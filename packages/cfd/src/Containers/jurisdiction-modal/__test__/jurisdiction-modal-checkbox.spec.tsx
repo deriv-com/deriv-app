@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import JurisdictionModalCheckbox from '../jurisdiction-modal-checkbox';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { JURISDICTION } from '../../../Helpers/cfd-config';
 
 describe('JurisdictionModalCheckbox', () => {

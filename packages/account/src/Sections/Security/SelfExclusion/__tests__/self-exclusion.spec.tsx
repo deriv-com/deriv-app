@@ -3,18 +3,18 @@ import { act } from 'react-dom/test-utils';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import SelfExclusion from '../self-exclusion';
 import { FormikValues } from 'formik';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
-import { WS } from '@deriv-app/shared';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
+import { WS } from '@deriv-lib/shared';
 import userEvent from '@testing-library/user-event';
 
 const portal_root = document.createElement('div');
 document.body.appendChild(portal_root);
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     useIsMounted: jest.fn().mockImplementation(() => () => true),
 }));
-jest.mock('@deriv-app/shared/src/services/ws-methods', () => ({
+jest.mock('@deriv-lib/shared/src/services/ws-methods', () => ({
     __esModule: true, // this property makes it work,
     default: 'mockedDefaultExport',
     WS: {

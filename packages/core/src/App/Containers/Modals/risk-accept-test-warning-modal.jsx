@@ -1,9 +1,9 @@
 import { TestWarningModal } from '@deriv/account';
-import { Button, Text } from '@deriv-app/components';
-import { Localize, localize } from '@deriv-app/translations';
-import { routes } from '@deriv-app/shared';
+import { Button, Text } from '@deriv-lib/components';
+import { Localize, localize } from '@deriv-lib/translations';
+import { routes } from '@deriv-lib/shared';
 import React from 'react';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 
 const RiskAcceptTestWarningModal = observer(() => {
     const { ui } = useStore();

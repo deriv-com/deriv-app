@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import { Formik, Form, FormikValues, FormikErrors } from 'formik';
 import { useHistory } from 'react-router-dom';
-import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text, FormSubmitButton } from '@deriv-app/components';
+import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text, FormSubmitButton } from '@deriv-lib/components';
 import {
     getErrorMessages,
     validPassword,
@@ -10,8 +10,8 @@ import {
     getCFDPlatformLabel,
     CFD_PLATFORMS,
     validMT5Password,
-} from '@deriv-app/shared';
-import { localize, Localize } from '@deriv-app/translations';
+} from '@deriv-lib/shared';
+import { localize, Localize } from '@deriv-lib/translations';
 import { TPlatforms } from '../../Types';
 import './reset-trading-password-modal.scss';
 

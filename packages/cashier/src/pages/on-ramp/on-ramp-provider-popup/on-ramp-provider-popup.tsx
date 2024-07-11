@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Button, HintBox, Icon, Loading, Popover, Text, useCopyToClipboard } from '@deriv-app/components';
-import { getKebabCase, website_name, isMobile } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv-app/translations';
-import { observer, useStore } from '@deriv-app/stores';
+import { Button, HintBox, Icon, Loading, Popover, Text, useCopyToClipboard } from '@deriv-lib/components';
+import { getKebabCase, website_name, isMobile } from '@deriv-lib/shared';
+import { localize, Localize } from '@deriv-lib/translations';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useCashierStore } from '../../../stores/useCashierStores';
 
 const OnRampProviderPopup = observer(() => {

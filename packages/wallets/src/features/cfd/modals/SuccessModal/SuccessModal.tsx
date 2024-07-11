@@ -1,5 +1,5 @@
 import React, { ComponentProps, FC } from 'react';
-import { useActiveWalletAccount } from '@deriv-app/api-v2';
+import { useActiveWalletAccount } from '@deriv-lib/api-v2';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
 import { PlatformDetails } from '../../constants';

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv-app/api-v2';
+import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv-lib/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { TradingAccountCard, WalletError } from '../../../../../components';
 import { WalletText } from '../../../../../components/Base';

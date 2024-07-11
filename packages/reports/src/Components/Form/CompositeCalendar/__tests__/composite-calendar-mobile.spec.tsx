@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import CompositeCalendarMobile from '../composite-calendar-mobile';
-import { toMoment } from '@deriv-app/shared';
+import { toMoment } from '@deriv-lib/shared';
 
 const startDate = 'Start date';
 const endDate = 'End date';
@@ -22,8 +22,8 @@ const mockDefaultProps = {
     setCurrentFocus: jest.fn(),
 };
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     MobileDialog: jest.fn(({ children, visible, footer, onClose }) => (
         <div>
             {visible && (

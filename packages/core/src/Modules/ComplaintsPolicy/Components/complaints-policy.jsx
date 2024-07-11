@@ -1,10 +1,10 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { FadeWrapper, PageOverlay, Div100vhContainer, Loading } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { FadeWrapper, PageOverlay, Div100vhContainer, Loading } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 import ComplaintsPolicyContent from './complaints-policy-content.jsx';
 import 'Sass/app/modules/complaints-policy.scss';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 
 const ComplaintsPolicy = observer(({ history }) => {
     const { common, client } = useStore();

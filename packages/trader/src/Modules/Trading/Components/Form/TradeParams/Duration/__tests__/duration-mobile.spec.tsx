@@ -2,11 +2,11 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import TraderProviders from '../../../../../../../trader-providers';
 import DurationMobile from '../duration-mobile';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
-jest.mock('@deriv-app/components', () => {
+jest.mock('@deriv-lib/components', () => {
     return {
-        ...jest.requireActual('@deriv-app/components'),
+        ...jest.requireActual('@deriv-lib/components'),
         Tabs: jest.fn(({ onTabItemClick, children }) => (
             <div>
                 {children}

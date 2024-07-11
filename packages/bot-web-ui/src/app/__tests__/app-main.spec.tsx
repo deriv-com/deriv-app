@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
-import { mockStore } from '@deriv-app/stores';
-import { TStores } from '@deriv-app/stores/types';
+import { mockStore } from '@deriv-lib/stores';
+import { TStores } from '@deriv-lib/stores/types';
 import { render } from '@testing-library/react';
 import { mock_ws } from '../../utils/mock';
 import App from '../app-main';
@@ -27,7 +27,7 @@ jest.mock('@deriv/deriv-charts', () => ({
     setSmartChartsPublicPath: jest.fn(),
 }));
 
-jest.mock('@deriv-app/components', () => ({
+jest.mock('@deriv-lib/components', () => ({
     Loading: () => <div>Loading...</div>,
 }));
 

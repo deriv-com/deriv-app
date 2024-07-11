@@ -2,10 +2,10 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field } from 'formik';
 
-import { Button, PasswordInput, PasswordMeter, Text } from '@deriv-app/components';
-import { getErrorMessages, redirectToSignUp } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+import { Button, PasswordInput, PasswordMeter, Text } from '@deriv-lib/components';
+import { getErrorMessages, redirectToSignUp } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 import { Analytics } from '@deriv-com/analytics';
 
 import SignupSeparatorContainer from '../AccountSignupModal/signup-separator-container.jsx';

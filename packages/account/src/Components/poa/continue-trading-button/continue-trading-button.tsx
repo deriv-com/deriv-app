@@ -1,8 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
-import { ButtonLink, Text } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
-import { routes } from '@deriv-app/shared/src/utils/routes/routes';
+import { ButtonLink, Text } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
+import { routes } from '@deriv-lib/shared/src/utils/routes/routes';
 
 type TContinueTradingButtonProps = { className?: string };
 

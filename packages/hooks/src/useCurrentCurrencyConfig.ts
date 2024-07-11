@@ -1,4 +1,4 @@
-import { useStore } from '@deriv-app/stores';
+import { useStore } from '@deriv-lib/stores';
 import useCurrencyConfig from './useCurrencyConfig';
 
 /** A custom hook to get the currency config information for the user's current currency. */

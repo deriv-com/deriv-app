@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Loading } from '@deriv-app/components';
-import { useDepositFiatAddress } from '@deriv-app/hooks';
-import { observer } from '@deriv-app/stores';
-import { setPerformanceValue } from '@deriv-app/shared';
+import { Loading } from '@deriv-lib/components';
+import { useDepositFiatAddress } from '@deriv-lib/hooks';
+import { observer } from '@deriv-lib/stores';
+import { setPerformanceValue } from '@deriv-lib/shared';
 import { ErrorState } from '../../../../components/error-state';
 import './deposit-fiat-iframe.scss';
 

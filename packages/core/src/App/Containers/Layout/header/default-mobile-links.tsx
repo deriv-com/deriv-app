@@ -1,10 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Icon } from '@deriv-app/components';
-import { useIsRealAccountNeededForCashier } from '@deriv-app/hooks';
-import { routes } from '@deriv-app/shared';
-import { useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv-app/translations';
+import { Button, Icon } from '@deriv-lib/components';
+import { useIsRealAccountNeededForCashier } from '@deriv-lib/hooks';
+import { routes } from '@deriv-lib/shared';
+import { useStore } from '@deriv-lib/stores';
+import { Localize } from '@deriv-lib/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import ShowNotifications from './show-notifications';
 import TradersHubOnboarding from './traders-hub-onboarding';

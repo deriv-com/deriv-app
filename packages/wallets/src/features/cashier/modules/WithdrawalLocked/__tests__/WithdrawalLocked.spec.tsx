@@ -7,11 +7,11 @@ import {
     useCashierValidation,
     useCryptoConfig,
     useCurrencyConfig,
-} from '@deriv-app/api-v2';
+} from '@deriv-lib/api-v2';
 import { render, screen } from '@testing-library/react';
 import WithdrawalLocked from '../WithdrawalLocked';
 
-jest.mock('@deriv-app/api-v2', () => ({
+jest.mock('@deriv-lib/api-v2', () => ({
     useAccountLimits: jest.fn(),
     useAccountStatus: jest.fn(),
     useActiveWalletAccount: jest.fn(),

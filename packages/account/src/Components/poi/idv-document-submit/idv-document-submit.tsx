@@ -1,8 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Form, Formik, FormikErrors, FormikHelpers } from 'formik';
-import { Button, HintBox, Text } from '@deriv-app/components';
-import { Localize, localize } from '@deriv-app/translations';
+import { Button, HintBox, Text } from '@deriv-lib/components';
+import { Localize, localize } from '@deriv-lib/translations';
 import {
     filterObjProperties,
     formatIDVFormValues,
@@ -10,8 +10,8 @@ import {
     removeEmptyPropertiesFromObject,
     toMoment,
     WS,
-} from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+} from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useDevice } from '@deriv-com/ui';
 import {
     isAdditionalDocumentValid,

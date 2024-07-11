@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, StaticUrl, Text } from '@deriv-app/components';
-import { localize, Localize } from '@deriv-app/translations';
-import { routes } from '@deriv-app/shared';
+import { Button, StaticUrl, Text } from '@deriv-lib/components';
+import { localize, Localize } from '@deriv-lib/translations';
+import { routes } from '@deriv-lib/shared';
 import { withRouter } from 'react-router-dom';
 import Error from 'Components/error';
 import './payment-agent-withdrawal-locked.scss';

@@ -1,10 +1,10 @@
 import React from 'react';
 import { OauthApps } from '@deriv/api-types';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ConnectedApps from '../connected-apps';
-import { WS } from '@deriv-app/shared';
+import { WS } from '@deriv-lib/shared';
 import { getConnectedAppsScopes } from '../template-helper';
 import { useDevice } from '@deriv-com/ui';
 
@@ -30,16 +30,16 @@ const mock_connected_apps: OauthApps = [
         active: 0,
     },
 ];
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     WS: {
         authorized: {
             send: jest.fn(() => ({ oauth_apps: mock_connected_apps })),
         },
     },
 }));
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Loading: jest.fn(() => <div>Mocked Loading</div>),
 }));
 jest.mock('../connected-apps-earn-more', () => jest.fn(() => <div>Mocked Earn More</div>));

@@ -1,5 +1,5 @@
 import React from 'react';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { mock_contract } from 'Utils/mock/contract';
 import RootStore from 'Stores/index';

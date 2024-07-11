@@ -1,27 +1,27 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { isMobile, routes } from '@deriv-app/shared';
-import { useCashierLocked, useDepositLocked } from '@deriv-app/hooks';
+import { isMobile, routes } from '@deriv-lib/shared';
+import { useCashierLocked, useDepositLocked } from '@deriv-lib/hooks';
 import OnRamp from '../on-ramp';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import type { TOnRampProps } from '../on-ramp';
 import CashierProviders from '../../../cashier-providers';
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useDepositLocked: jest.fn(() => false),
 }));
 
-jest.mock('@deriv-app/components', () => {
+jest.mock('@deriv-lib/components', () => {
     return {
-        ...jest.requireActual('@deriv-app/components'),
+        ...jest.requireActual('@deriv-lib/components'),
         Loading: () => <div>Loading</div>,
         ReadMore: () => <div>ReadMore</div>,
     };
 });
 
-jest.mock('@deriv-app/shared/src/utils/screen/responsive', () => ({
-    ...jest.requireActual('@deriv-app/shared/src/utils/screen/responsive'),
+jest.mock('@deriv-lib/shared/src/utils/screen/responsive', () => ({
+    ...jest.requireActual('@deriv-lib/shared/src/utils/screen/responsive'),
     isMobile: jest.fn(),
 }));
 
@@ -40,8 +40,8 @@ jest.mock('Pages/on-ramp/on-ramp-provider-popup', () => {
     return onRampProviderPopup;
 });
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useDepositLocked: jest.fn(() => false),
     useCashierLocked: jest.fn(() => false),
 }));

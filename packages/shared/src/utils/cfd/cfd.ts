@@ -1,5 +1,5 @@
 import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany } from '@deriv/api-types';
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import { CFD_PLATFORMS } from '../platform';
 import { AUTH_STATUS_CODES, Jurisdiction, JURISDICTION_MARKET_TYPES } from '../constants';
 

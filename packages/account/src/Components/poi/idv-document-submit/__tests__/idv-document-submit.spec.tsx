@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { isDocumentNumberValid } from 'Helpers/utils';
 import IdvDocumentSubmit from '../idv-document-submit';
 import { useDevice } from '@deriv-com/ui';
@@ -39,8 +39,8 @@ jest.mock('Helpers/utils', () => ({
     isDocumentNumberValid: jest.fn(),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     formatInput: jest.fn(() => '5436454364243'),
     WS: {
         send: jest.fn(() => Promise.resolve({ error: '' })),

@@ -1,6 +1,6 @@
 import React from 'react';
-import { localize, Localize } from '@deriv-app/translations';
-import { FormSubmitButton, Icon, Text, Modal } from '@deriv-app/components';
+import { localize, Localize } from '@deriv-lib/translations';
+import { FormSubmitButton, Icon, Text, Modal } from '@deriv-lib/components';
 
 type TClosingAccountWarningModalProps = {
     show_warning_modal: boolean;

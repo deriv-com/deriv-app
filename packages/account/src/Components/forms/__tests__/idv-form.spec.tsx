@@ -30,8 +30,8 @@ jest.mock('Helpers/utils', () => ({
     }),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isDesktop: jest.fn(() => true),
     isMobile: jest.fn(() => false),
 }));

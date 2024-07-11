@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { localize } from 'Components/i18next';
-import { Text } from '@deriv-app/components';
+import { Text } from '@deriv-lib/components';
 import './ad-type.scss';
 
 const AdType = ({ ad_pause_color, float_rate }) => {

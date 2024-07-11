@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Jurisdiction } from '@deriv-app/shared';
+import { Jurisdiction } from '@deriv-lib/shared';
 import { getJurisdictionContents } from '../../Constants/jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardProps } from '../props.types';
 import JurisdictionCardBack from './jurisdiction-card-back';

@@ -1,4 +1,4 @@
-import { regex_checks, TSchema } from '@deriv-app/shared';
+import { regex_checks, TSchema } from '@deriv-lib/shared';
 import { transformConfig } from 'Configs/address-details-config';
 
 describe('address-details-config', () => {

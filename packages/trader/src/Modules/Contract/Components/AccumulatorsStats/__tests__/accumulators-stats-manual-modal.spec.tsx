@@ -14,8 +14,8 @@ type TModal = React.ComponentType<{
     }>;
 };
 
-jest.mock('@deriv-app/components', () => {
-    const original_module = jest.requireActual('@deriv-app/components');
+jest.mock('@deriv-lib/components', () => {
+    const original_module = jest.requireActual('@deriv-lib/components');
     const Modal: TModal = jest.fn(({ children, is_open, title, toggleModal }) =>
         is_open ? (
             <div data-testid='modal'>
@@ -33,8 +33,8 @@ jest.mock('@deriv-app/components', () => {
     };
 });
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     getUrlBase: jest.fn(() => 'video_src.mp4'),
 }));
 

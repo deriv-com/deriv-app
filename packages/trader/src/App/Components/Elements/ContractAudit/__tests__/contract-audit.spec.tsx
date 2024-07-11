@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockContractInfo } from '@deriv-app/shared';
+import { mockContractInfo } from '@deriv-lib/shared';
 import ContractAudit from '../contract-audit';
 
 const ContractDetails = 'ContractDetails';
@@ -24,8 +24,8 @@ const mocked_default_props: React.ComponentProps<typeof ContractAudit> = {
     is_open: false,
 };
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Tabs: jest.fn(({ onTabItemClick, children }) => <div onClick={() => onTabItemClick(0)}>{children}</div>),
 }));
 jest.mock('../contract-details', () => jest.fn(() => <div>{ContractDetails}</div>));

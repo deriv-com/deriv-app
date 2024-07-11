@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Icon, ButtonLink, StaticUrl, Text } from '@deriv-app/components';
-import { isMobile } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv-app/translations';
+import { Button, Icon, ButtonLink, StaticUrl, Text } from '@deriv-lib/components';
+import { isMobile } from '@deriv-lib/shared';
+import { localize, Localize } from '@deriv-lib/translations';
 import ErrorStore from '../../stores/error-store';
 import './error.scss';
 

@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import ClosingAccountSteps from '../closing-account-steps';
 
 describe('<ClosingAccountSteps />', () => {

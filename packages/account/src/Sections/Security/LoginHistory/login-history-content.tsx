@@ -1,4 +1,4 @@
-import { Table } from '@deriv-app/components';
+import { Table } from '@deriv-lib/components';
 import { useDevice } from '@deriv-com/ui';
 import getLoginHistoryTableHeaders from '../../../Constants/get-login-history-table-headers';
 import LoginHistoryTableRow from './login-history-table-row';

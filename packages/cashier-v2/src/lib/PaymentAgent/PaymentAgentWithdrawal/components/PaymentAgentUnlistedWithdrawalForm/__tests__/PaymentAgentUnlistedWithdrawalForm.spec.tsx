@@ -5,8 +5,8 @@ import PaymentAgentUnlistedWithdrawalForm from '../PaymentAgentUnlistedWithdrawa
 
 const mockedRequestTryPaymentAgentWithdrawal = jest.fn();
 
-jest.mock('@deriv-app/api-v2', () => ({
-    ...jest.requireActual('@deriv-app/api-v2'),
+jest.mock('@deriv-lib/api-v2', () => ({
+    ...jest.requireActual('@deriv-lib/api-v2'),
     useActiveAccount: jest.fn(() => ({ data: { currency_config: { display_code: 'USD' } } })),
 }));
 

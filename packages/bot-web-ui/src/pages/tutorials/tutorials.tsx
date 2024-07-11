@@ -1,6 +1,6 @@
 import React from 'react';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import NoSearchResult from './common/no-search-result-found';
 import QuickStrategyGuides from './quick-strategy-content/quick-strategy-guides';

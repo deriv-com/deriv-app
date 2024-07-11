@@ -1,7 +1,7 @@
 import React from 'react';
-import { Icon, Text } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
-import { isNavigationFromP2P, isNavigationFromDerivGO } from '@deriv-app/shared';
+import { Icon, Text } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
+import { isNavigationFromP2P, isNavigationFromDerivGO } from '@deriv-lib/shared';
 import ContinueTradingButton from '../../continue-trading-button';
 import IconMessageContent from '../../../icon-message-content';
 import PoiButton from '../../../poi/poi-button';

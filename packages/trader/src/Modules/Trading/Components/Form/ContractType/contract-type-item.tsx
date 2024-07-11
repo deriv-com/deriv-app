@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Text } from '@deriv-app/components';
+import { Text } from '@deriv-lib/components';
 import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories';
 import { TContractType, TFilteredContractType } from './types';
 

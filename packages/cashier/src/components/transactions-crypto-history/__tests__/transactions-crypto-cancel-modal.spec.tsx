@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import TransactionsCryptoCancelModal from '../transactions-crypto-cancel-modal';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
 describe('<TransactionsCryptoCancelModal />', () => {
     let modal_root_el: HTMLDivElement, mockRootStore: ReturnType<typeof mockStore>;

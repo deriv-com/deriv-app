@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import App from '../app';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import moment from 'moment';
 
 const rootStore = mockStore({

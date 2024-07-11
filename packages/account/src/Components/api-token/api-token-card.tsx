@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, FieldProps } from 'formik';
-import { CompositeCheckbox } from '@deriv-app/components';
+import { CompositeCheckbox } from '@deriv-lib/components';
 
 type TApiTokenCard = {
     description: JSX.Element;

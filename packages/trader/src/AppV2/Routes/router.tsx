@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
 import { Switch } from 'react-router-dom';
-import { UILoader, RouteWithSubroutes } from '@deriv-app/components';
+import { UILoader, RouteWithSubroutes } from '@deriv-lib/components';
 import traderRoutes from './routes';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import Page404 from 'Modules/Page404';
 
 const Router: React.FC = () => {

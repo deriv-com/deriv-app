@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Dropdown, useOnClickOutside } from '@deriv-app/components';
-import { useP2PSettings } from '@deriv-app/hooks';
-import { isMobile } from '@deriv-app/shared';
-import { observer } from '@deriv-app/stores';
+import { Dropdown, useOnClickOutside } from '@deriv-lib/components';
+import { useP2PSettings } from '@deriv-lib/hooks';
+import { isMobile } from '@deriv-lib/shared';
+import { observer } from '@deriv-lib/stores';
 import { localize } from 'Components/i18next';
 // @ts-ignore
 import { useStores } from 'Stores';

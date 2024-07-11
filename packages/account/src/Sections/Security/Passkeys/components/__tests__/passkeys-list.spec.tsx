@@ -27,8 +27,8 @@ const mock_passkeys_list: React.ComponentProps<typeof PasskeysList>['passkeys_li
     },
 ];
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     getOSNameWithUAParser: () => 'test OS',
 }));
 

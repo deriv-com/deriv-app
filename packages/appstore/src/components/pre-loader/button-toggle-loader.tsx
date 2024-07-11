@@ -1,6 +1,6 @@
 import ContentLoader from 'react-content-loader';
 import React from 'react';
-import { MobileWrapper } from '@deriv-app/components';
+import { MobileWrapper } from '@deriv-lib/components';
 
 const ButtonToggleLoader = () => (
     <ContentLoader

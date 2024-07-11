@@ -1,10 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import useDepositFiatAddress from '../useDepositFiatAddress';
 import { withMockAPIProvider } from '../mocks';
 
-jest.mock('@deriv-app/api', () => ({
-    ...jest.requireActual('@deriv-app/api'),
+jest.mock('@deriv-lib/api', () => ({
+    ...jest.requireActual('@deriv-lib/api'),
     useRequest: jest.fn(() => ({ data: { cashier: 'https://example.com' }, mutate: jest.fn })),
 }));
 

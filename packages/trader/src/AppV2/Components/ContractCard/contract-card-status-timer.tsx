@@ -1,10 +1,10 @@
 import React from 'react';
-import { TPortfolioPosition } from '@deriv-app/stores/types';
-import { Localize } from '@deriv-app/translations';
+import { TPortfolioPosition } from '@deriv-lib/stores/types';
+import { Localize } from '@deriv-lib/translations';
 import { Tag } from '@deriv-com/quill-ui';
 import { LabelPairedStopwatchCaptionRegularIcon } from '@deriv/quill-icons';
-import { getCardLabels } from '@deriv-app/shared';
-import { RemainingTime } from '@deriv-app/components';
+import { getCardLabels } from '@deriv-lib/shared';
+import { RemainingTime } from '@deriv-lib/components';
 import { TRootStore } from 'Types';
 
 export type TContractCardStatusTimerProps = Pick<TPortfolioPosition['contract_info'], 'date_expiry' | 'tick_count'> & {

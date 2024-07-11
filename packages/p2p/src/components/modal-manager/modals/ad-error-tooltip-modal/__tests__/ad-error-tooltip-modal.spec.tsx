@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { APIProvider } from '@deriv-app/api';
-import { P2PSettingsProvider, StoreProvider, mockStore } from '@deriv-app/stores';
+import { APIProvider } from '@deriv-lib/api';
+import { P2PSettingsProvider, StoreProvider, mockStore } from '@deriv-lib/stores';
 import AdErrorTooltipModal from '../ad-error-tooltip-modal';
 import { number } from 'prop-types';
 
@@ -23,8 +23,8 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
     </APIProvider>
 );
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useP2PSettings: jest.fn().mockReturnValue({
         p2p_settings: {
             maximum_order_amount: 100,

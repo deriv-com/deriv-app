@@ -1,7 +1,7 @@
 import React from 'react';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 
-import { StaticUrl } from '@deriv-app/components';
+import { StaticUrl } from '@deriv-lib/components';
 import {
     checkServerMaintenance,
     daysSince,
@@ -24,8 +24,8 @@ import {
     LocalStore,
     routes,
     unique,
-} from '@deriv-app/shared';
-import { Localize, localize } from '@deriv-app/translations';
+} from '@deriv-lib/shared';
+import { Localize, localize } from '@deriv-lib/translations';
 
 import { BinaryLink } from 'App/Components/Routes';
 import { WS } from 'Services';

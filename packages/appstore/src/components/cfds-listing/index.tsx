@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
-import { observer, useStore } from '@deriv-app/stores';
-import { Loading, Text, StaticUrl } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Loading, Text, StaticUrl } from '@deriv-lib/components';
 import {
     formatMoney,
     getAuthenticationStatusInfo,
@@ -9,9 +9,9 @@ import {
     makeLazyLoader,
     moduleLoader,
     setPerformanceValue,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 import { useDevice } from '@deriv-com/ui';
-import { Localize } from '@deriv-app/translations';
+import { Localize } from '@deriv-lib/translations';
 import { Analytics } from '@deriv-com/analytics';
 import ListingContainer from 'Components/containers/listing-container';
 import AddOptionsAccount from 'Components/add-options-account';
@@ -20,7 +20,7 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 import CompareAccount from 'Components/compare-account';
 import CFDsDescription from 'Components/elements/cfds-description';
 import { getHasDivider } from 'Constants/utils';
-import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
+import { useMT5SVGEligibleToMigrate } from '@deriv-lib/hooks';
 import './cfds-listing.scss';
 
 const MigrationBanner = makeLazyLoader(

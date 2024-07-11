@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import { useActiveWalletAccount } from '@deriv-app/api-v2';
+import { useActiveWalletAccount } from '@deriv-lib/api-v2';
 import './WalletsContainer.scss';
 
 type TProps = {

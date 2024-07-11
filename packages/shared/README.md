@@ -1,4 +1,4 @@
-# `@deriv-app/shared`
+# `@deriv-lib/shared`
 
 > Responsible for the shared utilities and styles for all packages.
 
@@ -26,7 +26,7 @@ For Fonts, Constants, Mixins, Themes, Devices:
 {
     loader: 'sass-resources-loader',
     options: {
-        resources: require('@deriv-app/shared/src/styles/index.ts'),
+        resources: require('@deriv-lib/shared/src/styles/index.ts'),
     }
 }
 ```
@@ -46,5 +46,5 @@ For Fonts, Constants, Mixins, Themes, Devices:
 ## Utility functions
 
 ```js
-import { toMoment } '@deriv-app/shared'
+import { toMoment } '@deriv-lib/shared'
 ```

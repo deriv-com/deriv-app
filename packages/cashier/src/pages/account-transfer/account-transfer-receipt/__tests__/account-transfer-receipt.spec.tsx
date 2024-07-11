@@ -2,10 +2,10 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 import AccountTransferReceipt from '../account-transfer-receipt';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
 describe('<AccountTransferReceipt />', () => {
     let mockRootStore: ReturnType<typeof mockStore>;

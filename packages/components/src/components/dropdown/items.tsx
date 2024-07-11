@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { getCurrencyDisplayCode } from '@deriv-app/shared';
+import { getCurrencyDisplayCode } from '@deriv-lib/shared';
 import Popover from '../popover';
 import Text from '../text';
 import { TListItem } from './utility';

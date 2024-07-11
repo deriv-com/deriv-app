@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { getContractTypeDisplay, CONTRACT_TYPES } from '@deriv-app/shared';
+import { getContractTypeDisplay, CONTRACT_TYPES } from '@deriv-lib/shared';
 import ContractTypeCell from '../contract-type-cell';
 
 jest.mock('../../../icon-trade-types', () => jest.fn(({ type }) => <div>Icon trade type: {type}</div>));

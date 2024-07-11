@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik } from 'formik';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';

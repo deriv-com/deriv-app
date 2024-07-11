@@ -1,4 +1,4 @@
-import { Localize } from '@deriv-app/translations';
+import { Localize } from '@deriv-lib/translations';
 import React from 'react';
 import { TFilesDescription } from '../Types';
 

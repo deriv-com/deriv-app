@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, FormikHelpers, FormikValues, useFormikContext } from 'formik';
-import { Icon, Input } from '@deriv-app/components';
+import { Icon, Input } from '@deriv-lib/components';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { TCountryListProps } from 'Types';

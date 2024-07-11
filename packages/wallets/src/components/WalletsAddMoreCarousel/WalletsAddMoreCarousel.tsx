@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useEmblaCarousel, { EmblaCarouselType } from 'embla-carousel-react';
 import { useHover } from 'usehooks-ts';
-import { useAllWalletAccounts, useAuthorize } from '@deriv-app/api-v2';
+import { useAllWalletAccounts, useAuthorize } from '@deriv-lib/api-v2';
 import { LabelPairedChevronLeftLgFillIcon, LabelPairedChevronRightLgFillIcon } from '@deriv/quill-icons';
 import useDevice from '../../hooks/useDevice';
 import { IconButton, WalletText } from '../Base';

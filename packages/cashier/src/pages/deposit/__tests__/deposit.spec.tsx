@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useDepositLocked } from '@deriv-app/hooks';
-import { ContentFlag } from '@deriv-app/shared';
-import { mockStore } from '@deriv-app/stores';
+import { useDepositLocked } from '@deriv-lib/hooks';
+import { ContentFlag } from '@deriv-lib/shared';
+import { mockStore } from '@deriv-lib/stores';
 import CashierProviders from '../../../cashier-providers';
 import Deposit from '../deposit';
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useDepositLocked: jest.fn(() => false),
     useCashierLocked: jest.fn(() => false),
     useIsSystemMaintenance: jest.fn(() => false),

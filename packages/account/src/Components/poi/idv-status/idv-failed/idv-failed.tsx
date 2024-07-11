@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
 import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
-import { Button, HintBox, Loading, Text } from '@deriv-app/components';
+import { Button, HintBox, Loading, Text } from '@deriv-lib/components';
 import {
     filterObjProperties,
     getIDVNotApplicableOption,
@@ -12,9 +12,9 @@ import {
     TIDVErrorStatus,
     toMoment,
     WS,
-} from '@deriv-app/shared';
-import { useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+} from '@deriv-lib/shared';
+import { useStore } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import FormBody from '../../../form-body';
 import IDVForm from '../../../forms/idv-form';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { render } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';

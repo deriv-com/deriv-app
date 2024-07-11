@@ -1,10 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Field, Formik, FormikHandlers, FormikState } from 'formik';
-import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv-app/components';
-import { reorderCurrencies, getAddressDetailsFields, CURRENCY_TYPE } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv-lib/components';
+import { reorderCurrencies, getAddressDetailsFields, CURRENCY_TYPE } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import RadioButton from './radio-button';
 import RadioButtonGroup from './radio-button-group';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';

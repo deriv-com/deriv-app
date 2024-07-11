@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputField } from '@deriv-app/components';
+import { InputField } from '@deriv-lib/components';
 import Fieldset from 'App/Components/Form/fieldset';
 
 type TLabeledQuantityInputMobile = {

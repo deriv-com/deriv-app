@@ -1,7 +1,7 @@
 import React from 'react';
-import { APIProvider } from '@deriv-app/api';
-import { P2PSettingsProvider, StoreProvider } from '@deriv-app/stores';
-import { TStores } from '@deriv-app/stores/types';
+import { APIProvider } from '@deriv-lib/api';
+import { P2PSettingsProvider, StoreProvider } from '@deriv-lib/stores';
+import { TStores } from '@deriv-lib/stores/types';
 
 export const withMockAPIProvider = (mock?: TStores, has_p2p_settings?: boolean) => {
     if (mock) {

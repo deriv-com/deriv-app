@@ -4,10 +4,10 @@ import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import Withdrawal from '../withdrawal';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
-jest.mock('@deriv-app/api', () => ({
-    ...jest.requireActual('@deriv-app/api'),
+jest.mock('@deriv-lib/api', () => ({
+    ...jest.requireActual('@deriv-lib/api'),
     useFetch: jest.fn(() => ({
         data: {
             website_status: {
@@ -29,8 +29,8 @@ jest.mock('../withdrawal-crypto-form', () => jest.fn(() => 'WithdrawalCryptoForm
 jest.mock('../withdrawal-crypto-receipt', () => jest.fn(() => 'WithdrawalCryptoReceipt'));
 jest.mock('Components/transactions-crypto-history', () => jest.fn(() => 'TransactionsCryptoHistory'));
 jest.mock('../withdrawal-verification-email', () => jest.fn(() => 'WithdrawalVerificationEmail'));
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Loading: () => <div>Loading</div>,
 }));
 

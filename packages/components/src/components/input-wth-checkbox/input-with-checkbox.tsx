@@ -1,5 +1,5 @@
 import React from 'react';
-import { getDecimalPlaces } from '@deriv-app/shared';
+import { getDecimalPlaces } from '@deriv-lib/shared';
 import InputField from '../input-field';
 import Checkbox from '../checkbox';
 import Popover from '../popover';

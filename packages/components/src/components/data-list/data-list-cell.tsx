@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { isTurbosContract, isVanillaContract } from '@deriv-app/shared';
+import { isTurbosContract, isVanillaContract } from '@deriv-lib/shared';
 import { TPassThrough, TRow } from '../types/common.types';
 
 export type TColIndex =

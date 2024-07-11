@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useIsClientHighRiskForMT5 } from '@deriv-app/hooks';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { useIsClientHighRiskForMT5 } from '@deriv-lib/hooks';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import AccountWizard from '../account-wizard';
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useIsClientHighRiskForMT5: jest.fn(),
 }));
 
@@ -13,8 +13,8 @@ const mockUseIsClientHighRiskForMT5 = useIsClientHighRiskForMT5 as jest.MockedFu
     typeof useIsClientHighRiskForMT5
 >;
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Wizard: jest.fn(({ children }) => <div data-testid='dt_wizard'>{children}</div>),
 }));
 
@@ -34,8 +34,8 @@ jest.mock('../account-wizard-form', () => ({
     ]),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     WS: {
         send: jest.fn().mockResolvedValue({}),
     },

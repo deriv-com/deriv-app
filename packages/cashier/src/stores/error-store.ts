@@ -1,5 +1,5 @@
 import { action, makeObservable, observable } from 'mobx';
-import { getPropertyValue } from '@deriv-app/shared';
+import { getPropertyValue } from '@deriv-lib/shared';
 import { TServerError } from '../types';
 
 export default class ErrorStore {

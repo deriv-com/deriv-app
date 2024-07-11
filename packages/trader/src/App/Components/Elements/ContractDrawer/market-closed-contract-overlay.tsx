@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv-app/components';
+import { Text } from '@deriv-lib/components';
 
 const MarketClosedContractOverlay = ({ validation_error }: { validation_error?: string }) => (
     <div className='contract-card__market-closed'>

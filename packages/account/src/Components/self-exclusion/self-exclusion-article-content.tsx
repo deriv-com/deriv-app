@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React from 'react';
-import { getStaticUrl } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv-app/translations';
-import { Button, Icon, OpenLiveChatLink, Popup, Text } from '@deriv-app/components';
+import { getStaticUrl } from '@deriv-lib/shared';
+import { Localize, localize } from '@deriv-lib/translations';
+import { Button, Icon, OpenLiveChatLink, Popup, Text } from '@deriv-lib/components';
 import SelfExclusionContext from './self-exclusion-context';
 
 type TSelfExclusionArticleItems = Record<'is_eu' | 'is_app_settings', boolean | undefined>;

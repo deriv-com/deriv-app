@@ -1,5 +1,5 @@
-import { getPlatformSettings, routes } from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+import { getPlatformSettings, routes } from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 
 type TPlatformConfig = {
     description: () => string;

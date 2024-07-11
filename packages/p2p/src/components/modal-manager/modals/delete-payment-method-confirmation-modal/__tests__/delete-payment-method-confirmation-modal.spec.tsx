@@ -21,8 +21,8 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
     useModalManagerContext: () => mock_modal_manager_context,
 }));
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useP2PAdvertiserPaymentMethods: jest.fn(() => mock_p2p_advertiser_payment_methods_hooks),
 }));
 

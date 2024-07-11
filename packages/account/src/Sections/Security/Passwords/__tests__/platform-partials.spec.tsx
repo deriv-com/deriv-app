@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CFD_PLATFORMS } from '@deriv-app/shared';
+import { CFD_PLATFORMS } from '@deriv-lib/shared';
 import PlatformPartials from '../platform-partials';
 
 describe('<PlatformPartials />', () => {

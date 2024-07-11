@@ -1,8 +1,8 @@
 import React, { MouseEvent } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import { Input, Popover } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
+import { Input, Popover } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 type TQSInput = {

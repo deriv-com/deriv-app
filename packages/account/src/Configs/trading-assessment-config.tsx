@@ -1,7 +1,7 @@
 import React from 'react';
 import { GetFinancialAssessment, GetSettings } from '@deriv/api-types';
-import { generateValidationFunction, getDefaultFields } from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+import { generateValidationFunction, getDefaultFields } from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 import { getTradingAssessmentQuestions } from '../Constants/trading-assessment-questions';
 
 type TTradingAssessmentConfig = {

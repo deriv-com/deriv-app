@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount } from '@deriv-app/api-v2';
+import { useActiveWalletAccount } from '@deriv-lib/api-v2';
 import {
     LabelPairedArrowsRotateMdBoldIcon,
     LabelPairedArrowUpArrowDownMdBoldIcon,

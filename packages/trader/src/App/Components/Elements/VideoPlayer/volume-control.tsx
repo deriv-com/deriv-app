@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
-import { Icon } from '@deriv-app/components';
+import { Icon } from '@deriv-lib/components';
 
 type TVolumeControl = {
     onVolumeChange: (new_value: number) => void;

@@ -1,7 +1,7 @@
-import { Div100vhContainer, InlineMessage, Modal, PageOverlay, Text, UILoader } from '@deriv-app/components';
-import { getPlatformSettings } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv-app/translations';
+import { Div100vhContainer, InlineMessage, Modal, PageOverlay, Text, UILoader } from '@deriv-lib/components';
+import { getPlatformSettings } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize } from '@deriv-lib/translations';
 import { useDevice } from '@deriv-com/ui';
 import React from 'react';
 import AdditionalKycInfoForm from './additional-kyc-info-form';

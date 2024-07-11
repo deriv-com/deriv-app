@@ -1,7 +1,7 @@
 import React from 'react';
 import CurrentSwitcherContainer from '../currency-switcher-container';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 
 describe('CurrentSwitcherContainer', () => {
     it('should render the modal', async () => {

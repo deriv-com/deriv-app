@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Popover } from '@deriv-app/components';
+import { Popover } from '@deriv-lib/components';
 
 // ToDo:
 // - Refactor Last Digit to keep the children as array type.

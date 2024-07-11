@@ -8,11 +8,11 @@ import {
     Modal,
     Text,
     ThemedScrollbars,
-} from '@deriv-app/components';
-import { EMPLOYMENT_VALUES, shouldHideOccupationField } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv-app/translations';
+} from '@deriv-lib/components';
+import { EMPLOYMENT_VALUES, shouldHideOccupationField } from '@deriv-lib/shared';
+import { Localize, localize } from '@deriv-lib/translations';
 import { TFinancialInformationForm } from 'Types';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import FinancialInformation from './financial-details-partials';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';

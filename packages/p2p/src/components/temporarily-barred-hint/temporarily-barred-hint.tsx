@@ -1,6 +1,6 @@
 import React from 'react';
-import { InlineMessage } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
+import { InlineMessage } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
 // @ts-ignore
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';

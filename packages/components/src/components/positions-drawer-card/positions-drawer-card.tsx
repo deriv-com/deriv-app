@@ -13,8 +13,8 @@ import {
     getEndTime,
     isMobile,
     isVanillaContract,
-} from '@deriv-app/shared';
-import { TContractInfo, TContractStore } from '@deriv-app/shared/src/utils/contract/contract-types';
+} from '@deriv-lib/shared';
+import { TContractInfo, TContractStore } from '@deriv-lib/shared/src/utils/contract/contract-types';
 import { TToastConfig } from '../types/contract.types';
 
 type TPositionsDrawerCardProps = {

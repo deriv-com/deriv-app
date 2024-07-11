@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 import { useCashierStore } from 'Stores/useCashierStores';
 import { RouterChildContext, useHistory } from 'react-router';
 

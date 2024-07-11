@@ -1,9 +1,9 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
-import { useRemoteConfig } from '@deriv-app/api';
+import { useRemoteConfig } from '@deriv-lib/api';
 import { Analytics } from '@deriv-com/analytics';
-import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv-app/components';
+import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv-lib/components';
 import {
     useAccountTransferVisible,
     useAuthorize,
@@ -11,10 +11,10 @@ import {
     useOnrampVisible,
     usePaymentAgentTransferVisible,
     useP2PSettings,
-} from '@deriv-app/hooks';
-import { getOSNameWithUAParser, getStaticUrl, routes, useIsMounted, whatsapp_url } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+} from '@deriv-lib/hooks';
+import { getOSNameWithUAParser, getStaticUrl, routes, useIsMounted, whatsapp_url } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import getRoutesConfig from 'App/Constants/routes-config';

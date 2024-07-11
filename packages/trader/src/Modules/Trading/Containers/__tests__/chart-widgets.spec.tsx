@@ -3,7 +3,7 @@ import { screen, render } from '@testing-library/react';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from '../chart-widgets';
 import TraderProviders from '../../../../trader-providers';
 
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
 jest.mock('../../../Contract/Components/Digits/digits.tsx', () => jest.fn(() => <div>mockedDigits</div>));
 jest.mock('../../../SmartChart/Components/top-widgets.tsx', () => jest.fn(() => <div>mockedTopWidgets</div>));

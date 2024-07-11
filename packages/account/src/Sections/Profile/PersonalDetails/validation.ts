@@ -1,6 +1,6 @@
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import * as Yup from 'yup';
-import { address_permitted_special_characters_message, getLocation, toMoment } from '@deriv-app/shared';
+import { address_permitted_special_characters_message, getLocation, toMoment } from '@deriv-lib/shared';
 import { GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
 
 const getBaseSchema = () =>

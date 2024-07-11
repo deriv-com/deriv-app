@@ -1,9 +1,9 @@
 import { action, computed, makeObservable, observable, reaction, when } from 'mobx';
 import { LogTypes, MessageTypes } from '@deriv/bot-skeleton';
 import { config } from '@deriv/bot-skeleton/src/constants/config';
-import { formatDate } from '@deriv-app/shared';
-import { TStores } from '@deriv-app/stores/types';
-import { localize } from '@deriv-app/translations';
+import { formatDate } from '@deriv-lib/shared';
+import { TStores } from '@deriv-lib/stores/types';
+import { localize } from '@deriv-lib/translations';
 import { isCustomJournalMessage } from '../utils/journal-notifications';
 import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';
 import { getSetting, storeSetting } from '../utils/settings';

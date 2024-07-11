@@ -1,6 +1,6 @@
 import React from 'react';
-import { useCurrentCurrencyConfig } from '@deriv-app/hooks';
-import { observer } from '@deriv-app/stores';
+import { useCurrentCurrencyConfig } from '@deriv-lib/hooks';
+import { observer } from '@deriv-lib/stores';
 import { SideNoteFAQ } from '../../../../components/side-notes';
 import CashierOnboardingSideNoteCrypto from './cashier-onboarding-side-note-crypto';
 import CashierOnboardingSideNoteFiat from './cashier-onboarding-side-note-fiat';

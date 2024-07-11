@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, Text, HintBox, StaticUrl } from '@deriv-app/components';
+import { Button, Modal, Text, HintBox, StaticUrl } from '@deriv-lib/components';
 import {
     CFD_PLATFORMS,
     Jurisdiction,
@@ -8,10 +8,10 @@ import {
     DBVI_COMPANY_NAMES,
     getFormattedJurisdictionMarketTypes,
     getFormattedJurisdictionCode,
-} from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv-app/translations';
-import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
+} from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize } from '@deriv-lib/translations';
+import { useMT5SVGEligibleToMigrate } from '@deriv-lib/hooks';
 import MT5MigrationAccountIcons from './mt5-migration-account-icons';
 import { useMT5MigrationModalContext } from './mt5-migration-modal-context';
 

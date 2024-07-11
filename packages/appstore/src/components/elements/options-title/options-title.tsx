@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDevice } from '@deriv-com/ui';
-import { Text } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
+import { Text } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
 
 type TOptionsTitle = {
     is_eu_user: boolean;

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
-import { getKebabCase } from '@deriv-app/shared';
+import { getKebabCase } from '@deriv-lib/shared';
 import Counter from '../counter';
 import Icon from '../icon/icon';
 

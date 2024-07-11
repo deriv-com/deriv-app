@@ -3,8 +3,8 @@ import { render, screen } from '@testing-library/react';
 import RadioGroupWithInfoMobile from '../radio-group-with-info-mobile';
 import userEvent from '@testing-library/user-event';
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Popover: jest.fn(props => <div className={props.classNameBubble}>Popover</div>),
 }));
 

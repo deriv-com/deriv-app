@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import AccumulatorsSellButton from '../accumulators-sell-button';
-import { mockStore } from '@deriv-app/stores';
-import { mockContractInfo } from '@deriv-app/shared';
+import { mockStore } from '@deriv-lib/stores';
+import { mockContractInfo } from '@deriv-lib/shared';
 import TraderProviders from '../../../../../../../trader-providers';
 
 const mock_default_props = {

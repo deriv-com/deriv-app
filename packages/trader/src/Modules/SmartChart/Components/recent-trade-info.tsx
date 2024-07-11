@@ -1,8 +1,8 @@
 import React from 'react';
-import { observer, useStore } from '@deriv-app/stores';
-import { isAccumulatorContract, isDigitContract, isEnded } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
-import { Text } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { isAccumulatorContract, isDigitContract, isEnded } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
+import { Text } from '@deriv-lib/components';
 
 const RecentTradeInfo = observer(() => {
     const { contract_trade } = useStore();

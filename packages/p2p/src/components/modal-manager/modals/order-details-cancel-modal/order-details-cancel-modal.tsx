@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Modal, Text } from '@deriv-app/components';
-import { useP2PSettings } from '@deriv-app/hooks';
-import { useIsMounted } from '@deriv-app/shared';
+import { Button, Modal, Text } from '@deriv-lib/components';
+import { useP2PSettings } from '@deriv-lib/hooks';
+import { useIsMounted } from '@deriv-lib/shared';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import SectionError from 'Components/section-error';

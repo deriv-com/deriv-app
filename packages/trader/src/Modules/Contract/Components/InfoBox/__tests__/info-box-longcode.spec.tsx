@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
-import { TCoreStores } from '@deriv-app/stores/types';
-import { mockContractInfo } from '@deriv-app/shared';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
+import { TCoreStores } from '@deriv-lib/stores/types';
+import { mockContractInfo } from '@deriv-lib/shared';
 import InfoBoxLongcode from '../info-box-longcode';
 
 const test_longcode_short = 'test longcode';
@@ -16,8 +16,8 @@ const view_less_text = /View less/i;
 const mocked_props = {
     contract_info: mockContractInfo({ longcode: test_longcode_short, contract_type: 'test' }),
 };
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Icon: jest.fn(() => 'MockedIcon'),
 }));
 

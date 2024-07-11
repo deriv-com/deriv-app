@@ -2,7 +2,7 @@ import React from 'react';
 import InstrumentsIconWithLabel from './instruments-icon-with-label';
 import { TInstrumentsIcon, TCompareAccountsCard } from 'Components/props.types';
 import { getHighlightedIconLabel } from '../../Helpers/compare-accounts-config';
-import { useStore } from '@deriv-app/stores';
+import { useStore } from '@deriv-lib/stores';
 
 const CFDInstrumentsLabelHighlighted = ({ trading_platforms }: TCompareAccountsCard) => {
     const { traders_hub } = useStore();

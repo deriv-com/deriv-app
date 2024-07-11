@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatOnfidoError } from '@deriv-app/shared';
+import { formatOnfidoError } from '@deriv-lib/shared';
 import UploadComplete from '../../../Components/poi/status/upload-complete';
 import Verified from '../../../Components/poi/status/verified';
 import RejectedReasons from '../../../Components/poi/status/rejected-reasons';

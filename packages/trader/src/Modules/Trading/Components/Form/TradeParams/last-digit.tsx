@@ -1,9 +1,9 @@
 import React from 'react';
-import { isDesktop } from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+import { isDesktop } from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 import NumberSelector from 'App/Components/Form/number-selector';
 import Fieldset from 'App/Components/Form/fieldset';
-import { observer } from '@deriv-app/stores';
+import { observer } from '@deriv-lib/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TLastDigit = {

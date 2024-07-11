@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Icon, InlineMessage, Text, ThemedScrollbars } from '@deriv-app/components';
-import { useP2PSettings } from '@deriv-app/hooks';
-import { formatMoney, isDesktop, isMobile, routes } from '@deriv-app/shared';
-import { useStore, observer } from '@deriv-app/stores';
+import { Button, Icon, InlineMessage, Text, ThemedScrollbars } from '@deriv-lib/components';
+import { useP2PSettings } from '@deriv-lib/hooks';
+import { formatMoney, isDesktop, isMobile, routes } from '@deriv-lib/shared';
+import { useStore, observer } from '@deriv-lib/stores';
 import { Localize, localize } from 'Components/i18next';
 import { api_error_codes } from 'Constants/api-error-codes';
 import Chat from 'Pages/orders/chat/chat.jsx';

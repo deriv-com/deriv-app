@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import TradingTimePicker from '../trading-time-picker';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import TraderProviders from '../../../../../../trader-providers';
 import { render, screen } from '@testing-library/react';
 

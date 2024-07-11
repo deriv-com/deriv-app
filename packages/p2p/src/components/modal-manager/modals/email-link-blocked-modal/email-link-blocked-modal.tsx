@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Modal, Text } from '@deriv-app/components';
+import { Icon, Modal, Text } from '@deriv-lib/components';
 // @ts-ignore
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';

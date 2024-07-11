@@ -1,12 +1,12 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import WithdrawalVerificationEmail from '../withdrawal-verification-email';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import CashierProviders from '../../../../cashier-providers';
-import { useRequest } from '@deriv-app/api';
+import { useRequest } from '@deriv-lib/api';
 
-jest.mock('@deriv-app/api', () => ({
-    ...jest.requireActual('@deriv-app/api'),
+jest.mock('@deriv-lib/api', () => ({
+    ...jest.requireActual('@deriv-lib/api'),
     useRequest: jest.fn(),
 }));
 

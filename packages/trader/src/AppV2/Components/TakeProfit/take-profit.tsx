@@ -1,7 +1,7 @@
-import { Localize } from '@deriv-app/translations';
+import { Localize } from '@deriv-lib/translations';
 import React from 'react';
 import { getContractDetailsConfig } from 'AppV2/Utils/contract-details-config';
-import { observer } from '@deriv-app/stores';
+import { observer } from '@deriv-lib/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import RiskManagementItem from '../RiskManagementItem';
 

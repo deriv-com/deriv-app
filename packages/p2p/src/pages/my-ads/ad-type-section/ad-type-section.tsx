@@ -1,8 +1,8 @@
 import React from 'react';
 import { Field, FormikValues, useFormikContext } from 'formik';
-import { Input, RadioGroup, Text } from '@deriv-app/components';
-import { formatMoney } from '@deriv-app/shared';
-import { useStore } from '@deriv-app/stores';
+import { Input, RadioGroup, Text } from '@deriv-lib/components';
+import { formatMoney } from '@deriv-lib/shared';
+import { useStore } from '@deriv-lib/stores';
 import FloatingRate from 'Components/floating-rate';
 import { localize, Localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';

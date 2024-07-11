@@ -1,15 +1,15 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { GetAccountStatus } from '@deriv/api-types';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { ProofOfOwnership } from '../proof-of-ownership';
 import test_data from './test-data';
 
 type TRequests = DeepRequired<GetAccountStatus>['authentication']['ownership']['requests'];
 type TStatus = DeepRequired<GetAccountStatus>['authentication']['ownership']['status'];
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useFileUploader: jest.fn(() => ({
         upload: jest.fn(),
     })),

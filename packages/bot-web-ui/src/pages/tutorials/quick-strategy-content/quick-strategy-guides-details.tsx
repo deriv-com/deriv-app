@@ -1,8 +1,8 @@
 import React, { KeyboardEvent } from 'react';
 import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
-import { Icon, Text } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv-app/translations';
+import { Icon, Text } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize } from '@deriv-lib/translations';
 import { rudderStackSendSelectQsStrategyGuideEvent } from '../../../analytics/rudderstack-tutorials';
 import { STRATEGIES } from '../../bot-builder/quick-strategy/config';
 import StrategyTabContent from '../../bot-builder/quick-strategy/form-wrappers/strategy-tab-content';

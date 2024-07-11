@@ -1,10 +1,10 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { redirectToLogin, removeBranchName, routes, isEmptyObject, default_title } from '@deriv-app/shared';
-import { getLanguage } from '@deriv-app/translations';
+import { redirectToLogin, removeBranchName, routes, isEmptyObject, default_title } from '@deriv-lib/shared';
+import { getLanguage } from '@deriv-lib/translations';
 import Page404 from 'Modules/Page404';
-import { observer, useStore } from '@deriv-app/stores';
-import { useFeatureFlags } from '@deriv-app/hooks';
+import { observer, useStore } from '@deriv-lib/stores';
+import { useFeatureFlags } from '@deriv-lib/hooks';
 
 const RouteWithSubRoutes = observer(route => {
     const { common } = useStore();

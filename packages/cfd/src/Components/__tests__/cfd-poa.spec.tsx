@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import CFDPOA from '../cfd-poa';
 import CFDProviders from '../../cfd-providers';
 
@@ -13,8 +13,8 @@ jest.mock('@deriv/account/src/Components/poa/common-mistakes/common-mistake-exam
     jest.fn(() => <div>CommonMistakeExamples</div>)
 );
 jest.mock('@deriv/account/src/Components/leave-confirm', () => jest.fn(() => <div>LeaveConfirm</div>));
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     validPostCode: jest.fn(() => true),
     validLength: jest.fn(() => true),
     validLetterSymbol: jest.fn(() => true),
@@ -53,8 +53,8 @@ jest.mock('@deriv-app/shared', () => ({
     },
 }));
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useFileUploader: jest.fn(() => ({
         upload: jest.fn(),
     })),

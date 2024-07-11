@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Checkbox, Modal, Text } from '@deriv-app/components';
+import { Button, Checkbox, Modal, Text } from '@deriv-lib/components';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { api_error_codes } from 'Constants/api-error-codes';

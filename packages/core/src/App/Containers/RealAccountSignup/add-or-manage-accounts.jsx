@@ -1,15 +1,15 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Tabs, ThemedScrollbars } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
-import { CURRENCY_TYPE, isDesktop, isMobile } from '@deriv-app/shared';
+import { Tabs, ThemedScrollbars } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
+import { CURRENCY_TYPE, isDesktop, isMobile } from '@deriv-lib/shared';
 import { WS } from 'Services';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
 import AddCurrency from './add-currency.jsx';
 import ChangeAccountCurrency from './change-account-currency.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import 'Sass/add-or-manage.scss';
 import 'Sass/change-account.scss';
 

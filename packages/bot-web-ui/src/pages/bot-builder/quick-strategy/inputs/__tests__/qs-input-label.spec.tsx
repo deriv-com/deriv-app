@@ -1,5 +1,5 @@
 import React from 'react';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';

@@ -2,11 +2,11 @@
 @import 'app/_common/base/index';
 
 // Fonts
-@import '~@deriv-app/shared/src/styles/google-fonts.scss';
+@import '~@deriv-lib/shared/src/styles/google-fonts.scss';
 
 // Shared
-@import '~@deriv-app/shared/src/styles/reset.scss';
-@import '~@deriv-app/shared/src/styles/themes.scss';
+@import '~@deriv-lib/shared/src/styles/reset.scss';
+@import '~@deriv-lib/shared/src/styles/themes.scss';
 
 // General
 @import './details-form';

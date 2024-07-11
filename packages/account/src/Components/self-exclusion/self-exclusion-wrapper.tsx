@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Div100vhContainer, ThemedScrollbars } from '@deriv-app/components';
+import { Div100vhContainer, ThemedScrollbars } from '@deriv-lib/components';
 import SelfExclusionArticle from './self-exclusion-article';
 import SelfExclusionContext from './self-exclusion-context';
 import { useDevice } from '@deriv-com/ui';

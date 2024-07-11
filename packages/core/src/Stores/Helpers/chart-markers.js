@@ -24,8 +24,8 @@ import {
     isTurbosContract,
     isVanillaContract,
     unique,
-} from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+} from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 import { MARKER_TYPES_CONFIG } from '../Constants/markers';
 import { getChartType } from './logic';
 

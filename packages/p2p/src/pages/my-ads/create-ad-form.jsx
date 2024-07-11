@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Formik, Form } from 'formik';
-import { Div100vhContainer, ThemedScrollbars } from '@deriv-app/components';
-import { useP2PSettings } from '@deriv-app/hooks';
-import { isMobile } from '@deriv-app/shared';
-import { observer } from '@deriv-app/stores';
+import { Div100vhContainer, ThemedScrollbars } from '@deriv-lib/components';
+import { useP2PSettings } from '@deriv-lib/hooks';
+import { isMobile } from '@deriv-lib/shared';
+import { observer } from '@deriv-lib/stores';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';

@@ -1,7 +1,7 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import { AccumulatorOptionsWidget, MultiplierOptionsWidget, MultiplierAmountWidget } from '../widgets';
 import TraderProviders from '../../../../../../../trader-providers';
 

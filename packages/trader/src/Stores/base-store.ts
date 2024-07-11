@@ -1,5 +1,5 @@
 import { action, intercept, observable, reaction, toJS, when, makeObservable } from 'mobx';
-import { isProduction, isEmptyObject, Validator } from '@deriv-app/shared';
+import { isProduction, isEmptyObject, Validator } from '@deriv-lib/shared';
 import { getValidationRules } from './Modules/Trading/Constants/validation-rules';
 import { TRootStore } from 'Types';
 

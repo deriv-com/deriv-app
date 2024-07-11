@@ -1,6 +1,6 @@
 import React from 'react';
-import { getCardLabels, getContractTypeDisplay } from '@deriv-app/shared';
-import { TContractOptions } from '@deriv-app/shared/src/utils/contract/contract-types';
+import { getCardLabels, getContractTypeDisplay } from '@deriv-lib/shared';
+import { TContractOptions } from '@deriv-lib/shared/src/utils/contract/contract-types';
 
 export type TGenericObjectType = {
     [key: string]: React.ReactNode;

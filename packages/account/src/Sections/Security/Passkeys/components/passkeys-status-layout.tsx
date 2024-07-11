@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import clsx from 'clsx';
-import { Button, Text } from '@deriv-app/components';
+import { Button, Text } from '@deriv-lib/components';
 import { TCurrentManagedPasskey } from '../passkeys';
 import FormBody from '../../../../Components/form-body';
 import FormFooter from '../../../../Components/form-footer';

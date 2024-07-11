@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Dialog } from '@deriv-app/components';
-import { localize, Localize } from '@deriv-app/translations';
-import { routes } from '@deriv-app/shared';
-import { useStore, observer } from '@deriv-app/stores';
+import { Dialog } from '@deriv-lib/components';
+import { localize, Localize } from '@deriv-lib/translations';
+import { routes } from '@deriv-lib/shared';
+import { useStore, observer } from '@deriv-lib/stores';
 import { TError, TReactElement } from '../../types';
 
 type TErrorDialogProps = {

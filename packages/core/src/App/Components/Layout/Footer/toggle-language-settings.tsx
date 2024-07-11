@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import { observer, useStore } from '@deriv-app/stores';
-import { Icon, Modal, Popover, Text } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Icon, Modal, Popover, Text } from '@deriv-lib/components';
 import { useTranslations } from '@deriv-com/translations';
-import { Localize, localize } from '@deriv-app/translations'; // [TODO]: Remove this import after integrating Deriv app with new translation lib
+import { Localize, localize } from '@deriv-lib/translations'; // [TODO]: Remove this import after integrating Deriv app with new translation lib
 import 'Sass/app/modules/settings.scss';
 import LanguageSettings from '../../../Containers/SettingsModal/settings-language';
-import { TranslationFlag } from '@deriv-app/shared';
+import { TranslationFlag } from '@deriv-lib/shared';
 
 const ToggleLanguageSettings = observer(({ showPopover }: { showPopover?: boolean }) => {
     const { common, ui } = useStore();

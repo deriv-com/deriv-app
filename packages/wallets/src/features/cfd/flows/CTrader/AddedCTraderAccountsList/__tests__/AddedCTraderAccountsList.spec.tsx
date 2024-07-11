@@ -1,12 +1,12 @@
 import React from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { useCtraderAccountsList } from '@deriv-app/api-v2';
+import { useCtraderAccountsList } from '@deriv-lib/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../../../../../components/ModalProvider';
 import AddedCTraderAccountsList from '../AddedCTraderAccountsList';
 
-jest.mock('@deriv-app/api-v2', () => ({
+jest.mock('@deriv-lib/api-v2', () => ({
     useCtraderAccountsList: jest.fn(),
 }));
 

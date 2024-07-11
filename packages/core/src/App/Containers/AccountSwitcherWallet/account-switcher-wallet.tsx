@@ -1,10 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { Icon, Text, ThemedScrollbars, useOnClickOutside } from '@deriv-app/components';
-import { routes } from '@deriv-app/shared';
-import { observer } from '@deriv-app/stores';
-import { Localize } from '@deriv-app/translations';
-import { useStoreWalletAccountsList } from '@deriv-app/hooks';
+import { Icon, Text, ThemedScrollbars, useOnClickOutside } from '@deriv-lib/components';
+import { routes } from '@deriv-lib/shared';
+import { observer } from '@deriv-lib/stores';
+import { Localize } from '@deriv-lib/translations';
+import { useStoreWalletAccountsList } from '@deriv-lib/hooks';
 import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
 import './account-switcher-wallet.scss';
 

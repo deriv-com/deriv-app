@@ -1,7 +1,7 @@
 import React from 'react';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 
-import { isEmptyObject, isMobile, routes, toMoment } from '@deriv-app/shared';
+import { isEmptyObject, isMobile, routes, toMoment } from '@deriv-lib/shared';
 
 import { Localize, localize } from 'Components/i18next';
 import { api_error_codes } from 'Constants/api-error-codes';

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Loading, ThemedScrollbars } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { WS, useIsMounted } from '@deriv-app/shared';
+import { Loading, ThemedScrollbars } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { WS, useIsMounted } from '@deriv-lib/shared';
 import { useDevice } from '@deriv-com/ui';
 import LoadErrorMessage from '../../../Components/load-error-message';
 import LoginHistoryContent from './login-history-content';

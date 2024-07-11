@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useAuthorize, useWalletAccountsList } from '@deriv-app/api-v2';
+import { useAuthorize, useWalletAccountsList } from '@deriv-lib/api-v2';
 
 const useWalletAccountSwitcher = () => {
     const { switchAccount: _switchAccount } = useAuthorize();

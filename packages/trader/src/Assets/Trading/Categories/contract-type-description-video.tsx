@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStore } from '@deriv-app/stores';
+import { useStore } from '@deriv-lib/stores';
 import { getDescriptionVideoId } from 'Modules/Trading/Helpers/video-config';
 import VideoPlayer from 'App/Components/Elements/VideoPlayer';
 

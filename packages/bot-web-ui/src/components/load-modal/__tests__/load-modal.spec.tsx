@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { fireEvent, render, screen } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies

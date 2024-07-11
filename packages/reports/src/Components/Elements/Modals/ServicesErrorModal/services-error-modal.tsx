@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Modal } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { Button, Modal } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 import { getTitle } from './constants';
 import AuthorizationRequiredModal from './authorization-required-modal';
 import InsufficientBalanceModal from './insufficient-balance-modal';

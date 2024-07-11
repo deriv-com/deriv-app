@@ -1,8 +1,8 @@
 import React from 'react';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { toMoment } from '@deriv-app/shared';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { toMoment } from '@deriv-lib/shared';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import CompositeCalendar from '../composite-calendar';
 import TwoMonthPicker from '../two-month-picker';
 

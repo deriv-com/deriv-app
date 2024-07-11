@@ -1,8 +1,8 @@
 import React from 'react';
-import { Modal, Text } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
-import { observer, useStore } from '@deriv-app/stores';
-import { getStaticUrl } from '@deriv-app/shared';
+import { Modal, Text } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
+import { observer, useStore } from '@deriv-lib/stores';
+import { getStaticUrl } from '@deriv-lib/shared';
 
 const AccountClosed = observer(() => {
     const { client } = useStore();

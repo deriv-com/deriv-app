@@ -1,12 +1,12 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import FinancialAssessment from '../financial-assessment';
-import { WS } from '@deriv-app/shared';
+import { WS } from '@deriv-lib/shared';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     WS: {
         wait: jest.fn(() => Promise.resolve()),
         setSettings: jest.fn(() => Promise.resolve({ error: '' })),
@@ -36,8 +36,8 @@ jest.mock('@deriv-app/shared', () => ({
     },
     useWS: () => undefined,
 }));
-jest.mock('@deriv-app/components', () => {
-    const original_module = jest.requireActual('@deriv-app/components');
+jest.mock('@deriv-lib/components', () => {
+    const original_module = jest.requireActual('@deriv-lib/components');
     return {
         ...original_module,
         Loading: jest.fn(() => 'mockedLoading'),

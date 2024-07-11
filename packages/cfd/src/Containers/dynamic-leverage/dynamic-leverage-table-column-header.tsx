@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Text } from '@deriv-app/components';
+import { Table, Text } from '@deriv-lib/components';
 import { TDynamicLeverageTableColumnHeader } from 'Containers/props.types';
 
 export const DynamicLeverageTableColumnHeader = ({ title, subtitle }: TDynamicLeverageTableColumnHeader) => (

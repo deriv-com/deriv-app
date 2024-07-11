@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { APIProvider } from '@deriv-app/api';
-import { isDesktop, isMobile } from '@deriv-app/shared';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { APIProvider } from '@deriv-lib/api';
+import { isDesktop, isMobile } from '@deriv-lib/shared';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 // @ts-ignore
 import { useStores } from 'Stores';
 import { TModalManagerContext } from 'Types';
@@ -32,8 +32,8 @@ jest.mock('Stores', () => ({
     useStores: () => mock_store,
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isDesktop: jest.fn(() => true),
     isMobile: jest.fn(() => false),
 }));

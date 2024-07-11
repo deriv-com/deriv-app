@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Loading, Text } from '@deriv-app/components';
+import { Button, Loading, Text } from '@deriv-lib/components';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import ChatHeader from 'Pages/orders/chat/chat-header.jsx';

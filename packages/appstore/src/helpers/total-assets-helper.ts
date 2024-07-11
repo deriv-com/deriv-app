@@ -1,4 +1,4 @@
-import { useCFDAccounts, useExchangeRate, usePlatformAccounts } from '@deriv-app/hooks';
+import { useCFDAccounts, useExchangeRate, usePlatformAccounts } from '@deriv-lib/hooks';
 
 export const isRatesLoaded = (
     is_real: boolean,

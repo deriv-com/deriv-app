@@ -1,8 +1,8 @@
 import React from 'react';
-import { Popover, Icon } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { Popover, Icon } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
-import { whatsapp_url } from '@deriv-app/shared';
+import { whatsapp_url } from '@deriv-lib/shared';
 
 const WhatsApp = ({ showPopover }: { showPopover?: boolean }) => {
     const liveChat = useLiveChat();

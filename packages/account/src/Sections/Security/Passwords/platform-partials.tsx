@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Icon, Popover, Text } from '@deriv-app/components';
-import { getPlatformSettings, CFD_PLATFORMS } from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+import { Button, Icon, Popover, Text } from '@deriv-lib/components';
+import { getPlatformSettings, CFD_PLATFORMS } from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 
 type TPlatformPartialsProps = {
     description: JSX.Element;

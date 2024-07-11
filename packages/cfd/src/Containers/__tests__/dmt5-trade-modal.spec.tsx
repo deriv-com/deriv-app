@@ -1,15 +1,15 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import DMT5TradeModal from '../dmt5-trade-modal';
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Icon: jest.fn(({ icon }) => <div>{icon}</div>),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     getCFDAccountDisplay: jest.fn(),
 }));
 

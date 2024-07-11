@@ -1,13 +1,13 @@
 import React from 'react';
-import { DataList, Icon, Loading, MobileWrapper, Modal, Table, Text } from '@deriv-app/components';
-import { isDesktop, isMobile, routes } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv-app/translations';
-import { useStore, observer } from '@deriv-app/stores';
+import { DataList, Icon, Loading, MobileWrapper, Modal, Table, Text } from '@deriv-lib/components';
+import { isDesktop, isMobile, routes } from '@deriv-lib/shared';
+import { localize, Localize } from '@deriv-lib/translations';
+import { useStore, observer } from '@deriv-lib/stores';
 import TransactionsCryptoCancelModal from './transactions-crypto-cancel-modal';
 import TransactionsCryptoStatusModal from './transactions-crypto-status-modal';
 import TransactionsCryptoRenderer from './transactions-crypto-renderer';
 import { useCashierStore } from '../../stores/useCashierStores';
-import { useCryptoTransactions } from '@deriv-app/hooks';
+import { useCryptoTransactions } from '@deriv-lib/hooks';
 
 const getHeaders = () => [
     { text: localize('Transaction') },

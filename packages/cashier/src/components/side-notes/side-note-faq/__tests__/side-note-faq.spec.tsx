@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import SideNoteFAQ from '../side-note-faq';
 
 const mock = mockStore({ ui: { is_desktop: true } });

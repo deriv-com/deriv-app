@@ -4,10 +4,10 @@ import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createBrowserHistory } from 'history';
 import PageError from '../index';
-import { isMobile } from '@deriv-app/shared';
+import { isMobile } from '@deriv-lib/shared';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isMobile: jest.fn(() => false),
 }));
 

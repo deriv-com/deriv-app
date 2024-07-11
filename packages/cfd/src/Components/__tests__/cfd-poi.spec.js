@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import CFDPOI from '../cfd-poi';
 import CFDProviders from '../../cfd-providers';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
 jest.mock('@deriv/account/src/Sections/Verification/ProofOfIdentity/proof-of-identity-container-for-mt5.jsx', () =>
     jest.fn(() => <div>ProofOfIdentityContainerForMt5</div>)

@@ -1,8 +1,8 @@
 import moment from 'moment';
 import { init, get, getDistanceToServerTime } from '../server_time';
-import { WS } from '@deriv-app/shared';
+import { WS } from '@deriv-lib/shared';
 
-jest.mock('@deriv-app/shared', () => {
+jest.mock('@deriv-lib/shared', () => {
     const today = new Date();
     const epoch = Math.floor(today.getTime() / 1000);
 

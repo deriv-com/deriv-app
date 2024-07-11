@@ -1,6 +1,6 @@
 import React, { FC, Fragment, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv-app/api-v2';
+import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv-lib/api-v2';
 import { LabelPairedArrowUpArrowDownMdBoldIcon, LabelPairedCircleExclamationMdFillIcon } from '@deriv/quill-icons';
 import { WalletListCardBadge } from '../../../../components';
 import { InlineMessage, WalletButton, WalletText } from '../../../../components/Base';

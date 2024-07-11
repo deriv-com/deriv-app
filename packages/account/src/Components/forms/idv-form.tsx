@@ -5,9 +5,9 @@ import React from 'react';
 import clsx from 'clsx';
 import { Field, FormikProps, FieldProps, useFormikContext } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
-import { Autocomplete, Input, SelectNative } from '@deriv-app/components';
-import { formatInput, getIDVNotApplicableOption } from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+import { Autocomplete, Input, SelectNative } from '@deriv-lib/components';
+import { formatInput, getIDVNotApplicableOption } from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 import {
     getDocumentData,
     preventEmptyClipboardPaste,

@@ -1,7 +1,7 @@
 import React from 'react';
-import { DataList, DataTable } from '@deriv-app/components';
-import { getUnsupportedContracts, getContractPath, hasContractStarted } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
+import { DataList, DataTable } from '@deriv-lib/components';
+import { getUnsupportedContracts, getContractPath, hasContractStarted } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { useDevice } from '@deriv-com/ui';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
@@ -10,7 +10,7 @@ import PlaceholderComponent from '../Components/placeholder-component';
 import { TUnsupportedContractType } from 'Types';
 import { TMobileRowRenderer } from './mobile-row-renderer';
 import { TTotals } from './open-positions';
-import { TPortfolioPosition } from '@deriv-app/stores/types';
+import { TPortfolioPosition } from '@deriv-lib/stores/types';
 
 type TEmptyPlaceholderWrapper = React.PropsWithChildren<{
     is_empty: boolean;

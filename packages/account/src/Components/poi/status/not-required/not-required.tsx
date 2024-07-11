@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { Icon } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 import IconMessageContent from '../../../icon-message-content';
 
 export const OnfidoNotRequired = () => (

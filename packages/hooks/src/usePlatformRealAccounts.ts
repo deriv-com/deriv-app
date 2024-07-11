@@ -1,4 +1,4 @@
-import { useStore } from '@deriv-app/stores';
+import { useStore } from '@deriv-lib/stores';
 
 /**
  * we can use this hook to get all real accounts for both Eu and Non-Eu regions.

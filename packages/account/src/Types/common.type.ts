@@ -13,7 +13,7 @@ import {
     IdentityVerificationAddDocumentResponse,
     ApiToken,
 } from '@deriv/api-types';
-import { AUTH_STATUS_CODES, CFD_PLATFORMS, MT5_ACCOUNT_STATUS, Platforms } from '@deriv-app/shared';
+import { AUTH_STATUS_CODES, CFD_PLATFORMS, MT5_ACCOUNT_STATUS, Platforms } from '@deriv-lib/shared';
 
 export type TToken = NonNullable<ApiToken['tokens']>[0];
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { addComma, getDisplayStatus, isCryptocurrency } from '@deriv-app/shared';
-import { TContractInfo } from '@deriv-app/shared/src/utils/contract/contract-types';
+import { addComma, getDisplayStatus, isCryptocurrency } from '@deriv-lib/shared';
+import { TContractInfo } from '@deriv-lib/shared/src/utils/contract/contract-types';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';
 import ContractCardItem from './contract-card-item';

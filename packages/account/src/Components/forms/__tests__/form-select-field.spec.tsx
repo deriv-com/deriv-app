@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import FormSelectField from '../form-select-field';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { Formik } from 'formik';
 import userEvent from '@testing-library/user-event';
 

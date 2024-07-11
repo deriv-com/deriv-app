@@ -1,6 +1,6 @@
 import React from 'react';
-import { observer, useStore } from '@deriv-app/stores';
-import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal } from '@deriv-lib/components';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 // @ts-ignore
 import { useStores } from 'Stores';

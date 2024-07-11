@@ -1,8 +1,8 @@
-import { InlineMessage, Modal, Text, PasswordInput, FormSubmitButton } from '@deriv-app/components';
-import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
-import { CFD_PLATFORMS, WS, validLength, validPassword, getErrorMessages } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+import { InlineMessage, Modal, Text, PasswordInput, FormSubmitButton } from '@deriv-lib/components';
+import { useMT5SVGEligibleToMigrate } from '@deriv-lib/hooks';
+import { CFD_PLATFORMS, WS, validLength, validPassword, getErrorMessages } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 import React from 'react';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import { Formik, FormikErrors, FormikHelpers, FormikProps } from 'formik';

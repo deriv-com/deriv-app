@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CashierOnboardingAccountIdentifierMessage from '../CashierOnboardingAccountIdentifierMessage';
 
-jest.mock('@deriv-app/api-v2', () => ({
-    ...jest.requireActual('@deriv-app/api-v2'),
+jest.mock('@deriv-lib/api-v2', () => ({
+    ...jest.requireActual('@deriv-lib/api-v2'),
     useActiveAccount: jest.fn(() => ({
         data: {
             currency_config: {

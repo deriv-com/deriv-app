@@ -1,6 +1,6 @@
 import React from 'react';
-import { Popover, useOnClickOutside } from '@deriv-app/components';
-import { TPopoverProps } from '@deriv-app/components/src/components/types';
+import { Popover, useOnClickOutside } from '@deriv-lib/components';
+import { TPopoverProps } from '@deriv-lib/components/src/components/types';
 import { useDevice } from '@deriv-com/ui';
 
 /**

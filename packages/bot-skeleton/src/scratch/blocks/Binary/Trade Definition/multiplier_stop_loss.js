@@ -1,5 +1,5 @@
-import { localize } from '@deriv-app/translations';
-import { getCurrencyDisplayCode } from '@deriv-app/shared';
+import { localize } from '@deriv-lib/translations';
+import { getCurrencyDisplayCode } from '@deriv-lib/shared';
 import { config } from '../../../../constants/config';
 
 const description = localize(

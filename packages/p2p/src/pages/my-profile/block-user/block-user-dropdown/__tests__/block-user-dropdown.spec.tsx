@@ -27,8 +27,8 @@ const mock_modal_manager = {
     showModal: jest.fn(),
 };
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     DesktopWrapper: jest.fn(({ children }) => children),
     MobileWrapper: jest.fn(({ children }) => children),
 }));

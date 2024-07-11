@@ -3,9 +3,9 @@ import PaymentAgentTransferReceipt from '../payment-agent-transfer-receipt';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
 describe('<PaymentAgentTransferReceipt />', () => {
     let history: BrowserHistory, mockRootStore: ReturnType<typeof mockStore>;

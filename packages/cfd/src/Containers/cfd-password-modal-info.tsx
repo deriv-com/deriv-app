@@ -1,7 +1,7 @@
 import React from 'react';
-import { Icon, Text } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
-import { DBVI_COMPANY_NAMES } from '@deriv-app/shared';
+import { Icon, Text } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
+import { DBVI_COMPANY_NAMES } from '@deriv-lib/shared';
 
 type CfdPasswordModalInfoProps = {
     jurisdiction_selected_shortcode: string;

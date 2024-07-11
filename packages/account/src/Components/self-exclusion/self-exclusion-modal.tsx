@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, ThemedScrollbars } from '@deriv-app/components';
+import { Modal, ThemedScrollbars } from '@deriv-lib/components';
 import SelfExclusionContext from './self-exclusion-context';
 import SelfExclusionArticleContent from './self-exclusion-article-content';
 

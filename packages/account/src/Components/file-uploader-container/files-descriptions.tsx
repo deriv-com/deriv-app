@@ -1,4 +1,4 @@
-import { Text } from '@deriv-app/components';
+import { Text } from '@deriv-lib/components';
 import React from 'react';
 import { TFilesDescription } from '../../Types';
 import { useDevice } from '@deriv-com/ui';

@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { useDevice } from '@deriv-com/ui';
 import ContractReplay from '../contract-replay';
 import { Router } from 'react-router-dom';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import TraderProviders from '../../../../trader-providers';
 import { createMemoryHistory } from 'history';
 
@@ -12,8 +12,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     FadeWrapper: jest.fn(({ children }) => <div>{children}</div>),
     UnsupportedContractModal: jest.fn(() => <div>UnsupportedContractModal</div>),
     PageOverlay: jest.fn(({ children, id, header }) => (
@@ -33,13 +33,13 @@ jest.mock('../contract-replay-widget', () => ({
 
 jest.mock('../replay-chart', () => jest.fn(() => <div>ReplayChart</div>));
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useFeatureFlags: jest.fn(() => ({})),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
 }));
 
 const MockContractReplay = ({ store }: { store?: any }) => {

@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { APIProvider, useFetch } from '@deriv-app/api';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { APIProvider, useFetch } from '@deriv-lib/api';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useWalletTransactions from '../useWalletTransactions';
 
-jest.mock('@deriv-app/api', () => ({
-    ...jest.requireActual('@deriv-app/api'),
+jest.mock('@deriv-lib/api', () => ({
+    ...jest.requireActual('@deriv-lib/api'),
     useFetch: jest.fn(),
 }));
 

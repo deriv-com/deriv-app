@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Popover } from '@deriv-app/components';
+import { Button, Popover } from '@deriv-lib/components';
 
 type TToolbarButton = {
     popover_message?: string;

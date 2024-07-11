@@ -1,8 +1,8 @@
 // @ts-expect-error remove this line when ProofOfIdentityContainerForMt5 is converted to TS
 import ProofOfIdentityContainerForMt5 from '@deriv/account/src/Sections/Verification/ProofOfIdentity/proof-of-identity-container-for-mt5.jsx';
 import React from 'react';
-import { useStore, observer } from '@deriv-app/stores';
-import type { TCoreStores } from '@deriv-app/stores/types';
+import { useStore, observer } from '@deriv-lib/stores';
+import type { TCoreStores } from '@deriv-lib/stores/types';
 
 type TCFDValue = {
     poi_state: string;

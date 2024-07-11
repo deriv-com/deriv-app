@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { APIProvider } from '@deriv-app/api';
-import { P2PSettingsProvider } from '@deriv-app/stores';
+import { APIProvider } from '@deriv-lib/api';
+import { P2PSettingsProvider } from '@deriv-lib/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { requestWS } from 'Utils/websocket';
 import OrderDetailsCancelModal from '../order-details-cancel-modal';
@@ -14,8 +14,8 @@ jest.mock('Utils/websocket', () => ({
     requestWS: jest.fn().mockRejectedValue('Error'),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     useIsMounted: jest.fn().mockReturnValue(() => true),
 }));
 
@@ -25,8 +25,8 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
     </APIProvider>
 );
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useP2PSettings: jest.fn().mockReturnValue({
         p2p_settings: {
             cancellation_block_duration: '17',

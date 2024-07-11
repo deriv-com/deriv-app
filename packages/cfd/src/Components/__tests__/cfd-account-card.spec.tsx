@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { CFDAccountCard } from '../cfd-account-card';
 import { TCFDAccountCard } from '../props.types';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import CFDProviders from '../../cfd-providers';
 
 type TMockPlatformAccounts = {
@@ -42,8 +42,8 @@ const renderOptions = {
     ),
 };
 
-jest.mock('@deriv-app/components', () => {
-    const original_module = jest.requireActual('@deriv-app/components');
+jest.mock('@deriv-lib/components', () => {
+    const original_module = jest.requireActual('@deriv-lib/components');
     return {
         ...original_module,
         Icon: jest.fn(props => <div data-testid='mocked_icon'>{props.icon}</div>),

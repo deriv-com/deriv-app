@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Button, DatePicker, Icon, InputField, MobileDialog, Text } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
-import { toMoment } from '@deriv-app/shared';
+import { Button, DatePicker, Icon, InputField, MobileDialog, Text } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
+import { toMoment } from '@deriv-lib/shared';
 import { TInputDateRange } from 'Types';
 
 type TDatePickerOnChangeParams = Parameters<React.ComponentProps<typeof DatePicker>['onChange']>[0];

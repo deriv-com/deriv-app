@@ -2,15 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { render, screen } from '@testing-library/react';
 import TopWidgets from '../top-widgets';
-import { isMobile, isDesktop } from '@deriv-app/shared';
+import { isMobile, isDesktop } from '@deriv-lib/shared';
 
 jest.mock('../recent-trade-info.tsx', () => jest.fn(() => <div>MockedRecentTradeInfo</div>));
 jest.mock('Modules/SmartChart', () => ({
     ...jest.requireActual('Modules/SmartChart'),
     ChartTitle: () => <div>MockedChartTitle</div>,
 }));
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isMobile: jest.fn(() => false),
     isDesktop: jest.fn(() => true),
 }));

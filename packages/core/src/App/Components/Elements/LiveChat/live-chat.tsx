@@ -1,7 +1,7 @@
 import React from 'react';
-import { Popover, Icon, Text } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv-app/translations';
+import { Popover, Icon, Text } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize } from '@deriv-lib/translations';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
 
 const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {

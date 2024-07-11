@@ -1,4 +1,4 @@
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 
 const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH', 'UST'];
 

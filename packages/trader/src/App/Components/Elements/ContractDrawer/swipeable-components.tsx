@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SwipeableWrapper } from '@deriv-app/components';
+import { SwipeableWrapper } from '@deriv-lib/components';
 
 type TSwipeableContractAuditProps = React.PropsWithChildren<{
     is_multiplier?: boolean;

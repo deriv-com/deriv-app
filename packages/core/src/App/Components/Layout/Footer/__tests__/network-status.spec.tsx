@@ -2,7 +2,7 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import NetworkStatus from '../network-status.jsx';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 
 const store = mockStore();
 const MockNetworkStatus = ({ is_mobile = true }) => (

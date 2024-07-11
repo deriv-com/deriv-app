@@ -1,5 +1,5 @@
 import React from 'react';
-import { TStores } from '@deriv-app/stores/types';
+import { TStores } from '@deriv-lib/stores/types';
 import type { TWebSocket } from 'Types';
 import AppContent from './app-content';
 import DBotProviders from './dbot-providers';

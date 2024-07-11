@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { isDesktop, mockContractInfo, TRADE_TYPES } from '@deriv-app/shared';
+import { isDesktop, mockContractInfo, TRADE_TYPES } from '@deriv-lib/shared';
 import Digits from '../digits';
 import { useDevice } from '@deriv-com/ui';
 
@@ -37,8 +37,8 @@ jest.mock('../../LastDigitPrediction', () => ({
         </div>
     )),
 }));
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     useIsMounted: jest.fn(() => () => true),
 }));
 

@@ -1,7 +1,7 @@
 import { ServerTime } from '@deriv/bot-skeleton';
-import { LocalStore } from '@deriv-app/shared';
-import { mockStore } from '@deriv-app/stores';
-import { TStores } from '@deriv-app/stores/types';
+import { LocalStore } from '@deriv-lib/shared';
+import { mockStore } from '@deriv-lib/stores';
+import { TStores } from '@deriv-lib/stores/types';
 import { mock_ws } from 'Utils/mock';
 import { mockDBotStore } from 'Stores/useDBotStore';
 import ChartStore, { g_subscribers_map } from '../chart-store';

@@ -1,11 +1,11 @@
 import React from 'react';
-import { useWalletAccountsList } from '@deriv-app/api-v2';
+import { useWalletAccountsList } from '@deriv-lib/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { TSubscribedBalance } from '../../../types';
 import WalletListCardDropdown from '../WalletListCardDropdown';
 
 const mockSwitchAccount = jest.fn();
-jest.mock('@deriv-app/api-v2', () => ({
+jest.mock('@deriv-lib/api-v2', () => ({
     useActiveWalletAccount: jest.fn(() => ({
         data: {
             loginid: '1234567',

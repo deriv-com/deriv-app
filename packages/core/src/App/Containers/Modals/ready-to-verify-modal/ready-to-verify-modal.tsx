@@ -1,8 +1,8 @@
 import React from 'react';
-import { Dialog, Text } from '@deriv-app/components';
-import { useHasMFAccountDeposited } from '@deriv-app/hooks';
-import { Localize, localize } from '@deriv-app/translations';
-import { useStore, observer } from '@deriv-app/stores';
+import { Dialog, Text } from '@deriv-lib/components';
+import { useHasMFAccountDeposited } from '@deriv-lib/hooks';
+import { Localize, localize } from '@deriv-lib/translations';
+import { useStore, observer } from '@deriv-lib/stores';
 import './ready-to-verify-modal.scss';
 
 const ReadyToVerifyModal = observer(() => {

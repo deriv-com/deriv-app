@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { matchStringByChar, getPosition, getSearchNotFoundOption } from '@deriv-app/shared';
+import { matchStringByChar, getPosition, getSearchNotFoundOption } from '@deriv-lib/shared';
 import Icon from '../icon';
 import Input from '../input';
 import DropdownList, { TItem } from '../dropdown-list';

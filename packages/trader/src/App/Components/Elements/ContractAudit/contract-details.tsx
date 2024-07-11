@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Money, Icon, ThemedScrollbars, Text } from '@deriv-app/components';
-import { localize, Localize } from '@deriv-app/translations';
+import { Money, Icon, ThemedScrollbars, Text } from '@deriv-lib/components';
+import { localize, Localize } from '@deriv-lib/translations';
 import {
     addComma,
     epochToMoment,
@@ -25,7 +25,7 @@ import {
     TContractInfo,
     CONTRACT_TYPES,
     toGMTFormat,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 import { Analytics } from '@deriv-com/analytics';
 import { getBarrierLabel, getBarrierValue, isDigitType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import ContractAuditItem from './contract-audit-item';

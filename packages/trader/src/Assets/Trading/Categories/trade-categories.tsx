@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text } from '@deriv-app/components';
-import { TRADE_TYPES } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
+import { Text } from '@deriv-lib/components';
+import { TRADE_TYPES } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
 import AccumulatorTradeDescription from './Description/accumulator-trade-description';
 import AsianTradeDescription from './Description/asian-trade-description';
 import CallPutSpreadTradeDescription from './Description/call-put-spread-trade-description';

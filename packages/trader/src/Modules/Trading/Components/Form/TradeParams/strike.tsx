@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
 import BarriersList from './barriers-list';
-import { InputField, Dropdown, Text } from '@deriv-app/components';
-import { localize, Localize } from '@deriv-app/translations';
-import { clickAndKeyEventHandler, toMoment, TRADE_TYPES } from '@deriv-app/shared';
+import { InputField, Dropdown, Text } from '@deriv-lib/components';
+import { localize, Localize } from '@deriv-lib/translations';
+import { clickAndKeyEventHandler, toMoment, TRADE_TYPES } from '@deriv-lib/shared';
 import Fieldset from 'App/Components/Form/fieldset';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { useDevice } from '@deriv-com/ui';
 

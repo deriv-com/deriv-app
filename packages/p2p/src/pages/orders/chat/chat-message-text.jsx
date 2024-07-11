@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv-app/components';
+import { Text } from '@deriv-lib/components';
 import PropTypes from 'prop-types';
 import ChatMessage from 'Utils/chat-message';
 import './chat-message-text.scss';

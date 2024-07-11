@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Analytics } from '@deriv-com/analytics';
 import { BreakpointProvider } from '@deriv/quill-design';
-import { APIProvider } from '@deriv-app/api';
+import { APIProvider } from '@deriv-lib/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
-import { Loading } from '@deriv-app/components';
+import { Loading } from '@deriv-lib/components';
 import {
     POIProvider,
     initFormErrorMessages,
@@ -15,9 +15,9 @@ import {
     setUrlLanguage,
     setWebsocket,
     useOnLoadTranslation,
-} from '@deriv-app/shared';
-import { StoreProvider, P2PSettingsProvider } from '@deriv-app/stores';
-import { getLanguage, initializeTranslations } from '@deriv-app/translations';
+} from '@deriv-lib/shared';
+import { StoreProvider, P2PSettingsProvider } from '@deriv-lib/stores';
+import { getLanguage, initializeTranslations } from '@deriv-lib/translations';
 import { withTranslation, useTranslation } from 'react-i18next';
 import { initializeI18n, TranslationProvider, getInitialLanguage } from '@deriv-com/translations';
 import { CFD_TEXT } from '../Constants/cfd-text';

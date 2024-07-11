@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { Field, useFormikContext } from 'formik';
 import moment from 'moment';
-import { useSettings } from '@deriv-app/api-v2';
+import { useSettings } from '@deriv-lib/api-v2';
 import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import { DatePicker, FlowTextField, InlineMessage, useFlow, WalletText } from '../../../../components';
 import unixToDateString from '../../../../utils/utils';

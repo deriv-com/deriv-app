@@ -12,9 +12,9 @@ import {
     ThemedScrollbars,
     UILoader,
     Text,
-} from '@deriv-app/components';
-import { localize, Localize } from '@deriv-app/translations';
-import { isMobile, getCFDPlatformLabel } from '@deriv-app/shared';
+} from '@deriv-lib/components';
+import { localize, Localize } from '@deriv-lib/translations';
+import { isMobile, getCFDPlatformLabel } from '@deriv-lib/shared';
 import { FormikErrors } from 'formik';
 import CFDStore from '../Stores/Modules/CFD/cfd-store';
 import TradingPasswordManager from './trading-password-manager';
@@ -28,7 +28,7 @@ import {
     TFormValues,
     TPasswordManagerModalFormValues,
 } from './props.types';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { CFD_PLATFORMS } from '../Helpers/cfd-config';
 import { validatePassword } from '../Helpers/constants';

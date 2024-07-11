@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { CaptionText, Text } from '@deriv-com/quill-ui';
 import { useSwipeable } from 'react-swipeable';
-import { IconTradeTypes, Money } from '@deriv-app/components';
+import { IconTradeTypes, Money } from '@deriv-lib/components';
 import {
     TContractInfo,
     getCardLabels,
@@ -14,7 +14,7 @@ import {
     isMultiplierContract,
     isValidToCancel,
     isValidToSell,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 import { ContractCardStatusTimer, TContractCardStatusTimerProps } from './contract-card-status-timer';
 import { NavLink } from 'react-router-dom';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';

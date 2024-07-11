@@ -1,6 +1,6 @@
 import ContentLoader from 'react-content-loader';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper } from '@deriv-app/components';
+import { DesktopWrapper, MobileWrapper } from '@deriv-lib/components';
 
 const PlatformLoader = () => (
     <ContentLoader

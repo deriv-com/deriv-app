@@ -1,8 +1,8 @@
 import React from 'react';
-import { Icon, ThemedScrollbars, Text } from '@deriv-app/components';
+import { Icon, ThemedScrollbars, Text } from '@deriv-lib/components';
 import { useDevice } from '@deriv-com/ui';
 import DigitForm from './digit-form';
-import { Localize } from '@deriv-app/translations';
+import { Localize } from '@deriv-lib/translations';
 
 const TwoFactorEnabled = () => {
     const { isDesktop } = useDevice();

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockContractInfo, getCardLabels } from '@deriv-app/shared';
+import { mockContractInfo, getCardLabels } from '@deriv-lib/shared';
 import MultiplierCardBody from '../multiplier-card-body';
 
 type TMockedMultiplierCardBodyProps = Partial<React.ComponentProps<typeof MultiplierCardBody>>;

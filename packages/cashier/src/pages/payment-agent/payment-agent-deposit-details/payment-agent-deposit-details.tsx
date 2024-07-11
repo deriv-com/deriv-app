@@ -1,7 +1,7 @@
 import React from 'react';
 import { toJS } from 'mobx';
-import { Money, Text } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
+import { Money, Text } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
 import PaymentAgentDetail from '../payment-agent-detail';
 import { TPaymentAgent } from '../../../types';
 import './payment-agent-deposit-details.scss';

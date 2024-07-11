@@ -1,5 +1,5 @@
 import * as Helpers from '../helpers';
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 import getRoutesConfig from 'Constants/routes-config';
 
 const routesConfig = getRoutesConfig();

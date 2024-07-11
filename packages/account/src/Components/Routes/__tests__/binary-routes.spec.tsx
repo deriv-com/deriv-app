@@ -2,7 +2,7 @@ import React from 'react';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { render, screen } from '@testing-library/react';
 
 import BinaryRoutes from '../binary-routes';

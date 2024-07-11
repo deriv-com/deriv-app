@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { useExchangeRateSubscription, useTransferBetweenAccounts } from '@deriv-app/api-v2';
+import { useExchangeRateSubscription, useTransferBetweenAccounts } from '@deriv-lib/api-v2';
 import { getCryptoFiatConverterValidationSchema } from '../../../components';
 import type { THooks } from '../../../hooks/types';
 import type { TCurrency } from '../../../types';

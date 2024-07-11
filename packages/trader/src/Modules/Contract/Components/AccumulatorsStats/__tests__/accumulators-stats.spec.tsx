@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, within } from '@testing-library/react';
 import AccumulatorsStats, { ROW_SIZES } from '../accumulators-stats';
 import { TraderProviders } from '../../../../../trader-providers';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import userEvent from '@testing-library/user-event';
 import { useDevice } from '@deriv-com/ui';
 
@@ -18,8 +18,8 @@ const mock_connect_props = {
         },
     },
 };
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     getUrlBase: jest.fn(() => 'video_src.mp4'),
 }));
 

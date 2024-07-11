@@ -1,8 +1,8 @@
 import React from 'react';
-import { Checkbox } from '@deriv-app/components';
-import { localize, Localize } from '@deriv-app/translations';
+import { Checkbox } from '@deriv-lib/components';
+import { localize, Localize } from '@deriv-lib/translations';
 import MediaItem, { MediaHeading, MediaIcon, MediaDescription } from 'App/Components/Elements/Media';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 
 // TODO: enable asset information
 // import OHLCDisabledLightIcon             from 'Assets/SvgComponents/settings/OHLC-disabled.svg';

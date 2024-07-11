@@ -1,5 +1,5 @@
 import React from 'react';
-import { deriv_urls, getPlatformFromUrl } from '@deriv-app/shared';
+import { deriv_urls, getPlatformFromUrl } from '@deriv-lib/shared';
 
 const SmartTraderIFrame = () => {
     const { is_staging_deriv_app } = getPlatformFromUrl();

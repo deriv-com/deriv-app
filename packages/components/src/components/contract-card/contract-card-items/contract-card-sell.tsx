@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { isOpen, isValidToSell, hasContractEntered, isForwardStarting } from '@deriv-app/shared';
+import { isOpen, isValidToSell, hasContractEntered, isForwardStarting } from '@deriv-lib/shared';
 import Button from '../../button';
-import { TContractInfo } from '@deriv-app/shared/src/utils/contract/contract-types';
+import { TContractInfo } from '@deriv-lib/shared/src/utils/contract/contract-types';
 import { TGetCardLables } from '../../types';
 
 export type TContractCardSellProps = {

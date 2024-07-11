@@ -1,14 +1,14 @@
 import React from 'react';
 import moment from 'moment';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import Expiration from '../expiration';
 import TraderProviders from '../../../../../../../trader-providers';
 
 const expiry_date = '28 Nov 2023 at 11:04';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     getDateFromNow: jest.fn(() => '28 Nov 2023'),
 }));
 

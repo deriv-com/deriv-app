@@ -7,16 +7,16 @@ import {
     getStatementTableColumnsTemplate,
 } from 'Constants/data-table-constants';
 import { render, screen } from '@testing-library/react';
-import { isMobile } from '@deriv-app/shared';
+import { isMobile } from '@deriv-lib/shared';
 import { TCellContentProps } from 'Types';
 import moment from 'moment';
 
-jest.mock('@deriv-app/translations', () => ({
+jest.mock('@deriv-lib/translations', () => ({
     localize: jest.fn(text => text),
     Localize: jest.fn(text => text),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
+jest.mock('@deriv-lib/shared', () => ({
     isMobile: jest.fn(),
     getCurrencyDisplayCode: jest.fn(currency => currency),
     getTotalProfit: jest.fn(contract_info => {
@@ -50,7 +50,7 @@ jest.mock('Components/market-symbol-icon-row', () => {
     };
 });
 
-jest.mock('@deriv-app/components', () => ({
+jest.mock('@deriv-lib/components', () => ({
     __esModule: true,
     ContractCard: {
         MultiplierCloseActions: ({ contract_info }: { contract_info: { contract_id: string } }) => (

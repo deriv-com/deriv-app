@@ -4,11 +4,11 @@ import { BrowserRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 
 import RealAccountSignup from '../real-account-signup.jsx';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { Analytics } from '@deriv-com/analytics';
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Modal: () => <div>RealAccountModalContent</div>,
     DesktopWrapper: jest.fn(({ children }) => (
         <div>

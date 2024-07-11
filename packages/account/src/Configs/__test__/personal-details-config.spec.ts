@@ -1,7 +1,7 @@
 import { personal_details_config } from '../personal-details-config';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     getErrorMessages: jest.fn().mockReturnValue({
         name: jest.fn(),
         password: jest.fn(),

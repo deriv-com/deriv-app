@@ -1,7 +1,7 @@
 import React, { ComponentProps, useCallback, useEffect, useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { useActiveWalletAccount, useWalletAccountsList } from '@deriv-app/api-v2';
-import { displayMoney } from '@deriv-app/api-v2/src/utils';
+import { useActiveWalletAccount, useWalletAccountsList } from '@deriv-lib/api-v2';
+import { displayMoney } from '@deriv-lib/api-v2/src/utils';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { THooks, TSubscribedBalance } from '../../types';
 import { WalletDropdown, WalletText } from '../Base';

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Icon } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
+import { Button, Icon } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
 import IconMessageContent from 'Components/icon-message-content';
 
 type TPOORejected = {

@@ -1,4 +1,4 @@
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { RouteComponentProps, withRouter } from 'react-router';
 import React from 'react';
 import BinaryRoutes from 'Components/Routes';

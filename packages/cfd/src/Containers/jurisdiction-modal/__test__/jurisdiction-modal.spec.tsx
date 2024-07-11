@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
-import { TStores } from '@deriv-app/stores/types';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
+import { TStores } from '@deriv-lib/stores/types';
 import { CFDStoreProvider } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 import { TTradingPlatformAvailableAccount } from 'Components/props.types';
 import { TJurisdictionModalProps } from '../../props.types';
@@ -12,8 +12,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isMobile: false, isDesktop: true })),
 }));
 
-jest.mock('@deriv-app/shared/src/utils/screen/responsive', () => ({
-    ...jest.requireActual('@deriv-app/shared/src/utils/screen/responsive'),
+jest.mock('@deriv-lib/shared/src/utils/screen/responsive', () => ({
+    ...jest.requireActual('@deriv-lib/shared/src/utils/screen/responsive'),
     isMobile: jest.fn(),
     isDesktop: jest.fn(() => true),
 }));

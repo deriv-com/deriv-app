@@ -1,5 +1,5 @@
 import React from 'react';
-import { isMobile } from '@deriv-app/shared';
+import { isMobile } from '@deriv-lib/shared';
 import Icon from '../icon/icon';
 import Text from '../text';
 import './inline-message.scss';

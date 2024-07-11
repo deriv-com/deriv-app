@@ -1,11 +1,11 @@
 import React from 'react';
 import { withRouter, matchPath, RouteComponentProps } from 'react-router';
 import Loadable from 'react-loadable';
-import { UILoader } from '@deriv-app/components';
-import { routes } from '@deriv-app/shared';
+import { UILoader } from '@deriv-lib/components';
+import { routes } from '@deriv-lib/shared';
 import BinaryRoutes from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TMatchPattern = { from: Array<string | undefined>; to: Array<string> };

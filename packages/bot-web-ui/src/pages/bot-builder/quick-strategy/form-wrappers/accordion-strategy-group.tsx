@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import Accordion from '../../../tutorials/dbot-tours/common/accordion';
 import StrategyDescription from '../descriptions/strategy-description';
 import { TDescription, TDescriptionItem } from '../types';

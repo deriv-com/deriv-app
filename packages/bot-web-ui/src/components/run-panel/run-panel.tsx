@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Button, Drawer, Modal, Money, Tabs, Text, ThemedScrollbars } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+import { Button, Drawer, Modal, Money, Tabs, Text, ThemedScrollbars } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 import Journal from 'Components/journal';
 import SelfExclusion from 'Components/self-exclusion';
 import Summary from 'Components/summary';

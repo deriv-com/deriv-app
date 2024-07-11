@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { DatePicker, MobileDialog } from '@deriv-app/components';
+import { DatePicker, MobileDialog } from '@deriv-lib/components';
 import CompositeCalendarMobile from '../composite-calendar-mobile';
 
 const mock_props = {
@@ -16,8 +16,8 @@ const mock_props = {
     onChange: jest.fn(),
 };
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     InputField: jest.fn(({ onClick }) => (
         <div onClick={onClick} onKeyDown={onClick}>
             Input Field

@@ -6,12 +6,12 @@ import {
     useCashierValidation,
     useSettings,
     useWebsiteStatus,
-} from '@deriv-app/api-v2';
+} from '@deriv-lib/api-v2';
 import { render, screen } from '@testing-library/react';
 import DepositLocked from '../DepositLocked';
 import getDepositLockedDesc from '../DepositLockedContent';
 
-jest.mock('@deriv-app/api-v2', () => ({
+jest.mock('@deriv-lib/api-v2', () => ({
     useAccountStatus: jest.fn(),
     useActiveWalletAccount: jest.fn(),
     useAuthentication: jest.fn(),

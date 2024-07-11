@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChartMode, DrawTools, Share, StudyLegend, Views, ToolbarWidget } from 'Modules/SmartChart';
 import { useDevice } from '@deriv-com/ui';
-import { isTabletOs } from '@deriv-app/shared';
+import { isTabletOs } from '@deriv-lib/shared';
 
 type TToolbarWidgetsProps = {
     position?: string;

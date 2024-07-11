@@ -1,5 +1,5 @@
 import debounce from 'lodash.debounce';
-import { isEmptyObject, WS } from '@deriv-app/shared';
+import { isEmptyObject, WS } from '@deriv-lib/shared';
 import { createProposalRequests } from './proposal';
 import { PriceProposalRequest, PriceProposalResponse } from '@deriv/api-types';
 import { TTradeStore } from 'Types';

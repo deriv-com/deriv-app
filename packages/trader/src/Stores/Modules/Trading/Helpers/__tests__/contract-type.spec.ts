@@ -1,10 +1,10 @@
 import ServerTime from '_common/base/server_time';
 import { ContractType } from '../contract-type';
 import moment from 'moment';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     WS: {
         contractsFor: jest.fn(() =>
             Promise.resolve({

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal } from '@deriv-app/components';
+import { Modal } from '@deriv-lib/components';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import CopyAdvertForm from 'Pages/my-ads/copy-advert-form';

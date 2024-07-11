@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider } from '@deriv-app/api-v2';
+import { APIProvider } from '@deriv-lib/api-v2';
 import { ModalProvider } from './components/ModalProvider';
 import AppContent from './AppContent';
 import WalletsAuthProvider from './AuthProvider';

@@ -1,5 +1,5 @@
-import { mockStore } from '@deriv-app/stores';
-import { TStores } from '@deriv-app/stores/types';
+import { mockStore } from '@deriv-lib/stores';
+import { TStores } from '@deriv-lib/stores/types';
 import { mock_ws } from 'Utils/mock';
 import { mockDBotStore } from 'Stores/useDBotStore';
 import ToolbarStore from '../toolbar-store';

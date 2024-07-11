@@ -1,5 +1,5 @@
-import { CONTRACT_TYPES, getSupportedContracts, getTotalProfit, isHighLow, isMultiplierContract } from '@deriv-app/shared';
-import { TPortfolioPosition } from '@deriv-app/stores/types';
+import { CONTRACT_TYPES, getSupportedContracts, getTotalProfit, isHighLow, isMultiplierContract } from '@deriv-lib/shared';
+import { TPortfolioPosition } from '@deriv-lib/stores/types';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 
 export const DEFAULT_DATE_FORMATTING_CONFIG = {

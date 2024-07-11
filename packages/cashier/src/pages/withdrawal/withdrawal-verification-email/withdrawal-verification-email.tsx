@@ -1,8 +1,8 @@
 import React from 'react';
-import { EmptyState } from '@deriv-app/components';
-import { useVerifyEmail } from '@deriv-app/hooks';
-import { observer } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+import { EmptyState } from '@deriv-lib/components';
+import { useVerifyEmail } from '@deriv-lib/hooks';
+import { observer } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 import EmailVerificationEmptyState from '../../../components/email-verification-empty-state';
 import Error from '../../../components/error';
 import ErrorStore from '../../../stores/error-store';

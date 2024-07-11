@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import BarrierSelector from '../barrier-selector';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import TraderProviders from '../../../../../../../trader-providers';
 
 const mocked_root_store = {
@@ -21,12 +21,12 @@ const mocked_root_store = {
     },
 };
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
 }));
 
-jest.mock('@deriv-app/components', () => {
-    const original_module = jest.requireActual('@deriv-app/components');
+jest.mock('@deriv-lib/components', () => {
+    const original_module = jest.requireActual('@deriv-lib/components');
     return {
         ...original_module,
         Icon: jest.fn(() => <div>IcCross</div>),

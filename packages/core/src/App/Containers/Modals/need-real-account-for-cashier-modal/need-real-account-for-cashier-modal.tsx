@@ -1,9 +1,9 @@
 import React from 'react';
-import { Dialog } from '@deriv-app/components';
-import { Localize, localize } from '@deriv-app/translations';
-import { useStore, observer } from '@deriv-app/stores';
+import { Dialog } from '@deriv-lib/components';
+import { Localize, localize } from '@deriv-lib/translations';
+import { useStore, observer } from '@deriv-lib/stores';
 import { useHistory } from 'react-router-dom';
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 import './need-real-account-for-cashier-modal.scss';
 
 const NeedRealAccountForCashierModal = observer(() => {

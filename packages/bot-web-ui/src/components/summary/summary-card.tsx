@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { ContractCard, Text } from '@deriv-app/components';
-import { getCardLabels } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { ContractCard, Text } from '@deriv-lib/components';
+import { getCardLabels } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import ContractCardLoader from 'Components/contract-card-loading';
 import { getContractTypeDisplay } from 'Constants/contract';
 import { useDBotStore } from 'Stores/useDBotStore';

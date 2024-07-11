@@ -1,8 +1,8 @@
 import React from 'react';
 import { OauthApps } from '@deriv/api-types';
-import { Button } from '@deriv-app/components';
-import { toMoment } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
+import { Button } from '@deriv-lib/components';
+import { toMoment } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
 import DataListTemplateEntry from './data-list-template-entry';
 import { getConnectedAppsScopes } from './template-helper';
 

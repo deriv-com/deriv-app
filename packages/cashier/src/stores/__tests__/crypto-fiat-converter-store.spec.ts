@@ -1,5 +1,5 @@
 import { TRootStore } from '../../types';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import CryptoFiatConverterStore from '../crypto-fiat-converter-store';
 
 let crypto_fiat_converter_store: CryptoFiatConverterStore, root_store: ReturnType<typeof mockStore>;

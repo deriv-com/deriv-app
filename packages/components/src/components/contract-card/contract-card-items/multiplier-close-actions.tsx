@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
-import { isValidToCancel } from '@deriv-app/shared';
+import { isValidToCancel } from '@deriv-lib/shared';
 import Button from '../../button';
 import RemainingTime from '../../remaining-time';
-import { TContractInfo } from '@deriv-app/shared/src/utils/contract/contract-types';
+import { TContractInfo } from '@deriv-lib/shared/src/utils/contract/contract-types';
 import { TGetCardLables } from '../../types';
 
 export type TMultiplierCloseActionsProps = {

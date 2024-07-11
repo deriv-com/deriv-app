@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, Field, FieldProps, Form } from 'formik';
-import { Button, Input, Icon, Modal, Text } from '@deriv-app/components';
-import { useStore } from '@deriv-app/stores';
+import { Button, Input, Icon, Modal, Text } from '@deriv-lib/components';
+import { useStore } from '@deriv-lib/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 // @ts-ignore

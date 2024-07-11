@@ -1,4 +1,4 @@
-import { CONTRACT_TYPES } from '@deriv-app/shared';
+import { CONTRACT_TYPES } from '@deriv-lib/shared';
 
 const defaultConfig = {
     isTakeProfitVisible: false,

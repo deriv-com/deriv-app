@@ -1,12 +1,12 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import MobileWidget from '../mobile-widget';
-import { TStores } from '@deriv-app/stores/types';
+import { TStores } from '@deriv-lib/stores/types';
 import TraderProviders from '../../../../../trader-providers';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     getExpiryType: () => 'tick',
 }));
 

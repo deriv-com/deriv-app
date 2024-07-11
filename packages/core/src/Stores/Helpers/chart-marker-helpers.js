@@ -9,7 +9,7 @@ import {
     isSmartTraderContract,
     isTicksContract,
     isVanillaContract,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 
 import { MARKER_TYPES_CONFIG } from '../Constants/markers';
 

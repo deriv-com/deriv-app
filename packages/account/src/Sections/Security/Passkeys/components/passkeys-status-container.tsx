@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer } from '@deriv-app/stores';
+import { observer } from '@deriv-lib/stores';
 import { NoPasskeys } from './no-passkeys';
 import { TCurrentManagedPasskey, TOnPasskeyMenuClick, TPasskey } from '../passkeys';
 import { PasskeyCreated } from './passkey-created';

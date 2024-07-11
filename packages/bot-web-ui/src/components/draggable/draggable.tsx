@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Icon } from '@deriv-app/components';
+import { Icon } from '@deriv-lib/components';
 import {
     calculateHeight,
     calculateWidth,

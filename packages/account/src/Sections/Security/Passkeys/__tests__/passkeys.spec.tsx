@@ -3,11 +3,11 @@ import { MemoryRouter } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Analytics } from '@deriv-com/analytics';
-import { APIProvider } from '@deriv-app/api';
-import { useGetPasskeysList, useRegisterPasskey } from '@deriv-app/hooks';
+import { APIProvider } from '@deriv-lib/api';
+import { useGetPasskeysList, useRegisterPasskey } from '@deriv-lib/hooks';
 import { useDevice } from '@deriv-com/ui';
-import { routes } from '@deriv-app/shared';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { routes } from '@deriv-lib/shared';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import Passkeys from '../passkeys';
 import { PasskeysList } from '../components/passkeys-list';
 
@@ -44,19 +44,19 @@ jest.mock('react-router-dom', () => ({
     }),
 }));
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useGetPasskeysList: jest.fn(() => ({})),
     useRegisterPasskey: jest.fn(() => ({})),
 }));
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Loading: () => <div>MockLoading</div>,
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     getOSNameWithUAParser: () => 'test OS',
 }));
 

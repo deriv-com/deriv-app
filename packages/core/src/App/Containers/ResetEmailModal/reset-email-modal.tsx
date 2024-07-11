@@ -1,11 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Formik, Form, FormikErrors } from 'formik';
-import { Button, Dialog, Text, Input } from '@deriv-app/components';
-import { validEmail, getErrorMessages } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv-app/translations';
+import { Button, Dialog, Text, Input } from '@deriv-lib/components';
+import { validEmail, getErrorMessages } from '@deriv-lib/shared';
+import { Localize, localize } from '@deriv-lib/translations';
 import { ConfirmEmailModal } from '../ConfirmEmailModal/confirm-email-modal';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 
 type TResetEmailInitValues = {
     email: string;

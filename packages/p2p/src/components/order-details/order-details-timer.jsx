@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
-import { Text } from '@deriv-app/components';
+import { Text } from '@deriv-lib/components';
 import { localize } from 'Components/i18next';
 import { millisecondsToTimer } from 'Utils/date-time';
 import { getDistanceToServerTime } from 'Utils/server_time';

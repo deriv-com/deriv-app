@@ -35,10 +35,10 @@ import {
     getContractTypesConfig,
     setTradeURLParams,
     getTradeURLParams,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';

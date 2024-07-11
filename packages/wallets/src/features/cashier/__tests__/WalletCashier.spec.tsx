@@ -1,10 +1,10 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv-app/api-v2';
+import { useActiveWalletAccount } from '@deriv-lib/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import WalletCashier from '../WalletCashier';
 
-jest.mock('@deriv-app/api-v2', () => ({
-    ...jest.requireActual('@deriv-app/api-v2'),
+jest.mock('@deriv-lib/api-v2', () => ({
+    ...jest.requireActual('@deriv-lib/api-v2'),
     useActiveWalletAccount: jest.fn(),
 }));
 

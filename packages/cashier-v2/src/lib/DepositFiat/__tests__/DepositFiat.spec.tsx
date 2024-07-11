@@ -1,9 +1,9 @@
 import React from 'react';
-import { useAuthorize, useCashierFiatAddress } from '@deriv-app/api-v2';
+import { useAuthorize, useCashierFiatAddress } from '@deriv-lib/api-v2';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import DepositFiat from '../DepositFiat';
 
-jest.mock('@deriv-app/api-v2', () => ({
+jest.mock('@deriv-lib/api-v2', () => ({
     useAuthorize: jest.fn(),
     useCashierFiatAddress: jest.fn(),
 }));

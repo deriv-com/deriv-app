@@ -2,8 +2,8 @@ import React from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import debounce from 'lodash.debounce';
 import { ApiHelpers } from '@deriv/bot-skeleton';
-import { Autocomplete, IconTradeTypes, Text } from '@deriv-app/components';
-import { TItem } from '@deriv-app/components/src/components/dropdown-list';
+import { Autocomplete, IconTradeTypes, Text } from '@deriv-lib/components';
+import { TItem } from '@deriv-lib/components/src/components/dropdown-list';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TApiHelpersInstance, TFormData, TTradeType } from '../types';
 

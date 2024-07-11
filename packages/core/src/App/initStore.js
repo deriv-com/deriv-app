@@ -1,5 +1,5 @@
 import { configure } from 'mobx';
-import { excludeParamsFromUrlQuery, startPerformanceEventTimer } from '@deriv-app/shared';
+import { excludeParamsFromUrlQuery, startPerformanceEventTimer } from '@deriv-lib/shared';
 import NetworkMonitor from 'Services/network-monitor';
 import RootStore from 'Stores';
 

@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Text } from '@deriv-app/components';
-import { isMobile } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
-import { useStore, observer } from '@deriv-app/stores';
+import { Text } from '@deriv-lib/components';
+import { isMobile } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
+import { useStore, observer } from '@deriv-lib/stores';
 import './virtual.scss';
 
 const Virtual = observer(() => {

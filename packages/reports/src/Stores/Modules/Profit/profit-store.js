@@ -1,6 +1,6 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable, makeObservable, override } from 'mobx';
-import { filterDisabledPositions, toMoment, WS } from '@deriv-app/shared';
+import { filterDisabledPositions, toMoment, WS } from '@deriv-lib/shared';
 
 import getDateBoundaries from './Helpers/format-request';
 import { formatProfitTableTransactions } from './Helpers/format-response';

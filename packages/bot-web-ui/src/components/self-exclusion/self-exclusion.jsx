@@ -2,9 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
-import { Button, Div100vhContainer, FadeWrapper, Input, Modal, PageOverlay } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { Button, Div100vhContainer, FadeWrapper, Input, Modal, PageOverlay } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const SelfExclusionForm = props => {

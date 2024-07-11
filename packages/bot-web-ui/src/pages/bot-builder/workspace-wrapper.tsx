@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer } from '@deriv-app/stores';
+import { observer } from '@deriv-lib/stores';
 import Flyout from 'Components/flyout';
 import { useDBotStore } from 'Stores/useDBotStore';
 import StopBotModal from '../dashboard/load-bot-preview/stop-bot-modal';

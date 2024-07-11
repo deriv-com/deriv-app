@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Text, ThemedScrollbars } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
+import { Text, ThemedScrollbars } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
 
 export type TBarriersListBody = {
     barriers_list: string[];

@@ -1,11 +1,11 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import OnRampProviderPopup from '../on-ramp-provider-popup';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import CashierProviders from '../../../../cashier-providers';
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Loading: () => <div>Loading</div>,
 }));
 

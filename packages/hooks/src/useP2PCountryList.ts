@@ -1,4 +1,4 @@
-import { useQuery } from '@deriv-app/api';
+import { useQuery } from '@deriv-lib/api';
 
 /**
  * A custom hook that returns an object containing the list of countries available for P2P trading.

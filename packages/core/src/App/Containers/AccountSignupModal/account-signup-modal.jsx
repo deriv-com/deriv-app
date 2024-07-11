@@ -2,13 +2,13 @@ import React from 'react';
 import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 
-import { Button, Checkbox, Dialog, Loading, Text } from '@deriv-app/components';
-import { getLocation, SessionStore, setPerformanceValue, shuffleArray } from '@deriv-app/shared';
-import { getLanguage, localize } from '@deriv-app/translations';
+import { Button, Checkbox, Dialog, Loading, Text } from '@deriv-lib/components';
+import { getLocation, SessionStore, setPerformanceValue, shuffleArray } from '@deriv-lib/shared';
+import { getLanguage, localize } from '@deriv-lib/translations';
 import { Analytics } from '@deriv-com/analytics';
 
 import { WS } from 'Services';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 
 import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import PasswordSelectionModal from '../PasswordSelectionModal/password-selection-modal.jsx';

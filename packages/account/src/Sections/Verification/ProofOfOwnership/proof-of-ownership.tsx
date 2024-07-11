@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { GetAccountStatus } from '@deriv/api-types';
-import { Loading } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { AUTH_STATUS_CODES } from '@deriv-app/shared';
+import { Loading } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { AUTH_STATUS_CODES } from '@deriv-lib/shared';
 import ProofOfOwnershipForm from './proof-of-ownership-form';
 import { POONotRequired, POOVerified, POORejected, POOSubmitted } from '../../../Components/poo/statuses';
 import getPaymentMethodsConfig from '../../../Configs/payment-method-config';

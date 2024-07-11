@@ -1,6 +1,6 @@
 import React from 'react';
-import { APIProvider } from '@deriv-app/api';
-import { P2PSettingsProvider } from '@deriv-app/stores';
+import { APIProvider } from '@deriv-lib/api';
+import { P2PSettingsProvider } from '@deriv-lib/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useP2PSettings from '../useP2PSettings';
 

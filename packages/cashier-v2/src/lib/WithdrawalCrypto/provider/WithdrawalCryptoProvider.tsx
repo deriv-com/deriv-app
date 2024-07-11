@@ -8,7 +8,7 @@ import {
     useExchangeRateSubscription,
     usePOA,
     usePOI,
-} from '@deriv-app/api-v2';
+} from '@deriv-lib/api-v2';
 import type { THooks } from '../../../hooks/types';
 import { TWithdrawalReceipt } from '../types';
 

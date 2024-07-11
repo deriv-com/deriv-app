@@ -1,8 +1,8 @@
 import React from 'react';
-import { Loading } from '@deriv-app/components';
-import { WS } from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
-import { useStore, observer } from '@deriv-app/stores';
+import { Loading } from '@deriv-lib/components';
+import { WS } from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
+import { useStore, observer } from '@deriv-lib/stores';
 import ErrorMessage from '../../../Components/error-component';
 import IconWithMessage from '../../../Components/icon-with-message';
 import POISubmissionForMT5 from './proof-of-identity-submission-for-mt5.jsx';

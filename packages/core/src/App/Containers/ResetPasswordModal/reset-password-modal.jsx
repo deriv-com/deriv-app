@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
-import { Button, Dialog, PasswordInput, PasswordMeter, Text } from '@deriv-app/components';
-import { redirectToLogin, validPassword, validLength, getErrorMessages, WS } from '@deriv-app/shared';
-import { getLanguage, localize, Localize } from '@deriv-app/translations';
-import { observer, useStore } from '@deriv-app/stores';
+import { Button, Dialog, PasswordInput, PasswordMeter, Text } from '@deriv-lib/components';
+import { redirectToLogin, validPassword, validLength, getErrorMessages, WS } from '@deriv-lib/shared';
+import { getLanguage, localize, Localize } from '@deriv-lib/translations';
+import { observer, useStore } from '@deriv-lib/stores';
 
 const ResetPasswordModal = observer(() => {
     const { ui, client } = useStore();

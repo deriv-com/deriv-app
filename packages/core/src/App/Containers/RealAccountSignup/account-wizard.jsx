@@ -3,14 +3,14 @@ import fromEntries from 'object.fromentries';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv-app/components';
-import { WS, getLocation, toMoment, formatIDVFormValues, shouldHideOccupationField } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
-import { observer, useStore } from '@deriv-app/stores';
+import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv-lib/components';
+import { WS, getLocation, toMoment, formatIDVFormValues, shouldHideOccupationField } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
+import { observer, useStore } from '@deriv-lib/stores';
 import AcceptRiskForm from './accept-risk-form.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
-import { useResidenceSelfDeclaration } from '@deriv-app/hooks';
+import { useResidenceSelfDeclaration } from '@deriv-lib/hooks';
 import 'Sass/details-form.scss';
 import { Analytics } from '@deriv-com/analytics';
 

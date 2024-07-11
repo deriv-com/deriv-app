@@ -8,11 +8,11 @@ import {
     FormSubmitErrorMessage,
     MobileWrapper,
     SelectNative,
-} from '@deriv-app/components';
-import { useFileUploader } from '@deriv-app/hooks';
-import { localize, Localize } from '@deriv-app/translations';
-import { isEqualArray, WS } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+} from '@deriv-lib/components';
+import { useFileUploader } from '@deriv-lib/hooks';
+import { localize, Localize } from '@deriv-lib/translations';
+import { isEqualArray, WS } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import FilesDescription from 'Components/file-uploader-container/files-descriptions';
 import FormBody from 'Components/form-body';
 import FormFooter from 'Components/form-footer';

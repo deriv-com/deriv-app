@@ -1,8 +1,8 @@
 const moment = require('moment');
-const isEmptyObject = require('@deriv-app/shared').isEmptyObject;
-const getPropertyValue = require('@deriv-app/shared').getPropertyValue;
+const isEmptyObject = require('@deriv-lib/shared').isEmptyObject;
+const getPropertyValue = require('@deriv-lib/shared').getPropertyValue;
 const getStaticHash = require('_common/utility').getStaticHash;
-const LocalStore = require('@deriv-app/shared').LocalStore;
+const LocalStore = require('@deriv-lib/shared').LocalStore;
 
 /*
  * Caches WS responses to reduce delay time and number of requests

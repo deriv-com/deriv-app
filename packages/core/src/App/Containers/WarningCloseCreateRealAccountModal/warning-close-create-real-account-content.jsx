@@ -1,9 +1,9 @@
 import React from 'react';
-import { localize } from '@deriv-app/translations';
-import { Modal, FormSubmitButton, Text } from '@deriv-app/components';
-import { routes, isNavigationFromExternalPlatform } from '@deriv-app/shared';
+import { localize } from '@deriv-lib/translations';
+import { Modal, FormSubmitButton, Text } from '@deriv-lib/components';
+import { routes, isNavigationFromExternalPlatform } from '@deriv-lib/shared';
 import { Analytics } from '@deriv-com/analytics';
-import { useStore, observer } from '@deriv-app/stores';
+import { useStore, observer } from '@deriv-lib/stores';
 
 const WarningMessageModal = observer(
     ({

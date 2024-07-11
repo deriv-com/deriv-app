@@ -5,7 +5,7 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 // @ts-ignore
 import { useStores } from 'Stores';
 import FilterModal from '../filter-modal';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 
 const mock_store = {
     buy_sell_store: {

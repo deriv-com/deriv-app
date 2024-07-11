@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { isMobile } from '@deriv-app/shared';
+import { isMobile } from '@deriv-lib/shared';
 import Input from '../input';
 import Text from '../text';
 

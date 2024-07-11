@@ -1,7 +1,7 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
-import { Text } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
+import { Text } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
 import AccountLimitsContext, { TAccountLimitsContext } from './account-limits-context';
 
 const AccountLimitsFooterPortal = () => {

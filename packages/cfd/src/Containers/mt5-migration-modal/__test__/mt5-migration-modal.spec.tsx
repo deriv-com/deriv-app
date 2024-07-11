@@ -1,14 +1,14 @@
 import React from 'react';
 import MT5MigrationModal from '../mt5-migration-modal';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { CFDStoreProvider } from 'Stores/Modules/CFD/Helpers/useCfdStores';
-import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
+import { useMT5SVGEligibleToMigrate } from '@deriv-lib/hooks';
 import { MT5MigrationModalContext } from '../mt5-migration-modal-context';
 import userEvent from '@testing-library/user-event';
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useMT5SVGEligibleToMigrate: jest.fn(),
 }));
 

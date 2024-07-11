@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Icon } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { Icon } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 
 type TDurationToggle = {
     name: string;

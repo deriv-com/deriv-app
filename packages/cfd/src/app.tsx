@@ -2,7 +2,7 @@ import React from 'react';
 import Routes from './Containers/routes.jsx';
 import initStore from './init-store';
 import CFDProviders from './cfd-providers';
-import type { TCoreStores } from '@deriv-app/stores/types';
+import type { TCoreStores } from '@deriv-lib/stores/types';
 
 type TAppProps = {
     passthrough: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { getLocalizedBasis, TRADE_TYPES } from '@deriv-app/shared';
+import { getLocalizedBasis, TRADE_TYPES } from '@deriv-lib/shared';
 import ContractInfo from '../contract-info';
 import { useDevice } from '@deriv-com/ui';
 
@@ -43,8 +43,8 @@ const default_mock_props: React.ComponentProps<typeof ContractInfo> = {
 
 jest.mock('../value-movement', () => jest.fn(() => <div>{value_movement}</div>));
 jest.mock('../cancel-deal-info', () => jest.fn(() => <div>{cancel_deal_info}</div>));
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Popover: jest.fn(props => <div>{props.message}</div>),
 }));
 jest.mock('@deriv-com/ui', () => ({

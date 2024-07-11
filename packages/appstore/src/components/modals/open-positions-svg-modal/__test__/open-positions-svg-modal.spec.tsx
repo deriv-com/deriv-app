@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import OpenPositionsSVGModal from '../open-positions-svg-modal';
-import { TStores } from '@deriv-app/stores/types';
+import { TStores } from '@deriv-lib/stores/types';
 
 describe('<OpenPositionsSVGModal/>', () => {
     let modal_root_el: HTMLDivElement;

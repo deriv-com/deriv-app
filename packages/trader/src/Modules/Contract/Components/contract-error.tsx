@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '@deriv-app/components';
+import { Icon } from '@deriv-lib/components';
 
 type TContractError = {
     message?: string;

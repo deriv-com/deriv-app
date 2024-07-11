@@ -88,16 +88,16 @@ module.exports = function (env) {
                     exclude: /node_modules/,
                     use: [
                         {
-                            loader: '@deriv-app/shared/src/loaders/deriv-trader-loader.js',
+                            loader: '@deriv-lib/shared/src/loaders/deriv-trader-loader.js',
                         },
                         {
-                            loader: '@deriv-app/shared/src/loaders/deriv-account-loader.js',
+                            loader: '@deriv-lib/shared/src/loaders/deriv-account-loader.js',
                         },
                         {
-                            loader: '@deriv-app/shared/src/loaders/deriv-cashier-loader.js',
+                            loader: '@deriv-lib/shared/src/loaders/deriv-cashier-loader.js',
                         },
                         {
-                            loader: '@deriv-app/shared/src/loaders/deriv-cfd-loader.js',
+                            loader: '@deriv-lib/shared/src/loaders/deriv-cfd-loader.js',
                         },
                         {
                             loader: 'babel-loader',
@@ -141,7 +141,7 @@ module.exports = function (env) {
                                 // Provide path to the file with resources
                                 resources: [
                                     // eslint-disable-next-line global-require, import/no-dynamic-require
-                                    ...require('@deriv-app/shared/src/styles/index.js'),
+                                    ...require('@deriv-lib/shared/src/styles/index.js'),
                                 ],
                             },
                         },
@@ -184,9 +184,9 @@ module.exports = function (env) {
                 mobx: true,
                 'react-router': true,
                 'react-router-dom': true,
-                '@deriv-app/shared': true,
-                '@deriv-app/components': true,
-                '@deriv-app/translations': true,
+                '@deriv-lib/shared': true,
+                '@deriv-lib/components': true,
+                '@deriv-lib/translations': true,
                 '@deriv/account': true,
                 '@deriv/cashier': true,
                 '@deriv/cfd': true,

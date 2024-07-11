@@ -1,5 +1,5 @@
 import React from 'react';
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 import { localize } from 'Components/i18next';
 import AdvertiserPage from 'Pages/advertiser-page';
 import BuySell from 'Pages/buy-sell';

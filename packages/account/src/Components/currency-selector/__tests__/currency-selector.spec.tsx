@@ -2,9 +2,9 @@
 // @ts-nocheck [TODO]:Need to check the issue with DeepPartial - { [K in keyof T]?: DeepPartial<T[K]> }
 import React from 'react';
 import { fireEvent, screen, render, waitFor } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import CurrencySelector from '../currency-selector';
-import { TStores } from '@deriv-app/stores/types';
+import { TStores } from '@deriv-lib/stores/types';
 import { useDevice } from '@deriv-com/ui';
 
 jest.mock('../../real-account-signup/helpers/utils.ts', () => ({

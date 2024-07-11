@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Formik } from 'formik';
-import { localize, Localize } from '@deriv-app/translations';
+import { localize, Localize } from '@deriv-lib/translations';
 import { DerivLightIcEditPasskeyIcon } from '@deriv/quill-icons';
 import { FormInputField } from 'Components/forms/form-fields';
 import { TCurrentManagedPasskey } from '../passkeys';

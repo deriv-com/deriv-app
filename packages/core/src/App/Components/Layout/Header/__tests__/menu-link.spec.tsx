@@ -3,24 +3,24 @@ import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useIsRealAccountNeededForCashier } from '@deriv-app/hooks';
-import { getStaticUrl, routes } from '@deriv-app/shared';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { useIsRealAccountNeededForCashier } from '@deriv-lib/hooks';
+import { getStaticUrl, routes } from '@deriv-lib/shared';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { useDevice } from '@deriv-com/ui';
 import MenuLink from 'App/Components/Layout/Header/menu-link';
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Icon: jest.fn(() => <div>Mock Link Icon</div>),
 }));
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useIsRealAccountNeededForCashier: jest.fn(() => false),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     getStaticUrl: jest.fn(() => 'MockUrl'),
 }));
 

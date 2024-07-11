@@ -1,6 +1,6 @@
 import React from 'react';
 import { ProposalOpenContract } from '@deriv/api-types';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
@@ -9,8 +9,8 @@ import SummaryCard from '../summary-card';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({}));
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     ContractCard: jest.fn(() => <div>ContractCard</div>),
 }));
 

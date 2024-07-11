@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Button, Icon, Money, Popover, Table, Text } from '@deriv-app/components';
-import { epochToMoment, formatMoney, isMobile } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv-app/translations';
-import { useStore, observer } from '@deriv-app/stores';
+import { Button, Icon, Money, Popover, Table, Text } from '@deriv-lib/components';
+import { epochToMoment, formatMoney, isMobile } from '@deriv-lib/shared';
+import { localize, Localize } from '@deriv-lib/translations';
+import { useStore, observer } from '@deriv-lib/stores';
 import { getStatus } from '../../constants/transaction-status';
 import { useCashierStore } from '../../stores/useCashierStores';
-import type { TSocketResponse } from '@deriv-app/api/types';
+import type { TSocketResponse } from '@deriv-lib/api/types';
 
 type TTransactionsCryptoRendererProps = {
     row: NonNullable<TSocketResponse<'cashier_payments'>['cashier_payments']>['crypto'][number];

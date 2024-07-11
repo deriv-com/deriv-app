@@ -1,10 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Analytics } from '@deriv-com/analytics';
-import { PageOverlay, VerticalTab } from '@deriv-app/components';
-import { getOSNameWithUAParser, getSelectedRoute, routes as shared_routes } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv-app/translations';
+import { PageOverlay, VerticalTab } from '@deriv-lib/components';
+import { getOSNameWithUAParser, getSelectedRoute, routes as shared_routes } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize } from '@deriv-lib/translations';
 import TradingHubLogout from './tradinghub-logout';
 import { TRoute } from '../../Types';
 import { useDevice } from '@deriv-com/ui';

@@ -1,8 +1,8 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { FadeWrapper, Loading } from '@deriv-app/components';
-import { flatten, matchRoute, routes as shared_routes } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { FadeWrapper, Loading } from '@deriv-lib/components';
+import { flatten, matchRoute, routes as shared_routes } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import PageOverlayWrapper from './page-overlay-wrapper';
 import { TRoute } from '../../Types';
 import 'Styles/account.scss';

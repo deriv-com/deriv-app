@@ -33,8 +33,8 @@ jest.mock('html2canvas', () => ({
 
 jest.mock('qrcode.react', () => ({ QRCodeSVG: () => <div>QR code</div> }));
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     DesktopWrapper: jest.fn(({ children }) => children),
     MobileWrapper: jest.fn(({ children }) => children),
 }));

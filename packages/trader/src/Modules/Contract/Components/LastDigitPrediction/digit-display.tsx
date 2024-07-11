@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import { observer } from 'mobx-react';
 import React from 'react';
-import { DesktopWrapper } from '@deriv-app/components';
-import { isMobile } from '@deriv-app/shared';
+import { DesktopWrapper } from '@deriv-lib/components';
+import { isMobile } from '@deriv-lib/shared';
 import { Bounce } from 'App/Components/Animations';
 import Digit from './digit';
 import DigitSpot from './digit-spot';

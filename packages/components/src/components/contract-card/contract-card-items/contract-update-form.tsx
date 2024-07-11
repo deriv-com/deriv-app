@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Localize } from '@deriv-app/translations';
+import { Localize } from '@deriv-lib/translations';
 import {
     getCancellationPrice,
     getContractUpdateConfig,
@@ -9,11 +9,11 @@ import {
     isDeepEqual,
     isMultiplierContract,
     pick,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 import Button from '../../button';
 import Money from '../../money';
 import InputWithCheckbox from '../../input-wth-checkbox';
-import { TContractInfo, TContractStore } from '@deriv-app/shared/src/utils/contract/contract-types';
+import { TContractInfo, TContractStore } from '@deriv-lib/shared/src/utils/contract/contract-types';
 import { TGetCardLables, TToastConfig } from '../../types';
 import ArrowIndicator from '../../arrow-indicator';
 import Text from '../../text';

@@ -6,7 +6,7 @@ import Modal from '../modal';
 import Text from '../text';
 import Button from '../button';
 import MobileDialog from '../mobile-dialog';
-import { getDefaultError } from '@deriv-app/shared';
+import { getDefaultError } from '@deriv-lib/shared';
 
 const ModalContent = () => (
     <div className='unhandled-error'>

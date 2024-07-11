@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { TRADE_TYPES } from '@deriv-app/shared';
+import { TRADE_TYPES } from '@deriv-lib/shared';
 import { hasCallPutEqual } from 'Stores/Modules/Trading/Helpers/allow-equals';
 import AllowEquals from '../allow-equals';
 

@@ -3,12 +3,12 @@ import { act } from 'react-dom/test-utils';
 import { render, screen } from '@testing-library/react';
 import WithdrawalCryptoPriority from '../withdrawal-crypto-priority';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import userEvent from '@testing-library/user-event';
-import { useCryptoEstimations } from '@deriv-app/api';
+import { useCryptoEstimations } from '@deriv-lib/api';
 
-jest.mock('@deriv-app/api', () => ({
-    ...jest.requireActual('@deriv-app/api'),
+jest.mock('@deriv-lib/api', () => ({
+    ...jest.requireActual('@deriv-lib/api'),
     useCryptoEstimations: jest.fn(),
 }));
 

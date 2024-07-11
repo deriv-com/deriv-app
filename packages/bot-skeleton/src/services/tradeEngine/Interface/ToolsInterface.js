@@ -1,4 +1,4 @@
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import getCandleInterface from './CandleInterface';
 import getIndicatorsInterface from './IndicatorsInterface';
 import getMiscInterface from './MiscInterface';

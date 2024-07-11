@@ -1,5 +1,5 @@
 import React from 'react';
-import { AutoHeightWrapper } from '@deriv-app/components';
+import { AutoHeightWrapper } from '@deriv-lib/components';
 import { useDevice } from '@deriv-com/ui';
 import {
     WS,
@@ -8,8 +8,8 @@ import {
     formatIDVError,
     isIDVReportNotAvailable,
     getIDVNotApplicableOption,
-} from '@deriv-app/shared';
-import { useStore, observer } from '@deriv-app/stores';
+} from '@deriv-lib/shared';
+import { useStore, observer } from '@deriv-lib/stores';
 import Unsupported from '../../../Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view-container';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';

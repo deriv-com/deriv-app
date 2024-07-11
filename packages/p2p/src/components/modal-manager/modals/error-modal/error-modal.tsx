@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Button, Modal, Text } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
+import { Button, Modal, Text } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 

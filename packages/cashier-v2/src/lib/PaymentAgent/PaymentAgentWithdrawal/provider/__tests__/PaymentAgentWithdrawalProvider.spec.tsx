@@ -1,6 +1,6 @@
 import React from 'react';
 import { waitFor } from '@testing-library/react';
-import { usePaymentAgentWithdrawal } from '@deriv-app/api-v2';
+import { usePaymentAgentWithdrawal } from '@deriv-lib/api-v2';
 import { renderHook } from '@testing-library/react-hooks';
 import PaymentAgentWithdrawalProvider, { usePaymentAgentWithdrawalContext } from '../PaymentAgentWithdrawalProvider';
 
@@ -8,8 +8,8 @@ const mockedUsePaymentAgentWithdrawal = usePaymentAgentWithdrawal as jest.Mocked
     typeof usePaymentAgentWithdrawal
 >;
 
-jest.mock('@deriv-app/api-v2', () => ({
-    ...jest.requireActual('@deriv-app/api-v2'),
+jest.mock('@deriv-lib/api-v2', () => ({
+    ...jest.requireActual('@deriv-lib/api-v2'),
     useActiveAccount: jest.fn(() => ({
         data: {
             currency: 'USD',

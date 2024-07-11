@@ -1,7 +1,7 @@
 import React from 'react';
 import { getUUID } from '@deriv/bot-skeleton/src/services/tradeEngine/utils/helpers';
-import { Text } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
+import { Text } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
 
 type TTourSteps = {
     content: string[] | React.ReactElement[];

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { DesktopWrapper, Loading, Text } from '@deriv-app/components';
-import { routes } from '@deriv-app/shared';
-import { observer } from '@deriv-app/stores';
+import { DesktopWrapper, Loading, Text } from '@deriv-lib/components';
+import { routes } from '@deriv-lib/shared';
+import { observer } from '@deriv-lib/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import Verification from 'Components/verification';
 import { document_status_codes, identity_status_codes } from 'Constants/account-status-codes';

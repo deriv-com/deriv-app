@@ -1,10 +1,10 @@
 import React from 'react';
-import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
+import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
 import VerificationModalContent from './verification-modal-content';
 
 import './verification-modal.scss';
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 
 const VerificationModal = observer(() => {
     const { ui, client } = useStore();

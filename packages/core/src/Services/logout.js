@@ -1,4 +1,4 @@
-import { removeCookies } from '@deriv-app/shared';
+import { removeCookies } from '@deriv-lib/shared';
 import SocketCache from '_common/base/socket_cache';
 import WS from './ws-methods';
 

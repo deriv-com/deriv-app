@@ -1,8 +1,8 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { APIProvider } from '@deriv-app/api';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { APIProvider } from '@deriv-lib/api';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { useStores } from 'Stores/index';
 import {
     payment_method_info_alipay,
@@ -40,13 +40,13 @@ const mock_p2p_advertiser_payment_methods_hooks = {
     data: undefined,
 };
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     MobileWrapper: jest.fn(({ children }) => children),
 }));
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useP2PAdvertiserPaymentMethods: jest.fn(() => mock_p2p_advertiser_payment_methods_hooks),
 }));
 

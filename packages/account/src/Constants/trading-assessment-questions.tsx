@@ -1,4 +1,4 @@
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 
 export const getTradingAssessmentQuestions = () => [
     {

@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import ReactDOM from 'react-dom';
-import { Toast } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
+import { Toast } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
 
 // TODO: Need to sanitize,
 // Same sort of component is being used inside DTrader,

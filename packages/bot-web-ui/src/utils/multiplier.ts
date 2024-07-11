@@ -1,5 +1,5 @@
 import { ContractUpdate, ProposalOpenContract } from '@deriv/api-types';
-import { getLimitOrderAmount } from '@deriv-app/shared';
+import { getLimitOrderAmount } from '@deriv-lib/shared';
 
 type TContractUpdateConfig = (ContractUpdate & ProposalOpenContract['limit_order']) | undefined;
 /**

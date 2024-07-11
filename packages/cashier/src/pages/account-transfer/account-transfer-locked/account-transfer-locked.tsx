@@ -1,9 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { routes } from '@deriv-app/shared';
-import { Icon, Checklist, Text } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
-import { useStore, observer } from '@deriv-app/stores';
+import { routes } from '@deriv-lib/shared';
+import { Icon, Checklist, Text } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
+import { useStore, observer } from '@deriv-lib/stores';
 
 const AccountTransferLocked = observer(() => {
     const {

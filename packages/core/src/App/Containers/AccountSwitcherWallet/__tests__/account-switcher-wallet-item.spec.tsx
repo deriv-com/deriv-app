@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { AccountSwitcherWalletItem } from '../account-switcher-wallet-item';
 
 const account: React.ComponentProps<typeof AccountSwitcherWalletItem>['account'] = {

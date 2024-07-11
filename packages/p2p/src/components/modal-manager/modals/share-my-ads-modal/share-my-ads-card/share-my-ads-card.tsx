@@ -1,7 +1,7 @@
 import React from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import { Text } from '@deriv-app/components';
-import { isMobile } from '@deriv-app/shared';
+import { Text } from '@deriv-lib/components';
+import { isMobile } from '@deriv-lib/shared';
 import { Localize } from 'Components/i18next';
 import { base64_images } from 'Constants/base64-images';
 import { buy_sell } from 'Constants/buy-sell';

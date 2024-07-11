@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer } from '@deriv-app/stores';
+import { observer } from '@deriv-lib/stores';
 import { useDBotStore } from '../../../stores/useDBotStore';
 import StopBotModalContent from '../stop-bot-modal-content';
 

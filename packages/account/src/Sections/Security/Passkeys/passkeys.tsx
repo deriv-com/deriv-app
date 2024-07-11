@@ -1,11 +1,11 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
-import { InlineMessage, Loading } from '@deriv-app/components';
-import { useGetPasskeysList, useRegisterPasskey, useRenamePasskey } from '@deriv-app/hooks';
-import { routes } from '@deriv-app/shared';
+import { InlineMessage, Loading } from '@deriv-lib/components';
+import { useGetPasskeysList, useRegisterPasskey, useRenamePasskey } from '@deriv-lib/hooks';
+import { routes } from '@deriv-lib/shared';
 import { useDevice } from '@deriv-com/ui';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv-app/translations';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize } from '@deriv-lib/translations';
 import { PasskeyErrorModal } from './components/passkey-error-modal';
 import { PasskeyReminderModal } from './components/passkey-reminder-modal';
 import { PasskeysStatusContainer } from './components/passkeys-status-container';

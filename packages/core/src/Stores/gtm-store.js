@@ -1,7 +1,7 @@
 import * as Cookies from 'js-cookie';
 import { action, computed, makeObservable } from 'mobx';
-import { getAppId, toMoment, epochToMoment, CFD_PLATFORMS } from '@deriv-app/shared';
-import { getLanguage } from '@deriv-app/translations';
+import { getAppId, toMoment, epochToMoment, CFD_PLATFORMS } from '@deriv-lib/shared';
+import { getLanguage } from '@deriv-lib/translations';
 import BinarySocket from '_common/base/socket_base';
 import BaseStore from './base-store';
 

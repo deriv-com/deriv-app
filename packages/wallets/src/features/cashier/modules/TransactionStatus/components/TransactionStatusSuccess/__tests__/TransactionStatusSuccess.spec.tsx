@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { APIProvider } from '@deriv-app/api-v2';
+import { APIProvider } from '@deriv-lib/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../../../../../AuthProvider';
 import { ModalProvider } from '../../../../../../../components/ModalProvider';

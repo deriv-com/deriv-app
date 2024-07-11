@@ -1,8 +1,8 @@
 import { onChangeSymbolAsync } from '../symbol';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     WS: {
         contractsFor: jest.fn(() =>
             Promise.resolve({

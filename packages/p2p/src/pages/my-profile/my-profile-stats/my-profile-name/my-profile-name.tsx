@@ -1,7 +1,7 @@
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Text } from '@deriv-app/components';
-import { daysSince } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { DesktopWrapper, MobileWrapper, Text } from '@deriv-lib/components';
+import { daysSince } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import { Localize } from 'Components/i18next';
 import BlockUserCount from 'Pages/advertiser-page/block-user/block-user-count';
 import RecommendedBy from 'Components/recommended-by';

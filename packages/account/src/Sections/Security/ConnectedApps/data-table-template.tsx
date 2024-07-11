@@ -1,9 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
 import { OauthApps } from '@deriv/api-types';
-import { Button, Text } from '@deriv-app/components';
-import { toMoment } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
+import { Button, Text } from '@deriv-lib/components';
+import { toMoment } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
 import { getConnectedAppsColumnNames, getConnectedAppsScopes } from './template-helper';
 
 type TDataTableTemplate = { connected_apps: OauthApps; handleToggleModal: (app_id: number) => void };

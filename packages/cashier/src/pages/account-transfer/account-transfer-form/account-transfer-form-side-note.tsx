@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 
 import { GetLimits } from '@deriv/api-types';
-import { Text } from '@deriv-app/components';
-import { getCurrencyDisplayCode, getPlatformSettings } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
+import { Text } from '@deriv-lib/components';
+import { getCurrencyDisplayCode, getPlatformSettings } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
 
 type TAccountTransferNoteProps = {
     allowed_transfers_count: GetLimits['daily_transfers'];

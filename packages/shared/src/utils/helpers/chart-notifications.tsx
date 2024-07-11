@@ -1,5 +1,5 @@
 import React from 'react';
-import { localize, Localize } from '@deriv-app/translations';
+import { localize, Localize } from '@deriv-lib/translations';
 
 export const switch_to_tick_chart = {
     key: 'switch_to_tick_chart',

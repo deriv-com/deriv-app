@@ -1,10 +1,10 @@
 import React from 'react';
-import { APIProvider, useQuery } from '@deriv-app/api';
+import { APIProvider, useQuery } from '@deriv-lib/api';
 import { renderHook } from '@testing-library/react-hooks';
 import useP2PCountryList from '../useP2PCountryList';
 
-jest.mock('@deriv-app/api', () => ({
-    ...jest.requireActual('@deriv-app/api'),
+jest.mock('@deriv-lib/api', () => ({
+    ...jest.requireActual('@deriv-lib/api'),
     useQuery: jest.fn(),
 }));
 

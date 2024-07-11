@@ -1,8 +1,8 @@
 import React from 'react';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv-app/translations';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize } from '@deriv-lib/translations';
 import { ToggleNotifications } from 'App/Components/Layout/Header';
-import { isTabletOs } from '@deriv-app/shared';
+import { isTabletOs } from '@deriv-lib/shared';
 
 const ShowNotifications = observer(() => {
     const { notifications: notifications_store } = useStore();

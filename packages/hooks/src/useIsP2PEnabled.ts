@@ -1,7 +1,7 @@
 import React from 'react';
 import Cookies from 'js-cookie';
-import { deriv_urls } from '@deriv-app/shared';
-import { useStore } from '@deriv-app/stores';
+import { deriv_urls } from '@deriv-lib/shared';
+import { useStore } from '@deriv-lib/stores';
 import useP2PSettings from './useP2PSettings';
 
 const useIsP2PEnabled = () => {

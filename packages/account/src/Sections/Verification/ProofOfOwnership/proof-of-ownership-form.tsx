@@ -4,11 +4,11 @@
 import React from 'react';
 import { Form, Formik, FormikHelpers } from 'formik';
 import DocumentUploader from '@binary-com/binary-document-uploader';
-import { Button } from '@deriv-app/components';
-import { readFiles, WS, UPLOAD_FILE_TYPE } from '@deriv-app/shared';
+import { Button } from '@deriv-lib/components';
+import { readFiles, WS, UPLOAD_FILE_TYPE } from '@deriv-lib/shared';
 import { useDevice } from '@deriv-com/ui';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 import FormFooter from '../../../Components/form-footer';
 import FormBody from '../../../Components/form-body';
 import FormSubHeader from '../../../Components/form-sub-header';

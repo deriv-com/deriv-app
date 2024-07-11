@@ -1,8 +1,8 @@
 import React from 'react';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { getAllowedLanguages, useTranslations } from '@deriv-com/translations';
 import { LanguageLink } from 'App/Components/Routes';
-import { UNSUPPORTED_LANGUAGES } from '@deriv-app/shared';
+import { UNSUPPORTED_LANGUAGES } from '@deriv-lib/shared';
 
 const isCurrentLanguage = (lang, current_language) => lang === current_language;
 

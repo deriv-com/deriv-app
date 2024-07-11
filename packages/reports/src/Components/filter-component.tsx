@@ -1,8 +1,8 @@
 import React from 'react';
-import { FilterDropdown } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { FilterDropdown } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 import CompositeCalendar from './Form/CompositeCalendar';
-import { observer } from '@deriv-app/stores';
+import { observer } from '@deriv-lib/stores';
 import { useReportsStore } from 'Stores/useReportsStores';
 
 const FilterComponent = observer(() => {

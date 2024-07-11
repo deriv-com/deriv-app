@@ -1,7 +1,7 @@
 import React from 'react';
-import { Dialog, Icon, Text } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { Dialog, Icon, Text } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const BotStopped = observer(() => {

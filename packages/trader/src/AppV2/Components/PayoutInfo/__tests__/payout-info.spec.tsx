@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import PayoutInfo from '../payout-info';
-import { TContractInfo, mockContractInfo } from '@deriv-app/shared';
+import { TContractInfo, mockContractInfo } from '@deriv-lib/shared';
 
 describe('PayoutInfo component', () => {
     const mock_contract_info: TContractInfo = mockContractInfo({

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Div100vhContainer, PageOverlay, SwipeableWrapper, FadeWrapper } from '@deriv-app/components';
+import { Div100vhContainer, PageOverlay, SwipeableWrapper, FadeWrapper } from '@deriv-lib/components';
 import {
     getContractTypeFeatureFlag,
     isAccumulatorContract,
@@ -12,15 +12,15 @@ import {
     isVanillaContract,
     isResetContract,
     isLookBacksContract,
-} from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
-import { useFeatureFlags } from '@deriv-app/hooks';
+} from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
+import { useFeatureFlags } from '@deriv-lib/hooks';
 import { useDevice } from '@deriv-com/ui';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import { DigitsWidget, InfoBoxWidget } from './contract-replay-widget';
 import ReplayChart from './replay-chart';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 
 type TLocationState = { from_table_row: boolean };
 

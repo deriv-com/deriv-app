@@ -2,7 +2,7 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import TraderProviders from '../../../../../../../trader-providers';
 import DurationTicksWidgetMobile from '../duration-ticks-widget-mobile';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import userEvent from '@testing-library/user-event';
 
 describe('<DurationTicksWidgetMobile />', () => {

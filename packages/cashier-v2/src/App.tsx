@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider, AuthProvider } from '@deriv-app/api-v2';
+import { APIProvider, AuthProvider } from '@deriv-lib/api-v2';
 import AppContent from './AppContent';
 
 const App: React.FC = () => {

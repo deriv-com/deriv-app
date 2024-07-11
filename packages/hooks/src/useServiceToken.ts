@@ -1,5 +1,5 @@
-import { useQuery } from '@deriv-app/api';
-import { TSocketRequestPayload } from '@deriv-app/api/types';
+import { useQuery } from '@deriv-lib/api';
+import { TSocketRequestPayload } from '@deriv-lib/api/types';
 
 type TServiceTokenPayload = TSocketRequestPayload<'service_token'>['payload'];
 

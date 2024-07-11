@@ -3,10 +3,10 @@ import { render, screen, waitFor } from '@testing-library/react';
 import ProofOfIdentityContainer from '../proof-of-identity-container';
 import { populateVerificationStatus } from '../../Helpers/verification.js';
 import { identity_status_codes, service_code } from '../proof-of-identity-utils';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     WS: {
         authorized: {
             getAccountStatus: jest.fn().mockResolvedValue({ get_account_status: 1 }),
@@ -14,8 +14,8 @@ jest.mock('@deriv-app/shared', () => ({
     },
 }));
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Loading: jest.fn(() => 'mockedLoading'),
 }));
 

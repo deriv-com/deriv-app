@@ -1,6 +1,6 @@
 import React from 'react';
-import { Table, Text } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { Table, Text } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 import { TDynamicLeverageMarketCardProps } from 'Containers/props.types';
 import { DynamicLeverageTableColumnHeader } from './dynamic-leverage-table-column-header';
 

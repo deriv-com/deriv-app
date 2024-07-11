@@ -1,7 +1,7 @@
 import React from 'react';
-import { ProgressSlider } from '@deriv-app/components';
-import { getCurrentTick, TContractInfo, getCardLabels } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { ProgressSlider } from '@deriv-lib/components';
+import { getCurrentTick, TContractInfo, getCardLabels } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 
 type TProgressSliderStream = {
     contract_info: Required<TContractInfo>;

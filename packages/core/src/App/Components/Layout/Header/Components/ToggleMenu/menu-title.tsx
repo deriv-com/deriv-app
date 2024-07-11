@@ -1,8 +1,8 @@
 import React from 'react';
-import { observer, useStore } from '@deriv-app/stores';
-import { Icon, Text } from '@deriv-app/components';
-import { localize, Localize } from '@deriv-app/translations';
-import { TranslationFlag } from '@deriv-app/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Icon, Text } from '@deriv-lib/components';
+import { localize, Localize } from '@deriv-lib/translations';
+import { TranslationFlag } from '@deriv-lib/shared';
 
 const MenuTitle = observer(() => {
     const { client, common, ui } = useStore();

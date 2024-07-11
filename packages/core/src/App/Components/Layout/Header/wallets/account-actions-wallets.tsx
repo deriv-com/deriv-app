@@ -1,9 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { routes, isTabletOs } from '@deriv-app/shared';
-import { Button, Icon, Popover } from '@deriv-app/components';
-import { localize, Localize } from '@deriv-app/translations';
-import { observer, useStore } from '@deriv-app/stores';
+import { routes, isTabletOs } from '@deriv-lib/shared';
+import { Button, Icon, Popover } from '@deriv-lib/components';
+import { localize, Localize } from '@deriv-lib/translations';
+import { observer, useStore } from '@deriv-lib/stores';
 import { LoginButton } from '../login-button.jsx';
 import { SignupButton } from '../signup-button.jsx';
 import { BinaryLink } from '../../../Routes/index.js';

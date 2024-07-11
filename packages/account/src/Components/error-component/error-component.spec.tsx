@@ -2,8 +2,8 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import ErrorComponent from './error-component';
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     PageError: () => <div>PageError</div>,
 }));
 

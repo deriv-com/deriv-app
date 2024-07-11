@@ -1,9 +1,9 @@
 import React from 'react';
-import { InlineMessage, Text } from '@deriv-app/components';
-import { useCurrentCurrencyConfig } from '@deriv-app/hooks';
-import { formatMoney } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+import { InlineMessage, Text } from '@deriv-lib/components';
+import { useCurrentCurrencyConfig } from '@deriv-lib/hooks';
+import { formatMoney } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 import './deposit-crypto-disclaimers.scss';
 
 // Check with BE to see if we can get the network name from the API.

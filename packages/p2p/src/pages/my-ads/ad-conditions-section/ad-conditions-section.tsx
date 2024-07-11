@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormikValues, useFormikContext } from 'formik';
-import { Icon, Text } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
+import { Icon, Text } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
 import BlockSelector from 'Components/block-selector';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

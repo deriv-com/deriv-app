@@ -1,4 +1,4 @@
-import { useStore } from '@deriv-app/stores';
+import { useStore } from '@deriv-lib/stores';
 
 /** A custom hook used for enabling residenceSelfDeclaration checkbox in terms of use section in real account signup */
 const useResidenceSelfDeclaration = () => {

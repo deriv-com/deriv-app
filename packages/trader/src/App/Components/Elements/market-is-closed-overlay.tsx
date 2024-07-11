@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Button, Text, UILoader } from '@deriv-app/components';
-import { localize, Localize } from '@deriv-app/translations';
-import { useStore } from '@deriv-app/stores';
+import { Button, Text, UILoader } from '@deriv-lib/components';
+import { localize, Localize } from '@deriv-lib/translations';
+import { useStore } from '@deriv-lib/stores';
 import { useTraderStore } from '../../../Stores/useTraderStores';
 
 const MarketCountdownTimer = React.lazy(

@@ -1,7 +1,7 @@
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, Text } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
+import { Icon, Text } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
 import Download from 'Components/download';
 import { TJournalToolsProps } from '../journal.types';
 import FilterDialog from './filter-dialog';

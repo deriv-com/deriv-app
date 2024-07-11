@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { isCryptocurrency, getCurrencyDisplayCode } from '@deriv-app/shared';
+import { isCryptocurrency, getCurrencyDisplayCode } from '@deriv-lib/shared';
 import IncrementButtons, { TButtonType } from './increment-buttons';
 import Input, { TInputMode } from './input';
 import Tooltip from '../tooltip';

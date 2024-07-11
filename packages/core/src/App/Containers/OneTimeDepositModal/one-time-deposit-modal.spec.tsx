@@ -3,13 +3,13 @@ import { Router } from 'react-router';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createBrowserHistory } from 'history';
-import { useDepositFiatAddress, useHasMFAccountDeposited } from '@deriv-app/hooks';
-import { StoreProvider, mockStore, useStore } from '@deriv-app/stores';
+import { useDepositFiatAddress, useHasMFAccountDeposited } from '@deriv-lib/hooks';
+import { StoreProvider, mockStore, useStore } from '@deriv-lib/stores';
 import OneTimeDepositModal from './one-time-deposit-modal';
 
 let mock_store: ReturnType<typeof useStore>;
 
-jest.mock('@deriv-app/hooks', () => ({
+jest.mock('@deriv-lib/hooks', () => ({
     useDepositFiatAddress: jest.fn(() => ({
         data: 'https://www.binary.com',
         isSuccess: true,

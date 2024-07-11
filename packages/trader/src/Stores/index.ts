@@ -1,4 +1,4 @@
-import { TCoreStores } from '@deriv-app/stores/types';
+import { TCoreStores } from '@deriv-lib/stores/types';
 import ModulesStore from './Modules';
 
 export default class RootStore {

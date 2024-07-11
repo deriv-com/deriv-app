@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, Icon, ThemedScrollbars, ToggleSwitch } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
+import { Text, Icon, ThemedScrollbars, ToggleSwitch } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
 import { Localize } from 'Components/i18next';
 // @ts-ignore
 import { useStores } from 'Stores';

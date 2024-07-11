@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { InfiniteDataList, Loading, Table, Tabs, Text } from '@deriv-app/components';
-import { isDesktop, isMobile } from '@deriv-app/shared';
-import { useStore, observer } from '@deriv-app/stores';
+import { InfiniteDataList, Loading, Table, Tabs, Text } from '@deriv-lib/components';
+import { isDesktop, isMobile } from '@deriv-lib/shared';
+import { useStore, observer } from '@deriv-lib/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useP2PAdvertiserAdverts } from 'Hooks';
 // @ts-ignore

@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { useRequest } from '@deriv-app/api';
+import { useRequest } from '@deriv-lib/api';
 
 const useDepositCryptoAddress = () => {
     const { data, mutate, ...rest } = useRequest('cashier');

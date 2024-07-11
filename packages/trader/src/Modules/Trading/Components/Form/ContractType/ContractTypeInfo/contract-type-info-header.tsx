@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon, Text } from '@deriv-app/components';
-import { clickAndKeyEventHandler } from '@deriv-app/shared';
+import { Icon, Text } from '@deriv-lib/components';
+import { clickAndKeyEventHandler } from '@deriv-lib/shared';
 
 type THeader = {
     onClickBack?: () => void;

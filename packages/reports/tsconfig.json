@@ -12,7 +12,7 @@
             "templates/*": ["./src/templates/*"],
             "Utils/*": ["./src/Utils/*"],
             "Types": ["./src/Types"],
-            "@deriv-app/*": ["../*/src"],
+            "@deriv-lib/*": ["../*/src"],
         },
         "outDir": "./dist",
         "baseUrl": "./"

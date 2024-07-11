@@ -1,6 +1,6 @@
 import React from 'react';
-import { Popover } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
+import { Popover } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
 
 export type TUSTPopover = {
     id: string;

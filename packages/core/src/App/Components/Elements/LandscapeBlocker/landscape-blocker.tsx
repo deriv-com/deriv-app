@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { isDisabledLandscapeBlockerRoute, isTabletOs, routes } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { isDisabledLandscapeBlockerRoute, isTabletOs, routes } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import LandscapeBlockerSvg from 'Assets/SvgComponents/settings/landscape-blocker.svg';
 import './landscape-blocker.scss';
 

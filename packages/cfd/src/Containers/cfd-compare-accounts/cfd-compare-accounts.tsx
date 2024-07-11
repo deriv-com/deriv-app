@@ -1,12 +1,12 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
-import { Text, Icon, PageOverlay, CFDCompareAccountsCarousel } from '@deriv-app/components';
-import { routes } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv-app/translations';
-import { observer, useStore } from '@deriv-app/stores';
+import { Text, Icon, PageOverlay, CFDCompareAccountsCarousel } from '@deriv-lib/components';
+import { routes } from '@deriv-lib/shared';
+import { Localize, localize } from '@deriv-lib/translations';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useDevice } from '@deriv-com/ui';
-import { useIsRtl } from '@deriv-app/hooks';
+import { useIsRtl } from '@deriv-lib/hooks';
 import CFDCompareAccountsCard from './cfd-compare-accounts-card';
 import {
     getSortedCFDAvailableAccounts,

@@ -3,10 +3,10 @@ import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import { Icon, Table, Text } from '@deriv-app/components';
-import { isMobile, routes } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { useP2PExchangeRate } from '@deriv-app/hooks';
+import { Icon, Table, Text } from '@deriv-lib/components';
+import { isMobile, routes } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { useP2PExchangeRate } from '@deriv-lib/hooks';
 
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

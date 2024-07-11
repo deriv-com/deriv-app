@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Modal } from '@deriv-app/components';
-import { useHasSetCurrency } from '@deriv-app/hooks';
-import { localize } from '@deriv-app/translations';
-import { observer, useStore } from '@deriv-app/stores';
+import { Button, Modal } from '@deriv-lib/components';
+import { useHasSetCurrency } from '@deriv-lib/hooks';
+import { localize } from '@deriv-lib/translations';
+import { observer, useStore } from '@deriv-lib/stores';
 import 'Sass/set-currency-modal.scss';
 
 const SetAccountCurrencyModal = observer(() => {

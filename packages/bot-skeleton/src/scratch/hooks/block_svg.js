@@ -1,4 +1,4 @@
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import DBotStore from '../dbot-store';
 import { save, isDarkRgbColour } from '../utils';
 import debounce from 'lodash.debounce';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import useWalletMigration from '../useWalletMigration';
 
 describe('useWalletMigration', () => {

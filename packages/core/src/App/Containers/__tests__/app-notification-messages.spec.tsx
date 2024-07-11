@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import AppNotificationMessages from '../app-notification-messages';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 
 jest.mock('react-router-dom', () => ({
     useLocation: jest.fn(() => ({

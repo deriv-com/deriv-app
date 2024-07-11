@@ -1,8 +1,8 @@
 import React from 'react';
 import Item from './contract-type-item';
-import { localize } from '@deriv-app/translations';
-import { TRADE_TYPES } from '@deriv-app/shared';
-import { Text } from '@deriv-app/components';
+import { localize } from '@deriv-lib/translations';
+import { TRADE_TYPES } from '@deriv-lib/shared';
+import { Text } from '@deriv-lib/components';
 import classNames from 'classnames';
 import { TContractType, TContractCategory, TFilteredContractType } from './types';
 

@@ -2,7 +2,7 @@
 /// <reference path="../../../@types/@contentpass/zxcvbn/contentpass-zxcvbn-config.d.ts" />
 import classNames from 'classnames';
 import React from 'react';
-import { useIsMounted } from '@deriv-app/shared';
+import { useIsMounted } from '@deriv-lib/shared';
 import Field from '../field';
 import Loading from '../loading';
 

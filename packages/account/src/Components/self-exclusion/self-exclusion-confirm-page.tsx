@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Icon, StaticUrl, Text } from '@deriv-app/components';
+import { Button, Icon, StaticUrl, Text } from '@deriv-lib/components';
 import { FormikValues, useFormikContext } from 'formik';
-import { formatMoney, toMoment } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv-app/translations';
+import { formatMoney, toMoment } from '@deriv-lib/shared';
+import { Localize, localize } from '@deriv-lib/translations';
 import SelfExclusionContext from './self-exclusion-context';
 import SelfExclusionConfirmLimits from './self-exclusion-confirm-limits';
 

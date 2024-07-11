@@ -1,6 +1,6 @@
 import { reaction } from 'mobx';
 import { ProposalOpenContract } from '@deriv/api-types';
-import { TCoreStores, TStores } from '@deriv-app/stores/types';
+import { TCoreStores, TStores } from '@deriv-lib/stores/types';
 import { TStatistics } from 'Components/transaction-details/transaction-details.types';
 import RootStore from 'Stores/root-store';
 

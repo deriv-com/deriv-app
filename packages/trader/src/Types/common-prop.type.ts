@@ -18,7 +18,7 @@ import {
     UpdateContractResponse,
     UpdateContractRequest,
 } from '@deriv/api-types';
-import { TCoreStores } from '@deriv-app/stores/types';
+import { TCoreStores } from '@deriv-lib/stores/types';
 import ModulesStore from 'Stores/Modules';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Redirect, RouteComponentProps } from 'react-router-dom';

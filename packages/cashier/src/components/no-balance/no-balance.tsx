@@ -1,10 +1,10 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { Button, Icon, Text } from '@deriv-app/components';
-import { useDepositLocked } from '@deriv-app/hooks';
-import { routes, getCurrencyDisplayCode, startPerformanceEventTimer } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv-app/translations';
-import { useStore, observer } from '@deriv-app/stores';
+import { Button, Icon, Text } from '@deriv-lib/components';
+import { useDepositLocked } from '@deriv-lib/hooks';
+import { routes, getCurrencyDisplayCode, startPerformanceEventTimer } from '@deriv-lib/shared';
+import { localize, Localize } from '@deriv-lib/translations';
+import { useStore, observer } from '@deriv-lib/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
 
 type TNoBalanceProps = RouteComponentProps & {

@@ -3,7 +3,7 @@ import OnRampStore from '../on-ramp-store';
 import createBanxaProvider from '../../pages/on-ramp/on-ramp-providers';
 import { configure } from 'mobx';
 import { TWebSocket, TOnRampProvider, TRootStore } from '../../types';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
 configure({ safeDescriptors: false });
 
@@ -32,8 +32,8 @@ beforeEach(() => {
     banxa_provider = createBanxaProvider(onramp_store);
 });
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     websiteUrl: () => 'https://app.deriv.com/',
 }));
 

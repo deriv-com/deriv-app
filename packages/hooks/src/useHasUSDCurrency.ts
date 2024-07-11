@@ -1,4 +1,4 @@
-import { useStore } from '@deriv-app/stores';
+import { useStore } from '@deriv-lib/stores';
 
 const useHasUSDCurrency = () => {
     const { client } = useStore();

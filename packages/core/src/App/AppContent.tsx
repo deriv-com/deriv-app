@@ -1,8 +1,8 @@
 import React from 'react';
-import { useRemoteConfig } from '@deriv-app/api';
+import { useRemoteConfig } from '@deriv-lib/api';
 import { useDevice } from '@deriv-com/ui';
-import { useIsMounted } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { useIsMounted } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 import BinaryBotIFrame from 'Modules/BinaryBotIFrame';
 import P2PIFrame from 'Modules/P2PIFrame';
@@ -18,7 +18,7 @@ import Devtools from './Devtools';
 import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 import initDatadog from '../Utils/Datadog';
 import { ThemeProvider } from '@deriv-com/quill-ui';
-import { useGrowthbookIsOn } from '@deriv-app/hooks';
+import { useGrowthbookIsOn } from '@deriv-lib/hooks';
 import { useTranslations } from '@deriv-com/translations';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {

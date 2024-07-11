@@ -1,5 +1,5 @@
-import { formatTime, findValueByKeyRecursively, getRoundedNumber, isEmptyObject } from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+import { formatTime, findValueByKeyRecursively, getRoundedNumber, isEmptyObject } from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 import { error as logError } from './broadcast';
 import { observer as globalObserver } from '../../../utils/observer';
 

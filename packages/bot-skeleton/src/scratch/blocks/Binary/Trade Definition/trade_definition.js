@@ -1,4 +1,4 @@
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import { defineContract } from '../../images';
 import DBotStore from '../../../dbot-store';
 import { runIrreversibleEvents } from '../../../utils';

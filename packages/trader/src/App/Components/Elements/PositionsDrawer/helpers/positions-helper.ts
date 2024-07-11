@@ -1,4 +1,4 @@
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import {
     addComma,
     isHighLow,
@@ -8,7 +8,7 @@ import {
     TContractInfo,
     CONTRACT_TYPES,
     TRADE_TYPES,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 
 export const addCommaToNumber = (
     num: number | null | undefined,

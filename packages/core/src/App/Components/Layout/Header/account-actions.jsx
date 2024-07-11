@@ -1,8 +1,8 @@
 import * as PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon, Popover } from '@deriv-app/components';
-import { routes, formatMoney, moduleLoader, isTabletOs } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv-app/translations';
+import { Button, Icon, Popover } from '@deriv-lib/components';
+import { routes, formatMoney, moduleLoader, isTabletOs } from '@deriv-lib/shared';
+import { localize, Localize } from '@deriv-lib/translations';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
 import ToggleNotifications from './toggle-notifications.jsx';

@@ -1,5 +1,5 @@
-import { localize } from '@deriv-app/translations';
-import { isHourValid, isMinuteValid, isTimeValid, toMoment, TRuleOptions } from '@deriv-app/shared';
+import { localize } from '@deriv-lib/translations';
+import { isHourValid, isMinuteValid, isTimeValid, toMoment, TRuleOptions } from '@deriv-lib/shared';
 import { isSessionAvailable } from '../Helpers/start-date';
 import { TTradeStore } from 'Types';
 

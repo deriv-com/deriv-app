@@ -2,8 +2,8 @@ import React from 'react';
 import classnames from 'classnames';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
-import { Icon } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
+import { Icon } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 type TRecentWorkspaceProps = {

@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv-app/translations';
-import { InlineMessage, Text, Button, Modal, Icon } from '@deriv-app/components';
-import { Jurisdiction, CFD_PLATFORMS, getCFDPlatformNames, getFormattedJurisdictionCode } from '@deriv-app/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize } from '@deriv-lib/translations';
+import { InlineMessage, Text, Button, Modal, Icon } from '@deriv-lib/components';
+import { Jurisdiction, CFD_PLATFORMS, getCFDPlatformNames, getFormattedJurisdictionCode } from '@deriv-lib/shared';
 
 type TMigrationSuccessModalContent = {
     has_open_positions: boolean;

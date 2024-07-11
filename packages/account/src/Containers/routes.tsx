@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { BinaryRoutes } from '../Components/Routes';
 import ErrorComponent from '../Components/error-component';
 

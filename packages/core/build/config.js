@@ -145,7 +145,7 @@ const copyConfig = base => {
         },
         { from: path.resolve(__dirname, '../src/public/images/app/header/'), to: 'public/images/app/header/' },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv-app/components/lib/icon/sprites'),
+            from: path.resolve(__dirname, '../node_modules/@deriv-lib/components/lib/icon/sprites'),
             to: 'public/sprites',
             toType: 'dir',
         },

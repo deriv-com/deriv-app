@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import ThemedScrollbars from '../themed-scrollbars';
-import { clickAndKeyEventHandler } from '@deriv-app/shared';
+import { clickAndKeyEventHandler } from '@deriv-lib/shared';
 import { TTableRowItem } from '../types/common.types';
 import { useDebounce } from '../../hooks/use-debounce';
 

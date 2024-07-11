@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { BinaryLink } from '../index';
 import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 
 type TMockBinaryLink = {
     active_class?: string;

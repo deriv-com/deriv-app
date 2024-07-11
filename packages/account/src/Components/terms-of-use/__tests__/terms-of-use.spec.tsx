@@ -1,20 +1,20 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { isDesktop, isMobile } from '@deriv-app/shared';
-import { useResidenceSelfDeclaration } from '@deriv-app/hooks';
+import { isDesktop, isMobile } from '@deriv-lib/shared';
+import { useResidenceSelfDeclaration } from '@deriv-lib/hooks';
 
 import TermsOfUse from '../terms-of-use';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isDesktop: jest.fn(() => true),
     isMobile: jest.fn(() => false),
 }));
 
-jest.mock('@deriv-app/hooks', () => {
+jest.mock('@deriv-lib/hooks', () => {
     return {
-        ...jest.requireActual('@deriv-app/hooks'),
+        ...jest.requireActual('@deriv-lib/hooks'),
         useResidenceSelfDeclaration: jest.fn(() => ({
             is_residence_self_declaration_required: true,
         })),

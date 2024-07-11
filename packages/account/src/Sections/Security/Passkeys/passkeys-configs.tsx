@@ -1,8 +1,8 @@
 import React from 'react';
 import * as Yup from 'yup';
-import { TSocketError } from '@deriv-app/api/types';
-import { getOSNameWithUAParser } from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+import { TSocketError } from '@deriv-lib/api/types';
+import { getOSNameWithUAParser } from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { TServerError } from '../../../Types';
 

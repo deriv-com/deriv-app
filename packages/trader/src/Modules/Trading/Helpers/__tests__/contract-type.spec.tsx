@@ -1,4 +1,4 @@
-import { TRADE_TYPES } from '@deriv-app/shared';
+import { TRADE_TYPES } from '@deriv-lib/shared';
 import {
     getContractTypeCategoryIcons,
     getAvailableContractTypes,

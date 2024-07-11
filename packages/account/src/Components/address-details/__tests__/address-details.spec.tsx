@@ -2,8 +2,8 @@ import React from 'react';
 import { FormikProps } from 'formik';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useDevice } from '@deriv-com/ui';
-import { useStatesList } from '@deriv-app/hooks';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { useStatesList } from '@deriv-lib/hooks';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import AddressDetails, { TAddressDetailFormProps } from '../address-details';
 import userEvent from '@testing-library/user-event';
 import { splitValidationResultTypes } from 'Components/real-account-signup/helpers/utils';
@@ -13,8 +13,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     getLocation: jest.fn().mockReturnValue('Default test state'),
     makeCancellablePromise: jest.fn(() => ({ cancel: jest.fn(), promise: Promise.resolve('resolved') })),
 }));
@@ -26,13 +26,13 @@ jest.mock('../../real-account-signup/helpers/utils.ts', () => ({
     })),
 }));
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useStatesList: jest.fn(() => ({ data: [], isFetched: true })),
 }));
 
-jest.mock('@deriv-app/components', () => {
-    const original_module = jest.requireActual('@deriv-app/components');
+jest.mock('@deriv-lib/components', () => {
+    const original_module = jest.requireActual('@deriv-lib/components');
 
     return {
         ...original_module,

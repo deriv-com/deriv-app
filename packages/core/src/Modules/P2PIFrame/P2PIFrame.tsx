@@ -1,5 +1,5 @@
 import React from 'react';
-import { getUrlP2P } from '@deriv-app/shared';
+import { getUrlP2P } from '@deriv-lib/shared';
 
 const P2PIFrame = () => {
     const base_link = getUrlP2P(false);

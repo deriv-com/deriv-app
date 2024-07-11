@@ -1,12 +1,12 @@
 import React from 'react';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import { fireEvent, render, screen } from '@testing-library/react';
 import {
     useCurrentCurrencyConfig,
     useHasFiatCurrency,
     useHasP2PSupportedCurrencies,
     useIsP2PEnabled,
-} from '@deriv-app/hooks';
+} from '@deriv-lib/hooks';
 import CashierProviders from '../../../../../cashier-providers';
 import CashierOnboardingP2PCard from '../cashier-onboarding-p2p-card';
 
@@ -15,8 +15,8 @@ jest.mock('react-router', () => ({
     useHistory: () => ({ push: jest.fn() }),
 }));
 
-jest.mock('@deriv-app/api', () => ({
-    ...jest.requireActual('@deriv-app/api'),
+jest.mock('@deriv-lib/api', () => ({
+    ...jest.requireActual('@deriv-lib/api'),
     useFetch: jest.fn(() => ({
         data: {
             website_status: {
@@ -30,7 +30,7 @@ jest.mock('@deriv-app/api', () => ({
     })),
 }));
 
-jest.mock('@deriv-app/hooks');
+jest.mock('@deriv-lib/hooks');
 
 const MockUseCurrentCurrencyConfig = useCurrentCurrencyConfig as jest.MockedFunction<typeof useCurrentCurrencyConfig>;
 const MockUseHasFiatCurrency = useHasFiatCurrency as jest.MockedFunction<typeof useHasFiatCurrency>;

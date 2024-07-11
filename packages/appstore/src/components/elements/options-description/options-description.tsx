@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, StaticUrl } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
+import { Text, StaticUrl } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
 
 type TOptionsDescription = {
     is_eu_user: boolean;

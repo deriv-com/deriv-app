@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { Field, FieldProps, Form, Formik } from 'formik';
 
-import { Button, Dropdown, InlineMessage, Input, Loading, Money, Text } from '@deriv-app/components';
+import { Button, Dropdown, InlineMessage, Input, Loading, Money, Text } from '@deriv-lib/components';
 import {
     getCurrencyDisplayCode,
     getCurrencyName,
@@ -13,9 +13,9 @@ import {
     routes,
     startPerformanceEventTimer,
     validNumber,
-} from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+} from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 
 import AccountPlatformIcon from '../../../components/account-platform-icon';
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
@@ -25,7 +25,7 @@ import SideNote from '../../../components/side-note';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import { TAccount, TAccountsList, TError, TReactChangeEvent } from '../../../types';
 import AccountTransferReceipt from '../account-transfer-receipt/account-transfer-receipt';
-import { useMFAccountStatus, useExchangeRate } from '@deriv-app/hooks';
+import { useMFAccountStatus, useExchangeRate } from '@deriv-lib/hooks';
 
 import AccountTransferNote from './account-transfer-form-side-note';
 

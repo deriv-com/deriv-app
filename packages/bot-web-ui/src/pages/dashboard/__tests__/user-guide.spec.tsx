@@ -28,8 +28,8 @@ const mocked_props = {
     setActiveTabTutorial: jest.fn(),
 };
 
-jest.mock('@deriv-app/components', () => {
-    const original_module = jest.requireActual('@deriv-app/components');
+jest.mock('@deriv-lib/components', () => {
+    const original_module = jest.requireActual('@deriv-lib/components');
 
     return {
         ...original_module,

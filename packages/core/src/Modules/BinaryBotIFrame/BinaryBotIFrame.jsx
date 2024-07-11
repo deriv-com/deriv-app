@@ -1,5 +1,5 @@
 import React from 'react';
-import { getUrlBinaryBot } from '@deriv-app/shared';
+import { getUrlBinaryBot } from '@deriv-lib/shared';
 
 const BinaryBotIFrame = () => {
     const base_link = getUrlBinaryBot(false);

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import { TContractInfo, addComma, formatDate, formatTime, getEndTime } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
+import { TContractInfo, addComma, formatDate, formatTime, getEndTime } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
 import EntryExitDetailRow from './entry-exit-details-row';
 import CardWrapper from '../CardWrapper';
 import moment from 'moment';

@@ -1,4 +1,4 @@
-import { getRoundedNumber } from '@deriv-app/shared';
+import { getRoundedNumber } from '@deriv-lib/shared';
 import { sell, openContractReceived } from './state/actions';
 import { contractStatus, contract as broadcastContract } from '../utils/broadcast';
 import { api_base } from '../../api/api-base';

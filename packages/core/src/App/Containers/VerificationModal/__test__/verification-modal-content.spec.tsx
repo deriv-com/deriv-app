@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import VerificationModalContent from '../verification-modal-content';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv/account/src/Sections/Verification/ProofOfIdentity/proof-of-identity-container', () =>

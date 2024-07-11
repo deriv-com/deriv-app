@@ -1,10 +1,10 @@
 import React from 'react';
-import { useAccountStatus, useActiveWalletAccount, useAuthentication, useCashierValidation } from '@deriv-app/api-v2';
+import { useAccountStatus, useActiveWalletAccount, useAuthentication, useCashierValidation } from '@deriv-lib/api-v2';
 import { render, screen } from '@testing-library/react';
 import CashierLocked from '../CashierLocked';
 import { getSystemMaintenanceContent } from '../CashierLockedContent';
 
-jest.mock('@deriv-app/api-v2', () => ({
+jest.mock('@deriv-lib/api-v2', () => ({
     useAccountStatus: jest.fn(),
     useActiveWalletAccount: jest.fn(),
     useAuthentication: jest.fn(),

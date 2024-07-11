@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import { Router } from 'react-router-dom';
-import { TCoreStores } from '@deriv-app/stores/types';
+import { TCoreStores } from '@deriv-lib/stores/types';
 import BinaryRoutes from '../../Components/Routes';
 import Routes from '../routes';
 import ReportsProviders from '../../reports-providers';

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { useIsMounted } from '@deriv-app/shared';
+import { useIsMounted } from '@deriv-lib/shared';
 import Popover from '../popover';
 import Icon from '../icon';
 import { TPopoverProps } from '../types';

@@ -5,9 +5,9 @@ const IS_RELEASE =
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
 
 const js_loaders = [
-    '@deriv-app/shared/src/loaders/deriv-account-loader.js',
-    '@deriv-app/shared/src/loaders/deriv-cashier-loader.js',
-    '@deriv-app/shared/src/loaders/deriv-cfd-loader.js',
+    '@deriv-lib/shared/src/loaders/deriv-account-loader.js',
+    '@deriv-lib/shared/src/loaders/deriv-cashier-loader.js',
+    '@deriv-lib/shared/src/loaders/deriv-cfd-loader.js',
     {
         loader: 'babel-loader',
         options: {
@@ -114,7 +114,7 @@ const css_loaders = [
     {
         loader: 'sass-resources-loader',
         options: {
-            resources: require('@deriv-app/shared/src/styles/index.js'),
+            resources: require('@deriv-lib/shared/src/styles/index.js'),
         },
     },
 ];

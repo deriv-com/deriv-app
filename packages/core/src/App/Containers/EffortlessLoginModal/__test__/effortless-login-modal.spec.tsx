@@ -4,12 +4,12 @@ import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Analytics } from '@deriv-com/analytics';
-import { routes } from '@deriv-app/shared';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { routes } from '@deriv-lib/shared';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import EffortlessLoginModal from '../effortless-login-modal';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     getOSNameWithUAParser: () => 'test OS',
 }));
 

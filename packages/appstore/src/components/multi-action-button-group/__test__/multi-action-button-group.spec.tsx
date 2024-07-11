@@ -4,7 +4,7 @@ import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MultiActionButtonGroup from '../multi-action-button-group';
 import { createBrowserHistory } from 'history';
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 
 const mock_props = {
     link_to: routes.trade,

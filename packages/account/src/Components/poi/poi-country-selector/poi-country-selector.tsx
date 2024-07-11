@@ -1,12 +1,12 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik';
-import { Autocomplete, Button, HintBox, Text, SelectNative } from '@deriv-app/components';
-import { IDV_ERROR_STATUS, TIDVErrorStatus, POIContext } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv-app/translations';
+import { Autocomplete, Button, HintBox, Text, SelectNative } from '@deriv-lib/components';
+import { IDV_ERROR_STATUS, TIDVErrorStatus, POIContext } from '@deriv-lib/shared';
+import { Localize, localize } from '@deriv-lib/translations';
 import FormFooter from '../../form-footer';
 import { useDevice } from '@deriv-com/ui';
-import { useResidenceList } from '@deriv-app/api';
+import { useResidenceList } from '@deriv-lib/api';
 
 type TCountrySelector = {
     handleSelectionNext?: () => void;

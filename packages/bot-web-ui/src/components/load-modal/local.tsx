@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
-import { Button, Icon } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+import { Button, Icon } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import { notification_message } from 'Components/bot-notification/bot-notification-utils';
 import { useDBotStore } from 'Stores/useDBotStore';

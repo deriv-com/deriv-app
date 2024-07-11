@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text, Tabs, Icon, Loading } from '@deriv-app/components';
-import { ContentFlag, makeLazyLoader, moduleLoader } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize, useLocalize } from '@deriv-app/translations';
+import { Text, Tabs, Icon, Loading } from '@deriv-lib/components';
+import { ContentFlag, makeLazyLoader, moduleLoader } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize, useLocalize } from '@deriv-lib/translations';
 import { useDevice } from '@deriv-com/ui';
-import { useWalletMigration } from '@deriv-app/hooks';
+import { useWalletMigration } from '@deriv-lib/hooks';
 import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
 import BookBanner from 'Components/banners/book-banner';
 import AccountTypeDropdown from './account-type-dropdown';

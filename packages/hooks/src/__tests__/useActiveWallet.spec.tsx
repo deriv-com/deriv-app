@@ -1,11 +1,11 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import useActiveWallet from '../useActiveWallet';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
-import { APIProvider } from '@deriv-app/api';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
+import { APIProvider } from '@deriv-lib/api';
 
-jest.mock('@deriv-app/api', () => ({
-    ...jest.requireActual('@deriv-app/api'),
+jest.mock('@deriv-lib/api', () => ({
+    ...jest.requireActual('@deriv-lib/api'),
     useFetch: jest.fn((name: string) => {
         if (name === 'balance') {
             return {

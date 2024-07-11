@@ -1,9 +1,9 @@
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import { onChangeContractType, onChangeContractTypeList } from '../contract-type';
 import { ContractType } from '../../Helpers/contract-type';
-import { TRADE_TYPES } from '@deriv-app/shared';
+import { TRADE_TYPES } from '@deriv-lib/shared';
 
-jest.mock('@deriv-app/shared', () => {
+jest.mock('@deriv-lib/shared', () => {
     const barrier_intraday = '+0.000';
     const barrier_choices_intraday = ['-1.230', '-0.650', barrier_intraday, '+0.650', '+1.230'];
     const barrier_daily = '1790.00';
@@ -36,7 +36,7 @@ jest.mock('@deriv-app/shared', () => {
     };
 
     return {
-        ...jest.requireActual('@deriv-app/shared'),
+        ...jest.requireActual('@deriv-lib/shared'),
         WS: {
             contractsFor: jest.fn(() =>
                 Promise.resolve({

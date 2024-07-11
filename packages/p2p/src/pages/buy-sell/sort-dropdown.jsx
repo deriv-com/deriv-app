@@ -1,6 +1,6 @@
 import React from 'react';
-import { Dropdown, Icon } from '@deriv-app/components';
-import { isDesktop } from '@deriv-app/shared';
+import { Dropdown, Icon } from '@deriv-lib/components';
+import { isDesktop } from '@deriv-lib/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 // @ts-ignore

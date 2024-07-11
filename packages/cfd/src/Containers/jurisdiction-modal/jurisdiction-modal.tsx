@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useDevice } from '@deriv-com/ui';
-import { MobileDialog, Modal, UILoader } from '@deriv-app/components';
+import { MobileDialog, Modal, UILoader } from '@deriv-lib/components';
 import { TJurisdictionModalProps } from '../props.types';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import { DynamicLeverageContext } from '../dynamic-leverage/dynamic-leverage-context';
 import DynamicLeverageModalContent from '../dynamic-leverage/dynamic-leverage-modal-content';

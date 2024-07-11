@@ -10,9 +10,9 @@ const mock_modal_manager = {
     useRegisterModalProps: jest.fn(),
     is_modal_open: true,
 };
-jest.mock('@deriv-app/hooks', () => {
+jest.mock('@deriv-lib/hooks', () => {
     return {
-        ...jest.requireActual('@deriv-app/hooks'),
+        ...jest.requireActual('@deriv-lib/hooks'),
         useP2PAdvertInfo: jest.fn(() => ({ data: true, isLoading: false, isSuccess: true })),
     };
 });
@@ -74,8 +74,8 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
 
 jest.mock('Pages/advertiser-page/advertiser-page-adverts', () => jest.fn(() => <div>adverts</div>));
 jest.mock('Pages/advertiser-page/advertiser-page-stats', () => jest.fn(() => <div>stats</div>));
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Loading: jest.fn(() => <div> loading...</div>),
 }));
 

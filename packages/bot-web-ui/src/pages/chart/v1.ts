@@ -1,5 +1,5 @@
 import React from 'react';
-import { getUrlBase, moduleLoader } from '@deriv-app/shared';
+import { getUrlBase, moduleLoader } from '@deriv-lib/shared';
 
 let module: Promise<any> | undefined;
 

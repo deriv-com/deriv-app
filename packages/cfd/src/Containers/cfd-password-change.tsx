@@ -1,9 +1,9 @@
 import React from 'react';
 import { Form, Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
-import { observer, useStore } from '@deriv-app/stores';
-import { FormSubmitButton, PasswordInput, PasswordMeter, Text } from '@deriv-app/components';
-import { isDesktop, WS, getErrorMessages } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv-app/translations';
+import { observer, useStore } from '@deriv-lib/stores';
+import { FormSubmitButton, PasswordInput, PasswordMeter, Text } from '@deriv-lib/components';
+import { isDesktop, WS, getErrorMessages } from '@deriv-lib/shared';
+import { Localize, localize } from '@deriv-lib/translations';
 import { CATEGORY, CFD_PLATFORMS, PRODUCT } from '../Helpers/cfd-config';
 import { validatePassword } from '../Helpers/constants';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';

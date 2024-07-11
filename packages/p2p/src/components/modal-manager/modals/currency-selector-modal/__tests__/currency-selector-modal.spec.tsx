@@ -1,8 +1,8 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
-import { APIProvider } from '@deriv-app/api';
-import { P2PSettingsProvider } from '@deriv-app/stores';
+import { APIProvider } from '@deriv-lib/api';
+import { P2PSettingsProvider } from '@deriv-lib/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 // @ts-ignore
 import { useStores } from 'Stores';
@@ -21,8 +21,8 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
     </APIProvider>
 );
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useP2PSettings: jest.fn().mockReturnValue({
         p2p_settings: {
             currency_list: [

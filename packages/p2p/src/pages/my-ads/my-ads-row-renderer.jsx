@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Dropdown, Icon, Popover, ProgressIndicator, Table, Text } from '@deriv-app/components';
-import { isMobile, formatMoney } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { useP2PExchangeRate, useP2PSettings } from '@deriv-app/hooks';
+import { Dropdown, Icon, Popover, ProgressIndicator, Table, Text } from '@deriv-lib/components';
+import { isMobile, formatMoney } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { useP2PExchangeRate, useP2PSettings } from '@deriv-lib/hooks';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, Icon, MobileWrapper, Popover, StaticUrl } from '@deriv-app/components';
-import { routes, platforms, isTabletOs } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv-app/translations';
+import { DesktopWrapper, Icon, MobileWrapper, Popover, StaticUrl } from '@deriv-lib/components';
+import { routes, platforms, isTabletOs } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize } from '@deriv-lib/translations';
 import { MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';

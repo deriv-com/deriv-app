@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon } from '@deriv-app/components';
-import { capitalizeFirstLetter } from '@deriv-app/shared';
+import { Icon } from '@deriv-lib/components';
+import { capitalizeFirstLetter } from '@deriv-lib/shared';
 import { IconProps } from '../icon-types';
 
 export const IsIconCurrency = (icon?: string): icon is Currency =>

@@ -9,7 +9,7 @@ import {
     CurrencyUsdIcon,
     LabelPairedChevronRightMdRegularIcon,
 } from '@deriv/quill-icons';
-import { Localize } from '@deriv-app/translations';
+import { Localize } from '@deriv-lib/translations';
 
 type TRealSignupBannerDTraderV2 = {
     openRealAccount: () => void;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatMoney, getCurrencyDisplayCode } from '@deriv-app/shared';
+import { formatMoney, getCurrencyDisplayCode } from '@deriv-lib/shared';
 
 type TMoneyProps = {
     amount: number | string;

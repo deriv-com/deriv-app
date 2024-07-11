@@ -1,7 +1,7 @@
 import React from 'react';
-import { StaticUrl } from '@deriv-app/components';
-import { useCryptoTransactions } from '@deriv-app/hooks';
-import { Localize, localize } from '@deriv-app/translations';
+import { StaticUrl } from '@deriv-lib/components';
+import { useCryptoTransactions } from '@deriv-lib/hooks';
+import { Localize, localize } from '@deriv-lib/translations';
 import moment from 'moment';
 
 const cryptoTransactionMapper = (

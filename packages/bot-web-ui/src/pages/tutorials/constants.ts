@@ -1,5 +1,5 @@
 import { getImageLocation } from '../../public-path';
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import { TFaqContent, TGuideContent, TQuickStrategyContent, TUserGuideContent } from './tutorials.types';
 
 export const USER_GUIDE = 'user guide';

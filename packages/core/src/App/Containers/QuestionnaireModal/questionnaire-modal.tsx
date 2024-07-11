@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Analytics } from '@deriv-com/analytics';
-import { Button, Text } from '@deriv-app/components';
+import { Button, Text } from '@deriv-lib/components';
 import './questionnaire-modal.scss';
 
 type TAnswers = {

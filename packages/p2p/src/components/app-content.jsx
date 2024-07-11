@@ -3,10 +3,10 @@ import { useHistory } from 'react-router-dom';
 import { isAction, reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 
-import { Loading, Tabs } from '@deriv-app/components';
-import { useIsSystemMaintenance, useP2PNotificationCount } from '@deriv-app/hooks';
-import { isMobile } from '@deriv-app/shared';
-import { useStore } from '@deriv-app/stores';
+import { Loading, Tabs } from '@deriv-lib/components';
+import { useIsSystemMaintenance, useP2PNotificationCount } from '@deriv-lib/hooks';
+import { isMobile } from '@deriv-lib/shared';
+import { useStore } from '@deriv-lib/stores';
 
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import TemporarilyBarredHint from 'Components/temporarily-barred-hint';

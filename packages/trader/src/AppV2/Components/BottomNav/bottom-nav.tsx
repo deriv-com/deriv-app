@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react';
-import { Localize } from '@deriv-app/translations';
-import { routes } from '@deriv-app/shared';
+import { Localize } from '@deriv-lib/translations';
+import { routes } from '@deriv-lib/shared';
 import {
     LegacyMarketBasketIndicesIcon,
     StandaloneBarsRegularIcon,
@@ -10,7 +10,7 @@ import {
     StandaloneClockThreeRegularIcon,
 } from '@deriv/quill-icons';
 import { Badge } from '@deriv-com/quill-ui';
-import { useStore } from '@deriv-app/stores';
+import { useStore } from '@deriv-lib/stores';
 import BottomNavItem from './bottom-nav-item';
 import { useHistory, useLocation } from 'react-router';
 

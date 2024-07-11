@@ -1,5 +1,5 @@
 import React, { ButtonHTMLAttributes, useEffect, useState } from 'react';
-import { useCashierFiatAddress } from '@deriv-app/api-v2';
+import { useCashierFiatAddress } from '@deriv-lib/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { isServerError } from '../../../../utils/utils';
 import { WithdrawalErrorScreen } from '../../screens';

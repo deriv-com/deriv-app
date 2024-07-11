@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { Button } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 import { EXPERIAN } from './constants';
 
 const getActionButton = ({

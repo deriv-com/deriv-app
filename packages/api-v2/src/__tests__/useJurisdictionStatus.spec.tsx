@@ -6,7 +6,7 @@ import useJurisdictionStatus from '../hooks/useJurisdictionStatus';
 import APIProvider from '../APIProvider';
 import AuthProvider from '../AuthProvider';
 
-jest.mock('@deriv-app/shared');
+jest.mock('@deriv-lib/shared');
 jest.mock('../hooks/useAuthentication');
 jest.mock('../hooks/usePOI');
 

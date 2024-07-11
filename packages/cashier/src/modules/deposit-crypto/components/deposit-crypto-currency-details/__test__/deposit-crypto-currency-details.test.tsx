@@ -1,10 +1,10 @@
 import React from 'react';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { render, screen } from '@testing-library/react';
 import DepositCryptoCurrencyDetails from '../deposit-crypto-currency-details';
 
-jest.mock('@deriv-app/api', () => ({
-    ...jest.requireActual('@deriv-app/api'),
+jest.mock('@deriv-lib/api', () => ({
+    ...jest.requireActual('@deriv-lib/api'),
     useFetch: jest.fn(() => ({
         data: {
             website_status: {

@@ -1,4 +1,4 @@
-import { CookieStorage } from '@deriv-app/shared';
+import { CookieStorage } from '@deriv-lib/shared';
 
 export const getCookieObject = cookie_name => {
     const cookie_object = new CookieStorage(cookie_name.includes('utm') ? 'utm_data' : cookie_name);

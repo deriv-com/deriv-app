@@ -8,11 +8,11 @@ import {
     FormSubmitButton,
     AutoHeightWrapper,
     StaticUrl,
-} from '@deriv-app/components';
-import { useResidenceSelfDeclaration } from '@deriv-app/hooks';
-import { observer } from '@deriv-app/stores';
-import { TBrokerCodes } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv-app/translations';
+} from '@deriv-lib/components';
+import { useResidenceSelfDeclaration } from '@deriv-lib/hooks';
+import { observer } from '@deriv-lib/stores';
+import { TBrokerCodes } from '@deriv-lib/shared';
+import { localize, Localize } from '@deriv-lib/translations';
 import CheckboxField from './checkbox-field';
 import { SharedMessage, BrokerSpecificMessage, Hr } from './terms-of-use-messages';
 import './terms-of-use.scss';

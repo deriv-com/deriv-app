@@ -6,7 +6,7 @@ const IS_RELEASE =
 
 const js_loaders = [
     {
-        loader: '@deriv-app/shared/src/loaders/deriv-account-loader.js',
+        loader: '@deriv-lib/shared/src/loaders/deriv-account-loader.js',
     },
     {
         loader: 'babel-loader',
@@ -100,7 +100,7 @@ const css_loaders = [
     {
         loader: 'sass-resources-loader',
         options: {
-            resources: require('@deriv-app/shared/src/styles/index.js'),
+            resources: require('@deriv-lib/shared/src/styles/index.js'),
         },
     },
 ];

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Modal, Text } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
+import { Button, Modal, Text } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
 
 type TPasskeyReminderModal = {
     onButtonClick: React.MouseEventHandler<HTMLButtonElement>;

@@ -16,10 +16,10 @@ import {
     SelectNative,
     Text,
     ThemedScrollbars,
-} from '@deriv-app/components';
-import { useStatesList } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize, Localize } from '@deriv-app/translations';
+} from '@deriv-lib/components';
+import { useStatesList } from '@deriv-lib/hooks';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize, Localize } from '@deriv-lib/translations';
 import { FormInputField } from '../forms/form-fields';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';

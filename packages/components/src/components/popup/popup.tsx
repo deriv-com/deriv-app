@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createPortal } from 'react-dom';
-import { isMobile } from '@deriv-app/shared';
+import { isMobile } from '@deriv-lib/shared';
 import PopupBody from './popup-body';
 import PopupContext, { TPopupContext } from './popup-context';
 import PopupHeader from './popup-header';

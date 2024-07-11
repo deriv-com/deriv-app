@@ -1,8 +1,8 @@
 import React from 'react';
 import { RouteComponentProps, Router } from 'react-router';
 import { createMemoryHistory } from 'history';
-import { mockStore } from '@deriv-app/stores';
-import { routes } from '@deriv-app/shared';
+import { mockStore } from '@deriv-lib/stores';
+import { routes } from '@deriv-lib/shared';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import BinaryRoutes from '../../Components/Routes';
 import ReportsProviders from '../../reports-providers';

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text } from '@deriv-app/components';
+import { Text } from '@deriv-lib/components';
 
 const Loading = ({ className, id, is_fullscreen = true, is_slow_loading, status, theme }) => {
     const theme_class = theme ? `barspinner-${theme}` : 'barspinner-light';

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { Dialog, Text } from '@deriv-app/components';
-import { Localize, getLanguage } from '@deriv-app/translations';
-import { redirectToLogin } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { Dialog, Text } from '@deriv-lib/components';
+import { Localize, getLanguage } from '@deriv-lib/translations';
+import { redirectToLogin } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 
 const ModalHeader = ({ header }) => {
     switch (header) {

@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import IdvFailed from '../idv-failed';
-import { IDV_ERROR_STATUS } from '@deriv-app/shared';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { IDV_ERROR_STATUS } from '@deriv-lib/shared';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     WS: {
         wait: jest.fn().mockResolvedValue(true),
     },

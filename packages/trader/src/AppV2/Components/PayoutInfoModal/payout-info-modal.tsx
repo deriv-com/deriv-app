@@ -1,5 +1,5 @@
 import { CaptionText, Modal } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv-app/translations';
+import { Localize } from '@deriv-lib/translations';
 import React from 'react';
 
 const PayoutInfoModal = ({ body_content }: { body_content: React.ReactNode }) => {

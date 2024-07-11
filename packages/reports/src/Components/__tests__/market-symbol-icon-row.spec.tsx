@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockContractInfo } from '@deriv-app/shared';
+import { mockContractInfo } from '@deriv-lib/shared';
 import userEvent from '@testing-library/user-event';
 import MarketSymbolIconRow from '../market-symbol-icon-row';
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Icon: jest.fn(({ icon }: { icon: string }) => <div>{icon}</div>),
     IconTradeTypes: jest.fn(({ type }: { type: string }) => <div>{type}</div>),
 }));

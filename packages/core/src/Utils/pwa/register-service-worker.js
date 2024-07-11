@@ -1,4 +1,4 @@
-import { getUrlBase } from '@deriv-app/shared';
+import { getUrlBase } from '@deriv-lib/shared';
 
 const EVERY_HOUR = 3600000; // 1000 * 60 * 60
 

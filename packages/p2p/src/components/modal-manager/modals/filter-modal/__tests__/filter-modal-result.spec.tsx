@@ -34,8 +34,8 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(() => mock_store_values),
 }));
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Loading: () => <div>Loading</div>,
 }));
 

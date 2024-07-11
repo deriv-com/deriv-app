@@ -1,11 +1,11 @@
 import { Formik, FormikHelpers } from 'formik';
 import React from 'react';
-import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv-app/components';
-import { validLength, validPassword, validMT5Password, getErrorMessages, WS, redirectToLogin } from '@deriv-app/shared';
-import { localize, Localize, getLanguage } from '@deriv-app/translations';
+import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv-lib/components';
+import { validLength, validPassword, validMT5Password, getErrorMessages, WS, redirectToLogin } from '@deriv-lib/shared';
+import { localize, Localize, getLanguage } from '@deriv-lib/translations';
 import { getMtCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { TResetPasswordIntent, TCFDResetPasswordModal, TError } from './props.types';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { CFD_PLATFORMS } from '../Helpers/cfd-config';
 

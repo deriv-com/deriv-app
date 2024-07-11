@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Text } from '@deriv-app/components';
+import { Icon, Text } from '@deriv-lib/components';
 
 type TEmptyTradeHistoryMessage = {
     component_icon: string;

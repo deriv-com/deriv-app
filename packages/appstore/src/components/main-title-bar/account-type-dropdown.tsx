@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Dropdown } from '@deriv-app/components';
+import { Dropdown } from '@deriv-lib/components';
 import { Analytics } from '@deriv-com/analytics';
 import { getAccountTypes } from 'Constants/platform-config';
-import { useStore, observer } from '@deriv-app/stores';
-import { startPerformanceEventTimer } from '@deriv-app/shared';
+import { useStore, observer } from '@deriv-lib/stores';
+import { startPerformanceEventTimer } from '@deriv-lib/shared';
 import { TAccountCategory } from 'Types';
 import './account-type-dropdown.scss';
 

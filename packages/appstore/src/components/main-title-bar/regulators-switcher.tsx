@@ -1,10 +1,10 @@
 import React, { HTMLAttributes } from 'react';
 import classNames from 'classnames';
-import { Icon, Text } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
+import { Icon, Text } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
 import { region_availability } from 'Constants/platform-config';
 import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
-import { useStore, observer } from '@deriv-app/stores';
+import { useStore, observer } from '@deriv-lib/stores';
 import './regulators-switcher.scss';
 
 type SwitcherItemProps = {

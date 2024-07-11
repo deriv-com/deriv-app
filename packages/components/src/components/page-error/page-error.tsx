@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { isMobile } from '@deriv-app/shared';
+import { isMobile } from '@deriv-lib/shared';
 import DesktopWrapper from '../desktop-wrapper';
 import MobileWrapper from '../mobile-wrapper';
 import ButtonLink from '../button-link/button-link';

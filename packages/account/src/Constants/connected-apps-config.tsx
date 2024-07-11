@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize } from '@deriv-app/translations';
+import { Localize } from '@deriv-lib/translations';
 
 export const CONNECTED_APPS_INFO_BULLETS = [
     {

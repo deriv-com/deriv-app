@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useAuthorize } from '@deriv-app/api-v2';
-import { displayMoney } from '@deriv-app/api-v2/src/utils';
+import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useAuthorize } from '@deriv-lib/api-v2';
+import { displayMoney } from '@deriv-lib/api-v2/src/utils';
 import { LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
 import useDevice from '../../hooks/useDevice';
 import { TSubscribedBalance } from '../../types';

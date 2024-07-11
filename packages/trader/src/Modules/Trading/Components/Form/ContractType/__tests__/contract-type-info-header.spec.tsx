@@ -2,8 +2,8 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import Header from '../ContractTypeInfo/contract-type-info-header';
 
-jest.mock('@deriv-app/components', () => {
-    const original_module = jest.requireActual('@deriv-app/components');
+jest.mock('@deriv-lib/components', () => {
+    const original_module = jest.requireActual('@deriv-lib/components');
     return {
         ...original_module,
         Icon: jest.fn(() => 'mockedIcon'),

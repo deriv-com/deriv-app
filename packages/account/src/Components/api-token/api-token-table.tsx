@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text } from '@deriv-app/components';
-import { formatDate } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv-app/translations';
+import { Text } from '@deriv-lib/components';
+import { formatDate } from '@deriv-lib/shared';
+import { Localize, localize } from '@deriv-lib/translations';
 import { useDevice } from '@deriv-com/ui';
 import ApiTokenContext from './api-token-context';
 import ApiTokenDeleteButton from './api-token-delete-button';

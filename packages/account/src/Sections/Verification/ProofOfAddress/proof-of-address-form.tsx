@@ -1,11 +1,11 @@
 import React from 'react';
 import { Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
 import { useDevice } from '@deriv-com/ui';
-import { Loading, Button, Text, ThemedScrollbars, FormSubmitButton, Modal, HintBox } from '@deriv-app/components';
-import { useFileUploader } from '@deriv-app/hooks';
-import { validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+import { Loading, Button, Text, ThemedScrollbars, FormSubmitButton, Modal, HintBox } from '@deriv-lib/components';
+import { useFileUploader } from '@deriv-lib/hooks';
+import { validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 import FilesDescription from '../../../Components/file-uploader-container/files-descriptions';
 import FormFooter from '../../../Components/form-footer';
 import FormBody from '../../../Components/form-body';

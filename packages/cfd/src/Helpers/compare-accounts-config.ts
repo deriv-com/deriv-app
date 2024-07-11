@@ -1,4 +1,4 @@
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import { TInstrumentsIcon, TModifiedTradingPlatformAvailableAccount, TProducts } from '../Components/props.types';
 import { CFD_PLATFORMS, MARKET_TYPE, JURISDICTION, REGION, MARKET_TYPE_SHORTCODE, PRODUCT } from './cfd-config';
 

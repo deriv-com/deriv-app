@@ -1,7 +1,7 @@
 import DOMPurify from 'dompurify';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { setColors } from '@deriv/bot-skeleton';
-import { TStores } from '@deriv-app/stores/types';
+import { TStores } from '@deriv-lib/stores/types';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import { notification_message, NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { clearInjectionDiv } from 'Constants/load-modal';

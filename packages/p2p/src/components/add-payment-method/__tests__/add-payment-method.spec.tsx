@@ -1,8 +1,8 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { APIProvider } from '@deriv-app/api';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { APIProvider } from '@deriv-lib/api';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { useStores } from 'Stores/index';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AddPaymentMethod from '../add-payment-method';

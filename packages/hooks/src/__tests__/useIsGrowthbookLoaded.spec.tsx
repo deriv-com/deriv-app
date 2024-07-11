@@ -1,9 +1,9 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { useRemoteConfig } from '@deriv-app/api';
+import { useRemoteConfig } from '@deriv-lib/api';
 import { Analytics } from '@deriv-com/analytics';
 import useIsGrowthbookIsLoaded from '../useIsGrowthbookLoaded';
 
-jest.mock('@deriv-app/api');
+jest.mock('@deriv-lib/api');
 jest.mock('@deriv-com/analytics');
 
 describe('useIsGrowthbookIsLoaded', () => {

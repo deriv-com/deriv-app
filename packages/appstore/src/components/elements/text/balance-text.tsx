@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Text } from '@deriv-app/components';
-import { formatMoney } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { Text } from '@deriv-lib/components';
+import { formatMoney } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import './balance-text.scss';
 
 // Todo: this definitely needs to be somewhere else

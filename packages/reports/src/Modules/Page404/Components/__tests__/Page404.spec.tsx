@@ -3,7 +3,7 @@ import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
 import Page404 from '../Page404';
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 
 describe('Page404', () => {
     const history = createBrowserHistory();

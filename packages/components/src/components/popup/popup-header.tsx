@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isDesktop, isMobile } from '@deriv-app/shared';
+import { isDesktop, isMobile } from '@deriv-lib/shared';
 import PopupContext from './popup-context';
 import Button from '../button';
 import Icon from '../icon';

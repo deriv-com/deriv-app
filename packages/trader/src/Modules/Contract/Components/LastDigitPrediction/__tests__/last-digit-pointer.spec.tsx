@@ -2,8 +2,8 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import LastDigitPointer from '../last-digit-pointer';
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Icon: jest.fn(() => 'MockedIcon'),
 }));
 

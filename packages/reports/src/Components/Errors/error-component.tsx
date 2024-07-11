@@ -1,7 +1,7 @@
 import React from 'react';
-import { Dialog, PageErrorContainer } from '@deriv-app/components';
-import { routes } from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+import { Dialog, PageErrorContainer } from '@deriv-lib/components';
+import { routes } from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 import { TErrorComponent } from 'Types';
 
 const ErrorComponent = ({

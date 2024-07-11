@@ -1,11 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import Badge from '../badge';
 import Button from '../button';
 import Icon from '../icon';
 import Text from '../text';
-import { isMobile } from '@deriv-app/shared';
+import { isMobile } from '@deriv-lib/shared';
 import { WalletIcon } from '../wallet-icon';
 import './wallet-card.scss';
 

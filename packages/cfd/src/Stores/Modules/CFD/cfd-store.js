@@ -8,7 +8,7 @@ import {
     JURISDICTION_MARKET_TYPES,
     setPerformanceValue,
     startPerformanceEventTimer,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 import BaseStore from '../../base-store';
 
 import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';

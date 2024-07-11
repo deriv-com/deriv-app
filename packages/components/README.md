@@ -86,7 +86,7 @@ npm run storybook:deploy br_storybook
 You can import individual components with ES6 named imports.
 
 ```tsx
-import { Button } from '@deriv-app/components';
+import { Button } from '@deriv-lib/components';
 
 const SomeComponent = () => (
     <Button is_disabled primary>

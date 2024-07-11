@@ -1,14 +1,14 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MobileRowRenderer } from '../mobile-row-renderer';
-import { CONTRACT_TYPES, toMoment } from '@deriv-app/shared';
+import { CONTRACT_TYPES, toMoment } from '@deriv-lib/shared';
 
 const positions_drawer_card = 'PositionsDrawerCard';
 const progress_bar = 'ProgressBar';
 const progress_slider_mobile = 'ProgressSliderMobile';
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     PositionsDrawerCard: jest.fn(() => <>{positions_drawer_card}</>),
     ProgressBar: jest.fn(() => <>{progress_bar}</>),
     ProgressSliderMobile: jest.fn(() => <>ProgressSliderMobile</>),

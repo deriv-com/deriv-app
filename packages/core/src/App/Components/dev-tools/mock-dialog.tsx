@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Button, Dropdown, Input, Text } from '@deriv-app/components';
-import { useLocalStorageData } from '@deriv-app/hooks';
-import { useStore } from '@deriv-app/stores';
-import { useWS } from '@deriv-app/shared';
-import { getLanguage } from '@deriv-app/translations';
+import { Button, Dropdown, Input, Text } from '@deriv-lib/components';
+import { useLocalStorageData } from '@deriv-lib/hooks';
+import { useStore } from '@deriv-lib/stores';
+import { useWS } from '@deriv-lib/shared';
+import { getLanguage } from '@deriv-lib/translations';
 import './mock-dialog.scss';
 
 type MockServerStatus = 'online' | 'connecting' | 'offline';

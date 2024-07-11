@@ -1,6 +1,6 @@
 import React from 'react';
-import { formatIDVError, WS, IDV_ERROR_STATUS, POIContext, isIDVReportNotAvailable } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { formatIDVError, WS, IDV_ERROR_STATUS, POIContext, isIDVReportNotAvailable } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import CountrySelector from '../../../Components/poi/poi-country-selector';
 import IdvDocumentSubmit from '../../../Components/poi/idv-document-submit';
 import IdvFailed from '../../../Components/poi/idv-status/idv-failed';

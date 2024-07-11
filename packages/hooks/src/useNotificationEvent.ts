@@ -1,6 +1,6 @@
 import React from 'react';
-import { useMutation } from '@deriv-app/api';
-import { TSocketRequestPayload } from '@deriv-app/api/types';
+import { useMutation } from '@deriv-lib/api';
+import { TSocketRequestPayload } from '@deriv-lib/api/types';
 
 type TNotificationEventPayload = TSocketRequestPayload<'notification_event'>['payload'];
 

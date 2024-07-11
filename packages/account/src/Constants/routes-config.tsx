@@ -1,8 +1,8 @@
 // /* eslint-disable @typescript-eslint/ban-ts-comment */
 // // @ts-nocheck [TODO] - Need to update the types of routes
 
-import { routes, moduleLoader, makeLazyLoader } from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+import { routes, moduleLoader, makeLazyLoader } from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 import {
     Passkeys,
     PersonalDetails,
@@ -21,7 +21,7 @@ import {
 } from '../Sections';
 
 import { TRoute, TRouteConfig } from '../Types';
-import { Loading } from '@deriv-app/components';
+import { Loading } from '@deriv-lib/components';
 // Error Routes
 const Page404 = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')),

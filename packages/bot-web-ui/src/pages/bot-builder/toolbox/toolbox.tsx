@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, Text } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { Icon, Text } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import { rudderStackSendOpenEvent } from '../../../analytics/rudderstack-common-events';
 import { useDBotStore } from '../../../stores/useDBotStore';
 import ToolbarButton from '../toolbar/toolbar-button';

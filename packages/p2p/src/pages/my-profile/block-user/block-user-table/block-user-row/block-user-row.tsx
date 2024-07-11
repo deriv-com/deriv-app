@@ -1,9 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
-import { Button, Table, Text } from '@deriv-app/components';
-import { routes } from '@deriv-app/shared';
-import { observer } from '@deriv-app/stores';
+import { Button, Table, Text } from '@deriv-lib/components';
+import { routes } from '@deriv-lib/shared';
+import { observer } from '@deriv-lib/stores';
 import { Localize } from 'Components/i18next';
 import UserAvatar from 'Components/user/user-avatar';
 // @ts-ignore

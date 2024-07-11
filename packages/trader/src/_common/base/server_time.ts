@@ -1,4 +1,4 @@
-import { TCoreStores } from '@deriv-app/stores/types';
+import { TCoreStores } from '@deriv-lib/stores/types';
 import { PromiseUtils } from '@deriv-com/utils';
 import moment from 'moment';
 

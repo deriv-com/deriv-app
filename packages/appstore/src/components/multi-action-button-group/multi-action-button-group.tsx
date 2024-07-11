@@ -1,5 +1,5 @@
-import { Button } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
+import { Button } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
 import { Actions } from 'Components/containers/trading-app-card-actions';
 import TradeButton from 'Components/trade-button';
 import React from 'react';

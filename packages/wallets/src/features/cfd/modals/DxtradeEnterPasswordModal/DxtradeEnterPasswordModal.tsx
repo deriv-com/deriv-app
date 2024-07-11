@@ -5,7 +5,7 @@ import {
     useActiveWalletAccount,
     useCreateOtherCFDAccount,
     useDxtradeAccountsList,
-} from '@deriv-app/api-v2';
+} from '@deriv-lib/api-v2';
 import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalWrapper } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';

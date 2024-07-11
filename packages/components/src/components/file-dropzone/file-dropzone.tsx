@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { ReactElement, ReactNode, RefObject } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import Dropzone, { DropzoneOptions, DropzoneRef } from 'react-dropzone';
-import { truncateFileName } from '@deriv-app/shared';
+import { truncateFileName } from '@deriv-lib/shared';
 import Text from '../text';
 
 type TFadeInMessage = {

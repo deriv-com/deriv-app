@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
-import { Icon, Text } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { Icon, Text } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 import { getDesktopDownloadOptions, getMobileDownloadOptions } from '../Helpers/constants';
-import { CFD_PLATFORMS, getCFDPlatformLabel, getPlatformSettings, getUrlBase } from '@deriv-app/shared';
+import { CFD_PLATFORMS, getCFDPlatformLabel, getPlatformSettings, getUrlBase } from '@deriv-lib/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import './mt5-mobile-redirect-option.scss';
 

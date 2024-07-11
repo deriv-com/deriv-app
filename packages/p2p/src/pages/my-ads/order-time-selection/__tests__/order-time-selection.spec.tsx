@@ -2,7 +2,7 @@ import React from 'react';
 import * as formik from 'formik';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import OrderTimeSelection from '../order-time-selection';
 
@@ -17,8 +17,8 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
     useModalManagerContext: jest.fn(() => mock_modal_manager),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isMobile: jest.fn(() => false),
     isDesktop: jest.fn(() => true),
 }));

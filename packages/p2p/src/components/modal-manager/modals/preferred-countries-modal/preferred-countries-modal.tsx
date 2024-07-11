@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal, Text } from '@deriv-app/components';
+import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal, Text } from '@deriv-lib/components';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import PreferredCountriesModalBody from './preferred-countries-modal-body';

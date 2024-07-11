@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import React, { ComponentProps } from 'react';
 import * as Formik from 'formik';
-import { APIProvider } from '@deriv-app/api-v2';
+import { APIProvider } from '@deriv-lib/api-v2';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import WalletsAuthProvider from '../../../../../../../AuthProvider';
@@ -84,8 +84,8 @@ const mockRefetchExchangeRates = jest.fn(() =>
 
 const mockRefetchAccountLimits = jest.fn();
 
-jest.mock('@deriv-app/api-v2', () => ({
-    ...jest.requireActual('@deriv-app/api-v2'),
+jest.mock('@deriv-lib/api-v2', () => ({
+    ...jest.requireActual('@deriv-lib/api-v2'),
     useGetExchangeRate: jest.fn(({ base_currency }: { base_currency: string }) => ({
         data: {
             base_currency,

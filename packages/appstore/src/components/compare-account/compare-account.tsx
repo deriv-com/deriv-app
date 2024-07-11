@@ -1,9 +1,9 @@
 import React from 'react';
-import { Text } from '@deriv-app/components';
+import { Text } from '@deriv-lib/components';
 import { Analytics } from '@deriv-com/analytics';
 import { useHistory } from 'react-router-dom';
-import { routes } from '@deriv-app/shared';
-import { useStore, observer } from '@deriv-app/stores';
+import { routes } from '@deriv-lib/shared';
+import { useStore, observer } from '@deriv-lib/stores';
 
 type TCompareAccount = {
     accounts_sub_text: React.ReactNode;

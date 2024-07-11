@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 // @ts-ignore
 import { useStores } from 'Stores';
-import { useSafeState } from '@deriv-app/components';
+import { useSafeState } from '@deriv-lib/components';
 import Orders from '../orders.jsx';
 
 const mock_store = {
@@ -33,8 +33,8 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(() => mock_store),
 }));
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     useSafeState: jest.fn().mockReturnValue([{}, jest.fn()]),
 }));
 

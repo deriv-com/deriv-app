@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import WithdrawalCryptoReceipt from '../withdrawal-crypto-receipt';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
 let mock_last_transaction = {
     address_hash: 'test_hash',
@@ -19,9 +19,9 @@ let mock_last_transaction = {
     transaction_fee: '',
 };
 
-jest.mock('@deriv-app/hooks', () => {
+jest.mock('@deriv-lib/hooks', () => {
     return {
-        ...jest.requireActual('@deriv-app/hooks'),
+        ...jest.requireActual('@deriv-lib/hooks'),
         useCryptoTransactions: jest.fn(() => ({
             last_transaction: mock_last_transaction,
         })),

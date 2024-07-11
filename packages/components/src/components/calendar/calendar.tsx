@@ -1,5 +1,5 @@
 import React from 'react';
-import { getStartOfMonth, toMoment } from '@deriv-app/shared';
+import { getStartOfMonth, toMoment } from '@deriv-lib/shared';
 import Body from './calendar-body';
 import Footer from './calendar-footer';
 import Header from './calendar-header';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Collapsible, Text } from '@deriv-app/components';
+import { Collapsible, Text } from '@deriv-lib/components';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
 import AllowEqualsMobile from 'Modules/Trading/Containers/allow-equals';
 import {
@@ -26,10 +26,10 @@ import Strike from 'Modules/Trading/Components/Form/TradeParams/strike';
 import BarrierSelector from 'Modules/Trading/Components/Form/TradeParams/Turbos/barrier-selector';
 import PayoutPerPointMobile from 'Modules/Trading/Components/Elements/payout-per-point-mobile';
 import TradeTypeTabs from 'Modules/Trading/Components/Form/TradeParams/trade-type-tabs';
-import { observer } from '@deriv-app/stores';
+import { observer } from '@deriv-lib/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { Localize } from '@deriv-app/translations';
-import { TRADE_TYPES } from '@deriv-app/shared';
+import { Localize } from '@deriv-lib/translations';
+import { TRADE_TYPES } from '@deriv-lib/shared';
 
 type TCollapsibleTradeParams = Pick<
     ReturnType<typeof useTraderStore>,

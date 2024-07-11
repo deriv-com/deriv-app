@@ -15,7 +15,7 @@ import type {
     PaymentAgentDetailsResponse,
     PaymentAgentListResponse,
 } from '@deriv/api-types';
-import type { TSocketEndpointNames, TSocketResponse } from '@deriv-app/api/types';
+import type { TSocketEndpointNames, TSocketResponse } from '@deriv-lib/api/types';
 
 export type TAuthorizedSend = {
     error?: TServerError;

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Loading } from '@deriv-app/components';
+import { Loading } from '@deriv-lib/components';
 import { WS } from 'Services';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import LinkExpiredModal from '../LinkExpiredModal';
 import ResetPasswordModal from '../ResetPasswordModal';
 import UnlinkPasswordModal from '../UnlinkPasswordModal';

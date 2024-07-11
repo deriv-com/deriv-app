@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useFormikContext } from 'formik';
-import { Button, SelectNative, Text, ThemedScrollbars } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { Button, SelectNative, Text, ThemedScrollbars } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import {
     rudderStackSendQsRunStrategyEvent,

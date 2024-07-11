@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
-import { localize } from '@deriv-app/translations';
-import { Text } from '@deriv-app/components';
+import { localize } from '@deriv-lib/translations';
+import { Text } from '@deriv-lib/components';
 import TickSteps from './tick-steps';
 
 type TRangeSlider = {

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon, Money, Text } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
+import { Icon, Money, Text } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 // @ts-ignore

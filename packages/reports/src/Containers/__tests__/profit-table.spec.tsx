@@ -2,11 +2,11 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import ProfitTable, { getRowAction } from '../profit-table';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import { Analytics } from '@deriv-com/analytics';
 import ReportsProviders from '../../reports-providers';
 import { useReportsStore } from 'Stores/useReportsStores';
-import { extractInfoFromShortcode, formatDate, getUnsupportedContracts } from '@deriv-app/shared';
+import { extractInfoFromShortcode, formatDate, getUnsupportedContracts } from '@deriv-lib/shared';
 import { useDevice } from '@deriv-com/ui';
 
 const mockData = [
@@ -97,8 +97,8 @@ jest.mock('react-virtualized', () => {
     };
 });
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     WS: {
         forgetAll: jest.fn(),
         wait: jest.fn(),

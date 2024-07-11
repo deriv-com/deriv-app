@@ -10,7 +10,7 @@ import {
     PageOverlay,
     VerticalTab,
     Loading,
-} from '@deriv-app/components';
+} from '@deriv-lib/components';
 import {
     useAuthorize,
     useOnrampVisible,
@@ -19,14 +19,14 @@ import {
     usePaymentAgentTransferVisible,
     useP2PNotificationCount,
     useP2PSettings,
-} from '@deriv-app/hooks';
-import { getSelectedRoute, getStaticUrl, routes, setPerformanceValue, WS } from '@deriv-app/shared';
+} from '@deriv-lib/hooks';
+import { getSelectedRoute, getStaticUrl, routes, setPerformanceValue, WS } from '@deriv-lib/shared';
 import ErrorDialog from '../../components/error-dialog';
 import { TRoute } from '../../types';
-import { localize } from '@deriv-app/translations';
-import { observer, useStore } from '@deriv-app/stores';
+import { localize } from '@deriv-lib/translations';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
-import type { TCoreStores } from '@deriv-app/stores/types';
+import type { TCoreStores } from '@deriv-lib/stores/types';
 import './cashier.scss';
 
 type TCashierProps = RouteComponentProps & {

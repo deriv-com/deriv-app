@@ -2,11 +2,11 @@ import React from 'react';
 import { Redirect, withRouter } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 import ErrorComponent from 'App/Components/Elements/Errors';
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import ContractReplay from './contract-replay';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 
 type TContractParams = { contract_id: string };
 type TContract = RouteComponentProps<TContractParams>;

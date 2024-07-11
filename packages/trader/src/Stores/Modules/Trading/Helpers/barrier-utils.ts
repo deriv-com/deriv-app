@@ -1,4 +1,4 @@
-import { BARRIER_COLORS, CONTRACT_TYPES } from '@deriv-app/shared';
+import { BARRIER_COLORS, CONTRACT_TYPES } from '@deriv-lib/shared';
 
 export const getHoveredColor = (type: string): string => {
     switch (type) {

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { getKebabCase, getUrlBase } from '@deriv-app/shared';
+import { getKebabCase, getUrlBase } from '@deriv-lib/shared';
 import * as icons_manifest from './icons-manifest';
 import { TIconsManifest, TIconProps } from '../types';
 

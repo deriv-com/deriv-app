@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { APIProvider } from '@deriv-app/api-v2';
+import { APIProvider } from '@deriv-lib/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import WalletsAuthProvider from '../../../AuthProvider';

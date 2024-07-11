@@ -1,6 +1,6 @@
 import { action, autorun, computed, makeObservable, observable } from 'mobx';
 
-import { isMobile, isTouchDevice, routes } from '@deriv-app/shared';
+import { isMobile, isTouchDevice, routes } from '@deriv-lib/shared';
 
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 

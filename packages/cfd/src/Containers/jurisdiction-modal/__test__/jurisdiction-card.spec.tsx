@@ -1,5 +1,5 @@
 import React from 'react';
-import { Jurisdiction } from '@deriv-app/shared';
+import { Jurisdiction } from '@deriv-lib/shared';
 import { render, screen } from '@testing-library/react';
 import JurisdictionCard from '../jurisdiction-card';
 import { TTradingPlatformAvailableAccount } from 'Components/props.types';

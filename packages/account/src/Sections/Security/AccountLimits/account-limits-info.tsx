@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon, Text } from '@deriv-app/components';
-import { localize, Localize } from '@deriv-app/translations';
+import { Icon, Text } from '@deriv-lib/components';
+import { localize, Localize } from '@deriv-lib/translations';
 
 const currency_name_map = {
     BTC: { display_code: 'BTC', name: localize('Bitcoin') },

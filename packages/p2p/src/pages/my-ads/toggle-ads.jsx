@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, ToggleSwitch } from '@deriv-app/components';
-import { useIsMounted } from '@deriv-app/shared';
-import { observer } from '@deriv-app/stores';
+import { Text, ToggleSwitch } from '@deriv-lib/components';
+import { useIsMounted } from '@deriv-lib/shared';
+import { observer } from '@deriv-lib/stores';
 import { Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 // @ts-ignore

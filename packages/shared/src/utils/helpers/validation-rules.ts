@@ -1,4 +1,4 @@
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import { getTotalProfit } from '../contract';
 import { TContractStore } from '../contract/contract-types';
 import { getBuyPrice } from './logic';

@@ -1,11 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { useStore, observer } from '@deriv-app/stores';
-import { EmptyState } from '@deriv-app/components';
-import { useCashierLocked, useDepositLocked, useIsSystemMaintenance, useMFAccountStatus } from '@deriv-app/hooks';
+import { useStore, observer } from '@deriv-lib/stores';
+import { EmptyState } from '@deriv-lib/components';
+import { useCashierLocked, useDepositLocked, useIsSystemMaintenance, useMFAccountStatus } from '@deriv-lib/hooks';
 import getMessage from './cashier-locked-provider';
 import './cashier-locked.scss';
-import { MT5_ACCOUNT_STATUS } from '@deriv-app/shared';
+import { MT5_ACCOUNT_STATUS } from '@deriv-lib/shared';
 
 const CashierLocked = observer(() => {
     const {

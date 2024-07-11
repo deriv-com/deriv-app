@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text } from '@deriv-app/components';
+import { Text } from '@deriv-lib/components';
 import classNames from 'classnames';
 import './order-info-block.scss';
 

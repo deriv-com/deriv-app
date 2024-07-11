@@ -10,8 +10,8 @@ import {
     getIDVNotApplicableOption,
     IDV_ERROR_STATUS,
     AUTH_STATUS_CODES,
-} from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+} from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 import { getIDVDocuments } from '../Configs/idv-document-config';
 import { TServerError } from '../Types';
 import { LANGUAGE_CODES } from '../Constants/onfido';

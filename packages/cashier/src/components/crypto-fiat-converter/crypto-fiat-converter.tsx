@@ -1,11 +1,11 @@
 import React from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
 
-import { DesktopWrapper, Icon, Input, MobileWrapper } from '@deriv-app/components';
-import { useExchangeRate } from '@deriv-app/hooks';
-import { getCurrencyDisplayCode } from '@deriv-app/shared';
-import { observer } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { DesktopWrapper, Icon, Input, MobileWrapper } from '@deriv-lib/components';
+import { useExchangeRate } from '@deriv-lib/hooks';
+import { getCurrencyDisplayCode } from '@deriv-lib/shared';
+import { observer } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 
 import { useCashierStore } from '../../stores/useCashierStores';
 import { TReactChangeEvent } from '../../types';

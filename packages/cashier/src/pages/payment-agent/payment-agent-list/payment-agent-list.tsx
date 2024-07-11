@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Tabs } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
-import { isDesktop } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { Tabs } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
+import { isDesktop } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import SideNote from '../../../components/side-note';
 import DepositTab from './deposit-tab';
 import WithdrawalTab from './withdrawal-tab';

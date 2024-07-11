@@ -3,17 +3,17 @@ import { screen, render, fireEvent, waitFor, act, cleanup } from '@testing-libra
 import CFDPasswordManagerModal from '../cfd-password-manager-modal';
 import { BrowserRouter } from 'react-router-dom';
 import CFDProviders from '../../cfd-providers';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
-jest.mock('@deriv-app/components', () => {
-    const original_module = jest.requireActual('@deriv-app/components');
+jest.mock('@deriv-lib/components', () => {
+    const original_module = jest.requireActual('@deriv-lib/components');
     return {
         ...original_module,
         Icon: jest.fn(props => <div data-testid='mocked_icon'>{props.icon}</div>),
     };
 });
 
-jest.mock('@deriv-app/shared/src/services/ws-methods', () => ({
+jest.mock('@deriv-lib/shared/src/services/ws-methods', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
     WS: {
@@ -47,8 +47,8 @@ const mock_errors = {
     recent_years_are_easy: () => localize('Recent years are easy to guess'),
 };
 
-jest.mock('@deriv-app/shared/src/utils/validation/declarative-validation-rules.ts', () => {
-    const original_module = jest.requireActual('@deriv-app/shared/src/utils/validation/declarative-validation-rules.ts');
+jest.mock('@deriv-lib/shared/src/utils/validation/declarative-validation-rules.ts', () => {
+    const original_module = jest.requireActual('@deriv-lib/shared/src/utils/validation/declarative-validation-rules.ts');
     return {
         ...original_module,
         validPassword: jest.fn(() => {

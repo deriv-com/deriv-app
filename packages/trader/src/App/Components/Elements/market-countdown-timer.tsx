@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Text } from '@deriv-app/components';
-import { useIsMounted, WS, convertTimeFormat, isMarketClosed, toMoment } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
-import { observer, useStore } from '@deriv-app/stores';
+import { Text } from '@deriv-lib/components';
+import { useIsMounted, WS, convertTimeFormat, isMarketClosed, toMoment } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { TradingTimesRequest, TradingTimesResponse } from '@deriv/api-types';
 

@@ -11,7 +11,7 @@
 2. Using icons as a UI component library (in Trader or Bot)
 
     ```jsx
-    import { Icon } from '@deriv-app/components';
+    import { Icon } from '@deriv-lib/components';
 
     const App = () => <Icon icon='IcBrandDbot' />;
     ```
@@ -32,7 +32,7 @@
 #### Example:
 
 ```jsx
-import { Icon } from '@deriv-app/components';
+import { Icon } from '@deriv-lib/components';
 
 const App = () => (
     <>

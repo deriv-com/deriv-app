@@ -1,8 +1,8 @@
 import React from 'react';
-import { Money } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { Money } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 import RiskManagementDialog from 'Modules/Trading/Containers/Multiplier/risk-management-dialog';
-import { observer } from '@deriv-app/stores';
+import { observer } from '@deriv-lib/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const RiskManagementInfo = observer(() => {

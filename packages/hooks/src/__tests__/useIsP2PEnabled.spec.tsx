@@ -1,4 +1,4 @@
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import { withMockAPIProvider } from '../mocks';
 import useIsP2PEnabled from '../useIsP2PEnabled';

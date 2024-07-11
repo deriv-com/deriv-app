@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockContractInfo, CONTRACT_TYPES } from '@deriv-app/shared';
+import { mockContractInfo, CONTRACT_TYPES } from '@deriv-lib/shared';
 import LookBacksCardBody from '../lookbacks-card-body';
 
 type TLookBacksCardBody = React.ComponentProps<typeof LookBacksCardBody>;

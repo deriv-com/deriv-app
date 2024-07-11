@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text } from '@deriv-app/components';
-import { useStore } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { Text } from '@deriv-lib/components';
+import { useStore } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import QuickStrategyGuidesDetail from './quick-strategy-guides-details';
 import './index.scss';

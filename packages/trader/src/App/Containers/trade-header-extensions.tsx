@@ -1,10 +1,10 @@
 import React from 'react';
 import { when } from 'mobx';
-import { routes, WS } from '@deriv-app/shared';
+import { routes, WS } from '@deriv-lib/shared';
 import PopulateHeader from './populate-header';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import TraderProviders from '../../trader-providers';
-import { TCoreStores } from '@deriv-app/stores/types';
+import { TCoreStores } from '@deriv-lib/stores/types';
 import { useDevice } from '@deriv-com/ui';
 
 type TradeHeaderExtensionsProps = {

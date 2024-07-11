@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import getStatusBadgeConfig from 'Configs/get-status-badge-config';
-import { AUTH_STATUS_CODES, MT5_ACCOUNT_STATUS, routes } from '@deriv-app/shared';
+import { AUTH_STATUS_CODES, MT5_ACCOUNT_STATUS, routes } from '@deriv-lib/shared';
 import { TMT5AccountStatus } from 'Types';
 
 describe('getStatusBadgeConfig', () => {

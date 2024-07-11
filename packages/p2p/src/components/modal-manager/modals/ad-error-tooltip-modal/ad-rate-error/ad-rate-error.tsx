@@ -1,6 +1,6 @@
 import React from 'react';
-import { useP2PSettings } from '@deriv-app/hooks';
-import { useStore } from '@deriv-app/stores';
+import { useP2PSettings } from '@deriv-lib/hooks';
+import { useStore } from '@deriv-lib/stores';
 import { Localize } from 'Components/i18next';
 import { ad_type } from 'Constants/floating-rate';
 

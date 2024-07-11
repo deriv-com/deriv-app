@@ -1,15 +1,15 @@
 import 'Sass/app/modules/trading-mobile.scss';
-import { Div100vhContainer, Modal, Money, Tabs, ThemedScrollbars, usePreventIOSZoom } from '@deriv-app/components';
+import { Div100vhContainer, Modal, Money, Tabs, ThemedScrollbars, usePreventIOSZoom } from '@deriv-lib/components';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile';
 import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier';
 import DurationMobile from 'Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile';
 import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit';
 import { TTextValueStrings } from 'Types';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import React from 'react';
 import classNames from 'classnames';
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 
 type TTradeParamsModal = {
     is_open: boolean;

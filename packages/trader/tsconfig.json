@@ -16,7 +16,7 @@
             "Translations/*": ["src/public/translations/*"],
             "Types": ["src/Types"],
             "Utils/*": ["src/Utils/*"],
-            "@deriv-app/*": ["../*/src"],
+            "@deriv-lib/*": ["../*/src"],
         },
         "useDefineForClassFields": true,
         "outDir": "./dist",

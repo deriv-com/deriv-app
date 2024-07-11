@@ -1,4 +1,4 @@
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import PositionsStore from '../positions-store';
 import { configure } from 'mobx';
 import { TRootStore } from 'Types';

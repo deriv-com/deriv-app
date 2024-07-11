@@ -1,7 +1,7 @@
 import React from 'react';
-import { MobileFullPageModal } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { MobileFullPageModal } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import { StatisticsSummary } from 'Components/run-panel/run-panel';
 import { transaction_elements } from 'Constants/transactions';
 import { useDBotStore } from 'Stores/useDBotStore';

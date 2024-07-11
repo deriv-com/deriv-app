@@ -1,9 +1,9 @@
 import { useState, useEffect, ChangeEvent, Fragment } from 'react';
 import clsx from 'clsx';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { Formik, Form, FormikErrors, FormikHelpers } from 'formik';
-import { Button, Modal, Text } from '@deriv-app/components';
-import { localize, Localize } from '@deriv-app/translations';
+import { Button, Modal, Text } from '@deriv-lib/components';
+import { localize, Localize } from '@deriv-lib/translations';
 import TradingAssessmentRadioButton from './trading-assessment-radio-buttons';
 import TradingAssessmentDropdown from './trading-assessment-dropdown';
 import { getTradingAssessmentQuestions } from '../../Constants/trading-assessment-questions';

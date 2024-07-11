@@ -2,10 +2,10 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import AccountTransferNoAccount from '../account-transfer-no-account';
 import CashierProviders from '../../../../cashier-providers';
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
 describe('<AccountTransferNoAccount />', () => {
     let mockRootStore: ReturnType<typeof mockStore>;

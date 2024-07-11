@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
-import { useCryptoTransactions } from '@deriv-app/api-v2';
+import { useCryptoTransactions } from '@deriv-lib/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { WalletText } from '../../../../../../components/Base';
 import { TransactionsNoDataState } from '../TransactionsNoDataState';

@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Helpers from '../helpers';
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 import getRoutesConfig from '../../../Constants/routes-config';
 import Redirect from '../../../Containers/Redirect/redirect';
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import { deriv_urls, getActionFromUrl } from '@deriv-app/shared';
+import { deriv_urls, getActionFromUrl } from '@deriv-lib/shared';
 import { useIsMounted } from 'usehooks-ts';
 
 // Todo: Should break this into smaller hooks or utility functions.

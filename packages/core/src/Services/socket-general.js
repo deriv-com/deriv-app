@@ -8,8 +8,8 @@ import {
     routes,
     getActionFromUrl,
     checkServerMaintenance,
-} from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+} from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
 import WS from './ws-methods';

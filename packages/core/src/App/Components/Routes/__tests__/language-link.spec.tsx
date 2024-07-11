@@ -2,14 +2,14 @@ import React from 'react';
 import { useTranslations } from '@deriv-com/translations';
 import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { TLanguageLink } from 'App/Components/Routes/language-link';
 import { LanguageLink } from '../index';
 
 jest.mock('@deriv-com/translations');
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     TranslationFlag: { VI: () => <div>Tiếng Việt Flag</div> },
 }));
 

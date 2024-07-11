@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider, AuthProvider } from '@deriv-app/api-v2';
+import { APIProvider, AuthProvider } from '@deriv-lib/api-v2';
 import { render, screen } from '@testing-library/react';
 import { useWithdrawalCryptoContext } from '../provider';
 import WithdrawalCryptoModule from '../WithdrawalCrypto';

@@ -1,11 +1,11 @@
 import React from 'react';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../../cashier-providers';
 import CashierOnboardingFiatCard from '../cashier-onboarding-fiat-card';
 
-jest.mock('@deriv-app/api', () => ({
-    ...jest.requireActual('@deriv-app/api'),
+jest.mock('@deriv-lib/api', () => ({
+    ...jest.requireActual('@deriv-lib/api'),
     useFetch: jest.fn(() => ({
         data: {
             website_status: {

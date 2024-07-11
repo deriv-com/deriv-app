@@ -2,7 +2,7 @@ import React from 'react';
 import MT5MigrationModalContent from '../mt5-migration-modal-content';
 import { useMT5MigrationModalContext } from '../mt5-migration-modal-context';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { CFDStoreProvider } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 jest.mock('../mt5-migration-modal-context', () => ({

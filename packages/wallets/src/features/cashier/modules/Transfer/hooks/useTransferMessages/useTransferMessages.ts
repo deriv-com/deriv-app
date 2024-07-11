@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
-import { useActiveWalletAccount, useAuthorize, usePOI, useWalletAccountsList } from '@deriv-app/api-v2';
-import { displayMoney as displayMoney_ } from '@deriv-app/api-v2/src/utils';
+import { useActiveWalletAccount, useAuthorize, usePOI, useWalletAccountsList } from '@deriv-lib/api-v2';
+import { displayMoney as displayMoney_ } from '@deriv-lib/api-v2/src/utils';
 import { THooks } from '../../../../../../types';
 import { TAccount, TInitialTransferFormValues, TMessageFnProps, TTransferMessage } from '../../types';
 import {

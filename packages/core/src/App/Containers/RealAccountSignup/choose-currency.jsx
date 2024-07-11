@@ -1,12 +1,12 @@
 import { Field, Formik } from 'formik';
 import React from 'react';
-import { FormSubmitButton, Loading, Text, ThemedScrollbars } from '@deriv-app/components';
-import { usePaymentAgentList } from '@deriv-app/hooks';
-import { localize } from '@deriv-app/translations';
-import { reorderCurrencies, routes } from '@deriv-app/shared';
+import { FormSubmitButton, Loading, Text, ThemedScrollbars } from '@deriv-lib/components';
+import { usePaymentAgentList } from '@deriv-lib/hooks';
+import { localize } from '@deriv-lib/translations';
+import { reorderCurrencies, routes } from '@deriv-lib/shared';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
 import CurrencyProvider from './choose-currency';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import './currency-selector.scss';
 
 const CRYPTO_CURRENCY_TYPE = 'crypto';

@@ -1,12 +1,12 @@
 import React from 'react';
 import VerificationModal from '../verification-modal';
 import { render, screen } from '@testing-library/react';
-import { isDesktop, isMobile } from '@deriv-app/shared';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { isDesktop, isMobile } from '@deriv-lib/shared';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import userEvent from '@testing-library/user-event';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isMobile: jest.fn(),
     isDesktop: jest.fn(),
 }));

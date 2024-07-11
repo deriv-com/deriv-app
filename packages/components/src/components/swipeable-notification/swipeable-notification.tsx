@@ -4,8 +4,8 @@ import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { useSwipeable } from 'react-swipeable';
-import { Localize } from '@deriv-app/translations';
-import { getTimeSince } from '@deriv-app/shared';
+import { Localize } from '@deriv-lib/translations';
+import { getTimeSince } from '@deriv-lib/shared';
 import Text from '../text';
 
 type TSwipeableNotificationProps = React.PropsWithChildren<{

@@ -1,4 +1,4 @@
-import { getCurrencyDisplayCode } from '@deriv-app/shared';
+import { getCurrencyDisplayCode } from '@deriv-lib/shared';
 import Constants from 'Constants/constants';
 
 // check if mlt or dxtrade for account text

@@ -1,16 +1,16 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import DerivPassword from '../deriv-password';
-import { APIProvider, useVerifyEmail } from '@deriv-app/api';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { APIProvider, useVerifyEmail } from '@deriv-lib/api';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 
 jest.mock('@deriv/quill-icons', () => ({
     ...jest.requireActual('@deriv/quill-icons'),
     BrandDerivLogoCoralIcon: () => 'BrandDerivLogoCoralIcon',
 }));
 
-jest.mock('@deriv-app/api', () => ({
-    ...jest.requireActual('@deriv-app/api'),
+jest.mock('@deriv-lib/api', () => ({
+    ...jest.requireActual('@deriv-lib/api'),
     useVerifyEmail: jest.fn(() => ({ mutate: jest.fn() })),
 }));
 

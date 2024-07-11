@@ -1,7 +1,7 @@
 import React from 'react';
-import { PageError } from '@deriv-app/components';
-import { routes, getUrlBase } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
+import { PageError } from '@deriv-lib/components';
+import { routes, getUrlBase } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
 
 const Page404 = () => (
     <PageError

@@ -2,10 +2,10 @@ import React from 'react';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import BinaryRoutes from '../binary-routes';
 
-jest.mock('@deriv-app/translations', () => ({
+jest.mock('@deriv-lib/translations', () => ({
     Localize: jest.fn(({ i18n_default_text }) => <div>{i18n_default_text}</div>),
     localize: jest.fn(text => text),
 }));

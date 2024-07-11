@@ -2,14 +2,14 @@ import React from 'react';
 import { createBrowserHistory, History } from 'history';
 import { useDevice } from '@deriv-com/ui';
 import { Router } from 'react-router';
-import { useActiveAccount } from '@deriv-app/api-v2';
+import { useActiveAccount } from '@deriv-lib/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import FiatOnRamp from '../FiatOnRamp';
 
 const mockedUseDevice = useDevice as jest.MockedFunction<typeof useDevice>;
 
-jest.mock('@deriv-app/api-v2', () => ({
+jest.mock('@deriv-lib/api-v2', () => ({
     useActiveAccount: jest.fn(),
 }));
 

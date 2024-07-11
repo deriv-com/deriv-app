@@ -1,9 +1,9 @@
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { MobileDialog, useOnClickOutside } from '@deriv-app/components';
-import { LocalStore } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv-app/translations';
+import { MobileDialog, useOnClickOutside } from '@deriv-lib/components';
+import { LocalStore } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize } from '@deriv-lib/translations';
 import NotificationListWrapper from './notification-list-wrapper';
 import { useDevice } from '@deriv-com/ui';
 

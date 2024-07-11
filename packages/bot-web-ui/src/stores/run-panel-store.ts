@@ -1,9 +1,9 @@
 import { action, computed, makeObservable, observable, reaction, runInAction } from 'mobx';
 import { Buy, ProposalOpenContract } from '@deriv/api-types';
 import { ErrorTypes, MessageTypes, observer, unrecoverable_errors } from '@deriv/bot-skeleton';
-import { isSafari, mobileOSDetect, routes } from '@deriv-app/shared';
-import { TStores } from '@deriv-app/stores/types';
-import { localize } from '@deriv-app/translations';
+import { isSafari, mobileOSDetect, routes } from '@deriv-lib/shared';
+import { TStores } from '@deriv-lib/stores/types';
+import { localize } from '@deriv-lib/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import { notification_message } from 'Components/bot-notification/bot-notification-utils';
 import { contract_stages, TContractStage } from 'Constants/contract-stage';

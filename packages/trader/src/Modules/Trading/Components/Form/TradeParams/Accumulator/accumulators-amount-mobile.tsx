@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import { AMOUNT_MAX_LENGTH, getDecimalPlaces } from '@deriv-app/shared';
-import { MobileWrapper } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { AMOUNT_MAX_LENGTH, getDecimalPlaces } from '@deriv-lib/shared';
+import { MobileWrapper } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 import LabeledQuantityInputMobile from '../../LabeledQuantityInputMobile';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const AccumulatorsAmountMobile = observer(() => {

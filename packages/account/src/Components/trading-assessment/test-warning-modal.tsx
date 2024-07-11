@@ -1,6 +1,6 @@
 import React from 'react';
-import { MobileDialog, Modal } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { MobileDialog, Modal } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 import { useDevice } from '@deriv-com/ui';
 
 type TestWarningModalProps = {

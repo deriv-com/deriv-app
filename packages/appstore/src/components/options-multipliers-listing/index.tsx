@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Text, StaticUrl } from '@deriv-app/components';
-import { ContentFlag, setPerformanceValue } from '@deriv-app/shared';
-import { useStore } from '@deriv-app/stores';
-import { Localize, useLocalize } from '@deriv-app/translations';
+import { Text, StaticUrl } from '@deriv-lib/components';
+import { ContentFlag, setPerformanceValue } from '@deriv-lib/shared';
+import { useStore } from '@deriv-lib/stores';
+import { Localize, useLocalize } from '@deriv-lib/translations';
 import { useDevice } from '@deriv-com/ui';
 import ListingContainer from 'Components/containers/listing-container';
 import TradingAppCard from 'Components/containers/trading-app-card';

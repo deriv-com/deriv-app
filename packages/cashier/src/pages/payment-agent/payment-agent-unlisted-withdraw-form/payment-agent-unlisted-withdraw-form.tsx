@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Field, FieldProps, Formik, Form } from 'formik';
-import { Button, Icon, Input, Text } from '@deriv-app/components';
-import { getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize, Localize } from '@deriv-app/translations';
+import { Button, Icon, Input, Text } from '@deriv-lib/components';
+import { getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize, Localize } from '@deriv-lib/translations';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import ErrorDialog from 'Components/error-dialog';
 import SideNote from 'Components/side-note';

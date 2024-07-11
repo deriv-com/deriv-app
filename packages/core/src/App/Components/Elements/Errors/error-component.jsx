@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { PageErrorContainer } from '@deriv-app/components';
-import { routes } from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+import { PageErrorContainer } from '@deriv-lib/components';
+import { routes } from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 
 const ErrorComponent = ({
     header,

@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Button, Icon, Text } from '@deriv-app/components';
+import { Button, Icon, Text } from '@deriv-lib/components';
 import ExpandedCard from './expanded-card';
 import { TPaymentMethodInfo } from '../../Types';
 

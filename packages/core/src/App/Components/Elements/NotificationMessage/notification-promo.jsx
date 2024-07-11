@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, Text } from '@deriv-app/components';
+import { Button, Icon, Text } from '@deriv-lib/components';
 
 const NotificationPromo = ({ cta_btn, img_alt, img_src, message, onClose }) => {
     return (

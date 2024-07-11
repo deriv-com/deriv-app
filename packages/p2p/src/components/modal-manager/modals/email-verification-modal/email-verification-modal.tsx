@@ -1,6 +1,6 @@
 /* eslint-disable no-empty-pattern */
 import React from 'react';
-import { Button, Icon, Modal, Text } from '@deriv-app/components';
+import { Button, Icon, Modal, Text } from '@deriv-lib/components';
 import { Localize } from 'Components/i18next';
 // @ts-ignore
 import { useStores } from 'Stores';

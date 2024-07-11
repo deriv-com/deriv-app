@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Button, Checkbox, Icon, Text } from '@deriv-app/components';
-import { isMobile } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv-app/translations';
+import { Button, Checkbox, Icon, Text } from '@deriv-lib/components';
+import { isMobile } from '@deriv-lib/shared';
+import { Localize, localize } from '@deriv-lib/translations';
 import ErrorDialog from 'Components/error-dialog';
 import { TError } from '../../types';
 import './transfer-confirm.scss';

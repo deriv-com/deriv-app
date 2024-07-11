@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize, localize } from '@deriv-app/translations';
+import { Localize, localize } from '@deriv-lib/translations';
 import AccountArticle from '../article';
 
 const getDescription = () => [

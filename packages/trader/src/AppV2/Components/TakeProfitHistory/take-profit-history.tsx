@@ -1,10 +1,10 @@
 import { Text, CaptionText, Pagination } from '@deriv-com/quill-ui';
-import { formatDate, formatTime, TContractStore } from '@deriv-app/shared';
+import { formatDate, formatTime, TContractStore } from '@deriv-lib/shared';
 import { FormatUtils } from '@deriv-com/utils';
 import CardWrapper from '../CardWrapper';
 import React, { useState } from 'react';
 import clsx from 'classnames';
-import { Localize } from '@deriv-app/translations';
+import { Localize } from '@deriv-lib/translations';
 
 type TContractHistory = {
     currency?: string;

@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Icon, Money, Button, Text } from '@deriv-app/components';
-import { formatMoney, getCurrencyName, getCFDAccountDisplay, getCurrencyDisplayCode, isBot } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv-app/translations';
+import { Icon, Money, Button, Text } from '@deriv-lib/components';
+import { formatMoney, getCurrencyName, getCFDAccountDisplay, getCurrencyDisplayCode, isBot } from '@deriv-lib/shared';
+import { Localize, localize } from '@deriv-lib/translations';
 
 const AccountList = ({
     balance,

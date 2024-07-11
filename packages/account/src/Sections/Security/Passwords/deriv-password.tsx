@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { useVerifyEmail } from '@deriv-app/api';
-import { Button, Icon, Popover, Text } from '@deriv-app/components';
-import { getBrandWebsiteName, getPlatformSettings, toTitleCase } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+import { useVerifyEmail } from '@deriv-lib/api';
+import { Button, Icon, Popover, Text } from '@deriv-lib/components';
+import { getBrandWebsiteName, getPlatformSettings, toTitleCase } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 
 import { BrandDerivLogoCoralIcon } from '@deriv/quill-icons';
 import FormSubHeader from '../../../Components/form-sub-header';

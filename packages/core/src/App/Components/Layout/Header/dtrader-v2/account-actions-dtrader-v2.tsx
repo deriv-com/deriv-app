@@ -1,7 +1,7 @@
 import React from 'react';
 import 'Sass/app/_common/components/account-switcher-dtrader-v2.scss';
 import { LabelPairedBellLgRegularIcon } from '@deriv/quill-icons';
-import { formatMoney, moduleLoader } from '@deriv-app/shared';
+import { formatMoney, moduleLoader } from '@deriv-lib/shared';
 import { Badge } from '@deriv-com/quill-ui';
 
 type TAccountActionsDTraderV2 = {

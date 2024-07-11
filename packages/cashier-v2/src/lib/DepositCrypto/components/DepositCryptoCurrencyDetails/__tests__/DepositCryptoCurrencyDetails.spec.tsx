@@ -1,9 +1,9 @@
 import React from 'react';
-import { useActiveAccount } from '@deriv-app/api-v2';
+import { useActiveAccount } from '@deriv-lib/api-v2';
 import { render, screen } from '@testing-library/react';
 import DepositCryptoCurrencyDetails from '../DepositCryptoCurrencyDetails';
 
-jest.mock('@deriv-app/api-v2', () => ({
+jest.mock('@deriv-lib/api-v2', () => ({
     useActiveAccount: jest.fn(),
 }));
 

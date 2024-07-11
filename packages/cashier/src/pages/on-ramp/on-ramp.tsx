@@ -1,9 +1,9 @@
 import React from 'react';
-import { Loading, Modal, SelectNative, ReadMore, Text } from '@deriv-app/components';
-import { useCashierLocked, useDepositLocked } from '@deriv-app/hooks';
-import { routes, isMobile } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv-app/translations';
-import { useStore, observer } from '@deriv-app/stores';
+import { Loading, Modal, SelectNative, ReadMore, Text } from '@deriv-lib/components';
+import { useCashierLocked, useDepositLocked } from '@deriv-lib/hooks';
+import { routes, isMobile } from '@deriv-lib/shared';
+import { Localize, localize } from '@deriv-lib/translations';
+import { useStore, observer } from '@deriv-lib/stores';
 import CashierLocked from '../../components/cashier-locked';
 import SideNote from '../../components/side-note';
 import OnRampProviderCard from './on-ramp-provider-card';

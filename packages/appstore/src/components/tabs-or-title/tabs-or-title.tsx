@@ -1,7 +1,7 @@
 import React from 'react';
-import { observer, useStore } from '@deriv-app/stores';
-import { ButtonToggle, Text } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
+import { observer, useStore } from '@deriv-lib/stores';
+import { ButtonToggle, Text } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
 import { getPlatformToggleOptions } from 'Helpers';
 import './tabs-or-title.scss';
 

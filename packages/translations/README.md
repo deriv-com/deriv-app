@@ -1,4 +1,4 @@
-# `@deriv-app/translations`
+# `@deriv-lib/translations`
 
 -   Extract new string translations to Crowdin.
 -   Staging/dev branch is the source of truth for strings that should be translated.
@@ -57,7 +57,7 @@ To update strings to be translated in Crowdin
 -   in `app.jsx`:
 
 ```jsx
-    import { initializeTranslations } from '@deriv-app/translations';
+    import { initializeTranslations } from '@deriv-lib/translations';
     ...
     initializeTranslations()
 ```
@@ -68,7 +68,7 @@ To update strings to be translated in Crowdin
 -   [`<Localize />`](https://react.i18next.com/latest/trans-component) example:
 
 ```jsx
-import { Localize } from '@deriv-app/translations';
+import { Localize } from '@deriv-lib/translations';
 
 <Localize
     i18n_default_text='You cannot use your real money account with {{website_name}} at this time.'
@@ -79,7 +79,7 @@ import { Localize } from '@deriv-app/translations';
 -   localize example:
 
 ```jsx
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 
 <h4 className='drawer__notifications-header'>{localize('all notifications')}</h4>;
 ```

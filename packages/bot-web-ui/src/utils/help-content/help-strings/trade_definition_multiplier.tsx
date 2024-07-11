@@ -1,6 +1,6 @@
 import React from 'react';
-import { StaticUrl } from '@deriv-app/components';
-import { Localize, localize } from '@deriv-app/translations';
+import { StaticUrl } from '@deriv-lib/components';
+import { Localize, localize } from '@deriv-lib/translations';
 
 export default {
     text: [

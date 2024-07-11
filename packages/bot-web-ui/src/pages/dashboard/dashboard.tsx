@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Text } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { Text } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import OnboardTourHandler from '../tutorials/dbot-tours/onboarding-tour';
 import Cards from './cards';

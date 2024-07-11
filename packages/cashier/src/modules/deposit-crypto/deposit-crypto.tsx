@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { Divider } from '../../components/divider';
 import { PageContainer } from '../../components/page-container';
 import { useCashierStore } from '../../stores/useCashierStores';

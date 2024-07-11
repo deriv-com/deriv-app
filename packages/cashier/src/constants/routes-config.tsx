@@ -1,7 +1,7 @@
 import React from 'react';
 import P2P from '@deriv/p2p';
-import { routes, moduleLoader } from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+import { routes, moduleLoader } from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 import { Cashier } from '../containers';
 import { AccountTransfer, Deposit, OnRamp, PaymentAgent, PaymentAgentTransfer, Withdrawal } from '../pages';
 import { TRouteConfig, TRoute } from '../types';

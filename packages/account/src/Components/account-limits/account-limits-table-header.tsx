@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Text } from '@deriv-app/components';
+import { Text } from '@deriv-lib/components';
 
 type TAccountLimitsTableHeader = {
     align: 'left' | 'right';

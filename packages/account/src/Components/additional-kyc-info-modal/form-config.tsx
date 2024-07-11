@@ -1,7 +1,7 @@
 import React from 'react';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
-import { Localize, localize } from '@deriv-app/translations';
-import { generateValidationFunction } from '@deriv-app/shared';
+import { Localize, localize } from '@deriv-lib/translations';
+import { generateValidationFunction } from '@deriv-lib/shared';
 import { TListItem } from 'Types';
 
 export type TFields = 'place_of_birth' | 'tax_residence' | 'tax_identification_number' | 'account_opening_reason';

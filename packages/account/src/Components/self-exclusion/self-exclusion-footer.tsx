@@ -1,8 +1,8 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { FormikValues, useFormikContext } from 'formik';
-import { Button, Text } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
+import { Button, Text } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
 import SelfExclusionContext from './self-exclusion-context';
 
 const SelfExclusionFooter = () => {

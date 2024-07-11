@@ -1,12 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, Icon, Counter } from '@deriv-app/components';
+import { Text, Icon, Counter } from '@deriv-lib/components';
 import { useDevice } from '@deriv-com/ui';
 import { BinaryLink } from '../../Routes';
-import { observer, useStore } from '@deriv-app/stores';
-import { routes, startPerformanceEventTimer } from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
-import { useP2PNotificationCount, useIsRealAccountNeededForCashier } from '@deriv-app/hooks';
+import { observer, useStore } from '@deriv-lib/stores';
+import { routes, startPerformanceEventTimer } from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
+import { useP2PNotificationCount, useIsRealAccountNeededForCashier } from '@deriv-lib/hooks';
 import { useHistory } from 'react-router';
 import './menu-links.scss';
 

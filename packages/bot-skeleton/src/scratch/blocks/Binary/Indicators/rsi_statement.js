@@ -1,4 +1,4 @@
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 
 Blockly.Blocks.rsi_statement = {
     protected_statements: ['STATEMENT'],

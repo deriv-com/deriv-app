@@ -1,8 +1,8 @@
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import { api_base, ApiHelpers, ServerTime, setColors } from '@deriv/bot-skeleton';
-import { Loading } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
+import { Loading } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
 import TransactionDetailsModal from 'Components/transaction-details';
 import GTM from 'Utils/gtm';
 import { useDBotStore } from 'Stores/useDBotStore';

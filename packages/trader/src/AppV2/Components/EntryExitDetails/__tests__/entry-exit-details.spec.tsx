@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import EntryExitDetails from '../entry-exit-details';
-import { TContractInfo, mockContractInfo } from '@deriv-app/shared';
+import { TContractInfo, mockContractInfo } from '@deriv-lib/shared';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     addComma: jest.fn(value => value.toString()),
     getEndTime: jest.fn(() => 1623441600),
     formatDate: jest.fn(() => '12/1/23'),

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Clipboard } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
-import { isMobile } from '@deriv-app/shared';
+import { Clipboard } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
+import { isMobile } from '@deriv-lib/shared';
 import { TCFDAccountCopy } from './props.types';
 
 const CFDAccountCopy = ({ text, className }: TCFDAccountCopy) => {

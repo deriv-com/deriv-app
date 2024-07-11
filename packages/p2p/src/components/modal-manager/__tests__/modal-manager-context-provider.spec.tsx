@@ -3,7 +3,7 @@ import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ModalManagerContextProvider from '../modal-manager-context-provider';
 import ModalManager from '../modal-manager';
-import { isDesktop } from '@deriv-app/shared';
+import { isDesktop } from '@deriv-lib/shared';
 import { useStores } from 'Stores/index';
 import {
     MockBuySellModal,
@@ -12,8 +12,8 @@ import {
     MockPage,
 } from '../__mocks__/mock-modal-manager-context-provider';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isDesktop: jest.fn(() => true),
 }));
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import SuccessDialog from '../Components/success-dialog.jsx';
 import { getTopUpConfig } from '../Helpers/constants';
-import { Icon, Modal, Button, Money, Text } from '@deriv-app/components';
-import { getCFDPlatformLabel } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize, Localize } from '@deriv-app/translations';
+import { Icon, Modal, Button, Money, Text } from '@deriv-lib/components';
+import { getCFDPlatformLabel } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize, Localize } from '@deriv-lib/translations';
 import {
     getCTraderCompanies,
     TCTraderCompanies,

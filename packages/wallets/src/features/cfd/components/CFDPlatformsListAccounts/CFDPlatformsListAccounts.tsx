@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCtraderAccountsList, useDxtradeAccountsList, useSortedMT5Accounts } from '@deriv-app/api-v2';
+import { useCtraderAccountsList, useDxtradeAccountsList, useSortedMT5Accounts } from '@deriv-lib/api-v2';
 import { TradingAppCardLoader } from '../../../../components/SkeletonLoader';
 import {
     AddedCTraderAccountsList,

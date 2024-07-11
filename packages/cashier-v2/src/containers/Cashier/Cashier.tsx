@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
-import { useAuthorize } from '@deriv-app/api-v2';
+import { useAuthorize } from '@deriv-lib/api-v2';
 import { Loader, PageLayout, VerticalTab, VerticalTabItems } from '@deriv-com/ui';
 import type { TRouteTypes } from '../../types';
 import styles from './Cashier.module.scss';

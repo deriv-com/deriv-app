@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import React from 'react';
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import Fieldset from 'App/Components/Form/fieldset';
 import RangeSlider from 'App/Components/Form/RangeSlider';
-import { Dropdown } from '@deriv-app/components';
-import { toMoment, isVanillaContract } from '@deriv-app/shared';
-import { useStore } from '@deriv-app/stores';
+import { Dropdown } from '@deriv-lib/components';
+import { toMoment, isVanillaContract } from '@deriv-lib/shared';
+import { useStore } from '@deriv-lib/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import DurationToggle from './duration-toggle';
 import AdvancedDuration from './advanced-duration';

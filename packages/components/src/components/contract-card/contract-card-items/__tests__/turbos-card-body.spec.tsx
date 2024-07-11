@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { render, screen } from '@testing-library/react';
-import { mockContractInfo, getCardLabels } from '@deriv-app/shared';
+import { mockContractInfo, getCardLabels } from '@deriv-lib/shared';
 import TurbosCardBody from '../turbos-card-body';
 
 const contract_info = mockContractInfo({

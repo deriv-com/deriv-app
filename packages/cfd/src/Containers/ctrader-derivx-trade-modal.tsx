@@ -1,10 +1,10 @@
 import React from 'react';
 import { useDevice } from '@deriv-com/ui';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize, Localize } from '@deriv-app/translations';
-import { getCFDAccountKey } from '@deriv-app/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize, Localize } from '@deriv-lib/translations';
+import { getCFDAccountKey } from '@deriv-lib/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { Icon, Money, Text, ExpansionPanel, Button } from '@deriv-app/components';
+import { Icon, Money, Text, ExpansionPanel, Button } from '@deriv-lib/components';
 import SpecBox from '../Components/specbox';
 import { CFD_PLATFORMS } from '../Helpers/cfd-config';
 import PasswordBox from '../Components/passwordbox';

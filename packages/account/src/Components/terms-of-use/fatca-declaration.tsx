@@ -1,8 +1,8 @@
 import React from 'react';
 import { FieldInputProps } from 'formik';
-import { Text, Dropdown } from '@deriv-app/components';
+import { Text, Dropdown } from '@deriv-lib/components';
 import { useDevice } from '@deriv-com/ui';
-import { Localize, localize } from '@deriv-app/translations';
+import { Localize, localize } from '@deriv-lib/translations';
 import { getFatcaDeclaration, getAgreementOptions } from '../../Constants/fatca-declaration';
 import './terms-of-use.scss';
 

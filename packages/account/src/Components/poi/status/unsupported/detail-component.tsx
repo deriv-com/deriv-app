@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 //@ts-nocheck [TODO] - Need to fix typescript errors in OnfidoUpload component
 import React from 'react';
-import { Loading, Icon, Text, Button } from '@deriv-app/components';
-import { localize, Localize } from '@deriv-app/translations';
-import { WS } from '@deriv-app/shared';
+import { Loading, Icon, Text, Button } from '@deriv-lib/components';
+import { localize, Localize } from '@deriv-lib/translations';
+import { WS } from '@deriv-lib/shared';
 import { UploadComplete } from '../upload-complete/upload-complete';
 import POIManualUploadFailed from '../../../poi-manual-upload-failed';
 import { API_ERROR_CODES } from '../../../../Constants/api-error-codes';

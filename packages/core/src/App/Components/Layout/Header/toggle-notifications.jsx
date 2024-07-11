@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Counter, Icon, Popover } from '@deriv-app/components';
+import { Counter, Icon, Popover } from '@deriv-lib/components';
 import NotificationsDialog from 'App/Containers/NotificationsDialog';
 import 'Sass/app/modules/notifications-dialog.scss';
 import { useDevice } from '@deriv-com/ui';

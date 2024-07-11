@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { unmountComponentAtNode } from 'react-dom';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import { transaction_elements } from 'Constants/transactions';
 import RootStore from 'Stores/root-store';

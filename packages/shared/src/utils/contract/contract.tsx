@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React from 'react';
-import { Localize } from '@deriv-app/translations';
+import { Localize } from '@deriv-lib/translations';
 import { unique } from '../object';
 import { capitalizeFirstLetter } from '../string/string_util';
 import { TContractInfo, TContractStore, TDigitsInfo, TLimitOrder, TTickItem } from './contract-types';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { getCurrencyDisplayCode } from '@deriv-app/shared';
+import { getCurrencyDisplayCode } from '@deriv-lib/shared';
 import Text from '../text';
 
 type TCurrencyBadgeProps = {

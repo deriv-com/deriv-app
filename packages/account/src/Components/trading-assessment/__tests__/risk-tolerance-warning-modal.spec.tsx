@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { isDesktop, isMobile } from '@deriv-app/shared';
+import { isDesktop, isMobile } from '@deriv-lib/shared';
 import RiskToleranceWarningModal from '../risk-tolerance-warning-modal';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isMobile: jest.fn(),
     isDesktop: jest.fn(),
 }));

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockContractInfo, CONTRACT_TYPES } from '@deriv-app/shared';
+import { mockContractInfo, CONTRACT_TYPES } from '@deriv-lib/shared';
 import ResetContractChartElements from '../reset-contract-chart-elements';
 
 const reset_marker = 'Reset Marker';

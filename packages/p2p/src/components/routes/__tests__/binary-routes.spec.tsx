@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import BinaryRoutes from '../binary-routes';
 
 jest.mock('Constants/routes-config', () => () => [{}]);

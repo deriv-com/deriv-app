@@ -25,13 +25,13 @@ jobs:
       uses: "./.github/actions/build"
     - name: Check TypeScript for @deriv/api
       run: npx tsc --project packages/api/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv-app/api-v2
+    - name: Check TypeScript for @deriv-lib/api-v2
       run: npx tsc --project packages/api-v2/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv-app/hooks
+    - name: Check TypeScript for @deriv-lib/hooks
       run: npx tsc --project packages/hooks/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/utils
       run: npx tsc --project packages/utils/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv-app/stores
+    - name: Check TypeScript for @deriv-lib/stores
       run: npx tsc --project packages/stores/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/wallets
       run: npx tsc --project packages/wallets/tsconfig.json -noEmit
@@ -45,7 +45,7 @@ jobs:
       run: npx stylelint packages/wallets/**/*.scss
     - name: Check Stylelint for @deriv/cashier-v2
       run: npx stylelint packages/cashier-v2/**/*.scss
-    - name: Check tests for @deriv-app/hooks
+    - name: Check tests for @deriv-lib/hooks
       run: bash ./scripts/check-tests.sh packages/hooks/src
     - name: Check tests for @deriv/utils
       run: bash ./scripts/check-tests.sh packages/utils/src

@@ -1,7 +1,7 @@
 import React from 'react';
 import AccountTransferModal from '../account-transfer-modal';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 
 jest.mock('@deriv/cashier/src/pages/account-transfer', () => jest.fn(() => <div>AccountTransfer</div>));
 

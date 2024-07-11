@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import useIsClientHighRiskForMT5 from '../useIsClientHighRiskForMT5';
 
 describe('useIsClientHighRiskForMT5', () => {

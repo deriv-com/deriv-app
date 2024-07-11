@@ -3,10 +3,10 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Analytics } from '@deriv-com/analytics';
 import { MemoryRouter } from 'react-router-dom';
-import { TCoreStores } from '@deriv-app/stores/types';
-import { formatDate } from '@deriv-app/shared';
+import { TCoreStores } from '@deriv-lib/stores/types';
+import { formatDate } from '@deriv-lib/shared';
 import { useDevice } from '@deriv-com/ui';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import { useReportsStore } from 'Stores/useReportsStores';
 import Statement, { getRowAction } from '../statement';
 import ReportsProviders from '../../reports-providers';
@@ -72,8 +72,8 @@ jest.mock('Stores/useReportsStores', () => ({
     })),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isMobile: jest.fn(() => false),
     WS: {
         forgetAll: jest.fn(),
@@ -123,8 +123,8 @@ jest.mock('@deriv-app/shared', () => ({
     },
 }));
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Clipboard: jest.fn(() => <div>Copy icon</div>),
 }));
 

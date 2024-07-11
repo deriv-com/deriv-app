@@ -1,6 +1,6 @@
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
-import { getAppId, getSocketURL, website_name } from '@deriv-app/shared';
-import { getLanguage } from '@deriv-app/translations';
+import { getAppId, getSocketURL, website_name } from '@deriv-lib/shared';
+import { getLanguage } from '@deriv-lib/translations';
 import APIMiddleware from './api-middleware';
 
 export const generateDerivApiInstance = () => {

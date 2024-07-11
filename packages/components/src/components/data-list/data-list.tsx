@@ -12,7 +12,7 @@ import {
     ListRowProps,
     IndexRange,
 } from 'react-virtualized';
-import { isMobile, isDesktop, isForwardStartingBuyTransaction } from '@deriv-app/shared';
+import { isMobile, isDesktop, isForwardStartingBuyTransaction } from '@deriv-lib/shared';
 import DataListCell from './data-list-cell';
 import DataListRow, { TRowRenderer } from './data-list-row';
 import ThemedScrollbars from '../themed-scrollbars';

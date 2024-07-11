@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon, Text } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
+import { Icon, Text } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
 
 const getPasskeysDescriptions = () =>
     [

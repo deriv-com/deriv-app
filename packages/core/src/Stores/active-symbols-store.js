@@ -1,4 +1,4 @@
-import { WS } from '@deriv-app/shared';
+import { WS } from '@deriv-lib/shared';
 import { observable, action, runInAction, makeObservable } from 'mobx';
 import BaseStore from './base-store';
 

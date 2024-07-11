@@ -1,8 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
 import { useFormikContext } from 'formik';
-import { Input, Text } from '@deriv-app/components';
-import { hasInvalidCharacters } from '@deriv-app/shared';
+import { Input, Text } from '@deriv-lib/components';
+import { hasInvalidCharacters } from '@deriv-lib/shared';
 import { IDENTIFIER_TYPES } from '../../Constants/poo-identifier';
 import { isSpecialPaymentMethod } from '../../Helpers/utils';
 import FileUploader from './file-uploader';

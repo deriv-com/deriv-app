@@ -1,7 +1,7 @@
 import React from 'react';
-import { Dialog } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+import { Dialog } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const RoutePromptDialog = observer(() => {

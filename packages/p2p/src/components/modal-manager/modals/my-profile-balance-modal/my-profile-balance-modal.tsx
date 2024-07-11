@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, Text } from '@deriv-app/components';
+import { Button, Modal, Text } from '@deriv-lib/components';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { Localize, localize } from 'Components/i18next';
 

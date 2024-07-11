@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { TPortfolioPosition } from '@deriv-app/stores/types';
-import { mockContractInfo } from '@deriv-app/shared';
+import { TPortfolioPosition } from '@deriv-lib/stores/types';
+import { mockContractInfo } from '@deriv-lib/shared';
 import ContractCardList from '../contract-card-list';
 import ContractCard from '../contract-card';
 

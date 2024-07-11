@@ -1,4 +1,4 @@
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import { getMarketNamesMap, getContractConfig } from '../constants/contract';
 import { TContractOptions } from '../contract/contract-types';
 

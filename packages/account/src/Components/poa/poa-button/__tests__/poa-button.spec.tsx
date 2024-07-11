@@ -2,7 +2,7 @@ import React from 'react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 import PoaButton from '../poa-button';
 
 describe('<PoaButton/>', () => {

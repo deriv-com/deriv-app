@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { screen, render } from '@testing-library/react';
-import { TRADE_TYPES } from '@deriv-app/shared';
+import { TRADE_TYPES } from '@deriv-lib/shared';
 import StrikeParamModal from '../strike-param-modal';
 import userEvent from '@testing-library/user-event';
 
@@ -23,8 +23,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isDesktop: false })),
 }));
 
-jest.mock('@deriv-app/components', () => {
-    const original_module = jest.requireActual('@deriv-app/components');
+jest.mock('@deriv-lib/components', () => {
+    const original_module = jest.requireActual('@deriv-lib/components');
     const Modal = jest.fn(
         ({ children, is_open, title, toggleModal }) =>
             is_open && (

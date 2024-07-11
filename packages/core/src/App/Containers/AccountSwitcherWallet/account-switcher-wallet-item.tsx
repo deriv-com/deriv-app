@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import { AppLinkedWithWalletIcon, Text } from '@deriv-app/components';
-import { formatMoney, getCurrencyDisplayCode } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { useStoreWalletAccountsList } from '@deriv-app/hooks';
-import { Localize } from '@deriv-app/translations';
+import { AppLinkedWithWalletIcon, Text } from '@deriv-lib/components';
+import { formatMoney, getCurrencyDisplayCode } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { useStoreWalletAccountsList } from '@deriv-lib/hooks';
+import { Localize } from '@deriv-lib/translations';
 import WalletBadge from 'App/Components/Layout/Header/wallets/wallet-badge';
 import './account-switcher-wallet-item.scss';
 

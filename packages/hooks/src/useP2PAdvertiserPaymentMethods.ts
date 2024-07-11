@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
-import { useFetch, useInvalidateQuery, useRequest } from '@deriv-app/api';
-import { useStore } from '@deriv-app/stores';
+import { useFetch, useInvalidateQuery, useRequest } from '@deriv-lib/api';
+import { useStore } from '@deriv-lib/stores';
 
 type TPayloads = NonNullable<
     NonNullable<Parameters<ReturnType<typeof useRequest<'p2p_advertiser_payment_methods'>>['mutate']>[0]>['payload']

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ContentExpander } from '@deriv-app/components';
+import { ContentExpander } from '@deriv-lib/components';
 
 const AccountWrapper = ({ children, header, is_visible, toggleVisibility }) => (
     <ContentExpander

@@ -1,10 +1,10 @@
 import React from 'react';
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import NumberSelector from 'App/Components/Form/number-selector';
 import Fieldset from 'App/Components/Form/fieldset';
-import { getGrowthRatePercentage, isEmptyObject } from '@deriv-app/shared';
+import { getGrowthRatePercentage, isEmptyObject } from '@deriv-lib/shared';
 import classNames from 'classnames';
-import { observer } from '@deriv-app/stores';
+import { observer } from '@deriv-lib/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const Accumulator = observer(() => {

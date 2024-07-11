@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { getAuthenticationStatusInfo, isMobile, getMT5Title, CFD_PLATFORMS } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
+import { Text } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { getAuthenticationStatusInfo, isMobile, getMT5Title, CFD_PLATFORMS } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
 import { TJurisdictionModalFootNoteProps } from '../props.types';
 import { JURISDICTION } from '../../Helpers/cfd-config';
 

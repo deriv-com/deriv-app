@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
-import { useBalance } from '@deriv-app/api-v2';
+import { useBalance } from '@deriv-lib/api-v2';
 import { WalletText } from '../Base';
 import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';

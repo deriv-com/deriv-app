@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, Text } from '@deriv-app/components';
-import { getAuthenticationStatusInfo } from '@deriv-app/shared';
+import { Icon, Text } from '@deriv-lib/components';
+import { getAuthenticationStatusInfo } from '@deriv-lib/shared';
 import { jurisdictionVerificationContents } from '../../Constants/jurisdiction-contents/jurisdiction-verification-contents';
 import { TJurisdictionTitleIndicatorProps } from 'Containers/props.types';
 import { TJurisdictionCardItemVerificationItem, TJurisdictionCardVerificationStatus } from 'Components/props.types';

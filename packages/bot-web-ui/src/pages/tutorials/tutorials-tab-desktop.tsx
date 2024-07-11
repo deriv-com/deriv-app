@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, Tabs } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
+import { Icon, Tabs } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import SearchInput from './common/search-input';
 import { TTutorialsTabItem } from './tutorials';

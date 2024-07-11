@@ -1,13 +1,13 @@
 import React, { Fragment } from 'react';
 import { Formik, FormikValues, FormikHelpers, FormikErrors, Form } from 'formik';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
-import { Button } from '@deriv-app/components';
+import { Button } from '@deriv-lib/components';
 import {
     filterObjProperties,
     toMoment,
     removeEmptyPropertiesFromObject,
     getIDVNotApplicableOption,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 import { useTranslations, Localize } from '@deriv-com/translations';
 import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import FormSubHeader from '../../../form-sub-header';

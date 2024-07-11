@@ -1,5 +1,5 @@
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import { isCryptocurrency, routes } from '@deriv-app/shared';
+import { isCryptocurrency, routes } from '@deriv-lib/shared';
 import Constants from 'Constants/constants';
 import BaseStore from './base-store';
 import PaymentAgentStore from './payment-agent-store';

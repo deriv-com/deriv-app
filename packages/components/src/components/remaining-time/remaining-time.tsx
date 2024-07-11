@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-import { formatDuration, getDiffDuration } from '@deriv-app/shared';
+import { formatDuration, getDiffDuration } from '@deriv-lib/shared';
 
 import { TGetCardLables } from '../types';
 

@@ -7,7 +7,7 @@ import {
     TradingTimesRequest,
 } from '@deriv/api-types';
 import { ServerTime } from '@deriv/bot-skeleton';
-import { LocalStore } from '@deriv-app/shared';
+import { LocalStore } from '@deriv-lib/shared';
 import RootStore from './root-store';
 
 export const g_subscribers_map: Partial<Record<string, ReturnType<typeof WS.subscribeTicksHistory>>> = {};

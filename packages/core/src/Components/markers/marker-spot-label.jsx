@@ -2,11 +2,11 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, Text } from '@deriv-app/components';
-import { addComma, toMoment } from '@deriv-app/shared';
+import { Icon, Text } from '@deriv-lib/components';
+import { addComma, toMoment } from '@deriv-lib/shared';
 
 import MarkerSpot from './marker-spot.jsx';
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 
 const MarkerSpotLabel = ({
     align_label,

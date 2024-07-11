@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { useRemoteConfig } from '@deriv-app/api';
-import { useIsMounted } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { useRemoteConfig } from '@deriv-lib/api';
+import { useIsMounted } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import { notification_message } from 'Components/bot-notification/bot-notification-utils';
 import initDatadogLogs from 'Utils/datadog-logs';

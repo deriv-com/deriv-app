@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { ExpansionPanel } from '@deriv-app/components';
+import { ExpansionPanel } from '@deriv-lib/components';
 import PaymentAgentCardDescription from './payment-agent-card-description';
 import PaymentAgentDepositDetails from '../payment-agent-deposit-details';
 import PaymentAgentListedWithdrawForm from '../payment-agent-listed-withdraw-form';

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { addComma, getLimitOrderAmount, isCryptocurrency, isValidToSell } from '@deriv-app/shared';
+import { addComma, getLimitOrderAmount, isCryptocurrency, isValidToSell } from '@deriv-lib/shared';
 import ContractCardItem from './contract-card-item';
 import ToggleCardDialog from './toggle-card-dialog';
 import MobileWrapper from '../../mobile-wrapper';

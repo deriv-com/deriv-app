@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, WalletIcon, Text, AppLinkedWithWalletIcon } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
-import { formatMoney, getCurrencyDisplayCode } from '@deriv-app/shared';
-import { useStore, observer } from '@deriv-app/stores';
-import { useStoreWalletAccountsList, useStoreLinkedWalletsAccounts } from '@deriv-app/hooks';
-import { TStores } from '@deriv-app/stores/types';
+import { Icon, WalletIcon, Text, AppLinkedWithWalletIcon } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
+import { formatMoney, getCurrencyDisplayCode } from '@deriv-lib/shared';
+import { useStore, observer } from '@deriv-lib/stores';
+import { useStoreWalletAccountsList, useStoreLinkedWalletsAccounts } from '@deriv-lib/hooks';
+import { TStores } from '@deriv-lib/stores/types';
 import { AccountSwitcherWallet, AccountSwitcherWalletMobile } from 'App/Containers/AccountSwitcherWallet';
 import { AccountsInfoLoader } from '../Components/Preloader';
 import AccountInfoWrapper from '../account-info-wrapper';

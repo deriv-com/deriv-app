@@ -2,15 +2,15 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { isMobile } from '@deriv-app/shared';
+import { isMobile } from '@deriv-lib/shared';
 import getRoutesConfig from 'Constants/routes-config';
 import Cashier from '../cashier';
-import { P2PSettingsProvider, mockStore } from '@deriv-app/stores';
+import { P2PSettingsProvider, mockStore } from '@deriv-lib/stores';
 import CashierProviders from '../../../cashier-providers';
 
-jest.mock('@deriv-app/hooks', () => {
+jest.mock('@deriv-lib/hooks', () => {
     return {
-        ...jest.requireActual('@deriv-app/hooks'),
+        ...jest.requireActual('@deriv-lib/hooks'),
         usePaymentAgentTransferVisible: jest.fn(() => ({
             data: true,
             isLoading: false,
@@ -24,8 +24,8 @@ jest.mock('@deriv-app/hooks', () => {
     };
 });
 
-jest.mock('@deriv-app/components', () => {
-    const original_module = jest.requireActual('@deriv-app/components');
+jest.mock('@deriv-lib/components', () => {
+    const original_module = jest.requireActual('@deriv-lib/components');
 
     return {
         ...original_module,
@@ -33,8 +33,8 @@ jest.mock('@deriv-app/components', () => {
     };
 });
 
-jest.mock('@deriv-app/shared', () => {
-    const original_module = jest.requireActual('@deriv-app/shared');
+jest.mock('@deriv-lib/shared', () => {
+    const original_module = jest.requireActual('@deriv-lib/shared');
 
     return {
         ...original_module,

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import { Modal, SideNote, Text } from '@deriv-app/components';
-import { Localize, localize } from '@deriv-app/translations';
+import { Modal, SideNote, Text } from '@deriv-lib/components';
+import { Localize, localize } from '@deriv-lib/translations';
 
 type TProps = {
     currency: 'eUSDT' | 'USDT';

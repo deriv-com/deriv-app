@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import { ReportsStoreProvider } from '../../../../../../reports/src/Stores/useReportsStores';
 import TraderProviders from '../../../../trader-providers';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import PositionsContent, { TClosedPosition } from '../positions-content';
-import { TPortfolioPosition } from '@deriv-app/stores/types';
+import { TPortfolioPosition } from '@deriv-lib/stores/types';
 
 const contractTypeFilter = 'Filter by trade types';
 const contractCardList = 'ContractCardList';
@@ -22,8 +22,8 @@ const mediaQueryList = {
 
 window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     WS: {
         activeSymbols: jest.fn(),
         authorized: {

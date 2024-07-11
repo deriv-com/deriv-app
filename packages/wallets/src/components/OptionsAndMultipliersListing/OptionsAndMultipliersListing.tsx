@@ -1,7 +1,7 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { useActiveLinkedToTradingAccount } from '@deriv-app/api-v2';
+import { useActiveLinkedToTradingAccount } from '@deriv-lib/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { optionsAndMultipliersContent } from '../../constants/constants';
 import useDevice from '../../hooks/useDevice';

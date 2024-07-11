@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Button, Icon, Text } from '@deriv-app/components';
+import { Button, Icon, Text } from '@deriv-lib/components';
 
 const UserRatingButton = ({ button_text, is_disabled, large, onClick }) => {
     return (

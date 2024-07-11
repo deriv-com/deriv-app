@@ -1,18 +1,18 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { screen, render } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import AccountSwitcher from '../account-switcher.jsx';
 
-jest.mock('@deriv-app/hooks', () => {
+jest.mock('@deriv-lib/hooks', () => {
     return {
-        ...jest.requireActual('@deriv-app/hooks'),
+        ...jest.requireActual('@deriv-lib/hooks'),
         useHasSetCurrency: jest.fn(() => true),
     };
 });
 
-jest.mock('@deriv-app/components', () => {
-    const original_module = jest.requireActual('@deriv-app/components');
+jest.mock('@deriv-lib/components', () => {
+    const original_module = jest.requireActual('@deriv-lib/components');
 
     return {
         ...original_module,

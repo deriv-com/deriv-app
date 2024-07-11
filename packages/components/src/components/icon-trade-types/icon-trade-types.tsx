@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon from '../icon/icon';
 import { TIconProps } from '../types';
-import { CONTRACT_TYPES } from '@deriv-app/shared';
+import { CONTRACT_TYPES } from '@deriv-lib/shared';
 
 type TIconTradeTypes = Omit<TIconProps, 'icon'> & {
     type: string;

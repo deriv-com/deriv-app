@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useLocation } from 'react-router-dom';
-import { observer, useStore } from '@deriv-app/stores';
-import { Jurisdiction, routes } from '@deriv-app/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Jurisdiction, routes } from '@deriv-lib/shared';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import HeaderAccountActionsDTraderV2 from 'App/Components/Layout/Header/dtrader-v2/header-account-actions-dtrader-v2';

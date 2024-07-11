@@ -1,6 +1,6 @@
 import React, { ComponentProps, PropsWithChildren } from 'react';
 import { WalletTourGuide } from 'src/components/WalletTourGuide';
-import { APIProvider } from '@deriv-app/api-v2';
+import { APIProvider } from '@deriv-lib/api-v2';
 import { render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../AuthProvider';
 import useDevice from '../../../hooks/useDevice';

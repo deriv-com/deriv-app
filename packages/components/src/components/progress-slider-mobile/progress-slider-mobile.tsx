@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { getTimePercentage } from '@deriv-app/shared';
+import { getTimePercentage } from '@deriv-lib/shared';
 import ProgressTicksMobile from './progress-ticks-mobile';
 import CircularProgress from '../circular-progress';
 import RemainingTime from '../remaining-time';

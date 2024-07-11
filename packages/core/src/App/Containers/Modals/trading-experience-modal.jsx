@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Icon, Modal, Text } from '@deriv-app/components';
-import { Localize, localize } from '@deriv-app/translations';
-import { observer, useStore } from '@deriv-app/stores';
+import { Button, Icon, Modal, Text } from '@deriv-lib/components';
+import { Localize, localize } from '@deriv-lib/translations';
+import { observer, useStore } from '@deriv-lib/stores';
 
 const TradingExperienceModal = observer(() => {
     const { client, ui } = useStore();

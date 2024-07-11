@@ -15,8 +15,8 @@ const mock_history = [
     },
 ];
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Icon: jest.fn(() => <div>test_icon</div>),
 }));
 jest.mock('../contract-audit-item', () => jest.fn(props => <div data-testid={props.value}>ContractAuditItem</div>));

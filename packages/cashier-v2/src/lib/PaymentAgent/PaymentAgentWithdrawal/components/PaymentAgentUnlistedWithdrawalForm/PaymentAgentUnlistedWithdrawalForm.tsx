@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Field, FieldProps, Form, Formik } from 'formik';
-import { useActiveAccount } from '@deriv-app/api-v2';
+import { useActiveAccount } from '@deriv-lib/api-v2';
 import { LabelPairedCircleXmarkMdFillIcon, StandaloneArrowLeftBoldIcon } from '@deriv/quill-icons';
 import { Button, Input, Text } from '@deriv-com/ui';
 import { usePaymentAgentWithdrawalContext } from '../../provider';

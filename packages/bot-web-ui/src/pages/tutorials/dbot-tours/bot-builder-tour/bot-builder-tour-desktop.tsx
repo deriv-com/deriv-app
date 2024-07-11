@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { observer } from '@deriv-app/stores';
+import { observer } from '@deriv-lib/stores';
 
 import { useDBotStore } from 'Stores/useDBotStore';
 import { getSetting } from 'Utils/settings';

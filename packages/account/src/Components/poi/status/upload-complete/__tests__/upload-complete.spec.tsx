@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Button } from '@deriv-app/components';
+import { Button } from '@deriv-lib/components';
 import { UploadComplete } from '../upload-complete';
 import { BrowserRouter } from 'react-router-dom';
 
 jest.mock('../../../../poa/poa-button', () => jest.fn(() => <div data-testid='dt_poa_button' />));
 
-jest.mock('@deriv-app/components', () => {
-    const original_module = jest.requireActual('@deriv-app/components');
+jest.mock('@deriv-lib/components', () => {
+    const original_module = jest.requireActual('@deriv-lib/components');
     return {
         ...original_module,
         Icon: jest.fn(() => <div data-testid='dt_mocked_icon' />),

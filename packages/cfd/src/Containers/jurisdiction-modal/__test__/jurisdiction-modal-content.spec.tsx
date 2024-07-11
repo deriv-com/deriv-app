@@ -1,7 +1,7 @@
 import React from 'react';
 import RootStore from 'Stores/index';
 import { render, screen } from '@testing-library/react';
-import { Jurisdiction } from '@deriv-app/shared';
+import { Jurisdiction } from '@deriv-lib/shared';
 import JurisdictionModalContent from '../jurisdiction-modal-content';
 
 describe('JurisdictionModalContent', () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import { observer, useStore } from '@deriv-app/stores';
-import { useIsSystemMaintenance } from '@deriv-app/hooks';
+import { observer, useStore } from '@deriv-lib/stores';
+import { useIsSystemMaintenance } from '@deriv-lib/hooks';
 // @ts-ignore
 import { useStores } from 'Stores';
 import Dp2pBlocked from 'Components/dp2p-blocked';

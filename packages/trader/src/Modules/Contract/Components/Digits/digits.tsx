@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
 import { toJS } from 'mobx';
-import { Popover, Text } from '@deriv-app/components';
+import { Popover, Text } from '@deriv-lib/components';
 import { TickSpotData } from '@deriv/api-types';
-import { getMarketNamesMap, useIsMounted, isContractElapsed, TContractStore } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
+import { getMarketNamesMap, useIsMounted, isContractElapsed, TContractStore } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
 import { Bounce, SlideIn } from 'App/Components/Animations';
 import { DigitSpot, LastDigitPrediction } from '../LastDigitPrediction';
 import 'Sass/app/modules/contract/digits.scss';

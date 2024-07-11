@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
+import { Icon } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
 
 type TSearchIcon = {
     search: string;

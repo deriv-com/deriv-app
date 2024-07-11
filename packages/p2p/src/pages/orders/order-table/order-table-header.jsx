@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { Table } from '@deriv-app/components';
+import { Table } from '@deriv-lib/components';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import { order_list } from 'Constants/order-list';

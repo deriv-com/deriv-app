@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import ConnectedAppsEmpty from '../connected-apps-empty';
 
 describe('ConnectedAppsEmpty', () => {

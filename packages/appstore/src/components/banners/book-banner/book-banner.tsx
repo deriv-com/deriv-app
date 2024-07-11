@@ -1,6 +1,6 @@
 import React from 'react';
-import { SessionStore } from '@deriv-app/shared';
-import { getAllowedLanguages, getLanguage } from '@deriv-app/translations';
+import { SessionStore } from '@deriv-lib/shared';
+import { getAllowedLanguages, getLanguage } from '@deriv-lib/translations';
 import { Analytics } from '@deriv-com/analytics';
 import BookBannerTemplate from 'Components/banners/book-banner/banner-template';
 

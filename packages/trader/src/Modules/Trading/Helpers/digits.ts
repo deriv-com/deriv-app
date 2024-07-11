@@ -1,4 +1,4 @@
-import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv-app/shared';
+import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv-lib/shared';
 
 const digitCategoriesMap = [TRADE_TYPES.EVEN_ODD, TRADE_TYPES.MATCH_DIFF, TRADE_TYPES.OVER_UNDER] as const;
 const digitTypesMap = [

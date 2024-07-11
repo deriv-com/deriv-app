@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import ResetEmailModal from '../reset-email-modal';
 import { ConfirmEmailModal } from '../../ConfirmEmailModal/confirm-email-modal';
 
@@ -16,8 +16,8 @@ jest.mock('../../ConfirmEmailModal/confirm-email-modal', () => ({
     ),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     getErrorMessages: jest.fn(() => ({
         email: jest.fn(() => 'Invalid email address.'),
     })),

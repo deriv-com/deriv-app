@@ -1,6 +1,6 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv-app/api-v2';
-import { displayMoney } from '@deriv-app/api-v2/src/utils';
+import { useActiveWalletAccount } from '@deriv-lib/api-v2';
+import { displayMoney } from '@deriv-lib/api-v2/src/utils';
 import { TSubscribedBalance } from '../../types';
 import { WalletText } from '../Base';
 import './WalletListCardBalance.scss';

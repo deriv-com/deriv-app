@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, FieldProps, Formik } from 'formik';
-import { useGrowthbookIsOn } from '@deriv-app/api-v2';
+import { useGrowthbookIsOn } from '@deriv-lib/api-v2';
 import { WalletButton, WalletTextField } from '../../../../../../components';
 import { useWithdrawalCryptoContext } from '../../provider';
 import { validateCryptoAddress } from '../../utils';

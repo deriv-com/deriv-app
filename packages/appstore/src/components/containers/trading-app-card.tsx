@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
-import { Text, StatusBadge } from '@deriv-app/components';
-import { Localize, useLocalize } from '@deriv-app/translations';
+import { Text, StatusBadge } from '@deriv-lib/components';
+import { Localize, useLocalize } from '@deriv-lib/translations';
 import { Analytics } from '@deriv-com/analytics';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import {
@@ -13,7 +13,7 @@ import {
 } from 'Constants/platform-config';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import {
     CFD_PLATFORMS,
     ContentFlag,
@@ -22,7 +22,7 @@ import {
     getUrlBinaryBot,
     MT5_ACCOUNT_STATUS,
     CFD_PRODUCTS_TITLE,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
 import './trading-app-card.scss';
 

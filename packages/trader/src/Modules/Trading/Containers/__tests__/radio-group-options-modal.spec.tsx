@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import RadioGroupOptionsModal from '../radio-group-options-modal';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import TraderProviders from '../../../../trader-providers';
 
 jest.mock('../Multiplier/multiplier-options', () => jest.fn(() => 'mockedMultiplierOptions'));
@@ -16,8 +16,8 @@ type TModal = React.FC<{
     modal_title: string;
 }>;
 
-jest.mock('@deriv-app/components', () => {
-    const original_module = jest.requireActual('@deriv-app/components');
+jest.mock('@deriv-lib/components', () => {
+    const original_module = jest.requireActual('@deriv-lib/components');
     const Modal: TModal = jest.fn(({ children, is_open, toggleModal, modal_title }) => {
         if (is_open)
             return (

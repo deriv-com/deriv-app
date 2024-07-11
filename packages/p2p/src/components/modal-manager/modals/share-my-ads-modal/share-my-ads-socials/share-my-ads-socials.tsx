@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { FacebookShareButton, TelegramShareButton, TwitterShareButton, WhatsappShareButton } from 'react-share';
-import { Icon } from '@deriv-app/components';
+import { Icon } from '@deriv-lib/components';
 
 type TShareMyAdsSocialsProps = {
     advert_url: string;

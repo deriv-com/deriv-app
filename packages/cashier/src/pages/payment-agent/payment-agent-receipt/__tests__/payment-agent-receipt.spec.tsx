@@ -3,12 +3,12 @@ import PaymentAgentReceipt from '../payment-agent-receipt';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { isMobile, routes } from '@deriv-app/shared';
+import { isMobile, routes } from '@deriv-lib/shared';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isMobile: jest.fn(() => false),
 }));
 

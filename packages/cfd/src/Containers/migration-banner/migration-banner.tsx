@@ -1,16 +1,16 @@
 import React from 'react';
 import { Analytics } from '@deriv-com/analytics';
 import classNames from 'classnames';
-import { Button, Text } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
-import { observer, useStore } from '@deriv-app/stores';
-import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
+import { Button, Text } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
+import { observer, useStore } from '@deriv-lib/stores';
+import { useMT5SVGEligibleToMigrate } from '@deriv-lib/hooks';
 import {
     JURISDICTION_MARKET_TYPES,
     getFormattedJurisdictionMarketTypes,
     getCFDPlatformNames,
     CFD_PLATFORMS,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import MigrationBannerImage from './migration-banner-image';
 import './migration-banner.scss';

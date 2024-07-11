@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { useSettings } from '@deriv-app/api';
+import { useSettings } from '@deriv-lib/api';
 import { ResidenceList } from '@deriv/api-types';
-import { Loading, ThemedScrollbars } from '@deriv-app/components';
-import { useNotificationEvent, useServiceToken } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv-app/stores';
+import { Loading, ThemedScrollbars } from '@deriv-lib/components';
+import { useNotificationEvent, useServiceToken } from '@deriv-lib/hooks';
+import { observer, useStore } from '@deriv-lib/stores';
 import ErrorMessage from '../../../Components/error-component';
 import MissingPersonalDetails from '../../../Components/poi/missing-personal-details';
 import PoiConfirmWithExampleFormContainer from '../../../Components/poi/poi-confirm-with-example-form-container';

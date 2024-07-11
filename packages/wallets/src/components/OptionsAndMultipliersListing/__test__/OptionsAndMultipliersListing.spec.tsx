@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { APIProvider, AuthProvider, useActiveLinkedToTradingAccount } from '@deriv-app/api-v2';
+import { APIProvider, AuthProvider, useActiveLinkedToTradingAccount } from '@deriv-lib/api-v2';
 import { render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../ModalProvider';
 import OptionsAndMultipliersListing from '../OptionsAndMultipliersListing';
@@ -12,8 +12,8 @@ jest.mock('react-router-dom', () => ({
     }),
 }));
 
-jest.mock('@deriv-app/api-v2', () => ({
-    ...jest.requireActual('@deriv-app/api-v2'),
+jest.mock('@deriv-lib/api-v2', () => ({
+    ...jest.requireActual('@deriv-lib/api-v2'),
     useActiveLinkedToTradingAccount: jest.fn(),
 }));
 

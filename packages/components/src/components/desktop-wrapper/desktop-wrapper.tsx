@@ -1,4 +1,4 @@
-import { isDesktop } from '@deriv-app/shared';
+import { isDesktop } from '@deriv-lib/shared';
 import React from 'react';
 
 type TDesktopProps = {

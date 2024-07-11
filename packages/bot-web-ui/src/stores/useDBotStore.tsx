@@ -1,6 +1,6 @@
 import React, { createContext, PropsWithChildren, useContext, useMemo } from 'react';
 import { DBot } from '@deriv/bot-skeleton';
-import { useStore } from '@deriv-app/stores';
+import { useStore } from '@deriv-lib/stores';
 import type { TWebSocket } from 'Types';
 import RootStore from './root-store';
 

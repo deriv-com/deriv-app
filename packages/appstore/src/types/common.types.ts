@@ -1,5 +1,5 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { useStore } from '@deriv-app/stores';
+import { useStore } from '@deriv-lib/stores';
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { RegionAvailability } from 'Constants/platform-config';
 

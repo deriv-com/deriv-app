@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '@deriv-app/components';
+import { Icon } from '@deriv-lib/components';
 import PropTypes from 'prop-types';
 
 const ChatFooterIcon = React.memo(({ should_show_attachment_icon }) => (

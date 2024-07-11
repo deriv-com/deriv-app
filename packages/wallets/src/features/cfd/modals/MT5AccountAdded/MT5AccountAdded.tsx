@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useJurisdictionStatus, useMT5AccountsList, usePOA, usePOI } from '@deriv-app/api-v2';
+import { useActiveWalletAccount, useJurisdictionStatus, useMT5AccountsList, usePOA, usePOI } from '@deriv-lib/api-v2';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';

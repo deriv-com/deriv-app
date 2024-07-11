@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Button, Div100vhContainer, Icon, Text } from '@deriv-app/components';
-import { getCurrencyDisplayCode, isDesktop, isMobile, routes } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv-app/translations';
+import { Button, Div100vhContainer, Icon, Text } from '@deriv-lib/components';
+import { getCurrencyDisplayCode, isDesktop, isMobile, routes } from '@deriv-lib/shared';
+import { localize, Localize } from '@deriv-lib/translations';
 
 const SuccessMessage = ({ prev, current }) =>
     prev ? (

@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { APIProvider } from '@deriv-app/api';
-import { useP2PSettings } from '@deriv-app/hooks';
-import { mockStore, P2PSettingsProvider, StoreProvider } from '@deriv-app/stores';
+import { APIProvider } from '@deriv-lib/api';
+import { useP2PSettings } from '@deriv-lib/hooks';
+import { mockStore, P2PSettingsProvider, StoreProvider } from '@deriv-lib/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores/index';
 import MyAdsFloatingRateSwitchModal from '../my-ads-floating-rate-switch-modal';
@@ -45,8 +45,8 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
     </APIProvider>
 );
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useP2PSettings: jest.fn().mockReturnValue({
         p2p_settings: {
             reached_target_date: false,

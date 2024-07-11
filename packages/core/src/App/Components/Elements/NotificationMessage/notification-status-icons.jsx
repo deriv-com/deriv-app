@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon } from '@deriv-app/components';
+import { Icon } from '@deriv-lib/components';
 import { icon_types } from './constants';
 
 const NotificationStatusIcons = ({ type, class_suffix }) => {

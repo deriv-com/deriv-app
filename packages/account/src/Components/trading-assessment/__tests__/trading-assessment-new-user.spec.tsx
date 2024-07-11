@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import TradingAssessmentNewUser from '../trading-assessment-new-user';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 
 describe('TradingAssessmentNewUser', () => {
     const mockgotoNextStep = jest.fn();

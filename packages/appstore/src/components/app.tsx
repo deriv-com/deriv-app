@@ -1,7 +1,7 @@
 import React from 'react';
 import CashierStoreProvider from '@deriv/cashier/src/cashier-providers';
 import CFDStoreProvider from '@deriv/cfd/src/cfd-providers';
-import { StoreProvider } from '@deriv-app/stores';
+import { StoreProvider } from '@deriv-lib/stores';
 import { TranslationProvider } from '@deriv-com/translations';
 import AppContent from './app-content';
 import './app.scss';

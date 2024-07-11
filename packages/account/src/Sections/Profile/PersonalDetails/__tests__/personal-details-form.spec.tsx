@@ -2,19 +2,19 @@ import React from 'react';
 import { cleanup, render, waitFor, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { APIProvider } from '@deriv-app/api';
+import { APIProvider } from '@deriv-lib/api';
 import userEvent from '@testing-library/user-event';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import PersonalDetailsForm from '../personal-details-form';
-import { useResidenceList } from '@deriv-app/hooks';
+import { useResidenceList } from '@deriv-lib/hooks';
 
 afterAll(cleanup);
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Loading: () => <div>Loading</div>,
 }));
 
-jest.mock('@deriv-app/shared/src/services/ws-methods', () => ({
+jest.mock('@deriv-lib/shared/src/services/ws-methods', () => ({
     WS: {
         wait: (...payload: []) => Promise.resolve([...payload]),
     },
@@ -28,8 +28,8 @@ const residence_list = [
     },
 ];
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useStatesList: jest.fn(() => ({ data: residence_list, isLoading: false })),
     useResidenceList: jest.fn(() => ({ data: residence_list, isLoading: false })),
 }));

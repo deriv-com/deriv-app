@@ -1,5 +1,5 @@
 import { getHoveredColor } from '../barrier-utils';
-import { CONTRACT_TYPES } from '@deriv-app/shared';
+import { CONTRACT_TYPES } from '@deriv-lib/shared';
 
 describe('getHoveredColor', () => {
     it('should return red color (#ec3f3f) if passed value is TRADE_TYPES.TURBOS.SHORT', () => {

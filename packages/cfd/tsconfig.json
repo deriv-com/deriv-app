@@ -13,7 +13,7 @@
             "Stores/*": ["./src/Stores/*"],
             "Types/*": ["./src/types/*"],
             "Utils/*": ["./src/Utils/*"],
-            "@deriv-app/*": ["../*/src"],
+            "@deriv-lib/*": ["../*/src"],
         },
         "outDir": "./dist",
         "baseUrl": "./"

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';

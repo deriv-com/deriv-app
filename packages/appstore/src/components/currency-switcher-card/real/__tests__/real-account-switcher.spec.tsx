@@ -1,9 +1,9 @@
 import React from 'react';
 import RealAccountSwitcher from '../real-account-switcher';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
-import { MT5_ACCOUNT_STATUS } from '@deriv-app/shared';
-import { useMFAccountStatus } from '@deriv-app/hooks';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
+import { MT5_ACCOUNT_STATUS } from '@deriv-lib/shared';
+import { useMFAccountStatus } from '@deriv-lib/hooks';
 
 jest.mock('Components/containers/currency-switcher-container', () => ({
     __esModule: true,
@@ -23,8 +23,8 @@ jest.mock('@deriv/account', () => ({
     }),
 }));
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useMFAccountStatus: jest.fn(),
 }));
 

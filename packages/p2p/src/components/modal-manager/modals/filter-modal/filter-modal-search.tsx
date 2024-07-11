@@ -1,9 +1,9 @@
 import React from 'react';
 import { Field as FormField, Formik, Form, FormikValues } from 'formik';
 import debounce from 'lodash.debounce';
-import { Icon, Input } from '@deriv-app/components';
-import { isDesktop } from '@deriv-app/shared';
-import { observer } from '@deriv-app/stores';
+import { Icon, Input } from '@deriv-lib/components';
+import { isDesktop } from '@deriv-lib/shared';
+import { observer } from '@deriv-lib/stores';
 import { localize } from 'Components/i18next';
 // @ts-ignore
 import { useStores } from 'Stores';

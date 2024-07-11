@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import EmailVerificationEmptyState from '../email-verification-empty-state';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import CashierProviders from '../../../cashier-providers';
 
 const mock_store = mockStore({

@@ -2,8 +2,8 @@ import React from 'react';
 import clsx from 'clsx';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { GetSettings } from '@deriv/api-types';
-import { Checkbox, HintBox, Loading, Text } from '@deriv-app/components';
-import { Localize, localize } from '@deriv-app/translations';
+import { Checkbox, HintBox, Loading, Text } from '@deriv-lib/components';
+import { Localize, localize } from '@deriv-lib/translations';
 import {
     filterObjProperties,
     isEmptyObject,
@@ -11,7 +11,7 @@ import {
     removeEmptyPropertiesFromObject,
     toMoment,
     WS,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import FormBody from '../../form-body';
 import LoadErrorMessage from '../../load-error-message';

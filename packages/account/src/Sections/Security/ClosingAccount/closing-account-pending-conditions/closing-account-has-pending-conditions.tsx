@@ -1,9 +1,9 @@
 import React from 'react';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { Button, Money, ThemedScrollbars } from '@deriv-app/components';
-import { CFD_PLATFORMS, formatMoney } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv-app/translations';
+import { Button, Money, ThemedScrollbars } from '@deriv-lib/components';
+import { CFD_PLATFORMS, formatMoney } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize } from '@deriv-lib/translations';
 import {
     TAccounts,
     TDetailsOfDerivAccount,

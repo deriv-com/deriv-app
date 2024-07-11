@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Loading } from '@deriv-app/components';
-import { useP2PCountryList } from '@deriv-app/hooks';
+import { Loading } from '@deriv-lib/components';
+import { useP2PCountryList } from '@deriv-lib/hooks';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 // @ts-ignore

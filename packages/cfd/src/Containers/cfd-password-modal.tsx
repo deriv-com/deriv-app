@@ -15,7 +15,7 @@ import {
     Text,
     MobileWrapper,
     DesktopWrapper,
-} from '@deriv-app/components';
+} from '@deriv-lib/components';
 import {
     getAuthenticationStatusInfo,
     getCFDPlatformLabel,
@@ -26,9 +26,9 @@ import {
     validPassword,
     validMT5Password,
     WS,
-} from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+} from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 
 import { TProducts } from '../Components/props.types';
 import SuccessDialog from '../Components/success-dialog.jsx';

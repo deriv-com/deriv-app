@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize, localize } from '@deriv-app/translations';
+import { Localize, localize } from '@deriv-lib/translations';
 
 const getPaymentMethodsConfig = () => ({
     advcash: {

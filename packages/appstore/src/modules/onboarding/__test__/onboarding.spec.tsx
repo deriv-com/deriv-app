@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import Onboarding from '../onboarding';
 
 // Mock TradingPlatformIcon component

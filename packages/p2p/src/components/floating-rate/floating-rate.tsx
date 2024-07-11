@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { setDecimalPlaces, removeTrailingZeros, percentOf, roundOffDecimal } from 'Utils/format-value';
-import { InputField, Text } from '@deriv-app/components';
-import { useP2PExchangeRate, useP2PSettings } from '@deriv-app/hooks';
-import { formatMoney, isMobile, mobileOSDetect } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { InputField, Text } from '@deriv-lib/components';
+import { useP2PExchangeRate, useP2PSettings } from '@deriv-lib/hooks';
+import { formatMoney, isMobile, mobileOSDetect } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import { localize } from 'Components/i18next';
 
 type TFloatingRate = {

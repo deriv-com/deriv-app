@@ -1,4 +1,4 @@
-import { ChartBarrierStore } from '@deriv-app/shared';
+import { ChartBarrierStore } from '@deriv-lib/shared';
 import ClientStore from './client-store';
 import CommonStore from './common-store';
 import GTMStore from './gtm-store';

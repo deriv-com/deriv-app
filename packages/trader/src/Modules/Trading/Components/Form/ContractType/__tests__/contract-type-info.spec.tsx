@@ -1,10 +1,10 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import Info from '../ContractTypeInfo/contract-type-info';
 import { TContractCategory } from '../types';
-import { TRADE_TYPES } from '@deriv-app/shared';
+import { TRADE_TYPES } from '@deriv-lib/shared';
 import TraderProviders from '../../../../../../trader-providers';
 
 jest.mock('Assets/Trading/Categories/trade-categories-gif', () => jest.fn(() => 'TradeCategoriesGif'));
@@ -14,8 +14,8 @@ jest.mock('../../../../Helpers/contract-type', () => ({
     ...jest.requireActual('../../../../Helpers/contract-type'),
     isMajorPairsSymbol: jest.fn(() => true),
 }));
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Dropdown: jest.fn(() => <div>Dropdown</div>),
 }));
 

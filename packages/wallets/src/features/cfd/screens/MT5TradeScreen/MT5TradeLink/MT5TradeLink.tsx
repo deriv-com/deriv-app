@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useCtraderServiceToken } from '@deriv-app/api-v2';
+import { useCtraderServiceToken } from '@deriv-lib/api-v2';
 import { Divider } from '@deriv-com/ui';
 import { WalletButton, WalletText } from '../../../../../components/Base';
 import { getPlatformFromUrl } from '../../../../../helpers/urls';

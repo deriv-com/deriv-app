@@ -1,12 +1,12 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { render, screen } from '@testing-library/react';
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 import Header from '../header';
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useStoreWalletAccountsList: jest.fn(() => ({ data: [], has_wallet: false })),
     useFeatureFlags: jest.fn(() => ({})),
 }));

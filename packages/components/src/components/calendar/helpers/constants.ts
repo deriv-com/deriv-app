@@ -1,4 +1,4 @@
-import { toMoment } from '@deriv-app/shared';
+import { toMoment } from '@deriv-lib/shared';
 import moment from 'moment';
 
 export const week_headers: Record<

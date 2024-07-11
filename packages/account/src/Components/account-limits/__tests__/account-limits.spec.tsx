@@ -1,20 +1,20 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { formatMoney } from '@deriv-app/shared';
+import { formatMoney } from '@deriv-lib/shared';
 import { useDevice } from '@deriv-com/ui';
 import AccountLimits from '../account-limits';
 import { BrowserRouter } from 'react-router-dom';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 
-jest.mock('@deriv-app/components', () => {
-    const original_module = jest.requireActual('@deriv-app/components');
+jest.mock('@deriv-lib/components', () => {
+    const original_module = jest.requireActual('@deriv-lib/components');
 
     return {
         ...original_module,
         Loading: jest.fn(() => 'mockedLoading'),
     };
 });
-jest.mock('@deriv-app/shared/src/services/ws-methods', () => ({
+jest.mock('@deriv-lib/shared/src/services/ws-methods', () => ({
     __esModule: true, // this property makes it work,
     default: 'mockedDefaultExport',
     useWS: () => undefined,
@@ -25,8 +25,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     formatMoney: jest.fn(),
 }));
 

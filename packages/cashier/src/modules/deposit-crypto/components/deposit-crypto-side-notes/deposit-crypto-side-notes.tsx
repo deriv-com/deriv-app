@@ -1,6 +1,6 @@
 import React from 'react';
-import { useCurrentCurrencyConfig } from '@deriv-app/hooks';
-import { observer } from '@deriv-app/stores';
+import { useCurrentCurrencyConfig } from '@deriv-lib/hooks';
+import { observer } from '@deriv-lib/stores';
 import { TransactionsCryptoTransactionStatusSideNote } from '../../../transactions-crypto/components';
 import DepositCryptoSideNoteUSDT from './deposit-crypto-side-note-usdt';
 import './deposit-crypto-side-notes.scss';

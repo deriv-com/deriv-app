@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
-import { IDV_ERROR_STATUS } from '@deriv-app/shared';
+import { IDV_ERROR_STATUS } from '@deriv-lib/shared';
 import IdvSubmitComplete from '../idv-submit-complete';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 
 jest.mock('@deriv/quill-icons', () => ({
     ...jest.requireActual('@deriv/quill-icons'),

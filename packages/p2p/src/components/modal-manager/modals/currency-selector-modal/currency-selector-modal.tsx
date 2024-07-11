@@ -1,7 +1,7 @@
 import React from 'react';
-import { MobileFullPageModal } from '@deriv-app/components';
-import { useP2PSettings } from '@deriv-app/hooks';
-import { observer } from '@deriv-app/stores';
+import { MobileFullPageModal } from '@deriv-lib/components';
+import { useP2PSettings } from '@deriv-lib/hooks';
+import { observer } from '@deriv-lib/stores';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import CurrencySelector from 'Pages/buy-sell/currency-selector/currency-selector';

@@ -1,7 +1,7 @@
 import React from 'react';
-import { DesktopWrapper, Dropdown, Icon, Loading, MobileWrapper, SelectNative, Text } from '@deriv-app/components';
-import { useStore, observer } from '@deriv-app/stores';
-import { localize, Localize } from '@deriv-app/translations';
+import { DesktopWrapper, Dropdown, Icon, Loading, MobileWrapper, SelectNative, Text } from '@deriv-lib/components';
+import { useStore, observer } from '@deriv-lib/stores';
+import { localize, Localize } from '@deriv-lib/translations';
 import SideNote from 'Components/side-note';
 import MissingPaymentMethodNote from '../missing-payment-method-note';
 import PaymentAgentCard from '../payment-agent-card';

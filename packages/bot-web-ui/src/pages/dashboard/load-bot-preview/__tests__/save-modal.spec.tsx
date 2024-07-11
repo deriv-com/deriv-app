@@ -1,5 +1,5 @@
 import React from 'react';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
@@ -10,12 +10,12 @@ import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import SaveModal from '../save-modal';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
 }));
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
 }));
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());

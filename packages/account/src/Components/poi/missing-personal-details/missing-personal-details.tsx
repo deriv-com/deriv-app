@@ -1,6 +1,6 @@
 import React from 'react';
-import { ButtonLink, Icon, Text } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { ButtonLink, Icon, Text } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 import IconMessageContent from '../../icon-message-content';
 
 type TGoToPersonalDetailsButton = {

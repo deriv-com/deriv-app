@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field, Form, FormikBag, FormikValues } from 'formik';
-import { Button, Icon, Input, Loading, Text } from '@deriv-app/components';
-import { useP2PAdvertiserPaymentMethods } from '@deriv-app/hooks';
-import { isDesktop } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { Button, Icon, Input, Loading, Text } from '@deriv-lib/components';
+import { useP2PAdvertiserPaymentMethods } from '@deriv-lib/hooks';
+import { isDesktop } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 // @ts-ignore
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';

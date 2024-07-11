@@ -2,11 +2,11 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import TraderProviders from '../../../trader-providers';
 import TradeHeaderExtensions from '../trade-header-extensions';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import ui from '@deriv-com/ui';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     WS: {
         wait: jest.fn(() => Promise.resolve('authorized')),
     },

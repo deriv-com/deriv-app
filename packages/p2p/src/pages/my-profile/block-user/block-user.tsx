@@ -1,7 +1,7 @@
 import React from 'react';
 import { reaction } from 'mobx';
-import { DesktopWrapper, MobileFullPageModal, MobileWrapper } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
+import { DesktopWrapper, MobileFullPageModal, MobileWrapper } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { api_error_codes } from 'Constants/api-error-codes';

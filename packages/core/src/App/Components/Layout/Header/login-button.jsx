@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button } from '@deriv-app/components';
-import { redirectToLogin } from '@deriv-app/shared';
-import { getLanguage, localize } from '@deriv-app/translations';
+import { Button } from '@deriv-lib/components';
+import { redirectToLogin } from '@deriv-lib/shared';
+import { getLanguage, localize } from '@deriv-lib/translations';
 
 const LoginButton = ({ className }) => (
     <Button

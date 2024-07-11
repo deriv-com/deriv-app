@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon } from '@deriv-app/components';
-import { localize, Localize } from '@deriv-app/translations';
+import { Icon } from '@deriv-lib/components';
+import { localize, Localize } from '@deriv-lib/translations';
 import IconMessageContent from '../../../icon-message-content';
 
 export const POILimited = () => (

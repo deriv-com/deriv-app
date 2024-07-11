@@ -4,10 +4,10 @@ import classNames from 'classnames';
 import { FormikValues } from 'formik';
 
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { Button, DesktopWrapper, Icon, MobileWrapper, Money, Text } from '@deriv-app/components';
-import { getCFDPlatformLabel, isMobile, mobileOSDetect } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+import { Button, DesktopWrapper, Icon, MobileWrapper, Money, Text } from '@deriv-lib/components';
+import { getCFDPlatformLabel, isMobile, mobileOSDetect } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 
 import {
     getCTraderWebTerminalLink,

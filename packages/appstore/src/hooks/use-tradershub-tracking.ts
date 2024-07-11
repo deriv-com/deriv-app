@@ -1,5 +1,5 @@
 import { Analytics } from '@deriv-com/analytics';
-import { useStore } from '@deriv-app/stores';
+import { useStore } from '@deriv-lib/stores';
 import { useCallback, useMemo } from 'react';
 
 // This hook is used to track the onboarding form in TradersHub

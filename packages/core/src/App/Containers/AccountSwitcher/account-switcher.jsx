@@ -14,11 +14,11 @@ import {
     Text,
     useOnClickOutside,
     Loading,
-} from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { routes, formatMoney, ContentFlag } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv-app/translations';
-import { useHasSetCurrency } from '@deriv-app/hooks';
+} from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { routes, formatMoney, ContentFlag } from '@deriv-lib/shared';
+import { localize, Localize } from '@deriv-lib/translations';
+import { useHasSetCurrency } from '@deriv-lib/hooks';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { BinaryLink } from 'App/Components/Routes';
 import AccountList from './account-switcher-account-list.jsx';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { AdditionalKycInfoModal } from '../additional-kyc-info-modal';
 
 jest.mock('../additional-kyc-info-form.tsx', () => jest.fn(() => <div>AdditionalKycInfoForm</div>));

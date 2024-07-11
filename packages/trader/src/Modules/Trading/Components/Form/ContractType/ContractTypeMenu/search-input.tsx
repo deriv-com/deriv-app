@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon, Input } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { Icon, Input } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 
 type TSearchInput = {
     onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement | null>;

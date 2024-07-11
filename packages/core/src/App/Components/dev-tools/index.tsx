@@ -1,6 +1,6 @@
 import React from 'react';
 import MockDialog from './mock-dialog';
-import { useLocalStorageData } from '@deriv-app/hooks';
+import { useLocalStorageData } from '@deriv-lib/hooks';
 
 const DevTools = () => {
     const [show_mockserver_panel, setShowMockServerPanel] = useLocalStorageData<boolean>(

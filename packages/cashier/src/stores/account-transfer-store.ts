@@ -14,8 +14,8 @@ import {
     isEmptyObject,
     routes,
     validNumber,
-} from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+} from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 
 import AccountTransferGetSelectedError from '../pages/account-transfer/account-transfer-get-selected-error';
 import type { TAccount, TPlatformIcon, TRootStore, TTransferAccount, TWebSocket } from '../types';

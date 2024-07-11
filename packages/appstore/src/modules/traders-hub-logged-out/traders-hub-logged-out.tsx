@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useDevice } from '@deriv-com/ui';
-import { observer, useStore } from '@deriv-app/stores';
-import { Div100vhContainer, Loading, Text } from '@deriv-app/components';
-import { isEuCountry } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Div100vhContainer, Loading, Text } from '@deriv-lib/components';
+import { isEuCountry } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
 import OrderedPlatformSections from 'Components/ordered-platform-sections';
 import GetStartedTradingBanner from 'Components/get-started-trading-banner';
 import TabsOrTitle from 'Components/tabs-or-title';

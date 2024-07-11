@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer } from '@deriv-app/stores';
+import { observer } from '@deriv-lib/stores';
 import { getSetting } from 'Utils/settings';
 import { useDBotStore } from 'Stores/useDBotStore';
 import ReactJoyrideWrapper from '../common/react-joyride-wrapper';

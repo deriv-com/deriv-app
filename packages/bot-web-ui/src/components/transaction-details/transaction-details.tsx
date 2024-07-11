@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
-import { Loading } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
+import { Loading } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
 import TransactionDetailsDesktop from './transaction-details-desktop';
 import TransactionDetailsMobile from './transaction-details-mobile';
 

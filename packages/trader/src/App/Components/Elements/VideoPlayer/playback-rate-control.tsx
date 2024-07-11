@@ -1,6 +1,6 @@
 import React from 'react';
-import { Dropdown, Icon } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { Dropdown, Icon } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 
 type TPlaybackRateControl = {
     onPlaybackRateChange: (new_value: number) => void;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useWalletMigration } from '@deriv-app/hooks';
-import { makeLazyLoader, moduleLoader } from '@deriv-app/shared';
-import { Loading } from '@deriv-app/components';
+import { useWalletMigration } from '@deriv-lib/hooks';
+import { makeLazyLoader, moduleLoader } from '@deriv-lib/shared';
+import { Loading } from '@deriv-lib/components';
 import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 // @ts-ignore
 import { useStores } from 'Stores';

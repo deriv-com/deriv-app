@@ -1,9 +1,9 @@
 import React from 'react';
 import { FormikHandlers, FormikValues, useFormikContext } from 'formik';
-import { Dropdown, Icon, Popover, Text } from '@deriv-app/components';
+import { Dropdown, Icon, Popover, Text } from '@deriv-lib/components';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import { useStore } from '@deriv-app/stores';
+import { useStore } from '@deriv-lib/stores';
 
 type TFormikContext = {
     handleChange: FormikHandlers['handleChange'];

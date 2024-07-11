@@ -1,8 +1,8 @@
 import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
-import { makeLazyLoader, routes, moduleLoader } from '@deriv-app/shared';
-import { Loading } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { makeLazyLoader, routes, moduleLoader } from '@deriv-lib/shared';
+import { Loading } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 import Redirect from 'App/Containers/Redirect';
 import RootComponent from 'App/Containers/RootComponent';
 import Endpoint from 'Modules/Endpoint';

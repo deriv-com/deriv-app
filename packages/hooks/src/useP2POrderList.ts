@@ -1,4 +1,4 @@
-import { useSubscription } from '@deriv-app/api';
+import { useSubscription } from '@deriv-lib/api';
 
 /** A custom hook to subscribe to p2p_order_list */
 const useP2POrderList = () => {

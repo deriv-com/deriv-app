@@ -1,5 +1,5 @@
-import { localize } from '@deriv-app/translations';
-import { getPropertyValue } from '@deriv-app/shared';
+import { localize } from '@deriv-lib/translations';
+import { getPropertyValue } from '@deriv-lib/shared';
 
 export const getClientAccountType = loginid => {
     let account_type;

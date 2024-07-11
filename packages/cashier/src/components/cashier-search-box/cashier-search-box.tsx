@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Field as FormField, Formik, Form, FieldProps } from 'formik';
-import { Icon, Input } from '@deriv-app/components';
+import { Icon, Input } from '@deriv-lib/components';
 import './cashier-search-box.scss';
 
 type TCashierSearchBoxProps = {

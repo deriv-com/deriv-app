@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, render, screen, waitFor } from '@testing-library/react';
-import { mockStore } from '@deriv-app/stores';
-import { TCoreStores } from '@deriv-app/stores/types';
+import { mockStore } from '@deriv-lib/stores';
+import { TCoreStores } from '@deriv-lib/stores/types';
 import { ActiveSymbols, TradingTimesResponse } from '@deriv/api-types';
 import MarketCountdownTimer from '../market-countdown-timer';
 import TraderProviders from '../../../../trader-providers';
@@ -38,8 +38,8 @@ const default_mock_store = {
     },
 };
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     WS: {
         tradingTimes: () => ({
             api_initial_load_error: false,

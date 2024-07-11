@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, useOnClickOutside, Modal, Button } from '@deriv-app/components';
-import { useStore, observer } from '@deriv-app/stores';
-import { Localize } from '@deriv-app/translations';
+import { Text, useOnClickOutside, Modal, Button } from '@deriv-lib/components';
+import { useStore, observer } from '@deriv-lib/stores';
+import { Localize } from '@deriv-lib/translations';
 import './wallets-migration-failed.scss';
 
 const WalletsMigrationFailed = observer(() => {

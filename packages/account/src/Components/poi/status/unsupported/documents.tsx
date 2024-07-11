@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from '@deriv-app/components';
+import { Card } from '@deriv-lib/components';
 import { CardWithArrow } from './card-with-arrow';
 import { getDocumentIndex } from './constants';
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Div100vhContainer, SwipeableWrapper } from '@deriv-app/components';
+import { Div100vhContainer, SwipeableWrapper } from '@deriv-lib/components';
 import { TickSpotData } from '@deriv/api-types';
-import { TRADE_TYPES, isTabletOs } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { TRADE_TYPES, isTabletOs } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';

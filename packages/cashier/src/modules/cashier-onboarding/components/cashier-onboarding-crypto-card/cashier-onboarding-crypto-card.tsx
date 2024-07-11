@@ -1,7 +1,7 @@
 import React from 'react';
-import { useCurrentCurrencyConfig, useHasCryptoCurrency } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { useCurrentCurrencyConfig, useHasCryptoCurrency } from '@deriv-lib/hooks';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import { useCashierStore } from '../../../../stores/useCashierStores';
 import { CashierOnboardingCard } from '../cashier-onboarding-card';
 import { CashierOnboardingIconMarquee } from '../cashier-onboarding-icon-marquee';

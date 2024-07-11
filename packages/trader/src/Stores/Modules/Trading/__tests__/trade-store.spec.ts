@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { waitFor } from '@testing-library/react';
 import { Analytics, TEvents } from '@deriv-com/analytics';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import TradeStore from '../trade-store';
 import { configure } from 'mobx';
 import { ContractType } from '../Helpers/contract-type';
@@ -29,7 +29,7 @@ const activeSymbols = [
     },
 ];
 
-jest.mock('@deriv-app/shared', () => {
+jest.mock('@deriv-lib/shared', () => {
     const commonRiseFallProperties = {
         barrier_category: 'euro_atm',
         barriers: 0,
@@ -225,7 +225,7 @@ jest.mock('@deriv-app/shared', () => {
         req_id: 31,
     };
     return {
-        ...jest.requireActual('@deriv-app/shared'),
+        ...jest.requireActual('@deriv-lib/shared'),
         pickDefaultSymbol: jest.fn(() => Promise.resolve(symbol)),
         WS: {
             authorized: {

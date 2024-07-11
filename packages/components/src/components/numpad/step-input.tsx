@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { isCryptocurrency } from '@deriv-app/shared';
+import { isCryptocurrency } from '@deriv-lib/shared';
 import Input from '../input/input';
 import Button from '../button/button';
 

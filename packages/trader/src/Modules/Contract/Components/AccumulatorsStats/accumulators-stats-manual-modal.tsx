@@ -1,7 +1,7 @@
 import React from 'react';
-import { Icon, Loading, Modal, Text } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
-import { getUrlBase, isMobile } from '@deriv-app/shared';
+import { Icon, Loading, Modal, Text } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
+import { getUrlBase, isMobile } from '@deriv-lib/shared';
 import 'Sass/app/modules/contract/accumulators-stats.scss';
 
 type TAccumulatorsStatsManualModal = {

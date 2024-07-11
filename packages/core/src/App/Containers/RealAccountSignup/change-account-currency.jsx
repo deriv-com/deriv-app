@@ -1,10 +1,10 @@
 import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { FormSubmitButton, Text } from '@deriv-app/components';
-import { isMobile, reorderCurrencies } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize, Localize } from '@deriv-app/translations';
+import { FormSubmitButton, Text } from '@deriv-lib/components';
+import { isMobile, reorderCurrencies } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize, Localize } from '@deriv-lib/translations';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
 import './currency-selector.scss';
 

@@ -8,7 +8,7 @@ import {
     isTurbosContract,
     toMoment,
     TRADE_TYPES,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 import { TError, TTradeStore } from 'Types';
 
 type TObjContractBasis = {

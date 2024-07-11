@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, InputField } from '@deriv-app/components';
+import { Icon, InputField } from '@deriv-lib/components';
 import Dialog from './dialog';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import moment from 'moment';
 import { useTraderStore } from 'Stores/useTraderStores';
 

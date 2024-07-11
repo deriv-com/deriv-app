@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useActiveWalletAccount } from '@deriv-app/api-v2';
+import { useActiveWalletAccount } from '@deriv-lib/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { TradingAccountCard, WalletText } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';

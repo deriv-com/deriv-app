@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv-app/stores';
-import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv-app/shared';
-import { TCoreStores } from '@deriv-app/stores/types';
+import { mockStore } from '@deriv-lib/stores';
+import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv-lib/shared';
+import { TCoreStores } from '@deriv-lib/stores/types';
 import { useTraderStore } from 'Stores/useTraderStores';
 import TraderProviders from '../../../../../../trader-providers';
 import Amount from '../amount';
@@ -43,8 +43,8 @@ const mocked_multiplier = 'Mocked Multiplier Component';
 const mocked_multiplier_info = 'Mocked Multiplier Info Component';
 const mocked_min_max_stake_info = 'Mocked Min Max Stake Info Component';
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     InputField: jest.fn(() => <div>{mocked_input_field}</div>),
     Dropdown: jest.fn(() => <div>{mocked_dropdown}</div>),
     ButtonToggle: jest.fn(() => <div>{mocked_button_toggle}</div>),

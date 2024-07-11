@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter, useHistory, useLocation } from 'react-router-dom';
 import DTraderContractDetailsHeader from '../dtrader-v2-contract-detail-header';
 import userEvent from '@testing-library/user-event';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 
 jest.mock('@deriv-com/quill-ui', () => ({
     Text: () => <div>Contract Details</div>,

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { APIProvider, useRequest } from '@deriv-app/api';
+import { APIProvider, useRequest } from '@deriv-lib/api';
 import { renderHook } from '@testing-library/react-hooks';
 import useDepositCryptoAddress from '../useDepositCryptoAddress';
 
-jest.mock('@deriv-app/api', () => ({
-    ...jest.requireActual('@deriv-app/api'),
+jest.mock('@deriv-lib/api', () => ({
+    ...jest.requireActual('@deriv-lib/api'),
     useRequest: jest.fn(() => ({ mutate: jest.fn() })),
 }));
 

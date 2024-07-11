@@ -1,12 +1,12 @@
 import React, { PropsWithChildren } from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { useActiveWalletAccount } from '@deriv-app/api-v2';
+import { useActiveWalletAccount } from '@deriv-lib/api-v2';
 import { render, screen } from '@testing-library/react';
 import useDevice from '../../../hooks/useDevice';
 import WalletListCardActions from '../WalletListCardActions';
 
-jest.mock('@deriv-app/api-v2', () => ({
+jest.mock('@deriv-lib/api-v2', () => ({
     useActiveWalletAccount: jest.fn(() => ({
         data: {
             currency: 'USD',

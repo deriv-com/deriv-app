@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { APIProvider, useQuery } from '@deriv-app/api';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { APIProvider, useQuery } from '@deriv-lib/api';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useHasMFAccountDeposited from '../useHasMFAccountDeposited';
 
-jest.mock('@deriv-app/api', () => ({
-    ...jest.requireActual('@deriv-app/api'),
+jest.mock('@deriv-lib/api', () => ({
+    ...jest.requireActual('@deriv-lib/api'),
     useQuery: jest.fn(() => ({ data: { get_account_status: { status: [] } } })),
 }));
 

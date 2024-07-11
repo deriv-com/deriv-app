@@ -1,10 +1,10 @@
 import Routes from './Containers/routes';
 import ResetTradingPassword from './Containers/reset-trading-password';
 import { NetworkStatusToastErrorPopup } from './Containers/toast-popup';
-import { APIProvider } from '@deriv-app/api';
-import { StoreProvider } from '@deriv-app/stores';
-import { TCoreStores } from '@deriv-app/stores/types';
-import { POIProvider } from '@deriv-app/shared';
+import { APIProvider } from '@deriv-lib/api';
+import { StoreProvider } from '@deriv-lib/stores';
+import { TCoreStores } from '@deriv-lib/stores/types';
+import { POIProvider } from '@deriv-lib/shared';
 
 // TODO: add correct types for WS after implementing them
 type TAppProps = {

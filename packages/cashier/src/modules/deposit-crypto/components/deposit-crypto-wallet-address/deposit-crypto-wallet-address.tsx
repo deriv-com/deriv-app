@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button, Clipboard, InlineMessage, Loading, Text } from '@deriv-app/components';
-import { useDepositCryptoAddress } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
-import { setPerformanceValue } from '@deriv-app/shared';
+import { Button, Clipboard, InlineMessage, Loading, Text } from '@deriv-lib/components';
+import { useDepositCryptoAddress } from '@deriv-lib/hooks';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
+import { setPerformanceValue } from '@deriv-lib/shared';
 import QRCode from 'qrcode.react';
 import { DepositCryptoDisclaimers } from '../deposit-crypto-disclaimers';
 import './deposit-crypto-wallet-address.scss';

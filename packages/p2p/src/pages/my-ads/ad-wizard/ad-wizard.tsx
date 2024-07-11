@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopWrapper, FormProgress, Icon, MobileWrapper, Text, Wizard } from '@deriv-app/components';
+import { DesktopWrapper, FormProgress, Icon, MobileWrapper, Text, Wizard } from '@deriv-lib/components';
 import { Localize } from 'Components/i18next';
 import AdConditionsSection from 'Pages/my-ads/ad-conditions-section';
 import AdPaymentDetailsSection from 'Pages/my-ads/ad-payment-details-section';

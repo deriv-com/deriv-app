@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Popup } from '@deriv-app/components';
+import { Popup } from '@deriv-lib/components';
 import SelfExclusionArticleContent from '../self-exclusion-article-content';
 import SelfExclusionContext from '../self-exclusion-context';
 import { createPortal } from 'react-dom';

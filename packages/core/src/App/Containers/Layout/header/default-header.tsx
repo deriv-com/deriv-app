@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { getDecimalPlaces, platforms, routes } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { getDecimalPlaces, platforms, routes } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import { MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import NewVersionNotification from 'App/Containers/new-version-notification.jsx';

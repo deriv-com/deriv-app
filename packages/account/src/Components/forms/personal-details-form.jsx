@@ -11,9 +11,9 @@ import {
     RadioGroup,
     SelectNative,
     Text,
-} from '@deriv-app/components';
-import { getLegalEntityName, routes, validPhone } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv-app/translations';
+} from '@deriv-lib/components';
+import { getLegalEntityName, routes, validPhone } from '@deriv-lib/shared';
+import { Localize, localize } from '@deriv-lib/translations';
 import { isFieldImmutable, verifyFields } from '../../Helpers/utils';
 import { getEmploymentStatusList } from '../../Sections/Assessment/FinancialAssessment/financial-information-list';
 import FormBodySection from '../form-body-section';

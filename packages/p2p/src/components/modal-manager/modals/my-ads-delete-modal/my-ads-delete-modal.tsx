@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Modal, Text } from '@deriv-app/components';
-import { isDesktop } from '@deriv-app/shared';
-import { observer } from '@deriv-app/stores';
+import { Button, Modal, Text } from '@deriv-lib/components';
+import { isDesktop } from '@deriv-lib/shared';
+import { observer } from '@deriv-lib/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 // @ts-ignore

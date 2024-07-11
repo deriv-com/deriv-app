@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { isMobile } from '@deriv-app/shared';
+import { isMobile } from '@deriv-lib/shared';
 import Text from '../text';
 
 type TBadgeSize = 'medium' | 'large';

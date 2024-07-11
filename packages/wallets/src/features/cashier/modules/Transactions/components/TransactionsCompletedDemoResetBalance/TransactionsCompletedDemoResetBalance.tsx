@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
-import { useActiveWalletAccount, useAllAccountsList, useTransactions } from '@deriv-app/api-v2';
+import { useActiveWalletAccount, useAllAccountsList, useTransactions } from '@deriv-lib/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { WalletText } from '../../../../../../components/Base';
 import { TransactionsCompletedRow } from '../TransactionsCompletedRow';

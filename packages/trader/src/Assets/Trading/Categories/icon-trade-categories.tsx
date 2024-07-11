@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Icon } from '@deriv-app/components';
-import { TRADE_TYPES } from '@deriv-app/shared';
+import { Icon } from '@deriv-lib/components';
+import { TRADE_TYPES } from '@deriv-lib/shared';
 
 type TIconTradeCategory = {
     category: string;

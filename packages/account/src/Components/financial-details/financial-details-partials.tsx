@@ -1,8 +1,8 @@
 import React from 'react';
 import { Field, FormikValues, useFormikContext } from 'formik';
-import { Dropdown, SelectNative } from '@deriv-app/components';
-import { EMPLOYMENT_VALUES, TEmploymentStatus, shouldHideOccupationField } from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+import { Dropdown, SelectNative } from '@deriv-lib/components';
+import { EMPLOYMENT_VALUES, TEmploymentStatus, shouldHideOccupationField } from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 import { useDevice } from '@deriv-com/ui';
 import {
     getAccountTurnoverList,

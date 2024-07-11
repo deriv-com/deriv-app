@@ -64,7 +64,7 @@ module.exports = function (env) {
                         {
                             loader: 'sass-resources-loader',
                             options: {
-                                resources: require('@deriv-app/shared/src/styles/index.js'),
+                                resources: require('@deriv-lib/shared/src/styles/index.js'),
                             },
                         },
                     ],
@@ -147,9 +147,9 @@ module.exports = function (env) {
             {
                 '@babel/polyfill': '@babel/polyfill',
                 classnames: 'classnames',
-                '@deriv-app/components': '@deriv-app/components',
-                '@deriv-app/shared': '@deriv-app/shared',
-                '@deriv-app/translations': '@deriv-app/translations',
+                '@deriv-lib/components': '@deriv-lib/components',
+                '@deriv-lib/shared': '@deriv-lib/shared',
+                '@deriv-lib/translations': '@deriv-lib/translations',
                 formik: 'formik',
                 react: 'react',
                 mobx: 'mobx',
@@ -158,9 +158,9 @@ module.exports = function (env) {
                 '@deriv/deriv-charts': '@deriv/deriv-charts',
                 '@deriv-com/analytics': `@deriv-com/analytics`,
             },
-            /^@deriv-app\/shared\/.+$/,
-            /^@deriv-app\/components\/.+$/,
-            /^@deriv-app\/translations\/.+$/,
+            /^@deriv-lib\/shared\/.+$/,
+            /^@deriv-lib\/components\/.+$/,
+            /^@deriv-lib\/translations\/.+$/,
             /^@deriv\/analytics\/.+$/,
         ],
     };

@@ -1,14 +1,14 @@
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
-import { isMobile } from '@deriv-app/shared';
+import { isMobile } from '@deriv-lib/shared';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CFDPersonalDetailsForm from '../cfd-personal-details-form';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { CFDStoreProvider } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
-import { useLandingCompanyDetails } from '@deriv-app/hooks';
+import { useLandingCompanyDetails } from '@deriv-lib/hooks';
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useLandingCompanyDetails: jest.fn(() => ({
         data: {
             tin_not_mandatory: 0,
@@ -17,8 +17,8 @@ jest.mock('@deriv-app/hooks', () => ({
     })),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isMobile: jest.fn(),
 }));
 

@@ -3,7 +3,7 @@ import baseConfigForPackages from '../../jest.config.base';
 export default {
     ...baseConfigForPackages,
     moduleNameMapper: {
-        '@deriv-app/api-v2': '<rootDir>/../api/src',
+        '@deriv-lib/api-v2': '<rootDir>/../api/src',
         '\\.css$': '<rootDir>/../../__mocks__/styleMock.js',
         '\\.s(c|a)ss$': '<rootDir>/../../__mocks__/styleMock.js',
         '^.+\\.svg$': '<rootDir>/../../__mocks__/fileMock.js',

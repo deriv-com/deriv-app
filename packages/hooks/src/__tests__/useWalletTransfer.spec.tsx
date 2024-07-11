@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { APIProvider } from '@deriv-app/api';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { APIProvider } from '@deriv-lib/api';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { renderHook } from '@testing-library/react-hooks';
 
 import useWalletTransfer from '../useWalletTransfer';
 
-jest.mock('@deriv-app/api', () => ({
-    ...jest.requireActual('@deriv-app/api'),
+jest.mock('@deriv-lib/api', () => ({
+    ...jest.requireActual('@deriv-lib/api'),
     useFetch: jest.fn((name: string) => {
         if (name === 'authorize') {
             return {

@@ -1,8 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Text } from '@deriv-com/quill-ui';
-import { Loading } from '@deriv-app/components';
-import { toMoment } from '@deriv-app/shared';
+import { Loading } from '@deriv-lib/components';
+import { toMoment } from '@deriv-lib/shared';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 import ContractCardList from './contract-card-list';
 

@@ -3,8 +3,8 @@ declare module '*.svg' {
     export default content;
 }
 
-declare module '@deriv-app/components';
-declare module '@deriv-app/shared';
+declare module '@deriv-lib/components';
+declare module '@deriv-lib/shared';
 declare module '@deriv/account';
 
 declare module '@binary-com/binary-document-uploader';

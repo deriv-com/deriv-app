@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { WS } from '@deriv-app/shared';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { WS } from '@deriv-lib/shared';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import ProofOfIncome from 'Sections/Verification/ProofOfIncome';
 import { income_status_codes } from 'Sections/Verification/ProofOfIncome/proof-of-income-utils';
 
@@ -26,8 +26,8 @@ const mocked_account_status = {
 
 jest.mock('@binary-com/binary-document-uploader');
 jest.mock('Components/demo-message', () => jest.fn(() => 'MockedDemoMessage'));
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     WS: {
         authorized: {
             getAccountStatus: jest.fn(() =>

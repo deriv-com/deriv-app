@@ -1,4 +1,4 @@
-import { isEmptyObject, State } from '@deriv-app/shared';
+import { isEmptyObject, State } from '@deriv-lib/shared';
 
 export const hasMissingRequiredField = (account_settings, client, isAccountOfType) => {
     if (!account_settings || isEmptyObject(account_settings)) return false;

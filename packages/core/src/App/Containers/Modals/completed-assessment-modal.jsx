@@ -1,7 +1,7 @@
-import { Button, Icon, Modal, Text } from '@deriv-app/components';
-import { Localize, localize } from '@deriv-app/translations';
+import { Button, Icon, Modal, Text } from '@deriv-lib/components';
+import { Localize, localize } from '@deriv-lib/translations';
 import React from 'react';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 
 const CompletedAssessmentModal = observer(() => {
     const { ui } = useStore();

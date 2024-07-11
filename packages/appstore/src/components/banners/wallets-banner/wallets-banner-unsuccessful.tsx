@@ -1,7 +1,7 @@
 import React from 'react';
-import { Icon, Text } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv-app/translations';
+import { Icon, Text } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize } from '@deriv-lib/translations';
 
 const WalletBannerUnsuccessful = observer(() => {
     const { traders_hub, ui } = useStore();

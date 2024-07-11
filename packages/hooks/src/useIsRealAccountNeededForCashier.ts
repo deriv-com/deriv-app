@@ -1,4 +1,4 @@
-import { useStore } from '@deriv-app/stores';
+import { useStore } from '@deriv-lib/stores';
 import useHasMaltaInvestAccount from './useHasMaltaInvestAccount';
 import useHasSvgAccount from './useHasSvgAccount';
 

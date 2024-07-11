@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon, Popover } from '@deriv-app/components';
-import { useStore } from '@deriv-app/stores';
+import { Icon, Popover } from '@deriv-lib/components';
+import { useStore } from '@deriv-lib/stores';
 import { popover_zindex } from 'Constants/z-indexes';
 
 type TToolbarIcon = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { mockStore, useStore } from '@deriv-app/stores';
+import { mockStore, useStore } from '@deriv-lib/stores';
 import { render, screen } from '@testing-library/react';
 import { mock_ws } from '../../utils/mock';
 import DBotProviders from '../dbot-providers';

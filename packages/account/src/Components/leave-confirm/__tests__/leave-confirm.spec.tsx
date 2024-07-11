@@ -4,13 +4,13 @@ import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { isMobile } from '@deriv-app/shared';
+import { isMobile } from '@deriv-lib/shared';
 import LeaveConfirm, { TransitionBlocker } from '../leave-confirm';
 
 let modal_root_el: HTMLElement;
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isMobile: jest.fn(() => false),
 }));
 

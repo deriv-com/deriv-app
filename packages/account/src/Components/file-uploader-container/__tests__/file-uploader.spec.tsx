@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { readFiles } from '@deriv-app/shared';
+import { readFiles } from '@deriv-lib/shared';
 import FileUploader from '../file-uploader';
 import { useDevice } from '@deriv-com/ui';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     compressImageFiles: jest.fn(() => Promise.resolve([{ path: 'hello.pdf' }])),
     readFiles: jest.fn(),
 }));

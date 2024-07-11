@@ -1,9 +1,9 @@
 import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers/positions-helper';
 import React from 'react';
-import { useStore } from '@deriv-app/stores';
+import { useStore } from '@deriv-lib/stores';
 import AccumulatorsProfitLossTooltip from './accumulators-profit-loss-tooltip';
 import ChartMarker from './marker';
-import { TRADE_TYPES } from '@deriv-app/shared';
+import { TRADE_TYPES } from '@deriv-lib/shared';
 
 type TPortfolioStore = ReturnType<typeof useStore>['portfolio'];
 

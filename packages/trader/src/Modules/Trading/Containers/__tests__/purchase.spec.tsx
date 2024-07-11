@@ -1,8 +1,8 @@
 import React from 'react';
-import { mockStore } from '@deriv-app/stores';
-import { TCoreStores } from '@deriv-app/stores/types';
+import { mockStore } from '@deriv-lib/stores';
+import { TCoreStores } from '@deriv-lib/stores/types';
 import { render, screen } from '@testing-library/react';
-import { mockContractInfo, TContractInfo, CONTRACT_TYPES, TRADE_TYPES } from '@deriv-app/shared';
+import { mockContractInfo, TContractInfo, CONTRACT_TYPES, TRADE_TYPES } from '@deriv-lib/shared';
 import Purchase from '../purchase';
 import TraderProviders from '../../../../trader-providers';
 

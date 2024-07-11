@@ -1,4 +1,4 @@
-import { isMobile } from '@deriv-app/shared';
+import { isMobile } from '@deriv-lib/shared';
 
 /**
  * Function to get desired text size based off responsive size

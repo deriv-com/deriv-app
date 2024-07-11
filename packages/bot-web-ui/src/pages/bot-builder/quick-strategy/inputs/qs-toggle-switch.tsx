@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import { Popover, Text, ToggleSwitch } from '@deriv-app/components';
+import { Popover, Text, ToggleSwitch } from '@deriv-lib/components';
 import { TFormData } from '../types';
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 
 type TQSToggleSwitch = {
     name: string;

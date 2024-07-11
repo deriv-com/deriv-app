@@ -9,8 +9,8 @@ const mocked_props = {
     toggleModal: jest.fn(),
 };
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Div100vhContainer: jest.fn(({ children }) => <div>{children}</div>),
 }));
 jest.mock('../expiration', () => jest.fn(() => 'Expiration Component'));

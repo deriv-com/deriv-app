@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 import Trade from 'AppV2/Containers/Trade';
 import Markets from 'AppV2/Containers/Markets';
 import Positions from 'AppV2/Containers/Positions';

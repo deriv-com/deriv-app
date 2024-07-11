@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStore } from '@deriv-app/stores';
+import { useStore } from '@deriv-lib/stores';
 import ProfitStores from './Modules/Profit/profit-store';
 import StatementStores from './Modules/Statement/statement-store';
 import { formatProfitTableTransactions } from './Modules/Profit/Helpers/format-response';

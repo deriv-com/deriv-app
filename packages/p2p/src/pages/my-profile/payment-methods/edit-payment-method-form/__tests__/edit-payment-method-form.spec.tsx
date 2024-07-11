@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { useStores } from 'Stores/index';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { payment_method_info_alipay } from 'Pages/my-profile/__mocks__/mock-payment-method-data';

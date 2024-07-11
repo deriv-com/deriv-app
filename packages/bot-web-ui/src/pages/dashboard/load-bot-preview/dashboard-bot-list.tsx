@@ -1,8 +1,8 @@
 import React from 'react';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
-import { Text } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+import { Text } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import DeleteDialog from './delete-dialog';
 import RecentWorkspace from './recent-workspace';

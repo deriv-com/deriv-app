@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { routes } from '@deriv-app/shared';
-import { useStore, observer } from '@deriv-app/stores';
+import { routes } from '@deriv-lib/shared';
+import { useStore, observer } from '@deriv-lib/stores';
 import OnboardingSkeleton from '../../components/loader';
 import TradingPlatformIcon from 'Assets/svgs/trading-platform';
 import './onboarding.scss';

@@ -1,9 +1,9 @@
 import { action, makeObservable, reaction, when } from 'mobx';
 import { TApiHelpersStore, TDbotStore } from 'src/types/stores.types';
 import { ApiHelpers, DBot, runIrreversibleEvents } from '@deriv/bot-skeleton';
-import { ContentFlag, isEuResidenceWithOnlyVRTC, routes, showDigitalOptionsUnavailableError } from '@deriv-app/shared';
-import { TStores } from '@deriv-app/stores/types';
-import { localize } from '@deriv-app/translations';
+import { ContentFlag, isEuResidenceWithOnlyVRTC, routes, showDigitalOptionsUnavailableError } from '@deriv-lib/shared';
+import { TStores } from '@deriv-lib/stores/types';
+import { localize } from '@deriv-lib/translations';
 import RootStore from './root-store';
 
 const Blockly = window.Blockly;

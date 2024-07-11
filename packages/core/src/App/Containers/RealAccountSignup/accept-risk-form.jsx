@@ -7,9 +7,9 @@ import {
     FormSubmitButton,
     Text,
     Modal,
-} from '@deriv-app/components';
-import { localize, Localize } from '@deriv-app/translations';
-import { isDesktop, isMobile } from '@deriv-app/shared';
+} from '@deriv-lib/components';
+import { localize, Localize } from '@deriv-lib/translations';
+import { isDesktop, isMobile } from '@deriv-lib/shared';
 
 const AcceptRiskForm = ({ onConfirm, onClose }) => {
     return (

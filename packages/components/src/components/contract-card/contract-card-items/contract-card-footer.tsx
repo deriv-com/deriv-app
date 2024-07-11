@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { isValidToCancel, isValidToSell, hasContractEntered, isOpen, useNewRowTransition } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
+import { isValidToCancel, isValidToSell, hasContractEntered, isOpen, useNewRowTransition } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
 import ContractCardSell from './contract-card-sell';
 import MultiplierCloseActions from './multiplier-close-actions';
-import { TContractInfo } from '@deriv-app/shared/src/utils/contract/contract-types';
+import { TContractInfo } from '@deriv-lib/shared/src/utils/contract/contract-types';
 import { TGetCardLables } from '../../types';
 import Text from '../../text';
 

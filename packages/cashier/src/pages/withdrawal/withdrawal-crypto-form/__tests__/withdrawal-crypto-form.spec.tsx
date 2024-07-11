@@ -1,23 +1,23 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { useCurrentAccountDetails, useGrowthbookIsOn } from '@deriv-app/hooks';
+import { useCurrentAccountDetails, useGrowthbookIsOn } from '@deriv-lib/hooks';
 import WithdrawalCryptoForm from '../withdrawal-crypto-form';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import userEvent from '@testing-library/user-event';
-import { useCryptoEstimations } from '@deriv-app/api';
+import { useCryptoEstimations } from '@deriv-lib/api';
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useCurrentAccountDetails: jest.fn(() => {
         'icon';
     }),
     useGrowthbookIsOn: jest.fn().mockReturnValue([]),
 }));
 
-jest.mock('@deriv-app/api', () => ({
-    ...jest.requireActual('@deriv-app/api'),
+jest.mock('@deriv-lib/api', () => ({
+    ...jest.requireActual('@deriv-lib/api'),
     useCryptoEstimations: jest.fn(),
 }));
 

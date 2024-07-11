@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text } from '@deriv-app/components';
-import { useStore } from '@deriv-app/stores';
+import { Text } from '@deriv-lib/components';
+import { useStore } from '@deriv-lib/stores';
 
 type TAdTypeSectionTrailingIcon = { label: string };
 

@@ -1,10 +1,10 @@
 import React from 'react';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { Text } from '@deriv-com/quill-ui';
 import { LabelPairedArrowLeftSmBoldIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv-app/translations';
+import { Localize } from '@deriv-lib/translations';
 import { useHistory, useLocation } from 'react-router-dom';
-import { isEmptyObject } from '@deriv-app/shared';
+import { isEmptyObject } from '@deriv-lib/shared';
 
 const DTraderContractDetailsHeader = observer(() => {
     const { state } = useLocation();

@@ -1,4 +1,4 @@
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import { config } from '../../../../constants/config';
 
 Blockly.Blocks.contract_check_result = {

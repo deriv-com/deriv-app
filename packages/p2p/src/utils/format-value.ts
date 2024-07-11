@@ -1,4 +1,4 @@
-import { formatMoney } from '@deriv-app/shared';
+import { formatMoney } from '@deriv-lib/shared';
 import { ad_type } from 'Constants/floating-rate';
 
 /**

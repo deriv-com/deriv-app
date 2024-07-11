@@ -1,4 +1,4 @@
-import { useQuery } from '@deriv-app/api';
+import { useQuery } from '@deriv-lib/api';
 import { useMemo } from 'react';
 
 type TUseLandingCompanyDetailsPayload = Parameters<typeof useQuery<'landing_company_details'>>['1']['payload'];

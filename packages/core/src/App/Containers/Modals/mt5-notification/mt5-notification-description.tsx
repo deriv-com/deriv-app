@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
-import { mt5_community_url } from '@deriv-app/shared';
+import { Text } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
+import { mt5_community_url } from '@deriv-lib/shared';
 
 type TMT5NotificationDescription = {
     setMT5NotificationModal: (value: boolean) => void;

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Modal } from '@deriv-app/components';
-import { routes } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize, Localize } from '@deriv-app/translations';
+import { Button, Modal } from '@deriv-lib/components';
+import { routes } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize, Localize } from '@deriv-lib/translations';
 
 type TAccountVerificationRequiredModalProps = {
     is_visible: boolean;

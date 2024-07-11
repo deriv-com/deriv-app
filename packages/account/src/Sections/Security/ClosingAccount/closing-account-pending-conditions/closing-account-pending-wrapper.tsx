@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv-app/components';
+import { Text } from '@deriv-lib/components';
 
 type TClosingAccountPendingWrapperProps = {
     title: JSX.Element;

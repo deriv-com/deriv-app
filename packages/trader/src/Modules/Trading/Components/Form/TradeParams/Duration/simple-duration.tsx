@@ -1,10 +1,10 @@
 import React from 'react';
-import { ButtonToggle, InputField } from '@deriv-app/components';
-import { getDurationMinMaxValues, getUnitMap } from '@deriv-app/shared';
+import { ButtonToggle, InputField } from '@deriv-lib/components';
+import { getDurationMinMaxValues, getUnitMap } from '@deriv-lib/shared';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import TradingDatePicker from '../../DatePicker';
 import DurationRangeText from './duration-range-text';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TSimpleDuration = {

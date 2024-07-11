@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { Field, Form, Formik } from 'formik';
 import { config, save_types } from '@deriv/bot-skeleton';
-import { Button, Icon, Input, MobileFullPageModal, Modal, RadioGroup, Text, ThemedScrollbars } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { Button, Icon, Input, MobileFullPageModal, Modal, RadioGroup, Text, ThemedScrollbars } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import { useDBotStore } from '../../../stores/useDBotStore';
 import IconRadio from './icon-radio';
 

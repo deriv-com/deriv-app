@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '@deriv-app/components';
+import { Icon } from '@deriv-lib/components';
 import TradingPlatformIcon from 'Assets/svgs/trading-platform';
 import { TAccountsList } from '../../types';
 

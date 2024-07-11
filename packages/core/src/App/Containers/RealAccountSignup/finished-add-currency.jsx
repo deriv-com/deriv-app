@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 import { useDevice } from '@deriv-com/ui';
-import { Button, Div100vhContainer, Icon, Text } from '@deriv-app/components';
-import { routes } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv-app/translations';
+import { Button, Div100vhContainer, Icon, Text } from '@deriv-lib/components';
+import { routes } from '@deriv-lib/shared';
+import { localize, Localize } from '@deriv-lib/translations';
 
 const FinishedAddCurrency = ({
     current,

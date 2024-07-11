@@ -1,7 +1,7 @@
 import React from 'react';
-import { StaticUrl } from '@deriv-app/components';
-import { localize, Localize } from '@deriv-app/translations';
-import type { TSocketResponse } from '@deriv-app/api/types';
+import { StaticUrl } from '@deriv-lib/components';
+import { localize, Localize } from '@deriv-lib/translations';
+import type { TSocketResponse } from '@deriv-lib/api/types';
 
 type TCryptoTransactionItem = NonNullable<TSocketResponse<'cashier_payments'>['cashier_payments']>['crypto'][number];
 

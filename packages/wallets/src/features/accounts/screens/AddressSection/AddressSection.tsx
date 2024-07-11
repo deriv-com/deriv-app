@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSettings, useStatesList } from '@deriv-app/api-v2';
+import { useSettings, useStatesList } from '@deriv-lib/api-v2';
 import { FlowTextField, useFlow } from '../../../../components';
 import { InlineMessage, WalletDropdown, WalletText } from '../../../../components/Base';
 import {

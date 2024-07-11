@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { ArrowIndicator, ContractCard, CurrencyBadge, Money, ProgressSliderMobile, Text } from '@deriv-app/components';
+import { ArrowIndicator, ContractCard, CurrencyBadge, Money, ProgressSliderMobile, Text } from '@deriv-lib/components';
 import {
     addComma,
     getContractPath,
@@ -15,11 +15,11 @@ import {
     isTurbosContract,
     isCryptocurrency,
     isVanillaContract,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 import { BinaryLink } from 'App/Components/Routes';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import PositionsResultMobile from './positions-result-mobile';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TPortfolioStore = ReturnType<typeof useStore>['portfolio'];

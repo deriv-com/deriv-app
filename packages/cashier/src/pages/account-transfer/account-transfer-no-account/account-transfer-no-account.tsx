@@ -1,8 +1,8 @@
 import React from 'react';
-import { Icon, Button, Text } from '@deriv-app/components';
-import { routes } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
-import { useStore, observer } from '@deriv-app/stores';
+import { Icon, Button, Text } from '@deriv-lib/components';
+import { routes } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
+import { useStore, observer } from '@deriv-lib/stores';
 import './account-transfer-no-account.scss';
 import { useHistory } from 'react-router-dom';
 

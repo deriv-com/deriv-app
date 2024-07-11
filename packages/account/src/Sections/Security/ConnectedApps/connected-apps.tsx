@@ -1,8 +1,8 @@
 import React from 'react';
 import { OauthApps } from '@deriv/api-types';
-import { Loading } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
-import { WS } from '@deriv-app/shared';
+import { Loading } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
+import { WS } from '@deriv-lib/shared';
 import { useDevice } from '@deriv-com/ui';
 import ErrorComponent from '../../../Components/error-component';
 import ConnectedAppsKnowMore from './connected-apps-know-more';

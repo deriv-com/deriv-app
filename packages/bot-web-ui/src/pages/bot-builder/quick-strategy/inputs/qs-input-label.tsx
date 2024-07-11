@@ -1,5 +1,5 @@
 import React from 'react';
-import { Popover, Text } from '@deriv-app/components';
+import { Popover, Text } from '@deriv-lib/components';
 
 type TQSInputLabel = {
     children?: React.ReactNode;

@@ -15,13 +15,13 @@ import NetworkStatus, {
 import LiveChat from 'App/Components/Elements/LiveChat';
 import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
 import ServerTime from '../server-time.jsx';
-import { routes, useIsMounted, isTabletOs } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { routes, useIsMounted, isTabletOs } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import DarkModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-light-theme.svg';
 import LightModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-dark-theme.svg';
-import { Popover } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
-import { useRemoteConfig } from '@deriv-app/api';
+import { Popover } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
+import { useRemoteConfig } from '@deriv-lib/api';
 
 const FooterIconSeparator = () => <div className='footer-icon-separator' />;
 

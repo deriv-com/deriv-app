@@ -2,10 +2,10 @@ import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import classNames from 'classnames';
 
-import { Button, Icon, Modal, Text } from '@deriv-app/components';
-import { getCurrencyDisplayCode, isMobile, routes } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+import { Button, Icon, Modal, Text } from '@deriv-lib/components';
+import { getCurrencyDisplayCode, isMobile, routes } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 
 import AccountPlatformIcon from '../../../components/account-platform-icon';
 import { useCashierStore } from '../../../stores/useCashierStores';

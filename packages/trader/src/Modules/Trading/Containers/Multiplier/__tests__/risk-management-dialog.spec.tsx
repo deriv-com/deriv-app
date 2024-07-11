@@ -2,8 +2,8 @@ import React, { useState as useStateMock } from 'react';
 import ReactDOM from 'react-dom';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv-app/stores';
-import { MobileDialog } from '@deriv-app/components';
+import { mockStore } from '@deriv-lib/stores';
+import { MobileDialog } from '@deriv-lib/components';
 import { useTraderStore } from 'Stores/useTraderStores';
 import RiskManagementDialog from '../risk-management-dialog';
 import TraderProviders from '../../../../../trader-providers';
@@ -29,8 +29,8 @@ const default_mock_store = {
     },
 };
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     MobileDialog: ({
         children,
         ...props

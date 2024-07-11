@@ -3,7 +3,7 @@ import Loadable from 'react-loadable';
 import Routes from 'Containers/routes';
 import ReportsProviders from './reports-providers';
 import 'Sass/app.scss';
-import type { TCoreStores } from '@deriv-app/stores/types';
+import type { TCoreStores } from '@deriv-lib/stores/types';
 
 type TAppProps = {
     passthrough: {

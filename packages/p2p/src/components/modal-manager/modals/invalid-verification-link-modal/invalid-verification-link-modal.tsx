@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Button, Icon, Modal, Text } from '@deriv-app/components';
-import { useStore } from '@deriv-app/stores';
+import { Button, Icon, Modal, Text } from '@deriv-lib/components';
+import { useStore } from '@deriv-lib/stores';
 // @ts-ignore
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';

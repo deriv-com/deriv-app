@@ -6,8 +6,8 @@ import {
     isEqualObject,
     isMultiplierContract,
     Validator,
-} from '@deriv-app/shared';
-import { TStores } from '@deriv-app/stores/types';
+} from '@deriv-lib/shared';
+import { TStores } from '@deriv-lib/stores/types';
 import { TContractInfo } from 'Components/summary/summary-card.types';
 import { getValidationRules, TValidationRuleIndex, TValidationRules } from 'Constants/contract';
 import { contract_stages } from 'Constants/contract-stage';

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { Text } from '@deriv-app/components';
+import { Text } from '@deriv-lib/components';
 import { useDevice } from '@deriv-com/ui';
 import { CONNECTED_APPS_INFO_BULLETS } from '../../../Constants/connected-apps-config';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockStore, P2PSettingsProvider, StoreProvider } from '@deriv-app/stores';
+import { mockStore, P2PSettingsProvider, StoreProvider } from '@deriv-lib/stores';
 import { adverts } from 'Pages/my-ads/__mocks__/mock-data';
 import { useStores } from 'Stores/index';
 import CopyAdvertModal from '../copy-advert-modal';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { APIProvider } from '@deriv-app/api';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { APIProvider } from '@deriv-lib/api';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { useStores } from 'Stores/index';
 import { payment_method_info_alipay } from 'Pages/my-profile/__mocks__/mock-payment-method-data';
 // @ts-ignore
@@ -20,8 +20,8 @@ const mock_p2p_advertiser_payment_methods_hooks = {
     data: [] as TPaymentMethod[],
 };
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useP2PAdvertiserPaymentMethods: jest.fn(() => mock_p2p_advertiser_payment_methods_hooks),
 }));
 

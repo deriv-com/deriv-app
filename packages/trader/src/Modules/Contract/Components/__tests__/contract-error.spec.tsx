@@ -7,7 +7,7 @@ const mocked_props = {
     onClickClose: jest.fn(),
 };
 const test_text = 'test_text';
-jest.mock('@deriv-app/components', () => ({
+jest.mock('@deriv-lib/components', () => ({
     Icon: jest.fn(() => 'MockedIcon'),
 }));
 

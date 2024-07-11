@@ -1,9 +1,9 @@
 import React from 'react';
 import { useDevice } from '@deriv-com/ui';
-import { Div100vhContainer } from '@deriv-app/components';
-import { getAuthenticationStatusInfo, isPOARequiredForMT5 } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import type { TCoreStores } from '@deriv-app/stores/types';
+import { Div100vhContainer } from '@deriv-lib/components';
+import { getAuthenticationStatusInfo, isPOARequiredForMT5 } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import type { TCoreStores } from '@deriv-lib/stores/types';
 import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
 import CFDPersonalDetailsContainer from './cfd-personal-details-container';

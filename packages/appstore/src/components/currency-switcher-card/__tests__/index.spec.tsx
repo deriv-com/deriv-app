@@ -1,7 +1,7 @@
 import React from 'react';
 import CurrencySwitcherCard from '../index';
 import { render } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 
 jest.mock('../demo/demo-account-card', () => ({
     __esModule: true,

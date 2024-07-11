@@ -1,5 +1,5 @@
-import { Button, Icon, Text } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
+import { Button, Icon, Text } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
 import React from 'react';
 import IconMessageContent from '../../../icon-message-content';
 

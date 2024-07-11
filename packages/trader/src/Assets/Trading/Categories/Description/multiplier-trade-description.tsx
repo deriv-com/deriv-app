@@ -1,6 +1,6 @@
 import React from 'react';
-import { Localize } from '@deriv-app/translations';
-import { Text } from '@deriv-app/components';
+import { Localize } from '@deriv-lib/translations';
+import { Text } from '@deriv-lib/components';
 
 const MultiplierTradeDescription = ({
     is_multiplier_fx,

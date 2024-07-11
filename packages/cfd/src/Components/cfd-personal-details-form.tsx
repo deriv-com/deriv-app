@@ -18,12 +18,12 @@ import {
     ThemedScrollbars,
     Checkbox,
     InlineMessage,
-} from '@deriv-app/components';
-import { isDeepEqual, isDesktop, isMobile } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv-app/translations';
+} from '@deriv-lib/components';
+import { isDeepEqual, isDesktop, isMobile } from '@deriv-lib/shared';
+import { Localize, localize } from '@deriv-lib/translations';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
-import { useStore } from '@deriv-app/stores';
-import { useLandingCompanyDetails } from '@deriv-app/hooks';
+import { useStore } from '@deriv-lib/stores';
+import { useLandingCompanyDetails } from '@deriv-lib/hooks';
 
 type TCFDPersonalDetailsFormProps = {
     changeable_fields?: string[];

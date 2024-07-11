@@ -1,7 +1,7 @@
 import React from 'react';
-import { Localize, localize } from '@deriv-app/translations';
-import { Div100vhContainer, Modal, Popover, RadioGroup } from '@deriv-app/components';
-import { TRADE_TYPES } from '@deriv-app/shared';
+import { Localize, localize } from '@deriv-lib/translations';
+import { Div100vhContainer, Modal, Popover, RadioGroup } from '@deriv-lib/components';
+import { TRADE_TYPES } from '@deriv-lib/shared';
 import classNames from 'classnames';
 
 type TStrikeParamModalProps = {

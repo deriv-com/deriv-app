@@ -1,11 +1,11 @@
 import React from 'react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { WS, getErrorMessages, validPassword, Jurisdiction, routes } from '@deriv-app/shared';
+import { WS, getErrorMessages, validPassword, Jurisdiction, routes } from '@deriv-lib/shared';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import CFDPasswordModal from '../cfd-password-modal';
 import CFDProviders from '../../cfd-providers';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
 jest.mock('@deriv/account', () => ({
     SentEmailModal: jest.fn(({ should_show_sent_email_modal }) => (
@@ -13,13 +13,13 @@ jest.mock('@deriv/account', () => ({
     )),
 }));
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Icon: jest.fn(({ icon }) => <div>{icon}</div>),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     getErrorMessages: jest.fn().mockReturnValue({
         password_warnings: '',
         password: jest.fn().mockReturnValue('Password should have lower and uppercase English letters with numbers.'),

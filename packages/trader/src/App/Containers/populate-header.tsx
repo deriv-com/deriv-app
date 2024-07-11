@@ -2,8 +2,8 @@ import React from 'react';
 import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggle-positions-mobile';
 import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { observer, useStore } from '@deriv-app/stores';
-import { TRADE_TYPES, isTurbosContract, isVanillaContract, isContractSupportedAndStarted } from '@deriv-app/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { TRADE_TYPES, isTurbosContract, isVanillaContract, isContractSupportedAndStarted } from '@deriv-lib/shared';
 
 const PopulateHeader = observer(() => {
     const { portfolio, client } = useStore();

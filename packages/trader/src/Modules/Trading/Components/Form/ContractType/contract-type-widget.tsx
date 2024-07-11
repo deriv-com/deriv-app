@@ -1,7 +1,7 @@
 import React from 'react';
-import { InlineMessage, Text, Icon } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+import { InlineMessage, Text, Icon } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 import { Analytics } from '@deriv-com/analytics';
 import ContractType from './contract-type';
 import {

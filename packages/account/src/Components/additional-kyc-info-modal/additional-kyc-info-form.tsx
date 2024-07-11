@@ -1,10 +1,10 @@
-import { Button, Loading, Modal, Text } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv-app/translations';
+import { Button, Loading, Modal, Text } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize } from '@deriv-lib/translations';
 import clsx from 'clsx';
 import { Form, Formik } from 'formik';
 import React from 'react';
-import { useSettings } from '@deriv-app/api';
+import { useSettings } from '@deriv-lib/api';
 import { OECD_TIN_FORMAT_URL } from '../../Constants/external-urls';
 import FormFieldInfo from '../form-field-info';
 import { FormInputField } from '../forms/form-fields';

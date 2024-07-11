@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
-import { Calendar } from '@deriv-app/components';
-import { addMonths, diffInMonths, subMonths, toMoment } from '@deriv-app/shared';
+import { Calendar } from '@deriv-lib/components';
+import { addMonths, diffInMonths, subMonths, toMoment } from '@deriv-lib/shared';
 
 type TTwoMonthPickerProps = {
     onChange: (date: moment.MomentInput) => void;

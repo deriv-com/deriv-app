@@ -1,7 +1,7 @@
 import { Analytics } from '@deriv-com/analytics';
 import Cookies from 'js-cookie';
-import { getLanguage } from '@deriv-app/translations';
-import { LocalStore, getAppId } from '@deriv-app/shared';
+import { getLanguage } from '@deriv-lib/translations';
+import { LocalStore, getAppId } from '@deriv-lib/shared';
 import { MAX_MOBILE_WIDTH } from '../../Constants';
 import FIREBASE_INIT_DATA from '../../../../api/src/remote_config.json';
 

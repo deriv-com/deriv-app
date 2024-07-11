@@ -1,13 +1,13 @@
 import React from 'react';
-import { localize, Localize } from '@deriv-app/translations';
+import { localize, Localize } from '@deriv-lib/translations';
 import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
 import { RiskToleranceWarningModal, TestWarningModal } from 'Components/trading-assessment';
 import { getTradingAssessmentQuestions } from 'Constants/trading-assessment-questions';
-import { Dropdown, SelectNative, Text, FormSubmitButton, Button, Loading } from '@deriv-app/components';
+import { Dropdown, SelectNative, Text, FormSubmitButton, Button, Loading } from '@deriv-lib/components';
 import FormFooter from 'Components/form-footer';
-import { routes, WS } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { routes, WS } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useHistory, withRouter } from 'react-router';
 import { Formik, Form } from 'formik';
 import { useDevice } from '@deriv-com/ui';

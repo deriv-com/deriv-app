@@ -1,9 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { PageError } from '@deriv-app/components';
-import { routes } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv-app/translations';
-import { TCoreStores } from '@deriv-app/stores/types';
+import { PageError } from '@deriv-lib/components';
+import { routes } from '@deriv-lib/shared';
+import { localize, Localize } from '@deriv-lib/translations';
+import { TCoreStores } from '@deriv-lib/stores/types';
 
 type TErrorComponentProps = TCoreStores['common']['error'] & {
     setError?: (has_error: boolean, error: React.ReactNode | null) => void;

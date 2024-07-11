@@ -2,9 +2,9 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor } from '@testing-library/react';
-import { mockStore } from '@deriv-app/stores';
-import { TCoreStores } from '@deriv-app/stores/types';
-import { mockContractInfo, CONTRACT_TYPES } from '@deriv-app/shared';
+import { mockStore } from '@deriv-lib/stores';
+import { TCoreStores } from '@deriv-lib/stores/types';
+import { mockContractInfo, CONTRACT_TYPES } from '@deriv-lib/shared';
 import TogglePositionsMobile from '../toggle-positions-mobile';
 import TraderProviders from '../../../../../trader-providers';
 

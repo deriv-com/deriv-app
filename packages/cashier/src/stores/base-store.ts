@@ -1,5 +1,5 @@
 import { action, when, makeObservable } from 'mobx';
-import { isProduction } from '@deriv-app/shared';
+import { isProduction } from '@deriv-lib/shared';
 import { TRootStore } from '../types';
 
 type TListenerResponse = {

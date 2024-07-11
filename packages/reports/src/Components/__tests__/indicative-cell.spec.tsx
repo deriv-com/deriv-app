@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockStore } from '@deriv-app/stores';
-import { mockContractInfo } from '@deriv-app/shared';
+import { mockStore } from '@deriv-lib/stores';
+import { mockContractInfo } from '@deriv-lib/shared';
 import ReportsProviders from '../../reports-providers';
 import IndicativeCell from '../indicative-cell';
 
@@ -21,13 +21,13 @@ const mockProps = {
     profit: '5.23',
 };
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     DesktopWrapper: jest.fn(({ children }) => children),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     hasContractEntered: jest.fn().mockReturnValue(true),
     isValidToSell: jest.fn().mockReturnValue(true),
 }));

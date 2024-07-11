@@ -4,8 +4,8 @@ import { render, screen } from '@testing-library/react';
 import PlatformSwitcher from '../platform-switcher';
 import { createBrowserHistory } from 'history';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isMobile: jest.fn(() => true),
 }));
 

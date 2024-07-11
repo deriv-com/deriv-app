@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { toGMTFormat, toLocalFormat } from '@deriv-app/shared';
-import { Popover } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
+import { toGMTFormat, toLocalFormat } from '@deriv-lib/shared';
+import { Popover } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
 
 const ServerTime = observer(({ is_mobile }) => {
     const { common } = useStore();

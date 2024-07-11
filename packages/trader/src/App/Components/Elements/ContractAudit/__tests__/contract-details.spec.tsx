@@ -1,11 +1,11 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
-import { mockContractInfo, CONTRACT_TYPES } from '@deriv-app/shared';
+import { mockContractInfo, CONTRACT_TYPES } from '@deriv-lib/shared';
 import ContractDetails from '../contract-details';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isEndedBeforeCancellationExpired: jest.fn(() => true),
 }));
 jest.mock('Stores/Modules/Trading/Helpers/logic', () => ({

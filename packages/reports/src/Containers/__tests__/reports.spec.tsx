@@ -4,8 +4,8 @@ import { Router } from 'react-router-dom';
 import { History, createMemoryHistory } from 'history';
 import Reports from '../reports';
 import { Analytics } from '@deriv-com/analytics';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
-import { TStores } from '@deriv-app/stores/types';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
+import { TStores } from '@deriv-lib/stores/types';
 import userEvent from '@testing-library/user-event';
 import ui from '@deriv-com/ui';
 
@@ -15,8 +15,8 @@ jest.mock('@deriv-com/analytics', () => ({
     },
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     getSelectedRoute: jest.fn(({ routes, pathname }) => {
         return routes.find((route: { path: string }) => route.path === pathname) || routes[0];
     }),
@@ -30,8 +30,8 @@ const onCloseClick = 'onclose-click';
 const report1Text = 'Report 1';
 const report2Text = 'Report 2';
 const Loading = 'Loading';
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     DesktopWrapper: jest.fn(({ children }) => children),
     MobileWrapper: jest.fn(({ children }) => children),
     Div100vhContainer: jest.fn(({ children }) => children),
@@ -90,8 +90,8 @@ const mock = {
     },
 };
 
-jest.mock('@deriv-app/stores', () => ({
-    ...jest.requireActual('@deriv-app/stores'),
+jest.mock('@deriv-lib/stores', () => ({
+    ...jest.requireActual('@deriv-lib/stores'),
     observer: jest.fn(x => x),
 }));
 

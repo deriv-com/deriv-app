@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import useIsAccountStatusPresent from '../useIsAccountStatusPresent';
 
 describe('useIsAccountStatusPresent', () => {

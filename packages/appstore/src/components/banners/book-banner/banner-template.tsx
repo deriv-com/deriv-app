@@ -1,8 +1,8 @@
 import React from 'react';
-import { useStore } from '@deriv-app/stores';
+import { useStore } from '@deriv-lib/stores';
 import { Analytics } from '@deriv-com/analytics';
-import { SessionStore } from '@deriv-app/shared';
-import { getAllowedLanguages, Localize } from '@deriv-app/translations';
+import { SessionStore } from '@deriv-lib/shared';
+import { getAllowedLanguages, Localize } from '@deriv-lib/translations';
 import { LabelPairedCircleChevronDownXlBoldIcon, LabelPairedXmarkLgBoldIcon } from '@deriv/quill-icons';
 import { TEbooksUrl } from 'Components/banners/book-banner/book-banner';
 

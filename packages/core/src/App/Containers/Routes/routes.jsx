@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import Loadable from 'react-loadable';
-import { UILoader } from '@deriv-app/components';
-import { urlForLanguage } from '@deriv-app/shared';
-import { getLanguage } from '@deriv-app/translations';
+import { UILoader } from '@deriv-lib/components';
+import { urlForLanguage } from '@deriv-lib/shared';
+import { getLanguage } from '@deriv-lib/translations';
 import BinaryRoutes from 'App/Components/Routes';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 
 const Error = Loadable({
     loader: () => import(/* webpackChunkName: "error-component" */ 'App/Components/Elements/Errors'),

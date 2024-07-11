@@ -14,9 +14,9 @@ import NetworkStatus, {
 import LiveChat from 'App/Components/Elements/LiveChat';
 import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
 import ServerTime from '../server-time.jsx';
-import { observer, useStore } from '@deriv-app/stores';
-import { useRemoteConfig } from '@deriv-app/api';
-import { useIsMounted } from '@deriv-app/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { useRemoteConfig } from '@deriv-lib/api';
+import { useIsMounted } from '@deriv-lib/shared';
 
 const FooterIconSeparator = () => <div className='footer-icon-separator' />;
 

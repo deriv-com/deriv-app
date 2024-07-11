@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Modal, Text } from '@deriv-app/components';
-import { localize, Localize } from '@deriv-app/translations';
+import { Button, Modal, Text } from '@deriv-lib/components';
+import { localize, Localize } from '@deriv-lib/translations';
 
 export type TUnlinkModal = {
     identifier_title: string;

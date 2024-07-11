@@ -1,11 +1,11 @@
 import React from 'react';
-import { useSettings, useVerifyEmail } from '@deriv-app/api-v2';
+import { useSettings, useVerifyEmail } from '@deriv-lib/api-v2';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import WithdrawalVerification from '../WithdrawalVerification';
 import '@testing-library/jest-dom';
 
-jest.mock('@deriv-app/api-v2', () => ({
-    ...jest.requireActual('@deriv-app/api-v2'),
+jest.mock('@deriv-lib/api-v2', () => ({
+    ...jest.requireActual('@deriv-lib/api-v2'),
     useSettings: jest.fn(() => ({ data: { email: null } })),
     useVerifyEmail: jest.fn(() => ({ mutate: jest.fn() })),
 }));

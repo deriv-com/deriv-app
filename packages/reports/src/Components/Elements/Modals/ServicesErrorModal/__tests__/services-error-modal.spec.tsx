@@ -12,8 +12,8 @@ type TModal = {
     Body?: React.FC;
     Footer?: React.FC;
 };
-jest.mock('@deriv-app/components', () => {
-    const original_module = jest.requireActual('@deriv-app/components');
+jest.mock('@deriv-lib/components', () => {
+    const original_module = jest.requireActual('@deriv-lib/components');
     const Modal: TModal = jest.fn(() => <div>Modal</div>);
     Modal.Body = jest.fn(() => <div />);
     Modal.Footer = jest.fn(() => <div />);

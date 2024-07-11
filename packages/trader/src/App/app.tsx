@@ -8,7 +8,7 @@ import { NetworkStatusToastErrorPopup } from 'Modules/Trading/Containers/toast-p
 import type { TWebSocket } from 'Types';
 import initStore from './init-store';
 import 'Sass/app.scss';
-import type { TCoreStores } from '@deriv-app/stores/types';
+import type { TCoreStores } from '@deriv-lib/stores/types';
 import TraderProviders from '../trader-providers';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 

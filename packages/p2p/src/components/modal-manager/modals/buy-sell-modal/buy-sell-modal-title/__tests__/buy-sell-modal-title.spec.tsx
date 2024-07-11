@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { isDesktop } from '@deriv-app/shared';
+import { isDesktop } from '@deriv-lib/shared';
 // @ts-ignore
 import { useStores } from 'Stores';
 import BuySellModalTitle from '../buy-sell-modal-title';
@@ -22,8 +22,8 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     },
 };
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isDesktop: jest.fn(() => false),
 }));
 

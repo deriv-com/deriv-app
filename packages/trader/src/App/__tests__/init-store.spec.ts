@@ -1,5 +1,5 @@
-import { setWebsocket } from '@deriv-app/shared';
-import { mockStore } from '@deriv-app/stores';
+import { setWebsocket } from '@deriv-lib/shared';
+import { mockStore } from '@deriv-lib/stores';
 import initStore from 'App/init-store';
 
 const mockWs = {
@@ -28,8 +28,8 @@ const mockWs = {
     wait: jest.fn(),
 };
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     setWebsocket: jest.fn(),
 }));
 

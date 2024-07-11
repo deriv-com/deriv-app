@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Button, DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Modal } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
+import { Button, DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Modal } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AddPaymentMethod from 'Components/add-payment-method';

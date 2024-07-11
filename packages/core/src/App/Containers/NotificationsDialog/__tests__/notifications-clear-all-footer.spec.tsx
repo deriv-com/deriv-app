@@ -1,5 +1,5 @@
 import React from 'react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import NotificationsClearAllFooter from '../notifications-clear-all-footer';

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useStore } from '@deriv-app/stores';
+import { useStore } from '@deriv-lib/stores';
 
 const useFeatureFlags = () => {
     const { feature_flags } = useStore();

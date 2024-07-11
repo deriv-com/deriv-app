@@ -1,9 +1,9 @@
 import React from 'react';
-import { Localize } from '@deriv-app/translations';
-import { formatDuration, getDiffDuration, getDateFromNow } from '@deriv-app/shared';
-import { Text } from '@deriv-app/components';
+import { Localize } from '@deriv-lib/translations';
+import { formatDuration, getDiffDuration, getDateFromNow } from '@deriv-lib/shared';
+import { Text } from '@deriv-lib/components';
 import Fieldset from 'App/Components/Form/fieldset';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TExpirationProps = {

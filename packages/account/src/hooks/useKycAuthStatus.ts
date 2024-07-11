@@ -1,6 +1,6 @@
-import { useQuery } from '@deriv-app/api';
-import { TSocketRequestPayload } from '@deriv-app/api/types';
-import { useStore } from '@deriv-app/stores';
+import { useQuery } from '@deriv-lib/api';
+import { TSocketRequestPayload } from '@deriv-lib/api/types';
+import { useStore } from '@deriv-lib/stores';
 
 type TKycAuthStatusPayload = TSocketRequestPayload<'kyc_auth_status'>['payload'];
 

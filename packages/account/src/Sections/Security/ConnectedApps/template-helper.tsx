@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize, localize } from '@deriv-app/translations';
+import { Localize, localize } from '@deriv-lib/translations';
 
 export const getConnectedAppsColumnNames = () => [
     <Localize key='name' i18n_default_text='Name' />,

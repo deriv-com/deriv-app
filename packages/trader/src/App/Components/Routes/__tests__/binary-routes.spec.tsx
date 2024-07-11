@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, waitFor, screen } from '@testing-library/react';
-import { routes } from '@deriv-app/shared';
-import { mockStore } from '@deriv-app/stores';
+import { routes } from '@deriv-lib/shared';
+import { mockStore } from '@deriv-lib/stores';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import { TCoreStores } from '@deriv-app/stores/types';
+import { TCoreStores } from '@deriv-lib/stores/types';
 import BinaryRoutes from '../binary-routes';
 import TraderProviders from '../../../../trader-providers';
 

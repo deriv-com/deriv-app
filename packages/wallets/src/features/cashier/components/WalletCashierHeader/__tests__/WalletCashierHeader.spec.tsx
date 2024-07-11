@@ -1,11 +1,11 @@
 import React from 'react';
-import { APIProvider, useActiveWalletAccount, useBalanceSubscription } from '@deriv-app/api-v2';
+import { APIProvider, useActiveWalletAccount, useBalanceSubscription } from '@deriv-lib/api-v2';
 import { render, screen, waitFor } from '@testing-library/react';
 import WalletsAuthProvider from '../../../../../AuthProvider';
 import WalletCashierHeader from '../WalletCashierHeader';
 
-jest.mock('@deriv-app/api-v2', () => ({
-    ...jest.requireActual('@deriv-app/api-v2'),
+jest.mock('@deriv-lib/api-v2', () => ({
+    ...jest.requireActual('@deriv-lib/api-v2'),
     useActiveWalletAccount: jest.fn(),
     useBalanceSubscription: jest.fn(),
 }));

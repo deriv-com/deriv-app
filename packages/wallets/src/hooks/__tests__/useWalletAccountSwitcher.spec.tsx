@@ -1,13 +1,13 @@
 import React, { PropsWithChildren } from 'react';
-import { APIProvider } from '@deriv-app/api-v2';
+import { APIProvider } from '@deriv-lib/api-v2';
 import { renderHook } from '@testing-library/react-hooks';
 import WalletsAuthProvider from '../../AuthProvider';
 import { mockLocalStorageBeforeEachTest, restoreLocalStorageAfterEachTest } from '../../utils/tests';
 import useWalletAccountSwitcher from '../useWalletAccountSwitcher';
 
 const mockSwitchAccount = jest.fn();
-jest.mock('@deriv-app/api-v2', () => ({
-    ...jest.requireActual('@deriv-app/api-v2'),
+jest.mock('@deriv-lib/api-v2', () => ({
+    ...jest.requireActual('@deriv-lib/api-v2'),
     useAuthorize: () => ({
         data: {
             email: 'test@gmail.com',

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 // @ts-ignore
 import { useStores } from 'Stores';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import AppContent from '../app-content.jsx';
 
 const mocked_store_values = {
@@ -30,8 +30,8 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
     })),
 }));
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Tabs: jest.fn(({ children }) => (
         <div>
             Tabs<div>{children}</div>
@@ -40,8 +40,8 @@ jest.mock('@deriv-app/components', () => ({
     Loading: () => <div>Loading</div>,
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isMobile: jest.fn(() => false),
 }));
 

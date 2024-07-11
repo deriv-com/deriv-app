@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Div100vhContainer, Modal } from '@deriv-app/components';
+import { Div100vhContainer, Modal } from '@deriv-lib/components';
 import AccountSwitcher from 'App/Containers/AccountSwitcher';
 
 const AccountSwitcherMobile = props => {

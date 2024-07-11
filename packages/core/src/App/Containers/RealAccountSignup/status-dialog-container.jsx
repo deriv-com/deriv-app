@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { useDevice } from '@deriv-com/ui';
-import { Div100vhContainer, Icon } from '@deriv-app/components';
-import { routes } from '@deriv-app/shared';
+import { Div100vhContainer, Icon } from '@deriv-lib/components';
+import { routes } from '@deriv-lib/shared';
 import { EXPERIAN, getExperianResult } from './helpers/constants';
 import { DialogHeading } from './helpers/dialog-heading.jsx';
 import { DialogMessage } from './helpers/dialog-message.jsx';
 import { DialogButtons } from './helpers/dialog-buttons.jsx';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 
 const MainIcon = ({ currency }) => <Icon icon={`IcCurrency-${currency.toLowerCase()}`} size={120} />;
 const Checkmark = ({ className }) => <Icon className={className} icon='IcCheckmarkCircle' color='green' size={24} />;

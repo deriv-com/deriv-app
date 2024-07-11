@@ -1,5 +1,5 @@
-import { Button } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
+import { Button } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
 import TradeButton from 'Components/trade-button/trade-button';
 import React from 'react';
 import { observer } from 'mobx-react-lite';

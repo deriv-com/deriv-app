@@ -3,15 +3,15 @@ import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
-import { Jurisdiction, CURRENCY_TYPE } from '@deriv-app/shared';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
+import { Jurisdiction, CURRENCY_TYPE } from '@deriv-lib/shared';
 import { BROKER_CODE } from '../Utils/account-switcher-dtrader-v2-utils';
 import AccountSwitcherDTraderV2 from '../account-switcher-dtrader-v2';
 
 const loading = 'Loading';
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Loading: jest.fn(() => loading),
 }));
 jest.mock('App/Components/Routes', () => ({

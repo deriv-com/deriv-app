@@ -565,7 +565,7 @@ type TClientStore = {
     is_fully_authenticated: boolean;
     updateMt5LoginList: () => Promise<void>;
     states_list: StatesList;
-    /** @deprecated Use `useCurrencyConfig` or `useCurrentCurrencyConfig` from `@deriv-app/hooks` package instead. */
+    /** @deprecated Use `useCurrencyConfig` or `useCurrentCurrencyConfig` from `@deriv-lib/hooks` package instead. */
     is_crypto: (currency?: string) => boolean;
     ctrader_accounts_list: TCtraderAccountsList[];
     dxtrade_accounts_list: (DetailsOfEachMT5Loginid & { account_id?: string })[];

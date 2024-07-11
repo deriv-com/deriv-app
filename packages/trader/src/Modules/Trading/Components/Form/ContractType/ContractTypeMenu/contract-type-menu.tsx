@@ -1,7 +1,7 @@
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Loading, ThemedScrollbars, VerticalTab } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { Loading, ThemedScrollbars, VerticalTab } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 import SearchInput from './search-input';
 import NoResultsMessage from './no-results-message';
 import { Header } from '../ContractTypeInfo/index';

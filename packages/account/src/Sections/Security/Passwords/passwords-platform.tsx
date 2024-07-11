@@ -1,8 +1,8 @@
 import React from 'react';
-import { useMutation } from '@deriv-app/api';
-import { CFD_PLATFORMS, getPlatformSettings } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+import { useMutation } from '@deriv-lib/api';
+import { CFD_PLATFORMS, getPlatformSettings } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 import FormSubHeader from '../../../Components/form-sub-header';
 import SentEmailModal from '../../../Components/sent-email-modal';
 import PlatformPartials from './platform-partials';

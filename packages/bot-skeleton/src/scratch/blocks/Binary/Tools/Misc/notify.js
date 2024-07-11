@@ -1,4 +1,4 @@
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import { emptyTextValidator } from '../../../../utils';
 import { config } from '../../../../../constants/config';
 

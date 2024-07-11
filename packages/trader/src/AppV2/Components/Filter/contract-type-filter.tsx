@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActionSheet, Checkbox, Chip, Text } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv-app/translations';
+import { Localize } from '@deriv-lib/translations';
 
 type TContractTypeFilter = {
     contractTypeFilter: string[] | [];

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useP2PAdvertiserPaymentMethods } from '@deriv-app/hooks';
+import { useP2PAdvertiserPaymentMethods } from '@deriv-lib/hooks';
 // @ts-ignore
 import { useStores } from 'Stores';
 import PaymentMethodCard from 'Components/payment-method-card';

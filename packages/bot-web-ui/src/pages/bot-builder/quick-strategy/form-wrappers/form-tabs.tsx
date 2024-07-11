@@ -1,7 +1,7 @@
 import React, { KeyboardEvent } from 'react';
 import classNames from 'classnames';
-import { Text } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
+import { Text } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
 import { FORM_TABS } from '../config';
 import { TDescriptionItem } from '../types';
 

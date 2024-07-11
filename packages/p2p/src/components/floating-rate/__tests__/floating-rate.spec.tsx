@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { APIProvider } from '@deriv-app/api';
-import { useP2PSettings } from '@deriv-app/hooks';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { APIProvider } from '@deriv-lib/api';
+import { useP2PSettings } from '@deriv-lib/hooks';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import FloatingRate from '../floating-rate';
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (
@@ -11,7 +11,7 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
     </APIProvider>
 );
 
-jest.mock('@deriv-app/hooks');
+jest.mock('@deriv-lib/hooks');
 
 const mockUseP2PSettings = useP2PSettings as jest.MockedFunction<typeof useP2PSettings>;
 

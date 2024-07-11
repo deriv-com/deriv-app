@@ -1,9 +1,9 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Button, Icon, Text } from '@deriv-app/components';
-import { routes, formatMoney, getCurrencyDisplayCode, getCurrencyName } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize, Localize } from '@deriv-app/translations';
+import { Button, Icon, Text } from '@deriv-lib/components';
+import { routes, formatMoney, getCurrencyDisplayCode, getCurrencyName } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize, Localize } from '@deriv-lib/translations';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-transfer-receipt.scss';
 import { BrowserHistory } from 'history';

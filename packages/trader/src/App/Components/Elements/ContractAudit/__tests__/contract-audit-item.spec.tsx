@@ -14,8 +14,8 @@ const mock_default_props = {
     value: values.value,
 };
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     formatDate: jest.fn(() => <div>2023-10-11</div>),
     formatTime: jest.fn(() => <div>12:40:45 GMT</div>),
 }));

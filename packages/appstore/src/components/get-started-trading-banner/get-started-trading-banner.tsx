@@ -1,9 +1,9 @@
 import React from 'react';
 import { useDevice } from '@deriv-com/ui';
-import { getLanguage, Localize } from '@deriv-app/translations';
-import { Button, Text, Icon } from '@deriv-app/components';
-import { useStore, observer } from '@deriv-app/stores';
-import { redirectToLogin } from '@deriv-app/shared';
+import { getLanguage, Localize } from '@deriv-lib/translations';
+import { Button, Text, Icon } from '@deriv-lib/components';
+import { useStore, observer } from '@deriv-lib/stores';
+import { redirectToLogin } from '@deriv-lib/shared';
 import TrustpilotWidget from 'Components/trustpilot-widget';
 import './get-started-trading-banner.scss';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
-import { mobileOSDetect, getPosition } from '@deriv-app/shared';
+import { mobileOSDetect, getPosition } from '@deriv-lib/shared';
 import { TList, findNextFocusableNode, findPreviousFocusableNode, TListItem } from './utility';
 import Items from './items';
 import DisplayText from './display-text';

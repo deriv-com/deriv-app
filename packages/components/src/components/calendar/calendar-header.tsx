@@ -1,5 +1,5 @@
 import React from 'react';
-import { addMonths, addYears, subMonths, subYears, toMoment } from '@deriv-app/shared';
+import { addMonths, addYears, subMonths, subYears, toMoment } from '@deriv-lib/shared';
 import Button from './calendar-button';
 import { getCentury, getDecade } from './helpers';
 

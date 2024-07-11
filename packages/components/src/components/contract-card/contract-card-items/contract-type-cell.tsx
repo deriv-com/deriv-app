@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { TGetContractTypeDisplay } from '../../types';
 import IconTradeTypes from '../../icon-trade-types';
-import { isVanillaContract, isSmartTraderContract, isLookBacksContract } from '@deriv-app/shared';
+import { isVanillaContract, isSmartTraderContract, isLookBacksContract } from '@deriv-lib/shared';
 
 export type TContractTypeCellProps = {
     getContractTypeDisplay: TGetContractTypeDisplay;

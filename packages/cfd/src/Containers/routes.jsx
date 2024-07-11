@@ -3,7 +3,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import BinaryRoutes from '../Components/Routes';
 import ErrorComponent from '../Components/Errors/error-component.jsx';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 
 const Routes = observer(({ passthrough }) => {
     const { client, common } = useStore();

@@ -1,7 +1,7 @@
 import React from 'react';
-import { MobileFullPageModal, Modal, Tabs } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { MobileFullPageModal, Modal, Tabs } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import { tabs_title } from 'Constants/load-modal';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendCloseEvent } from '../../analytics/rudderstack-common-events';

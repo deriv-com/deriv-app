@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
+import { Icon } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
 import './trustpilot-star-rating.scss';
 
 const TrustpilotStarRating = observer(({ score }: { score: number }) => {

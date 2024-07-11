@@ -1,5 +1,5 @@
 import React from 'react';
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import { Breadcrumb } from '@deriv/ui';
 import { useCashierStore } from '../../stores/useCashierStores';
 import './cashier-breadcrumb.scss';

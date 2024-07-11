@@ -1,4 +1,4 @@
-import { useActiveAccount } from '@deriv-app/api-v2';
+import { useActiveAccount } from '@deriv-lib/api-v2';
 import type { TCurrency } from '../../../types';
 import { usePaymentAgentDetails, usePaymentAgentTransfer } from '../hooks';
 

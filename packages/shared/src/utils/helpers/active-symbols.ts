@@ -3,7 +3,7 @@ import { LocalStore } from '../storage';
 import { redirectToLogin } from '../login';
 import { WS } from '../../services';
 
-import { getLanguage, localize } from '@deriv-app/translations';
+import { getLanguage, localize } from '@deriv-lib/translations';
 import { ActiveSymbols } from '@deriv/api-types';
 
 type TResidenceList = {

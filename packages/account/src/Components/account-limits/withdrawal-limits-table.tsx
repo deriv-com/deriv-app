@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text } from '@deriv-app/components';
-import { formatMoney } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
-import { observer, useStore } from '@deriv-app/stores';
+import { Text } from '@deriv-lib/components';
+import { formatMoney } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
+import { observer, useStore } from '@deriv-lib/stores';
 import AccountLimitsTableCell from './account-limits-table-cell';
 import AccountLimitsTableHeader from './account-limits-table-header';
 

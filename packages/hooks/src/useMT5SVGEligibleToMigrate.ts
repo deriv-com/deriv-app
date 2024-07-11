@@ -1,6 +1,6 @@
 import React from 'react';
-import { useStore } from '@deriv-app/stores';
-import { Jurisdiction, getFormattedJurisdictionCode } from '@deriv-app/shared';
+import { useStore } from '@deriv-lib/stores';
+import { Jurisdiction, getFormattedJurisdictionCode } from '@deriv-lib/shared';
 
 const useMT5SVGEligibleToMigrate = () => {
     const { client, traders_hub } = useStore();

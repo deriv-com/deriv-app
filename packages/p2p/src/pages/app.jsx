@@ -1,15 +1,14 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { reaction } from 'mobx';
-import { Loading } from '@deriv-app/components';
-import { useP2PCompletedOrdersNotification, useFeatureFlags, useP2PSettings } from '@deriv-app/hooks';
-import { isEmptyObject, routes, WS } from '@deriv-app/shared';
-import { useStore, observer } from '@deriv-app/stores';
-import { getLanguage } from '@deriv-app/translations';
+import { Loading } from '@deriv-lib/components';
+import { useP2PCompletedOrdersNotification, useFeatureFlags, useP2PSettings } from '@deriv-lib/hooks';
+import { isEmptyObject, routes, WS } from '@deriv-lib/shared';
+import { useStore, observer } from '@deriv-lib/stores';
+import { getLanguage } from '@deriv-lib/translations';
 import { URLConstants } from '@deriv-com/utils';
 import { init } from 'Utils/server_time';
 import { waitWS } from 'Utils/websocket';
-// @ts-ignore
 import { useStores } from 'Stores';
 import AppContent from 'Components/app-content.jsx';
 import { setLanguage } from 'Components/i18next';

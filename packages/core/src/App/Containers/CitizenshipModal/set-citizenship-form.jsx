@@ -2,8 +2,8 @@ import React from 'react';
 import { Field } from 'formik';
 import PropTypes from 'prop-types';
 
-import { Autocomplete, Text } from '@deriv-app/components';
-import { Localize, localize } from '@deriv-app/translations';
+import { Autocomplete, Text } from '@deriv-lib/components';
+import { Localize, localize } from '@deriv-lib/translations';
 
 const SetCitizenshipForm = ({ class_prefix, errors, touched, setFieldValue, citizenship_list }) => (
     <div className={`${class_prefix}__residence-selection`}>

@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { MessageTypes } from '@deriv/bot-skeleton';
-import { useNewRowTransition } from '@deriv-app/shared';
+import { useNewRowTransition } from '@deriv-lib/shared';
 import { TJournalItemExtra, TJournalItemProps } from '../journal.types';
 import DateItem from './date-item';
 import FormatMessage from './format-message';

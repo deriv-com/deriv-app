@@ -1,12 +1,12 @@
 import React from 'react';
 import MT5MigrationFrontSideContent from '../mt5-migration-front-side-content';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
-import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
+import { useMT5SVGEligibleToMigrate } from '@deriv-lib/hooks';
 import { CFDStoreProvider } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useMT5SVGEligibleToMigrate: jest.fn(),
 }));
 

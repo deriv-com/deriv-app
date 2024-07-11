@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { useDevice } from '@deriv-com/ui';
-import { DataList, DataTable, Text, Clipboard, usePrevious } from '@deriv-app/components';
+import { DataList, DataTable, Text, Clipboard, usePrevious } from '@deriv-lib/components';
 import {
     capitalizeFirstLetter,
     extractInfoFromShortcode,
@@ -10,8 +10,8 @@ import {
     getUnsupportedContracts,
     isForwardStarting,
     hasForwardContractStarted,
-} from '@deriv-app/shared';
-import { localize, Localize } from '@deriv-app/translations';
+} from '@deriv-lib/shared';
+import { localize, Localize } from '@deriv-lib/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
@@ -19,11 +19,11 @@ import PlaceholderComponent from '../Components/placeholder-component';
 import FilterComponent from '../Components/filter-component';
 import { ReportsMeta } from '../Components/reports-meta';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useReportsStore } from 'Stores/useReportsStores';
 import { TUnsupportedContractType } from 'Types';
-import { TSource } from '@deriv-app/components/src/components/data-table/table-row';
-import { TRow } from '@deriv-app/components/src/components/types/common.types';
+import { TSource } from '@deriv-lib/components/src/components/data-table/table-row';
+import { TRow } from '@deriv-lib/components/src/components/types/common.types';
 
 type TGetStatementTableColumnsTemplate = ReturnType<typeof getStatementTableColumnsTemplate>;
 type TColIndex = 'icon' | 'refid' | 'currency' | 'date' | 'action_type' | 'amount' | 'balance';

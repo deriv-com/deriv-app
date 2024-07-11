@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStore, observer } from '@deriv-app/stores';
+import { useStore, observer } from '@deriv-lib/stores';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -8,8 +8,8 @@ import { createExtendedOrderDetails } from 'Utils/orders';
 import { getDistanceToServerTime } from 'Utils/server_time';
 // @ts-ignore
 import { useStores } from 'Stores';
-import { DesktopWrapper, Icon, MobileWrapper, Table, Text } from '@deriv-app/components';
-import { formatMoney, routes } from '@deriv-app/shared';
+import { DesktopWrapper, Icon, MobileWrapper, Table, Text } from '@deriv-lib/components';
+import { formatMoney, routes } from '@deriv-lib/shared';
 import { localize } from 'Components/i18next';
 import RatingCellRenderer from 'Components/rating-cell-renderer';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

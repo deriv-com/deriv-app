@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { APIProvider, useSubscription } from '@deriv-app/api';
+import { APIProvider, useSubscription } from '@deriv-lib/api';
 import { renderHook } from '@testing-library/react-hooks';
 import useCryptoTransactions from '../useCryptoTransactions';
 
-jest.mock('@deriv-app/api', () => ({
-    ...jest.requireActual('@deriv-app/api'),
+jest.mock('@deriv-lib/api', () => ({
+    ...jest.requireActual('@deriv-lib/api'),
     useSubscription: jest.fn(),
 }));
 

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Text } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { Button, Text } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 import { DerivLightExclamationPoiIcon } from '@deriv/quill-icons';
-import { POIContext } from '@deriv-app/shared';
+import { POIContext } from '@deriv-lib/shared';
 import { submission_status_code } from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
 
 type TIdvLimited = {

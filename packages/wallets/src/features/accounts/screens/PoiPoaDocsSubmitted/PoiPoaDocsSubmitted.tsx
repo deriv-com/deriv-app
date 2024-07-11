@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useInvalidateQuery } from '@deriv-app/api-v2';
+import { useInvalidateQuery } from '@deriv-lib/api-v2';
 import { DerivLightWaitingPoiIcon } from '@deriv/quill-icons';
 import { useFlow, WalletButton, WalletsActionScreen } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';

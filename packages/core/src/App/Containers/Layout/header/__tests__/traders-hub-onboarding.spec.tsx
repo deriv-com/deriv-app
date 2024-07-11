@@ -1,11 +1,11 @@
 import React from 'react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TradersHubOnboarding from '../traders-hub-onboarding';
-import { TCoreStores } from '@deriv-app/stores/types';
+import { TCoreStores } from '@deriv-lib/stores/types';
 
 describe('TradersHubOnboarding', () => {
     const onboarding_icon_testid = 'dt_traders_hub_onboarding_icon';

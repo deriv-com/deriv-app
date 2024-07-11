@@ -1,6 +1,6 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { DataList, usePrevious, SelectNative, Dropdown } from '@deriv-app/components';
+import { DataList, usePrevious, SelectNative, Dropdown } from '@deriv-lib/components';
 import { useDevice } from '@deriv-com/ui';
 import {
     isAccumulatorContract,
@@ -8,15 +8,15 @@ import {
     getTotalProfit,
     getGrowthRatePercentage,
     toMoment,
-} from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+} from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 import { Analytics } from '@deriv-com/analytics';
 import {
     getOpenPositionsColumnsTemplate,
     getAccumulatorOpenPositionsColumnsTemplate,
     getMultiplierOpenPositionsColumnsTemplate,
 } from 'Constants/data-table-constants';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { TColIndex } from 'Types';
 import { OpenPositionsTable } from './open-positions-table';
 import { MobileRowRenderer } from './mobile-row-renderer';

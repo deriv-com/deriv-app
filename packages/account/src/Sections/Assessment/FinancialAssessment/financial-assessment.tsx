@@ -5,10 +5,10 @@ import clsx from 'clsx';
 import React from 'react';
 import { Formik, FormikHelpers } from 'formik';
 import { useHistory, withRouter } from 'react-router';
-import { FormSubmitErrorMessage, Loading, Button, Dropdown, Modal, Icon, SelectNative, Text } from '@deriv-app/components';
-import { routes, platforms, WS, shouldHideOccupationField } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize, Localize } from '@deriv-app/translations';
+import { FormSubmitErrorMessage, Loading, Button, Dropdown, Modal, Icon, SelectNative, Text } from '@deriv-lib/components';
+import { routes, platforms, WS, shouldHideOccupationField } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize, Localize } from '@deriv-lib/translations';
 import LeaveConfirm from 'Components/leave-confirm';
 import IconMessageContent from 'Components/icon-message-content';
 import DemoMessage from 'Components/demo-message';
@@ -35,7 +35,7 @@ import {
     getOtherInstrumentsTradingExperienceList,
     getOtherInstrumentsTradingFrequencyList,
 } from './financial-information-list';
-import type { TCoreStores } from '@deriv-app/stores/types';
+import type { TCoreStores } from '@deriv-lib/stores/types';
 import { GetFinancialAssessment, GetFinancialAssessmentResponse } from '@deriv/api-types';
 import { getFormattedOccupationList } from 'Configs/financial-details-config';
 import { TFinancialInformationForm } from 'Types';

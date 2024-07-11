@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Text } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { Text } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 
 type TIconRadio = {
     google_drive_connected?: boolean;

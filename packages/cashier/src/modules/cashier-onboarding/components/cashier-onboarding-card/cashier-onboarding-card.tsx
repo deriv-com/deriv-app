@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon, Text } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
+import { Icon, Text } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
 import './cashier-onboarding-card.scss';
 
 type TProps = {

@@ -83,14 +83,14 @@ module.exports = function () {
                 'react-content-loader': 'react-content-loader',
                 'react-dom': 'react-dom',
                 'react-dropzone': 'react-dropzone',
-                '@deriv-app/shared': '@deriv-app/shared',
-                '@deriv-app/translations': '@deriv-app/translations',
+                '@deriv-lib/shared': '@deriv-lib/shared',
+                '@deriv-lib/translations': '@deriv-lib/translations',
                 'react-router-dom': 'react-router-dom',
                 'react-swipeable': 'react-swipeable',
                 'react-tiny-popover': 'react-tiny-popover',
             },
-            /^@deriv-app\/shared\/.+$/,
-            /^@deriv-app\/translations\/.+$/,
+            /^@deriv-lib\/shared\/.+$/,
+            /^@deriv-lib\/translations\/.+$/,
         ],
     };
 };

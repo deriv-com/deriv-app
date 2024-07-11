@@ -31,9 +31,9 @@ import {
     urlForLanguage,
     getAppId,
     getUrlP2P,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 import { Analytics } from '@deriv-com/analytics';
-import { getLanguage, localize, getRedirectionLanguage } from '@deriv-app/translations';
+import { getLanguage, localize, getRedirectionLanguage } from '@deriv-lib/translations';
 
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';

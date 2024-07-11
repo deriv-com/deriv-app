@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import Balance from './Balance';
 import OpenContract from './OpenContract';
 import Proposal from './Proposal';

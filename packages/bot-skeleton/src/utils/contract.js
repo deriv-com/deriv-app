@@ -1,4 +1,4 @@
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import { config } from '../constants/config';
 
 // TODO: use-shared-functions - These functions are duplicates of trader ones, export and use these instead.

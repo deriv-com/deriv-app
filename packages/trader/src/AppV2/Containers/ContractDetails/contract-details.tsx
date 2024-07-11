@@ -4,7 +4,7 @@ import TakeProfitHistory from 'AppV2/Components/TakeProfitHistory';
 import PayoutInfo from 'AppV2/Components/PayoutInfo';
 import ChartPlaceholder from '../Chart';
 import CardWrapper from 'AppV2/Components/CardWrapper';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import OrderDetails from 'AppV2/Components/OrderDetails';
 import { getContractDetailsConfig } from 'AppV2/Utils/contract-details-config';
@@ -21,7 +21,7 @@ import {
     isValidToSell,
     hasContractEntered,
     isAccumulatorContract,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 import classNames from 'classnames';
 import ContractDetailsFooter from 'AppV2/Components/ContractDetailsFooter';
 import { ContractCard } from 'AppV2/Components/ContractCard';

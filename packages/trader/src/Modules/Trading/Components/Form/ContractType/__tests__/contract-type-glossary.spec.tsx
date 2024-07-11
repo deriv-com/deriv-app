@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { TRADE_TYPES } from '@deriv-app/shared';
+import { TRADE_TYPES } from '@deriv-lib/shared';
 import ContractTypeGlossary from '../ContractTypeInfo/contract-type-glossary';
 
 const deal_cancellation = 'Deal cancellation';

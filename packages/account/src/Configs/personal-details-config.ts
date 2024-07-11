@@ -6,8 +6,8 @@ import {
     getErrorMessages,
     toMoment,
     validLength,
-} from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+} from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 import { shouldShowIdentityInformation } from 'Helpers/utils';
 import { TUpgradeInfo } from 'Types';
 import { PHONE_NUMBER_LENGTH } from 'Constants/personal-details';

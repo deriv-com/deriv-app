@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { useActiveWalletAccount } from '@deriv-app/api-v2';
+import { useActiveWalletAccount } from '@deriv-lib/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { WalletCashierContent, WalletCashierHeader } from './components';
 import { CashierScrollContext } from './context';

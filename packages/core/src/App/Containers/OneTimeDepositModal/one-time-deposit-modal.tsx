@@ -8,10 +8,10 @@ import {
     MobileWrapper,
     Modal,
     Text,
-} from '@deriv-app/components';
-import { useHasMFAccountDeposited } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv-app/translations';
+} from '@deriv-lib/components';
+import { useHasMFAccountDeposited } from '@deriv-lib/hooks';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize } from '@deriv-lib/translations';
 import DepositFiatIframe from '@deriv/cashier/src/modules/deposit-fiat/components/deposit-fiat-iframe/deposit-fiat-iframe';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
 

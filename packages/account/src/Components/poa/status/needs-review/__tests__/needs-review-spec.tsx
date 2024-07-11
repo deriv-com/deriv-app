@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
 import { BrowserRouter } from 'react-router-dom';
-import { Button } from '@deriv-app/components';
+import { Button } from '@deriv-lib/components';
 import { NeedsReview } from '../needs-review';
 import React from 'react';
 

@@ -1,13 +1,13 @@
-import { isMobile, validNumber } from '@deriv-app/shared';
+import { isMobile, validNumber } from '@deriv-lib/shared';
 import WithdrawStore from '../withdraw-store';
 import { configure } from 'mobx';
 import { TWebSocket, TRootStore } from '../../types';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
 configure({ safeDescriptors: false });
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     getMinWithdrawal: jest.fn(() => 100),
     isMobile: jest.fn(() => false),
     validNumber: jest.fn(() => {

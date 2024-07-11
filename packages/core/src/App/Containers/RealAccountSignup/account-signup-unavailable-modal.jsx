@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Modal } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { Button, Modal } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 
 const AccountSignupUnavailableModal = ({ is_visible, toggleModal }) => (
     <Modal is_open={is_visible} small toggleModal={toggleModal}>

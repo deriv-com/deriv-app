@@ -1,10 +1,10 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv-app/api-v2';
+import { useActiveWalletAccount } from '@deriv-lib/api-v2';
 import { render, screen, waitFor } from '@testing-library/react';
 import WalletsContainer from '../WalletsContainer';
 import '@testing-library/jest-dom/extend-expect';
 
-jest.mock('@deriv-app/api-v2', () => ({
+jest.mock('@deriv-lib/api-v2', () => ({
     useActiveWalletAccount: jest.fn(),
 }));
 

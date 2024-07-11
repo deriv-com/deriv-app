@@ -1,7 +1,7 @@
 import { ChangeEventHandler } from 'react';
-import { Text, Icon } from '@deriv-app/components';
+import { Text, Icon } from '@deriv-lib/components';
 import clsx from 'clsx';
-import { TranslationFlag } from '@deriv-app/shared';
+import { TranslationFlag } from '@deriv-lib/shared';
 
 export type TLanguageRadioButton = {
     is_current_language: boolean;

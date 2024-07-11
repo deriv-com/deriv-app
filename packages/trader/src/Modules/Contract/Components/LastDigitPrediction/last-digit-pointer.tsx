@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Icon } from '@deriv-app/components';
+import { Icon } from '@deriv-lib/components';
 
 type TLastDigitPointer = {
     is_lost?: boolean;

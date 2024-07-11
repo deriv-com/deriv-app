@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { render, screen } from '@testing-library/react';
 import MarketUnavailableModal from '../market-unavailable';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import ReportsProviders from '../../../../../reports-providers';
 
 const mock_props = {

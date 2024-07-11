@@ -1,6 +1,6 @@
 import * as SocketCache from '_common/base/socket_cache';
 import { action, computed, makeObservable, observable } from 'mobx';
-import { changeLanguage } from '@deriv-app/translations';
+import { changeLanguage } from '@deriv-lib/translations';
 import { getAllowedLanguages } from '@deriv-com/translations';
 import {
     UNSUPPORTED_LANGUAGES,
@@ -12,7 +12,7 @@ import {
     platforms,
     routes,
     toMoment,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
 import ServerTime from '_common/base/server_time';

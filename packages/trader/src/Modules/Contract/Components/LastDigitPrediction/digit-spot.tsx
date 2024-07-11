@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Text } from '@deriv-app/components';
+import { Text } from '@deriv-lib/components';
 
 type TDigitSpot = {
     current_spot?: string | null;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv-app/stores';
-import { TCoreStores } from '@deriv-app/stores/types';
+import { mockStore } from '@deriv-lib/stores';
+import { TCoreStores } from '@deriv-lib/stores/types';
 import { TProposalTypeInfo } from 'Types';
 import CancelDealInfo from '../cancel-deal-info';
 import TraderProviders from '../../../../../../trader-providers';

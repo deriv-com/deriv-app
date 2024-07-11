@@ -1,7 +1,7 @@
 import React from 'react';
 import type { TWebSocket } from 'Types';
 import initStore from 'App/init-store';
-import type { TCoreStores } from '@deriv-app/stores/types';
+import type { TCoreStores } from '@deriv-lib/stores/types';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import TraderProviders from '../trader-providers';
 import { ReportsStoreProvider } from '../../../reports/src/Stores/useReportsStores';

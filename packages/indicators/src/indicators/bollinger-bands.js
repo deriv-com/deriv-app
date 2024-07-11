@@ -1,4 +1,4 @@
-import { sequence } from '@deriv-app/shared';
+import { sequence } from '@deriv-lib/shared';
 import { simpleMovingAverage } from './simple-moving-average';
 import { stddev, takeLast } from '../utils/math';
 

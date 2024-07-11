@@ -1,6 +1,6 @@
 const resolve = require('path').resolve;
 const existsSync = require('fs').existsSync;
-/* Using this loader you can import components from @deriv-app/components without having to manually
+/* Using this loader you can import components from @deriv-lib/components without having to manually
 import the corresponding stylesheet. The deriv-reports-loader will automatically import
 stylesheets.
 

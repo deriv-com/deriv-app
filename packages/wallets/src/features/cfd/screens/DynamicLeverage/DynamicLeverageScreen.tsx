@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useDebounceValue } from 'usehooks-ts';
-import { useDynamicLeverage } from '@deriv-app/api-v2';
+import { useDynamicLeverage } from '@deriv-lib/api-v2';
 import { WalletText } from '../../../../components';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
 import { PlatformDetails } from '../../constants';

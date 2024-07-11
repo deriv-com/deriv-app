@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import { InputWithCheckbox } from '@deriv-app/components';
-import { Localize, localize } from '@deriv-app/translations';
+import { InputWithCheckbox } from '@deriv-lib/components';
+import { Localize, localize } from '@deriv-lib/translations';
 import Fieldset from 'App/Components/Form/fieldset';
-import { isDesktop } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { isDesktop } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { TTradeStore } from 'Types';
 

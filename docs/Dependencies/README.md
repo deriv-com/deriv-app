@@ -16,7 +16,7 @@ lerna exec --scope @deriv/[Package] -- npm install [Package] --save
 For example
 
 ```
-lerna exec --scope @deriv-app/shared -- npm install sax --save
+lerna exec --scope @deriv-lib/shared -- npm install sax --save
 ```
 
 ### Update
@@ -43,7 +43,7 @@ lerna exec --scope @deriv/[Package] -- npm uninstall [package]
 For example:
 
 ```sh
-npx lerna exec --scope @deriv-app/shared -- npm uninstall sax --save
+npx lerna exec --scope @deriv-lib/shared -- npm uninstall sax --save
 ```
 
 ## Root

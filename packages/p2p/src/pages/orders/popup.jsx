@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
-import { Button, Checkbox, Modal, Text, useSafeState } from '@deriv-app/components';
+import { Button, Checkbox, Modal, Text, useSafeState } from '@deriv-lib/components';
 import { localize } from 'Components/i18next';
 import FormError from 'Components/section-error';
 

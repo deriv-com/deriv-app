@@ -1,9 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Button, DatePicker, Input, Text } from '@deriv-app/components';
-import { epochToMoment, toMoment } from '@deriv-app/shared';
+import { Button, DatePicker, Input, Text } from '@deriv-lib/components';
+import { epochToMoment, toMoment } from '@deriv-lib/shared';
 import { useDevice } from '@deriv-com/ui';
-import { Localize, localize } from '@deriv-app/translations';
+import { Localize, localize } from '@deriv-lib/translations';
 import {
     Field,
     FormikComputedProps,

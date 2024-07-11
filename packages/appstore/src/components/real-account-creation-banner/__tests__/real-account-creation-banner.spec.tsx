@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import RealAccountCreationBanner from '../real-account-creation-banner';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import userEvent from '@testing-library/user-event';
 
 describe('RealAccountCreationBanner', () => {

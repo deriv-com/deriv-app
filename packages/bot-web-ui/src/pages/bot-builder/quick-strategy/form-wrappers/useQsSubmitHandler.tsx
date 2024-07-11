@@ -1,5 +1,5 @@
 import { useFormikContext } from 'formik';
-import { useStore } from '@deriv-app/stores';
+import { useStore } from '@deriv-lib/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendQsRunStrategyEvent } from '../../../../analytics/rudderstack-quick-strategy';
 import { TFormValues } from '../types';

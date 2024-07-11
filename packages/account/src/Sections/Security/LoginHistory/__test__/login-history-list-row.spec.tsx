@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { APIProvider } from '@deriv-app/api';
+import { APIProvider } from '@deriv-lib/api';
 import { useDevice } from '@deriv-com/ui';
 import LoginHistoryListRow from '../login-history-list-row';
 

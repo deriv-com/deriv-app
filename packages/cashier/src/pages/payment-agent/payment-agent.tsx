@@ -1,7 +1,7 @@
 import React from 'react';
-import { Loading } from '@deriv-app/components';
-import { useCashierLocked } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv-app/stores';
+import { Loading } from '@deriv-lib/components';
+import { useCashierLocked } from '@deriv-lib/hooks';
+import { observer, useStore } from '@deriv-lib/stores';
 import CashierLocked from 'Components/cashier-locked';
 import { Virtual } from 'Components/cashier-container';
 import PaymentAgentList from './payment-agent-list';

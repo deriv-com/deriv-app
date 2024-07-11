@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useFormikContext } from 'formik';
-import { Button, Text, ThemedScrollbars } from '@deriv-app/components';
-import Icon from '@deriv-app/components/src/components/icon/icon';
-import { observer } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { Button, Text, ThemedScrollbars } from '@deriv-lib/components';
+import Icon from '@deriv-lib/components/src/components/icon/icon';
+import { observer } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import {
     rudderStackSendQsEditStrategyEvent,

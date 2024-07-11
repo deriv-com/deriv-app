@@ -1,4 +1,4 @@
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import { sellContract } from '../../images';
 
 Blockly.Blocks.during_purchase = {

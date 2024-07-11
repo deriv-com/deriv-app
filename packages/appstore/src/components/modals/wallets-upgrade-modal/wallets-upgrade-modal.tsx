@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Stream } from '@cloudflare/stream-react';
-import { Button, Text, Modal } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
-import { observer, useStore } from '@deriv-app/stores';
-import { useWalletMigration } from '@deriv-app/hooks';
+import { Button, Text, Modal } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
+import { observer, useStore } from '@deriv-lib/stores';
+import { useWalletMigration } from '@deriv-lib/hooks';
 import './wallets-upgrade-modal.scss';
 
 const WalletsUpgradeModal = observer(() => {

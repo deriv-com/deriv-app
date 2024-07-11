@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Modal, Text, Icon } from '@deriv-app/components';
-import { localize, Localize } from '@deriv-app/translations';
+import { Button, Modal, Text, Icon } from '@deriv-lib/components';
+import { localize, Localize } from '@deriv-lib/translations';
 
 type TUnlinkAccountModalProps = {
     onClose: () => void;

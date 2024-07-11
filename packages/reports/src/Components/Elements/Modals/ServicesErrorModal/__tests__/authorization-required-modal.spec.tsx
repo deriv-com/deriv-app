@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import AuthorizationRequiredModal from '../authorization-required-modal';
-import { redirectToLogin, redirectToSignUp } from '@deriv-app/shared';
+import { redirectToLogin, redirectToSignUp } from '@deriv-lib/shared';
 import userEvent from '@testing-library/user-event';
 
 type TModal = React.FC<{
@@ -17,8 +17,8 @@ type TModal = React.FC<{
     }>;
 };
 
-jest.mock('@deriv-app/components', () => {
-    const original_module = jest.requireActual('@deriv-app/components');
+jest.mock('@deriv-lib/components', () => {
+    const original_module = jest.requireActual('@deriv-lib/components');
     const Modal: TModal = jest.fn(({ children, is_open, title }) => {
         if (is_open) {
             return (
@@ -39,8 +39,8 @@ jest.mock('@deriv-app/components', () => {
     };
 });
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     redirectToLogin: jest.fn(),
     redirectToSignUp: jest.fn(),
 }));

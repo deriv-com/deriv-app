@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { ModalManagerContextProvider } from 'Components/modal-manager';
 import { useStores } from 'Stores/index';
 import MyProfileDetailsContainer from '../my-profile-details-container';

@@ -12,7 +12,7 @@ import {
     isTurbosContract,
     isMultiplierContract,
     getLocalizedTurbosSubtype,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 import ContractTypeCell from './contract-type-cell';
 import Button from '../../button';
 import Icon from '../../icon';
@@ -21,7 +21,7 @@ import ProgressSlider from '../../progress-slider';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';
 import TickCounterBar from './tick-counter-bar';
-import { TContractInfo } from '@deriv-app/shared/src/utils/contract/contract-types';
+import { TContractInfo } from '@deriv-lib/shared/src/utils/contract/contract-types';
 import { TGetCardLables, TGetContractTypeDisplay } from '../../types/common.types';
 
 export type TContractCardHeaderProps = {

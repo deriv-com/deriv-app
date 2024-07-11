@@ -1,10 +1,10 @@
 import React from 'react';
 import { FormikValues } from 'formik';
-import { EMPLOYMENT_VALUES } from '@deriv-app/shared';
+import { EMPLOYMENT_VALUES } from '@deriv-lib/shared';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import FinancialDetails from '../financial-details';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { useDevice } from '@deriv-com/ui';
 
 jest.mock('@deriv-com/ui', () => ({

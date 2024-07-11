@@ -1,4 +1,4 @@
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import { loadBlocksFromRemote, runIrreversibleEvents } from '../../../../utils';
 import { observer as globalObserver } from '../../../../../utils/observer';
 import { LogTypes } from '../../../../../constants/messages';

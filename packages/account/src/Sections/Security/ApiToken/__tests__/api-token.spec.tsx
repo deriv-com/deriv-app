@@ -2,8 +2,8 @@ import React from 'react';
 import { FormikValues } from 'formik';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { getPropertyValue, WS } from '@deriv-app/shared';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { getPropertyValue, WS } from '@deriv-lib/shared';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { useDevice } from '@deriv-com/ui';
 import ApiToken from '../api-token';
 
@@ -12,17 +12,17 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Loading: () => <div>Loading</div>,
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     getPropertyValue: jest.fn(() => []),
 }));
 
-jest.mock('@deriv-app/shared/src/services/ws-methods', () => ({
+jest.mock('@deriv-lib/shared/src/services/ws-methods', () => ({
     __esModule: true, // this property makes it work,
     default: 'mockedDefaultExport',
     WS: {

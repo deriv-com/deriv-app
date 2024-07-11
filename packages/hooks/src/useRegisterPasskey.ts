@@ -1,8 +1,8 @@
 import React from 'react';
 import { startRegistration } from '@simplewebauthn/browser';
 import { PublicKeyCredentialCreationOptionsJSON } from '@simplewebauthn/typescript-types';
-import { useInvalidateQuery } from '@deriv-app/api';
-import { mobileOSDetect, WS } from '@deriv-app/shared';
+import { useInvalidateQuery } from '@deriv-lib/api';
+import { mobileOSDetect, WS } from '@deriv-lib/shared';
 import { Analytics } from '@deriv-com/analytics';
 
 type TError = { code?: string; name?: string; message: string };

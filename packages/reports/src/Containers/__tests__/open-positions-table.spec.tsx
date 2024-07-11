@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockContractInfo } from '@deriv-app/shared';
+import { mockContractInfo } from '@deriv-lib/shared';
 import { useDevice } from '@deriv-com/ui';
-import { TPortfolioPosition } from '@deriv-app/stores/types';
+import { TPortfolioPosition } from '@deriv-lib/stores/types';
 import { OpenPositionsTable, getRowAction, isPurchaseMissing } from '../open-positions-table';
 
 const data_list = 'DataList';
@@ -33,8 +33,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     DataList: jest.fn(() => <>{data_list}</>),
 }));
 

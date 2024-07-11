@@ -1,7 +1,7 @@
 import React from 'react';
-import { Dialog } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+import { Dialog } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendOpenEvent } from '../../../analytics/rudderstack-common-events';
 import ToolbarButton from './toolbar-button';

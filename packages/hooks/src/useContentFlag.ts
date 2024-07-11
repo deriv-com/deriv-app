@@ -1,5 +1,5 @@
-import { ContentFlag } from '@deriv-app/shared';
-import { useStore } from '@deriv-app/stores';
+import { ContentFlag } from '@deriv-lib/shared';
+import { useStore } from '@deriv-lib/stores';
 
 const useContentFlag = () => {
     const { traders_hub } = useStore();

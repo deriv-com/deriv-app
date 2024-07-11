@@ -1,7 +1,7 @@
 import React from 'react';
-import { Table, Div100vhContainer, Text, ThemedScrollbars } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
-import { isDesktop, isMobile } from '@deriv-app/shared';
+import { Table, Div100vhContainer, Text, ThemedScrollbars } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
+import { isDesktop, isMobile } from '@deriv-lib/shared';
 import {
     getCFDContents,
     getOptionsContents,

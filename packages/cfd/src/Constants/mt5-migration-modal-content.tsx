@@ -1,6 +1,6 @@
 import React from 'react';
-import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
-import { Localize } from '@deriv-app/translations';
+import { useMT5SVGEligibleToMigrate } from '@deriv-lib/hooks';
+import { Localize } from '@deriv-lib/translations';
 
 type TMigrationModalDetails = Exclude<
     NonNullable<ReturnType<typeof useMT5SVGEligibleToMigrate>>['eligible_account_to_migrate_label'],

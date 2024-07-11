@@ -1,5 +1,5 @@
-import { epochToMoment, toMoment } from '@deriv-app/shared';
-import { TCoreStores } from '@deriv-app/stores/types';
+import { epochToMoment, toMoment } from '@deriv-lib/shared';
+import { TCoreStores } from '@deriv-lib/stores/types';
 
 const isProductionOrStaging = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 

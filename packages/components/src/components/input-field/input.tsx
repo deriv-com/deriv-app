@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { getCurrencyDisplayCode } from '@deriv-app/shared';
+import { getCurrencyDisplayCode } from '@deriv-lib/shared';
 import Text from '../text';
 
 export type TInputMode = 'search' | 'text' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal';

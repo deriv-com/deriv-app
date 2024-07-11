@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { getCardLabels, toMoment } from '@deriv-app/shared';
+import { getCardLabels, toMoment } from '@deriv-lib/shared';
 import { ContractCardStatusTimer } from '../contract-card-status-timer';
 
 const mockedNow = Math.floor(Date.now() / 1000);

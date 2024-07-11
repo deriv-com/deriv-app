@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Icon } from '@deriv-app/components';
-import { getCardLabels } from '@deriv-app/shared';
+import { Icon } from '@deriv-lib/components';
+import { getCardLabels } from '@deriv-lib/shared';
 
 type TPositionsResultMobile = {
     is_visible: boolean;

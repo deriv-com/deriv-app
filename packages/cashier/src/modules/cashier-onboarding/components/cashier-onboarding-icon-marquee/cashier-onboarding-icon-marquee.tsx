@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, NewsTicker } from '@deriv-app/components';
+import { Icon, NewsTicker } from '@deriv-lib/components';
 import './cashier-onboarding-icon-marquee.scss';
 
 type TProps = {

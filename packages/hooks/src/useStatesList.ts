@@ -1,5 +1,5 @@
-import { useQuery } from '@deriv-app/api';
-import { TSocketRequestQueryOptions } from '@deriv-app/api/types';
+import { useQuery } from '@deriv-lib/api';
+import { TSocketRequestQueryOptions } from '@deriv-lib/api/types';
 /**
  * Custom hook to get states list for a particular country.
  * @returns an object with the states list and the options to manage API response.

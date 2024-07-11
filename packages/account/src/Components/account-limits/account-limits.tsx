@@ -1,11 +1,11 @@
 import React from 'react';
 import { FormikValues } from 'formik';
 import clsx from 'clsx';
-import { formatMoney, useIsMounted } from '@deriv-app/shared';
-import { Loading, ThemedScrollbars } from '@deriv-app/components';
+import { formatMoney, useIsMounted } from '@deriv-lib/shared';
+import { Loading, ThemedScrollbars } from '@deriv-lib/components';
 import { useDevice } from '@deriv-com/ui';
-import { Localize, localize } from '@deriv-app/translations';
-import { observer, useStore } from '@deriv-app/stores';
+import { Localize, localize } from '@deriv-lib/translations';
+import { observer, useStore } from '@deriv-lib/stores';
 import DemoMessage from '../demo-message';
 import LoadErrorMessage from '../load-error-message';
 import AccountLimitsArticle from './account-limits-article';

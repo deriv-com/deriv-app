@@ -3,12 +3,12 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TimePicker from '../time-picker';
 import moment from 'moment';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import TraderProviders from '../../../../../trader-providers';
 
 jest.mock('../dialog', () => jest.fn(() => 'TimePickerDialog'));
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Icon: jest.fn(() => <div>Mocked Icon</div>),
 }));
 jest.mock('react-transition-group', () => ({

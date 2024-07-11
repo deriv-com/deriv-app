@@ -1,6 +1,6 @@
-import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces, TRADE_TYPES } from '@deriv-app/shared';
-import { ButtonToggle, Dropdown, InputField } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces, TRADE_TYPES } from '@deriv-lib/shared';
+import { ButtonToggle, Dropdown, InputField } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 import AllowEquals from './allow-equals';
 import Fieldset from 'App/Components/Form/fieldset';
 import Multiplier from './Multiplier/multiplier';
@@ -9,7 +9,7 @@ import MinMaxStakeInfo from './min-max-stake-info';
 import React from 'react';
 import classNames from 'classnames';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 
 type TInput = {
     amount: string | number;

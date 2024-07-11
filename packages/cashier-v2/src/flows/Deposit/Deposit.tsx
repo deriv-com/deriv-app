@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useActiveAccount } from '@deriv-app/api-v2';
+import { useActiveAccount } from '@deriv-lib/api-v2';
 import { CashierBreadcrumb, PageContainer } from '../../components';
 import { CashierOnboardingModule, DepositCryptoModule, DepositFiatModule } from '../../lib';
 

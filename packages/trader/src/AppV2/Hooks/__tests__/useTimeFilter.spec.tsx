@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import useTimeFilter from '../useTimeFilter';
 

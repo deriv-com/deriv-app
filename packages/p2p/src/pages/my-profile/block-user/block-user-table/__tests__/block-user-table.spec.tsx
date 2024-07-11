@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, render, act } from '@testing-library/react';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { useStores } from 'Stores/index';
 import BlockUserTable from '../block-user-table';
 

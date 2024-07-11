@@ -2,13 +2,13 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 import NoBalance from '../no-balance';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useDepositLocked: jest.fn(() => false),
 }));
 

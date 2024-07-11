@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { isCryptocurrency, getIndicativePrice, getCurrentTick, getDisplayStatus, getTotalProfit } from '@deriv-app/shared';
+import { isCryptocurrency, getIndicativePrice, getCurrentTick, getDisplayStatus, getTotalProfit } from '@deriv-lib/shared';
 import ContractCardItem from './contract-card-item';
 import CurrencyBadge from '../../currency-badge';
 import DesktopWrapper from '../../desktop-wrapper';

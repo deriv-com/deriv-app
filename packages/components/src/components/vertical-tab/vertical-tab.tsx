@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { matchRoute } from '@deriv-app/shared';
+import { matchRoute } from '@deriv-lib/shared';
 import VerticalTabContentContainer, { TAction_bar } from './vertical-tab-content-container';
 import VerticalTabHeader, { TItem } from './vertical-tab-header';
 import VerticalTabHeaderGroup from './vertical-tab-header-group';

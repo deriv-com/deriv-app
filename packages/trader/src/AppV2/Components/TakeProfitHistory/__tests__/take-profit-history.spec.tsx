@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import TakeProfitHistory from '../take-profit-history';
-import { formatDate, formatTime, TContractStore } from '@deriv-app/shared';
+import { formatDate, formatTime, TContractStore } from '@deriv-lib/shared';
 import { FormatUtils } from '@deriv-com/utils';
 
-jest.mock('@deriv-app/shared', () => ({
+jest.mock('@deriv-lib/shared', () => ({
     formatDate: jest.fn(),
     formatTime: jest.fn(),
 }));

@@ -1,4 +1,4 @@
-import { TStores } from '@deriv-app/stores/types';
+import { TStores } from '@deriv-lib/stores/types';
 import type { TDbot, TWebSocket } from 'Types';
 import AppStore from './app-store';
 import BlocklyStore from './blockly-store';

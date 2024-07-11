@@ -1,11 +1,11 @@
 import React from 'react';
-import { useActiveWalletAccount, useAllAccountsList, useInfiniteTransactions } from '@deriv-app/api-v2';
+import { useActiveWalletAccount, useAllAccountsList, useInfiniteTransactions } from '@deriv-lib/api-v2';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { CashierScrollContext } from '../../../../../context/CashierScrollContext';
 import TransactionsCompleted from '../TransactionsCompleted';
 import '@testing-library/jest-dom/extend-expect';
 
-jest.mock('@deriv-app/api-v2', () => ({
+jest.mock('@deriv-lib/api-v2', () => ({
     useActiveWalletAccount: jest.fn(),
     useAllAccountsList: jest.fn(),
     useInfiniteTransactions: jest.fn(() => ({

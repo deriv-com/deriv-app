@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Dialog } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
-import { getCurrentProductionDomain } from '@deriv-app/shared';
+import { Dialog } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
+import { getCurrentProductionDomain } from '@deriv-lib/shared';
 
 const RedirectNoticeModal = ({ is_logged_in, is_eu, portal_id }) => {
     const [dialog_status, setDialogStatus] = React.useState(false);

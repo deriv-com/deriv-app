@@ -1,10 +1,10 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { isDesktop, isMobile } from '@deriv-app/shared';
+import { isDesktop, isMobile } from '@deriv-lib/shared';
 import BlockUserEmpty from '..';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isDesktop: jest.fn(),
     isMobile: jest.fn(),
 }));

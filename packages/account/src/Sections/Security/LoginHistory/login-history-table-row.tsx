@@ -1,5 +1,5 @@
-import { Table, Text } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
+import { Table, Text } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
 import { TLoginHistoryItems } from '../../../Types';
 
 const LoginHistoryTableRow = ({ id, date, action, browser, ip, status }: TLoginHistoryItems) => {

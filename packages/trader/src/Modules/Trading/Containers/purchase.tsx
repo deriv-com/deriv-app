@@ -7,11 +7,11 @@ import {
     getContractTypePosition,
     getSupportedContracts,
     getIndicativePrice,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 import AccumulatorsSellButton from '../Components/Form/TradeParams/Accumulator/accumulators-sell-button';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { TTradeStore } from 'Types';
 
 type TGetSupportedContractsKey = keyof ReturnType<typeof getSupportedContracts>;

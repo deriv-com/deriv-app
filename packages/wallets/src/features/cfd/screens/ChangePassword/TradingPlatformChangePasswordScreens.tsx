@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import classNames from 'classnames';
-import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv-app/api-v2';
+import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv-lib/api-v2';
 import { DerivLightDmt5PasswordIcon, DerivLightIcDxtradePasswordIcon } from '@deriv/quill-icons';
 import { SentEmailContent, WalletButton, WalletsActionScreen, WalletText } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';

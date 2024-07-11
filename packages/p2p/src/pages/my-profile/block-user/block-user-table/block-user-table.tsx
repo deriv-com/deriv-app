@@ -1,6 +1,6 @@
 import React from 'react';
-import { InfiniteDataList, Loading, Table, Text } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
+import { InfiniteDataList, Loading, Table, Text } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
 import { Localize } from 'Components/i18next';
 // @ts-ignore
 import { useStores } from 'Stores';

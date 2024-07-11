@@ -1,7 +1,7 @@
 import React from 'react';
 import { QRCode } from 'react-qrcode';
 
-import { Icon, Text, Button } from '@deriv-app/components';
+import { Icon, Text, Button } from '@deriv-lib/components';
 import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
 import {
     getPlatformDXTradeDownloadLink,
@@ -12,8 +12,8 @@ import {
     platformsText,
     CTRADER_URL,
 } from './constants';
-import { isMobile } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
+import { isMobile } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
 
 import { TCFDDashboardContainer } from 'Containers/props.types';
 import { CATEGORY, CFD_PLATFORMS } from './cfd-config';

@@ -1,4 +1,4 @@
-import { sequence } from '@deriv-app/shared';
+import { sequence } from '@deriv-lib/shared';
 import { sum, takeLast } from '../utils/math';
 
 /**

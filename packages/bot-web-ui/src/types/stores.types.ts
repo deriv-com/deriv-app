@@ -1,4 +1,4 @@
-import { TStores } from '@deriv-app/stores/types';
+import { TStores } from '@deriv-lib/stores/types';
 import DashboardStore from 'Stores/dashboard-store';
 import FlyoutStore from 'Stores/flyout-store';
 import LoadModalStore from 'Stores/load-modal-store';

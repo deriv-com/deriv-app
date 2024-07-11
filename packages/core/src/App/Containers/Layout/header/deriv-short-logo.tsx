@@ -1,5 +1,5 @@
 import React from 'react';
-import { StaticUrl } from '@deriv-app/components';
+import { StaticUrl } from '@deriv-lib/components';
 import DerivBrandShortLogo from 'Assets/SvgComponents/header/deriv-logo-short.svg';
 
 const DerivShortLogo = () => {

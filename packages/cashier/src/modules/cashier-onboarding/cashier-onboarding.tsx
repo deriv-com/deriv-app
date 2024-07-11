@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { useHasSetCurrency } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv-app/stores';
+import { useHasSetCurrency } from '@deriv-lib/hooks';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useHistory } from 'react-router';
 import { PageContainer } from '../../components/page-container';
 import { useCashierStore } from '../../stores/useCashierStores';

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Money, Table, Text } from '@deriv-app/components';
-import { isMobile } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { Money, Table, Text } from '@deriv-lib/components';
+import { isMobile } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import { localize, Localize } from 'Components/i18next';
 // @ts-ignore
 import { useStores } from 'Stores';

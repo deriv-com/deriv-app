@@ -9,8 +9,8 @@ import {
     useExchangeRateSubscription,
     usePOA,
     usePOI,
-} from '@deriv-app/api-v2';
-import { TSocketError } from '@deriv-app/api-v2/types';
+} from '@deriv-lib/api-v2';
+import { TSocketError } from '@deriv-lib/api-v2/types';
 import { THooks } from '../../../../../types';
 import { TWithdrawalReceipt } from '../types';
 

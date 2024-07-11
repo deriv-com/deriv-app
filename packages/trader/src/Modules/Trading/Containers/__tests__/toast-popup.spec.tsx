@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv-app/stores';
-import { TCoreStores } from '@deriv-app/stores/types';
+import { mockStore } from '@deriv-lib/stores';
+import { TCoreStores } from '@deriv-lib/stores/types';
 import TraderProviders from '../../../../trader-providers';
 import { ToastPopup, NetworkStatusToastErrorPopup } from '../toast-popup';
 
@@ -16,8 +16,8 @@ const mocked_props_toast_popup = {
     timeout: 0,
 };
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Toast: () => <div>Toast component</div>,
     MobileWrapper: () => <div>MobileWrapper component</div>,
 }));

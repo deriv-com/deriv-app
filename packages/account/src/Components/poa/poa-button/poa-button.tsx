@@ -1,7 +1,7 @@
 import React from 'react';
-import { ButtonLink, Text } from '@deriv-app/components';
-import { routes } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
+import { ButtonLink, Text } from '@deriv-lib/components';
+import { routes } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
 import clsx from 'clsx';
 
 type TPoaButton = {

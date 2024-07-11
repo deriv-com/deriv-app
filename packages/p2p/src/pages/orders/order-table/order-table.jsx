@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ButtonToggle } from '@deriv-app/components';
-import { toMoment } from '@deriv-app/shared';
-import { useStore } from '@deriv-app/stores';
+import { ButtonToggle } from '@deriv-lib/components';
+import { toMoment } from '@deriv-lib/shared';
+import { useStore } from '@deriv-lib/stores';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import ToggleContainer from 'Components/toggle-container';

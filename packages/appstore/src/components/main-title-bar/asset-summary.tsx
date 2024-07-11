@@ -1,9 +1,9 @@
 import React from 'react';
-import { Text, Popover } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
+import { Text, Popover } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
 import { useDevice } from '@deriv-com/ui';
 import BalanceText from 'Components/elements/text/balance-text';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
 import {
@@ -12,7 +12,7 @@ import {
     usePlatformAccounts,
     useTotalAssetCurrency,
     useExchangeRate,
-} from '@deriv-app/hooks';
+} from '@deriv-lib/hooks';
 import { isRatesLoaded } from '../../helpers';
 
 const AssetSummary = observer(() => {

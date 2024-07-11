@@ -2,11 +2,11 @@ import React from 'react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { isMobile } from '@deriv-app/shared';
+import { isMobile } from '@deriv-lib/shared';
 import IdvVerified from '../idv-verified';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isMobile: jest.fn(() => false),
 }));
 

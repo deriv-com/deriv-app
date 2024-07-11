@@ -1,9 +1,9 @@
 import React from 'react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { render, screen } from '@testing-library/react';
 import { useLocation } from 'react-router-dom';
 import DefaultHeader from '../default-header';
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 import { useDevice } from '@deriv-com/ui';
 
 jest.mock('@deriv-com/ui', () => ({

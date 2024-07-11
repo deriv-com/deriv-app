@@ -1,8 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
-import { DataList, Icon, Text } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { DataList, Icon, Text } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import { contract_stages } from 'Constants/contract-stage';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TCheckedFilters, TFilterMessageValues, TJournalDataListArgs } from './journal.types';

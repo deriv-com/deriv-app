@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon, Popover, StaticUrl } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { Icon, Popover, StaticUrl } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 
 export const ResponsibleTrading = ({ showPopover }) => (
     <StaticUrl href='/responsible' className='footer__link'>

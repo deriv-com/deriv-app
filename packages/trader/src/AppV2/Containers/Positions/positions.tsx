@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize } from '@deriv-app/translations';
+import { Localize } from '@deriv-lib/translations';
 import { Tab } from '@deriv-com/quill-ui';
 import { getTabIndexFromURL, setPositionURLParams, TAB_NAME } from 'AppV2/Utils/positions-utils';
 import BottomNav from 'AppV2/Components/BottomNav';

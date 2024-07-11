@@ -1,6 +1,6 @@
 import React from 'react';
-import { useFetch } from '@deriv-app/api';
-import { useStore } from '@deriv-app/stores';
+import { useFetch } from '@deriv-lib/api';
+import { useStore } from '@deriv-lib/stores';
 import useWalletsList from './useWalletsList';
 import useAuthorize from './useAuthorize';
 

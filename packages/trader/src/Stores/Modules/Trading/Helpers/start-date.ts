@@ -1,5 +1,5 @@
 import ServerTime from '_common/base/server_time';
-import { toMoment } from '@deriv-app/shared';
+import { toMoment } from '@deriv-lib/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const isBeforeDate = (compare_moment: moment.Moment, should_only_check_hour: boolean, start_moment?: moment.Moment) => {

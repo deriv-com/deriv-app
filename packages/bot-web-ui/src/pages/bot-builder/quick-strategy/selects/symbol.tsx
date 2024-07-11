@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { ApiHelpers } from '@deriv/bot-skeleton';
-import { Autocomplete, Icon, Text } from '@deriv-app/components';
-import { TItem } from '@deriv-app/components/src/components/dropdown-list';
-import { useStore } from '@deriv-app/stores';
+import { Autocomplete, Icon, Text } from '@deriv-lib/components';
+import { TItem } from '@deriv-lib/components/src/components/dropdown-list';
+import { useStore } from '@deriv-lib/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TFormData } from '../types';
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { useStore } from '@deriv-app/stores';
-import { useGetAccountStatus } from '@deriv-app/api';
+import { useStore } from '@deriv-lib/stores';
+import { useGetAccountStatus } from '@deriv-lib/api';
 import useP2POrderList from './useP2POrderList';
 
 const useP2PCompletedOrdersNotification = () => {

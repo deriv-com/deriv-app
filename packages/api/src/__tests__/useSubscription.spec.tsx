@@ -1,10 +1,10 @@
 import React from 'react';
-import { useWS } from '@deriv-app/shared';
+import { useWS } from '@deriv-lib/shared';
 import { act, renderHook } from '@testing-library/react-hooks';
 import APIProvider from '../APIProvider';
 import useSubscription from '../useSubscription';
 
-jest.mock('@deriv-app/shared');
+jest.mock('@deriv-lib/shared');
 
 const mockUseWS = useWS as jest.MockedFunction<typeof useWS>;
 

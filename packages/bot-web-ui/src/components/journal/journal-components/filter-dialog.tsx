@@ -1,5 +1,5 @@
 import React from 'react';
-import { useOnClickOutside } from '@deriv-app/components';
+import { useOnClickOutside } from '@deriv-lib/components';
 import { TFilterDialogProps } from '../journal.types';
 import Filters from './filters';
 

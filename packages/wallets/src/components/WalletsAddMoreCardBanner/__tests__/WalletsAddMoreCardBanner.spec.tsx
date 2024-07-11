@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useCreateWallet } from '@deriv-app/api-v2';
+import { useCreateWallet } from '@deriv-lib/api-v2';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import useDevice from '../../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../../hooks/useSyncLocalStorageClientAccounts';
@@ -26,7 +26,7 @@ type TWalletButton = {
     onClick: () => void;
 };
 
-jest.mock('@deriv-app/api-v2', () => ({
+jest.mock('@deriv-lib/api-v2', () => ({
     useCreateWallet: jest.fn(),
 }));
 

@@ -1,8 +1,8 @@
 import React from 'react';
-import { MobileDialog } from '@deriv-app/components';
+import { MobileDialog } from '@deriv-lib/components';
 import { useDevice } from '@deriv-com/ui';
 import { Header } from './ContractTypeInfo';
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import ContractTypeMenu from './ContractTypeMenu';
 
 type TContractTypeDialog = {

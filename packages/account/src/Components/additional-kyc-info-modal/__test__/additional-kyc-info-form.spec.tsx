@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { AdditionalKycInfoForm } from '../additional-kyc-info-form';
 import userEvent from '@testing-library/user-event';
-import { useSettings } from '@deriv-app/api';
-import { TSocketError } from '@deriv-app/api/types';
+import { useSettings } from '@deriv-lib/api';
+import { TSocketError } from '@deriv-lib/api/types';
 
-jest.mock('@deriv-app/api', () => ({
-    ...jest.requireActual('@deriv-app/api'),
+jest.mock('@deriv-lib/api', () => ({
+    ...jest.requireActual('@deriv-lib/api'),
     useSettings: jest.fn(),
 }));
 
@@ -31,8 +31,8 @@ const mock_settings: Partial<TMockConfig> = {
     },
 };
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     generateValidationFunction: jest.fn(),
 }));
 

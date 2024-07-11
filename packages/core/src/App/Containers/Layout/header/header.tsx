@@ -1,10 +1,10 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { useFeatureFlags } from '@deriv-app/hooks';
+import { useFeatureFlags } from '@deriv-lib/hooks';
 import { useReadLocalStorage } from 'usehooks-ts';
-import { makeLazyLoader, moduleLoader, routes } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { useDevice } from '@deriv-app/components';
+import { makeLazyLoader, moduleLoader, routes } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { useDevice } from '@deriv-lib/components';
 
 const HeaderFallback = () => <div className='header' />;
 

@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
-import { useActiveWalletAccount } from '@deriv-app/api-v2';
+import { useActiveWalletAccount } from '@deriv-lib/api-v2';
 import { WalletMarketCurrencyIcon, WalletSuccess, WalletText } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import useDevice from '../../../../hooks/useDevice';

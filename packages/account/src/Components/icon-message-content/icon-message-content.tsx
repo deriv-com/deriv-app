@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Div100vhContainer, Text } from '@deriv-app/components';
+import { Div100vhContainer, Text } from '@deriv-lib/components';
 import { useDevice } from '@deriv-com/ui';
 
 type TIconMessageContent = {

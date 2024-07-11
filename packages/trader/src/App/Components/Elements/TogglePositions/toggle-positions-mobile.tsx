@@ -1,13 +1,13 @@
 import React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { Icon, Div100vhContainer, Modal, Text } from '@deriv-app/components';
-import { routes } from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+import { Icon, Div100vhContainer, Modal, Text } from '@deriv-lib/components';
+import { routes } from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 import { NavLink } from 'react-router-dom';
 import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import PositionsModalCard from 'App/Components/Elements/PositionsDrawer/positions-modal-card';
 import TogglePositions from './toggle-positions';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useDevice } from '@deriv-com/ui';
 
 type TTogglePositionsMobile = Pick<

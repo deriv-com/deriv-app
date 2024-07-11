@@ -1,20 +1,20 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { CONTRACT_TYPES, TContractInfo, getCardLabelsV2, mockContractInfo } from '@deriv-app/shared';
+import { CONTRACT_TYPES, TContractInfo, getCardLabelsV2, mockContractInfo } from '@deriv-lib/shared';
 import useOrderDetails from '../useOrderDetails';
 
-jest.mock('@deriv-app/translations', () => ({
+jest.mock('@deriv-lib/translations', () => ({
     localize: jest.fn(text => text),
     Localize: jest.fn(text => text),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
+jest.mock('@deriv-lib/shared', () => ({
     getDurationPeriod: jest.fn(),
     getDurationUnitText: jest.fn(),
     getGrowthRatePercentage: jest.fn(() => '10'),
     isAccumulatorContract: jest.fn(),
     isResetContract: jest.fn(),
     addComma: jest.fn(),
-    ...jest.requireActual('@deriv-app/shared'),
+    ...jest.requireActual('@deriv-lib/shared'),
 }));
 
 jest.mock('App/Components/Elements/PositionsDrawer/helpers', () => ({

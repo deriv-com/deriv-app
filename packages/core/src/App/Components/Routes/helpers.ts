@@ -1,5 +1,5 @@
 import { RouteComponentProps, Redirect, matchPath, RouteProps } from 'react-router';
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 
 type TRoute = {
     component?: React.ComponentType<RouteComponentProps> | React.ComponentType<Record<string, never>> | typeof Redirect;

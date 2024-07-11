@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Text } from '@deriv-app/components';
+import { Text } from '@deriv-lib/components';
 import { localize, Localize } from 'Components/i18next';
 
 type TTradeBadge = {

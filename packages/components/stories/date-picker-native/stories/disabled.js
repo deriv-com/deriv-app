@@ -1,6 +1,6 @@
 import React from 'react';
 import { boolean } from '@storybook/addon-knobs';
-import { toMoment } from '@deriv-app/shared';
+import { toMoment } from '@deriv-lib/shared';
 import DatePickerNative from '../../../src/components/date-picker/date-picker-native';
 import Wrapper from '../wrapper';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { getCardLabels } from '@deriv-app/shared';
+import { getCardLabels } from '@deriv-lib/shared';
 import { useDevice } from '@deriv-com/ui';
 import ToggleCardDialog from '../toggle-card-dialog';
 
@@ -13,8 +13,8 @@ jest.mock('../../../icon', () => jest.fn((props: { icon: string }) => <div>{prop
 jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isMobile: jest.fn(() => false),
     isDesktop: jest.fn(() => true),
 }));

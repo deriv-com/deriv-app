@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv-app/components';
+import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv-lib/components';
 import { CSSTransition } from 'react-transition-group';
 import Fieldset from 'App/Components/Form/fieldset';
 import BarriersListBody, { TBarriersListBody } from './barriers-list-body';

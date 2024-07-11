@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loading } from '@deriv-app/components';
+import { Loading } from '@deriv-lib/components';
 
 const LoadingModal = props => (
     <div className='account-signup-loader'>

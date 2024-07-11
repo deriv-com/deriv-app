@@ -13,11 +13,11 @@ import {
     Loading,
     SelectNative,
     Text,
-} from '@deriv-app/components';
+} from '@deriv-lib/components';
 import { GetSettings } from '@deriv/api-types';
-import { AUTH_STATUS_CODES, WS, getBrandWebsiteName, routes } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv-app/translations';
-import { observer, useStore } from '@deriv-app/stores';
+import { AUTH_STATUS_CODES, WS, getBrandWebsiteName, routes } from '@deriv-lib/shared';
+import { Localize, localize } from '@deriv-lib/translations';
+import { observer, useStore } from '@deriv-lib/stores';
 import LeaveConfirm from 'Components/leave-confirm';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
@@ -29,8 +29,8 @@ import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
-import { useInvalidateQuery } from '@deriv-app/api';
-import { useStatesList, useResidenceList } from '@deriv-app/hooks';
+import { useInvalidateQuery } from '@deriv-lib/api';
+import { useStatesList, useResidenceList } from '@deriv-lib/hooks';
 
 type TRestState = {
     show_form: boolean;

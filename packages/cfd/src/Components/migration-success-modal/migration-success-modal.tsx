@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Modal, PageOverlay } from '@deriv-app/components';
-import { Jurisdiction, MT5_ACCOUNT_STATUS, routes } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { Modal, PageOverlay } from '@deriv-lib/components';
+import { Jurisdiction, MT5_ACCOUNT_STATUS, routes } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import { getFormattedJurisdictionCode } from '../../Stores/Modules/CFD/Helpers/cfd-config';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import MigrationSuccessModalContent from './migration-success-modal-content';

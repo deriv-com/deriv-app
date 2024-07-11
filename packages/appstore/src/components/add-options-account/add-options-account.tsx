@@ -1,9 +1,9 @@
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Button, Text } from '@deriv-app/components';
-import { Localize } from '@deriv-app/translations';
+import { DesktopWrapper, MobileWrapper, Button, Text } from '@deriv-lib/components';
+import { Localize } from '@deriv-lib/translations';
 import './add-options-account.scss';
-import { useStore, observer } from '@deriv-app/stores';
-import { isMobile, ContentFlag } from '@deriv-app/shared';
+import { useStore, observer } from '@deriv-lib/stores';
+import { isMobile, ContentFlag } from '@deriv-lib/shared';
 import { Analytics } from '@deriv-com/analytics';
 
 const AddOptions = observer(() => {

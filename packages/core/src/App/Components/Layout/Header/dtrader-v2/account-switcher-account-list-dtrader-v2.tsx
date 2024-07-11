@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Money } from '@deriv-app/components';
+import { Money } from '@deriv-lib/components';
 import { Text, Button } from '@deriv-com/quill-ui';
-import { formatMoney, getCurrencyDisplayCode } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
+import { formatMoney, getCurrencyDisplayCode } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
 import {
     getAccountIcon,
     getAccountTitle,

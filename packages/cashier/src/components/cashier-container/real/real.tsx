@@ -1,6 +1,6 @@
 import React from 'react';
-import { Loading } from '@deriv-app/components';
-import { useStore, observer } from '@deriv-app/stores';
+import { Loading } from '@deriv-lib/components';
+import { useStore, observer } from '@deriv-lib/stores';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './real.scss';
 

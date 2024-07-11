@@ -1,9 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv-app/stores';
-import { TCoreStores } from '@deriv-app/stores/types';
-import { getCardLabels, mockContractInfo, TRADE_TYPES } from '@deriv-app/shared';
+import { mockStore } from '@deriv-lib/stores';
+import { TCoreStores } from '@deriv-lib/stores/types';
+import { getCardLabels, mockContractInfo, TRADE_TYPES } from '@deriv-lib/shared';
 import { ActiveSymbols } from '@deriv/api-types';
 import PositionsModalCard from '../positions-modal-card';
 import TraderProviders from '../../../../../trader-providers';
@@ -73,16 +73,16 @@ jest.mock('App/Components/Elements/ContentLoader', () => ({
     ...jest.requireActual('App/Components/Elements/ContentLoader'),
     PositionsCardLoader: jest.fn(() => <div>{positions_card_loader}</div>),
 }));
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     getSymbolDisplayName: jest.fn(() => symbol_display_name),
 }));
 jest.mock('App/Components/Routes', () => ({
     ...jest.requireActual('App/Components/Routes'),
     BinaryLink: jest.fn(({ children }) => <div>{children}</div>),
 }));
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     CurrencyBadge: jest.fn(() => <div>{currency_badge}</div>),
     ProgressSliderMobile: jest.fn(() => <div>{progress_slider_mobile}</div>),
 }));

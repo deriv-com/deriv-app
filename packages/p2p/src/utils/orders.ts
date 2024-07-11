@@ -1,5 +1,5 @@
 import { P2POrderInfo } from '@deriv/api-types';
-import { toMoment } from '@deriv-app/shared';
+import { toMoment } from '@deriv-lib/shared';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { order_status } from 'Constants/order-list';

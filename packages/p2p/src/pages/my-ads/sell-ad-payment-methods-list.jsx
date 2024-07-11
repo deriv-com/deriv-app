@@ -1,6 +1,6 @@
 import React from 'react';
-import { ThemedScrollbars } from '@deriv-app/components';
-import { isMobile } from '@deriv-app/shared';
+import { ThemedScrollbars } from '@deriv-lib/components';
+import { isMobile } from '@deriv-lib/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import PropTypes from 'prop-types';

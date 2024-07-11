@@ -1,5 +1,5 @@
 import { Duration } from 'moment';
-import { getDiffDuration, toMoment, epochToMoment } from '@deriv-app/shared';
+import { getDiffDuration, toMoment, epochToMoment } from '@deriv-lib/shared';
 import { localize } from 'Components/i18next';
 import { api_error_codes } from 'Constants/api-error-codes';
 

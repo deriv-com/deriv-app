@@ -12,9 +12,9 @@
             "Translations/*": ["src/translations/*"],
             "Types": ["src/types"],
             "Utils/*": ["src/utils/*"],
-            "@deriv-app/*": ["../*/src"],
+            "@deriv-lib/*": ["../*/src"],
         },
-        "outDir": "./lib"
+        "outDir": "./dist",
     },
-    "include": ["src", "@deriv-stores.d.ts"]
+    "include": ["src", "@deriv-stores.d.ts"],
 }

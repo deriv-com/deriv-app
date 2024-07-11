@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Formik, Field } from 'formik';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { Autocomplete, Icon, Text, useOnClickOutside } from '@deriv-app/components';
-import { isDesktop, isMobile } from '@deriv-app/shared';
+import { Autocomplete, Icon, Text, useOnClickOutside } from '@deriv-lib/components';
+import { isDesktop, isMobile } from '@deriv-lib/shared';
 // @ts-ignore
 import { useStores } from 'Stores';
 import { localize, Localize } from 'Components/i18next';

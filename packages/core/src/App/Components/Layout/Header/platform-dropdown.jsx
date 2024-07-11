@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Div100vhContainer, Icon, useOnClickOutside, Text } from '@deriv-app/components';
-import { routes, getActivePlatform } from '@deriv-app/shared';
+import { Div100vhContainer, Icon, useOnClickOutside, Text } from '@deriv-lib/components';
+import { routes, getActivePlatform } from '@deriv-lib/shared';
 import { BinaryLink } from 'App/Components/Routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';
-import { Localize } from '@deriv-app/translations';
+import { Localize } from '@deriv-lib/translations';
 import { useHistory } from 'react-router';
 import { useDevice } from '@deriv-com/ui';
 

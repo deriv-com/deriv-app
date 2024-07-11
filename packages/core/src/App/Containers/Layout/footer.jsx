@@ -1,8 +1,8 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDevice } from '@deriv-com/ui';
-import { routes, isDisabledLandscapeBlockerRoute } from '@deriv-app/shared';
-import { DesktopWrapper } from '@deriv-app/components';
+import { routes, isDisabledLandscapeBlockerRoute } from '@deriv-lib/shared';
+import { DesktopWrapper } from '@deriv-lib/components';
 import TradingHubFooter from './trading-hub-footer';
 
 const Footer = () => {

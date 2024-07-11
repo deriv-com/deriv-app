@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import * as utils from 'AppV2/Utils/positions-utils';
 import { ReportsStoreProvider } from '../../../../../../reports/src/Stores/useReportsStores';
 import TraderProviders from '../../../../trader-providers';

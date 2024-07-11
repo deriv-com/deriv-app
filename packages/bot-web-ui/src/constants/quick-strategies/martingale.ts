@@ -1,5 +1,5 @@
 import { getImageLocation } from '../../public-path';
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import { TDescriptionItem } from '../../pages/bot-builder/quick-strategy/types';
 
 export const MARTINGALE: TDescriptionItem[] = [

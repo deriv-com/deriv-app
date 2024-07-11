@@ -1,13 +1,13 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Button, Modal } from '@deriv-app/components';
-import { getAuthenticationStatusInfo, isPOARequiredForMT5 } from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+import { Button, Modal } from '@deriv-lib/components';
+import { getAuthenticationStatusInfo, isPOARequiredForMT5 } from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 import { TJurisdictionModalContentWrapperProps } from '../props.types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
 import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
 import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
-import { useStore, observer } from '@deriv-app/stores';
+import { useStore, observer } from '@deriv-lib/stores';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import { MARKET_TYPE, JURISDICTION } from '../../Helpers/cfd-config';
 

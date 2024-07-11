@@ -1,8 +1,8 @@
 import React from 'react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { render, screen } from '@testing-library/react';
 import TradersHubHeader from '../traders-hub-header';
-import { TStores } from '@deriv-app/stores/types';
+import { TStores } from '@deriv-lib/stores/types';
 import { useDevice } from '@deriv-com/ui';
 
 jest.mock('react-router', () => ({
@@ -10,8 +10,8 @@ jest.mock('react-router', () => ({
     useHistory: () => ({ history: {} }),
     useLocation: () => ({ pathname: '/appstore/traders-hub' }),
 }));
-jest.mock('@deriv-app/components', () => {
-    const original_module = jest.requireActual('@deriv-app/components');
+jest.mock('@deriv-lib/components', () => {
+    const original_module = jest.requireActual('@deriv-lib/components');
     return {
         ...original_module,
         Icon: jest.fn(() => 'MockedIcon'),
@@ -28,8 +28,8 @@ jest.mock('Assets/SvgComponents/header/deriv-rebranding-logo.svg', () => jest.fn
 jest.mock('../../../CurrencySelectionModal', () => jest.fn(() => <div>MockedCurrencySelectionModal</div>));
 jest.mock('../show-notifications', () => jest.fn(() => <div>MockedShowNotifications</div>));
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useFeatureFlags: jest.fn(() => ({})),
     useHasSetCurrency: jest.fn(() => true),
     useIsRealAccountNeededForCashier: jest.fn(() => false),

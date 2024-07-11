@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { TCoreStores } from '@deriv-app/stores/types';
+import { TCoreStores } from '@deriv-lib/stores/types';
 import {
     getMultiplierOpenPositionsColumnsTemplate,
     getOpenPositionsColumnsTemplate,
@@ -8,7 +8,7 @@ import {
     getStatementTableColumnsTemplate,
     TKeys,
 } from 'Constants/data-table-constants';
-import { getSupportedContracts, getUnsupportedContracts } from '@deriv-app/shared';
+import { getSupportedContracts, getUnsupportedContracts } from '@deriv-lib/shared';
 
 export type TPassthrough = {
     root_store: TCoreStores;

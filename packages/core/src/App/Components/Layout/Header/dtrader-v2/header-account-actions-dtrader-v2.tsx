@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import AccountActionsDTraderV2 from './account-actions-dtrader-v2';
 import { getAccountTitle } from './Utils/account-switcher-dtrader-v2-utils';
 

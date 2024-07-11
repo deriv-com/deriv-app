@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import { TTradeStore } from 'Types';
 import MultiplierOptions from '../multiplier-options';
 import TraderProviders from '../../../../../trader-providers';
@@ -49,8 +49,8 @@ jest.mock('Stores/Modules/Trading/Helpers/preview-proposal', () => ({
             subscription: {},
         }),
 }));
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     WS: {
         forget: jest.fn(),
     },

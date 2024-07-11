@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, Field, FormikValues } from 'formik';
-import { Autocomplete, Icon, Loading, Text } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
+import { Autocomplete, Icon, Loading, Text } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
 // @ts-ignore
 import { useStores } from 'Stores';
 import { localize, Localize } from 'Components/i18next';

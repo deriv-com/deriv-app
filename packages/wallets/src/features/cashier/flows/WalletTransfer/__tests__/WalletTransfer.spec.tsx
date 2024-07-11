@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { useTransferBetweenAccounts } from '@deriv-app/api-v2';
+import { useTransferBetweenAccounts } from '@deriv-lib/api-v2';
 import { render, screen } from '@testing-library/react';
 import { CashierLocked } from '../../../modules';
 import WalletTransfer from '../WalletTransfer';
@@ -31,8 +31,8 @@ jest.mock('../../../screens/TransferNotAvailable', () => ({
     )),
 }));
 
-jest.mock('@deriv-app/api-v2', () => ({
-    ...jest.requireActual('@deriv-app/api-v2'),
+jest.mock('@deriv-lib/api-v2', () => ({
+    ...jest.requireActual('@deriv-lib/api-v2'),
     useTransferBetweenAccounts: jest.fn(),
 }));
 

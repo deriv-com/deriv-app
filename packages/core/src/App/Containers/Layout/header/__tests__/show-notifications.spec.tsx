@@ -1,6 +1,6 @@
 import React from 'react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
-import { TStores } from '@deriv-app/stores/types';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
+import { TStores } from '@deriv-lib/stores/types';
 import { render, screen } from '@testing-library/react';
 import ShowNotifications from '../show-notifications';
 

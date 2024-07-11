@@ -1,9 +1,9 @@
 import React from 'react';
-import { TContractInfo } from '@deriv-app/shared';
-import { Loading } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
+import { TContractInfo } from '@deriv-lib/shared';
+import { Loading } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
 import { EmptyPositions, TEmptyPositionsProps } from 'AppV2/Components/EmptyPositions';
-import { TPortfolioPosition } from '@deriv-app/stores/types';
+import { TPortfolioPosition } from '@deriv-lib/stores/types';
 import { ContractCardList, ContractCardsSections } from 'AppV2/Components/ContractCard';
 import { ContractTypeFilter, TimeFilter } from 'AppV2/Components/Filter';
 import TotalProfitLoss from 'AppV2/Components/TotalProfitLoss';

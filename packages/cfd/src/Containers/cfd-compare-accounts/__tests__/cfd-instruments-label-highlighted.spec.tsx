@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CFDInstrumentsLabelHighlighted from '../cfd-instruments-label-highlighted';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 
 jest.mock('../instruments-icon-with-label', () => jest.fn(() => <div>Mocked Icon</div>));
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
-import { useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv-app/translations';
+import { useStore } from '@deriv-lib/stores';
+import { Localize } from '@deriv-lib/translations';
 import Page404 from 'Components/page-404';
 import getRoutesConfig from 'Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes';

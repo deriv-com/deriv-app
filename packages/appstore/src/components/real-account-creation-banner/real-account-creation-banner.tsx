@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDevice } from '@deriv-com/ui';
-import { getUrlBase, Jurisdiction } from '@deriv-app/shared';
+import { getUrlBase, Jurisdiction } from '@deriv-lib/shared';
 import { Analytics } from '@deriv-com/analytics';
-import { Localize } from '@deriv-app/translations';
-import { Text, Button } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
+import { Localize } from '@deriv-lib/translations';
+import { Text, Button } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
 import './real-account-creation-banner.scss';
 
 const RealAccountCreationBanner = observer(() => {

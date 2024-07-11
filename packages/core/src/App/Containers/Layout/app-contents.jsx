@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useLocation, withRouter } from 'react-router';
 import { Analytics } from '@deriv-com/analytics';
-import { ThemedScrollbars } from '@deriv-app/components';
-import { CookieStorage, TRACKING_STATUS_KEY, platforms, routes, WS } from '@deriv-app/shared';
-import { useStore, observer } from '@deriv-app/stores';
-import { useFeatureFlags } from '@deriv-app/hooks';
+import { ThemedScrollbars } from '@deriv-lib/components';
+import { CookieStorage, TRACKING_STATUS_KEY, platforms, routes, WS } from '@deriv-lib/shared';
+import { useStore, observer } from '@deriv-lib/stores';
+import { useFeatureFlags } from '@deriv-lib/hooks';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 import { useDevice } from '@deriv-com/ui';
 

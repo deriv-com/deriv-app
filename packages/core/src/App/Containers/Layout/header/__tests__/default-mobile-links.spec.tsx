@@ -1,15 +1,15 @@
 import React from 'react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 import DefaultMobileLinks from '../default-mobile-links';
-import { useIsRealAccountNeededForCashier } from '@deriv-app/hooks';
+import { useIsRealAccountNeededForCashier } from '@deriv-lib/hooks';
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useIsRealAccountNeededForCashier: jest.fn(() => false),
 }));
 jest.mock('App/Components/Routes', () => ({

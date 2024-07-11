@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
 import { shouldShowIdentityInformation, isDocumentTypeValid, isAdditionalDocumentValid } from '../../../Helpers/utils';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { Analytics } from '@deriv-com/analytics';
 import { FormikErrors } from 'formik';
 import { useDevice } from '@deriv-com/ui';
@@ -20,8 +20,8 @@ jest.mock('@deriv/quill-icons', () => ({
     DerivLightNameDobPoiIcon: () => 'DerivLightNameDobPoiIcon',
 }));
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Popover: jest.fn(props => props.is_open && <span>{props.message}</span>),
 }));
 

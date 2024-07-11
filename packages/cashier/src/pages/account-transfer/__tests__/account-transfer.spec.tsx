@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
-import { useCashierLocked, useDepositLocked } from '@deriv-app/hooks';
+import { useCashierLocked, useDepositLocked } from '@deriv-lib/hooks';
 import { createBrowserHistory } from 'history';
 import AccountTransfer from '../account-transfer';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
-jest.mock('@deriv-app/shared/src/services/ws-methods', () => ({
+jest.mock('@deriv-lib/shared/src/services/ws-methods', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
     WS: {
@@ -24,7 +24,7 @@ jest.mock('Components/cashier-locked', () => jest.fn(() => 'mockedCashierLocked'
 jest.mock('../account-transfer-no-account', () => jest.fn(() => 'mockedAccountTransferNoAccount'));
 jest.mock('Components/error', () => jest.fn(() => 'mockedError'));
 
-jest.mock('@deriv-app/hooks');
+jest.mock('@deriv-lib/hooks');
 const mockUseDepositLocked = useDepositLocked as jest.MockedFunction<typeof useDepositLocked>;
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 

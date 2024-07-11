@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Localize } from '@deriv-app/translations';
-import { getCurrencyDisplayCode } from '@deriv-app/shared';
+import { Localize } from '@deriv-lib/translations';
+import { getCurrencyDisplayCode } from '@deriv-lib/shared';
 import { LabelPairedChevronDownCaptionRegularIcon, LabelPairedLockCaptionRegularIcon } from '@deriv/quill-icons';
 import { CaptionText, Heading, ActionSheet } from '@deriv-com/quill-ui';
 import { TAccountInfoDTraderV2 } from './account-actions-dtrader-v2';

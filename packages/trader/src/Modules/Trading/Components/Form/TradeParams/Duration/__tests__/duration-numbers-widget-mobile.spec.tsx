@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import TraderProviders from '../../../../../../../trader-providers';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import DurationNumbersWidgetMobile from '../duration-numbers-widget-mobile';
 import * as durationUtils from '../duration-utils';
 import userEvent from '@testing-library/user-event';

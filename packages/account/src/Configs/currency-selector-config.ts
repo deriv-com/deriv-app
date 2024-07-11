@@ -1,6 +1,6 @@
 import React from 'react';
-import { generateValidationFunction, getDefaultFields, TSchema } from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+import { generateValidationFunction, getDefaultFields, TSchema } from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 
 const currency_selector_config: TSchema = {
     currency: {

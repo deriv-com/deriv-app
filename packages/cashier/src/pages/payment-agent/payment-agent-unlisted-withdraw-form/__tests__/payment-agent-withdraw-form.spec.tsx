@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentUnlistedWithdrawForm from '../payment-agent-unlisted-withdraw-form';
-import { isMobile, validNumber } from '@deriv-app/shared';
+import { isMobile, validNumber } from '@deriv-lib/shared';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     validNumber: jest.fn(() => ({ is_ok: true, message: '' })),
     isMobile: jest.fn(() => false),
 }));

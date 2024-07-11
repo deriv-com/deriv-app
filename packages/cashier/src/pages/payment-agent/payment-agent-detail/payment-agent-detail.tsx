@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, Text } from '@deriv-app/components';
+import { Icon, Text } from '@deriv-lib/components';
 import './payment-agent-detail.scss';
 
 type TPaymentAgentDetail = {

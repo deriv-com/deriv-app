@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv-app/stores';
-import { TCoreStores } from '@deriv-app/stores/types';
-import { TRADE_TYPES } from '@deriv-app/shared';
+import { mockStore } from '@deriv-lib/stores';
+import { TCoreStores } from '@deriv-lib/stores/types';
+import { TRADE_TYPES } from '@deriv-lib/shared';
 import TraderProviders from '../../../../trader-providers';
 import Contract from '../contract-type';
 
@@ -24,8 +24,8 @@ const default_mock_store = {
     },
 };
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isMobile: () => true,
 }));
 jest.mock('../../Components/Form/ContractType', () =>
@@ -35,8 +35,8 @@ jest.mock('../toast-popup', () => ({
     ...jest.requireActual('../toast-popup'),
     ToastPopup: () => <div>ToastPopup component</div>,
 }));
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     usePrevious: () => 'EN',
 }));
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Formik, Field, FieldProps, Form } from 'formik';
-import { Button, InlineMessage, Input, Text, ThemedScrollbars } from '@deriv-app/components';
-import { useP2PSettings } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv-app/stores';
+import { Button, InlineMessage, Input, Text, ThemedScrollbars } from '@deriv-lib/components';
+import { useP2PSettings } from '@deriv-lib/hooks';
+import { observer, useStore } from '@deriv-lib/stores';
 import FloatingRate from 'Components/floating-rate';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Text } from '@deriv-app/components';
+import { Icon, Text } from '@deriv-lib/components';
 import { Localize } from 'Components/i18next';
 
 const CashierUnderMaintenance = () => (

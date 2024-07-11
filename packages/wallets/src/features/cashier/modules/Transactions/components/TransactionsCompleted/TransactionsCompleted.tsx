@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import moment from 'moment';
-import { useActiveWalletAccount, useAllAccountsList, useInfiniteTransactions } from '@deriv-app/api-v2';
-import { TSocketRequestPayload } from '@deriv-app/api-v2/types';
+import { useActiveWalletAccount, useAllAccountsList, useInfiniteTransactions } from '@deriv-lib/api-v2';
+import { TSocketRequestPayload } from '@deriv-lib/api-v2/types';
 import { Loader } from '@deriv-com/ui';
 import { WalletText } from '../../../../../../components/Base';
 import { useCashierScroll } from '../../../../context';

@@ -1,11 +1,11 @@
 import React from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
-import { Loading } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
-import { Jurisdiction, routes } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv-app/translations';
-import { useHasSetCurrency } from '@deriv-app/hooks';
-import { TActiveAccount } from '@deriv-app/stores/types';
+import { Loading } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Jurisdiction, routes } from '@deriv-lib/shared';
+import { localize, Localize } from '@deriv-lib/translations';
+import { useHasSetCurrency } from '@deriv-lib/hooks';
+import { TActiveAccount } from '@deriv-lib/stores/types';
 import { LabelPairedChevronRightSmRegularIcon, StandaloneDerivIcon } from '@deriv/quill-icons';
 import { Button, Text } from '@deriv-com/quill-ui';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';

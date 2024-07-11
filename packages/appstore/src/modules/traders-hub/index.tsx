@@ -1,15 +1,15 @@
 import React, { lazy, Suspense } from 'react';
-import { ButtonToggle, Div100vhContainer, Text } from '@deriv-app/components';
-import { routes, checkServerMaintenance, startPerformanceEventTimer } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize, useLocalize } from '@deriv-app/translations';
+import { ButtonToggle, Div100vhContainer, Text } from '@deriv-lib/components';
+import { routes, checkServerMaintenance, startPerformanceEventTimer } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize, useLocalize } from '@deriv-lib/translations';
 import { useDevice } from '@deriv-com/ui';
 import CFDsListing from 'Components/cfds-listing';
 import ModalManager from 'Components/modals/modal-manager';
 import MainTitleBar from 'Components/main-title-bar';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
-import { useContentFlag, useGrowthbookGetFeatureValue } from '@deriv-app/hooks';
+import { useContentFlag, useGrowthbookGetFeatureValue } from '@deriv-lib/hooks';
 import classNames from 'classnames';
 import './traders-hub.scss';
 

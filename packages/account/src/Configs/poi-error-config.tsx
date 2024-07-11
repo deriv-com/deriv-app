@@ -1,7 +1,7 @@
 import React from 'react';
 import { GetAccountStatus, ResidenceList } from '@deriv/api-types';
-import { IDV_ERROR_STATUS, getIDVError } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
+import { IDV_ERROR_STATUS, getIDVError } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
 import { DerivLightNameDobPoiIcon, DerivLightDobPoiIcon, DerivLightNamePoiIcon } from '@deriv/quill-icons';
 import { getIDVDocumentType } from '../Helpers/utils';
 

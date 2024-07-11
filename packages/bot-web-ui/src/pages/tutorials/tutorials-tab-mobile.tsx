@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, SelectNative } from '@deriv-app/components';
-import { TListItem } from '@deriv-app/components/src/components/dropdown/utility';
-import { observer } from '@deriv-app/stores';
+import { Icon, SelectNative } from '@deriv-lib/components';
+import { TListItem } from '@deriv-lib/components/src/components/dropdown/utility';
+import { observer } from '@deriv-lib/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import SearchInput from './common/search-input';
 import { TTutorialsTabItem } from './tutorials';

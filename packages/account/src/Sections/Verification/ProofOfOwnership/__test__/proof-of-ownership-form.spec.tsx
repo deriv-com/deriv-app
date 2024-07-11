@@ -8,15 +8,15 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import ProofOfOwnershipForm from '../proof-of-ownership-form';
 
 import { grouped_payment_method_data } from './test-data';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 
 type TRenderComponentProps = {
     props: React.ComponentProps<typeof ProofOfOwnershipForm>;
     store: ReturnType<typeof mockStore>;
 };
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useFileUploader: jest.fn(() => ({
         upload: jest.fn(),
     })),

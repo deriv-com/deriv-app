@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize } from '@deriv-app/translations';
+import { Localize } from '@deriv-lib/translations';
 
 type TPlatformDescription = {
     brand_website_name: string;

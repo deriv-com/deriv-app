@@ -1,6 +1,6 @@
 import React from 'react';
-import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text, Button } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
+import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text, Button } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { Localize, localize } from 'Components/i18next';
 // @ts-ignore

@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useActiveWalletAccount, useBalanceSubscription } from '@deriv-app/api-v2';
-import { displayMoney } from '@deriv-app/api-v2/src/utils';
+import { useActiveWalletAccount, useBalanceSubscription } from '@deriv-lib/api-v2';
+import { displayMoney } from '@deriv-lib/api-v2/src/utils';
 import {
     LabelPairedArrowsRotateMdRegularIcon,
     LabelPairedArrowUpArrowDownMdRegularIcon,

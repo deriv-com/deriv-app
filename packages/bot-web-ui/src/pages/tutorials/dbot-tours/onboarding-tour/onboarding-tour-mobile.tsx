@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, ProgressBarTracker, Text } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { Icon, ProgressBarTracker, Text } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import { getSetting } from 'Utils/settings';
 import { useDBotStore } from 'Stores/useDBotStore';
 import TourButton from '../common/tour-button';

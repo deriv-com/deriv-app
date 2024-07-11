@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, Modal, Text } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
+import { Icon, Modal, Text } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { SIDEBAR_INTRO } from './constants';

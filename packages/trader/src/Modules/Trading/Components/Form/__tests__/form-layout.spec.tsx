@@ -1,7 +1,7 @@
 import React from 'react';
 import Loadable from 'react-loadable';
 
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import { render, screen, waitFor } from '@testing-library/react';
 
 import TraderProviders from '../../../../../trader-providers';

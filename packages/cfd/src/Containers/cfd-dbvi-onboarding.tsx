@@ -2,11 +2,11 @@ import React from 'react';
 import { useDevice } from '@deriv-com/ui';
 import { PoiPoaDocsSubmitted } from '@deriv/account';
 import { AccountStatusResponse } from '@deriv/api-types';
-import { Button, Icon, Loading, MobileDialog, Modal, Text, UILoader } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
-import { getAuthenticationStatusInfo, isMobile, WS, isPOARequiredForMT5 } from '@deriv-app/shared';
+import { Button, Icon, Loading, MobileDialog, Modal, Text, UILoader } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
+import { getAuthenticationStatusInfo, isMobile, WS, isPOARequiredForMT5 } from '@deriv-lib/shared';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { JURISDICTION } from '../Helpers/cfd-config';
 

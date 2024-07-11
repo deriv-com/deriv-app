@@ -1,9 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 import Loadable from 'react-loadable';
-import { DesktopWrapper, InputField, MobileWrapper, useOnClickOutside } from '@deriv-app/components';
-import { daysFromTodayTo, toMoment } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { DesktopWrapper, InputField, MobileWrapper, useOnClickOutside } from '@deriv-lib/components';
+import { daysFromTodayTo, toMoment } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import { localize } from 'Components/i18next';
 import CalendarIcon from './calendar-icon';
 import CalendarSideList from './calendar-side-list';

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Dialog } from '@deriv-app/components';
-import { getPlatformSettings } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv-app/translations';
-import { observer, useStore } from '@deriv-app/stores';
+import { Dialog } from '@deriv-lib/components';
+import { getPlatformSettings } from '@deriv-lib/shared';
+import { localize, Localize } from '@deriv-lib/translations';
+import { observer, useStore } from '@deriv-lib/stores';
 
 type TMarketUnavailableModalProps = {
     is_loading?: boolean;

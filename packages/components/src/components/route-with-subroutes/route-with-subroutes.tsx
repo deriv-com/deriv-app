@@ -6,7 +6,7 @@ import {
     routes as shared_routes,
     isEmptyObject,
     default_title,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 
 type TRoute = RouteProps & { default: boolean };
 

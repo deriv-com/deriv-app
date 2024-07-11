@@ -1,11 +1,11 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { formatMoney } from '@deriv-app/shared';
+import { formatMoney } from '@deriv-lib/shared';
 import AccountLimitsTurnoverLimitRow from '../account-limits-turnover-limit-row';
 import AccountLimitsContext from '../account-limits-context';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     formatMoney: jest.fn(),
 }));
 const AccountLimitsTurnoverLimitRowComponent = (props: React.ComponentProps<typeof AccountLimitsTurnoverLimitRow>) => (

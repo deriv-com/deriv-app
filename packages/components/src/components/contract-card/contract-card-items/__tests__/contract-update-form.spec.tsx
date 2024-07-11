@@ -1,7 +1,7 @@
 import React from 'react';
 import { configure, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CONTRACT_TYPES, mockContractInfo, getCardLabels } from '@deriv-app/shared';
+import { CONTRACT_TYPES, mockContractInfo, getCardLabels } from '@deriv-lib/shared';
 import { useDevice } from '@deriv-com/ui';
 import ContractUpdateForm from '../contract-update-form';
 

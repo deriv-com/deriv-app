@@ -1,13 +1,13 @@
 import React from 'react';
 import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
-import { Button, Icon, Modal, Money, StatusBadge, Text } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
-import { getCurrencyName, startPerformanceEventTimer } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { Button, Icon, Modal, Money, StatusBadge, Text } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
+import { getCurrencyName, startPerformanceEventTimer } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import CurrencyIcon from './currency';
 import { AccountListDetail } from './types';
 import classNames from 'classnames';
-import { useHasSetCurrency, useMFAccountStatus } from '@deriv-app/hooks';
+import { useHasSetCurrency, useMFAccountStatus } from '@deriv-lib/hooks';
 
 type CurrencySelectionModalProps = {
     is_visible: boolean;

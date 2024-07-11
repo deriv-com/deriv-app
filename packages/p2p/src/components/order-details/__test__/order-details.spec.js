@@ -1,5 +1,5 @@
 import React from 'react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 // @ts-ignore
 import { useStores } from 'Stores';
 import { render, screen } from '@testing-library/react';
@@ -98,8 +98,8 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
     })),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isDesktop: jest.fn(() => true),
 }));
 

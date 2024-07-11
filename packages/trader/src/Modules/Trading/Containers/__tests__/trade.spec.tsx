@@ -1,10 +1,10 @@
 import React, { ComponentProps } from 'react';
 import { act, render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import Trader from '../trade';
 import TraderProviders from '../../../../trader-providers';
 import ChartLoader from 'App/Components/Elements/chart-loader';
-import { TCoreStores } from '@deriv-app/stores/types';
+import { TCoreStores } from '@deriv-lib/stores/types';
 import { useDevice } from '@deriv-com/ui';
 
 jest.mock('App/Components/Elements/PositionsDrawer', () => jest.fn(() => <div>PositionsDrawer</div>));

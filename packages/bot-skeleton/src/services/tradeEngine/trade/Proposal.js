@@ -1,4 +1,4 @@
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import { proposalsReady, clearProposals } from './state/actions';
 import { tradeOptionToProposal, doUntilDone } from '../utils/helpers';
 import { api_base } from '../../api/api-base';

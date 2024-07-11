@@ -17,7 +17,7 @@ import {
     setTradeURLParams,
     switch_to_tick_chart,
     TRADE_TYPES,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 
 import BaseStore from './base-store';
 import { getAccumulatorMarkers } from './Helpers/chart-markers';

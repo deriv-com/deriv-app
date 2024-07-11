@@ -1,7 +1,7 @@
 import { action, computed, observable, makeObservable } from 'mobx';
-import { formatMoney, getDecimalPlaces, getMinWithdrawal, validNumber } from '@deriv-app/shared';
+import { formatMoney, getDecimalPlaces, getMinWithdrawal, validNumber } from '@deriv-lib/shared';
 import { CryptoConfig } from '@deriv/api-types';
-import { localize } from '@deriv-app/translations';
+import { localize } from '@deriv-lib/translations';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import { TWebSocket, TRootStore } from '../types';

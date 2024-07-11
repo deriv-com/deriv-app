@@ -1,20 +1,20 @@
 import React from 'react';
-import { MT5_ACCOUNT_STATUS, isMobile } from '@deriv-app/shared';
+import { MT5_ACCOUNT_STATUS, isMobile } from '@deriv-lib/shared';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import { TError } from '../../../../types';
 import AccountTransferForm from '../account-transfer-form';
 import userEvent from '@testing-library/user-event';
-import { useMFAccountStatus } from '@deriv-app/hooks';
+import { useMFAccountStatus } from '@deriv-lib/hooks';
 
-jest.mock('@deriv-app/shared/src/utils/screen/responsive', () => ({
-    ...jest.requireActual('@deriv-app/shared/src/utils/screen/responsive'),
+jest.mock('@deriv-lib/shared/src/utils/screen/responsive', () => ({
+    ...jest.requireActual('@deriv-lib/shared/src/utils/screen/responsive'),
     isMobile: jest.fn(),
 }));
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useMFAccountStatus: jest.fn(),
 }));
 

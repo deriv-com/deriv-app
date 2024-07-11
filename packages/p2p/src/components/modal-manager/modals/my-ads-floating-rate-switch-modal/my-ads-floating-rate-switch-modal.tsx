@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Modal, Text } from '@deriv-app/components';
-import { useP2PSettings } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv-app/stores';
+import { Button, Modal, Text } from '@deriv-lib/components';
+import { useP2PSettings } from '@deriv-lib/hooks';
+import { observer, useStore } from '@deriv-lib/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { ad_type } from 'Constants/floating-rate';

@@ -1,8 +1,8 @@
 import React from 'react';
 import { screen, render, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { APIProvider } from '@deriv-app/api';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { APIProvider } from '@deriv-lib/api';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { useStores } from 'Stores/index';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AddPaymentMethodForm from '../add-payment-method-form';
@@ -33,8 +33,8 @@ const mock_p2p_advertiser_payment_methods_hooks = {
     },
 };
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useP2PAdvertiserPaymentMethods: jest.fn(() => mock_p2p_advertiser_payment_methods_hooks),
 }));
 

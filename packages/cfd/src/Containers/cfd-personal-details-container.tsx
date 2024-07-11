@@ -1,11 +1,11 @@
 import React from 'react';
-import { Div100vhContainer, Text } from '@deriv-app/components';
-import { localize } from '@deriv-app/translations';
+import { Div100vhContainer, Text } from '@deriv-lib/components';
+import { localize } from '@deriv-lib/translations';
 import { TCFDPersonalDetailsContainerProps } from './props.types';
 import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form';
-import { getPropertyValue, isDesktop, WS } from '@deriv-app/shared';
+import { getPropertyValue, isDesktop, WS } from '@deriv-lib/shared';
 import { GetSettings } from '@deriv/api-types';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 
 type TFormValues = { [key: string]: string };
 type TSetSubmitting = (isSubmitting: boolean) => void;

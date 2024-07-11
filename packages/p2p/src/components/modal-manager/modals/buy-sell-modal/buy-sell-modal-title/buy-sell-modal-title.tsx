@@ -1,7 +1,7 @@
 import React from 'react';
-import { Icon, Text } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
-import { isDesktop } from '@deriv-app/shared';
+import { Icon, Text } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
+import { isDesktop } from '@deriv-lib/shared';
 // @ts-ignore
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';

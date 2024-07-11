@@ -2,7 +2,7 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import JurisdictionTitleIndicator from '../jurisdiction-title-indicator';
 import { TJurisdictionTitleIndicatorProps } from 'Containers/props.types';
-import { Jurisdiction } from '@deriv-app/shared';
+import { Jurisdiction } from '@deriv-lib/shared';
 
 describe('JurisdictionTitleIndicator', () => {
     const mock_props: TJurisdictionTitleIndicatorProps = {

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Loading } from '@deriv-app/components';
-import { useP2PAdvertiserPaymentMethods } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv-app/stores';
+import { Loading } from '@deriv-lib/components';
+import { useP2PAdvertiserPaymentMethods } from '@deriv-lib/hooks';
+import { observer, useStore } from '@deriv-lib/stores';
 // @ts-ignore
 import { useStores } from 'Stores';
 import AddPaymentMethod from 'Components/add-payment-method';

@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockContractInfo, getCardLabels, isValidToSell } from '@deriv-app/shared';
+import { mockContractInfo, getCardLabels, isValidToSell } from '@deriv-lib/shared';
 import AccumulatorCardBody from '../accumulator-card-body';
 
 type TAccumulatorCardBody = React.ComponentProps<typeof AccumulatorCardBody>;
 
 jest.mock('../toggle-card-dialog', () => jest.fn(() => <div>ToggleCardDialog</div>));
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isValidToSell: jest.fn(() => false),
 }));
 

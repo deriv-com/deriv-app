@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Toast } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
+import { Toast } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
 import { useDevice } from '@deriv-com/ui';
 
 type TToastPopUp = {

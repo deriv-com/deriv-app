@@ -1,7 +1,7 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { CFDStoreProvider } from '../../../Stores/Modules/CFD/Helpers/useCfdStores';
 import MigrationSuccessModalContent from '../migration-success-modal-content';
 

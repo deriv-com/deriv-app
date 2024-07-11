@@ -1,8 +1,8 @@
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 import PaymentAgentStore from '../payment-agent-store';
 import { configure } from 'mobx';
 import { TRootStore, TWebSocket } from '../../types';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 
 configure({ safeDescriptors: false });
 

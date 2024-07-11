@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockStore, useStore } from '@deriv-app/stores';
-import { TCoreStores } from '@deriv-app/stores/types';
-import { mockContractInfo, CONTRACT_TYPES, TRADE_TYPES } from '@deriv-app/shared';
+import { mockStore, useStore } from '@deriv-lib/stores';
+import { TCoreStores } from '@deriv-lib/stores/types';
+import { mockContractInfo, CONTRACT_TYPES, TRADE_TYPES } from '@deriv-lib/shared';
 import PositionsDrawer from '../positions-drawer';
 import TraderProviders from '../../../../../trader-providers';
 
@@ -30,8 +30,8 @@ jest.mock('react-transition-group', () => ({
     ...jest.requireActual('react-transition-group'),
     CSSTransition: jest.fn(({ children }) => <div>{children}</div>),
 }));
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     DataList: jest.fn(props => <div>{props.data_source.map(() => props.rowRenderer())}</div>),
     PositionsDrawerCard: jest.fn(props => (
         <div>

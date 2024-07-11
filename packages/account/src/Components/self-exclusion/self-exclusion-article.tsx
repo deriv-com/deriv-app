@@ -1,10 +1,10 @@
 import React from 'react';
-import { StaticUrl } from '@deriv-app/components';
-import { Localize, localize } from '@deriv-app/translations';
-import { getBrandWebsiteName, getPlatformSettings } from '@deriv-app/shared';
+import { StaticUrl } from '@deriv-lib/components';
+import { Localize, localize } from '@deriv-lib/translations';
+import { getBrandWebsiteName, getPlatformSettings } from '@deriv-lib/shared';
 import AccountArticle from 'Components/article';
 import SelfExclusionContext from './self-exclusion-context';
-import { observer } from '@deriv-app/stores';
+import { observer } from '@deriv-lib/stores';
 
 const SelfExclusionArticle = observer(() => {
     const { toggleArticle, is_eu } = React.useContext(SelfExclusionContext);

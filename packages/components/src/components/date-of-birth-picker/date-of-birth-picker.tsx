@@ -1,5 +1,5 @@
 import React from 'react';
-import { toMoment } from '@deriv-app/shared';
+import { toMoment } from '@deriv-lib/shared';
 import DatePicker from '../date-picker';
 
 const DateOfBirthPicker = (

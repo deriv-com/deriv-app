@@ -1,7 +1,7 @@
 import React from 'react';
 import { useStores } from 'Stores/index';
 import { ModalManagerContext } from './modal-manager-context';
-import { isDesktop } from '@deriv-app/shared';
+import { isDesktop } from '@deriv-lib/shared';
 import type {
     TModal,
     TModalKeys,

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { isAccumulatorContract, isEmptyObject, getEndTime } from '@deriv-app/shared';
+import { isAccumulatorContract, isEmptyObject, getEndTime } from '@deriv-lib/shared';
 import ServerTime from '../../_common/base/server_time';
 
 export const getChartConfig = contract_info => {

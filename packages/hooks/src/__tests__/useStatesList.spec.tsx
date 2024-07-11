@@ -1,11 +1,11 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { APIProvider, useQuery } from '@deriv-app/api';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { APIProvider, useQuery } from '@deriv-lib/api';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import useStatesList from '../useStatesList';
 
-jest.mock('@deriv-app/api', () => ({
-    ...jest.requireActual('@deriv-app/api'),
+jest.mock('@deriv-lib/api', () => ({
+    ...jest.requireActual('@deriv-lib/api'),
     useQuery: jest.fn(),
 }));
 

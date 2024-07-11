@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useSubscription } from '@deriv-app/api';
+import { useSubscription } from '@deriv-lib/api';
 
 type TTransaction = NonNullable<
     NonNullable<ReturnType<typeof useSubscription<'cashier_payments'>>['data']>['cashier_payments']

@@ -3,8 +3,8 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { routes } from '@deriv-app/shared';
-import { useStore } from '@deriv-app/stores';
+import { routes } from '@deriv-lib/shared';
+import { useStore } from '@deriv-lib/stores';
 import AccountVerificationRequiredModal from '../account-verification-required-modal';
 
 type TModal = React.FC<{
@@ -21,8 +21,8 @@ type TModal = React.FC<{
     }>;
 };
 
-jest.mock('@deriv-app/stores', () => ({
-    ...jest.requireActual('@deriv-app/stores'),
+jest.mock('@deriv-lib/stores', () => ({
+    ...jest.requireActual('@deriv-lib/stores'),
     observer: jest.fn(x => x),
     useStore: jest.fn(() => ({
         ui: {
@@ -31,13 +31,13 @@ jest.mock('@deriv-app/stores', () => ({
     })),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isMobile: jest.fn(() => true),
 }));
 
-jest.mock('@deriv-app/components', () => {
-    const original_module = jest.requireActual('@deriv-app/components');
+jest.mock('@deriv-lib/components', () => {
+    const original_module = jest.requireActual('@deriv-lib/components');
     const Modal: TModal = jest.fn(({ children, is_open, title, height }) => {
         if (is_open) {
             return (

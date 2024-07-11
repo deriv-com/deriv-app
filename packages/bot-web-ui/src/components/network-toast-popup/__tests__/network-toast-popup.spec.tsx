@@ -1,5 +1,5 @@
 import React from 'react';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { act, render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
@@ -12,8 +12,8 @@ jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
     unHighlightAllBlocks: jest.fn(),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isMobile: () => true,
 }));
 

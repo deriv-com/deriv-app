@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { Button } from '@deriv-app/components';
+import { Button } from '@deriv-lib/components';
 import React from 'react';
 import { Verified } from '../verified';
 

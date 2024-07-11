@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize } from 'Components/i18next';
-import { DesktopWrapper } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
+import { DesktopWrapper } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
 // @ts-ignore
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

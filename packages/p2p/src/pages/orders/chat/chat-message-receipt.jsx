@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon } from '@deriv-app/components';
+import { Icon } from '@deriv-lib/components';
 import ChatMessage from 'Utils/chat-message';
 import './chat-message-receipt.scss';
 

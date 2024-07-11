@@ -1,9 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
-import { Localize, localize } from '@deriv-app/translations';
+import { Localize, localize } from '@deriv-lib/translations';
 import { useDevice } from '@deriv-com/ui';
-import { Button, Text } from '@deriv-app/components';
+import { Button, Text } from '@deriv-lib/components';
 import Uploader from './uploader';
 import { setInitialValues, validateFields } from './utils';
 import { ROOT_CLASS, SELFIE_DOCUMENT } from '../constants';

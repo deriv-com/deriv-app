@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { FormikValues } from 'formik';
-import { useDocumentUpload, useSettings } from '@deriv-app/api-v2';
+import { useDocumentUpload, useSettings } from '@deriv-lib/api-v2';
 
 const useHandleManualDocumentUpload = () => {
     const { data: settings } = useSettings();

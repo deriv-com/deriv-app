@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
-import { Button, Loading, SideNote, Text } from '@deriv-app/components';
-import { useCryptoTransactions, useCurrentCurrencyConfig } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv-app/translations';
+import { Button, Loading, SideNote, Text } from '@deriv-lib/components';
+import { useCryptoTransactions, useCurrentCurrencyConfig } from '@deriv-lib/hooks';
+import { observer, useStore } from '@deriv-lib/stores';
+import { Localize, localize } from '@deriv-lib/translations';
 import classNames from 'classnames';
 import { useCashierStore } from '../../../../stores/useCashierStores';
 import { cryptoTransactionMapper } from '../../helpers';

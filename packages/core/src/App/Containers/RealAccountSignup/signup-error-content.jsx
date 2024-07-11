@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import { isMobile, getSignupFormFields } from '@deriv-app/shared';
-import { Button, Icon, StaticUrl, Text } from '@deriv-app/components';
-import { localize, Localize } from '@deriv-app/translations';
+import { isMobile, getSignupFormFields } from '@deriv-lib/shared';
+import { Button, Icon, StaticUrl, Text } from '@deriv-lib/components';
+import { localize, Localize } from '@deriv-lib/translations';
 
 const Heading = ({ code }) => {
     switch (code) {

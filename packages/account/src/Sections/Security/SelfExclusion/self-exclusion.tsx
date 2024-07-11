@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loading } from '@deriv-app/components';
+import { Loading } from '@deriv-lib/components';
 import {
     getBrandWebsiteName,
     getPropertyValue,
@@ -9,8 +9,8 @@ import {
     validNumber,
     useIsMounted,
     WS,
-} from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+} from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 import DemoMessage from 'Components/demo-message';
 import 'Components/self-exclusion/self-exclusion.scss';
 import LoadErrorMessage from 'Components/load-error-message';
@@ -20,7 +20,7 @@ import SelfExclusionModal from 'Components/self-exclusion/self-exclusion-modal';
 import SelfExclusionWrapper from 'Components/self-exclusion/self-exclusion-wrapper';
 import SelfExclusionForm from 'Components/self-exclusion/self-exclusion-form';
 import { FormikHelpers, FormikValues } from 'formik';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 
 type TSelfExclusion = {
     is_app_settings?: boolean;

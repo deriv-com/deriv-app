@@ -8,7 +8,7 @@ import 'promise-polyfill';
 import registerServiceWorker from 'Utils/pwa';
 import initStore from 'App/initStore';
 import App from 'App/app.jsx';
-import { checkAndSetEndpointFromUrl } from '@deriv-app/shared';
+import { checkAndSetEndpointFromUrl } from '@deriv-lib/shared';
 import AppNotificationMessages from './App/Containers/app-notification-messages.jsx';
 import { AnalyticsInitializer } from 'Utils/Analytics';
 

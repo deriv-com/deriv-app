@@ -6,8 +6,8 @@ import {
     useBalanceSubscription,
     useCurrencyConfig,
     useMobileCarouselWalletsList,
-} from '@deriv-app/api-v2';
-import { displayMoney } from '@deriv-app/api-v2/src/utils';
+} from '@deriv-lib/api-v2';
+import { displayMoney } from '@deriv-lib/api-v2/src/utils';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { THooks } from '../../types';
 import { ProgressBar, WalletText } from '../Base';

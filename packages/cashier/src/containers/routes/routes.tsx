@@ -1,4 +1,4 @@
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import React from 'react';
 import { withRouter } from 'react-router';
 import BinaryRoutes from './binary-routes';

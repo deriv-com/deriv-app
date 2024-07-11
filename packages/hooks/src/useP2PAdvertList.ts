@@ -1,5 +1,5 @@
 import React from 'react';
-import { useInfiniteQuery } from '@deriv-app/api';
+import { useInfiniteQuery } from '@deriv-lib/api';
 
 /**
  * This custom hook returns available adverts for use with 'p2p_order_create' by calling 'p2p_advert_list' endpoint

@@ -1,5 +1,5 @@
 import React from 'react';
-import { isMobile } from '@deriv-app/shared';
+import { isMobile } from '@deriv-lib/shared';
 
 type TMobileWrapper = {
     children: React.ReactNode;

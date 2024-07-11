@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { routes } from '@deriv-app/shared';
+import { routes } from '@deriv-lib/shared';
 import { action } from '@storybook/addon-actions';
 import { boolean } from '@storybook/addon-knobs';
 import PageError from 'Components/page-error';

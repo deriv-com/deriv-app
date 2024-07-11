@@ -3,8 +3,8 @@ import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import LanguageRadioButton, { TLanguageRadioButton } from '../language-radio-button';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     TranslationFlag: { lang_id: () => <div>Language 1 Flag</div> },
 }));
 

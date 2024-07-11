@@ -4,8 +4,8 @@ import { TSocketResponse } from '../../types';
 import APIProvider from '../APIProvider';
 import useQuery from '../useQuery';
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     useWS: () => ({
         send: jest.fn(() =>
             Promise.resolve<TSocketResponse<'ping'>>({

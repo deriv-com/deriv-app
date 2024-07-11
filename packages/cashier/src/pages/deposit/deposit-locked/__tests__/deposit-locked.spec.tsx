@@ -1,8 +1,8 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Checklist } from '@deriv-app/components';
+import { Checklist } from '@deriv-lib/components';
 import DepositLocked from '../deposit-locked';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import CashierProviders from '../../../../cashier-providers';
 
 jest.mock('Components/cashier-locked', () => {

@@ -1,5 +1,5 @@
 {
-    "name": "@deriv-app/hooks",
+    "name": "@deriv-lib/hooks",
     "private": true,
     "version": "1.0.0",
     "main": "src/index.ts",
@@ -7,10 +7,10 @@
     "dependencies": {
         "@binary-com/binary-document-uploader": "^2.4.8",
         "@deriv-com/analytics": "1.8.0",
-        "@deriv-app/api": "^1.0.0",
-        "@deriv-app/stores": "^1.0.0",
+        "@deriv-lib/api": "^1.0.0",
+        "@deriv-lib/stores": "^1.0.0",
         "@deriv/utils": "^1.0.0",
-        "@deriv-app/shared": "^1.0.0",
+        "@deriv-lib/shared": "^1.0.0",
         "usehooks-ts": "^2.7.0",
         "react-i18next": "^11.11.0",
         "@simplewebauthn/browser": "^8.3.4",

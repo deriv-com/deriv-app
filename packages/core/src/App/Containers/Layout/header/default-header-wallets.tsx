@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
-import { useStore } from '@deriv-app/stores';
-import { DesktopWrapper, MobileWrapper, StaticUrl } from '@deriv-app/components';
-import { getDecimalPlaces, platforms, routes } from '@deriv-app/shared';
+import { useStore } from '@deriv-lib/stores';
+import { DesktopWrapper, MobileWrapper, StaticUrl } from '@deriv-lib/components';
+import { getDecimalPlaces, platforms, routes } from '@deriv-lib/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import NewVersionNotification from 'App/Containers/new-version-notification.jsx';

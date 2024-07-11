@@ -1,6 +1,6 @@
 import React from 'react';
-import { ButtonToggle } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
+import { ButtonToggle } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
 import { localize } from 'Components/i18next';
 import ToggleContainer from 'Components/toggle-container';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';

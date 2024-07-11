@@ -1,6 +1,6 @@
 import React from 'react';
 import QRCode from 'qrcode.react';
-import { useDepositCryptoAddress } from '@deriv-app/api-v2';
+import { useDepositCryptoAddress } from '@deriv-lib/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
 import { Clipboard } from '../../../../components';
 import { DepositCryptoAddressLoader } from '../DepositCryptoAddressLoader';

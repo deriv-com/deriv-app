@@ -1,9 +1,9 @@
 import React from 'react';
-import { getUrlSmartTrader } from '@deriv-app/shared';
+import { getUrlSmartTrader } from '@deriv-lib/shared';
 import MarketUnavailableModal from '../Elements/Modals/MarketUnavailableModal';
 import ServicesErrorModal from '../Elements/Modals/ServicesErrorModal';
 import AccountVerificationPendingModal from '../Elements/Modals/AccountVerificationPendingModal';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 
 const TradeModals = observer(() => {
     const { ui, client, common } = useStore();

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text } from '@deriv-app/components';
-import { AUTH_STATUS_CODES, MT5_ACCOUNT_STATUS, routes } from '@deriv-app/shared';
-import { Localize } from '@deriv-app/translations';
+import { Text } from '@deriv-lib/components';
+import { AUTH_STATUS_CODES, MT5_ACCOUNT_STATUS, routes } from '@deriv-lib/shared';
+import { Localize } from '@deriv-lib/translations';
 import { TAuthStatusCodes, TMT5AccountStatus } from '../Types/common.type';
 import { Link } from 'react-router-dom';
 

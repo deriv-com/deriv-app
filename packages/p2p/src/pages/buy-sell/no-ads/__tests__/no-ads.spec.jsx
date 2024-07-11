@@ -1,8 +1,8 @@
 import React from 'react';
 import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
-import { APIProvider } from '@deriv-app/api';
-import { P2PSettingsProvider } from '@deriv-app/stores';
+import { APIProvider } from '@deriv-lib/api';
+import { P2PSettingsProvider } from '@deriv-lib/stores';
 import { Router } from 'react-router';
 import NoAds from '../no-ads';
 
@@ -33,8 +33,8 @@ const wrapper = ({ children }) => (
     </APIProvider>
 );
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useP2PSettings: jest.fn().mockReturnValue({
         p2p_settings: {
             currency_list: [

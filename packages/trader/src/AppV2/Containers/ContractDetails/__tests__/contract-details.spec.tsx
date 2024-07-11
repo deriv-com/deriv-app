@@ -3,7 +3,7 @@ import { act, render, screen, waitFor } from '@testing-library/react';
 import ContractDetails from '../contract-details';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import useOrderDetails from 'AppV2/Hooks/useOrderDetails';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import TraderProviders from '../../../../trader-providers';
 import moment from 'moment';
 import {
@@ -16,7 +16,7 @@ import {
     hasContractEntered,
     isForwardStarting,
     isAccumulatorContract,
-} from '@deriv-app/shared';
+} from '@deriv-lib/shared';
 import { getContractDetailsConfig } from 'AppV2/Utils/contract-details-config';
 
 jest.mock('AppV2/Hooks/useContractDetails', () => jest.fn());
@@ -81,7 +81,7 @@ jest.mock('AppV2/Components/OrderDetails', () => {
     return OrderDetails;
 });
 
-jest.mock('@deriv-app/shared', () => ({
+jest.mock('@deriv-lib/shared', () => ({
     isValidToSell: jest.fn(),
     isMultiplierContract: jest.fn(),
     isValidToCancel: jest.fn(),

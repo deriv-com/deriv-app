@@ -1,8 +1,8 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { ProposalOpenContract } from '@deriv/api-types';
 import { LogTypes } from '@deriv/bot-skeleton';
-import { formatDate, isEnded } from '@deriv-app/shared';
-import { TPortfolioPosition, TStores } from '@deriv-app/stores/types';
+import { formatDate, isEnded } from '@deriv-lib/shared';
+import { TPortfolioPosition, TStores } from '@deriv-lib/stores/types';
 import { TContractInfo } from '../components/summary/summary-card.types';
 import { transaction_elements } from '../constants/transactions';
 import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';

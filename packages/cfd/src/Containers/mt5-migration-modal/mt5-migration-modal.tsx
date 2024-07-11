@@ -1,7 +1,7 @@
 import React from 'react';
-import { DesktopWrapper, Modal, PageOverlay, UILoader, MobileWrapper, Text, Dialog } from '@deriv-app/components';
-import { Localize, localize } from '@deriv-app/translations';
-import { observer, useStore } from '@deriv-app/stores';
+import { DesktopWrapper, Modal, PageOverlay, UILoader, MobileWrapper, Text, Dialog } from '@deriv-lib/components';
+import { Localize, localize } from '@deriv-lib/translations';
+import { observer, useStore } from '@deriv-lib/stores';
 import MT5MigrationModalContent from './mt5-migration-modal-content';
 import { MT5MigrationModalContext } from './mt5-migration-modal-context';
 import './mt5-migration-modal.scss';

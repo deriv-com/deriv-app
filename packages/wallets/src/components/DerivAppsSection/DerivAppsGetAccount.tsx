@@ -5,7 +5,7 @@ import {
     useCreateNewRealAccount,
     useInvalidateQuery,
     useSettings,
-} from '@deriv-app/api-v2';
+} from '@deriv-lib/api-v2';
 import { toMoment } from '@deriv/utils';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
 import useDevice from '../../hooks/useDevice';

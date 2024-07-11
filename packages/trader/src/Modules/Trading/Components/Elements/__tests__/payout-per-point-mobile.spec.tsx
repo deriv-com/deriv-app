@@ -2,9 +2,9 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import PayoutPerPointMobile from '../payout-per-point-mobile';
-import { mockStore } from '@deriv-app/stores';
-import { TCoreStores } from '@deriv-app/stores/types';
-import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv-app/shared';
+import { mockStore } from '@deriv-lib/stores';
+import { TCoreStores } from '@deriv-lib/stores/types';
+import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv-lib/shared';
 import userEvent from '@testing-library/user-event';
 import TraderProviders from '../../../../../trader-providers';
 

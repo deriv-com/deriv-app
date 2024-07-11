@@ -28,7 +28,7 @@ jest.mock('react-router-dom', () => ({
 
 const mockRedirectToLogin = jest.fn();
 
-jest.mock('@deriv-app/shared', () => ({
+jest.mock('@deriv-lib/shared', () => ({
     redirectToLogin: jest.fn(),
     isEmptyObject: (obj: Record<string, any>) => Object.keys(obj).length === 0,
     routes: { index: '/index', is_logged_in: '/login' },
@@ -36,7 +36,7 @@ jest.mock('@deriv-app/shared', () => ({
     default_title: 'Default Title',
 }));
 
-jest.mock('@deriv-app/translations', () => ({
+jest.mock('@deriv-lib/translations', () => ({
     getLanguage: jest.fn().mockReturnValue('EN'),
 }));
 

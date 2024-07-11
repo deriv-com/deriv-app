@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSubscription } from '@deriv-app/api';
+import { useSubscription } from '@deriv-lib/api';
 
 /**
  * @deprecated Please use `useAdvertInfo` from the `api` package instead.

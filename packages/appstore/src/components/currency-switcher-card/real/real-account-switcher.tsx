@@ -1,13 +1,13 @@
 import React from 'react';
 import { getStatusBadgeConfig } from '@deriv/account';
-import { StatusBadge, Text } from '@deriv-app/components';
+import { StatusBadge, Text } from '@deriv-lib/components';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import CurrencySwitcherLoader from 'Components/pre-loader/currency-switcher-loader';
-import { useStore, observer } from '@deriv-app/stores';
+import { useStore, observer } from '@deriv-lib/stores';
 import RealAccountCard from './real-account-card';
 import './real-account-switcher.scss';
 import { IsIconCurrency } from 'Assets/svgs/currency';
-import { useMFAccountStatus } from '@deriv-app/hooks';
+import { useMFAccountStatus } from '@deriv-lib/hooks';
 
 const AccountNeedsVerification = observer(() => {
     const mf_account_status = useMFAccountStatus();

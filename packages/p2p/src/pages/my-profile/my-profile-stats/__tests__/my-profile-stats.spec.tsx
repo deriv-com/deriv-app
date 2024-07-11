@@ -1,16 +1,16 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { isMobile } from '@deriv-app/shared';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { isMobile } from '@deriv-lib/shared';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores/index';
 import MyProfileStats from '../my-profile-stats';
 
 let mock_store: DeepPartial<ReturnType<typeof useStores>>;
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     MobileWrapper: jest.fn(({ children }) => children),
     // @ts-ignore
     MobileFullPageModal: ({ children, pageHeaderReturnFn = mock_store.setActiveTab }) => (
@@ -21,8 +21,8 @@ jest.mock('@deriv-app/components', () => ({
     ),
 }));
 
-jest.mock('@deriv-app/shared', () => ({
-    ...jest.requireActual('@deriv-app/shared'),
+jest.mock('@deriv-lib/shared', () => ({
+    ...jest.requireActual('@deriv-lib/shared'),
     isMobile: jest.fn(() => true),
 }));
 

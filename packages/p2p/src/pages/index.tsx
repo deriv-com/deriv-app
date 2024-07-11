@@ -1,6 +1,6 @@
 import React from 'react';
-import { makeLazyLoader, moduleLoader } from '@deriv-app/shared';
-import { Loading } from '@deriv-app/components';
+import { makeLazyLoader, moduleLoader } from '@deriv-lib/shared';
+import { Loading } from '@deriv-lib/components';
 import './index.scss';
 
 const App = makeLazyLoader(

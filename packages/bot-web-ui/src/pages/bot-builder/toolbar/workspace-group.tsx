@@ -1,6 +1,6 @@
 import React from 'react';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendOpenEvent } from '../../../analytics/rudderstack-common-events';
 import ToolbarIcon from './toolbar-icon';

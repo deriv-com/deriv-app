@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import usePlatformRealAccounts from '../usePlatformRealAccounts';
 

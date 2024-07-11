@@ -1,6 +1,6 @@
 import React from 'react';
-import { getCFDPlatformLabel, CFD_PRODUCTS_TITLE, CFD_PLATFORMS } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv-app/stores';
+import { getCFDPlatformLabel, CFD_PRODUCTS_TITLE, CFD_PLATFORMS } from '@deriv-lib/shared';
+import { observer, useStore } from '@deriv-lib/stores';
 import CfdPasswordModalInfo from './cfd-password-modal-info';
 import JurisdictionCheckBox from './jurisdiction-modal/jurisdiction-modal-checkbox';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';

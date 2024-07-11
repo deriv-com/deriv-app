@@ -1,7 +1,7 @@
 import React from 'react';
 import debounce from 'lodash.debounce';
-import { Loading, SearchBox, Text } from '@deriv-app/components';
-import { observer, useStore } from '@deriv-app/stores';
+import { Loading, SearchBox, Text } from '@deriv-lib/components';
+import { observer, useStore } from '@deriv-lib/stores';
 import { Localize, localize } from 'Components/i18next';
 import { api_error_codes } from 'Constants/api-error-codes';
 // @ts-ignore

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Modal, Text } from '@deriv-app/components';
-import { Jurisdiction, MT5_ACCOUNT_STATUS, getMT5AccountTitle } from '@deriv-app/shared';
-import { useStore } from '@deriv-app/stores';
-import { Localize, useLocalize } from '@deriv-app/translations';
+import { Button, Modal, Text } from '@deriv-lib/components';
+import { Jurisdiction, MT5_ACCOUNT_STATUS, getMT5AccountTitle } from '@deriv-lib/shared';
+import { useStore } from '@deriv-lib/stores';
+import { Localize, useLocalize } from '@deriv-lib/translations';
 import { TTradingPlatformAvailableAccount } from '../account-type-modal/types';
 import { TMarketType } from '../../../types/common.types';
 

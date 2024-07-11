@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stream, StreamPlayerApi } from '@cloudflare/stream-react';
-import { isSafariBrowser, mobileOSDetect } from '@deriv-app/shared';
+import { isSafariBrowser, mobileOSDetect } from '@deriv-lib/shared';
 import debounce from 'lodash.debounce';
 import VideoOverlay from './video-overlay';
 import VideoControls from './video-controls';

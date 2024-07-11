@@ -1,7 +1,7 @@
 /* eslint-disable simple-import-sort/imports */
 import React from 'react';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { observer, useStore } from '@deriv-app/stores';
+import { observer, useStore } from '@deriv-lib/stores';
 import './quick-strategy.scss';
 import SymbolSelect from './selects/symbol';
 import TradeTypeSelect from './selects/trade-type';

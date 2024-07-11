@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { useStore } from '@deriv-app/stores';
+import { useStore } from '@deriv-lib/stores';
 import { getWalletCurrencyIcon } from '@deriv/utils';
 import useActiveWallet from './useActiveWallet';
 import useCurrencyConfig from './useCurrencyConfig';

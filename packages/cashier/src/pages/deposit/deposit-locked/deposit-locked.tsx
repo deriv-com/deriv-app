@@ -1,9 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Icon, Checklist, StaticUrl, Text } from '@deriv-app/components';
-import { Localize, localize } from '@deriv-app/translations';
-import { routes, WS } from '@deriv-app/shared';
-import { useStore, observer } from '@deriv-app/stores';
+import { Icon, Checklist, StaticUrl, Text } from '@deriv-lib/components';
+import { Localize, localize } from '@deriv-lib/translations';
+import { routes, WS } from '@deriv-lib/shared';
+import { useStore, observer } from '@deriv-lib/stores';
 import CashierLocked from '../../../components/cashier-locked';
 
 type TItems = {

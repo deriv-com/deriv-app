@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
-import { useStore, observer } from '@deriv-app/stores';
+import { useStore, observer } from '@deriv-lib/stores';
 import ListingContainer from 'Components/containers/listing-container';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import OptionsDescription from 'Components/elements/options-description';
 import OptionsTitle from 'Components/elements/options-title';
 import { BrandConfig } from 'Constants/platform-config';
 import { getHasDivider } from 'Constants/utils';
-import { isEuCountry, getAppstorePlatforms } from '@deriv-app/shared';
+import { isEuCountry, getAppstorePlatforms } from '@deriv-lib/shared';
 import './options-multipliers-listing-logged-out.scss';
 
 const OptionsAndMultipliersListingLoggedOut = observer(() => {

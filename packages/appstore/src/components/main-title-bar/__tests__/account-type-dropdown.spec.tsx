@@ -1,7 +1,7 @@
 import React from 'react';
 import AccountTypeDropdown from '../account-type-dropdown';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import userEvent from '@testing-library/user-event';
 
 describe('AccountTypeDropdown', () => {

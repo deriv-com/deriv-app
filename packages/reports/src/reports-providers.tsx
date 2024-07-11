@@ -1,7 +1,7 @@
 import React from 'react';
-import { StoreProvider } from '@deriv-app/stores';
+import { StoreProvider } from '@deriv-lib/stores';
 import { ReportsStoreProvider } from 'Stores/useReportsStores';
-import type { TCoreStores } from '@deriv-app/stores/types';
+import type { TCoreStores } from '@deriv-lib/stores/types';
 
 export const ReportsProviders = ({ children, store }: React.PropsWithChildren<{ store: TCoreStores }>) => {
     return (

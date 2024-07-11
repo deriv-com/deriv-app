@@ -3,7 +3,7 @@ import {
     APIProvider,
     useTradingPlatformInvestorPasswordReset,
     useTradingPlatformPasswordReset,
-} from '@deriv-app/api-v2';
+} from '@deriv-lib/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../AuthProvider';
 import { CFD_PLATFORMS } from '../../../features/cfd/constants';
@@ -26,8 +26,8 @@ jest.mock('../../ModalProvider', () => ({
     })),
 }));
 
-jest.mock('@deriv-app/api-v2', () => ({
-    ...jest.requireActual('@deriv-app/api-v2'),
+jest.mock('@deriv-lib/api-v2', () => ({
+    ...jest.requireActual('@deriv-lib/api-v2'),
     useTradingPlatformInvestorPasswordReset: jest.fn(() => ({
         error: null,
         isError: false,

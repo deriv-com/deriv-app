@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { displayMoney } from '@deriv-app/api-v2/src/utils';
+import { displayMoney } from '@deriv-lib/api-v2/src/utils';
 import { THooks } from '../../../hooks/types';
 
 type TModifiedAccounts = ReturnType<typeof getModifiedAccounts>;

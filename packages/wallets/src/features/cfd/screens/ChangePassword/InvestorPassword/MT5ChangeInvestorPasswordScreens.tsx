@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv-app/api-v2';
+import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv-lib/api-v2';
 import { useModal } from '../../../../../components/ModalProvider';
 import { platformPasswordResetRedirectLink } from '../../../../../utils/cfd';
 import MT5ChangeInvestorPasswordInputsScreen from './MT5ChangeInvestorPasswordInputsScreen';

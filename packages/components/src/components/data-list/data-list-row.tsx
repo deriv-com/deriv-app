@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useIsMounted, clickAndKeyEventHandler } from '@deriv-app/shared';
+import { useIsMounted, clickAndKeyEventHandler } from '@deriv-lib/shared';
 import { TPassThrough, TRow } from '../types/common.types';
 import { TColIndex, TDataListCell } from './data-list-cell';
 import { TSource } from '../data-table/table-row';

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import { isMobile } from '@deriv-app/shared';
-import { Button, Icon, Text } from '@deriv-app/components';
+import { isMobile } from '@deriv-lib/shared';
+import { Button, Icon, Text } from '@deriv-lib/components';
 
 const NotificationBanner = ({
     className,

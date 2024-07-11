@@ -1,15 +1,15 @@
 import React from 'react';
 import { MemoryRouter, BrowserRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
-import { routes } from '@deriv-app/shared';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
+import { routes } from '@deriv-lib/shared';
 import { TRoute } from 'Types';
 import Account from '../account';
 
 jest.mock('../../Account/page-overlay-wrapper', () => jest.fn(() => <div>MockPageOverlayWrapper</div>));
 
-jest.mock('@deriv-app/components', () => ({
-    ...jest.requireActual('@deriv-app/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     Loading: () => <div>MockLoading</div>,
 }));
 

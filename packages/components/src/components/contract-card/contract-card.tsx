@@ -8,9 +8,9 @@ import ContractCardSell from './contract-card-items/contract-card-sell';
 import MultiplierCloseActions from './contract-card-items/multiplier-close-actions';
 import ResultOverlay from './result-overlay';
 import DesktopWrapper from '../desktop-wrapper';
-import { TContractInfo } from '@deriv-app/shared/src/utils/contract/contract-types';
+import { TContractInfo } from '@deriv-lib/shared/src/utils/contract/contract-types';
 import { TGetCardLables, TGetContractPath } from '../types';
-import { getTotalProfit } from '@deriv-app/shared';
+import { getTotalProfit } from '@deriv-lib/shared';
 
 type TContractCardProps = {
     contract_info: TContractInfo;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { mockStore, StoreProvider } from '@deriv-lib/stores';
 import { render, screen } from '@testing-library/react';
 
 import FormBodySection, { TFormBodySection } from '../form-body-section';

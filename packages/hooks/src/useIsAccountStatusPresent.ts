@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStore } from '@deriv-app/stores';
+import { useStore } from '@deriv-lib/stores';
 
 const AccountStatusList = [
     'address_verified',

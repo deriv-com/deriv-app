@@ -2,10 +2,10 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentTransferForm from '../payment-agent-transfer-form';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv-app/stores';
+import { mockStore } from '@deriv-lib/stores';
 import { expect } from '@jest/globals';
 
-jest.mock('@deriv-app/shared/src/utils/validation/declarative-validation-rules', () => ({
+jest.mock('@deriv-lib/shared/src/utils/validation/declarative-validation-rules', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
     validNumber: jest.fn(() => true),

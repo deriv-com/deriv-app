@@ -1,5 +1,5 @@
-import { validPassword, validLength, website_name, getErrorMessages } from '@deriv-app/shared';
-import { localize } from '@deriv-app/translations';
+import { validPassword, validLength, website_name, getErrorMessages } from '@deriv-lib/shared';
+import { localize } from '@deriv-lib/translations';
 
 const validateSignupFields = (values, residence_list) => {
     const errors = {};

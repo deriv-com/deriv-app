@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { P2PSettingsContext } from '@deriv-app/stores';
+import { P2PSettingsContext } from '@deriv-lib/stores';
 
 /**
  * A custom hook to get the p2p_settings information from `p2p_settings` endpoint

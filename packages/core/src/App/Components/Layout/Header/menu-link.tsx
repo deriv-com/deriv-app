@@ -1,11 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, Text } from '@deriv-app/components';
-import { useIsRealAccountNeededForCashier } from '@deriv-app/hooks';
-import { routes, getStaticUrl } from '@deriv-app/shared';
+import { Icon, Text } from '@deriv-lib/components';
+import { useIsRealAccountNeededForCashier } from '@deriv-lib/hooks';
+import { routes, getStaticUrl } from '@deriv-lib/shared';
 import { isExternalLink } from '@deriv/utils';
-import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv-app/translations';
+import { observer, useStore } from '@deriv-lib/stores';
+import { localize } from '@deriv-lib/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { useDevice } from '@deriv-com/ui';
 

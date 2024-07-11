@@ -2,14 +2,14 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Analytics } from '@deriv-com/analytics';
-import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { StoreProvider, mockStore } from '@deriv-lib/stores';
 import { CFDStoreProvider } from '../../../Stores/Modules/CFD/Helpers/useCfdStores';
-import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
-import { APIProvider } from '@deriv-app/api';
+import { useMT5SVGEligibleToMigrate } from '@deriv-lib/hooks';
+import { APIProvider } from '@deriv-lib/api';
 import MigrationBanner from '../migration-banner';
 
-jest.mock('@deriv-app/hooks', () => ({
-    ...jest.requireActual('@deriv-app/hooks'),
+jest.mock('@deriv-lib/hooks', () => ({
+    ...jest.requireActual('@deriv-lib/hooks'),
     useMT5SVGEligibleToMigrate: jest.fn(),
 }));
 

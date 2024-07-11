@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button } from '@deriv-app/components';
+import { Button } from '@deriv-lib/components';
 import { TPasswordBoxProps } from './props.types';
-import { Localize } from '@deriv-app/translations';
+import { Localize } from '@deriv-lib/translations';
 
 const PasswordBox = ({ onClick }: TPasswordBoxProps) => (
     <div className='cfd-trade-modal__password-box'>

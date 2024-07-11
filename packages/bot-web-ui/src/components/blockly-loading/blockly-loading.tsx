@@ -1,6 +1,6 @@
 import React from 'react';
-import { Loading } from '@deriv-app/components';
-import { observer } from '@deriv-app/stores';
+import { Loading } from '@deriv-lib/components';
+import { observer } from '@deriv-lib/stores';
 import { useDBotStore } from '../../stores/useDBotStore';
 
 const BlocklyLoading = observer(() => {

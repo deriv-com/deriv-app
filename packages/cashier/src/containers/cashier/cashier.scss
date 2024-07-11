@@ -122,7 +122,7 @@
     &__input {
         display: inline-block !important;
         margin-bottom: 0 !important;
-        @include mobile-or-tablet-screen {
+        @include mobile {
             margin-bottom: 3.2rem !important;
         }
     }

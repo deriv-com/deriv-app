@@ -1483,13 +1483,9 @@ export default class ClientStore extends BaseStore {
         const authorize_response = await this.setUserLogin(login_new_user);
 
         if (search) {
-            // we need to store redirect url before it gets deleted
-            // it gets deleted bcz redirect.jsx runs after history.replaceState so the redirecturl gets updated with the url that has no code
-            // putting is_logged_in does not work bcz its not updated even when user logs in
-            // we a condn in if block such that this if bloacks only runs when user hits that redirect url
             if (code_param && action_param) {
                 this.setVerificationCode(code_param, action_param);
-                // sessionStorage.setItem('request_email', code_param);
+                sessionStorage.setItem('request_email', code_param);
             }
             setTimeout(() => {
                 // timeout is needed to get the token (code) from the URL before we hide it from the URL
@@ -1589,10 +1585,6 @@ export default class ClientStore extends BaseStore {
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
 
         if (this.is_logged_in) {
-            // if (redirect_action_param === 'request_email' && redirect_code_param) {
-            //     console.log('REPLACE CALLED', redirect_action_param, redirect_code_param, this.is_logged_in);
-            //     history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
-            // }
             this.getWalletMigrationState();
 
             await WS.mt5LoginList().then(this.responseMt5LoginList);

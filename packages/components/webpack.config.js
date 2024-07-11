@@ -89,8 +89,8 @@ module.exports = function () {
                 'react-swipeable': 'react-swipeable',
                 'react-tiny-popover': 'react-tiny-popover',
             },
-            /^@deriv\/shared\/.+$/,
-            /^@deriv\/translations\/.+$/,
+            /^@deriv-app\/shared\/.+$/,
+            /^@deriv-app\/translations\/.+$/,
         ],
     };
 };

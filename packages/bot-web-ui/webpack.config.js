@@ -158,9 +158,9 @@ module.exports = function (env) {
                 '@deriv/deriv-charts': '@deriv/deriv-charts',
                 '@deriv-com/analytics': `@deriv-com/analytics`,
             },
-            /^@deriv\/shared\/.+$/,
-            /^@deriv\/components\/.+$/,
-            /^@deriv\/translations\/.+$/,
+            /^@deriv-app\/shared\/.+$/,
+            /^@deriv-app\/components\/.+$/,
+            /^@deriv-app\/translations\/.+$/,
             /^@deriv\/analytics\/.+$/,
         ],
     };

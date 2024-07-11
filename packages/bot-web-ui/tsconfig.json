@@ -9,7 +9,7 @@
             "Constants/*": ["src/constants/*"],
             "Stores/*": ["src/stores/*"],
             "Utils/*": ["src/utils/*"],
-            "@deriv/*": ["../*/src"],
+            "@deriv-app/*": ["../*/src"],
             "Types": ["src/types"],
         }
     },

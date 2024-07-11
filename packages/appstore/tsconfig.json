@@ -16,7 +16,7 @@
             "Types": ["src/types"],
             "Utils": ["src/utils"],
             "Helpers": ["src/helpers"],
-            "@deriv/*": ["../*/src"]
+            "@deriv-app/*": ["../*/src"],
         }
     },
     "include": ["src", "../../utils.d.ts"]

@@ -69,6 +69,17 @@ module.exports = function (env) {
                     ],
                 },
                 {
+                    test: /\.m?ts$|\.tsx?$/,
+                    exclude: /node_modules/,
+                    //     // include: [path.resolve(__dirname, '../*/src/**/*'), path.resolve(__dirname, '**/*')],
+                    use: {
+                        loader: 'ts-loader',
+                        //         // options: {
+                        //         //     onlyCompileBundledFiles: true,
+                        //         // }
+                    },
+                },
+                {
                     test: /\.(sc|sa|c)ss$/,
                     use: [
                         'style-loader',

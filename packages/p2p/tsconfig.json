@@ -12,7 +12,7 @@
             "Translations/*": ["src/translations/*"],
             "Types": ["src/types"],
             "Utils/*": ["src/utils/*"],
-            "@deriv/*": ["../*/src"]
+            "@deriv-app/*": ["../*/src"],
         },
         "outDir": "./lib"
     },

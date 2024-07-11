@@ -3,7 +3,7 @@
     "compilerOptions": {
         "baseUrl": "./",
         "paths": {
-            "@deriv/*": ["../*/src"]
+            "@deriv-app/*": ["../*/src"],
         }
     },
     "include": ["src", "../../utils.d.ts"]

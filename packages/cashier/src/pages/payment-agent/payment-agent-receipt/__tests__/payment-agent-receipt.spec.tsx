@@ -6,6 +6,12 @@ import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
 jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => jest.fn(() => 'PaymentAgentDisclaimer'));
 
@@ -95,7 +101,7 @@ describe('<PaymentAgentReceipt />', () => {
     });
 
     it('should show PaymentAgentDisclaimer in mobile view', () => {
-        mockRootStore.ui.is_desktop = false;
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         renderPaymentAgentReceipt();
 
         expect(screen.getByText('PaymentAgentDisclaimer')).toBeInTheDocument();

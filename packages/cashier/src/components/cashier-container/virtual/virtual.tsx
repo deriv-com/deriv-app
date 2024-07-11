@@ -3,13 +3,16 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { useStore, observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import './virtual.scss';
 
 const Virtual = observer(() => {
     const {
-        ui: { is_dark_mode_on, is_desktop, toggleAccountsDialog },
+        ui: { is_dark_mode_on, toggleAccountsDialog },
     } = useStore();
+
+    const { isMobile } = useDevice();
 
     return (
         <div className='cashier__wrapper virtual' data-testid='dt_cashier_wrapper_id'>
@@ -30,7 +33,7 @@ const Virtual = observer(() => {
                 </Text>
                 <Text
                     as='p'
-                    size={is_desktop ? 'xs' : 'xxs'}
+                    size={!isMobile ? 'xs' : 'xxs'}
                     line_height='s'
                     align='center'
                     className='cashier__paragraph cashier__text'

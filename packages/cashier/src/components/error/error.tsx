@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Icon, ButtonLink, StaticUrl, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import ErrorStore from '../../stores/error-store';
 import './error.scss';
 
@@ -19,9 +19,7 @@ type TErrorFields = {
 };
 
 const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }: TErrorComponentProps) => {
-    const {
-        ui: { is_desktop },
-    } = useStore();
+    const { isMobile } = useDevice();
 
     return (
         <div className='cashier__wrapper cashier__wrapper-error'>
@@ -35,7 +33,7 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
                 <Text
                     as='p'
                     align='center'
-                    size={is_desktop ? 'xs' : 'xxs'}
+                    size={!isMobile ? 'xs' : 'xxs'}
                     line_height='s'
                     className='cashier__paragraph'
                 >

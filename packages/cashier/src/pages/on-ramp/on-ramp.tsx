@@ -4,6 +4,7 @@ import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import CashierLocked from '../../components/cashier-locked';
 import SideNote from '../../components/side-note';
 import OnRampProviderCard from './on-ramp-provider-card';
@@ -56,7 +57,7 @@ const OnRampInfo = () => (
 );
 
 const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
-    const { common, client, ui } = useStore();
+    const { common, client } = useStore();
     const { onramp, general_store } = useCashierStore();
     const {
         filtered_onramp_providers,
@@ -68,10 +69,10 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
         setIsOnRampModalOpen,
         should_show_dialog,
     } = onramp;
+    const { isDesktop } = useDevice();
     const { is_cashier_onboarding, is_loading, cashier_route_tab_index } = general_store;
     const is_cashier_locked = useCashierLocked();
     const { is_switching } = client;
-    const { is_desktop } = ui;
     const { routeTo } = common;
     const is_deposit_locked = useDepositLocked();
 
@@ -115,7 +116,7 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
     return (
         <React.Fragment>
             <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>
-                {!is_desktop && (
+                {!isDesktop && (
                     <React.Fragment>
                         <SelectNative
                             data_testid='dt_on_ramp_select_native'
@@ -135,8 +136,8 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
                     </React.Fragment>
                 )}
                 <Text
-                    color={is_desktop ? 'general' : 'less-prominent'}
-                    weight={is_desktop ? 'bold' : 'normal'}
+                    color={isDesktop ? 'general' : 'less-prominent'}
+                    weight={isDesktop ? 'bold' : 'normal'}
                     align='center'
                     line_height='m'
                     className='on-ramp__page-header'

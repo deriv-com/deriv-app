@@ -5,6 +5,7 @@ import { Button, Icon, Input, Text } from '@deriv/components';
 import { getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import ErrorDialog from 'Components/error-dialog';
 import SideNote from 'Components/side-note';
@@ -54,7 +55,7 @@ const validateWithdrawal = (values: TValidateWithdrawalValueProps, { balance, cu
 const PaymentAgentUnlistedWithdrawForm = observer(({ setIsUnlistedWithdraw }: TPaymentAgentUnlistedWithdrawForm) => {
     const { client, ui } = useStore();
     const { balance, currency } = client;
-    const { is_desktop } = ui;
+    const { isDesktop } = useDevice();
     const verification_code = client.verification_code.payment_agent_withdraw;
     const { payment_agent } = useCashierStore();
     const { error, onMountPaymentAgentWithdraw: onMount, requestTryPaymentAgentWithdraw } = payment_agent;
@@ -87,7 +88,7 @@ const PaymentAgentUnlistedWithdrawForm = observer(({ setIsUnlistedWithdraw }: TP
                     <Localize i18n_default_text='Back to list' />
                 </Text>
             </div>
-            {!is_desktop && (
+            {!isDesktop && (
                 <SideNote className='payment-agent-list__side-note' has_title={false}>
                     <PaymentAgentDisclaimer />
                 </SideNote>

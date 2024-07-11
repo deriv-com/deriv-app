@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import './side-note.scss';
 
 type TSideNoteTitle = {
@@ -44,13 +44,12 @@ const SideNoteBullet = ({ children, id }: TSideNoteBullet) => (
 
 /** @deprecated Use `SideNote` from `@deriv/components` package instead. */
 const SideNote = ({ children, className, has_bullets = true, has_title = true, side_notes, title }: TSideNoteProps) => {
-    const { ui } = useStore();
-    const { is_desktop } = ui;
+    const { isDesktop } = useDevice();
 
     return (
         <>
             {(children || side_notes?.length) && (
-                <div className={classNames('side-note-legacy', { 'side-note-legacy--mobile': !is_desktop }, className)}>
+                <div className={classNames('side-note-legacy', { 'side-note-legacy--mobile': !isDesktop }, className)}>
                     {has_title && (
                         <SideNoteTitle
                             title={title}

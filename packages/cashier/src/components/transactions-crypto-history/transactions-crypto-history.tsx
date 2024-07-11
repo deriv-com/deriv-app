@@ -3,6 +3,7 @@ import { DataList, Icon, Loading, Modal, Table, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import TransactionsCryptoCancelModal from './transactions-crypto-cancel-modal';
 import TransactionsCryptoStatusModal from './transactions-crypto-status-modal';
 import TransactionsCryptoRenderer from './transactions-crypto-renderer';
@@ -21,13 +22,13 @@ const getHeaders = () => [
 ];
 
 const TransactionsCryptoHistory = observer(() => {
-    const { client, ui } = useStore();
+    const { client } = useStore();
+    const { isDesktop } = useDevice();
     const { transaction_history, general_store } = useCashierStore();
     const { setIsTransactionsCryptoVisible } = transaction_history;
     const { data, isLoading } = useCryptoTransactions();
     const { setIsDeposit } = general_store;
     const { currency } = client;
-    const { is_desktop } = ui;
     const [is_modal_visible, setIsModalVisible] = React.useState(false);
 
     React.useEffect(() => {
@@ -50,7 +51,7 @@ const TransactionsCryptoHistory = observer(() => {
                         onClick={onClickBack}
                         data-testid='dt_transactions_crypto_history_back'
                     >
-                        <Icon icon={!is_desktop ? 'IcChevronLeftBold' : 'IcArrowLeftBold'} />
+                        <Icon icon={!isDesktop ? 'IcChevronLeftBold' : 'IcArrowLeftBold'} />
                         <Text as='p' size='xs' weight='bold'>
                             <Localize i18n_default_text={'{{currency}} recent transactions'} values={{ currency }} />
                         </Text>
@@ -60,7 +61,7 @@ const TransactionsCryptoHistory = observer(() => {
                     <Loading is_fullscreen={false} />
                 ) : (
                     <React.Fragment>
-                        {!is_desktop && (
+                        {!isDesktop && (
                             <>
                                 <TransactionsCryptoCancelModal />
                                 <TransactionsCryptoStatusModal />
@@ -68,7 +69,7 @@ const TransactionsCryptoHistory = observer(() => {
                         )}
                         {(data?.length || 0) > 0 ? (
                             <Table className='transactions-crypto-history__table'>
-                                {is_desktop && (
+                                {isDesktop && (
                                     <Table.Header className='transactions-crypto-history__table-header'>
                                         <Table.Row className='transactions-crypto-history__table-row'>
                                             {getHeaders().map(header => (
@@ -88,7 +89,7 @@ const TransactionsCryptoHistory = observer(() => {
                                             />
                                         )}
                                         keyMapper={row => row.id}
-                                        row_gap={!is_desktop ? 0 : 8}
+                                        row_gap={!isDesktop ? 0 : 8}
                                     />
                                 </Table.Body>
                             </Table>

@@ -5,7 +5,7 @@ import { Localize } from '@deriv/translations';
 
 const WalletsBannerUpgrading = observer(() => {
     const { ui } = useStore();
-    const { is_desktop } = ui;
+    const { is_desktop, is_mobile } = ui;
 
     return (
         <div className='wallets-banner wallets-banner-upgrading'>
@@ -39,11 +39,11 @@ const WalletsBannerUpgrading = observer(() => {
                 />
             </div>
             <Icon
-                icon={`IcAppstoreWalletsUpgradeCoins${is_desktop ? 'Horizontal' : ''}`}
+                icon={`IcAppstoreWalletsUpgradeCoins${is_mobile ? '' : 'Horizontal'}`}
                 width={is_desktop ? 448 : 220}
-                height={is_desktop ? '100%' : 220}
+                height={is_mobile ? 220 : '100%'}
                 className='wallets-banner-upgrading__image'
-                data_testid={`dt_wallets_upgrade_coins${is_desktop ? '_horizontal' : ''}`}
+                data_testid={`dt_wallets_upgrade_coins${is_mobile ? '' : '_horizontal'}`}
             />
         </div>
     );

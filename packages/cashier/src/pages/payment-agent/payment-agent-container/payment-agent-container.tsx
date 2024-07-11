@@ -2,6 +2,7 @@ import React from 'react';
 import { DesktopWrapper, Dropdown, Icon, Loading, MobileWrapper, SelectNative, Text } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import SideNote from 'Components/side-note';
 import MissingPaymentMethodNote from '../missing-payment-method-note';
 import PaymentAgentCard from '../payment-agent-card';
@@ -33,7 +34,8 @@ const PaymentAgentSearchWarning = () => {
 
 const PaymentAgentContainer = observer(({ is_deposit }: TPaymentAgentContainer) => {
     const { ui } = useStore();
-    const { app_contents_scroll_ref, is_dark_mode_on, is_desktop } = ui;
+    const { isDesktop } = useDevice();
+    const { app_contents_scroll_ref, is_dark_mode_on } = ui;
     const { payment_agent: payment_agent_store } = useCashierStore();
     const {
         has_payment_agent_search_warning,
@@ -78,7 +80,7 @@ const PaymentAgentContainer = observer(({ is_deposit }: TPaymentAgentContainer) 
 
     return (
         <React.Fragment>
-            {!is_desktop && (
+            {!isDesktop && (
                 <React.Fragment>
                     {!has_payment_agent_search_warning && (
                         <SideNote className='payment-agent-list__side-note' has_title={false}>

@@ -141,7 +141,11 @@
     inset-inline-end: 8rem;
     inset-block-start: 0rem;
 
-    @include mobile-or-tablet-screen {
+    @include tablet-screen {
+        inset-inline-end: 0rem;
+    }
+
+    @include mobile {
         inset-inline-end: -4.5rem;
         inset-block-start: -3rem;
     }

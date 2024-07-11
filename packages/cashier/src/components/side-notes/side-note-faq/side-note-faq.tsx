@@ -10,7 +10,7 @@ type TSideNoteFAQProps = {
 
 const SideNoteFAQ = ({ transaction_type }: TSideNoteFAQProps) => {
     const { client, ui } = useStore();
-    const { is_desktop } = ui;
+    const { is_mobile } = ui;
     const { is_eu } = client;
 
     const onClickHandler = () => window.LC_API?.open_chat_window?.();
@@ -130,7 +130,7 @@ const SideNoteFAQ = ({ transaction_type }: TSideNoteFAQProps) => {
     return (
         <SideNote
             description={
-                <Text size={is_desktop ? 'xs' : 'xxs'} weight='bold'>
+                <Text size={!is_mobile ? 'xs' : 'xxs'} weight='bold'>
                     <Localize i18n_default_text='FAQ' />
                 </Text>
             }

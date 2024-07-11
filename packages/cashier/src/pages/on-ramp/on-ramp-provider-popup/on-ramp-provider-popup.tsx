@@ -4,11 +4,13 @@ import { Button, HintBox, Icon, Loading, Popover, Text, useCopyToClipboard } fro
 import { getKebabCase, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { useCashierStore } from '../../../stores/useCashierStores';
 
 const OnRampProviderPopup = observer(() => {
     const { ui } = useStore();
-    const { is_dark_mode_on, is_desktop } = ui;
+    const { is_dark_mode_on } = ui;
+    const { isDesktop, isMobile } = useDevice();
     const { onramp } = useCashierStore();
     const {
         api_error,
@@ -56,7 +58,7 @@ const OnRampProviderPopup = observer(() => {
     }
 
     if (is_deposit_address_loading || (should_show_widget && is_requesting_widget_html)) {
-        return <Loading is_fullscreen={is_desktop} />;
+        return <Loading is_fullscreen={isDesktop} />;
     }
 
     if (should_show_widget) {
@@ -100,10 +102,10 @@ const OnRampProviderPopup = observer(() => {
                 <React.Fragment>
                     <div className='on-ramp__popup-deposit'>
                         <Text
-                            size={is_desktop ? 'xs' : 'xxs'}
+                            size={!isMobile ? 'xs' : 'xxs'}
                             color='general'
-                            line_height={is_desktop ? 'l' : 'm'}
-                            align={is_desktop ? 'center' : 'left'}
+                            line_height={!isMobile ? 'l' : 'm'}
+                            align={isDesktop ? 'center' : 'left'}
                         >
                             <Localize i18n_default_text="Please copy the crypto address you see below. You'll need it to deposit your cryptocurrency." />
                         </Text>
@@ -120,7 +122,7 @@ const OnRampProviderPopup = observer(() => {
                                 <Icon
                                     className='on-ramp__popup-deposit-address-icon'
                                     data_testid='dti_deposit_address_icon'
-                                    icon={is_desktop ? 'icClipboard' : 'IcCopy'}
+                                    icon={isDesktop ? 'icClipboard' : 'IcCopy'}
                                     size={16}
                                     onClick={onClickCopyDepositAddress}
                                 />
@@ -150,7 +152,7 @@ const OnRampProviderPopup = observer(() => {
                     <Localize i18n_default_text='Disclaimer' />
                 </Text>
                 <Text
-                    size={is_desktop ? 'xs' : 'xxs'}
+                    size={!isMobile ? 'xs' : 'xxs'}
                     line_height='l'
                     color='general'
                     as='p'

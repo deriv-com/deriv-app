@@ -8,6 +8,11 @@ import { P2PSettingsProvider, mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 import { routes } from '@deriv/shared';
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
+
 jest.mock('@deriv/hooks', () => {
     return {
         ...jest.requireActual('@deriv/hooks'),
@@ -60,7 +65,6 @@ describe('<Cashier />', () => {
             },
             ui: {
                 is_cashier_visible: true,
-                is_desktop: true,
                 toggleCashier: jest.fn(),
             },
             client: {

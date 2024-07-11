@@ -5,6 +5,11 @@ import CashierProviders from '../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
 import { useSubscription } from '@deriv/api';
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
+
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useSubscription: jest.fn(),
@@ -29,9 +34,6 @@ describe('<TransactionsCryptoHistory />', () => {
             },
             client: {
                 currency: 'BTC',
-            },
-            ui: {
-                is_desktop: true,
             },
         });
     });

@@ -6,6 +6,12 @@ import OnRamp from '../on-ramp';
 import { mockStore } from '@deriv/stores';
 import type { TOnRampProps } from '../on-ramp';
 import CashierProviders from '../../../cashier-providers';
+import { useDevice } from '@deriv-com/ui';
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -253,6 +259,7 @@ describe('<OnRamp />', () => {
     });
 
     it('should show "What is Fiat onramp?" message and render <ReadMore /> component in Mobile mode', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         const mock = mockStore({
             client: {
                 account_status: { status: [] },
@@ -262,9 +269,6 @@ describe('<OnRamp />', () => {
                         sub_account_type: 'financial_stp',
                     },
                 ],
-            },
-            ui: {
-                is_desktop: false,
             },
             modules: { cashier: cashier_mock },
         });
@@ -275,6 +279,7 @@ describe('<OnRamp />', () => {
     });
 
     it('should have proper menu options in Mobile mode', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         const mock = mockStore({
             client: {
                 account_status: { status: [] },
@@ -284,9 +289,6 @@ describe('<OnRamp />', () => {
                         sub_account_type: 'financial_stp',
                     },
                 ],
-            },
-            ui: {
-                is_desktop: false,
             },
             modules: { cashier: cashier_mock },
         });
@@ -300,6 +302,7 @@ describe('<OnRamp />', () => {
     });
 
     it('should trigger "routeTo" callback when the user chooses a different from "Fiat onramp" option in Mobile mode', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         props.menu_options = [
             {
                 label: 'Deposit',
@@ -323,9 +326,6 @@ describe('<OnRamp />', () => {
                         sub_account_type: 'financial_stp',
                     },
                 ],
-            },
-            ui: {
-                is_desktop: false,
             },
             modules: { cashier: cashier_mock },
         });

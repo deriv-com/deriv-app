@@ -5,6 +5,12 @@ import PaymentAgentUnlistedWithdrawForm from '../payment-agent-unlisted-withdraw
 import { validNumber } from '@deriv/shared';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -133,7 +139,7 @@ describe('<PaymentAgentUnlistedWithdrawForm />', () => {
     });
 
     it('should show PaymentAgentDisclaimer in mobile view', () => {
-        mockRootStore.ui.is_desktop = false;
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         render(mockPaymentAgentUnlistedWithdrawForm());
 
         expect(screen.getByText('PaymentAgentDisclaimer')).toBeInTheDocument();

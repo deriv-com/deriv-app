@@ -8,6 +8,11 @@ import AccountTransferForm from '../account-transfer-form';
 import userEvent from '@testing-library/user-event';
 import { useMFAccountStatus } from '@deriv/hooks';
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
+
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useMFAccountStatus: jest.fn(),
@@ -48,7 +53,6 @@ describe('<AccountTransferForm />', () => {
             },
             ui: {
                 is_dark_mode_on: false,
-                is_desktop: true,
             },
             modules: {
                 cashier: {

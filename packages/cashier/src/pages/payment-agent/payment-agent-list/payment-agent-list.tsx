@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Tabs } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import SideNote from '../../../components/side-note';
 import DepositTab from './deposit-tab';
 import WithdrawalTab from './withdrawal-tab';
@@ -20,8 +21,8 @@ const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
 
     const {
         common: { current_language },
-        ui: { is_desktop },
     } = useStore();
+    const { isDesktop } = useDevice();
 
     React.useEffect(() => {
         if (!general_store.is_loading && !payment_agent.is_try_withdraw_successful) {
@@ -55,7 +56,7 @@ const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
                     className='tabs--desktop'
                     onTabItemClick={payment_agent.setActiveTab}
                     top
-                    header_fit_content={is_desktop}
+                    header_fit_content={isDesktop}
                     center={false}
                     bottom={false}
                     active_icon_color={''}

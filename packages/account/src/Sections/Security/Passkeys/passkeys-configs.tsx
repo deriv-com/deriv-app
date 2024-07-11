@@ -1,4 +1,4 @@
-import { MutableRefObject } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import { TSocketError } from '@deriv/api/types';
 import { getOSNameWithUAParser } from '@deriv/shared';
@@ -33,7 +33,7 @@ export const getPasskeyRenameValidationSchema = () =>
             .matches(/^[A-Za-z0-9][A-Za-z0-9\s-]*$/, localize('Only letters, numbers, space, and hyphen are allowed.')),
     });
 
-export const clearTimeOut = (timeout_ref: MutableRefObject<NodeJS.Timeout | null>) => {
+export const clearTimeOut = (timeout_ref: React.MutableRefObject<NodeJS.Timeout | null>) => {
     if (timeout_ref.current) clearTimeout(timeout_ref.current);
 };
 

@@ -408,6 +408,7 @@ export default class ClientStore extends BaseStore {
             startWalletMigration: action.bound,
             resetWalletMigration: action.bound,
             setIsPasskeySupported: action.bound,
+            setPasskeysStatusToCookie: action.bound,
             setShouldShowEffortlessLoginModal: action.bound,
             fetchShouldShowEffortlessLoginModal: action.bound,
             getExchangeRate: action.bound,

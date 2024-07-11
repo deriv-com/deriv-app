@@ -39,7 +39,7 @@
         "@deriv/hooks": "^1.0.0",
         "@deriv/integration": "1.0.0",
         "@deriv/quill-icons": "^1.22.12",
-        "@deriv-com/quill-ui": "1.13.10",
+        "@deriv-com/quill-ui": "1.13.12",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",

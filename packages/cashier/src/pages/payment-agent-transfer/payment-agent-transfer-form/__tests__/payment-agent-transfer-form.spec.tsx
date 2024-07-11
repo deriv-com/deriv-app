@@ -8,7 +8,6 @@ import { expect } from '@jest/globals';
 jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
-    validNumber: jest.fn(() => true),
 }));
 
 describe('<PaymentAgentTransferForm />', () => {

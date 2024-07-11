@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { Tabs } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDesktop } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import SideNote from '../../../components/side-note';
 import DepositTab from './deposit-tab';
@@ -21,6 +20,7 @@ const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
 
     const {
         common: { current_language },
+        ui: { is_desktop },
     } = useStore();
 
     React.useEffect(() => {
@@ -55,7 +55,7 @@ const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
                     className='tabs--desktop'
                     onTabItemClick={payment_agent.setActiveTab}
                     top
-                    header_fit_content={isDesktop()}
+                    header_fit_content={is_desktop}
                     center={false}
                     bottom={false}
                     active_icon_color={''}

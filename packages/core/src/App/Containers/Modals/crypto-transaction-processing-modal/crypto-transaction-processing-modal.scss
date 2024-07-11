@@ -24,30 +24,30 @@
 
     &__circle {
         position: relative;
-        width: 64px;
-        height: 64px;
+        width: 6.4rem;
+        height: 6.4rem;
         background: $color-yellow;
-        border-radius: 32px;
+        border-radius: 3.2rem;
     }
 
     &__dot {
         position: absolute;
-        width: 10px;
-        height: 10px;
+        width: 1rem;
+        height: 1rem;
         background: var(--general-main-1);
-        border-radius: 5px;
-        top: 27px;
+        border-radius: 0.5rem;
+        top: 2.7rem;
 
         &-0 {
-            left: 12px;
+            left: 1.2rem;
         }
 
         &-1 {
-            left: 27px;
+            left: 2.7rem;
         }
 
         &-2 {
-            left: 42px;
+            left: 4.2rem;
         }
     }
 }

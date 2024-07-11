@@ -53,12 +53,9 @@ module.exports = function (env) {
                     },
                 },
                 {
-                    test: /\.(js|jsx|ts|tsx)$/,
+                    test: /\.(js)$/,
                     exclude: /node_modules/,
                     use: [
-                        {
-                            loader: '@deriv-app/shared/src/loaders/react-import-loader.js',
-                        },
                         {
                             loader: 'babel-loader',
                             options: {
@@ -69,15 +66,16 @@ module.exports = function (env) {
                     ],
                 },
                 {
-                    test: /\.m?ts$|\.tsx?$/,
-                    exclude: /node_modules/,
-                    //     // include: [path.resolve(__dirname, '../*/src/**/*'), path.resolve(__dirname, '**/*')],
-                    use: {
-                        loader: 'ts-loader',
-                        //         // options: {
-                        //         //     onlyCompileBundledFiles: true,
-                        //         // }
-                    },
+                    test: /\.(ts|tsx|jsx)$/,
+                    use: [
+                        {
+                            loader: 'babel-loader',
+                            options: {
+                                cacheDirectory: true,
+                                rootMode: 'upward',
+                            },
+                        },
+                    ],
                 },
                 {
                     test: /\.(sc|sa|c)ss$/,
@@ -106,7 +104,7 @@ module.exports = function (env) {
                             options: {
                                 // Provide path to the file with resources
                                 // eslint-disable-next-line global-require, import/no-dynamic-require
-                                resources: require('@deriv-app/shared/src/styles/index.js'),
+                                resources: require('@deriv-lib/shared/src/styles/index.js'),
                             },
                         },
                     ],

@@ -1,35 +1,26 @@
-import React, { ReactNode, useMemo } from 'react';
+import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { useResidenceList, useSettings } from '@deriv/api-v2';
-import {
-    FormField,
-    InlineMessage,
-    Loader,
-    ModalStepWrapper,
-    WalletButton,
-    WalletDropdown,
-    WalletText,
-} from '../../../../components';
-import { accountOpeningReasonList } from './constants';
+import { FormField, Loader, ModalStepWrapper, WalletButton, WalletDropdown, WalletText } from '../../../../components';
+import { NeedHelpMessage } from './components';
+import { useTaxInformation } from './hooks';
+import { accountOpeningReasonList } from './utils';
 import './TaxInformation.scss';
 
-const TaxInformation = () => {
-    const { data: residenceList, isLoading, isSuccess: isResidenceListSuccess } = useResidenceList();
-    const { data: settings, update } = useSettings();
+type TTaxInformationProps = {
+    onCompletion?: () => void;
+};
 
-    const countryCodeToPatternMapper = useMemo(() => {
-        const countryCodeToPatternMapping: Record<string, string> = {};
-
-        if (isResidenceListSuccess) {
-            residenceList.forEach(residence => {
-                if (residence.value && !(residence.value in countryCodeToPatternMapping)) {
-                    countryCodeToPatternMapping[residence.value] = residence?.tin_format?.[0] ?? '';
-                }
-            });
-        }
-        return countryCodeToPatternMapping;
-    }, [isResidenceListSuccess, residenceList]);
+const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
+    const {
+        countryCodeToPatternMapper,
+        countryList,
+        getTaxResidence,
+        initialValues,
+        isLoading,
+        isSubmitted: isTaxInformationSubmitted,
+        onSubmit,
+    } = useTaxInformation();
 
     const getTinValidator = (pattern: string) => {
         if (pattern) {
@@ -49,48 +40,18 @@ const TaxInformation = () => {
         );
     };
 
-    const initialValues = useMemo(
-        () => ({
-            accountOpeningReason: settings.account_opening_reason,
-            citizenship: settings.citizen,
-            placeOfBirth: settings.place_of_birth,
-            taxIdentificationNumber: settings.tax_identification_number ?? '',
-            taxResidence: settings.tax_residence,
-        }),
-        [
-            settings.account_opening_reason,
-            settings.citizen,
-            settings.place_of_birth,
-            settings.tax_identification_number,
-            settings.tax_residence,
-        ]
-    );
+    if (isTaxInformationSubmitted && onCompletion) {
+        onCompletion();
+    }
 
     return (
-        <Formik
-            initialValues={initialValues}
-            onSubmit={values => {
-                if (
-                    values &&
-                    values.placeOfBirth &&
-                    values.taxResidence &&
-                    values.accountOpeningReason &&
-                    values.taxIdentificationNumber
-                )
-                    update({
-                        // @ts-expect-error broken api types for residenceList call
-                        account_opening_reason: values.accountOpeningReason,
-                        citizen: values.citizenship,
-                        place_of_birth: values.placeOfBirth,
-                        tax_identification_number: values.taxIdentificationNumber,
-                        tax_residence: values.taxResidence,
-                    });
-            }}
-        >
-            {({ handleSubmit, isValid, setFieldValue, values }) => {
+        <Formik initialValues={initialValues} onSubmit={onSubmit}>
+            {({ errors, handleSubmit, setFieldValue, values }) => {
+                const isValid = !!Object.keys(errors).length;
+
                 return (
                     <ModalStepWrapper
-                        renderFooter={() => <Footer disabled={!isValid} onSubmit={handleSubmit} />}
+                        renderFooter={() => <Footer disabled={isValid} onSubmit={handleSubmit} />}
                         title='Add a real MT5 account'
                     >
                         <div className='wallets-tax-information'>
@@ -106,62 +67,36 @@ const TaxInformation = () => {
                                             verification purposes only.
                                         </WalletText>
                                     </div>
-                                    <div className='wallets-tax-information__inline'>
-                                        <InlineMessage type='information' variant='contained'>
-                                            <WalletText size='xs'>
-                                                Need help with tax info? Let us know via{' '}
-                                                <button
-                                                    className='wallets-link wallets-link__variant--bold'
-                                                    onClick={() => window.LC_API.open_chat_window()}
-                                                >
-                                                    live chat
-                                                </button>
-                                                .
-                                            </WalletText>
-                                        </InlineMessage>
-                                    </div>
+                                    <NeedHelpMessage />
                                     <div className='wallets-tax-information__form'>
                                         <WalletDropdown
                                             label='Citizenship*'
-                                            list={residenceList.map(residence => ({
-                                                text: residence.text as ReactNode,
-                                                value: residence.value ?? '',
-                                            }))}
+                                            list={countryList}
                                             listHeight='sm'
                                             name='citizenship'
                                             onSelect={selectedItem => setFieldValue('citizenship', selectedItem)}
-                                            value={settings?.citizen ?? values?.citizenship}
+                                            value={values?.citizenship ?? initialValues?.citizenship}
                                             variant='comboBox'
                                         />
                                         <WalletDropdown
-                                            disabled={settings?.place_of_birth !== ''}
+                                            disabled={initialValues?.placeOfBirth !== ''}
                                             label='Place of birth*'
-                                            list={residenceList.map(residence => ({
-                                                text: residence.text as ReactNode,
-                                                value: residence.value ?? '',
-                                            }))}
+                                            list={countryList}
                                             listHeight='sm'
                                             name='placeOfBirth'
                                             onSelect={selectedItem => setFieldValue('placeOfBirth', selectedItem)}
-                                            value={settings?.place_of_birth ?? ''}
+                                            value={initialValues?.placeOfBirth ?? ''}
                                             variant='comboBox'
                                         />
                                         <WalletDropdown
-                                            errorMessage={'Tax residence is required'}
+                                            errorMessage={values.taxResidence ?? 'Tax residence is required'}
                                             isRequired
                                             label='Tax residence*'
-                                            list={residenceList.map(residence => ({
-                                                text: residence.text as ReactNode,
-                                                value: residence.value ?? '',
-                                            }))}
+                                            list={countryList}
                                             listHeight='sm'
                                             name='taxResidence'
-                                            onChange={inputValue => {
-                                                residenceList.forEach(residence => {
-                                                    if (residence.text?.toLowerCase() === inputValue.toLowerCase()) {
-                                                        setFieldValue('taxResidence', residence.value);
-                                                    }
-                                                });
+                                            onChange={value => {
+                                                setFieldValue('taxResidence', getTaxResidence(value));
                                             }}
                                             onSelect={selectedItem => {
                                                 setFieldValue('taxResidence', selectedItem);

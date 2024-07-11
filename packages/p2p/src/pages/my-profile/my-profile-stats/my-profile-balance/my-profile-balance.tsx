@@ -3,6 +3,7 @@ import { Icon, Money, Text } from '@deriv-app/components';
 import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { getIconSize, getTextSize } from 'Utils/responsive';
 
@@ -26,6 +27,7 @@ const MyProfileBalance = () => {
                         data_testid='dt_my_profile_balance_icon'
                         icon='IcInfoOutline'
                         onClick={() =>
+                            // @ts-ignore
                             showModal({
                                 key: 'MyProfileBalanceModal',
                             })

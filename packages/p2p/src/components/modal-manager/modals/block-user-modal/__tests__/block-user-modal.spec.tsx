@@ -1,5 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
+// @ts-ignore
 import { useStores } from 'Stores';
 import BlockUserModal from '../block-user-modal';
 

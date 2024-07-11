@@ -3,6 +3,7 @@ import { Button, Modal, Text, ThemedScrollbars } from '@deriv-app/components';
 import { useP2PSettings } from '@deriv-app/hooks';
 import { observer, useStore } from '@deriv-app/stores';
 import { localize, Localize } from 'Components/i18next';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { api_error_codes } from 'Constants/api-error-codes';

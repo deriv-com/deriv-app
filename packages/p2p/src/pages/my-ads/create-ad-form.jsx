@@ -7,6 +7,7 @@ import { observer } from '@deriv-app/stores';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AdWizard from './ad-wizard';

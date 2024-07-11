@@ -6,6 +6,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { millisecondsToTimer } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { getDistanceToServerTime } from 'Utils/server_time';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { DesktopWrapper, Icon, MobileWrapper, Table, Text } from '@deriv-app/components';
 import { formatMoney, routes } from '@deriv-app/shared';

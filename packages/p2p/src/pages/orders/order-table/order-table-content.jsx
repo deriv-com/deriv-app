@@ -10,6 +10,7 @@ import TableError from 'Components/section-error';
 import P2pEmpty from 'Components/p2p-empty';
 import OrderRow from 'Pages/orders/order-table/order-table-row.jsx';
 import OrderTableHeader from 'Pages/orders/order-table/order-table-header.jsx';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { createExtendedOrderDetails } from 'Utils/orders';
 

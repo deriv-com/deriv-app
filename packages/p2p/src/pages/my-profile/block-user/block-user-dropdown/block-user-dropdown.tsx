@@ -3,6 +3,7 @@ import { DesktopWrapper, Dropdown, Icon, MobileWrapper } from '@deriv-app/compon
 import { observer } from '@deriv-app/stores';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+// @ts-ignore
 import { useStores } from 'Stores';
 
 const BlockUserDropdown = () => {
@@ -26,6 +27,7 @@ const BlockUserDropdown = () => {
                 <div
                     className='block-user-dropdown'
                     onClick={() => {
+                        // @ts-ignore
                         showModal({ key: 'BlockUserFilterModal' });
                     }}
                 >

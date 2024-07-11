@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { fireEvent, render, screen } from '@testing-library/react';
 import OrderDetailsFooter from '../order-details-footer.jsx';

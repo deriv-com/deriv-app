@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Button, Icon, MobileWrapper, Modal, Popover, Text } from '@deriv-app/components';
 import { localize } from 'Components/i18next';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { isDesktop } from '@deriv-app/shared';
 import './block-user-count.scss';

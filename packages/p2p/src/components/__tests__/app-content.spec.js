@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { mockStore, StoreProvider } from '@deriv-app/stores';
 import AppContent from '../app-content.jsx';

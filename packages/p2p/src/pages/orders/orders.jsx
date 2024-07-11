@@ -4,6 +4,7 @@ import { reaction } from 'mobx';
 import { observer } from '@deriv-app/stores';
 import OrderDetails from 'Components/order-details/order-details.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+// @ts-ignore
 import { useStores } from 'Stores';
 import OrderTable from './order-table/order-table.jsx';
 

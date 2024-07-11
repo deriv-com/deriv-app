@@ -7,6 +7,7 @@ import { useP2PExchangeRate, useP2PSettings } from '@deriv-app/hooks';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
 import { ad_type } from 'Constants/floating-rate';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { removeTrailingZeros, roundOffDecimal, percentOf } from 'Utils/format-value';
 import './edit-ad-summary.scss';

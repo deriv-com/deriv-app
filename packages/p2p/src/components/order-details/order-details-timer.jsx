@@ -5,6 +5,7 @@ import { Text } from '@deriv-app/components';
 import { localize } from 'Components/i18next';
 import { millisecondsToTimer } from 'Utils/date-time';
 import { getDistanceToServerTime } from 'Utils/server_time';
+// @ts-ignore
 import { useStores } from 'Stores';
 import './order-details-timer.scss';
 

@@ -45,6 +45,7 @@ const FormWithConfirmation = ({
                                 </Text>
                                 <div className='orders__popup-field'>
                                     <Field name='need_confirmation'>
+                                        {/*// @ts-ignore*/}
                                         {({ field }) => (
                                             <Checkbox
                                                 {...field}

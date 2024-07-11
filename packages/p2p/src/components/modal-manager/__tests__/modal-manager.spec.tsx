@@ -66,6 +66,7 @@ describe('<ModalManager />', () => {
 
     it('should render the latest shown modal', () => {
         mock_modal_manager_state.modal_props.set('BuySellModal', {
+            // @ts-ignore
             title: 'Cached Title',
         });
         mock_modal_manager_state.modal = {
@@ -86,6 +87,7 @@ describe('<ModalManager />', () => {
         mock_modal_manager_state.modal = {
             key: 'BuySellModal',
             props: {
+                // @ts-ignore
                 title: 'Title',
             },
         };
@@ -101,6 +103,7 @@ describe('<ModalManager />', () => {
 
     it('should pass modal props to the MockModal when there are cached and registered props', () => {
         mock_modal_manager_state.modal_props.set('BuySellModal', {
+            // @ts-ignore
             title: 'Cached Title',
         });
         render(
@@ -115,11 +118,13 @@ describe('<ModalManager />', () => {
 
     it('should use registered props and passed-in props to the MockModal', () => {
         mock_modal_manager_state.modal_props.set('BuySellModal', {
+            // @ts-ignore
             title: 'Cached Title',
         });
         mock_modal_manager_state.modal = {
             key: 'BuySellModal',
             props: {
+                // @ts-ignore
                 subtitle: 'Subtitle',
             },
         };

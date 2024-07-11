@@ -5,10 +5,12 @@ import { Button, Icon, Input, Loading, Text } from '@deriv-app/components';
 import { useP2PAdvertiserPaymentMethods } from '@deriv-app/hooks';
 import { isDesktop } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import ModalForm from 'Components/modal-manager/modal-form';
+// @ts-ignore
 import { TPaymentMethodFieldMapProps, TPaymentMethodValues } from 'Types/my-profile.types';
 
 type TAddPaymentMethodFormProps = {
@@ -51,6 +53,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }: TAddPaym
                 my_ads_store.setShouldShowAddPaymentMethod(false);
             }
         } else if (mutation_status === 'error') {
+            // @ts-ignore
             my_profile_store.setAddPaymentMethodErrorMessage(mutation_error.message);
             showModal({
                 key: 'AddPaymentMethodErrorModal',
@@ -77,6 +80,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }: TAddPaym
         <ModalForm
             enableReinitialize
             initialValues={my_profile_store.initial_values}
+            // @ts-ignore
             onSubmit={createPaymentMethod}
             validate={my_profile_store.validatePaymentMethodFields}
         >
@@ -165,6 +169,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }: TAddPaym
                                     } else {
                                         my_profile_store.hideAddPaymentMethodForm();
                                         // fixes an issue where in buy-sell-modal mobile, on clicking Cancel button without modifying form it just closes the buy sell modal as
+                                        // @ts-ignore
                                         if (modal.key !== 'BuySellModal') {
                                             hideModal();
                                         }

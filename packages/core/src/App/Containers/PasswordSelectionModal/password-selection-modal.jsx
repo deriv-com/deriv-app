@@ -50,6 +50,7 @@ const PasswordSelectionModal = observer(
                     <Localize i18n_default_text='Keep your account secure with a password' />
                 </Text>
                 <Field name='password'>
+                    {/*// @ts-ignore*/}
                     {({ field }) => (
                         <PasswordMeter
                             input={pw_input}

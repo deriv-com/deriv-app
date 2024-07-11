@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { APIProvider } from '@deriv-app/api';
 import { P2PSettingsProvider, StoreProvider, mockStore } from '@deriv-app/stores';
 import AdErrorTooltipModal from '../ad-error-tooltip-modal';
+import { number } from 'prop-types';
 
 const mock_modal_manager = {
     hideModal: jest.fn(),
@@ -31,7 +32,13 @@ jest.mock('@deriv-app/hooks', () => ({
     }),
 }));
 
-const mock_props = {
+type TProps =  {
+    visibility_status: string[],
+    account_currency: string,
+    remaining_amount: number,
+    advert_type: string,
+}
+const mock_props: TProps = {
     visibility_status: [],
     account_currency: 'USD',
     remaining_amount: 100,

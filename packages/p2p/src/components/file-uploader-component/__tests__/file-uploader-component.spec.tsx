@@ -32,6 +32,7 @@ describe('<FileUploaderComponent />', () => {
     };
 
     it('should render FileUploaderComponent component in desktop mode', async () => {
+        // @ts-ignore
         render(<FileUploaderComponent {...props} />, { wrapper });
         expect(screen.getByText('upload here')).toBeInTheDocument();
     });
@@ -39,6 +40,7 @@ describe('<FileUploaderComponent />', () => {
     it('should upload supported file', async () => {
         props.value = [file];
 
+        // @ts-ignore
         render(<FileUploaderComponent {...props} />, { wrapper });
 
         const input = screen.getByTestId('dt_file_upload_input') as HTMLInputElement;
@@ -57,6 +59,7 @@ describe('<FileUploaderComponent />', () => {
     it('should show validation_error_message when unsupported file is uploaded', async () => {
         props.validation_error_message = 'error';
 
+        // @ts-ignore
         render(<FileUploaderComponent {...props} />, { wrapper });
 
         const unsupported_file = new File(['hello'], 'hello.html', { type: 'html' });
@@ -69,8 +72,10 @@ describe('<FileUploaderComponent />', () => {
     });
 
     it('should render validation error message if validation_error_message is passed as a function', () => {
+        // @ts-ignore
         props.validation_error_message = () => 'error';
 
+        // @ts-ignore
         render(<FileUploaderComponent {...props} />, { wrapper });
 
         expect(screen.getByText('error')).toBeInTheDocument();
@@ -82,6 +87,7 @@ describe('<FileUploaderComponent />', () => {
         props.value = [file, file_bye];
         props.validation_error_message = '';
 
+        // @ts-ignore
         render(<FileUploaderComponent {...props} />, { wrapper });
 
         const input = screen.getByTestId('dt_file_upload_input') as HTMLInputElement;

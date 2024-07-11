@@ -8,6 +8,7 @@ import { Localize } from 'Components/i18next';
 import TableError from 'Components/section-error';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { useP2PRenderedAdverts } from 'Hooks';
+// @ts-ignore
 import { useStores } from 'Stores';
 import BuySellRow from './buy-sell-row.jsx';
 import NoAds from 'Pages/buy-sell//no-ads';

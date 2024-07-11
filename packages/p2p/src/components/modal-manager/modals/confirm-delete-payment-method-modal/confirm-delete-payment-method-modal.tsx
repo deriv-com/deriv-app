@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Modal, Text } from '@deriv-app/components';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+// @ts-ignore
 import { useStores } from 'Stores';
 
 const ConfirmDeletePaymentMethodModal = () => {

@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { getDistanceToServerTime } from 'Utils/server_time';
 import { render, screen } from '@testing-library/react';

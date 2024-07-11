@@ -5,6 +5,7 @@ import { observer } from '@deriv-app/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AddPaymentMethod from 'Components/add-payment-method';
+// @ts-ignore
 import { useStores } from 'Stores';
 
 const CreateAdAddPaymentMethodModal = () => {

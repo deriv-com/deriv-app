@@ -2,6 +2,7 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+// @ts-ignore
 import { useStores } from 'Stores';
 import AdCancelModal from '../ad-cancel-modal';
 

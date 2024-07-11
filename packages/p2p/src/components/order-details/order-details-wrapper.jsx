@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Icon, MobileFullPageModal, ThemedScrollbars } from '@deriv-app/components';
 import { isMobile, routes } from '@deriv-app/shared';
 import PageReturn from 'Components/page-return';
+// @ts-ignore
 import { useStores } from 'Stores';
 import OrderDetailsFooter from 'Components/order-details/order-details-footer.jsx';
 

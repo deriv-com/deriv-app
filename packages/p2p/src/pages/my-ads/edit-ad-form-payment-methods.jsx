@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useP2PAdvertiserPaymentMethods } from '@deriv-app/hooks';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

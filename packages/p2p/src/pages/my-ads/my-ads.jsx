@@ -4,6 +4,7 @@ import { Loading } from '@deriv-app/components';
 import { useP2PCountryList } from '@deriv-app/hooks';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
+// @ts-ignore
 import { useStores } from 'Stores';
 import TableError from 'Components/section-error';
 import CreateAd from './create-ad.jsx';

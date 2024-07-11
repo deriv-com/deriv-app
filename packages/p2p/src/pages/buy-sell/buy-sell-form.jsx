@@ -10,6 +10,7 @@ import { observer, Observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { ad_type } from 'Constants/floating-rate';
+// @ts-ignore
 import { useStores } from 'Stores';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import PaymentMethodCard from 'Components/payment-method-card';

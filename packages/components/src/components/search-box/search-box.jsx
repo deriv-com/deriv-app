@@ -46,6 +46,7 @@ const SearchBox = ({ className, onClear, onSearch, placeholder }) => {
                 {({ submitForm, values: { search }, setFieldValue }) => (
                     <Form>
                         <FormField name='search'>
+                            {/*// @ts-ignore*/}
                             {({ field }) => (
                                 <Input
                                     {...field}

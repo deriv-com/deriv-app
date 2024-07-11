@@ -3,6 +3,7 @@ import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv-app/components
 import { observer } from '@deriv-app/stores';
 import { localize, Localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return';
+// @ts-ignore
 import { useStores } from 'Stores';
 
 type TFilterModalHeaderProps = {

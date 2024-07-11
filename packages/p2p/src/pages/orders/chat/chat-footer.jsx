@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import ChatFooterIcon from 'Pages/orders/chat/chat-footer-icon.jsx';
+// @ts-ignore
 import { useStores } from 'Stores';
 import ChatMessage from 'Utils/chat-message';
 import './chat-footer.scss';

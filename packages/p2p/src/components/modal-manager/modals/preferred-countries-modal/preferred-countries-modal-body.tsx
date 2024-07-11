@@ -37,6 +37,7 @@ const PreferredCountriesModalBody = ({
         ]);
     };
 
+    // @ts-ignore
     const onSearch = e => {
         const { value } = e.target;
         if (!value) {
@@ -75,6 +76,7 @@ const PreferredCountriesModalBody = ({
                             value={selected_countries?.length === country_list?.length}
                             label='All countries'
                             name='all'
+                            // @ts-ignore
                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                 if (event.target.checked) {
                                     setSelectedCountries(country_list.map(item => item.value));
@@ -90,6 +92,7 @@ const PreferredCountriesModalBody = ({
                                 key={item.value}
                                 label={item.text}
                                 name={item.value}
+                                // @ts-ignore
                                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                     if (event.target.checked) {
                                         setSelectedCountries([...selected_countries, item.value]);

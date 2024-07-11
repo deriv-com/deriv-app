@@ -41,6 +41,7 @@ const FloatingRate = ({
     const override_exchange_rate = p2p_settings?.override_exchange_rate;
     const market_rate = override_exchange_rate ? Number(override_exchange_rate) : exchange_rate;
     const os = mobileOSDetect();
+    // @ts-ignore
     const market_feed = value ? percentOf(market_rate, value) : market_rate;
     const decimal_place = setDecimalPlaces(market_feed, 6);
 

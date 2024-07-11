@@ -10,6 +10,7 @@ import { useP2PRenderedAdverts } from 'Hooks';
 import { localize } from 'Components/i18next';
 import ToggleContainer from 'Components/toggle-container';
 import SortDropdown from 'Pages/buy-sell/sort-dropdown';
+// @ts-ignore
 import { useStores } from 'Stores';
 import CurrencyDropdown from 'Pages/buy-sell/currency-dropdown.jsx';
 import 'Pages/buy-sell/buy-sell-header.scss';

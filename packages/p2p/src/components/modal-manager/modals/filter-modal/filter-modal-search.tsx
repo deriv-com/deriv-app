@@ -5,6 +5,7 @@ import { Icon, Input } from '@deriv-app/components';
 import { isDesktop } from '@deriv-app/shared';
 import { observer } from '@deriv-app/stores';
 import { localize } from 'Components/i18next';
+// @ts-ignore
 import { useStores } from 'Stores';
 import './filter-modal-search.scss';
 

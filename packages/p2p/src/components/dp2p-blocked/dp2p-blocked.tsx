@@ -3,6 +3,7 @@ import React from 'react';
 import { Icon, Text } from '@deriv-app/components';
 
 import { Localize } from 'Components/i18next';
+// @ts-ignore
 import { useStores } from 'Stores';
 
 import Dp2pBlockedChecklist from './dp2p-blocked-checklist';

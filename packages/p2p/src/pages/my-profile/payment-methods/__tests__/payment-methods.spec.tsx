@@ -4,6 +4,7 @@ import { APIProvider } from '@deriv-app/api';
 import { mockStore, StoreProvider } from '@deriv-app/stores';
 import { useStores } from 'Stores/index';
 import { payment_method_info_alipay } from 'Pages/my-profile/__mocks__/mock-payment-method-data';
+// @ts-ignore
 import { TPaymentMethod } from 'Types/my-profile.types';
 import PaymentMethods from '../payment-methods';
 

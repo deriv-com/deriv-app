@@ -8,6 +8,7 @@ import { observer } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { document_status_codes, identity_status_codes } from 'Constants/account-status-codes';
+// @ts-ignore
 import { useStores } from 'Stores';
 import './no-ads.scss';
 

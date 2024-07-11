@@ -2,10 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import { Checkbox, Dropdown, Icon, Text } from '@deriv-app/components';
 import { isEmptyObject } from '@deriv-app/shared';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import PaymentMethodIcon from 'Components/payment-method-icon';
+// @ts-ignore
 import { TPaymentMethod } from 'Types/my-profile.types';
 
 type TPaymentMethodCardProps = {

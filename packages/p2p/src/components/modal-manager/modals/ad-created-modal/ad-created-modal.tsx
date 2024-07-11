@@ -3,6 +3,7 @@ import { Button, Checkbox, Modal, Text } from '@deriv-app/components';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { api_error_codes } from 'Constants/api-error-codes';
+// @ts-ignore
 import { useStores } from 'Stores';
 
 type TAdCreatedModalProps = {
@@ -46,6 +47,7 @@ const AdCreatedModal = ({ adverts_archive_period }: TAdCreatedModalProps) => {
             is_open={is_modal_open}
             small
             title={localize("You've created an ad")}
+            // @ts-ignore
             toggleModal={hideModal}
         >
             <Modal.Body>

@@ -55,6 +55,7 @@ describe('<ShareMyAdsModal />', () => {
     });
 
     it('should render the ShareMyAdsModal', () => {
+        // @ts-ignore
         render(<ShareMyAdsModal advert={mock_advert} />);
 
         expect(screen.getByText('Share this ad')).toBeInTheDocument();
@@ -63,6 +64,7 @@ describe('<ShareMyAdsModal />', () => {
     });
 
     it('should toggle the modal', () => {
+        // @ts-ignore
         render(<ShareMyAdsModal advert={mock_advert} />);
 
         const close_icon = screen.getByTestId('dt_modal_close_icon');
@@ -75,6 +77,7 @@ describe('<ShareMyAdsModal />', () => {
         const mockShare = jest.fn().mockResolvedValue(true);
         global.navigator.share = mockShare;
 
+        // @ts-ignore
         render(<ShareMyAdsModal advert={mock_advert} />);
 
         const share_link_button = screen.getByRole('button', { name: 'Share link' });
@@ -95,6 +98,7 @@ describe('<ShareMyAdsModal />', () => {
 
         jest.useFakeTimers();
 
+        // @ts-ignore
         render(<ShareMyAdsModal advert={mock_advert} />);
 
         const copy_button = screen.getByRole('button', { name: 'Copy link' });
@@ -112,6 +116,7 @@ describe('<ShareMyAdsModal />', () => {
     });
 
     it('should call html2canvas function when clicking on Download this QR code button', async () => {
+        // @ts-ignore
         render(<ShareMyAdsModal advert={mock_advert} />);
 
         const download_button = screen.getByRole('button', { name: 'Download this QR code' });

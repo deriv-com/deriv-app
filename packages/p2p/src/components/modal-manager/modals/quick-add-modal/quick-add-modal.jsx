@@ -10,6 +10,7 @@ import AddPaymentMethod from 'Components/add-payment-method';
 import BuyAdPaymentMethodsList from 'Pages/my-ads/buy-ad-payment-methods-list.jsx';
 import SellAdPaymentMethodsList from 'Pages/my-ads/sell-ad-payment-methods-list.jsx';
 import { buy_sell } from 'Constants/buy-sell';
+// @ts-ignore
 import { useStores } from 'Stores';
 
 const QuickAddModal = ({ advert }) => {

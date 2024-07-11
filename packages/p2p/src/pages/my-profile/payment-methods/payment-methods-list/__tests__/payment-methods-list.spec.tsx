@@ -68,6 +68,7 @@ describe('<PaymentMethodsList /> Desktop', () => {
     });
 
     it('should render PaymentMethodsList component', () => {
+        // @ts-ignore
         mock_p2p_advertiser_payment_methods_hooks.data = [payment_method_info_alipay, payment_method_info_bank];
         render(<PaymentMethodsList />, { wrapper });
 

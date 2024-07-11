@@ -5,6 +5,7 @@ import { useP2PSettings } from '@deriv-app/hooks';
 import { isMobile } from '@deriv-app/shared';
 import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { ad_type } from 'Constants/floating-rate';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

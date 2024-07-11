@@ -2,6 +2,7 @@ import React from 'react';
 import { Icon, Text } from '@deriv-app/components';
 import { observer } from '@deriv-app/stores';
 import { isDesktop } from '@deriv-app/shared';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 

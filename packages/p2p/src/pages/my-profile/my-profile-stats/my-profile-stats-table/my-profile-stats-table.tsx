@@ -2,6 +2,7 @@ import React from 'react';
 import { Money, Text } from '@deriv-app/components';
 import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { getTextSize } from 'Utils/responsive';
 

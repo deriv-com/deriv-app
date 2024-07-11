@@ -5,6 +5,7 @@ import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { ad_type } from 'Constants/floating-rate';
+// @ts-ignore
 import { useStores } from 'Stores';
 
 type TMyAdsFloatingRateSwitchModalProps = {
@@ -22,6 +23,7 @@ const MyAdsFloatingRateSwitchModal = ({ onSwitch }: TMyAdsFloatingRateSwitchModa
     const is_float_rate = p2p_settings?.rate_type === ad_type.FLOAT;
 
     return (
+        // @ts-ignore
         <Modal is_open={is_modal_open} toggleModal={hideModal} small className='my-ads-floating-rate-switch-modal'>
             <Modal.Body>
                 <Text size={is_desktop ? 's' : 'xs'}>

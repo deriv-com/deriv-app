@@ -291,6 +291,7 @@ const PersonalDetailsForm = props => {
                                 <React.Fragment>
                                     {isDesktop ? (
                                         <Field name='address_state'>
+                                            {/*// @ts-ignore*/}
                                             {({ field }) => (
                                                 <Autocomplete
                                                     {...field}
@@ -356,6 +357,7 @@ const PersonalDetailsForm = props => {
                         )}
                         {'citizen' in values && (
                             <Field name='citizen'>
+                                {/*// @ts-ignore*/}
                                 {({ field }) => (
                                     <React.Fragment>
                                         {isDesktop ? (

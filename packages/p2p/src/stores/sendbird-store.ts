@@ -412,6 +412,7 @@ export default class SendbirdStore extends BaseStore {
     sendFile(file: File) {
         if (!file) return;
 
+        // @ts-ignore
         const updated_file = renameFile(file);
         this.active_chat_channel
             ?.sendFileMessage({

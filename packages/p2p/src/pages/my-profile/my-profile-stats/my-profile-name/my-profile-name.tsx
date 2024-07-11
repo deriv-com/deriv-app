@@ -9,6 +9,7 @@ import StarRating from 'Components/star-rating';
 import TradeBadge from 'Components/trade-badge';
 import UserAvatar from 'Components/user/user-avatar';
 import { document_status_codes, identity_status_codes } from 'Constants/account-status-codes';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { getIconSize, getTextSize } from 'Utils/responsive';
 import MyProfilePrivacy from '../my-profile-privacy';
@@ -93,6 +94,7 @@ const MyProfileName = () => {
                                         <StarRating
                                             empty_star_icon='IcEmptyStar'
                                             full_star_icon='IcFullStar'
+                                            // @ts-ignore
                                             initial_value={rating_average_decimal}
                                             is_readonly
                                             number_of_stars={5}

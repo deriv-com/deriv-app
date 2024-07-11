@@ -4,9 +4,11 @@ import userEvent from '@testing-library/user-event';
 import { APIProvider } from '@deriv-app/api';
 import { mockStore, StoreProvider } from '@deriv-app/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+// @ts-ignore
 import { useStores } from 'Stores';
 import BuySellModal from '../buy-sell-modal';
 
+// @ts-ignore
 const wrapper = ({ children }) => (
     <APIProvider>
         <StoreProvider store={mockStore({})}>{children}</StoreProvider>

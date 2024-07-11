@@ -4,6 +4,7 @@ import { Button } from '@deriv-app/components';
 import { observer } from 'mobx-react-lite';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+// @ts-ignore
 import { useStores } from 'Stores';
 import OrderDetailsComplainModal from './order-details-complain-modal.jsx';
 import './order-details-footer.scss';

@@ -16,6 +16,7 @@ import TradeBadge from 'Components/trade-badge';
 import { document_status_codes, identity_status_codes } from 'Constants/account-status-codes';
 import { buy_sell } from 'Constants/buy-sell';
 import BuySellRowAction from 'Pages/buy-sell/buy-sell-row-action';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { generateEffectiveRate } from 'Utils/format-value';
 

@@ -3,6 +3,7 @@ import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text } from '
 import { observer } from '@deriv-app/stores';
 import { Localize, localize } from 'Components/i18next';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+// @ts-ignore
 import { useStores } from 'Stores';
 
 type TBlockUserTableErrorProps = {

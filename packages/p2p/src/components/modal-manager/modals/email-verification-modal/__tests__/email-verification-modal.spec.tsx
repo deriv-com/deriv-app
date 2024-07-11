@@ -85,6 +85,7 @@ describe('EmailVerificationModal />', () => {
     });
 
     it('should call hideModal, confirmOrderRequest when clicking on Resend Email button', () => {
+        // @ts-ignore
         jest.spyOn(React, 'useState').mockImplementationOnce(() => React.useState(true));
 
         render(<EmailVerificationModal />);

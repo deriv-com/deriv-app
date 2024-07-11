@@ -1,5 +1,6 @@
 import { P2POrderInfo } from '@deriv/api-types';
 import { createExtendedOrderDetails } from '../orders';
+// @ts-ignore
 import ServerTime from '../server-time';
 
 const mock_order: P2POrderInfo = {

@@ -4,6 +4,7 @@ import { Button, Input, Icon, Modal, Text } from '@deriv-app/components';
 import { useStore } from '@deriv-app/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+// @ts-ignore
 import { useStores } from 'Stores';
 
 type TNicknameModalProps = {
@@ -30,6 +31,7 @@ const NicknameModal = ({ onCancel, onConfirm, should_hide_close_btn = false }: T
                         } else {
                             notifications.addNotificationMessage({
                                 key: 'p2p_advertiser_nickname_added',
+                                // @ts-ignore
                                 header: <Localize i18n_default_text='Nickname added successfully!' />,
                                 platform: 'P2P',
                                 should_hide_close_btn,

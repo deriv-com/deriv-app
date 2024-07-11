@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button, Icon, Modal, Text } from '@deriv-app/components';
 import { Localize } from 'Components/i18next';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 

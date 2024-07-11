@@ -5,6 +5,7 @@ import { isDesktop, isMobile } from '@deriv-app/shared';
 import { useStore, observer } from '@deriv-app/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useP2PAdvertiserAdverts } from 'Hooks';
+// @ts-ignore
 import { useStores } from 'Stores';
 import P2pEmpty from 'Components/p2p-empty';
 import AdvertiserPageRow from './advertiser-page-row.jsx';

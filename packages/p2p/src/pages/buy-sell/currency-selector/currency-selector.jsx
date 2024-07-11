@@ -34,6 +34,7 @@ const CurrencySelector = ({ className, default_value, list, onSelect }) => {
         <Formik enableReinitialize initialValues={{ currency: '' }}>
             {({ setFieldValue }) => (
                 <Field name='currency'>
+                    {/*// @ts-ignore*/}
                     {({ field }) => (
                         <Autocomplete
                             {...field}

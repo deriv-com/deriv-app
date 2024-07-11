@@ -21,6 +21,7 @@ const BlockSelector = ({ label, onSelect, options, tooltip_info, value }: TBlock
     const [selectors, setSelectors] = React.useState(options);
     const [selected_value, setSelectedValue] = React.useState(value);
     const { showModal } = useModalManagerContext();
+    // @ts-ignore
     const onClick = e => {
         const selected_value = e.target.getAttribute('data-value');
         onSelect?.(0);

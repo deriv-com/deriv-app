@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+// @ts-ignore
 import { useStores } from 'Stores';
 import FilterModal from '../filter-modal';
 import { StoreProvider, mockStore } from '@deriv-app/stores';
@@ -39,6 +40,7 @@ let mock_modal_manager: Partial<ReturnType<typeof useModalManagerContext>> = {
     showModal: jest.fn(),
     hideModal: jest.fn(),
     is_modal_open: true,
+    // @ts-ignore
     useSavedState: jest.fn(() => [[], mock_fn]),
 };
 
@@ -75,6 +77,7 @@ describe('<FilterModal />', () => {
         expect(mock_store.my_profile_store.setSearchTerm).toHaveBeenCalledWith('');
     });
     it('should handle clicking close icon', () => {
+        // @ts-ignore
         mock_modal_manager.useSavedState
             .mockReturnValueOnce([false, mock_fn])
             .mockReturnValueOnce([[], mock_fn])
@@ -92,6 +95,7 @@ describe('<FilterModal />', () => {
     it('should open LeavePageModal if user has made changes and clicks close icon', () => {
         mock_modal_manager = {
             ...mock_modal_manager,
+            // @ts-ignore
             useSavedState: jest.fn(() => [['skrill'], mock_fn]),
         };
         render(<FilterModal />, {

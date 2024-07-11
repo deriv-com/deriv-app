@@ -26,6 +26,7 @@ storiesOf('AutoComplete', module)
                     <Formik initialValues={{ citizen: '' }}>
                         {({ setFieldValue }) => (
                             <Field name='citizen'>
+                                {/*// @ts-ignore*/}
                                 {({ field }) => (
                                     <Autocomplete
                                         {...field}

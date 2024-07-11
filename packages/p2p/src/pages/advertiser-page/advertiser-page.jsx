@@ -18,6 +18,7 @@ import TradeBadge from 'Components/trade-badge';
 import UserAvatar from 'Components/user/user-avatar';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { getEligibilityMessage } from 'Utils/adverts';
 import { getErrorMessage, getErrorModalTitle, getWidth } from 'Utils/block-user';

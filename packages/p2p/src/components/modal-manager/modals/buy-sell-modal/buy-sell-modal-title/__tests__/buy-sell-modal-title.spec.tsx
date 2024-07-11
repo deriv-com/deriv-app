@@ -1,6 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import { isDesktop } from '@deriv-app/shared';
+// @ts-ignore
 import { useStores } from 'Stores';
 import BuySellModalTitle from '../buy-sell-modal-title';
 import userEvent from '@testing-library/user-event';

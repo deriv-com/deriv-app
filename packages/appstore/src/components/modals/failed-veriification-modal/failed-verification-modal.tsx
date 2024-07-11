@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { useHistory } from 'react-router-dom';
 import { Localize, useLocalize } from '@deriv-app/translations';

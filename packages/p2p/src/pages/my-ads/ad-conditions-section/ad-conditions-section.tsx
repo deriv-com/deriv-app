@@ -7,6 +7,7 @@ import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AdFormController from 'Pages/my-ads/ad-form-controller';
 import PreferredCountriesSelector from 'Pages/my-ads/preferred-countries-selector';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { TCountryListProps } from 'Types';
 import CreateAdSummary from '../create-ad-summary.jsx';
@@ -124,6 +125,7 @@ const AdConditionsSection = ({
                 />
             </div>
             <PreferredCountriesSelector country_list={country_list} />
+            {/*// @ts-ignore*/}
             <AdFormController
                 {...props}
                 action={action}

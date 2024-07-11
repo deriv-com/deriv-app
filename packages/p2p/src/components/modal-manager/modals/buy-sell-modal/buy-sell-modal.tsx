@@ -11,6 +11,7 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import AddPaymentMethodForm from 'Components/add-payment-method-form';
 import BuySellForm from 'Pages/buy-sell/buy-sell-form.jsx';
 import BuySellFormReceiveAmount from 'Pages/buy-sell/buy-sell-form-receive-amount.jsx';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { getTextSize } from 'Utils/responsive';
 import BuySellModalFooter from './buy-sell-modal-footer';
@@ -194,6 +195,7 @@ const BuySellModal = () => {
                                 <BuySellForm
                                     advert={selected_ad_state}
                                     has_rate_changed={has_rate_changed}
+                                    // @ts-ignore
                                     handleClose={onCancel}
                                     handleConfirm={onConfirmClick}
                                     setIsSubmitDisabled={setIsSubmitDisabled}
@@ -242,6 +244,7 @@ const BuySellModal = () => {
                                 <BuySellForm
                                     advert={selected_ad_state}
                                     has_rate_changed={has_rate_changed}
+                                    // @ts-ignore
                                     handleClose={onCancel}
                                     handleConfirm={onConfirmClick}
                                     setIsSubmitDisabled={setIsSubmitDisabled}

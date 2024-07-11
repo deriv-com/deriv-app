@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { isDesktop } from '@deriv-app/shared';
 import { fireEvent, render, screen } from '@testing-library/react';

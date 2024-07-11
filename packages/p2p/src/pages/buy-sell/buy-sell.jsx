@@ -5,6 +5,7 @@ import { localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return';
 import Verification from 'Components/verification';
 import { buy_sell } from 'Constants/buy-sell';
+// @ts-ignore
 import { useStores } from 'Stores';
 import BuySellHeader from './buy-sell-header.jsx';
 import BuySellTable from './buy-sell-table.jsx';

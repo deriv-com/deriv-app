@@ -7,6 +7,7 @@ import { observer } from '@deriv-app/stores';
 import { Localize, localize } from 'Components/i18next';
 import SectionError from 'Components/section-error';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+// @ts-ignore
 import { useStores } from 'Stores';
 
 const MyProfileForm = () => {
@@ -23,9 +24,11 @@ const MyProfileForm = () => {
             validate={my_profile_store.validateForm}
         >
             {({ dirty, errors, isSubmitting, isValid }) => {
+                // @ts-ignore
                 return (
                     <Form className='my-profile-form__form'>
                         <Field name='contact_info'>
+                            {/*// @ts-ignore*/}
                             {({ field }) => (
                                 <Input
                                     {...field}
@@ -44,6 +47,7 @@ const MyProfileForm = () => {
                             )}
                         </Field>
                         <Field name='default_advert_description'>
+                            {/*// @ts-ignore*/}
                             {({ field }) => (
                                 <Input
                                     {...field}

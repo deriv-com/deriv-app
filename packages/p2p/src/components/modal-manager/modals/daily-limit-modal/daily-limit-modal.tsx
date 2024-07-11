@@ -5,6 +5,7 @@ import { formatMoney } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+// @ts-ignore
 import { useStores } from 'Stores';
 
 const DailyLimitModal = () => {

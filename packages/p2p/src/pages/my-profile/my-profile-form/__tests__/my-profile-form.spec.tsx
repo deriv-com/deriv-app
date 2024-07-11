@@ -16,6 +16,7 @@ jest.mock('@deriv-app/components', () => ({
     DesktopWrapper: jest.fn(({ children }) => children),
     MobileWrapper: jest.fn(({ children }) => children),
     MobileFullPageModal: ({
+        // @ts-ignore
         children,
         pageHeaderReturnFn = mock_store.setActiveTab,
         page_header_text = 'Ad details',

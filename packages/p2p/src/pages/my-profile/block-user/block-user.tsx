@@ -6,6 +6,7 @@ import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { getErrorMessage, getErrorModalTitle, getWidth } from 'Utils/block-user';
 import BlockUserList from './block-user-list';
@@ -43,6 +44,7 @@ const BlockUser = () => {
                             general_store.setBlockUnblockUserError('');
                             hideModal();
                         },
+                        // @ts-ignore
                         width: getWidth(),
                     },
                 });

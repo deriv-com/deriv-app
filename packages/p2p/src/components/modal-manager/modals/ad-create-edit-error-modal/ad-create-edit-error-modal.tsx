@@ -5,6 +5,7 @@ import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { ads } from 'Constants/ads';
 import { api_error_codes } from 'Constants/api-error-codes';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { generateErrorDialogBody, generateErrorDialogTitle } from 'Utils/adverts';
 

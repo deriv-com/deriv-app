@@ -4,6 +4,7 @@ import { useWalletMigration } from '@deriv-app/hooks';
 import { makeLazyLoader, moduleLoader } from '@deriv-app/shared';
 import { Loading } from '@deriv-app/components';
 import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';

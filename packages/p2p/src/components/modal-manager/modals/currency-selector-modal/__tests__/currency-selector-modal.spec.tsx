@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { APIProvider } from '@deriv-app/api';
 import { P2PSettingsProvider } from '@deriv-app/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+// @ts-ignore
 import { useStores } from 'Stores';
 import CurrenySelectorModal from '../currency-selector-modal';
 

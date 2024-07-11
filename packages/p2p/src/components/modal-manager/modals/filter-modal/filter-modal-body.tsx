@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, Icon, ThemedScrollbars, ToggleSwitch } from '@deriv-app/components';
 import { observer } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { TPaymentMethod } from './filter-modal';
 import FilterModalResult from './filter-modal-result';

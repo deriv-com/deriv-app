@@ -3,6 +3,7 @@ import { Modal } from '@deriv-app/components';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import CopyAdvertForm from 'Pages/my-ads/copy-advert-form';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { TAdvert, TCountryListProps } from 'Types';
 
@@ -24,6 +25,7 @@ const CopyAdvertModal = ({ advert, country_list }: TCopyAdvertModalProps) => {
         >
             <Modal.Body className='copy-advert-modal'>
                 <CopyAdvertForm
+                    // @ts-ignore
                     advert={advert}
                     country_list={country_list}
                     onCancel={() => my_ads_store.setShowEditAdForm(false)}

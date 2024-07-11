@@ -2,6 +2,7 @@ import React from 'react';
 import { Formik, Field, FormikValues } from 'formik';
 import { Autocomplete, Icon, Loading, Text } from '@deriv-app/components';
 import { observer } from '@deriv-app/stores';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { localize, Localize } from 'Components/i18next';
 import './select-payment-method.scss';
@@ -38,6 +39,7 @@ const SelectPaymentMethod = () => {
                                 data-lpignore='true'
                                 label={localize('Payment method')}
                                 list_items={my_profile_store.payment_methods_list_items}
+                                // @ts-ignore
                                 onItemSelection={({ value }) => {
                                     setTimeout(() => my_profile_store.setSelectedPaymentMethod(value), 0);
                                 }}

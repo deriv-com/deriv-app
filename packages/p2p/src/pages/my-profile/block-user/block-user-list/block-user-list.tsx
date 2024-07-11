@@ -4,6 +4,7 @@ import { Loading, SearchBox, Text } from '@deriv-app/components';
 import { observer, useStore } from '@deriv-app/stores';
 import { Localize, localize } from 'Components/i18next';
 import { api_error_codes } from 'Constants/api-error-codes';
+// @ts-ignore
 import { useStores } from 'Stores';
 import BlockUserDropdown from '../block-user-dropdown';
 import BlockUserTable from '../block-user-table';

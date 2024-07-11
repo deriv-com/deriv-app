@@ -8,6 +8,7 @@ import { localize, Localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import AdFormController from 'Pages/my-ads/ad-form-controller';
+// @ts-ignore
 import { useStores } from 'Stores';
 import AdTypeSectionTrailingIcon from './ad-type-section-trailing-icon';
 
@@ -84,6 +85,7 @@ const AdTypeSection = ({
         <>
             {!is_edit && (
                 <Field name='type'>
+                    {/*// @ts-ignore*/}
                     {({ field }) => (
                         <RadioGroup
                             {...field}
@@ -104,6 +106,7 @@ const AdTypeSection = ({
             )}
             <div className='ad-type-section__container'>
                 <Field name='offer_amount'>
+                    {/*// @ts-ignore*/}
                     {({ field }) => (
                         <Input
                             {...field}
@@ -135,6 +138,7 @@ const AdTypeSection = ({
                     )}
                 </Field>
                 <Field name='rate_type'>
+                    {/*// @ts-ignore*/}
                     {({ field }) =>
                         rate_type === ad_type.FLOAT ? (
                             <FloatingRate
@@ -150,6 +154,7 @@ const AdTypeSection = ({
                                     lower_limit: parseInt(float_rate_offset_limit_string) * -1,
                                 }}
                                 required
+                                // @ts-ignore
                                 change_handler={e => {
                                     my_ads_store.restrictDecimalPlace(e, handleChange);
                                 }}
@@ -179,6 +184,7 @@ const AdTypeSection = ({
             </div>
             <div className='ad-type-section__container'>
                 <Field name='min_transaction'>
+                    {/*// @ts-ignore*/}
                     {({ field }) => (
                         <Input
                             {...field}
@@ -198,6 +204,7 @@ const AdTypeSection = ({
                     )}
                 </Field>
                 <Field name='max_transaction'>
+                    {/*// @ts-ignore*/}
                     {({ field }) => (
                         <Input
                             {...field}
@@ -220,6 +227,7 @@ const AdTypeSection = ({
             {values.type === buy_sell.SELL && (
                 <div className='ad-type-section__field--contact-details'>
                     <Field name='contact_info'>
+                        {/*// @ts-ignore*/}
                         {({ field }) => (
                             <Input
                                 {...field}
@@ -244,6 +252,7 @@ const AdTypeSection = ({
                 </div>
             )}
             <Field name='default_advert_description'>
+                {/*// @ts-ignore*/}
                 {({ field }) => (
                     <Input
                         {...field}
@@ -266,6 +275,7 @@ const AdTypeSection = ({
                     />
                 )}
             </Field>
+            {/*// @ts-ignore*/}
             <AdFormController {...props} is_next_btn_disabled={is_next_btn_disabled} onCancel={onCancel} />
         </>
     );

@@ -3,6 +3,7 @@ import { MobileFullPageModal } from '@deriv-app/components';
 import { isMobile } from '@deriv-app/shared';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
+// @ts-ignore
 import { useStores } from 'Stores';
 import ChatHeader from './chat-header.jsx';
 

@@ -51,6 +51,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
 
     const handleGenerateImage = async () => {
         if (div_ref.current) {
+            // @ts-ignore
             const p2p_logo = div_ref.current.querySelector('.share-my-ads-card__qr-icon');
 
             if (p2p_logo) {
@@ -85,6 +86,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
     }, [is_copied]);
 
     return (
+        // @ts-ignore
         <Modal is_open={is_modal_open} title={localize('Share this ad')} toggleModal={hideModal} width='71rem'>
             <Modal.Body className='share-my-ads-modal__body'>
                 <React.Fragment>

@@ -23,6 +23,7 @@ jest.mock('Stores', () => ({
 
 const el_modal = document.createElement('div');
 const onConfirm = jest.fn();
+// @ts-ignore
 const wrapper = ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>;
 
 describe('<NicknameForm/>', () => {
@@ -71,6 +72,7 @@ describe('<NicknameForm/>', () => {
                             return !v(values[key]);
                         });
 
+                        // @ts-ignore
                         if (error_index !== -1) errors[key] = nickname_messages[error_index];
                     });
 

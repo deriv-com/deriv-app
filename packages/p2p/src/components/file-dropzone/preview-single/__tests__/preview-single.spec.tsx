@@ -15,6 +15,7 @@ describe('<PreviewSingle />', () => {
         const file: File = new File(['hello'], 'hello.png', { type: 'image/png' });
         props.value = [file];
 
+        // @ts-ignore
         render(<PreviewSingle {...props} />);
 
         expect(screen.getByText('hello.png')).toBeInTheDocument();
@@ -23,6 +24,7 @@ describe('<PreviewSingle />', () => {
     it('should render the Image component if preview_single is true', () => {
         const preview_single = <img data-testid='dt_image' src='hello.png' />;
 
+        // @ts-ignore
         render(<PreviewSingle {...props} preview_single={preview_single} />);
 
         expect(screen.getByTestId('dt_image')).toBeInTheDocument();

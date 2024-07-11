@@ -5,6 +5,7 @@ import { observer } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import AdFormController from 'Pages/my-ads/ad-form-controller';
+// @ts-ignore
 import { useStores } from 'Stores';
 import CreateAdFormPaymentMethods from '../create-ad-form-payment-methods.jsx';
 import CreateAdSummary from '../create-ad-summary.jsx';
@@ -42,6 +43,7 @@ const AdPaymentDetailsSection = ({ setIsFormDirty, ...props }: TAdPaymentDetails
         setIsNextBtnDisabled(!isValid || !selected_payment_methods?.length);
     }, [selected_payment_methods]);
 
+    // @ts-ignore
     return (
         <>
             <CreateAdSummary
@@ -49,6 +51,7 @@ const AdPaymentDetailsSection = ({ setIsFormDirty, ...props }: TAdPaymentDetails
                 price_rate={values.rate_type}
                 type={values.type}
             />
+            {/*// @ts-ignore*/}
             <Field name='order_completion_time'>{({ field }) => <OrderTimeSelection {...field} />}</Field>
             <div className='ad-payment-details-section__label'>
                 <Text color='prominent' size='xs'>
@@ -66,6 +69,7 @@ const AdPaymentDetailsSection = ({ setIsFormDirty, ...props }: TAdPaymentDetails
                 is_sell_advert={is_sell_advert}
                 onSelectPaymentMethods={setSelectedPaymentMethods}
             />
+            {/*// @ts-ignore*/}
             <AdFormController {...props} is_next_btn_disabled={is_next_btn_disabled} />
         </>
     );

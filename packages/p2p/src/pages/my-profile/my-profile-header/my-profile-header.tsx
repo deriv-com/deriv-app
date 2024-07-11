@@ -4,6 +4,7 @@ import { observer } from '@deriv-app/stores';
 import { localize } from 'Components/i18next';
 import ToggleContainer from 'Components/toggle-container';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+// @ts-ignore
 import { useStores } from 'Stores';
 
 const MyProfileHeader = () => {

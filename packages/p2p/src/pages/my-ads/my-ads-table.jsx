@@ -5,6 +5,7 @@ import { isDesktop, isMobile } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
 import { localize } from 'Components/i18next';
 import ToggleAds from 'Pages/my-ads/toggle-ads.jsx';
+// @ts-ignore
 import { useStores } from 'Stores';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
 import NoAds from 'Pages/buy-sell/no-ads';

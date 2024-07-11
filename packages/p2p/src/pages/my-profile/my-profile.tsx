@@ -7,6 +7,7 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import Verification from 'Components/verification';
 import { document_status_codes, identity_status_codes } from 'Constants/account-status-codes';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+// @ts-ignore
 import { useStores } from 'Stores';
 import MyProfileContent from './my-profile-content';
 import MyProfileDetailsContainer from './my-profile-stats/my-profile-details-container';

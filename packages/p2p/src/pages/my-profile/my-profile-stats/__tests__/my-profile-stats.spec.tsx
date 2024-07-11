@@ -12,6 +12,7 @@ let mock_store: DeepPartial<ReturnType<typeof useStores>>;
 jest.mock('@deriv-app/components', () => ({
     ...jest.requireActual('@deriv-app/components'),
     MobileWrapper: jest.fn(({ children }) => children),
+    // @ts-ignore
     MobileFullPageModal: ({ children, pageHeaderReturnFn = mock_store.setActiveTab }) => (
         <div>
             <button onClick={pageHeaderReturnFn}>Return</button>

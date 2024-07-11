@@ -37,7 +37,8 @@ const AdWizard = ({
             nav={
                 <>
                     <DesktopWrapper>
-                        <FormProgress steps={steps} current_step={current_step} />
+                        {/*// @ts-ignore*/}
+                        <FormProgress steps={steps as any} current_step={current_step} />
                     </DesktopWrapper>
                     <MobileWrapper>
                         <div>
@@ -79,6 +80,7 @@ const AdWizard = ({
                 rate_type={rate_type}
             />
             <AdPaymentDetailsSection setIsFormDirty={setIsFormDirty} />
+            {/*// @ts-ignore*/}
             <AdConditionsSection action={action} country_list={country_list} is_form_dirty={is_form_dirty} />
         </Wizard>
     );

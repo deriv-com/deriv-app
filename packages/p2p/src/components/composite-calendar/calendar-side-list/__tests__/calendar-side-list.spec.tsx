@@ -17,6 +17,7 @@ const mock_props = {
 
 describe('CalendarSideList', () => {
     it('should render the side list for duration as 0', () => {
+        // @ts-ignore
         render(<CalendarSideList {...mock_props} />);
         expect(screen.getByText('All time')).toBeInTheDocument();
     });
@@ -32,6 +33,7 @@ describe('CalendarSideList', () => {
                 },
             ],
         };
+        // @ts-ignore
         render(<CalendarSideList {...new_props} />);
         expect(screen.getByText('Last 7 days')).toBeInTheDocument();
     });

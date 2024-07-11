@@ -60,6 +60,7 @@ const SaveModalForm = ({
                             </Text>
                             <div className='modal__content-row'>
                                 <Field name='bot_name'>
+                                    {/*// @ts-ignore*/}
                                     {({ field }) => (
                                         <Input
                                             className='save-type__input'

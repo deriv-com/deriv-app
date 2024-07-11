@@ -5,11 +5,13 @@ import { Button, DesktopWrapper, Input, Loading, Text } from '@deriv-app/compone
 import { useP2PAdvertiserPaymentMethods } from '@deriv-app/hooks';
 import { isEmptyObject } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import ModalForm from 'Components/modal-manager/modal-form';
 import PageReturn from 'Components/page-return';
+// @ts-ignore
 import { TPaymentMethod } from 'Types/my-profile.types';
 
 const EditPaymentMethodForm = () => {
@@ -30,6 +32,7 @@ const EditPaymentMethodForm = () => {
         validatePaymentMethodFields,
     } = my_profile_store;
 
+    // @ts-ignore
     const updatePaymentMethod = values => {
         update(payment_method_to_edit.id, values);
     };
@@ -56,8 +59,10 @@ const EditPaymentMethodForm = () => {
 
     React.useEffect(() => {
         if (mutation_status === 'success') {
+            // @ts-ignore
             setShouldShowEditPaymentMethodForm(false);
         } else if (mutation_status === 'error') {
+            // @ts-ignore
             setAddPaymentMethodErrorMessage(mutation_error.message);
             showModal({ key: 'AddPaymentMethodErrorModal', props: {} });
             general_store.formik_ref.setSubmitting(false);

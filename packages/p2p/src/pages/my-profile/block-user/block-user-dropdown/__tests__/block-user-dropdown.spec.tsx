@@ -2,6 +2,7 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { localize } from 'Components/i18next';
+// @ts-ignore
 import { useStores } from 'Stores';
 import BlockUserDropdown from '../block-user-dropdown';
 

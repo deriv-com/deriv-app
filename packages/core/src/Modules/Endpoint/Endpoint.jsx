@@ -81,6 +81,7 @@ const Endpoint = () => {
                         }
                     />
                     <Field name='is_debug_service_worker_enabled'>
+                        {/*// @ts-ignore*/}
                         {({ field }) => (
                             <div className='endpoint__checkbox'>
                                 <Checkbox

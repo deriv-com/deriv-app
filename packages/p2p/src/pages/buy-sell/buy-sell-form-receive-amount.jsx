@@ -4,6 +4,7 @@ import { getFormattedText } from '@deriv-app/shared';
 import { observer } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import { roundOffDecimal } from 'Utils/format-value';
+// @ts-ignore
 import { useStores } from 'Stores';
 import './buy-sell-form-receive-amount.scss';
 

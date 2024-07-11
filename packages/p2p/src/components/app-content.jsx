@@ -11,6 +11,7 @@ import { useStore } from '@deriv-app/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import TemporarilyBarredHint from 'Components/temporarily-barred-hint';
 import { buy_sell } from 'Constants/buy-sell';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { localize } from './i18next';
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { useSafeState } from '@deriv-app/components';
 import Orders from '../orders.jsx';

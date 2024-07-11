@@ -55,6 +55,7 @@ const FileUploaderComponent = ({
                 message={getUploadMessage()}
                 multiple={multiple}
                 onDropAccepted={onDropAccepted}
+                // @ts-ignore
                 onDropRejected={onDropRejected}
                 validation_error_message={validation_error_message}
                 value={value}

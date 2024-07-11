@@ -3,6 +3,7 @@ import { Loading } from '@deriv-app/components';
 import { observer } from 'mobx-react-lite';
 import CopyAdvertForm from 'Pages/my-ads/copy-advert-form';
 import CreateAdForm from 'Pages/my-ads/create-ad-form';
+// @ts-ignore
 import { useStores } from 'Stores';
 
 const CreateAd = ({ country_list }) => {

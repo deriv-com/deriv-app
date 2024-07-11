@@ -5,6 +5,7 @@ import { observer } from '@deriv-app/stores';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import CurrencySelector from 'Pages/buy-sell/currency-selector/currency-selector';
+// @ts-ignore
 import { useStores } from 'Stores';
 
 const CurrencySelectorModal = () => {
@@ -17,6 +18,7 @@ const CurrencySelectorModal = () => {
         <MobileFullPageModal
             is_flex
             is_modal_open={is_modal_open}
+            // @ts-ignore
             onClickClose={hideModal}
             page_header_text={localize('Preferred currency')}
             pageHeaderReturnFn={hideModal}

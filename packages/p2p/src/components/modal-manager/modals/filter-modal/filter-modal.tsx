@@ -2,6 +2,7 @@ import React from 'react';
 import { observer, useStore } from '@deriv-app/stores';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal } from '@deriv-app/components';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { getListDifference } from 'Utils/helper';
 import FilterModalBody from './filter-modal-body';
@@ -18,6 +19,7 @@ const FilterModal = () => {
     const {
         ui: { is_mobile },
     } = useStore();
+    // @ts-ignore
     const { hideModal, is_modal_open, showModal, useSavedState } = useModalManagerContext();
     const {
         onClickApply: onClickApplyFilter,
@@ -209,6 +211,7 @@ const FilterModal = () => {
                     is_modal_open={is_modal_open}
                     height_offset='80px'
                     is_flex
+                    // @ts-ignore
                     header={<FilterModalHeader pageHeaderReturnFn={pageHeaderReturnFn} />}
                     onClickClose={onClose}
                     renderPageFooterChildren={() => {

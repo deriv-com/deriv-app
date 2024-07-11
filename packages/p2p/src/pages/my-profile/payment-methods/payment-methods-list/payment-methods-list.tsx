@@ -10,12 +10,14 @@ import {
     ThemedScrollbars,
 } from '@deriv-app/components';
 import { useP2PAdvertiserPaymentMethods } from '@deriv-app/hooks';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import PaymentMethodCard from 'Components/payment-method-card';
 import ScrollbarWrapper from 'Components/scrollbar-wrapper';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+// @ts-ignore
 import { TPaymentMethod } from 'Types/my-profile.types';
 
 const PaymentMethodsList = () => {

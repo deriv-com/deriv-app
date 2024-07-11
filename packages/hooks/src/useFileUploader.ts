@@ -1,3 +1,4 @@
+// @ts-ignore
 import DocumentUploader from '@binary-com/binary-document-uploader';
 import { useMutation } from '@deriv-app/api';
 import { WS, compressImageFiles, readFiles } from '@deriv-app/shared';

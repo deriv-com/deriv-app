@@ -4,6 +4,7 @@ import { observer } from '@deriv-app/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { api_error_codes } from 'Constants/api-error-codes';
+// @ts-ignore
 import { useStores } from 'Stores';
 
 type TAdVisibilityErrorModalProps = {

@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+// @ts-ignore
 import { useStores } from 'Stores';
 import BlockUser from '../block-user';
 

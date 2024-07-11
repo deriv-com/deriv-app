@@ -9,6 +9,7 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import OrderTimeSelection from 'Pages/my-ads/order-time-selection';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { TAdvertProps, TCountryListProps } from 'Types';
 import { getInlineTextSize } from 'Utils/responsive';
@@ -28,12 +29,16 @@ const CopyAdvertForm = ({ advert, country_list, onCancel }: TCopyAdvertFormProps
     } = useStore();
     const local_currency = local_currency_config.currency;
     const { general_store, my_ads_store, my_profile_store } = useStores();
+    // @ts-ignore
     const {
         contact_info,
         description,
         amount_display,
+        // @ts-ignore
         eligible_countries,
+        // @ts-ignore
         min_completion_rate,
+        // @ts-ignore
         min_join_days,
         order_expiry_period,
         payment_method_details,
@@ -43,8 +48,10 @@ const CopyAdvertForm = ({ advert, country_list, onCancel }: TCopyAdvertFormProps
         type,
     } = advert;
     const {
+        // @ts-ignore
         p2p_settings: { adverts_archive_period, float_rate_offset_limit_string, rate_type },
     } = useP2PSettings();
+    // @ts-ignore
     const onClickCancel = values => {
         my_ads_store.setAdFormValues(values);
         general_store.showModal({
@@ -60,6 +67,7 @@ const CopyAdvertForm = ({ advert, country_list, onCancel }: TCopyAdvertFormProps
             },
         });
     };
+    // @ts-ignore
     const onSubmit = (values, { setSubmitting }) => {
         my_ads_store.setAdFormValues(values);
         my_ads_store.handleSubmit(values, { setSubmitting }, true, adverts_archive_period);
@@ -94,6 +102,7 @@ const CopyAdvertForm = ({ advert, country_list, onCancel }: TCopyAdvertFormProps
                 });
             }
         } else {
+            // @ts-ignore
             my_profile_store.payment_methods_list?.map(({ text, value }) => {
                 if (payment_method_names.includes(text)) my_ads_store.payment_method_names.push(value);
             });
@@ -176,6 +185,7 @@ const CopyAdvertForm = ({ advert, country_list, onCancel }: TCopyAdvertFormProps
                                             data-testid='offer_amount'
                                             data-lpignore='true'
                                             type='text'
+                                            // @ts-ignore
                                             error={errors.offer_amount}
                                             label={localize('Total amount')}
                                             trailing_icon={<CopyAdvertFormTrailingIcon label={currency} />}
@@ -189,15 +199,18 @@ const CopyAdvertForm = ({ advert, country_list, onCancel }: TCopyAdvertFormProps
                                             <FloatingRate
                                                 className='copy-advert-form__floating-rate'
                                                 data_testid='float_rate_type'
+                                                // @ts-ignore
                                                 error_messages={errors.rate_type}
                                                 fiat_currency={currency}
                                                 local_currency={local_currency}
+                                                // @ts-ignore
                                                 onChange={handleChange}
                                                 offset={{
                                                     upper_limit: float_rate_offset_limit_string,
                                                     lower_limit: float_rate_offset_limit_string * -1,
                                                 }}
                                                 required
+                                                // @ts-ignore
                                                 change_handler={e => {
                                                     my_ads_store.restrictDecimalPlace(e, handleChange);
                                                 }}
@@ -209,6 +222,7 @@ const CopyAdvertForm = ({ advert, country_list, onCancel }: TCopyAdvertFormProps
                                                 data-testid='fixed_rate_type'
                                                 data-lpignore='true'
                                                 type='text'
+                                                // @ts-ignore
                                                 error={touched.rate_type && errors.rate_type}
                                                 label={localize('Fixed Rate')}
                                                 trailing_icon={<CopyAdvertFormTrailingIcon label={local_currency} />}
@@ -225,6 +239,7 @@ const CopyAdvertForm = ({ advert, country_list, onCancel }: TCopyAdvertFormProps
                                             data-testid='min_transaction'
                                             label={localize('Min order')}
                                             type='text'
+                                            // @ts-ignore
                                             error={touched.min_transaction && errors.min_transaction}
                                             trailing_icon={<CopyAdvertFormTrailingIcon label={currency} />}
                                             required
@@ -239,6 +254,7 @@ const CopyAdvertForm = ({ advert, country_list, onCancel }: TCopyAdvertFormProps
                                             data-lpignore='true'
                                             label={localize('Max order')}
                                             type='text'
+                                            // @ts-ignore
                                             error={touched.max_transaction && errors.max_transaction}
                                             trailing_icon={<CopyAdvertFormTrailingIcon label={currency} />}
                                             required

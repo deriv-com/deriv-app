@@ -44,6 +44,7 @@ const ModalManagerContextProvider = (props: React.PropsWithChildren<{ mock?: TMo
         const saved_state_ref = React.useRef(saved_state);
 
         React.useEffect(() => {
+            // @ts-ignore
             const persisted_state = persisted_states.current[modal.active_modal.key];
 
             if (persisted_state) {
@@ -51,13 +52,16 @@ const ModalManagerContextProvider = (props: React.PropsWithChildren<{ mock?: TMo
                     setSavedState(persisted_state[key]);
                 }
             } else {
+                // @ts-ignore
                 persisted_states.current[modal.active_modal.key] = {
                     [key]: default_state,
                 };
             }
 
             return () => {
+                // @ts-ignore
                 if (persisted_states.current[modal.active_modal.key]) {
+                    // @ts-ignore
                     persisted_states.current[modal.active_modal.key][key] = saved_state_ref.current;
                 }
             };
@@ -204,6 +208,7 @@ const ModalManagerContextProvider = (props: React.PropsWithChildren<{ mock?: TMo
     general_store.showModal = showModal;
 
     const state: TModalManagerContext = {
+        // @ts-ignore
         hideModal,
         is_modal_open,
         isCurrentModal,

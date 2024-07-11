@@ -7,7 +7,7 @@ type TWizard = {
     initial_step: number;
     onStepChange?: (prop: { [key: string]: number }) => void;
     nav: React.ReactNode;
-    selected_step_ref: () => React.MutableRefObject<HTMLElement>;
+    selected_step_ref?: () => React.MutableRefObject<HTMLElement>;
 };
 
 const Wizard = ({

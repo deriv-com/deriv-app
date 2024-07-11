@@ -8,6 +8,7 @@ import { localize } from 'Components/i18next';
 import ToggleContainer from 'Components/toggle-container';
 import CompositeCalendar from 'Components/composite-calendar';
 import { order_list } from 'Constants/order-list';
+// @ts-ignore
 import { useStores } from 'Stores';
 import OrderTableContent from './order-table-content.jsx';
 import './order-table.scss';

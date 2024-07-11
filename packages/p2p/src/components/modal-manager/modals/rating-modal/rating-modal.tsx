@@ -6,6 +6,7 @@ import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import StarRating from 'Components/star-rating';
 import RecommendUser from 'Components/recommend-user';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { getIconSize } from 'Utils/responsive';
 

@@ -63,6 +63,7 @@ describe('<MarketRateChangeErrorModal />', () => {
     });
 
     it('should render MarketRateChangeErrorModal', () => {
+        // @ts-ignore
         render(<MarketRateChangeErrorModal {...mock_props} />, { wrapper });
 
         expect(screen.getByText('Attention: Rate fluctuation')).toBeInTheDocument();
@@ -83,6 +84,7 @@ describe('<MarketRateChangeErrorModal />', () => {
     });
 
     it('should call hideModal and setIsMarketRateErrorModalOpen when clicking Cancel', () => {
+        // @ts-ignore
         render(<MarketRateChangeErrorModal {...mock_props} />, { wrapper });
 
         const cancel_button = screen.getByRole('button', { name: 'Cancel' });
@@ -94,6 +96,7 @@ describe('<MarketRateChangeErrorModal />', () => {
     });
 
     it('should call submitForm and not hideModal on desktop, when clicking on Continue with order button', () => {
+        // @ts-ignore
         render(<MarketRateChangeErrorModal {...mock_props} />, { wrapper });
 
         const continue_button = screen.getByRole('button', { name: 'Continue with order' });
@@ -109,6 +112,7 @@ describe('<MarketRateChangeErrorModal />', () => {
             is_mobile: true,
         };
 
+        // @ts-ignore
         render(<MarketRateChangeErrorModal {...mock_props} />, { wrapper });
 
         const continue_button = screen.getByRole('button', { name: 'Continue with order' });

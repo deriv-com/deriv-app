@@ -7,6 +7,7 @@ import { observer } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import ChatMessageReceipt from 'Pages/orders/chat/chat-message-receipt.jsx';
 import ChatMessageText from 'Pages/orders/chat/chat-message-text.jsx';
+// @ts-ignore
 import { useStores } from 'Stores';
 import ChatMessage from 'Utils/chat-message';
 import { convertToMB, isImageType, isPDFType } from 'Utils/file-uploader';

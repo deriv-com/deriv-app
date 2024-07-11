@@ -5,6 +5,7 @@ import { adverts } from 'Pages/my-ads/__mocks__/mock-data';
 import { useStores } from 'Stores/index';
 import CopyAdvertModal from '../copy-advert-modal';
 
+// @ts-ignore
 const wrapper = ({ children }) => (
     <StoreProvider store={mockStore({})}>
         <P2PSettingsProvider>{children}</P2PSettingsProvider>
@@ -47,6 +48,7 @@ describe('<CopyAdvertModal />', () => {
     });
 
     it('should render CopyAdvertModal', () => {
+        // @ts-ignore
         render(<CopyAdvertModal advert={adverts[0]} country_list={{}} />, { wrapper });
 
         expect(screen.getByText('Create a similar ad')).toBeInTheDocument();

@@ -5,6 +5,7 @@ import { useIsMounted } from '@deriv-app/shared';
 import { observer } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
+// @ts-ignore
 import { useStores } from 'Stores';
 import './toggle-ads.scss';
 

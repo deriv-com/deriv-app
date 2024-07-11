@@ -73,7 +73,9 @@ export function MockAdCancelModal() {
         {
             key: 'BuySellModal',
             props: {
+                // @ts-ignore
                 title: 'my title',
+                // @ts-ignore
                 subtitle: 'my subtitle',
             },
         },

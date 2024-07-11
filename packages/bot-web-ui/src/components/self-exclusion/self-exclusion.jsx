@@ -114,6 +114,7 @@ const SelfExclusionForm = props => {
                             <Form>
                                 <div className='db-self-exclusion__form-group'>
                                     <Field name='form_max_losses'>
+                                        {/*// @ts-ignore*/}
                                         {({ field }) => (
                                             <Input
                                                 {...field}

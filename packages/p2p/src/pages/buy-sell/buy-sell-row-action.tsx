@@ -3,6 +3,7 @@ import { Button } from '@deriv-app/components';
 import { useStore } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { getEligibilityMessage } from 'Utils/adverts';
 
@@ -66,6 +67,7 @@ const BuySellRowAction = ({
     }
 
     return (
+        // @ts-ignore
         <Button onClick={() => onUnavailableClick(eligibility_status)} secondary small={is_desktop}>
             <Localize i18n_default_text='Unavailable' />
         </Button>

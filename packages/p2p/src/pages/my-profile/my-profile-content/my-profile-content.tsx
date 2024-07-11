@@ -5,6 +5,7 @@ import { observer } from '@deriv-app/stores';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+// @ts-ignore
 import { useStores } from 'Stores';
 import BlockUser from '../block-user';
 import MyProfileForm from '../my-profile-form';
@@ -46,11 +47,13 @@ const MyProfileContent = () => {
                         pageHeaderReturnFn={() => {
                             if (general_store.is_form_modified || !!selected_payment_method) {
                                 if (should_show_add_payment_method_form) {
+                                    // @ts-ignore
                                     showModal({
                                         key: 'CancelAddPaymentMethodModal',
                                     });
                                 }
                                 if (should_show_edit_payment_method_form) {
+                                    // @ts-ignore
                                     showModal({
                                         key: 'CancelEditPaymentMethodModal',
                                     });

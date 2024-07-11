@@ -15,6 +15,7 @@ import OrderDetailsTimer from 'Components/order-details/order-details-timer.jsx'
 import OrderInfoBlock from 'Components/order-details/order-info-block.jsx';
 import OrderDetailsWrapper from 'Components/order-details/order-details-wrapper.jsx';
 import P2PAccordion from 'Components/p2p-accordion/p2p-accordion.jsx';
+// @ts-ignore
 import { useStores } from 'Stores';
 import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx';
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';

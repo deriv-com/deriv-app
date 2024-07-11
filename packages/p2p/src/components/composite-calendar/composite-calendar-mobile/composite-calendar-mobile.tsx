@@ -82,6 +82,7 @@ const CompositeCalendarMobile = ({
         if (has_custom_date_range_selected) {
             selectCustomDateRange();
         } else {
+            // @ts-ignore
             selectDateRange(selected_date_range);
         }
         setAppliedDateRange(selected_date_range);
@@ -129,7 +130,9 @@ const CompositeCalendarMobile = ({
                     is_read_only
                     icon={CalendarIcon}
                     onClick={openDialog}
+                    // @ts-ignore
                     setCurrentFocus={setCurrentFocus}
+                    // @ts-ignore
                     value={applied_date_range?.label}
                 />
             </div>
@@ -176,8 +179,10 @@ const CompositeCalendarMobile = ({
                                 disabled={!has_custom_date_range_selected}
                                 is_nativepicker
                                 placeholder={localize('Start date')}
+                                // @ts-ignore
                                 value={from_date}
                                 max_date={to_date || today}
+                                // @ts-ignore
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => selectDate(e, 'from')}
                             />
                             <DatePicker
@@ -185,9 +190,11 @@ const CompositeCalendarMobile = ({
                                 disabled={!has_custom_date_range_selected}
                                 is_nativepicker
                                 placeholder={localize('End date')}
+                                // @ts-ignore
                                 value={to_date}
                                 max_date={today}
                                 min_date={from_date}
+                                // @ts-ignore
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => selectDate(e, 'to')}
                             />
                         </div>

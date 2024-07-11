@@ -4,10 +4,12 @@ import userEvent from '@testing-library/user-event';
 import { APIProvider } from '@deriv-app/api';
 import { isDesktop, isMobile } from '@deriv-app/shared';
 import { mockStore, StoreProvider } from '@deriv-app/stores';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { TModalManagerContext } from 'Types';
 import CreateAdAddPaymentMethodModal from '../create-ad-add-payment-method-modal';
 
+// @ts-ignore
 const wrapper = ({ children }) => (
     <APIProvider>
         <StoreProvider store={mockStore({})}>{children}</StoreProvider>

@@ -5,6 +5,7 @@ import { useP2PSettings } from '@deriv-app/hooks';
 import { isMobile } from '@deriv-app/shared';
 import { observer } from '@deriv-app/stores';
 import { localize } from 'Components/i18next';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { CurrencySelector } from 'Pages/buy-sell/currency-selector';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

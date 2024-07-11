@@ -8,6 +8,7 @@ import { Localize, localize } from '@deriv-app/translations';
 const SetCitizenshipForm = ({ class_prefix, errors, touched, setFieldValue, citizenship_list }) => (
     <div className={`${class_prefix}__residence-selection`}>
         <Field name='citizenship'>
+            {/*// @ts-ignore*/}
             {({ field }) => (
                 <React.Fragment>
                     <Autocomplete

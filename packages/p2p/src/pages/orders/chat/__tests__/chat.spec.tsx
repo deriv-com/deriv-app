@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+// @ts-ignore
 import { useStores } from 'Stores';
 import Chat from '../chat';
 

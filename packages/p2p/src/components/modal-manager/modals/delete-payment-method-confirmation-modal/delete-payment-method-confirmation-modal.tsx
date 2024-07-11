@@ -30,6 +30,7 @@ const DeletePaymentMethodConfirmationModal = ({
                 {
                     key: 'DeletePaymentMethodErrorModal',
                     props: {
+                        // @ts-ignore
                         error_message: mutation_error.message,
                     },
                 },

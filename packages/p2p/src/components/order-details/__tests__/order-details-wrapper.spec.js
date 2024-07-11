@@ -1,5 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { isMobile } from '@deriv-app/shared';
 import OrderDetailsWrapper from '../order-details-wrapper.jsx';

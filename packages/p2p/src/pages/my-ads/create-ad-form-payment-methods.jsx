@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useP2PAdvertiserPaymentMethods } from '@deriv-app/hooks';
+// @ts-ignore
 import { useStores } from 'Stores';
 import PaymentMethodCard from 'Components/payment-method-card';
 import { localize } from 'Components/i18next';

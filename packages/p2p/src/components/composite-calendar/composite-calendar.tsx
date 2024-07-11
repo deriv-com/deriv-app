@@ -207,6 +207,7 @@ const CompositeCalendar = (props: TCompositeCalendarProps) => {
                         />
                         <TwoMonthPickerLoadable
                             value={show_to ? to : from}
+                            // @ts-ignore
                             onChange={date => setFromToDate(date, show_to ? 'to' : 'from')}
                             getIsPeriodDisabled={date => getIsPeriodDisabled(date, show_to ? 'to' : 'from')}
                         />

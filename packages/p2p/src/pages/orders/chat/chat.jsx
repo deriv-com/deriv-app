@@ -7,6 +7,7 @@ import ChatHeader from 'Pages/orders/chat/chat-header.jsx';
 import ChatMessages from 'Pages/orders/chat/chat-messages.jsx';
 import ChatFooter from 'Pages/orders/chat/chat-footer.jsx';
 import ChatWrapper from 'Pages/orders/chat/chat-wrapper.jsx';
+// @ts-ignore
 import { useStores } from 'Stores';
 import 'Pages/orders/chat/chat.scss';
 

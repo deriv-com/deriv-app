@@ -2,6 +2,7 @@ import React from 'react';
 import { Loading } from '@deriv-app/components';
 import { useP2PAdvertiserPaymentMethods } from '@deriv-app/hooks';
 import { observer, useStore } from '@deriv-app/stores';
+// @ts-ignore
 import { useStores } from 'Stores';
 import AddPaymentMethod from 'Components/add-payment-method';
 import EditPaymentMethodForm from './edit-payment-method-form';

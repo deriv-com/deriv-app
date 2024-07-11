@@ -3,6 +3,7 @@ import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text, Button 
 import { observer } from '@deriv-app/stores';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { Localize, localize } from 'Components/i18next';
+// @ts-ignore
 import { useStores } from 'Stores';
 
 const PaymentMethodsEmpty = () => {

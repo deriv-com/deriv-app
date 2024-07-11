@@ -5,6 +5,7 @@ import { Table } from '@deriv-app/components';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import { order_list } from 'Constants/order-list';
+// @ts-ignore
 import { useStores } from 'Stores';
 import './order-table-header.scss';
 

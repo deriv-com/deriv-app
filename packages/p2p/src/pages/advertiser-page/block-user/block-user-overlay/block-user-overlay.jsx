@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Icon, Text } from '@deriv-app/components';
 import { Localize } from 'Components/i18next';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';

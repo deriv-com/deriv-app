@@ -4,6 +4,7 @@ import { isDesktop } from '@deriv-app/shared';
 import { observer } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { requestWS } from 'Utils/websocket';
 
@@ -27,6 +28,7 @@ const MyAdsDeleteModal = () => {
             } else {
                 // TODO: Fix typings for adverts in store or move it out from store
                 // remove the deleted ad from the list of items
+                // @ts-ignore
                 const updated_items = my_ads_store.adverts.filter(ad => ad.id !== response.p2p_advert_update?.id);
                 my_ads_store.setAdverts(updated_items);
             }

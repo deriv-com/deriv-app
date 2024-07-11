@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Dropdown, Icon, Text } from '@deriv-app/components';
 import { Localize } from 'Components/i18next';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { useOnClickOutside } from '../../../../components/src/hooks';
 import './advertiser-page-dropdown-menu.scss';

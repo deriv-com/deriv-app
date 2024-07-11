@@ -4,6 +4,7 @@ import { Table, Text } from '@deriv-app/components';
 import { isMobile } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
 import { useP2PExchangeRate } from '@deriv-app/hooks';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';

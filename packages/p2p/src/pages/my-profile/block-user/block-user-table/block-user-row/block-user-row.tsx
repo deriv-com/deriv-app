@@ -6,6 +6,7 @@ import { routes } from '@deriv-app/shared';
 import { observer } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import UserAvatar from 'Components/user/user-avatar';
+// @ts-ignore
 import { useStores } from 'Stores';
 
 type TBlockUserRowProps = {

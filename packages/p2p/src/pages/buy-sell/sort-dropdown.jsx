@@ -3,6 +3,7 @@ import { Dropdown, Icon } from '@deriv-app/components';
 import { isDesktop } from '@deriv-app/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
+// @ts-ignore
 import { useStores } from 'Stores';
 import 'Pages/buy-sell/sort-dropdown.scss';
 

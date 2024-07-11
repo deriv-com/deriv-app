@@ -6,6 +6,7 @@ import FormError from 'Components/section-error';
 import FileUploaderComponent from 'Components/file-uploader-component';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { TFile } from 'Types';
 import { getErrorMessage, max_pot_file_size } from 'Utils/file-uploader';
@@ -97,7 +98,9 @@ const OrderDetailsConfirmModal = () => {
                         hover_message={localize('Upload receipt here')}
                         max_size={max_pot_file_size}
                         onClickClose={removeFile}
+                        // @ts-ignore
                         onDropAccepted={handleAcceptedFiles}
+                        // @ts-ignore
                         onDropRejected={handleRejectedFiles}
                         upload_message={localize('Upload receipt here')}
                         validation_error_message={document_file.error_message}

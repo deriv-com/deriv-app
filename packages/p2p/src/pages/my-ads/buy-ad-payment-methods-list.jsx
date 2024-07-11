@@ -4,6 +4,7 @@ import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { Autocomplete, Icon, Text, useOnClickOutside } from '@deriv-app/components';
 import { isDesktop, isMobile } from '@deriv-app/shared';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { localize, Localize } from 'Components/i18next';
 import PaymentMethodIcon from 'Components/payment-method-icon';
@@ -260,6 +261,7 @@ const BuyAdPaymentMethodsList = ({
                         <Formik enableReinitialize initialValues={{ payment_method: '' }}>
                             {({ setFieldValue }) => (
                                 <Field name='payment_method'>
+                                    {/*// @ts-ignore*/}
                                     {({ field }) => (
                                         <div className='my-ads--border'>
                                             <Autocomplete
@@ -314,6 +316,7 @@ const BuyAdPaymentMethodsList = ({
             <Formik enableReinitialize initialValues={{ payment_method: '' }}>
                 {({ setFieldValue }) => (
                     <Field name='payment_method'>
+                        {/*// @ts-ignore*/}
                         {({ field }) => (
                             <div className='my-ads--border'>
                                 <Autocomplete

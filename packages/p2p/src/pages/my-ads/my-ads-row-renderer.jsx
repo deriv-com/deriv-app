@@ -10,6 +10,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AdStatus from 'Pages/my-ads/ad-status.jsx';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { generateEffectiveRate } from 'Utils/format-value';

@@ -3,6 +3,7 @@ import { Button, Modal, Text } from '@deriv-app/components';
 import { useStore } from '@deriv-app/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+// @ts-ignore
 import { useStores } from 'Stores';
 import './market-rate-change-error-modal.scss';
 

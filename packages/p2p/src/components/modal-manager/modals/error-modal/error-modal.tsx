@@ -32,6 +32,7 @@ const ErrorModal = ({
             has_close_icon={has_close_icon}
             is_open={is_modal_open}
             title={error_modal_title}
+            // @ts-ignore
             toggleModal={onClose ?? hideModal}
             width={is_mobile ? '90rem' : '40rem'}
         >

@@ -3,6 +3,7 @@ import { Button, Icon, Modal, Text } from '@deriv-app/components';
 import { formatMoney } from '@deriv-app/shared';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { removeTrailingZeros, roundOffDecimal, setDecimalPlaces } from 'Utils/format-value';
 import { getIconSize, getTextSize } from 'Utils/responsive';

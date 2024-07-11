@@ -2,6 +2,7 @@ import React from 'react';
 import { InfiniteDataList, Loading, Table, Text } from '@deriv-app/components';
 import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
+// @ts-ignore
 import { useStores } from 'Stores';
 import BlockUserEmpty from '../block-user-empty';
 import BlockUserRow from './block-user-row';
@@ -49,6 +50,7 @@ const BlockUserTable = () => {
                         items={my_profile_store.rendered_trade_partners_list}
                         keyMapperFn={item => item.id}
                         loadMoreRowsFn={my_profile_store.getTradePartnersList}
+                        // @ts-ignore
                         rowRenderer={props => <BlockUserRow {...props} />}
                     />
                 </Table.Body>

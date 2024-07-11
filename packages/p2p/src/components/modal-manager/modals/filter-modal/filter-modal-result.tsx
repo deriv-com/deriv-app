@@ -1,6 +1,7 @@
 import React from 'react';
 import { Checkbox, Loading } from '@deriv-app/components';
 import { observer } from '@deriv-app/stores';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { TPaymentMethod } from './filter-modal';
 import FilterModalNoResults from './filter-modal-no-results';

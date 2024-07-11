@@ -1,6 +1,7 @@
 import React from 'react';
 import { Loading } from '@deriv-app/components';
 import { observer } from 'mobx-react-lite';
+// @ts-ignore
 import { useStores } from 'Stores';
 import EditAdForm from './edit-ad-form.jsx';
 

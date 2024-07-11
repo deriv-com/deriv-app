@@ -5,6 +5,7 @@ import { useIsMounted } from '@deriv-app/shared';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import SectionError from 'Components/section-error';
+// @ts-ignore
 import { useStores } from 'Stores';
 import { requestWS } from 'Utils/websocket';
 
@@ -37,6 +38,7 @@ const OrderDetailsCancelModal = () => {
             className='order-details-cancel-modal'
             has_close_icon={false}
             is_open={is_modal_open}
+            // @ts-ignore
             toggleModal={hideModal}
             renderTitle={() => (
                 <Text color='prominent' weight='bold'>

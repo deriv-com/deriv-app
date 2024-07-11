@@ -4,6 +4,7 @@ import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { order_status } from 'Constants/order-list';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
+// @ts-ignore
 import ServerTime from './server-time';
 
 type TServerTime = typeof ServerTime;

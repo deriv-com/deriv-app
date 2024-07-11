@@ -1,5 +1,9 @@
 .network-status {
     &__container {
-        padding-inline: 1.6rem;
+        .snackbar {
+            //center fixed element with dynamic width
+            left: 50%;
+            transform: translateX(-50%);
+        }
     }
 }

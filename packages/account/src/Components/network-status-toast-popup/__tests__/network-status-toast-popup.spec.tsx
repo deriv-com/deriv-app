@@ -101,9 +101,25 @@ describe('NetworkStatusToastPopup', () => {
         expect(screen.queryByText(online)).not.toBeInTheDocument();
     });
 
-    it('should not render NetworkStatusToastPopup for desktop or tablet', () => {
+    it('should not render NetworkStatusToastPopup for desktop', () => {
         (useDevice as jest.Mock).mockReturnValue({
             isDesktop: true,
+            isTablet: false,
+            isMobile: false,
+        });
+        mock_store.common.network_status.class = offline.toLowerCase();
+        mock_store.common.network_status.tooltip = offline;
+
+        render(<NetworkStatusToastPopup />, { wrapper });
+
+        expect(screen.queryByText(offline)).not.toBeInTheDocument();
+        expect(screen.queryByText(connecting)).not.toBeInTheDocument();
+        expect(screen.queryByText(online)).not.toBeInTheDocument();
+    });
+
+    it('should not render NetworkStatusToastPopup for tablet', () => {
+        (useDevice as jest.Mock).mockReturnValue({
+            isDesktop: false,
             isTablet: true,
             isMobile: false,
         });

@@ -1,0 +1,26 @@
+.trade {
+    &__trade-types,
+    &__assets {
+        padding: var(--core-spacing-400) var(--core-spacing-800);
+    }
+    &__trade-types {
+        display: flex;
+        gap: var(--core-spacing-400);
+        overflow-x: auto;
+        min-height: var(--core-spacing-1600);
+        white-space: nowrap;
+        scrollbar-width: none;
+    }
+    &__assets {
+        background-color: var(--component-field-bg-fill-default);
+
+        .dc-dropdown {
+            &__container {
+                width: 26rem;
+            }
+            &__display {
+                height: var(--core-spacing-2100);
+            }
+        }
+    }
+}

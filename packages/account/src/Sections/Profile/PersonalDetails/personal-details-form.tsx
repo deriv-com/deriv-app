@@ -18,17 +18,17 @@ import { GetSettings } from '@deriv/api-types';
 import { AUTH_STATUS_CODES, WS, getBrandWebsiteName, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import LeaveConfirm from 'Components/leave-confirm';
-import FormFooter from 'Components/form-footer';
-import FormBody from 'Components/form-body';
-import { DateOfBirthField } from 'Components/forms/form-fields';
-import FormSubHeader from 'Components/form-sub-header';
-import LoadErrorMessage from 'Components/load-error-message';
-import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
-import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
+import LeaveConfirm from '../../../Components/leave-confirm';
+import FormFooter from '../../../Components/form-footer';
+import FormBody from '../../../Components/form-body';
+import { DateOfBirthField } from '../../../Components/forms/form-fields';
+import FormSubHeader from '../../../Components/form-sub-header';
+import LoadErrorMessage from '../../../Components/load-error-message';
+import POAAddressMismatchHintBox from '../../../Components/poa-address-mismatch-hint-box';
+import { getEmploymentStatusList } from '../../Assessment/FinancialAssessment/financial-information-list';
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
-import FormSelectField from 'Components/forms/form-select-field';
+import FormSelectField from '../../../Components/forms/form-select-field';
 import { useInvalidateQuery } from '@deriv/api';
 import { useStatesList, useResidenceList } from '@deriv/hooks';
 
@@ -433,7 +433,7 @@ const PersonalDetailsForm = observer(() => {
                                                                     ? errors.employment_status
                                                                     : undefined
                                                             }
-                                                            onChange={e => {
+                                                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                                                 setFieldTouched('employment_status', true);
                                                                 handleChange(e);
                                                             }}

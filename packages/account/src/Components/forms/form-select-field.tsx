@@ -2,7 +2,7 @@ import { FC, Fragment } from 'react';
 import { Autocomplete, SelectNative } from '@deriv/components';
 import { Field, FieldProps, FormikErrors } from 'formik';
 import { TGetField } from '../additional-kyc-info-modal/form-config';
-import { TListItem } from 'Types';
+import { TListItem } from '../../Types';
 import { useDevice } from '@deriv-com/ui';
 
 type TFormSelectField = TGetField & {

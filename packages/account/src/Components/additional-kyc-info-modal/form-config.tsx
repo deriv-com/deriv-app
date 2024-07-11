@@ -2,7 +2,7 @@ import React from 'react';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Localize, localize } from '@deriv/translations';
 import { generateValidationFunction } from '@deriv/shared';
-import { TListItem } from 'Types';
+import { TListItem } from '../../Types';
 
 export type TFields = 'place_of_birth' | 'tax_residence' | 'tax_identification_number' | 'account_opening_reason';
 
@@ -41,7 +41,7 @@ type TInputConfig = {
     /**
      * The list of items for the dropdown or select
      */
-    list_items?: TListItem[];
+    list_items: TListItem[];
     /**
      * The validation rules for the input field (e.g. 'req', 'length', 'regular', etc.)
      */

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Icon, Text } from '@deriv/components';
 import { motion } from 'framer-motion';
 
@@ -35,11 +35,24 @@ const variants = {
 type WheelPickerType = {
     onBarrierClick: (id: string) => Promise<void> | void;
     options: string[];
+    defaultValue?: string;
 };
 
-const WheelPicker = ({ options, onBarrierClick }: WheelPickerType) => {
-    const [selectedIndex, setSelectedIndex] = useState(3);
+const WheelPicker = ({ options, onBarrierClick, defaultValue }: WheelPickerType) => {
+    const getDefaultIndex = () => {
+        if (defaultValue) {
+            const index = options.indexOf(defaultValue);
+            return index !== -1 ? index : 0;
+        }
+        return 0;
+    };
+
+    const [selectedIndex, setSelectedIndex] = useState(getDefaultIndex());
     const [direction, setDirection] = useState('down');
+
+    useEffect(() => {
+        onBarrierClick(options[selectedIndex]);
+    }, [selectedIndex, onBarrierClick, options]);
 
     const handleIndexChange = (newIndex: number, newDirection: 'up' | 'down') => {
         setDirection(newDirection);
@@ -60,14 +73,24 @@ const WheelPicker = ({ options, onBarrierClick }: WheelPickerType) => {
     };
 
     const visibleValues = () => {
-        const start = Math.max(0, selectedIndex - 1);
-        const end = Math.min(options.length, selectedIndex + 2);
-        return options.slice(start, end);
+        const values = [];
+        if (selectedIndex > 0) {
+            values.push(options[selectedIndex - 1]);
+        } else {
+            values.push('');
+        }
+        values.push(options[selectedIndex]);
+        if (selectedIndex < options.length - 1) {
+            values.push(options[selectedIndex + 1]);
+        } else {
+            values.push('');
+        }
+        return values;
     };
 
     return (
         <div className='wheel-picker'>
-            <div className='picker-wheel' key={selectedIndex}>
+            <div className='wheel-picker__wheel' key={selectedIndex}>
                 {visibleValues().map((value: string, index: number) => (
                     <motion.div
                         key={value}
@@ -84,19 +107,28 @@ const WheelPicker = ({ options, onBarrierClick }: WheelPickerType) => {
                             color={index === 1 ? 'default' : 'disabled-1'}
                             align='center'
                             as='p'
-                            className={index === 1 ? 'selected-value' : ''}
+                            className={index === 1 ? '' : 'wheel-picker__wheel__placeholder'}
                         >
                             {value}
                         </Text>
                     </motion.div>
                 ))}
             </div>
-            <div className='actions'>
-                <Button small className='icons' icon={<Icon icon='IcChevronUp' />} onClick={handleIncrease} />
+            <div className='wheel-picker__actions'>
                 <Button
                     small
-                    className='icons chevron-up'
+                    className='wheel-picker__actions__icon'
                     icon={<Icon icon='IcChevronUp' />}
+                    data-testid='up-btn'
+                    name='up-btn'
+                    onClick={handleIncrease}
+                />
+                <Button
+                    small
+                    className='wheel-picker__actions__icon wheel-picker__actions--chevron-up'
+                    icon={<Icon icon='IcChevronUp' className='chevron-up' />}
+                    name='down-btn'
+                    data-testid='down-btn'
                     onClick={handleDecrease}
                 />
             </div>

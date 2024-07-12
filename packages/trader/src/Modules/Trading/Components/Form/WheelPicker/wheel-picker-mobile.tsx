@@ -3,6 +3,14 @@ import { useSwipeable } from 'react-swipeable';
 import { Text } from '@deriv/components';
 import { AnimatePresence, motion } from 'framer-motion';
 
+
+type WheelPickerMobileProps = {
+    defaultValue?: string;
+    onChange?: (val: string) => void;
+    options?: string[];
+    optionHeight?: number;
+};
+
 export function getTargetIndex({
     deltaY = 0,
     snapTolerance = 0.5,
@@ -24,27 +32,12 @@ export function getTargetIndex({
     return targetIndex;
 }
 
-const defaultOptions = [
-    '0.12',
-    '0.21',
-    '0.2231231',
-    '0.34',
-    '0.33',
-    '0.38',
-    '0.09',
-    '0.76',
-    '0.77',
-    '0.78',
-    '0.79',
-];
-
-export default function WheelPickerMobile({
-    defaultValue = defaultOptions[3],
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
+    defaultValue,
     onChange = (val: string) => {},
-    options = defaultOptions,
-    optionHeight = 30,
-}) {
+    options,
+    optionHeight = 30
+})=> {
     const [selectedIndex, setSelectedIndex] = useState(options.length - 1);
     const [optionWidth, setOptionWidth] = useState(0);
 
@@ -111,8 +104,7 @@ export default function WheelPickerMobile({
         width: '100%',
         top: `calc(50% - ${optionHeight / 2}px)`,
     };
-    return (
-        <div className='wheel-picker-mobile'>
+    return <div className='wheel-picker-mobile'>
             <div className='picker-selected-wrapper'>
                 <div className='picker-selected'>
                     <Text
@@ -146,7 +138,7 @@ export default function WheelPickerMobile({
                                 <Text
                                     size={index === selectedIndex ? 's' : 'xs'}
                                     weight={index === selectedIndex ? 'bolder' : 'bold'}
-                                    color={index === selectedIndex ? 'default' : 'disabled-1'}
+                                    color={index === selectedIndex ? '' : 'disabled-1'}
                                     align='center'
                                     as='p'
                                 >
@@ -158,5 +150,6 @@ export default function WheelPickerMobile({
                 </div>
             </div>
         </div>
-    );
 }
+
+export default WheelPickerMobile;

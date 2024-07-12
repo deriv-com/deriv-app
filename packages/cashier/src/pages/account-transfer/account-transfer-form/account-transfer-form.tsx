@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { Field, FieldProps, Form, Formik } from 'formik';
 
-import { Button, Dropdown, InlineMessage, Input, Loading, Money, Text } from '@deriv/components';
+import { Button, Dropdown, InlineMessage, Input, Loading, Money, StatusBadge, Text } from '@deriv/components';
 import {
     getCurrencyDisplayCode,
     getCurrencyName,
@@ -25,7 +25,7 @@ import SideNote from '../../../components/side-note';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import { TAccount, TAccountsList, TError, TReactChangeEvent } from '../../../types';
 import AccountTransferReceipt from '../account-transfer-receipt/account-transfer-receipt';
-import { useMFAccountStatus, useExchangeRate } from '@deriv/hooks';
+import { useMFAccountStatus, useExchangeRate, useTradingPlatformStatus } from '@deriv/hooks';
 
 import AccountTransferNote from './account-transfer-form-side-note';
 
@@ -43,11 +43,19 @@ const AccountOption = ({
     account,
     idx,
     is_pending_verification,
-    is_selected_from,
     is_verification_failed,
     is_verification_needed,
+    is_account_unavailable,
+    is_server_maintenance,
 }: TAccountsList) => {
-    const is_cfd_account = account.is_dxtrade || account.is_ctrader || account.is_mt || account.is_derivez;
+    const is_cfd_account = account.is_dxtrade || account.is_ctrader || account.is_mt;
+
+    const has_show_account_status = true;
+    is_pending_verification ||
+        is_verification_needed ||
+        is_verification_failed ||
+        is_server_maintenance ||
+        is_account_unavailable;
 
     const getAccountStatusText = () => {
         if (is_pending_verification) {
@@ -68,6 +76,10 @@ const AccountOption = ({
                     <Localize i18n_default_text='Verification failed' />
                 </Text>
             );
+        } else if (is_server_maintenance === 'maintenance') {
+            return <StatusBadge account_status='under_maintenance' icon='IcAlertWarning' text='Server Maintenance' />;
+        } else if (is_account_unavailable) {
+            return <StatusBadge account_status='unavailable' icon='IcAlertWarning' text='Unavailable' />;
         }
     };
 
@@ -89,7 +101,7 @@ const AccountOption = ({
             </div>
 
             <span className='account-transfer-form__balance'>
-                {(is_pending_verification || is_verification_needed || is_verification_failed) && is_selected_from ? (
+                {has_show_account_status /* && is_selected_from */ ? (
                     getAccountStatusText()
                 ) : (
                     <Money
@@ -185,6 +197,8 @@ const AccountTransferForm = observer(
         const is_mf_status_verification_failed = mf_account_status === 'failed';
         const is_mf_status_pending_or_needs_verification =
             is_mf_status_pending || is_mf_status_need_verification || is_mf_status_verification_failed;
+        const is_account_unavailable = selected_to.status === MT5_ACCOUNT_STATUS.UNAVAILABLE;
+        const is_maintenance_status_present = selected_to.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
 
         const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
 
@@ -251,6 +265,8 @@ const AccountTransferForm = observer(
             return [];
         };
 
+        const { data: tradingPlatformStatusData } = useTradingPlatformStatus();
+
         React.useEffect(() => {
             if (selected_from?.currency && selected_to?.currency) {
                 const is_arrow_right = arrow_icon_direction === 'right';
@@ -276,16 +292,29 @@ const AccountTransferForm = observer(
 
             accounts_list.forEach((account, idx) => {
                 const is_selected_from = account.value === selected_from.value;
+                let platform;
+                if (account.is_mt) {
+                    platform = 'mt5';
+                } else if (account.is_ctrader) {
+                    platform = 'ctrader';
+                } else {
+                    platform = 'dxtrade';
+                }
+                const is_server_maintenance = tradingPlatformStatusData?.find(p => p.platform === platform)?.status;
+
                 const text = (
                     <AccountOption
                         idx={idx}
                         account={account}
                         is_pending_verification={is_mf_status_pending}
                         is_selected_from={is_selected_from}
+                        is_account_unavailable={is_account_unavailable}
                         is_verification_failed={is_mf_status_verification_failed}
                         is_verification_needed={is_mf_status_need_verification}
+                        is_server_maintenance={is_server_maintenance}
                     />
                 );
+
                 const value = account.value;
 
                 const is_cfd_account = account.is_mt || account.is_ctrader || account.is_dxtrade;
@@ -422,6 +451,22 @@ const AccountTransferForm = observer(
             let hint_text;
             if (is_migration_status_present) {
                 hint_text = <Localize i18n_default_text='You can no longer open new positions with this account.' />;
+            } else if (is_account_unavailable) {
+                hint_text = (
+                    <Localize i18n_default_text='The server is temporarily unavailable for this account. We’re working to resolve this.' />
+                );
+            } else if (is_maintenance_status_present) {
+                const getMaintenanceTime = () => {
+                    if (selected_to.is_dxtrade) return '08:00 GMT';
+                    if (selected_to.is_ctrader) return '10:00 GMT';
+                    return '03:00 GMT'; // mt5
+                };
+                hint_text = (
+                    <Localize
+                        i18n_default_text={`We’re currently performing server maintenance, which may continue until <0>${getMaintenanceTime()}</0>. Please expect some disruptions during this time.`}
+                        components={[<strong key={0} />]}
+                    />
+                );
             } else {
                 const transfer_text = remaining_transfers > 1 ? 'transfers' : 'transfer';
                 hint_text = (

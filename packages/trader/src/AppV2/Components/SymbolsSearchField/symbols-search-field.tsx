@@ -6,7 +6,7 @@ import { Localize, localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getContractTypesConfig } from '@deriv/shared';
 
-type TSymbolsSearchField = {
+export type TSymbolsSearchField = {
     isSearching: boolean;
     setIsSearching: (input: boolean) => void;
     searchValue: string;

@@ -6,10 +6,8 @@ import React from 'react';
 const SymbolNotFound = ({ searchTerm }: { searchTerm?: string }) => {
     return (
         <div className='symbol-not-found--container'>
-            {/* //TODO fill needs to use some quill token dont know which one yet */}
             <StandaloneSearchRegularIcon
-                // fill='#var(--core-color-solid-slate-200)'
-                fill='#acbacb'
+                fill='var(--semantic-color-slate-solid-surface-static-midLowest)'
                 iconSize='2xl'
             />
             <div className='symbol-not-found--content'>
@@ -17,7 +15,7 @@ const SymbolNotFound = ({ searchTerm }: { searchTerm?: string }) => {
                     <Localize i18n_default_text={`No results for ${searchTerm}`} />
                 </Text>
                 <Text size='md' color='quill-typography__color--subtle'>
-                    <Localize i18n_default_text={'Try searching for something else'} />
+                    <Localize i18n_default_text={'Try searching for something else.'} />
                 </Text>
             </div>
         </div>

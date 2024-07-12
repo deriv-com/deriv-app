@@ -5,8 +5,7 @@ import { Localize } from '@deriv/translations';
 
 const NoFavoriteSymbol = () => (
     <div className='favorite-symbols--no-fav'>
-        {/* //TODO fill needs to use some quill token dont know which one yet */}
-        <StandaloneStarFillIcon fill='#acbacb' iconSize='2xl' />
+        <StandaloneStarFillIcon fill='var(--semantic-color-slate-solid-surface-static-midLowest)' iconSize='2xl' />
         <Text size='lg' bold color='quill-typography__color--subtle'>
             <Localize i18n_default_text={`No favourites`} />
         </Text>

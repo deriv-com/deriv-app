@@ -47,7 +47,7 @@ const TradeParametersContainer = ({
             {is_minimized ? (
                 <CSSTransition
                     in={is_minimized_visible}
-                    timeout={100}
+                    timeout={0}
                     classNames={{
                         appear: 'trade-params__options__wrapper--minimized--enter',
                         enter: 'trade-params__options__wrapper--minimized--enter',
@@ -55,6 +55,10 @@ const TradeParametersContainer = ({
                         exit: 'trade-params__options__wrapper--minimized--exit',
                     }}
                     unmountOnExit
+                    onEntered={() => {
+                        const scroll_container = document.querySelector('.bottom-nav-selection');
+                        scroll_container?.scroll({ top: scroll_container?.scrollHeight, behavior: 'smooth' });
+                    }}
                 >
                     {children}
                 </CSSTransition>

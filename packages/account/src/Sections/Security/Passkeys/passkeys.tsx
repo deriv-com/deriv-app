@@ -5,7 +5,7 @@ import { useGetPasskeysList, useRegisterPasskey, useRemovePasskey, useRenamePass
 import { routes } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
 import { PasskeyErrorModal } from './components/passkey-error-modal';
 import { PasskeyReminderModal } from './components/passkey-reminder-modal';
 import { PasskeysStatusContainer } from './components/passkeys-status-container';
@@ -106,6 +106,7 @@ const Passkeys = observer(() => {
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
         }
         return () => clearRefTimeOut(snackbar_timeout);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_passkeys_list_loading, passkeys_list?.length]);
 
     useEffect(() => {
@@ -186,13 +187,11 @@ const Passkeys = observer(() => {
         }
         if (passkey_status === PASSKEY_STATUS_CODES.REMOVED) {
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
-            // TODO: add tracking events
         }
-        if (passkey_status === PASSKEY_STATUS_CODES.VERIFYING) {
-            // TODO: add the logic for removing with email and tracking events
-            // TODO: remove redirecting to passkeys list
-            setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
-        }
+        // TODO: add the logic for removing with passkey or email and tracking events when e-mail verification is implemented
+        // if (passkey_status === PASSKEY_STATUS_CODES.VERIFYING) {
+        //     setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
+        // }
     };
 
     const onSecondaryButtonClick = () => {

@@ -1,5 +1,5 @@
 import { Button, Modal, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
 import { isNotSupportedError, TPasskeyError } from '../passkeys-configs';
 import { TServerError } from '../../../../Types';
 

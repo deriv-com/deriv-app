@@ -1,12 +1,14 @@
 import { Dropdown, Icon, Text } from '@deriv/components';
 import { getLongDate } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { useTranslations, Localize } from '@deriv-com/translations';
 import { TOnPasskeyMenuClick, TPasskey } from '../passkeys';
 import { PASSKEY_STATUS_CODES, passkeysMenuActionEventTrack } from '../passkeys-configs';
 
 type TPasskeyCard = TPasskey & { onPasskeyMenuClick: TOnPasskeyMenuClick };
 
 export const PasskeyCard = ({ name, last_used, stored_on, id, icon, passkey_id, onPasskeyMenuClick }: TPasskeyCard) => {
+    const { localize } = useTranslations();
+
     const current_passkey_data = { id, name, passkey_id };
     const handleManagePasskey = (event: { target: { value: string } }) => {
         if (event.target.value === 'rename') {
@@ -41,6 +43,7 @@ export const PasskeyCard = ({ name, last_used, stored_on, id, icon, passkey_id, 
                 {icon && <Icon icon={icon} size={24} className='passkeys-card__passkey-type-icon' />}
             </div>
             <Dropdown
+                test_id={`dt_passkey_card_menu_${id}`}
                 is_align_text_left
                 list={[
                     {

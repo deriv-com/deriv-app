@@ -4,7 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Analytics } from '@deriv-com/analytics';
 import { APIProvider } from '@deriv/api';
-import { useGetPasskeysList, useRegisterPasskey } from '@deriv/hooks';
+import { useGetPasskeysList, useRegisterPasskey, useRemovePasskey, useRenamePasskey } from '@deriv/hooks';
 import { useDevice } from '@deriv-com/ui';
 import { routes } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
@@ -52,6 +52,12 @@ jest.mock('@simplewebauthn/browser', () => ({
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useGetPasskeysList: jest.fn(() => ({})),
+    useRemovePasskey: jest.fn(() => ({})),
+    useRenamePasskey: jest.fn(() => ({})),
+    useRegisterPasskey: jest.fn(() => ({
+        startPasskeyRegistration: jest.fn().mockResolvedValue({}),
+        createPasskey: jest.fn().mockResolvedValue({}),
+    })),
 }));
 
 jest.mock('@deriv/components', () => ({
@@ -62,22 +68,6 @@ jest.mock('@deriv/components', () => ({
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     getOSNameWithUAParser: () => 'test OS',
-    WS: {
-        send: jest.fn(() =>
-            Promise.resolve({
-                passkeys_register_options: {
-                    publicKey: {
-                        name: 'test key',
-                    },
-                },
-                passkeys_register: {
-                    properties: {
-                        name: 'test name',
-                    },
-                },
-            })
-        ),
-    },
 }));
 
 jest.mock('@deriv-com/ui', () => ({
@@ -137,13 +127,12 @@ describe('Passkeys', () => {
         );
     };
 
-    it("doesn't render existed passkeys for desktop and tablet", () => {
+    it('should not render existed passkeys for desktop and tablet', () => {
         (useGetPasskeysList as jest.Mock).mockReturnValue({
             passkeys_list: mock_passkeys_list,
         });
         (useDevice as jest.Mock).mockReturnValueOnce({ isMobile: false });
 
-        mock_store.ui.is_mobile = false;
         renderComponent();
 
         expect(screen.queryByText(passkey_name_1)).not.toBeInTheDocument();
@@ -198,5 +187,102 @@ describe('Passkeys', () => {
         expect(mockHistoryPush).toHaveBeenCalledWith(routes.traders_hub);
     });
 
-    // TODO: add tests for create, rename, remove flows, as well as errors
+    it('render existed passkeys for responsive', () => {
+        (useGetPasskeysList as jest.Mock).mockReturnValue({
+            passkeys_list: mock_passkeys_list,
+        });
+
+        renderComponent();
+
+        expect(screen.getByText(passkey_name_1)).toBeInTheDocument();
+        expect(screen.getByText(passkey_name_2)).toBeInTheDocument();
+        expect(Analytics.trackEvent).not.toHaveBeenCalled();
+    });
+
+    it('should trigger creation of new passkey ', async () => {
+        const mockStartPasskeyRegistration = jest.fn();
+        const mockCreatePasskey = jest.fn();
+
+        (useGetPasskeysList as jest.Mock).mockReturnValue({
+            passkeys_list: mock_passkeys_list,
+        });
+        (useRegisterPasskey as jest.Mock).mockReturnValue({
+            startPasskeyRegistration: mockStartPasskeyRegistration,
+            createPasskey: mockCreatePasskey,
+        });
+
+        renderComponent();
+
+        expect(screen.getByText(passkey_name_1)).toBeInTheDocument();
+        expect(screen.getByText(passkey_name_2)).toBeInTheDocument();
+
+        userEvent.click(screen.getByRole('button', { name: create_passkey }));
+
+        expect(mockStartPasskeyRegistration).toHaveBeenCalledTimes(1);
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(
+            tracking_event,
+            getAnalyticsParams('create_passkey_started', { subform_name: 'passkey_main' })
+        );
+        expect(screen.getByText('Just a reminder')).toBeInTheDocument();
+
+        userEvent.click(screen.getByRole('button', { name: continue_button }));
+
+        expect(mockCreatePasskey).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+            expect(screen.queryByText('Just a reminder')).not.toBeInTheDocument();
+        });
+    });
+
+    it('should trigger removing of passkey ', async () => {
+        (useGetPasskeysList as jest.Mock).mockReturnValue({
+            passkeys_list: mock_passkeys_list,
+        });
+        const mockUseRemovePasskey = jest.fn();
+
+        (useRemovePasskey as jest.Mock).mockReturnValue({
+            removePasskey: mockUseRemovePasskey,
+        });
+
+        renderComponent();
+
+        userEvent.click(screen.getAllByTestId('dt_dropdown_display')[0]);
+
+        await waitFor(() => {
+            expect(screen.getByText('Rename')).toBeInTheDocument();
+            expect(screen.getByText('Remove')).toBeInTheDocument();
+        });
+
+        userEvent.click(screen.getByText('Remove'));
+        expect(mockUseRemovePasskey).toHaveBeenCalledTimes(1);
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('passkey_remove_started'));
+    });
+
+    it('should trigger renaming of passkey ', async () => {
+        (useGetPasskeysList as jest.Mock).mockReturnValue({
+            passkeys_list: mock_passkeys_list,
+        });
+        const mockUseRenamePasskey = jest.fn();
+
+        (useRenamePasskey as jest.Mock).mockReturnValue({
+            renamePasskey: mockUseRenamePasskey,
+        });
+
+        renderComponent();
+
+        userEvent.click(screen.getAllByTestId('dt_dropdown_display')[0]);
+
+        await waitFor(() => {
+            expect(screen.getByText('Rename')).toBeInTheDocument();
+            expect(screen.getByText('Remove')).toBeInTheDocument();
+        });
+
+        userEvent.click(screen.getByText('Rename'));
+        // expect(mockUseRenamePasskey).toHaveBeenCalledTimes(1);
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('passkey_rename_started'));
+
+        // await waitFor(() => {
+        //     // screen.debug();
+        //     // TODO: improve this test
+        // });
+    });
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import * as Yup from 'yup';
 import { TSocketError } from '@deriv/api/types';
 import { getOSNameWithUAParser } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-com/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { TServerError } from '../../../Types';
 
@@ -50,7 +50,7 @@ export const passkeysMenuActionEventTrack = (
     additional_data: { error_message?: string; subform_name?: string } = {}
 ) => {
     Analytics.trackEvent('ce_passkey_account_settings_form', {
-        //@ts-expect-error [TODO] type not found in @deriv-analytics
+        //@ts-expect-error TODO: remove ts-expect-error when analytics is updated
         action,
         form_name: 'ce_passkey_account_settings_form',
         operating_system: getOSNameWithUAParser(),

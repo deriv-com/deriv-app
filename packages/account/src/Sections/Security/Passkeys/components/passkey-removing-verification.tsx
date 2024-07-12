@@ -1,8 +1,9 @@
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
 // import { mobileOSDetect } from '@deriv/shared';
 import { DerivLightIcVerifyPasskeyIcon } from '@deriv/quill-icons';
 import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status-layout';
 
+// TODO: edit the component and add tests when e-mail flow is implemented
 export const PasskeyRemovingVerification = ({ onPrimaryButtonClick }: TPasskeysButtonOnClicks) => {
     // TODO: edit the description considering OS
     return (

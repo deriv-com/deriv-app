@@ -1,5 +1,5 @@
 import { Form, Formik } from 'formik';
-import { localize, Localize } from '@deriv/translations';
+import { useTranslations, Localize } from '@deriv-com/translations';
 import { DerivLightIcEditPasskeyIcon } from '@deriv/quill-icons';
 import { FormInputField } from 'Components/forms/form-fields';
 import { TCurrentManagedPasskey } from '../passkeys';
@@ -15,6 +15,8 @@ export const PasskeyRename = ({
     onSecondaryButtonClick,
     current_managed_passkey,
 }: TPasskeyRename) => {
+    const { localize } = useTranslations();
+
     const form_initial_values: TInitialValues = {
         passkey_name: current_managed_passkey.name,
     };

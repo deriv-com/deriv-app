@@ -8,7 +8,7 @@ import { PasskeysList } from './passkeys-list';
 import { PasskeyRename } from './passkey-rename';
 import { TPasskeysButtonOnClicks } from './passkeys-status-layout';
 import { PasskeyRemoved } from 'Sections/Security/Passkeys/components/passkey-removed';
-import { PasskeyRemovingVerification } from 'Sections/Security/Passkeys/components/passkey-removing-verification';
+// import { PasskeyRemovingVerification } from 'Sections/Security/Passkeys/components/passkey-removing-verification';
 
 type TPasskeysStatusContainer = {
     current_managed_passkey: TCurrentManagedPasskey;
@@ -58,9 +58,9 @@ export const PasskeysStatusContainer = observer(
                 );
             case PASSKEY_STATUS_CODES.REMOVED:
                 return <PasskeyRemoved onPrimaryButtonClick={onPrimaryButtonClick} />;
-            case PASSKEY_STATUS_CODES.VERIFYING:
-                return <PasskeyRemovingVerification onPrimaryButtonClick={onPrimaryButtonClick} />;
-
+            // TODO: add new verifying screen and tests when e-mail flow is implemented
+            // case PASSKEY_STATUS_CODES.VERIFYING:
+            //     return <PasskeyRemovingVerification onPrimaryButtonClick={onPrimaryButtonClick} />;
             default:
                 return (
                     <PasskeysList

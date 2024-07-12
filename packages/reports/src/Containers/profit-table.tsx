@@ -24,7 +24,7 @@ type TDataListCell = React.ComponentProps<typeof DataList.Cell>;
 
 type TGetProfitTableColumnsTemplate = ReturnType<typeof getProfitTableColumnsTemplate>;
 
-const getRowAction = (row_obj: { [key: string]: unknown }) => {
+export const getRowAction = (row_obj: { [key: string]: unknown }) => {
     const contract_type = extractInfoFromShortcode(row_obj?.shortcode as string)
         ?.category?.toString()
         .toUpperCase();

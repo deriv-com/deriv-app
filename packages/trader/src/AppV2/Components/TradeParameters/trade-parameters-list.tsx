@@ -8,11 +8,11 @@ import Duration from './Duration';
 import Stake from './Stake';
 import Barrier from './Barrier';
 
-type TTradeParamsProps = {
+type TTradeParametersList = {
     is_minimized?: boolean;
 };
 
-const TradeParams = observer(({ is_minimized }: TTradeParamsProps) => {
+const TradeParametersList = observer(({ is_minimized }: TTradeParametersList) => {
     const {
         amount,
         barrier_1,
@@ -76,4 +76,4 @@ const TradeParams = observer(({ is_minimized }: TTradeParamsProps) => {
     );
 });
 
-export default TradeParams;
+export default TradeParametersList;

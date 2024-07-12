@@ -3,6 +3,8 @@ import type {
     AccountLimitsResponse,
     AccountStatusRequest,
     AccountStatusResponse,
+    TradingPlatformStatusRequest,
+    TradingPlatformStatusResponse,
     ActiveSymbolsRequest,
     ActiveSymbolsResponse,
     APITokenRequest,
@@ -304,6 +306,22 @@ type KycAuthStatus = {
 };
 
 type TPrivateSocketEndpoints = {
+    trading_platform_status: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            trading_platform_status: 1;
+        };
+        response: {
+            trading_platform_status: {
+                /**
+                 * Trading platform status.
+                 */
+                status: 'active' | 'unavailable' | 'maintenance';
+            };
+        };
+    };
     available_accounts: {
         request: {
             /**
@@ -2275,6 +2293,10 @@ type ChangeEmailResponse = {
 };
 
 type TSocketEndpoints = {
+    trading_platform_status: {
+        request: TradingPlatformStatusRequest;
+        response: TradingPlatformStatusResponse;
+    };
     active_symbols: {
         request: ActiveSymbolsRequest;
         response: ActiveSymbolsResponse;

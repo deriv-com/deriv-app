@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { observer, useStore } from '@deriv/stores';
-import { Loading, Text, StaticUrl } from '@deriv/components';
+import { Loading, Text } from '@deriv/components';
 import {
     formatMoney,
     getAuthenticationStatusInfo,
@@ -22,7 +22,8 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 import CompareAccount from 'Components/compare-account';
 import CFDsDescription from 'Components/elements/cfds-description';
 import { getHasDivider } from 'Constants/utils';
-import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
+import { useMT5SVGEligibleToMigrate, useTradingPlatformStatus } from '@deriv/hooks';
+
 import './cfds-listing.scss';
 
 const MigrationBanner = makeLazyLoader(
@@ -76,6 +77,7 @@ const CFDsListing = observer(() => {
         setServerMaintenanceModal,
         setProduct,
     } = cfd;
+
     const {
         account_status,
         is_landing_company_loaded,
@@ -99,9 +101,10 @@ const CFDsListing = observer(() => {
     const { has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
     const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
 
-    const getTradingPlatformStatus = async (platform?: string) => {
-        const { trading_platform_status: tradingPlatformStatus } = await WS.send({ trading_platform_status: 1 });
-        const status = tradingPlatformStatus.find((p: { platform: string }) => p.platform === platform)?.status;
+    const { data: tradingPlatformStatusData } = useTradingPlatformStatus();
+
+    const getTradingPlatformStatus = (platform?: string) => {
+        const status = tradingPlatformStatusData?.find(p => p.platform === platform)?.status;
 
         switch (status) {
             case TRADING_PLATFORM_STATUS.MAINTENANCE:

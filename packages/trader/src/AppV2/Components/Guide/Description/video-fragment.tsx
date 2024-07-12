@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-lib/translations';
 import { Loading } from '@deriv-lib/components';
 import { Text } from '@deriv-com/quill-ui';
 import { useDevice } from '@deriv-com/ui';

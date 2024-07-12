@@ -8,7 +8,7 @@ import {
     DESCRIPTION_VIDEO_IDS,
 } from '../contract-description-utils';
 import { CONTRACT_LIST } from '../trade-types-utils';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-lib/translations';
 
 describe('getTermDefinition', () => {
     it('should return correct definition for passed term and contract type', () => {

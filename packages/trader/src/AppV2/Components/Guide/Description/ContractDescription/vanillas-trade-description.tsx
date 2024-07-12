@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-lib/translations';
 import { TERM, getContractDescription } from 'AppV2/Utils/contract-description-utils';
 
 const VanillasTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {

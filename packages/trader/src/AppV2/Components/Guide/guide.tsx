@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@deriv-com/quill-ui';
 import { LabelPairedPresentationScreenSmRegularIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-lib/translations';
 import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
 import GuideDefinitionModal from './guide-definition-modal';
 import GuideDescriptionModal from './guide-description-modal';

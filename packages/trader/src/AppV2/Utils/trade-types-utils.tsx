@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-lib/translations';
 
 export const CONTRACT_LIST = {
     ACCUMULATORS: 'Accumulators',

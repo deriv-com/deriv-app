@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv-lib/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-lib/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv-lib/shared';

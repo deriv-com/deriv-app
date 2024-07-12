@@ -1,5 +1,5 @@
 import React from 'react';
-import { MobileFullPageModal, Modal, Text } from '@deriv/components';
+import { MobileFullPageModal, Modal, Text } from '@deriv-lib/components';
 import { useStore } from '@deriv/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { Localize } from 'Components/i18next';

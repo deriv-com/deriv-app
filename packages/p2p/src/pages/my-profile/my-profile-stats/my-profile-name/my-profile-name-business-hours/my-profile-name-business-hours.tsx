@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Text, Tooltip } from '@deriv/components';
+import { Icon, Text, Tooltip } from '@deriv-lib/components';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { getTextSize } from 'Utils/responsive';

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Localize } from '@deriv-lib/translations';
-import { Skeleton } from '@deriv/components';
+import { Skeleton } from '@deriv-lib/components';
 import { getCurrencyDisplayCode } from '@deriv-lib/shared';
 import { LabelPairedChevronDownCaptionRegularIcon, LabelPairedLockCaptionRegularIcon } from '@deriv/quill-icons';
 import { CaptionText, Heading, ActionSheet } from '@deriv-com/quill-ui';

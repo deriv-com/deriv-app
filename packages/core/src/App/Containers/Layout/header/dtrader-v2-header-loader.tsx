@@ -1,5 +1,5 @@
 import React from 'react';
-import { Skeleton, VARIANT } from '@deriv/components';
+import { Skeleton, VARIANT } from '@deriv-lib/components';
 
 type TDTraderV2HeaderLoaderProps = {
     show_notifications_skeleton?: boolean;

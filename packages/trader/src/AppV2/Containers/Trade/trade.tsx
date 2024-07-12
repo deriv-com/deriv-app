@@ -3,7 +3,7 @@ import { Text } from '@deriv-com/quill-ui';
 import BottomNav from 'AppV2/Components/BottomNav';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { Loading } from '@deriv/components';
+import { Loading } from '@deriv-lib/components';
 import Guide from 'AppV2/Components/Guide';
 
 const Trade = observer(() => {

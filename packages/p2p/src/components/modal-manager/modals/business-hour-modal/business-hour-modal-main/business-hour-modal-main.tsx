@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-lib/components';
 import { Localize } from 'Components/i18next';
 import SeparatorContainerLine from 'Components/separator-container-line';
 import './business-hour-modal-main.scss';

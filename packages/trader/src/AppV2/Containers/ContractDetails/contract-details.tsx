@@ -22,7 +22,7 @@ import {
     hasContractEntered,
     isAccumulatorContract,
 } from '@deriv-lib/shared';
-import { Loading } from '@deriv/components';
+import { Loading } from '@deriv-lib/components';
 import classNames from 'classnames';
 import ContractDetailsFooter from 'AppV2/Components/ContractDetailsFooter';
 import { ContractCard } from 'AppV2/Components/ContractCard';

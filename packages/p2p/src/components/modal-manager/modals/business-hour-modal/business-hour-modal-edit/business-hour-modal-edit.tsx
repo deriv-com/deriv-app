@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Dropdown, Icon, Text, Tooltip } from '@deriv/components';
+import { Dropdown, Icon, Text, Tooltip } from '@deriv-lib/components';
 import { Localize, localize } from 'Components/i18next';
 import { getHoursList } from 'Constants/business-hour-times';
 import SeparatorContainerLine from 'Components/separator-container-line';

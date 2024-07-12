@@ -8,8 +8,8 @@ import ProgressSliderStream from '../progress-slider-stream';
 
 const progress_slider = 'ProgressSlider';
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-lib/components', () => ({
+    ...jest.requireActual('@deriv-lib/components'),
     ProgressSlider: jest.fn(() => <div>{progress_slider}</div>),
 }));
 

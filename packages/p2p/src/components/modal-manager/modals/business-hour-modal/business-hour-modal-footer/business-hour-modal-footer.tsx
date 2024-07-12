@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@deriv/components';
+import { Button } from '@deriv-lib/components';
 import { Localize } from 'Components/i18next';
 import './business-hour-modal-footer.scss';
 

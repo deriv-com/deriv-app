@@ -6,7 +6,7 @@ export const getTradeParams = (symbol?: string) => ({
     [TRADE_TYPES.HIGH_LOW]: ['duration', 'barrier', 'stake'],
     [TRADE_TYPES.TOUCH]: ['duration', 'barrier', 'stake'],
     [TRADE_TYPES.MATCH_DIFF]: ['last_digit', 'duration', 'stake'],
-    [TRADE_TYPES.EVEN_ODD]: ['last_digit', 'duration', 'stake'],
+    [TRADE_TYPES.EVEN_ODD]: ['duration', 'stake'],
     [TRADE_TYPES.OVER_UNDER]: ['last_digit', 'duration', 'stake'],
     [TRADE_TYPES.ACCUMULATOR]: ['growth_rate', 'stake', 'take_profit', 'accu_info_display'],
     [TRADE_TYPES.MULTIPLIER]: [

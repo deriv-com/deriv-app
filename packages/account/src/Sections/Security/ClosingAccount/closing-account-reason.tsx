@@ -4,7 +4,7 @@ import { Loading, Modal, Text } from '@deriv-lib/components';
 import { routes } from '@deriv-lib/shared';
 import { useCloseDerivAccount } from '@deriv-lib/api';
 import { Localize } from '@deriv-lib/translations';
-import { MAX_ALLOWED_REASONS_FOR_CLOSING_ACCOUNT } from 'Constants/closing-account-config';
+import { MAX_ALLOWED_REASONS_FOR_CLOSING_ACCOUNT } from '../../../Constants/closing-account-config';
 import ClosingAccountHasPendingConditions from './closing-account-pending-conditions/closing-account-has-pending-conditions';
 import ClosingAccountReasonForm from './closing-account-reason-form';
 import ClosingAccountWarningModal from './closing-account-warning-modal';

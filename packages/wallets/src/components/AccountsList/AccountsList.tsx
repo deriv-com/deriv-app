@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Divider, Tab, Tabs } from '@deriv-com/ui';
 import { CFDPlatformsList } from '../../features';
@@ -7,13 +7,28 @@ import { TSubscribedBalance } from '../../types';
 import { OptionsAndMultipliersListing } from '../OptionsAndMultipliersListing';
 import './AccountsList.scss';
 
-const AccountsList: FC<TSubscribedBalance> = ({ balance }) => {
+const tabs = ['CFDs', 'Options'];
+
+type TProps = {
+    accountsActiveTabIndex?: number;
+    balance: TSubscribedBalance['balance'];
+    onTabClickHandler?: React.Dispatch<React.SetStateAction<number>>;
+};
+
+const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, balance, onTabClickHandler }) => {
     const { isMobile } = useDevice();
     const { t } = useTranslation();
 
+    const onChangeTabHandler = useCallback((activeTab: number) => onTabClickHandler?.(activeTab), [onTabClickHandler]);
+
     if (isMobile) {
         return (
-            <Tabs activeTab='CFDs' className='wallets-accounts-list__tabs' wrapperClassName='wallets-accounts-list'>
+            <Tabs
+                activeTab={tabs[accountsActiveTabIndex ?? 0]}
+                className='wallets-accounts-list__tabs'
+                onChange={onChangeTabHandler}
+                wrapperClassName='wallets-accounts-list'
+            >
                 <Tab className='wallets-accounts-list__tab' title={t('CFDs')}>
                     <CFDPlatformsList />
                     <Divider color='var(--wallets-banner-border-color)' />

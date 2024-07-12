@@ -27,6 +27,9 @@ describe('Positions', () => {
             </BrowserRouter>
         );
     };
+    beforeAll(() => {
+        Element.prototype.scrollTo = jest.fn();
+    });
 
     beforeAll(() => {
         Element.prototype.scrollTo = jest.fn();

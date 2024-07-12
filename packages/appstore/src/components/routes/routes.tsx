@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Loading } from '@deriv-lib/components';
 import { observer, useStore } from '@deriv-lib/stores';
-import { useLocalize } from '@deriv-lib/translations';
+import { localize } from '@deriv-lib/translations';
 import { routes } from '@deriv-lib/shared';
 import { Switch } from 'react-router-dom';
 import RouteWithSubroutes from './route-with-sub-routes.jsx';
@@ -14,7 +14,6 @@ const TradersHubLoggedOut = React.lazy(
 const Page404 = React.lazy(() => import(/* */ 'Modules/Page404'));
 
 const Routes: React.FC = observer(() => {
-    const { localize } = useLocalize();
     const { client } = useStore();
     const { is_logged_in, is_logging_in } = client;
 

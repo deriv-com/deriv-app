@@ -1,6 +1,6 @@
 import { str as crc32 } from 'crc-32';
 import i18n from 'i18next';
-import { initReactI18next, useTranslation } from 'react-i18next';
+import { initReactI18next } from 'react-i18next';
 import withI18n from '../components';
 
 const LANGUAGE_KEY = 'i18n_language';
@@ -166,12 +166,6 @@ export const localize = (string: string, values?: Record<string, unknown>) => {
     if (!string) return '';
 
     return i18n.t(crc32(string).toString(), { defaultValue: string, ...values });
-};
-
-export const useLocalize = () => {
-    useTranslation();
-
-    return { localize };
 };
 
 const loadIncontextTranslation = () => {

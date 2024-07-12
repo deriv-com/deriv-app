@@ -1,7 +1,7 @@
 import React from 'react';
 import { TContractInfo } from '@deriv-lib/shared';
-import { Loading } from '@deriv-lib/components';
 import { observer, useStore } from '@deriv-lib/stores';
+import { Loading } from '@deriv-lib/components';
 import { EmptyPositions, TEmptyPositionsProps } from 'AppV2/Components/EmptyPositions';
 import { TPortfolioPosition } from '@deriv-lib/stores/types';
 import { ContractCardList, ContractCardsSections } from 'AppV2/Components/ContractCard';
@@ -116,7 +116,8 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (shouldShowLoading || (!shouldShowContractCards && !shouldShowEmptyMessage)) return <Loading />;
+    if (shouldShowLoading || (!shouldShowContractCards && !shouldShowEmptyMessage))
+        return <Loading.DTraderV2 is_positions is_closed_tab={isClosedTab} />;
     return (
         <div
             className={`positions-page__${isClosedTab ? TAB_NAME.CLOSED.toLowerCase() : TAB_NAME.OPEN.toLowerCase()}`}

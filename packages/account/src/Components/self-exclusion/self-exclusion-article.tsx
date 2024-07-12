@@ -2,7 +2,7 @@ import React from 'react';
 import { StaticUrl } from '@deriv-lib/components';
 import { Localize, localize } from '@deriv-lib/translations';
 import { getBrandWebsiteName, getPlatformSettings } from '@deriv-lib/shared';
-import AccountArticle from 'Components/article';
+import AccountArticle from '../article';
 import SelfExclusionContext from './self-exclusion-context';
 import { observer } from '@deriv-lib/stores';
 

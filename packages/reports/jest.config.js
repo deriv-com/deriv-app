@@ -10,6 +10,7 @@ module.exports = {
         '^App/(.*)$': '<rootDir>/src/App/$1',
         '^Assets/(.*)$': '<rootDir>/src/Assets/$1',
         '^Components/(.*)$': '<rootDir>/src/Components/$1',
+        '^Containers/(.*)$': '<rootDir>/src/Containers/$1',
         '^Constants/(.*)$': '<rootDir>/src/Constants/$1',
         '^Constants$': '<rootDir>/src/Constants/index.js',
         '^Documents/(.*)$': '<rootDir>/src/Documents/$1',

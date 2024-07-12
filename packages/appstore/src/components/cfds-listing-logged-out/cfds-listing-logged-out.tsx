@@ -2,7 +2,7 @@ import React from 'react';
 import { observer, useStore } from '@deriv-lib/stores';
 import { Text } from '@deriv-lib/components';
 import { redirectToLogin } from '@deriv-lib/shared';
-import { getLanguage, Localize, useLocalize } from '@deriv-lib/translations';
+import { getLanguage, localize } from '@deriv-lib/translations';
 import { getHasDivider } from 'Constants/utils';
 import ListingContainer from 'Components/containers/listing-container';
 import TradingAppCard from 'Components/containers/trading-app-card';
@@ -11,7 +11,6 @@ import CFDsTitle from 'Components/elements/cfds-title';
 import './cfds-listing-logged-out.scss';
 
 const CFDsListingLoggedOut = observer(() => {
-    const { localize } = useLocalize();
     const { traders_hub } = useStore();
     const {
         available_dxtrade_accounts,
@@ -25,7 +24,7 @@ const CFDsListingLoggedOut = observer(() => {
         <ListingContainer title={<CFDsTitle />} description={<CFDsDescription />}>
             <div className='cfds-listing-logged-out__cfd-full-row'>
                 <Text line_height='m' weight='bold' color='prominent'>
-                    <Localize i18n_default_text='Deriv MT5' />
+                    {localize('Deriv MT5')}
                 </Text>
             </div>
             {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
@@ -37,10 +36,10 @@ const CFDsListingLoggedOut = observer(() => {
                         clickable_icon
                         icon={existing_account.icon}
                         sub_title={existing_account?.sub_title}
-                        name={localize(existing_account?.name) ?? ''}
+                        name={existing_account?.name ?? ''}
                         short_code_and_region={existing_account?.short_code_and_region}
                         platform={existing_account.platform}
-                        description={localize(existing_account.description)}
+                        description={existing_account.description}
                         key={existing_account.key}
                         has_divider={!is_eu_user && getHasDivider(index, list_size, 3)}
                         onAction={() => redirectToLogin(false, getLanguage())}
@@ -56,9 +55,7 @@ const CFDsListingLoggedOut = observer(() => {
             )}
             {!is_eu_user && (
                 <div className='cfds-listing-logged-out__cfd-full-row'>
-                    <Text weight='bold'>
-                        <Localize i18n_default_text='Deriv cTrader' />{' '}
-                    </Text>
+                    <Text weight='bold'>{localize('Deriv cTrader')}</Text>
                 </div>
             )}
             {available_ctrader_accounts.map(account => (
@@ -69,7 +66,7 @@ const CFDsListingLoggedOut = observer(() => {
                     icon={account.icon}
                     name={account.name}
                     platform={account.platform}
-                    description={localize(account.description)}
+                    description={account.description}
                     onAction={() => redirectToLogin(false, getLanguage())}
                     key={`trading_app_card_${account.name}`}
                     market_type='all'
@@ -83,7 +80,7 @@ const CFDsListingLoggedOut = observer(() => {
 
                     <div className='cfds-listing-logged-out__cfd-full-row'>
                         <Text line_height='m' weight='bold' color='prominent'>
-                            <Localize i18n_default_text='Deriv X' />
+                            {localize('Deriv X')}
                         </Text>
                     </div>
                 </React.Fragment>
@@ -96,7 +93,7 @@ const CFDsListingLoggedOut = observer(() => {
                     icon={account.icon}
                     name={account.name}
                     platform={account.platform}
-                    description={localize(account.description)}
+                    description={account.description}
                     onAction={() => redirectToLogin(false, getLanguage())}
                     key={`trading_app_card_${account.name}`}
                     market_type='all'

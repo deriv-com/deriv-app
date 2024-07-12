@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { Text, StatusBadge } from '@deriv-lib/components';
-import { Localize, useLocalize } from '@deriv-lib/translations';
+import { Localize } from '@deriv-lib/translations';
 import { Analytics } from '@deriv-com/analytics';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import {
@@ -45,7 +45,6 @@ const TradingAppCard = ({
     market_type,
     is_new = false,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
-    const { localize } = useLocalize();
     const {
         common,
         traders_hub,

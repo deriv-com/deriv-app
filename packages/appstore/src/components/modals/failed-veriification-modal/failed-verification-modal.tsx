@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 // @ts-ignore
 import { useStores } from 'Stores';
 import { useHistory } from 'react-router-dom';
-import { Localize, useLocalize } from '@deriv-lib/translations';
+import { localize, Localize } from '@deriv-lib/translations';
 import { Text, Dialog } from '@deriv-lib/components';
 import { isMobile, getAuthenticationStatusInfo, routes, Jurisdiction } from '@deriv-lib/shared';
 import './failed-verification-modal.scss';
@@ -65,7 +65,6 @@ const FailedVerificationModalContent = ({
 };
 
 const FailedVerificationModal = () => {
-    const { localize } = useLocalize();
     const {
         traders_hub,
         ui,

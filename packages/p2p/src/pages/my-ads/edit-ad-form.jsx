@@ -8,6 +8,7 @@ import { buy_sell } from 'Constants/buy-sell';
 // @ts-ignore
 import { useStores } from 'Stores';
 import { ad_type } from 'Constants/floating-rate';
+import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AdWizard from './ad-wizard';
 import './edit-ad-form.scss';
@@ -23,9 +24,9 @@ const EditAdFormWrapper = ({ children }) => {
 const EditAdForm = ({ country_list }) => {
     const { my_ads_store, my_profile_store } = useStores();
     const steps = [
-        { header: { title: 'Edit ad type and amount' } },
-        { header: { title: 'Edit payment details' } },
-        { header: { title: 'Edit ad conditions' } },
+        { header: { title: localize('Edit ad type and amount') } },
+        { header: { title: localize('Edit payment details') } },
+        { header: { title: localize('Edit ad conditions') } },
     ];
 
     const {

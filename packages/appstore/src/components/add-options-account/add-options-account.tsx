@@ -1,6 +1,6 @@
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Button, Text } from '@deriv-lib/components';
-import { Localize } from '@deriv-lib/translations';
+import { Localize, localize } from '@deriv-lib/translations';
 import './add-options-account.scss';
 import { useStore, observer } from '@deriv-lib/stores';
 import { isMobile, ContentFlag } from '@deriv-lib/shared';
@@ -12,13 +12,16 @@ const AddOptions = observer(() => {
     const { setShouldShowCooldownModal, openRealAccountSignup } = ui;
     const { real_account_creation_unlock_date } = client;
 
+    const add_deriv_account_text = localize('To trade CFDs, get a Deriv Apps account first.');
+    const add_deriv_account_btn = localize('Get a Deriv account');
+
     const eu_user = content_flag === ContentFlag.LOW_RISK_CR_EU || content_flag === ContentFlag.EU_REAL;
 
     return (
         <React.Fragment>
             <div className='add-options-account__title'>
                 <Text size={isMobile() ? 'xxs' : 's'} weight='bold'>
-                    <Localize i18n_default_text='To trade CFDs, get a Deriv Apps account first.' />
+                    <Localize i18n_default_text={add_deriv_account_text} />
                 </Text>
             </div>
             <div className='add-options-account__button'>
@@ -45,11 +48,10 @@ const AddOptions = observer(() => {
                     }}
                     is_disabled={false}
                     is_loading={false}
+                    text={add_deriv_account_btn}
                     medium
                     primary
-                >
-                    <Localize i18n_default_text='Get a Deriv account' />
-                </Button>
+                />
             </div>
         </React.Fragment>
     );

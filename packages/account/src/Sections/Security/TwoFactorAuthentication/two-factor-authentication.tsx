@@ -1,6 +1,6 @@
 import React from 'react';
 import { getPropertyValue, WS } from '@deriv-lib/shared';
-import LoadErrorMessage from 'Components/load-error-message';
+import LoadErrorMessage from '../../../Components/load-error-message';
 import { observer, useStore } from '@deriv-lib/stores';
 import { Loading } from '@deriv-lib/components';
 import TwoFactorEnabled from './two-factor-enabled';

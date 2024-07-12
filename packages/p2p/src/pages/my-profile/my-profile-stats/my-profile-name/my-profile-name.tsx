@@ -135,6 +135,10 @@ const MyProfileName = () => {
                                 <div className='my-profile-name__rating__row'>
                                     <BlockUserCount />
                                 </div>
+                                {/* TODO: uncomment when implementing business hours feature */}
+                                {/* <div className='my-profile-name__rating__row'>
+                                    <MyProfileNameBusinessHours />
+                                </div> */}
                             </DesktopWrapper>
                         </div>
                         <MobileWrapper>
@@ -142,6 +146,10 @@ const MyProfileName = () => {
                                 <div className='my-profile-name__rating__row'>
                                     <BlockUserCount />
                                 </div>
+                                {/* TODO: uncomment when implementing business hours feature */}
+                                {/* <div className='my-profile-name__rating__row'>
+                                    <MyProfileNameBusinessHours />
+                                </div> */}
                             </div>
                         </MobileWrapper>
                         <div className='my-profile-name__row'>

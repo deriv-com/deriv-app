@@ -1,4 +1,5 @@
 import React from 'react';
+import { Analytics } from '@deriv-com/analytics';
 import { useDevice } from '@deriv-com/ui';
 import { Dialog, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
@@ -17,16 +18,59 @@ const DepositNowOrLaterModal = observer(() => {
     } = ui;
 
     const onConfirmModal = () => {
+        Analytics.trackEvent('ce_tradershub_popup', {
+            // @ts-expect-error 'click_download' property is changed to 'click_cta'
+            action: 'click_cta',
+            form_name: 'traders_hub_default',
+            account_mode: 'real',
+            popup_name: 'deposit_now_or_later',
+            popup_type: 'with_cta',
+            // 'cta_name' property type will be added later
+            cta_name: 'deposit_now',
+        });
+
         setShouldShowDepositNowOrLaterModal(false);
     };
 
-    const onClose = () => {
+    const onClose = (is_click_on_cancel_button = false) => {
+        if (is_click_on_cancel_button)
+            Analytics.trackEvent('ce_tradershub_popup', {
+                // @ts-expect-error 'click_download' property is changed to 'click_cta'
+                action: 'click_cta',
+                form_name: 'traders_hub_default',
+                account_mode: 'real',
+                popup_name: 'deposit_now_or_later',
+                popup_type: 'with_cta',
+                // 'cta_name' property type will be added later
+                cta_name: 'deposit_later',
+            });
+        else
+            Analytics.trackEvent('ce_tradershub_popup', {
+                action: 'close',
+                form_name: 'traders_hub_default',
+                account_mode: 'real',
+                popup_name: 'deposit_now_or_later',
+                popup_type: 'with_cta',
+            });
+
         setShouldShowDepositNowOrLaterModal(false);
         setShouldShowOneTimeDepositModal(false);
 
         // for MF accounts we need to show success modal
         if (is_mf_account) toggleAccountSuccessModal();
     };
+
+    React.useEffect(() => {
+        if (should_show_deposit_now_or_later_modal) {
+            Analytics.trackEvent('ce_tradershub_popup', {
+                action: 'open',
+                form_name: 'traders_hub_default',
+                account_mode: 'real',
+                popup_name: 'deposit_now_or_later',
+                popup_type: 'with_cta',
+            });
+        }
+    }, [should_show_deposit_now_or_later_modal]);
 
     return (
         <Dialog
@@ -35,7 +79,8 @@ const DepositNowOrLaterModal = observer(() => {
             confirm_button_text={localize('Deposit now')}
             onConfirm={onConfirmModal}
             cancel_button_text={localize('Deposit later')}
-            onCancel={onClose}
+            onCancel={() => onClose(true)}
+            onClose={onClose}
             is_visible={should_show_deposit_now_or_later_modal}
             has_close_icon
             is_closed_on_cancel={false}

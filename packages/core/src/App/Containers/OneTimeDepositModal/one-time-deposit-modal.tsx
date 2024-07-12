@@ -1,4 +1,5 @@
 import React from 'react';
+import { Analytics } from '@deriv-com/analytics';
 import { useDevice } from '@deriv-com/ui';
 import { MobileFullPageModal, Modal } from '@deriv/components';
 import { useCryptoTransactions, useCurrentCurrencyConfig } from '@deriv/hooks';
@@ -11,7 +12,7 @@ import './one-time-deposit-modal.scss';
 const OneTimeDepositModal = observer(() => {
     const { isDesktop } = useDevice();
     const { client, ui } = useStore();
-    const { is_cr_account, is_logged_in, balance } = client;
+    const { is_cr_account, is_logged_in, balance, currency } = client;
     const {
         should_show_one_time_deposit_modal,
         setShouldShowOneTimeDepositModal,
@@ -56,6 +57,19 @@ const OneTimeDepositModal = observer(() => {
         setShouldShowOneTimeDepositModal,
         setShouldShowCryptoTransactionProcessingModal,
     ]);
+
+    React.useEffect(() => {
+        if (should_show_one_time_deposit_modal) {
+            Analytics.trackEvent('ce_tradershub_popup', {
+                action: 'open',
+                form_name: 'traders_hub_default',
+                account_mode: 'real',
+                popup_name: 'direct_deposit',
+                // @ts-expect-error currency propery will be added later
+                currency,
+            });
+        }
+    }, [should_show_one_time_deposit_modal]);
 
     return (
         <React.Fragment>

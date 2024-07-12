@@ -7,11 +7,11 @@ import AllowEquals from './AllowEquals';
 import Duration from './Duration';
 import Stake from './Stake';
 
-type TTradeParamsProps = {
+type TTradeParametersList = {
     is_minimized?: boolean;
 };
 
-const TradeParams = observer(({ is_minimized }: TTradeParamsProps) => {
+const TradeParametersList = observer(({ is_minimized }: TTradeParametersList) => {
     const {
         amount,
         basis,
@@ -74,4 +74,4 @@ const TradeParams = observer(({ is_minimized }: TTradeParamsProps) => {
     );
 });
 
-export default TradeParams;
+export default TradeParametersList;

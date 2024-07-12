@@ -1,24 +1,21 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import { Dropdown, Loading } from '@deriv/components';
 import { Chip, Text } from '@deriv-com/quill-ui';
-import BottomNav from 'AppV2/Components/BottomNav';
-import { useTraderStore } from 'Stores/useTraderStores';
 import { getAvailableContractTypes } from 'Modules/Trading/Helpers/contract-type';
 import { TRADE_TYPES, unsupported_contract_types_list } from '@deriv/shared';
-import { observer } from 'mobx-react';
+import { useTraderStore } from 'Stores/useTraderStores';
+import BottomNav from 'AppV2/Components/BottomNav';
 import PurchaseButton from 'AppV2/Components/PurchaseButton';
-import TradeParameters from 'AppV2/Components/TradeParameters';
-
-const HEIGHT = {
-    ADVANCED_FOOTER: 136,
-    BOTTOM_NAV: 56,
-    HEADER: 48,
-    PADDING: 24,
-};
+import { HEIGHT } from 'AppV2/Utils/layout-utils';
+import { TradeParametersContainer, TradeParametersList } from 'AppV2/Components/TradeParameters';
 
 const Trade = observer(() => {
+    const chart_ref = React.useRef<HTMLDivElement>(null);
+
     const { active_symbols, contract_type, contract_types_list, onMount, onChange, onUnmount, symbol } =
         useTraderStore();
+
     const filtered_contract_types = getAvailableContractTypes(
         contract_types_list as unknown as Parameters<typeof getAvailableContractTypes>[0],
         unsupported_contract_types_list
@@ -27,6 +24,7 @@ const Trade = observer(() => {
         text: display_name,
         value: underlying,
     }));
+
     const trade_types = Object.values(filtered_contract_types)
         .map(({ contract_types }) => contract_types)
         .flat()
@@ -34,14 +32,9 @@ const Trade = observer(() => {
             ({ value }) =>
                 ![TRADE_TYPES.VANILLA.PUT, TRADE_TYPES.TURBOS.SHORT, TRADE_TYPES.RISE_FALL_EQUAL].includes(value)
         );
+
     const calculated_chart_height =
         window.innerHeight - HEIGHT.HEADER - HEIGHT.BOTTOM_NAV - HEIGHT.ADVANCED_FOOTER - HEIGHT.PADDING;
-
-    React.useEffect(() => {
-        onMount();
-        return onUnmount;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const onTradeTypeSelect = (e: React.MouseEvent<HTMLButtonElement>) => {
         const value = trade_types.find(({ text }) => text === (e.target as HTMLButtonElement).textContent)?.value;
@@ -53,10 +46,16 @@ const Trade = observer(() => {
         });
     };
 
+    React.useEffect(() => {
+        onMount();
+        return onUnmount;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <BottomNav>
             {symbols.length && trade_types.length ? (
-                <div className='trade'>
+                <React.Fragment>
                     <div className='trade__trade-types'>
                         {trade_types.map(({ text, value }) => (
                             <Chip.Selectable
@@ -71,15 +70,19 @@ const Trade = observer(() => {
                     <div className='trade__assets'>
                         <Dropdown list={symbols} name='symbol' onChange={onChange} value={symbol} />
                     </div>
-                    <div className='section__wrapper'>
-                        <TradeParameters />
-                        <section className='section__chart' style={{ height: calculated_chart_height }}>
+                    <div className='trade__section__wrapper'>
+                        <TradeParametersContainer>
+                            <TradeParametersList />
+                        </TradeParametersContainer>
+                        <section className='trade__chart' style={{ height: calculated_chart_height }} ref={chart_ref}>
                             Awesome Chart Placeholder
                         </section>
                     </div>
-                    <TradeParameters is_minimized />
+                    <TradeParametersContainer chart_ref={chart_ref} is_minimized>
+                        <TradeParametersList is_minimized />
+                    </TradeParametersContainer>
                     <PurchaseButton />
-                </div>
+                </React.Fragment>
             ) : (
                 <Loading.DTraderV2 />
             )}

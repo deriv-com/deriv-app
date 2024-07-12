@@ -1,4 +1,4 @@
-import TradeParameters from './trade-parameters';
 import './trade-parameters.scss';
 
-export default TradeParameters;
+export { default as TradeParametersContainer } from './trade-parameters-container';
+export { default as TradeParametersList } from './trade-parameters-list';

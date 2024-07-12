@@ -1485,7 +1485,6 @@ export default class ClientStore extends BaseStore {
         if (search) {
             if (code_param && action_param) {
                 this.setVerificationCode(code_param, action_param);
-                sessionStorage.setItem('request_email', code_param);
             }
             setTimeout(() => {
                 // timeout is needed to get the token (code) from the URL before we hide it from the URL
@@ -2124,7 +2123,7 @@ export default class ClientStore extends BaseStore {
                     is_social_signup_provider = true;
                 }
             });
-            // if search_params contains action, request_email as key,value then don't delete code param
+            // If search_params contains action=request_email, then don't delete the code parameter.
             const is_request_email = search_params.has('action', 'request_email');
 
             this.is_new_session = Object.keys(obj_params).length > 0;

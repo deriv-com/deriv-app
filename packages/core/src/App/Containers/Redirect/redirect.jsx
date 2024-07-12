@@ -28,8 +28,7 @@ const Redirect = observer(() => {
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
     const action_param = url_params.get('action');
-    const code_param =
-        url_params.get('code') || verification_code[action_param] || sessionStorage.getItem('request_email');
+    const code_param = url_params.get('code') || verification_code[action_param];
     const ext_platform_url = url_params.get('ext_platform_url');
 
     const redirectToExternalPlatform = url => {
@@ -65,11 +64,16 @@ const Redirect = observer(() => {
         }
         case 'request_email': {
             if (!is_logging_in && !is_logged_in) {
+                if (verification_code[action_param]) {
+                    sessionStorage.setItem('request_email_code', verification_code[action_param]);
+                }
                 redirectToLogin(is_logged_in, getLanguage(), true);
                 redirected_to_route = true;
-            } else {
+            } else if (!verification_code[action_param]) {
+                const request_email_code = sessionStorage.getItem('request_email_code');
+                setVerificationCode(request_email_code, action_param);
+                sessionStorage.removeItem('request_email_code');
                 toggleResetEmailModal(true);
-                sessionStorage.removeItem('request_email');
             }
             break;
         }

@@ -29,6 +29,8 @@ const AppContent: React.FC = () => {
     }, []);
 
     useEffect(() => {
+        // TODO: remove `@ts-expect-error` after @deriv-com/analytics version update
+        //@ts-expect-error temporary suppress ts error until we update @deriv-com/analytics to the latest version
         Analytics.trackEvent('ce_wallets_homepage_form', {
             action: 'open',
             form_name: 'ce_wallets_homepage_form',

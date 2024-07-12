@@ -41,7 +41,10 @@ class DBot {
             const { name, type } = event;
 
             if (type === Blockly.Events.BLOCK_CHANGE) {
-                if (name === 'SYMBOL_LIST' || name === 'TRADETYPECAT_LIST') {
+                const is_symbol_list_change = name === 'SYMBOL_LIST';
+                const is_trade_type_cat_list_change = name === 'TRADETYPECAT_LIST';
+
+                if (is_symbol_list_change || is_trade_type_cat_list_change) {
                     const { contracts_for } = ApiHelpers.instance;
                     const top_parent_block = this.getTopParent();
                     const market_block = top_parent_block.getChildByType('trade_definition_market');
@@ -51,7 +54,7 @@ class DBot {
                     const category = this.getFieldValue('TRADETYPECAT_LIST');
                     const trade_type = this.getFieldValue('TRADETYPE_LIST');
 
-                    if (name === 'SYMBOL_LIST') {
+                    if (is_symbol_list_change) {
                         contracts_for.getTradeTypeCategories(market, submarket, symbol).then(categories => {
                             const category_field = this.getField('TRADETYPECAT_LIST');
                             if (category_field) {
@@ -76,10 +79,9 @@ class DBot {
                                 await that.interpreter?.bot.tradeEngine.watchTicks(symbol);
                             });
                         }
-                    } else if (name === 'TRADETYPECAT_LIST' && event.blockId === this.id) {
+                    } else if (is_trade_type_cat_list_change && event.blockId === this.id) {
                         contracts_for.getTradeTypes(market, submarket, symbol, category).then(trade_types => {
                             const trade_type_field = this.getField('TRADETYPE_LIST');
-
                             trade_type_field.updateOptions(trade_types, {
                                 default_value: trade_type,
                                 should_pretend_empty: true,

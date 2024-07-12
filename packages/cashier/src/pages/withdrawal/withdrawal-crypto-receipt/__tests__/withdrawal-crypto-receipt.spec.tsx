@@ -16,6 +16,7 @@ let mock_last_transaction = {
     transaction_type: 'withdrawal',
     is_deposit: false,
     is_withdrawal: true,
+    transaction_fee: '',
 };
 
 jest.mock('@deriv/hooks', () => {
@@ -58,6 +59,7 @@ describe('<WithdrawalCryptoReceipt />', () => {
                         resetWithdrawForm: jest.fn(),
                         setIsWithdrawConfirmed: jest.fn(),
                         withdraw_amount: 0.0002,
+                        crypto_estimations_fee: 0.001,
                     },
                 },
             },
@@ -136,5 +138,11 @@ describe('<WithdrawalCryptoReceipt />', () => {
         renderWithdrawalCryptoReceipt();
 
         expect(screen.getByText('Successful')).toBeInTheDocument();
+    });
+
+    it('should show transaction fee when transaction fee is available', () => {
+        renderWithdrawalCryptoReceipt();
+
+        expect(screen.getByText(/Transaction fee/)).toBeInTheDocument();
     });
 });

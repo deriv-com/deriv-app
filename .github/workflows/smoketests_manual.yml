@@ -3,71 +3,26 @@ run-name: Manual run of tests
 
 on:
   workflow_dispatch:
-    inputs:
-      ilabel:
-        type: choice
-        description: Run smoke or full test suite
-        options:
-        - P2P
-        - dbot, Traders
-        - Traders
-        - Wallets
-        - dbot
-      idraft:
-        type: choice
-        description: Draft
-        options:
-        - 'true'
-        - 'false'
-      iappRegUrl:
-        type: choice
-        description: Select the Url for a specific PR
-        options:
-        - https://deriv-app-git-fork-maryia-matskevich-deriv-maryia-bot-1913.binary.sx/
-        - https://deriv-app-git-fork-suisin-deriv-suisin-upm1116addkhmerlanguage.binary.sx
-      iissue_number:
-        type: choice
-        description: Issue Number
-        options:
-        - '15719'
-        - '15714'
-      iuser_name:
-        type: choice
-        description: User name
-        options:
-        - maryia-deriv
-        - suisin-deriv
 
 jobs:
   trigger-workflow:
     runs-on: ubuntu-latest
     steps:
-
-    - name: Set env vars
-      id: set-env-vars
-      run: |
-        if [[ "${{ github.event.inputs.ilabel }}" == *"dbot"* ]]; then
-          echo "TEST_SUITE=dbot" >> $GITHUB_ENV
-        elif [[ "${{ github.event.inputs.ilabel }}" == *"P2P"* ]]; then
-          echo "TEST_SUITE=P2P" >> $GITHUB_ENV
-        elif [[ "${{ github.event.inputs.ilabel }}" == *"Wallets"* ]]; then
-          echo "TEST_SUITE=Wallets" >> $GITHUB_ENV
-        else
-          echo "TEST_SUITE=<do not run>" >> $GITHUB_ENV
-        fi
         
-    - name: Trigger another deriv-app smoke tests from regentmarkets
-      if: ${{ github.event.inputs.idraft == 'false' && env.TEST_SUITE != '<do not run>' }}
+    - name: Trigger deriv-app smoke tests from regentmarkets
       uses: actions/github-script@v6
+      env: 
+        E2E_WORKFLOW_SUITE: ${{ secrets.E2E_WORKFLOW_SUITE }}
+        E2E_WORKFLOW_ENV: ${{ secrets.E2E_WORKFLOW_ENV }}
       with:
         github-token: ${{ secrets.E2E_WORKFLOW_TOKEN }}
         script: |
           const workflowInputs = {
-            environment: '${{ secrets.E2E_WORKFLOW_ENV }}',
-            suite: '${{ env.TEST_SUITE }}',
-            appRegUrl: '${{ github.event.inputs.iappRegUrl }}',
-            issue_number: '${{ github.event.inputs.iissue_number }}',
-            user_name: '${{ github.event.inputs.iuser_name }}'
+            environment: $E2E_WORKFLOW_ENV,
+            suite: $E2E_WORKFLOW_SUITE,
+            appRegUrl: 'https://deriv-app-git-fork-maryia-matskevich-deriv-maryia-bot-1913.binary.sx/',
+            issue_number: '15719',
+            user_name: 'maryia-deriv'
             };
           const response = await github.rest.actions.createWorkflowDispatch({
             owner: 'regentmarkets',

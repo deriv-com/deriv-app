@@ -1,10 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Text } from '@deriv-com/quill-ui';
-import { Loading } from '@deriv/components';
 import { toMoment } from '@deriv/shared';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 import ContractCardList from './contract-card-list';
+import { StandaloneLoaderBoldIcon } from '@deriv/quill-icons';
 
 type TContractCardsSections = {
     isLoadingMore?: boolean;
@@ -45,7 +45,11 @@ const ContractCardsSections = ({ isLoadingMore, hasBottomMargin, positions }: TC
                     </div>
                 ))}
             </div>
-            {isLoadingMore && <Loading is_fullscreen={false} />}
+            {isLoadingMore && (
+                <div className='load-more-spinner' data-testid='dt_load_more_spinner'>
+                    <StandaloneLoaderBoldIcon iconSize='md' />
+                </div>
+            )}
         </React.Fragment>
     );
 };

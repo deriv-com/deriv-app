@@ -733,7 +733,6 @@
             max-width: 100%;
             overflow: hidden;
         }
-        position: relative;
         max-width: 68.2rem;
     }
 
@@ -762,7 +761,7 @@
             &--status {
                 height: 100%;
                 width: 100%;
-                position: absolute;
+
                 padding-top: 2.4rem;
             }
         }
@@ -898,6 +897,9 @@
         justify-content: flex-end;
         bottom: 0;
 
+        @include desktop-screen {
+            max-width: 68.2rem;
+        }
         @include mobile-or-tablet-screen {
             flex-direction: row;
             width: 100%;

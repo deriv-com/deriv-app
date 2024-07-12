@@ -1483,15 +1483,16 @@ export default class ClientStore extends BaseStore {
         const authorize_response = await this.setUserLogin(login_new_user);
 
         if (search) {
-            if (code_param && action_param) {
-                this.setVerificationCode(code_param, action_param);
-            }
-            setTimeout(() => {
-                // timeout is needed to get the token (code) from the URL before we hide it from the URL
-                // and from LiveChat that gets the URL from Window, particularly when initialized via HTML script on mobile
-                history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
-            }, 0);
+            if (code_param && action_param) this.setVerificationCode(code_param, action_param);
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    // timeout is needed to get the token (code) from the URL before we hide it from the URL
+                    // and from LiveChat that gets the URL from Window, particularly when initialized via HTML script on mobile
+                    history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
+                }, 0);
+            });
         }
+
         this.setDeviceData();
 
         // On case of invalid token, no need to continue with additional api calls.

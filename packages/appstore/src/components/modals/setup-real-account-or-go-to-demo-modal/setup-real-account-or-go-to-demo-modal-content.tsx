@@ -19,12 +19,13 @@ export const SetupRealAccountOrGoToDemoModalContent = observer(({ is_responsive 
 
     const onSetupRealAccountButtonClick = () => {
         Analytics.trackEvent('ce_tradershub_popup', {
-            action: 'click_download',
+            // @ts-expect-error 'click_download' property is changed to 'click_cta'
+            action: 'click_cta',
             form_name: 'traders_hub_default',
             account_mode: 'demo',
             popup_name: 'setup_real_or_go_demo',
             popup_type: 'with_cta',
-            // @ts-expect-error 'cta_name' property type will be added later
+            // 'cta_name' property type will be added later
             cta_name: 'setup_real',
         });
 
@@ -41,12 +42,13 @@ export const SetupRealAccountOrGoToDemoModalContent = observer(({ is_responsive 
 
     const onToDemoButtonClick = () => {
         Analytics.trackEvent('ce_tradershub_popup', {
-            action: 'click_download',
+            // @ts-expect-error 'click_download' property type is changed to 'click_cta'
+            action: 'click_cta',
             form_name: 'traders_hub_default',
             account_mode: 'demo',
             popup_name: 'setup_real_or_go_demo',
             popup_type: 'with_cta',
-            // @ts-expect-error 'cta_name' property type will be added later
+            // 'cta_name' property type will be added later
             cta_name: 'go_demo',
         });
 

@@ -10,7 +10,7 @@ import {
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { TCFDPlatform, TDetailsOfDerivXAccount, TDetailsOfMT5Account } from 'Types';
+import { TCFDPlatform, TDetailsOfDerivXAccount, TDetailsOfMT5Account } from '../../../../Types';
 import ClosingAccountPendingWrapper from './closing-account-pending-wrapper';
 import ClosingAccountPendingContent from './closing-account-pending-content';
 
@@ -19,7 +19,7 @@ type TClosingAccountPendingBalanceProps = {
     account_balance: TDetailsOfMT5Account[] | TDetailsOfDerivXAccount[];
 };
 
-type TShortcode = Parameters<typeof getCFDAccountDisplay>[0]['shortcode'];
+type TShortcode = Exclude<TDetailsOfMT5Account['landing_company_short'], 'seychelles'>;
 
 const ClosingAccountPendingBalance = observer(({ platform, account_balance }: TClosingAccountPendingBalanceProps) => {
     const { traders_hub } = useStore();

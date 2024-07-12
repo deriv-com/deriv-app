@@ -9,11 +9,7 @@ import {
     ProofOfIdentity,
     ProofOfAddress,
     ProofOfOwnership,
-    ApiToken,
-    TwoFactorAuthentication,
-    SelfExclusion,
     Account,
-    ClosingAccount,
     DeactivateAccount,
     ProofOfIncome,
 } from '../Sections';
@@ -63,6 +59,25 @@ const TradingAssessment = makeLazyLoader(
     () => moduleLoader(() => import('../Sections/Assessment/TradingAssessment')),
     () => <Loading />
 )();
+
+const ApiToken = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/ApiToken')),
+    () => <Loading />
+)();
+
+const TwoFactorAuthentication = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/TwoFactorAuthentication')),
+    () => <Loading />
+)();
+const SelfExclusion = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/SelfExclusion')),
+    () => <Loading />
+)();
+const ClosingAccount = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/ClosingAccount')),
+    () => <Loading />
+)();
+
 export type TPage404 = typeof Page404;
 
 // Order matters

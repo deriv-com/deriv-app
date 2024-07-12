@@ -20,10 +20,6 @@
             margin-bottom: 3.4rem;
         }
 
-        @include tablet-up {
-            max-width: 100%;
-            min-width: 672px;
-        }
         @include mobile-or-tablet-screen {
             display: block;
             padding: 0 1.6rem;
@@ -32,6 +28,10 @@
 
             .dc-mobile-full-page-modal {
                 opacity: 1 !important;
+            }
+
+            @include tablet-screen {
+                width: 60rem;
             }
         }
     }

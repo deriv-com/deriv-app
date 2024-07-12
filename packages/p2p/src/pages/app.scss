@@ -22,7 +22,7 @@
                     }
                 }
                 & .dc-page-overlay__content {
-                    & .dc-mobile-full-page-modal {
+                    & > .dc-mobile-full-page-modal {
                         width: 60rem;
                         left: 50%;
                         transform: translateX(-50%);

@@ -9,6 +9,20 @@
             padding: 1rem 2rem;
             width: 100vw;
 
+            @include tablet-screen {
+                width: 100%;
+
+                & .dc-mobile-full-page-modal {
+                    & .dc-page-overlay {
+                        & .dc-page-overlay__content {
+                            & .dc-mobile-full-page-modal {
+                                top: 0;
+                            }
+                        }
+                    }
+                }
+            }
+
             &-add {
                 padding: 1rem 0 0;
             }

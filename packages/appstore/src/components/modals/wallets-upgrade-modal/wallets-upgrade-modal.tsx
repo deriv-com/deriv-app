@@ -3,7 +3,7 @@ import { Analytics, TEvents } from '@deriv-com/analytics';
 import classNames from 'classnames';
 import { Stream } from '@cloudflare/stream-react';
 import { Button, Text, Modal } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useWalletMigration } from '@deriv/hooks';
 import './wallets-upgrade-modal.scss';
@@ -96,9 +96,7 @@ const WalletsUpgradeModal = observer(() => {
                         'wallets-upgrade-modal__footer--mobile': is_mobile,
                     })}
                 >
-                    <Button large={is_desktop} onClick={handleMigration} primary>
-                        <Localize i18n_default_text='Enable now' />
-                    </Button>
+                    <Button large={is_desktop} onClick={handleMigration} primary text={localize('Enable now')} />
                 </div>
             </Modal.Body>
         </Modal>

@@ -134,7 +134,6 @@ Blockly.Blocks.trade_definition_multiplier = {
 
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             this.setCurrency();
-            this.updateAmountLimits();
             if (is_load_event) {
                 // Do NOT touch any values when a strategy is being loaded.
                 this.updateMultiplierInput(false);
@@ -161,14 +160,12 @@ Blockly.Blocks.trade_definition_multiplier = {
                 }
             } else if (event.name === 'SYMBOL_LIST' || event.name === 'TRADETYPE_LIST') {
                 this.updateMultiplierInput(true);
-                this.updateAmountLimits();
             }
             return;
         }
 
         if (event.type === Blockly.Events.END_DRAG) {
             this.setCurrency();
-            this.updateAmountLimits();
             this.validateBlocksInStatement();
             if (event.blockId === this.id) {
                 // Ensure this block is populated after initial drag from flyout.
@@ -182,7 +179,7 @@ Blockly.Blocks.trade_definition_multiplier = {
             }
         }
     },
-    updateAmountLimits: Blockly.Blocks.trade_definition_tradeoptions.updateAmountLimits,
+
     updateMultiplierInput(should_use_default_value) {
         const { contracts_for } = ApiHelpers.instance;
 

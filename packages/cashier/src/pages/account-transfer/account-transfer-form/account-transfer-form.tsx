@@ -197,7 +197,9 @@ const AccountTransferForm = observer(
         const is_mf_status_verification_failed = mf_account_status === 'failed';
         const is_mf_status_pending_or_needs_verification =
             is_mf_status_pending || is_mf_status_need_verification || is_mf_status_verification_failed;
-        const is_account_unavailable = selected_to.status === MT5_ACCOUNT_STATUS.UNAVAILABLE;
+        const is_unavailable_status_present =
+            selected_from.status === MT5_ACCOUNT_STATUS.UNAVAILABLE ||
+            selected_to.status === MT5_ACCOUNT_STATUS.UNAVAILABLE;
         const is_maintenance_status_present = selected_to.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
 
         const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
@@ -301,6 +303,7 @@ const AccountTransferForm = observer(
                     platform = 'dxtrade';
                 }
                 const is_server_maintenance = tradingPlatformStatusData?.find(p => p.platform === platform)?.status;
+                const is_account_unavailable = account.status === MT5_ACCOUNT_STATUS.UNAVAILABLE;
 
                 const text = (
                     <AccountOption
@@ -451,7 +454,7 @@ const AccountTransferForm = observer(
             let hint_text;
             if (is_migration_status_present) {
                 hint_text = <Localize i18n_default_text='You can no longer open new positions with this account.' />;
-            } else if (is_account_unavailable) {
+            } else if (is_unavailable_status_present) {
                 hint_text = (
                     <Localize i18n_default_text='The server is temporarily unavailable for this account. We’re working to resolve this.' />
                 );

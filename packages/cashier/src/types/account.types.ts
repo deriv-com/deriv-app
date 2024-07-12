@@ -33,9 +33,9 @@ export type TAccountsList = {
     is_dark_mode_on?: boolean;
     is_pending_verification?: boolean;
     is_selected_from?: boolean;
-    is_account_unavailable?: boolean;
     is_verification_failed?: boolean;
     is_verification_needed?: boolean;
+    is_account_unavailable?: boolean;
     is_server_maintenance?: string;
     loginid?: string;
     mt5_login_list?: DetailsOfEachMT5Loginid[];

@@ -2124,18 +2124,11 @@ export default class ClientStore extends BaseStore {
                     is_social_signup_provider = true;
                 }
             });
-            // If search_params contains action=request_email, then don't delete the code parameter.
-            const is_request_email = search_params.has('action', 'request_email');
 
             this.is_new_session = Object.keys(obj_params).length > 0;
 
             // delete account query params - but keep other query params (e.g. utm)
-            Object.keys(obj_params).forEach(key => {
-                if (key === 'code' && is_request_email) {
-                    return;
-                }
-                search_params.delete(key);
-            });
+            Object.keys(obj_params).forEach(key => search_params.delete(key));
             search_params.delete('state'); // remove unused state= query string
             search_params = search_params?.toString();
             const search_param_without_account = search_params ? `?${search_params}` : '/';

@@ -1,34 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 import { api_base } from '@deriv/bot-skeleton';
-import { initial_req_schema, TBotList, TBotListItem, TRequestSchema } from '../pages/server-bot/request_schema';
+import { initial_req_schema, TBotList, TBotListItem } from '../pages/server-bot/request_schema';
 import RootStore from './root-store';
-
-interface IServerBotStore {
-    bot_list: TBotListItem[];
-    notifications: Array<string>;
-    setNotifications: (notifications: string) => void;
-    getBotList: () => void;
-    notifyBot: (bot_id: string, should_change_status: boolean) => void;
-    createBot: () => void;
-    removeBot: (bot_id: string) => void;
-    startBot: (bot_id: string) => void;
-    stopBot: (bot_id: string) => void;
-    setValue: (name: string, value: string) => void;
-    setValueServerBot: (form_data: any) => void;
-    makeRequest: (req_schema: TRequestSchema) => Promise<TBotResponse>;
-    setFormValues: (currency: string) => void;
-    setStatusBot: (status: string, bot_id: string) => void;
-}
-
-type TBotListResponse = {
-    bot_list: TBotList;
-    echo_req: {
-        bot_list: number;
-        req_id: number;
-    };
-    msg_type: 'bot_list';
-    req_id: number;
-};
 
 type TKeysResponse =
     | { bot_list: TBotList }
@@ -50,11 +23,24 @@ export type TFormData = {
     [key: string]: string | number | boolean;
 };
 
-export default class ServerBotStore implements IServerBotStore {
+const isValidJSON = (text: string) => {
+    try {
+        JSON.parse(text);
+        return true; // The string is valid JSON
+    } catch (error) {
+        return false; // The string is not valid JSON
+    }
+};
+
+export default class ServerBotStore {
     bot_list: TBotListItem[] = [];
     notifications: Array<string> = [];
     root_store: RootStore;
     form_data: TFormData = {};
+
+    bot_starting_list: string[] = [];
+    bot_running_list: string[] = [];
+    contracts: any = {};
 
     constructor(root_store: RootStore) {
         this.root_store = root_store;
@@ -62,6 +48,10 @@ export default class ServerBotStore implements IServerBotStore {
             bot_list: observable,
             notifications: observable,
             form_data: observable,
+            bot_starting_list: observable,
+            bot_running_list: observable,
+            contracts: observable,
+
             setValueServerBot: action.bound,
             setNotifications: action.bound,
             setValue: action.bound,
@@ -73,6 +63,11 @@ export default class ServerBotStore implements IServerBotStore {
             stopBot: action.bound,
             setFormValues: action.bound,
             setStatusBot: action.bound,
+
+            setRunning: action,
+            setStopped: action,
+            handleMessage: action,
+            setContracts: action,
         });
     }
 
@@ -82,15 +77,6 @@ export default class ServerBotStore implements IServerBotStore {
 
     setValueServerBot = (form_data: any) => {
         this.form_data = form_data;
-    };
-
-    makeRequest = (req_schema: TRequestSchema): Promise<TBotResponse> => {
-        return new Promise((resolve, reject) => {
-            api_base.api
-                ?.send(req_schema)
-                .then((data: TBotResponse) => resolve(data))
-                .catch((error: Error) => reject(error));
-        });
     };
 
     setFormValues = (currency: string) => {
@@ -119,31 +105,36 @@ export default class ServerBotStore implements IServerBotStore {
         });
     };
 
-    getBotList = () => {
-        /* eslint-disable no-unused-vars */
-        const api_status = api_base.getConnectionStatus();
-        setTimeout(() => {
-            // eslint-disable-next-line
-            // if (api_status === 'Connected') { // need handle the first loading
-            api_base?.api
-                ?.send({
-                    bot_list: 1,
-                })
-                .then((data: TBotListResponse) => {
-                    this.bot_list = data.bot_list.bot_list;
-                    return data.bot_list.bot_list;
-                })
-                .catch((error: Error) => {
-                    /* eslint-disable no-console */
-                    this.setNotifications(error?.error?.message);
+    getBotList = async () => {
+        try {
+            const {
+                bot_list: { bot_list },
+                error,
+            } = await api_base?.api?.send({
+                bot_list: 1,
+            });
+
+            if (error) {
+                this.setNotifications(error?.error?.message);
+            }
+
+            if (bot_list?.length) {
+                api_base.api?.onMessage()?.subscribe(this.handleMessage);
+                bot_list.forEach(bot => {
+                    if (bot.status === 'running') this.bot_running_list.push(bot.bot_id);
                 });
-        }, 2000);
+                this.bot_list = bot_list;
+                return bot_list;
+            }
+        } catch (e) {
+            // eslint-disable-next-line no-console
+            console.log('error fetching bot list', e);
+        }
     };
 
     createBot = () => {
-        console.log('create', this.form_data);
-
-        this.makeRequest(initial_req_schema)
+        api_base.api
+            .send(initial_req_schema)
             .then(data => {
                 this.setNotifications(data.bot_create.message);
                 if (this.form_data.action === 'RUN') {
@@ -159,72 +150,104 @@ export default class ServerBotStore implements IServerBotStore {
             .then(() => this.getBotList());
     };
 
-    removeBot = (bot_id: string) => {
-        this.makeRequest({
-            bot_remove: 1,
-            bot_id,
-        })
-            .then(data => {
-                this.setNotifications(data.bot_remove.message);
-            })
-            .catch((error: Error) => {
-                /* eslint-disable no-console */
-                console.error(error);
-                this.setNotifications(error?.error?.message);
-            })
-            .then(() => this.getBotList());
-    };
-
-    startBot = (bot_id: string) => {
-        this.notifyBot(bot_id);
-        this.makeRequest({
-            bot_start: 1,
-            bot_id,
-        })
-            .then(data => {
-                this.setNotifications(data.bot_start.message);
-            })
-            .catch((error: Error) => {
-                /* eslint-disable no-console */
-                console.error(error);
-                this.setNotifications(error?.error?.message);
+    removeBot = async (bot_id: string) => {
+        this.bot_starting_list.push(bot_id);
+        try {
+            const { bot_remove, error } = await api_base.api.send({
+                bot_remove: 1,
+                bot_id,
             });
-    };
 
-    stopBot = (bot_id: string) => {
-        this.makeRequest({
-            bot_stop: 1,
-            bot_id,
-        })
-            .then(data => {
-                this.setNotifications(data.bot_stop.message);
-            })
-            .catch((error: Error) => {
-                /* eslint-disable no-console */
+            if (bot_remove) {
+                this.setNotifications(bot_remove.message);
+            }
+
+            if (error) {
                 console.error(error);
                 this.setNotifications(error?.error?.message);
-            })
-            .then(() => this.getBotList());
+            }
+        } catch (e) {
+            // eslint-disable-next-line no-console
+            console.log('error removing bot', e);
+        } finally {
+            this.bot_starting_list = this.bot_starting_list.filter(id => id !== bot_id);
+            this.getBotList();
+        }
     };
 
-    notifyBot = (bot_id: string, should_change_status = true) => {
-        if (should_change_status) {
-            this.setStatusBot('started', bot_id);
+    startBot = async (bot_id: string) => {
+        this.bot_starting_list.push(bot_id);
+        this.notifyBot(bot_id);
+        try {
+            const { bot_start, error } = await api_base.api.send({
+                bot_start: 1,
+                bot_id,
+            });
+
+            if (bot_start) {
+                this.setNotifications(bot_start.message);
+                this.bot_running_list.push(bot_id);
+            }
+
+            if (error) {
+                console.error(error);
+                this.setNotifications(error?.error?.message);
+            }
+        } catch (e) {
+            // eslint-disable-next-line no-console
+            console.log('error starting bot', e);
+        } finally {
+            this.bot_starting_list = this.bot_starting_list.filter(id => id !== bot_id);
         }
-        this.makeRequest({
-            bot_notification: 1,
-            subscribe: 1,
-            bot_id,
-        })
+    };
+
+    stopBot = async (bot_id: string) => {
+        try {
+            this.bot_starting_list.push(bot_id);
+            const { bot_stop, error } = await api_base.api.send({
+                bot_stop: 1,
+                bot_id,
+            });
+
+            if (error) {
+                this.setNotifications(error?.error?.message);
+            }
+
+            if (bot_stop) {
+                this.setNotifications(bot_stop.message);
+            }
+        } catch (e) {
+            // eslint-disable-next-line no-console
+            console.log('error stopping bot', e);
+        } finally {
+            this.bot_starting_list = this.bot_starting_list.filter(id => id !== bot_id);
+        }
+    };
+
+    notifyBot = (bot_id: string) => {
+        api_base.api
+            .send({
+                bot_notification: 1,
+                subscribe: 1,
+                bot_id,
+            })
             .then(data => {
                 this.setNotifications(data?.bot_notification?.message);
                 return data;
             })
             .catch((error: Error) => {
-                /* eslint-disable no-console */
+                // eslint-disable-next-line no-console
                 console.error(error);
                 this.setNotifications(error?.error?.message);
             });
+    };
+
+    setRunning = (bot_id: string) => {
+        this.bot_running_list.push(bot_id);
+    };
+
+    setStopped = (bot_id: string) => {
+        this.bot_running_list = this.bot_running_list.filter(id => id !== bot_id);
     };
 
     setNotifications = (notifications: string) => {
@@ -233,5 +256,73 @@ export default class ServerBotStore implements IServerBotStore {
 
     setStatusBot = (status: string, bot_id: string) => {
         this.bot_list = this.bot_list.map(bot => (bot.bot_id === bot_id ? { ...bot, status } : bot));
+    };
+
+    handleMessage = ({ data }) => {
+        if (data?.msg_type === 'bot_notification') {
+            const contract_ids = [];
+            const { message } = data.bot_notification;
+            if (isValidJSON(message)) {
+                const { msg, msg_type } = JSON.parse(message);
+                if (msg_type === 'transaction' && msg?.action === 'buy') {
+                    this.setNotifications(
+                        `msg_type: ${msg_type} action: ${msg.action} payout: ${msg.payout} price: ${msg.price}`
+                    );
+                    contract_ids.push(msg.contract_id);
+                    this.setContracts({
+                        ...this.contracts,
+                        [msg.contract_id]: {
+                            ...msg,
+                            contract_id: msg.contract_id,
+                        },
+                    });
+                }
+
+                if (msg_type === 'transaction' && msg?.action === 'sell') {
+                    // eslint-disable-next-line no-console
+                    console.log(msg?.action, msg_type, msg, data);
+                    this.setNotifications(
+                        `msg_type: ${msg_type} action: ${msg.action} payout: ${msg.payout} price: ${msg.price} profit: ${msg.profit}`
+                    );
+
+                    this.setContracts({
+                        ...this.contracts,
+                        [msg.contract_id]: {
+                            ...this.contracts[msg.contract_id],
+                            profit: msg.profit,
+                        },
+                    });
+                }
+
+                if (msg_type === 'poc') {
+                    this.setNotifications(
+                        `${msg.longcode} barrier: ${msg?.barrier || ''} current_spot: ${msg.current_spot} payout: ${
+                            msg.payout
+                        } profit: ${msg.profit}`
+                    );
+
+                    this.setContracts({
+                        ...this.contracts,
+                        [msg.contract_id]: {
+                            ...msg,
+                            contract_id: msg.contract_id,
+                        },
+                    });
+                }
+
+                if (msg_type === 'stop') {
+                    this.setStopped(data.echo_req.bot_id);
+                    this.setStatusBot('stopped', data.echo_req.bot_id);
+                    this.setNotifications(`msg_type: ${msg_type} reason: ${msg.reason}`);
+                }
+            } else {
+                console.log('else', data, data.msg_type);
+                // test
+            }
+        }
+    };
+
+    setContracts = (contracts: any) => {
+        this.contracts = contracts;
     };
 }

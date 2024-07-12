@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { api_base } from '@deriv/bot-skeleton';
+import classNames from 'classnames';
 import { Button, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -10,64 +10,21 @@ import ServerQSForm from './server-qs-form';
 import './server-bot.scss';
 
 const ServerBot = observer(() => {
-    const {
-        server_bot: { getBotList, bot_list, createBot, notifications, setNotifications, setStatusBot },
-    } = useDBotStore();
-
+    const { server_bot } = useDBotStore();
+    const { createBot, getBotList } = server_bot;
     const [add_btn_active, setAddBtnActive] = useState(false);
     const { client, ui } = useStore();
     const { is_mobile } = ui;
-    const { is_virtual } = client;
+    const { is_virtual, is_logged_in } = client;
 
     React.useEffect(() => {
-        if (!bot_list[0]) {
-            setTimeout(() => getBotList(), 2000);
+        if (is_logged_in) {
+            setTimeout(() => {
+                getBotList();
+            }, 1000);
         }
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_virtual]);
-
-    const handleMessage = ({ data }) => {
-        if (data?.msg_type === 'bot_notification' && !data?.error) {
-            const contract_ids = [];
-            const { msg: bot_notification_msg } = data.bot_notification;
-
-            if (bot_notification_msg?.longcode) {
-                setNotifications(
-                    `${bot_notification_msg.longcode} barrier: ${bot_notification_msg.barrier} current_spot: ${bot_notification_msg.current_spot} payout: ${bot_notification_msg.payout} profit: ${bot_notification_msg.profit}`
-                );
-            }
-            if (data.bot_notification.msg_type === 'buy') {
-                setNotifications(
-                    `msg_type: ${data.bot_notification.msg_type} action: ${bot_notification_msg.action} payout: ${bot_notification_msg.payout} price: ${bot_notification_msg.price}`
-                );
-                contract_ids.push(bot_notification_msg.contract_id);
-                if (
-                    contract_ids.includes(bot_notification_msg.contract_id) &&
-                    bot_notification_msg.contract_id ===
-                        contract_ids.some(el => el === bot_notification_msg.contract_id)
-                ) {
-                    setNotifications(`!!${bot_notification_msg[`${bot_notification_msg.contract_id}`].barrier}`);
-                } else {
-                    contract_ids.push(bot_notification_msg.contract_id);
-                }
-            }
-            if (data.bot_notification.msg_type === 'sell') {
-                setNotifications(
-                    `msg_type: ${data.bot_notification.msg_type} action: ${bot_notification_msg.action} payout: ${bot_notification_msg.payout} price: ${bot_notification_msg.price} profit: ${bot_notification_msg.profit}`
-                );
-            }
-            if (data.bot_notification.msg_type === 'stop') {
-                setStatusBot('stopped', data.echo_req.bot_id);
-                setNotifications(`msg_type: ${data.bot_notification.msg_type} reason: ${bot_notification_msg.reason}`);
-            }
-        }
-    };
-
-    React.useEffect(() => {
-        api_base.api?.onMessage()?.subscribe(handleMessage);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [api_base?.api]);
 
     return (
         <>
@@ -84,7 +41,10 @@ const ServerBot = observer(() => {
                     <ServerBotList />
                 </div>
                 <div className='server-bot__item'>
-                    {notifications.length !== 0 && <Notifications notifications={notifications} />}
+                    <div className='server-bot__item__content'>
+                        <ServerBotSummary />
+                    </div>
+                    <Notifications />
                 </div>
             </div>
             <ServerQSForm add_btn_active={add_btn_active} setAddBtnActive={setAddBtnActive} createBot={createBot} />
@@ -93,3 +53,60 @@ const ServerBot = observer(() => {
 });
 
 export default ServerBot;
+
+const ServerBotSummary = observer(() => {
+    const { server_bot } = useDBotStore();
+    const { contracts } = server_bot;
+
+    return (
+        <div className='server-bot__summary'>
+            <div className='server-bot__summary__header'>
+                <Text size='s' weight='bold'>
+                    <Localize i18n_default_text='Contract Summary' />
+                </Text>
+            </div>
+            <div className='server-bot__contract-card-wrapper'>
+                {Object.keys(contracts).map((contract_id: string) => {
+                    const contract = contracts[contract_id as keyof typeof contracts];
+                    const { status, entry_spot = '', exit_spot = '...', buy_price = '', profit = '' } = contract;
+
+                    const pnl = Math.sign(Number(profit || '')) === 1 ? 'Profit' : 'Loss';
+                    return (
+                        <div
+                            key={contract_id}
+                            className={classNames('server-bot__contract-card', {
+                                'server-bot__contract-card--active': status === 'open',
+                                'server-bot__contract-card--closed': status === 'closed',
+                            })}
+                        >
+                            <div className='server-bot__contract-card__card entry-spot'>
+                                <Text size='xxs' weight='bold'>
+                                    Entry spot :
+                                </Text>{' '}
+                                <Text size='xxs'>{entry_spot}</Text>
+                            </div>
+                            <div className='server-bot__contract-card__card buy-price'>
+                                <Text size='xxs' weight='bold'>
+                                    Buy price :
+                                </Text>{' '}
+                                <Text size='xxs'>{buy_price}</Text>
+                            </div>
+                            <div className='server-bot__contract-card__card exit-spot'>
+                                <Text size='xxs' weight='bold'>
+                                    Exit spot :
+                                </Text>{' '}
+                                <Text size='xxs'>{exit_spot}</Text>
+                            </div>
+                            <div className='server-bot__contract-card__card profit-loss'>
+                                <Text size='xxs' weight='bold'>
+                                    {pnl} :
+                                </Text>{' '}
+                                <Text size='xxs'>{profit}</Text>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
+});

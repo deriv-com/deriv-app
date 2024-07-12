@@ -32,6 +32,11 @@ const Trade = observer(() => {
             ({ value }) =>
                 ![TRADE_TYPES.VANILLA.PUT, TRADE_TYPES.TURBOS.SHORT, TRADE_TYPES.RISE_FALL_EQUAL].includes(value)
         );
+    const isTradeTypeSelected = (value: string) =>
+        [contract_type, value].every(type => type.startsWith('vanilla')) ||
+        [contract_type, value].every(type => type.startsWith('turbos')) ||
+        [contract_type, value].every(type => type.startsWith('rise_fall')) ||
+        contract_type === value;
 
     const calculated_chart_height =
         window.innerHeight - HEIGHT.HEADER - HEIGHT.BOTTOM_NAV - HEIGHT.ADVANCED_FOOTER - HEIGHT.PADDING;
@@ -61,7 +66,7 @@ const Trade = observer(() => {
                             <Chip.Selectable
                                 key={value}
                                 onChipSelect={onTradeTypeSelect}
-                                selected={value === contract_type}
+                                selected={isTradeTypeSelected(value)}
                             >
                                 <Text size='sm'>{text}</Text>
                             </Chip.Selectable>

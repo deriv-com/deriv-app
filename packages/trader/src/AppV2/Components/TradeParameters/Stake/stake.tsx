@@ -8,13 +8,18 @@ type TStakeProps = {
     is_minimized?: boolean;
 } & Pick<ReturnType<typeof useTraderStore>, 'amount' | 'basis' | 'currency' | 'onChange'>;
 
+const BASIS = {
+    PAYOUT: 'payout',
+    STAKE: 'stake',
+};
+
 const Stake = ({ amount, basis, currency, onChange, is_minimized }: TStakeProps) => {
     React.useEffect(() => {
-        if (basis === 'payout') onChange({ target: { name: 'basis', value: 'stake' } });
+        if (basis === BASIS.PAYOUT) onChange({ target: { name: 'basis', value: BASIS.STAKE } });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [basis]);
 
-    if (basis === 'payout') return null;
+    if (basis === BASIS.PAYOUT) return null;
     return (
         <TextField
             variant='fill'

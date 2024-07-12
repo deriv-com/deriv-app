@@ -55,6 +55,7 @@
 
         &--minimized {
             width: 16rem;
+            flex-shrink: 0;
         }
     }
 }

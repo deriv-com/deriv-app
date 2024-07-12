@@ -13,6 +13,8 @@ import AccumulatorsInformation from './AccumulatorsInformation';
 import Multiplier from './Multiplier';
 import RiskManagement from './RiskManagement';
 import MultipliersInformation from './MultipliersInformation';
+import TradeTypeTabs from './TradeTypeTabs';
+import Strike from './Strike';
 
 type TTradeParametersList = {
     is_minimized?: boolean;
@@ -53,12 +55,14 @@ const TradeParametersList = observer(({ is_minimized }: TTradeParametersList) =>
                 is_minimized && 'trade-params__options__wrapper--minimized'
             )}
         >
-            {/* {isVisible('trade_type_tabs') && <TradeTypeTabs />} */}
+            {isVisible('trade_type_tabs') && (
+                <TradeTypeTabs contract_type={contract_type} is_minimized={is_minimized} onChange={onChange} />
+            )}
             {/* {isVisible('last_digit') && <LastDigit />} */}
             {isVisible('duration') && (
                 <Duration duration={duration} duration_unit={duration_unit} is_minimized={is_minimized} />
             )}
-            {/* {isVisible('strike') && <Strike />} */}
+            {isVisible('strike') && <Strike barrier_1={barrier_1} is_minimized={is_minimized} />}
             {/* {isVisible('payout_per_point') && <PayoutPerPointSelector />} */}
             {isVisible('barrier') && <Barrier barrier_1={barrier_1} is_minimized={is_minimized} />}
             {isVisible('growth_rate') && (

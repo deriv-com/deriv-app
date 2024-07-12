@@ -6,6 +6,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import AllowEquals from './AllowEquals';
 import Duration from './Duration';
 import Stake from './Stake';
+import Barrier from './Barrier';
 
 type TTradeParamsProps = {
     is_minimized?: boolean;
@@ -14,6 +15,7 @@ type TTradeParamsProps = {
 const TradeParams = observer(({ is_minimized }: TTradeParamsProps) => {
     const {
         amount,
+        barrier_1,
         basis,
         contract_start_type,
         contract_type,
@@ -44,7 +46,7 @@ const TradeParams = observer(({ is_minimized }: TTradeParamsProps) => {
             )}
             {/* {isVisible('strike') && <Strike />} */}
             {/* {isVisible('payout_per_point') && <PayoutPerPointSelector />} */}
-            {/* {isVisible('barrier') && <Barrier />} */}
+            {isVisible('barrier') && <Barrier barrier_1={barrier_1} is_minimized={is_minimized} />}
             {/* {isVisible('growth_rate') && <GrowthRate />} */}
             {isVisible('stake') && (
                 <Stake

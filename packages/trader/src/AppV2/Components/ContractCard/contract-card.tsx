@@ -16,7 +16,7 @@ import {
     isValidToSell,
 } from '@deriv/shared';
 import { ContractCardStatusTimer, TContractCardStatusTimerProps } from './contract-card-status-timer';
-import { BinaryLink } from 'App/Components/Routes';
+import { NavLink } from 'react-router-dom';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 import { TRootStore } from 'Types';
 import { getProfit } from 'AppV2/Utils/positions-utils';
@@ -30,7 +30,7 @@ type TContractCardProps = TContractCardStatusTimerProps & {
     onClick?: (e?: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>) => void;
     onCancel?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
     onClose?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
-    redirectTo?: string;
+    redirectTo?: string | React.ComponentProps<typeof NavLink>['to'];
     serverTime?: TRootStore['common']['server_time'];
 };
 
@@ -78,7 +78,7 @@ const ContractCard = ({
     const validToSell = isValidToSell(contractInfo as TContractInfo) && !isSellRequested;
     const isCancelButtonPressed = isSellRequested && isCanceling;
     const isCloseButtonPressed = isSellRequested && isClosing;
-    const Component = redirectTo ? BinaryLink : 'div';
+    const Component = redirectTo ? NavLink : 'div';
 
     const handleSwipe = (direction: string) => {
         const isLeft = direction === DIRECTION.LEFT;

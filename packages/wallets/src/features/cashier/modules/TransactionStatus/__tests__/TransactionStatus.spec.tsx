@@ -20,6 +20,11 @@ jest.mock('@deriv/api-v2', () => ({
     })),
 }));
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    Loader: jest.fn(() => <div>Loading...</div>),
+}));
+
 describe('TransactionStatus component', () => {
     beforeEach(() => {
         jest.clearAllMocks();
@@ -29,7 +34,7 @@ describe('TransactionStatus component', () => {
         render(<TransactionStatus />);
 
         expect(screen.getByText('Transaction status')).toBeInTheDocument();
-        expect(screen.queryByTestId('dt_wallets_loader')).not.toBeInTheDocument();
+        expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
         expect(screen.queryByRole('button', { name: 'Refresh' })).not.toBeInTheDocument();
     });
 
@@ -56,7 +61,7 @@ describe('TransactionStatus component', () => {
 
         render(<TransactionStatus />);
         expect(screen.getByText('Transaction status')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_wallets_loader')).toBeInTheDocument();
+        expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
     it('should render loading state correctly for useCryptoTransactions', async () => {
@@ -71,7 +76,7 @@ describe('TransactionStatus component', () => {
 
         render(<TransactionStatus />);
         expect(screen.getByText('Transaction status')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_wallets_loader')).toBeInTheDocument();
+        expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
     it('should render error state correctly for useActiveWalletAccount', async () => {

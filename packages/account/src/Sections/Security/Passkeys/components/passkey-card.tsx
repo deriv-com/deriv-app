@@ -11,10 +11,10 @@ export const PasskeyCard = ({ name, last_used, stored_on, id, icon, passkey_id, 
     const handleManagePasskey = (event: { target: { value: string } }) => {
         if (event.target.value === 'rename') {
             onPasskeyMenuClick(PASSKEY_STATUS_CODES.RENAMING, current_passkey_data);
-            passkeysMenuActionEventTrack('passkey_rename_open');
+            passkeysMenuActionEventTrack('passkey_rename_started');
         } else if (event.target.value === 'remove') {
             onPasskeyMenuClick(PASSKEY_STATUS_CODES.REMOVING, current_passkey_data);
-            // TODO: add action for revoke passkey
+            passkeysMenuActionEventTrack('passkey_remove_started');
         }
     };
 

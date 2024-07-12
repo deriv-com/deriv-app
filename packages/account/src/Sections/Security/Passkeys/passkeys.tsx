@@ -69,7 +69,7 @@ const Passkeys = observer(() => {
 
     const onSuccessPasskeyRemove = () => {
         setPasskeyStatus(PASSKEY_STATUS_CODES.REMOVED);
-        // TODO: add tracking events
+        passkeysMenuActionEventTrack('passkey_remove_success');
     };
 
     const onSuccessPasskeyRename = () => {

@@ -175,6 +175,7 @@ runs:
       name: analyse
       path: analyse.zip
       retention-days: 20
+      overwrite: true
 
   - name: Set sanitized branch name
     id: sanitize
@@ -184,12 +185,13 @@ runs:
       echo "SANITIZED_REF_NAME=${SANITIZED_REF_NAME}" >> $GITHUB_ENV
 
   - name: Upload analyse.zip for Feature Branches
-    # if: github.ref != 'refs/heads/master'
+    if: github.ref != 'refs/heads/master'
     uses: actions/upload-artifact@v4
     with:
       name: analyse-${{ env.SANITIZED_REF_NAME }}
       path: analyse.zip
       retention-days: 5
+      overwrite: true
 
   - name: Validate size changes
     if: ${{ steps.diff.outputs.above_threshold == 'true' && github.ref != 'refs/heads/master' }}

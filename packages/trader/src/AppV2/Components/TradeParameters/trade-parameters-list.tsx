@@ -10,6 +10,9 @@ import Barrier from './Barrier';
 import GrowthRate from './GrowthRate';
 import TakeProfit from './TakeProfit';
 import AccumulatorsInformation from './AccumulatorsInformation';
+import Multiplier from './Multiplier';
+import RiskManagement from './RiskManagement';
+import MultipliersInformation from './MultipliersInformation';
 
 type TTradeParametersList = {
     is_minimized?: boolean;
@@ -23,6 +26,7 @@ const TradeParametersList = observer(({ is_minimized }: TTradeParametersList) =>
         contract_start_type,
         contract_type,
         contract_types_list,
+        commission,
         currency,
         duration,
         duration_unit,
@@ -31,9 +35,11 @@ const TradeParametersList = observer(({ is_minimized }: TTradeParametersList) =>
         has_open_accu_contract,
         is_equal,
         onChange,
+        stop_out,
         symbol,
         maximum_payout,
         maximum_ticks,
+        multiplier,
     } = useTraderStore();
 
     const isVisible = (component_key: string) => {
@@ -62,6 +68,7 @@ const TradeParametersList = observer(({ is_minimized }: TTradeParametersList) =>
                     is_minimized={is_minimized}
                 />
             )}
+            {isVisible('multiplier') && <Multiplier is_minimized={is_minimized} multiplier={multiplier} />}
             {isVisible('stake') && (
                 <Stake
                     amount={amount}
@@ -84,7 +91,7 @@ const TradeParametersList = observer(({ is_minimized }: TTradeParametersList) =>
             {isVisible('take_profit') && (
                 <TakeProfit has_open_accu_contract={has_open_accu_contract} is_minimized={is_minimized} />
             )}
-            {/* {isVisible('risk_management') && <RiskManagement />} */}
+            {isVisible('risk_management') && <RiskManagement is_minimized={is_minimized} />}
             {/* {isVisible('expiration') && <Expiration />} */}
             {isVisible('accu_info_display') && (
                 <AccumulatorsInformation
@@ -94,7 +101,14 @@ const TradeParametersList = observer(({ is_minimized }: TTradeParametersList) =>
                     maximum_ticks={maximum_ticks}
                 />
             )}
-            {/* {isVisible('mult_info_display') && <MultipliersInfoDisplay />} */}
+            {isVisible('mult_info_display') && (
+                <MultipliersInformation
+                    currency={currency}
+                    commission={commission}
+                    is_minimized={is_minimized}
+                    stop_out={stop_out}
+                />
+            )}
         </div>
     );
 });

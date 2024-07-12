@@ -11,11 +11,7 @@ import {
     ProofOfIdentity,
     ProofOfAddress,
     ProofOfOwnership,
-    ApiToken,
-    TwoFactorAuthentication,
-    SelfExclusion,
     Account,
-    ClosingAccount,
     DeactivateAccount,
     ProofOfIncome,
 } from '../Sections';
@@ -55,6 +51,24 @@ const LoginHistory = makeLazyLoader(
 
 const ConnectedApps = makeLazyLoader(
     () => moduleLoader(() => import('../Sections/Security/ConnectedApps')),
+    () => <Loading />
+)();
+
+const ApiToken = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/ApiToken')),
+    () => <Loading />
+)();
+
+const TwoFactorAuthentication = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/TwoFactorAuthentication')),
+    () => <Loading />
+)();
+const SelfExclusion = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/SelfExclusion')),
+    () => <Loading />
+)();
+const ClosingAccount = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/ClosingAccount')),
     () => <Loading />
 )();
 

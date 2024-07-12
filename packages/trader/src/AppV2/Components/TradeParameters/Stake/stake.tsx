@@ -3,6 +3,7 @@ import { TextField } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import clsx from 'clsx';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { getCurrencyDisplayCode } from '@deriv/shared';
 
 type TStakeProps = {
     is_minimized?: boolean;
@@ -25,7 +26,7 @@ const Stake = ({ amount, basis, currency, onChange, is_minimized }: TStakeProps)
             variant='fill'
             readOnly
             label={<Localize i18n_default_text='Stake' />}
-            value={`${amount} ${currency}`}
+            value={`${amount} ${getCurrencyDisplayCode(currency)}`}
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
         />
     );

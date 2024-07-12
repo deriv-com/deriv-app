@@ -15,6 +15,7 @@ import RiskManagement from './RiskManagement';
 import MultipliersInformation from './MultipliersInformation';
 import TradeTypeTabs from './TradeTypeTabs';
 import Strike from './Strike';
+import PayoutPerPoint from './PayoutPerPoint';
 
 type TTradeParametersList = {
     is_minimized?: boolean;
@@ -37,8 +38,10 @@ const TradeParametersList = observer(({ is_minimized }: TTradeParametersList) =>
         has_open_accu_contract,
         is_equal,
         onChange,
+        proposal_info,
         stop_out,
         symbol,
+        take_profit,
         maximum_payout,
         maximum_ticks,
         multiplier,
@@ -63,7 +66,14 @@ const TradeParametersList = observer(({ is_minimized }: TTradeParametersList) =>
                 <Duration duration={duration} duration_unit={duration_unit} is_minimized={is_minimized} />
             )}
             {isVisible('strike') && <Strike barrier_1={barrier_1} is_minimized={is_minimized} />}
-            {/* {isVisible('payout_per_point') && <PayoutPerPointSelector />} */}
+            {isVisible('payout_per_point') && (
+                <PayoutPerPoint
+                    contract_type={contract_type}
+                    currency={currency}
+                    is_minimized={is_minimized}
+                    proposal_info={proposal_info}
+                />
+            )}
             {isVisible('barrier') && <Barrier barrier_1={barrier_1} is_minimized={is_minimized} />}
             {isVisible('growth_rate') && (
                 <GrowthRate
@@ -93,7 +103,12 @@ const TradeParametersList = observer(({ is_minimized }: TTradeParametersList) =>
                 />
             )}
             {isVisible('take_profit') && (
-                <TakeProfit has_open_accu_contract={has_open_accu_contract} is_minimized={is_minimized} />
+                <TakeProfit
+                    currency={currency}
+                    has_open_accu_contract={has_open_accu_contract}
+                    is_minimized={is_minimized}
+                    take_profit={take_profit}
+                />
             )}
             {isVisible('risk_management') && <RiskManagement is_minimized={is_minimized} />}
             {/* {isVisible('expiration') && <Expiration />} */}

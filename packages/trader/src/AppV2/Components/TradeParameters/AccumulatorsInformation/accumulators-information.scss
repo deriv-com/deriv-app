@@ -1,0 +1,16 @@
+.accumulators {
+    &__wrapper {
+        width: 100%;
+    }
+
+    &__row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-block: var(--component-badge-notification-spacing-padding-sm);
+    }
+
+    &__title {
+        border-bottom: var(--core-borderWidth-75) dotted var(--component-textIcon-normal-default);
+    }
+}

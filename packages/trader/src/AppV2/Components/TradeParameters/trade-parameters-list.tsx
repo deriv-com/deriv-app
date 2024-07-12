@@ -7,6 +7,9 @@ import AllowEquals from './AllowEquals';
 import Duration from './Duration';
 import Stake from './Stake';
 import Barrier from './Barrier';
+import GrowthRate from './GrowthRate';
+import TakeProfit from './TakeProfit';
+import AccumulatorsInformation from './AccumulatorsInformation';
 
 type TTradeParametersList = {
     is_minimized?: boolean;
@@ -24,10 +27,15 @@ const TradeParametersList = observer(({ is_minimized }: TTradeParametersList) =>
         duration,
         duration_unit,
         expiry_type,
+        growth_rate,
+        has_open_accu_contract,
         is_equal,
         onChange,
         symbol,
+        maximum_payout,
+        maximum_ticks,
     } = useTraderStore();
+
     const isVisible = (component_key: string) => {
         return getTradeParams(symbol)[contract_type].includes(component_key);
     };
@@ -47,7 +55,13 @@ const TradeParametersList = observer(({ is_minimized }: TTradeParametersList) =>
             {/* {isVisible('strike') && <Strike />} */}
             {/* {isVisible('payout_per_point') && <PayoutPerPointSelector />} */}
             {isVisible('barrier') && <Barrier barrier_1={barrier_1} is_minimized={is_minimized} />}
-            {/* {isVisible('growth_rate') && <GrowthRate />} */}
+            {isVisible('growth_rate') && (
+                <GrowthRate
+                    growth_rate={growth_rate}
+                    has_open_accu_contract={has_open_accu_contract}
+                    is_minimized={is_minimized}
+                />
+            )}
             {isVisible('stake') && (
                 <Stake
                     amount={amount}
@@ -67,10 +81,19 @@ const TradeParametersList = observer(({ is_minimized }: TTradeParametersList) =>
                     is_equal={is_equal}
                 />
             )}
-            {/* {isVisible('take_profit') && <TakeProfit />} */}
+            {isVisible('take_profit') && (
+                <TakeProfit has_open_accu_contract={has_open_accu_contract} is_minimized={is_minimized} />
+            )}
             {/* {isVisible('risk_management') && <RiskManagement />} */}
             {/* {isVisible('expiration') && <Expiration />} */}
-            {/* {isVisible('accu_info_display') && <AccumulatorsInfoDisplay />} */}
+            {isVisible('accu_info_display') && (
+                <AccumulatorsInformation
+                    currency={currency}
+                    is_minimized={is_minimized}
+                    maximum_payout={maximum_payout}
+                    maximum_ticks={maximum_ticks}
+                />
+            )}
             {/* {isVisible('mult_info_display') && <MultipliersInfoDisplay />} */}
         </div>
     );

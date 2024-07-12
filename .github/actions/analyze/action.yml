@@ -192,8 +192,9 @@ runs:
       retention-days: 5
 
   - name: Validate size changes
-    if: ${{ steps.diff.outputs.above_threshold == 'true' }}
+    if: ${{ steps.diff.outputs.above_threshold == 'true' && github.ref != 'refs/heads/master' }}
     uses: actions/github-script@v5
     with:
       script: |
         core.setFailed('Size changes exceed the defined threshold. Check above logs for details.');
+

@@ -1,7 +1,6 @@
 import { str as crc32 } from 'crc-32';
 import i18n from 'i18next';
 import { initReactI18next, useTranslation } from 'react-i18next';
-import { isProduction } from '@deriv-lib/shared';
 import withI18n from '../components';
 
 const LANGUAGE_KEY = 'i18n_language';
@@ -63,7 +62,7 @@ export const getAllowedLanguages = () => {
         }, {});
 
     // TODO Remove production check when all languages are available in prod.
-    if (isProduction()) language_list = allowed_languages;
+    if (!isLocal() && !isStaging()) language_list = allowed_languages;
 
     return language_list;
 };

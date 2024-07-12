@@ -5,7 +5,7 @@ import { Localize } from '@deriv/translations';
 import SymbolIconsMapper from '../SymbolIconsMapper/symbol-icons-mapper';
 import { ActiveSymbols } from '@deriv/api-types';
 import clsx from 'clsx';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TMarketCategoryItem = {
@@ -25,6 +25,8 @@ const MarketCategoryItem = forwardRef(
             onChange: onSymbolChange,
         } = useTraderStore();
         const { addSnackbar } = useSnackbar();
+        const { ui } = useStore();
+        const { is_dark_mode_on } = ui;
 
         useEffect(() => {
             setIsFavorite(favoriteSymbols.includes(item.symbol));
@@ -48,7 +50,7 @@ const MarketCategoryItem = forwardRef(
                     icon: (
                         <StandaloneStarRegularIcon
                             fill={
-                                selectedSymbol === item.symbol
+                                !is_dark_mode_on
                                     ? 'var(--semantic-color-slate-solid-textIcon-inverse-highest)'
                                     : 'var(--semantic-color-monochrome-textIcon-normal-mid)'
                             }

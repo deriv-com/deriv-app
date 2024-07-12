@@ -163,25 +163,18 @@ runs:
     run: |
       node .github/actions/analyze/compareReports.js --format=console
 
-  - name: Upload analyse.zip for Master Branch
-    uses: actions/upload-artifact@v4
-    with:
-      name: analyse
-      path: analyse.zip
-      retention-days: 20
-
-  - name: Validate size changes
-    if: ${{ steps.diff.outputs.above_threshold == 'true' }}
-    uses: actions/github-script@v5
-    with:
-      script: |
-        core.setFailed('Size changes exceed the defined threshold. Check above logs for details.');
-
   - name: Zip all treemaps and reports
     shell: bash
     run: |
       zip -r analyse.zip packages/*/{report.json,treemap.html}
 
+  - name: Upload analyse.zip for Master Branch
+    if: github.ref == 'refs/heads/master'
+    uses: actions/upload-artifact@v4
+    with:
+      name: analyse
+      path: analyse.zip
+      retention-days: 20
 
   - name: Set sanitized branch name
     id: sanitize
@@ -197,3 +190,10 @@ runs:
       name: analyse-${{ env.SANITIZED_REF_NAME }}
       path: analyse.zip
       retention-days: 5
+
+  - name: Validate size changes
+    if: ${{ steps.diff.outputs.above_threshold == 'true' }}
+    uses: actions/github-script@v5
+    with:
+      script: |
+        core.setFailed('Size changes exceed the defined threshold. Check above logs for details.');

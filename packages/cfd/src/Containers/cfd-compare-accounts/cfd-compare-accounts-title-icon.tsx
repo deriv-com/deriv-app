@@ -24,8 +24,6 @@ const CFDCompareAccountsTitleIcon = ({ trading_platforms, is_eu_user, is_demo }:
         'Choosing this jurisdiction will give you a Financial STP account. Your trades will go directly to the market and have tighter spreads.'
     );
 
-    console.log('==>', jurisdiction_card_icon);
-
     return (
         <React.Fragment>
             <div className={'compare-cfd-account-icon-title'}>

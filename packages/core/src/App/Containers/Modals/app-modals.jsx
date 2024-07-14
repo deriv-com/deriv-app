@@ -91,7 +91,7 @@ const AppModals = observer(() => {
         mt5_login_list,
         should_show_effortless_login_modal,
     } = client;
-    const { content_flag } = traders_hub;
+    const { content_flag, is_mt5_notification_modal_visible } = traders_hub;
     const { is_from_derivgo } = common;
     const {
         is_account_needed_modal_on,
@@ -124,7 +124,7 @@ const AppModals = observer(() => {
     const is_eu_user = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL, ContentFlag.EU_DEMO].includes(content_flag);
 
     const should_show_mt5_notification_modal =
-        is_logged_in && mt5_login_list.length > 0
+        is_logged_in && mt5_login_list.length > 0 && is_mt5_notification_modal_visible
             ? mt5_login_list.find(login => login)?.white_label?.notification ?? true
             : false;
 

@@ -123,7 +123,7 @@ describe('StatementStore', () => {
 
         statement_store.handleDateChange(date_values);
 
-        expect(statement_store.date_from).toBe(null);
+        expect(statement_store.date_from).toBeNull();
         expect(statement_store.date_to).toBe(toMoment(date_values.to).unix());
     });
 
@@ -137,7 +137,7 @@ describe('StatementStore', () => {
         expect(statement_store.action_type).toBe(filterValue);
     });
 
-    it('should call fetchNextBatch when fetchOnScroll is called with left less than 1500', () => {
+    it('should fetch statement when fetchOnScroll is called with left less than 1500', () => {
         WS.statement.mockResolvedValue(response);
         statement_store.shouldFetchNextBatch = jest.fn().mockReturnValue(true);
 

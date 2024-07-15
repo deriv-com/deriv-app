@@ -1091,6 +1091,7 @@ type TTradersHubStore = {
     available_dxtrade_accounts: TAvailableCFDAccounts[];
     available_ctrader_accounts: TAvailableCFDAccounts[];
     is_demo_low_risk: boolean;
+    is_mt5_notification_modal_visible: boolean;
     setMT5NotificationModal: (value: boolean) => void;
     has_any_real_account: boolean;
     startTrade: (platform?: TPlatform, existing_account?: DetailsOfEachMT5Loginid) => void;

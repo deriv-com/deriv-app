@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { Text } from '@deriv/components';
-import { AnimatePresence, motion } from 'framer-motion';
-
+import { motion } from 'framer-motion';
 
 type WheelPickerMobileProps = {
     defaultValue?: string;
@@ -11,13 +10,25 @@ type WheelPickerMobileProps = {
     optionHeight?: number;
 };
 
+type SwipeState = {
+    startY: number;
+    deltaY: number;
+    translateY: number;
+};
+
 export function getTargetIndex({
     deltaY = 0,
     snapTolerance = 0.5,
     optionHeight = 0,
     options = [],
     selectedIndex = 0,
-} = {}) {
+}: {
+    deltaY: number;
+    snapTolerance: number;
+    optionHeight: number;
+    options: string[];
+    selectedIndex: number;
+}) {
     const absDeltaY = Math.abs(deltaY);
     const yLeftover = absDeltaY % optionHeight;
     const snapThreshold = Math.round(optionHeight * snapTolerance);
@@ -34,20 +45,20 @@ export function getTargetIndex({
 
 const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
     defaultValue,
-    onChange = (val: string) => {},
-    options,
-    optionHeight = 30
-})=> {
-    const [selectedIndex, setSelectedIndex] = useState(options.length - 1);
-    const [optionWidth, setOptionWidth] = useState(0);
+    onChange,
+    options = [],
+    optionHeight = 30,
+}) => {
+    const [selectedIndex, setSelectedIndex] = useState<number>(options.length - 1);
+    const [optionWidth, setOptionWidth] = useState<number>(0);
 
-    const [swipe, setSwipe] = useState({ startY: 0, deltaY: 0, translateY: 0 });
+    const [swipe, setSwipe] = useState<SwipeState>({ startY: 0, deltaY: 0, translateY: 0 });
     const optionRef = useRef<HTMLDivElement>(null);
+
     const swipeableHandlers = useSwipeable({
         onSwipeStart: () => {
             setSwipe(swipe => ({ ...swipe, startY: swipe.translateY }));
         },
-
         onSwiping: ({ deltaY, first }) => {
             if (first) return;
             const MIN = 0;
@@ -61,7 +72,6 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
             }));
             setSelectedIndex(newIndex);
         },
-
         onSwiped: ({ deltaY }) => {
             const MIN = 0;
             const MAX = optionHeight * (options.length - 1);
@@ -75,8 +85,8 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
 
     useEffect(() => {
         const defaultValueIndex = options.findIndex(o => o === defaultValue);
-        setSelectedIndex(defaultValueIndex);
-    }, []);
+        setSelectedIndex(defaultValueIndex !== -1 ? defaultValueIndex : options.length - 1);
+    }, [defaultValue, options]);
 
     useEffect(() => {
         const translateY = optionHeight * selectedIndex;
@@ -96,15 +106,13 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
 
     const translateValue = `translateY(${-swipe.translateY}px)`;
     const wheelStyle = {
-        MozTransform: translateValue,
-        MsTransform: translateValue,
-        OTransform: translateValue,
         transform: translateValue,
-        WebkitTransform: translateValue,
         width: '100%',
         top: `calc(50% - ${optionHeight / 2}px)`,
     };
-    return <div className='wheel-picker-mobile'>
+
+    return (
+        <div className='wheel-picker-mobile'>
             <div className='picker-selected-wrapper'>
                 <div className='picker-selected'>
                     <Text
@@ -114,9 +122,7 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
                         align='center'
                         as='h1'
                         className='currency-label'
-                        style={{
-                            paddingLeft: optionWidth + 60,
-                        }}
+                        style={{ paddingLeft: optionWidth + 60 }}
                     >
                         USD
                     </Text>
@@ -127,9 +133,7 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
                     {options.map((option, index) => (
                         <motion.div
                             key={`option-${index}`}
-                            style={{
-                                height: optionHeight,
-                            }}
+                            style={{ height: optionHeight }}
                             className='options'
                             onMouseUp={() => handleClick(index)}
                             transition={{ type: 'spring', stiffness: 300 }}
@@ -150,6 +154,7 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
                 </div>
             </div>
         </div>
-}
+    );
+};
 
 export default WheelPickerMobile;

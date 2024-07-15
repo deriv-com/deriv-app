@@ -1,23 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 import { api_base } from '@deriv/bot-skeleton';
-import { initial_req_schema, TBotList, TBotListItem } from '../pages/server-bot/request_schema';
+import { initial_req_schema, TBotListItem } from '../pages/server-bot/request_schema';
 import RootStore from './root-store';
-
-type TKeysResponse =
-    | { bot_list: TBotList }
-    | { bot_create: number }
-    | { bot_start: number }
-    | { bot_stop: number }
-    | { bot_notification: number };
-
-type TBotResponse = {
-    echo_req: {
-        bot_list: number;
-        req_id: number;
-    };
-    msg_type: 'bot_list';
-    req_id: number;
-} & TKeysResponse;
 
 export type TFormData = {
     [key: string]: string | number | boolean;
@@ -52,22 +36,25 @@ export default class ServerBotStore {
             bot_running_list: observable,
             contracts: observable,
 
-            setValueServerBot: action.bound,
-            setNotifications: action.bound,
-            setValue: action.bound,
-            getBotList: action.bound,
-            notifyBot: action.bound,
-            createBot: action.bound,
-            removeBot: action.bound,
-            startBot: action.bound,
-            stopBot: action.bound,
-            setFormValues: action.bound,
-            setStatusBot: action.bound,
+            setValueServerBot: action,
+            setNotifications: action,
+            setValue: action,
+            getBotList: action,
+            notifyBot: action,
+            createBot: action,
+            removeBot: action,
+            startBot: action,
+            stopBot: action,
+            setFormValues: action,
+            setStatusBot: action,
 
             setRunning: action,
             setStopped: action,
             handleMessage: action,
             setContracts: action,
+            setStarting: action,
+            removeFromStartingList: action,
+            setBotList: action,
         });
     }
 
@@ -121,15 +108,19 @@ export default class ServerBotStore {
             if (bot_list?.length) {
                 api_base.api?.onMessage()?.subscribe(this.handleMessage);
                 bot_list.forEach(bot => {
-                    if (bot.status === 'running') this.bot_running_list.push(bot.bot_id);
+                    if (bot.status === 'running') this.setRunning(bot.bot_id);
                 });
-                this.bot_list = bot_list;
+                this.setBotList(bot_list);
                 return bot_list;
             }
         } catch (e) {
             // eslint-disable-next-line no-console
             console.log('error fetching bot list', e);
         }
+    };
+
+    setBotList = (bot_list: TBotListItem[]) => {
+        this.bot_list = bot_list;
     };
 
     createBot = () => {
@@ -151,7 +142,7 @@ export default class ServerBotStore {
     };
 
     removeBot = async (bot_id: string) => {
-        this.bot_starting_list.push(bot_id);
+        this.setStarting(bot_id);
         try {
             const { bot_remove, error } = await api_base.api.send({
                 bot_remove: 1,
@@ -170,13 +161,13 @@ export default class ServerBotStore {
             // eslint-disable-next-line no-console
             console.log('error removing bot', e);
         } finally {
-            this.bot_starting_list = this.bot_starting_list.filter(id => id !== bot_id);
+            this.removeFromStartingList(bot_id);
             this.getBotList();
         }
     };
 
     startBot = async (bot_id: string) => {
-        this.bot_starting_list.push(bot_id);
+        this.setStarting(bot_id);
         this.notifyBot(bot_id);
         try {
             const { bot_start, error } = await api_base.api.send({
@@ -186,7 +177,7 @@ export default class ServerBotStore {
 
             if (bot_start) {
                 this.setNotifications(bot_start.message);
-                this.bot_running_list.push(bot_id);
+                this.setRunning(bot_id);
             }
 
             if (error) {
@@ -197,7 +188,7 @@ export default class ServerBotStore {
             // eslint-disable-next-line no-console
             console.log('error starting bot', e);
         } finally {
-            this.bot_starting_list = this.bot_starting_list.filter(id => id !== bot_id);
+            this.removeFromStartingList(bot_id);
         }
     };
 
@@ -250,75 +241,97 @@ export default class ServerBotStore {
         this.bot_running_list = this.bot_running_list.filter(id => id !== bot_id);
     };
 
+    setStarting = (bot_id: string) => {
+        const bot_starting_list = [...this.bot_starting_list];
+        bot_starting_list.push(bot_id);
+        this.bot_starting_list = bot_starting_list;
+    };
+
+    removeFromStartingList = (bot_id: string) => {
+        const bot_starting_list = [...this.bot_starting_list].filter(id => id !== bot_id);
+        this.bot_starting_list = bot_starting_list;
+    };
+
     setNotifications = (notifications: string) => {
         this.notifications.push(notifications);
     };
 
     setStatusBot = (status: string, bot_id: string) => {
-        this.bot_list = this.bot_list.map(bot => (bot.bot_id === bot_id ? { ...bot, status } : bot));
+        const list = [...this.bot_list].map(bot => (bot.bot_id === bot_id ? { ...bot, status } : bot));
+        this.setBotList(list);
     };
 
     handleMessage = ({ data }) => {
-        if (data?.msg_type === 'bot_notification') {
-            const contract_ids = [];
-            const { message } = data.bot_notification;
-            if (isValidJSON(message)) {
-                const { msg, msg_type } = JSON.parse(message);
-                if (msg_type === 'transaction' && msg?.action === 'buy') {
-                    this.setNotifications(
-                        `msg_type: ${msg_type} action: ${msg.action} payout: ${msg.payout} price: ${msg.price}`
-                    );
-                    contract_ids.push(msg.contract_id);
-                    this.setContracts({
-                        ...this.contracts,
-                        [msg.contract_id]: {
-                            ...msg,
-                            contract_id: msg.contract_id,
-                        },
-                    });
+        if (data?.error) {
+            console.log(data?.error?.code, data?.error?.message);
+            return data.error;
+        }
+        try {
+            if (data?.msg_type === 'bot_notification') {
+                const contract_ids = [];
+                const { message } = data.bot_notification;
+
+                if (isValidJSON(message)) {
+                    const { msg, msg_type } = JSON.parse(message);
+                    if (msg_type === 'transaction' && msg?.action === 'buy') {
+                        this.setNotifications(
+                            `msg_type: ${msg_type} action: ${msg.action} payout: ${msg.payout} price: ${msg.price}`
+                        );
+                        contract_ids.push(msg.contract_id);
+                        this.setContracts({
+                            ...this.contracts,
+                            [msg.contract_id]: {
+                                ...msg,
+                                contract_id: msg.contract_id,
+                            },
+                        });
+                    }
+
+                    if (msg_type === 'transaction' && msg?.action === 'sell') {
+                        // eslint-disable-next-line no-console
+                        console.log(msg?.action, msg_type, msg, data);
+                        this.setNotifications(
+                            `msg_type: ${msg_type} action: ${msg.action} payout: ${msg.payout} price: ${msg.price} profit: ${msg.profit}`
+                        );
+
+                        this.setContracts({
+                            ...this.contracts,
+                            [msg.contract_id]: {
+                                ...this.contracts[msg.contract_id],
+                                profit: msg.profit,
+                            },
+                        });
+                    }
+
+                    if (msg_type === 'poc') {
+                        this.setNotifications(
+                            `${msg.longcode} barrier: ${msg?.barrier || ''} current_spot: ${msg.current_spot} payout: ${
+                                msg.payout
+                            } profit: ${msg.profit}`
+                        );
+
+                        this.setContracts({
+                            ...this.contracts,
+                            [msg.contract_id]: {
+                                ...msg,
+                                contract_id: msg.contract_id,
+                            },
+                        });
+                    }
+
+                    if (msg_type === 'stop') {
+                        this.setStopped(data.echo_req.bot_id);
+                        this.setStatusBot('stopped', data.echo_req.bot_id);
+                        this.setNotifications(`msg_type: ${msg_type} reason: ${msg.reason}`);
+                    }
+                } else {
+                    console.log('else', data, data.msg_type);
+                    // test
                 }
-
-                if (msg_type === 'transaction' && msg?.action === 'sell') {
-                    // eslint-disable-next-line no-console
-                    console.log(msg?.action, msg_type, msg, data);
-                    this.setNotifications(
-                        `msg_type: ${msg_type} action: ${msg.action} payout: ${msg.payout} price: ${msg.price} profit: ${msg.profit}`
-                    );
-
-                    this.setContracts({
-                        ...this.contracts,
-                        [msg.contract_id]: {
-                            ...this.contracts[msg.contract_id],
-                            profit: msg.profit,
-                        },
-                    });
-                }
-
-                if (msg_type === 'poc') {
-                    this.setNotifications(
-                        `${msg.longcode} barrier: ${msg?.barrier || ''} current_spot: ${msg.current_spot} payout: ${
-                            msg.payout
-                        } profit: ${msg.profit}`
-                    );
-
-                    this.setContracts({
-                        ...this.contracts,
-                        [msg.contract_id]: {
-                            ...msg,
-                            contract_id: msg.contract_id,
-                        },
-                    });
-                }
-
-                if (msg_type === 'stop') {
-                    this.setStopped(data.echo_req.bot_id);
-                    this.setStatusBot('stopped', data.echo_req.bot_id);
-                    this.setNotifications(`msg_type: ${msg_type} reason: ${msg.reason}`);
-                }
-            } else {
-                console.log('else', data, data.msg_type);
-                // test
             }
+        } catch (e) {
+            // eslint-disable-next-line no-console
+            console.log('error handling message', e);
         }
     };
 

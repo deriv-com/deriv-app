@@ -1,4 +1,19 @@
+.server-bot-container {
+    .qs__body__content__footer {
+        padding: 0;
+        .dc-btn--secondary {
+            border: none;
+        }
+    }
+}
+
 .server-bot {
+    &__title {
+        display: flex;
+        padding: 24px;
+        justify-content: space-between;
+    }
+
     background-color: var(--general-main-1);
     width: 100%;
     display: flex;
@@ -106,7 +121,7 @@
     }
 
     &__notifications {
-        height: calc(100vh - 70rem);
+        height: 234px;
         overflow-x: auto;
         display: flex;
         width: 100%;

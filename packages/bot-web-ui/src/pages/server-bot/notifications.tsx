@@ -12,7 +12,7 @@ const Notifications = observer(() => {
     }, [notifications.length]);
 
     const scrollToTopOfElement = () => {
-        const element = document.querySelector('server-bot-notifications');
+        const element = document.getElementById('server-bot-notifications');
         if (element) {
             // Using scrollIntoView with 'start' to align to the bottom because of column-reverse
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });

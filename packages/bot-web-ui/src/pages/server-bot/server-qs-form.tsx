@@ -1,10 +1,10 @@
 import React from 'react';
-import { Button, Modal, Text, ThemedScrollbars } from '@deriv/components';
+import { Form as FormikForm, useFormikContext } from 'formik';
+import { Button, Icon, Modal, Text, ThemedScrollbars } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { FormikWrapper } from '../bot-builder/quick-strategy/quick-strategy';
-import { useFormikContext, Form as FormikForm } from 'formik';
 import QuickStrategyForm from '../bot-builder/quick-strategy/form';
+import { FormikWrapper } from '../bot-builder/quick-strategy/quick-strategy';
 import { TFormValues } from '../bot-builder/quick-strategy/types';
 
 type TServerQSForm = {
@@ -52,7 +52,9 @@ const ServerQSForm = ({ add_btn_active, setAddBtnActive, createBot }: TServerQSF
                     <Text size={is_mobile ? 'xs' : 's'} weight='bold'>
                         <Localize i18n_default_text='Quick strategy' />
                     </Text>
-                    <Button onClick={() => setAddBtnActive(false)}>{localize('x')}</Button>
+                    <span onClick={() => setAddBtnActive(false)}>
+                        <Icon icon='IcCloseCircle' />
+                    </span>
                 </div>
                 <ThemedScrollbars className='qs__form__container' autohide={false}>
                     <FormikWrapper>

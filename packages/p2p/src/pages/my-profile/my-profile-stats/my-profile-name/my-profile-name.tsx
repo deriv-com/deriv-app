@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
+import { Text } from '@deriv/components';
 import { daysSince } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
@@ -136,12 +136,20 @@ const MyProfileName = () => {
                                     <BlockUserCount />
                                 </div>
                             )}
+                            {/* TODO: uncomment when implementing business hours feature */}
+                            {/* <div className='my-profile-name__rating__row'>
+                                    <MyProfileNameBusinessHours />
+                                </div> */}
                         </div>
                         {!isDesktop && (
                             <div className='my-profile-name__row'>
                                 <div className='my-profile-name__rating__row'>
                                     <BlockUserCount />
                                 </div>
+                                {/* TODO: uncomment when implementing business hours feature */}
+                                {/* <div className='my-profile-name__rating__row'>
+                                    <MyProfileNameBusinessHours />
+                                </div> */}
                             </div>
                         )}
                         <div className='my-profile-name__row'>

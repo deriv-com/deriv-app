@@ -70,7 +70,12 @@ const BuySellRowAction = ({
     }
 
     return (
-        <Button onClick={() => onUnavailableClick(eligibility_status)} secondary small={isDesktop}>
+        <Button
+            onClick={() => onUnavailableClick(eligibility_status)}
+            secondary
+            small={isDesktop}
+            className={className}
+        >
             <Localize i18n_default_text='Unavailable' />
         </Button>
     );

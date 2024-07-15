@@ -35,9 +35,13 @@ $card-width: 456px;
 
     & .chat {
         @include tablet-screen {
-            & .dc-mobile-full-page-modal {
-                top: 0;
-                overflow: hidden;
+            height: calc(100% - 4rem - 4rem);
+            & .dc-page-overlay__content {
+                height: calc(100% - 4rem - 4rem);
+                & .dc-mobile-full-page-modal {
+                    top: 0;
+                    overflow: hidden;
+                }
             }
         }
     }

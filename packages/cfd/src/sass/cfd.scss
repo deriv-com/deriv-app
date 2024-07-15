@@ -13,7 +13,7 @@
         justify-content: space-between;
         padding: 0 2.4rem 1.2rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 0;
         }
     }
@@ -39,7 +39,7 @@
     .dc-input {
         &__label {
             top: 1.2rem;
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 top: 0.9rem;
                 background-color: var(--fill-normal);
             }
@@ -48,7 +48,7 @@
     .dc-password-meter {
         &__bg {
             background: var(--general-section-2);
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 background: var(--fill-disabled);
             }
         }
@@ -57,7 +57,7 @@
         margin-top: 3em;
     }
     .cfd-password-reset {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             flex: 1;
         }
     }
@@ -65,7 +65,7 @@
         flex-grow: 1;
         margin: auto;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: calc(100vw - 4.8rem);
             max-width: 30rem;
         }
@@ -77,12 +77,12 @@
     .input-element {
         width: 100%;
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         .cfd-password-modal__content {
             overflow-y: auto;
             overflow-x: hidden;
             height: 100%;
-            max-height: calc(100% - 6.4rem);
+            max-height: calc(100vh - 6.4rem);
             padding: 1rem;
         }
     }
@@ -161,7 +161,7 @@
         flex-direction: column;
         max-width: 30rem;
 
-        @include desktop {
+        @include desktop-screen {
             margin-top: -2.5rem;
         }
 
@@ -172,6 +172,47 @@
         }
         .dc-form-submit-button {
             margin-bottom: 2.2rem;
+        }
+    }
+    &-tnc {
+        margin-block-end: 3.2rem;
+        &--bottom {
+            @include mobile-or-tablet-screen {
+                margin-top: auto;
+                margin-bottom: 7.5rem;
+            }
+        }
+    }
+    &-info {
+        border-radius: 0.4rem;
+        background: $color-status-information;
+        display: flex;
+        padding: 0.8rem;
+        align-items: flex-start;
+        gap: 0.8rem;
+        margin-block-end: 0.8rem;
+        &__icon {
+            flex-basis: 1.6rem;
+            max-width: 1.6rem;
+        }
+    }
+    &__checkbox {
+        display: flex;
+        align-self: baseline;
+        margin-inline-start: -0.8rem;
+        .dc-text {
+            font-size: var(--text-size-xxs);
+            text-align: var(--text-align-left);
+            & > a {
+                font-weight: bold;
+                text-transform: lowercase;
+            }
+        }
+    }
+    &-info,
+    &__checkbox {
+        .dc-icon {
+            margin-inline-start: 0;
         }
     }
 }
@@ -274,7 +315,7 @@
         gap: 4rem;
         padding: 2.4rem 0;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             min-height: 24rem;
             width: calc(100vw - 3.2rem);
         }
@@ -296,10 +337,10 @@
         }
     }
     &__password-area {
-        @include desktop {
+        @include desktop-screen {
             width: calc(min(34rem, 100vw));
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 100%;
             max-width: calc(100% - 2.4rem);
         }
@@ -335,12 +376,12 @@
         justify-content: space-around;
         padding: 2.4rem 0 2rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: calc(100vw - 3.2rem);
             height: 100%;
         }
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         & .dc-form-submit-button {
             all: unset;
         }
@@ -369,7 +410,7 @@
             margin-top: 8px;
             font-weight: bold;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             &:not(:first-child):not(:last-child) {
                 margin: 0;
             }
@@ -387,7 +428,7 @@
             }
         }
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         display: grid;
         grid-gap: 2.4rem;
         grid-template-columns: 1fr 1fr 1fr;

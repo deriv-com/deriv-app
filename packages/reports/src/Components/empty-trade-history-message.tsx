@@ -4,8 +4,8 @@ import { Icon, Text } from '@deriv/components';
 type TEmptyTradeHistoryMessage = {
     component_icon: string;
     has_selected_date: boolean;
-    localized_message: string;
-    localized_period_message: string;
+    localized_message: React.ReactNode;
+    localized_period_message: React.ReactNode;
 };
 
 const EmptyTradeHistoryMessage = ({

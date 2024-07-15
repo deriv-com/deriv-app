@@ -11,15 +11,20 @@ type TTradeTypeOption = {
     trade_type: TTradeType;
 };
 
-const TradeTypeOption: React.FC<TTradeTypeOption> = ({ trade_type }: TTradeTypeOption) => (
-    <div key={trade_type.value} className='qs__select__option'>
-        <IconTradeTypes type={trade_type.icon[0]} className='qs__select__option__icon' />
-        <IconTradeTypes type={trade_type.icon[1]} className='qs__select__option__icon' />
-        <Text className='qs__select__option__text' size='xs' color='prominent'>
-            {trade_type.text}
-        </Text>
-    </div>
-);
+const TradeTypeOption: React.FC<TTradeTypeOption> = ({ trade_type: { value, icon, text } }: TTradeTypeOption) => {
+    return (
+        <div key={value} className='qs__select__option'>
+            {icon?.length
+                ? icon.map((ic, idx) => (
+                      <IconTradeTypes type={ic} className='qs__select__option__icon' key={`${ic}id-${idx}`} />
+                  ))
+                : null}
+            <Text className='qs__select__option__text' size='xs' color='prominent'>
+                {text}
+            </Text>
+        </div>
+    );
+};
 
 const TradeTypeSelect: React.FC = () => {
     const [trade_types, setTradeTypes] = React.useState<TTradeType[]>([]);

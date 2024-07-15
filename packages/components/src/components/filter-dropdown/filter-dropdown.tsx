@@ -2,6 +2,7 @@ import React from 'react';
 import { isMobile } from '@deriv/shared';
 import Dropdown from '../dropdown/dropdown';
 import SelectNative from '../select-native/select-native';
+import { useDevice } from '@deriv-com/ui';
 
 type TListItem = {
     text: string;
@@ -32,6 +33,7 @@ const FilterDropdown = ({
     label,
     hide_top_placeholder,
 }: TFilterDropdown) => {
+    const { isDesktop } = useDevice();
     const [selected_filter, setSelectedFilter] = React.useState(initial_selected_filter ?? filter_list?.[0]?.value);
 
     const onChange = (event: { target: { name: string; value: string } }) => {
@@ -41,30 +43,30 @@ const FilterDropdown = ({
             handleFilterChange(event.target.value);
         }
     };
-    if (isMobile()) {
+    if (isDesktop) {
         return (
-            <SelectNative
-                list_items={filter_list}
+            <Dropdown
+                list={filter_list}
                 value={selected_filter}
-                hide_selected_value
+                name='dc-filter-dropdown'
+                className={dropdown_className}
+                classNameDisplay={dropdown_display_className}
                 suffix_icon='IcFilter'
-                should_show_empty_option={false}
                 onChange={onChange}
-                label={label}
-                hide_top_placeholder={hide_top_placeholder}
             />
         );
     }
 
     return (
-        <Dropdown
-            list={filter_list}
+        <SelectNative
+            list_items={filter_list}
             value={selected_filter}
-            name='dc-filter-dropdown'
-            className={dropdown_className}
-            classNameDisplay={dropdown_display_className}
+            hide_selected_value
             suffix_icon='IcFilter'
+            should_show_empty_option={false}
             onChange={onChange}
+            label={label}
+            hide_top_placeholder={hide_top_placeholder}
         />
     );
 };

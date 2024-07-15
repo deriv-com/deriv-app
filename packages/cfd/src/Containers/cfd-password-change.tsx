@@ -4,8 +4,10 @@ import { observer, useStore } from '@deriv/stores';
 import { FormSubmitButton, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { isDesktop, WS, getErrorMessages } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { CFD_PLATFORMS } from '../Helpers/cfd-config';
+import { CATEGORY, CFD_PLATFORMS, PRODUCT } from '../Helpers/cfd-config';
 import { validatePassword } from '../Helpers/constants';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import CfdPasswordModalTnc from './cfd-password-modal-tnc';
 
 export type TCFDPasswordFormValues = { password: string };
 export type TCFDPasswordFormChangeValues = { old_password: string; new_password: string };
@@ -38,12 +40,17 @@ const CFDPasswordChange = observer(
         onForgotPassword,
         setNewPasswordValue,
         should_set_trading_password,
+        platform,
     }: TCFDPasswordChangeProps) => {
         const { ui, modules } = useStore();
+        const { product, account_type } = useCfdStore();
         const { cfd } = modules;
         const { setIsMt5PasswordChangedModalVisible, setIsFromMt5MigrationModal } = cfd;
         const { is_mobile, is_mt5_migration_modal_enabled } = ui;
         const has_cancel_button = (isDesktop() ? !should_set_trading_password : true) || error_type === 'PasswordReset';
+        const [checked, setChecked] = React.useState(
+            !(product === PRODUCT.ZEROSPREAD && account_type.category === CATEGORY.REAL)
+        );
 
         const handleCancel = () => {
             if (!has_cancel_button) {
@@ -184,10 +191,18 @@ const CFDPasswordChange = observer(
                                         </li>
                                     </ol>
                                 </div>
+                                {product === PRODUCT.ZEROSPREAD && account_type.category === CATEGORY.REAL && (
+                                    <CfdPasswordModalTnc
+                                        className='cfd-password-modal-tnc--bottom'
+                                        platform={platform}
+                                        checked={checked}
+                                        onCheck={() => setChecked(prev => !prev)}
+                                    />
+                                )}
                             </div>
                             <div className='cfd-password-change__footer-button'>
                                 <FormSubmitButton
-                                    is_disabled={!values.old_password || !values.new_password || !isValid}
+                                    is_disabled={!values.old_password || !values.new_password || !isValid || !checked}
                                     has_cancel={has_cancel_button}
                                     is_absolute={is_mobile}
                                     cancel_label={localize('Forgot password?')}

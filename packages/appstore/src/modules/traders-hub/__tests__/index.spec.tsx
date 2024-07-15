@@ -8,6 +8,14 @@ jest.mock('Components/main-title-bar', () => jest.fn(() => 'mockedMainTitleBar')
 jest.mock('Components/cfds-listing', () => jest.fn(() => 'mockedCFDsListing'));
 jest.mock('Components/options-multipliers-listing', () => jest.fn(() => 'mocked<OptionsAndMultipliersListing>'));
 
+jest.mock('@deriv-com/ui', () => ({
+    useDevice: jest.fn(() => ({
+        isDesktop: true,
+        isMobile: false,
+        isTablet: false,
+    })),
+}));
+
 describe('TradersHub', () => {
     const render_container = (mock_store_override = {}) => {
         const mock_store = mockStore(mock_store_override);

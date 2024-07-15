@@ -4,11 +4,16 @@ import userEvent from '@testing-library/user-event';
 import { Analytics } from '@deriv-com/analytics';
 import { MemoryRouter } from 'react-router-dom';
 import { TCoreStores } from '@deriv/stores/types';
-import { formatDate, isMobile } from '@deriv/shared';
+import { formatDate } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 import { mockStore } from '@deriv/stores';
 import { useReportsStore } from 'Stores/useReportsStores';
 import Statement, { getRowAction } from '../statement';
 import ReportsProviders from '../../reports-providers';
+
+jest.mock('@deriv-com/ui', () => ({
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
 jest.mock('Stores/useReportsStores', () => ({
     ...jest.requireActual('Stores/useReportsStores'),
@@ -159,7 +164,6 @@ describe('Statement', () => {
                 is_virtual: true,
             },
         });
-        (isMobile as jest.Mock).mockReturnValue(false);
     });
     it('should render filter with All transactions selected and DataTable for desktop', () => {
         render(mockedStatement());
@@ -178,7 +182,7 @@ describe('Statement', () => {
         expect(screen.queryByTestId(dataTableTestId)).not.toBeInTheDocument();
     });
     it('should render filter dropdown with All transactions selected and DataList for mobile', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
+        (useDevice as jest.Mock).mockImplementation(() => ({ isDesktop: false, isMobile: true }));
         render(mockedStatement());
         expect(screen.getByRole('combobox')).toHaveValue('all');
         expect(screen.getByTestId(dataListTestId)).toBeInTheDocument();
@@ -190,10 +194,10 @@ describe('Statement', () => {
                 data: [],
             },
         });
-        (isMobile as jest.Mock).mockReturnValue(true);
         render(mockedStatement());
         expect(screen.getByRole('combobox')).toHaveValue('all');
         expect(screen.queryByTestId(dataListTestId)).not.toBeInTheDocument();
+        (useDevice as jest.Mock).mockImplementation(() => ({ isDesktop: true, isMobile: false }));
     });
     it('should render error if it is defined', () => {
         (useReportsStore as jest.Mock).mockReturnValueOnce({

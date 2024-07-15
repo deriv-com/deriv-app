@@ -4,7 +4,7 @@ export const getJurisdictionMaltainvestContents = (): TJurisdictionCardItems => 
     contents: {
         financial: [
             {
-                description: 'Synthetics, Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies',
+                description: 'Forex, stocks, stock indices, commodities, cryptocurrencies and synthetic indices',
                 key: 'assets',
                 title: 'Assets',
                 titleIndicators: {
@@ -15,7 +15,7 @@ export const getJurisdictionMaltainvestContents = (): TJurisdictionCardItems => 
             },
             {
                 key: 'leverage',
-                title: 'Leverage',
+                title: 'Leverage up to',
                 titleIndicators: {
                     displayText: '1:30',
                     displayTextSkinColor: 'brown-dark',
@@ -60,14 +60,14 @@ export const getJurisdictionMaltainvestContents = (): TJurisdictionCardItems => 
                 key: 'assets',
                 title: 'Assets',
                 titleIndicators: {
-                    displayText: '140+',
+                    displayText: '210+',
                     displayTextSkinColor: 'red-light',
                     type: 'displayText',
                 },
             },
             {
                 key: 'leverage',
-                title: 'Leverage',
+                title: 'Leverage up to',
                 titleIndicators: {
                     displayText: '1:30',
                     displayTextSkinColor: 'brown-dark',

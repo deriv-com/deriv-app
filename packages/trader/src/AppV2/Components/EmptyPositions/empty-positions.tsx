@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from '@deriv-com/quill-ui';
 import { StandaloneBriefcaseFillIcon, StandaloneSearchFillIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
+import { TAB_NAME } from 'AppV2/Utils/positions-utils';
 
 export type TEmptyPositionsProps = {
     isClosedTab?: boolean;
@@ -12,7 +13,9 @@ const EmptyPositions = ({ isClosedTab, noMatchesFound }: TEmptyPositionsProps) =
     const Icon = noMatchesFound ? StandaloneSearchFillIcon : StandaloneBriefcaseFillIcon;
 
     return (
-        <div className={`empty-positions__${isClosedTab ? 'closed' : 'open'}`}>
+        <div
+            className={`empty-positions__${isClosedTab ? TAB_NAME.CLOSED.toLowerCase() : TAB_NAME.OPEN.toLowerCase()}`}
+        >
             <div className='icon' data-testid='dt_empty_state_icon'>
                 <Icon iconSize='2xl' />
             </div>

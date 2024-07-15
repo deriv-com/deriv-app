@@ -73,6 +73,7 @@ export default class ClientStore extends BaseStore {
     is_populating_account_list = false;
     is_populating_mt5_account_list = true;
     is_populating_dxtrade_account_list = true;
+    is_populating_ctrader_account_list = true;
     website_status = {};
     account_settings = {};
     account_status = {};
@@ -85,6 +86,7 @@ export default class ClientStore extends BaseStore {
     has_enabled_two_fa = false;
     has_changed_two_fa = false;
     landing_companies = {};
+    is_new_session = false;
 
     // All possible landing companies of user between all
     standpoint = {
@@ -192,6 +194,7 @@ export default class ClientStore extends BaseStore {
             is_populating_account_list: observable,
             is_populating_mt5_account_list: observable,
             is_populating_dxtrade_account_list: observable,
+            is_populating_ctrader_account_list: observable,
             website_status: observable,
             account_settings: observable,
             account_status: observable,
@@ -270,7 +273,6 @@ export default class ClientStore extends BaseStore {
             is_social_signup: computed,
             isEligibleForMoreDemoMt5Svg: action.bound,
             isEligibleForMoreRealMt5: action.bound,
-            setIsCfdPoiCompleted: action.bound,
             setCitizen: action.bound,
             is_mt5_password_not_set: computed,
             is_dxtrade_password_not_set: computed,
@@ -294,7 +296,6 @@ export default class ClientStore extends BaseStore {
             should_show_eu_error: computed,
             is_virtual: computed,
             is_eu: computed,
-            is_brazil: computed,
             can_upgrade: computed,
             can_upgrade_to: computed,
             virtual_account_loginid: computed,
@@ -435,12 +436,20 @@ export default class ClientStore extends BaseStore {
 
         reaction(
             () => [this.account_settings],
-            () => {
-                const language = getRedirectionLanguage(this.account_settings?.preferred_language);
-                window.history.replaceState({}, document.title, urlForLanguage(language));
+            async () => {
+                const language = getRedirectionLanguage(this.account_settings?.preferred_language, this.is_new_session);
+                const should_update_preferred_language =
+                    language !== this.account_settings?.preferred_language &&
+                    this.preferred_language !== this.account_settings?.preferred_language;
 
-                this.setPreferredLanguage(language);
-                LocalStore.set(LANGUAGE_KEY, language);
+                if (should_update_preferred_language) {
+                    window.history.replaceState({}, document.title, urlForLanguage(language));
+                    this.setPreferredLanguage(language);
+                    await WS.setSettings({
+                        set_settings: 1,
+                        preferred_language: language,
+                    });
+                }
             }
         );
 
@@ -831,10 +840,6 @@ export default class ClientStore extends BaseStore {
         );
     }
 
-    get is_brazil() {
-        return this.clients_country === 'br';
-    }
-
     get can_upgrade() {
         return this.upgrade_info && (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi);
     }
@@ -1074,7 +1079,7 @@ export default class ClientStore extends BaseStore {
     };
 
     setCookieAccount() {
-        const domain = /deriv\.(com|me)/.test(window.location.hostname)
+        const domain = /deriv\.(com|me|be)/.test(window.location.hostname)
             ? deriv_urls.DERIV_HOST_NAME
             : window.location.hostname;
 
@@ -1477,10 +1482,6 @@ export default class ClientStore extends BaseStore {
 
         const authorize_response = await this.setUserLogin(login_new_user);
 
-        if (action_param === 'signup') {
-            this.root_store.ui.setIsNewAccount();
-        }
-
         if (search) {
             if (code_param && action_param) this.setVerificationCode(code_param, action_param);
             document.addEventListener('DOMContentLoaded', () => {
@@ -1558,9 +1559,12 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 this.is_populating_account_list = false;
             });
-            const language = getRedirectionLanguage(authorize_response.authorize.preferred_language);
+            const language = getRedirectionLanguage(
+                authorize_response.authorize.preferred_language,
+                this.is_new_session
+            );
             const stored_language = LocalStore.get(LANGUAGE_KEY);
-            if (language !== 'EN' && stored_language && language !== stored_language) {
+            if (stored_language && language !== stored_language) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));
                 await this.root_store.common.changeSelectedLanguage(language);
             }
@@ -1686,10 +1690,6 @@ export default class ClientStore extends BaseStore {
 
     setSwitched(switched) {
         this.switched = switched;
-    }
-
-    setIsCfdPoiCompleted(is_completed) {
-        this.is_cfd_poi_completed = is_completed;
     }
 
     /**
@@ -1848,7 +1848,6 @@ export default class ClientStore extends BaseStore {
 
         // set local storage
         this.root_store.gtm.setLoginFlag();
-
         await this.init();
 
         // broadcastAccountChange is already called after new connection is authorized
@@ -1995,8 +1994,6 @@ export default class ClientStore extends BaseStore {
         this.dxtrade_accounts_list = [];
         this.ctrader_accounts_list = [];
         this.landing_companies = {};
-        localStorage.removeItem('readScamMessage');
-        localStorage.removeItem('isNewAccount');
         localStorage.removeItem('show_effortless_login_modal');
         LocalStore.set('marked_notifications', JSON.stringify([]));
         localStorage.setItem('active_loginid', this.loginid);
@@ -2041,6 +2038,7 @@ export default class ClientStore extends BaseStore {
         };
         const client_object = {};
         const selected_account = obj_params?.selected_acct;
+        const verification_code = obj_params?.code;
         const is_wallets_selected = selected_account?.startsWith('CRW');
         let active_loginid;
         let active_wallet_loginid;
@@ -2048,9 +2046,8 @@ export default class ClientStore extends BaseStore {
         if (selected_account) {
             if (is_wallets_selected) {
                 active_wallet_loginid = obj_params.selected_acct;
-            } else {
-                active_loginid = obj_params.selected_acct;
             }
+            active_loginid = obj_params.selected_acct;
         }
 
         account_list.forEach(function (account) {
@@ -2095,10 +2092,12 @@ export default class ClientStore extends BaseStore {
         if (active_loginid && Object.keys(client_object).length) {
             if (selected_account && is_wallets_selected) {
                 localStorage.setItem('active_wallet_loginid', active_wallet_loginid);
-            } else {
-                localStorage.setItem('active_loginid', active_loginid);
+                if (verification_code) {
+                    localStorage.setItem('verification_code.payment_withdraw', verification_code);
+                }
             }
 
+            localStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
             this.syncWithLegacyPlatforms(active_loginid, this.accounts);
         }
@@ -2115,7 +2114,7 @@ export default class ClientStore extends BaseStore {
             let search_params = new URLSearchParams(window.location.search);
 
             search_params.forEach((value, key) => {
-                const account_keys = ['acct', 'token', 'cur'];
+                const account_keys = ['acct', 'token', 'cur', 'code'];
                 const is_account_param = account_keys.some(
                     account_key => key?.includes(account_key) && key !== 'affiliate_token'
                 );
@@ -2125,6 +2124,8 @@ export default class ClientStore extends BaseStore {
                     is_social_signup_provider = true;
                 }
             });
+
+            this.is_new_session = Object.keys(obj_params).length > 0;
 
             // delete account query params - but keep other query params (e.g. utm)
             Object.keys(obj_params).forEach(key => search_params.delete(key));

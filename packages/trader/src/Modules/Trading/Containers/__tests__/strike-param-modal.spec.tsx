@@ -18,6 +18,11 @@ type TModal = React.FC<{
     }>;
 };
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: false })),
+}));
+
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
     const Modal = jest.fn(

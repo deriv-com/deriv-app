@@ -30,7 +30,7 @@ describe('CashierOnboardingSideNotes', () => {
         );
         render(<CashierOnboardingSideNotes />, { wrapper });
 
-        expect(screen.getByText(/If you want to change your account currency/i)).toBeInTheDocument();
+        expect(screen.getByText(/To change your account currency/i)).toBeInTheDocument();
     });
 
     test('should render CashierOnboardingSideNoteCrypto on mobile on mobile if is_crypto is true', async () => {

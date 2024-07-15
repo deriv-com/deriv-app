@@ -235,7 +235,7 @@ export default class ContractsFor {
     }
 
     async getDurations(symbol, trade_type, convert_day_to_hours = true) {
-        if (trade_type === 'multiplier') {
+        if (trade_type === 'multiplier' || trade_type === 'accumulator') {
             return [];
         }
 
@@ -345,6 +345,10 @@ export default class ContractsFor {
         return prediction_range;
     }
 
+    getAccumulationRange = async () => {
+        return [0.01, 0.02, 0.03, 0.04, 0.05];
+    };
+
     async getMultiplierRange(symbol, trade_type) {
         const contracts = await this.getContractsByTradeType(symbol, trade_type);
         const multiplier_range = [];
@@ -432,10 +436,18 @@ export default class ContractsFor {
 
                 if (!is_disabled && has_durations) {
                     const types = opposites[trade_type.toUpperCase()];
+                    const icons = [];
+                    const names = [];
+
+                    types.forEach(type => {
+                        icons.push(Object.keys(type)[0]);
+                        names.push(Object.values(type)[0]);
+                    });
+
                     dropdown_options.push({
-                        name: types.map(type => type[Object.keys(type)[0]]).join('/'),
+                        name: names.join('/'),
                         value: trade_type,
-                        icon: [Object.keys(types[0])[0], Object.keys(types[1])[0]],
+                        icon: icons,
                     });
                 }
             }

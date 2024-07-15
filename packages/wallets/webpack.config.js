@@ -1,4 +1,5 @@
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const DefinePlugin = require('webpack').DefinePlugin;
 const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
 
@@ -195,7 +196,13 @@ module.exports = function (env) {
                 classnames: true,
                 'react-router-dom': true,
                 moment: true,
+                '@deriv-com/analytics': '@deriv-com/analytics',
             },
+        ],
+        plugins: [
+            new DefinePlugin({
+                'process.env.REMOTE_CONFIG_URL': JSON.stringify(process.env.REMOTE_CONFIG_URL),
+            }),
         ],
     };
 };

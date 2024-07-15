@@ -5,6 +5,7 @@ import Options from './ic-appstore-options.svg';
 import CFDs from './ic-appstore-cfds.svg';
 import Standard from './ic-appstore-standard.svg';
 import SwapFree from './ic-appstore-swap-free.svg';
+import ZeroSpread from './ic-appstore-zero-spread.svg';
 
 export interface IconProps<T> {
     icon: T;
@@ -20,6 +21,7 @@ export const PlatformIcons = {
     CFDs,
     Standard,
     SwapFree,
+    ZeroSpread,
 };
 
 const TradingPlatformIcon = ({ icon, className, size, onClick }: IconProps<keyof typeof PlatformIcons>) => {

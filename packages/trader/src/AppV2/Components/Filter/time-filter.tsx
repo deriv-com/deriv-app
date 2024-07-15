@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { toMoment } from '@deriv/shared';
-import { ActionSheet, Chip, RadioGroup } from '@deriv-com/quill-ui';
+import { ActionSheet, Chip, RadioGroup, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import CustomDateFilterButton from './custom-time-filter-button';
 import DateRangePicker from 'AppV2/Components/DatePicker';
@@ -124,12 +124,18 @@ const TimeFilter = ({
                 className='filter__chip'
                 dropdown
                 isDropdownOpen={isDropdownOpen}
-                label={getChipLabel()}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 selected={isChipSelected}
                 size='md'
-            />
-            <ActionSheet.Root isOpen={isDropdownOpen} onClose={() => setIsDropdownOpen(false)} position='left'>
+            >
+                <Text size='sm'>{getChipLabel()}</Text>
+            </Chip.Standard>
+            <ActionSheet.Root
+                isOpen={isDropdownOpen}
+                onClose={() => setIsDropdownOpen(false)}
+                position='left'
+                expandable={false}
+            >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Filter by trade types' />} />
                     <ActionSheet.Content className='filter__item__wrapper'>

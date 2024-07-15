@@ -16,6 +16,16 @@
         height: fit-content;
     }
 
+    &__loader {
+        width: 14rem;
+        height: 3.6rem;
+
+        @include mobile {
+            width: 12rem;
+            height: 2.6rem;
+        }
+    }
+
     &__info {
         display: flex;
         justify-content: space-between;
@@ -127,8 +137,6 @@
     }
 
     &__tab-icon {
-        width: 1.6rem;
-        height: 1.6rem;
         &--system-dark-2-general-text {
             path {
                 fill: var(--system-dark-2-general-text, #c2c2c2);

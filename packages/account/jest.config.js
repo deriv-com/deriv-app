@@ -4,6 +4,7 @@ module.exports = {
     ...baseConfigForPackages,
     preset: 'ts-jest',
     moduleNameMapper: {
+        '\\.css$': '<rootDir>/../../__mocks__/styleMock.js',
         '\\.s(c|a)ss$': '<rootDir>/../../__mocks__/styleMock.js',
         '^.+\\.svg$': '<rootDir>/../../__mocks__/styleMock.js',
         '@deriv-com/translations': '<rootDir>/../../__mocks__/translation.mock.js',

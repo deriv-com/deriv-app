@@ -3,6 +3,7 @@ import {
     useAccountLimits,
     useActiveWalletAccount,
     useCryptoConfig,
+    useCryptoEstimations,
     useCryptoWithdrawal,
     useCurrencyConfig,
     useExchangeRateSubscription,
@@ -16,7 +17,11 @@ import { TWithdrawalReceipt } from '../types';
 export type TWithdrawalCryptoContext = {
     accountLimits: ReturnType<typeof useAccountLimits>['data'];
     activeWallet: ReturnType<typeof useActiveWalletAccount>['data'];
+    countDownEstimationFee: ReturnType<typeof useCryptoEstimations>['countDown'];
     cryptoConfig: ReturnType<typeof useCryptoConfig>['data'];
+    cryptoEstimationsError: ReturnType<typeof useCryptoEstimations>['error'];
+    cryptoEstimationsFee: ReturnType<typeof useCryptoEstimations>['cryptoEstimationsFee'];
+    cryptoEstimationsFeeUniqueId: ReturnType<typeof useCryptoEstimations>['cryptoEstimationsFeeUniqueId'];
     error: TSocketError<'cashier'>['error'] | undefined;
     exchangeRates: Partial<ReturnType<typeof useExchangeRateSubscription>>;
     fractionalDigits: {
@@ -25,11 +30,15 @@ export type TWithdrawalCryptoContext = {
     };
     getConvertedCryptoAmount: (fiatInput: number | string) => string;
     getConvertedFiatAmount: (cryptoInput: number | string) => string;
+    getCryptoEstimations: ReturnType<typeof useCryptoEstimations>['getCryptoEstimations'];
     getCurrencyConfig: ReturnType<typeof useCurrencyConfig>['getConfig'];
     isClientVerified: boolean | undefined;
     isLoading: boolean;
+    isLoadingCryptoEstimationFee: ReturnType<typeof useCryptoEstimations>['isLoading'];
     isWithdrawalSuccess: ReturnType<typeof useCryptoWithdrawal>['isSuccess'];
     requestCryptoWithdrawal: (values: Parameters<THooks.CryptoWithdrawal>[0]) => void;
+    serverTime: ReturnType<typeof useCryptoEstimations>['serverTime'];
+    setCurrencyCode: ReturnType<typeof useCryptoEstimations>['setCurrencyCode'];
     setError: React.Dispatch<
         React.SetStateAction<
             | {
@@ -39,6 +48,7 @@ export type TWithdrawalCryptoContext = {
             | undefined
         >
     >;
+    unsubscribeCryptoEstimations: ReturnType<typeof useCryptoEstimations>['unsubscribeCryptoEstimations'];
     withdrawalReceipt: TWithdrawalReceipt;
 };
 
@@ -69,6 +79,17 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
     const { data: poaStatus } = usePOA();
     const { data: poiStatus } = usePOI();
     const { isSuccess: isWithdrawalSuccess, mutateAsync } = useCryptoWithdrawal();
+    const {
+        countDown: countDownEstimationFee,
+        cryptoEstimationsFee,
+        cryptoEstimationsFeeUniqueId,
+        error: cryptoEstimationsError,
+        getCryptoEstimations,
+        isLoading: isLoadingCryptoEstimationFee,
+        serverTime,
+        setCurrencyCode,
+        unsubscribeCryptoEstimations,
+    } = useCryptoEstimations();
     const { getConfig } = useCurrencyConfig();
     const [error, setError] = useState<TSocketError<'cashier'>['error'] | undefined>();
     const [isTokenValidationLoading, setIsTokenValidationLoading] = useState(true);
@@ -128,20 +149,29 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
     };
 
     const requestCryptoWithdrawal = (values: Parameters<THooks.CryptoWithdrawal>[0]) => {
-        const { address, amount } = values;
+        // eslint-disable-next-line camelcase
+        const { address, amount, estimated_fee_unique_id: estimatedFeeUniqueId } = values;
         mutateAsync({
             address,
             amount,
+            estimated_fee_unique_id: estimatedFeeUniqueId,
             verification_code: verificationCode,
         })
-            .then(() =>
+            .then(() => {
+                const fractionalDigits = activeWallet?.currency_config?.fractional_digits ?? 0;
                 setWithdrawalReceipt({
                     address,
-                    amount: amount?.toFixed(activeWallet?.currency_config?.fractional_digits),
+                    amount: amount?.toFixed(fractionalDigits),
+                    amountReceived: estimatedFeeUniqueId
+                        ? (Number(amount) - Number(cryptoEstimationsFee)).toFixed(fractionalDigits)
+                        : amount?.toFixed(fractionalDigits),
                     currency: activeWallet?.currency,
                     landingCompany: activeWallet?.landing_company_name,
-                })
-            )
+                    transactionFee: estimatedFeeUniqueId
+                        ? Number(cryptoEstimationsFee)?.toFixed(fractionalDigits)
+                        : undefined,
+                });
+            })
             .catch((error: TSocketError<'cashier'>) => {
                 setError(error.error);
             });
@@ -150,7 +180,11 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
     const value = {
         accountLimits,
         activeWallet,
+        countDownEstimationFee,
         cryptoConfig,
+        cryptoEstimationsError,
+        cryptoEstimationsFee,
+        cryptoEstimationsFeeUniqueId,
         error,
         exchangeRates: {
             data: exchangeRates,
@@ -163,12 +197,17 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
         },
         getConvertedCryptoAmount,
         getConvertedFiatAmount,
+        getCryptoEstimations,
         getCurrencyConfig: getConfig,
         isClientVerified: getClientVerificationStatus(),
         isLoading: isCryptoConfigLoading || isTokenValidationLoading,
+        isLoadingCryptoEstimationFee,
         isWithdrawalSuccess,
         requestCryptoWithdrawal,
+        serverTime,
+        setCurrencyCode,
         setError,
+        unsubscribeCryptoEstimations,
         withdrawalReceipt,
     };
 

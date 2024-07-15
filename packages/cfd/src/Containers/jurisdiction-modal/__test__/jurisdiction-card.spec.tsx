@@ -197,7 +197,7 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('210+')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Forex (standard), stock indices, commodities, cryptocurrencies, synthetic indices, basket indices and derived FX'
+                'Forex (standard), stock indices, commodities, cryptocurrencies, stocks, ETFs, synthetic indices, basket indices and derived FX'
             )
         ).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();

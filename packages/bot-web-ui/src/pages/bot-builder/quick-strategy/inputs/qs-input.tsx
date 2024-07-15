@@ -29,7 +29,7 @@ const QSInput: React.FC<TQSInput> = observer(
         has_currency_unit = false,
     }: TQSInput) => {
         const {
-            ui: { is_mobile },
+            ui: { is_desktop },
             client: { currency },
         } = useStore();
         const { quick_strategy } = useDBotStore();
@@ -81,7 +81,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                 <Popover
                                     alignment='bottom'
                                     message={error}
-                                    is_open={is_mobile ? !!error : !!error && has_focus}
+                                    is_open={!is_desktop ? !!error : !!error && has_focus}
                                     zIndex='9999'
                                     classNameBubble='qs__warning-bubble'
                                     has_error
@@ -136,7 +136,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                         {...field}
                                         disabled={disabled}
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleOnChange(e)}
-                                        placeholder={is_exclusive_field ? '0.00' : ''}
+                                        placeholder={is_exclusive_field ? '0' : ''}
                                         bottom_label={is_exclusive_field ? currency : ''}
                                         max_characters={2}
                                         maxLength={2}

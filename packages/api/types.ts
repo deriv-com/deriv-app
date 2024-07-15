@@ -49,6 +49,8 @@ import type {
     CountriesListResponse,
     CryptocurrencyConfigurationsRequest,
     CryptocurrencyConfigurationsResponse,
+    CryptocurrencyEstimationsRequest,
+    CryptocurrencyEstimationsResponse,
     DocumentUploadRequest,
     DocumentUploadResponse,
     EconomicCalendarRequest,
@@ -2254,6 +2256,26 @@ type PasskeysRenameResponse = {
     [k: string]: unknown;
 };
 
+type ChangeEmailRequest = {
+    change_email: 'verify' | 'update';
+    new_email: string;
+    new_password?: string;
+    verification_code: string;
+    loginid?: string;
+    passthrough?: {
+        [k: string]: unknown;
+    };
+    req_id?: number;
+};
+type ChangeEmailResponse = {
+    change_email: 0 | 1;
+    echo_req: {
+        [k: string]: unknown;
+    };
+    msg_type: 'change_email';
+    req_id?: number;
+};
+
 type TSocketEndpoints = {
     active_symbols: {
         request: ActiveSymbolsRequest;
@@ -2319,6 +2341,10 @@ type TSocketEndpoints = {
         request: CashierInformationRequest;
         response: CashierInformationResponse;
     };
+    change_email: {
+        request: ChangeEmailRequest;
+        response: ChangeEmailResponse;
+    };
     contract_update_history: {
         request: UpdateContractHistoryRequest;
         response: UpdateContractHistoryResponse;
@@ -2350,6 +2376,10 @@ type TSocketEndpoints = {
     crypto_config: {
         request: CryptocurrencyConfigurationsRequest;
         response: CryptocurrencyConfigurationsResponse;
+    };
+    crypto_estimations: {
+        request: CryptocurrencyEstimationsRequest;
+        response: CryptocurrencyEstimationsResponse;
     };
     document_upload: {
         request: DocumentUploadRequest;
@@ -2770,7 +2800,7 @@ export type TSocketResponseData<T extends TSocketEndpointNames> = Omit<
     'req_id' | 'msg_type' | 'echo_req' | 'subscription'
 >;
 
-type TSocketRequest<T extends TSocketEndpointNames> = TSocketEndpoints[T]['request'];
+export type TSocketRequest<T extends TSocketEndpointNames> = TSocketEndpoints[T]['request'];
 
 type TRemovableEndpointName<T extends TSocketEndpointNames> = T extends KeysMatching<TSocketRequest<T>, 1> ? T : never;
 

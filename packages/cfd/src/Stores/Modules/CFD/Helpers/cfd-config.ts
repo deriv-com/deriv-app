@@ -1,5 +1,6 @@
 import { Jurisdiction } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { TProducts } from 'Components/props.types';
 
 export type TDxCompanies = ReturnType<typeof getDxCompanies>;
 export type TMtCompanies = ReturnType<typeof getMtCompanies>;
@@ -97,11 +98,11 @@ export const getCTraderCompanies = () => {
     };
 };
 
-export const getMtCompanies = (is_eu: boolean) => {
+export const getMtCompanies = (is_eu: boolean, product?: TProducts) => {
     const all_config = {
         account_type: '',
         leverage: 100,
-        short_title: localize('Swap-Free'),
+        short_title: product === 'swap_free' ? localize('Swap-Free') : localize('Zero Spread'),
     };
     const synthetic_config = {
         account_type: '',
@@ -123,14 +124,20 @@ export const getMtCompanies = (is_eu: boolean) => {
             all: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
-                title: localize('Demo Swap-Free'),
+                title: product === 'swap_free' ? localize('Demo Swap-Free') : localize('Demo Zero Spread'),
                 short_title: all_config.short_title,
             },
-            all_svg: {
+            all_swap_free_svg: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
                 title: localize('Demo Swap-Free SVG'),
                 short_title: localize('Swap-Free SVG'),
+            },
+            all_zero_spread_bvi: {
+                mt5_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('Demo Zero Spread BVI'),
+                short_title: localize('Zero Spread BVI'),
             },
             ctrader: {
                 mt5_account_type: all_config.account_type,
@@ -180,13 +187,19 @@ export const getMtCompanies = (is_eu: boolean) => {
             all: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
-                title: localize('Swap-Free'),
+                title: product === 'swap_free' ? localize('Swap-Free') : localize('Zero Spread'),
                 short_title: all_config.short_title,
             },
-            all_svg: {
+            all_swap_free_svg: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
                 title: localize('Swap-Free SVG'),
+                short_title: all_config.short_title,
+            },
+            all_zero_spread_bvi: {
+                mt5_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('Zero Spread BVI'),
                 short_title: all_config.short_title,
             },
             ctrader: {

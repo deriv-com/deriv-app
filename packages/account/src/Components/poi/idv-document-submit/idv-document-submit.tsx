@@ -12,6 +12,7 @@ import {
     WS,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import {
     isAdditionalDocumentValid,
     isDocumentNumberValid,
@@ -21,7 +22,7 @@ import {
     validate,
     validateName,
 } from '../../../Helpers/utils';
-import PoiNameDobExample from '../../../Assets/ic-poi-name-dob-example.svg';
+import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import IDVForm from '../../forms/idv-form';
 import PersonalDetailsForm from '../../forms/personal-details-form';
 import FormBody from '../../form-body';
@@ -48,14 +49,14 @@ export type TIdvDocumentSubmitForm = TIDVFormValues & TConfirmPersonalDetailsFor
 
 const IdvDocumentSubmit = observer(
     ({ handleBack, handleViewComplete, handleSelectionNext, selected_country }: TIDVDocumentSubmitProps) => {
-        const { client, ui } = useStore();
+        const { client } = useStore();
         const { account_settings, getChangeableFields } = client;
-        const { is_mobile, is_desktop } = ui;
+        const { isDesktop } = useDevice();
 
         const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
         const shouldSkipIdv = (document_id?: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;
         const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
-        const side_note_image = <PoiNameDobExample />;
+        const side_note_image = <DerivLightNameDobPoiIcon height='195px' width='285px' />;
 
         const form_initial_values = filterObjProperties(account_settings, visible_settings) as {
             [Property in keyof TConfirmPersonalDetailsForm]: string;
@@ -201,7 +202,7 @@ const IdvDocumentSubmit = observer(
                                     />
                                 </div>
                             )}
-                            <FormBody className='form-body' scroll_offset={is_mobile ? '180px' : '80px'}>
+                            <FormBody className='form-body' scroll_offset={isDesktop ? '80px' : '180px'}>
                                 <FormSubHeader title={localize('Identity verification')} />
                                 <IDVForm selected_country={selected_country} class_name='idv-layout' />
                                 {!shouldSkipIdv(values?.document_type?.id) && (
@@ -223,7 +224,7 @@ const IdvDocumentSubmit = observer(
                                 )}
                             </FormBody>
                             <FormFooter className='proof-of-identity__footer '>
-                                {is_desktop && (
+                                {isDesktop && (
                                     <Button
                                         className='back-btn'
                                         onClick={handleBack}

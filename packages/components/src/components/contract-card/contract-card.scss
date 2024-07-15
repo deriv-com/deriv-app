@@ -42,11 +42,16 @@
             width: 100%;
 
             &--trader {
-                grid-template-columns: 1.2fr 1fr;
+                @include desktop-screen {
+                    grid-template-columns: 1.2fr 1fr;
+                }
 
                 &--accumulator {
-                    display: flex;
                     grid-gap: 1px;
+
+                    @include desktop-screen {
+                        display: flex;
+                    }
                 }
 
                 &--sold {

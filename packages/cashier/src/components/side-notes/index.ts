@@ -1,1 +1,1 @@
-export * from './side-note-payment-methods-learn-more';
+export * from './side-note-faq';

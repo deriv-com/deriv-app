@@ -41,12 +41,16 @@ const WalletListHeader: React.FC = () => {
             {shouldShowSwitcher && (
                 <div>
                     <div className='wallets-list-header__label'>
-                        <WalletText size='sm'>
-                            <Localize i18n_default_text='Demo' />
-                        </WalletText>
-                        <WalletText size='sm'>
-                            <Localize i18n_default_text='Real' />
-                        </WalletText>
+                        <div className='wallets-list-header__label-item'>
+                            <WalletText size='sm'>
+                                <Localize i18n_default_text='Demo' />
+                            </WalletText>
+                        </div>
+                        <div className='wallets-list-header__label-item'>
+                            <WalletText size='sm'>
+                                <Localize i18n_default_text='Real' />
+                            </WalletText>
+                        </div>
                     </div>
                     <label className='wallets-list-header__switcher' htmlFor='wallets-list-header__switcher'>
                         <input

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
+import { Localize } from '@deriv-com/translations';
 import { WalletLink, WalletText } from '../../../../components';
 
 type TWithdrawalLimitReachedDescProps = {
@@ -20,7 +20,7 @@ type TWithdrawalLockedDescProps = {
 
 const generateDescription = (description: string, components?: JSX.Element[]) => (
     <WalletText align='center'>
-        <Trans components={components} defaults={description} />
+        <Localize components={components} i18n_default_text={description} />
     </WalletText>
 );
 

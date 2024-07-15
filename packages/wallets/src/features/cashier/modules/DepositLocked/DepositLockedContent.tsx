@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
+import { Localize } from '@deriv-com/translations';
 import { WalletLink, WalletText } from '../../../../components';
 
 type TDepositLockedDescProps = {
@@ -34,11 +34,13 @@ const getDepositLockedDesc = ({
     websiteTncVersion,
 }: TDepositLockedDescProps) => {
     let description = null;
-    const generateDescription = (description: string, components?: JSX.Element[], values?: Date) => (
+    const generateDescription = (description: string, components?: JSX.Element[], values?: string) => (
         <WalletText align='center'>
-            <Trans
+            <Localize
                 components={components}
-                defaults={unwelcomeStatus ? description : `You have reached the withdrawal limit. ${description}`}
+                i18n_default_text={
+                    unwelcomeStatus ? description : `You have reached the withdrawal limit. ${description}`
+                }
                 values={{ values }}
             />
         </WalletText>
@@ -79,7 +81,7 @@ const getDepositLockedDesc = ({
                     onClick={() => window.LC_API.open_chat_window()}
                 />,
             ],
-            excludedUntil
+            excludedUntil?.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
         );
     } else if (unwelcomeStatus) {
         description = generateDescription('Please contact us via <0>live chat</0>.', [

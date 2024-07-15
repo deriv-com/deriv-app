@@ -200,6 +200,7 @@ module.exports = function (env) {
         plugins: [
             new DefinePlugin({
                 'process.env.REMOTE_CONFIG_URL': JSON.stringify(process.env.REMOTE_CONFIG_URL),
+                'process.env.WALLETS_TRANSLATION_PATH': JSON.stringify(process.env.WALLETS_TRANSLATION_PATH),
             }),
         ],
         resolve: {

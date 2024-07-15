@@ -7,7 +7,7 @@ import {
     LabelPairedMinusMdBoldIcon,
     LabelPairedPlusMdBoldIcon,
 } from '@deriv/quill-icons';
-import { Localize } from '@deriv-com/translations';
+import { useTranslations } from '@deriv-com/translations';
 import useDevice from '../../hooks/useDevice';
 import { IconButton, WalletButton, WalletText } from '../Base';
 import './WalletListCardActions.scss';
@@ -16,14 +16,16 @@ type TProps = {
     accountsActiveTabIndex?: number;
 };
 
-const getWalletHeaderButtons = (isDemo?: boolean) => {
+const GetWalletHeaderButtons = (isDemo?: boolean) => {
+    const { localize } = useTranslations();
+
     const buttons = [
         {
             className: isDemo ? 'wallets-mobile-actions-content-icon' : 'wallets-mobile-actions-content-icon--primary',
             color: isDemo ? 'white' : 'primary',
             icon: isDemo ? <LabelPairedArrowsRotateMdBoldIcon /> : <LabelPairedPlusMdBoldIcon fill='#FFF' />,
             name: isDemo ? 'reset-balance' : 'deposit',
-            text: isDemo ? 'Reset balance' : 'Deposit',
+            text: isDemo ? localize('Reset balance') : localize('Deposit'),
             variant: isDemo ? 'outlined' : 'contained',
         },
         {
@@ -31,7 +33,7 @@ const getWalletHeaderButtons = (isDemo?: boolean) => {
             color: 'white',
             icon: <LabelPairedMinusMdBoldIcon />,
             name: 'withdrawal',
-            text: 'Withdraw',
+            text: localize('Withdraw'),
             variant: 'outlined',
         },
         {
@@ -39,7 +41,7 @@ const getWalletHeaderButtons = (isDemo?: boolean) => {
             color: 'white',
             icon: <LabelPairedArrowUpArrowDownMdBoldIcon />,
             name: 'account-transfer',
-            text: 'Transfer',
+            text: localize('Transfer'),
             variant: 'outlined',
         },
     ] as const;
@@ -54,6 +56,7 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const history = useHistory();
+    const { localize } = useTranslations();
 
     const isActive = activeWallet?.is_active;
     const isDemo = activeWallet?.is_virtual;
@@ -62,7 +65,7 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
         return (
             <div className='wallets-mobile-actions__container'>
                 <div className='wallets-mobile-actions'>
-                    {getWalletHeaderButtons(isDemo).map(button => (
+                    {GetWalletHeaderButtons(isDemo).map(button => (
                         <div className='wallets-mobile-actions-content' key={button.name}>
                             <IconButton
                                 aria-label={button.name}
@@ -74,8 +77,8 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
                                 }}
                                 size='lg'
                             />
-                            <WalletText size='sm' weight={button.text === 'Deposit' ? 'bold' : 'normal'}>
-                                <Localize i18n_default_text={button.text} />
+                            <WalletText size='sm' weight={button.text === localize('Deposit') ? 'bold' : 'normal'}>
+                                {button.text}
                             </WalletText>
                         </div>
                     ))}
@@ -85,7 +88,7 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
 
     return (
         <div className='wallets-header__actions'>
-            {getWalletHeaderButtons(isDemo).map(button => (
+            {GetWalletHeaderButtons(isDemo).map(button => (
                 <WalletButton
                     ariaLabel={button.name}
                     icon={button.icon}
@@ -96,7 +99,7 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
                     rounded='lg'
                     variant={button.variant}
                 >
-                    <Localize i18n_default_text={isActive ? button.text : ''} />
+                    {isActive ? button.text : ''}
                 </WalletButton>
             ))}
         </div>

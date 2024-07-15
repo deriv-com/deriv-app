@@ -1,114 +1,93 @@
-import React from 'react';
-import {
-    FlagBangladeshIcon,
-    FlagChinaSimplifiedIcon,
-    FlagChinaTraditionalIcon,
-    FlagFranceIcon,
-    FlagGermanyIcon,
-    FlagItalyIcon,
-    FlagMongoliaIcon,
-    FlagPolandIcon,
-    FlagPortugalIcon,
-    FlagRussiaIcon,
-    FlagSouthKoreaIcon,
-    FlagSpainIcon,
-    FlagSriLankaIcon,
-    FlagTanzaniaIcon,
-    FlagThailandIcon,
-    FlagTurkeyIcon,
-    FlagUnitedKingdomIcon,
-    FlagVietnamIcon,
-} from '@deriv/quill-icons';
-
 export const languages = [
     {
         code: 'EN',
         displayName: 'English',
-        icon: <FlagUnitedKingdomIcon />,
+        icon: null,
     },
+    //TODO: arabic language implementation
     {
         code: 'BN',
         displayName: 'Bengali',
-        icon: <FlagBangladeshIcon />,
+        icon: null,
     },
     {
         code: 'DE',
         displayName: 'Deutsch',
-        icon: <FlagGermanyIcon />,
+        icon: null,
     },
     {
         code: 'ES',
         displayName: 'Español',
-        icon: <FlagSpainIcon />,
+        icon: null,
     },
     {
         code: 'FR',
         displayName: 'Français',
-        icon: <FlagFranceIcon />,
+        icon: null,
     },
     {
         code: 'IT',
         displayName: 'Italiano',
-        icon: <FlagItalyIcon />,
+        icon: null,
     },
     {
         code: 'SW',
         displayName: 'Kiswahili',
-        icon: <FlagTanzaniaIcon />,
+        icon: null,
     },
     {
         code: 'KO',
         displayName: '한국어',
-        icon: <FlagSouthKoreaIcon />,
+        icon: null,
     },
     {
         code: 'MN',
         displayName: 'Монгол',
-        icon: <FlagMongoliaIcon />,
+        icon: null,
     },
     {
         code: 'PL',
         displayName: 'Polish',
-        icon: <FlagPolandIcon />,
+        icon: null,
     },
     {
         code: 'PT',
         displayName: 'Português',
-        icon: <FlagPortugalIcon />,
+        icon: null,
     },
     {
         code: 'RU',
         displayName: 'Русский',
-        icon: <FlagRussiaIcon />,
+        icon: null,
     },
     {
         code: 'SI',
         displayName: 'සිංහල',
-        icon: <FlagSriLankaIcon />,
+        icon: null,
     },
     {
         code: 'TH',
         displayName: 'ไทย',
-        icon: <FlagThailandIcon />,
+        icon: null,
     },
     {
         code: 'TR',
         displayName: 'Türkçe',
-        icon: <FlagTurkeyIcon />,
+        icon: null,
     },
     {
         code: 'VI',
         displayName: 'Tiếng Việt',
-        icon: <FlagVietnamIcon />,
+        icon: null,
     },
     {
         code: 'ZH_CN',
         displayName: '简体中文',
-        icon: <FlagChinaSimplifiedIcon />,
+        icon: null,
     },
     {
         code: 'ZH_TW',
         displayName: '繁體中文',
-        icon: <FlagChinaTraditionalIcon />,
+        icon: null,
     },
 ];

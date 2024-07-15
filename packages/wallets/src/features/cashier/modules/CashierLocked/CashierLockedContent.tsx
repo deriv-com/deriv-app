@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
+import { Localize } from '@deriv-com/translations';
 import { WalletLink, WalletText } from '../../../../components';
 
 type TSystemMaintenanceDescProps = {
@@ -38,14 +38,17 @@ export const getSystemMaintenanceContent = ({
     const generateContent = (textDefault: string) => ({
         description: (
             <WalletText align='center'>
-                <Trans
-                    defaults={`Due to system maintenance, ${textDefault} with your {{currency}} Wallet are unavailable at the moment. Please try again later.`}
+                <Localize
+                    i18n_default_text={`Due to system maintenance, ${textDefault} with your {{currency}} Wallet are unavailable at the moment. Please try again later.`}
                     values={{ currency }}
                 />
             </WalletText>
         ),
         title: (
-            <Trans defaults={`{{currency}} Wallet ${textDefault} are temporarily unavailable.`} values={{ currency }} />
+            <Localize
+                i18n_default_text={`{{currency}} Wallet ${textDefault} are temporarily unavailable.`}
+                values={{ currency }}
+            />
         ),
     });
 
@@ -81,7 +84,7 @@ const getCashierLockedDesc = ({
     let description = null;
     const generateDescription = (description: string, components?: JSX.Element[]) => (
         <WalletText align='center'>
-            <Trans components={components} defaults={description} values={{ currency }} />
+            <Localize components={components} i18n_default_text={description} values={{ currency }} />
         </WalletText>
     );
 

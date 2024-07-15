@@ -1,7 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
-import { Localize } from '@deriv-com/translations';
 import { TSubscribedBalance } from '../../types';
 import { WalletText } from '../Base';
 import './WalletListCardBalance.scss';
@@ -20,15 +19,13 @@ const WalletListCardBalance: React.FC<TSubscribedBalance> = ({ balance }) => {
                 />
             ) : (
                 <WalletText align='right' size='xl' weight='bold'>
-                    <Localize
-                        i18n_default_text={displayMoney?.(
-                            balanceData?.accounts?.[activeWallet?.loginid ?? '']?.balance ?? 0,
-                            activeWallet?.currency ?? '',
-                            {
-                                fractional_digits: activeWallet?.currency_config?.fractional_digits,
-                            }
-                        )}
-                    />
+                    {displayMoney?.(
+                        balanceData?.accounts?.[activeWallet?.loginid ?? '']?.balance ?? 0,
+                        activeWallet?.currency ?? '',
+                        {
+                            fractional_digits: activeWallet?.currency_config?.fractional_digits,
+                        }
+                    )}
                 </WalletText>
             )}
         </div>

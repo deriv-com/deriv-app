@@ -43,19 +43,15 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
                     <div className='wallets-list-card-dropdown__item'>
                         <WalletCurrencyIcon currency={wallet.currency ?? 'USD'} rounded />
                         <div className='wallets-list-card-dropdown__item-content'>
-                            <WalletText size='2xs'>
-                                <Localize i18n_default_text={`${wallet.currency} Wallet`} />
-                            </WalletText>
+                            <WalletText size='2xs'>{wallet.currency} Wallet</WalletText>
                             <WalletText size='sm' weight='bold'>
-                                <Localize
-                                    i18n_default_text={displayMoney?.(
-                                        balanceData?.accounts?.[wallet.loginid]?.balance ?? 0,
-                                        wallet?.currency || '',
-                                        {
-                                            fractional_digits: wallet?.currency_config?.fractional_digits,
-                                        }
-                                    )}
-                                />
+                                {displayMoney?.(
+                                    balanceData?.accounts?.[wallet.loginid]?.balance ?? 0,
+                                    wallet?.currency || '',
+                                    {
+                                        fractional_digits: wallet?.currency_config?.fractional_digits,
+                                    }
+                                )}
                             </WalletText>
                         </div>
                     </div>

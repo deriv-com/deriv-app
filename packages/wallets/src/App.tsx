@@ -6,11 +6,12 @@ import AppContent from './AppContent';
 import WalletsAuthProvider from './AuthProvider';
 import './styles/fonts.scss';
 import './index.scss';
-import './translations/i18n';
 
 const App: React.FC = () => {
     const i18nInstance = initializeI18n({
-        cdnUrl: `${process.env.CROWDIN_URL}/${process.env.WALLETS_TRANSLATION_PATH}`, // 'https://translations.deriv.com/deriv-app-wallets/staging/translations',
+        cdnUrl:
+            // `${process.env.CROWDIN_URL}/${process.env.WALLETS_TRANSLATION_PATH}`,
+            'https://translations.deriv.com/deriv-app-wallets/staging',
         useSuspense: false,
     });
 

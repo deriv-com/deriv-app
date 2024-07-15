@@ -3,7 +3,7 @@
     padding-block: var(--core-spacing-400);
     align-items: flex-end;
     height: var(--core-size-2800);
-    gap: 0;
+    gap: 0px;
 
     &:nth-child(2):not(.purchase-button--loading) {
         align-items: flex-start;
@@ -32,6 +32,10 @@
 
             &--reverse {
                 flex-direction: row-reverse;
+            }
+
+            &--disabled-placeholder {
+                min-height: var(--core-size-900);
             }
         }
 

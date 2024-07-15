@@ -47,33 +47,42 @@ const PurchaseButtonContent = ({
         return localized_basis.payout;
     };
 
+    const text_basis = getTextBasis();
+    const amount = getAmount();
+    const is_content_empty = !text_basis || !amount;
+
     return (
         <CaptionText
             size='sm'
             className={clsx(
                 'purchase-button__information__wrapper',
-                is_reverse && 'purchase-button__information__wrapper--reverse'
+                is_reverse && 'purchase-button__information__wrapper--reverse',
+                is_content_empty && 'purchase-button__information__wrapper--disabled-placeholder'
             )}
         >
-            <CaptionText
-                as='span'
-                size='sm'
-                className={clsx(!has_open_accu_contract && 'purchase-button__information__item')}
-            >
-                {getTextBasis()}
-            </CaptionText>
-            <CaptionText
-                as='span'
-                size='sm'
-                className={clsx(!has_open_accu_contract && 'purchase-button__information__item')}
-            >
-                <Money
-                    amount={getAmount()}
-                    currency={currency}
-                    should_format={!is_turbos && !is_vanilla}
-                    show_currency
-                />
-            </CaptionText>
+            {!is_content_empty && (
+                <React.Fragment>
+                    <CaptionText
+                        as='span'
+                        size='sm'
+                        className={clsx(!has_open_accu_contract && 'purchase-button__information__item')}
+                    >
+                        {text_basis}
+                    </CaptionText>
+                    <CaptionText
+                        as='span'
+                        size='sm'
+                        className={clsx(!has_open_accu_contract && 'purchase-button__information__item')}
+                    >
+                        <Money
+                            amount={amount}
+                            currency={currency}
+                            should_format={!is_turbos && !is_vanilla}
+                            show_currency
+                        />
+                    </CaptionText>
+                </React.Fragment>
+            )}
         </CaptionText>
     );
 };

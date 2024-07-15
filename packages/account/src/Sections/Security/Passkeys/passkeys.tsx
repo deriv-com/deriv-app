@@ -120,7 +120,8 @@ const Passkeys = observer(() => {
             if (should_hide_error) return;
 
             if (isNotExistedPasskey(error as TServerError)) {
-                setPasskeyStatus(PASSKEY_STATUS_CODES.VERIFYING);
+                // TODO: add the logic for removing with passkey or email and tracking events when e-mail verification is implemented
+                // setPasskeyStatus(PASSKEY_STATUS_CODES.VERIFYING);
                 return;
             }
 

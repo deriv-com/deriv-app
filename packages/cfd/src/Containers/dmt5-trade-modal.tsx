@@ -1,5 +1,6 @@
 import React from 'react';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { useDevice } from '@deriv-com/ui';
 import { Text, Icon, Money, StatusBadge } from '@deriv/components';
 import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { getCFDAccountKey, MT5_ACCOUNT_STATUS } from '@deriv/shared';
@@ -44,8 +45,8 @@ const DMT5TradeModal = observer(
         product,
         is_demo,
     }: TMT5TradeModalProps) => {
-        const { ui, client } = useStore();
-        const { is_mobile } = ui;
+        const { isDesktop } = useDevice();
+        const { client } = useStore();
         const { account_status: { authentication } = {} } = client;
         const is_eligible_to_migrate = mt5_trade_account.eligible_to_migrate;
 
@@ -192,7 +193,7 @@ const DMT5TradeModal = observer(
                     <div className='cfd-trade-modal__maintenance'>
                         <Icon
                             icon='IcAlertWarning'
-                            size={is_mobile ? 28 : 20}
+                            size={!isDesktop ? 28 : 20}
                             className='cfd-trade-modal__maintenance-icon'
                         />
                         <div className='cfd-trade-modal__maintenance-text'>
@@ -202,7 +203,7 @@ const DMT5TradeModal = observer(
                 </div>
                 {is_eligible_to_migrate && <MigrationBanner is_trade_modal />}
 
-                {is_mobile ? (
+                {!isDesktop ? (
                     <MT5MobileRedirectOption mt5_trade_account={mt5_trade_account} />
                 ) : (
                     <MT5DesktopRedirectOption account_title={getAccountTitle()} mt5_trade_account={mt5_trade_account} />

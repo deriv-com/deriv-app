@@ -53,7 +53,10 @@ const OptionsAndMultipliersListing: React.FC<TSubscribedBalance> = ({ balance })
                             trailing={
                                 activeLinkedToTradingAccount?.loginid ? (
                                     <div className='wallets-options-and-multipliers-listing__icon'>
-                                        <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                                        <LabelPairedChevronRightCaptionRegularIcon
+                                            data-testid='dt_label_paired_chevron'
+                                            width={16}
+                                        />
                                     </div>
                                 ) : null
                             }

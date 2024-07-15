@@ -51,6 +51,8 @@ import type {
     CountriesListResponse,
     CryptocurrencyConfigurationsRequest,
     CryptocurrencyConfigurationsResponse,
+    CryptocurrencyEstimationsRequest,
+    CryptocurrencyEstimationsResponse,
     DocumentUploadRequest,
     DocumentUploadResponse,
     EconomicCalendarRequest,
@@ -1623,6 +1625,10 @@ type TPrivateSocketEndpoints = {
                        */
                       name?: string;
                       /**
+                       * This needs to be removed after updating api-types version
+                       */
+                      product?: 'zero_spread' | 'swap_free' | 'standard';
+                      /**
                        * Legal requirements for the Landing Company
                        */
                       requirements?: {
@@ -2344,6 +2350,10 @@ type TSocketEndpoints = {
     crypto_config: {
         request: CryptocurrencyConfigurationsRequest;
         response: CryptocurrencyConfigurationsResponse;
+    };
+    crypto_estimations: {
+        request: CryptocurrencyEstimationsRequest;
+        response: CryptocurrencyEstimationsResponse;
     };
     document_upload: {
         request: DocumentUploadRequest;

@@ -23,9 +23,7 @@ import EffortlessLoginModal from '../EffortlessLoginModal';
 
 const TradingAssessmentExistingUser = React.lazy(() =>
     moduleLoader(() =>
-        import(
-            /* webpackChunkName: "trading-assessment-existing-user-modal" */ './trading-assessment-existing-user.jsx'
-        )
+        import(/* webpackChunkName: "trading-assessment-existing-user-modal" */ './trading-assessment-existing-user')
     )
 );
 
@@ -57,10 +55,6 @@ const SetResidenceModal = React.lazy(() =>
 const ResetEmailModal = React.lazy(() => import(/* webpackChunkName: "reset-email-modal"  */ '../ResetEmailModal'));
 
 const UpdateEmailModal = React.lazy(() => import(/* webpackChunkName: "update-email-modal"  */ '../UpdateEmailModal'));
-
-const WarningScamMessageModal = React.lazy(() =>
-    import(/* webpackChunkName: "warning-scam-message" */ '../WarningScamMessageModal')
-);
 
 const WarningCloseCreateRealAccountModal = React.lazy(() =>
     import(/* webpackChunkName: "warning-close-create-real-account" */ '../WarningCloseCreateRealAccountModal')
@@ -108,7 +102,6 @@ const AppModals = observer(() => {
         toggleAccountSignupModal,
         is_trading_assessment_for_new_user_enabled,
         is_deriv_account_needed_modal_visible,
-        is_warning_scam_message_modal_visible,
         is_ready_to_deposit_modal_visible,
         is_need_real_account_for_cashier_modal_visible,
         should_show_risk_accept_modal,
@@ -201,8 +194,6 @@ const AppModals = observer(() => {
         content_flag !== ContentFlag.LOW_RISK_CR_NON_EU
     ) {
         ComponentToLoad = <TradingAssessmentExistingUser />;
-    } else if (is_warning_scam_message_modal_visible) {
-        ComponentToLoad = <WarningScamMessageModal />;
     } else if (is_closing_create_real_account_modal) {
         ComponentToLoad = <WarningCloseCreateRealAccountModal />;
     } else if (is_account_needed_modal_on) {

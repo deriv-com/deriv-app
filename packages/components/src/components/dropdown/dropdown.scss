@@ -273,10 +273,8 @@
         min-width: 15rem;
         width: 100%;
 
-        &:not(.cfd-personal-details-modal__form *)
-            :not(.trade-container__multiplier-dropdown)
-            :not(.dc-dropdown--left)
-            :not(.contract-type-info__dropdown) {
+        &:not(.cfd-personal-details-modal__form *):not(.trade-container__multiplier-dropdown):not(
+                .dc-dropdown--left):not(.contract-type-info__dropdown) {
             margin-top: unset;
         }
 
@@ -319,4 +317,10 @@
 .suffix-icon {
     position: absolute;
     left: 20px;
+    transition: transform 0.2s ease;
+    transform: rotate(0deg);
+
+    &--flip {
+        transform: rotate(-180deg);
+    }
 }

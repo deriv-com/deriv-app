@@ -1,13 +1,13 @@
 import React from 'react';
 import { TContractInfo } from '@deriv/shared';
-import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+import { Loading } from '@deriv/components';
 import { EmptyPositions, TEmptyPositionsProps } from 'AppV2/Components/EmptyPositions';
 import { TPortfolioPosition } from '@deriv/stores/types';
 import { ContractCardList, ContractCardsSections } from 'AppV2/Components/ContractCard';
 import { ContractTypeFilter, TimeFilter } from 'AppV2/Components/Filter';
 import TotalProfitLoss from 'AppV2/Components/TotalProfitLoss';
-import { filterPositions, getTotalPositionsProfit } from '../../Utils/positions-utils';
+import { filterPositions, getTotalPositionsProfit, TAB_NAME } from '../../Utils/positions-utils';
 import { TReportsStore, useReportsStore } from '../../../../../reports/src/Stores/useReportsStores';
 import useTradeTypeFilter from 'AppV2/Hooks/useTradeTypeFilter';
 import useTimeFilter from 'AppV2/Hooks/useTimeFilter';
@@ -61,17 +61,12 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     const shouldShowEmptyMessage = hasNoPositions || noMatchesFound;
     const shouldShowContractCards =
         !!filteredPositions.length && (isClosedTab || (filteredPositions[0]?.contract_info as TContractInfo)?.status);
-    const shouldShowLoading = isClosedTab ? isFetchingClosedPositions : is_loading;
+    const shouldShowLoading = isClosedTab ? isFetchingClosedPositions && !filteredPositions.length : is_loading;
     const shouldShowTakeProfit = !isClosedTab || !!(timeFilter || customTimeRangeFilter);
 
-    const onScroll = React.useCallback(
-        (e: React.UIEvent<HTMLDivElement>) => {
-            if (isClosedTab) {
-                handleScroll(e, true);
-            }
-        },
-        [handleScroll, isClosedTab]
-    );
+    const onScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        if (isClosedTab) handleScroll(e, true);
+    };
 
     const contractCards = isClosedTab ? (
         <ContractCardsSections
@@ -100,8 +95,8 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     };
 
     React.useEffect(() => {
+        const result = filterPositions(positions, contractTypeFilter);
         if (contractTypeFilter.length) {
-            const result = filterPositions(positions, contractTypeFilter);
             setFilteredPositions(result);
             if (!isClosedTab) setNoMatchesFound(!result.length);
         } else {
@@ -109,9 +104,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
             setFilteredPositions(positions);
         }
         if (isClosedTab)
-            setNoMatchesFound(
-                !positions.length && !!(timeFilter || customTimeRangeFilter || contractTypeFilter.length)
-            );
+            setNoMatchesFound(!result.length && !!(timeFilter || customTimeRangeFilter || contractTypeFilter.length));
     }, [isClosedTab, positions, contractTypeFilter, timeFilter, customTimeRangeFilter]);
 
     React.useEffect(() => {
@@ -123,10 +116,11 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (shouldShowLoading || (!shouldShowContractCards && !shouldShowEmptyMessage)) return <Loading />;
+    if (shouldShowLoading || (!shouldShowContractCards && !shouldShowEmptyMessage))
+        return <Loading.DTraderV2 is_positions is_closed_tab={isClosedTab} />;
     return (
         <div
-            className={`positions-page__${isClosedTab ? 'closed' : 'open'}`}
+            className={`positions-page__${isClosedTab ? TAB_NAME.CLOSED.toLowerCase() : TAB_NAME.OPEN.toLowerCase()}`}
             onScroll={isClosedTab ? onScroll : undefined}
         >
             {!hasNoPositions && (

@@ -12,7 +12,7 @@ import {
     toMoment,
     WS,
 } from '@deriv/shared';
-import PoiNameDobExample from '../../../Assets/ic-poi-name-dob-example.svg';
+import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import FormBody from '../../form-body';
 import LoadErrorMessage from '../../load-error-message';
 import PersonalDetailsForm from '../../forms/personal-details-form.jsx';
@@ -20,6 +20,7 @@ import { GENERIC_ERROR_MESSAGE, DUPLICATE_ACCOUNT_ERROR_MESSAGE } from '../../..
 import { API_ERROR_CODES } from '../../../Constants/api-error-codes';
 import { makeSettingsRequest, validate, validateName } from '../../../Helpers/utils';
 import { TInputFieldValues } from '../../../Types';
+import { useDevice } from '@deriv-com/ui';
 
 type TRestState = {
     api_error: string;
@@ -40,6 +41,7 @@ const PoiConfirmWithExampleFormContainer = ({
     getChangeableFields,
     onFormConfirm,
 }: TPoiConfirmWithExampleFormContainer) => {
+    const { isDesktop } = useDevice();
     const [is_loading, setIsLoading] = React.useState(true);
     const [checked, setChecked] = React.useState(false);
     const [rest_state, setRestState] = React.useState<TRestState>({
@@ -49,7 +51,7 @@ const PoiConfirmWithExampleFormContainer = ({
         api_error: '',
     });
 
-    const side_note_image = <PoiNameDobExample />;
+    const side_note_image = <DerivLightNameDobPoiIcon height='195px' width='285px' />;
 
     React.useEffect(() => {
         const initializeFormValues = () => {
@@ -170,7 +172,7 @@ const PoiConfirmWithExampleFormContainer = ({
                             <Checkbox
                                 value={checked}
                                 label={
-                                    <Text size={isMobile() ? 'xxs' : 'xs'}>
+                                    <Text size={isDesktop ? 'xs' : 'xxs'}>
                                         {localize(
                                             'I confirm that the name and date of birth above match my chosen identity document (see below)'
                                         )}

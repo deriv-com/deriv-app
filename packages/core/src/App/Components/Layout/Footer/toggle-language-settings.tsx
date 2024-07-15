@@ -18,6 +18,7 @@ const ToggleLanguageSettings = observer(({ showPopover }: { showPopover?: boolea
         'ic-settings--active': is_language_settings_modal_on,
         'ic-settings--disabled': is_language_changing,
     });
+
     const content = (
         <React.Fragment>
             {TranslationFlag[currentLang] ? (
@@ -52,7 +53,7 @@ const ToggleLanguageSettings = observer(({ showPopover }: { showPopover?: boolea
             <Modal
                 id='dt_settings_modal'
                 is_open={is_language_settings_modal_on}
-                title={localize('Select Language')}
+                title={localize('Select language')}
                 toggleModal={toggleLanguageSettingsModal}
                 width='616px'
                 should_header_stick_body={false}

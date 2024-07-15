@@ -3,11 +3,11 @@ import classNames from 'classnames';
 import { Button, Icon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { SectionMessage } from '@deriv-com/quill-ui';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import { notification_message } from 'Components/bot-notification/bot-notification-utils';
 import { useDBotStore } from 'Stores/useDBotStore';
 import LocalFooter from './local-footer';
+import SectionMessage from './section-message';
 import WorkspaceControl from './workspace-control';
 
 const LocalComponent = observer(() => {
@@ -81,8 +81,7 @@ const LocalComponent = observer(() => {
                     message={localize(
                         'Importing XML files from Binary Bot and other third-party platforms may take longer.'
                     )}
-                    size='sm'
-                    status='warning'
+                    icon='IcInfoOutline'
                     className='load-strategy__section_message'
                 />
 

@@ -3,14 +3,9 @@
         padding: var(--core-spacing-400) 0;
     }
     &--no-fav {
-        // display: flex;
-        // flex-direction: column;
-        // justify-content: center;
-        // align-items: center;
-        // margin-block: auto;
         padding: 0 var(--core-spacing-2400);
         position: absolute;
-        top: calc(45vh - 21px - 24px - 10px);
+        top: calc(45vh - var(--size-generic-2xl));
         text-align: center;
         width: 100%;
     }

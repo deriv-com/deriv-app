@@ -22,7 +22,6 @@
         "build:travis": "rimraf lib && webpack",
         "serve": "rimraf lib && cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch",
         "start": "rimraf lib && npm run test && npm run serve",
-        "test:jest": "jest --maxWorkers=${JEST_MAX_WORKERS:-'50%'}",
         "deploy": "echo \"No deploy specified\"",
         "deploy:clean": "echo \"No deploy:clean specified\"",
         "deploy:folder": "echo \"No deploy:folder specified\"",

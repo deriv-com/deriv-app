@@ -70,7 +70,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     } = usePaymentAgentTransferVisible();
     const { is_payment_agent_visible } = payment_agent;
     const { is_from_derivgo } = common;
-    const { is_cashier_visible: is_visible, is_mobile, toggleCashier, toggleReadyToDepositModal } = ui;
+    const { is_cashier_visible: is_visible, is_mobile, toggleCashier, toggleReadyToDepositModal, is_desktop } = ui;
     const { currency, is_account_setting_loaded, is_logged_in, is_logging_in, is_svg, is_virtual } = client;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
@@ -257,7 +257,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
             <ErrorDialog error={error} />
             <div className='cashier'>
                 <PageOverlay header={getHeaderTitle} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
-                    <DesktopWrapper>
+                    {is_desktop && (
                         <VerticalTab
                             current_path={location.pathname}
                             is_floating
@@ -276,8 +276,8 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                                 />
                             }
                         />
-                    </DesktopWrapper>
-                    <MobileWrapper>
+                    )}
+                    {!is_desktop && (
                         <Div100vhContainer className='cashier__wrapper--is-mobile' height_offset='80px'>
                             {selected_route?.component && (
                                 <selected_route.component
@@ -287,7 +287,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                                 />
                             )}
                         </Div100vhContainer>
-                    </MobileWrapper>
+                    )}
                 </PageOverlay>
             </div>
         </FadeWrapper>

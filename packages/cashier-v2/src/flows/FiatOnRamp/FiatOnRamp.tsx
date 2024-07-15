@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveAccount } from '@deriv/api-v2';
 import { Dropdown, Loader, useDevice } from '@deriv-com/ui';
+import ChevronIcon from '../../assets/images/chevron-icon.svg';
 import { PageContainer } from '../../components';
 import { FiatOnRampModule } from '../../lib';
 import { TRouteTypes } from '../../types';
@@ -29,6 +30,7 @@ const FiatOnRamp: React.FC<TProps> = ({ path, routes }) => {
             {isMobile && (
                 <Dropdown
                     data-testid='dt_routes_dropdown'
+                    dropdownIcon={<ChevronIcon />}
                     isFullWidth
                     list={routeList}
                     listHeight='sm'

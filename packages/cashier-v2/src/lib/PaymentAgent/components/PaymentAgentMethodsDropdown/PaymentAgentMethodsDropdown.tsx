@@ -1,5 +1,6 @@
 import React from 'react';
 import { Dropdown } from '@deriv-com/ui';
+import ChevronIcon from '../../../../assets/images/chevron-icon.svg';
 import { usePaymentAgentContext } from '../../provider';
 import styles from './PaymentAgentMethodsDropdown.module.scss';
 
@@ -14,6 +15,7 @@ const PaymentAgentMethodsDropdown = () => {
     return (
         <div className={styles.container}>
             <Dropdown
+                dropdownIcon={<ChevronIcon />}
                 isFullWidth
                 list={supportedPaymentMethodsList}
                 listHeight='sm'

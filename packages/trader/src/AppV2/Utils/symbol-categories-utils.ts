@@ -71,10 +71,7 @@ export const categorizeSymbols = (symbols: ActiveSymbols): Record<string, Market
     const allCategory = Object.values(categorizedSymbols).reduce((result, item) => {
         Object.keys(item.subgroups).forEach(key => {
             const newKey = key === 'none' ? item.market : key;
-            const newName =
-                item.subgroups[key].subgroup_display_name === 'None'
-                    ? item.market_display_name
-                    : item.subgroups[key].subgroup_display_name;
+            const newName = key === 'none' ? item.market_display_name : item.subgroups[key].subgroup_display_name;
 
             result[newKey] = {
                 subgroup_display_name: newName,

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSettings, useStatesList } from '@deriv/api-v2';
-import { LegacyChevronDown1pxIcon } from '@deriv/quill-icons';
 import { Dropdown } from '@deriv-com/ui';
 import { FlowTextField, useFlow } from '../../../../components';
 import { InlineMessage, WalletText } from '../../../../components/Base';
@@ -51,17 +50,17 @@ const AddressSection: React.FC = () => {
                     name='townCityLine'
                     validationSchema={cityValidator}
                 />
-                <Dropdown
-                    dropdownIcon={<LegacyChevronDown1pxIcon iconSize='xs' />}
-                    errorMessage=' '
-                    isFullWidth
-                    label='State/Province'
-                    list={statesList}
-                    listHeight='sm'
-                    name='stateProvinceDropdownLine'
-                    onSelect={selectedItem => setFormValues('stateProvinceDropdownLine', selectedItem)}
-                    value={getSettings?.address_state ?? ''}
-                />
+                <div className='wallets-address-section__dropdown'>
+                    <Dropdown
+                        isFullWidth
+                        label='State/Province'
+                        list={statesList}
+                        listHeight='sm'
+                        name='stateProvinceDropdownLine'
+                        onSelect={selectedItem => setFormValues('stateProvinceDropdownLine', selectedItem)}
+                        value={getSettings?.address_state ?? ''}
+                    />
+                </div>
                 <FlowTextField
                     defaultValue={getSettings?.address_postcode ?? ''}
                     label='Postal/ZIP code'

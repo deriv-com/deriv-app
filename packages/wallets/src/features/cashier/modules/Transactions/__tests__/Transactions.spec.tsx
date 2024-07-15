@@ -87,7 +87,7 @@ describe('Transactions', () => {
         render(<Transactions />);
 
         expect(screen.getByText('Transactions Completed')).toBeInTheDocument();
-        fireEvent.click(screen.getByTestId('dt_wallets_transactions_dropdown_icon'));
+        fireEvent.click(screen.getByTestId('dt_wallets_transactions_dropdown'));
         fireEvent.click(screen.getByText('Reset balance'));
         expect(screen.getByRole('combobox')).toHaveValue('Reset balance');
         expect(screen.getByText('Transactions Completed Demo Reset Balance')).toBeInTheDocument();
@@ -100,19 +100,19 @@ describe('Transactions', () => {
         (useCurrencyConfig as jest.Mock).mockReturnValue({ isLoading: false });
         render(<Transactions />);
 
-        fireEvent.click(screen.getByTestId('dt_wallets_transactions_dropdown_icon'));
+        fireEvent.click(screen.getByTestId('dt_wallets_transactions_dropdown'));
         fireEvent.click(screen.getByText('Deposit'));
 
         expect(screen.getByRole('combobox')).toHaveValue('Deposit');
-        fireEvent.click(screen.getByTestId('dt_wallets_transactions_dropdown_icon'));
+        fireEvent.click(screen.getByTestId('dt_wallets_transactions_dropdown'));
         fireEvent.click(screen.getByText('Withdrawal'));
 
         expect(screen.getByRole('combobox')).toHaveValue('Withdrawal');
-        fireEvent.click(screen.getByTestId('dt_wallets_transactions_dropdown_icon'));
+        fireEvent.click(screen.getByTestId('dt_wallets_transactions_dropdown'));
         fireEvent.click(screen.getByText('Transfer'));
 
         expect(screen.getByRole('combobox')).toHaveValue('Transfer');
-        fireEvent.click(screen.getByTestId('dt_wallets_transactions_dropdown_icon'));
+        fireEvent.click(screen.getByTestId('dt_wallets_transactions_dropdown'));
         fireEvent.click(screen.getByText('All'));
 
         expect(screen.getByRole('combobox')).toHaveValue('All');
@@ -133,7 +133,7 @@ describe('Transactions', () => {
         render(<Transactions />);
 
         expect(screen.getByText('Transactions Pending')).toBeInTheDocument();
-        fireEvent.click(screen.getByTestId('dt_wallets_transactions_dropdown_icon'));
+        fireEvent.click(screen.getByTestId('dt_wallets_transactions_dropdown'));
         fireEvent.click(screen.getByText('All'));
 
         expect(screen.getByRole('combobox')).toHaveValue('All');
@@ -154,7 +154,7 @@ describe('Transactions', () => {
         render(<Transactions />);
 
         expect(screen.getByText('Transactions Completed')).toBeInTheDocument();
-        fireEvent.click(screen.getByTestId('dt_wallets_transactions_dropdown_icon'));
+        fireEvent.click(screen.getByTestId('dt_wallets_transactions_dropdown'));
         fireEvent.click(screen.getByText('All'));
 
         expect(screen.getByRole('combobox')).toHaveValue('All');

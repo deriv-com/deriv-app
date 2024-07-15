@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import * as Yup from 'yup';
 import { useResidenceList, useSettings } from '@deriv/api-v2';
-import { LegacyChevronDown1pxIcon } from '@deriv/quill-icons';
 import { Dropdown, Loader } from '@deriv-com/ui';
 import { FlowTextField, InlineMessage, useFlow, WalletText } from '../../../../components';
 import { accountOpeningReasonList } from './constants';
@@ -80,62 +79,63 @@ const PersonalDetails = () => {
                         </InlineMessage>
                     </div>
                     <div className='wallets-personal-details__form'>
-                        <Dropdown
-                            dropdownIcon={<LegacyChevronDown1pxIcon iconSize='xs' />}
-                            errorMessage=' '
-                            isFullWidth
-                            label='Citizenship*'
-                            list={residenceList.map(residence => ({
-                                text: residence.text,
-                                value: residence.value ?? '',
-                            }))}
-                            listHeight='sm'
-                            name='wallets-personal-details__dropdown-citizenship'
-                            onSelect={selectedItem => setFormValues('citizenship', selectedItem)}
-                            value={formValues?.citizenship ?? getSettings?.citizen}
-                            variant='comboBox'
-                        />
-                        <Dropdown
-                            disabled={getSettings?.place_of_birth !== ''}
-                            dropdownIcon={<LegacyChevronDown1pxIcon iconSize='xs' />}
-                            errorMessage=' '
-                            isFullWidth
-                            label='Place of birth*'
-                            list={residenceList.map(residence => ({
-                                text: residence.text,
-                                value: residence.value ?? '',
-                            }))}
-                            listHeight='sm'
-                            name='wallets-personal-details__dropdown-pob'
-                            onSelect={selectedItem => setFormValues('placeOfBirth', selectedItem)}
-                            value={getSettings?.place_of_birth ?? ''}
-                            variant='comboBox'
-                        />
-                        <Dropdown
-                            dropdownIcon={<LegacyChevronDown1pxIcon iconSize='xs' />}
-                            errorMessage='Tax residence is required'
-                            isFullWidth
-                            isRequired
-                            label='Tax residence*'
-                            list={residenceList.map(residence => ({
-                                text: residence.text,
-                                value: residence.value ?? '',
-                            }))}
-                            listHeight='sm'
-                            name='wallets-personal-details__dropdown-tax-residence'
-                            onSearch={inputValue => {
-                                residenceList.forEach(residence => {
-                                    if (residence.text?.toLowerCase() === inputValue.toLowerCase()) {
-                                        setFormValues('taxResidence', residence.value);
-                                    }
-                                });
-                            }}
-                            onSelect={selectedItem => {
-                                setFormValues('taxResidence', selectedItem);
-                            }}
-                            value={formValues?.taxResidence ?? getSettings?.tax_residence}
-                            variant='comboBox'
-                        />
+                        <div className='wallets-personal-details__dropdown'>
+                            <Dropdown
+                                isFullWidth
+                                label='Citizenship*'
+                                list={residenceList.map(residence => ({
+                                    text: residence.text,
+                                    value: residence.value ?? '',
+                                }))}
+                                listHeight='sm'
+                                name='wallets-personal-details__dropdown-citizenship'
+                                onSelect={selectedItem => setFormValues('citizenship', selectedItem)}
+                                value={formValues?.citizenship ?? getSettings?.citizen}
+                                variant='comboBox'
+                            />
+                        </div>
+                        <div className='wallets-personal-details__dropdown'>
+                            <Dropdown
+                                disabled={getSettings?.place_of_birth !== ''}
+                                isFullWidth
+                                label='Place of birth*'
+                                list={residenceList.map(residence => ({
+                                    text: residence.text,
+                                    value: residence.value ?? '',
+                                }))}
+                                listHeight='sm'
+                                name='wallets-personal-details__dropdown-pob'
+                                onSelect={selectedItem => setFormValues('placeOfBirth', selectedItem)}
+                                value={getSettings?.place_of_birth ?? ''}
+                                variant='comboBox'
+                            />
+                        </div>
+                        <div className='wallets-personal-details__dropdown'>
+                            <Dropdown
+                                errorMessage='Tax residence is required'
+                                isFullWidth
+                                isRequired
+                                label='Tax residence*'
+                                list={residenceList.map(residence => ({
+                                    text: residence.text,
+                                    value: residence.value ?? '',
+                                }))}
+                                listHeight='sm'
+                                name='wallets-personal-details__dropdown-tax-residence'
+                                onSearch={inputValue => {
+                                    residenceList.forEach(residence => {
+                                        if (residence.text?.toLowerCase() === inputValue.toLowerCase()) {
+                                            setFormValues('taxResidence', residence.value);
+                                        }
+                                    });
+                                }}
+                                onSelect={selectedItem => {
+                                    setFormValues('taxResidence', selectedItem);
+                                }}
+                                value={formValues?.taxResidence ?? getSettings?.tax_residence}
+                                variant='comboBox'
+                            />
+                        </div>
                         <FlowTextField
                             defaultValue={getSettings?.tax_identification_number ?? formValues?.taxIdentificationNumber}
                             errorMessage={!formValues?.taxResidence ? 'Please fill in tax residence' : tinValidator}
@@ -145,17 +145,17 @@ const PersonalDetails = () => {
                             label='Tax identification number*'
                             name='taxIdentificationNumber'
                         />
-                        <Dropdown
-                            dropdownIcon={<LegacyChevronDown1pxIcon iconSize='xs' />}
-                            errorMessage=' '
-                            isFullWidth
-                            label='Account opening reason*'
-                            list={accountOpeningReasonList}
-                            name='wallets-personal-details__dropdown-opening-reason'
-                            onSelect={selectedItem => setFormValues('accountOpeningReason', selectedItem)}
-                            value={formValues?.accountOpeningReason ?? getSettings?.account_opening_reason}
-                            variant='comboBox'
-                        />
+                        <div className='wallets-personal-details__dropdown'>
+                            <Dropdown
+                                isFullWidth
+                                label='Account opening reason*'
+                                list={accountOpeningReasonList}
+                                name='wallets-personal-details__dropdown-opening-reason'
+                                onSelect={selectedItem => setFormValues('accountOpeningReason', selectedItem)}
+                                value={formValues?.accountOpeningReason ?? getSettings?.account_opening_reason}
+                                variant='comboBox'
+                            />
+                        </div>
                     </div>
                 </>
             )}

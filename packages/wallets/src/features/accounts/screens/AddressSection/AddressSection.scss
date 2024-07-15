@@ -35,6 +35,11 @@
             }
         }
     }
+
+    &__dropdown {
+        padding-bottom: 2rem;
+    }
+
     &__inline {
         display: flex;
         align-items: flex-start;
@@ -58,11 +63,6 @@
 
         @include mobile {
             width: 100%;
-        }
-
-        /* stylelint-disable-next-line selector-class-pattern */
-        & .deriv-input__container {
-            width: 100%; /* Remove after @deriv-com/ui dropdown component refactored */
         }
     }
 }

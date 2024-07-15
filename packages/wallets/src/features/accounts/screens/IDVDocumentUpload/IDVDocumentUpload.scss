@@ -19,11 +19,6 @@
         @include mobile {
             padding: 0;
         }
-
-        /* stylelint-disable-next-line selector-class-pattern */
-        & .deriv-input__container {
-            width: 100%; /* Remove after @deriv-com/ui dropdown component refactored */
-        }
     }
 
     &__buttons {
@@ -34,11 +29,7 @@
     }
 
     &__dropdown {
-        padding-bottom: 0.8rem;
-
-        @include mobile {
-            padding-bottom: 1.6rem;
-        }
+        padding-bottom: 3.6rem;
     }
 
     &__title {

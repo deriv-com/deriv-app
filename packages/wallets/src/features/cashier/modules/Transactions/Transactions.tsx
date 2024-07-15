@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
-import { LegacyChevronDown1pxIcon, LegacyFilter1pxIcon } from '@deriv/quill-icons';
+import { LegacyFilter1pxIcon } from '@deriv/quill-icons';
 import { Dropdown } from '@deriv-com/ui';
 import { ToggleSwitch, WalletText } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
@@ -89,12 +89,7 @@ const Transactions = () => {
                 )}
                 <div className='wallets-transactions__dropdown'>
                     <Dropdown
-                        dropdownIcon={
-                            <LegacyChevronDown1pxIcon
-                                data-testid='dt_wallets_transactions_dropdown_icon'
-                                iconSize='xs'
-                            />
-                        }
+                        data-testid='dt_wallets_transactions_dropdown'
                         icon={<LegacyFilter1pxIcon iconSize='xs' />}
                         isFullWidth
                         label='Filter'

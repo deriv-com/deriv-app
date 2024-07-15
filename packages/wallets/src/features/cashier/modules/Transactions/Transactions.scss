@@ -19,11 +19,6 @@
         @include mobile {
             max-width: unset;
         }
-
-        /* stylelint-disable-next-line selector-class-pattern */
-        & .deriv-input__container {
-            width: 100%; /* Remove after @deriv-com/ui dropdown component refactored */
-        }
     }
 
     &__header {

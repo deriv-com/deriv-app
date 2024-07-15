@@ -35,11 +35,11 @@
         @include desktop {
             max-width: 40rem;
         }
+    }
 
-        /* stylelint-disable-next-line selector-class-pattern */
-        & .deriv-input__container {
-            width: 100%; /* Remove after @deriv-com/ui dropdown component refactored */
-        }
+    &__dropdown {
+        width: 100%;
+        padding-bottom: 2rem;
     }
 
     &__inline {

@@ -196,7 +196,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 shadow_block.setFieldValue(prediction_range[0], 'NUM');
                 shadow_block.outputConnection.connect(prediction_input.connection);
                 shadow_block.initSvg();
-                // this breaks the loading of quick strategy and Backward compatibility
                 shadow_block.renderEfficiently();
             }
         });
@@ -223,8 +222,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     shadow_block.setFieldValue(barriers.values[i], 'NUM');
                     shadow_block.outputConnection.connect(input.connection);
                     shadow_block.initSvg();
-                    // kept this commented to fix backward compatibility issue
-                    // need to fix this for mutliplier block
                     shadow_block.renderEfficiently();
                 }
             }
@@ -356,8 +353,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                         .connect(stop_loss_block.previousConnection);
                     stop_loss_block.initSvg();
                     stop_loss_block.renderEfficiently();
-                    stop_loss_block.queueRender();
-                    stop_loss_block.updateDisabled();
 
                     this.dispose();
                 });

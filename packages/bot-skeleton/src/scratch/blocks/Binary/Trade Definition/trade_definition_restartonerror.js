@@ -11,6 +11,7 @@ Blockly.Blocks.trade_definition_restartonerror = {
                     type: 'field_checkbox',
                     name: 'RESTARTONERROR',
                     checked: true,
+                    class: 'blocklyCheckbox',
                 },
             ],
             colour: Blockly.Colours.Base.colour,
@@ -23,15 +24,6 @@ Blockly.Blocks.trade_definition_restartonerror = {
         this.setNextStatement(false);
         this.setMovable(false);
         this.setDeletable(false);
-        this.inputList.forEach(input_list => {
-            input_list.fieldRow.forEach(fieldRow => {
-                setTimeout(() => {
-                    if (fieldRow?.borderRect_) {
-                        Blockly.utils.dom.addClass(fieldRow?.borderRect_, 'blocklyCheckbox');
-                    }
-                }, 0);
-            });
-        });
     },
     onchange(/* event */) {
         if (!this.workspace || Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {

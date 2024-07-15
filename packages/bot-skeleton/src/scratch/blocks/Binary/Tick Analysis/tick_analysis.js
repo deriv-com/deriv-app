@@ -34,7 +34,7 @@ Blockly.Blocks.tick_analysis = {
         return {
             display_name: localize('Run on every tick'),
             description: localize(
-                'check The content of this block is called on every tick. Place this block outside of any root block.'
+                'The content of this block is called on every tick. Place this block outside of any root block.'
             ),
         };
     },

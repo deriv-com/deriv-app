@@ -11,6 +11,7 @@ Blockly.Blocks.trade_definition_restartbuysell = {
                     type: 'field_checkbox',
                     name: 'TIME_MACHINE_ENABLED',
                     checked: false,
+                    class: 'blocklyCheckbox',
                 },
             ],
             colour: Blockly.Colours.Base.colour,
@@ -27,15 +28,6 @@ Blockly.Blocks.trade_definition_restartbuysell = {
             if (next_block?.type !== 'trade_definition_restartonerror') {
                 next_block?.unplug(true);
             }
-        });
-        this.inputList.forEach(input_list => {
-            input_list.fieldRow.forEach(fieldRow => {
-                setTimeout(() => {
-                    if (fieldRow?.borderRect_) {
-                        Blockly.utils.dom.addClass(fieldRow?.borderRect_, 'blocklyCheckbox');
-                    }
-                }, 0);
-            });
         });
     },
     onchange(/* event */) {

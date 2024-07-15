@@ -114,8 +114,6 @@ Blockly.Blocks.trade_definition = {
         modifyContextMenu(menu);
     },
     onchange(event) {
-        // modifyContextMenu(event, 'trade_definition', this);
-
         if (event.type === Blockly.Events.SELECTED && !this.isInit) {
             this.isInit = true;
             initErrorHandlingListener('keydown');

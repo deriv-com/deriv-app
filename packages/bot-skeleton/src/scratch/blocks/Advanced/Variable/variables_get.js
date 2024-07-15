@@ -3,7 +3,6 @@ import { localize } from '@deriv/translations';
 Blockly.Blocks.variables_get = {
     init() {
         this.jsonInit(this.definition());
-
         this.inputList.forEach(input_list => {
             input_list.fieldRow.forEach(fieldRow => {
                 setTimeout(() => {

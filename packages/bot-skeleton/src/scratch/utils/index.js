@@ -604,11 +604,6 @@ const download_option = {
     callback: downloadBlock,
 };
 
-//add comment
-//collapse block
-//disable block
-//download block
-
 export const excludeOptionFromContextMenu = (menu, exclude_items) => {
     if (exclude_items && exclude_items.length > 0) {
         for (let i = menu.length - 1; i >= 0; i--) {

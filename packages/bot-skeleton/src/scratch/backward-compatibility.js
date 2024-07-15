@@ -505,6 +505,7 @@ export default class BlockConversion {
 
         this.workspace.getAllBlocks(true).forEach(block => {
             block.initSvg();
+            // keep this commneted to fix backward compatibility issue
             // block.render();
         });
 

@@ -223,8 +223,6 @@ Blockly.Blocks.controls_if = {
         );
 
         this.initSvg();
-        // kept this commented to fix backward compatibility issue
-        // need to fix this for mutliplier block
         this.queueRender();
     },
     storeConnections(arg = 0) {

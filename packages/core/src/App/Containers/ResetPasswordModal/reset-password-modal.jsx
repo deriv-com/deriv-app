@@ -84,10 +84,15 @@ const ResetPasswordModal = observer(() => {
     const history = useHistory();
 
     const removeActionParam = () => {
-        const searchParams = new URLSearchParams(location.search);
-        searchParams.delete('action');
+        const { pathname, search } = location;
+        const searchParams = new URLSearchParams(search);
+
+        if (searchParams.has('action')) {
+            searchParams.delete('action');
+        }
         const newSearch = searchParams.toString();
-        const newPath = `${location.pathname}${newSearch ? `?${newSearch}` : ''}`;
+        const newPath = `${pathname}${newSearch ? `?${newSearch}` : ''}`;
+
         history.push(newPath);
     };
 

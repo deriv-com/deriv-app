@@ -9,9 +9,7 @@ import './index.scss';
 
 const App: React.FC = () => {
     const i18nInstance = initializeI18n({
-        cdnUrl:
-            // `${process.env.CROWDIN_URL}/${process.env.WALLETS_TRANSLATION_PATH}`,
-            'https://translations.deriv.com/deriv-app-wallets/staging',
+        cdnUrl: `${process.env.CROWDIN_URL}/${process.env.WALLETS_TRANSLATION_PATH}`, // 'https://translations.deriv.com/deriv-app-wallets/staging'
         useSuspense: false,
     });
 

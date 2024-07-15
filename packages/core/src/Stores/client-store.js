@@ -1480,12 +1480,7 @@ export default class ClientStore extends BaseStore {
             window.history.replaceState({}, document.title, routes.trade + search);
         }
 
-        let authorize_response;
-        if (code_param) {
-            authorize_response = await this.setUserLogin(login_new_user, code_param);
-        } else {
-            authorize_response = await this.setUserLogin(login_new_user);
-        }
+        const authorize_response = await this.setUserLogin(login_new_user);
 
         if (search) {
             if (code_param && action_param) this.setVerificationCode(code_param, action_param);
@@ -2034,7 +2029,7 @@ export default class ClientStore extends BaseStore {
     }
 
     /* eslint-disable */
-    storeClientAccounts(obj_params, account_list, code_param = null) {
+    storeClientAccounts(obj_params, account_list) {
         // store consistent names with other API calls
         // API_V4: send consistent names
         const map_names = {
@@ -2043,6 +2038,7 @@ export default class ClientStore extends BaseStore {
         };
         const client_object = {};
         const selected_account = obj_params?.selected_acct;
+        const verification_code = obj_params?.code;
         const is_wallets_selected = selected_account?.startsWith('CRW');
         let active_loginid;
         let active_wallet_loginid;
@@ -2096,8 +2092,8 @@ export default class ClientStore extends BaseStore {
         if (active_loginid && Object.keys(client_object).length) {
             if (selected_account && is_wallets_selected) {
                 localStorage.setItem('active_wallet_loginid', active_wallet_loginid);
-                if (code_param) {
-                    localStorage.setItem('verification_code.payment_withdraw', code_param);
+                if (verification_code) {
+                    localStorage.setItem('verification_code.payment_withdraw', verification_code);
                 }
             }
 
@@ -2107,7 +2103,7 @@ export default class ClientStore extends BaseStore {
         }
     }
 
-    async setUserLogin(login_new_user, code_param = null) {
+    async setUserLogin(login_new_user) {
         // login_new_user is populated only on virtual sign-up
         let obj_params = {};
         const search = window.location.search;
@@ -2118,7 +2114,7 @@ export default class ClientStore extends BaseStore {
             let search_params = new URLSearchParams(window.location.search);
 
             search_params.forEach((value, key) => {
-                const account_keys = ['acct', 'token', 'cur'];
+                const account_keys = ['acct', 'token', 'cur', 'code'];
                 const is_account_param = account_keys.some(
                     account_key => key?.includes(account_key) && key !== 'affiliate_token'
                 );
@@ -2189,11 +2185,7 @@ export default class ClientStore extends BaseStore {
                 this.upgradeable_landing_companies = [...new Set(authorize_response.upgradeable_landing_companies)];
 
                 if (this.canStoreClientAccounts(obj_params, account_list)) {
-                    if (code_param) {
-                        this.storeClientAccounts(obj_params, account_list, code_param);
-                    } else {
-                        this.storeClientAccounts(obj_params, account_list);
-                    }
+                    this.storeClientAccounts(obj_params, account_list);
                 } else {
                     // Since there is no API error, we have to add this to manually trigger checks in other parts of the code.
                     authorize_response.error = {

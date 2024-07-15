@@ -20,6 +20,7 @@ Blockly.FieldDropdown.prototype.updateOptions = function (dropdown_options, opti
     const has_default_value = dropdown_options.findIndex(item => item[1] === options.default_value) !== -1;
 
     runInvisibleEvents(() => {
+        //kept this commented to remove console errors
         //this.setValue('');
 
         if (has_default_value) {

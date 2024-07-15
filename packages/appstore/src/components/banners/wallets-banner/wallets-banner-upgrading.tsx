@@ -7,7 +7,7 @@ import { Localize } from '@deriv/translations';
 const WalletsBannerUpgrading = observer(() => {
     const { traders_hub, ui } = useStore();
     const { is_demo } = traders_hub;
-    const { is_mobile } = ui;
+    const { is_desktop, is_mobile } = ui;
 
     React.useEffect(() => {
         Analytics.trackEvent('ce_tradershub_banner', {
@@ -20,7 +20,7 @@ const WalletsBannerUpgrading = observer(() => {
     }, [is_demo]);
 
     return (
-        <div className='wallets-banner__container wallets-banner-upgrading'>
+        <div className='wallets-banner wallets-banner-upgrading'>
             <div className='wallets-banner__content wallets-banner-upgrading__content'>
                 <div className='wallets-banner-upgrading__loading' data-testid='dt_wallets_loading_dots'>
                     <span className='wallets-banner-upgrading__dot' />
@@ -32,8 +32,8 @@ const WalletsBannerUpgrading = observer(() => {
                     components={[
                         <Text
                             key={0}
-                            line_height={is_mobile ? 's' : 'm'}
-                            size={is_mobile ? 'xs' : 'sm'}
+                            line_height={is_desktop ? 'm' : 's'}
+                            size={is_desktop ? 'sm' : 'xs'}
                             weight='bold'
                         />,
                     ]}
@@ -45,15 +45,15 @@ const WalletsBannerUpgrading = observer(() => {
                             className='wallets-banner-upgrading__description'
                             key={0}
                             line_height='s'
-                            size={is_mobile ? 'xxxs' : 'xs'}
+                            size={is_desktop ? 'xs' : 'xxxs'}
                         />,
                     ]}
                 />
             </div>
             <Icon
-                icon={`IcAppstoreWalletsUpgradeCoins${is_mobile ? '' : 'Horizontal'}`}
-                width={is_mobile ? 220 : 448}
-                height={is_mobile ? 220 : '100%'}
+                icon={`IcAppstoreWalletsUpgradeCoins${is_desktop ? 'Horizontal' : ''}`}
+                width={is_desktop ? 448 : 220}
+                height={is_desktop ? '100%' : 220}
                 className='wallets-banner-upgrading__image'
                 data_testid={`dt_wallets_upgrade_coins${is_mobile ? '' : '_horizontal'}`}
             />

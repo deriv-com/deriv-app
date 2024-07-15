@@ -72,7 +72,7 @@ const CreateAdForm = ({ country_list }) => {
     }, []);
 
     const getOrderExpiryOption = () => {
-        if (order_expiry_options.includes(Number(order_payment_period_string))) {
+        if (order_expiry_options?.includes(Number(order_payment_period_string))) {
             return order_payment_period_string;
         }
         return `${Math.max(...order_expiry_options)}`;

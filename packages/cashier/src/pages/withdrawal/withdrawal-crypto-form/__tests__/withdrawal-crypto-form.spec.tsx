@@ -1,12 +1,11 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { useCurrentAccountDetails, useGrowthbookIsOn } from '@deriv/hooks';
+import { useCryptoEstimations } from '@deriv/api';
+import { useCurrentAccountDetails } from '@deriv/hooks';
+import { mockStore } from '@deriv/stores';
 import WithdrawalCryptoForm from '../withdrawal-crypto-form';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
-import userEvent from '@testing-library/user-event';
-import { useCryptoEstimations } from '@deriv/api';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -19,6 +18,11 @@ jest.mock('@deriv/hooks', () => ({
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useCryptoEstimations: jest.fn(),
+}));
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
 describe('<WithdrawalCryptoForm />', () => {

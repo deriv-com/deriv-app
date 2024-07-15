@@ -1,11 +1,11 @@
 import React from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
-
 import { Icon, Input } from '@deriv/components';
 import { useExchangeRate } from '@deriv/hooks';
 import { getCurrencyDisplayCode } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import { useCashierStore } from '../../stores/useCashierStores';
 import { TReactChangeEvent } from '../../types';
 
@@ -59,11 +59,9 @@ const CryptoFiatConverter = observer(
         validateFromAmount,
         validateToAmount,
     }: TCryptoFiatConverterProps) => {
-        const { ui } = useStore();
         const { crypto_fiat_converter } = useCashierStore();
         const { exchange_rates } = useExchangeRate();
-
-        const { is_desktop } = ui;
+        const { isDesktop } = useDevice();
         const { converter_from_amount, converter_from_error, converter_to_error, converter_to_amount } =
             crypto_fiat_converter;
 
@@ -108,7 +106,7 @@ const CryptoFiatConverter = observer(
                         />
                     )}
                 </Field>
-                {is_desktop ? (
+                {isDesktop ? (
                     <div className='crypto-fiat-converter__arrow-container'>
                         {arrow_icon_direction === 'right' ? (
                             <Icon icon='IcArrowRightBold' id='arrow_right_bold' data_testid='dti_arrow_right_bold' />

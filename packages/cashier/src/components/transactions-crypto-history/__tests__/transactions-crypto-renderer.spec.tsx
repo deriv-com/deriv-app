@@ -4,9 +4,15 @@ import userEvent from '@testing-library/user-event';
 import TransactionsCryptoRenderer from '../transactions-crypto-renderer';
 import CashierProviders from '../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
+}));
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
 describe('<TransactionsCryptoRenderer />', () => {
@@ -24,9 +30,6 @@ describe('<TransactionsCryptoRenderer />', () => {
             },
             client: {
                 currency: 'BTC',
-            },
-            ui: {
-                is_desktop: true,
             },
         });
     });
@@ -65,7 +68,7 @@ describe('<TransactionsCryptoRenderer />', () => {
     });
 
     it('shows the proper data in Mobile/Tablet mode', () => {
-        mockRootStore.ui.is_desktop = false;
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
 
         renderTransactionsCryptoRenderer();
 
@@ -89,7 +92,7 @@ describe('<TransactionsCryptoRenderer />', () => {
     });
 
     it('shows cancel confirmation modal when user clicks on "Cancel transaction" button in Mobile/Tablet mode', async () => {
-        mockRootStore.ui.is_desktop = false;
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
 
         renderTransactionsCryptoRenderer();
 
@@ -165,7 +168,7 @@ describe('<TransactionsCryptoRenderer />', () => {
     });
 
     it('checks whether the tooltip is clickable for third-party transactions (CoinsPaid) in Mobile/Tablet mode', () => {
-        mockRootStore.ui.is_desktop = false;
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
 
         const tooltip_props = {
             row: {
@@ -197,7 +200,7 @@ describe('<TransactionsCryptoRenderer />', () => {
     });
 
     it('shows transaction status modal when status is clicked in Mobile/Tablet mode', () => {
-        mockRootStore.ui.is_desktop = false;
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
 
         renderTransactionsCryptoRenderer();
 

@@ -4,6 +4,7 @@ import { Button, Icon, Money, Popover, Table, Text } from '@deriv/components';
 import { epochToMoment, formatMoney } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { getStatus } from '../../constants/transaction-status';
 import { useCashierStore } from '../../stores/useCashierStores';
 import type { TSocketResponse } from '@deriv/api/types';
@@ -14,12 +15,12 @@ type TTransactionsCryptoRendererProps = {
 };
 
 const TransactionsCryptoRenderer = observer(({ row: crypto, onTooltipClick }: TTransactionsCryptoRendererProps) => {
-    const { client, ui } = useStore();
+    const { client } = useStore();
     const { transaction_history } = useCashierStore();
     const { cancelCryptoTransaction, showTransactionsCryptoCancelModal, showTransactionsCryptoStatusModal } =
         transaction_history;
     const { currency } = client;
-    const { is_desktop } = ui;
+    const { isDesktop } = useDevice();
 
     const {
         address_hash,
@@ -38,7 +39,7 @@ const TransactionsCryptoRenderer = observer(({ row: crypto, onTooltipClick }: TT
         ? `${address_hash.substring(0, 4)}....${address_hash.substring(address_hash.length - 4)}`
         : '';
     const formatted_amount = transaction_type === 'withdrawal' ? `-${amount}` : `+${amount}`;
-    const formatted_submit_date = !is_desktop
+    const formatted_submit_date = !isDesktop
         ? epochToMoment(submit_date).format('DD MMM YYYY')
         : epochToMoment(submit_date).format('DD MMM YYYY HH:mm:ss [GMT]');
     const formatted_submit_time = epochToMoment(submit_date).format('HH:mm:ss [GMT]');
@@ -71,7 +72,7 @@ const TransactionsCryptoRenderer = observer(({ row: crypto, onTooltipClick }: TT
             <Localize i18n_default_text='Deposit' />
         );
 
-    if (status && !is_desktop) {
+    if (status && !isDesktop) {
         return (
             <div>
                 <Table.Row className='transactions-crypto-history__table-row'>

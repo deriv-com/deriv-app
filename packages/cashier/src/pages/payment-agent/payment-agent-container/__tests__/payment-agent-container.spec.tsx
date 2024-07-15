@@ -142,7 +142,7 @@ describe('<PaymentAgentContainer />', () => {
     });
 
     it('should show PaymentAgentDisclaimer in mobile view', () => {
-        mockRootStore.ui.is_desktop = false;
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         renderPaymentAgentContainer();
 
         expect(screen.getByText('PaymentAgentDisclaimer')).toBeInTheDocument();

@@ -332,27 +332,6 @@ export type ResetPasswordRequest = {
     req_id?: number;
 };
 
-/**
- * The result of reset password request.
- */
-export type ResetPasswordResponse = {
-    reset_password?: 0 | 1;
-    /**
-     * Echo of the request made.
-     */
-    echo_req: {
-        [k: string]: unknown;
-    };
-    /**
-     * Action name of the request made.
-     */
-    msg_type: 'reset_password';
-    /**
-     * Optional field sent in request to map to response, present only when request contains `req_id`.
-     */
-    req_id?: number;
-    [k: string]: unknown;
-};
 type TPrivateSocketEndpoints = {
     available_accounts: {
         request: {

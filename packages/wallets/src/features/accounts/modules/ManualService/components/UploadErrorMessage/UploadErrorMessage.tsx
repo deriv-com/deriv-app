@@ -2,19 +2,19 @@ import React from 'react';
 import { DerivLightDeclinedPoiIcon } from '@deriv/quill-icons';
 import { ActionScreen, Button } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../../../../../../components';
-import { ErrorCode } from '../../utils';
+import { ManualDocumentUploadErrorCode } from '../../utils';
 import './UploadErrorMessage.scss';
 
-type TPoiUploadErrorProps = {
-    errorCode: keyof typeof ErrorCode;
+type UploadErrorMessageProps = {
+    errorCode: keyof typeof ManualDocumentUploadErrorCode;
     onRetry?: () => void;
 };
 
-const errorCodeToDescriptionMapper: Record<keyof typeof ErrorCode, string> = {
+const errorCodeToDescriptionMapper: Record<keyof typeof ManualDocumentUploadErrorCode, string> = {
     DuplicateUpload: 'It seems you’ve submitted this document before. Upload a new document.',
 };
 
-const UploadErrorMessage: React.FC<TPoiUploadErrorProps> = ({ errorCode, onRetry }) => {
+const UploadErrorMessage: React.FC<UploadErrorMessageProps> = ({ errorCode, onRetry }) => {
     const ActionButton = () => (
         <Button onClick={onRetry} size='lg'>
             Try again

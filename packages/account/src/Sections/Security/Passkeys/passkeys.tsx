@@ -93,13 +93,13 @@ const Passkeys = observer(() => {
     const error = passkeys_list_error || passkey_registration_error || passkey_renaming_error || passkey_removing_error;
 
     useEffect(() => {
-        if (
+        const should_not_render_main_page =
             is_passkeys_list_loading ||
             passkey_status === PASSKEY_STATUS_CODES.CREATED ||
-            passkey_status === PASSKEY_STATUS_CODES.REMOVED ||
-            passkey_status === PASSKEY_STATUS_CODES.VERIFYING
-        )
-            return;
+            passkey_status === PASSKEY_STATUS_CODES.REMOVED;
+
+        if (should_not_render_main_page) return;
+
         if (!passkeys_list?.length) {
             setPasskeyStatus(PASSKEY_STATUS_CODES.NO_PASSKEY);
         } else {

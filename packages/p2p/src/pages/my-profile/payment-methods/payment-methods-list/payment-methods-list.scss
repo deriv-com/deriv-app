@@ -15,6 +15,10 @@
                 & .dc-mobile-full-page-modal {
                     & .dc-page-overlay {
                         & .dc-page-overlay__content {
+                            @include tablet-screen {
+                                height: unset;
+                            }
+
                             & .dc-mobile-full-page-modal {
                                 top: 0;
                             }

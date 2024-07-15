@@ -38,6 +38,10 @@
 
         &__data-list-body {
             flex: 1;
+
+            @include tablet-screen {
+                top: 1rem;
+            }
         }
 
         .data-list__body-wrapper {

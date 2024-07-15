@@ -32,6 +32,15 @@ $card-width: 456px;
             margin: 1rem 2rem;
         }
     }
+
+    & .chat {
+        @include tablet-screen {
+            & .dc-mobile-full-page-modal {
+                top: 0;
+                overflow: hidden;
+            }
+        }
+    }
 }
 
 .order-details-card {

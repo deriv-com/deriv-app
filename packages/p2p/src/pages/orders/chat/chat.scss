@@ -32,10 +32,4 @@
     &__header {
         padding: 0 1.6rem;
     }
-
-    @include tablet-screen {
-        & .dc-mobile-full-page-modal {
-            top: 0;
-        }
-    }
 }

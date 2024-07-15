@@ -78,7 +78,7 @@ const AdvertiserPageRow = ({ row: advert }) => {
         };
     }, []);
 
-    if (!isDesktop) {
+    if (isDesktop) {
         return (
             <Table.Row className='advertiser-page-adverts__table-row'>
                 <Table.Cell>{`${min_order_amount_limit_display}-${max_order_amount_limit_display} ${currency}`}</Table.Cell>

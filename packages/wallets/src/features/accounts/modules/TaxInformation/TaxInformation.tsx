@@ -1,7 +1,8 @@
 import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { FormField, Loader, ModalStepWrapper, WalletButton, WalletDropdown, WalletText } from '../../../../components';
+import { Loader } from '@deriv-com/ui';
+import { FormField, ModalStepWrapper, WalletButton, WalletDropdown, WalletText } from '../../../../components';
 import { NeedHelpMessage } from './components';
 import { useTaxInformation } from './hooks';
 import { accountOpeningReasonList } from './utils';

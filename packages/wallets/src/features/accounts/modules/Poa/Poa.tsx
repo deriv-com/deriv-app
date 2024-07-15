@@ -1,15 +1,19 @@
 import React, { useMemo } from 'react';
 import { Formik } from 'formik';
 import { useDocumentUpload, useInvalidateQuery, useSettings, useStatesList } from '@deriv/api-v2';
-import { Loader, ModalStepWrapper, WalletButton } from '../../../../components';
+import { Loader } from '@deriv-com/ui';
+import { ModalStepWrapper, WalletButton } from '../../../../components';
 import { AddressSection, DocumentSubmission } from './components';
 import { poaValidationSchema } from './poaValidationSchema';
 import { TAddressDetails, TPoaDocument } from './types';
 import './Poa.scss';
 
+type TPoaProps = {
+    onCompletion?: () => void;
+};
 type TPoaValues = TAddressDetails & TPoaDocument;
 
-const Poa: React.FC = () => {
+const Poa: React.FC<TPoaProps> = ({ onCompletion }) => {
     const {
         data: settings,
         isLoading: isSettingsLoading,

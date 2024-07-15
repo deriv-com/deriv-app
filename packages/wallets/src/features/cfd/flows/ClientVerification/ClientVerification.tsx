@@ -1,8 +1,9 @@
 import React, { useMemo, useState } from 'react';
-import { usePOA, usePOI, useSettings } from '@deriv/api-v2';
-import { Loader } from '../../../../components';
+import { useMT5AccountsList, usePOA, usePOI, useSettings } from '@deriv/api-v2';
+import { Loader } from '@deriv-com/ui';
 import { THooks } from '../../../../types';
 import { Poa, Poi, TaxInformation } from '../../../accounts';
+import { ResubmissionSuccessMessage } from './components';
 
 type TClientVerificationProps = {
     selectedJurisdiction?: string;
@@ -22,11 +23,14 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({ selectedJurisd
     const { data: poiData, isLoading: isPoiDataLoading } = usePOI();
     const { data: poaData, isLoading: isPoaDataLoading } = usePOA();
     const { data: accountSettings, isLoading: isAccountSettingsLoading } = useSettings();
+    const { data: mt5AccountsList, isLoading: isMT5AccountsListLoading } = useMT5AccountsList();
 
     const [isPoaJustCompleted, setIsPoaJustCompleted] = useState(false);
     const [isPoiJustCompleted, setIsPoiJustCompleted] = useState(false);
 
-    const isLoading = isAccountSettingsLoading || isPoaDataLoading || isPoiDataLoading;
+    const isLoading = isAccountSettingsLoading || isMT5AccountsListLoading || isPoaDataLoading || isPoiDataLoading;
+
+    const clientsHasMT5Accounts = mt5AccountsList?.some(account => account.account_type === 'real');
 
     const isPoaRequired = useMemo(
         () =>
@@ -56,18 +60,29 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({ selectedJurisd
         setIsPoiJustCompleted(true);
     };
 
+    // return <ResubmissionSuccessMessage message="We'll review your documents and notify you of its status within" />;
+
     if (isLoading) return <Loader />;
 
     if (shouldSubmitPoi) {
-        <Poi onCompletion={onPoiCompletion} />;
+        return <Poi onCompletion={onPoiCompletion} />;
     }
 
     if (shouldSubmitPoa) {
-        <Poa onCompletion={onPoaCompletion} />;
+        return <Poa onCompletion={onPoaCompletion} />;
     }
 
     if (shouldSubmitTaxInformation) {
-        <TaxInformation />;
+        return <TaxInformation />;
+    }
+
+    if (clientsHasMT5Accounts && !shouldSubmitPoi && !shouldSubmitPoa) {
+        /* 
+            formValues.service === 'manual'
+                ? "We'll review your documents and notify you of its status within 1 - 3 working days."
+                : "We'll review your documents and notify you of its status within 5 minutes."
+                return <ResubmissionSuccessMessage message="We'll review your documents and notify you of its status within" />;
+        */
     }
 
     return null;

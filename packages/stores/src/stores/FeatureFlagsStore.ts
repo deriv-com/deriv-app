@@ -12,7 +12,6 @@ export default class FeatureFlagsStore extends BaseStore<{ [k in keyof typeof FL
     private static instance: FeatureFlagsStore | null = null;
 
     constructor() {
-        // Call cleanup on the existing instance if it exists
         if (FeatureFlagsStore.instance) {
             FeatureFlagsStore.instance.cleanup();
         }

@@ -3,18 +3,41 @@
     padding-block: var(--core-spacing-400);
     align-items: flex-end;
     height: var(--core-size-2800);
+    gap: 0;
 
-    & + & {
+    &:nth-child(2):not(.purchase-button--loading) {
         align-items: flex-start;
     }
 
-    &__payout {
-        width: 100%;
-        display: inline-flex;
-        justify-content: space-between;
+    &--single {
         align-items: center;
-        font-size: var(--core-fontSize-50);
-        line-height: var(--core-lineHeight-100);
+        justify-content: center;
+
+        .purchase-button__information__wrapper {
+            justify-content: center;
+            gap: var(--core-spacing-400);
+        }
+    }
+
+    &--loading {
+        align-items: center;
+    }
+
+    &__information {
+        &__wrapper {
+            width: 100%;
+            display: inline-flex;
+            justify-content: space-between;
+            align-items: center;
+
+            &--reverse {
+                flex-direction: row-reverse;
+            }
+        }
+
+        &__item {
+            color: var(--core-color-solid-slate-50);
+        }
     }
 
     &__wrapper {

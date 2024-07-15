@@ -603,13 +603,6 @@ export default class NotificationStore extends BaseStore {
                     this.addNotificationMessage(this.client_notifications.svg_poi_expired);
                 }
             }
-            if (
-                client &&
-                this.root_store.client.mt5_login_list.length > 0 &&
-                (this.root_store.client.mt5_login_list.find(login => login)?.white_label?.notification ?? true)
-            ) {
-                this.addNotificationMessage(this.client_notifications.mt5_notification);
-            }
         }
 
         if (!is_eu && isMultiplierContract(selected_contract_type) && current_language === 'EN' && is_logged_in) {
@@ -750,7 +743,6 @@ export default class NotificationStore extends BaseStore {
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
         const { has_enabled_two_fa, setTwoFAChangedStatus, logout } = this.root_store.client;
-        const { setMT5NotificationModal } = this.root_store.traders_hub;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
 
         const platform_name_trader = getPlatformSettings('trader').name;
@@ -1524,18 +1516,6 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Go to LiveChat'),
                 },
                 type: 'danger',
-            },
-            mt5_notification: {
-                key: 'mt5_notification',
-                header: localize('Changes to your Deriv MT5 login'),
-                message: localize('We are going to update the login process for your Deriv MT5 account.'),
-                action: {
-                    text: localize('Learn more'),
-                    onClick: () => {
-                        setMT5NotificationModal(true);
-                    },
-                },
-                type: 'warning',
             },
             additional_kyc_info: {
                 key: 'additional_kyc_info',

@@ -11,7 +11,6 @@ const WalletsBannerUpgrade: React.FC<TProps> = observer(({ is_upgrading }) => {
     const { traders_hub, ui } = useStore();
     const { is_desktop, is_mobile } = ui;
     const { toggleWalletsUpgrade } = traders_hub;
-    const { is_mobile } = ui;
 
     return (
         <div className='wallets-banner wallets-banner-upgrade'>

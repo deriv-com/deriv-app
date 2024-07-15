@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent, screen, within } from '@testing-library/react';
 import WheelPickerMobile from '../wheel-picker-mobile';
 import userEvent from '@testing-library/user-event';
 
@@ -19,12 +19,16 @@ describe('WheelPickerMobile', () => {
     it('calls onChange when the value changes via swipe', () => {
         render(<WheelPickerMobile options={options} onChange={mockOnChange} defaultValue={options[3]} />);
         // eslint-disable-next-line testing-library/no-node-access
-        const picker = screen.getByText('0.21');
+        const pickerContainer = screen.getByText('0.34').closest('.picker-viewport') as HTMLElement;
 
-        if (picker) {
-            fireEvent.touchStart(picker, { clientY: 0 });
-            fireEvent.touchMove(picker, { clientY: 10 });
-            fireEvent.touchEnd(picker);
+        if (pickerContainer) {
+            const { getByText } = within(pickerContainer);
+
+            const initialPicker = getByText('0.34');
+
+            fireEvent.touchStart(initialPicker, { touches: [{ clientY: 0 }] });
+            fireEvent.touchMove(initialPicker, { touches: [{ clientY: 10 }] });
+            fireEvent.touchEnd(initialPicker);
 
             expect(mockOnChange).toHaveBeenCalledWith('0.34');
         }

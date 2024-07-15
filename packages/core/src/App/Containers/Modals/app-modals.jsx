@@ -91,7 +91,7 @@ const AppModals = observer(() => {
         mt5_login_list,
         should_show_effortless_login_modal,
     } = client;
-    const { content_flag, is_mt5_notification_modal_visible } = traders_hub;
+    const { content_flag } = traders_hub;
     const { is_from_derivgo } = common;
     const {
         is_account_needed_modal_on,
@@ -124,7 +124,7 @@ const AppModals = observer(() => {
     const is_eu_user = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL, ContentFlag.EU_DEMO].includes(content_flag);
 
     const should_show_mt5_notification_modal =
-        is_logged_in && mt5_login_list.length > 0 && is_mt5_notification_modal_visible
+        is_logged_in && mt5_login_list.length > 0
             ? mt5_login_list.find(login => login)?.white_label?.notification ?? true
             : false;
 
@@ -184,75 +184,76 @@ const AppModals = observer(() => {
             }
             break;
     }
+    if (!url_action_param) {
+        if (
+            is_logged_in &&
+            active_account_landing_company === 'maltainvest' &&
+            !is_trading_assessment_for_new_user_enabled &&
+            is_trading_experience_incomplete &&
+            content_flag !== ContentFlag.LOW_RISK_CR_EU &&
+            content_flag !== ContentFlag.LOW_RISK_CR_NON_EU
+        ) {
+            ComponentToLoad = <TradingAssessmentExistingUser />;
+        } else if (is_closing_create_real_account_modal) {
+            ComponentToLoad = <WarningCloseCreateRealAccountModal />;
+        } else if (is_account_needed_modal_on) {
+            ComponentToLoad = <MT5AccountNeededModal />;
+        } else if (should_show_cooldown_modal) {
+            ComponentToLoad = <CooldownWarningModal />;
+        } else if (should_show_mt5_notification_modal) {
+            ComponentToLoad = <MT5Notification />;
+        } else if (should_show_assessment_complete_modal) {
+            ComponentToLoad = <CompletedAssessmentModal />;
+        } else if (is_deriv_account_needed_modal_visible) {
+            ComponentToLoad = <DerivRealAccountRequiredModal />;
+        } else if (should_show_risk_accept_modal) {
+            ComponentToLoad = <RiskAcceptTestWarningModal />;
+        } else if (isUrlUnavailableModalVisible) {
+            ComponentToLoad = <UrlUnavailableModal />;
+        }
 
-    if (
-        is_logged_in &&
-        active_account_landing_company === 'maltainvest' &&
-        !is_trading_assessment_for_new_user_enabled &&
-        is_trading_experience_incomplete &&
-        content_flag !== ContentFlag.LOW_RISK_CR_EU &&
-        content_flag !== ContentFlag.LOW_RISK_CR_NON_EU
-    ) {
-        ComponentToLoad = <TradingAssessmentExistingUser />;
-    } else if (is_closing_create_real_account_modal) {
-        ComponentToLoad = <WarningCloseCreateRealAccountModal />;
-    } else if (is_account_needed_modal_on) {
-        ComponentToLoad = <MT5AccountNeededModal />;
-    } else if (should_show_cooldown_modal) {
-        ComponentToLoad = <CooldownWarningModal />;
-    } else if (should_show_mt5_notification_modal) {
-        ComponentToLoad = <MT5Notification />;
-    } else if (should_show_assessment_complete_modal) {
-        ComponentToLoad = <CompletedAssessmentModal />;
-    } else if (is_deriv_account_needed_modal_visible) {
-        ComponentToLoad = <DerivRealAccountRequiredModal />;
-    } else if (should_show_risk_accept_modal) {
-        ComponentToLoad = <RiskAcceptTestWarningModal />;
-    } else if (isUrlUnavailableModalVisible) {
-        ComponentToLoad = <UrlUnavailableModal />;
-    }
+        if (has_wallet && should_show_wallets_upgrade_completed_modal) {
+            ComponentToLoad = <WalletsUpgradeCompletedModal />;
+        }
 
-    if (has_wallet && should_show_wallets_upgrade_completed_modal) {
-        ComponentToLoad = <WalletsUpgradeCompletedModal />;
-    }
+        if (!has_wallet && is_migrated && is_logged_in) {
+            ComponentToLoad = <WalletsUpgradeLogoutModal />;
+        }
 
-    if (!has_wallet && is_migrated && is_logged_in) {
-        ComponentToLoad = <WalletsUpgradeLogoutModal />;
-    }
+        if (should_show_passkeys_info_modal) {
+            ComponentToLoad = <EffortlessLoginModal />;
+        }
 
-    if (should_show_passkeys_info_modal) {
-        ComponentToLoad = <EffortlessLoginModal />;
-    }
+        if (is_ready_to_deposit_modal_visible) {
+            ComponentToLoad = <ReadyToDepositModal />;
+        }
 
-    if (is_ready_to_deposit_modal_visible) {
-        ComponentToLoad = <ReadyToDepositModal />;
-    }
+        if (is_need_real_account_for_cashier_modal_visible) {
+            ComponentToLoad = <NeedRealAccountForCashierModal />;
+        }
 
-    if (is_need_real_account_for_cashier_modal_visible) {
-        ComponentToLoad = <NeedRealAccountForCashierModal />;
-    }
+        if (is_verification_modal_visible) {
+            ComponentToLoad = <VerificationModal />;
+        }
 
-    if (is_verification_modal_visible) {
-        ComponentToLoad = <VerificationModal />;
-    }
+        if (is_verification_submitted) {
+            ComponentToLoad = <VerificationDocumentSubmitted />;
+        }
 
-    if (is_verification_submitted) {
-        ComponentToLoad = <VerificationDocumentSubmitted />;
-    }
+        if (should_show_one_time_deposit_modal) {
+            ComponentToLoad = <OneTimeDepositModal />;
+        }
 
-    if (should_show_one_time_deposit_modal) {
-        ComponentToLoad = <OneTimeDepositModal />;
-    }
+        if (should_show_account_success_modal) {
+            ComponentToLoad = <ReadyToVerifyModal />;
+        }
+        if (is_additional_kyc_info_modal_open) {
+            ComponentToLoad = <AdditionalKycInfoModal />;
+        }
 
-    if (should_show_account_success_modal) {
-        ComponentToLoad = <ReadyToVerifyModal />;
-    }
-    if (is_additional_kyc_info_modal_open) {
-        ComponentToLoad = <AdditionalKycInfoModal />;
-    }
-
-    if (is_kyc_information_submitted_modal_open) {
-        ComponentToLoad = <InformationSubmittedModal />;
+        if (is_kyc_information_submitted_modal_open) {
+            ComponentToLoad = <InformationSubmittedModal />;
+        }
     }
 
     return (

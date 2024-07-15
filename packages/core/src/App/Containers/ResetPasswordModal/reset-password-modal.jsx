@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Button, Dialog, PasswordInput, PasswordMeter, Text } from '@deriv/components';
@@ -8,7 +9,7 @@ import { observer, useStore } from '@deriv/stores';
 
 const ResetPasswordModal = observer(() => {
     const { ui, client } = useStore();
-    const { logout: logoutClient, verification_code } = client;
+    const { logout: logoutClient, verification_code, setVerificationCode } = client;
     const {
         disableApp,
         enableApp,
@@ -53,6 +54,7 @@ const ResetPasswordModal = observer(() => {
             } else {
                 onResetComplete(null, actions);
             }
+            setVerificationCode('', 'reset_password');
         });
     };
 
@@ -78,6 +80,22 @@ const ResetPasswordModal = observer(() => {
 
     const reset_initial_values = { password: '' };
 
+    const location = useLocation();
+    const history = useHistory();
+
+    const removeActionParam = () => {
+        const searchParams = new URLSearchParams(location.search);
+        searchParams.delete('action');
+        const newSearch = searchParams.toString();
+        const newPath = `${location.pathname}${newSearch ? `?${newSearch}` : ''}`;
+        history.push(newPath);
+    };
+
+    const closeResetPasswordModal = () => {
+        toggleResetPasswordModal(false);
+        removeActionParam();
+    };
+
     return (
         <Formik
             initialValues={reset_initial_values}
@@ -93,7 +111,7 @@ const ResetPasswordModal = observer(() => {
                     enableApp={enableApp}
                     is_loading={is_loading}
                     dismissable={status.error_msg}
-                    onConfirm={() => toggleResetPasswordModal(false)}
+                    onConfirm={closeResetPasswordModal}
                     title={localize('Reset your password')}
                     has_close_icon
                     is_closed_on_cancel={false}

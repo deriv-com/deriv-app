@@ -78,6 +78,8 @@ const Passkeys = observer(() => {
         if (is_passkey_renamed) {
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
             setIsSnackbarOpen(true);
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             passkeysMenuActionEventTrack('passkey_rename_success');
             clearTimeOut(snackbar_timeout);
             snackbar_timeout.current = setTimeout(() => {
@@ -176,6 +178,8 @@ const Passkeys = observer(() => {
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
         }
         if (passkey_status === PASSKEY_STATUS_CODES.RENAMING) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             passkeysMenuActionEventTrack('passkey_rename_back');
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
         }

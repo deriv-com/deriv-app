@@ -7,6 +7,7 @@ type WheelPickerMobileProps = {
     defaultValue?: string;
     onChange?: (val: string) => void;
     options?: string[];
+    currency: string;
     optionHeight?: number;
 };
 
@@ -46,6 +47,7 @@ export function getTargetIndex({
 const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
     defaultValue,
     onChange,
+    currency,
     options = [],
     optionHeight = 30,
 }) => {
@@ -124,7 +126,7 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
                         className='currency-label'
                         style={{ paddingLeft: optionWidth + 60 }}
                     >
-                        USD
+                        {currency}
                     </Text>
                 </div>
             </div>

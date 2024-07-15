@@ -210,6 +210,7 @@ const ScreenSmall = observer(({ is_trade_enabled }: { is_trade_enabled: boolean 
         last_digit,
         open_payout_wheelpicker,
         togglePayoutWheelPicker,
+        currency,
     } = trade_store;
     const is_allow_equal = !!trade_store.is_equal;
 
@@ -247,10 +248,7 @@ const ScreenSmall = observer(({ is_trade_enabled }: { is_trade_enabled: boolean 
     ) : (
         <>
             {open_payout_wheelpicker ? (
-                <PayoutPerPointMobileInput
-                    open_payout_wheelpicker={open_payout_wheelpicker}
-                    togglePayoutWheelPicker={togglePayoutWheelPicker}
-                />
+                <PayoutPerPointMobileInput togglePayoutWheelPicker={togglePayoutWheelPicker} currency={currency} />
             ) : (
                 <CollapsibleTradeParams has_allow_equals={has_allow_equals} {...collapsible_trade_params_props} />
             )}

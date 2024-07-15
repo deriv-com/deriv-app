@@ -41,13 +41,6 @@ const BarrierSelector = observer(() => {
         </div>
     );
 
-    // const barriers_header_mobile = (
-    //     <div className='trade-container__barriers-table__header-wrapper'>
-    //         <div>{localize('Barriers')}</div>
-    //         <Popover alignment='bottom' icon='info' zIndex='9999' message={header_tooltip_text} />
-    //     </div>
-    // );
-
     if (isMobile) {
         return (
             <React.Fragment>

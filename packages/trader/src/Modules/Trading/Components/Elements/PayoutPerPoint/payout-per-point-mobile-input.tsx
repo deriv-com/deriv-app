@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, FadeWrapper, Icon, MobileWrapper, PageOverlay, Popover, Text } from '@deriv/components';
+import { Button, Icon, PageOverlay, Popover, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import WheelPickerMobile from '../../Form/WheelPicker/wheel-picker-mobile';
 import './payout-per-point.scss';
@@ -7,16 +7,16 @@ import './payout-per-point.scss';
 const defaultOptions = ['0.12', '0.21', '0.22', '0.34', '0.33', '0.38', '0.09', '0.76', '0.77', '0.78', '0.79', '0.22'];
 
 const PayoutPerPointMobileInput = ({
-    open_payout_wheelpicker,
     togglePayoutWheelPicker,
+    currency,
 }: {
-    open_payout_wheelpicker: boolean;
     togglePayoutWheelPicker: () => void;
+    currency: string;
 }) => {
     return (
         <PageOverlay onClickClose={togglePayoutWheelPicker}>
             <div className='payout-per-point-mobile'>
-                <div className='payout-per-point-mobile-header'>
+                <div className='payout-per-point-mobile__header'>
                     <Text size='xs' weight='bold' color='default' as='h1'>
                         {localize('Payout per Point')}
                     </Text>
@@ -25,7 +25,7 @@ const PayoutPerPointMobileInput = ({
                         icon='info'
                         className='popover-icon'
                         is_bubble_hover_enabled
-                        message={'dasdasdasdasd dsa d das asd as'}
+                        message={'testing'}
                         margin={216}
                         relative_render
                     />
@@ -36,21 +36,22 @@ const PayoutPerPointMobileInput = ({
                 <WheelPickerMobile
                     options={defaultOptions}
                     defaultValue={defaultOptions[2]}
+                    currency={currency}
                     onChange={() => {
                         // eslint-disable-next-line no-console
-                        console.log('das');
+                        console.log('onChange');
                     }}
                 />
                 <Text
                     size={'xxs'}
-                    className='distance'
+                    className='distance-to-spot'
                     line_height='l'
                     weight={'bold'}
                     color={'default'}
                     align='center'
                     as='p'
                 >
-                    Distance to current spot:
+                    {localize('Distance to current spot:')}
                 </Text>
                 <Button className='save-button'>{localize('Save')}</Button>
             </div>

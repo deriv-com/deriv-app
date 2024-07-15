@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 
 window.goog = goog;
 
-const modifyBlocklyContextMenus = () => {
+const modifyBlocklyWorkSpaceContextMenu = () => {
     const exclude_item = ['blockInline'];
     exclude_item.forEach(item_id => {
         const option = Blockly.ContextMenuRegistry.registry.getItem(item_id);
@@ -40,7 +40,7 @@ export const loadBlockly = async isDarkMode => {
         base: Blockly.Themes.Zelos,
         componentStyles: {},
     });
-    modifyBlocklyContextMenus();
+    modifyBlocklyWorkSpaceContextMenu();
     setColors(isDarkMode);
     await import('./hooks');
     await import('./blocks');

@@ -38,12 +38,11 @@ const WalletsBannerUpgrade = observer(() => {
                 </div>
                 <Button
                     className='wallets-banner-upgrade__button'
+                    text={localize("Let's go")}
                     primary
                     large
                     onClick={() => toggleWalletsUpgrade(true)}
-                >
-                    <Localize i18n_default_text="Let's go" />
-                </Button>
+                />
             </div>
             <Icon
                 icon={`IcAppstoreWalletsUpgradeCoins${isMobile ? '' : 'Horizontal'}`}

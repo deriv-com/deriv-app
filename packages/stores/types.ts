@@ -1098,6 +1098,10 @@ type TTradersHubStore = {
     getAccount: () => void;
     showTopUpModal: (existing_account?: DetailsOfEachMT5Loginid) => void;
     is_regulators_compare_modal_visible: boolean;
+    is_cfd_restricted_country: boolean;
+    is_financial_restricted_country: boolean;
+    setIsCFDRestrictedCountry: (value: boolean) => void;
+    setIsFinancialRestrictedCountry: (value: boolean) => void;
 };
 
 type TContractReplay = {

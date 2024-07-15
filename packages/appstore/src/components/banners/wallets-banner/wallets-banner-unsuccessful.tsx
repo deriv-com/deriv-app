@@ -17,9 +17,9 @@ const trackAnalyticsEvent = (
     });
 };
 
-const WalletBannerUnsuccessful = observer(() => {
+const WalletsBannerUnsuccessful = observer(() => {
     const { traders_hub, ui } = useStore();
-    const { is_desktop, is_mobile } = ui;
+    const { is_desktop } = ui;
     const { is_demo, toggleWalletsUpgrade } = traders_hub;
     const account_mode = is_demo ? 'demo' : 'real';
 

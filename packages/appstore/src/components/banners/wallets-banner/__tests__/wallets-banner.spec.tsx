@@ -2,8 +2,14 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import WalletsBannerUpgrade from '../wallets-banner-upgrade';
 import WalletsBannerUpgrading from '../wallets-banner-upgrading';
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isMobile: false })),
+}));
 
 describe('<WalletsBanner />', () => {
     const mockRootStore = mockStore({
@@ -24,8 +30,7 @@ describe('<WalletsBanner />', () => {
             expect(btn).toBeInTheDocument();
         });
 
-        it('Should render image properly for desktop', () => {
-            mockRootStore.ui.is_desktop = true;
+        it('Should render image properly for desktop/tablet', () => {
             render(<WalletsBannerUpgrade />, {
                 wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             });
@@ -36,8 +41,8 @@ describe('<WalletsBanner />', () => {
             expect(mobile_image).not.toBeInTheDocument();
         });
 
-        it('Should render image properly for mobile/tablet', () => {
-            mockRootStore.ui.is_desktop = false;
+        it('Should render image properly for mobile', () => {
+            (useDevice as jest.Mock).mockReturnValueOnce({ isMobile: true });
             render(<WalletsBannerUpgrade />, {
                 wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             });
@@ -71,8 +76,7 @@ describe('<WalletsBanner />', () => {
             expect(loading_dots).toBeInTheDocument();
         });
 
-        it('Should render image properly for desktop', () => {
-            mockRootStore.ui.is_desktop = true;
+        it('Should render image properly for desktop/tablet', () => {
             render(<WalletsBannerUpgrading />, {
                 wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             });
@@ -83,8 +87,8 @@ describe('<WalletsBanner />', () => {
             expect(mobile_image).not.toBeInTheDocument();
         });
 
-        it('Should render image properly for mobile/tablet', () => {
-            mockRootStore.ui.is_desktop = false;
+        it('Should render image properly for mobile', () => {
+            (useDevice as jest.Mock).mockReturnValueOnce({ isMobile: true });
             render(<WalletsBannerUpgrading />, {
                 wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             });

@@ -30,7 +30,7 @@
             justify-content: center;
             gap: 1.6rem;
 
-            @include mobile-or-tablet-screen {
+            @include mobile {
                 width: 20rem;
             }
 
@@ -53,18 +53,22 @@
             width: 48.6rem;
             justify-content: space-between;
 
-            @include mobile-or-tablet-screen {
+            @include mobile {
                 width: 20rem;
             }
 
             @include tablet-screen {
-                width: 29.5rem;
+                width: 25.6rem;
             }
         }
 
         &__description {
-            @include mobile-or-tablet-screen {
+            @include mobile {
                 width: 15.1rem;
+            }
+
+            @include tablet-screen {
+                width: 25.6rem;
             }
         }
 
@@ -118,7 +122,7 @@
             gap: 0.8rem;
             z-index: 1;
 
-            @include mobile-or-tablet-screen {
+            @include mobile {
                 width: 17rem;
             }
 

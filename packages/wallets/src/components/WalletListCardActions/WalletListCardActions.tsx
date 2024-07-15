@@ -12,6 +12,10 @@ import useDevice from '../../hooks/useDevice';
 import { IconButton, WalletButton, WalletText } from '../Base';
 import './WalletListCardActions.scss';
 
+type TProps = {
+    accountsActiveTabIndex?: number;
+};
+
 const getWalletHeaderButtons = (isDemo?: boolean) => {
     const buttons = [
         {
@@ -46,7 +50,7 @@ const getWalletHeaderButtons = (isDemo?: boolean) => {
     return filteredButtons;
 };
 
-const WalletListCardActions = () => {
+const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const history = useHistory();
@@ -66,7 +70,7 @@ const WalletListCardActions = () => {
                                 color={button.color}
                                 icon={button.icon}
                                 onClick={() => {
-                                    history.push(`/wallet/${button.name}`);
+                                    history.push(`/wallet/${button.name}`, { accountsActiveTabIndex });
                                 }}
                                 size='lg'
                             />

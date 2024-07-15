@@ -80,6 +80,10 @@
             margin: 0.25rem;
             width: fit-content;
             padding: 0.8rem;
+
+            @include tablet-screen {
+                padding: 0.3rem 0.8rem;
+            }
         }
 
         @media (max-width: 320px) {

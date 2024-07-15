@@ -14,7 +14,7 @@ import ShareMyAdsSocials from './share-my-ads-socials';
 import { useDevice } from '@deriv-com/ui';
 
 const ShareMyAdsModal = ({ advert }: TAdvert) => {
-    const { isDesktop } = useDevice();
+    const { isDesktop, isMobile } = useDevice();
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
     const { account_currency, advertiser_details, id, local_currency, rate_display, rate_type, type } = advert;
     const { id: advertiser_id } = advertiser_details;
@@ -129,7 +129,12 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
     }
 
     return (
-        <Modal is_open={is_modal_open} title={localize('Share this ad')} toggleModal={hideModal} width='71rem'>
+        <Modal
+            is_open={is_modal_open}
+            title={localize('Share this ad')}
+            toggleModal={hideModal}
+            width={isMobile ? '71rem' : '44rem'}
+        >
             <Modal.Body className='share-my-ads-modal__body'>
                 <div className='share-my-ads-modal__container'>
                     <div className='share-my-ads-modal__container__card'>

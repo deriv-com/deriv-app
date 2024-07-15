@@ -261,7 +261,7 @@ const BuySellRow = ({ row: advert }) => {
                     <Text as='div' color='profit-success' weight='bold'>
                         {display_effective_rate} {local_currency}
                     </Text>
-                    <Text as='div' color='less-prominent' size={isMobile ? 'xxs' : 'xxxs'}>
+                    <Text as='div' color='less-prominent' size='xs'>
                         <Localize
                             i18n_default_text='Limits {{ min_order }}–{{ max_order }} {{ currency }}'
                             values={{
@@ -277,7 +277,7 @@ const BuySellRow = ({ row: advert }) => {
                         payment_method_names.map((payment_method, key) => {
                             return (
                                 <div className='buy-sell-row__payment-method' key={key}>
-                                    <Text line_height='l' size={isMobile ? 'xxxs' : 'xs'}>
+                                    <Text line_height='l' size={isMobile ? 'xxxs' : 'xxs'}>
                                         {payment_method}
                                     </Text>
                                 </div>
@@ -285,7 +285,7 @@ const BuySellRow = ({ row: advert }) => {
                         })
                     ) : (
                         <div className='buy-sell-row__payment-method'>
-                            <Text line_height='l' size={isMobile ? 'xxxs' : 'xs'}>
+                            <Text line_height='l' size={isMobile ? 'xxxs' : 'xxs'}>
                                 -
                             </Text>
                         </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
+import { RouteComponentProps, useHistory, useLocation, withRouter } from 'react-router-dom';
 import { FormikConsumer } from 'formik';
 import { Button, Icon, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
@@ -46,18 +46,18 @@ const LeaveConfirmMessage = ({ back, leave }: TLeaveConfirmMessage) => {
  */
 export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
     const [show, setShow] = React.useState(false);
-    const [next_location, setNextLocation] = React.useState<{ pathname: string } | null>(null);
     const history = useHistory();
     const { isMobile } = useDevice();
+    const [location, setNextLocation] = useLocation();
 
     const leave = React.useCallback(() => {
-        if (next_location?.pathname) {
-            const { pathname } = next_location;
+        if (location.pathname) {
+            const { pathname } = location;
             history.push(pathname);
         } else {
             history.push(null);
         }
-    }, [next_location, history]);
+    }, [location, history]);
 
     React.useEffect(() => {
         const unblock = history.block((location: { pathname: string }) => {
@@ -74,7 +74,7 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
         return () => {
             unblock();
         };
-    }, [dirty, show, history, onDirty, leave]);
+    }, [dirty, show, history, onDirty, leave, setNextLocation]);
 
     const back = () => {
         setNextLocation(null);

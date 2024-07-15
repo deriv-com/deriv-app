@@ -6,19 +6,19 @@ import { useGetSymbolSearchResults } from 'AppV2/Hooks/useGetSymbolSearchResults
 import { observer } from '@deriv/stores';
 import MarketCategoryItem from '../MarketCategoryItem';
 
-type TSymbolsSearchResult = {
+type TSymbolSearchResults = {
     searchValue: string;
     setSearchValue: (input: string) => void;
     setIsOpen: (input: boolean) => void;
     setSelectedSymbol: (input: string) => void;
 };
-const SymbolsSearchResult = observer(({ searchValue, setIsOpen, setSelectedSymbol }: TSymbolsSearchResult) => {
+const SymbolSearchResults = observer(({ searchValue, setIsOpen, setSelectedSymbol }: TSymbolSearchResults) => {
     const searchResults = useGetSymbolSearchResults(searchValue);
 
     return (
-        <div className='symbols-search-result--container'>
+        <div className='symbol-search-results--container'>
             {searchValue === '' && (
-                <Text size='sm' color='quill-typography__color--subtle' className='symbols-search-result--suggestion'>
+                <Text size='sm' color='quill-typography__color--subtle' className='symbol-search-results--suggestion'>
                     <Localize i18n_default_text='Try searching for markets or keywords' />
                 </Text>
             )}
@@ -40,4 +40,4 @@ const SymbolsSearchResult = observer(({ searchValue, setIsOpen, setSelectedSymbo
     );
 });
 
-export default SymbolsSearchResult;
+export default SymbolSearchResults;

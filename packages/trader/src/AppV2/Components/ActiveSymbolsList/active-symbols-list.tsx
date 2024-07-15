@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import SymbolsSearchField from '../SymbolsSearchField';
 import MarketCategories from '../MarketCategories';
 import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
-import SymbolsSearchResult from '../SymbolsSearchResult';
+import SymbolSearchResults from '../SymbolSearchResults';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TActiveSymbolsList = {
@@ -64,7 +64,7 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
                         }}
                     >
                         {isSearching ? (
-                            <SymbolsSearchResult
+                            <SymbolSearchResults
                                 searchValue={searchValue}
                                 setSearchValue={setSearchValue}
                                 setIsOpen={setIsOpen}

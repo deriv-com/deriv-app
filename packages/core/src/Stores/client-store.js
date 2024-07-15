@@ -789,7 +789,7 @@ export default class ClientStore extends BaseStore {
             !isEmptyObject(this.accounts) &&
             Object.keys(this.accounts).length > 0 &&
             this.loginid &&
-            this.accounts[this.loginid].token
+            this.accounts[this.loginid]?.token
         );
     }
 

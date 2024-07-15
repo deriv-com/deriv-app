@@ -140,6 +140,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                     value={otp}
                     type='number'
                     maxLength={6}
+                    buttonDisabled={otp.length < 6}
                 />
                 <ResendCodeTimer
                     clearOtpValue={clearOtpValue}

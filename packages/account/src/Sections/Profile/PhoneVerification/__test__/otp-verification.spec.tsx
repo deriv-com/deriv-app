@@ -57,7 +57,7 @@ describe('OTPVerification', () => {
         expect(
             screen.getByText(/Enter the code or click the link in the email to verify that the account belongs to you./)
         ).toBeInTheDocument();
-        expect(screen.getByRole('spinbutton', { name: /OTP code/ })).toBeInTheDocument();
+        expect(screen.getByRole('textbox', { name: /OTP code/ })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Resend code/ })).toBeInTheDocument();
     });
 
@@ -75,6 +75,19 @@ describe('OTPVerification', () => {
         expect(screen.getByText(/WhatsApp/)).toBeInTheDocument();
     });
 
+    it('should not enabled Verify button when otp does not have 6 characters', () => {
+        store.ui.should_show_phone_number_otp = true;
+        (useSendOTPVerificationCode as jest.Mock).mockReturnValue({
+            sendPhoneOTPVerification: jest.fn(),
+            setPhoneOtpErrorMessage: jest.fn(),
+        });
+        renderComponent();
+        const otp_textfield = screen.getByRole('textbox');
+        const verify_button = screen.getByRole('button', { name: 'Verify' });
+        userEvent.type(otp_textfield, '12345');
+        expect(verify_button).toBeDisabled();
+    });
+
     it('should contain value of 123456 for otp textfield component', () => {
         store.ui.should_show_phone_number_otp = true;
         (useSendOTPVerificationCode as jest.Mock).mockReturnValue({
@@ -82,9 +95,9 @@ describe('OTPVerification', () => {
             setPhoneOtpErrorMessage: jest.fn(),
         });
         renderComponent();
-        const otp_textfield = screen.getByRole('spinbutton');
+        const otp_textfield = screen.getByRole('textbox');
         userEvent.type(otp_textfield, '123456');
-        expect(otp_textfield).toHaveValue(123456);
+        expect(otp_textfield).toHaveValue('123456');
     });
 
     it('should render mockSendPhoneOTPVerification when Verify button is clicked', () => {
@@ -94,7 +107,7 @@ describe('OTPVerification', () => {
             setPhoneOtpErrorMessage: jest.fn(),
         });
         renderComponent();
-        const otp_textfield = screen.getByRole('spinbutton');
+        const otp_textfield = screen.getByRole('textbox');
         const verify_button = screen.getByRole('button', { name: 'Verify' });
         userEvent.type(otp_textfield, '123456');
         expect(verify_button).toBeEnabled();
@@ -121,7 +134,7 @@ describe('OTPVerification', () => {
         });
         renderComponent();
         expect(screen.getByText(/Error Message/)).toBeInTheDocument();
-        const otp_textfield = screen.getByRole('spinbutton');
+        const otp_textfield = screen.getByRole('textbox');
         userEvent.type(otp_textfield, '123456');
         expect(mockSetPhoneOtpErrorMessage).toBeCalled();
     });
@@ -144,7 +157,7 @@ describe('OTPVerification', () => {
             setPhoneOtpErrorMessage: jest.fn(),
         });
         renderComponent();
-        const otp_textfield = screen.getByRole('spinbutton');
+        const otp_textfield = screen.getByRole('textbox');
         const verify_button = screen.getByRole('button', { name: 'Verify' });
         userEvent.type(otp_textfield, '123456');
         expect(verify_button).toBeEnabled();
@@ -160,7 +173,7 @@ describe('OTPVerification', () => {
             setPhoneOtpErrorMessage: jest.fn(),
         });
         renderComponent();
-        const otp_textfield = screen.getByRole('spinbutton');
+        const otp_textfield = screen.getByRole('textbox');
         const verify_button = screen.getByRole('button', { name: 'Verify' });
         userEvent.type(otp_textfield, '123456');
         expect(verify_button).toBeEnabled();

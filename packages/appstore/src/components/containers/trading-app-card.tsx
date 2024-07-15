@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { Text, StatusBadge } from '@deriv/components';
-import { Localize, useLocalize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import {
@@ -45,7 +45,6 @@ const TradingAppCard = ({
     market_type,
     is_new = false,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
-    const { localize } = useLocalize();
     const {
         common,
         traders_hub,
@@ -183,7 +182,7 @@ const TradingAppCard = ({
                         </Text>
                         {is_new && name === CFD_PRODUCTS_TITLE.ZEROSPREAD && (
                             <Text className='trading-app-card__details__new' weight='bolder' size='xxs' line_height='s'>
-                                <Localize i18n_default_text='NEW!' />;
+                                <Localize i18n_default_text='NEW!' />
                             </Text>
                         )}
                     </div>

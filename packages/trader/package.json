@@ -44,6 +44,7 @@
         "@types/lodash.debounce": "^4.0.7",
         "@types/react": "^18.0.7",
         "@types/react-dom": "^18.0.0",
+        "@types/react-lottie":"1.2.10",
         "babel-loader": "^8.1.0",
         "circular-dependency-plugin": "^5.2.2",
         "clean-webpack-plugin": "^3.0.0",
@@ -123,6 +124,7 @@
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0",
         "react-swipeable": "^6.2.1",
-        "react-transition-group": "4.4.2"
+        "react-transition-group": "4.4.2",
+        "react-lottie": "1.2.4"
     }
 }

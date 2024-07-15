@@ -375,7 +375,6 @@ describe('<Cashier />', () => {
     //     });
 
     //     renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
-    //     screen.debug(undefined, Infinity);
 
     //     const withdrawal_link = screen.getByRole('link', { name: 'Withdrawal' });
     //     fireEvent.click(withdrawal_link);

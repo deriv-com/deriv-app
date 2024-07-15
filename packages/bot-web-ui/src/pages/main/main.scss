@@ -99,9 +99,11 @@
                         svg {
                             margin-bottom: 2.4rem;
                         }
+
                         h1 {
                             margin-bottom: 0.8rem;
                         }
+
                         span {
                             word-break: break-word;
                             text-align: center;
@@ -164,8 +166,14 @@
         z-index: 2;
 
         .animation {
-            &__button {
-                background-color: var(--purchase-main-1);
+            &__button#db-animation {
+                &__run-button {
+                    background-color: var(--purchase-main-1);
+                }
+
+                &__stop-button {
+                    background-color: var(--button-primary-hover);
+                }
             }
 
             &__container {
@@ -182,6 +190,20 @@
 
         &--hidden {
             display: none;
+        }
+    }
+}
+
+.animation__wrapper {
+    .animation {
+        &__button#db-animation {
+            &__run-button {
+                background-color: var(--purchase-main-1);
+            }
+
+            &__stop-button {
+                background-color: var(--button-primary-hover);
+            }
         }
     }
 }
@@ -259,6 +281,7 @@
             width: 40rem;
         }
     }
+
     &__toolbox {
         position: absolute;
         top: 0;
@@ -311,6 +334,7 @@
             }
         }
     }
+
     &__run-strategy-wrapper {
         @include desktop-screen {
             position: absolute;

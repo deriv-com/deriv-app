@@ -5,6 +5,8 @@
     &__list {
         border-right: 1px solid var(--border-normal);
         width: 30%;
+        height: calc(100vh - 16.6rem);
+        overflow-x: auto;
         &__actions {
             display: flex;
             align-items: center;

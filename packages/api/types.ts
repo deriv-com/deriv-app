@@ -304,7 +304,55 @@ type KycAuthStatus = {
         };
     };
 };
+/**
+ * Reset Password.
+ */
+export type ResetPasswordRequest = {
+    /**
+     * Must be `1`
+     */
+    reset_password: 1;
+    /**
+     * New password. For validation (Accepts any printable ASCII character. Must be within 8-25 characters, and include numbers, lowercase and uppercase letters. Must not be the same as the user's email address).
+     */
+    new_password: string;
+    /**
+     * Email verification code (received from a `verify_email` call, which must be done first)
+     */
+    verification_code: string;
+    /**
+     * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+     */
+    passthrough?: {
+        [k: string]: unknown;
+    };
+    /**
+     * [Optional] Used to map request to response.
+     */
+    req_id?: number;
+};
 
+/**
+ * The result of reset password request.
+ */
+export type ResetPasswordResponse = {
+    reset_password?: 0 | 1;
+    /**
+     * Echo of the request made.
+     */
+    echo_req: {
+        [k: string]: unknown;
+    };
+    /**
+     * Action name of the request made.
+     */
+    msg_type: 'reset_password';
+    /**
+     * Optional field sent in request to map to response, present only when request contains `req_id`.
+     */
+    req_id?: number;
+    [k: string]: unknown;
+};
 type TPrivateSocketEndpoints = {
     available_accounts: {
         request: {
@@ -2143,6 +2191,50 @@ type TPrivateSocketEndpoints = {
              * Action name of the request made.
              */
             msg_type: 'kyc_auth_status';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
+    reset_password: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            reset_password: 1;
+            /**
+             * New password. For validation (Accepts any printable ASCII character. Must be within 8-25 characters, and include numbers, lowercase and uppercase letters. Must not be the same as the user's email address).
+             */
+            new_password: string;
+            /**
+             * Email verification code (received from a `verify_email` call, which must be done first)
+             */
+            verification_code: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            reset_password?: 0 | 1;
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'reset_password';
             /**
              * Optional field sent in request to map to response, present only when request contains `req_id`.
              */

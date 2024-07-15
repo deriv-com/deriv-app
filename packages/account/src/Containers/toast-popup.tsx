@@ -1,7 +1,7 @@
 import { ComponentProps, PropsWithChildren, useState } from 'react';
 import { createPortal } from 'react-dom';
 import clsx from 'clsx';
-import { MobileWrapper, Toast } from '@deriv/components';
+import { Toast } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 

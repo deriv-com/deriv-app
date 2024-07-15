@@ -13,7 +13,7 @@
         flex-direction: column;
 
         & .data-list {
-            @include desktop {
+            @include desktop-screen {
                 height: 28rem;
             }
         }

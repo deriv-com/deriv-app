@@ -5,7 +5,7 @@
     border-top: 1px solid var(--general-section-1);
     padding: 2rem 0;
 
-    @include desktop {
+    @include desktop-screen {
         margin-top: 5rem;
     }
 

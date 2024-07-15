@@ -153,7 +153,7 @@
         }
 
         &-field {
-            @include desktop {
+            @include desktop-screen {
                 display: flex;
             }
         }
@@ -225,7 +225,7 @@
 }
 
 .notification-messages {
-    @include desktop {
+    @include desktop-screen {
         z-index: 9999;
     }
 }

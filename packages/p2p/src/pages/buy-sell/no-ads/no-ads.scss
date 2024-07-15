@@ -26,7 +26,7 @@
 .ads-page {
     margin: 4.5rem 1.6rem;
 
-    @include desktop {
+    @include desktop-screen {
         position: absolute;
         inset-inline-start: 5rem;
     }

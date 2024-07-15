@@ -17,7 +17,7 @@
             width: 100%;
 
             &-symbol {
-                @include desktop {
+                @include desktop-screen {
                     padding-right: 1rem;
                 }
             }

@@ -205,7 +205,7 @@ button.dc-input-wrapper__button {
         width: 100%;
     }
 
-    @include desktop {
+    @include desktop-screen {
         margin: unset;
     }
 }

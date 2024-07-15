@@ -52,7 +52,7 @@
     }
 
     &__footer {
-        @include desktop {
+        @include desktop-screen {
             padding-right: 2.4rem;
         }
 

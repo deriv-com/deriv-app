@@ -8,7 +8,7 @@
         column-gap: 0.8rem;
         justify-content: end;
 
-        @include desktop {
+        @include desktop-screen {
             position: absolute;
             bottom: 0;
             width: 100%;
@@ -49,7 +49,7 @@
             height: auto;
             pointer-events: none;
 
-            @include desktop {
+            @include desktop-screen {
                 background-color: var(--general-main-2);
             }
         }
@@ -131,13 +131,13 @@
     }
 
     .dc-input__label {
-        @include desktop {
+        @include desktop-screen {
             background-color: var(--general-main-2);
         }
     }
 
     &__scrollbar {
-        @include desktop {
+        @include desktop-screen {
             padding: 0 2.4rem 8.8rem;
         }
     }

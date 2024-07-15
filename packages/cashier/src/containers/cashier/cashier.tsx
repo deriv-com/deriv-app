@@ -1,16 +1,7 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
-import {
-    Button,
-    DesktopWrapper,
-    Div100vhContainer,
-    FadeWrapper,
-    MobileWrapper,
-    PageOverlay,
-    VerticalTab,
-    Loading,
-} from '@deriv/components';
+import { Button, Div100vhContainer, FadeWrapper, PageOverlay, VerticalTab, Loading } from '@deriv/components';
 import {
     useAuthorize,
     useOnrampVisible,

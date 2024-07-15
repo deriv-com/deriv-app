@@ -7,7 +7,7 @@
     justify-content: center;
     width: $width;
 
-    @include desktop {
+    @include desktop-screen {
         &:hover {
             background-color: var(--general-hover);
             border-radius: 0.5rem;
@@ -41,7 +41,7 @@
 
         .ReactVirtualized__Grid__innerScrollContainer {
             .my-ads-table__dropdown-custom .dc-list {
-                @include desktop {
+                @include desktop-screen {
                     margin-top: -18rem;
                 }
             }
@@ -281,7 +281,7 @@
             }
 
             &--display {
-                @include desktop {
+                @include desktop-screen {
                     display: none;
                 }
 
@@ -299,7 +299,7 @@
                     right: unset;
                 }
 
-                @include desktop {
+                @include desktop-screen {
                     margin-top: 4.5rem;
                 }
             }

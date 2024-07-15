@@ -261,8 +261,8 @@ describe('Passkeys', () => {
         (useGetPasskeysList as jest.Mock).mockReturnValue({
             passkeys_list: mock_passkeys_list,
         });
-        const mockUseRenamePasskey = jest.fn();
 
+        const mockUseRenamePasskey = jest.fn();
         (useRenamePasskey as jest.Mock).mockReturnValue({
             renamePasskey: mockUseRenamePasskey,
         });
@@ -277,12 +277,24 @@ describe('Passkeys', () => {
         });
 
         userEvent.click(screen.getByText('Rename'));
-        // expect(mockUseRenamePasskey).toHaveBeenCalledTimes(1);
+
         expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('passkey_rename_started'));
 
-        // await waitFor(() => {
-        //     // screen.debug();
-        //     // TODO: improve this test
-        // });
+        const save_button: HTMLButtonElement = screen.getByRole('button', { name: /save changes/i });
+        expect(save_button).toBeDisabled();
+        const input: HTMLInputElement = screen.getByLabelText('Passkey name');
+        expect(input).toHaveValue(passkey_name_1);
+
+        userEvent.clear(input);
+        userEvent.type(input, `new ${passkey_name_1}`);
+
+        expect(input).toHaveValue(`new ${passkey_name_1}`);
+        expect(save_button).toBeEnabled();
+
+        userEvent.click(save_button);
+
+        await waitFor(() => {
+            expect(mockUseRenamePasskey).toHaveBeenCalledTimes(1);
+        });
     });
 });

@@ -304,33 +304,6 @@ type KycAuthStatus = {
         };
     };
 };
-/**
- * Reset Password.
- */
-export type ResetPasswordRequest = {
-    /**
-     * Must be `1`
-     */
-    reset_password: 1;
-    /**
-     * New password. For validation (Accepts any printable ASCII character. Must be within 8-25 characters, and include numbers, lowercase and uppercase letters. Must not be the same as the user's email address).
-     */
-    new_password: string;
-    /**
-     * Email verification code (received from a `verify_email` call, which must be done first)
-     */
-    verification_code: string;
-    /**
-     * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
-     */
-    passthrough?: {
-        [k: string]: unknown;
-    };
-    /**
-     * [Optional] Used to map request to response.
-     */
-    req_id?: number;
-};
 
 type TPrivateSocketEndpoints = {
     available_accounts: {

@@ -30,7 +30,7 @@ export type TBotListItem = {
 };
 
 export type TBotList = {
-    bot_listing: Array<TBotListItem>;
+    bot_list: Array<TBotListItem>;
     message: string;
     status: string;
 };

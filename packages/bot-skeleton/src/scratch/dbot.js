@@ -32,7 +32,7 @@ class DBot {
         this.interpreter = Interpreter();
         const that = this;
         Blockly.Blocks.trade_definition_tradetype.onchange = function (event) {
-            if (!this.workspace || Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+            if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
                 return;
             }
 

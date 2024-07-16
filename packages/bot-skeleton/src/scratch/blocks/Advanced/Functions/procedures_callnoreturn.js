@@ -56,7 +56,7 @@ Blockly.Blocks.procedures_callnoreturn = {
      * @this Blockly.Block
      */
     onchange(event) {
-        if (!this.workspace || Blockly.derivWorkspace.isFlyout_) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible) {
             // Block is deleted or is in a flyout.
             return;
         }

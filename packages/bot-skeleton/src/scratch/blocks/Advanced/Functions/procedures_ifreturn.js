@@ -108,10 +108,10 @@ Blockly.Blocks.procedures_ifreturn = {
                 this.hasReturnValue = true;
             }
 
-            if (!Blockly.derivWorkspace.isFlyout_) {
+            if (!Blockly.derivWorkspace.isFlyoutVisible) {
                 this.setDisabled(false);
             }
-        } else if (!Blockly.derivWorkspace.isFlyout_ && !this.getInheritedDisabled()) {
+        } else if (!Blockly.derivWorkspace.isFlyoutVisible && !this.getInheritedDisabled()) {
             this.setDisabled(true);
         }
     },

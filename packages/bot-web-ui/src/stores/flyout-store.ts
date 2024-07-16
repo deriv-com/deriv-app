@@ -244,7 +244,7 @@ export default class FlyoutStore implements IFlyoutStore {
             this.flyout_content = [];
         }
 
-        window.Blockly.derivWorkspace.isFlyout_ = is_visible;
+        window.Blockly.derivWorkspace.isFlyoutVisible = is_visible;
     }
 
     /**

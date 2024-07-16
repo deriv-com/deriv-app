@@ -121,7 +121,7 @@ Blockly.Blocks.trade_definition = {
             this.isInit = false;
             removeErrorHandlingEventListener('keydown');
         }
-        if (!this.workspace || this.workspace.isDragging() || Blockly.derivWorkspace.isFlyout_) {
+        if (!this.workspace || this.workspace.isDragging() || Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 

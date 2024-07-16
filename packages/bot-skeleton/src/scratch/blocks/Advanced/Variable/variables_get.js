@@ -3,16 +3,6 @@ import { localize } from '@deriv/translations';
 Blockly.Blocks.variables_get = {
     init() {
         this.jsonInit(this.definition());
-        this.inputList.forEach(input_list => {
-            input_list.fieldRow.forEach(fieldRow => {
-                setTimeout(() => {
-                    if (fieldRow?.borderRect_ || fieldRow.clickTarget_) {
-                        const target_block = fieldRow?.borderRect_ || fieldRow.clickTarget_;
-                        Blockly.utils.dom.addClass(target_block, 'blocklyVariableGet');
-                    }
-                }, 0);
-            });
-        });
     },
     definition() {
         return {
@@ -27,9 +17,9 @@ Blockly.Blocks.variables_get = {
             ],
             output: null,
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Special2.colour,
-            colourSecondary: Blockly.Colours.Special2.colourSecondary,
-            colourTertiary: Blockly.Colours.Special2.colourTertiary,
+            colour: Blockly.Colours.Special4.colour,
+            colourSecondary: Blockly.Colours.Special4.colourSecondary,
+            colourTertiary: Blockly.Colours.Special4.colourTertiary,
             tooltip: localize('Gets variable value'),
             category: Blockly.Categories.Variables,
         };

@@ -43,7 +43,12 @@ Blockly.Blocks.trade_definition_market = {
         const is_allowed_event =
             allowed_events.findIndex(event_name => event.type === Blockly.Events[event_name]) !== -1;
 
-        if (!this.workspace || Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging() || !is_allowed_event) {
+        if (
+            !this.workspace ||
+            Blockly.derivWorkspace.isFlyoutVisible ||
+            this.workspace.isDragging() ||
+            !is_allowed_event
+        ) {
             return;
         }
 

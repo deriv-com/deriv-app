@@ -68,7 +68,6 @@ Blockly.Blocks.lists_split = {
         }
 
         this.initSvg();
-        // kept this commented to fix backward compatibility issue
         //this.render(false);
     },
 };

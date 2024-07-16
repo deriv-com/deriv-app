@@ -50,7 +50,7 @@ Blockly.Blocks.text_join = {
         };
     },
     onIconClick() {
-        if (this.workspace.options.readOnly || Blockly.derivWorkspace.isFlyout_) {
+        if (this.workspace.options.readOnly || Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 
@@ -59,14 +59,13 @@ Blockly.Blocks.text_join = {
             text_block.required_parent_id = this.id;
             text_block.setMovable(true);
             text_block.initSvg();
-            // kept this commented to fix backward compatibility issue
             text_block?.renderEfficiently();
 
             const shadow_block = this.workspace.newBlock('text');
             shadow_block.setShadow(true);
             shadow_block.setFieldValue('', 'TEXT');
             shadow_block.initSvg();
-            // kept this commented to fix backward compatibility issue
+
             shadow_block?.renderEfficiently();
 
             const text_input = text_block.getInput('TEXT');

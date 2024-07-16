@@ -12,6 +12,10 @@ $colour_toolboxHover: $black;
 $colour_toolboxSelected: $black;
 
 .theme--dark {
+    .blocklyDropDownDiv {
+        background-color: rgb(194, 194, 194) !important;
+        border-color: rgb(194, 194, 194) !important;
+    }
     .zelos-renderer.zelos_renderer-theme .blocklyMainBackground,
     .load-strategy__container .blocklyMainBackground,
     .zelos-renderer.zelos_renderer-theme rect.blocklyFieldRect.blocklyDropdownRect,

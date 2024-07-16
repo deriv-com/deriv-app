@@ -86,7 +86,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 });
         }
 
-        if (!this.workspace || this.workspace.isDragging() || Blockly.derivWorkspace.isFlyout_) {
+        if (!this.workspace || this.workspace.isDragging() || Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 

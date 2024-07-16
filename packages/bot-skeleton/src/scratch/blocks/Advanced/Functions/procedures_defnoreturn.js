@@ -80,7 +80,7 @@ Blockly.Blocks.procedures_defnoreturn = {
     onchange(event) {
         const allowedEvents = [Blockly.Events.BLOCK_DELETE, Blockly.Events.BLOCK_CREATE, Blockly.Events.BLOCK_CHANGE];
 
-        if (!this.workspace || Blockly.derivWorkspace.isFlyout_ || !allowedEvents.includes(event.type)) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || !allowedEvents.includes(event.type)) {
             return;
         }
         if (event.type === Blockly.Events.BLOCK_CREATE || Blockly.Events.BLOCK_CHANGE) {
@@ -98,7 +98,7 @@ Blockly.Blocks.procedures_defnoreturn = {
      * @this Blockly.Block
      */
     onAddClick() {
-        if (this.is_adding || this.workspace.options.readOnly || Blockly.derivWorkspace.isFlyout_) {
+        if (this.is_adding || this.workspace.options.readOnly || Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 
@@ -278,7 +278,7 @@ Blockly.Blocks.procedures_defnoreturn = {
      */
     customContextMenu(options) {
         modifyContextMenu(options);
-        if (Blockly.derivWorkspace.isFlyout_) {
+        if (Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
         // Add option to create caller.

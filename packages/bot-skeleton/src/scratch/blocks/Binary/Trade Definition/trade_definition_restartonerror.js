@@ -26,7 +26,7 @@ Blockly.Blocks.trade_definition_restartonerror = {
         this.setDeletable(false);
     },
     onchange(/* event */) {
-        if (!this.workspace || Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 

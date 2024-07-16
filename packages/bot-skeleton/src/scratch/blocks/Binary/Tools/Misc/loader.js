@@ -38,7 +38,7 @@ Blockly.Blocks.loader = {
         };
     },
     onchange(event) {
-        if (!this.workspace || Blockly.derivWorkspace.isFlyout_) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 

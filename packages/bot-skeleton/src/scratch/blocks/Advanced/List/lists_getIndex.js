@@ -70,8 +70,6 @@ Blockly.Blocks.lists_getIndex = {
             this.setNextStatement(newStatement);
 
             this.initSvg();
-            // kept this commented to fix backward compatibility issue
-            // this.render(false);
         }
     },
     updateAt(isAt) {
@@ -96,8 +94,6 @@ Blockly.Blocks.lists_getIndex = {
         this.getInput('AT').appendField(menu, 'WHERE');
 
         this.initSvg();
-        // kept this commented to fix backward compatibility issue
-        //this.render(false);
     },
 };
 

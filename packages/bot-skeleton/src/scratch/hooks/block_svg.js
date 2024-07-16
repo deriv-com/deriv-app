@@ -3,7 +3,7 @@ import DBotStore from '../dbot-store';
 import debounce from 'lodash.debounce';
 
 Blockly.BlockSvg.prototype.addSelect = function () {
-    if (!Blockly.derivWorkspace.isFlyout_) {
+    if (!Blockly.derivWorkspace.isFlyoutVisible) {
         const { flyout } = DBotStore.instance;
         if (flyout) {
             flyout.setVisibility(false);

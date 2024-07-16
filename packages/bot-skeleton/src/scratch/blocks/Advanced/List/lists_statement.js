@@ -35,7 +35,7 @@ Blockly.Blocks.lists_statement = {
         };
     },
     onIconClick() {
-        if (this.workspace.options.readOnly || Blockly.derivWorkspace.isFlyout_) {
+        if (this.workspace.options.readOnly || Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 
@@ -45,7 +45,7 @@ Blockly.Blocks.lists_statement = {
         });
     },
     onchange(event) {
-        if (!this.workspace || Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 

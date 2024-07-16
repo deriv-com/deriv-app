@@ -1,10 +1,16 @@
 .trade {
-    &__trade-types,
-    &__assets {
-        padding: var(--core-spacing-400) var(--core-spacing-800);
-    }
+    display: flex;
+    flex-direction: column;
+    background-color: var(--core-color-solid-slate-75);
+    padding: 0 var(--core-spacing-400);
+    gap: var(--core-spacing-400);
 
     &__trade-types {
+        position: relative;
+        width: 100vw;
+        inset-inline-start: calc(-1 * var(--core-spacing-400));
+        padding: var(--core-spacing-400) var(--core-spacing-800);
+        background-color: var(--core-color-solid-slate-50);
         display: flex;
         gap: var(--core-spacing-400);
         overflow-x: auto;
@@ -12,9 +18,8 @@
         white-space: nowrap;
         scrollbar-width: none;
     }
-
     &__assets {
-        background-color: var(--component-field-bg-fill-default);
+        padding: 0 var(--core-spacing-800);
 
         .dc-dropdown {
             &__container {
@@ -25,24 +30,21 @@
             }
         }
     }
-
     &__section {
         &__wrapper {
-            background-color: var(--core-color-solid-slate-75);
             position: relative;
-            padding: var(--core-spacing-400);
             display: flex;
             flex-direction: column;
             justify-content: center;
             gap: var(--core-spacing-400);
         }
     }
-
     &__chart {
         border-radius: var(--core-borderRadius-400);
-        background-color: var(--core-color-solid-slate-50);
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        overflow: hidden;
+
+        .smartcharts {
+            position: relative;
+        }
     }
 }

@@ -45,17 +45,22 @@
                 max-height: var(--core-size-3600);
                 padding: var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-400);
             }
+            .quill-input__container {
+                width: unset;
+            }
         }
     }
 
     &__option {
-        .input {
-            padding-inline-start: 0;
-        }
-
         &--minimized {
             width: 16rem;
             flex-shrink: 0;
+        }
+        &:not(.trade-params__option--minimized) {
+            height: var(--core-size-2800);
+        }
+        .input {
+            padding-inline-start: 0;
         }
     }
 }

@@ -73,4 +73,4 @@ const TradeParametersContainer = ({
     );
 };
 
-export default TradeParametersContainer;
+export default React.memo(TradeParametersContainer);

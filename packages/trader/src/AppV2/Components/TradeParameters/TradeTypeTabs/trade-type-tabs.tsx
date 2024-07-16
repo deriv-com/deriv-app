@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import clsx from 'clsx';
 import { SegmentedControlSingleChoice } from '@deriv-com/quill-ui';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -6,9 +7,10 @@ import { isTurbosContract, isVanillaContract, TRADE_TYPES } from '@deriv/shared'
 
 type TTradeTypeTabsProps = {
     is_minimized?: boolean;
-} & Pick<ReturnType<typeof useTraderStore>, 'contract_type' | 'onChange'>;
+};
 
-const TradeTypeTabs = ({ contract_type, onChange, is_minimized }: TTradeTypeTabsProps) => {
+const TradeTypeTabs = observer(({ is_minimized }: TTradeTypeTabsProps) => {
+    const { contract_type, onChange } = useTraderStore();
     const is_turbos = isTurbosContract(contract_type);
     const is_vanilla = isVanillaContract(contract_type);
     const tab_list = [
@@ -33,6 +35,6 @@ const TradeTypeTabs = ({ contract_type, onChange, is_minimized }: TTradeTypeTabs
             selectedItemIndex={selected_item_index}
         />
     );
-};
+});
 
 export default TradeTypeTabs;

@@ -51,6 +51,7 @@
         padding: 0px var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-400);
         gap: var(--core-spacing-400);
         position: sticky;
+        z-index: 2; // chart has z-index: 1, it should not push purchase buttons down
         bottom: 0;
     }
 }

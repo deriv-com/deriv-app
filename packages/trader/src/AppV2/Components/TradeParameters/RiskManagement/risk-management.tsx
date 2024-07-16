@@ -1,7 +1,7 @@
 import React from 'react';
-import { TextField } from '@deriv-com/quill-ui';
-import { Localize, localize } from '@deriv/translations';
 import clsx from 'clsx';
+import { TextField } from '@deriv-com/quill-ui';
+import { localize, Localize } from '@deriv/translations';
 
 type TRiskManagementProps = {
     is_minimized?: boolean;

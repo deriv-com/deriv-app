@@ -172,6 +172,12 @@ type TStakeBoundary = Record<
     }
 >;
 type TTicksHistoryResponse = TicksHistoryResponse | TicksStreamResponse;
+type TTickData = {
+    current_spot?: number;
+    current_spot_time?: number;
+    prev_spot_time?: number;
+    pip_size?: number;
+};
 type TBarriersData = Record<string, never> | { barrier: string; barrier_choices: string[] };
 
 const store_name = 'trade_store';
@@ -256,6 +262,7 @@ export default class TradeStore extends BaseStore {
     // Chart loader observables
     is_chart_loading?: boolean;
     should_show_active_symbols_loading = false;
+    tick_data?: TTickData;
 
     // Accumulator trade params
     accumulator_range_list: number[] = [];
@@ -378,6 +385,7 @@ export default class TradeStore extends BaseStore {
             contract_type: observable,
             contract_types_list: observable,
             currency: observable,
+            tick_data: observable.struct,
             duration_min_max: observable,
             duration_unit: observable,
             duration_units_list: observable,
@@ -388,6 +396,8 @@ export default class TradeStore extends BaseStore {
             expiry_time: observable,
             expiry_type: observable,
             form_components: observable,
+            resetTickData: action.bound,
+            setTickData: action.bound,
             growth_rate: observable,
             has_cancellation: observable,
             has_equals_only: observable,
@@ -1676,32 +1686,41 @@ export default class TradeStore extends BaseStore {
         }
     }
 
+    resetTickData() {
+        this.tick_data = {};
+    }
+
+    setTickData(response: TTicksHistoryResponse | TicksStreamResponse) {
+        if ('tick' in response) {
+            const { epoch, pip_size, quote, symbol } = response.tick as TickSpotData;
+            if (this.symbol !== symbol) return;
+            this.tick_data = {
+                current_spot: quote,
+                current_spot_time: epoch,
+                pip_size,
+            };
+        } else if ('history' in response) {
+            const { prices, times } = response.history as History;
+            const symbol = response.echo_req.ticks_history;
+            if (this.symbol !== symbol) return;
+            this.tick_data = {
+                current_spot: prices?.[prices?.length - 1],
+                current_spot_time: times?.[times?.length - 1],
+                prev_spot_time: times?.[times?.length - 2],
+                pip_size: response.pip_size as number,
+            };
+        }
+    }
+
     // ---------- WS ----------
     wsSubscribe = (req: TicksHistoryRequest, callback: (response: TTicksHistoryResponse) => void) => {
         const passthrough_callback = (...args: [TTicksHistoryResponse]) => {
             callback(...args);
-            if (this.is_accumulator) {
-                let current_spot_data = {};
-                if ('tick' in args[0]) {
-                    const { epoch, quote, symbol } = args[0].tick as TickSpotData;
-                    if (this.symbol !== symbol) return;
-                    current_spot_data = {
-                        current_spot: quote,
-                        current_spot_time: epoch,
-                    };
-                } else if ('history' in args[0]) {
-                    const { prices, times } = args[0].history as History;
-                    const symbol = args[0].echo_req.ticks_history;
-                    if (this.symbol !== symbol) return;
-                    current_spot_data = {
-                        current_spot: prices?.[prices?.length - 1],
-                        current_spot_time: times?.[times?.length - 1],
-                        prev_spot_time: times?.[times?.length - 2],
-                    };
-                } else {
-                    return;
+            if (this.is_accumulator || isDigitTradeType(this.contract_type)) {
+                this.setTickData(args[0]);
+                if (this.tick_data && this.is_accumulator) {
+                    this.root_store.contract_trade.updateAccumulatorBarriersData(this.tick_data);
                 }
-                this.root_store.contract_trade.updateAccumulatorBarriersData(current_spot_data);
             }
         };
         if (isMarketClosed(this.active_symbols, req.ticks_history)) {

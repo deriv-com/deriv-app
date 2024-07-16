@@ -1,15 +1,17 @@
 import React from 'react';
+import clsx from 'clsx';
+import { observer } from 'mobx-react';
 import { TextField } from '@deriv-com/quill-ui';
 import { getUnitMap } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import clsx from 'clsx';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TDurationProps = {
     is_minimized?: boolean;
-} & Pick<ReturnType<typeof useTraderStore>, 'duration' | 'duration_unit'>;
+};
 
-const Duration = ({ duration, duration_unit, is_minimized }: TDurationProps) => {
+const Duration = observer(({ is_minimized }: TDurationProps) => {
+    const { duration, duration_unit } = useTraderStore();
     const { name_plural, name } = getUnitMap()[duration_unit];
     const duration_unit_text = name_plural ?? name;
 
@@ -22,6 +24,6 @@ const Duration = ({ duration, duration_unit, is_minimized }: TDurationProps) => 
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
         />
     );
-};
+});
 
 export default Duration;

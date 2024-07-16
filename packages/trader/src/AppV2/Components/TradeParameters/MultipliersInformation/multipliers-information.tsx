@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import { Localize } from '@deriv/translations';
 import { Money } from '@deriv/components';
 import { Text } from '@deriv-com/quill-ui';
@@ -6,9 +7,10 @@ import { useTraderStore } from 'Stores/useTraderStores';
 
 type TMultipliersInformationProps = {
     is_minimized?: boolean;
-} & Pick<ReturnType<typeof useTraderStore>, 'currency' | 'commission' | 'stop_out'>;
+};
 
-const MultipliersInformation = ({ currency, commission, is_minimized, stop_out }: TMultipliersInformationProps) => {
+const MultipliersInformation = observer(({ is_minimized }: TMultipliersInformationProps) => {
+    const { currency, commission, stop_out } = useTraderStore();
     const content = [
         {
             label: <Localize i18n_default_text='Commission' />,
@@ -36,6 +38,6 @@ const MultipliersInformation = ({ currency, commission, is_minimized, stop_out }
             ))}
         </div>
     );
-};
+});
 
 export default MultipliersInformation;

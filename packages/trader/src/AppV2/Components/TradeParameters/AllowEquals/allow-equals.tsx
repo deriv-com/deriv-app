@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import clsx from 'clsx';
 import { TextField } from '@deriv-com/quill-ui';
 import { localize, Localize } from '@deriv/translations';
@@ -7,19 +8,10 @@ import { useTraderStore } from 'Stores/useTraderStores';
 
 type TAllowEqualsProps = {
     is_minimized?: boolean;
-} & Pick<
-    ReturnType<typeof useTraderStore>,
-    'contract_start_type' | 'contract_types_list' | 'duration_unit' | 'expiry_type' | 'is_equal'
->;
+};
 
-const AllowEquals = ({
-    contract_types_list,
-    contract_start_type,
-    duration_unit,
-    expiry_type,
-    is_equal,
-    is_minimized,
-}: TAllowEqualsProps) => {
+const AllowEquals = observer(({ is_minimized }: TAllowEqualsProps) => {
+    const { contract_types_list, contract_start_type, duration_unit, expiry_type, is_equal } = useTraderStore();
     const has_callputequal_duration = hasDurationForCallPutEqual(
         contract_types_list,
         duration_unit,
@@ -38,6 +30,6 @@ const AllowEquals = ({
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
         />
     );
-};
+});
 
 export default AllowEquals;

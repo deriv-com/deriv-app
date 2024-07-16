@@ -1,15 +1,17 @@
 import React from 'react';
+import clsx from 'clsx';
+import { observer } from 'mobx-react';
 import { TextField } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
-import clsx from 'clsx';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getGrowthRatePercentage } from '@deriv/shared';
 
 type TGrowthRateProps = {
     is_minimized?: boolean;
-} & Pick<ReturnType<typeof useTraderStore>, 'growth_rate' | 'has_open_accu_contract'>;
+};
 
-const GrowthRate = ({ growth_rate, has_open_accu_contract, is_minimized }: TGrowthRateProps) => {
+const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
+    const { growth_rate, has_open_accu_contract } = useTraderStore();
     return (
         <TextField
             variant='fill'
@@ -20,6 +22,6 @@ const GrowthRate = ({ growth_rate, has_open_accu_contract, is_minimized }: TGrow
             disabled={has_open_accu_contract}
         />
     );
-};
+});
 
 export default GrowthRate;

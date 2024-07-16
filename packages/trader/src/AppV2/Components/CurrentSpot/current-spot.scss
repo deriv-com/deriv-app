@@ -1,0 +1,8 @@
+.trade__current-spot {
+    display: flex;
+    height: var(--core-size-2400);
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--core-borderRadius-400);
+    background-color: var(--core-color-solid-slate-50);
+}

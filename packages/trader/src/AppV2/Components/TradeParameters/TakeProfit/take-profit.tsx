@@ -1,15 +1,17 @@
 import React from 'react';
-import { TextField } from '@deriv-com/quill-ui';
-import { Localize, localize } from '@deriv/translations';
 import clsx from 'clsx';
+import { observer } from 'mobx-react';
+import { TextField } from '@deriv-com/quill-ui';
+import { localize, Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 
 type TTakeProfitProps = {
     is_minimized?: boolean;
-} & Pick<ReturnType<typeof useTraderStore>, 'currency' | 'has_open_accu_contract' | 'take_profit'>;
+};
 
-const TakeProfit = ({ currency, has_open_accu_contract, is_minimized, take_profit }: TTakeProfitProps) => {
+const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
+    const { currency, has_open_accu_contract, take_profit } = useTraderStore();
     return (
         <TextField
             variant='fill'
@@ -20,6 +22,6 @@ const TakeProfit = ({ currency, has_open_accu_contract, is_minimized, take_profi
             disabled={has_open_accu_contract}
         />
     );
-};
+});
 
 export default TakeProfit;

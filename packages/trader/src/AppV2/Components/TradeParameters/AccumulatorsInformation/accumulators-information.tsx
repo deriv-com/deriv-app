@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import { Localize, localize } from '@deriv/translations';
 import { Money } from '@deriv/components';
 import { Text } from '@deriv-com/quill-ui';
@@ -6,14 +7,10 @@ import { useTraderStore } from 'Stores/useTraderStores';
 
 type TAccumulatorsInformationProps = {
     is_minimized?: boolean;
-} & Pick<ReturnType<typeof useTraderStore>, 'currency' | 'maximum_payout' | 'maximum_ticks'>;
+};
 
-const AccumulatorsInformation = ({
-    currency,
-    is_minimized,
-    maximum_payout,
-    maximum_ticks,
-}: TAccumulatorsInformationProps) => {
+const AccumulatorsInformation = observer(({ is_minimized }: TAccumulatorsInformationProps) => {
+    const { currency, maximum_payout, maximum_ticks } = useTraderStore();
     const content = [
         {
             label: <Localize i18n_default_text='Max. payout' />,
@@ -41,6 +38,6 @@ const AccumulatorsInformation = ({
             ))}
         </div>
     );
-};
+});
 
 export default AccumulatorsInformation;

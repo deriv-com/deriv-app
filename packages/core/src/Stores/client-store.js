@@ -1080,7 +1080,7 @@ export default class ClientStore extends BaseStore {
     };
 
     setCookieAccount() {
-        const domain = /deriv\.(com|me)/.test(window.location.hostname)
+        const domain = /deriv\.(com|me|be)/.test(window.location.hostname)
             ? deriv_urls.DERIV_HOST_NAME
             : window.location.hostname;
 

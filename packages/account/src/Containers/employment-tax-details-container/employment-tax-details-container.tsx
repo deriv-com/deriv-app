@@ -106,7 +106,9 @@ const EmploymentTaxDetailsContainer = ({
     const { is_tin_mandatory, tin_employment_status_bypass } = tin_validation_config;
 
     const should_show_no_tax_details_checkbox =
-        (!is_tin_mandatory && tin_employment_status_bypass?.includes(values.employment_status)) ||
+        (!is_tin_mandatory &&
+            tin_employment_status_bypass?.includes(values.employment_status) &&
+            values.tax_residence) ||
         values.confirm_no_tax_details;
 
     const isTaxInfoDisabled = (field_name: string) =>

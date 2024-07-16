@@ -19,7 +19,7 @@ const { addressPermittedSpecialCharacters } = ValidationConstants.messagesHints;
 export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) => {
     return Yup.object({
         employment_status: Yup.string().required(localize('Employment status is required.')),
-        tax_residence: Yup.string().required(localize('Tax residence is required.')),
+        tax_residence: Yup.string(),
         confirm_no_tax_details: Yup.bool(),
         tax_identification_confirm: Yup.bool().when(
             ['tax_identification_number', 'tax_residence', 'confirm_no_tax_details'],
@@ -36,14 +36,10 @@ export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) 
                 then: Yup.string().notRequired(),
             })
             .max(25, localize("Tax identification number can't be longer than 25 characters."))
-            .matches(
-                taxIdentificationNumber,
-                localize('Only letters, numbers, space, hyphen, period, and forward slash are allowed.')
-            )
-            .matches(
-                /^[a-zA-Z0-9].*$/,
-                localize('Should start with letter or number and may contain a hyphen, period and slash.')
-            )
+            .matches(taxIdentificationNumber, {
+                excludeEmptyString: true,
+                message: localize('Only letters, numbers, space, hyphen, period, and forward slash are allowed.'),
+            })
             .test({
                 name: 'validate-tin',
                 test: (value, context) => {

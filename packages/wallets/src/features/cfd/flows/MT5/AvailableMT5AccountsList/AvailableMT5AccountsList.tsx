@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react';
-import { useActiveWalletAccount } from '@deriv/api-v2';
+import { useActiveWalletAccount, useTradingPlatformStatus } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { TradingAccountCard, WalletText } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
 import { MarketTypeDetails } from '../../../constants';
-import { JurisdictionModal, MT5PasswordModal } from '../../../modals';
+import { AccountUnavailableModal, JurisdictionModal, MT5PasswordModal, ServerMaintenanceModal } from '../../../modals';
 import './AvailableMT5AccountsList.scss';
 
 type TProps = {
@@ -14,15 +14,34 @@ type TProps = {
 
 const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useActiveWalletAccount();
+    const { data: tradingPlatformStatus } = useTradingPlatformStatus();
     const { setModalState, show } = useModal();
     const { description, title } = MarketTypeDetails[account.market_type || 'all'];
 
     const onButtonClick = useCallback(() => {
-        activeWallet?.is_virtual
-            ? show(<MT5PasswordModal marketType={account?.market_type || 'synthetic'} platform={account.platform} />)
-            : show(<JurisdictionModal />);
-        setModalState('marketType', account.market_type);
-    }, [activeWallet?.is_virtual, show, account.market_type, account.platform, setModalState]);
+        const platformStatus = tradingPlatformStatus?.find(
+            (status: { platform: string; status: string }) => status.platform === account.platform
+        )?.status;
+
+        switch (platformStatus) {
+            case 'maintenance':
+                return show(<ServerMaintenanceModal />);
+            case 'unavailable':
+                return show(<AccountUnavailableModal />);
+            case 'active':
+            default:
+                activeWallet?.is_virtual
+                    ? show(
+                          <MT5PasswordModal
+                              marketType={account?.market_type || 'synthetic'}
+                              platform={account.platform}
+                          />
+                      )
+                    : show(<JurisdictionModal />);
+                setModalState('marketType', account.market_type);
+                break;
+        }
+    }, [tradingPlatformStatus, activeWallet?.is_virtual, show, account.market_type, account.platform, setModalState]);
 
     return (
         <TradingAccountCard

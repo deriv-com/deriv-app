@@ -1,15 +1,21 @@
-import React, { useMemo } from 'react';
+import React, { Fragment, useMemo } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { useAuthorize, useJurisdictionStatus } from '@deriv/api-v2';
-import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
+import { useAuthorize, useJurisdictionStatus, useTradingPlatformStatus } from '@deriv/api-v2';
+import { LabelPairedChevronRightCaptionRegularIcon, LegacyWarningIcon } from '@deriv/quill-icons';
+import { Badge } from '@deriv-com/ui';
 import { InlineMessage, WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import useDevice from '../../../../../hooks/useDevice';
 import { THooks } from '../../../../../types';
 import { MarketTypeDetails, PlatformDetails } from '../../../constants';
-import { MT5TradeModal, VerificationFailedModal } from '../../../modals';
+import {
+    AccountUnavailableModal,
+    MT5TradeModal,
+    ServerMaintenanceModal,
+    VerificationFailedModal,
+} from '../../../modals';
 import './AddedMT5AccountsList.scss';
 
 type TProps = {
@@ -18,6 +24,7 @@ type TProps = {
 
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useAuthorize();
+    const { data: tradingPlatformStatus } = useTradingPlatformStatus();
     const { getVerificationStatus } = useJurisdictionStatus();
     const jurisdictionStatus = useMemo(
         () => getVerificationStatus(account.landing_company_short || 'svg', account.status),
@@ -27,34 +34,62 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { isMobile } = useDevice();
     const { show } = useModal();
     const { t } = useTranslation();
+    const platformStatus = tradingPlatformStatus?.find(
+        (status: { platform: string; status: string }) => status.platform === account.platform
+    )?.status;
 
     return (
         <TradingAccountCard
-            disabled={jurisdictionStatus.is_pending}
+            disabled={jurisdictionStatus.is_pending || platformStatus !== 'active'}
             leading={
                 <div className='wallets-added-mt5__icon'>{MarketTypeDetails[account.market_type || 'all'].icon}</div>
             }
             onClick={() => {
-                jurisdictionStatus.is_failed
-                    ? show(<VerificationFailedModal selectedJurisdiction={account.landing_company_short} />, {
-                          defaultRootId: 'wallets_modal_root',
-                      })
-                    : show(
-                          <MT5TradeModal
-                              marketType={account.market_type ?? 'all'}
-                              mt5Account={account}
-                              platform={PlatformDetails.mt5.platform}
-                          />
-                      );
+                switch (platformStatus) {
+                    case 'maintenance':
+                        return show(<ServerMaintenanceModal />);
+                    case 'unavailable':
+                        return show(<AccountUnavailableModal />);
+                    case 'active':
+                    default:
+                        jurisdictionStatus.is_failed
+                            ? show(<VerificationFailedModal selectedJurisdiction={account.landing_company_short} />, {
+                                  defaultRootId: 'wallets_modal_root',
+                              })
+                            : show(
+                                  <MT5TradeModal
+                                      marketType={account.market_type ?? 'all'}
+                                      mt5Account={account}
+                                      platform={PlatformDetails.mt5.platform}
+                                  />
+                              );
+                        break;
+                }
             }}
             trailing={
-                <div
-                    className={classNames('wallets-added-mt5__icon', {
-                        'wallets-added-mt5__icon--pending': jurisdictionStatus.is_pending,
-                    })}
-                >
-                    <LabelPairedChevronRightCaptionRegularIcon width={16} />
-                </div>
+                <Fragment>
+                    {platformStatus !== 'active' ? (
+                        <Badge
+                            badgeSize='xs'
+                            color='warning'
+                            isBold
+                            leftIcon={<LegacyWarningIcon iconSize='xs' />}
+                            padding='tight'
+                            rounded='sm'
+                            variant='bordered'
+                        >
+                            {t(platformStatus)}
+                        </Badge>
+                    ) : (
+                        <div
+                            className={classNames('wallets-added-mt5__icon', {
+                                'wallets-added-mt5__icon--pending': jurisdictionStatus.is_pending,
+                            })}
+                        >
+                            <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                        </div>
+                    )}
+                </Fragment>
             }
         >
             <div className='wallets-added-mt5__details'>

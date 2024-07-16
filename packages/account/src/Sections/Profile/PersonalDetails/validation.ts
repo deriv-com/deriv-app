@@ -112,9 +112,7 @@ export const makeSettingsRequest = (
     }
     delete request.tax_identification_confirm;
 
-    // TODO: need to check with BE
-    // if(request.confirm_no_tax_details)
-    delete request.confirm_no_tax_details;
+    delete request?.confirm_no_tax_details;
 
     return request;
 };

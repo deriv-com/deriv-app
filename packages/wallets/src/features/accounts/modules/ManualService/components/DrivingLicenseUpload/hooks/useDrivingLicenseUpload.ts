@@ -10,7 +10,7 @@ type TDrivingLicenseUploadValues = {
 };
 
 const useDrivingLicenseUpload = () => {
-    const { error: _error, isSuccess, upload } = useDocumentUpload();
+    const { error: _error, isSuccess, reset: resetError, upload } = useDocumentUpload();
     const [isDrivingLicenseUploadSuccess, setIsDrivingLicenseUploadSuccess] = useState(false);
 
     const initialValues = {
@@ -52,7 +52,7 @@ const useDrivingLicenseUpload = () => {
         }
     };
 
-    return { error: _error?.error, initialValues, isDrivingLicenseUploadSuccess, submit };
+    return { error: _error?.error, initialValues, isDrivingLicenseUploadSuccess, resetError, submit };
 };
 
 export default useDrivingLicenseUpload;

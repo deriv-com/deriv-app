@@ -7,7 +7,7 @@ import ImageIcon from '../../../../../public/images/accounts/image-icon.svg';
 import LessThanEightIcon from '../../../../../public/images/accounts/less-than-eight-icon.svg';
 import NIMCSlipIcon from '../../../../../public/images/accounts/nimc-slip.svg';
 import PassportIcon from '../../../../../public/images/accounts/passport.svg';
-import { DrivingLicenseUpload, PassportUpload } from '../components';
+import { DrivingLicenseUpload, IdentityCardUpload, NIMCSlipUpload, PassportUpload } from '../components';
 
 type TManualDocumentComponentProps = {
     onCompletion?: () => void;
@@ -47,11 +47,13 @@ export const manualDocumentsMapper: TManualDocumentType = {
         title: 'Driving licence',
     },
     'identity-card': {
+        component: IdentityCardUpload,
         description: 'Upload the front and back of your identity card.',
         icon: IdentityCardIcon,
         title: 'Identity card',
     },
     'nimc-slip': {
+        component: NIMCSlipUpload,
         countries: ['NG'],
         description: 'Upload the front and back of your identity card.',
         icon: NIMCSlipIcon,

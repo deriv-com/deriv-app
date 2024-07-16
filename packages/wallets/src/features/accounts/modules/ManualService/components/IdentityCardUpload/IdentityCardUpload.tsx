@@ -3,61 +3,64 @@ import { Formik } from 'formik';
 import moment from 'moment';
 import { Divider } from '@deriv-com/ui';
 import { DatePicker, Dropzone, FormField, WalletText } from '../../../../../../components';
-import DrivingLicenseCardBack from '../../../../../../public/images/accounts/document-back.svg';
-import DrivingLicenseCardFront from '../../../../../../public/images/accounts/driving-license-front.svg';
+import IdentityCardBack from '../../../../../../public/images/accounts/document-back.svg';
+import IdentityCardFront from '../../../../../../public/images/accounts/identity-card-front.svg';
 import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
 import { GeneralDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
 import { ManualUploadErrorMessage } from '../ManualUploadErrorMessage';
-import { useDrivingLicenseUpload } from './hooks';
-import './DrivingLicenseUpload.scss';
+import { useIdentityCardUpload } from './hooks';
+import './IdentityCardUpload.scss';
 
-const DrivingLicenseUpload: TManualDocumentComponent = ({ onCompletion }) => {
-    const { error, initialValues, isDrivingLicenseUploadSuccess, submit } = useDrivingLicenseUpload();
+const IdentityCardUpload: TManualDocumentComponent = ({ onCompletion }) => {
+    const { error, initialValues, isIdentityCardUploadSuccess, resetError, submit } = useIdentityCardUpload();
 
-    if (isDrivingLicenseUploadSuccess && onCompletion) {
+    if (isIdentityCardUploadSuccess && onCompletion) {
         onCompletion();
     }
 
     if (error) {
-        return <ManualUploadErrorMessage errorCode={error.code} />;
+        return <ManualUploadErrorMessage errorCode={error.code} onRetry={resetError} />;
     }
 
     return (
         <Formik initialValues={initialValues} onSubmit={submit}>
             {({ setFieldValue, values }) => {
                 const handleDateChange = (formattedDate: string | null) => {
-                    setFieldValue('drivingLicenseExpiryDate', formattedDate);
+                    setFieldValue('identityCardExpiryDate', formattedDate);
                 };
 
                 return (
-                    <div className='wallets-driving-license-upload' data-testid='dt_driving-license-document-upload'>
-                        <WalletText>First, enter your Driving licence number and the expiry date.</WalletText>
-                        <div className='wallets-driving-license-upload__input-group'>
+                    <div
+                        className='wallets-identity-card-document-upload'
+                        data-testid='dt_identity-card-document-upload'
+                    >
+                        <WalletText>First, enter your Identity card number and the expiry date.</WalletText>
+                        <div className='wallets-identity-card-document-upload__input-group'>
                             <FormField
-                                defaultValue={values.drivingLicenceNumber ?? ''}
-                                label='Driving licence number*'
-                                name='drivingLicenceNumber'
-                                validationSchema={documentRequiredValidator('Driving licence number')}
+                                defaultValue={values.identityCardNumber ?? ''}
+                                label='Identity card number*'
+                                name='identityCardNumber'
+                                validationSchema={documentRequiredValidator('Identity card number')}
                             />
                             <DatePicker
-                                defaultValue={values.drivingLicenseExpiryDate ?? ''}
+                                defaultValue={values.identityCardExpiryDate ?? ''}
                                 label='Expiry date*'
                                 minDate={moment().add(2, 'days').toDate()}
-                                name='drivingLicenseExpiryDate'
+                                name='identityCardExpiryDate'
                                 onDateChange={handleDateChange}
                                 placeholder='DD/MM/YYYY'
                                 validationSchema={expiryDateValidator}
                             />
                         </div>
                         <Divider color='var(--border-divider)' height={2} />
-                        <div className='wallets-driving-license-upload__document-upload'>
-                            <WalletText>Next, upload the front and back of your driving licence.</WalletText>
-                            <div className='wallets-driving-license-upload__dropzone'>
+                        <div className='wallets-identity-card-document-upload__document-upload'>
+                            <WalletText>Next, upload the front and back of your identity card.</WalletText>
+                            <div className='wallets-identity-card-document-upload__dropzone'>
                                 <Dropzone
                                     buttonText='Drop file or click here to upload'
-                                    defaultFile={values.drivingLicenseCardFront}
-                                    description='Upload the front of your driving licence.'
+                                    defaultFile={values.identityCardFront}
+                                    description='Upload the front of your identity card.'
                                     fileFormats={[
                                         'image/jpeg',
                                         'image/jpg',
@@ -65,15 +68,15 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ onCompletion }) => {
                                         'image/gif',
                                         'application/pdf',
                                     ]}
-                                    icon={<DrivingLicenseCardFront />}
+                                    icon={<IdentityCardFront />}
                                     maxSize={8388608}
                                     noClick
-                                    onFileChange={(file?: File) => setFieldValue('drivingLicenseCardFront', file)}
+                                    onFileChange={(file?: File) => setFieldValue('identityCardFront', file)}
                                 />
                                 <Dropzone
                                     buttonText='Drop file or click here to upload'
-                                    defaultFile={values.drivingLicenseCardBack}
-                                    description='Upload the back of your driving licence.'
+                                    defaultFile={values.identityCardBack}
+                                    description='Upload the back of your identity card.'
                                     fileFormats={[
                                         'image/jpeg',
                                         'image/jpg',
@@ -81,10 +84,10 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ onCompletion }) => {
                                         'image/gif',
                                         'application/pdf',
                                     ]}
-                                    icon={<DrivingLicenseCardBack />}
+                                    icon={<IdentityCardBack />}
                                     maxSize={8388608}
                                     noClick
-                                    onFileChange={(file?: File) => setFieldValue('drivingLicenseCardBack', file)}
+                                    onFileChange={(file?: File) => setFieldValue('identityCardBack', file)}
                                 />
                             </div>
                             <DocumentRules hints={GeneralDocumentRules} />
@@ -96,4 +99,4 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ onCompletion }) => {
     );
 };
 
-export default DrivingLicenseUpload;
+export default IdentityCardUpload;

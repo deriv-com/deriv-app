@@ -4,16 +4,16 @@ import { ActionScreen, Button } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../../../../../../components';
 import './ManualUploadErrorMessage.scss';
 
-type ManualUploadErrorMessageProps = {
+type TManualUploadErrorMessageProps = {
     errorCode: string;
     onRetry?: () => void;
 };
 
 const errorCodeToDescriptionMapper: Record<string, string> = {
-    DuplicateUpload: 'It seems you’ve submitted this document before. Upload a new document.',
+    DuplicateUpload: "It seems you've submitted this document before. Upload a new document.",
 } as const;
 
-const ManualUploadErrorMessage: React.FC<ManualUploadErrorMessageProps> = ({ errorCode, onRetry }) => {
+const ManualUploadErrorMessage: React.FC<TManualUploadErrorMessageProps> = ({ errorCode, onRetry }) => {
     const ActionButton = () => (
         <Button onClick={onRetry} size='lg'>
             Try again

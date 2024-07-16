@@ -5,10 +5,11 @@ import { Button, Divider } from '@deriv-com/ui';
 import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
 import PassportPlaceholder from '../../../../../../public/images/accounts/passport-placeholder.svg';
 import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
-import { GeneralDocumentRules } from '../../utils';
+import { GeneralDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
 import { usePassportUpload } from './hooks';
 import './PassportUpload.scss';
+import { ManualUploadErrorMessage } from '../ManualUploadErrorMessage';
 
 type TFooterProps = {
     onClickBack?: () => void;
@@ -24,8 +25,16 @@ const Footer: React.FC<TFooterProps> = ({ onClickBack, onClickNext }) => {
     );
 };
 
-const PassportUpload = () => {
-    const { initialValues, submit } = usePassportUpload();
+const PassportUpload: TManualDocumentComponent = ({ onCompletion }) => {
+    const { error, initialValues, isPassportUploadSuccess, resetError, submit } = usePassportUpload();
+
+    if (isPassportUploadSuccess && onCompletion) {
+        onCompletion();
+    }
+
+    if (error) {
+        return <ManualUploadErrorMessage errorCode={error.code} onRetry={resetError} />;
+    }
 
     return (
         <Formik initialValues={initialValues} onSubmit={submit}>

@@ -16,7 +16,7 @@ const FavoriteSymbols = observer(({ selectedSymbol, setSelectedSymbol, setIsOpen
     return (
         <React.Fragment>
             {favoriteSymbols.length > 0 ? (
-                <div className='favorite-symbols--container'>
+                <div className='favorite-symbols__container'>
                     {favoriteSymbols.map(symbol => (
                         <MarketCategoryItem
                             key={symbol?.display_name}

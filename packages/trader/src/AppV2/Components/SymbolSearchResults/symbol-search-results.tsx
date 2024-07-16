@@ -16,7 +16,7 @@ const SymbolSearchResults = observer(({ searchValue, setIsOpen, setSelectedSymbo
     const searchResults = useGetSymbolSearchResults(searchValue);
 
     return (
-        <div className='symbol-search-results--container'>
+        <div className='symbol-search-results__container'>
             {searchValue === '' && (
                 <Text size='sm' color='quill-typography__color--subtle' className='symbol-search-results--suggestion'>
                     <Localize i18n_default_text='Try searching for markets or keywords' />

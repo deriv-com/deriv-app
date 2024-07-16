@@ -5,7 +5,7 @@ import React from 'react';
 
 const SymbolNotFound = ({ searchTerm }: { searchTerm?: string }) => {
     return (
-        <div className='symbol-not-found--container'>
+        <div className='symbol-not-found__container'>
             <StandaloneSearchRegularIcon
                 fill='var(--semantic-color-slate-solid-surface-static-midLowest)'
                 iconSize='2xl'
@@ -15,7 +15,7 @@ const SymbolNotFound = ({ searchTerm }: { searchTerm?: string }) => {
                     <Localize i18n_default_text={`No results for ${searchTerm}`} />
                 </Text>
                 <Text size='md' color='quill-typography__color--subtle'>
-                    <Localize i18n_default_text={'Try searching for something else.'} />
+                    <Localize i18n_default_text='Try searching for something else.' />
                 </Text>
             </div>
         </div>

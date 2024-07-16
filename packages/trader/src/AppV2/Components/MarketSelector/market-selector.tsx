@@ -18,7 +18,7 @@ const MarketSelector = observer(() => {
 
     return (
         <React.Fragment>
-            <div className='market-selector--container' onClick={() => setIsOpen(!isOpen)}>
+            <div className='market-selector__container' onClick={() => setIsOpen(!isOpen)}>
                 <div className='market-selector'>
                     <SymbolIconsMapper symbol={storeSymbol ?? default_symbol} />
                     <div className='market-selector-info'>

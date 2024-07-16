@@ -33,9 +33,9 @@ const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen
             <Tab.Panel key={category.market_display_name}>
                 {category.market !== 'favorites' ? (
                     Object.entries(category.subgroups).map(([subgroupKey, subgroup]) => (
-                        <div key={subgroupKey} className='market-category-content--container'>
+                        <div key={subgroupKey} className='market-category-content__container'>
                             {subgroupKey !== 'none' && (
-                                <div className='market-category-title--container'>
+                                <div className='market-category-title__container'>
                                     <Text size='sm' className='market-category-title'>
                                         {category.subgroups[subgroupKey].subgroup_display_name}
                                     </Text>

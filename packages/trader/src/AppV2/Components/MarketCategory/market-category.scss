@@ -1,13 +1,13 @@
 .market-category {
     &-content {
-        &--container {
+        &__container {
             display: flex;
             flex-direction: column;
         }
     }
     &-title {
         padding: 0 var(--core-spacing-800);
-        &--container {
+        &__container {
             display: flex;
             padding-top: var(--core-spacing-400);
             flex-direction: column;

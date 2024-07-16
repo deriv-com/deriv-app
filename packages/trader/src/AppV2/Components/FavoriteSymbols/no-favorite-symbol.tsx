@@ -10,7 +10,7 @@ const NoFavoriteSymbol = () => (
             <Localize i18n_default_text={`No favourites`} />
         </Text>
         <Text size='sm' color='quill-typography__color--subtle'>
-            <Localize i18n_default_text={'Your favourite markets will appear here.'} />
+            <Localize i18n_default_text='Your favourite markets will appear here.' />
         </Text>
     </div>
 );

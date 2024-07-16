@@ -4,7 +4,7 @@ import { Text, InputGroupButton } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useSendOTPVerificationCode, useSettings } from '@deriv/hooks';
-import { convertPhoneTypeDisplay } from 'Helpers/utils';
+import { convertPhoneTypeDisplay } from '../../../Helpers/utils';
 import ResendCodeTimer from './resend-code-timer';
 import DidntGetTheCodeModal from './didnt-get-the-code-modal';
 import PhoneNumberVerifiedModal from './phone-number-verified-modal';

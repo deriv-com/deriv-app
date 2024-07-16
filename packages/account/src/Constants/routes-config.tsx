@@ -11,7 +11,6 @@ import {
     ProofOfIdentity,
     ProofOfAddress,
     ProofOfOwnership,
-    PhoneVerificationPage,
     Account,
     DeactivateAccount,
     ProofOfIncome,
@@ -30,6 +29,10 @@ const Passwords = makeLazyLoader(
     () => <Loading />
 )();
 
+const PhoneVerificationPage = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Profile/PhoneVerification')),
+    () => <Loading />
+)();
 const AccountLimits = makeLazyLoader(
     () => moduleLoader(() => import('../Sections/Security/AccountLimits')),
     () => <Loading />

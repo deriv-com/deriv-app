@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Modal, Text } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
-import { convertPhoneTypeDisplay } from 'Helpers/utils';
+import { convertPhoneTypeDisplay } from '../../../Helpers/utils';
 import { TSocketError } from '@deriv/api/types';
 import { useDevice } from '@deriv-com/ui';
 

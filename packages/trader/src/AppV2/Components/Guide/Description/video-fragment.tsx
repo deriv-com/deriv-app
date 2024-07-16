@@ -25,18 +25,12 @@ const VideoFragment = ({ contract_type }: TVideoFragment) => {
     const lottie_src = React.useMemo(() => getVideoSource('lottie'), [getVideoSource]);
 
     React.useEffect(() => {
-        const onLoad = () => {
-            setIsLoading(false);
-        };
+        const onLoad = () => setIsLoading(false);
 
-        if (dotLottie) {
-            dotLottie.addEventListener('load', onLoad);
-        }
+        if (dotLottie) dotLottie.addEventListener('load', onLoad);
 
         return () => {
-            if (dotLottie) {
-                dotLottie.removeEventListener('load', onLoad);
-            }
+            if (dotLottie) dotLottie.removeEventListener('load', onLoad);
         };
     }, [dotLottie]);
 

@@ -12,7 +12,9 @@ const MarketSelector = observer(() => {
     const [isOpen, setIsOpen] = useState(false);
     const { default_symbol, activeSymbols } = useActiveSymbols({});
     const { symbol: storeSymbol } = useTraderStore();
-    const currentSymbol = activeSymbols.find(symbol => symbol.symbol === storeSymbol);
+    const currentSymbol = activeSymbols.find(
+        symbol => symbol.symbol === storeSymbol || symbol.symbol === default_symbol
+    );
 
     return (
         <React.Fragment>

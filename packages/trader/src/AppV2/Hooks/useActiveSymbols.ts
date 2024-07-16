@@ -39,11 +39,11 @@ const useActiveSymbols = ({ contract_type = [], barrier_category = [] }: TUseAct
 
         trader.active_symbols = active_symbols;
 
-        if (!active_symbols.length || error) {
+        if (!active_symbols?.length || error) {
             setActiveSymbols([]);
         } else {
             setActiveSymbols(active_symbols);
-            default_symbol_ref.current = (await pickDefaultSymbol(active_symbols)) ?? '';
+            default_symbol_ref.current = trader.symbol || (await pickDefaultSymbol(active_symbols)) || '1HZ100V';
             modules.trade.onChange({ target: { name: 'symbol', value: default_symbol_ref.current } });
         }
     }, [is_logged_in, trader, contract_type, barrier_category]);

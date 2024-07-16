@@ -15,7 +15,6 @@ const WalletsBannerUnsuccessful = observer(() => {
     const { traders_hub } = useStore();
     const { isMobile, isTablet } = useDevice();
     const { toggleWalletsUpgrade } = traders_hub;
-
     const styles: TStyles = {
         titleFontSize: 'sm',
         descriptionFontSize: 'xs',

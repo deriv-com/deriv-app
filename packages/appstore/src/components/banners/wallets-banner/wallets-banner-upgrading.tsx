@@ -13,7 +13,6 @@ type TStyles = {
 
 const WalletsBannerUpgrading = observer(() => {
     const { isMobile, isTablet } = useDevice();
-
     const styles: TStyles = {
         titleFontSize: 'sm',
         descriptionFontSize: 'xs',

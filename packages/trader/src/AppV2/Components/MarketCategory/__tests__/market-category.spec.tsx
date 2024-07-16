@@ -3,7 +3,6 @@ import { screen, render } from '@testing-library/react';
 import MarketCategory from '../market-category';
 import { ActiveSymbols } from '@deriv/api-types';
 
-// jest.mock('AppV2/Components/MarketCategoryItem', () => jest.fn(() => <div>MockedMarketCategoryItem</div>));
 jest.mock('AppV2/Components/MarketCategoryItem', () =>
     jest.fn(props => <div ref={props.ref}>MockedMarketCategoryItem</div>)
 );

@@ -286,7 +286,7 @@ const CreatePassword = ({
                         <div className='cfd-password-modal__create-password-body'>
                             {platform === CFD_PLATFORMS.MT5 ? (
                                 <>
-                                    <Icon icon={'IcMt5Password'} width='100' height='100' />
+                                    <Icon icon='IcMt5Password' width='100' height='100' />
                                     <Text
                                         size='xs'
                                         align='center'
@@ -302,7 +302,7 @@ const CreatePassword = ({
                                 </>
                             ) : (
                                 <>
-                                    <Icon icon={'IcDxtradeOnePassword'} width='122' height='108' />
+                                    <Icon icon='IcDxtradeOnePassword' width='122' height='108' />
                                     <Text
                                         size='s'
                                         align='center'
@@ -985,7 +985,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const password_modal = (
         <Modal
             className={classNames('cfd-password-modal', {
-                'cfd-mt5-password-modal': platform === CFD_PLATFORMS.MT5 && should_set_trading_password,
+                'cfd-password-modal__mt5': platform === CFD_PLATFORMS.MT5 && should_set_trading_password,
             })}
             has_close_icon
             is_open={should_show_password_modal}
@@ -1013,7 +1013,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             portal_element_id='modal_root'
             visible={should_show_password_modal}
             onClose={closeModal}
-            wrapper_classname='cfd-password-modal cfd-mt5-password-modal'
+            wrapper_classname='cfd-password-modal cfd-password-modal__mt5'
             renderTitle={() => (
                 <PasswordModalHeader
                     should_set_trading_password={should_set_trading_password}

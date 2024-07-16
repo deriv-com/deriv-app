@@ -83,3 +83,16 @@ export const isTestDerivApp = (domain = window.location.hostname) => {
 
     return is_test_deriv_app;
 };
+
+export const removeActionParam = (actionToRemove: string) => {
+    const { pathname, search } = window.location;
+    const searchParams = new URLSearchParams(search);
+
+    if (searchParams.get('action') === actionToRemove) {
+        searchParams.delete('action');
+    }
+    const newSearch = searchParams.toString();
+    const newPath = `${pathname}${newSearch ? `?${newSearch}` : ''}`;
+
+    window.history.pushState({}, '', newPath);
+};

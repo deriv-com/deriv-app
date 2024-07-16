@@ -1,9 +1,8 @@
 import React from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { Formik, Form, FormikValues, FormikErrors } from 'formik';
 import { Button, Dialog, PasswordInput, PasswordMeter, Text } from '@deriv/components';
-import { redirectToLogin, validPassword, validLength, getErrorMessages, WS } from '@deriv/shared';
+import { redirectToLogin, validPassword, validLength, getErrorMessages, WS, removeActionParam } from '@deriv/shared';
 import { getLanguage, localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { TSocketError, TSocketRequest, TSocketResponse } from '@deriv/api/types';
@@ -86,25 +85,9 @@ const ResetPasswordModal = observer(() => {
 
     const reset_initial_values: TInitialValues = { password: '' };
 
-    const location = useLocation();
-    const history = useHistory();
-
-    const removeActionParam = () => {
-        const { pathname, search } = location;
-        const searchParams = new URLSearchParams(search);
-
-        if (searchParams.has('action')) {
-            searchParams.delete('action');
-        }
-        const newSearch = searchParams.toString();
-        const newPath = `${pathname}${newSearch ? `?${newSearch}` : ''}`;
-
-        history.push(newPath);
-    };
-
     const closeResetPasswordModal = () => {
         toggleResetPasswordModal(false);
-        removeActionParam();
+        removeActionParam('reset_password');
     };
 
     return (

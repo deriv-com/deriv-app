@@ -28,7 +28,7 @@ const mock = {
     },
     client: {
         verification_code: {
-            reset_password: 'abcde',
+            reset_password: '@rnv!sv',
         },
         setVerificationCode: jest.fn(),
         logout: jest.fn(() => Promise.resolve()),
@@ -87,9 +87,9 @@ describe('ResetPasswordModal', () => {
 
         const new_password = screen.getByLabelText('Create a password', { selector: 'input' });
 
-        userEvent.type(new_password, 'Tptte1743!@');
+        userEvent.type(new_password, 'Tpt#&te1743!@');
 
-        expect(new_password).toHaveValue('Tptte1743!@');
+        expect(new_password).toHaveValue('Tpt#&te1743!@');
         expect(screen.getByRole('button', { name: /Reset my password/i })).toBeEnabled();
 
         userEvent.click(
@@ -99,18 +99,18 @@ describe('ResetPasswordModal', () => {
         );
         await waitFor(() => {
             expect(WS.resetPassword).toHaveBeenCalledWith({
-                new_password: 'Tptte1743!@',
+                new_password: 'Tpt#&te1743!@',
                 reset_password: 1,
-                verification_code: 'abcde',
+                verification_code: '@rnv!sv',
             });
         });
         expect(store.client.setVerificationCode).toHaveBeenCalledTimes(1);
 
         await waitFor(() => {
             expect(WS.resetPassword).toHaveBeenCalledWith({
-                new_password: 'Tptte1743!@',
+                new_password: 'Tpt#&te1743!@',
                 reset_password: 1,
-                verification_code: 'abcde',
+                verification_code: '@rnv!sv',
             });
         });
 

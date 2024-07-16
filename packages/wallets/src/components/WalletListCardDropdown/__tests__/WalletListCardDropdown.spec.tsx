@@ -127,4 +127,28 @@ describe('WalletListCardDropdown', () => {
 
         expect(screen.queryByDisplayValue('USD Wallet')).not.toBeInTheDocument();
     });
+
+    it('closes the dropdown when clicking outside', () => {
+        render(<WalletListCardDropdown balance={mockBalanceData} />);
+
+        const input = screen.getByDisplayValue('USD Wallet');
+        fireEvent.click(input);
+
+        expect(screen.getByText('BTC Wallet')).toBeInTheDocument();
+
+        fireEvent.mouseDown(document);
+        expect(screen.queryByText('BTC Wallet')).not.toBeInTheDocument();
+    });
+
+    it('closes the dropdown when pressing the escape key', () => {
+        render(<WalletListCardDropdown balance={mockBalanceData} />);
+
+        const input = screen.getByDisplayValue('USD Wallet');
+        fireEvent.click(input);
+
+        expect(screen.getByText('BTC Wallet')).toBeInTheDocument();
+
+        fireEvent.keyDown(document, { key: 'Escape' });
+        expect(screen.queryByText('BTC Wallet')).not.toBeInTheDocument();
+    });
 });

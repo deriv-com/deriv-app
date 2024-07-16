@@ -1,4 +1,5 @@
 import React from 'react';
+import { Analytics } from '@deriv-com/analytics';
 import { useHistory } from 'react-router-dom';
 import { isAction, reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
@@ -13,6 +14,25 @@ import TemporarilyBarredHint from 'Components/temporarily-barred-hint';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import { localize } from './i18next';
+
+const P2pAnalyticsEventTracker = () => {
+    const { client } = useStore();
+    const { currency, loginid } = client;
+
+    React.useEffect(() => {
+        if (loginid && currency) {
+            Analytics.trackEvent('ce_cashier_deposit_onboarding_form', {
+                action: 'open_deposit_subpage',
+                form_name: 'ce_cashier_deposit_onboarding_form',
+                deposit_category: 'p2p',
+                currency,
+                login_id: loginid,
+            });
+        }
+    }, [currency, loginid]);
+
+    return null;
+};
 
 const AppContent = ({ order_id }) => {
     const { buy_sell_store, general_store } = useStores();
@@ -62,29 +82,32 @@ const AppContent = ({ order_id }) => {
     }
 
     return (
-        <Tabs
-            active_index={general_store.active_index}
-            header_fit_content={!isMobile()}
-            is_100vw={isMobile()}
-            is_scrollable
-            is_overflow_hidden
-            onTabItemClick={active_tab_index => {
-                general_store.handleTabClick(active_tab_index);
-                history.push({
-                    pathname: general_store.active_tab_route,
-                });
-            }}
-            top
-        >
-            <div label={localize('Buy / Sell')}>
-                <TemporarilyBarredHint />
-            </div>
-            <div data-count={notification_count} label={localize('Orders')} />
-            <div label={localize('My ads')}>
-                <TemporarilyBarredHint />
-            </div>
-            <div label={localize('My profile')} />
-        </Tabs>
+        <React.Fragment>
+            <P2pAnalyticsEventTracker />
+            <Tabs
+                active_index={general_store.active_index}
+                header_fit_content={!isMobile()}
+                is_100vw={isMobile()}
+                is_scrollable
+                is_overflow_hidden
+                onTabItemClick={active_tab_index => {
+                    general_store.handleTabClick(active_tab_index);
+                    history.push({
+                        pathname: general_store.active_tab_route,
+                    });
+                }}
+                top
+            >
+                <div label={localize('Buy / Sell')}>
+                    <TemporarilyBarredHint />
+                </div>
+                <div data-count={notification_count} label={localize('Orders')} />
+                <div label={localize('My ads')}>
+                    <TemporarilyBarredHint />
+                </div>
+                <div label={localize('My profile')} />
+            </Tabs>
+        </React.Fragment>
     );
 };
 

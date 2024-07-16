@@ -45,6 +45,7 @@ const CashierOnboardingFiatCard: React.FC = observer(() => {
         <CashierOnboardingCard
             title={localize('Deposit via bank wire, credit card, and e-wallet')}
             description={localize('Deposit via the following payment methods:')}
+            depositCategory='fiat'
             onClick={is_dialog_visible ? undefined : onClick}
         >
             <CashierOnboardingIconMarquee icons={icons.map(icon => `${icon}${is_dark_mode_on ? 'Dark' : 'Light'}`)} />

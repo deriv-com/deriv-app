@@ -1,4 +1,3 @@
-import React from 'react';
 import { Modal, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
@@ -6,6 +5,7 @@ import { LabelPairedCircleXmarkLgRegularIcon } from '@deriv/quill-icons';
 import { usePhoneNumberVerificationSetTimer, useSettings, useVerifyEmail } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
+import { useEffect } from 'react';
 
 type TVerificationLinkExpiredModal = {
     should_show_verification_link_expired_modal: boolean;
@@ -32,7 +32,7 @@ const VerificationLinkExpiredModal = ({
         sendPhoneNumberVerifyEmail();
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (WS.isSuccess) invalidate('get_settings').then(() => setShouldShowVerificationLinkExpiredModal(false));
     }, [WS.isSuccess, invalidate]);
 

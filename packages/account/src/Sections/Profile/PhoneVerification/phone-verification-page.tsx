@@ -1,4 +1,3 @@
-import React from 'react';
 import './phone-verification.scss';
 import { LabelPairedArrowLeftCaptionFillIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/quill-ui';
@@ -10,16 +9,16 @@ import VerificationLinkExpiredModal from './verification-link-expired-modal';
 import { observer, useStore } from '@deriv/stores';
 import { useSendOTPVerificationCode } from '@deriv/hooks';
 import { Loading } from '@deriv/components';
+import { useEffect, useState } from 'react';
 
 const PhoneVerificationPage = observer(() => {
-    const [otp_verification, setOtpVerification] = React.useState({
+    const [otp_verification, setOtpVerification] = useState({
         show_otp_verification: true,
         phone_verification_type: '',
     });
-    const [is_loading, setIsLoading] = React.useState(false);
-    const [should_show_cancel_verification_modal, setShouldShowCancelVerificationModal] = React.useState(false);
-    const [should_show_verification_link_expired_modal, setShouldShowVerificationLinkExpiredModal] =
-        React.useState(false);
+    const [is_loading, setIsLoading] = useState(false);
+    const [should_show_cancel_verification_modal, setShouldShowCancelVerificationModal] = useState(false);
+    const [should_show_verification_link_expired_modal, setShouldShowVerificationLinkExpiredModal] = useState(false);
     const handleBackButton = () => {
         setShouldShowCancelVerificationModal(true);
     };
@@ -32,7 +31,7 @@ const PhoneVerificationPage = observer(() => {
         is_authorize,
     } = client;
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (is_redirected_from_email) {
             if (email_otp_error) {
                 setIsLoading(false);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { usePhoneNumberVerificationSetTimer, useRequestPhoneNumberOTP, useSettings } from '@deriv/hooks';
@@ -65,8 +65,10 @@ describe('ConfirmPhoneNumber', () => {
         expect(screen.getByText('Confirm your phone number')).toBeInTheDocument();
         expect(phone_number_textfield).toBeInTheDocument();
         userEvent.clear(phone_number_textfield);
-        await act(async () => userEvent.type(phone_number_textfield, '+01293291291'));
-        expect(mock_set_error_message).toHaveBeenCalled();
+        userEvent.type(phone_number_textfield, '+01293291291');
+        await waitFor(() => {
+            expect(mock_set_error_message).toHaveBeenCalled();
+        });
     });
 
     it('should display given error message', () => {
@@ -94,8 +96,10 @@ describe('ConfirmPhoneNumber', () => {
             </StoreProvider>
         );
         const whatsapp_btn = screen.getByRole('button', { name: whatsapp_button_text });
-        await userEvent.click(whatsapp_btn);
-        expect(mock_handle_error).toBeCalledTimes(1);
+        userEvent.click(whatsapp_btn);
+        await waitFor(() => {
+            expect(mock_handle_error).toBeCalledTimes(1);
+        });
     });
 
     it('should call requestOnWhatsApp when Whatsapp button is clicked', async () => {
@@ -111,8 +115,10 @@ describe('ConfirmPhoneNumber', () => {
             </StoreProvider>
         );
         const whatsapp_btn = screen.getByRole('button', { name: whatsapp_button_text });
-        await act(async () => userEvent.click(whatsapp_btn));
-        expect(mockWhatsappButtonClick).toHaveBeenCalled();
+        userEvent.click(whatsapp_btn);
+        await waitFor(() => {
+            expect(mockWhatsappButtonClick).toHaveBeenCalled();
+        });
     });
 
     it('should call requestOnSMS when SMS button is clicked', async () => {
@@ -128,8 +134,10 @@ describe('ConfirmPhoneNumber', () => {
             </StoreProvider>
         );
         const sms_btn = screen.getByRole('button', { name: sms_button_text });
-        await act(async () => userEvent.click(sms_btn));
-        expect(mockSmsButtonClick).toHaveBeenCalled();
+        userEvent.click(sms_btn);
+        await waitFor(() => {
+            expect(mockSmsButtonClick).toHaveBeenCalled();
+        });
     });
 
     it('should make both buttons disabled if next_otp_request text is provided', async () => {

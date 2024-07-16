@@ -144,6 +144,14 @@ const AppModals = observer(() => {
         !is_from_signup_account &&
         !is_real_acc_signup_on;
 
+    const should_show_trading_assessment_existing_user_form =
+        is_logged_in &&
+        active_account_landing_company === 'maltainvest' &&
+        !is_trading_assessment_for_new_user_enabled &&
+        is_trading_experience_incomplete &&
+        content_flag !== ContentFlag.LOW_RISK_CR_EU &&
+        content_flag !== ContentFlag.LOW_RISK_CR_NON_EU;
+
     if (temp_session_signup_params && is_onboarding) {
         toggleAccountSignupModal(true);
     } else {
@@ -178,14 +186,7 @@ const AppModals = observer(() => {
             break;
     }
     if (!url_action_param) {
-        if (
-            is_logged_in &&
-            active_account_landing_company === 'maltainvest' &&
-            !is_trading_assessment_for_new_user_enabled &&
-            is_trading_experience_incomplete &&
-            content_flag !== ContentFlag.LOW_RISK_CR_EU &&
-            content_flag !== ContentFlag.LOW_RISK_CR_NON_EU
-        ) {
+        if (should_show_trading_assessment_existing_user_form) {
             ComponentToLoad = <TradingAssessmentExistingUser />;
         } else if (is_closing_create_real_account_modal) {
             ComponentToLoad = <WarningCloseCreateRealAccountModal />;

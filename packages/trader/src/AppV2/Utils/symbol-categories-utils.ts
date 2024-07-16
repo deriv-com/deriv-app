@@ -26,27 +26,17 @@ export const categorizeSymbols = (symbols: ActiveSymbols): Record<string, Market
         const { market, market_display_name, subgroup, subgroup_display_name, submarket, submarket_display_name } =
             symbol;
 
-        if (!acc[market]) {
-            acc[market] = {
-                market,
-                market_display_name,
-                subgroups: {},
-            };
-        }
+        acc[market] ??= { market, market_display_name, subgroups: {} };
 
-        if (!acc[market].subgroups[subgroup]) {
-            acc[market].subgroups[subgroup] = {
-                subgroup_display_name,
-                submarkets: {},
-            };
-        }
+        acc[market].subgroups[subgroup] ??= {
+            subgroup_display_name,
+            submarkets: {},
+        };
 
-        if (!acc[market].subgroups[subgroup].submarkets[submarket]) {
-            acc[market].subgroups[subgroup].submarkets[submarket] = {
-                submarket_display_name,
-                items: [],
-            };
-        }
+        acc[market].subgroups[subgroup].submarkets[submarket] ??= {
+            submarket_display_name,
+            items: [],
+        };
 
         acc[market].subgroups[subgroup].submarkets[submarket].items.push(symbol);
 

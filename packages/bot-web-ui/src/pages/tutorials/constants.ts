@@ -31,7 +31,7 @@ export const guide_content: TGuideContent[] = [
         type: 'DBotVideo',
         content: localize('An introduction to Deriv Bot'),
         url: 'https://www.youtube.com/embed/lthEgaIY1uw',
-        src: getImageLocation('intro_to_deriv_bot.webp'),
+        src: getImageLocation('intro_to_deriv_bot.png'),
         search_id: `${VIDEOS}-0`,
     },
     {
@@ -39,7 +39,7 @@ export const guide_content: TGuideContent[] = [
         type: 'DBotVideo',
         content: localize('How to build a basic trading bot with Deriv Bot'),
         url: 'https://www.youtube.com/embed/mnpi2g7YakU',
-        src: getImageLocation('build_a_bot.webp'),
+        src: getImageLocation('build_a_bot.png'),
         search_id: `${VIDEOS}-1`,
     },
     {
@@ -47,7 +47,7 @@ export const guide_content: TGuideContent[] = [
         type: 'DBotVideo',
         content: localize('How to use Martingale strategy on Deriv Bot'),
         url: 'https://www.youtube.com/embed/FSslvF7P00I',
-        src: getImageLocation('how_to_use_martingale.webp'),
+        src: getImageLocation('how_to_use_martingale.jpg'),
         search_id: `${VIDEOS}-2`,
     },
 ];

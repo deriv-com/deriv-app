@@ -504,7 +504,7 @@ export default class TradeStore extends BaseStore {
             updateStore: action.bound,
             updateSymbol: action.bound,
 
-            /******************************** V2 Specifi actions and observables ********************************/
+            /******************************** V2 Specific actions and observables ********************************/
             favoriteSymbols: observable,
             favoriteIndicators: observable,
             setFavoriteSymbols: action.bound,
@@ -1867,7 +1867,7 @@ export default class TradeStore extends BaseStore {
         this.is_digits_widget_active = is_active;
     }
 
-    /******************************** V2 Specifi Logic ********************************/
+    /******************************** V2 Specific Logic ********************************/
     setFavoriteIndicators(indicators: string[]) {
         this.favoriteIndicators = indicators;
         this.syncLocalStorage();

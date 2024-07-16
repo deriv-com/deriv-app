@@ -4,6 +4,7 @@ import SymbolSearchResults from '../symbol-search-results';
 import TraderProviders from '../../../../trader-providers';
 import { mockStore } from '@deriv/stores';
 import * as useGetSymbolSearchResults from 'AppV2/Hooks/useGetSymbolSearchResults';
+import { ActiveSymbols } from '@deriv/api-types';
 
 jest.mock('AppV2/Components/MarketCategoryItem/market-category-item', () =>
     jest.fn(() => <div>MockedMarketCategoryItem</div>)
@@ -37,13 +38,10 @@ describe('<SymbolSearchResults />', () => {
     });
     it('renders MarketCategoryItem components when there are search results', () => {
         jest.spyOn(useGetSymbolSearchResults, 'useGetSymbolSearchResults').mockReturnValue([
-            //@ts-expect-error not going to mock all the return values
             { symbol: 'EURUSD', display_name: 'EUR/USD' },
-            //@ts-expect-error not going to mock all the return values
             { symbol: 'GBPUSD', display_name: 'GBP/USD' },
-            //@ts-expect-error not going to mock all the return values
             { symbol: 'CADAUD', display_name: 'CAD/AUD' },
-        ]);
+        ] as ActiveSymbols);
         mocked_props.searchValue = 'u';
         render(MockedSymbolSearchResults(mocked_props));
 

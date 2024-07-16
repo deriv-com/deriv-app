@@ -34,10 +34,6 @@ const VideoFragment = ({ contract_type }: TVideoFragment) => {
         };
     }, [dotLottie]);
 
-    const dotLottieRefCallback = (dotLottie: EventTarget | null) => {
-        setDotLottie(dotLottie);
-    };
-
     return (
         <div
             className={classNames('video-fragment__wrapper', {
@@ -47,12 +43,14 @@ const VideoFragment = ({ contract_type }: TVideoFragment) => {
         >
             {is_loading && <Loading is_fullscreen={false} />}
             <DotLottieReact
-                src={lottie_src}
-                loop
                 autoplay
                 dotLottieRefCallback={
-                    dotLottieRefCallback as React.ComponentProps<typeof DotLottieReact>['dotLottieRefCallback']
+                    ((dotLottie: EventTarget | null) => setDotLottie(dotLottie)) as React.ComponentProps<
+                        typeof DotLottieReact
+                    >['dotLottieRefCallback']
                 }
+                src={lottie_src}
+                loop
             />
         </div>
     );

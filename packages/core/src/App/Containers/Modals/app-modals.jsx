@@ -142,6 +142,8 @@ const AppModals = observer(() => {
 
     const is_onboarding = window.location.href.includes(routes.onboarding);
 
+    console.log("real", is_real_acc_signup_on, "demo", is_setup_real_account_or_go_to_demo_modal_visible)
+
     const should_show_passkeys_info_modal =
         should_show_effortless_login_modal &&
         !is_from_derivgo &&

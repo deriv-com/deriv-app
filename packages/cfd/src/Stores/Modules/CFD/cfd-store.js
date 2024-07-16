@@ -284,7 +284,7 @@ export default class CFDStore extends BaseStore {
             }
         } else if (platform === CFD_PLATFORMS.CTRADER) {
             startPerformanceEventTimer('create_ctrader_account_time');
-            this.root_store.client.setTradersHubLoading(false);
+            this.root_store.client.setIsLandingCompanyLoaded(false);
 
             this.setJurisdictionSelectedShortcode('svg');
             if (this.account_type.category === 'demo') {
@@ -324,7 +324,7 @@ export default class CFDStore extends BaseStore {
                 this.setError(true, response.error);
                 this.setIsAccountBeingCreated(false);
             }
-            this.root_store.client.setTradersHubLoading(true);
+            this.root_store.client.setIsLandingCompanyLoaded(true);
         } else if (platform === CFD_PLATFORMS.MT5) {
             if (category === 'real') {
                 this.toggleJurisdictionModal();

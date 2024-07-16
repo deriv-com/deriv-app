@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { TextField } from '@deriv-com/quill-ui';
 import { getUnitMap } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TDurationProps = {
@@ -19,7 +19,7 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
         <TextField
             variant='fill'
             readOnly
-            label={<Localize i18n_default_text='Duration' />}
+            label={localize('Duration')}
             value={`${duration} ${duration_unit_text}`}
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
         />

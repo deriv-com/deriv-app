@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { TextField } from '@deriv-com/quill-ui';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 
@@ -16,7 +16,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
         <TextField
             variant='fill'
             readOnly
-            label={<Localize i18n_default_text='Take profit' />}
+            label={localize('Take profit')}
             value={take_profit ? `${take_profit} ${getCurrencyDisplayCode(currency)}` : localize('Not set')}
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
             disabled={has_open_accu_contract}

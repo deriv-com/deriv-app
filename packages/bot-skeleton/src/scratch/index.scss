@@ -1217,6 +1217,7 @@ drag a block and selected text moves instead.
     }
 }
 
+.blocklyNonEditableText:has(> .blocklyCheckbox) .blocklyFieldRect,
 .blocklyEditableText:has(> .blocklyCheckbox) .blocklyFieldRect {
     width: 16px;
     height: 16px;

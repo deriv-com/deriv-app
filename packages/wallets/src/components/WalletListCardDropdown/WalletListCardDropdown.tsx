@@ -2,9 +2,10 @@ import React, { ComponentProps, useCallback, useEffect, useMemo, useState } from
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { Localize, useTranslations } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { THooks, TSubscribedBalance } from '../../types';
-import { WalletDropdown, WalletText } from '../Base';
+import { WalletDropdown } from '../Base';
 import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import './WalletListCardDropdown.scss';
 
@@ -43,8 +44,8 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
                     <div className='wallets-list-card-dropdown__item'>
                         <WalletCurrencyIcon currency={wallet.currency ?? 'USD'} rounded />
                         <div className='wallets-list-card-dropdown__item-content'>
-                            <WalletText size='2xs'>{wallet.currency} Wallet</WalletText>
-                            <WalletText size='sm' weight='bold'>
+                            <Text size='2xs'>{wallet.currency} Wallet</Text>
+                            <Text size='sm' weight='bold'>
                                 {displayMoney?.(
                                     balanceData?.accounts?.[wallet.loginid]?.balance ?? 0,
                                     wallet?.currency || '',
@@ -52,7 +53,7 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
                                         fractional_digits: wallet?.currency_config?.fractional_digits,
                                     }
                                 )}
-                            </WalletText>
+                            </Text>
                         </div>
                     </div>
                 ),
@@ -68,9 +69,9 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
                     inputWidth={inputWidth}
                     list={walletList ?? []}
                     listHeader={
-                        <WalletText size='sm' weight='bold'>
+                        <Text size='sm' weight='bold'>
                             <Localize i18n_default_text='Select Wallet' />
-                        </WalletText>
+                        </Text>
                     }
                     name='wallets-list-card-dropdown'
                     onSelect={selectedItem => {

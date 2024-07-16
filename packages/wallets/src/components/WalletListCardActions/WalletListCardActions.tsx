@@ -8,8 +8,9 @@ import {
     LabelPairedPlusMdBoldIcon,
 } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import useDevice from '../../hooks/useDevice';
-import { IconButton, WalletButton, WalletText } from '../Base';
+import { IconButton, WalletButton } from '../Base';
 import './WalletListCardActions.scss';
 
 type TProps = {
@@ -77,9 +78,9 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
                                 }}
                                 size='lg'
                             />
-                            <WalletText size='sm' weight={button.text === localize('Deposit') ? 'bold' : 'normal'}>
+                            <Text size='sm' weight={button.text === localize('Deposit') ? 'bold' : 'normal'}>
                                 {button.text}
-                            </WalletText>
+                            </Text>
                         </div>
                     ))}
                 </div>

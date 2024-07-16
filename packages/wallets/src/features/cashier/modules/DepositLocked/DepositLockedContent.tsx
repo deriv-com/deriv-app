@@ -1,6 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv-com/translations';
-import { WalletLink, WalletText } from '../../../../components';
+import { Text } from '@deriv-com/ui';
+import { WalletLink } from '../../../../components';
 
 type TDepositLockedDescProps = {
     askFixDetails?: boolean;
@@ -35,7 +36,7 @@ const getDepositLockedDesc = ({
 }: TDepositLockedDescProps) => {
     let description = null;
     const generateDescription = (description: string, components?: JSX.Element[], values?: string) => (
-        <WalletText align='center'>
+        <Text align='center'>
             <Localize
                 components={components}
                 i18n_default_text={
@@ -43,7 +44,7 @@ const getDepositLockedDesc = ({
                 }
                 values={{ values }}
             />
-        </WalletText>
+        </Text>
     );
 
     if (poiNeedsVerification && poiStatus !== 'none') {

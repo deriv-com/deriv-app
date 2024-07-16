@@ -1,6 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv-com/translations';
-import { WalletLink, WalletText } from '../../../../components';
+import { Text } from '@deriv-com/ui';
+import { WalletLink } from '../../../../components';
 
 type TWithdrawalLimitReachedDescProps = {
     askFinancialRiskApproval?: boolean;
@@ -19,9 +20,9 @@ type TWithdrawalLockedDescProps = {
 };
 
 const generateDescription = (description: string, components?: JSX.Element[]) => (
-    <WalletText align='center'>
+    <Text align='center'>
         <Localize components={components} i18n_default_text={description} />
-    </WalletText>
+    </Text>
 );
 
 export const getWithdrawalLimitReachedDesc = ({

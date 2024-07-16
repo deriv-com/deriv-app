@@ -1,6 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv-com/translations';
-import { WalletLink, WalletText } from '../../../../components';
+import { Text } from '@deriv-com/ui';
+import { WalletLink } from '../../../../components';
 
 type TSystemMaintenanceDescProps = {
     currency?: string;
@@ -37,12 +38,12 @@ export const getSystemMaintenanceContent = ({
     let content = null;
     const generateContent = (textDefault: string) => ({
         description: (
-            <WalletText align='center'>
+            <Text align='center'>
                 <Localize
                     i18n_default_text={`Due to system maintenance, ${textDefault} with your {{currency}} Wallet are unavailable at the moment. Please try again later.`}
                     values={{ currency }}
                 />
-            </WalletText>
+            </Text>
         ),
         title: (
             <Localize
@@ -83,9 +84,9 @@ const getCashierLockedDesc = ({
 }: TCashierLockedDescProps) => {
     let description = null;
     const generateDescription = (description: string, components?: JSX.Element[]) => (
-        <WalletText align='center'>
+        <Text align='center'>
             <Localize components={components} i18n_default_text={description} values={{ currency }} />
-        </WalletText>
+        </Text>
     );
 
     if (noResidence) {

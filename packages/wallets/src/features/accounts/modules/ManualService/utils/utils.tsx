@@ -7,7 +7,7 @@ import ImageIcon from '../../../../../public/images/accounts/image-icon.svg';
 import LessThanEightIcon from '../../../../../public/images/accounts/less-than-eight-icon.svg';
 import NIMCSlipIcon from '../../../../../public/images/accounts/nimc-slip.svg';
 import PassportIcon from '../../../../../public/images/accounts/passport.svg';
-import { PassportUpload } from '../components';
+import { DrivingLicenseUpload, PassportUpload } from '../components';
 
 type TManualDocumentComponentProps = {
     onCompletion?: () => void;
@@ -31,6 +31,7 @@ export type TDocumentRule = {
     icon: React.ComponentType<React.SVGAttributes<SVGElement>>;
 };
 
+/** A mapper which contains the info on all the available manual POI upload options for a client */
 export const manualDocumentsMapper: TManualDocumentType = {
     passport: {
         component: PassportUpload,
@@ -40,6 +41,7 @@ export const manualDocumentsMapper: TManualDocumentType = {
     },
     // eslint-disable-next-line sort-keys
     'driving-license': {
+        component: DrivingLicenseUpload,
         description: 'Upload the front and back of your driving licence.',
         icon: DrivingLicenseIcon,
         title: 'Driving licence',
@@ -57,10 +59,7 @@ export const manualDocumentsMapper: TManualDocumentType = {
     },
 };
 
-export const ManualDocumentUploadErrorCode = {
-    DuplicateUpload: 'DuplicateUpload',
-} as const;
-
+/** General rules to show as hints for non-NIMC countries */
 export const GeneralDocumentRules: TDocumentRule[] = [
     {
         description: 'A clear colour photo or scanned image',
@@ -76,6 +75,7 @@ export const GeneralDocumentRules: TDocumentRule[] = [
     },
 ];
 
+/** Special rules to show as hints for NIMC countries */
 export const NIMCDocumentRules: TDocumentRule[] = [
     ...GeneralDocumentRules,
     {

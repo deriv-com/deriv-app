@@ -2,19 +2,18 @@ import React from 'react';
 import { DerivLightDeclinedPoiIcon } from '@deriv/quill-icons';
 import { ActionScreen, Button } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../../../../../../components';
-import { ManualDocumentUploadErrorCode } from '../../utils';
-import './UploadErrorMessage.scss';
+import './ManualUploadErrorMessage.scss';
 
-type UploadErrorMessageProps = {
-    errorCode: keyof typeof ManualDocumentUploadErrorCode;
+type ManualUploadErrorMessageProps = {
+    errorCode: string;
     onRetry?: () => void;
 };
 
-const errorCodeToDescriptionMapper: Record<keyof typeof ManualDocumentUploadErrorCode, string> = {
+const errorCodeToDescriptionMapper: Record<string, string> = {
     DuplicateUpload: 'It seems you’ve submitted this document before. Upload a new document.',
-};
+} as const;
 
-const UploadErrorMessage: React.FC<UploadErrorMessageProps> = ({ errorCode, onRetry }) => {
+const ManualUploadErrorMessage: React.FC<ManualUploadErrorMessageProps> = ({ errorCode, onRetry }) => {
     const ActionButton = () => (
         <Button onClick={onRetry} size='lg'>
             Try again
@@ -23,7 +22,7 @@ const UploadErrorMessage: React.FC<UploadErrorMessageProps> = ({ errorCode, onRe
 
     return (
         <ModalStepWrapper title='Submit your proof of identity'>
-            <div className='wallets-upload-error-message'>
+            <div className='wallets-manual-upload-error-message'>
                 <ActionScreen
                     actionButtons={<ActionButton />}
                     description={errorCodeToDescriptionMapper[errorCode]}
@@ -35,4 +34,4 @@ const UploadErrorMessage: React.FC<UploadErrorMessageProps> = ({ errorCode, onRe
     );
 };
 
-export default UploadErrorMessage;
+export default ManualUploadErrorMessage;

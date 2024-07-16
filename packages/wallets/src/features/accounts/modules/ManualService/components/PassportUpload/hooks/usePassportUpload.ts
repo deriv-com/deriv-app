@@ -1,5 +1,6 @@
 import { FormikContextType, FormikValues } from 'formik';
-import { useDocumentUpload, useSettings } from '@deriv/api-v2';
+import { useDocumentUpload } from '@deriv/api-v2';
+import { THooks } from '../../../../../../../types';
 
 type TPassportUploadValues = {
     passportExpiryDate: string;
@@ -8,7 +9,6 @@ type TPassportUploadValues = {
 };
 
 const usePassportUpload = () => {
-    const { data: accountSettings } = useSettings();
     const { error, isLoading, isSuccess, upload } = useDocumentUpload();
 
     const submit = (values: FormikValues, context: FormikContextType<TPassportUploadValues>) => {
@@ -28,7 +28,7 @@ const usePassportUpload = () => {
         passportNumber: '',
     } as TPassportUploadValues;
 
-    return { initialValues, submit };
+    return { error, initialValues, isUploading: isLoading, submit };
 };
 
 export default usePassportUpload;

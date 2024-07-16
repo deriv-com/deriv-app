@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useSettings } from '@deriv/api-v2';
+import { Loader } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../../../../components';
 import { DocumentSelection } from './components';
-import { manualDocumentsMapper, TManualDocumentType } from './utils';
+import { manualDocumentsMapper, TManualDocumentComponent, TManualDocumentType } from './utils';
 
 type TManualServiceProps = {
     onCompletion?: () => void;
@@ -10,10 +12,16 @@ type TManualServiceProps = {
 type TSelectedManualDocument = keyof TManualDocumentType | undefined;
 
 const ManualService: React.FC<TManualServiceProps> = ({ onCompletion }) => {
+    const { data: accountSettings, isLoading: isAccountSettingsLoading } = useSettings();
     const [selectedManualDocument, setSelectedManualDocument] = useState<TSelectedManualDocument>();
+    let SelectedDocument: TManualDocumentComponent;
+
+    if (isAccountSettingsLoading) {
+        return <Loader />;
+    }
 
     if (selectedManualDocument) {
-        const SelectedDocument = manualDocumentsMapper[selectedManualDocument].component;
+        SelectedDocument = manualDocumentsMapper[selectedManualDocument].component;
         return <SelectedDocument onCompletion={onCompletion} />;
     }
 

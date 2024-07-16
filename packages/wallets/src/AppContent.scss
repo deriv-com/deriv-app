@@ -25,3 +25,11 @@
         }
     }
 }
+
+/* stylelint-disable-next-line selector-class-pattern */
+.ReactModal__Overlay {
+    /* stylelint-disable-next-line selector-class-pattern */
+    .deriv-button__rounded--sm {
+        height: auto;
+    }
+}

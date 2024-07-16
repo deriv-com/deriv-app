@@ -199,8 +199,9 @@ module.exports = function (env) {
         },
         plugins: [
             new DefinePlugin({
+                'process.env.CROWDIN_URL': JSON.stringify('https://translations.deriv.com'),
                 'process.env.REMOTE_CONFIG_URL': JSON.stringify(process.env.REMOTE_CONFIG_URL),
-                'process.env.WALLETS_TRANSLATION_PATH': JSON.stringify(process.env.WALLETS_TRANSLATION_PATH),
+                'process.env.WALLETS_TRANSLATION_PATH': JSON.stringify('deriv-app-wallets/staging'),
             }),
         ],
         resolve: {

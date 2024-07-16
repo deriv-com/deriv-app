@@ -1,3 +1,4 @@
+import React from 'react';
 import { render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { WS } from '@deriv/shared';

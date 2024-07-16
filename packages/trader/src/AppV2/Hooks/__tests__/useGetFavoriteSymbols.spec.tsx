@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { useGetFavoriteSymbols } from '../useGetFavoriteSymbols';
 import * as sortSymbolsUtils from 'AppV2/Utils/sort-symbols-utils';
-import { useTraderStore } from 'Stores/useTraderStores';
+import { useModulesStore } from 'Stores/useModulesStores';
 
 jest.mock('AppV2/Hooks/useActiveSymbols', () => ({
     __esModule: true,
@@ -14,10 +14,10 @@ jest.mock('AppV2/Hooks/useActiveSymbols', () => ({
     })),
 }));
 
-jest.mock('Stores/useTraderStores', () => ({
+jest.mock('Stores/useModulesStores', () => ({
     __esModule: true,
-    useTraderStore: jest.fn().mockImplementation(() => ({
-        favoriteSymbols: ['EURUSD', 'CADAUD'],
+    useModulesStore: jest.fn().mockImplementation(() => ({
+        markets: { favoriteSymbols: ['EURUSD', 'CADAUD'] },
     })),
 }));
 
@@ -43,7 +43,9 @@ describe('useGetFavoriteSymbols', () => {
         ]);
     });
     it('should handle empty favoriteSymbols array', () => {
-        (useTraderStore as jest.Mock).mockImplementationOnce(() => []);
+        (useModulesStore as jest.Mock).mockImplementationOnce(() => ({
+            markets: { favoriteSymbols: [] },
+        }));
         (sortSymbolsUtils.default as jest.Mock).mockImplementationOnce(() => []);
 
         const { result } = renderHook(() => useGetFavoriteSymbols());

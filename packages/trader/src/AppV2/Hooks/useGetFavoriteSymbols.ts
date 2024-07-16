@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react';
 import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 import { ActiveSymbols } from '@deriv/api-types';
-import { useTraderStore } from 'Stores/useTraderStores';
 import sortSymbols from 'AppV2/Utils/sort-symbols-utils';
+import { useModulesStore } from 'Stores/useModulesStores';
 
 export const useGetFavoriteSymbols = () => {
     const { activeSymbols } = useActiveSymbols({});
-    const { favoriteSymbols } = useTraderStore();
+    const { markets } = useModulesStore();
+    const { favoriteSymbols } = markets;
 
     const clientFavoriteList = useMemo(() => {
         return favoriteSymbols

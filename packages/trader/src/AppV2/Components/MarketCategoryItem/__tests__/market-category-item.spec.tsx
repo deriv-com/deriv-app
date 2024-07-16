@@ -7,6 +7,7 @@ import { mockStore } from '@deriv/stores';
 import { ActiveSymbols } from '@deriv/api-types';
 import userEvent from '@testing-library/user-event';
 import { useSnackbar } from '@deriv-com/quill-ui';
+import ModulesProvider from 'Stores/Providers/modules-providers';
 
 jest.mock('@deriv/quill-icons', () => ({
     ...jest.requireActual('@deriv/quill-icons'),
@@ -32,13 +33,15 @@ describe('<MarketCategoryItem />', () => {
     const mocked_store = {
         modules: {
             trade: {
+                onChange: jest.fn(),
+            },
+            markets: {
                 favoriteSymbols: [
                     { display_name: 'Symbol 1', symbol: 'SYMBOL1' },
                     { display_name: 'Symbol 2', symbol: 'SYMBOL2' },
                 ],
                 setFavoriteSymbols: jest.fn(),
                 removeFavoriteSymbol: jest.fn(),
-                onChange: jest.fn(),
             },
         },
         ui: {
@@ -51,7 +54,9 @@ describe('<MarketCategoryItem />', () => {
     ) => {
         return (
             <TraderProviders store={mocked_store}>
-                <MarketCategoryItem {...mocked_props} />
+                <ModulesProvider store={mocked_store}>
+                    <MarketCategoryItem {...mocked_props} />
+                </ModulesProvider>
             </TraderProviders>
         );
     };
@@ -87,7 +92,7 @@ describe('<MarketCategoryItem />', () => {
         render(MockMarketCategoryItem(mockStore(mocked_store), mocked_props));
         userEvent.click(screen.getByText('MockedStandaloneStarRegularIcon'));
 
-        expect(mocked_store.modules.trade.setFavoriteSymbols).toHaveBeenCalled();
+        expect(mocked_store.modules.markets.setFavoriteSymbols).toHaveBeenCalled();
         expect(mockAddSnackbar).toHaveBeenCalled();
     });
 });

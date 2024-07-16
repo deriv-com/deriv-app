@@ -7,6 +7,7 @@ import { ActiveSymbols } from '@deriv/api-types';
 import clsx from 'clsx';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { useModulesStore } from 'Stores/useModulesStores';
 
 type TMarketCategoryItem = {
     item: ActiveSymbols[0];
@@ -18,12 +19,9 @@ type TMarketCategoryItem = {
 const MarketCategoryItem = forwardRef(
     ({ item, selectedSymbol, setSelectedSymbol, setIsOpen }: TMarketCategoryItem, ref: Ref<HTMLDivElement>) => {
         const [isFavorite, setIsFavorite] = useState(false);
-        const {
-            favoriteSymbols,
-            setFavoriteSymbols,
-            removeFavoriteSymbol,
-            onChange: onSymbolChange,
-        } = useTraderStore();
+        const { onChange: onSymbolChange } = useTraderStore();
+        const { markets } = useModulesStore();
+        const { favoriteSymbols, setFavoriteSymbols, removeFavoriteSymbol } = markets;
         const { addSnackbar } = useSnackbar();
         const { ui } = useStore();
         const { is_dark_mode_on } = ui;

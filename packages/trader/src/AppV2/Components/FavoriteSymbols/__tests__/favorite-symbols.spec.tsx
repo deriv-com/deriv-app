@@ -2,9 +2,9 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import FavoriteSymbols from '../favorite-symbols';
 import { useGetFavoriteSymbols } from 'AppV2/Hooks/useGetFavoriteSymbols';
-import TraderProviders from '../../../../trader-providers';
 import { TCoreStores } from '@deriv/stores/types';
 import { mockStore } from '@deriv/stores';
+import ModulesProvider from 'Stores/Providers/modules-providers';
 
 jest.mock('AppV2/Hooks/useGetFavoriteSymbols');
 
@@ -24,7 +24,7 @@ describe('FavoriteSymbols Component', () => {
     };
     const mocked_store = {
         modules: {
-            trade: {
+            markets: {
                 favoriteSymbols: [
                     { display_name: 'Symbol 1', symbol: 'SYMBOL1' },
                     { display_name: 'Symbol 2', symbol: 'SYMBOL2' },
@@ -35,9 +35,9 @@ describe('FavoriteSymbols Component', () => {
 
     const MockFavoriteSymbols = (mocked_store: TCoreStores) => {
         return (
-            <TraderProviders store={mocked_store}>
+            <ModulesProvider store={mocked_store}>
                 <FavoriteSymbols {...mock_props} />
-            </TraderProviders>
+            </ModulesProvider>
         );
     };
     it('should render favorite symbols when they exist', () => {
@@ -50,7 +50,7 @@ describe('FavoriteSymbols Component', () => {
     });
 
     it('should render NoFavoriteSymbol component when there are no favorite symbols', () => {
-        mocked_store.modules.trade.favoriteSymbols = [];
+        mocked_store.modules.markets.favoriteSymbols = [];
         (useGetFavoriteSymbols as jest.Mock).mockReturnValue([]);
 
         render(MockFavoriteSymbols(mockStore(mocked_store)));

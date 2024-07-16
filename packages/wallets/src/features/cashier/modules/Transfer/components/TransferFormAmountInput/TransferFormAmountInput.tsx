@@ -170,10 +170,15 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
 
     const onMaxBtnClickHandler = useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-            setFieldValue('fromAmount', Number(fromAccount?.balance));
             e.preventDefault();
+            const maxAmount = Number(fromAccount?.balance ?? 0);
+            setValues(prev => ({
+                ...prev,
+                activeAmountFieldName: 'fromAmount',
+                fromAmount: maxAmount,
+            }));
         },
-        [fromAccount?.balance, setFieldValue]
+        [fromAccount?.balance, setValues]
     );
 
     return (

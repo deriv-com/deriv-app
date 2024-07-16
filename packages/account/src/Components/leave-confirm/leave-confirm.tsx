@@ -63,9 +63,10 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
         const unblock = history.block((location: { pathname: string }) => {
             if (dirty) {
                 if (onDirty) onDirty(false);
-                if (show) leave();
-                setShow(true);
-                setNextLocation(location);
+                if (!show) {
+                    setShow(true);
+                    setNextLocation(location);
+                }
                 return false;
             }
             return true;

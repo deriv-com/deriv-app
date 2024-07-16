@@ -285,12 +285,24 @@ const CreatePassword = ({
                     >
                         <div className='cfd-password-modal__create-password-body'>
                             {platform === CFD_PLATFORMS.MT5 ? (
-                                <Icon icon={'IcMt5Password'} width='100' height='100' />
-                            ) : (
-                                <Icon icon={'IcDxtradeOnePassword'} width='122' height='108' />
-                            )}
-                            {platform !== CFD_PLATFORMS.MT5 ? (
                                 <>
+                                    <Icon icon={'IcMt5Password'} width='100' height='100' />
+                                    <Text
+                                        size='xs'
+                                        align='center'
+                                        className='cfd-password-modal__create-password-description'
+                                    >
+                                        <Localize
+                                            i18n_default_text='Note: You can use this password for all your {{platform}} accounts.'
+                                            values={{
+                                                platform: getCFDPlatformLabel(platform),
+                                            }}
+                                        />
+                                    </Text>
+                                </>
+                            ) : (
+                                <>
+                                    <Icon icon={'IcDxtradeOnePassword'} width='122' height='108' />
                                     <Text
                                         size='s'
                                         align='center'
@@ -317,19 +329,6 @@ const CreatePassword = ({
                                         />
                                     </Text>
                                 </>
-                            ) : (
-                                <Text
-                                    size='xs'
-                                    align='center'
-                                    className='cfd-password-modal__create-password-description'
-                                >
-                                    <Localize
-                                        i18n_default_text='Note: You can use this password for all your {{platform}} accounts.'
-                                        values={{
-                                            platform: getCFDPlatformLabel(platform),
-                                        }}
-                                    />
-                                </Text>
                             )}
                             <div className='input-element'>
                                 <PasswordMeter

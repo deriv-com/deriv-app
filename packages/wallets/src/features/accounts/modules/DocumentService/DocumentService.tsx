@@ -1,8 +1,23 @@
 import React from 'react';
-import { ModalStepWrapper } from '../../../../components';
+import classNames from 'classnames';
+import { IDVService, Onfido } from './components';
+import './DocumentService.scss';
 
-const DocumentService = () => {
-    return <ModalStepWrapper />;
+type TDocumentServiceProps = {
+    onCompletion?: () => void;
+};
+
+const DocumentService: React.FC<TDocumentServiceProps> = ({ onCompletion }) => {
+    return (
+        <div
+            className={classNames('wallets-document-service', {
+                // 'wallets-document-service--reverse': isOnfido,
+            })}
+        >
+            {/* <IDVService onCompletion={onCompletion} /> */}
+            <Onfido onCompletion={onCompletion} />
+        </div>
+    );
 };
 
 export default DocumentService;

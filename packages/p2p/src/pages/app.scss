@@ -11,8 +11,6 @@
     overflow: hidden;
 
     @include tablet-screen {
-        padding: 0 8.4rem;
-
         & .dc-mobile-full-page-modal {
             width: 60rem;
             & .dc-page-overlay {

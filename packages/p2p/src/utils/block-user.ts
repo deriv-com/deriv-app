@@ -1,4 +1,3 @@
-import { isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 
 /**

@@ -265,8 +265,8 @@ const QuickAddModal = ({ advert }) => {
                             <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
                         </Text>
                         <SellAdPaymentMethodsList
-                            is_only_horizontal
-                            is_scrollable
+                            is_only_horizontal={!isDesktop}
+                            is_scrollable={!isDesktop}
                             onClickPaymentMethodCard={onClickPaymentMethodCard}
                             onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethod(true)}
                             p2p_advertiser_payment_methods={p2p_advertiser_payment_methods}

@@ -4,7 +4,6 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import { useStores } from 'Stores/index';
 import MarketRateChangeErrorModal from '../market-rate-change-error-modal';
 import { useDevice } from '@deriv-com/ui';
-import { isDesktop } from '@deriv/shared';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     buy_sell_store: {

@@ -64,7 +64,7 @@ describe('VerifyButton', () => {
         renderWithRouter();
         const verifyButton = screen.getByText('Verify');
         userEvent.click(verifyButton);
-        history.push(routes.phone_verification);
+        expect(history.location.pathname).toBe(routes.phone_verification);
     });
 
     it('should render Verified text', () => {

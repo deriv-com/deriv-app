@@ -173,7 +173,6 @@ type TStakeBoundary = Record<
 >;
 type TTicksHistoryResponse = TicksHistoryResponse | TicksStreamResponse;
 type TBarriersData = Record<string, never> | { barrier: string; barrier_choices: string[] };
-// type TFavorites = Record<string, string[]>;
 
 const store_name = 'trade_store';
 const g_subscribers_map: Partial<Record<string, ReturnType<typeof WS.subscribeTicksHistory>>> = {}; // blame amin.m

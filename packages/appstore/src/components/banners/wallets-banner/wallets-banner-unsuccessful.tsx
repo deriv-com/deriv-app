@@ -4,27 +4,35 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
 
+type TStyles = {
+    titleFontSize: string;
+    descriptionFontSize: string;
+    iconHeight: number | string;
+    iconWidth: number;
+};
+
 const WalletsBannerUnsuccessful = observer(() => {
     const { traders_hub } = useStore();
-    const { isDesktop, isMobile, isTablet } = useDevice();
+    const { isMobile, isTablet } = useDevice();
     const { toggleWalletsUpgrade } = traders_hub;
-    let titleFontSize, descriptionFontSize, iconHeight, iconWidth;
+
+    const styles: TStyles = {
+        titleFontSize: 'sm',
+        descriptionFontSize: 'xs',
+        iconHeight: 148,
+        iconWidth: 360,
+    };
 
     if (isMobile) {
-        titleFontSize = 'xs';
-        descriptionFontSize = 'xxxs';
-        iconHeight = '100%';
-        iconWidth = 216;
+        styles.titleFontSize = 'xs';
+        styles.descriptionFontSize = 'xxxs';
+        styles.iconHeight = '100%';
+        styles.iconWidth = 216;
     } else if (isTablet) {
-        titleFontSize = 's';
-        descriptionFontSize = 'xxs';
-        iconHeight = 110;
-        iconWidth = 220;
-    } else if (isDesktop) {
-        titleFontSize = 'sm';
-        descriptionFontSize = 'xs';
-        iconHeight = 148;
-        iconWidth = 360;
+        styles.titleFontSize = 's';
+        styles.descriptionFontSize = 'xxs';
+        styles.iconHeight = 110;
+        styles.iconWidth = 220;
     }
 
     return (
@@ -33,20 +41,20 @@ const WalletsBannerUnsuccessful = observer(() => {
                 <Localize
                     i18n_default_text='<0>Setup unsuccessful</0>'
                     components={[
-                        <Text key={0} line_height={!isMobile ? 'm' : 's'} size={titleFontSize} weight='bold' />,
+                        <Text key={0} line_height={!isMobile ? 'm' : 's'} size={styles.titleFontSize} weight='bold' />,
                     ]}
                 />
                 <div>
                     <Localize
                         i18n_default_text='<0>We’re unable to upgrade you to Wallets at this time and are working to get this fixed as soon as we can. Please </0><1>try again</1><0>.</0>'
                         components={[
-                            <Text key={0} line_height='s' size={descriptionFontSize} />,
+                            <Text key={0} line_height='s' size={styles.descriptionFontSize} />,
                             <Text
                                 key={1}
                                 className='wallets-banner-unsuccessful__clickable-text'
                                 color='red'
                                 line_height='s'
-                                size={descriptionFontSize}
+                                size={styles.descriptionFontSize}
                                 weight='bold'
                                 onClick={() => toggleWalletsUpgrade(true)}
                             />,
@@ -56,8 +64,8 @@ const WalletsBannerUnsuccessful = observer(() => {
             </div>
             <Icon
                 icon='IcAppstoreWalletsUpgradeUnsuccessful'
-                width={iconWidth}
-                height={iconHeight}
+                width={styles.iconWidth}
+                height={styles.iconHeight}
                 className='wallets-banner-unsuccessful__image'
                 data_testid='dt_wallets_upgrade_unsuccessful'
             />

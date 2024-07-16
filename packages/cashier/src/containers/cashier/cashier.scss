@@ -9,10 +9,10 @@
         width: 100%;
 
         &-header {
-            margin-bottom: 3.2rem;
-            @include mobile {
-                padding-top: 1.6rem;
-                margin-bottom: 0;
+            padding: 0 0 3.2rem;
+
+            @include mobile-or-tablet-screen {
+                padding: 0 0 1.6rem;
             }
         }
     }
@@ -28,15 +28,8 @@
             width: 100%;
             height: 100%;
             line-height: 1.43;
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 height: inherit;
-            }
-
-            // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
-            @media (max-width: 926px) {
-                width: auto;
-                height: auto;
-                margin: 0 1.6rem;
             }
 
             .inline-icon .color1-fill {
@@ -56,14 +49,14 @@
             align-items: center;
         }
         &--is-mobile {
-            // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
-            @media (max-width: 926px) {
-                width: 100vw;
+            width: 100vw;
+            padding: 0 1.6rem;
+
+            @include tablet-screen {
+                max-width: 60rem;
             }
 
-            @include mobile {
-                width: 100vw;
-                margin-top: 4rem;
+            @include mobile-or-tablet-screen {
                 .dc-collapsible {
                     position: relative;
                     background-color: var(--general-section-1);
@@ -73,9 +66,6 @@
                     z-index: 1;
                 }
                 .cashier__wrapper {
-                    width: calc(100% - 3.2rem);
-                    margin: 0 1.6rem;
-
                     &-error {
                         display: flex;
                         align-items: center;
@@ -92,7 +82,7 @@
         .withdraw__input {
             width: fit-content;
             min-width: 36rem;
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 100%;
                 min-width: auto;
                 margin-bottom: 1.3rem !important;
@@ -103,7 +93,7 @@
         font-size: 1rem;
     }
     &__header {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             font-size: 1.4rem;
         }
     }
@@ -116,7 +106,7 @@
             margin: 3.9rem 0 2.4rem 2.4rem;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             &-submit {
                 margin: 1.6rem 0;
                 flex-flow: column;
@@ -151,7 +141,7 @@
             min-height: 4rem;
             min-width: 28.3rem;
             height: auto;
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 min-height: auto;
                 min-width: calc(100% - 4rem);
                 display: flex;
@@ -219,7 +209,7 @@
         max-width: 70%;
         margin-left: auto;
         margin-right: auto;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             max-width: 100%;
             min-width: unset;
             margin: 0;
@@ -253,7 +243,7 @@
         &-button {
             margin: 3.2rem auto;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -268,20 +258,6 @@
         }
     }
     &__page-wrapper {
-        @include mobile {
-            /* postcss-bem-linter: ignore */
-            & .dc-page-overlay__header {
-                position: fixed;
-                top: 4rem;
-                width: 100%;
-                height: 4rem;
-            }
-
-            .dc-page-overlay__header.dc-page-app__header {
-                top: 0rem;
-            }
-        }
-
         &-button {
             min-width: 27.8rem;
             padding: 0.6rem 0.8rem;
@@ -312,14 +288,14 @@
         }
         &__title {
             margin-bottom: 0.8rem;
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin-left: 1.2rem;
                 margin-right: 1.2rem;
             }
         }
         &__desc {
             margin-bottom: 3.2rem;
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding: 0 1rem;
             }
         }
@@ -328,7 +304,7 @@
             padding: 0 2.4rem 2.4rem;
             max-width: 61.8rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding: 1.6rem;
             }
         }

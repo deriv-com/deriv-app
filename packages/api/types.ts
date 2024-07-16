@@ -318,7 +318,11 @@ type TPrivateSocketEndpoints = {
         response: {
             trading_platform_status: {
                 /**
-                 * Trading platform status.
+                 * cfd platforms
+                 */
+                platform: 'ctrader' | 'dxtrade' | 'mt5';
+                /**
+                 * possible platform statuses.
                  */
                 status: 'active' | 'unavailable' | 'maintenance';
             };
@@ -2295,10 +2299,6 @@ type ChangeEmailResponse = {
 };
 
 type TSocketEndpoints = {
-    trading_platform_status: {
-        request: TradingPlatformStatusRequest;
-        response: TradingPlatformStatusResponse;
-    };
     active_symbols: {
         request: ActiveSymbolsRequest;
         response: ActiveSymbolsResponse;
@@ -2758,6 +2758,10 @@ type TSocketEndpoints = {
     trading_times: {
         request: TradingTimesRequest;
         response: TradingTimesResponse;
+    };
+    trading_platform_status: {
+        request: TradingPlatformStatusRequest;
+        response: TradingPlatformStatusResponse;
     };
     transaction: {
         request: TransactionsStreamRequest;

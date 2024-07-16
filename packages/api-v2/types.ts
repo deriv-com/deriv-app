@@ -215,6 +215,8 @@ import type {
     TradingPlatformInvestorPasswordResetResponse,
     TradingPlatformPasswordResetRequest,
     TradingPlatformPasswordResetResponse,
+    TradingPlatformStatusRequest,
+    TradingPlatformStatusResponse,
     TradingTimesRequest,
     TradingTimesResponse,
     TransactionsStreamRequest,
@@ -2163,6 +2165,26 @@ type TPrivateSocketEndpoints = {
         req_id?: number;
         [k: string]: unknown;
     };
+    trading_platform_status: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            trading_platform_status: 1;
+        };
+        response: {
+            trading_platform_status: {
+                /**
+                 * cfd platforms
+                 */
+                platform: 'ctrader' | 'dxtrade' | 'mt5';
+                /**
+                 * possible platform statuses.
+                 */
+                status: 'active' | 'unavailable' | 'maintenance';
+            };
+        };
+    };
     kyc_auth_status: {
         request: {
             /**
@@ -2690,6 +2712,10 @@ type TSocketEndpoints = {
     trading_servers: {
         request: ServerListRequest;
         response: ServerListResponse;
+    };
+    trading_platform_status: {
+        request: TradingPlatformStatusRequest;
+        response: TradingPlatformStatusResponse;
     };
     trading_times: {
         request: TradingTimesRequest;

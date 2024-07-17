@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Stream } from '@cloudflare/stream-react';
-import { Button, Text, Modal } from '@deriv/components';
+import { Button, Text, Modal, VideoPlayer } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useWalletMigration } from '@deriv/hooks';
@@ -10,7 +9,7 @@ import './wallets-upgrade-modal.scss';
 const WalletsUpgradeModal = observer(() => {
     const { traders_hub, ui } = useStore();
     const { is_real_wallets_upgrade_on, toggleWalletsUpgrade } = traders_hub;
-    const { is_desktop } = ui;
+    const { is_desktop, is_mobile } = ui;
     const { is_eligible, startMigration } = useWalletMigration();
     const isWalletMigrationModalClosed = localStorage.getItem('is_wallet_migration_modal_closed');
     const [modalOpen, setModalOpen] = React.useState(!isWalletMigrationModalClosed);
@@ -37,17 +36,11 @@ const WalletsUpgradeModal = observer(() => {
             <Modal.Body>
                 <div className='wallets-upgrade-modal__content'>
                     <div className='wallets-upgrade-modal__media-container'>
-                        <Stream
-                            autoplay
-                            className='wallets-upgrade-modal__video'
-                            controls
-                            letterboxColor='transparent'
-                            loop
-                            muted
-                            preload='auto'
-                            responsive={false}
+                        <VideoPlayer
+                            height={is_desktop ? '320px' : '157px'}
+                            is_mobile={is_mobile}
                             src='25df7df0d0af48090b086cd6f103d8f3'
-                            width='100%'
+                            className='wallets-upgrade-modal__video'
                         />
                     </div>
                     <div className='wallets-upgrade-modal__text'>

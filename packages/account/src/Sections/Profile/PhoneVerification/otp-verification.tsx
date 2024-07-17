@@ -140,8 +140,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                     value={otp}
                     type='number'
                     maxLength={6}
-                    // /* eslint-disable @typescript-eslint/ban-ts-comment */
-                    // @ts-ignore [TODO] - Need to fix typescript errors in InputGroupButton
+                    /* @ts-expect-error [TODO] need to fix types for  DateOfBirthField component*/
                     buttonDisabled={otp.length < 6}
                 />
                 <ResendCodeTimer

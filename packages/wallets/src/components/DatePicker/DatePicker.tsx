@@ -15,7 +15,6 @@ interface TDatePickerProps extends TFormFieldProps {
     maxDate?: Date;
     minDate?: Date;
     mobileAlignment?: 'above' | 'below';
-    onDateChange: (dateString: string | null) => void;
 }
 
 const DatePicker = ({
@@ -27,7 +26,6 @@ const DatePicker = ({
     minDate,
     mobileAlignment = 'below',
     name,
-    onDateChange,
 }: TDatePickerProps) => {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const datePickerRef = useRef<HTMLDivElement>(null);
@@ -67,7 +65,7 @@ const DatePicker = ({
                             )}
                             showMessage
                             type='text'
-                            value={getFormattedDateString(field.value, displayFormat)}
+                            value={field.value ? getFormattedDateString(field.value, displayFormat) : ''}
                         />
                         {isCalendarOpen && (
                             <div
@@ -82,11 +80,12 @@ const DatePicker = ({
                                     onChange={value => {
                                         const calendarSelectedDate = Array.isArray(value) ? value[0] : value;
                                         setIsCalendarOpen(false);
-                                        onDateChange(
+                                        form.setFieldValue(
+                                            name,
                                             getFormattedDateString(calendarSelectedDate as Date, 'YYYY-MM-DD')
                                         );
                                     }}
-                                    value={getFormattedDateString(field.value)}
+                                    value={field.value ? getFormattedDateString(field.value) : ''}
                                 />
                             </div>
                         )}

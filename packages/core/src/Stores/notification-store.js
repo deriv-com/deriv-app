@@ -12,6 +12,7 @@ import {
     getMarketName,
     getPathname,
     getPlatformSettings,
+    shouldShowPhoneVerificationNotification,
     getStaticUrl,
     getTotalProfit,
     getTradeTypeName,
@@ -41,6 +42,7 @@ import {
     poi_notifications,
 } from './Helpers/client-notifications';
 import BaseStore from './base-store';
+import dayjs from 'dayjs';
 
 export default class NotificationStore extends BaseStore {
     is_notifications_visible = false;
@@ -302,6 +304,7 @@ export default class NotificationStore extends BaseStore {
     }
 
     async handleClientNotifications() {
+        const current_time = dayjs();
         const {
             account_settings,
             account_status,
@@ -338,7 +341,12 @@ export default class NotificationStore extends BaseStore {
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.trustpilot?.key
         );
-
+        const is_next_email_attempt_timer_running = shouldShowPhoneVerificationNotification(
+            account_settings?.phone_number_verification?.next_email_attempt,
+            current_time
+        );
+        const show_phone_number_verification_notification =
+            !account_settings?.phone_number_verification?.verified && !is_next_email_attempt_timer_running;
         let has_missing_required_field;
 
         const is_server_down = checkServerMaintenance(website_status);
@@ -378,6 +386,9 @@ export default class NotificationStore extends BaseStore {
                 this.removeNotificationByKey({ key: this.client_notifications.two_f_a?.key });
             }
 
+            if (show_phone_number_verification_notification) {
+                this.addNotificationMessage(this.client_notifications.phone_number_verification);
+            }
             if (malta_account && is_financial_information_incomplete) {
                 this.addNotificationMessage(this.client_notifications.need_fa);
             } else {
@@ -603,13 +614,6 @@ export default class NotificationStore extends BaseStore {
                     this.addNotificationMessage(this.client_notifications.svg_poi_expired);
                 }
             }
-            if (
-                client &&
-                this.root_store.client.mt5_login_list.length > 0 &&
-                (this.root_store.client.mt5_login_list.find(login => login)?.white_label?.notification ?? true)
-            ) {
-                this.addNotificationMessage(this.client_notifications.mt5_notification);
-            }
         }
 
         if (!is_eu && isMultiplierContract(selected_contract_type) && current_language === 'EN' && is_logged_in) {
@@ -749,8 +753,7 @@ export default class NotificationStore extends BaseStore {
 
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
-        const { has_enabled_two_fa, setTwoFAChangedStatus, logout } = this.root_store.client;
-        const { setMT5NotificationModal } = this.root_store.traders_hub;
+        const { has_enabled_two_fa, setTwoFAChangedStatus, logout, email } = this.root_store.client;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
 
         const platform_name_trader = getPlatformSettings('trader').name;
@@ -1060,6 +1063,19 @@ export default class NotificationStore extends BaseStore {
                 header: localize('Password updated.'),
                 message: <Localize i18n_default_text='Please log in with your updated password.' />,
                 type: 'info',
+            },
+            phone_number_verification: {
+                key: 'phone_number_verification',
+                header: localize('Verify your phone number'),
+                message: <Localize i18n_default_text='Keep your account safe. Verify your phone number now.' />,
+                type: 'warning',
+                action: {
+                    onClick: () => {
+                        WS.verifyEmail(email, 'phone_number_verification');
+                    },
+                    route: routes.phone_verification,
+                    text: localize('Get started'),
+                },
             },
             poa_rejected_for_mt5: {
                 action: {
@@ -1524,18 +1540,6 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Go to LiveChat'),
                 },
                 type: 'danger',
-            },
-            mt5_notification: {
-                key: 'mt5_notification',
-                header: localize('Changes to your Deriv MT5 login'),
-                message: localize('We are going to update the login process for your Deriv MT5 account.'),
-                action: {
-                    text: localize('Learn more'),
-                    onClick: () => {
-                        setMT5NotificationModal(true);
-                    },
-                },
-                type: 'warning',
             },
             additional_kyc_info: {
                 key: 'additional_kyc_info',

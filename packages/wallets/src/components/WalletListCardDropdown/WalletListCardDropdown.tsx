@@ -1,10 +1,11 @@
 import React, { ComponentProps, useCallback, useEffect, useMemo, useState } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { THooks, TSubscribedBalance } from '../../types';
-import { WalletDropdown, WalletText } from '../Base';
+import { WalletDropdown } from '../Base';
 import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import './WalletListCardDropdown.scss';
 
@@ -14,7 +15,7 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const switchWalletAccount = useWalletAccountSwitcher();
-    const { t } = useTranslation();
+    const { localize } = useTranslations();
     const { data: balanceData } = balance;
 
     const [inputWidth, setInputWidth] = useState('auto');
@@ -22,9 +23,9 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
 
     const generateTitleText = useCallback(
         (wallet: THooks.WalletAccountsList) => {
-            return t(`${wallet?.currency} Wallet`);
+            return localize(`${wallet?.currency} Wallet`);
         },
-        [t]
+        [localize]
     );
 
     useEffect(() => {
@@ -43,20 +44,16 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
                     <div className='wallets-list-card-dropdown__item'>
                         <WalletCurrencyIcon currency={wallet.currency ?? 'USD'} rounded />
                         <div className='wallets-list-card-dropdown__item-content'>
-                            <WalletText size='2xs'>
-                                <Trans defaults={`${wallet.currency} Wallet`} />
-                            </WalletText>
-                            <WalletText size='sm' weight='bold'>
-                                <Trans
-                                    defaults={displayMoney?.(
-                                        balanceData?.accounts?.[wallet.loginid]?.balance ?? 0,
-                                        wallet?.currency || '',
-                                        {
-                                            fractional_digits: wallet?.currency_config?.fractional_digits,
-                                        }
-                                    )}
-                                />
-                            </WalletText>
+                            <Text size='2xs'>{wallet.currency} Wallet</Text>
+                            <Text size='sm' weight='bold'>
+                                {displayMoney?.(
+                                    balanceData?.accounts?.[wallet.loginid]?.balance ?? 0,
+                                    wallet?.currency || '',
+                                    {
+                                        fractional_digits: wallet?.currency_config?.fractional_digits,
+                                    }
+                                )}
+                            </Text>
                         </div>
                     </div>
                 ),
@@ -72,9 +69,9 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
                     inputWidth={inputWidth}
                     list={walletList ?? []}
                     listHeader={
-                        <WalletText size='sm' weight='bold'>
-                            <Trans defaults='Select Wallet' />
-                        </WalletText>
+                        <Text size='sm' weight='bold'>
+                            <Localize i18n_default_text='Select Wallet' />
+                        </Text>
                     }
                     name='wallets-list-card-dropdown'
                     onSelect={selectedItem => {

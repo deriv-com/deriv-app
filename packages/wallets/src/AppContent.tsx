@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from '@deriv-com/translations';
+import { DesktopLanguagesModal } from '@deriv-com/ui';
+import { languages } from './constants/languages';
 import { defineViewportHeight } from './utils/utils';
-import { WalletLanguageSidePanel } from './components';
 import { Router } from './routes';
 import './AppContent.scss';
 
 const AppContent: React.FC = () => {
-    const [isPanelOpen, setIsPanelOpen] = useState(false);
-    const { i18n } = useTranslation();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { currentLang, switchLanguage } = useTranslations();
 
     useEffect(() => {
         const handleShortcutKey = (event: globalThis.KeyboardEvent) => {
-            if (event.ctrlKey && event.key === 'p') {
-                setIsPanelOpen(prev => !prev);
+            if (event.ctrlKey && event.key === '\\') {
+                setIsModalOpen(prev => !prev);
             }
         };
 
@@ -21,17 +22,24 @@ const AppContent: React.FC = () => {
         return () => {
             window.removeEventListener('keydown', handleShortcutKey);
         };
-    }, [setIsPanelOpen]);
+    }, [setIsModalOpen]);
 
     useEffect(() => {
         defineViewportHeight();
     }, []);
 
     return (
-        <div className='wallets-app' key={`wallets_app_${i18n.language}`}>
+        <div className='wallets-app' key={`wallets_app_${currentLang}`}>
             <div className='wallets-modal-show-header-root' id='wallets_modal_show_header_root' />
             <Router />
-            {isPanelOpen && <WalletLanguageSidePanel />}
+            <DesktopLanguagesModal
+                headerTitle='Wallets Translations [FOR TESTING PURPOSES]'
+                isModalOpen={isModalOpen}
+                languages={languages}
+                onClose={() => setIsModalOpen(false)}
+                onLanguageSwitch={switchLanguage}
+                selectedLanguage={currentLang}
+            />
         </div>
     );
 };

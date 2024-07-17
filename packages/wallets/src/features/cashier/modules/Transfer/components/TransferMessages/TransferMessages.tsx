@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
-import { Trans } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { Localize } from '@deriv-com/translations';
 import { FadedAnimatedList, WalletAlertMessage, WalletButton } from '../../../../../../components';
 import { useTransferMessages } from '../../hooks';
 import { useTransfer } from '../../provider';
@@ -30,7 +30,7 @@ const TransferMessages: React.FC = () => {
     return (
         <FadedAnimatedList className='wallets-transfer-messages'>
             {messages.map(({ action, message: { text, values }, type }) => {
-                const message = <Trans defaults={text} values={values} />;
+                const message = <Localize i18n_default_text={text} values={values} />;
 
                 return (
                     <WalletAlertMessage key={text} message={message} type={type}>
@@ -45,7 +45,7 @@ const TransferMessages: React.FC = () => {
                                             target: '_blank',
                                         })}
                                     >
-                                        <Trans defaults={action.buttonLabel} />
+                                        <Localize i18n_default_text={action.buttonLabel} />
                                     </Link>
                                 </WalletButton>
                             </div>

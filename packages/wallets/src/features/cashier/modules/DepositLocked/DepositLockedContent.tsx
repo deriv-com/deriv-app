@@ -1,6 +1,7 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
-import { WalletLink, WalletText } from '../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
+import { WalletLink } from '../../../../components';
 
 type TDepositLockedDescProps = {
     askFixDetails?: boolean;
@@ -34,14 +35,16 @@ const getDepositLockedDesc = ({
     websiteTncVersion,
 }: TDepositLockedDescProps) => {
     let description = null;
-    const generateDescription = (description: string, components?: JSX.Element[], values?: Date) => (
-        <WalletText align='center'>
-            <Trans
+    const generateDescription = (description: string, components?: JSX.Element[], values?: string) => (
+        <Text align='center'>
+            <Localize
                 components={components}
-                defaults={unwelcomeStatus ? description : `You have reached the withdrawal limit. ${description}`}
+                i18n_default_text={
+                    unwelcomeStatus ? description : `You have reached the withdrawal limit. ${description}`
+                }
                 values={{ values }}
             />
-        </WalletText>
+        </Text>
     );
 
     if (poiNeedsVerification && poiStatus !== 'none') {
@@ -79,7 +82,7 @@ const getDepositLockedDesc = ({
                     onClick={() => window.LC_API.open_chat_window()}
                 />,
             ],
-            excludedUntil
+            excludedUntil?.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
         );
     } else if (unwelcomeStatus) {
         description = generateDescription('Please contact us via <0>live chat</0>.', [

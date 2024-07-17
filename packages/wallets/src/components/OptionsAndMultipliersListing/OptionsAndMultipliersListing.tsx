@@ -1,5 +1,4 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useActiveLinkedToTradingAccount } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
@@ -24,16 +23,14 @@ const OptionsAndMultipliersListing: React.FC<TSubscribedBalance> = ({ balance })
                 <div className='wallets-options-and-multipliers-listing__header-title'>
                     {!isMobile && (
                         <WalletText align='center' size='xl' weight='bold'>
-                            <Trans defaults='Options' />
+                            Options
                         </WalletText>
                     )}
                     <WalletText size={isMobile ? 'sm' : 'md'}>
-                        <Trans
-                            components={[
-                                <WalletLink key={0} staticUrl='/trade-types/options/digital-options/up-and-down/' />,
-                            ]}
-                            defaults='Predict the market, profit if you’re right, risk only what you put in. <0>Learn more</0>'
-                        />
+                        Predict the market, profit if you’re right, risk only what you put in.{' '}
+                        <WalletLink staticUrl='/trade-types/options/digital-options/up-and-down/'>
+                            Learn more
+                        </WalletLink>
                     </WalletText>
                 </div>
                 <DerivAppsSection balance={balance} />
@@ -62,12 +59,8 @@ const OptionsAndMultipliersListing: React.FC<TSubscribedBalance> = ({ balance })
                             }
                         >
                             <div className='wallets-options-and-multipliers-listing__content__details'>
-                                <WalletText size='sm'>
-                                    <Trans defaults={title} />
-                                </WalletText>
-                                <WalletText size='xs'>
-                                    <Trans defaults={description} />
-                                </WalletText>
+                                <WalletText size='sm'>{title}</WalletText>
+                                <WalletText size='xs'>{description}</WalletText>
                             </div>
                         </TradingAccountCard>
                     );

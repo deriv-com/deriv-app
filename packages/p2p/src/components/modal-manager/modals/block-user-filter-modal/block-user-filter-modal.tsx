@@ -15,7 +15,7 @@ const BlockUserFilterModal = () => {
                 className='sort-radiogroup'
                 name='block-user-filter-modal'
                 onToggle={() => {
-                    my_profile_store.handleChange;
+                    my_profile_store.handleChange();
                     if (!isDesktop) {
                         hideModal();
                     }

@@ -21,7 +21,7 @@ type TDocumentFile = {
 const OrderDetailsConfirmModal = () => {
     const { hideModal, is_modal_open } = useModalManagerContext();
     const { order_details_store, order_store, sendbird_store } = useStores();
-    const { isDesktop, isMobile } = useDevice();
+    const { isMobile } = useDevice();
     const { error_message } = order_details_store;
     const { confirmOrderRequest, order_information } = order_store;
     const { sendFile } = sendbird_store;

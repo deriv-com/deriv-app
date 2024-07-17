@@ -42,6 +42,8 @@ export default class TradersHubStore extends BaseStore {
     active_modal_wallet_id;
     is_cfd_restricted_country = false;
     is_financial_restricted_country = false;
+    is_bvi_regulated = true;
+    filtered_accounts = [];
 
     constructor(root_store) {
         const local_storage_properties = [
@@ -79,6 +81,8 @@ export default class TradersHubStore extends BaseStore {
             is_wallet_migration_failed: observable,
             is_cfd_restricted_country: observable,
             is_financial_restricted_country: observable,
+            is_bvi_regulated: observable,
+            filtered_accounts: observable,
             closeModal: action.bound,
             content_flag: computed,
             getAccount: action.bound,
@@ -124,6 +128,8 @@ export default class TradersHubStore extends BaseStore {
             toggleWalletsUpgrade: action.bound,
             setWalletsMigrationFailedPopup: action.bound,
             cleanup: action.bound,
+            setBviRegulated: action.bound,
+            filterVisibility: action.bound,
         });
 
         reaction(
@@ -140,10 +146,12 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.client.landing_companies,
                 this.root_store.common.current_language,
                 this.financial_restricted_countries,
+                this.is_bvi_regulated,
             ],
             () => {
                 this.getAvailablePlatforms();
                 this.getAvailableCFDAccounts();
+                this.setBviRegulated();
             }
         );
 
@@ -426,9 +434,16 @@ export default class TradersHubStore extends BaseStore {
                 product: 'zero_spread',
                 icon: 'ZeroSpread',
                 availability: 'Non-EU',
+                visibility: {
+                    is_bvi_regulated: false,
+                },
             },
         ];
-        this.available_cfd_accounts = all_available_accounts.map(account => {
+        const criteria = {
+            is_bvi_regulated: this.is_bvi_regulated,
+        };
+        this.filterVisibility(all_available_accounts, criteria);
+        this.available_cfd_accounts = this.filtered_accounts.map(account => {
             return {
                 ...account,
                 description: account.description,
@@ -860,5 +875,29 @@ export default class TradersHubStore extends BaseStore {
             this.is_financial_restricted_country = false;
             this.available_platforms = [];
         }
+    }
+
+    setBviRegulated() {
+        if (this.root_store.client.is_logged_in) {
+            const trading_platforms = this.root_store.client.trading_platform_available_accounts;
+            this.is_bvi_regulated =
+                trading_platforms.length > 0 &&
+                trading_platforms.some(account => {
+                    return account.shortcode === 'bvi';
+                });
+            return;
+        }
+        this.is_bvi_regulated = true;
+    }
+
+    filterVisibility(arr, criteria) {
+        this.filtered_accounts = arr.filter(account => {
+            return !Object.keys(criteria).some(
+                key =>
+                    account.visibility &&
+                    Object.prototype.hasOwnProperty.call(account.visibility, key) &&
+                    criteria[key] === account.visibility[key]
+            );
+        });
     }
 }

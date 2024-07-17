@@ -8,7 +8,8 @@ import { THooks } from '../../../../types';
 import './VerificationFailed.scss';
 
 const LazyVerification = lazy(
-    () => import(/* webpackChunkName: "wallets-verification-flow" */ '../../flows/Verification/Verification')
+    () =>
+        import(/* webpackChunkName: "wallets-verification-flow" */ '../../flows/ClientVerification/ClientVerification')
 );
 
 const getDocumentTitle = (isPOIFailed?: boolean, isPOAFailed?: boolean) => {

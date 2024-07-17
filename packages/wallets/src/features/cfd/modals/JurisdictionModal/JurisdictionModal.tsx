@@ -12,7 +12,8 @@ import { MT5PasswordModal } from '..';
 import './JurisdictionModal.scss';
 
 const LazyVerification = lazy(
-    () => import(/* webpackChunkName: "wallets-verification-flow" */ '../../flows/Verification/Verification')
+    () =>
+        import(/* webpackChunkName: "wallets-verification-flow" */ '../../flows/ClientVerification/ClientVerification')
 );
 
 const JurisdictionModal = () => {

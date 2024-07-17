@@ -22,6 +22,16 @@ const PreferredCountriesModal = ({ country_list, eligible_countries, onApply }: 
     };
 
     const onClear = () => setSelectedCountries([]);
+    const onLeave = () => {
+        if (selected_countries === eligible_countries) {
+            hideModal();
+        } else {
+            showModal({
+                key: 'LeavePageModal',
+                props: {},
+            });
+        }
+    };
 
     return (
         <React.Fragment>
@@ -32,12 +42,7 @@ const PreferredCountriesModal = ({ country_list, eligible_countries, onApply }: 
                     is_open={is_modal_open}
                     small
                     title={localize('Preferred countries')}
-                    toggleModal={() => {
-                        showModal({
-                            key: 'LeavePageModal',
-                            props: {},
-                        });
-                    }}
+                    toggleModal={onLeave}
                 >
                     <Modal.Body className='preferred-countries-modal__body'>
                         <PreferredCountriesModalBody
@@ -68,7 +73,7 @@ const PreferredCountriesModal = ({ country_list, eligible_countries, onApply }: 
                     is_flex
                     is_modal_open={is_modal_open}
                     page_footer_className='preferred-countries-modal__footer'
-                    pageHeaderReturnFn={hideModal}
+                    pageHeaderReturnFn={onLeave}
                     renderPageHeaderElement={
                         <Text as='p' color='prominent' weight='bold'>
                             <Localize i18n_default_text='Preferred countries' />

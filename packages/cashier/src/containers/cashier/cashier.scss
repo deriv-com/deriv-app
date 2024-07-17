@@ -50,7 +50,9 @@
         }
         &--is-mobile {
             width: 100vw;
-            padding: 0 1.6rem;
+            > :not(.p2p) {
+                padding: 0 1.6rem;
+            }
 
             @include tablet-screen {
                 max-width: 60rem;

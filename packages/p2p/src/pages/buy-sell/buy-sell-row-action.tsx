@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
@@ -24,9 +24,7 @@ const BuySellRowAction = ({
     onClick,
 }: TBuySellRowActionProps) => {
     const { showModal } = useModalManagerContext();
-    const {
-        ui: { is_desktop },
-    } = useStore();
+    const { isDesktop } = useDevice();
     const { general_store } = useStores();
 
     const onUnavailableClick = (eligibility_status: string[]) => {
@@ -41,7 +39,7 @@ const BuySellRowAction = ({
                     is_disabled={general_store.is_barred}
                     onClick={onClick}
                     primary
-                    small={is_desktop}
+                    small={isDesktop}
                 >
                     <Localize
                         i18n_default_text='Buy {{ account_currency }}'
@@ -54,7 +52,13 @@ const BuySellRowAction = ({
         }
 
         return (
-            <Button is_disabled={general_store.is_barred} onClick={onClick} primary small={is_desktop}>
+            <Button
+                is_disabled={general_store.is_barred}
+                onClick={onClick}
+                primary
+                small={isDesktop}
+                className={className}
+            >
                 <Localize
                     i18n_default_text='Sell {{ account_currency }}'
                     values={{
@@ -66,7 +70,12 @@ const BuySellRowAction = ({
     }
 
     return (
-        <Button onClick={() => onUnavailableClick(eligibility_status)} secondary small={is_desktop}>
+        <Button
+            onClick={() => onUnavailableClick(eligibility_status)}
+            secondary
+            small={isDesktop}
+            className={className}
+        >
             <Localize i18n_default_text='Unavailable' />
         </Button>
     );

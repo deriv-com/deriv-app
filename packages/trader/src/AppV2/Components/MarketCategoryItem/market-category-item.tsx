@@ -55,14 +55,14 @@ const MarketCategoryItem = forwardRef(
                             iconSize='sm'
                         />
                     ),
-                    message: 'Removed from favorites',
+                    message: <Localize i18n_default_text='Removed from favorites' />,
                     hasCloseButton: false,
                 });
             } else {
                 setFavoriteSymbols([...favoriteSymbols, symbol]);
                 addSnackbar({
                     icon: <StandaloneStarFillIcon fill='var(--core-color-solid-mustard-700)' iconSize='sm' />,
-                    message: 'Added to favorites',
+                    message: <Localize i18n_default_text='Added to favorites' />,
                     hasCloseButton: false,
                 });
             }

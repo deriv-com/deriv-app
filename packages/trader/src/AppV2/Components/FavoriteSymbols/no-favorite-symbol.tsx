@@ -7,7 +7,7 @@ const NoFavoriteSymbol = () => (
     <div className='favorite-symbols--no-fav'>
         <StandaloneStarFillIcon fill='var(--semantic-color-slate-solid-surface-static-midLowest)' iconSize='2xl' />
         <Text size='lg' bold color='quill-typography__color--subtle'>
-            <Localize i18n_default_text={`No favourites`} />
+            <Localize i18n_default_text='No favourites' />
         </Text>
         <Text size='sm' color='quill-typography__color--subtle'>
             <Localize i18n_default_text='Your favourite markets will appear here.' />

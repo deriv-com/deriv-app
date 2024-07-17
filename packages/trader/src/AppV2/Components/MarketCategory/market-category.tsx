@@ -29,54 +29,52 @@ const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen
     }, [isOpen, category.market, selectedSymbol]);
 
     return (
-        <React.Fragment>
-            <Tab.Panel key={category.market_display_name}>
-                {category.market !== 'favorites' ? (
-                    Object.entries(category.subgroups).map(([subgroupKey, subgroup]) => (
-                        <div key={subgroupKey} className='market-category-content__container'>
-                            {subgroupKey !== 'none' && (
-                                <div className='market-category-title__container'>
-                                    <Text size='sm' className='market-category-title'>
-                                        {category.subgroups[subgroupKey].subgroup_display_name}
-                                    </Text>
+        <Tab.Panel key={category.market_display_name}>
+            {category.market !== 'favorites' ? (
+                Object.entries(category.subgroups).map(([subgroupKey, subgroup]) => (
+                    <div key={subgroupKey} className='market-category-content__container'>
+                        {subgroupKey !== 'none' && (
+                            <div className='market-category-title__container'>
+                                <Text size='sm' className='market-category-title'>
+                                    {category.subgroups[subgroupKey].subgroup_display_name}
+                                </Text>
+                            </div>
+                        )}
+                        {Object.entries(subgroup.submarkets).map(([submarketKey, submarket]) => (
+                            <div className='market-category-body' key={submarketKey}>
+                                <CaptionText size='sm' className='market-category-subtitle'>
+                                    {submarket.submarket_display_name}
+                                </CaptionText>
+                                <div className='market-category-items'>
+                                    {submarket.items.map((item: ActiveSymbols[0]) => (
+                                        <MarketCategoryItem
+                                            key={item.display_name}
+                                            ref={
+                                                item.symbol === selectedSymbol
+                                                    ? el => (itemRefs.current[item.symbol] = el)
+                                                    : undefined
+                                            }
+                                            item={item}
+                                            selectedSymbol={selectedSymbol}
+                                            setSelectedSymbol={setSelectedSymbol}
+                                            setIsOpen={setIsOpen}
+                                        />
+                                    ))}
                                 </div>
-                            )}
-                            {Object.entries(subgroup.submarkets).map(([submarketKey, submarket]) => (
-                                <div className='market-category-body' key={submarketKey}>
-                                    <CaptionText size='sm' className='market-category-subtitle'>
-                                        {submarket.submarket_display_name}
-                                    </CaptionText>
-                                    <div className='market-category-items'>
-                                        {submarket.items.map((item: ActiveSymbols[0]) => (
-                                            <MarketCategoryItem
-                                                key={item.display_name}
-                                                ref={
-                                                    item.symbol === selectedSymbol
-                                                        ? el => (itemRefs.current[item.symbol] = el)
-                                                        : undefined
-                                                }
-                                                item={item}
-                                                selectedSymbol={selectedSymbol}
-                                                setSelectedSymbol={setSelectedSymbol}
-                                                setIsOpen={setIsOpen}
-                                            />
-                                        ))}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    ))
-                ) : (
-                    <div>
-                        <FavoriteSymbols
-                            selectedSymbol={selectedSymbol}
-                            setSelectedSymbol={setSelectedSymbol}
-                            setIsOpen={setIsOpen}
-                        />
+                            </div>
+                        ))}
                     </div>
-                )}
-            </Tab.Panel>
-        </React.Fragment>
+                ))
+            ) : (
+                <div>
+                    <FavoriteSymbols
+                        selectedSymbol={selectedSymbol}
+                        setSelectedSymbol={setSelectedSymbol}
+                        setIsOpen={setIsOpen}
+                    />
+                </div>
+            )}
+        </Tab.Panel>
     );
 };
 

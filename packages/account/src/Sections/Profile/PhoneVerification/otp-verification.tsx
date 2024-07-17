@@ -140,7 +140,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                     value={otp}
                     type='number'
                     maxLength={6}
-                    /* @ts-expect-error [TODO] need to fix types for  DateOfBirthField component*/
+                    /* @ts-expect-error [TODO] need to fix types for  InputGroupButton */
                     buttonDisabled={otp.length < 6}
                 />
                 <ResendCodeTimer

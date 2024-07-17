@@ -1,5 +1,6 @@
 import React from 'react';
-import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
+import { RouteComponentProps, useHistory, withRouter, useLocation } from 'react-router-dom';
+import { routes } from '@deriv/shared';
 import { FormikConsumer } from 'formik';
 import { Button, Icon, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
@@ -45,50 +46,52 @@ const LeaveConfirmMessage = ({ back, leave }: TLeaveConfirmMessage) => {
  * Has to be a child of <Formik> for FormikConsumer to work
  */
 export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
-    const [show, setShow] = React.useState(false);
-    const [next_location, setNextLocation] = React.useState<{ pathname: string } | null>(null);
+    const [showModal, setShowModal] = React.useState(false);
     const history = useHistory();
+    const location = useLocation();
     const { isMobile } = useDevice();
-
-    const leave = React.useCallback(() => {
-        if (next_location?.pathname) {
-            const { pathname } = next_location;
-            history.push(pathname);
-        } else {
-            history.push(null);
-        }
-    }, [next_location, history]);
+    const [next_location, setNextLocation] = React.useState(location.pathname);
 
     React.useEffect(() => {
         const unblock = history.block((location: { pathname: string }) => {
             if (dirty) {
-                if (onDirty) onDirty(false);
-                if (!show) {
-                    setShow(true);
-                    setNextLocation(location);
+                if (onDirty) {
+                    onDirty(false);
                 }
-                return false;
+                if (!showModal) {
+                    setNextLocation(location.pathname);
+                    setShowModal(true);
+                }
             }
-            return true;
+            return !dirty;
         });
 
         return () => {
             unblock();
         };
-    }, [dirty, show, history, onDirty, leave]);
+    }, [dirty, history, onDirty, showModal]);
+
+    const leave = React.useCallback(() => {
+        if (location.pathname !== next_location) {
+            history.location.pathname = next_location;
+        } else {
+            history.push(null);
+        }
+    }, [location.pathname, next_location, history]);
 
     const back = () => {
-        setNextLocation(null);
-        setShow(false);
-        if (onDirty) onDirty(true);
+        setShowModal(false);
+        if (onDirty) {
+            onDirty(true);
+        }
     };
 
     return (
         <>
-            {show && isMobile ? (
+            {showModal && isMobile ? (
                 <LeaveConfirmMessage back={back} leave={leave} />
             ) : (
-                <Modal is_open={show} small toggleModal={back}>
+                <Modal is_open={showModal} small toggleModal={back}>
                     <Modal.Body>
                         <LeaveConfirmMessage back={back} leave={leave} />
                     </Modal.Body>
@@ -97,13 +100,10 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
         </>
     );
 };
-
 export const TransitionBlockerWithRouter = withRouter(TransitionBlocker);
-
 const LeaveConfirm = ({ onDirty }: { onDirty?: (prop: boolean) => void }) => (
     <FormikConsumer>
         {formik => <TransitionBlockerWithRouter onDirty={onDirty} dirty={formik.dirty && formik.submitCount === 0} />}
     </FormikConsumer>
 );
-
 export default LeaveConfirm;

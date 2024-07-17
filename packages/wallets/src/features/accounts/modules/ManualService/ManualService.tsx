@@ -16,17 +16,21 @@ const ManualService: React.FC<TManualServiceProps> = ({ onCompletion }) => {
     const [selectedManualDocument, setSelectedManualDocument] = useState<TSelectedManualDocument>();
     let SelectedDocument: TManualDocumentComponent;
 
+    const resetSelectedDocument = () => {
+        setSelectedManualDocument(undefined);
+    };
+
     if (isAccountSettingsLoading) {
         return <Loader />;
     }
 
     if (selectedManualDocument) {
         SelectedDocument = manualDocumentsMapper[selectedManualDocument].component;
-        return <SelectedDocument onCompletion={onCompletion} />;
+        return <SelectedDocument onClickBack={resetSelectedDocument} onCompletion={onCompletion} />;
     }
 
     return (
-        <ModalStepWrapper>
+        <ModalStepWrapper title='Add a real MT5 account'>
             <DocumentSelection
                 onSelectDocument={document => {
                     setSelectedManualDocument(document);

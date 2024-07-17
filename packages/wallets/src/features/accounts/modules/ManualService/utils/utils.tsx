@@ -10,6 +10,7 @@ import PassportIcon from '../../../../../public/images/accounts/passport.svg';
 import { DrivingLicenseUpload, IdentityCardUpload, NIMCSlipUpload, PassportUpload } from '../components';
 
 type TManualDocumentComponentProps = {
+    onClickBack?: () => void;
     onCompletion?: () => void;
 };
 
@@ -28,7 +29,7 @@ export type TManualDocumentType = Record<
 
 export type TDocumentRule = {
     description: string;
-    icon: React.ComponentType<React.SVGAttributes<SVGElement>>;
+    icon: JSX.Element;
 };
 
 /** A mapper which contains the info on all the available manual POI upload options for a client */
@@ -61,27 +62,29 @@ export const manualDocumentsMapper: TManualDocumentType = {
     },
 };
 
-/** General rules to show as hints for non-NIMC countries */
-export const GeneralDocumentRules: TDocumentRule[] = [
+const DocumentRules: TDocumentRule[] = [
     {
         description: 'A clear colour photo or scanned image',
-        icon: ClearPhoto,
+        icon: <ClearPhoto />,
     },
     {
         description: 'JPEG, JPG, PNG, PDF, or GIF',
-        icon: ImageIcon,
+        icon: <ImageIcon />,
     },
     {
         description: 'Less than 8MB',
-        icon: LessThanEightIcon,
+        icon: <LessThanEightIcon />,
     },
 ];
 
 /** Special rules to show as hints for NIMC countries */
-export const NIMCDocumentRules: TDocumentRule[] = [
-    ...GeneralDocumentRules,
+export const NIMCDocumentRules: TDocumentRule[] = DocumentRules;
+
+/** General rules to show as hints for non-NIMC countries */
+export const GeneralDocumentRules: TDocumentRule[] = [
+    ...DocumentRules,
     {
         description: 'Must be valid for at least 6 months',
-        icon: ClockIcon,
+        icon: <ClockIcon />,
     },
 ];

@@ -1,14 +1,29 @@
 .wallets-passport-upload {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    padding: 2.4rem;
-    gap: 2.4rem;
-    background: var(--light-8-primary-background, #fff);
+    align-items: center;
 
-    @include mobile {
-        width: 100%;
-        gap: 1.6rem;
+    @include desktop {
+        width: 99.6rem;
+        height: 60rem;
+    }
+
+    &__wrapper {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2.4rem;
+        gap: 2.4rem;
+
+        @include desktop {
+            width: 67.2rem;
+        }
+
+        @include mobile {
+            width: 100%;
+            gap: 1.6rem;
+        }
     }
 
     &__document-upload {
@@ -33,11 +48,25 @@
         }
     }
 
+    &__divider {
+        width: 100%;
+    }
+
     & .wallets-dropzone__container {
         min-height: 18.6rem;
 
         @include mobile {
             min-height: 25rem;
+        }
+    }
+
+    &__footer {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.8rem;
+
+        @include mobile {
+            align-items: center;
         }
     }
 }

@@ -2,7 +2,7 @@ import { FormikValues } from 'formik';
 import { useDocumentUpload } from '@deriv/api-v2';
 
 type TPassportUploadValues = {
-    passportExpiryDate: string;
+    passportExpiryDate: string | null;
     passportFile?: File;
     passportNumber: string;
 };
@@ -21,7 +21,7 @@ const usePassportUpload = () => {
     };
 
     const initialValues = {
-        passportExpiryDate: '',
+        passportExpiryDate: null,
         passportNumber: '',
     } as TPassportUploadValues;
 

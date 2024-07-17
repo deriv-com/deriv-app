@@ -73,6 +73,7 @@ export default class ClientStore extends BaseStore {
     is_populating_account_list = false;
     is_populating_mt5_account_list = true;
     is_populating_dxtrade_account_list = true;
+    is_populating_ctrader_account_list = true;
     website_status = {};
     account_settings = {};
     account_status = {};
@@ -116,6 +117,7 @@ export default class ClientStore extends BaseStore {
         reset_password: '',
         payment_withdraw: '',
         payment_agent_withdraw: '',
+        phone_number_verification: '',
         trading_platform_mt5_password_reset: '',
         trading_platform_dxtrade_password_reset: '',
         request_email: '',
@@ -193,6 +195,7 @@ export default class ClientStore extends BaseStore {
             is_populating_account_list: observable,
             is_populating_mt5_account_list: observable,
             is_populating_dxtrade_account_list: observable,
+            is_populating_ctrader_account_list: observable,
             website_status: observable,
             account_settings: observable,
             account_status: observable,
@@ -1077,7 +1080,7 @@ export default class ClientStore extends BaseStore {
     };
 
     setCookieAccount() {
-        const domain = /deriv\.(com|me)/.test(window.location.hostname)
+        const domain = /deriv\.(com|me|be)/.test(window.location.hostname)
             ? deriv_urls.DERIV_HOST_NAME
             : window.location.hostname;
 
@@ -2209,10 +2212,12 @@ export default class ClientStore extends BaseStore {
 
     setVerificationCode(code, action) {
         this.verification_code[action] = code;
-        if (code) {
-            LocalStore.set(`verification_code.${action}`, code);
-        } else {
-            LocalStore.remove(`verification_code.${action}`);
+        if (action !== 'phone_number_verification') {
+            if (code) {
+                LocalStore.set(`verification_code.${action}`, code);
+            } else {
+                LocalStore.remove(`verification_code.${action}`);
+            }
         }
         if (action === 'signup') {
             // TODO: add await if error handling needs to happen before AccountSignup is initialised
@@ -2686,7 +2691,7 @@ export default class ClientStore extends BaseStore {
         this.setIsWalletMigrationRequestIsInProgress(true);
         try {
             await WS.authorized.startWalletMigration();
-            this.getWalletMigrationState();
+            await this.getWalletMigrationState();
         } catch (error) {
             // eslint-disable-next-line no-console
             console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);

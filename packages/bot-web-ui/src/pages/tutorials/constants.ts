@@ -29,10 +29,26 @@ export const guide_content: TGuideContent[] = [
     {
         id: 1,
         type: 'DBotVideo',
-        content: localize('Deriv Bot - your automated trading partner'),
-        url: 'https://www.youtube.com/embed/QdI5zCkO4Gk',
-        src: getImageLocation('video_dbot.webp'),
+        content: localize('An introduction to Deriv Bot'),
+        url: 'https://www.youtube.com/embed/lthEgaIY1uw',
+        src: getImageLocation('intro_to_deriv_bot.png'),
         search_id: `${VIDEOS}-0`,
+    },
+    {
+        id: 2,
+        type: 'DBotVideo',
+        content: localize('How to build a basic trading bot with Deriv Bot'),
+        url: 'https://www.youtube.com/embed/mnpi2g7YakU',
+        src: getImageLocation('build_a_bot.png'),
+        search_id: `${VIDEOS}-1`,
+    },
+    {
+        id: 3,
+        type: 'DBotVideo',
+        content: localize('How to use Martingale strategy on Deriv Bot'),
+        url: 'https://www.youtube.com/embed/FSslvF7P00I',
+        src: getImageLocation('how_to_use_martingale.jpg'),
+        search_id: `${VIDEOS}-2`,
     },
 ];
 

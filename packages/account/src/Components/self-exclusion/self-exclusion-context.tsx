@@ -1,4 +1,4 @@
-import React from 'react';
+import { createContext } from 'react';
 import { FormikHelpers, FormikValues } from 'formik';
 
 export type TSelfExclusionContext = {
@@ -23,7 +23,7 @@ export type TSelfExclusionContext = {
     backToReview?: () => void;
 };
 
-const SelfExclusionContext = React.createContext<TSelfExclusionContext>({
+const SelfExclusionContext = createContext<TSelfExclusionContext>({
     overlay_ref: document.createElement('div'),
     currency: '',
     handleSubmit: () => null,

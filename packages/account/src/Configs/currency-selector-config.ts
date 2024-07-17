@@ -1,6 +1,7 @@
+// Do not remove React as this component is used in Core package
 import React from 'react';
 import { generateValidationFunction, getDefaultFields, TSchema } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-com/translations';
 
 const currency_selector_config: TSchema = {
     currency: {

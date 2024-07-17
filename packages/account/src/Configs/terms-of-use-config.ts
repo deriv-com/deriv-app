@@ -1,6 +1,7 @@
+// Do not remote React as it is used in Core package
 import React from 'react';
 import { getDefaultFields, isDesktop } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-com/translations';
 import { GetSettings } from '@deriv/api-types';
 
 type TTermsOfConfigSettings = GetSettings & { fatca_declaration?: number };

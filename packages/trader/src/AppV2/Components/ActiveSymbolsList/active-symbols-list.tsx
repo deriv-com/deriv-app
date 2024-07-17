@@ -21,31 +21,17 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
     const { symbol } = useTraderStore();
 
     const marketCategoriesRef = useRef<HTMLDivElement | null>(null);
-    const [prevScrollY, setPrevScrollY] = useState(marketCategoriesRef.current?.scrollTop);
-    const [isSearchFieldVisible, setIsSearchFieldVisible] = useState(true);
 
     useEffect(() => {
         setSelectedSymbol(symbol ?? default_symbol);
     }, [symbol, default_symbol]);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            const currentScrollY = marketCategoriesRef.current?.scrollTop;
-            if (prevScrollY && currentScrollY) setIsSearchFieldVisible(prevScrollY > currentScrollY);
-            setPrevScrollY(currentScrollY);
-        };
-        marketCategoriesRef.current?.addEventListener('scroll', handleScroll);
-        return () => {
-            marketCategoriesRef.current?.removeEventListener('scroll', handleScroll);
-        };
-    }, [prevScrollY]);
 
     return (
         <React.Fragment>
             <ActionSheet.Root isOpen={isOpen}>
                 <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen>
                     <SymbolsSearchField
-                        isSearchFieldVisible={isSearchFieldVisible}
+                        marketCategoriesRef={marketCategoriesRef}
                         searchValue={searchValue}
                         setSearchValue={setSearchValue}
                         isSearching={isSearching}
@@ -60,7 +46,6 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
                             if (index !== 1) {
                                 marketCategoriesRef.current?.scrollTo({ top: 0 });
                             }
-                            setIsSearchFieldVisible(true);
                         }}
                     >
                         {isSearching ? (

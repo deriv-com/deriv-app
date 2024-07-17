@@ -40,7 +40,9 @@ describe('<SymbolsSearchField />', () => {
             setIsSearching: jest.fn(),
             searchValue: '',
             setSearchValue: jest.fn(),
-            isSearchFieldVisible: true,
+            marketCategoriesRef: {
+                current: document.createElement('div'),
+            },
         };
         jest.clearAllMocks();
     });
@@ -54,7 +56,7 @@ describe('<SymbolsSearchField />', () => {
         render(MockedSymbolsSearchField(mockStore(mocked_store), mocked_props));
         expect(screen.getByText('Cancel')).toBeInTheDocument();
     });
-    it('should not render cancel button if isSearching is true', () => {
+    it('should not render cancel button if isSearching is false', () => {
         mocked_props.isSearching = false;
         render(MockedSymbolsSearchField(mockStore(mocked_store), mocked_props));
         expect(screen.queryByText('Cancel')).not.toBeInTheDocument();

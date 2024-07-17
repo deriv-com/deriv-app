@@ -17,7 +17,12 @@ const trackAnalyticsEvent = (
     });
 };
 
-const WalletsBannerUpgrade = observer(() => {
+type TProps = {
+    is_upgrading: boolean;
+};
+
+const WalletsBannerUpgrade: React.FC<TProps> = observer(({ is_upgrading }) => {
+
     const { traders_hub, ui } = useStore();
     const { is_desktop, is_mobile } = ui;
     const { is_demo, toggleWalletsUpgrade } = traders_hub;
@@ -46,6 +51,7 @@ const WalletsBannerUpgrade = observer(() => {
                 </div>
                 <Button
                     className='wallets-banner-upgrade__button'
+                    is_disabled={is_upgrading}
                     text={localize("Let's go")}
                     primary
                     large

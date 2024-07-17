@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores/index';
 import BlockUserTableError from '../block-user-table-error';
-import { useDevice } from '@deriv-com/ui';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     my_profile_store: {

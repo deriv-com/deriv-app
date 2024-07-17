@@ -22,7 +22,6 @@ type TProps = {
 };
 
 const WalletsBannerUpgrade: React.FC<TProps> = observer(({ is_upgrading }) => {
-
     const { traders_hub, ui } = useStore();
     const { is_desktop, is_mobile } = ui;
     const { is_demo, toggleWalletsUpgrade } = traders_hub;

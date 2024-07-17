@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Formik, Form, FormikValues, FormikErrors } from 'formik';
+import { Formik, Form, FormikHelpers, FormikErrors } from 'formik';
 import { Button, Dialog, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { redirectToLogin, validPassword, validLength, getErrorMessages, WS, removeActionParam } from '@deriv/shared';
 import { getLanguage, localize, Localize } from '@deriv/translations';
@@ -8,7 +8,7 @@ import { observer, useStore } from '@deriv/stores';
 import { TSocketError, TSocketRequest, TSocketResponse } from '@deriv/api/types';
 import { useDevice } from '@deriv-com/ui';
 
-type TInitialValues = {
+type TResetPasswordModalValues = {
     password: string;
 };
 
@@ -25,7 +25,10 @@ const ResetPasswordModal = observer(() => {
     } = ui;
 
     const { isDesktop } = useDevice();
-    const onResetComplete = (error: TSocketError<'reset_password'>['error'] | null, actions: FormikValues) => {
+    const onResetComplete = (
+        error: TSocketError<'reset_password'>['error'] | null,
+        actions: FormikHelpers<TResetPasswordModalValues>
+    ) => {
         actions.setSubmitting(false);
         const error_code = error?.code;
         // Error would be returned on invalid token (and the like) cases.
@@ -34,7 +37,11 @@ const ResetPasswordModal = observer(() => {
                 toggleResetPasswordModal(false);
                 toggleLinkExpiredModal(true);
             } else {
-                actions.resetForm({ password: '' });
+                actions.resetForm({
+                    values: {
+                        password: '',
+                    },
+                });
                 actions.setStatus({ error_msg: error?.message });
             }
             return;
@@ -46,7 +53,7 @@ const ResetPasswordModal = observer(() => {
         });
     };
 
-    const handleSubmit = (values: FormikValues, actions: FormikValues) => {
+    const handleSubmit = (values: TResetPasswordModalValues, actions: FormikHelpers<TResetPasswordModalValues>) => {
         const api_request: TSocketRequest<'reset_password'> = {
             reset_password: 1,
             new_password: values.password,
@@ -64,8 +71,8 @@ const ResetPasswordModal = observer(() => {
         );
     };
 
-    const validateReset = (values: TInitialValues) => {
-        const errors: FormikErrors<TInitialValues> = {};
+    const validateReset = (values: TResetPasswordModalValues) => {
+        const errors: FormikErrors<TResetPasswordModalValues> = {};
 
         if (
             !validLength(values.password, {
@@ -83,7 +90,7 @@ const ResetPasswordModal = observer(() => {
         return errors;
     };
 
-    const reset_initial_values: TInitialValues = { password: '' };
+    const reset_initial_values: TResetPasswordModalValues = { password: '' };
 
     const closeResetPasswordModal = () => {
         toggleResetPasswordModal(false);

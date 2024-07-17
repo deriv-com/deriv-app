@@ -22,6 +22,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
 
     const {
         USDExchangeRates,
+        activeWallet,
         activeWalletExchangeRates,
         preferredLanguage,
         refetchAccountLimits,
@@ -41,7 +42,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     const isAmountInputDisabled = !hasFunds || (fieldName === 'toAmount' && !toAccount);
     const isAmountFieldActive = fieldName === values.activeAmountFieldName;
     const isTimerVisible = !isFromAmountField && toAccount && !isSameCurrency && fromAmount > 0 && toAmount > 0;
-    const isMaxBtnVisible = isFromAmountField && fromAccount?.account_type === 'crypto';
+    const isMaxBtnVisible = isFromAmountField && activeWallet?.account_type === 'crypto';
 
     const amountValue = isFromAmountField ? fromAmount : toAmount;
     const debouncedAmountValue = useDebounce(amountValue, DEBOUNCE_DELAY_MS);

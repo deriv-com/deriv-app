@@ -19,6 +19,9 @@
     }
 
     &-item {
+        background-color: transparent;
+        border: none;
+        padding: var(--core-spacing-50);
         display: flex;
         flex-direction: column;
         align-items: center;

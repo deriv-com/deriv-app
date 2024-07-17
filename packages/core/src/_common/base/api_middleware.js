@@ -7,10 +7,6 @@ class APIMiddleware {
         this.session_id = session_id;
     }
 
-    requestDataTransformer(request) {
-        return this.session_id ? { ...request, session_id: this.session_id } : request;
-    }
-
     sendWillBeCalled({ args: [request] }) {
         this.config.wsEvent('send');
 

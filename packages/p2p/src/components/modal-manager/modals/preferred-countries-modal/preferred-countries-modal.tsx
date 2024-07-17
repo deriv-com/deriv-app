@@ -13,8 +13,8 @@ type TPreferredCountriesModal = {
 
 const PreferredCountriesModal = ({ country_list, eligible_countries, onApply }: TPreferredCountriesModal) => {
     const [search_value, setSearchValue] = React.useState('');
-    const [selected_countries, setSelectedCountries] = React.useState(eligible_countries);
-    const { hideModal, is_modal_open } = useModalManagerContext();
+    const { hideModal, is_modal_open, showModal, useSavedState } = useModalManagerContext();
+    const [selected_countries, setSelectedCountries] = useSavedState('selected_countries', eligible_countries);
 
     const onApplySelectedCountries = () => {
         onApply?.(selected_countries);
@@ -32,7 +32,12 @@ const PreferredCountriesModal = ({ country_list, eligible_countries, onApply }: 
                     is_open={is_modal_open}
                     small
                     title={localize('Preferred countries')}
-                    toggleModal={() => hideModal()}
+                    toggleModal={() => {
+                        showModal({
+                            key: 'LeavePageModal',
+                            props: {},
+                        });
+                    }}
                 >
                     <Modal.Body className='preferred-countries-modal__body'>
                         <PreferredCountriesModalBody

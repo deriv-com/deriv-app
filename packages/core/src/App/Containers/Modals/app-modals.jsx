@@ -13,7 +13,6 @@ import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
 import ReadyToVerifyModal from './ready-to-verify-modal';
 import CooldownWarningModal from './cooldown-warning-modal.jsx';
-import MT5Notification from './mt5-notification';
 import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
@@ -88,7 +87,6 @@ const AppModals = observer(() => {
         setCFDScore,
         landing_company_shortcode: active_account_landing_company,
         is_trading_experience_incomplete,
-        mt5_login_list,
         should_show_effortless_login_modal,
     } = client;
     const { content_flag, is_setup_real_account_or_go_to_demo_modal_visible } = traders_hub;
@@ -122,11 +120,6 @@ const AppModals = observer(() => {
     const url_action_param = url_params.get('action');
 
     const is_eu_user = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL, ContentFlag.EU_DEMO].includes(content_flag);
-
-    const should_show_mt5_notification_modal =
-        is_logged_in && mt5_login_list.length > 0
-            ? mt5_login_list.find(login => login)?.white_label?.notification ?? true
-            : false;
 
     const { is_migrated } = useWalletMigration();
 
@@ -201,8 +194,6 @@ const AppModals = observer(() => {
         ComponentToLoad = <MT5AccountNeededModal />;
     } else if (should_show_cooldown_modal) {
         ComponentToLoad = <CooldownWarningModal />;
-    } else if (should_show_mt5_notification_modal) {
-        ComponentToLoad = <MT5Notification />;
     } else if (should_show_assessment_complete_modal) {
         ComponentToLoad = <CompletedAssessmentModal />;
     } else if (is_deriv_account_needed_modal_visible) {

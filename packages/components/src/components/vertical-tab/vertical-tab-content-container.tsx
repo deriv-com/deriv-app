@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { memo, useEffect, useMemo } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Icon from '../icon/icon';
 import { TItem } from './vertical-tab-header';
@@ -57,32 +57,37 @@ const ContentWrapper = ({ children, has_side_note }: React.PropsWithChildren<TCo
     return children as JSX.Element;
 };
 
-const Content = ({ is_routed, items, selected }: TContent) => {
+const Content = memo(({ is_routed, items, selected }: TContent) => {
     const selected_item = items.find(item => item.label === selected.label);
-    const TabContent = selected_item?.value as React.ElementType;
     const [side_notes, setSideNotes] = React.useState<React.ReactNode[] | null>(null);
 
     const addToNotesQueue = React.useCallback((notes: React.ReactNode[]) => {
         setSideNotes(notes);
     }, []);
 
+    const MemoizedTabContent = useMemo(() => {
+        return selected_item?.value as React.ElementType;
+    }, [selected_item?.value]);
+
+    const memoized_routes = useMemo(() => {
+        return items.map(({ value, component, path, icon }, idx) => {
+            const Component = (value as React.ElementType) || component;
+            return (
+                <Route
+                    key={idx}
+                    path={path}
+                    render={() => <Component component_icon={icon} setSideNotes={addToNotesQueue} />}
+                />
+            );
+        });
+    }, [addToNotesQueue, items]);
+
     return (
         <React.Fragment>
             {is_routed ? (
-                <Switch>
-                    {items.map(({ value, component, path, icon }, idx) => {
-                        const Component = (value as React.ElementType) || component;
-                        return (
-                            <Route
-                                key={idx}
-                                path={path}
-                                render={() => <Component component_icon={icon} setSideNotes={addToNotesQueue} />}
-                            />
-                        );
-                    })}
-                </Switch>
+                <Switch>{memoized_routes}</Switch>
             ) : (
-                <TabContent key={selected_item?.label} className='item-id' setSideNotes={addToNotesQueue} />
+                <MemoizedTabContent key={selected_item?.label} className='item-id' setSideNotes={addToNotesQueue} />
             )}
             {selected.has_side_note && (
                 // for components that have side note, even if no note is passed currently,
@@ -91,7 +96,9 @@ const Content = ({ is_routed, items, selected }: TContent) => {
             )}
         </React.Fragment>
     );
-};
+});
+
+Content.displayName = 'Content';
 
 const VerticalTabContentContainer = ({
     action_bar,

@@ -14,6 +14,7 @@ import TemporaryTradeTypes from './trade-types';
 import TemporaryAssets from './assets';
 
 const Trade = observer(() => {
+    const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
     const chart_ref = React.useRef<HTMLDivElement>(null);
 
     const { active_symbols, contract_type, contract_types_list, onMount, onChange, onUnmount, symbol } =
@@ -45,6 +46,15 @@ const Trade = observer(() => {
         [trade_types, onChange]
     );
 
+    const onScroll = React.useCallback(() => {
+        const current_chart_ref = chart_ref?.current;
+        if (current_chart_ref) {
+            const chart_bottom_Y = current_chart_ref.getBoundingClientRect().bottom;
+            const container_bottom_Y = window.innerHeight - HEIGHT.BOTTOM_NAV;
+            setIsMinimizedParamsVisible(chart_bottom_Y < container_bottom_Y);
+        }
+    }, []);
+
     React.useEffect(() => {
         onMount();
         return onUnmount;
@@ -52,7 +62,7 @@ const Trade = observer(() => {
     }, []);
 
     return (
-        <BottomNav>
+        <BottomNav onScroll={onScroll}>
             {symbols.length && trade_types.length ? (
                 <div className='trade'>
                     <TemporaryTradeTypes
@@ -70,7 +80,7 @@ const Trade = observer(() => {
                             <TradeChart />
                         </section>
                     </div>
-                    <TradeParametersContainer chart_ref={chart_ref} is_minimized>
+                    <TradeParametersContainer is_minimized_visible={is_minimized_params_visible} is_minimized>
                         <TradeParameters is_minimized />
                     </TradeParametersContainer>
                     <PurchaseButton />

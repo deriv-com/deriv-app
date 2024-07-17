@@ -25,10 +25,10 @@ const MultipliersInformation = observer(({ is_minimized }: TMultipliersInformati
     if (is_minimized) return null;
 
     return (
-        <div className='multipliers__wrapper'>
+        <div className='multipliers-info__wrapper'>
             {content.map(({ label, value }) => (
-                <div key={label.props.i18n_default_text} className='multipliers__row'>
-                    <Text size='sm' className='multipliers__title'>
+                <div key={label.props.i18n_default_text} className='multipliers-info__row'>
+                    <Text size='sm' className='multipliers-info__title'>
                         {label}
                     </Text>
                     <Text size='sm' bold>

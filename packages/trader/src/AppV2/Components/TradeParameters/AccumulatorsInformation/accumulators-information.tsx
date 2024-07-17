@@ -25,10 +25,10 @@ const AccumulatorsInformation = observer(({ is_minimized }: TAccumulatorsInforma
     if (is_minimized) return null;
 
     return (
-        <div className='accumulators__wrapper'>
+        <div className='accumulators-info__wrapper'>
             {content.map(({ label, value }) => (
-                <div key={label.props.i18n_default_text} className='accumulators__row'>
-                    <Text size='sm' className='accumulators__title'>
+                <div key={label.props.i18n_default_text} className='accumulators-info__row'>
+                    <Text size='sm' className='accumulators-info__title'>
                         {label}
                     </Text>
                     <Text size='sm' bold>

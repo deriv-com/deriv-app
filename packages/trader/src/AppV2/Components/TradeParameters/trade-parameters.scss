@@ -49,6 +49,14 @@
                 width: unset;
             }
         }
+        &--has-last-digit {
+            flex-direction: row;
+            flex-wrap: wrap;
+
+            > div:not(:first-child) {
+                width: calc((100% - var(--core-size-400)) / 2);
+            }
+        }
     }
 
     &__option {

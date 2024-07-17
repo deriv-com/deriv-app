@@ -321,6 +321,13 @@ $MIN_HEIGHT_FLOATING: calc(
         &__fieldset {
             position: relative;
             max-width: 400px;
+
+            &--phone {
+                @include mobile {
+                    padding-inline-end: 2.5rem;
+                }
+            }
+
             @include mobile-or-tablet-screen {
                 max-width: 100%;
                 width: 100%;

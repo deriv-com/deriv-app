@@ -18,6 +18,7 @@ import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box'
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
+import { VerifyButton } from './verify-button';
 import { useInvalidateQuery } from '@deriv/api';
 import { useStatesList, useResidenceList, useTinValidations } from '@deriv/hooks';
 import EmploymentTaxDetailsContainer from 'Containers/employment-tax-details-container';
@@ -361,6 +362,10 @@ const PersonalDetailsForm = observer(() => {
                                             name='phone'
                                             id={'phone'}
                                             label={localize('Phone number*')}
+                                            className={clsx({
+                                                'account-form__fieldset--phone':
+                                                    account_settings?.phone_number_verification?.verified,
+                                            })}
                                             //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
                                             value={values.phone}
                                             onChange={handleChange}
@@ -370,6 +375,7 @@ const PersonalDetailsForm = observer(() => {
                                             disabled={isFieldDisabled('phone')}
                                             data-testid='dt_phone'
                                         />
+                                        <VerifyButton />
                                     </fieldset>
                                 )}
                                 {!is_virtual && (

@@ -29,13 +29,13 @@ const WalletsUpgradeModal = observer(() => {
     const account_mode = is_demo ? 'demo' : 'real';
     const isWalletMigrationModalClosed = localStorage.getItem('is_wallet_migration_modal_closed');
     const [modalOpen, setModalOpen] = React.useState(!isWalletMigrationModalClosed);
-    const isOpen = (is_eligible && modalOpen) || is_real_wallets_upgrade_on;
+    const is_open = (is_eligible && modalOpen) || is_real_wallets_upgrade_on;
 
     React.useEffect(() => {
-        if (isOpen) {
+        if (is_open) {
             trackAnalyticsEvent('open', account_mode);
         }
-    }, [account_mode, isOpen]);
+    }, [account_mode, is_open]);
 
     const closeModal = () => {
         setModalOpen(false);
@@ -57,7 +57,7 @@ const WalletsUpgradeModal = observer(() => {
     return (
         <Modal
             className='wallets-upgrade-modal'
-            is_open={(is_eligible && modalOpen) || is_real_wallets_upgrade_on}
+            is_open={is_open}
             width={is_desktop ? '77.6rem' : '32.8rem'}
             title=' '
             toggleModal={onToggleModalHandler}

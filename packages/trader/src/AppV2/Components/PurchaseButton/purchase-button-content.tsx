@@ -59,6 +59,7 @@ const PurchaseButtonContent = ({
                 is_reverse && 'purchase-button__information__wrapper--reverse',
                 is_content_empty && 'purchase-button__information__wrapper--disabled-placeholder'
             )}
+            data-testid='dt_purchase_button_wrapper'
         >
             {!is_content_empty && (
                 <React.Fragment>

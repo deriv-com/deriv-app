@@ -1,0 +1,50 @@
+.trade {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--core-color-solid-slate-75);
+    padding: 0 var(--core-spacing-400);
+    gap: var(--core-spacing-400);
+
+    &__trade-types {
+        position: relative;
+        width: 100vw;
+        inset-inline-start: calc(-1 * var(--core-spacing-400));
+        padding: var(--core-spacing-400) var(--core-spacing-800);
+        background-color: var(--core-color-solid-slate-50);
+        display: flex;
+        gap: var(--core-spacing-400);
+        overflow-x: auto;
+        min-height: var(--core-spacing-1600);
+        white-space: nowrap;
+        scrollbar-width: none;
+    }
+    &__assets {
+        padding: 0 var(--core-spacing-800);
+
+        .dc-dropdown {
+            &__container {
+                width: 26rem;
+            }
+            &__display {
+                height: var(--core-spacing-2100);
+            }
+        }
+    }
+    &__section {
+        &__wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: var(--core-spacing-400);
+        }
+    }
+    &__chart {
+        border-radius: var(--core-borderRadius-400);
+        overflow: hidden;
+
+        .smartcharts {
+            position: relative;
+        }
+    }
+}

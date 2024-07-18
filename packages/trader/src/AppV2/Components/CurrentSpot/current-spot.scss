@@ -1,0 +1,29 @@
+.trade__current-spot {
+    display: flex;
+    height: var(--core-size-2400);
+    justify-content: center;
+    align-items: flex-end;
+    border-radius: var(--core-borderRadius-400);
+    background-color: var(--core-color-solid-slate-50);
+    padding: var(--core-spacing-400) var(--core-spacing-800);
+
+    &--has-contract {
+        justify-content: space-between;
+    }
+    .current-spot {
+        display: flex;
+        gap: var(--core-spacing-100);
+
+        p {
+            color: var(--core-color-opacity-black-800);
+        }
+        &__last-digit {
+            &--won {
+                color: var(--core-color-solid-green-700);
+            }
+            &--lost {
+                color: var(--core-color-solid-red-700);
+            }
+        }
+    }
+}

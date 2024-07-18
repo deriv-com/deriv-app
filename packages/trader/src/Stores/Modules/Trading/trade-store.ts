@@ -246,6 +246,8 @@ export default class TradeStore extends BaseStore {
     market_close_times: string[] = [];
 
     // Last Digit
+    digit_stats: number[] = [];
+    digit_tick: TickSpotData | null = null;
     last_digit = 5;
     is_mobile_digit_view_selected = false;
 
@@ -378,6 +380,8 @@ export default class TradeStore extends BaseStore {
             contract_type: observable,
             contract_types_list: observable,
             currency: observable,
+            digit_stats: observable,
+            digit_tick: observable,
             duration_min_max: observable,
             duration_unit: observable,
             duration_units_list: observable,
@@ -388,6 +392,8 @@ export default class TradeStore extends BaseStore {
             expiry_time: observable,
             expiry_type: observable,
             form_components: observable,
+            setDigitStats: action.bound,
+            setDigitTick: action.bound,
             growth_rate: observable,
             has_cancellation: observable,
             has_equals_only: observable,
@@ -1249,6 +1255,14 @@ export default class TradeStore extends BaseStore {
 
     get show_digits_stats() {
         return isDigitTradeType(this.contract_type);
+    }
+
+    setDigitStats(digit_stats: number[]) {
+        this.digit_stats = digit_stats;
+    }
+
+    setDigitTick(tick: TickSpotData | null) {
+        this.digit_tick = tick;
     }
 
     setMobileDigitView(bool: boolean) {

@@ -13,9 +13,10 @@ import './verify-button.scss';
 
 type TVerifyButton = {
     phone: string | null | undefined;
+    setError: (value: string) => void;
 };
 
-export const VerifyButton = observer(({ phone }: TVerifyButton) => {
+export const VerifyButton = observer(({ phone, setError }: TVerifyButton) => {
     const [open_popover, setOpenPopover] = useState(false);
     const { client, ui } = useStore();
     const { setShouldShowPhoneNumberOTP } = ui;
@@ -42,6 +43,9 @@ export const VerifyButton = observer(({ phone }: TVerifyButton) => {
             setVerificationCode('', 'phone_number_verification');
             setShouldShowPhoneNumberOTP(false);
             sendPhoneNumberVerifyEmail();
+        } else {
+            //@ts-expect-error will fix this later
+            setError(error?.message);
         }
     };
 

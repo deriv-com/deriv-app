@@ -43,6 +43,7 @@ const PersonalDetailsForm = observer(() => {
     const [is_loading, setIsLoading] = useState(false);
     const [is_btn_loading, setIsBtnLoading] = useState(false);
     const [is_submit_success, setIsSubmitSuccess] = useState(false);
+    const [error, setError] = useState('');
     const invalidate = useInvalidateQuery();
     const history = useHistory();
 
@@ -370,11 +371,11 @@ const PersonalDetailsForm = observer(() => {
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             required
-                                            error={errors.phone}
+                                            error={error || errors.phone}
                                             disabled={isFieldDisabled('phone')}
                                             data-testid='dt_phone'
                                         />
-                                        <VerifyButton phone={values.phone} />
+                                        <VerifyButton phone={values.phone} setError={setError} />
                                     </fieldset>
                                 )}
                                 <Fragment>

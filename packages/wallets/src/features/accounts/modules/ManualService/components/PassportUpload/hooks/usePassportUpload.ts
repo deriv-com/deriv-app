@@ -11,7 +11,7 @@ const usePassportUpload = () => {
     const { error, isLoading, isSuccess, reset: resetError, upload } = useDocumentUpload();
 
     const submit = (values: FormikValues) => {
-        upload({
+        return upload({
             document_id: values.passportNumber,
             document_issuing_country: settings?.country_code ?? undefined,
             document_type: 'passport',
@@ -28,7 +28,7 @@ const usePassportUpload = () => {
     return {
         error: error?.error,
         initialValues,
-        isPassportUploadSuccess: isSuccess,
+        isSuccess,
         isUploading: isLoading,
         resetError,
         submit,

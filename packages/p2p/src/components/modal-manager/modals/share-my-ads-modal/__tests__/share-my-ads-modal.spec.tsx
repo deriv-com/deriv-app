@@ -3,6 +3,7 @@ import html2canvas from 'html2canvas';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ShareMyAdsModal from '../share-my-ads-modal';
+import { useDevice } from '@deriv-com/ui';
 
 const el_modal = document.createElement('div');
 
@@ -31,13 +32,12 @@ jest.mock('html2canvas', () => ({
     }),
 }));
 
-jest.mock('qrcode.react', () => ({ QRCodeSVG: () => <div>QR code</div> }));
-
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    DesktopWrapper: jest.fn(({ children }) => children),
-    MobileWrapper: jest.fn(({ children }) => children),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn().mockReturnValue({ isDesktop: true }),
 }));
+
+jest.mock('qrcode.react', () => ({ QRCodeSVG: () => <div>QR code</div> }));
 
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
     ...jest.requireActual('Components/modal-manager/modal-manager-context'),
@@ -72,6 +72,7 @@ describe('<ShareMyAdsModal />', () => {
     });
 
     it('should call setShowPopup when clicking on Share link', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         const mockShare = jest.fn().mockResolvedValue(true);
         global.navigator.share = mockShare;
 
@@ -85,6 +86,7 @@ describe('<ShareMyAdsModal />', () => {
     });
 
     it('should call onCopy function when clicking on copy icon', async () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         const writeText = jest.fn();
 
         Object.assign(navigator, {

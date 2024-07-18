@@ -1,34 +1,40 @@
 import React from 'react';
+import { Analytics, TEvents } from '@deriv-com/analytics';
 import { Button, Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
-import { useDevice } from '@deriv-com/ui';
+import { Localize, localize } from '@deriv/translations';
 
-type TStyles = {
-    titleFontSize: string;
-    iconHeight: number;
-    iconWidth: number;
+const trackAnalyticsEvent = (
+    action: TEvents['ce_tradershub_banner']['action'],
+    account_mode: TEvents['ce_tradershub_banner']['account_mode']
+) => {
+    Analytics.trackEvent('ce_tradershub_banner', {
+        action,
+        form_name: 'ce_tradershub_banner',
+        account_mode,
+        banner_name: 'lets_go_wallets_step_1_2',
+        banner_type: 'with_cta',
+    });
 };
 
-const WalletsBannerUpgrade = observer(() => {
-    const { traders_hub } = useStore();
-    const { isMobile, isTablet } = useDevice();
-    const { toggleWalletsUpgrade } = traders_hub;
-    const styles: TStyles = {
-        titleFontSize: 'm',
-        iconHeight: 148,
-        iconWidth: 360,
-    };
+type TProps = {
+    is_upgrading: boolean;
+};
 
-    if (isMobile) {
-        styles.titleFontSize = 'xs';
-        styles.iconHeight = 196;
-        styles.iconWidth = 196;
-    } else if (isTablet) {
-        styles.titleFontSize = 'xsm';
-        styles.iconHeight = 110;
-        styles.iconWidth = 268;
-    }
+const WalletsBannerUpgrade: React.FC<TProps> = observer(({ is_upgrading }) => {
+    const { traders_hub, ui } = useStore();
+    const { is_desktop, is_mobile } = ui;
+    const { is_demo, toggleWalletsUpgrade } = traders_hub;
+    const account_mode = is_demo ? 'demo' : 'real';
+
+    React.useEffect(() => {
+        trackAnalyticsEvent('open', account_mode);
+    }, [account_mode]);
+
+    const onWalletsUpgradeHandler = () => {
+        toggleWalletsUpgrade(true);
+        trackAnalyticsEvent('click_cta', account_mode);
+    };
 
     return (
         <div className='wallets-banner wallets-banner-upgrade'>
@@ -37,26 +43,26 @@ const WalletsBannerUpgrade = observer(() => {
                     <Localize
                         i18n_default_text='<0>Wallets</0><1> — A smarter way to manage your funds</1>'
                         components={[
-                            <Text key={0} weight='bold' size={styles.titleFontSize} />,
-                            <Text key={1} size={styles.titleFontSize} />,
+                            <Text key={0} weight='bold' size={is_desktop ? 'm' : 'xs'} />,
+                            <Text key={1} size={is_desktop ? 'm' : 'xs'} />,
                         ]}
                     />
                 </div>
                 <Button
                     className='wallets-banner-upgrade__button'
+                    is_disabled={is_upgrading}
+                    text={localize("Let's go")}
                     primary
                     large
-                    onClick={() => toggleWalletsUpgrade(true)}
-                >
-                    <Localize i18n_default_text="Let's go" />
-                </Button>
+                    onClick={onWalletsUpgradeHandler}
+                />
             </div>
             <Icon
-                icon={`IcAppstoreWalletsUpgradeCoins${isMobile ? '' : 'Horizontal'}`}
-                width={styles.iconWidth}
-                height={styles.iconHeight}
+                icon={`IcAppstoreWalletsUpgradeCoins${is_desktop ? 'Horizontal' : ''}`}
+                width={is_desktop ? 448 : 220}
+                height={is_desktop ? '100%' : 220}
                 className='wallets-banner-upgrade__image'
-                data_testid={`dt_wallets_upgrade_coins${isMobile ? '' : '_horizontal'}`}
+                data_testid={`dt_wallets_upgrade_coins${is_mobile ? '' : '_horizontal'}`}
             />
         </div>
     );

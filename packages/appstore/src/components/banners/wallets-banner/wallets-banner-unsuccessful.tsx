@@ -1,38 +1,36 @@
 import React from 'react';
+import { Analytics, TEvents } from '@deriv-com/analytics';
 import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { useDevice } from '@deriv-com/ui';
 
-type TStyles = {
-    titleFontSize: string;
-    descriptionFontSize: string;
-    iconHeight: number | string;
-    iconWidth: number;
+const trackAnalyticsEvent = (
+    action: TEvents['ce_tradershub_banner']['action'],
+    account_mode: TEvents['ce_tradershub_banner']['account_mode']
+) => {
+    Analytics.trackEvent('ce_tradershub_banner', {
+        action,
+        form_name: 'ce_tradershub_banner',
+        account_mode,
+        banner_name: 'setup_unsuccessful_wallets_step_3_2',
+        banner_type: 'with_cta',
+    });
 };
 
 const WalletsBannerUnsuccessful = observer(() => {
-    const { traders_hub } = useStore();
-    const { isMobile, isTablet } = useDevice();
-    const { toggleWalletsUpgrade } = traders_hub;
-    const styles: TStyles = {
-        titleFontSize: 'sm',
-        descriptionFontSize: 'xs',
-        iconHeight: 148,
-        iconWidth: 360,
-    };
+    const { traders_hub, ui } = useStore();
+    const { is_desktop } = ui;
+    const { is_demo, toggleWalletsUpgrade } = traders_hub;
+    const account_mode = is_demo ? 'demo' : 'real';
 
-    if (isMobile) {
-        styles.titleFontSize = 'xs';
-        styles.descriptionFontSize = 'xxxs';
-        styles.iconHeight = '100%';
-        styles.iconWidth = 216;
-    } else if (isTablet) {
-        styles.titleFontSize = 's';
-        styles.descriptionFontSize = 'xxs';
-        styles.iconHeight = 110;
-        styles.iconWidth = 220;
-    }
+    React.useEffect(() => {
+        trackAnalyticsEvent('open', account_mode);
+    }, [account_mode]);
+
+    const onWalletsUpgradeHandler = () => {
+        toggleWalletsUpgrade(true);
+        trackAnalyticsEvent('click_cta', account_mode);
+    };
 
     return (
         <div className='wallets-banner wallets-banner-unsuccessful'>
@@ -40,22 +38,27 @@ const WalletsBannerUnsuccessful = observer(() => {
                 <Localize
                     i18n_default_text='<0>Setup unsuccessful</0>'
                     components={[
-                        <Text key={0} line_height={!isMobile ? 'm' : 's'} size={styles.titleFontSize} weight='bold' />,
+                        <Text
+                            key={0}
+                            line_height={is_desktop ? 'm' : 's'}
+                            size={is_desktop ? 'sm' : 'xs'}
+                            weight='bold'
+                        />,
                     ]}
                 />
                 <div>
                     <Localize
                         i18n_default_text='<0>We’re unable to upgrade you to Wallets at this time and are working to get this fixed as soon as we can. Please </0><1>try again</1><0>.</0>'
                         components={[
-                            <Text key={0} line_height='s' size={styles.descriptionFontSize} />,
+                            <Text key={0} line_height='s' size={is_desktop ? 'xs' : 'xxxs'} />,
                             <Text
                                 key={1}
                                 className='wallets-banner-unsuccessful__clickable-text'
                                 color='red'
                                 line_height='s'
-                                size={styles.descriptionFontSize}
+                                size={is_desktop ? 'xs' : 'xxxs'}
                                 weight='bold'
-                                onClick={() => toggleWalletsUpgrade(true)}
+                                onClick={onWalletsUpgradeHandler}
                             />,
                         ]}
                     />
@@ -63,8 +66,8 @@ const WalletsBannerUnsuccessful = observer(() => {
             </div>
             <Icon
                 icon='IcAppstoreWalletsUpgradeUnsuccessful'
-                width={styles.iconWidth}
-                height={styles.iconHeight}
+                width={is_desktop ? 272 : 192}
+                height='100%'
                 className='wallets-banner-unsuccessful__image'
                 data_testid='dt_wallets_upgrade_unsuccessful'
             />

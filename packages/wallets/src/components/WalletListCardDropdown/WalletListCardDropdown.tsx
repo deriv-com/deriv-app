@@ -88,6 +88,7 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
             {walletList.length > 0 && (
                 <div className='wallets-listcard-dropdown' ref={dropdownRef}>
                     <WalletTextField
+                        data-testid='dt_wallets_listcard_dropdown'
                         inputWidth={inputWidth}
                         name='wallets-list-card-dropdown'
                         onClickCapture={handleInputClick}
@@ -119,7 +120,7 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
                                     className={classNames('wallets-listcard-dropdown__item', {
                                         'wallets-listcard-dropdown__item--active': loginId === wallet.loginid,
                                     })}
-                                    id={`wallets-listcard-dropdown__item-${index}`}
+                                    data-testid={`wallets-listcard-dropdown__item-${index}`}
                                     key={wallet.loginid}
                                     onClick={() => handleItemClick(wallet.loginid, reactNodeToString(wallet.text))}
                                 >

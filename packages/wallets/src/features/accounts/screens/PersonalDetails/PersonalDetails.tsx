@@ -81,6 +81,7 @@ const PersonalDetails = () => {
                     <div className='wallets-personal-details__form'>
                         <div className='wallets-personal-details__dropdown'>
                             <Dropdown
+                                data-testid='dt_wallets_personal_details_dropdown_citizenship'
                                 isFullWidth
                                 label='Citizenship*'
                                 list={residenceList.map(residence => ({
@@ -96,6 +97,7 @@ const PersonalDetails = () => {
                         </div>
                         <div className='wallets-personal-details__dropdown'>
                             <Dropdown
+                                data-testid='dt_wallets_personal_details_dropdown_pob'
                                 disabled={getSettings?.place_of_birth !== ''}
                                 isFullWidth
                                 label='Place of birth*'
@@ -112,6 +114,7 @@ const PersonalDetails = () => {
                         </div>
                         <div className='wallets-personal-details__dropdown'>
                             <Dropdown
+                                data-testid='dt_wallets_personal_details_dropdown_residence'
                                 errorMessage='Tax residence is required'
                                 isFullWidth
                                 isRequired
@@ -147,6 +150,7 @@ const PersonalDetails = () => {
                         />
                         <div className='wallets-personal-details__dropdown'>
                             <Dropdown
+                                data-testid='dt_wallets_personal_details_dropdown_openingreason'
                                 isFullWidth
                                 label='Account opening reason*'
                                 list={accountOpeningReasonList}

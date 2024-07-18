@@ -124,6 +124,7 @@ const IDVDocumentUpload = () => {
                 </div>
                 <div className='wallets-idv-document-upload__dropdown'>
                     <Dropdown
+                        data-testid='dt_wallets_idv_document_upload_dropdown'
                         errorMessage='Document type is required'
                         isFullWidth
                         isRequired

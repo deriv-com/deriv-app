@@ -52,6 +52,7 @@ const AddressSection: React.FC = () => {
                 />
                 <div className='wallets-address-section__dropdown'>
                     <Dropdown
+                        data-testid='dt_wallets_address_section_dropdown'
                         isFullWidth
                         label='State/Province'
                         list={statesList}

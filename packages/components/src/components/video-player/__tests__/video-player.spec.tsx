@@ -24,8 +24,7 @@ const mocked_props: React.ComponentProps<typeof VideoPlayer> = {
     src: 'test_src',
 };
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('../../icon', () => ({
     Icon: jest.fn(({ icon }: { icon: string }) => <div>{icon}</div>),
 }));
 
@@ -33,7 +32,7 @@ jest.mock('@cloudflare/stream-react', () => ({
     ...jest.requireActual('@cloudflare/stream-react'),
     Stream: jest.fn(({ onEnded, onPlay, onLoadedMetaData, streamRef, src }: TMockedStreamProps) => (
         <video
-            data-testid='dt_video'
+            data-testid={video_data_testid}
             onClick={onEnded}
             onLoadedData={onLoadedMetaData}
             onPlay={onPlay}

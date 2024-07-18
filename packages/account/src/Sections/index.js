@@ -8,7 +8,6 @@ import ProofOfOwnership from 'Sections/Verification/ProofOfOwnership';
 import ProofOfIncome from 'Sections/Verification/ProofOfIncome';
 import Account from 'Containers/Account/account';
 import DeactivateAccount from 'Sections/Security/DeactivateAccount'; // TODO: Remove once mobile team has changed this link
-import PhoneVerificationPage from 'Sections/Profile/PhoneVerification';
 
 export {
     Passkeys,
@@ -20,7 +19,6 @@ export {
     ProofOfAddress,
     ProofOfOwnership,
     ProofOfIncome,
-    PhoneVerificationPage,
     Account,
     DeactivateAccount,
 };

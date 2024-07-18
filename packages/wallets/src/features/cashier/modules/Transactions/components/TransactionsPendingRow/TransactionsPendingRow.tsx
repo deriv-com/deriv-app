@@ -164,30 +164,27 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                     )}
                 </div>
                 <div className='wallets-transactions-pending-row__transaction-status'>
-                    <button
+                    <Tooltip
+                        as='button'
                         className='wallets-transactions-pending-row__transaction-status-button'
                         data-testid='dt_transaction_status_button'
+                        hideTooltip={isMobile}
                         onClick={onMobileStatusClick}
+                        tooltipContent={transaction.description}
+                        tooltipPosition='left'
                     >
-                        <Tooltip
-                            as='div'
-                            hideTooltip={isMobile}
-                            tooltipContent={transaction.description}
-                            tooltipPosition='left'
-                        >
-                            <div
-                                className={classNames(
-                                    'wallets-transactions-pending-row__transaction-status-dot',
-                                    `wallets-transactions-pending-row__transaction-status-dot--${transaction.status_code
-                                        .toLowerCase()
-                                        .replace('_', '-')}`
-                                )}
-                            />
-                        </Tooltip>
+                        <div
+                            className={classNames(
+                                'wallets-transactions-pending-row__transaction-status-dot',
+                                `wallets-transactions-pending-row__transaction-status-dot--${transaction.status_code
+                                    .toLowerCase()
+                                    .replace('_', '-')}`
+                            )}
+                        />
                         <WalletText color='general' size='sm'>
                             {transaction.status_name}
                         </WalletText>
-                    </button>
+                    </Tooltip>
                     {!isMobile && !!transaction.is_valid_to_cancel && (
                         <button
                             className='wallets-transactions-pending-row__transaction-cancel-button'

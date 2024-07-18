@@ -60,8 +60,8 @@ const SymbolsSearchField = observer(
         return (
             <div
                 className={clsx('symbols-search-field__container', {
-                    'symbols-search-field--isFocused': isSearching,
-                    'symbols-search-field--isHidden': !isSearchFieldVisible,
+                    'symbols-search-field--is-focused': isSearching,
+                    'symbols-search-field--is-hidden': !isSearchFieldVisible,
                 })}
             >
                 <SearchField

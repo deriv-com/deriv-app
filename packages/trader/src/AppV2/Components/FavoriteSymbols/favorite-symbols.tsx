@@ -1,7 +1,7 @@
 import React from 'react';
 import MarketCategoryItem from '../MarketCategoryItem';
 import { useGetFavoriteSymbols } from 'AppV2/Hooks/useGetFavoriteSymbols';
-import NoFavoriteSymbol from './no-favorite-symbol';
+import NoFavoriteSymbols from './no-favorite-symbols';
 import { observer } from '@deriv/stores';
 
 type TFavoriteSymbols = {
@@ -28,7 +28,7 @@ const FavoriteSymbols = observer(({ selectedSymbol, setSelectedSymbol, setIsOpen
                     ))}
                 </div>
             ) : (
-                <NoFavoriteSymbol />
+                <NoFavoriteSymbols />
             )}
         </React.Fragment>
     );

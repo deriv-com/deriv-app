@@ -15,16 +15,16 @@ type TMarketCategory = {
 
 const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen, isOpen }: TMarketCategory) => {
     const itemRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+    const timerRef = useRef<NodeJS.Timeout>();
 
     useEffect(() => {
-        let timer: ReturnType<typeof setTimeout>;
         if (isOpen && category.market === 'all' && selectedSymbol && itemRefs.current[selectedSymbol]) {
-            timer = setTimeout(() => {
+            timerRef.current = setTimeout(() => {
                 itemRefs.current[selectedSymbol]?.scrollIntoView({ block: 'center' });
             }, 50);
         }
         return () => {
-            clearInterval(timer);
+            clearTimeout(timerRef.current);
         };
     }, [isOpen, category.market, selectedSymbol]);
 

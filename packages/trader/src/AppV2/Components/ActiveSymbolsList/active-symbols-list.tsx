@@ -20,7 +20,7 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
     const [searchValue, setSearchValue] = useState('');
     const { symbol } = useTraderStore();
 
-    const marketCategoriesRef = useRef<HTMLDivElement | null>(null);
+    const marketCategoriesRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setSelectedSymbol(symbol ?? default_symbol);

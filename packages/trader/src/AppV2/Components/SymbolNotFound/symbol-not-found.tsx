@@ -10,9 +10,9 @@ const SymbolNotFound = ({ searchTerm }: { searchTerm?: string }) => {
                 fill='var(--semantic-color-slate-solid-surface-static-midLowest)'
                 iconSize='2xl'
             />
-            <div className='symbol-not-found--content'>
+            <div className='symbol-not-found__content'>
                 <Text size='lg' bold color='quill-typography__color--subtle'>
-                    <Localize i18n_default_text={`No results for ${searchTerm}`} />
+                    <Localize i18n_default_text='No results for {{searchTerm}}' values={{ searchTerm }} />
                 </Text>
                 <Text size='md' color='quill-typography__color--subtle'>
                     <Localize i18n_default_text='Try searching for something else.' />

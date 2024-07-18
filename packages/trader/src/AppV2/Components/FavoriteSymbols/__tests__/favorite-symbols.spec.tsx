@@ -14,7 +14,7 @@ const mockFavoriteSymbols = [
 ];
 
 jest.mock('../../MarketCategoryItem', () => jest.fn(() => 'MockedMarketCategoryItem'));
-jest.mock('../no-favorite-symbol', () => jest.fn(() => 'No favorite symbols'));
+jest.mock('../no-favorite-symbols', () => jest.fn(() => 'No favorite symbols'));
 
 describe('FavoriteSymbols Component', () => {
     const mock_props = {

@@ -1,10 +1,10 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import NoFavoriteSymbol from '../no-favorite-symbol';
+import NoFavoriteSymbols from '../no-favorite-symbols';
 
 describe('<NoFavoriteSymbol />', () => {
     it('should show correct text', () => {
-        render(<NoFavoriteSymbol />);
+        render(<NoFavoriteSymbols />);
         expect(screen.getByText('No favourites')).toBeInTheDocument();
         expect(screen.getByText('Your favourite markets will appear here.')).toBeInTheDocument();
     });

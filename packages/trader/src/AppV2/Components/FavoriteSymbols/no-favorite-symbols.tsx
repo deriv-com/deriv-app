@@ -3,7 +3,7 @@ import { Text } from '@deriv-com/quill-ui';
 import { StandaloneStarFillIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 
-const NoFavoriteSymbol = () => (
+const NoFavoriteSymbols = () => (
     <div className='favorite-symbols--no-fav'>
         <StandaloneStarFillIcon fill='var(--semantic-color-slate-solid-surface-static-midLowest)' iconSize='2xl' />
         <Text size='lg' bold color='quill-typography__color--subtle'>
@@ -15,4 +15,4 @@ const NoFavoriteSymbol = () => (
     </div>
 );
 
-export default NoFavoriteSymbol;
+export default NoFavoriteSymbols;

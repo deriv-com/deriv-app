@@ -17,7 +17,7 @@ const useActiveSymbols = ({ contract_type = [], barrier_category = [] }: TUseAct
 
     const trader = useTraderStore();
 
-    const default_symbol_ref = useRef<string>('');
+    const default_symbol_ref = useRef('');
     const previous_logged_in = usePrevious(is_logged_in);
 
     const fetchActiveSymbols = useCallback(async () => {

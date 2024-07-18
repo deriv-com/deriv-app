@@ -41,10 +41,10 @@ describe('sortSymbols', () => {
     });
     it('should handle symbols with same market correctly', () => {
         const symbolsList = [
-            { symbol: 'EURUSD', display_name: 'EUR/USD', market: 'forex', submarket_display_name: 'Euro/USD' },
             { symbol: 'GBPUSD', display_name: 'GBP/USD', market: 'forex', submarket_display_name: 'Pound/USD' },
-            { symbol: 'BTCUSD', display_name: 'BTC/USD', market: 'cryptocurrency', submarket_display_name: 'Bitcoin' },
+            { symbol: 'EURUSD', display_name: 'EUR/USD', market: 'forex', submarket_display_name: 'Euro/USD' },
             { symbol: 'ETHUSD', display_name: 'ETH/USD', market: 'cryptocurrency', submarket_display_name: 'Ethereum' },
+            { symbol: 'BTCUSD', display_name: 'BTC/USD', market: 'cryptocurrency', submarket_display_name: 'Bitcoin' },
         ];
 
         const sortedSymbols = sortSymbols(symbolsList as ActiveSymbols);

@@ -1,5 +1,6 @@
 import React from 'react';
 import { SideNote } from '@deriv/components';
+import { isDesktop } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { PageContainer } from '../../components/page-container';
@@ -18,7 +19,7 @@ const DepositFiat: React.FC = observer(() => {
             hide_breadcrumb={is_low_risk_cr_eu_real}
             right={
                 <>
-                    <SideNoteFAQ transaction_type='deposit' />
+                    {isDesktop() && <SideNoteFAQ transaction_type='deposit' />}
                     <SideNote
                         description={
                             <Localize

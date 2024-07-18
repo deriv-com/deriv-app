@@ -1,6 +1,7 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { useCurrentCurrencyConfig } from '@deriv/hooks';
+import { isDesktop } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { PageContainer } from 'Components/page-container';
 import TransactionsCryptoHistory from '../../components/transactions-crypto-history';
@@ -41,7 +42,7 @@ const WithdrawalPageContent = observer(() => {
 
     if (!!currency_config && !currency_config?.is_crypto && (verification_code || iframe_url))
         return (
-            <PageContainer hide_breadcrumb right={<SideNoteFAQ transaction_type='withdraw' />}>
+            <PageContainer hide_breadcrumb right={isDesktop() ? <SideNoteFAQ transaction_type='withdraw' /> : <></>}>
                 <WithdrawalFiat />
             </PageContainer>
         );

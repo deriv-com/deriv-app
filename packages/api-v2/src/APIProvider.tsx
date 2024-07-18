@@ -151,7 +151,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
 
         const { payload: _payload } = payload ?? {};
 
-        const result: Awaited<ReturnType<TSubscribeFunction>> = {
+        const result: UnwrappedSubscription = {
             id,
             subscription: {
                 subscribe: (onData: (response: TSocketResponseData<TSocketSubscribableEndpointNames>) => void) => {

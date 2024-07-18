@@ -1,12 +1,11 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import classNames from 'classnames';
-
 import { Button, Icon, Modal, Text } from '@deriv/components';
-import { getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
+import { getCurrencyDisplayCode, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-
+import { useDevice } from '@deriv-com/ui';
 import AccountPlatformIcon from '../../../components/account-platform-icon';
 import { useCashierStore } from '../../../stores/useCashierStores';
 
@@ -27,6 +26,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
     const { is_from_derivgo } = common;
     const { loginid, switchAccount } = client;
     const { closeAccountTransferModal } = traders_hub;
+    const { isDesktop } = useDevice();
     const { receipt, resetAccountTransfer, selected_from, selected_to, setShouldSwitchAccount } = account_transfer;
 
     const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
@@ -146,7 +146,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
             <Modal
                 is_open={is_switch_visible}
                 toggleModal={toggleSwitchAlert}
-                has_close_icon={isMobile()}
+                has_close_icon={!isDesktop}
                 className='account_transfer_switch_modal'
                 small
                 title={localize(`Switch to ${switch_to.currency} account?`)}

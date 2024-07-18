@@ -1,5 +1,5 @@
 import React from 'react';
-import { MT5_ACCOUNT_STATUS, isMobile } from '@deriv/shared';
+import { MT5_ACCOUNT_STATUS } from '@deriv/shared';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
@@ -8,9 +8,9 @@ import AccountTransferForm from '../account-transfer-form';
 import userEvent from '@testing-library/user-event';
 import { useMFAccountStatus } from '@deriv/hooks';
 
-jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
-    ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
-    isMobile: jest.fn(),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
 jest.mock('@deriv/hooks', () => ({
@@ -206,7 +206,6 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should not allow to do transfer if accounts from and to are same', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
         mockRootStore.modules.cashier.account_transfer.accounts_list[0].is_mt = true;
         mockRootStore.modules.cashier.account_transfer.selected_from.is_mt = true;
         mockRootStore.modules.cashier.account_transfer.selected_from.balance = 200;
@@ -248,7 +247,6 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show proper hint about mt5 remained transfers', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
         mockRootStore.client.account_limits = {
             daily_transfers: {
                 dxtrade: {},
@@ -267,8 +265,6 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show proper hint about dxtrade remained transfers', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-
         mockRootStore.client.account_limits = {
             daily_transfers: {
                 dxtrade: {
@@ -289,7 +285,6 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show proper hint about internal remained transfers', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
         mockRootStore.client.account_limits = {
             daily_transfers: {
                 dxtrade: {},

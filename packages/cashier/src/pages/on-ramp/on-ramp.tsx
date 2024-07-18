@@ -1,9 +1,10 @@
 import React from 'react';
 import { Loading, Modal, SelectNative, ReadMore, Text } from '@deriv/components';
 import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
-import { routes, isMobile } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import CashierLocked from '../../components/cashier-locked';
 import SideNote from '../../components/side-note';
 import OnRampProviderCard from './on-ramp-provider-card';
@@ -68,6 +69,7 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
         setIsOnRampModalOpen,
         should_show_dialog,
     } = onramp;
+    const { isDesktop } = useDevice();
     const { is_cashier_onboarding, is_loading, cashier_route_tab_index } = general_store;
     const is_cashier_locked = useCashierLocked();
     const { is_switching } = client;
@@ -114,7 +116,7 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
     return (
         <React.Fragment>
             <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>
-                {isMobile() && (
+                {!isDesktop && (
                     <React.Fragment>
                         <SelectNative
                             data_testid='dt_on_ramp_select_native'
@@ -134,8 +136,8 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
                     </React.Fragment>
                 )}
                 <Text
-                    color={isMobile() ? 'less-prominent' : 'general'}
-                    weight={isMobile() ? 'normal' : 'bold'}
+                    color={isDesktop ? 'general' : 'less-prominent'}
+                    weight={isDesktop ? 'bold' : 'normal'}
                     align='center'
                     line_height='m'
                     className='on-ramp__page-header'

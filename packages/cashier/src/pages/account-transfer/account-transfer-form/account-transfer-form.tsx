@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { Field, FieldProps, Form, Formik } from 'formik';
-
 import { Button, Dropdown, InlineMessage, Input, Loading, Money, Text } from '@deriv/components';
 import {
     getCurrencyDisplayCode,
@@ -16,7 +15,8 @@ import {
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-
+import { useMFAccountStatus, useExchangeRate } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 import AccountPlatformIcon from '../../../components/account-platform-icon';
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
 import ErrorDialog from '../../../components/error-dialog';
@@ -25,10 +25,7 @@ import SideNote from '../../../components/side-note';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import { TAccount, TAccountsList, TError, TReactChangeEvent } from '../../../types';
 import AccountTransferReceipt from '../account-transfer-receipt/account-transfer-receipt';
-import { useMFAccountStatus, useExchangeRate } from '@deriv/hooks';
-
 import AccountTransferNote from './account-transfer-form-side-note';
-
 import './account-transfer-form.scss';
 
 type TAccountTransferFormProps = {
@@ -124,8 +121,7 @@ const AccountTransferForm = observer(
             common: { is_from_derivgo },
             traders_hub: { closeAccountTransferModal },
         } = useStore();
-
-        const { is_mobile } = ui;
+        const { isDesktop, isMobile } = useDevice();
         const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
         const mf_account_status = useMFAccountStatus();
         const { account_transfer, crypto_fiat_converter, general_store } = useCashierStore();
@@ -198,7 +194,7 @@ const AccountTransferForm = observer(
                     <Localize
                         i18n_default_text='<0>Verify your account to transfer funds.</0> <1>Verify now</1>'
                         components={[
-                            <Text color='var(--status-info)' key={0} size={is_mobile ? 'xxxs' : 'xxs'} />,
+                            <Text color='var(--status-info)' key={0} size={!isMobile ? 'xxs' : 'xxxs'} />,
                             <Link
                                 className='account-transfer-form__link'
                                 key={1}
@@ -211,7 +207,7 @@ const AccountTransferForm = observer(
 
             if (is_mf_status_pending)
                 return (
-                    <Text color='var(--status-info)' size={is_mobile ? 'xxxs' : 'xxs'}>
+                    <Text color='var(--status-info)' size={!isMobile ? 'xxs' : 'xxxs'}>
                         <Localize i18n_default_text='Unavailable as your documents are still under review' />
                     </Text>
                 );
@@ -575,7 +571,7 @@ const AccountTransferForm = observer(
                                                 label={localize('To')}
                                                 list={to_accounts}
                                                 list_height='404'
-                                                initial_height_offset={is_mobile ? 160 : 180}
+                                                initial_height_offset={isDesktop ? 180 : 160}
                                                 name='transfer_to'
                                                 value={selected_to.value}
                                                 onChange={(e: TReactChangeEvent) => {
@@ -756,8 +752,8 @@ const AccountTransferForm = observer(
                                                 </Button>
                                             </div>
                                         </div>
-                                        {!is_from_outside_cashier && (
-                                            <SideNote title={<Localize i18n_default_text='Notes' />} is_mobile>
+                                        {!isDesktop && !is_from_outside_cashier && (
+                                            <SideNote title={<Localize i18n_default_text='Notes' />}>
                                                 <AccountTransferNote
                                                     allowed_transfers_count={{
                                                         internal: internal_remaining_transfers?.allowed,

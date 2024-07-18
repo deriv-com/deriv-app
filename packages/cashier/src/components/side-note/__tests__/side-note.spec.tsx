@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import SideNote from '../side-note';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 describe('<SideNote />', () => {
     const props = {
@@ -10,7 +11,11 @@ describe('<SideNote />', () => {
     };
 
     it('should show proper title and messages', () => {
-        render(<SideNote {...props} />);
+        render(
+            <StoreProvider store={mockStore({})}>
+                <SideNote {...props} />;
+            </StoreProvider>
+        );
 
         expect(screen.getByText('First side note message')).toBeInTheDocument();
         expect(screen.getByText('Second side note message')).toBeInTheDocument();
@@ -18,7 +23,11 @@ describe('<SideNote />', () => {
     });
 
     it('should show side note bullet dots when "has_bullets=true"', () => {
-        render(<SideNote {...props} has_bullets />);
+        render(
+            <StoreProvider store={mockStore({})}>
+                <SideNote {...props} has_bullets />;
+            </StoreProvider>
+        );
 
         expect(screen.getByTestId('dt_side_note_bullet_wrapper_0')).toBeInTheDocument();
         expect(screen.getByTestId('dt_side_note_bullet_0')).toBeInTheDocument();

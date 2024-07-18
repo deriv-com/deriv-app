@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
+import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 import './side-note.scss';
 
 type TSideNoteTitle = {
@@ -43,52 +43,34 @@ const SideNoteBullet = ({ children, id }: TSideNoteBullet) => (
 );
 
 /** @deprecated Use `SideNote` from `@deriv/components` package instead. */
-const SideNote = ({
-    children,
-    className,
-    has_bullets = true,
-    has_title = true,
-    is_mobile,
-    side_notes,
-    title,
-}: TSideNoteProps) => {
-    const Wrapper = is_mobile ? MobileWrapper : DesktopWrapper;
+const SideNote = ({ children, className, has_bullets = true, has_title = true, side_notes, title }: TSideNoteProps) => {
+    const { isDesktop } = useDevice();
 
     return (
         <>
             {(children || side_notes?.length) && (
-                <Wrapper>
-                    <div
-                        className={classNames(
-                            'side-note-legacy',
-                            { 'side-note-legacy--mobile': isMobile() },
-                            className
+                <div className={classNames('side-note-legacy', { 'side-note-legacy--mobile': !isDesktop }, className)}>
+                    {has_title && (
+                        <SideNoteTitle
+                            title={title}
+                            children_length={Array.isArray(children) ? children?.length : 1}
+                            side_notes_length={side_notes?.length}
+                        />
+                    )}
+                    {children && <>{children}</>}
+                    {!children &&
+                        side_notes?.map((note, i) =>
+                            has_bullets ? (
+                                <SideNoteBullet id={i} key={i}>
+                                    {note}
+                                </SideNoteBullet>
+                            ) : (
+                                <Text key={i} className='side-note-legacy__text' size='xxs' as='p'>
+                                    {note}
+                                </Text>
+                            )
                         )}
-                    >
-                        {has_title && (
-                            <SideNoteTitle
-                                title={title}
-                                children_length={Array.isArray(children) ? children?.length : 1}
-                                side_notes_length={side_notes?.length}
-                            />
-                        )}
-
-                        {children && <>{children}</>}
-
-                        {!children &&
-                            side_notes?.map((note, i) =>
-                                has_bullets ? (
-                                    <SideNoteBullet id={i} key={i}>
-                                        {note}
-                                    </SideNoteBullet>
-                                ) : (
-                                    <Text key={i} className='side-note-legacy__text' size='xxs' as='p'>
-                                        {note}
-                                    </Text>
-                                )
-                            )}
-                    </div>
-                </Wrapper>
+                </div>
             )}
         </>
     );

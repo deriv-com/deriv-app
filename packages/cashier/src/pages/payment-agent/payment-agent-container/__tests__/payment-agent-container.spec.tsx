@@ -1,13 +1,13 @@
 import React from 'react';
 import { fireEvent, screen, render } from '@testing-library/react';
 import PaymentAgentContainer from '../payment-agent-container';
-import { isMobile } from '@deriv/shared';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: false })),
 }));
 
 jest.mock('@deriv/components', () => ({
@@ -104,7 +104,7 @@ describe('<PaymentAgentContainer />', () => {
         expect(screen.getByText('Further information CR90000000')).toBeInTheDocument();
         expect(screen.getByText('Payment Agent of CR90000002')).toBeInTheDocument();
         expect(screen.getByText('Further information CR90000002')).toBeInTheDocument();
-        expect(screen.getAllByTestId('dt_payment_method_icon').length).toBe(2);
+        expect(screen.getAllByTestId('dt_payment_method_icon')).toHaveLength(2);
     });
 
     it('should show proper header when is_deposit is equal to false', () => {
@@ -142,7 +142,7 @@ describe('<PaymentAgentContainer />', () => {
     });
 
     it('should show PaymentAgentDisclaimer in mobile view', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         renderPaymentAgentContainer();
 
         expect(screen.getByText('PaymentAgentDisclaimer')).toBeInTheDocument();

@@ -1,13 +1,13 @@
 import React from 'react';
 
 const Localize = ({ i18n_default_text, components = [], values = {} }) => {
-    // Split text into parts, extracting placeholders for components
+    // Split text into parts, extracting placeholders for components and values
     const parts = i18n_default_text.split(/(<\d+>.*?<\/\d+>|{{\w+}})/g);
 
     return (
         <>
             {parts.map((part, index) => {
-                // Handle component placeholders
+                // Replace component placeholders with actual components
                 const componentMatch = part.match(/<(\d+)>(.*?)<\/\1>/);
                 if (componentMatch) {
                     const componentIndex = parseInt(componentMatch[1]);
@@ -15,7 +15,7 @@ const Localize = ({ i18n_default_text, components = [], values = {} }) => {
                     const Component = components[componentIndex];
                     return Component ? React.cloneElement(Component, { key: index, children: content }) : content;
                 }
-                // Replace placeholders with actual values
+                // Replace value placeholders with actual values
                 const valueMatch = part.match(/{{(\w+)}}/);
                 if (valueMatch) {
                     const valueKey = valueMatch[1];

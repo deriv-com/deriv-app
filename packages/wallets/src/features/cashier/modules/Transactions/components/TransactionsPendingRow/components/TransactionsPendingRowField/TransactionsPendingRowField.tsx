@@ -52,11 +52,7 @@ const TransactionsPendingRowField: React.FC<TProps> = ({ className, hint, name, 
             {hint ? (
                 <Tooltip
                     as='div'
-                    tooltipContainerClassName={
-                        isMobile
-                            ? 'wallets-transactions-pending-row-field__tooltip--hidden'
-                            : 'wallets-transactions-pending-row-field__tooltip'
-                    }
+                    hideTooltip={isMobile}
                     tooltipContent={hint.text}
                     tooltipPosition={hint.tooltipAlignment}
                 >

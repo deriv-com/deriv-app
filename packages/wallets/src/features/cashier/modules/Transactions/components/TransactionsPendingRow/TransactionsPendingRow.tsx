@@ -171,11 +171,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                     >
                         <Tooltip
                             as='div'
-                            tooltipContainerClassName={
-                                isMobile
-                                    ? 'wallets-transactions-pending-row__tooltip--hidden'
-                                    : 'wallets-transactions-pending-row__tooltip'
-                            }
+                            hideTooltip={isMobile}
                             tooltipContent={transaction.description}
                             tooltipPosition='left'
                         >

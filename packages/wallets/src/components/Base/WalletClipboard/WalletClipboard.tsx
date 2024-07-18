@@ -3,7 +3,6 @@ import { useCopyToClipboard } from 'usehooks-ts';
 import { LegacyCopy1pxIcon, LegacyWonIcon } from '@deriv/quill-icons';
 import { Tooltip } from '@deriv-com/ui';
 import useDevice from '../../../hooks/useDevice';
-import './WalletClipboard.scss';
 
 type TProps = {
     popoverAlignment?: ComponentProps<typeof Tooltip>['tooltipPosition'];
@@ -32,8 +31,8 @@ const WalletClipboard = ({ popoverAlignment = 'right', textCopy }: TProps) => {
     return (
         <Tooltip
             as='button'
+            hideTooltip={isMobile}
             onClick={onClick}
-            tooltipContainerClassName={isMobile ? 'wallets-clipboard--hidden' : 'wallets-clipboard'}
             tooltipContent={isCopied ? 'Copied!' : 'Copy'}
             tooltipPosition={popoverAlignment}
         >

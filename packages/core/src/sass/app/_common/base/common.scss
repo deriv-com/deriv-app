@@ -139,8 +139,7 @@ html,
     &--prominent {
         color: var(--text-prominent);
     }
-    &--tnc {
-        text-transform: lowercase;
+    &--no-underline {
         &:hover {
             text-decoration: none;
         }

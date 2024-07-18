@@ -46,37 +46,43 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
     const history = useHistory();
     const location = useLocation();
     const { isMobile } = useDevice();
-    const [nextLocation, setNextLocation] = React.useState<string | null>(null); // Track next location to navigate to
+    const [nextLocation, setNextLocation] = React.useState(location);
+
+    const handleHistoryBlock = React.useCallback(
+        (locate: { pathname: string }) => {
+            if (dirty && !showModal) {
+                setNextLocation(locate.pathname);
+                setShowModal(true);
+                return false;
+            }
+            return true;
+        },
+        [dirty, showModal]
+    );
 
     React.useEffect(() => {
-        const unblock = history.block((loc: typeof location) => {
-            if (dirty && !showModal) {
-                setNextLocation(loc.pathname); // Store next location
-                setShowModal(true); // Show modal to confirm leaving
-                return false; // Prevent navigation until confirmed
-            }
-            return true; // Allow navigation if not dirty or already showing modal
-        });
+        const unblock = history.block(handleHistoryBlock);
 
         return () => {
-            unblock(); // Cleanup: release the blocking prompt
+            unblock();
         };
-    }, [dirty, history, showModal]);
+    }, [history, handleHistoryBlock]);
 
     const leave = React.useCallback(() => {
         if (nextLocation) {
-            history.push(nextLocation); // Navigate to the stored next location
+            setShowModal(true);
+            history.push(nextLocation);
         }
-        setShowModal(false); // Hide modal after confirming leave
         if (onDirty) {
-            onDirty(true); // Trigger onDirty callback if provided
+            onDirty(true);
         }
     }, [nextLocation, history, onDirty]);
 
     const back = () => {
-        setShowModal(false); // Hide modal on cancel
+        setNextLocation(location);
+        setShowModal(false);
         if (onDirty) {
-            onDirty(false); // Trigger onDirty callback with false on cancel
+            onDirty(false);
         }
     };
 

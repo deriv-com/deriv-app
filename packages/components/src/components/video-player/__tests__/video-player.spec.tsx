@@ -25,7 +25,8 @@ const mocked_props: React.ComponentProps<typeof VideoPlayer> = {
 };
 
 jest.mock('../../icon', () => ({
-    Icon: jest.fn(({ icon }: { icon: string }) => <div>{icon}</div>),
+    __esModule: true,
+    default: jest.fn(({ icon }: { icon: string }) => <div>{icon}</div>),
 }));
 
 jest.mock('@cloudflare/stream-react', () => ({

@@ -4,9 +4,9 @@ import { Text } from '@deriv/components';
 import { motion } from 'framer-motion';
 
 type WheelPickerMobileProps = {
-    defaultValue?: string;
-    onChange?: (val: string) => void;
-    options?: string[];
+    defaultValue?: number;
+    onChange?: (val: number) => void;
+    options: number[];
     currency: string;
     optionHeight?: number;
 };
@@ -48,7 +48,7 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
     defaultValue,
     onChange,
     currency,
-    options = [],
+    options,
     optionHeight = 30,
 }) => {
     const [selectedIndex, setSelectedIndex] = useState<number>(options.length - 1);
@@ -88,7 +88,7 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
     useEffect(() => {
         const defaultValueIndex = options.findIndex(o => o === defaultValue);
         setSelectedIndex(defaultValueIndex !== -1 ? defaultValueIndex : options.length - 1);
-    }, [defaultValue, options]);
+    }, []);
 
     useEffect(() => {
         const translateY = optionHeight * selectedIndex;

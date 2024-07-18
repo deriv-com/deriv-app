@@ -9,26 +9,17 @@ import { useDevice } from '@deriv-com/ui';
 import PayoutPerPointInput from 'Modules/Trading/Components/Elements/PayoutPerPoint/payout-per-point-input';
 
 const BarrierSelector = observer(() => {
-    const { barrier_1, onChange, setHoveredBarrier, barrier_choices, togglePayoutWheelPicker } = useTraderStore();
-    const [is_barriers_table_expanded, setIsBarriersTableExpanded] = React.useState(false);
+    const { barrier_1, payout_choices, setPayoutWheelPicker, togglePayoutWheelPicker, payout_per_point, currency } =
+        useTraderStore();
     const [selected_barrier, setSelectedBarrier] = React.useState(barrier_1);
     const { isMobile } = useDevice();
 
     const toggleBarriersTable = () => {
-        setIsBarriersTableExpanded(!is_barriers_table_expanded);
         togglePayoutWheelPicker();
     };
 
-    const onBarrierClick = (barrier: string) => {
-        setHoveredBarrier('');
-        setSelectedBarrier(barrier);
-        onChange({
-            target: {
-                name: 'barrier_1',
-                value: barrier,
-            },
-        });
-        setIsBarriersTableExpanded(false);
+    const onPayoutClick = (value: number) => {
+        setPayoutWheelPicker(value);
     };
 
     React.useEffect(() => {
@@ -46,7 +37,7 @@ const BarrierSelector = observer(() => {
             <React.Fragment>
                 <div className='mobile-widget' onClick={toggleBarriersTable}>
                     <Text size='xs' color='prominent' align='center'>
-                        {localize('Spot')}
+                        {payout_per_point}
                     </Text>
                     <Text size='xs' color='prominent' align='center' weight='bold'>
                         {barrier_1}
@@ -62,39 +53,13 @@ const BarrierSelector = observer(() => {
     return (
         <React.Fragment>
             <PayoutPerPointInput
-                barriersList={barrier_choices}
-                onBarrierClick={onBarrierClick}
+                currency={currency}
+                defaultPayout={payout_per_point}
+                barriersList={payout_choices}
+                onPayoutClick={onPayoutClick}
                 tooltipText={header_tooltip_text}
                 selectedBarrier={selected_barrier}
             />
-            <Fieldset
-                className='trade-container__fieldset trade-container__barriers'
-                header={localize('Barrier')}
-                header_tooltip={header_tooltip_text}
-            >
-                <div onClick={toggleBarriersTable} className='trade-container__barriers__wrapper'>
-                    <Text size='xs' className='trade-container__barriers-spot'>
-                        {localize('Spot')}
-                    </Text>
-                    <Text size='xs' className='trade-container__barriers-value' data-testid='current_barrier'>
-                        {barrier_1}
-                        <Icon icon='IcChevronLeft' className='trade-container__barriers-value--arrow-right' />
-                    </Text>
-                </div>
-            </Fieldset>
-            {is_barriers_table_expanded && (
-                <BarriersList
-                    className='trade-container__barriers-table'
-                    header={localize('Barriers')}
-                    barriers_list={barrier_choices}
-                    selected_item={selected_barrier}
-                    show_table={is_barriers_table_expanded}
-                    subheader={localize('Distance to current spot')}
-                    onClick={onBarrierClick}
-                    onClickCross={toggleBarriersTable}
-                    onHover={setHoveredBarrier}
-                />
-            )}
         </React.Fragment>
     );
 });

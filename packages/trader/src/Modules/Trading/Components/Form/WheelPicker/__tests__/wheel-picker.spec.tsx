@@ -4,7 +4,7 @@ import WheelPicker from '../wheel-picker';
 import userEvent from '@testing-library/user-event';
 
 describe('WheelPicker', () => {
-    const options = ['Option 1', 'Option 2', 'Option 3'];
+    const options = [31, 35, 39];
     const mockOnBarrierClick = jest.fn();
 
     afterEach(() => {
@@ -12,47 +12,47 @@ describe('WheelPicker', () => {
     });
 
     it('renders correctly with the initial state', () => {
-        render(<WheelPicker options={options} onBarrierClick={mockOnBarrierClick} />);
-        expect(screen.getByText('Option 1')).toBeInTheDocument();
+        render(<WheelPicker options={options} onClick={mockOnBarrierClick} />);
+        expect(screen.getByText(31)).toBeInTheDocument();
     });
 
     it('calls onBarrierClick when the value changes', () => {
-        render(<WheelPicker options={options} onBarrierClick={mockOnBarrierClick} />);
+        render(<WheelPicker options={options} onClick={mockOnBarrierClick} />);
 
         const increaseButton = screen.getByTestId('up-btn');
         userEvent.click(increaseButton);
-        expect(mockOnBarrierClick).toHaveBeenCalledWith('Option 1');
+        expect(mockOnBarrierClick).toHaveBeenCalledWith(31);
 
         const decreaseButton = screen.getByTestId('down-btn');
         userEvent.click(decreaseButton);
-        expect(mockOnBarrierClick).toHaveBeenCalledWith('Option 2');
+        expect(mockOnBarrierClick).toHaveBeenCalledWith(35);
     });
 
     it('handles increase and decrease correctly', () => {
-        render(<WheelPicker options={options} onBarrierClick={mockOnBarrierClick} />);
+        render(<WheelPicker options={options} onClick={mockOnBarrierClick} />);
 
         const increaseButton = screen.getByTestId('up-btn');
         const decreaseButton = screen.getByTestId('down-btn');
 
-        expect(screen.getByText('Option 1')).toBeInTheDocument();
+        expect(screen.getByText(31)).toBeInTheDocument();
 
         userEvent.click(decreaseButton);
-        expect(screen.getByText('Option 2')).toBeInTheDocument();
+        expect(screen.getByText(35)).toBeInTheDocument();
 
         userEvent.click(decreaseButton);
-        expect(screen.getByText('Option 3')).toBeInTheDocument();
+        expect(screen.getByText(39)).toBeInTheDocument();
 
         userEvent.click(increaseButton);
-        expect(screen.getByText('Option 2')).toBeInTheDocument();
+        expect(screen.getByText(35)).toBeInTheDocument();
 
         userEvent.click(increaseButton);
-        expect(screen.getByText('Option 1')).toBeInTheDocument();
+        expect(screen.getByText(31)).toBeInTheDocument();
     });
 
     it('sets default value from props correctly', () => {
-        const defaultValue = 'Option 3';
-        render(<WheelPicker options={options} onBarrierClick={mockOnBarrierClick} defaultValue={defaultValue} />);
+        const defaultValue = 39;
+        render(<WheelPicker options={options} onClick={mockOnBarrierClick} defaultValue={defaultValue} />);
 
-        expect(screen.getByText('Option 3')).toBeInTheDocument();
+        expect(screen.getByText(39)).toBeInTheDocument();
     });
 });

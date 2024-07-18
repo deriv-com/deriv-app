@@ -1,18 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Icon, PageOverlay, Popover, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import WheelPickerMobile from '../../Form/WheelPicker/wheel-picker-mobile';
 import './payout-per-point.scss';
 
-const defaultOptions = ['0.12', '0.21', '0.22', '0.34', '0.33', '0.38', '0.09', '0.76', '0.77', '0.78', '0.79', '0.22'];
-
 const PayoutPerPointMobileInput = ({
     togglePayoutWheelPicker,
+    payoutChoices,
+    onPayoutClick,
+    payout_per_point,
     currency,
 }: {
     togglePayoutWheelPicker: () => void;
+    payoutChoices: number[];
+    onPayoutClick: (val: number) => void;
     currency: string;
+    payout_per_point?: number;
 }) => {
+    const [payoutValue, setPayoutValue] = useState(payoutChoices[2] || payoutChoices[0]);
+    const onSave = () => {
+        togglePayoutWheelPicker();
+        onPayoutClick(payoutValue);
+    };
     return (
         <PageOverlay onClickClose={togglePayoutWheelPicker}>
             <div className='payout-per-point-mobile'>
@@ -34,12 +43,11 @@ const PayoutPerPointMobileInput = ({
                     </div>
                 </div>
                 <WheelPickerMobile
-                    options={defaultOptions}
-                    defaultValue={defaultOptions[2]}
+                    options={payoutChoices}
+                    defaultValue={payout_per_point || payoutChoices[2]}
                     currency={currency}
-                    onChange={() => {
-                        // eslint-disable-next-line no-console
-                        console.log('onChange');
+                    onChange={val => {
+                        setPayoutValue(val);
                     }}
                 />
                 <Text
@@ -53,7 +61,9 @@ const PayoutPerPointMobileInput = ({
                 >
                     {localize('Distance to current spot:')}
                 </Text>
-                <Button className='save-button'>{localize('Save')}</Button>
+                <Button className='save-button' onClick={onSave}>
+                    {localize('Save')}
+                </Button>
             </div>
         </PageOverlay>
     );

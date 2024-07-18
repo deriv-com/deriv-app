@@ -33,12 +33,13 @@ const variants = {
 };
 
 type WheelPickerType = {
-    onBarrierClick: (id: string) => Promise<void> | void;
-    options: string[];
-    defaultValue?: string;
+    onClick: (id: number) => Promise<void> | void;
+    options: number[];
+    defaultValue?: number;
+    currency?: string;
 };
 
-const WheelPicker = ({ options, onBarrierClick, defaultValue }: WheelPickerType) => {
+const WheelPicker = ({ options, onClick, defaultValue, currency }: WheelPickerType) => {
     const getDefaultIndex = () => {
         if (defaultValue) {
             const index = options.indexOf(defaultValue);
@@ -51,13 +52,13 @@ const WheelPicker = ({ options, onBarrierClick, defaultValue }: WheelPickerType)
     const [direction, setDirection] = useState('down');
 
     useEffect(() => {
-        onBarrierClick(options[selectedIndex]);
-    }, [selectedIndex, onBarrierClick, options]);
+        onClick(options[selectedIndex]);
+    }, [selectedIndex, onClick, options]);
 
     const handleIndexChange = (newIndex: number, newDirection: 'up' | 'down') => {
         setDirection(newDirection);
         setSelectedIndex(newIndex);
-        onBarrierClick(options[newIndex]);
+        onClick(options[newIndex]);
     };
 
     const handleIncrease = () => {
@@ -91,9 +92,9 @@ const WheelPicker = ({ options, onBarrierClick, defaultValue }: WheelPickerType)
     return (
         <div className='wheel-picker'>
             <div className='wheel-picker__wheel' key={selectedIndex}>
-                {visibleValues().map((value: string, index: number) => (
+                {visibleValues().map((value: string | number, index: number) => (
                     <motion.div
-                        key={value}
+                        key={index}
                         variants={variants}
                         custom={direction}
                         initial='enter'
@@ -109,7 +110,7 @@ const WheelPicker = ({ options, onBarrierClick, defaultValue }: WheelPickerType)
                             as='p'
                             className={index === 1 ? '' : 'wheel-picker__wheel__placeholder'}
                         >
-                            {value}
+                            {value} {value !== '' && currency}
                         </Text>
                     </motion.div>
                 ))}

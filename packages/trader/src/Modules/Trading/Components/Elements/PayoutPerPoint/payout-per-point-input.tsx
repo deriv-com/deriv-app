@@ -7,13 +7,17 @@ import './payout-per-point.scss';
 
 const PayoutPerPointInput = ({
     barriersList,
-    onBarrierClick,
+    onPayoutClick,
     selectedBarrier,
+    defaultPayout,
+    currency,
     tooltipText,
 }: {
-    barriersList: string[];
-    onBarrierClick: (option: string) => void;
+    barriersList: number[];
+    onPayoutClick: (option: number) => void;
     selectedBarrier: string;
+    defaultPayout: number;
+    currency: string;
     tooltipText?: React.ReactNode;
 }) => {
     const { is_desktop } = useDevice();
@@ -24,7 +28,12 @@ const PayoutPerPointInput = ({
             header={localize('Payout per Point')}
             header_tooltip={tooltipText}
         >
-            <WheelPicker options={barriersList} onBarrierClick={onBarrierClick} />
+            <WheelPicker
+                options={barriersList}
+                defaultValue={defaultPayout}
+                onClick={onPayoutClick}
+                currency={currency}
+            />
             <div className='actions-wrapper'>
                 <Text size={'xxs'} line_height='l' color={'default'} align='center' as='p'>
                     {localize('Distance to current spot')}

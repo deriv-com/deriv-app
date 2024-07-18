@@ -4,12 +4,12 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useActiveWalletAccount, useBalanceSubscription } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import {
+    LabelPairedArrowsRotateMdRegularIcon,
+    LabelPairedArrowUpArrowDownMdRegularIcon,
+    LabelPairedMinusMdRegularIcon,
+    LabelPairedPlusMdRegularIcon,
+    LabelPairedSquareListMdRegularIcon,
     LegacyClose2pxIcon,
-    LegacyDepositIcon,
-    LegacyPlus1pxIcon,
-    LegacyStatementIcon,
-    LegacyTransferIcon,
-    LegacyWithdrawalIcon,
 } from '@deriv/quill-icons';
 import { WalletCurrencyIcon, WalletGradientBackground, WalletText } from '../../../../components';
 import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
@@ -23,22 +23,22 @@ type TProps = {
 
 const realAccountTabs = [
     {
-        icon: <LegacyDepositIcon iconSize='xs' />,
+        icon: <LabelPairedPlusMdRegularIcon />,
         path: 'deposit',
         text: i18n.t('Deposit'),
     },
     {
-        icon: <LegacyWithdrawalIcon iconSize='xs' />,
+        icon: <LabelPairedMinusMdRegularIcon />,
         path: 'withdrawal',
         text: i18n.t('Withdraw'),
     },
     {
-        icon: <LegacyTransferIcon iconSize='xs' />,
+        icon: <LabelPairedArrowUpArrowDownMdRegularIcon />,
         path: 'account-transfer',
         text: i18n.t('Transfer'),
     },
     {
-        icon: <LegacyStatementIcon iconSize='xs' />,
+        icon: <LabelPairedSquareListMdRegularIcon />,
         path: 'transactions',
         text: i18n.t('Transactions'),
     },
@@ -46,19 +46,19 @@ const realAccountTabs = [
 
 const virtualAccountTabs = [
     {
-        icon: <LegacyPlus1pxIcon iconSize='xs' />,
-        path: 'reset-balance',
-        text: i18n.t('Reset Balance'),
-    },
-    {
-        icon: <LegacyTransferIcon iconSize='xs' />,
+        icon: <LabelPairedArrowUpArrowDownMdRegularIcon />,
         path: 'account-transfer',
         text: i18n.t('Transfer'),
     },
     {
-        icon: <LegacyStatementIcon iconSize='xs' />,
+        icon: <LabelPairedSquareListMdRegularIcon />,
         path: 'transactions',
         text: i18n.t('Transactions'),
+    },
+    {
+        icon: <LabelPairedArrowsRotateMdRegularIcon />,
+        path: 'reset-balance',
+        text: i18n.t('Reset Balance'),
     },
 ] as const;
 
@@ -69,6 +69,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const activeTabRef = useRef<HTMLButtonElement>(null);
     const history = useHistory();
     const location = useLocation();
+    const accountsActiveTabIndexRef = useRef<number>(location.state?.accountsActiveTabIndex ?? 0);
 
     const tabs = activeWallet?.is_virtual ? virtualAccountTabs : realAccountTabs;
     const isDemo = activeWallet?.is_virtual;
@@ -140,8 +141,11 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                             className={classNames('wallets-cashier-header__close-icon', {
                                 'wallets-cashier-header__close-icon--white': isDemo,
                             })}
+                            data-testid='dt_close_btn'
                             iconSize='xs'
-                            onClick={() => history.push('/')}
+                            onClick={() =>
+                                history.push('/', { accountsActiveTabIndex: accountsActiveTabIndexRef?.current })
+                            }
                         />
                     </div>
                 </section>
@@ -161,7 +165,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                                 ref={isActiveTab ? activeTabRef : null}
                             >
                                 <div
-                                    className={classNames('wallets-cashier-header__tab-icon', {
+                                    className={classNames({
                                         'wallets-cashier-header__tab-icon--system-dark-2-general-text':
                                             isDemo && !isActiveTab,
                                     })}

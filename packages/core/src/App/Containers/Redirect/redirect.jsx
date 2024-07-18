@@ -17,6 +17,7 @@ const Redirect = observer(() => {
         openRealAccountSignup,
         setCFDPasswordResetModal,
         setResetTradingPasswordModalOpen,
+        setRedirectFromEmail,
         toggleAccountSignupModal,
         toggleResetPasswordModal,
         toggleResetEmailModal,
@@ -63,12 +64,7 @@ const Redirect = observer(() => {
             break;
         }
         case 'request_email': {
-            if (!is_logging_in && !is_logged_in) {
-                redirectToLogin(is_logged_in, getLanguage());
-                redirected_to_route = true;
-            } else {
-                toggleResetEmailModal(true);
-            }
+            toggleResetEmailModal(true);
             break;
         }
         case 'social_email_change': {
@@ -134,6 +130,12 @@ const Redirect = observer(() => {
             }
 
             setResetTradingPasswordModalOpen(true);
+            break;
+        }
+        case 'phone_number_verification': {
+            setRedirectFromEmail(true);
+            history.push(routes.phone_verification);
+            redirected_to_route = true;
             break;
         }
         case 'payment_deposit': {

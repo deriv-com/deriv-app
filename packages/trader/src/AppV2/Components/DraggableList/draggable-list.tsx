@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { Text } from '@deriv-com/quill-ui';
 import DraggableListItem from './draggable-list-item';
+import { Localize } from '@deriv/translations';
 
 export type DraggableListItem = {
     id: string;
@@ -12,18 +13,23 @@ export type DraggableListItem = {
 export type DraggableListCategory = {
     id: string;
     title?: string;
+    button_title?: string;
     items: DraggableListItem[];
 };
 
 export type DraggableListProps = {
     categories: DraggableListCategory[];
     onRightIconClick: (item: DraggableListItem) => void;
+    onSave?: () => void;
+    onDrag?: (categories: DraggableListCategory[]) => void;
 };
 
-const DraggableList: React.FC<DraggableListProps> = ({ categories, onRightIconClick }) => {
+const DraggableList: React.FC<DraggableListProps> = ({ categories, onRightIconClick, onSave, onDrag }) => {
     const [category_list, setCategoryList] = useState(categories);
+    const [draggedItemId, setDraggedItemId] = useState<string | null>(null);
 
     const handleOnDragEnd = (result: DropResult) => {
+        setDraggedItemId(null);
         if (!result.destination) return;
 
         const source_category_index = category_list.findIndex(category => category.id === result.source.droppableId);
@@ -56,6 +62,11 @@ const DraggableList: React.FC<DraggableListProps> = ({ categories, onRightIconCl
             items: source_items,
         };
         setCategoryList(new_category_list);
+        onDrag && onDrag(new_category_list);
+    };
+
+    const handleOnDragStart = (start: any) => {
+        setDraggedItemId(start.draggableId);
     };
 
     React.useEffect(() => {
@@ -63,12 +74,25 @@ const DraggableList: React.FC<DraggableListProps> = ({ categories, onRightIconCl
     }, [categories]);
 
     return (
-        <DragDropContext onDragEnd={handleOnDragEnd}>
+        <DragDropContext onDragEnd={handleOnDragEnd} onDragStart={handleOnDragStart}>
             {category_list.map(category => (
                 <div key={category.id} className='draggable-list-category'>
-                    <Text size='sm' bold className='draggable-list-category-title'>
-                        {category.title}
-                    </Text>
+                    <div className='draggable-list-category-header'>
+                        <Text size='sm' bold className='draggable-list-category-header-title'>
+                            {category.title}
+                        </Text>
+                        {onSave && (
+                            <Text
+                                size='sm'
+                                bold
+                                underlined
+                                className='draggable-list-category-header-button'
+                                onClick={onSave}
+                            >
+                                {category.button_title || <Localize i18n_default_text='Done' />}
+                            </Text>
+                        )}
+                    </div>
                     <Droppable droppableId={category.id}>
                         {provided => (
                             <div
@@ -83,10 +107,15 @@ const DraggableList: React.FC<DraggableListProps> = ({ categories, onRightIconCl
                                                 ref={provided.innerRef}
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
+                                                className={`draggable-list-category__item ${
+                                                    draggedItemId === item.id ? 'is-clicked' : ''
+                                                }`}
                                             >
                                                 <DraggableListItem
                                                     title={item.title}
                                                     onRightIconClick={() => onRightIconClick(item)}
+                                                    active={draggedItemId === item.id}
+                                                    disabled={category.items.length === 1}
                                                 />
                                             </div>
                                         )}

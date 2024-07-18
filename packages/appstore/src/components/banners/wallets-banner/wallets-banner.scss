@@ -8,13 +8,10 @@
     border: 1px solid var(--wallets-banner-border-color);
     border-radius: $BORDER_RADIUS * 4;
 
-    @include mobile {
-        border-radius: $BORDER_RADIUS * 2;
-    }
-
     @include mobile-or-tablet-screen {
         height: 14.2rem;
         padding: 1.6rem;
+        border-radius: $BORDER_RADIUS * 2;
     }
 
     &__content {
@@ -30,12 +27,8 @@
             justify-content: center;
             gap: 1.6rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 20rem;
-            }
-
-            @include tablet-screen {
-                width: 25.6rem;
             }
         }
 
@@ -53,22 +46,14 @@
             width: 48.6rem;
             justify-content: space-between;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 20rem;
-            }
-
-            @include tablet-screen {
-                width: 25.6rem;
             }
         }
 
         &__description {
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 15.1rem;
-            }
-
-            @include tablet-screen {
-                width: 25.6rem;
             }
         }
 
@@ -122,12 +107,8 @@
             gap: 0.8rem;
             z-index: 1;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 17rem;
-            }
-
-            @include tablet-screen {
-                width: 29.5rem;
             }
         }
 
@@ -138,15 +119,10 @@
         &__image {
             position: absolute;
             inset-inline-end: 8rem;
-            inset-block-start: 1.6rem;
+            inset-block-start: 0rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 inset-inline-end: -3rem;
-                inset-block-start: 0rem;
-            }
-
-            @include tablet-screen {
-                inset-inline-end: 2.4rem;
             }
 
             @include rtl {
@@ -163,15 +139,11 @@
 .wallets-banner-upgrading__image {
     position: absolute;
     inset-inline-end: 8rem;
-    inset-block-start: 1.6rem;
+    inset-block-start: 0rem;
 
-    @include mobile {
-        inset-inline-end: -6rem;
+    @include mobile-or-tablet-screen {
+        inset-inline-end: -4.5rem;
         inset-block-start: -3rem;
-    }
-
-    @include tablet-screen {
-        inset-inline-end: 1.4rem;
     }
 }
 

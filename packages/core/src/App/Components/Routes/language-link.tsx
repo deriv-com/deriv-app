@@ -2,39 +2,44 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import { Icon } from '@deriv/components';
-import { getAllowedLanguages } from '@deriv/translations';
+import { TranslationFlag, UNSUPPORTED_LANGUAGES } from '@deriv/shared';
+import { getAllowedLanguages, useTranslations } from '@deriv-com/translations';
 
 export type TLanguageLink = {
-    icon_classname?: string;
     is_clickable?: boolean;
     lang: string;
     toggleModal?: () => void;
 };
 
-const LanguageLink = observer(({ icon_classname, is_clickable = false, lang, toggleModal }: TLanguageLink) => {
+const LanguageLink = observer(({ is_clickable = false, lang, toggleModal }: TLanguageLink) => {
     const { common } = useStore();
-    const { changeSelectedLanguage, current_language } = common;
-    const is_active = current_language === lang;
+    const { currentLang, switchLanguage } = useTranslations();
+    const { changeSelectedLanguage } = common;
+    const is_active = currentLang === lang;
 
     const link: React.ReactNode = (
         <React.Fragment>
-            <Icon
-                icon={`IcFlag${lang.replace('_', '-')}`}
-                className={classNames(
-                    'settings-language__language-link-flag',
-                    'settings-language__language-flag',
-                    icon_classname
-                )}
-            />
+            {TranslationFlag[lang] ? (
+                TranslationFlag[lang](36, 24)
+            ) : (
+                <Icon icon={`IcFlag${lang}`} className='settings-language__language-flag' />
+            )}
             <span
                 className={classNames('settings-language__language-name', {
                     'settings-language__language-name--active': is_active,
                 })}
             >
-                {getAllowedLanguages()[lang]}
+                {getAllowedLanguages(UNSUPPORTED_LANGUAGES)[lang]}
             </span>
         </React.Fragment>
     );
+
+    const handleLanguageChange = async (lang: string) => {
+        await changeSelectedLanguage(lang);
+        switchLanguage(lang);
+        toggleModal?.();
+    };
+
     return (
         <React.Fragment>
             {!is_clickable ? (
@@ -51,9 +56,8 @@ const LanguageLink = observer(({ icon_classname, is_clickable = false, lang, tog
                     data-testid='dt_settings_language_button'
                     id={`dt_settings_${lang}_button`}
                     key={lang}
-                    onClick={() => {
-                        changeSelectedLanguage(lang);
-                        toggleModal?.();
+                    onClick={async () => {
+                        await handleLanguageChange(lang);
                     }}
                     className={classNames('settings-language__language-link', {
                         'settings-language__language-link--active': is_active,

@@ -55,7 +55,7 @@ describe('<TransactionsCryptoRenderer />', () => {
     it('should show the proper data in Desktop mode', () => {
         renderTransactionsCryptoRenderer();
 
-        expect(screen.getByText('withdrawal')).toBeInTheDocument();
+        expect(screen.getByText('Withdrawal')).toBeInTheDocument();
         expect(screen.getByText('Pending')).toBeInTheDocument();
         expect(screen.getByText('-0.00500000 BTC')).toBeInTheDocument();
         expect(screen.getByText('tb1q....ntxt')).toBeInTheDocument();
@@ -121,7 +121,7 @@ describe('<TransactionsCryptoRenderer />', () => {
 
         renderTransactionsCryptoRenderer();
 
-        expect(screen.getByText('withdrawal')).toBeInTheDocument();
+        expect(screen.getByText('Withdrawal')).toBeInTheDocument();
         expect(screen.getByText('Pending')).toBeInTheDocument();
         expect(screen.getByText('-0.00500000 BTC')).toBeInTheDocument();
         expect(screen.getByText('tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt')).toBeInTheDocument();

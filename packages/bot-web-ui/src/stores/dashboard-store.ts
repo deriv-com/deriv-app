@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { setColors } from '@deriv/bot-skeleton';
 import { TStores } from '@deriv/stores/types';
@@ -22,7 +23,6 @@ import {
     TUserGuideContent,
 } from '../pages/tutorials/tutorials.types';
 import RootStore from './root-store';
-import DOMPurify from 'dompurify';
 
 type TDialogOptions = {
     title?: string;
@@ -371,6 +371,7 @@ export default class DashboardStore implements IDashboardStore {
 
     setActiveTab = (active_tab: number): void => {
         this.active_tab = active_tab;
+        localStorage.setItem('active_tab', active_tab.toString());
     };
 
     setActiveTabTutorial = (active_tab_tutorials: number): void => {

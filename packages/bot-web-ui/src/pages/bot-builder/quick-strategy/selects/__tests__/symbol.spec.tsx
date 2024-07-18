@@ -100,7 +100,7 @@ describe('<SymbolSelect />', () => {
             wrapper,
         });
 
-        const autocomplete_element = screen.getByTestId('qs_autocomplete_symbol');
+        const autocomplete_element = screen.getByTestId('dt_qs_symbol');
         userEvent.click(autocomplete_element);
 
         const option_element = screen.getByText(/Bear Market Index/i);
@@ -110,12 +110,12 @@ describe('<SymbolSelect />', () => {
     });
 
     it('should input to be empty when the user clicks to type something', () => {
-        mockStore({ ui: { is_mobile: false, is_desktop: true } });
+        mockStore({ ui: { is_mobile: false } });
         render(<SymbolSelect />, {
             wrapper,
         });
 
-        const autocomplete_element = screen.getByTestId('qs_autocomplete_symbol');
+        const autocomplete_element = screen.getByTestId('dt_qs_symbol');
         userEvent.hover(autocomplete_element);
 
         expect((autocomplete_element as HTMLInputElement).value).toBe('AUD Basket');

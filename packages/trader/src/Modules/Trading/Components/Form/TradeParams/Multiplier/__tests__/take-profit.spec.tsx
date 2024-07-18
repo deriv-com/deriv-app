@@ -10,6 +10,7 @@ describe('<TakeProfit />', () => {
         default_mocked_props: React.ComponentProps<typeof TakeProfit>;
     const popoverTestid = 'dt_popover_wrapper';
     const takeProfitTooltipText = /When your profit reaches/i;
+    const takeProfitTooltipTextForAcc = /Take profit can't be adjusted after your contract starts./i;
 
     beforeEach(() => {
         default_mocked_store = {
@@ -97,9 +98,9 @@ describe('<TakeProfit />', () => {
         default_mocked_store.modules.trade.is_multiplier = false;
         render(mockTakeProfit());
 
-        expect(screen.queryByText(takeProfitTooltipText)).not.toBeInTheDocument();
+        expect(screen.queryByText(takeProfitTooltipTextForAcc)).not.toBeInTheDocument();
         userEvent.hover(screen.getByTestId(popoverTestid));
 
-        expect(screen.getByText(takeProfitTooltipText)).toBeInTheDocument();
+        expect(screen.getByText(takeProfitTooltipTextForAcc)).toBeInTheDocument();
     });
 });

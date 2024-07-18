@@ -54,6 +54,9 @@ inputs:
   IS_GROWTHBOOK_ENABLED:
     description: 'Is growthbook enabled'
     required: true
+  TRUSTPILOT_API_KEY:
+    description: 'Trustpilot api key'
+    required: false
 
 runs:
   using: composite
@@ -77,5 +80,6 @@ runs:
       GROWTHBOOK_DECRYPTION_KEY: ${{ inputs.GROWTHBOOK_DECRYPTION_KEY }}
       REF_NAME: ${{ inputs.REF_NAME }}
       REMOTE_CONFIG_URL: ${{ inputs.REMOTE_CONFIG_URL }}
+      TRUSTPILOT_API_KEY: ${{ inputs.TRUSTPILOT_API_KEY }}
     run: npm run build:all
     shell: bash

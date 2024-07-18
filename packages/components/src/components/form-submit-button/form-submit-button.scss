@@ -39,7 +39,7 @@
     &--error {
         text-transform: none;
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         &--absolute {
             top: unset;
             bottom: 0;

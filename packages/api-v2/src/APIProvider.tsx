@@ -83,11 +83,19 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     const derivAPIRef = useRef<DerivAPIBasic>();
     const subscriptionsRef = useRef<Record<string, DerivAPIBasic['subscribe']>>();
     const reactQueryRef = useRef<QueryClient>();
+    const isMounted = useRef(true);
 
     // on reconnected ref
     const onReconnectedRef = useRef<() => void>();
     const onConnectedRef = useRef<() => void>();
     const isOpenRef = useRef<boolean>(false);
+
+    useEffect(() => {
+        isMounted.current = true;
+        return () => {
+            isMounted.current = false;
+        };
+    }, []);
 
     if (!reactQueryRef.current) {
         reactQueryRef.current = new QueryClient({
@@ -103,12 +111,16 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     // have to be here and not inside useEffect as there are places in code expecting this to be available
     if (!derivAPIRef.current) {
         derivAPIRef.current = initializeDerivAPI(
-            () => setReconnect(true),
             () => {
-                isOpenRef.current = true;
-                if (onConnectedRef.current) {
-                    onConnectedRef.current();
-                    onConnectedRef.current = undefined;
+                if (isMounted.current) setReconnect(true);
+            },
+            () => {
+                if (isMounted.current) {
+                    isOpenRef.current = true;
+                    if (onConnectedRef.current) {
+                        onConnectedRef.current();
+                        onConnectedRef.current = undefined;
+                    }
                 }
             }
         );

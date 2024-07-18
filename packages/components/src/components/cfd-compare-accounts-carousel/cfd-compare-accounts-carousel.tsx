@@ -4,12 +4,14 @@ import CFDCompareAccountsCarouselButton from './cfd-compare-accounts-carousel-bu
 
 type TCFDCompareAccountsCarousel = {
     children: React.ReactNode;
+    isRtl?: boolean;
 };
 
-const CFDCompareAccountsCarousel = (props: TCFDCompareAccountsCarousel) => {
+const CFDCompareAccountsCarousel = ({ children, isRtl = false }: TCFDCompareAccountsCarousel) => {
     const options: EmblaOptionsType = {
         align: 0,
         containScroll: 'trimSnaps',
+        direction: isRtl ? 'rtl' : 'ltr',
     };
     const [emblaRef, emblaApi] = useEmblaCarousel(options);
     const [prev_btn_enabled, setPrevBtnEnabled] = React.useState(false);
@@ -34,10 +36,10 @@ const CFDCompareAccountsCarousel = (props: TCFDCompareAccountsCarousel) => {
     return (
         <div className='cfd-compare-accounts-carousel'>
             <div className='cfd-compare-accounts-carousel__viewport' ref={emblaRef}>
-                <div className='cfd-compare-accounts-carousel__container'>{props.children}</div>
+                <div className='cfd-compare-accounts-carousel__container'>{children}</div>
             </div>
-            <CFDCompareAccountsCarouselButton onClick={scrollPrev} isNext={false} enabled={prev_btn_enabled} />
-            <CFDCompareAccountsCarouselButton onClick={scrollNext} isNext={true} enabled={next_btn_enabled} />
+            <CFDCompareAccountsCarouselButton onClick={scrollPrev} enabled={prev_btn_enabled} isRtl={isRtl} />
+            <CFDCompareAccountsCarouselButton onClick={scrollNext} isNext enabled={next_btn_enabled} isRtl={isRtl} />
         </div>
     );
 };

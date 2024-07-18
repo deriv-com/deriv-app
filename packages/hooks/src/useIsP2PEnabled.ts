@@ -26,7 +26,7 @@ const useIsP2PEnabled = () => {
         setIsP2PEnabled(is_p2p_enabled);
 
         if (email && loginid) {
-            const domain = /deriv\.(com|me)/.test(window.location.hostname)
+            const domain = /deriv\.(com|me|be)/.test(window.location.hostname)
                 ? deriv_urls.DERIV_HOST_NAME
                 : window.location.hostname;
 

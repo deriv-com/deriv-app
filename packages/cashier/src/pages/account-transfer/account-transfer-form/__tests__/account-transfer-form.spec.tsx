@@ -352,7 +352,7 @@ describe('<AccountTransferForm />', () => {
                 text: 'USD',
                 currency: 'USD',
                 value: 'MTR40013177',
-                platform_icon: 'Derived',
+                platform_icon: 'Standard',
                 is_crypto: false,
                 is_mt: true,
                 is_dxtrade: false,
@@ -408,7 +408,7 @@ describe('<AccountTransferForm />', () => {
                     .mockReturnValue(100.0);
 
                 renderAccountTransferForm();
-                expect(screen.getByTestId('Derived')).toBeInTheDocument();
+                expect(screen.getByTestId('Standard')).toBeInTheDocument();
             });
 
             it('should check for DerivX icon when DerivX is selected in from_dropdown', () => {

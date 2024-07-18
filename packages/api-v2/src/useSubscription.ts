@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import useAPI from './useAPI';
+import { useAuthContext } from './AuthProvider';
 import type {
     TSocketAcceptableProps,
     TSocketError,
@@ -16,7 +16,7 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T, id
     const [data, setData] = useState<TSocketResponseData<T>>();
     const subscriber = useRef<{ unsubscribe?: VoidFunction }>();
     const idle_timeout = useRef<NodeJS.Timeout>();
-    const { subscribe: _subscribe } = useAPI();
+    const { subscribe: _subscribe } = useAuthContext();
 
     const subscribe = useCallback(
         (...props: TSocketAcceptableProps<T>) => {
@@ -33,7 +33,7 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T, id
             }, idle_time);
 
             try {
-                subscriber.current = _subscribe(name, payload).subscribe(
+                subscriber.current = _subscribe(name, payload)?.subscribe(
                     response => {
                         setData(response);
                         setIsLoading(false);

@@ -10,7 +10,7 @@
     }
     &-title {
         flex: 1;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             text-align: center;
             padding: 1rem;
         }
@@ -22,7 +22,7 @@
     margin: auto;
     &-container {
         margin: 1.5rem;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin: 0;
             overflow-x: auto;
             overflow-y: scroll;
@@ -39,6 +39,10 @@
             }
         }
     }
+    &-spread {
+        display: flex;
+        justify-content: center;
+    }
     &-main-container {
         padding-left: 1rem;
         padding-right: 1rem;
@@ -53,7 +57,7 @@
         &:hover {
             box-shadow: 0 2px 8px 0 var(--shadow-menu);
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 18rem;
         }
         &__eu-clients {
@@ -72,7 +76,7 @@
             height: 2rem;
             background: var(--status-transfer);
             transform: translateX(17rem) translateY(-2rem) rotate(45deg);
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 transform: translateX(8rem) translateY(-2rem) rotate(45deg);
                 padding: 0.1rem;
             }
@@ -83,14 +87,25 @@
         flex-direction: column;
         padding: 4rem 2.4rem 0;
         border-radius: 2.4rem;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 7rem 1.5rem 1.5rem;
         }
     }
     &-text-container {
         max-height: 25.5rem;
+
+        @include mobile {
+            min-height: 32rem;
+            height: fit-content;
+        }
+
         &--demo {
             max-height: 13.5rem;
+
+            @include mobile {
+                min-height: unset;
+                height: fit-content;
+            }
         }
         &__separator {
             margin: 0.9rem;
@@ -121,6 +136,21 @@
         &--msg {
             position: relative;
             width: 62%;
+            @include mobile-or-tablet-screen {
+                display: block;
+                position: fixed;
+                width: 15.2rem;
+                right: 0;
+            }
+        }
+    }
+    &-zerospread-tooltip {
+        position: relative;
+        left: 0.5rem;
+        top: 0.2rem;
+        &--msg {
+            position: relative;
+            width: 100%;
             @include mobile {
                 display: block;
                 position: fixed;
@@ -162,5 +192,56 @@
     }
     &__text {
         margin-left: 0.5rem;
+    }
+}
+
+.dc-page-overlay:has(.dc-page-overlay__content .compare-cfd-account-container) {
+    .dc-page-overlay {
+        &-portal {
+            @include mobile-or-tablet-screen {
+                top: $MOBILE_HEADER_HEIGHT;
+            }
+        }
+        &__header {
+            &-title {
+                @include mobile-or-tablet-screen {
+                    font-size: 1.6rem !important;
+                }
+            }
+            &-close {
+                @include mobile-or-tablet-screen {
+                    right: 1.2rem;
+                }
+            }
+            &-wrapper {
+                @include mobile-or-tablet-screen {
+                    height: 100%;
+                    padding: 0;
+                }
+            }
+            @include mobile-or-tablet-screen {
+                height: 4rem;
+                z-index: 3;
+                padding: 0;
+                margin: 0;
+            }
+        }
+        &__content {
+            @include mobile-or-tablet-screen {
+                flex: 1;
+                padding: 0;
+            }
+        }
+        &__header-wrapper,
+        &__content {
+            @include mobile-or-tablet-screen {
+                width: 100%;
+            }
+        }
+        @include mobile-or-tablet-screen {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
     }
 }

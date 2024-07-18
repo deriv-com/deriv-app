@@ -6,8 +6,8 @@ import {
     DerivLightIcDocumentAddressMismatchIcon,
     DerivLightIcDocumentNameMismatchIcon,
     DerivLightIcEnvelopeIcon,
-    DerivLightIcOldIssuedDocumentMoreThan6Icon,
     DerivLightIcOldIssuedDocumentMoreThan12Icon,
+    DerivLightIcOldIssuedDocumentMoreThan6Icon,
 } from '@deriv/quill-icons';
 
 type TExampleImageConfig = {

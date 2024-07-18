@@ -7,7 +7,7 @@ import {
     useDxtradeAccountsList,
 } from '@deriv/api-v2';
 import { SentEmailContent, WalletError } from '../../../../components';
-import { ModalStepWrapper, ModalWrapper } from '../../../../components/Base';
+import { ModalWrapper } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import useSendPasswordResetEmail from '../../../../hooks/useSendPasswordResetEmail';
@@ -68,16 +68,10 @@ const DxtradeEnterPasswordModal = () => {
 
     useEffect(() => {
         if (!isResetPasswordSuccessful) return;
-        if (!isDxtradePasswordNotSet && isMobile) {
+        if (!isDxtradePasswordNotSet) {
             show(
-                <ModalStepWrapper>
-                    <SentEmailContent onErrorButtonClick={hide} platform={dxtradePlatform} />
-                </ModalStepWrapper>
-            );
-        } else if (!isDxtradePasswordNotSet) {
-            show(
-                <ModalWrapper>
-                    <SentEmailContent onErrorButtonClick={hide} platform={dxtradePlatform} />
+                <ModalWrapper isFullscreen={isMobile}>
+                    <SentEmailContent isForgottenPassword onErrorButtonClick={hide} platform={dxtradePlatform} />
                 </ModalWrapper>
             );
         }

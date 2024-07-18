@@ -1,4 +1,3 @@
-import React from 'react';
 import Routes from './Containers/routes';
 import ResetTradingPassword from './Containers/reset-trading-password';
 import { NetworkStatusToastErrorPopup } from './Containers/toast-popup';

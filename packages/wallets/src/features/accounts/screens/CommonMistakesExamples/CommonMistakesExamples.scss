@@ -14,7 +14,7 @@
         }
 
         &-layout {
-            background: #ff444f14;
+            background: var(--transparent-danger, #ff444f29);
             gap: 1.6rem;
             display: flex;
             flex-direction: column;

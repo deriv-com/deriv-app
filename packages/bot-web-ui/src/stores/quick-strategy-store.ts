@@ -34,7 +34,6 @@ interface IQuickStrategyStore {
     };
     is_contract_dialog_open: boolean;
     is_stop_bot_dialog_open: boolean;
-    is_enabled_toggle_switch: boolean;
     setLossThresholdWarningData: (data: TLossThresholdWarningData) => void;
     setFormVisibility: (is_open: boolean) => void;
     setSelectedStrategy: (strategy: string) => void;
@@ -42,7 +41,6 @@ interface IQuickStrategyStore {
     onSubmit: (data: TFormData) => void;
     toggleStopBotDialog: () => void;
     setCurrentDurationMinMax: (min: number, max: number) => void;
-    setIsEnabledToggleSwitch: () => void;
 }
 
 export default class QuickStrategyStore implements IQuickStrategyStore {
@@ -64,7 +62,6 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
     loss_threshold_warning_data: TLossThresholdWarningData = {
         show: false,
     };
-    is_enabled_toggle_switch = !!this.form_data.boolean_max_stake;
 
     constructor(root_store: RootStore) {
         makeObservable(this, {
@@ -83,8 +80,6 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             setLossThresholdWarningData: action,
             setValue: action,
             toggleStopBotDialog: action,
-            is_enabled_toggle_switch: observable,
-            setIsEnabledToggleSwitch: action,
         });
         this.root_store = root_store;
         reaction(
@@ -110,10 +105,6 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             highlight_field: [],
             already_shown: false,
         };
-    };
-
-    setIsEnabledToggleSwitch = () => {
-        this.is_enabled_toggle_switch = !this.is_enabled_toggle_switch;
     };
 
     setFormVisibility = (is_open: boolean) => {

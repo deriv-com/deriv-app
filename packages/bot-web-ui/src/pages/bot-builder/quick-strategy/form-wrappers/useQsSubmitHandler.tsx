@@ -1,14 +1,21 @@
 import { useFormikContext } from 'formik';
 import { useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { TFormData } from '../types';
+import { rudderStackSendQsRunStrategyEvent } from '../../../../analytics/rudderstack-quick-strategy';
+import { TFormValues } from '../types';
 
 const useQsSubmitHandler = () => {
     const { client } = useStore();
     const { currency, balance, is_logged_in } = client;
-    const { submitForm, setFieldValue, values, isValid, validateForm } = useFormikContext<TFormData>();
+    const { submitForm, setFieldValue, values, isValid, validateForm } = useFormikContext<TFormValues>();
     const { quick_strategy, run_panel } = useDBotStore();
-    const { toggleStopBotDialog, setLossThresholdWarningData, loss_threshold_warning_data, onSubmit } = quick_strategy;
+    const {
+        toggleStopBotDialog,
+        setLossThresholdWarningData,
+        selected_strategy,
+        loss_threshold_warning_data,
+        onSubmit,
+    } = quick_strategy;
 
     const handleSubmit = async () => {
         const loss_amount = Number(values?.loss ?? 0);
@@ -38,11 +45,19 @@ const useQsSubmitHandler = () => {
             validateForm();
             submitForm();
             toggleStopBotDialog();
+            rudderStackSendQsRunStrategyEvent({
+                form_values: values,
+                selected_strategy,
+            });
         } else {
             await setFieldValue('action', 'RUN');
             validateForm();
-            submitForm().then((form_data: TFormData | void) => {
+            submitForm().then((form_data: TFormValues | void) => {
                 if (isValid && form_data) {
+                    rudderStackSendQsRunStrategyEvent({
+                        form_values: values,
+                        selected_strategy,
+                    });
                     onSubmit(form_data);
                 }
             });

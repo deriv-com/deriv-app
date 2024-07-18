@@ -43,7 +43,9 @@ type TDropdown = {
     onChange?: (e: { target: { name: string; value: string } }) => void;
     onClick?: () => void;
     placeholder?: string;
+    should_animate_suffix_icon?: boolean;
     suffix_icon?: string;
+    suffix_icon_size?: number;
     should_open_on_hover?: boolean;
     should_scroll_to_selected?: boolean;
     should_autohide?: boolean;
@@ -70,6 +72,7 @@ type TDropdownList = {
     parent_ref: React.RefObject<HTMLElement>;
     portal_id?: string;
     suffix_icon?: string;
+    suffix_icon_size?: number;
     should_scroll_to_selected?: boolean;
     should_autohide?: boolean;
     value?: string | number;
@@ -94,6 +97,7 @@ const DropdownList = React.forwardRef<HTMLDivElement, TDropdownList>((props, lis
         parent_ref,
         portal_id,
         suffix_icon,
+        suffix_icon_size = 16,
         should_scroll_to_selected,
         should_autohide,
         value,
@@ -276,6 +280,8 @@ const Dropdown = ({
     onClick,
     placeholder,
     suffix_icon,
+    should_animate_suffix_icon = false,
+    suffix_icon_size = 16,
     should_open_on_hover = false,
     should_scroll_to_selected,
     should_autohide,
@@ -487,7 +493,15 @@ const Dropdown = ({
                         id='dropdown-display'
                         ref={dropdown_ref}
                     >
-                        {!!suffix_icon && <Icon className='suffix-icon' icon={suffix_icon} size={16} />}
+                        {!!suffix_icon && (
+                            <Icon
+                                className={classNames('suffix-icon', {
+                                    'suffix-icon--flip': is_list_visible && should_animate_suffix_icon,
+                                })}
+                                icon={suffix_icon}
+                                size={suffix_icon_size}
+                            />
+                        )}
                         <DisplayText
                             className={classNames({
                                 'dc-dropdown__display--has-suffix-icon-text': suffix_icon,
@@ -534,6 +548,7 @@ const Dropdown = ({
                         portal_id={list_portal_id}
                         ref={list_ref}
                         suffix_icon={suffix_icon}
+                        suffix_icon_size={suffix_icon_size}
                         should_scroll_to_selected={should_scroll_to_selected}
                         should_autohide={should_autohide}
                         value={value}

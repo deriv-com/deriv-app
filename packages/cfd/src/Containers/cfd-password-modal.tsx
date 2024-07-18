@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Formik, FormikErrors, FormikHelpers } from 'formik';
+import { useDevice } from '@deriv-com/ui';
 
 import { SentEmailModal } from '@deriv/account';
 import {
@@ -20,7 +21,6 @@ import {
     getCFDPlatformLabel,
     getErrorMessages,
     getLegalEntityName,
-    isDesktop,
     routes,
     validLength,
     validPassword,
@@ -30,25 +30,21 @@ import {
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 
-import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import { TProducts } from '../Components/props.types';
 import SuccessDialog from '../Components/success-dialog.jsx';
-import MigrationSuccessModal from '../Components/migration-success-modal';
-import {
-    getDxCompanies,
-    getFormattedJurisdictionCode,
-    getMtCompanies,
-    TDxCompanies,
-    TMtCompanies,
-} from '../Stores/Modules/CFD/Helpers/cfd-config';
-import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import CFDPasswordModalTitle from './cfd-password-modal-title';
-import { CFD_PLATFORMS, JURISDICTION, CATEGORY } from '../Helpers/cfd-config';
+import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import MigrationSuccessModal from '../Components/migration-success-modal';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { CFD_PLATFORMS, JURISDICTION, CATEGORY, PRODUCT } from '../Helpers/cfd-config';
+import { getDxCompanies, getMtCompanies, TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 
-import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 import CFDPasswordChange from './cfd-password-change';
 import CFDPasswordChangeContent from './cfd-password-change-content';
+import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 
 import '../sass/cfd.scss';
+import CfdPasswordModalTnc from './cfd-password-modal-tnc';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -65,6 +61,7 @@ type TIconTypeProps = {
     platform: string;
     type?: string;
     show_eu_related_content: boolean;
+    product?: TProducts;
 };
 
 type TCFDPasswordFormReusedProps = {
@@ -115,36 +112,36 @@ type TCFDPasswordModalProps = {
     platform: typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS];
 };
 
-const PasswordModalHeader = observer(
-    ({ should_set_trading_password, is_password_reset_error, platform }: TPasswordModalHeaderProps) => {
-        const { ui } = useStore();
-        const { is_mobile } = ui;
+const PasswordModalHeader = ({
+    should_set_trading_password,
+    is_password_reset_error,
+    platform,
+}: TPasswordModalHeaderProps) => {
+    const { isDesktop } = useDevice();
 
-        const element = is_mobile ? 'p' : 'span';
-        const alignment = 'center';
-        const font_size = 's';
-        const style = is_mobile
-            ? {
-                  padding: '2rem',
-              }
-            : {};
+    const element = !isDesktop ? 'p' : 'span';
+    const alignment = 'center';
+    const font_size = 's';
+    const style = !isDesktop
+        ? {
+              padding: '2rem',
+          }
+        : {};
 
-        return (
-            <Text styles={style} as={element} line_height='m' weight='bold' size={font_size} align={alignment}>
-                {!should_set_trading_password && !is_password_reset_error && (
-                    <Localize
-                        i18n_default_text='Enter your {{platform}} password'
-                        values={{
-                            platform: getCFDPlatformLabel(platform),
-                        }}
-                    />
-                )}
-                {is_password_reset_error && <Localize i18n_default_text='Too many attempts' />}
-            </Text>
-        );
-    }
-);
-
+    return (
+        <Text styles={style} as={element} line_height='m' weight='bold' size={font_size} align={alignment}>
+            {!should_set_trading_password && !is_password_reset_error && (
+                <Localize
+                    i18n_default_text='Enter your {{platform}} password'
+                    values={{
+                        platform: getCFDPlatformLabel(platform),
+                    }}
+                />
+            )}
+            {is_password_reset_error && <Localize i18n_default_text='Too many attempts' />}
+        </Text>
+    );
+};
 const ReviewMessageForMT5 = ({
     is_selected_mt5_verified,
     jurisdiction_selected_shortcode,
@@ -170,7 +167,7 @@ const ReviewMessageForMT5 = ({
     return null;
 };
 
-const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconTypeProps) => {
+const IconType = React.memo(({ platform, type, show_eu_related_content, product }: TIconTypeProps) => {
     const traders_hub = window.location.pathname === routes.traders_hub;
     if (platform === CFD_PLATFORMS.DXTRADE) {
         return <Icon icon='IcRebrandingDxtradeDashboard' size={128} />;
@@ -180,8 +177,11 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
         }
         switch (type) {
             case 'synthetic':
-                return <TradingPlatformIcon icon='Derived' size={128} />;
+                return <TradingPlatformIcon icon='Standard' size={128} />;
             case 'all':
+                if (product === PRODUCT.ZEROSPREAD) {
+                    return <TradingPlatformIcon icon='ZeroSpread' size={128} />;
+                }
                 return <TradingPlatformIcon icon='SwapFree' size={128} />;
             case 'financial':
                 if (show_eu_related_content) {
@@ -194,8 +194,11 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
     } else {
         switch (type) {
             case 'synthetic':
-                return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
+                return <Icon icon='IcMt5StandardPlatform' size={128} />;
             case 'all':
+                if (product === PRODUCT.ZEROSPREAD) {
+                    return <Icon icon='IcMt5ZeroSpread' size={128} />;
+                }
                 return <Icon icon='IcMt5SwapFreePlatform' size={128} />;
             case 'financial':
                 if (show_eu_related_content) {
@@ -212,9 +215,10 @@ IconType.displayName = 'IconType';
 const getCancelButtonLabel = ({
     should_set_trading_password,
     error_type,
-}: Pick<TCFDPasswordFormProps, 'should_set_trading_password' | 'error_type'>) => {
+    isDesktop,
+}: Pick<TCFDPasswordFormProps, 'should_set_trading_password' | 'error_type'> & { isDesktop: boolean }) => {
     if (should_set_trading_password && error_type !== 'PasswordReset') {
-        return isDesktop() ? null : localize('Cancel');
+        return isDesktop ? null : localize('Cancel');
     }
 
     return localize('Forgot password?');
@@ -240,6 +244,11 @@ const CreatePassword = ({
     error_message,
     is_real_financial_stp,
 }: TCFDCreatePasswordProps) => {
+    const { product, account_type } = useCfdStore();
+    const [checked, setChecked] = React.useState(
+        !(product === PRODUCT.ZEROSPREAD && account_type.category === CATEGORY.REAL)
+    );
+
     return (
         <Formik
             initialValues={{
@@ -323,8 +332,15 @@ const CreatePassword = ({
                                 <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).' />
                             </div>
                         )}
+                        {product === PRODUCT.ZEROSPREAD && account_type.category === CATEGORY.REAL && (
+                            <CfdPasswordModalTnc
+                                platform={platform}
+                                checked={checked}
+                                onCheck={() => setChecked(prev => !prev)}
+                            />
+                        )}
                         <FormSubmitButton
-                            is_disabled={!values.password || Object.keys(errors).length > 0}
+                            is_disabled={!values.password || !checked || Object.keys(errors).length > 0}
                             is_loading={isSubmitting}
                             label={localize('Create {{platform}} password', {
                                 platform: getCFDPlatformLabel(platform),
@@ -403,8 +419,11 @@ const CFDPasswordForm = observer(
         submitPassword,
         validatePassword,
     }: TCFDPasswordFormProps) => {
-        const { ui } = useStore();
-        const { is_mobile } = ui;
+        const { isDesktop } = useDevice();
+        const { product, account_type } = useCfdStore();
+        const [checked, setChecked] = React.useState(
+            !(product === PRODUCT.ZEROSPREAD && account_type.category === CATEGORY.REAL)
+        );
 
         const button_label = React.useMemo(() => {
             if (error_type === 'PasswordReset') {
@@ -413,9 +432,9 @@ const CFDPasswordForm = observer(
             return localize('Add account');
         }, [error_type]);
 
-        const has_cancel_button = (isDesktop() ? !should_set_trading_password : true) || error_type === 'PasswordReset';
+        const has_cancel_button = (isDesktop ? !should_set_trading_password : true) || error_type === 'PasswordReset';
 
-        const cancel_button_label = getCancelButtonLabel({ should_set_trading_password, error_type });
+        const cancel_button_label = getCancelButtonLabel({ should_set_trading_password, error_type, isDesktop });
 
         const handleCancel = () => {
             if (!has_cancel_button) {
@@ -444,7 +463,7 @@ const CFDPasswordForm = observer(
                                         has_cancel={has_cancel_button}
                                         cancel_label={cancel_button_label}
                                         onCancel={handleCancel}
-                                        is_absolute={is_mobile}
+                                        is_absolute={!isDesktop}
                                         label={button_label}
                                     />
                                 </form>
@@ -531,13 +550,21 @@ const CFDPasswordForm = observer(
                                     />
                                 </Text>
                             )}
+                            {product === PRODUCT.ZEROSPREAD && account_type.category === CATEGORY.REAL && (
+                                <CfdPasswordModalTnc
+                                    className='cfd-password-modal-tnc--bottom'
+                                    platform={platform}
+                                    checked={checked}
+                                    onCheck={() => setChecked(prev => !prev)}
+                                />
+                            )}
                         </div>
                         <FormSubmitButton
-                            is_disabled={!values.password}
+                            is_disabled={!values.password || !checked}
                             has_cancel={has_cancel_button}
                             cancel_label={cancel_button_label}
                             onCancel={handleCancel}
-                            is_absolute={is_mobile}
+                            is_absolute={!isDesktop}
                             is_loading={isSubmitting}
                             label={button_label}
                             is_center={should_set_trading_password}
@@ -551,6 +578,7 @@ const CFDPasswordForm = observer(
 );
 
 const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalProps) => {
+    const { isDesktop } = useDevice();
     const { client, traders_hub, ui } = useStore();
 
     const {
@@ -565,7 +593,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         updateMT5Status,
     } = client;
     const { show_eu_related_content, is_eu_user, toggleAccountTransferModal } = traders_hub;
-    const { is_mobile, is_mt5_migration_modal_enabled, setMT5MigrationModalEnabled, is_mt5_migration_modal_open } = ui;
+    const { is_mt5_migration_modal_enabled, setMT5MigrationModalEnabled, is_mt5_migration_modal_open } = ui;
 
     const {
         account_type,
@@ -582,6 +610,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         submitMt5Password,
         submitCFDPassword,
         new_account_response,
+        product,
         setMigratedMT5Accounts,
         is_mt5_password_changed_modal_visible,
         is_mt5_password_invalid_format_modal_visible,
@@ -772,17 +801,17 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const should_show_password_modal = React.useMemo(() => {
         if (should_show_password) {
-            return should_set_trading_password ? true : isDesktop();
+            return should_set_trading_password ? true : isDesktop;
         }
         return false;
     }, [should_set_trading_password, should_show_password]);
 
     const should_show_password_dialog = React.useMemo(() => {
         if (should_show_password) {
-            if (!should_set_trading_password) return is_mobile;
+            if (!should_set_trading_password) return !isDesktop;
         }
         return false;
-    }, [is_mobile, should_set_trading_password, should_show_password]);
+    }, [isDesktop, should_set_trading_password, should_show_password]);
 
     const success_modal_submit_label = React.useMemo(() => {
         if (account_type.category === CATEGORY.REAL) {
@@ -809,10 +838,9 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         let type_label = '';
         switch (platform) {
             case CFD_PLATFORMS.MT5:
-                type_label =
-                    getMtCompanies(show_eu_related_content)[category as keyof TMtCompanies][
-                        type as keyof TMtCompanies['demo' | 'real']
-                    ].short_title;
+                type_label = getMtCompanies(show_eu_related_content, product)[category as keyof TMtCompanies][
+                    type as keyof TMtCompanies['demo' | 'real']
+                ].short_title;
                 break;
             case CFD_PLATFORMS.DXTRADE:
                 type_label =
@@ -870,9 +898,10 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         if (platform === CFD_PLATFORMS.MT5) {
             return (
                 <Localize
-                    i18n_default_text='Your demo {{type}} account is ready.'
+                    i18n_default_text='Your demo {{deriv}} {{type}} account is ready.'
                     values={{
                         type: accountTypes(),
+                        deriv: 'Deriv MT5',
                     }}
                 />
             );
@@ -927,7 +956,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             onUnmount={() => getAccountStatus(platform)}
             onExited={() => setPasswordModalExited(true)}
             onEntered={() => setPasswordModalExited(false)}
-            width={is_mobile ? '32.8rem' : 'auto'}
+            width={!isDesktop ? '32.8rem' : 'auto'}
         >
             {cfd_password_form}
         </Modal>
@@ -1022,6 +1051,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         platform={platform}
                         type={account_type.type}
                         show_eu_related_content={show_eu_related_content}
+                        product={product}
                     />
                 }
                 icon_size='xlarge'
@@ -1033,8 +1063,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         : account_type.category === CATEGORY.REAL
                 }
                 has_close_icon={false}
-                width={is_mobile ? '32.8rem' : 'auto'}
-                is_medium_button={is_mobile}
+                width={!isDesktop ? '32.8rem' : 'auto'}
+                is_medium_button={!isDesktop}
             />
             <MigrationSuccessModal is_open={should_show_migration_success} closeModal={closeModal} />
             <SentEmailModal

@@ -3,6 +3,7 @@ import {
     useActiveLinkedToTradingAccount,
     useActiveWalletAccount,
     useCreateNewRealAccount,
+    useInvalidateQuery,
     useSettings,
 } from '@deriv/api-v2';
 import { toMoment } from '@deriv/utils';
@@ -19,23 +20,24 @@ const DerivAppsGetAccount: React.FC = () => {
     const { isDesktop } = useDevice();
     const { data: activeWallet } = useActiveWalletAccount();
     const {
-        data: newTradingAccountData,
         isLoading: isAccountCreationLoading,
         isSuccess: isAccountCreationSuccess,
-        mutate: createNewRealAccount,
+        mutateAsync: createNewRealAccount,
     } = useCreateNewRealAccount();
     const {
         data: { country_code: countryCode, date_of_birth: dateOfBirth, first_name: firstName, last_name: lastName },
     } = useSettings();
     const { addTradingAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
+    const invalidate = useInvalidateQuery();
 
-    const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
+    const { data: activeLinkedToTradingAccount, isLoading: isActiveLinkedToTradingAccountLoading } =
+        useActiveLinkedToTradingAccount();
 
     const landingCompanyName = activeWallet?.landing_company_name?.toLocaleUpperCase();
 
-    const createTradingAccount = () => {
+    const createTradingAccount = async () => {
         if (!activeWallet?.is_virtual) {
-            createNewRealAccount({
+            const createAccountResponse = await createNewRealAccount({
                 payload: {
                     currency: activeWallet?.currency_config?.display_code,
                     date_of_birth: toMoment(dateOfBirth).format('YYYY-MM-DD'),
@@ -44,13 +46,18 @@ const DerivAppsGetAccount: React.FC = () => {
                     residence: countryCode || '',
                 },
             });
+
+            const newAccountReal = createAccountResponse?.new_account_real;
+
+            if (!newAccountReal) return;
+
+            await addTradingAccountToLocalStorage(newAccountReal);
+
+            invalidate('account_list');
         }
     };
 
     useEffect(() => {
-        if (newTradingAccountData && isAccountCreationSuccess) {
-            addTradingAccountToLocalStorage(newTradingAccountData);
-        }
         if (isAccountCreationSuccess) {
             show(
                 <ModalStepWrapper
@@ -71,12 +78,12 @@ const DerivAppsGetAccount: React.FC = () => {
             );
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [addTradingAccountToLocalStorage, newTradingAccountData, isAccountCreationSuccess]);
+    }, [addTradingAccountToLocalStorage, isAccountCreationSuccess]);
 
     return (
         <div className='wallets-deriv-apps-section wallets-deriv-apps-section__get-account'>
             <div className='wallets-deriv-apps-section__icon'>
-                <WalletMarketIcon icon='IcWalletOptionsLight' size='lg' />
+                <WalletMarketIcon icon='standard' size='lg' />
             </div>
             <div className='wallets-deriv-apps-section__get-content'>
                 <div className='wallets-deriv-apps-section__details'>
@@ -85,7 +92,11 @@ const DerivAppsGetAccount: React.FC = () => {
                     </WalletText>
                     <WalletText size={isDesktop ? '2xs' : 'xs'}>One options account for all platforms.</WalletText>
                 </div>
-                <WalletButton color='primary-light' disabled={isAccountCreationLoading} onClick={createTradingAccount}>
+                <WalletButton
+                    color='primary-light'
+                    disabled={isAccountCreationLoading || isActiveLinkedToTradingAccountLoading}
+                    onClick={createTradingAccount}
+                >
                     Get
                 </WalletButton>
             </div>

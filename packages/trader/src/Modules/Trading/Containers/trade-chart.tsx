@@ -1,6 +1,7 @@
 import React from 'react';
 import { ActiveSymbols } from '@deriv/api-types';
-import { isDesktop } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
+import { ChartBarrierStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ChartBottomWidgets } from './chart-widgets';
@@ -8,7 +9,6 @@ import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accum
 import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets';
 import type { TBottomWidgetsParams } from './trade';
 import { SmartChart } from 'Modules/SmartChart';
-import { ChartBarrierStore } from 'Stores/Modules/SmartChart/chart-barrier-store';
 
 type TTradeChartProps = {
     bottomWidgets?: (props: TBottomWidgetsParams) => React.ReactElement;
@@ -21,6 +21,7 @@ type TTradeChartProps = {
 const TradeChart = observer((props: TTradeChartProps) => {
     const { has_barrier, is_accumulator, topWidgets } = props;
     const { ui, common, contract_trade, portfolio } = useStore();
+    const { isMobile } = useDevice();
     const {
         accumulator_barriers_data,
         accumulator_contract_barriers_data,
@@ -33,8 +34,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
     } = contract_trade;
     const ref = React.useRef<{ hasPredictionIndicators(): void; triggerPopup(arg: () => void): void }>(null);
     const { all_positions } = portfolio;
-    const { is_chart_countdown_visible, is_chart_layout_default, is_dark_mode_on, is_mobile, is_positions_drawer_on } =
-        ui;
+    const { is_chart_countdown_visible, is_chart_layout_default, is_dark_mode_on, is_positions_drawer_on } = ui;
     const { current_language, is_socket_opened } = common;
     const {
         active_symbols,
@@ -62,7 +62,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
         language: current_language.toLowerCase(),
         position: is_chart_layout_default ? 'bottom' : 'left',
         theme: is_dark_mode_on ? 'dark' : 'light',
-        ...(is_accumulator ? { whitespace: 190, minimumLeftBars: is_mobile ? 3 : undefined } : {}),
+        ...(is_accumulator ? { whitespace: 190, minimumLeftBars: isMobile ? 3 : undefined } : {}),
         ...(has_barrier ? { whitespace: 110 } : {}),
     };
 
@@ -109,8 +109,8 @@ const TradeChart = observer((props: TTradeChartProps) => {
             ref={ref}
             barriers={barriers}
             contracts_array={markers_array}
-            bottomWidgets={(is_accumulator || show_digits_stats) && isDesktop() ? bottomWidgets : props.bottomWidgets}
-            crosshair={is_mobile ? 0 : undefined}
+            bottomWidgets={(is_accumulator || show_digits_stats) && !isMobile ? bottomWidgets : props.bottomWidgets}
+            crosshair={isMobile ? 0 : undefined}
             crosshairTooltipLeftAllow={560}
             showLastDigitStats={show_digits_stats}
             chartControlsWidgets={null}
@@ -125,11 +125,11 @@ const TradeChart = observer((props: TTradeChartProps) => {
             feedCall={{
                 activeSymbols: false,
             }}
-            enabledNavigationWidget={isDesktop()}
+            enabledNavigationWidget={!isMobile}
             enabledChartFooter={false}
             id='trade'
-            isMobile={is_mobile}
-            maxTick={is_mobile ? max_ticks : undefined}
+            isMobile={isMobile}
+            maxTick={isMobile ? max_ticks : undefined}
             granularity={show_digits_stats || is_accumulator ? 0 : granularity}
             requestAPI={wsSendRequest}
             requestForget={wsForget}
@@ -143,13 +143,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
             isConnectionOpened={is_socket_opened}
             clearChart={false}
             toolbarWidget={() => {
-                return (
-                    <ToolbarWidgets
-                        updateChartType={updateChartType}
-                        updateGranularity={updateGranularity}
-                        is_mobile={is_mobile}
-                    />
-                );
+                return <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />;
             }}
             importedLayout={chart_layout}
             onExportLayout={exportLayout}
@@ -158,10 +152,10 @@ const TradeChart = observer((props: TTradeChartProps) => {
             getMarketsOrder={getMarketsOrder}
             should_zoom_out_on_yaxis={is_accumulator}
             yAxisMargin={{
-                top: is_mobile ? 76 : 106,
+                top: isMobile ? 76 : 106,
             }}
             isLive
-            leftMargin={isDesktop() && is_positions_drawer_on ? 328 : 80}
+            leftMargin={!isMobile && is_positions_drawer_on ? 328 : 80}
         >
             {is_accumulator && (
                 <AccumulatorsChartElements
@@ -171,7 +165,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
                     has_crossed_accu_barriers={has_crossed_accu_barriers}
                     should_show_profit_text={!!accumulator_contract_barriers_data.accumulators_high_barrier}
                     symbol={symbol}
-                    is_mobile={is_mobile}
+                    is_mobile={isMobile}
                 />
             )}
         </SmartChart>

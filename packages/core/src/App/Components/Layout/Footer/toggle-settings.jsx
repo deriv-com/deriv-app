@@ -13,7 +13,14 @@ const ModalContent = ({ settings_extension }) => {
     return <VerticalTab list={content} />;
 };
 
-const ToggleSettings = ({ enableApp, is_settings_visible, disableApp, toggleSettings, settings_extension }) => {
+const ToggleSettings = ({
+    enableApp,
+    is_settings_visible,
+    disableApp,
+    toggleSettings,
+    settings_extension,
+    showPopover,
+}) => {
     const toggle_settings_class = classNames('ic-settings', 'footer__link', {
         'ic-settings--active': is_settings_visible,
     });
@@ -25,9 +32,13 @@ const ToggleSettings = ({ enableApp, is_settings_visible, disableApp, toggleSett
                 onClick={toggleSettings}
                 className={`${toggle_settings_class} footer__link`}
             >
-                <Popover alignment='top' message={localize('Platform settings')} zIndex={9999}>
+                {showPopover ? (
+                    <Popover alignment='top' message={localize('Platform settings')} zIndex={9999}>
+                        <Icon icon='IcGear' data_testid='dt_icon' className='footer__icon ic-settings__icon' />
+                    </Popover>
+                ) : (
                     <Icon icon='IcGear' data_testid='dt_icon' className='footer__icon ic-settings__icon' />
-                </Popover>
+                )}
             </a>
             <Modal
                 id='dt_settings_modal'
@@ -52,6 +63,7 @@ ToggleSettings.propTypes = {
     is_settings_visible: PropTypes.bool,
     settings_extension: PropTypes.array,
     toggleSettings: PropTypes.func,
+    showPopover: PropTypes.bool,
 };
 
 export { ToggleSettings };

@@ -60,6 +60,9 @@ inputs:
   ISSUE_NUMBER:
     description: 'Issue to post a comment to'
     required: false
+  TRUSTPILOT_API_KEY:
+    description: 'Trustpilot api key'
+    required: false
 
 runs:
   using: composite
@@ -70,17 +73,11 @@ runs:
       GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
     shell: bash
     run: |
-      # Fetching the artifacts and storing response for debugging
       RESPONSE=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
         "https://api.github.com/repos/${{ github.repository }}/actions/artifacts?name=analyse")
 
-      # uncomment for debugging purposes
-      # echo "API Response: $RESPONSE"
-
-      # Extracting the artifact URL using jq
       ARTIFACT_URL=$(echo $RESPONSE | jq -r '.artifacts[0].archive_download_url')
 
-      # Check if the artifact URL is empty
       if [[ -z "$ARTIFACT_URL" ]]; then
         echo "Error: No artifact URL found for the master branch with prefix 'analyse'."
         exit 1
@@ -88,7 +85,6 @@ runs:
         echo "Artifact URL: $ARTIFACT_URL"
       fi
 
-      # Output artifact URL for other steps
       echo "artifact_url=$ARTIFACT_URL" >> $GITHUB_OUTPUT
       echo "artifact_url=$ARTIFACT_URL"
 
@@ -125,6 +121,7 @@ runs:
       GROWTHBOOK_DECRYPTION_KEY: ${{ inputs.GROWTHBOOK_DECRYPTION_KEY }}
       REF_NAME: ${{ inputs.REF_NAME }}
       REMOTE_CONFIG_URL: ${{ inputs.REMOTE_CONFIG_URL }}
+      TRUSTPILOT_API_KEY: ${{ inputs.TRUSTPILOT_API_KEY }}
       NODE_OPTIONS: "--max_old_space_size=4096"
     shell: bash
     run: npm run build:prod && npm run analyze:stats && npm run analyze:build
@@ -134,36 +131,43 @@ runs:
     if: steps.get_artifact_url.outputs.artifact_url != 'null'
     shell: bash
     run: |
-      DIFF_OUTPUT=$(node .github/actions/analyze/compareReports.js)
-      echo "diff_output<<EOF" >> $GITHUB_OUTPUT
-      echo "$DIFF_OUTPUT" >> $GITHUB_OUTPUT
-      echo "EOF" >> $GITHUB_OUTPUT
-      echo $DIFF_OUTPUT
+      DIFF_OUTPUT_HTML=$(node .github/actions/analyze/compareReports.js --format=html)
+      ABOVE_THRESHOLD=$(node .github/actions/analyze/compareReports.js --format=boolean) || { echo "Threshold check failed"; exit 1; }
+
+      # Output results to GITHUB_OUTPUT
+      echo "diff_output_html=$DIFF_OUTPUT_HTML" >> $GITHUB_OUTPUT
+      echo "above_threshold=$ABOVE_THRESHOLD" >> $GITHUB_OUTPUT
 
   - name: Comment on PR with Diff Output
     if: steps.get_artifact_url.outputs.artifact_url != 'null' && inputs.ISSUE_NUMBER
     uses: actions/github-script@v5
     env:
-      DIFF_OUTPUT: ${{ steps.diff.outputs.diff_output }}
+      DIFF_OUTPUT_HTML: ${{ steps.diff.outputs.diff_output_html }}
       ISSUE_NUMBER: ${{ inputs.ISSUE_NUMBER }}
     with:
       script: |
-        const diffOutput = process.env.DIFF_OUTPUT;
+        const diffOutputHtml = process.env.DIFF_OUTPUT_HTML;  // Removed Buffer.from and base64 decoding
         const issueNumber = process.env.ISSUE_NUMBER;
         github.rest.issues.createComment({
           owner: context.repo.owner,
           repo: context.repo.repo,
           issue_number: issueNumber,
-          body: `${diffOutput}`
+          body: `${diffOutputHtml}`
         });
     continue-on-error: true
 
-  - name: Zip all report.json files
+  - name: Print out differences on console
+    id: print_diff
+    if: steps.get_artifact_url.outputs.artifact_url != 'null'
     shell: bash
     run: |
-      zip -r analyse.zip packages/*/report.json
+      node .github/actions/analyze/compareReports.js --format=console
 
-  # Step for the master branch
+  - name: Zip all treemaps and reports
+    shell: bash
+    run: |
+      zip -r analyse.zip packages/*/{report.json,treemap.html}
+
   - name: Upload analyse.zip for Master Branch
     if: github.ref == 'refs/heads/master'
     uses: actions/upload-artifact@v4
@@ -171,6 +175,7 @@ runs:
       name: analyse
       path: analyse.zip
       retention-days: 20
+      overwrite: true
 
   - name: Set sanitized branch name
     id: sanitize
@@ -186,3 +191,12 @@ runs:
       name: analyse-${{ env.SANITIZED_REF_NAME }}
       path: analyse.zip
       retention-days: 5
+      overwrite: true
+
+  - name: Validate size changes
+    if: ${{ steps.diff.outputs.above_threshold == 'true' && github.ref != 'refs/heads/master' }}
+    uses: actions/github-script@v5
+    with:
+      script: |
+        core.setFailed('Size changes exceed the defined threshold. Check above logs for details.');
+

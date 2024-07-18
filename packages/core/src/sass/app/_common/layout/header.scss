@@ -48,7 +48,7 @@
         border-bottom: 1px solid var(--general-section-2);
         padding-right: 0;
 
-        &--trader-hub {
+        &--responsible-trading {
             border-bottom: 1px solid var(--general-section-2);
         }
     }
@@ -165,7 +165,6 @@
         &-extensions {
             display: flex;
             align-items: center;
-            overflow: hidden;
         }
 
         &-logo {
@@ -184,7 +183,7 @@
         &--hidden {
             display: none;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             .acc-info__separator {
                 display: none;
             }
@@ -284,7 +283,7 @@
         height: 100%;
         align-self: center;
 
-        @media (max-width: 520px) {
+        @include mobile-or-tablet-screen {
             display: none;
         }
     }
@@ -373,7 +372,7 @@
         margin-right: 0.8rem;
         vertical-align: middle;
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         height: $MOBILE_HEADER_HEIGHT;
 
         .header__menu-left,
@@ -395,37 +394,81 @@
 }
 
 .header-v2 {
-    display: flex;
-    justify-content: center;
+    height: $MOBILE_HEADER_DTRADER_V2_HEIGHT;
+    border-bottom: none;
+
+    &--with-banner {
+        height: $MOBILE_HEADER_DTRADER_V2_WITH_BANNER_HEIGHT;
+    }
 
     &__acc-info {
         display: flex;
-        flex-direction: column;
-        align-items: center;
         justify-content: center;
+        flex-direction: column;
 
-        &--top {
+        &__name {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: var(--semantic-spacing-gap-sm);
+            gap: var(--core-spacing-200);
         }
 
-        &--logo {
-            height: var(--core-size-800);
-            width: var(--core-size-800);
+        &__balance:is(h5) {
+            color: var(--core-color-opacity-black-600);
+        }
 
-            svg {
-                width: var(--core-size-800);
-                height: var(--core-size-800);
+        &__container {
+            height: $MOBILE_HEADER_DTRADER_V2_HEIGHT;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-inline: var(--core-spacing-800);
+
+            .notifications {
+                &__icon {
+                    fill: var(--core-color-opacity-black-600);
+                }
+                &__wrapper {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: var(--core-size-1800);
+                    height: var(--core-size-1800);
+                }
             }
         }
 
-        &--bottom {
+        &__wrapper {
             display: flex;
-            align-items: center;
             justify-content: center;
-            gap: var(--semantic-spacing-gap-sm);
+            align-items: center;
+            gap: var(--core-spacing-400);
         }
+
+        &__select-arrow {
+            pointer-events: none;
+            transform: rotate(0);
+            transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+
+            &--up {
+                transform: rotate(180deg);
+            }
+        }
+    }
+    &__loader {
+        display: flex;
+        justify-content: space-between;
+        padding: var(--core-spacing-300) var(--semantic-spacing-general-md);
+    }
+}
+
+.contract-details-header-v2 {
+    display: flex;
+    justify-content: center;
+    height: var(--core-spacing-2400);
+    padding: var(--core-spacing-600) var(--core-spacing-50);
+    .arrow {
+        position: absolute;
+        cursor: pointer;
+        left: var(--core-size-1200);
     }
 }

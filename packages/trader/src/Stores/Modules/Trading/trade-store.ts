@@ -1,6 +1,7 @@
 import * as Symbol from './Actions/symbol';
 import {
     WS,
+    ChartBarrierStore,
     cloneObject,
     convertDurationLimit,
     extractInfoFromShortcode,
@@ -13,16 +14,15 @@ import {
     isBarrierSupported,
     isAccumulatorContract,
     isCryptocurrency,
-    isDesktop,
     isEmptyObject,
     isMarketClosed,
-    isMobile,
     isMultiplierContract,
     isTurbosContract,
     isVanillaFxContract,
     isVanillaContract,
     pickDefaultSymbol,
     resetEndTimeOnVolatilityIndices,
+    setLimitOrderBarriers,
     showDigitalOptionsUnavailableError,
     showUnavailableLocationError,
     getCurrencyDisplayCode,
@@ -50,11 +50,8 @@ import { action, computed, makeObservable, observable, override, reaction, runIn
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
 import { getHoveredColor } from './Helpers/barrier-utils';
 import BaseStore from '../../base-store';
-import { TTextValueNumber, TTextValueStrings } from 'Types';
-import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
+import { TRootStore, TTextValueNumber, TTextValueStrings } from 'Types';
 import debounce from 'lodash.debounce';
-import { setLimitOrderBarriers } from './Helpers/limit-orders';
-import type { TCoreStores } from '@deriv/stores/types';
 import {
     ActiveSymbols,
     ActiveSymbolsRequest,
@@ -309,7 +306,9 @@ export default class TradeStore extends BaseStore {
         Analytics.trackEvent('ce_contracts_set_up_form', payload);
     }, 2000);
     debouncedSetChartStatus = debounce((status: boolean) => {
-        this.is_chart_loading = status;
+        runInAction(() => {
+            this.is_chart_loading = status;
+        });
     }); // no time is needed here, the only goal is to put the call into macrotasks queue
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests: Record<string, Partial<PriceProposalRequest>> = {};
@@ -319,7 +318,7 @@ export default class TradeStore extends BaseStore {
     is_initial_barrier_applied = false;
     is_digits_widget_active = false;
     should_skip_prepost_lifecycle = false;
-    constructor({ root_store }: { root_store: TCoreStores }) {
+    constructor({ root_store }: { root_store: TRootStore }) {
         const local_storage_properties = [
             'amount',
             'currency',
@@ -911,11 +910,13 @@ export default class TradeStore extends BaseStore {
 
     onPurchase = debounce(this.processPurchase, 300);
 
-    processPurchase(proposal_id: string, price: string | number, type: string) {
+    processPurchase(proposal_id: string, price: string | number, type: string, isMobile: boolean) {
         if (!this.is_purchase_enabled) return;
         if (proposal_id) {
-            this.is_purchase_enabled = false;
-            this.is_purchasing_contract = true;
+            runInAction(() => {
+                this.is_purchase_enabled = false;
+                this.is_purchasing_contract = true;
+            });
             const is_tick_contract = this.duration_unit === 't';
             processPurchase(proposal_id, price).then(
                 action((response: TResponse<Buy, BuyContractResponse, 'buy'>) => {
@@ -937,7 +938,7 @@ export default class TradeStore extends BaseStore {
                             });
 
                             // Clear purchase info on mobile after toast box error disappears (mobile_toast_timeout = 3500)
-                            if (isMobile() && this.root_store.common?.services_error?.type === 'buy') {
+                            if (isMobile && this.root_store.common?.services_error?.type === 'buy') {
                                 setTimeout(() => {
                                     this.clearPurchaseInfo();
                                     this.requestProposal();
@@ -997,7 +998,7 @@ export default class TradeStore extends BaseStore {
                             // and then set the chart view to the start_time
                             // draw the start time line and show longcode then mount contract
                             // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
-                            if (isDesktop()) {
+                            if (!isMobile) {
                                 this.root_store.ui.openPositionsDrawer();
                             }
                             this.proposal_info = {};
@@ -1296,16 +1297,20 @@ export default class TradeStore extends BaseStore {
     requestProposal() {
         const requests = createProposalRequests(this);
         if (Object.values(this.validation_errors).some(e => e.length)) {
-            this.proposal_info = {};
-            this.purchase_info = {};
+            runInAction(() => {
+                this.proposal_info = {};
+                this.purchase_info = {};
+            });
             this.forgetAllProposal();
             if (this.is_accumulator) this.resetAccumulatorData();
             return;
         }
 
         if (!isEmptyObject(requests)) {
-            this.proposal_requests = requests as Record<string, Partial<PriceProposalRequest>>;
-            this.purchase_info = {};
+            runInAction(() => {
+                this.proposal_requests = requests as Record<string, Partial<PriceProposalRequest>>;
+                this.purchase_info = {};
+            });
             Object.keys(this.proposal_requests).forEach(type => {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
             });
@@ -1565,6 +1570,13 @@ export default class TradeStore extends BaseStore {
     onMount() {
         this.root_store.notifications.removeTradeNotifications();
         if (this.is_trade_component_mounted && this.should_skip_prepost_lifecycle) {
+            const { chart_type, granularity } = this.root_store.contract_trade;
+            setTradeURLParams({
+                chartType: chart_type,
+                granularity,
+                symbol: this.symbol,
+                contractType: this.contract_type,
+            });
             return;
         }
         this.root_store.notifications.setShouldShowPopups(false);

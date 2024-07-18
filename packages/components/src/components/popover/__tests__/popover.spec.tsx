@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen, within } from '@testing-library/react';
+import { useDevice } from '@deriv-com/ui';
 import userEvent from '@testing-library/user-event';
 import Popover from '../popover';
 import Icon from '../../icon';
@@ -22,6 +23,11 @@ const default_mocked_props = {
     onBubbleClose: jest.fn(),
     onBubbleOpen: jest.fn(),
 } as React.ComponentProps<typeof Popover>;
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
 jest.mock('../../icon', () =>
     jest.fn((props: React.ComponentProps<typeof Icon>) => <div data-testid='mocked_icon'>{props.icon}</div>)
@@ -47,7 +53,7 @@ describe('<Popover/>', () => {
         expect(screen.queryByText(tooltip_message)).not.toBeInTheDocument();
     });
     it('should render a question icon, display tooltip upon tap & hide it upon the second tap on mobile', () => {
-        window.innerWidth = MAX_MOBILE_WIDTH;
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
         render(mockPopover({ ...default_mocked_props, icon: 'question' }));
         const unknown_icon = screen.getByText('IcUnknown');
         expect(unknown_icon).toBeInTheDocument();

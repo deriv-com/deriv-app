@@ -7,6 +7,7 @@ import { BreakpointProvider } from '@deriv/quill-design';
 import { APIProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
+import { Loading } from '@deriv/components';
 import {
     POIProvider,
     initFormErrorMessages,
@@ -18,6 +19,7 @@ import {
 import { StoreProvider, P2PSettingsProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
 import { withTranslation, useTranslation } from 'react-i18next';
+import { initializeI18n, TranslationProvider, getInitialLanguage } from '@deriv-com/translations';
 import { CFD_TEXT } from '../Constants/cfd-text';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import AppContent from './AppContent';
@@ -25,6 +27,9 @@ import initHotjar from '../Utils/Hotjar';
 import 'Sass/app.scss';
 
 const AppWithoutTranslation = ({ root_store }) => {
+    const i18nInstance = initializeI18n({
+        cdnUrl: `${process.env.CROWDIN_URL}/${process.env.ACC_TRANSLATION_PATH}`, // https://translations.deriv.com/deriv-app-accounts/staging/translations
+    });
     const l = window.location;
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
@@ -37,6 +42,8 @@ const AppWithoutTranslation = ({ root_store }) => {
     const initCFDStore = () => {
         root_store.modules.attachModule('cfd', new CFDStore({ root_store, WS }));
     };
+    const { preferred_language } = root_store.client;
+    const language = preferred_language ?? getInitialLanguage();
 
     React.useEffect(() => {
         const dir = i18n.dir(i18n.language.toLowerCase());
@@ -86,6 +93,8 @@ const AppWithoutTranslation = ({ root_store }) => {
     const platform_passthrough = {
         root_store,
         WS,
+        i18nInstance,
+        language,
     };
 
     setWebsocket(WS);
@@ -104,11 +113,14 @@ const AppWithoutTranslation = ({ root_store }) => {
                         <BreakpointProvider>
                             <APIProvider>
                                 <POIProvider>
-                                    <StoreProvider store={root_store}>
-                                        <P2PSettingsProvider>
-                                            <AppContent passthrough={platform_passthrough} />
-                                        </P2PSettingsProvider>
-                                    </StoreProvider>
+                                    <P2PSettingsProvider>
+                                        <TranslationProvider defaultLang={language} i18nInstance={i18nInstance}>
+                                            {/* This is required as translation provider uses suspense to reload language */}
+                                            <React.Suspense fallback={<Loading />}>
+                                                <AppContent passthrough={platform_passthrough} />
+                                            </React.Suspense>
+                                        </TranslationProvider>
+                                    </P2PSettingsProvider>
                                 </POIProvider>
                             </APIProvider>
                         </BreakpointProvider>

@@ -23,12 +23,14 @@
         backface-visibility: hidden;
         transition: transform 0.6s ease;
         transform: rotateY(0deg);
-        height: 100%;
+        @include mobile-or-tablet-screen {
+            height: 100%;
+        }
     }
 
     &__footer-content {
         background-color: var(--general-main-1);
-        @include mobile {
+        @include mobile-or-tablet-screen {
             position: sticky;
             bottom: 0;
         }
@@ -37,11 +39,11 @@
         background-color: var(--general-main-1);
         button {
             height: 4rem;
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 100%;
             }
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             position: sticky;
             bottom: 0;
         }
@@ -56,7 +58,7 @@
             overflow-y: scroll;
             perspective: 100rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
@@ -64,7 +66,7 @@
         }
     }
     &__flipped {
-        @include desktop {
+        @include desktop-screen {
             height: 70rem;
             overflow: scroll;
         }
@@ -75,6 +77,10 @@
                 transition: transform 1.5s ease;
                 transform: rotateY(-180deg);
                 visibility: hidden;
+
+                @include mobile-or-tablet-screen {
+                    height: 100%;
+                }
             }
         }
 
@@ -117,11 +123,11 @@
     &__wrapper {
         margin: 3rem 5rem 1rem;
         display: flex;
-        @include desktop {
+        @include desktop-screen {
             justify-content: center;
         }
         gap: 1.6rem;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin: 0;
             padding: 4rem;
             gap: 4rem;
@@ -152,7 +158,7 @@
                 &-blank {
                     height: 4rem;
                     border-radius: 1.4rem;
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         height: 2rem;
                     }
                 }
@@ -185,7 +191,7 @@
     &__h2-header {
         min-height: 5rem;
         margin: 1rem 2rem;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin-bottom: 2rem;
             min-height: auto;
         }
@@ -195,7 +201,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             min-height: auto;
             width: 100%;
         }
@@ -207,10 +213,10 @@
 
         gap: 1rem;
         margin: 1rem;
-        @include desktop {
+        @include desktop-screen {
             min-height: 7.6rem;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             gap: 0;
             margin: 0;
         }
@@ -219,7 +225,7 @@
     &__footnote {
         display: flex;
         justify-content: center;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin: unset;
             padding: 1.6rem 0.8rem;
             box-shadow: 0px -4px 4px rgba(0, 0, 0, 0.08);
@@ -232,7 +238,7 @@
     &__jurisdiction-checkbox {
         display: flex;
         justify-content: center;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin-bottom: 1rem;
             padding: 0.8rem;
         }
@@ -258,10 +264,18 @@
 
 .cfd-jurisdiction-card--financial {
     &__footnotes-container {
-        @include desktop {
+        @include desktop-screen {
             gap: 1rem;
             min-height: 7.6rem;
             margin: 1rem;
+        }
+    }
+}
+
+.cfd-jurisdiction-card--synthetic {
+    &__footnotes-container {
+        @include desktop {
+            min-height: 11rem;
         }
     }
 }
@@ -270,7 +284,7 @@
     &-perspective {
         -webkit-perspective: 100rem;
         perspective: 100rem;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 100%;
         }
     }
@@ -287,7 +301,7 @@
         &.financial {
             min-height: 55rem;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             height: 48rem;
             width: 100%;
         }
@@ -354,7 +368,7 @@
             }
         }
         &-description-height {
-            @include desktop {
+            @include desktop-screen {
                 &-assets {
                     min-height: 3.4rem;
                 }
@@ -395,6 +409,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        min-height: 2.55rem;
     }
     &-disabled {
         &-flat {
@@ -495,14 +510,6 @@
         color: var(--text-less-prominent);
         line-height: 1.45;
     }
-    &--tag {
-        background-color: $color-blue;
-        color: var(--text-colored-background);
-        border-radius: 0.2rem;
-        padding: 0 0.4rem;
-        font-weight: bold;
-        font-size: 1.3rem;
-    }
 
     &__mobile {
         &-title {
@@ -514,6 +521,21 @@
         display: flex;
         flex-direction: column;
         flex-grow: 1;
+
+        &-heading--real {
+            padding: 0.2rem 0.4rem;
+            margin-left: 0.3rem;
+            background-color: var(--icon-grey-background);
+            border-radius: $BORDER_RADIUS;
+        }
+
+        &-heading--demo {
+            background-color: $color-blue-8;
+            color: $color-blue-9;
+            border-radius: $BORDER_RADIUS;
+            padding: 0.2rem 0.4rem;
+            margin-left: 0.3rem;
+        }
 
         &-balance {
             margin-left: 1.5rem;
@@ -573,7 +595,7 @@
         &-text {
             padding: 0.5rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding-right: 0.5rem;
                 white-space: nowrap;
             }
@@ -672,7 +694,7 @@
                     display: flex;
                     flex-direction: column;
                     margin: 4rem 1.6rem 6rem;
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         margin-top: 5rem;
                         margin-bottom: 0;
                     }
@@ -739,7 +761,7 @@
                     gap: 0.8rem;
                 }
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     margin-left: 0;
                     margin-right: unset;
                 }
@@ -764,7 +786,7 @@
             line-height: 1.5;
             margin-left: 2.1rem;
             margin-bottom: 4.2rem;
-            @include desktop {
+            @include desktop-screen {
                 margin-left: 0;
                 text-align: center;
             }
@@ -772,7 +794,7 @@
         &--hint {
             margin-top: 1.6rem;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin-bottom: 1.6rem;
         }
     }
@@ -835,7 +857,7 @@
         & .dc-input__label {
             top: 0.9rem;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding-bottom: 12rem;
         }
     }
@@ -850,7 +872,7 @@
         max-width: 300px;
         margin: 2.4em auto 0;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             max-width: unset;
         }
     }
@@ -868,7 +890,7 @@
     &--button {
         margin-top: 1.6rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 100%;
             margin-top: 0.8rem;
             max-width: 30rem;
@@ -887,7 +909,7 @@
             margin-top: 3.2rem;
             width: 6.4rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 100%;
                 max-width: 30rem;
             }
@@ -899,10 +921,10 @@
     .multi-step__component {
         text-align: center;
     }
-    @include desktop {
+    @include desktop-screen {
         max-width: calc(450px + 1rem); // needs extra padding for the scrollbar, otherwise it will cover the words
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         padding: 0 1.6rem;
         margin-top: 2.4rem;
 
@@ -926,7 +948,7 @@
     backface-visibility: hidden;
     transition: transform 0.6s ease;
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         margin: 1.5rem 2.4rem 2.4rem;
     }
 
@@ -936,7 +958,7 @@
         grid-template-columns: 1fr 1fr;
         margin: 0 10rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             grid-template-columns: 1fr;
             margin: 0 6.5rem 3rem;
         }
@@ -1010,7 +1032,7 @@
     }
 
     .upload-layout {
-        @include desktop {
+        @include desktop-screen {
             height: 100%;
         }
     }
@@ -1018,7 +1040,7 @@
     .account-form__poi-confirm-example {
         gap: 1.6rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             gap: 0;
         }
     }
@@ -1045,7 +1067,7 @@
             &-details {
                 max-width: 68rem;
                 margin: auto;
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     overflow-y: scroll;
                 }
 
@@ -1076,9 +1098,13 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+
+            .upload_error_btn {
+                margin-top: 3.2rem;
+            }
         }
 
-        @include desktop() {
+        @include desktop-screen {
             .onfido-container {
                 padding-top: 1.6rem;
             }
@@ -1110,14 +1136,14 @@
             flex: 1;
         }
     }
-    @include desktop {
+    @include desktop-screen {
         overflow: hidden;
 
         & .details-form__description {
             width: 100%;
         }
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         overflow: initial;
         grid-template-rows: 7rem minmax(10rem, 1fr);
         &__heading {
@@ -1142,7 +1168,7 @@
             height: auto;
             padding: 0 3rem;
             padding-bottom: 7rem;
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 overflow-y: auto;
             }
         }
@@ -1208,7 +1234,7 @@
         width: 45%;
         margin: 1.2rem auto;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 95%;
         }
     }
@@ -1251,7 +1277,7 @@
         align-items: center;
         height: 100%;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             display: unset;
             position: relative;
         }
@@ -1278,7 +1304,7 @@
                 align-items: unset;
                 flex-direction: unset;
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     width: 95%;
                     margin-top: 8px;
                 }
@@ -1295,7 +1321,7 @@
                 width: 45%;
                 justify-content: unset;
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     width: 100%;
                     padding: 0 1.2rem;
                     overflow-y: unset;
@@ -1367,7 +1393,7 @@
             &__fieldset {
                 width: 100%;
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     margin: 0 0 1.8rem;
                 }
 
@@ -1389,7 +1415,7 @@
 
             &__submit-button {
                 margin-left: 0.8rem;
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     margin-right: unset;
                 }
             }
@@ -1404,11 +1430,11 @@
         height: 100%;
         position: relative;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             max-height: calc(100% - 1rem);
         }
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         overflow: hidden;
     }
 }
@@ -1438,7 +1464,7 @@
 
 .dc-modal__container_cfd-financial-stp-signup-modal {
     max-height: calc(100vh - 102px) !important;
-    @include desktop {
+    @include desktop-screen {
         display: grid;
         grid-template-rows: 6rem minmax(20rem, 1fr);
     }
@@ -1469,7 +1495,7 @@
                 margin-inline-start: 0;
             }
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 0.8rem 1.6rem 1.6rem;
             display: flex;
             grid-gap: 0.6rem;
@@ -1505,7 +1531,7 @@
     }
     &__inline-msg {
         margin: 2.4rem 2.4rem 0;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin: 2.4rem 0;
         }
     }
@@ -1522,13 +1548,13 @@
         margin: 0.8rem auto;
 
         &__desc {
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding: 0 3.8rem;
             }
         }
     }
     &-footer {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             position: absolute;
             bottom: 3.6rem;
             width: 100%;
@@ -1552,7 +1578,7 @@
                 left: 7.6rem;
                 top: 7.6rem;
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     left: 7.8rem;
                     top: 5.8rem;
                 }
@@ -1571,7 +1597,7 @@
                 display: flex;
                 flex-direction: column;
                 gap: 1.2rem;
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     gap: 0.8rem;
                 }
             }
@@ -1584,7 +1610,7 @@
             padding: 1.6rem 0 0.8rem;
             width: fit-content;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             font-size: 1.4rem;
         }
     }
@@ -1595,7 +1621,7 @@
 }
 .cfd-personal-details-form-error {
     @include typeface(--paragraph-left-normal-red);
-    @include desktop {
+    @include desktop-screen {
         white-space: nowrap;
         display: flex;
         align-items: flex-end;
@@ -1618,7 +1644,7 @@
         &--restricted {
             grid-template-columns: 1fr 2fr 1fr;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 116vw;
             height: unset;
         }
@@ -1630,7 +1656,7 @@
                 grid-template-columns: repeat($column_count, 1fr);
             } @else if $column_count == 5 {
                 grid-template-columns: repeat($column_count - 1, 1fr);
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     grid-template-columns: repeat($column_count, 1fr);
                 }
             }
@@ -1823,7 +1849,7 @@
             margin-top: 2.4rem;
         }
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         height: 100%;
         font-size: 1.2rem;
 
@@ -1917,6 +1943,13 @@
     }
 }
 
+.dc-mobile-dialog__content.dc-mobile-dialog__content--is-full-height:has(.dc-mobile-dialog__cfd-password-modal) {
+    @include mobile-or-tablet-screen {
+        display: flex;
+        justify-content: center;
+    }
+}
+
 .dc-modal__container_cfd-password-modal,
 .dc-mobile-dialog__cfd-password-modal {
     display: flex;
@@ -1932,7 +1965,7 @@
         justify-content: space-between;
         padding: 0 2.4rem 1.2rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 0;
         }
     }
@@ -1958,7 +1991,7 @@
     .dc-input {
         &__label {
             top: 1.2rem;
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 top: 0.9rem;
                 background-color: var(--fill-normal);
             }
@@ -1967,7 +2000,7 @@
     .dc-password-meter {
         &__bg {
             background: var(--general-section-2);
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 background: var(--fill-disabled);
             }
         }
@@ -1976,7 +2009,7 @@
         margin-top: 3em;
     }
     .cfd-password-reset {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             flex: 1;
         }
     }
@@ -1984,7 +2017,7 @@
         flex-grow: 1;
         margin: auto;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: calc(100vw - 4.8rem);
             max-width: 30rem;
         }
@@ -1996,7 +2029,7 @@
     .input-element {
         width: 100%;
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         .cfd-password-modal__content {
             overflow-y: auto;
             overflow-x: hidden;
@@ -2080,7 +2113,7 @@
         flex-direction: column;
         max-width: 30rem;
 
-        @include desktop {
+        @include desktop-screen {
             margin-top: -2.5rem;
         }
 
@@ -2193,7 +2226,7 @@
         gap: 4rem;
         padding: 2.4rem 0;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             min-height: 24rem;
             width: calc(100vw - 3.2rem);
         }
@@ -2215,10 +2248,10 @@
         }
     }
     &__password-area {
-        @include desktop {
+        @include desktop-screen {
             width: calc(min(34rem, 100vw));
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 100%;
             max-width: calc(100% - 2.4rem);
         }
@@ -2254,12 +2287,12 @@
         justify-content: space-around;
         padding: 2.4rem 0 2rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: calc(100vw - 3.2rem);
             height: 100%;
         }
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         & .dc-form-submit-button {
             all: unset;
         }
@@ -2288,7 +2321,7 @@
             margin-top: 8px;
             font-weight: bold;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             &:not(:first-child):not(:last-child) {
                 margin: 0;
             }
@@ -2306,7 +2339,7 @@
             }
         }
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         display: grid;
         grid-gap: 2.4rem;
         grid-template-columns: 1fr 1fr 1fr;
@@ -2367,7 +2400,7 @@
     &-modal {
         &-description {
             margin: 1.5rem 0 2rem;
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin: 1rem 1rem 2rem;
                 &--button {
                     display: flex;
@@ -2394,14 +2427,14 @@
         justify-content: center;
         align-items: center;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 1.4rem 1.6rem 2.4rem;
         }
     }
     &__icon {
         // to adjust the icon to the center
         margin: 0 0 2rem 2.4rem;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin: 0 0 2.4rem 2.4rem;
         }
     }
@@ -2411,7 +2444,7 @@
     &__subtext {
         margin-bottom: 1.6rem;
     }
-    @include desktop {
+    @include desktop-screen {
         &__footer {
             &-button {
                 padding: 0 1rem 1rem 0;

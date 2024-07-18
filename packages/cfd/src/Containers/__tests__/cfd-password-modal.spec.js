@@ -347,7 +347,7 @@ describe('<CFDPasswordModal/>', () => {
         expect(await screen.findByRole('button', { name: /transfer now/i }));
     });
 
-    it('should display Derived icon in Success Dialog', async () => {
+    it('should display Standard icon in Success Dialog', async () => {
         const store = mockStore(mockRootStore);
 
         store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
@@ -364,7 +364,7 @@ describe('<CFDPasswordModal/>', () => {
             }
         );
 
-        expect(await screen.findByText('IcMt5SyntheticPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('IcMt5StandardPlatform')).toBeInTheDocument();
     });
 
     it('should display icon in Success Dialog in tradershub', async () => {
@@ -384,7 +384,7 @@ describe('<CFDPasswordModal/>', () => {
             }
         );
 
-        expect(await screen.findByText('IcMt5SyntheticPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('IcMt5StandardPlatform')).toBeInTheDocument();
     });
 
     it('should display Financial icon in Success Dialog', async () => {

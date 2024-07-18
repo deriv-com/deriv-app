@@ -2,6 +2,7 @@ import throttle from 'lodash.throttle';
 import { action, computed, observable, reaction, makeObservable, override } from 'mobx';
 import { computedFn } from 'mobx-utils';
 import {
+    ChartBarrierStore,
     isAccumulatorContract,
     isEmptyObject,
     isEnded,
@@ -21,11 +22,10 @@ import {
     TRADE_TYPES,
     removeBarrier,
     routes,
+    setLimitOrderBarriers,
 } from '@deriv/shared';
 import { Money } from '@deriv/components';
 import { Analytics } from '@deriv-com/analytics';
-import { ChartBarrierStore } from './chart-barrier-store';
-import { setLimitOrderBarriers } from './Helpers/limit-orders';
 
 import BaseStore from './base-store';
 
@@ -33,7 +33,7 @@ export default class PortfolioStore extends BaseStore {
     positions = [];
     all_positions = [];
     positions_map = {};
-    is_loading = false;
+    is_loading = true;
     error = '';
 
     //accumulators
@@ -472,7 +472,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     networkStatusChangeListener(is_online) {
-        this.is_loading = !is_online;
+        this.is_loading = this.is_loading || !is_online;
     }
 
     onMount() {

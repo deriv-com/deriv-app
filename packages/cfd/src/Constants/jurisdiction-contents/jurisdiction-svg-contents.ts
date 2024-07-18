@@ -10,10 +10,12 @@ export const getJurisdictionSvgContents = ({
         {
             key: 'assets',
             title: localize('Assets'),
-            description: localize('Synthetic indices, basket indices, and derived FX'),
+            description: localize(
+                'Forex (standard), stock indices, commodities, cryptocurrencies, stocks, ETFs, synthetic indices, basket indices and derived FX'
+            ),
             title_indicators: {
                 type: 'displayText',
-                display_text: localize('40+'),
+                display_text: localize('210+'),
                 display_text_skin_color: 'red-darker',
             },
         },

@@ -5,7 +5,6 @@ import { withRouter } from 'react-router';
 import NetworkStatus, {
     AccountLimits as AccountLimitsFooter,
     EndpointNote,
-    GoToDeriv,
     HelpCentre,
     RegulatoryInformation,
     ResponsibleTrading,
@@ -16,7 +15,7 @@ import NetworkStatus, {
 import LiveChat from 'App/Components/Elements/LiveChat';
 import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
 import ServerTime from '../server-time.jsx';
-import { routes, useIsMounted } from '@deriv/shared';
+import { routes, useIsMounted, isTabletOs } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import DarkModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-light-theme.svg';
 import LightModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-dark-theme.svg';
@@ -73,6 +72,15 @@ const TradingHubFooter = observer(() => {
     const location = window.location.pathname;
     const { data } = useRemoteConfig(isMounted());
     const { cs_chat_livechat, cs_chat_whatsapp } = data;
+
+    const showPopover = !isTabletOs;
+
+    const modeIcon = is_dark_mode ? (
+        <LightModeToggleIcon onClick={changeTheme} />
+    ) : (
+        <DarkModeToggleIcon onClick={changeTheme} />
+    );
+
     return (
         <footer
             className={classNames('footer', {
@@ -91,31 +99,31 @@ const TradingHubFooter = observer(() => {
             <FooterIconSeparator />
             <div className='footer__links'>
                 {footer_extensions_right.map(FooterExtensionRenderer)}
-                {cs_chat_whatsapp && <WhatsApp />}
-                {cs_chat_livechat && <LiveChat />}
-                <GoToDeriv />
-                <ResponsibleTrading />
-                {is_logged_in && <AccountLimitsFooter />}
+                {cs_chat_whatsapp && <WhatsApp showPopover={showPopover} />}
+                {cs_chat_livechat && <LiveChat showPopover={showPopover} />}
+                <ResponsibleTrading showPopover={showPopover} />
+                {is_logged_in && <AccountLimitsFooter showPopover={showPopover} />}
                 {is_logged_in && !is_virtual && (
                     <RegulatoryInformation
                         landing_company={landing_company_shortcode}
                         is_eu={is_eu}
                         show_eu_related_content={show_eu_related_content}
+                        showPopover={showPopover}
                     />
                 )}
                 {!has_wallet && (
                     <div className='footer__links--dark-mode'>
-                        <Popover alignment='top' message={localize('Change theme')} zIndex={9999}>
-                            {is_dark_mode ? (
-                                <LightModeToggleIcon onClick={changeTheme} />
-                            ) : (
-                                <DarkModeToggleIcon onClick={changeTheme} />
-                            )}
-                        </Popover>
+                        {showPopover ? (
+                            <Popover alignment='top' message={localize('Change theme')} zIndex={9999}>
+                                {modeIcon}
+                            </Popover>
+                        ) : (
+                            modeIcon
+                        )}
                     </div>
                 )}
                 <FooterIconSeparator />
-                <HelpCentre />
+                <HelpCentre showPopover={showPopover} />
                 {location === routes.trade && (
                     <ToggleSettings
                         is_settings_visible={is_settings_modal_on}
@@ -123,6 +131,7 @@ const TradingHubFooter = observer(() => {
                         disableApp={disableApp}
                         enableApp={enableApp}
                         settings_extension={settings_extension}
+                        showPopover={showPopover}
                     />
                 )}
                 {!has_wallet && (
@@ -130,9 +139,10 @@ const TradingHubFooter = observer(() => {
                         is_settings_visible={is_language_settings_modal_on}
                         toggleSettings={toggleLanguageSettingsModal}
                         lang={current_language}
+                        showPopover={showPopover}
                     />
                 )}
-                <ToggleFullScreen />
+                <ToggleFullScreen showPopover={showPopover} />
             </div>
         </footer>
     );

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, StaticUrl } from '@deriv/components';
-import { routes, platforms } from '@deriv/shared';
+import { routes, platforms, isTabletOs } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { MenuLinks } from 'App/Components/Layout/Header';
@@ -26,6 +26,12 @@ const TradersHubHeaderWallets = observer(() => {
     const { platform } = common;
     const { modal_data } = traders_hub;
     const { header_extension, is_app_disabled, is_route_modal_on } = ui;
+
+    const accountSettings = (
+        <BinaryLink className='traders-hub-header__setting' to={routes.personal_details}>
+            <Icon icon='IcUserOutline' size={20} />
+        </BinaryLink>
+    );
 
     const filterPlatformsForClients = (payload: TPlatformConfig) =>
         payload.filter(config => {
@@ -75,17 +81,19 @@ const TradersHubHeaderWallets = observer(() => {
                         <div className='traders-hub-header__menu-right--items--notifications'>
                             <ShowNotifications />
                         </div>
-                        <Popover
-                            classNameBubble='account-settings-toggle__tooltip'
-                            alignment='bottom'
-                            message={<Localize i18n_default_text='Manage account settings' />}
-                            should_disable_pointer_events
-                            zIndex={'9999'}
-                        >
-                            <BinaryLink className='traders-hub-header__setting' to={routes.personal_details}>
-                                <Icon icon='IcUserOutline' size={20} />
-                            </BinaryLink>
-                        </Popover>
+                        {isTabletOs ? (
+                            accountSettings
+                        ) : (
+                            <Popover
+                                classNameBubble='account-settings-toggle__tooltip'
+                                alignment='bottom'
+                                message={<Localize i18n_default_text='Manage account settings' />}
+                                should_disable_pointer_events
+                                zIndex='9999'
+                            >
+                                {accountSettings}
+                            </Popover>
+                        )}
                     </div>
                 </div>
                 <RealAccountSignup />

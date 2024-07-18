@@ -22,6 +22,7 @@ const useDerivAccountsList = () => {
     const { data: balance_data } = useBalance();
     const { getConfig } = useCurrencyConfig();
 
+    const account_list = account_list_data?.account_list;
     // Add additional information to the authorize response.
     const modified_accounts = useMemo(() => {
         return getAccountListWithAuthToken(account_list_data?.account_list)?.map(account => {
@@ -55,7 +56,7 @@ const useDerivAccountsList = () => {
                 is_mf: account.loginid?.startsWith('MF'),
             } as const;
         });
-    }, [account_list_data?.account_list, authorize_data?.loginid, getConfig]);
+    }, [account_list_data, account_list, authorize_data?.loginid, getConfig]);
 
     // Add balance to each account
     const modified_accounts_with_balance = useMemo(

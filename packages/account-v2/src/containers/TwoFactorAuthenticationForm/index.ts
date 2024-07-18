@@ -1,1 +1,0 @@
-export { TwoFactorAuthenticationForm } from './TwoFactorAuthenticationForm';

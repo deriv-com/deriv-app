@@ -1,11 +1,10 @@
 .wallets-sent-email-content {
     display: inline-flex;
-    padding: 6rem 3.2rem 3.2rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 2.4rem;
-    width: 40rem;
+    width: 45.2rem;
     border-radius: 0.8rem;
     background: var(--system-light-8-primary-background, #fff);
 
@@ -13,6 +12,18 @@
         width: 100%;
         justify-content: flex-start;
         border-radius: 0;
+        padding-bottom: 2.4rem;
+    }
+
+    &--scrollable {
+        padding: 6rem 2.4rem 3.2rem;
+        padding-inline: 2.4rem;
+
+        @include mobile {
+            padding-top: 4.8rem;
+            height: calc(100vh - 40px);
+            overflow-y: scroll;
+        }
     }
 
     &__resend {
@@ -28,13 +39,25 @@
         }
     }
 
+    &__reasons-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        row-gap: 0.8rem;
+    }
+
     &__reasons {
         display: flex;
         align-items: center;
-        gap: 0.8rem;
+        column-gap: 1.6rem;
 
         & svg {
             flex-shrink: 0;
+        }
+
+        .wallets-text {
+            display: flex;
+            align-self: flex-start;
         }
     }
 }

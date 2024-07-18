@@ -35,6 +35,7 @@ const AppContent = observer(() => {
 
     const { recovered_transactions, recoverPendingContracts } = transactions;
     const is_subscribed_to_msg_listener = React.useRef(false);
+    const init_api_interval = React.useRef(null);
     const msg_listener = React.useRef(null);
 
     const handleMessage = ({ data }) => {
@@ -49,13 +50,23 @@ const AppContent = observer(() => {
         }
     };
 
+    function checkIfApiInitialized() {
+        init_api_interval.current = setInterval(() => {
+            if (api_base?.api) {
+                clearInterval(init_api_interval.current);
+                // Listen for proposal open contract messages to check
+                // if there is any active contract from bot still running
+                if (api_base?.api && !is_subscribed_to_msg_listener.current) {
+                    is_subscribed_to_msg_listener.current = true;
+                    msg_listener.current = api_base.api?.onMessage()?.subscribe(handleMessage);
+                }
+            }
+        }, 500);
+    }
+
     React.useEffect(() => {
-        // Listen for proposal open contract messages to check
-        // if there is any active contract from bot still running
-        if (api_base?.api && !is_subscribed_to_msg_listener.current) {
-            is_subscribed_to_msg_listener.current = true;
-            msg_listener.current = api_base.api?.onMessage()?.subscribe(handleMessage);
-        }
+        // Check until api is initialized and then subscribe to the proposal open conrtact
+        checkIfApiInitialized();
         return () => {
             if (is_subscribed_to_msg_listener.current && msg_listener.current) {
                 is_subscribed_to_msg_listener.current = false;
@@ -63,7 +74,7 @@ const AppContent = observer(() => {
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [api_base?.api]);
+    }, []);
 
     //Do not remove this is for the bot-skeleton package to load blockly with the theme
     React.useEffect(() => {
@@ -122,7 +133,7 @@ const AppContent = observer(() => {
     ) : (
         <>
             <BlocklyLoading />
-            <div className='bot-dashboard bot'>
+            <div className='bot-dashboard bot' data-testid='dt_bot_dashboard'>
                 <Audio />
                 <BotNotificationMessages />
                 <Main />

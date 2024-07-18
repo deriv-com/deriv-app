@@ -2,5 +2,20 @@
     &__iframe {
         width: 100%;
         flex: 1;
+
+        @include mobile {
+            position: absolute;
+            height: calc(100% - 6rem);
+            top: 6rem;
+            inset-inline-end: 0;
+            padding: 0 1.6rem;
+
+            + .page-container__sidebar--right {
+                position: relative;
+                top: 100%;
+                padding-bottom: 1.6rem;
+                flex: none;
+            }
+        }
     }
 }

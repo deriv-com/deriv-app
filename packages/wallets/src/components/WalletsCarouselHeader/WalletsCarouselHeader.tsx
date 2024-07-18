@@ -1,8 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
-import { useBalance } from '@deriv/api-v2';
-import { LegacyTransferIcon } from '@deriv/quill-icons';
+import { LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
 import { IconButton, WalletText } from '../Base';
 import { WalletCurrencyCard } from '../WalletCurrencyCard';
 import './WalletsCarouselHeader.scss';
@@ -12,11 +11,11 @@ type TProps = {
     currency: string;
     hidden?: boolean;
     isDemo?: boolean;
+    isLoading?: boolean;
 };
 
-const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, isDemo }) => {
+const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, isDemo, isLoading }) => {
     const history = useHistory();
-    const { isLoading } = useBalance();
 
     return (
         <div className={classNames('wallets-carousel-header', { 'wallets-carousel-header--hidden': hidden })}>
@@ -39,14 +38,13 @@ const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, is
                 </div>
             </div>
             <IconButton
-                color='transparent'
+                aria-label='Transfer'
+                className='wallets-carousel-header__button'
+                color='white'
                 data-testid='dt_wallets_carousel_header_button'
-                icon={<LegacyTransferIcon iconSize='xs' />}
-                iconSize='lg'
-                onClick={() => {
-                    history.push('/wallet/account-transfer');
-                }}
-                size='lg'
+                icon={<LabelPairedArrowUpArrowDownSmBoldIcon />}
+                onClick={() => history.push('/wallet/account-transfer')}
+                size='md'
             />
         </div>
     );

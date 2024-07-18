@@ -1,1 +1,0 @@
-export { DocumentSubmission } from './DocumentSubmission';

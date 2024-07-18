@@ -19,25 +19,11 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
 }) => {
     const switchWalletAccount = useWalletAccountSwitcher();
 
-    const {
-        data,
-        error,
-        isLoading: isWalletCreationLoading,
-        isSuccess: isMutateSuccess,
-        mutate,
-        status,
-    } = useCreateWallet();
+    const { data, error, isLoading: isWalletCreationLoading, mutateAsync, status } = useCreateWallet();
     const { isMobile } = useDevice();
     const history = useHistory();
     const modal = useModal();
     const { addWalletAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
-
-    useEffect(() => {
-        if (data && isMutateSuccess) {
-            addWalletAccountToLocalStorage(data);
-            switchWalletAccount(data?.client_id);
-        }
-    }, [addWalletAccountToLocalStorage, data, isMutateSuccess, switchWalletAccount]);
 
     useEffect(
         () => {
@@ -50,7 +36,6 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
                     <WalletAddedSuccess
                         currency={data?.currency}
                         displayBalance={data?.display_balance ?? `0.00 ${data?.currency}`}
-                        landingCompany={data?.landing_company_shortcode}
                         onPrimaryButtonClick={() => {
                             history.push('/wallet/deposit');
                             modal.hide();
@@ -80,9 +65,22 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
                         <LabelPairedPlusMdFillIcon fill='#333333' />
                     )
                 }
-                onClick={e => {
+                onClick={async e => {
                     e.stopPropagation();
-                    currency && mutate({ account_type: isCrypto ? 'crypto' : 'doughflow', currency });
+
+                    if (!currency) return;
+
+                    const createAccountResponse = await mutateAsync({
+                        account_type: isCrypto ? 'crypto' : 'doughflow',
+                        currency,
+                    });
+
+                    const newAccountWallet = createAccountResponse?.new_account_wallet;
+
+                    if (!newAccountWallet) return;
+
+                    await addWalletAccountToLocalStorage({ ...newAccountWallet, display_balance: `0.00 ${currency}` });
+                    switchWalletAccount(newAccountWallet.client_id);
                 }}
                 size={isMobile ? 'sm' : 'lg'}
             >

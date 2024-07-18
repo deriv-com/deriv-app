@@ -1,6 +1,6 @@
 import { FormikHelpers } from 'formik';
 import { DetailsOfEachMT5Loginid, Mt5NewAccount, VerifyEmailResponse } from '@deriv/api-types';
-import { TDetailsOfEachMT5Loginid, TTradingPlatformAvailableAccount } from 'Components/props.types';
+import { TDetailsOfEachMT5Loginid, TProducts, TTradingPlatformAvailableAccount } from 'Components/props.types';
 import { TCFDPasswordFormValues } from 'Containers/cfd-password-modal';
 import { TDxCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 
@@ -9,6 +9,7 @@ export type TCFDStore = {
     toggleCFDVerificationModal: () => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     setAccountType: (account_type: { category: string; type?: string }) => void;
+    product: TProducts;
     dxtrade_tokens: {
         demo: string;
         real: string;

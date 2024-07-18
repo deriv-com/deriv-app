@@ -127,7 +127,7 @@ describe('CFDAccountCard', () => {
                 {...props}
                 type={type}
                 descriptor={synthetic_descriptor}
-                title='Derived'
+                title='Standard'
                 existing_accounts_data={[mt5_acc]}
             />,
             renderOptions
@@ -186,7 +186,7 @@ describe('CFDAccountCard', () => {
                 {...props}
                 type={type}
                 descriptor={synthetic_descriptor}
-                title='Derived'
+                title='Standard'
                 existing_accounts_data={[mt5_acc]}
             />,
             renderOptions
@@ -265,7 +265,7 @@ describe('CFDAccountCard', () => {
                 {...props}
                 type={type}
                 descriptor={synthetic_descriptor}
-                title='Derived'
+                title='Standard'
                 existing_accounts_data={[]}
                 platform='mt5'
             />,
@@ -285,7 +285,7 @@ describe('CFDAccountCard', () => {
                 {...props}
                 type={type}
                 descriptor={synthetic_descriptor}
-                title='Derived'
+                title='Standard'
                 existing_accounts_data={[]}
                 platform='mt5'
             />,
@@ -305,7 +305,7 @@ describe('CFDAccountCard', () => {
                 {...props}
                 type={type}
                 descriptor={synthetic_descriptor}
-                title='Derived'
+                title='Standard'
                 existing_accounts_data={[]}
                 platform='mt5'
             />,
@@ -326,7 +326,7 @@ describe('CFDAccountCard', () => {
                 {...props}
                 type={type}
                 descriptor={synthetic_descriptor}
-                title='Derived'
+                title='Standard'
                 platform='mt5'
                 button_label='Add real account'
                 existing_accounts_data={null}
@@ -349,7 +349,7 @@ describe('CFDAccountCard', () => {
                 {...props}
                 type={type}
                 descriptor={synthetic_descriptor}
-                title='Derived'
+                title='Standard'
                 platform='mt5'
                 button_label='Add demo account'
                 existing_accounts_data={null}
@@ -372,7 +372,7 @@ describe('CFDAccountCard', () => {
                 {...props}
                 type={type}
                 descriptor={synthetic_descriptor}
-                title='Derived'
+                title='Standard'
                 platform='mt5'
                 existing_accounts_data={[mt5_labuan_acc]}
             />,
@@ -392,7 +392,7 @@ describe('CFDAccountCard', () => {
                 {...props}
                 type={type}
                 descriptor={synthetic_descriptor}
-                title='Derived'
+                title='Standard'
                 platform='dxtrade'
             />,
             renderOptions
@@ -412,7 +412,7 @@ describe('CFDAccountCard', () => {
                 {...props}
                 type={type}
                 descriptor={synthetic_descriptor}
-                title='Derived'
+                title='Standard'
                 existing_accounts_data={[derivx_acc]}
                 platform='dxtrade'
             />,
@@ -434,7 +434,7 @@ describe('CFDAccountCard', () => {
                 {...props}
                 type={type}
                 descriptor={synthetic_descriptor}
-                title='Derived'
+                title='Standard'
                 existing_accounts_data={[derivx_acc]}
                 platform='dxtrade'
             />,
@@ -461,7 +461,7 @@ describe('CFDAccountCard', () => {
                 {...props}
                 type={type}
                 descriptor={synthetic_descriptor}
-                title='Derived'
+                title='Standard'
                 existing_accounts_data={null}
                 platform='dxtrade'
                 is_logged_in={false}

@@ -69,7 +69,7 @@ jest.mock('../../Base', () => ({
 }));
 
 describe('WalletsAddMoreCardBanner', () => {
-    const mockMutate = jest.fn();
+    const mockMutate = jest.fn().mockResolvedValue({ new_account_wallet: { client_id: '123', currency: 'USD' } });
     const mockHistoryPush = jest.fn();
     const mockSwitchWalletAccount = jest.fn();
     const mockAddWalletAccountToLocalStorage = jest.fn();
@@ -83,7 +83,7 @@ describe('WalletsAddMoreCardBanner', () => {
             data: undefined,
             error: null,
             isSuccess: false,
-            mutate: mockMutate,
+            mutateAsync: mockMutate,
             status: 'idle',
         });
 
@@ -222,7 +222,7 @@ describe('WalletsAddMoreCardBanner', () => {
             data: { client_id: '123', currency: 'USD' },
             error: null,
             isSuccess: true,
-            mutate: mockMutate,
+            mutateAsync: mockMutate,
             status: 'success',
         });
 
@@ -232,8 +232,14 @@ describe('WalletsAddMoreCardBanner', () => {
             </ModalProvider>
         );
 
+        fireEvent.click(screen.getByText('Add'));
+
         await waitFor(() => {
-            expect(mockAddWalletAccountToLocalStorage).toHaveBeenCalledWith({ client_id: '123', currency: 'USD' });
+            expect(mockAddWalletAccountToLocalStorage).toHaveBeenCalledWith({
+                client_id: '123',
+                currency: 'USD',
+                display_balance: '0.00 USD',
+            });
             expect(mockSwitchWalletAccount).toHaveBeenCalledWith('123');
         });
     });

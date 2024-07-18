@@ -1,21 +1,20 @@
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { Text } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import './cfds-title.scss';
 
-const CFDsTitle = observer(() => {
-    const { ui } = useStore();
-    const { is_mobile } = ui;
+const CFDsTitle = () => {
+    const { isDesktop } = useDevice();
 
-    if (is_mobile) return null;
+    if (!isDesktop) return null;
     return (
         <div className='cfds-title'>
             <Text size='sm' weight='bold' color='prominent'>
-                {localize('CFDs')}
+                <Localize i18n_default_text='CFDs' />
             </Text>
         </div>
     );
-});
+};
 
 export default CFDsTitle;

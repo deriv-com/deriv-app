@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
-import { useAuthorize, useDepositCryptoAddress } from '@deriv/api-v2';
-import { Loader } from '../../../../components';
-import { Divider } from '../../../../components/Base';
+import React from 'react';
+import { useDepositCryptoAddress } from '@deriv/api-v2';
+import { Divider, Loader } from '@deriv-com/ui';
 import { isServerError } from '../../../../utils/utils';
 import { DepositErrorScreen } from '../../screens';
 import { TransactionStatus } from '../TransactionStatus';
@@ -12,15 +11,8 @@ import DepositCryptoTryFiatOnRamp from './components/DepositCryptoTryFiatOnRamp/
 import './DepositCrypto.scss';
 
 const DepositCrypto = () => {
-    const { isSuccess: isAuthorizeSuccess } = useAuthorize();
-    const { data: depositCryptoAddress, error, isLoading, mutate: mutateDepositCrypto } = useDepositCryptoAddress();
+    const { data: depositCryptoAddress, error, isLoading } = useDepositCryptoAddress();
     const depositCryptoError = error?.error;
-
-    useEffect(() => {
-        if (isAuthorizeSuccess) {
-            mutateDepositCrypto();
-        }
-    }, [isAuthorizeSuccess, mutateDepositCrypto]);
 
     if (isLoading) return <Loader />;
 
@@ -35,7 +27,7 @@ const DepositCrypto = () => {
                 <DepositCryptoCurrencyDetails />
                 <DepositCryptoAddress depositCryptoAddress={depositCryptoAddress} />
                 <DepositCryptoDisclaimers />
-                <Divider />
+                <Divider color='var(--border-divider)' height={2} />
                 <DepositCryptoTryFiatOnRamp />
             </div>
             <div className='wallets-deposit-crypto__side-pane'>

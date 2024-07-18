@@ -1,0 +1,28 @@
+.total-profit-loss {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--core-spacing-400) var(--core-spacing-800);
+    background-color: var(--core-color-solid-slate-75);
+
+    &.bottom {
+        position: absolute;
+        inset-inline-start: 0;
+        inset-block-start: unset;
+        inset-block-end: 0;
+        z-index: 2;
+        background-color: var(--component-modal-bg);
+        box-shadow: var(--core-elevation-shadow-210);
+    }
+    &__amount {
+        &.positive {
+            color: var(--core-color-solid-green-600);
+        }
+        &.negative {
+            color: var(--core-color-solid-red-600);
+        }
+    }
+}

@@ -13,7 +13,6 @@ import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
 import ReadyToVerifyModal from './ready-to-verify-modal';
 import CooldownWarningModal from './cooldown-warning-modal.jsx';
-import MT5Notification from './mt5-notification';
 import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
@@ -23,9 +22,7 @@ import EffortlessLoginModal from '../EffortlessLoginModal';
 
 const TradingAssessmentExistingUser = React.lazy(() =>
     moduleLoader(() =>
-        import(
-            /* webpackChunkName: "trading-assessment-existing-user-modal" */ './trading-assessment-existing-user.jsx'
-        )
+        import(/* webpackChunkName: "trading-assessment-existing-user-modal" */ './trading-assessment-existing-user')
     )
 );
 
@@ -57,10 +54,6 @@ const SetResidenceModal = React.lazy(() =>
 const ResetEmailModal = React.lazy(() => import(/* webpackChunkName: "reset-email-modal"  */ '../ResetEmailModal'));
 
 const UpdateEmailModal = React.lazy(() => import(/* webpackChunkName: "update-email-modal"  */ '../UpdateEmailModal'));
-
-const WarningScamMessageModal = React.lazy(() =>
-    import(/* webpackChunkName: "warning-scam-message" */ '../WarningScamMessageModal')
-);
 
 const WarningCloseCreateRealAccountModal = React.lazy(() =>
     import(/* webpackChunkName: "warning-close-create-real-account" */ '../WarningCloseCreateRealAccountModal')
@@ -94,7 +87,6 @@ const AppModals = observer(() => {
         setCFDScore,
         landing_company_shortcode: active_account_landing_company,
         is_trading_experience_incomplete,
-        mt5_login_list,
         should_show_effortless_login_modal,
     } = client;
     const { content_flag } = traders_hub;
@@ -108,7 +100,6 @@ const AppModals = observer(() => {
         toggleAccountSignupModal,
         is_trading_assessment_for_new_user_enabled,
         is_deriv_account_needed_modal_visible,
-        is_warning_scam_message_modal_visible,
         is_ready_to_deposit_modal_visible,
         is_need_real_account_for_cashier_modal_visible,
         should_show_risk_accept_modal,
@@ -129,11 +120,6 @@ const AppModals = observer(() => {
     const url_action_param = url_params.get('action');
 
     const is_eu_user = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL, ContentFlag.EU_DEMO].includes(content_flag);
-
-    const should_show_mt5_notification_modal =
-        is_logged_in && mt5_login_list.length > 0
-            ? mt5_login_list.find(login => login)?.white_label?.notification ?? true
-            : false;
 
     const { is_migrated } = useWalletMigration();
 
@@ -201,16 +187,12 @@ const AppModals = observer(() => {
         content_flag !== ContentFlag.LOW_RISK_CR_NON_EU
     ) {
         ComponentToLoad = <TradingAssessmentExistingUser />;
-    } else if (is_warning_scam_message_modal_visible) {
-        ComponentToLoad = <WarningScamMessageModal />;
     } else if (is_closing_create_real_account_modal) {
         ComponentToLoad = <WarningCloseCreateRealAccountModal />;
     } else if (is_account_needed_modal_on) {
         ComponentToLoad = <MT5AccountNeededModal />;
     } else if (should_show_cooldown_modal) {
         ComponentToLoad = <CooldownWarningModal />;
-    } else if (should_show_mt5_notification_modal) {
-        ComponentToLoad = <MT5Notification />;
     } else if (should_show_assessment_complete_modal) {
         ComponentToLoad = <CompletedAssessmentModal />;
     } else if (is_deriv_account_needed_modal_visible) {

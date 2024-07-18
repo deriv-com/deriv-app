@@ -70,6 +70,14 @@ const AdvertiserPageRow = ({ row: advert }) => {
         }
     };
 
+    React.useEffect(() => {
+        const disposeAdvertIntervalReaction = buy_sell_store.registerAdvertIntervalReaction();
+
+        return () => {
+            disposeAdvertIntervalReaction();
+        };
+    }, []);
+
     if (isMobile()) {
         return (
             <Table.Row className='advertiser-page-adverts__table-row'>

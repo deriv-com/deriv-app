@@ -1,6 +1,7 @@
 import React from 'react';
 import { useStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useDBotStore } from 'Stores/useDBotStore';
 import Toolbar from '..';
 
@@ -57,7 +58,7 @@ describe('Toolbar component', () => {
     });
     it('should render Toolbar', () => {
         render(<Toolbar />);
-        expect(screen.getByTestId('dashboard__toolbar')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_dashboard_toolbar')).toBeInTheDocument();
     });
 
     it('Toolbar should renders a modal window, when the bot is running and dialog is open', () => {
@@ -67,9 +68,9 @@ describe('Toolbar component', () => {
             toolbar: { ...mockDbotStore.toolbar, is_dialog_open: true },
         });
         render(<Toolbar />);
-        expect(screen.getByTestId('dashboard__toolbar')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_dashboard_toolbar')).toBeInTheDocument();
         expect(screen.getByRole('dialog')).toBeInTheDocument();
-        expect(screen.getByTestId('toolbar__dialog-text--second')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_toolbar_dialog_text_second')).toBeInTheDocument();
     });
 
     it('Toolbar should renders a button, when it is mobile version', async () => {
@@ -80,5 +81,17 @@ describe('Toolbar component', () => {
         });
         render(<Toolbar />);
         expect(await screen.findByRole('button')).toBeInTheDocument();
+    });
+
+    it('Toolbar should render Quick strategy form on toolbar button click and when it is mobile version', () => {
+        (useStore as jest.Mock).mockReturnValue({
+            ui: {
+                is_mobile: true,
+            },
+        });
+        render(<Toolbar />);
+        const quick_strategy_button = screen.getByText('Quick strategy');
+        userEvent.click(quick_strategy_button);
+        expect(mockDbotStore?.quick_strategy.setFormVisibility).toHaveBeenCalledWith(true);
     });
 });

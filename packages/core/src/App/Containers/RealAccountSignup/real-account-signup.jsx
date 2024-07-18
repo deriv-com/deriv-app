@@ -2,8 +2,9 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
+import { useDevice } from '@deriv-com/ui';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
-import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text, UILoader } from '@deriv/components';
+import { Button, MobileDialog, Modal, Text, UILoader } from '@deriv/components';
 import { WS, moduleLoader, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
@@ -16,9 +17,7 @@ import SetCurrency from './set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
 import { Analytics } from '@deriv-com/analytics';
-import 'Sass/details-form.scss';
 import 'Sass/account-wizard.scss';
-import 'Sass/real-account-signup.scss';
 
 const AccountWizard = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-wizard-modal" */ './account-wizard.jsx'))
@@ -60,6 +59,7 @@ const WizardHeading = ({ currency, real_account_signup_target }) => {
 };
 
 const RealAccountSignup = observer(({ history, state_index, is_trading_experience_incomplete }) => {
+    const { isDesktop } = useDevice();
     const { ui, client, traders_hub, modules } = useStore();
     const {
         available_crypto_currencies,
@@ -204,6 +204,8 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                     return localize('Create a new account');
                 } else if (local_props?.has_fiat && local_props?.available_crypto_currencies?.length === 0) {
                     return localize('Manage account');
+                } else if (signup_error) {
+                    return null;
                 }
                 return localize('Add or manage account');
             },
@@ -278,14 +280,14 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
     );
 
     React.useEffect(() => {
-        if (is_real_acc_signup_on) {
+        if (is_real_acc_signup_on && real_account_signup_target === 'svg') {
             trackEvent({ action: 'open' });
         }
-    }, [is_real_acc_signup_on, trackEvent]);
+    }, [is_real_acc_signup_on, real_account_signup_target, trackEvent]);
 
     const getModalHeight = () => {
         if (is_from_restricted_country) return '304px';
-        else if ([invalid_input_error, status_dialog].includes(getActiveModalIndex())) return 'auto';
+        else if ([invalid_input_error, status_dialog, signup_error].includes(getActiveModalIndex())) return 'auto';
         if (!currency || getActiveModalIndex() === modal_pages_indices.set_currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
             if (show_eu_related_content && getActiveModalIndex() === modal_pages_indices.add_or_manage_account) {
@@ -303,7 +305,10 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         return '740px'; // Account wizard modal
     };
     const getModalWidth = () => {
-        if (is_from_restricted_country || getActiveModalIndex() === modal_pages_indices.invalid_input_error)
+        if (
+            is_from_restricted_country ||
+            [modal_pages_indices.invalid_input_error, modal_pages_indices.signup_error].includes(getActiveModalIndex())
+        )
             return '440px';
         return !has_close_icon ? 'auto' : '955px';
     };
@@ -613,7 +618,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         <React.Fragment>
             {is_real_acc_signup_on && (
                 <React.Fragment>
-                    <DesktopWrapper>
+                    {isDesktop ? (
                         <Modal
                             id='real_account_signup_modal'
                             className={classNames('real-account-signup-modal', {
@@ -661,13 +666,13 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                                 deposit_target={deposit_target}
                             />
                         </Modal>
-                    </DesktopWrapper>
-                    <MobileWrapper>
+                    ) : (
                         <MobileDialog
                             portal_element_id='modal_root'
                             wrapper_classname='account-signup-mobile-dialog'
                             visible={is_real_acc_signup_on}
                             onClose={closeModal}
+                            has_full_height={getActiveModalIndex() === modal_pages_indices.signup_error}
                             renderTitle={() => {
                                 if (Title) {
                                     return (
@@ -691,7 +696,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                                 deposit_target={deposit_target}
                             />
                         </MobileDialog>
-                    </MobileWrapper>
+                    )}
                 </React.Fragment>
             )}
         </React.Fragment>

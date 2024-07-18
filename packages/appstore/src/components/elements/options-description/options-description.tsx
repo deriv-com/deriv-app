@@ -8,7 +8,7 @@ type TOptionsDescription = {
 
 const OptionsDescription = ({ is_eu_user }: TOptionsDescription) => {
     return is_eu_user ? (
-        <Text size='xs'>
+        <Text size='xs' line_height='s'>
             <Localize
                 i18n_default_text='Multipliers let you trade with leverage and limit your risk to your stake. <0>Learn more</0>'
                 components={[<StaticUrl key={0} className='options' href='trade-types/multiplier/' />]}
@@ -16,9 +16,9 @@ const OptionsDescription = ({ is_eu_user }: TOptionsDescription) => {
         </Text>
     ) : (
         <div>
-            <Text size='xs'>
+            <Text size='xs' line_height='s'>
                 <Localize
-                    i18n_default_text='Buy or sell at a specific time for a specific price. <0>Learn more</0>'
+                    i18n_default_text='Predict the market, profit if you’re right, risk only what you put in. <0>Learn more</0>'
                     components={[
                         <StaticUrl
                             key={0}

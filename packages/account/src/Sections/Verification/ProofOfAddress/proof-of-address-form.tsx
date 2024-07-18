@@ -1,5 +1,6 @@
 import React from 'react';
 import { Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
+import { useDevice } from '@deriv-com/ui';
 import { Loading, Button, Text, ThemedScrollbars, FormSubmitButton, Modal, HintBox } from '@deriv/components';
 import { useFileUploader } from '@deriv/hooks';
 import { validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv/shared';
@@ -17,15 +18,15 @@ import CommonMistakeExamples from '../../../Components/poa/common-mistakes/commo
 import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
 import { isServerError, validate } from '../../../Helpers/utils';
 import { getFileUploaderDescriptions } from '../../../Constants/file-uploader';
+import { API_ERROR_CODES } from '../../../Constants/api-error-codes';
 
 type TProofOfAddressForm = {
-    className?: string;
+    className: string;
     is_resubmit: boolean;
-    is_for_cfd_modal?: boolean;
-    onCancel?: () => void;
-    onSubmit: (needs_poi: boolean) => void;
-    onSubmitForCFDModal: (index: number, values: FormikValues) => void;
-    step_index: number;
+    is_for_cfd_modal: boolean;
+    onCancel: () => void;
+    onSubmit: (needs_poi: boolean, has_submitted_duplicate_poa?: boolean) => void;
+    onSubmitForCFDModal: (values: FormikValues, has_submitted_duplicate_poa?: boolean) => void;
 };
 
 type TFormInitialValues = Record<
@@ -36,15 +37,9 @@ type TFormInitialValues = Record<
 type TFormState = Record<'is_btn_loading' | 'is_submit_success' | 'should_allow_submit' | 'should_show_form', boolean>;
 
 const ProofOfAddressForm = observer(
-    ({
-        is_resubmit,
-        is_for_cfd_modal,
-        onSubmit,
-        onSubmitForCFDModal,
-        step_index,
-        className,
-    }: Partial<TProofOfAddressForm>) => {
-        const { client, notifications, ui } = useStore();
+    ({ is_resubmit, is_for_cfd_modal, onSubmit, onSubmitForCFDModal, className }: Partial<TProofOfAddressForm>) => {
+        const { isDesktop } = useDevice();
+        const { client, notifications } = useStore();
         const { account_settings, fetchResidenceList, fetchStatesList, getChangeableFields, states_list, is_eu } =
             client;
         const {
@@ -52,7 +47,6 @@ const ProofOfAddressForm = observer(
             removeNotificationMessage,
             removeNotificationByKey,
         } = notifications;
-        const { is_mobile } = ui;
         const [document_files, setDocumentFiles] = React.useState<File[]>([]);
         const [file_selection_error, setFileSelectionError] = React.useState<string | null>(null);
         const [is_loading, setIsLoading] = React.useState(true);
@@ -201,10 +195,20 @@ const ProofOfAddressForm = observer(
             // upload files
             try {
                 const api_response = await upload(document_files);
+
                 if (api_response?.warning) {
-                    setStatus({ msg: api_response?.message });
                     setFormState({ ...form_state, ...{ is_btn_loading: false } });
-                    setShouldScrollToTop(true);
+
+                    if (api_response.warning === API_ERROR_CODES.DUPLICATE_DOCUMENT) {
+                        if (is_for_cfd_modal) {
+                            onSubmitForCFDModal?.(values, true);
+                        } else {
+                            onSubmit?.(false, true);
+                        }
+                    } else {
+                        setStatus({ msg: api_response?.message });
+                        setShouldScrollToTop(true);
+                    }
                     return;
                 }
 
@@ -237,15 +241,13 @@ const ProofOfAddressForm = observer(
             } catch (error) {
                 if (isServerError(error)) {
                     setStatus({ msg: error.message });
+                    setSubmitting(false);
                     setFormState({ ...form_state, ...{ is_btn_loading: false } });
                     setShouldScrollToTop(true);
                 }
-            } finally {
-                setSubmitting(false);
-                setFormState({ ...form_state, ...{ is_btn_loading: false } });
             }
-            if (is_for_cfd_modal && typeof step_index !== 'undefined') {
-                onSubmitForCFDModal?.(step_index, values);
+            if (is_for_cfd_modal) {
+                onSubmitForCFDModal?.(values);
             }
         };
 
@@ -271,7 +273,7 @@ const ProofOfAddressForm = observer(
         }
         const setOffset = (status: { msg: string }) => {
             const mobile_scroll_offset = status?.msg ? '200px' : '154px';
-            return is_mobile && !is_for_cfd_modal ? mobile_scroll_offset : '80px';
+            return !isDesktop && !is_for_cfd_modal ? mobile_scroll_offset : '80px';
         };
 
         return (
@@ -283,21 +285,21 @@ const ProofOfAddressForm = observer(
             >
                 {({ status, handleSubmit, isSubmitting, isValid }) => (
                     <>
-                        <LeaveConfirm onDirty={is_mobile ? showForm : undefined} />
+                        <LeaveConfirm onDirty={!isDesktop ? showForm : undefined} />
                         {form_state.should_show_form && (
                             <form noValidate className='account-form account-form_poa' onSubmit={handleSubmit}>
                                 <ThemedScrollbars
                                     height='572px'
-                                    is_bypassed={!is_for_cfd_modal || is_mobile}
+                                    is_bypassed={!is_for_cfd_modal || !isDesktop}
                                     className={className}
                                 >
-                                    <FormBody scroll_offset={setOffset(status)}>
+                                    <FormBody scroll_offset={setOffset(status)} isFullHeight={!isDesktop}>
                                         {(status?.msg || is_resubmit) && (
                                             <HintBox
                                                 className='account-form_poa-submit-error'
                                                 icon='IcAlertDanger'
                                                 message={
-                                                    <Text as='p' size={is_mobile ? 'xxxs' : 'xs'}>
+                                                    <Text as='p' size={!isDesktop ? 'xxxs' : 'xs'}>
                                                         {!status?.msg && is_resubmit && (
                                                             <Localize i18n_default_text='We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.' />
                                                         )}
@@ -342,7 +344,7 @@ const ProofOfAddressForm = observer(
                                                 !!file_selection_error
                                             }
                                             label={localize('Continue')}
-                                            is_absolute={is_mobile}
+                                            is_absolute={!isDesktop}
                                             is_loading={isSubmitting}
                                         />
                                     </Modal.Footer>

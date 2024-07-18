@@ -8,11 +8,15 @@ import { Button, Icon, Text } from '@deriv/components';
 import { getOSNameWithUAParser, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { DerivLightIcInfoPasskeyIcon } from '@deriv/quill-icons';
 import { EffortLessLoginTips } from './effortless-login-tips';
 import { EffortlessLoginDescription } from './effortless-login-description';
 import './effortless-login-modal.scss';
 
 const passkeysEffortlessModalActionEventTrack = (action: string) => {
+    // TODO: remove ts-ignore after updating analytica package
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     Analytics.trackEvent('ce_passkey_effortless_form', {
         action,
         form_name: 'ce_passkey_effortless_form',
@@ -38,10 +42,13 @@ const EffortlessLoginModal = observer(() => {
         return () => {
             window.removeEventListener('beforeunload', track_close);
         };
-    }, []);
+    }, [portal_element]);
 
     const onClickHandler = (route: string, action: string) => {
         localStorage.setItem('show_effortless_login_modal', JSON.stringify(false));
+        // TODO: fix routes types across the app
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         history.push(route);
         setShouldShowEffortlessLoginModal(false);
         passkeysEffortlessModalActionEventTrack(action);
@@ -83,7 +90,7 @@ const EffortlessLoginModal = observer(() => {
             )}
 
             <FormBody scroll_offset='15rem' className='effortless-login-modal__wrapper'>
-                <Icon icon='IcInfoPasskey' size={96} />
+                <DerivLightIcInfoPasskeyIcon height='96px' width='96px' className='passkey__info-icon' />
                 <Text as='div' color='general' weight='bold' align='center' className='effortless-login-modal__title'>
                     <Localize i18n_default_text='Effortless login with passkeys' />
                 </Text>

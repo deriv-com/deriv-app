@@ -1,10 +1,11 @@
 import React from 'react';
 import { useRemoteConfig } from '@deriv/api';
-import { DesktopWrapper } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
 import { useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 import BinaryBotIFrame from 'Modules/BinaryBotIFrame';
+import P2PIFrame from 'Modules/P2PIFrame';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import AppToastMessages from './Containers/app-toast-messages.jsx';
@@ -14,13 +15,18 @@ import Header from './Containers/Layout/header';
 import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
 import Devtools from './Devtools';
+import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 import initDatadog from '../Utils/Datadog';
 import { ThemeProvider } from '@deriv-com/quill-ui';
 import { useGrowthbookIsOn } from '@deriv/hooks';
+import { useTranslations } from '@deriv-com/translations';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
     const { has_wallet } = store.client;
+    const { current_language } = store.common;
+    const { isMobile } = useDevice();
+    const { switchLanguage } = useTranslations();
 
     const [isWebPasskeysFFEnabled, isGBLoaded] = useGrowthbookIsOn({
         featureFlag: 'web_passkeys',
@@ -34,12 +40,16 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const is_passkeys_supported = browserSupportsWebAuthn();
 
     React.useEffect(() => {
+        switchLanguage(current_language);
+    }, [current_language, switchLanguage]);
+
+    React.useEffect(() => {
         if (isGBLoaded && isWebPasskeysFFEnabled && isServicePasskeysFFEnabled) {
             store.client.setIsPasskeySupported(
-                is_passkeys_supported && isServicePasskeysFFEnabled && isWebPasskeysFFEnabled
+                is_passkeys_supported && isServicePasskeysFFEnabled && isWebPasskeysFFEnabled && isMobile
             );
         }
-    }, [isServicePasskeysFFEnabled, isGBLoaded, isWebPasskeysFFEnabled, is_passkeys_supported]);
+    }, [isServicePasskeysFFEnabled, isGBLoaded, isWebPasskeysFFEnabled, is_passkeys_supported, isMobile, store.client]);
 
     React.useEffect(() => {
         initDatadog(tracking_datadog);
@@ -59,6 +69,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
 
     return (
         <ThemeProvider theme={store.ui.is_dark_mode_on ? 'dark' : 'light'}>
+            <LandscapeBlocker />
             <Header />
             <ErrorBoundary root_store={store}>
                 <AppContents>
@@ -66,14 +77,13 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
                     <Routes passthrough={passthrough} />
                 </AppContents>
             </ErrorBoundary>
-            <DesktopWrapper>
-                <Footer />
-            </DesktopWrapper>
+            <Footer />
             <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>
             <SmartTraderIFrame />
             <BinaryBotIFrame />
+            <P2PIFrame />
             <AppToastMessages />
             <Devtools />
         </ThemeProvider>

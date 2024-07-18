@@ -44,6 +44,7 @@ const CFDsListingLoggedOut = observer(() => {
                         has_divider={!is_eu_user && getHasDivider(index, list_size, 3)}
                         onAction={() => redirectToLogin(false, getLanguage())}
                         market_type='all'
+                        is_new
                     />
                 );
             })}

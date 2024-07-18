@@ -5,6 +5,7 @@ import { Analytics } from '@deriv-com/analytics';
 import Routes from 'Components/routes/routes';
 import classNames from 'classnames';
 import './app.scss';
+import './temporary-overrides.scss';
 
 const AppContent: React.FC = observer(() => {
     const { ui, traders_hub } = useStore();

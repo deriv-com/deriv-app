@@ -1,18 +1,16 @@
 import React from 'react';
+import { useTranslations } from '@deriv-com/translations';
 import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { TLanguageLink } from 'App/Components/Routes/language-link';
 import { LanguageLink } from '../index';
 
-jest.mock('react-i18next', () => ({
-    ...jest.requireActual('react-i18next'),
-    useTranslation: jest.fn(() => ({ i18n: { changeLanguage: jest.fn() } })),
-}));
+jest.mock('@deriv-com/translations');
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    Icon: jest.fn(() => <div data-testid='dt_mocked_icon' />),
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    TranslationFlag: { VI: () => <div>Tiếng Việt Flag</div> },
 }));
 
 jest.mock('Utils/Language', () => ({
@@ -21,9 +19,17 @@ jest.mock('Utils/Language', () => ({
 }));
 
 describe('LanguageLink component', () => {
+    beforeEach(() => {
+        (useTranslations as jest.Mock).mockReturnValue({
+            currentLang: 'VI',
+            localize: jest.fn().mockImplementation(key => key),
+            switchLanguage: jest.fn(),
+        });
+    });
+
     const mock_props: TLanguageLink = {
         is_clickable: false,
-        lang: 'ID',
+        lang: 'VI',
         toggleModal: jest.fn(),
     };
     const mockRootStore = mockStore({});
@@ -33,8 +39,8 @@ describe('LanguageLink component', () => {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
-        expect(screen.getByText('Indonesian')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_mocked_icon')).toBeInTheDocument();
+        expect(screen.getByText('Tiếng Việt')).toBeInTheDocument();
+        expect(screen.getByText('Tiếng Việt Flag')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_settings_language_button')).not.toBeInTheDocument();
     });
     it('should render language icon with language when clickable', async () => {
@@ -45,8 +51,8 @@ describe('LanguageLink component', () => {
         });
 
         const lang_btn = screen.getByTestId('dt_settings_language_button');
-        expect(screen.getByText('Indonesian')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_mocked_icon')).toBeInTheDocument();
+        expect(screen.getByText('Tiếng Việt')).toBeInTheDocument();
+        expect(screen.getByText('Tiếng Việt Flag')).toBeInTheDocument();
         expect(screen.getByTestId('dt_settings_language_button')).toBeInTheDocument();
 
         userEvent.click(lang_btn);

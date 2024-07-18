@@ -1,1 +1,0 @@
-export { IDVForm } from './IDVForm';

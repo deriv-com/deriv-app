@@ -21,12 +21,13 @@ type TProps = {
 };
 
 const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, setNextScreen }) => {
-    const { isMobile } = useDevice();
     const { getModalState } = useModal();
     const mt5AccountId = getModalState('accountId') ?? '';
     const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);
     const [hasCurrentPasswordFieldTouched, setHasCurrentPasswordFieldTouched] = useState(false);
     const { t } = useTranslation();
+    const { isMobile } = useDevice();
+    const buttonTextSize = isMobile ? 'md' : 'sm';
 
     const {
         error: changeInvestorPasswordError,
@@ -121,12 +122,13 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                 <WalletButton
                                     disabled={!values.currentPassword || !validPasswordMT5(values.newPassword)}
                                     isLoading={changeInvestorPasswordStatus === 'loading'}
-                                    size={isMobile ? 'lg' : 'md'}
+                                    size='lg'
+                                    textSize={buttonTextSize}
                                     type='submit'
                                 >
                                     Change investor password
                                 </WalletButton>
-                                <WalletButton onClick={sendEmail} size={isMobile ? 'lg' : 'md'} variant='ghost'>
+                                <WalletButton onClick={sendEmail} size='lg' textSize={buttonTextSize} variant='ghost'>
                                     Create or reset investor password
                                 </WalletButton>
                             </div>

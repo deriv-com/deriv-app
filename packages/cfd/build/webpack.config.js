@@ -60,6 +60,7 @@ module.exports = function (env) {
                 '@deriv/components': '@deriv/components',
                 '@deriv/translations': '@deriv/translations',
                 '@deriv/account': '@deriv/account',
+                '@deriv-com/translations': '@deriv-com/translations',
             },
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,

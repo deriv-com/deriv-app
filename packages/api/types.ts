@@ -49,6 +49,8 @@ import type {
     CountriesListResponse,
     CryptocurrencyConfigurationsRequest,
     CryptocurrencyConfigurationsResponse,
+    CryptocurrencyEstimationsRequest,
+    CryptocurrencyEstimationsResponse,
     DocumentUploadRequest,
     DocumentUploadResponse,
     EconomicCalendarRequest,
@@ -2238,6 +2240,124 @@ type PasskeyRegisterResponse = {
     req_id?: number;
     [k: string]: unknown;
 };
+type PasskeysRenameRequest = {
+    passkeys_rename: 1;
+    id: number;
+    name: string;
+    req_id?: number;
+};
+type PasskeysRenameResponse = {
+    passkeys_rename?: 1 | 0;
+    echo_req: {
+        [k: string]: unknown;
+    };
+    msg_type: 'passkeys_rename';
+    req_id?: number;
+    [k: string]: unknown;
+};
+
+// TODO: remove these mock phone number challenge types after implementing them inside api-types
+type PhoneNumberChallengeRequest = {
+    /**
+     * Must be `1`
+     */
+    phone_number_challenge: 1;
+    /**
+     * The carrier sending the email code.
+     */
+    email_code: string;
+    /**
+     * The carrier sending the OTP.
+     */
+    carrier?: 'whatsapp' | 'sms';
+    /**
+     * [Optional] The login id of the user. If left unspecified, it defaults to the initial authorized token's login id.
+     */
+    loginid?: string;
+    /**
+     * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+     */
+    passthrough?: {
+        [k: string]: unknown;
+    };
+    /**
+     * [Optional] Used to map request to response.
+     */
+    req_id?: number;
+};
+
+type PhoneNumberChallengeResponse = {
+    phone_number_challenge?: number;
+    /**
+     * Echo of the request made.
+     */
+    echo_req: {
+        [k: string]: unknown;
+    };
+    /**
+     * Action name of the request made.
+     */
+    msg_type: 'phone_number_challenge';
+    /**
+     * Optional field sent in request to map to response, present only when request contains `req_id`.
+     */
+    req_id?: number;
+    [k: string]: unknown;
+};
+
+// TODO: remove these mock phone number challenge types after implementing them inside api-types
+type PhoneNumberVerifyRequest = {
+    /**
+     * Must be `1`
+     */
+    phone_number_verify: 1;
+    /**
+     * The carrier sending the OTP.
+     */
+    otp: string;
+    /**
+     * [Optional] Used to map request to response.
+     */
+    req_id?: number;
+};
+
+type PhoneNumberVerifyResponse = {
+    /**
+     * Echo of the request made.
+     */
+    echo_req: {
+        [k: string]: unknown;
+    };
+    /**
+     * Action name of the request made.
+     */
+    msg_type: 'phone_number_verify';
+    /**
+     * Optional field sent in request to map to response, present only when request contains `req_id`.
+     */
+    req_id?: number;
+    [k: string]: unknown;
+};
+
+type ChangeEmailRequest = {
+    change_email: 'verify' | 'update';
+    new_email: string;
+    new_password?: string;
+    verification_code: string;
+    loginid?: string;
+    passthrough?: {
+        [k: string]: unknown;
+    };
+    req_id?: number;
+};
+type ChangeEmailResponse = {
+    change_email: 0 | 1;
+    echo_req: {
+        [k: string]: unknown;
+    };
+    msg_type: 'change_email';
+    req_id?: number;
+};
 
 type TSocketEndpoints = {
     active_symbols: {
@@ -2304,6 +2424,10 @@ type TSocketEndpoints = {
         request: CashierInformationRequest;
         response: CashierInformationResponse;
     };
+    change_email: {
+        request: ChangeEmailRequest;
+        response: ChangeEmailResponse;
+    };
     contract_update_history: {
         request: UpdateContractHistoryRequest;
         response: UpdateContractHistoryResponse;
@@ -2335,6 +2459,10 @@ type TSocketEndpoints = {
     crypto_config: {
         request: CryptocurrencyConfigurationsRequest;
         response: CryptocurrencyConfigurationsResponse;
+    };
+    crypto_estimations: {
+        request: CryptocurrencyEstimationsRequest;
+        response: CryptocurrencyEstimationsResponse;
     };
     document_upload: {
         request: DocumentUploadRequest;
@@ -2540,6 +2668,10 @@ type TSocketEndpoints = {
         request: PasskeysListRequest;
         response: PasskeysListResponse;
     };
+    passkeys_rename: {
+        request: PasskeysRenameRequest;
+        response: PasskeysRenameResponse;
+    };
     passkeys_register_options: {
         request: PasskeysRegisterOptionsRequest;
         response: PasskeysRegisterOptionsResponse;
@@ -2579,6 +2711,14 @@ type TSocketEndpoints = {
     payout_currencies: {
         request: PayoutCurrenciesRequest;
         response: PayoutCurrenciesResponse;
+    };
+    phone_number_challenge: {
+        request: PhoneNumberChallengeRequest;
+        response: PhoneNumberChallengeResponse;
+    };
+    phone_number_verify: {
+        request: PhoneNumberVerifyRequest;
+        response: PhoneNumberVerifyResponse;
     };
     ping: {
         request: PingRequest;
@@ -2751,7 +2891,7 @@ export type TSocketResponseData<T extends TSocketEndpointNames> = Omit<
     'req_id' | 'msg_type' | 'echo_req' | 'subscription'
 >;
 
-type TSocketRequest<T extends TSocketEndpointNames> = TSocketEndpoints[T]['request'];
+export type TSocketRequest<T extends TSocketEndpointNames> = TSocketEndpoints[T]['request'];
 
 type TRemovableEndpointName<T extends TSocketEndpointNames> = T extends KeysMatching<TSocketRequest<T>, 1> ? T : never;
 

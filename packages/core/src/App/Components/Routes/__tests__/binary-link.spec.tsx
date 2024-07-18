@@ -10,7 +10,7 @@ type TMockBinaryLink = {
     to?: string;
 };
 
-let store = mockStore();
+let store = mockStore({});
 
 const MockBinaryLink = ({ active_class, to }: TMockBinaryLink) => (
     <BrowserRouter>

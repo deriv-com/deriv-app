@@ -272,6 +272,12 @@
             @include mobile {
                 min-width: 3.2rem;
                 width: 3.2rem;
+
+                &.dc-dropdown--disabled {
+                    .suffix-icon {
+                        --fill-color1: var(--text-disabled);
+                    }
+                }
             }
 
             &--display {

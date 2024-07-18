@@ -35,7 +35,7 @@ const RealAccountCard = observer(() => {
             className='demo-account-card'
             title={
                 currency ? (
-                    <BalanceText currency={get_currency} balance={Number(balance)} size='xs' />
+                    <BalanceText currency={currency} balance={Number(balance)} size='xs' />
                 ) : (
                     'No currency assigned'
                 )

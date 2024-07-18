@@ -1,7 +1,7 @@
 import React from 'react';
 import { getInitialLanguage } from '@deriv/translations';
 import i18n from 'i18next';
-import { initMoment } from '../date';
+import { setLocale, initMoment } from '../date';
 import { routes } from '../routes';
 
 type TPlatform = {
@@ -41,6 +41,7 @@ export const useOnLoadTranslation = () => {
         }
         (async () => {
             await initMoment(i18n.language);
+            await setLocale(i18n.language);
         })();
         const is_english = i18n.language === 'EN';
         if (is_english) {

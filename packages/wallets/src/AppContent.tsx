@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDerivAccountsList } from '@deriv/api-v2';
+import { Analytics } from '@deriv-com/analytics';
 import useAllBalanceSubscription from './hooks/useAllBalanceSubscription';
 import { defineViewportHeight } from './utils/utils';
 import { WalletLanguageSidePanel } from './components';
@@ -40,6 +41,15 @@ const AppContent: React.FC = () => {
 
     useEffect(() => {
         defineViewportHeight();
+    }, []);
+
+    useEffect(() => {
+        // TODO: remove `@ts-expect-error` after @deriv-com/analytics version update
+        //@ts-expect-error temporary suppress ts error until we update @deriv-com/analytics to the latest version
+        Analytics.trackEvent('ce_wallets_homepage_form', {
+            action: 'open',
+            form_name: 'ce_wallets_homepage_form',
+        });
     }, []);
 
     return (

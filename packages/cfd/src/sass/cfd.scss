@@ -200,9 +200,6 @@
         display: flex;
         align-self: baseline;
         margin-inline-start: -0.8rem;
-        .dc-text {
-            text-align: var(--text-align-left);
-        }
     }
     &-info,
     &__checkbox {

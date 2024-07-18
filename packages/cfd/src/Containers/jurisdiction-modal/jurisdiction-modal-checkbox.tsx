@@ -1,7 +1,7 @@
 import React from 'react';
 import { Checkbox, StaticUrl, Text } from '@deriv/components';
 import { DBVI_COMPANY_NAMES } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { TJurisdictionCheckBoxProps } from '../props.types';
 import { JURISDICTION } from '../../Helpers/cfd-config';
@@ -15,6 +15,8 @@ const JurisdictionCheckBox = observer(
         should_restrict_bvi_account_creation,
         should_restrict_vanuatu_account_creation,
     }: TJurisdictionCheckBoxProps) => {
+        const { ui } = useStore();
+        const { is_mobile } = ui;
         const shouldShowCheckBox = () => {
             if (
                 !jurisdiction_selected_shortcode ||
@@ -28,7 +30,7 @@ const JurisdictionCheckBox = observer(
         };
 
         const getCheckboxLabel = () => (
-            <Text as='p' align='center' size='xxs' line_height='m'>
+            <Text as='p' align={is_mobile ? 'left' : 'center'} size='xxs' line_height='m'>
                 <Localize
                     i18n_default_text="I confirm and accept {{company}} 's <0>terms and conditions</0>"
                     values={{ company: DBVI_COMPANY_NAMES[jurisdiction_selected_shortcode].name }}

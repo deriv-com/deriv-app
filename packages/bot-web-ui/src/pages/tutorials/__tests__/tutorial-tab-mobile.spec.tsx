@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
@@ -25,9 +25,9 @@ const guideContent = [
     {
         id: 1,
         type: 'DBotVideo',
-        content: 'Deriv Bot - your automated trading partner',
-        url: 'https://www.youtube.com/embed/QdI5zCkO4Gk',
-        src: 'video_dbot.webp',
+        content: 'An introduction to Deriv Bot',
+        url: 'https://www.youtube.com/embed/lthEgaIY1uw',
+        src: 'intro_to_deriv_bot.png',
     },
 ];
 
@@ -137,5 +137,24 @@ describe('<TutorialsTabDesktop />', () => {
         userEvent.click(closeIcon);
 
         expect(inputElement.value).toBe(checkinputValue);
+    });
+
+    it('should make the search visible on click of onHandleChangeMobile()', () => {
+        const search_icon = screen.getByTestId('search-icon');
+
+        userEvent.click(search_icon);
+        const search = screen.getByTestId('id-search-visible');
+
+        expect(search).toHaveClass('tutorials-mobile__select--show-search');
+    });
+
+    it('should change active_tutorial on click of onChangeHandle()', () => {
+        const select = screen.getByTestId('id-tutorials-select');
+        const prev_active_tutorials = mock_DBot_store.dashboard.active_tab_tutorials;
+
+        fireEvent.change(select, { target: { value: 'Quick strategy guides' } });
+        const last_active_tutorials = mock_DBot_store.dashboard.active_tab_tutorials;
+
+        expect(prev_active_tutorials).not.toEqual(last_active_tutorials);
     });
 });

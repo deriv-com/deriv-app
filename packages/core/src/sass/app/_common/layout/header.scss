@@ -406,13 +406,6 @@
         justify-content: center;
         flex-direction: column;
 
-        &--loader {
-            background-color: var(--core-color-solid-slate-75);
-            width: var(--core-size-3400);
-            height: var(--core-spacing-900);
-            border-radius: var(--core-borderRadius-400);
-        }
-
         &__name {
             display: flex;
             align-items: center;
@@ -434,6 +427,13 @@
                 &__icon {
                     fill: var(--core-color-opacity-black-600);
                 }
+                &__wrapper {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: var(--core-size-1800);
+                    height: var(--core-size-1800);
+                }
             }
         }
 
@@ -454,9 +454,10 @@
             }
         }
     }
-
-    .badge__position-top-sm {
-        top: calc(-1 * var(--temp-static-spacing-7));
+    &__loader {
+        display: flex;
+        justify-content: space-between;
+        padding: var(--core-spacing-300) var(--semantic-spacing-general-md);
     }
 }
 

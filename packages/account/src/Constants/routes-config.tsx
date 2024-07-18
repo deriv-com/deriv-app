@@ -6,16 +6,10 @@ import { localize } from '@deriv/translations';
 import {
     Passkeys,
     PersonalDetails,
-    TradingAssessment,
-    FinancialAssessment,
     ProofOfIdentity,
     ProofOfAddress,
     ProofOfOwnership,
-    ApiToken,
-    TwoFactorAuthentication,
-    SelfExclusion,
     Account,
-    ClosingAccount,
     DeactivateAccount,
     ProofOfIncome,
 } from '../Sections';
@@ -33,6 +27,10 @@ const Passwords = makeLazyLoader(
     () => <Loading />
 )();
 
+const PhoneVerificationPage = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Profile/PhoneVerification')),
+    () => <Loading />
+)();
 const AccountLimits = makeLazyLoader(
     () => moduleLoader(() => import('../Sections/Security/AccountLimits')),
     () => <Loading />
@@ -55,6 +53,32 @@ const LoginHistory = makeLazyLoader(
 
 const ConnectedApps = makeLazyLoader(
     () => moduleLoader(() => import('../Sections/Security/ConnectedApps')),
+    () => <Loading />
+)();
+const FinancialAssessment = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Assessment/FinancialAssessment')),
+    () => <Loading />
+)();
+const TradingAssessment = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Assessment/TradingAssessment')),
+    () => <Loading />
+)();
+
+const ApiToken = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/ApiToken')),
+    () => <Loading />
+)();
+
+const TwoFactorAuthentication = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/TwoFactorAuthentication')),
+    () => <Loading />
+)();
+const SelfExclusion = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/SelfExclusion')),
+    () => <Loading />
+)();
+const ClosingAccount = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/ClosingAccount')),
     () => <Loading />
 )();
 
@@ -85,6 +109,12 @@ const initRoutesConfig = () => [
                 getTitle: () => localize('Profile'),
                 icon: 'IcUserOutline',
                 subroutes: [
+                    {
+                        path: routes.phone_verification,
+                        component: PhoneVerificationPage,
+                        getTitle: () => localize('Personal details'),
+                        is_hidden: true,
+                    },
                     {
                         path: routes.personal_details,
                         component: PersonalDetails,

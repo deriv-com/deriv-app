@@ -7,11 +7,15 @@ import { useHistory } from 'react-router';
 import { routes } from '@deriv/shared';
 import { OpenLiveChatLink, Popover, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { usePhoneNumberVerificationSetTimer, useVerifyEmail } from '@deriv/hooks';
+import { usePhoneNumberVerificationSetTimer, useRequestPhoneNumberOTP, useVerifyEmail } from '@deriv/hooks';
 import { useDevice } from '@deriv-com/ui';
 import './verify-button.scss';
 
-export const VerifyButton = observer(() => {
+type TVerifyButton = {
+    phone: string | null | undefined;
+};
+
+export const VerifyButton = observer(({ phone }: TVerifyButton) => {
     const [open_popover, setOpenPopover] = useState(false);
     const { client, ui } = useStore();
     const { setShouldShowPhoneNumberOTP } = ui;
@@ -19,9 +23,9 @@ export const VerifyButton = observer(() => {
     const { phone_number_verification } = account_settings;
     const phone_number_verified = phone_number_verification?.verified;
     const history = useHistory();
-    //@ts-expect-error remove this comment when types are added in GetSettings api types
     const { sendPhoneNumberVerifyEmail, WS } = useVerifyEmail('phone_number_verification');
     const { isMobile } = useDevice();
+    const { setUsersPhoneNumber } = useRequestPhoneNumberOTP();
     const { next_otp_request } = usePhoneNumberVerificationSetTimer();
 
     useEffect(() => {
@@ -30,11 +34,15 @@ export const VerifyButton = observer(() => {
         }
     }, [WS.isSuccess, history]);
 
-    const redirectToPhoneVerification = () => {
+    const redirectToPhoneVerification = async () => {
         if (next_otp_request) return;
-        setVerificationCode('', 'phone_number_verification');
-        setShouldShowPhoneNumberOTP(false);
-        sendPhoneNumberVerifyEmail();
+        const { error } = await setUsersPhoneNumber({ phone });
+
+        if (!error) {
+            setVerificationCode('', 'phone_number_verification');
+            setShouldShowPhoneNumberOTP(false);
+            sendPhoneNumberVerifyEmail();
+        }
     };
 
     return (
@@ -72,7 +80,6 @@ export const VerifyButton = observer(() => {
                     className={clsx('phone-verification-btn--not-verified', {
                         'phone-verification-btn--not-verified--disabled': !!next_otp_request,
                     })}
-                    disabled={true}
                     onClick={redirectToPhoneVerification}
                 >
                     <Localize

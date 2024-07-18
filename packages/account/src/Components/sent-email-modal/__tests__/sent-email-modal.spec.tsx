@@ -141,8 +141,6 @@ describe('<SentEmailModal/>', () => {
         fireEvent.click(screen.getByRole('button', { name: /didn't receive the email?/i }));
         fireEvent.click(screen.getByText(/live chat/i));
 
-        screen.debug();
-
         expect(onClose).toBeCalledTimes(1);
     });
 

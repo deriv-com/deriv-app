@@ -34,12 +34,10 @@ export default class UIStore extends BaseStore {
     account_switcher_disabled_message = '';
 
     has_only_forward_starting_contracts = false;
-    has_read_scam_message = localStorage.getItem('readScamMessage') || false;
 
     // Purchase Controls
     // @observable is_purchase_confirm_on    = false;
     is_services_error_visible = false;
-    is_new_account = localStorage.getItem('isNewAccount') || false;
     is_account_signup_modal_visible = false;
     is_link_expired_modal_visible = false;
     is_set_residence_modal_visible = false;
@@ -131,6 +129,9 @@ export default class UIStore extends BaseStore {
     prompt_when = false;
     promptFn = () => {};
 
+    //phone number verification
+    should_show_phone_number_otp = false;
+
     //warn user if they want to close create real account modal
     is_closing_create_real_account_modal = false;
 
@@ -169,6 +170,7 @@ export default class UIStore extends BaseStore {
     should_show_assessment_complete_modal = false;
     app_contents_scroll_ref = null;
     is_deriv_account_needed_modal_visible = false;
+    is_redirected_from_email = false;
     is_wallet_modal_visible = false;
     is_ready_to_deposit_modal_visible = false;
     is_need_real_account_for_cashier_modal_visible = false;
@@ -201,7 +203,6 @@ export default class UIStore extends BaseStore {
             'is_dark_mode_on',
             'is_positions_drawer_on',
             'is_reports_visible',
-            'is_warning_scam_message_modal_visible',
             // 'is_purchase_confirm_on',
             // 'is_purchase_lock_on',
             'should_show_cancellation_warning',
@@ -215,11 +216,9 @@ export default class UIStore extends BaseStore {
             account_needed_modal_props: observable,
             account_switcher_disabled_message: observable,
             has_only_forward_starting_contracts: observable,
-            has_read_scam_message: observable,
             is_ready_to_deposit_modal_visible: observable,
             is_need_real_account_for_cashier_modal_visible: observable,
             is_services_error_visible: observable,
-            is_new_account: observable,
             is_account_signup_modal_visible: observable,
             is_link_expired_modal_visible: observable,
             is_set_residence_modal_visible: observable,
@@ -264,6 +263,7 @@ export default class UIStore extends BaseStore {
             is_dark_mode_on: observable,
             is_deriv_account_needed_modal_visible: observable,
             is_from_signup_account: observable,
+            is_redirected_from_email: observable,
             is_wallet_modal_visible: observable,
 
             is_history_tab_active: observable,
@@ -301,6 +301,7 @@ export default class UIStore extends BaseStore {
             real_account_signup: observable,
             reports_route_tab_index: observable,
             settings_extension: observable,
+            should_show_phone_number_otp: observable,
             should_show_appropriateness_warning_modal: observable,
             should_show_assessment_complete_modal: observable,
             should_show_cancel: observable,
@@ -334,7 +335,6 @@ export default class UIStore extends BaseStore {
             is_desktop: computed,
             is_mobile: computed,
             is_tablet: computed,
-            is_warning_scam_message_modal_visible: computed,
             url_hashed_values: observable,
             notifyAppInstall: action.bound,
             onChangeUiStore: action.bound,
@@ -352,6 +352,7 @@ export default class UIStore extends BaseStore {
             resetPurchaseStates: action.bound,
             resetRealAccountSignupParams: action.bound,
             resetRealAccountSignupTarget: action.bound,
+            setShouldShowPhoneNumberOTP: action.bound,
             setAccountSwitcherDisabledMessage: action.bound,
             setAppContentsScrollRef: action.bound,
             setCFDPasswordResetModal: action.bound,
@@ -373,8 +374,8 @@ export default class UIStore extends BaseStore {
             shouldNavigateAfterChooseCrypto: action.bound,
             setIsMT5VerificationFailedModal: action.bound,
             setShouldShowRiskWarningModal: action.bound,
+            setRedirectFromEmail: action.bound,
             setIsWalletModalVisible: action.bound,
-            setIsNewAccount: action.bound,
             setIsRealTabEnabled: action.bound,
             setIsTradingAssessmentForExistingUserEnabled: action.bound,
             setIsTradingAssessmentForNewUserEnabled: action.bound,
@@ -387,7 +388,6 @@ export default class UIStore extends BaseStore {
             setRealAccountSignupParams: action.bound,
             setResetTradingPasswordModalOpen: action.bound,
             setRouteModal: action.bound,
-            setScamMessageLocalStorage: action.bound,
             setShouldShowAppropriatenessWarningModal: action.bound,
             setShouldShowAssessmentCompleteModal: action.bound,
             setShouldShowCancel: action.bound,
@@ -443,15 +443,6 @@ export default class UIStore extends BaseStore {
         }
     };
 
-    get is_warning_scam_message_modal_visible() {
-        return (
-            this.root_store.client.is_logged_in &&
-            this.root_store.client.is_brazil &&
-            !this.has_read_scam_message &&
-            !this.is_new_account
-        );
-    }
-
     setIsClosingCreateRealAccountModal(is_closing_create_real_account_modal) {
         this.is_closing_create_real_account_modal = is_closing_create_real_account_modal;
     }
@@ -460,14 +451,8 @@ export default class UIStore extends BaseStore {
         this.is_real_tab_enabled = is_real_tab_enabled;
     }
 
-    setScamMessageLocalStorage() {
-        localStorage.setItem('readScamMessage', !this.has_read_scam_message);
-        this.has_read_scam_message = localStorage.getItem('readScamMessage') || false;
-    }
-
-    setIsNewAccount() {
-        localStorage.setItem('isNewAccount', !this.is_new_account);
-        this.is_new_account = localStorage.getItem('isNewAccount') || false;
+    setShouldShowPhoneNumberOTP(should_show_phone_number_otp) {
+        this.should_show_phone_number_otp = should_show_phone_number_otp;
     }
 
     setHashedValue(url_hashed_values) {
@@ -886,6 +871,10 @@ export default class UIStore extends BaseStore {
 
     openDerivRealAccountNeededModal() {
         this.is_deriv_account_needed_modal_visible = !this.is_deriv_account_needed_modal_visible;
+    }
+
+    setRedirectFromEmail(value) {
+        this.is_redirected_from_email = value;
     }
 
     setIsWalletModalVisible(value) {

@@ -93,8 +93,19 @@
     }
     &-text-container {
         max-height: 25.5rem;
+
+        @include mobile {
+            min-height: 32rem;
+            height: fit-content;
+        }
+
         &--demo {
             max-height: 13.5rem;
+
+            @include mobile {
+                min-height: unset;
+                height: fit-content;
+            }
         }
         &__separator {
             margin: 0.9rem;

@@ -177,7 +177,7 @@
     &-tnc {
         margin-block-end: 3.2rem;
         &--bottom {
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin-top: auto;
                 margin-bottom: 7.5rem;
             }

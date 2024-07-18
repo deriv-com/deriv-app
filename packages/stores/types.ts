@@ -159,11 +159,14 @@ export type TPortfolioPosition = {
         Portfolio1 & {
             contract_update?: ContractUpdate;
         };
+    current_tick?: number;
     details?: string;
     display_name: string;
     entry_spot?: number;
+    high_barrier?: number;
     id?: number;
     indicative: number;
+    low_barrier?: number;
     payout?: number;
     purchase?: number;
     reference: number;
@@ -220,6 +223,7 @@ type TAccountsList = {
     idx?: string | number;
     is_dark_mode_on?: boolean;
     is_virtual?: boolean | number;
+    is_disabled?: boolean | number;
     loginid?: string;
     trader_accounts_list?: DetailsOfEachMT5Loginid[];
     mt5_login_list?: DetailsOfEachMT5Loginid[];
@@ -227,7 +231,7 @@ type TAccountsList = {
 }[];
 
 // balance is missing in @deriv/api-types
-type TActiveAccount = TAccount & {
+export type TActiveAccount = TAccount & {
     balance?: string | number;
     landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest';
     is_virtual: number;
@@ -468,6 +472,7 @@ type TClientStore = {
     is_proof_of_ownership_enabled: boolean;
     is_poa_expired: boolean;
     is_populating_dxtrade_account_list: boolean;
+    is_populating_ctrader_account_list: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
     is_high_risk: boolean;
@@ -511,6 +516,7 @@ type TClientStore = {
     verification_code: {
         payment_agent_withdraw: string;
         payment_withdraw: string;
+        phone_number_verification: string;
         request_email: string;
         reset_password: string;
         signup: string;
@@ -534,6 +540,12 @@ type TClientStore = {
     account_settings: GetSettings & {
         upload_file?: string;
         poi_state?: string;
+        phone_number_verification?: {
+            verified?: 0 | 1;
+            next_attempt?: number;
+            next_email_attempt?: number;
+            next_verify_attempt?: number;
+        };
     };
     residence_list: ResidenceList;
     should_restrict_bvi_account_creation: boolean;
@@ -541,7 +553,7 @@ type TClientStore = {
     updateMT5Status: () => Promise<void>;
     fetchAccountSettings: () => Promise<void>;
     setAccountSettings: (get_settings_response: GetSettings) => void;
-    upgradeable_landing_companies: unknown[];
+    upgradeable_landing_companies: string[];
     is_populating_mt5_account_list: boolean;
     landing_companies: LandingCompany;
     getChangeableFields: () => string[];
@@ -606,6 +618,7 @@ type TClientStore = {
     subscribeToExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
     unsubscribeFromExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
     unsubscribeFromAllExchangeRates: () => void;
+    virtual_account_loginid?: string;
 };
 
 type TCommonStoreError = {
@@ -617,6 +630,7 @@ type TCommonStoreError = {
     should_clear_error_on_click?: boolean;
     should_redirect?: boolean;
     should_show_refresh?: boolean;
+    setError?: (has_error: boolean, error: React.ReactNode | null) => void;
     type?: string;
 };
 
@@ -672,6 +686,7 @@ type TUiStore = {
     is_advanced_duration: boolean;
     is_cashier_visible: boolean;
     is_history_tab_active: boolean;
+    is_redirected_from_email: boolean;
     is_wallet_modal_visible: boolean;
     is_chart_asset_info_visible?: boolean;
     is_chart_layout_default: boolean;
@@ -703,7 +718,12 @@ type TUiStore = {
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
-    notification_messages_ui: React.ElementType;
+    notification_messages_ui: (props?: {
+        is_notification_loaded?: boolean;
+        is_mt5?: boolean;
+        stopNotificationLoading?: () => void;
+        show_trade_notifications?: boolean;
+    }) => JSX.Element;
     setChartCountdown: (value: boolean) => void;
     populateFooterExtensions: (
         footer_extensions:
@@ -721,6 +741,7 @@ type TUiStore = {
     setCurrentFocus: (value: string | null) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setIsWalletModalVisible: (value: boolean) => void;
+    setRedirectFromEmail: (value: boolean) => void;
     setHasOnlyForwardingContracts: (has_only_forward_starting_contracts?: boolean) => void;
     setMobileLanguageMenuOpen: (is_mobile_language_menu_open: boolean) => void;
     setReportsTabIndex: (value: number) => void;
@@ -733,6 +754,8 @@ type TUiStore = {
     setRealAccountSignupEnd: (status: boolean) => void;
     setPurchaseState: (index: number) => void;
     simple_duration_unit: string;
+    should_show_phone_number_otp: boolean;
+    setShouldShowPhoneNumberOTP: (value: boolean) => void;
     sub_section_index: number;
     setPromptHandler: (
         condition: boolean,
@@ -740,6 +763,7 @@ type TUiStore = {
     ) => void;
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: Omit<string, TRoutes> | TRoutes) => void;
+    should_show_real_accounts_list?: boolean;
     toggleAccountsDialog: (value?: boolean) => void;
     toggleAccountSettings: (props?: boolean) => void;
     toggleCashier: () => void;
@@ -1078,8 +1102,6 @@ type TTradersHubStore = {
     available_dxtrade_accounts: TAvailableCFDAccounts[];
     available_ctrader_accounts: TAvailableCFDAccounts[];
     is_demo_low_risk: boolean;
-    is_mt5_notification_modal_visible: boolean;
-    setMT5NotificationModal: (value: boolean) => void;
     has_any_real_account: boolean;
     startTrade: (platform?: TPlatform, existing_account?: DetailsOfEachMT5Loginid) => void;
     getAccount: () => void;

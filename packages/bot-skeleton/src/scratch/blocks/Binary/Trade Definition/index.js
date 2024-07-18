@@ -8,4 +8,6 @@ import './trade_definition_restartonerror';
 import './trade_definition_tradeoptions';
 import './trade_definition_multiplier';
 import './multiplier_stop_loss';
+import './accumulator_take_profit';
 import './multiplier_take_profit';
+import './trade_definition_accumulator';

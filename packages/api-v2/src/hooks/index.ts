@@ -20,14 +20,11 @@ export { default as useCFDAccountsList } from './useCFDAccountsList';
 export { default as useCFDCompareAccounts } from './useCFDCompareAccounts';
 export { default as useCancelCryptoTransaction } from './useCancelCryptoTransaction';
 export { default as useCashierFiatAddress } from './useCashierFiatAddress';
-// TODO: Export these into P2P entities
-export { default as useChatCreate } from './p2p/entity/chat/p2p-chat/useChatCreate';
-export { default as useOrderInfo } from './p2p/entity/order/p2p-order/useOrderInfo';
-
 export { default as useCountryConfig } from './useCountryConfig';
 export { default as useCreateNewRealAccount } from './useCreateNewRealAccount';
 export { default as useCreateWallet } from './useCreateWallet';
 export { default as useCryptoConfig } from './useCryptoConfig';
+export { default as useCryptoEstimations } from './useCryptoEstimations';
 export { default as useCryptoTransactions } from './useCryptoTransactions';
 export { default as useCryptoWithdrawal } from './useCryptoWithdrawal';
 export { default as useCtraderAccountsList } from './useCtraderAccountsList';
@@ -42,6 +39,7 @@ export { default as useDynamicLeverage } from './useDynamicLeverage';
 export { default as useExchangeRateSubscription } from './useExchangeRateSubscription';
 export { default as useGetAccountStatus } from './useGetAccountStatus';
 export { default as useGetExchangeRate } from './useGetExchangeRate';
+export { default as useGrowthbookIsOn } from './useGrowthbookIsOn';
 export { default as useIdentityDocumentVerificationAdd } from './useIdentityDocumentVerificationAdd';
 export { default as useIsEuRegion } from './useIsEuRegion';
 export { default as useJurisdictionStatus } from './useJurisdictionStatus';

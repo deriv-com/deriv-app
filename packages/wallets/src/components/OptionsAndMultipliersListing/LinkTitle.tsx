@@ -29,6 +29,7 @@ const LinkTitle: React.FC<{ platform: ComponentProps<typeof WalletMarketIcon>['i
     return (
         <div
             className='wallets-options-and-multipliers-listing__content__icon'
+            data-testid='dt_wallet_link_title'
             onClick={handleClick}
             // Fix sonarcloud issue
             onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) => {

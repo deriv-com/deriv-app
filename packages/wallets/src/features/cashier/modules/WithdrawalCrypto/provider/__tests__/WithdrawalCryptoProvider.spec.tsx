@@ -3,6 +3,7 @@ import {
     useAccountLimits,
     useActiveWalletAccount,
     useCryptoConfig,
+    useCryptoEstimations,
     useCryptoWithdrawal,
     useCurrencyConfig,
     useExchangeRateSubscription,
@@ -17,6 +18,7 @@ jest.mock('@deriv/api-v2', () => ({
     useAccountLimits: jest.fn(),
     useActiveWalletAccount: jest.fn(),
     useCryptoConfig: jest.fn(),
+    useCryptoEstimations: jest.fn(),
     useCryptoWithdrawal: jest.fn(),
     useCurrencyConfig: jest.fn(),
     useExchangeRateSubscription: jest.fn(),
@@ -27,6 +29,7 @@ jest.mock('@deriv/api-v2', () => ({
 const mockUseAccountLimits = useAccountLimits as jest.Mock;
 const mockUseActiveWalletAccount = useActiveWalletAccount as jest.Mock;
 const mockUseCryptoConfig = useCryptoConfig as jest.Mock;
+const mockCryptoEstimations = useCryptoEstimations as jest.Mock;
 const mockUseCryptoWithdrawal = useCryptoWithdrawal as jest.Mock;
 const mockUseCurrencyConfig = useCurrencyConfig as jest.Mock;
 const mockUseExchangeRate = useExchangeRateSubscription as jest.Mock;
@@ -38,6 +41,7 @@ describe('useWithdrawalCryptoContext', () => {
         mockUseAccountLimits.mockReturnValue({});
         mockUseActiveWalletAccount.mockReturnValue({});
         mockUseCryptoConfig.mockReturnValue({});
+        mockCryptoEstimations.mockReturnValue({});
         mockUseCryptoWithdrawal.mockReturnValue({ mutateAsync: jest.fn().mockResolvedValueOnce({}) });
         mockUseCurrencyConfig.mockReturnValue({
             getConfig: () => ({

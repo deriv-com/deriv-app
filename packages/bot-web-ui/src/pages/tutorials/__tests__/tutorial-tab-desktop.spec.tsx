@@ -7,9 +7,13 @@ import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import TutorialsTabDesktop from '../tutorials-tab-desktop';
 
-jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
-jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
+
+let mockFunction: boolean | jest.Mock;
+jest.mock('lodash.debounce', () => (fn: jest.Mock) => {
+    if (!mockFunction) mockFunction = fn;
+    return mockFunction;
+});
 
 const userGuideContent = [
     {
@@ -25,9 +29,9 @@ const guideContent = [
     {
         id: 1,
         type: 'DBotVideo',
-        content: 'Deriv Bot - your automated trading partner',
-        url: 'https://www.youtube.com/embed/QdI5zCkO4Gk',
-        src: 'video_dbot.webp',
+        content: 'An introduction to Deriv Bot',
+        url: 'https://www.youtube.com/embed/lthEgaIY1uw',
+        src: 'intro_to_deriv_bot.png',
     },
 ];
 
@@ -37,7 +41,7 @@ const faqContent = [
         description: [
             {
                 type: 'text',
-                content: 'eriv Bot is a web-based strategy builder for trading digital options',
+                content: 'Deriv Bot is a web-based strategy builder for trading digital options',
             },
         ],
     },

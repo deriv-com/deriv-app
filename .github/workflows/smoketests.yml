@@ -25,14 +25,15 @@ jobs:
     - name: Set env vars
       id: set-env-vars
       run: |
-        if [[ "${{ github.event.issue.labels.*.name }}" == *"Bot"* ]]; then
-          echo "TEST_SUITE=dbot" >> $GITHUB_ENV
-        elif [[ "${{ github.event.issue.labels.*.name }}" == *"P2P"* ]]; then
-          echo "TEST_SUITE=P2P" >> $GITHUB_ENV
-        elif [[ "${{ github.event.issue.labels.*.name }}" == *"Wallets"* ]]; then
-          echo "TEST_SUITE=Wallets" >> $GITHUB_ENV
+        labels=$(echo '${{ toJSON(github.event.issue.labels) }}' | jq -r '.[].name')
+        if echo "$labels" | grep -q "Bot"; then
+            echo "TEST_SUITE=dbot" >> $GITHUB_ENV
+        elif echo "$labels" | grep -q "P2P"; then
+            echo "TEST_SUITE=P2P" >> $GITHUB_ENV
+        elif echo "$labels" | grep -q "Wallets"; then
+            echo "TEST_SUITE=Wallets" >> $GITHUB_ENV
         else
-          echo "TEST_SUITE=<do not run>" >> $GITHUB_ENV
+            echo "TEST_SUITE=<do not run>" >> $GITHUB_ENV
         fi
         
     - name: Trigger deriv-app smoke tests from regentmarkets

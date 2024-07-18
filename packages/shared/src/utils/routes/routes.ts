@@ -32,6 +32,7 @@ export const routes = {
     proof_of_income: '/account/proof-of-income',
     passwords: '/account/passwords',
     passkeys: '/account/passkeys',
+    phone_verification: '/account/personal-details/phone-verification',
     closing_account: '/account/closing-account',
     deactivate_account: '/account/deactivate-account', // TODO: Remove once mobile team has changed this link
     account_closed: '/account-closed',
@@ -70,7 +71,6 @@ export const routes = {
     // cashier_offramp: '/cashier/off-ramp',
     cashier_onramp: '/cashier/on-ramp',
     cashier_p2p: '/cashier/p2p',
-    cashier_p2p_v2: '/cashier/p2p-v2',
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
 
     // P2P
@@ -80,7 +80,6 @@ export const routes = {
     p2p_my_ads: '/cashier/p2p/my-ads',
     p2p_my_profile: '/cashier/p2p/my-profile',
     p2p_advertiser_page: '/cashier/p2p/advertiser',
-    p2p_v2_inner: '/cashier/p2p-v2/inner',
 
     // Appstore
     old_traders_hub: '/appstore/traders-hub',
@@ -107,6 +106,9 @@ export const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [
     routes.onboarding,
     routes.compare_cfds,
     routes.reports,
+    routes.bot,
+    routes.account,
+    routes.endpoint,
     /** because contract route has dynamic id */
     '/contract',
 ];

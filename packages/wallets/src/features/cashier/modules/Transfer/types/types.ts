@@ -28,7 +28,7 @@ type TMessage = {
 export type TTransferMessage = {
     action?: TAction;
     message: TMessage;
-    type: 'error' | 'info' | 'success';
+    type: 'error' | 'info' | 'success' | 'warning';
 };
 
 export type TMessageFnProps = {
@@ -38,6 +38,7 @@ export type TMessageFnProps = {
     displayMoney?: (amount: number, currency: string, fractionalDigits: number) => string;
     fiatAccount?: THooks.WalletAccountsList;
     limits?: THooks.AccountLimits;
+    platformStatus: THooks.TradingPlatformStatus['status'];
     sourceAccount: NonNullable<TAccount>;
     sourceAmount: number;
     targetAccount: TAccount;

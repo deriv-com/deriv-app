@@ -1,8 +1,15 @@
 import { useCallback, useMemo } from 'react';
-import { useActiveWalletAccount, useAuthorize, usePOI, useWalletAccountsList } from '@deriv/api-v2';
+import {
+    useActiveWalletAccount,
+    useAuthorize,
+    usePOI,
+    useTradingPlatformStatus,
+    useWalletAccountsList,
+} from '@deriv/api-v2';
 import { displayMoney as displayMoney_ } from '@deriv/api-v2/src/utils';
 import { THooks } from '../../../../../../types';
 import { TAccount, TInitialTransferFormValues, TMessageFnProps, TTransferMessage } from '../../types';
+import tradingPlatformStatusMessageFn from './utils/tradingPlatformStatusMessageFn';
 import {
     countLimitMessageFn,
     cumulativeAccountLimitsMessageFn,
@@ -33,6 +40,12 @@ const useTransferMessages = ({
     const { data: walletAccounts } = useWalletAccountsList();
     const { preferred_language: preferredLanguage } = authorizeData;
     const { data: poi } = usePOI();
+    const { data: tradingPlatformStatus } = useTradingPlatformStatus();
+
+    const platformStatus = tradingPlatformStatus?.find(
+        (status: { platform: string; status: string }) =>
+            status.platform === fromAccount?.account_type || status.platform === toAccount?.account_type
+    )?.status;
 
     const isTransferBetweenWallets =
         fromAccount?.account_category === 'wallet' && toAccount?.account_category === 'wallet';
@@ -69,6 +82,10 @@ const useTransferMessages = ({
             messageFns.push(transferFeesBetweenWalletsMessageFn);
         }
 
+        if (platformStatus) {
+            messageFns.push(tradingPlatformStatusMessageFn);
+        }
+
         messageFns.forEach(messageFn => {
             if (!activeWallet || !fromAccount) return;
 
@@ -78,6 +95,7 @@ const useTransferMessages = ({
                 displayMoney,
                 fiatAccount,
                 limits: accountLimits,
+                platformStatus,
                 sourceAccount: fromAccount,
                 sourceAmount,
                 targetAccount: toAccount,
@@ -104,6 +122,7 @@ const useTransferMessages = ({
         fromAccount,
         isAccountVerified,
         isTransferBetweenWallets,
+        platformStatus,
         toAccount,
         walletAccounts,
     ]);

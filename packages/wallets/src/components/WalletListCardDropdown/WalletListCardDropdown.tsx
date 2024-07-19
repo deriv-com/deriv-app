@@ -120,7 +120,7 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
                                     className={classNames('wallets-listcard-dropdown__item', {
                                         'wallets-listcard-dropdown__item--active': loginId === wallet.loginid,
                                     })}
-                                    data-testid={`wallets-listcard-dropdown__item-${index}`}
+                                    id={`wallets-listcard-dropdown__item-${index}`}
                                     key={wallet.loginid}
                                     onClick={() => handleItemClick(wallet.loginid, reactNodeToString(wallet.text))}
                                 >

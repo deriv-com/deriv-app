@@ -109,6 +109,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     return (
         <button
             className='wallets-transfer-form-dropdown'
+            data-testid='dt_wallets_transfer_form_dropdown'
             onClick={() => {
                 modal.show(
                     <TransferFormAccountSelection

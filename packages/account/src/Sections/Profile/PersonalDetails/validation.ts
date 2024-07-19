@@ -91,7 +91,6 @@ export const makeSettingsRequest = (
         request.last_name = request.last_name.trim();
     }
     if (request.date_of_birth) {
-        // @ts-expect-error need to fix the type for date_of_birth in GetSettings because it should be string not number
         request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
     }
 

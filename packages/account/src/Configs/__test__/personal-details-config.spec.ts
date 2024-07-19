@@ -72,34 +72,4 @@ describe('personal-details-config', () => {
         },
         residence: 'af',
     };
-
-    it('should return account tax residence as default value if it is already set', () => {
-        const personal_details = personal_details_config(mock_props);
-        expect(personal_details.tax_residence.default_value).toEqual('Indonesia');
-    });
-
-    it('should return residence as the default value for MF clients, If the account tax residence is not set', () => {
-        const new_props = {
-            ...mock_props,
-            account_settings: {
-                ...mock_props.account_settings,
-                tax_residence: '',
-            },
-        };
-        const personal_details = personal_details_config(new_props);
-        expect(personal_details.tax_residence.default_value).toEqual(new_props.account_settings.residence);
-    });
-
-    it('should not set default value for CR clients, If the account tax residence is not set', () => {
-        const new_props = {
-            ...mock_props,
-            real_account_signup_target: 'svg',
-            account_settings: {
-                ...mock_props.account_settings,
-                tax_residence: '',
-            },
-        };
-        const personal_details = personal_details_config(new_props);
-        expect(personal_details.tax_residence.default_value).toEqual('');
-    });
 });

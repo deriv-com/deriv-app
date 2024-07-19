@@ -34,15 +34,22 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({ selectedJurisd
 
     const isPoaRequired = useMemo(
         () =>
-            isSubmissionRequired[poaData?.status ?? 'none'] &&
-            selectedJurisdiction &&
-            // @ts-expect-error broken type for verified_jurisdiction key in type GetAccountStatusResponse
-            poaData?.verified_jurisdiction?.[selectedJurisdiction],
+            !!(
+                (
+                    isSubmissionRequired[poaData?.status ?? 'none'] &&
+                    selectedJurisdiction &&
+                    // @ts-expect-error broken type for verified_jurisdiction key in type GetAccountStatusResponse
+                    !poaData?.verified_jurisdiction?.[selectedJurisdiction]
+                ) // if the value is 0 against selected jurisdiction, client needs to do POA
+            ),
         // @ts-expect-error broken type for verified_jurisdiction key in type GetAccountStatusResponse
         [poaData?.status, poaData?.verified_jurisdiction, selectedJurisdiction]
     );
 
-    const isPoiRequired = useMemo(() => isSubmissionRequired[poiData?.current.status ?? 'none'], [poiData]);
+    const isPoiRequired = useMemo(
+        () => poiData?.current.status && isSubmissionRequired[poiData?.current.status],
+        [poiData]
+    );
 
     const isTaxInformationRequired = useMemo(
         () => !accountSettings.has_submitted_personal_details,

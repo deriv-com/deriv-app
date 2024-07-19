@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Formik } from 'formik';
-import {
-    FormField,
-    Loader,
-    ModalStepWrapper,
-    WalletButton,
-    WalletDropdown,
-    WalletText,
-} from '../../../../../../components';
+import { Loader } from '@deriv-com/ui';
+import { FormField, ModalStepWrapper, WalletButton, WalletDropdown, WalletText } from '../../../../../../components';
 import {
     TVerifyPersonalDetailsValues,
     useVerifyPersonalDetails,

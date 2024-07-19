@@ -132,15 +132,14 @@
 }
 
 .video-fragment {
-    width: 24.8rem;
-    height: 16.1rem;
-    object-fit: initial;
-
     &__wrapper {
         display: flex;
         justify-content: center;
         align-items: center;
         margin-block-end: var(--component-actionSheet-spacing-padding-md);
+        width: 24.8rem;
+        height: 16.1rem;
+        margin-inline: auto;
 
         &--accumulator {
             margin-block-end: var(--component-actionSheet-spacing-padding-sm);

@@ -4,6 +4,7 @@ import {
     makeSettingsRequest,
 } from '../validation';
 import { ResidenceList } from '@deriv/api-types';
+import * as Yup from 'yup';
 
 describe('getPersonalDetailsValidationSchema', () => {
     const valid_data = {
@@ -16,6 +17,8 @@ describe('getPersonalDetailsValidationSchema', () => {
         tax_identification_number: '123123123',
         tax_residence: 'Germany',
         employment_status: 'Employed',
+        date_of_birth: '1990-01-01',
+        tax_identification_confirm: true,
     };
 
     const invalid_data = {

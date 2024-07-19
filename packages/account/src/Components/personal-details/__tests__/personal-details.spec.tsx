@@ -311,8 +311,6 @@ describe('<PersonalDetails/>', () => {
         const place_of_birth = screen.getByTestId('place_of_birth');
         const citizenship = screen.getByTestId('citizenship');
         const phone = screen.getByTestId('phone');
-        // const tax_residence = screen.getByTestId('tax_residence');
-        // const tax_identification_number = screen.getByTestId('tax_identification_number');
 
         userEvent.clear(first_name);
         fireEvent.blur(date_of_birth);
@@ -320,35 +318,19 @@ describe('<PersonalDetails/>', () => {
         fireEvent.blur(place_of_birth);
         fireEvent.blur(citizenship);
         fireEvent.blur(phone);
-        // fireEvent.blur(tax_residence);
-        // fireEvent.blur(tax_identification_number);
 
         expect(await screen.findByText(/first name is required\./i)).toBeInTheDocument();
         expect(await screen.findByText(/date of birth is required\./i)).toBeInTheDocument();
         expect(await screen.findByText(/place of birth is required\./i)).toBeInTheDocument();
         expect(await screen.findByText(/citizenship is required/i)).toBeInTheDocument();
         expect(await screen.findByText(/You should enter 9-35 numbers./i)).toBeInTheDocument();
-        // expect(await screen.findByText(/tax residence is required\./i)).toBeInTheDocument();
-        // expect(await screen.findByText(/tax identification number is required\./i)).toBeInTheDocument();
-        // (splitValidationResultTypes as jest.Mock).mockReturnValue({
-        //     ...mock_warnings,
-        //     errors: {
-        //         ...mock_errors,
-        //         first_name: 'letters, spaces, periods, hyphens, apostrophes only',
-        //         date_of_birth: 'You must be 18 years old and above.',
-        //         // tax_identification_number: "Tax Identification Number can't be longer than 25 characters.",
-        //     },
-        // });
+
         fireEvent.change(first_name, { target: { value: '123' } });
         fireEvent.change(last_name, { target: { value: 'a' } });
         fireEvent.change(date_of_birth, { target: { value: '2021-04-13' } });
-        // fireEvent.change(tax_identification_number, { target: { value: '123456789012345678901234567890' } });
 
         expect(await screen.findAllByText(/letters, spaces, periods, hyphens, apostrophes only/i)).toHaveLength(2);
         expect(await screen.findByText(/you must be 18 years old and above\./i)).toBeInTheDocument();
-        // expect(
-        //     await screen.findByText(/tax Identification Number can't be longer than 25 characters\./i)
-        // ).toBeInTheDocument();
     });
 
     // it('submit button should be enabled if TIN or tax_residence is optional in case of CR accounts', () => {

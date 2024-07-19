@@ -28,7 +28,7 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
 
     return (
         <React.Fragment>
-            <ActionSheet.Root isOpen={isOpen}>
+            <ActionSheet.Root isOpen={isOpen} onClose={() => setIsOpen(false)}>
                 <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen>
                     <SymbolsSearchField
                         marketCategoriesRef={marketCategoriesRef}

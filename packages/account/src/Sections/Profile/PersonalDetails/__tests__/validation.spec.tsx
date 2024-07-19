@@ -27,16 +27,14 @@ describe('getPersonalDetailsValidationSchema', () => {
         citizen: '',
     };
 
-    const mock_residence_list = [] as ResidenceList;
-
     it('should validate a valid input for non-eu users', async () => {
-        const validationSchema = getPersonalDetailsValidationSchema(mock_residence_list, false);
+        const validationSchema = getPersonalDetailsValidationSchema();
         const isValid = await validationSchema.isValid(valid_data);
         expect(isValid).toBe(true);
     });
 
     it('should not validate an invalid input for non-eu users', async () => {
-        const validationSchema = getPersonalDetailsValidationSchema(mock_residence_list, false);
+        const validationSchema = getPersonalDetailsValidationSchema();
         try {
             await validationSchema.isValid(invalid_data);
         } catch (error) {
@@ -46,13 +44,13 @@ describe('getPersonalDetailsValidationSchema', () => {
     });
 
     it('should validate a valid input for eu users', async () => {
-        const validationSchema = getPersonalDetailsValidationSchema(mock_residence_list, false);
+        const validationSchema = getPersonalDetailsValidationSchema();
         const isValid = await validationSchema.isValid(valid_data);
         expect(isValid).toBe(true);
     });
 
     it('should return empty object for virtual account', () => {
-        const validationSchema = getPersonalDetailsValidationSchema(mock_residence_list, true);
+        const validationSchema = getPersonalDetailsValidationSchema(true);
         expect(validationSchema.fields).toEqual({});
     });
 });

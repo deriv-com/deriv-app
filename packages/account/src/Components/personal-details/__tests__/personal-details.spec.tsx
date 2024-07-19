@@ -347,7 +347,7 @@ describe('<PersonalDetails/>', () => {
         fireEvent.change(date_of_birth, { target: { value: '2021-04-13' } });
         // fireEvent.change(tax_identification_number, { target: { value: '123456789012345678901234567890' } });
 
-        expect(await screen.findAllByText(/letters, spaces, periods, hyphens, apostrophes only/i)).toHaveLength(2);
+        expect(await screen.findAllByText(/letters, spaces, periods, hyphens, apostrophes only/i)).toHaveLength(1);
         expect(await screen.findByText(/you must be 18 years old and above\./i)).toBeInTheDocument();
         // expect(
         //     await screen.findByText(/tax Identification Number can't be longer than 25 characters\./i)

@@ -1,0 +1,19 @@
+.carousel {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: hidden;
+
+    &__item {
+        width: 100vw;
+        min-width: 100vw;
+        transition: transform 0.24s ease-in-out;
+    }
+
+    //TODO: temporary, because quill doesn't support positioning of icon in header
+    .icon--left {
+        .quill-action-sheet--title--icon {
+            right: unset;
+            left: 0;
+        }
+    }
+}

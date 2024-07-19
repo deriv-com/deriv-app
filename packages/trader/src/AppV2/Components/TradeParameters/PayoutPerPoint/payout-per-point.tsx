@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { TextField } from '@deriv-com/quill-ui';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { Skeleton } from '@deriv/components';
@@ -27,7 +27,7 @@ const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
         <TextField
             variant='fill'
             readOnly
-            label={localize('Payout per point')}
+            label={<Localize i18n_default_text='Payout per point' />}
             value={`${payout_per_point} ${getCurrencyDisplayCode(currency)}`}
             className={classname}
         />

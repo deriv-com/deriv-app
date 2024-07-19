@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import clsx from 'clsx';
 import { CaptionText, Text, TextField } from '@deriv-com/quill-ui';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TLastDigitSelectorProps = {
@@ -23,7 +23,7 @@ const LastDigitPrediction = observer(({ is_minimized }: TLastDigitSelectorProps)
             <TextField
                 variant='fill'
                 readOnly
-                label={localize('Last digit prediction')}
+                label={<Localize i18n_default_text='Last digit prediction' />}
                 value={last_digit}
                 className={clsx('trade-params__option', 'trade-params__option--minimized')}
             />

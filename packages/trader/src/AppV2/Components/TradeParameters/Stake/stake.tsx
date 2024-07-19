@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { TextField } from '@deriv-com/quill-ui';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 
@@ -28,7 +28,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         <TextField
             variant='fill'
             readOnly
-            label={localize('Stake')}
+            label={<Localize i18n_default_text='Stake' />}
             value={`${amount} ${getCurrencyDisplayCode(currency)}`}
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
         />

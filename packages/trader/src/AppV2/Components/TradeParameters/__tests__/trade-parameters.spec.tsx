@@ -47,17 +47,17 @@ jest.mock('../LastDigitPrediction', () =>
 );
 
 describe('TradeParameters', () => {
-    let defaultMockStore: ReturnType<typeof mockStore>;
+    let default_mock_store: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
-        defaultMockStore = mockStore({});
+        default_mock_store = mockStore({});
     });
 
     const mockTradeParameters = () => {
         return (
-            <TraderProviders store={defaultMockStore}>
+            <TraderProviders store={default_mock_store}>
                 <ReportsStoreProvider>
-                    <ModulesProvider store={defaultMockStore}>
+                    <ModulesProvider store={default_mock_store}>
                         <TradeParameters />
                     </ModulesProvider>
                 </ReportsStoreProvider>
@@ -66,7 +66,7 @@ describe('TradeParameters', () => {
     };
 
     it('should render correct trade params for Accumulators', () => {
-        defaultMockStore.modules.trade.contract_type = TRADE_TYPES.ACCUMULATOR;
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.ACCUMULATOR;
         render(mockTradeParameters());
 
         expect(screen.getByText(TRADE_PARAMS.GROWTH_RATE)).toBeInTheDocument();
@@ -77,7 +77,7 @@ describe('TradeParameters', () => {
     });
 
     it('should render correct trade params for Vanillas', () => {
-        defaultMockStore.modules.trade.contract_type = TRADE_TYPES.VANILLA.CALL;
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.VANILLA.CALL;
         render(mockTradeParameters());
 
         expect(screen.getByText(TRADE_PARAMS.TRADE_TYPE_TABS)).toBeInTheDocument();
@@ -88,7 +88,7 @@ describe('TradeParameters', () => {
     });
 
     it('should render correct trade params for Turbos', () => {
-        defaultMockStore.modules.trade.contract_type = TRADE_TYPES.TURBOS.LONG;
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.TURBOS.LONG;
         render(mockTradeParameters());
 
         expect(screen.getByText(TRADE_PARAMS.TRADE_TYPE_TABS)).toBeInTheDocument();
@@ -100,7 +100,7 @@ describe('TradeParameters', () => {
     });
 
     it('should render correct trade params for Multipliers', () => {
-        defaultMockStore.modules.trade.contract_type = TRADE_TYPES.MULTIPLIER;
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.MULTIPLIER;
         render(mockTradeParameters());
 
         expect(screen.getByText(TRADE_PARAMS.MULTIPLIER)).toBeInTheDocument();
@@ -111,7 +111,7 @@ describe('TradeParameters', () => {
     });
 
     it('should render correct trade params for Rise/Fall', () => {
-        defaultMockStore.modules.trade.contract_type = TRADE_TYPES.RISE_FALL;
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.RISE_FALL;
         render(mockTradeParameters());
 
         expect(screen.getByText(TRADE_PARAMS.DURATION)).toBeInTheDocument();
@@ -121,7 +121,7 @@ describe('TradeParameters', () => {
     });
 
     it('should render correct trade params for Higher/Lower', () => {
-        defaultMockStore.modules.trade.contract_type = TRADE_TYPES.HIGH_LOW;
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.HIGH_LOW;
         render(mockTradeParameters());
 
         expect(screen.getByText(TRADE_PARAMS.DURATION)).toBeInTheDocument();
@@ -131,7 +131,7 @@ describe('TradeParameters', () => {
     });
 
     it('should render correct trade params for Touch/No Touch', () => {
-        defaultMockStore.modules.trade.contract_type = TRADE_TYPES.TOUCH;
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.TOUCH;
         render(mockTradeParameters());
 
         expect(screen.getByText(TRADE_PARAMS.DURATION)).toBeInTheDocument();
@@ -141,7 +141,7 @@ describe('TradeParameters', () => {
     });
 
     it('should render correct trade params for Matches/Differs', () => {
-        defaultMockStore.modules.trade.contract_type = TRADE_TYPES.MATCH_DIFF;
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.MATCH_DIFF;
         render(mockTradeParameters());
 
         expect(screen.getByText(TRADE_PARAMS.LAST_DIGIT_PREDICTION)).toBeInTheDocument();
@@ -151,7 +151,7 @@ describe('TradeParameters', () => {
     });
 
     it('should render correct trade params for Even/Odd', () => {
-        defaultMockStore.modules.trade.contract_type = TRADE_TYPES.EVEN_ODD;
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.EVEN_ODD;
         render(mockTradeParameters());
 
         expect(screen.getByText(TRADE_PARAMS.DURATION)).toBeInTheDocument();
@@ -160,7 +160,7 @@ describe('TradeParameters', () => {
     });
 
     it('should render correct trade params for Over/Under', () => {
-        defaultMockStore.modules.trade.contract_type = TRADE_TYPES.OVER_UNDER;
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.OVER_UNDER;
         render(mockTradeParameters());
 
         expect(screen.getByText(TRADE_PARAMS.LAST_DIGIT_PREDICTION)).toBeInTheDocument();

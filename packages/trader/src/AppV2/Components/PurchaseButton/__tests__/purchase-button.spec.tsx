@@ -9,10 +9,10 @@ import ModulesProvider from 'Stores/Providers/modules-providers';
 import PurchaseButton from '../purchase-button';
 
 describe('PositionsContent', () => {
-    let defaultMockStore: ReturnType<typeof mockStore>;
+    let default_mock_store: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
-        defaultMockStore = mockStore({
+        default_mock_store = mockStore({
             portfolio: {
                 all_positions: [
                     {
@@ -154,9 +154,9 @@ describe('PositionsContent', () => {
 
     const mockPurchaseButton = () => {
         render(
-            <TraderProviders store={defaultMockStore}>
+            <TraderProviders store={default_mock_store}>
                 <ReportsStoreProvider>
-                    <ModulesProvider store={defaultMockStore}>
+                    <ModulesProvider store={default_mock_store}>
                         <PurchaseButton />
                     </ModulesProvider>
                 </ReportsStoreProvider>
@@ -179,31 +179,31 @@ describe('PositionsContent', () => {
 
         const purchase_button = screen.getAllByRole('button')[0];
         expect(purchase_button).not.toHaveClass('purchase-button--loading');
-        expect(defaultMockStore.modules.trade.onPurchase).not.toBeCalled();
+        expect(default_mock_store.modules.trade.onPurchase).not.toBeCalled();
         expect(screen.queryByTestId('button-loader')).not.toBeInTheDocument();
 
         userEvent.click(purchase_button);
 
         expect(purchase_button).toHaveClass('purchase-button--loading');
-        expect(defaultMockStore.modules.trade.onPurchase).toBeCalled();
+        expect(default_mock_store.modules.trade.onPurchase).toBeCalled();
         expect(screen.getByTestId('button-loader')).toBeInTheDocument();
     });
 
     it('should disable the button if one of the prop is false (is_trade_enabled, is_proposal_empty, !info.id, is_purchase_enabled): button should have a specific attribute and if user clicks on it onPurchase will not be called', () => {
-        defaultMockStore.modules.trade.is_purchase_enabled = false;
+        default_mock_store.modules.trade.is_purchase_enabled = false;
         mockPurchaseButton();
 
         const purchase_button = screen.getAllByRole('button')[0];
         expect(purchase_button).toBeDisabled();
-        expect(defaultMockStore.modules.trade.onPurchase).not.toBeCalled();
+        expect(default_mock_store.modules.trade.onPurchase).not.toBeCalled();
 
         userEvent.click(purchase_button);
 
-        expect(defaultMockStore.modules.trade.onPurchase).not.toBeCalled();
+        expect(default_mock_store.modules.trade.onPurchase).not.toBeCalled();
     });
 
     it('should render only one button if trade_types have only one field', () => {
-        defaultMockStore.modules.trade.trade_types = {
+        default_mock_store.modules.trade.trade_types = {
             CALL: 'Rise',
         };
         mockPurchaseButton();
@@ -214,15 +214,15 @@ describe('PositionsContent', () => {
     });
 
     it('should render sell button for Accumulators contract if there is an open Accumulators contract; if user clicks on it - onClickSell should be called', () => {
-        defaultMockStore.modules.trade.has_open_accu_contract = true;
-        defaultMockStore.modules.trade.is_accumulator = true;
+        default_mock_store.modules.trade.has_open_accu_contract = true;
+        default_mock_store.modules.trade.is_accumulator = true;
         mockPurchaseButton();
 
         const sell_button = screen.getByText('Sell');
         expect(sell_button).toBeInTheDocument();
-        expect(defaultMockStore.portfolio.onClickSell).not.toBeCalled();
+        expect(default_mock_store.portfolio.onClickSell).not.toBeCalled();
 
         userEvent.click(sell_button);
-        expect(defaultMockStore.portfolio.onClickSell).toBeCalled();
+        expect(default_mock_store.portfolio.onClickSell).toBeCalled();
     });
 });

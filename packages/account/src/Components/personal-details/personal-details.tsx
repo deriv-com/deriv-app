@@ -166,91 +166,88 @@ const PersonalDetails = observer(
                     onSubmit(current_step, values, actions.setSubmitting, goToNextStep);
                 }}
             >
-                {({ handleSubmit, isSubmitting, values, errors }) => {
-                    console.log('Errors: ', errors, values);
-                    return (
-                        <AutoHeightWrapper default_height={380} height_offset={isDesktop ? 81 : null}>
-                            {({ setRef, height }) => (
-                                <Form
-                                    noValidate
-                                    ref={setRef}
-                                    onSubmit={handleSubmit}
-                                    autoComplete='off'
-                                    data-testid='personal_details_form'
+                {({ handleSubmit, isSubmitting, values }) => (
+                    <AutoHeightWrapper default_height={380} height_offset={isDesktop ? 81 : null}>
+                        {({ setRef, height }) => (
+                            <Form
+                                noValidate
+                                ref={setRef}
+                                onSubmit={handleSubmit}
+                                autoComplete='off'
+                                data-testid='personal_details_form'
+                            >
+                                <ScrollToFieldWithError
+                                    fields_to_scroll_bottom={isDesktop ? ['account_opening_reason'] : undefined}
+                                    fields_to_scroll_top={isDesktop ? undefined : ['account_opening_reason']}
+                                    should_recollect_inputs_names={
+                                        values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
+                                    }
+                                />
+                                <Div100vhContainer
+                                    className='details-form'
+                                    height_offset='100px'
+                                    is_disabled={isDesktop}
                                 >
-                                    <ScrollToFieldWithError
-                                        fields_to_scroll_bottom={isDesktop ? ['account_opening_reason'] : undefined}
-                                        fields_to_scroll_top={isDesktop ? undefined : ['account_opening_reason']}
-                                        should_recollect_inputs_names={
-                                            values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
-                                        }
-                                    />
-                                    <Div100vhContainer
-                                        className='details-form'
-                                        height_offset='100px'
-                                        is_disabled={isDesktop}
-                                    >
-                                        <ThemedScrollbars height={height} testId='dt_personal_details_container'>
-                                            <div className={clsx('details-form__elements', 'personal-details-form')}>
-                                                {is_rendered_for_idv && (
-                                                    <Fragment>
-                                                        <FormSubHeader title={localize('Identity verification')} />
-                                                        <IDVForm
-                                                            selected_country={selected_country}
-                                                            hide_hint
-                                                            is_for_real_account_signup_modal
-                                                        />
-                                                    </Fragment>
+                                    <ThemedScrollbars height={height} testId='dt_personal_details_container'>
+                                        <div className={clsx('details-form__elements', 'personal-details-form')}>
+                                            {is_rendered_for_idv && (
+                                                <Fragment>
+                                                    <FormSubHeader title={localize('Identity verification')} />
+                                                    <IDVForm
+                                                        selected_country={selected_country}
+                                                        hide_hint
+                                                        is_for_real_account_signup_modal
+                                                    />
+                                                </Fragment>
+                                            )}
+                                            {is_svg && !is_eu_user && <FormSubHeader title={localize('Details')} />}
+                                            <PersonalDetailsForm
+                                                class_name={clsx({
+                                                    'account-form__poi-confirm-example_container':
+                                                        is_svg && !is_eu_user,
+                                                })}
+                                                is_virtual={is_virtual}
+                                                is_svg={is_svg}
+                                                is_eu_user={is_eu_user}
+                                                side_note={<DerivLightNameDobPoiIcon height='200px' />}
+                                                is_rendered_for_idv={is_rendered_for_idv}
+                                                editable_fields={getEditableFields(
+                                                    values?.confirmation_checkbox,
+                                                    values?.document_type?.id
                                                 )}
-                                                {is_svg && !is_eu_user && <FormSubHeader title={localize('Details')} />}
-                                                <PersonalDetailsForm
-                                                    class_name={clsx({
-                                                        'account-form__poi-confirm-example_container':
-                                                            is_svg && !is_eu_user,
-                                                    })}
-                                                    is_virtual={is_virtual}
-                                                    is_svg={is_svg}
-                                                    is_eu_user={is_eu_user}
-                                                    side_note={<DerivLightNameDobPoiIcon height='200px' />}
-                                                    is_rendered_for_idv={is_rendered_for_idv}
-                                                    editable_fields={getEditableFields(
-                                                        values?.confirmation_checkbox,
-                                                        values?.document_type?.id
-                                                    )}
-                                                    residence_list={residence_list}
-                                                    has_real_account={has_real_account}
-                                                    is_fully_authenticated={is_fully_authenticated}
-                                                    closeRealAccountSignup={closeRealAccountSignup}
-                                                    salutation_list={salutation_list}
-                                                    account_opening_reason_list={account_opening_reason_list}
-                                                    inline_note_text={
-                                                        <Localize
-                                                            i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
-                                                            components={[<strong key={0} />]}
-                                                        />
-                                                    }
-                                                    no_confirmation_needed={
-                                                        values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
-                                                    }
-                                                />
-                                            </div>
-                                        </ThemedScrollbars>
-                                    </Div100vhContainer>
-                                    <Modal.Footer has_separator is_bypassed={!isDesktop}>
-                                        <FormSubmitButton
-                                            cancel_label={localize('Previous')}
-                                            has_cancel
-                                            is_disabled={isSubmitting}
-                                            is_absolute={!isDesktop}
-                                            label={localize('Next')}
-                                            onCancel={() => handleCancel(values)}
-                                        />
-                                    </Modal.Footer>
-                                </Form>
-                            )}
-                        </AutoHeightWrapper>
-                    );
-                }}
+                                                residence_list={residence_list}
+                                                has_real_account={has_real_account}
+                                                is_fully_authenticated={is_fully_authenticated}
+                                                closeRealAccountSignup={closeRealAccountSignup}
+                                                salutation_list={salutation_list}
+                                                account_opening_reason_list={account_opening_reason_list}
+                                                inline_note_text={
+                                                    <Localize
+                                                        i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+                                                        components={[<strong key={0} />]}
+                                                    />
+                                                }
+                                                no_confirmation_needed={
+                                                    values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
+                                                }
+                                            />
+                                        </div>
+                                    </ThemedScrollbars>
+                                </Div100vhContainer>
+                                <Modal.Footer has_separator is_bypassed={!isDesktop}>
+                                    <FormSubmitButton
+                                        cancel_label={localize('Previous')}
+                                        has_cancel
+                                        is_disabled={isSubmitting}
+                                        is_absolute={!isDesktop}
+                                        label={localize('Next')}
+                                        onCancel={() => handleCancel(values)}
+                                    />
+                                </Modal.Footer>
+                            </Form>
+                        )}
+                    </AutoHeightWrapper>
+                )}
             </Formik>
         );
     }

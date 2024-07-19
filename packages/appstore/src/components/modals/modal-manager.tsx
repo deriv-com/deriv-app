@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useWalletMigration } from '@deriv/hooks';
 import { makeLazyLoader, moduleLoader } from '@deriv/shared';
@@ -288,6 +289,12 @@ const ModalManager = () => {
         is_cfd_success_dialog_enabled ||
         is_mt5_password_invalid_format_modal_visible ||
         is_sent_email_modal_enabled;
+
+    const url_params = new URLSearchParams(useLocation().search);
+    const url_action_param = url_params.get('action');
+    if (url_action_param) {
+        return null;
+    }
 
     return (
         <React.Fragment>

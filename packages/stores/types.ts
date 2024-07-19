@@ -698,6 +698,7 @@ type TUiStore = {
     is_dark_mode_on: boolean;
     is_loading: boolean;
     is_reports_visible: boolean;
+    is_reset_password_modal_visible: boolean;
     is_route_modal_on: boolean;
     is_language_settings_modal_on: boolean;
     is_verification_modal_visible: boolean;
@@ -773,6 +774,7 @@ type TUiStore = {
     togglePositionsDrawer: () => void;
     toggleReadyToDepositModal: () => void;
     toggleResetEmailModal: (state_change: boolean) => void;
+    toggleResetPasswordModal: (state_change: boolean) => void;
     toggleServicesErrorModal: (is_visible: boolean) => void;
     toggleSetCurrencyModal: () => void;
     toggleShouldShowRealAccountsList: (value: boolean) => void;

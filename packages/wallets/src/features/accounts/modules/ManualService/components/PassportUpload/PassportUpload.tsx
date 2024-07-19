@@ -5,13 +5,13 @@ import { TSocketError } from '@deriv/api-v2/types';
 import { Divider } from '@deriv-com/ui';
 import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
 import PassportPlaceholder from '../../../../../../public/images/accounts/passport-placeholder.svg';
-import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
 import { Footer } from '../../../components';
 import { GeneralDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
 import { ManualUploadErrorMessage } from '../ManualUploadErrorMessage';
 import { SelfieUpload, useSelfieUpload } from '../SelfieUpload';
 import { usePassportUpload } from './hooks';
+import { passportUploadValidator } from './utils';
 import './PassportUpload.scss';
 
 const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onClickBack, onCompletion }) => {
@@ -42,7 +42,11 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
     };
 
     return (
-        <Formik initialValues={{ ...initialValuesPassportUpload, ...initialValuesSelfieUpload }} onSubmit={submit}>
+        <Formik
+            initialValues={{ ...initialValuesPassportUpload, ...initialValuesSelfieUpload }}
+            onSubmit={submit}
+            validationSchema={passportUploadValidator}
+        >
             {({ dirty, errors, handleSubmit, setFieldValue, values }) => {
                 const handleFileChange = (file?: File) => {
                     setFieldValue('passportFile', file);

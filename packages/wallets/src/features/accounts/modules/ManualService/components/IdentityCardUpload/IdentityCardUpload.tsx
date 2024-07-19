@@ -5,11 +5,11 @@ import { Divider } from '@deriv-com/ui';
 import { DatePicker, Dropzone, FormField, WalletText } from '../../../../../../components';
 import IdentityCardBack from '../../../../../../public/images/accounts/document-back.svg';
 import IdentityCardFront from '../../../../../../public/images/accounts/identity-card-front.svg';
-import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
 import { GeneralDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
 import { ManualUploadErrorMessage } from '../ManualUploadErrorMessage';
 import { useIdentityCardUpload } from './hooks';
+import { identityCardUploadValidator } from './utils';
 import './IdentityCardUpload.scss';
 
 const IdentityCardUpload: TManualDocumentComponent = ({ onCompletion }) => {
@@ -24,7 +24,7 @@ const IdentityCardUpload: TManualDocumentComponent = ({ onCompletion }) => {
     }
 
     return (
-        <Formik initialValues={initialValues} onSubmit={submit}>
+        <Formik initialValues={initialValues} onSubmit={submit} validationSchema={identityCardUploadValidator}>
             {({ setFieldValue, values }) => {
                 const handleDateChange = (formattedDate: string | null) => {
                     setFieldValue('identityCardExpiryDate', formattedDate);
@@ -41,7 +41,6 @@ const IdentityCardUpload: TManualDocumentComponent = ({ onCompletion }) => {
                                 defaultValue={values.identityCardNumber ?? ''}
                                 label='Identity card number*'
                                 name='identityCardNumber'
-                                validationSchema={documentRequiredValidator('Identity card number')}
                             />
                             <DatePicker
                                 defaultValue={values.identityCardExpiryDate ?? ''}
@@ -50,7 +49,6 @@ const IdentityCardUpload: TManualDocumentComponent = ({ onCompletion }) => {
                                 name='identityCardExpiryDate'
                                 onDateChange={handleDateChange}
                                 placeholder='DD/MM/YYYY'
-                                validationSchema={expiryDateValidator}
                             />
                         </div>
                         <Divider color='var(--border-divider)' height={2} />

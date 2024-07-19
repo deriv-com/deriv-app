@@ -6,7 +6,7 @@ import { Divider } from '@deriv-com/ui';
 import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
 import DrivingLicenseCardBack from '../../../../../../public/images/accounts/document-back.svg';
 import DrivingLicenseCardFront from '../../../../../../public/images/accounts/driving-license-front.svg';
-import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
+// import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
 import { Footer } from '../../../components';
 import { GeneralDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
@@ -51,7 +51,7 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
             {({ dirty, errors, handleSubmit, resetForm, setFieldValue, values }) => {
                 const isDrivingLicenseFormDirty =
                     dirty &&
-                    !errors.drivingLicenceNumber &&
+                    !errors.drivingLicenseNumber &&
                     !errors.drivingLicenseExpiryDate &&
                     !errors.drivingLicenseCardBack &&
                     !errors.drivingLicenseCardFront;
@@ -102,10 +102,10 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                             <WalletText>First, enter your Driving licence number and the expiry date.</WalletText>
                             <div className='wallets-driving-license-upload__input-group'>
                                 <FormField
-                                    defaultValue={values.drivingLicenceNumber ?? ''}
+                                    defaultValue={values.drivingLicenseNumber ?? ''}
                                     label='Driving licence number*'
-                                    name='drivingLicenceNumber'
-                                    validationSchema={documentRequiredValidator('Driving licence number')}
+                                    name='drivingLicenseNumber'
+                                    // validationSchema={documentRequiredValidator('Driving licence number')}
                                 />
                                 <DatePicker
                                     defaultValue={values.drivingLicenseExpiryDate ?? ''}
@@ -113,7 +113,7 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                                     minDate={moment().add(2, 'days').toDate()}
                                     name='drivingLicenseExpiryDate'
                                     placeholder='DD/MM/YYYY'
-                                    validationSchema={expiryDateValidator}
+                                    // validationSchema={expiryDateValidator}
                                 />
                             </div>
                             <Divider color='var(--border-divider)' height={2} />

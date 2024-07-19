@@ -4,11 +4,11 @@ import { Divider } from '@deriv-com/ui';
 import { Dropzone, FormField, WalletText } from '../../../../../../components';
 import NIMCSlipFront from '../../../../../../public/images/accounts/nimc-slip-front.svg';
 import ProofOfAgeIcon from '../../../../../../public/images/accounts/proof-of-age.svg';
-import { documentRequiredValidator } from '../../../../validations';
 import { NIMCDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
 import { ManualUploadErrorMessage } from '../ManualUploadErrorMessage';
 import { useNIMCUpload } from './hooks';
+import { nimcSlipUploadValidator } from './utils';
 import './NIMCSlipUpload.scss';
 
 const NIMCSlipUpload: TManualDocumentComponent = ({ onCompletion }) => {
@@ -23,17 +23,12 @@ const NIMCSlipUpload: TManualDocumentComponent = ({ onCompletion }) => {
     }
 
     return (
-        <Formik initialValues={initialValues} onSubmit={submit}>
+        <Formik initialValues={initialValues} onSubmit={submit} validationSchema={nimcSlipUploadValidator}>
             {({ setFieldValue, values }) => {
                 return (
                     <div className='wallets-nimc-slip-document-upload' data-testid='dt_driving-license-document-upload'>
                         <WalletText>First, enter your NIMC slip number.</WalletText>
-                        <FormField
-                            defaultValue={values.nimcNumber ?? ''}
-                            label='NIMC slip number*'
-                            name='nimcNumber'
-                            validationSchema={documentRequiredValidator('NIMC slip number')}
-                        />
+                        <FormField defaultValue={values.nimcNumber ?? ''} label='NIMC slip number*' name='nimcNumber' />
                         <Divider color='var(--border-divider)' height={2} />
                         <div className='wallets-nimc-slip-document-upload__document-section'>
                             <WalletText>Next, upload both of the following documents.</WalletText>

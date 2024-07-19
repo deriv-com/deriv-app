@@ -4,10 +4,10 @@ import { useDocumentUpload } from '@deriv/api-v2';
 import { THooks } from '../../../../../../../types';
 
 type TDrivingLicenseUploadValues = {
-    drivingLicenceNumber: string;
     drivingLicenseCardBack?: File;
     drivingLicenseCardFront?: File;
     drivingLicenseExpiryDate: string;
+    drivingLicenseNumber: string;
 };
 
 const useDrivingLicenseUpload = (documentIssuingCountryCode: THooks.AccountSettings['country_code']) => {
@@ -15,8 +15,8 @@ const useDrivingLicenseUpload = (documentIssuingCountryCode: THooks.AccountSetti
     const [isDrivingLicenseUploadSuccess, setIsDrivingLicenseUploadSuccess] = useState(false);
 
     const initialValues = {
-        drivingLicenceNumber: '',
         drivingLicenseExpiryDate: '',
+        drivingLicenseNumber: '',
     } as TDrivingLicenseUploadValues;
 
     const uploadFront = (values: FormikValues) => {

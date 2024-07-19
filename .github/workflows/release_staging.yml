@@ -52,15 +52,12 @@ jobs:
       with:
         CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-
-    - name: Build Docker image and push to Docker hub and K8S
-      uses: "./.github/actions/build_and_push_docker_image"
+    - name: Upload to vercel
+      uses: 'deriv-com/shared-actions/.github/actions/vercel_DR_publish@master'
       with:
-        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-        DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
-        DOCKERHUB_ORGANISATION: ${{ secrets.DOCKERHUB_ORGANISATION }}
-        K8S_NAMESPACE: ${{ secrets.K8S_NAMESPACE }}
-        KUBE_SERVER: ${{ secrets.KUBE_SERVER }}
-        SERVICEACCOUNT_TOKEN: ${{ secrets.SERVICEACCOUNT_TOKEN }}
-        CA_CRT: ${{ secrets.CA_CRT }}
-        APP_VERSION: latest-staging
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        VERCEL_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
+        ENVIRONMENT: Preview
+        VERCEL_SCOPE: deriv
+        ALIAS_DOMAIN_URL: 'staging-app-dr.deriv.com'

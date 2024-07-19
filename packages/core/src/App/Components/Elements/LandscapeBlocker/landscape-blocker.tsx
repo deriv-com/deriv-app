@@ -11,8 +11,7 @@ const LandscapeBlocker = observer(() => {
     const {
         client: { has_wallet },
     } = useStore();
-    const { isTablet, isMobile } = useDevice();
-    console.log(isMobile, 'isMobile', isTablet, 'isTablet', isTabletOs, 'isTabletOS', isMobileOs(), 'isMobileOS');
+    const { isMobile } = useDevice();
     const location = useLocation();
     const pathname = location?.pathname;
     const is_hidden_landscape_blocker = isDisabledLandscapeBlockerRoute(pathname);

@@ -119,8 +119,6 @@ export const makeSettingsRequest = (
     }
     delete request.tax_identification_confirm;
 
-    delete request?.confirm_no_tax_details;
-
     return request;
 };
 

@@ -890,35 +890,13 @@ export default class TradersHubStore extends BaseStore {
         this.is_bvi_regulated = true;
     }
 
-    /**
-     * Filters an array of account objects based on specified visibility criteria.
-     *
-     * @param {Object[]} arr - The array of account objects to be filtered.
-     * @param {Object} criteria - An object representing the visibility criteria to filter by.
-     * @param {boolean} [criteria.is_bvi_regulated] - A boolean value to filter accounts by BVI regulation status.
-     * @returns {void} - This function doesn't return a value. It sets the `filtered_accounts` property of the instance.
-     *
-     * @example
-     * const all_available_accounts = [
-     *     {
-     *         name: "Account A",
-     *         visibility: { is_bvi_regulated: true, market_type: 'swap-free' },
-     *     },
-     *     {
-     *         name: "Account B",
-     *         visibility: { is_bvi_regulated: false },
-     *     }
-     * ];
-     * const criteria = { is_bvi_regulated: true };
-     * filterVisibility(all_available_accounts, criteria);
-     */
     filterVisibility(arr, criteria) {
-        this.filtered_accounts = arr.filter(item => {
+        this.filtered_accounts = arr.filter(account => {
             return !Object.keys(criteria).some(
                 key =>
-                    item.visibility &&
-                    Object.prototype.hasOwnProperty.call(item.visibility, key) &&
-                    criteria[key] === item.visibility[key]
+                    account.visibility &&
+                    Object.prototype.hasOwnProperty.call(account.visibility, key) &&
+                    criteria[key] === account.visibility[key]
             );
         });
     }

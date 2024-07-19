@@ -158,7 +158,7 @@ type TResponse<Req, Res extends { [key: string]: unknown }, K extends string> = 
     error?: {
         code: string;
         message: string;
-        details?: Res[K] & { field: string };
+        details?: Res[K] & { field: string; payout_per_point_choices?: number[] };
     };
 };
 type TProposalInfo = {
@@ -172,7 +172,7 @@ type TStakeBoundary = Record<
     }
 >;
 type TTicksHistoryResponse = TicksHistoryResponse | TicksStreamResponse;
-type TBarriersData = Record<string, never> | { barrier: string; barrier_choices: string[] };
+type TBarriersData = Record<string, never> | { barrier: string; barrier_choices?: string[] };
 type TPayoutData = Record<string, never> | { barrier: string; payout_choices: number[] };
 
 const store_name = 'trade_store';
@@ -291,8 +291,8 @@ export default class TradeStore extends BaseStore {
         triggerPopup(arg: () => void): void;
     }> | null = null;
     // Turbos trade params
-    long_barriers: TPayoutData = {};
-    short_barriers: TPayoutData = {};
+    long_barriers: TBarriersData = {};
+    short_barriers: TBarriersData = {};
     payout_per_point = 0;
 
     // Vanilla trade params
@@ -1394,7 +1394,8 @@ export default class TradeStore extends BaseStore {
                 let chart_barrier = (
                     Number(response.proposal?.contract_details?.barrier) - Number(response.proposal?.spot)
                 ).toFixed(3);
-                if (chart_barrier > 0) {
+
+                if (Number(chart_barrier) > 0) {
                     chart_barrier = `+${chart_barrier}`;
                 }
                 this.setMainBarrier({
@@ -1493,7 +1494,7 @@ export default class TradeStore extends BaseStore {
             } else if (this.is_turbos) {
                 const { max_stake, min_stake, payout_choices } = response.proposal ?? {};
                 if (payout_choices) {
-                    this.setPayoutChoices(payout_choices);
+                    this.setPayoutChoices(payout_choices as number[]);
                     this.setStakeBoundary(contract_type, min_stake, max_stake);
                     if (
                         this.barrier_1 !==

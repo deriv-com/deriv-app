@@ -136,7 +136,7 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
                         <motion.div
                             key={`option-${index}`}
                             style={{ height: optionHeight }}
-                            className='options'
+                            className='picker-wheel__options'
                             onMouseUp={() => handleClick(index)}
                             transition={{ type: 'spring', stiffness: 300 }}
                         >

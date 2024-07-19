@@ -67,7 +67,7 @@
         .picker-wheel {
             position: relative;
             transition-timing-function: ease-in-out;
-            .options {
+            &__options {
                 display: flex;
                 justify-content: center;
                 align-items: center;

@@ -3752,6 +3752,7 @@
     "-1043795232": "Positions récentes",
     "-153220091": "{{display_value}} Tick",
     "-802374032": "Heure",
+    "-1700010072": "This feature is unavailable for tick intervals. Switch to minutes, hours, or days.",
     "-663862998": "Marchés",
     "-1341681145": "Lorsque cette fonction est activée, vous pouvez annuler votre transaction dans le délai choisi. Votre mise vous sera remboursée sans perte.",
     "-2069438609": "Aucune correspondance trouvée",

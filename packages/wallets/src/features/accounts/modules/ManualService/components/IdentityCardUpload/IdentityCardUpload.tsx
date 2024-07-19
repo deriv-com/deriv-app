@@ -12,8 +12,9 @@ import { useIdentityCardUpload } from './hooks';
 import { identityCardUploadValidator } from './utils';
 import './IdentityCardUpload.scss';
 
-const IdentityCardUpload: TManualDocumentComponent = ({ onCompletion }) => {
-    const { error, initialValues, isIdentityCardUploadSuccess, resetError, submit } = useIdentityCardUpload();
+const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onCompletion }) => {
+    const { error, initialValues, isIdentityCardUploadSuccess, resetError, submit } =
+        useIdentityCardUpload(documentIssuingCountryCode);
 
     if (isIdentityCardUploadSuccess && onCompletion) {
         onCompletion();
@@ -26,10 +27,6 @@ const IdentityCardUpload: TManualDocumentComponent = ({ onCompletion }) => {
     return (
         <Formik initialValues={initialValues} onSubmit={submit} validationSchema={identityCardUploadValidator}>
             {({ setFieldValue, values }) => {
-                const handleDateChange = (formattedDate: string | null) => {
-                    setFieldValue('identityCardExpiryDate', formattedDate);
-                };
-
                 return (
                     <div
                         className='wallets-identity-card-document-upload'
@@ -47,7 +44,6 @@ const IdentityCardUpload: TManualDocumentComponent = ({ onCompletion }) => {
                                 label='Expiry date*'
                                 minDate={moment().add(2, 'days').toDate()}
                                 name='identityCardExpiryDate'
-                                onDateChange={handleDateChange}
                                 placeholder='DD/MM/YYYY'
                             />
                         </div>

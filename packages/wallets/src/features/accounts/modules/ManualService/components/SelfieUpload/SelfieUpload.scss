@@ -1,13 +1,9 @@
 .wallets-selfie-upload {
+    width: fit-content;
     display: flex;
     flex-direction: column;
     gap: 1.6rem;
     padding: 1.6rem;
-
-    @include desktop {
-        width: 99.6rem;
-        height: 60rem;
-    }
 
     @include mobile {
         width: 100%;

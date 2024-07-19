@@ -17,7 +17,7 @@ const usePassportUpload = (documentIssuingCountryCode: THooks.AccountSettings['c
             document_issuing_country: documentIssuingCountryCode ?? undefined,
             document_type: 'passport',
             expiration_date: values.passportExpiryDate,
-            file: values.passport,
+            file: values.passportFile,
         });
     };
 

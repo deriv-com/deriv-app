@@ -11,8 +11,8 @@ import { useNIMCUpload } from './hooks';
 import { nimcSlipUploadValidator } from './utils';
 import './NIMCSlipUpload.scss';
 
-const NIMCSlipUpload: TManualDocumentComponent = ({ onCompletion }) => {
-    const { error, initialValues, isNIMCUploadSuccess, resetError, submit } = useNIMCUpload();
+const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onCompletion }) => {
+    const { error, initialValues, isNIMCUploadSuccess, resetError, submit } = useNIMCUpload(documentIssuingCountryCode);
 
     if (isNIMCUploadSuccess && onCompletion) {
         onCompletion();

@@ -91,17 +91,11 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                             <div className='wallets-passport-upload__wrapper'>
                                 <WalletText>First, enter your Passport number and the expiry date.</WalletText>
                                 <div className='wallets-passport-upload__input-group'>
-                                    <FormField
-                                        defaultValue={values.passportNumber}
-                                        label='Passport number*'
-                                        name='passportNumber'
-                                        validationSchema={documentRequiredValidator('Passport number')}
-                                    />
+                                    <FormField label='Passport number*' name='passportNumber' />
                                     <DatePicker
                                         label='Expiry date*'
                                         minDate={moment().add(2, 'days').toDate()}
                                         name='passportExpiryDate'
-                                        validationSchema={expiryDateValidator}
                                     />
                                 </div>
                                 <Divider

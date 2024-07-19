@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FormikHelpers, FormikValues } from 'formik';
 import { useDocumentUpload } from '@deriv/api-v2';
+import { THooks } from '../../../../../../../types';
 
 type TIdentityCardUploadValues = {
     identityCardBack?: File;
@@ -9,14 +10,14 @@ type TIdentityCardUploadValues = {
     identityCardNumber: string;
 };
 
-const useIdentityCardUpload = () => {
+const useIdentityCardUpload = (documentIssuingCountryCode: THooks.AccountSettings['country_code']) => {
     const { error, isSuccess, reset: resetError, upload } = useDocumentUpload();
     const [isIdentityCardUploadSuccess, setIsIdentityCardUploadSuccess] = useState(false);
 
     const uploadFront = (values: FormikValues) => {
         return upload({
             document_id: values.identityCardNumber,
-            document_issuing_country: settings?.country_code ?? undefined,
+            document_issuing_country: documentIssuingCountryCode ?? undefined,
             document_type: 'national_identity_card',
             expiration_date: values.identityCardExpiryDate,
             file: values.identityCardFront,
@@ -27,7 +28,7 @@ const useIdentityCardUpload = () => {
     const uploadBack = (values: FormikValues) => {
         return upload({
             document_id: values.identityCardNumber,
-            document_issuing_country: settings?.country_code ?? undefined,
+            document_issuing_country: documentIssuingCountryCode ?? undefined,
             document_type: 'national_identity_card',
             expiration_date: values.identityCardExpiryDate,
             file: values.identityCardBack,

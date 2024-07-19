@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FormikHelpers, FormikValues } from 'formik';
 import { useDocumentUpload } from '@deriv/api-v2';
+import { THooks } from '../../../../../../../types';
 
 type TNIMCUploadValues = {
     nimcCardBack?: File;
@@ -8,14 +9,14 @@ type TNIMCUploadValues = {
     nimcNumber: string;
 };
 
-const useNIMCUpload = () => {
+const useNIMCUpload = (documentIssuingCountryCode: THooks.AccountSettings['country_code']) => {
     const { error, isSuccess, reset: resetError, upload } = useDocumentUpload();
     const [isNIMCUploadSuccess, setIsNIMCUploadSuccess] = useState(false);
 
     const uploadFront = (values: FormikValues) => {
         return upload({
             document_id: values.identityCardNumber,
-            document_issuing_country: settings?.country_code ?? undefined,
+            document_issuing_country: documentIssuingCountryCode ?? undefined,
             document_type: 'national_identity_card',
             expiration_date: values.identityCardExpiryDate,
             file: values.identityCardFront,
@@ -26,7 +27,7 @@ const useNIMCUpload = () => {
     const uploadBack = (values: FormikValues) => {
         return upload({
             document_id: values.identityCardNumber,
-            document_issuing_country: settings?.country_code ?? undefined,
+            document_issuing_country: documentIssuingCountryCode ?? undefined,
             document_type: 'national_identity_card',
             expiration_date: values.identityCardExpiryDate,
             file: values.identityCardBack,

@@ -10,7 +10,7 @@ const useSelfieUpload = (documentIssuingCountryCode: THooks.AccountSettings['cou
         return upload({
             document_issuing_country: documentIssuingCountryCode ?? undefined,
             document_type: 'selfie_with_id',
-            file: values.selfie,
+            file: values.selfieFile,
         });
     };
 

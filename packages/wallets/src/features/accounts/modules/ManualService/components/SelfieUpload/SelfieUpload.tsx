@@ -19,7 +19,7 @@ const SelfieUpload: TManualDocumentComponent = ({ onClickBack, onCompletion }) =
             disableAnimation
             renderFooter={() => (
                 <Footer
-                    disableNext={isSelfieFormDirty}
+                    disableNext={!isSelfieFormDirty}
                     nextText='Confirm and upload'
                     onClickBack={onClickBack}
                     onClickNext={onCompletion}
@@ -35,7 +35,7 @@ const SelfieUpload: TManualDocumentComponent = ({ onClickBack, onCompletion }) =
                     description='Upload your selfie'
                     descriptionColor={isDesktop ? 'less-prominent' : 'general'}
                     fileFormats='image/*'
-                    hasFrame={isDesktop}
+                    hasFrame={isDesktop && !values.selfieFile}
                     icon={<SelfieIcon />}
                     noClick
                     onFileChange={(file?: File) => setFieldValue('selfieFile', file)}

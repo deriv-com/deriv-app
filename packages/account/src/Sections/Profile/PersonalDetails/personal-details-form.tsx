@@ -380,6 +380,9 @@ const PersonalDetailsForm = observer(() => {
                                             parent_ref={scroll_div_ref}
                                             handleChange={mutate}
                                             tin_validation_config={tin_validation_config}
+                                            is_tin_autoset={
+                                                account_settings.tax_identification_number === 'Approved000'
+                                            }
                                         />
                                         {!is_virtual && (
                                             <Fragment>

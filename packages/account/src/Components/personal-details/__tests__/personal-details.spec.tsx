@@ -329,7 +329,7 @@ describe('<PersonalDetails/>', () => {
         fireEvent.change(last_name, { target: { value: 'a' } });
         fireEvent.change(date_of_birth, { target: { value: '2021-04-13' } });
 
-        expect(await screen.findAllByText(/letters, spaces, periods, hyphens, apostrophes only/i)).toHaveLength(2);
+        expect(await screen.findByText(/letters, spaces, periods, hyphens, apostrophes only/i)).toBeInTheDocument();
         expect(await screen.findByText(/you must be 18 years old and above\./i)).toBeInTheDocument();
     });
 

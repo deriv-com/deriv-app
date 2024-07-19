@@ -113,9 +113,7 @@ describe('getEmploymentAndTaxValidationSchema', () => {
         try {
             validation_schema.validateSync(invalid_values);
         } catch (error: unknown) {
-            expect((error as Yup.ValidationError).message).toBe(
-                'Should start with letter or number and may contain a hyphen, period and slash.'
-            );
+            expect((error as Yup.ValidationError).message).toBe('Tax identification number is not properly formatted');
         }
     });
 

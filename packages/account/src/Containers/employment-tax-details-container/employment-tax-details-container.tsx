@@ -20,6 +20,7 @@ type TEmploymentTaxDetailsContainerProps = {
     should_display_long_message?: boolean;
     handleChange: (value: string) => void;
     tin_validation_config: TinValidations;
+    is_tin_autoset?: boolean;
 };
 
 const EmploymentTaxDetailsContainer = ({
@@ -28,6 +29,7 @@ const EmploymentTaxDetailsContainer = ({
     should_display_long_message,
     tin_validation_config,
     handleChange,
+    is_tin_autoset,
 }: TEmploymentTaxDetailsContainerProps) => {
     const { values, setFieldValue, touched, errors, setValues, validateField } = useFormikContext<FormikValues>();
     const { isDesktop } = useDevice();
@@ -107,10 +109,11 @@ const EmploymentTaxDetailsContainer = ({
     const { is_tin_mandatory, tin_employment_status_bypass } = tin_validation_config;
 
     const should_show_no_tax_details_checkbox =
-        (!is_tin_mandatory &&
+        !is_tin_autoset &&
+        ((!is_tin_mandatory &&
             tin_employment_status_bypass?.includes(values.employment_status) &&
-            values.tax_residence) ||
-        values.confirm_no_tax_details;
+            !!values.tax_residence) ||
+            values.confirm_no_tax_details);
 
     const isFieldDisabled = (field_name: string) =>
         isFieldImmutable(field_name, editable_fields) || !!values.confirm_no_tax_details;

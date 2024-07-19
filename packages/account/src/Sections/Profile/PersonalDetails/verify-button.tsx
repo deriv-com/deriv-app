@@ -12,10 +12,10 @@ import { useDevice } from '@deriv-com/ui';
 import './verify-button.scss';
 
 type TVerifyButton = {
-    disable: boolean;
+    is_disabled: boolean;
 };
 
-export const VerifyButton = observer(({ disable }: TVerifyButton) => {
+export const VerifyButton = observer(({ is_disabled }: TVerifyButton) => {
     const [open_popover, setOpenPopover] = useState(false);
     const { client, ui } = useStore();
     const { setShouldShowPhoneNumberOTP } = ui;
@@ -35,7 +35,7 @@ export const VerifyButton = observer(({ disable }: TVerifyButton) => {
     }, [WS.isSuccess, history]);
 
     const redirectToPhoneVerification = () => {
-        if (next_otp_request || disable) return;
+        if (next_otp_request || is_disabled) return;
         setVerificationCode('', 'phone_number_verification');
         setShouldShowPhoneNumberOTP(false);
         sendPhoneNumberVerifyEmail();
@@ -74,9 +74,8 @@ export const VerifyButton = observer(({ disable }: TVerifyButton) => {
                     weight='bold'
                     color='red'
                     className={clsx('phone-verification-btn--not-verified', {
-                        'phone-verification-btn--not-verified--disabled': !!next_otp_request || disable,
+                        'phone-verification-btn--not-verified--disabled': !!next_otp_request || is_disabled,
                     })}
-                    disabled={true}
                     onClick={redirectToPhoneVerification}
                 >
                     <Localize

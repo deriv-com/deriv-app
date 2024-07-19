@@ -374,7 +374,7 @@ const PersonalDetailsForm = observer(() => {
                                             disabled={isFieldDisabled('phone')}
                                             data-testid='dt_phone'
                                         />
-                                        <VerifyButton disable={dirty} />
+                                        <VerifyButton is_disabled={dirty} />
                                     </fieldset>
                                 )}
                                 <Fragment>

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-// Localize moment instance with specific object
+// Localize dayjs instance
 export const setLocale = async (lang: string) => {
     const hasEnMomentLocale = ['AR', 'BN', 'SI']; // This is the list of locales that have the same format as en
     let locale = lang.toLowerCase().replace('_', '-');

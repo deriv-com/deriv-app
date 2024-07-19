@@ -149,7 +149,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                 <>
                     {selectedAccount?.demo_account ? (
                         <div className='wallets-transfer-form-dropdown__badge'>
-                            <WalletListCardBadge isDemo={Boolean(selectedAccount?.demo_account)} label='virtual' />
+                            <WalletListCardBadge />
                         </div>
                     ) : null}
                     <LegacyChevronDown2pxIcon className='wallets-transfer-form-dropdown__icon-dropdown' iconSize='xs' />

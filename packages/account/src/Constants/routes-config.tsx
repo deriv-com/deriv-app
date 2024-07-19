@@ -6,8 +6,6 @@ import { localize } from '@deriv/translations';
 import {
     Passkeys,
     PersonalDetails,
-    TradingAssessment,
-    FinancialAssessment,
     ProofOfIdentity,
     ProofOfAddress,
     ProofOfOwnership,
@@ -55,6 +53,14 @@ const LoginHistory = makeLazyLoader(
 
 const ConnectedApps = makeLazyLoader(
     () => moduleLoader(() => import('../Sections/Security/ConnectedApps')),
+    () => <Loading />
+)();
+const FinancialAssessment = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Assessment/FinancialAssessment')),
+    () => <Loading />
+)();
+const TradingAssessment = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Assessment/TradingAssessment')),
     () => <Loading />
 )();
 

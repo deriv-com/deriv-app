@@ -1,7 +1,5 @@
 import Passkeys from 'Sections/Security/Passkeys';
 import PersonalDetails from 'Sections/Profile/PersonalDetails';
-import TradingAssessment from 'Sections/Assessment/TradingAssessment';
-import FinancialAssessment from 'Sections/Assessment/FinancialAssessment';
 import { ProofOfIdentityContainer, ProofOfIdentity } from 'Sections/Verification/ProofOfIdentity';
 import ProofOfAddress from 'Sections/Verification/ProofOfAddress';
 import ProofOfOwnership from 'Sections/Verification/ProofOfOwnership';
@@ -13,8 +11,6 @@ import DeactivateAccount from 'Sections/Security/DeactivateAccount'; // TODO: Re
 export {
     Passkeys,
     PersonalDetails,
-    TradingAssessment,
-    FinancialAssessment,
     ProofOfIdentityContainer,
     ProofOfIdentity,
     ProofOfAddress,

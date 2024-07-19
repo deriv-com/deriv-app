@@ -56,7 +56,6 @@ const mock_errors: FormikErrors<TPersonalDetailsSectionForm> = {
 
 const tax_residence_pop_over_text =
     /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i;
-const tin_pop_over_text = /don't know your tax identification number\?/i;
 
 const runCommonFormfieldsTests = (is_svg: boolean) => {
     expect(screen.getByRole('radio', { name: /mr/i })).toBeInTheDocument();

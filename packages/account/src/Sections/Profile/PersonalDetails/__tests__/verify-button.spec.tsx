@@ -31,12 +31,14 @@ describe('VerifyButton', () => {
             },
         },
     });
+    const mockSetError = jest.fn();
+    const mockPhoneNumber = '+123123123123';
 
     const renderWithRouter = () => {
         return render(
             <Router history={history}>
                 <StoreProvider store={mock_store}>
-                    <VerifyButton />
+                    <VerifyButton setError={mockSetError} phone={mockPhoneNumber} />
                 </StoreProvider>
             </Router>
         );

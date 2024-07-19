@@ -24,6 +24,7 @@ export const VerifyButton = observer(({ phone, setError }: TVerifyButton) => {
     const { phone_number_verification } = account_settings;
     const phone_number_verified = phone_number_verification?.verified;
     const history = useHistory();
+    //@ts-expect-error remove this comment when types are added in GetSettings api types
     const { sendPhoneNumberVerifyEmail, WS } = useVerifyEmail('phone_number_verification');
     const { isMobile } = useDevice();
     const { setUsersPhoneNumber } = useRequestPhoneNumberOTP();

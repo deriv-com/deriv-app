@@ -24,6 +24,7 @@ jobs:
       with:
         REMOTE_CONFIG_URL: ${{ vars.REMOTE_CONFIG_URL }}
     - name: Build
+      id: build
       uses: "./.github/actions/build"
       with:
         NODE_ENV: production
@@ -44,6 +45,7 @@ jobs:
         REMOTE_CONFIG_URL: ${{ vars.REMOTE_CONFIG_URL }}
         TRUSTPILOT_API_KEY: ${{ secrets.TRUSTPILOT_API_KEY }}
     - name: Run tests
+      id: tests
       run: npm test
     - name: Versioning
       uses: "./.github/actions/versioning"
@@ -53,11 +55,14 @@ jobs:
       id: extract_version
       run: echo "RELEASE_VERSION=${version}" >> $GITHUB_OUTPUT
     - name: Publish to Cloudflare Pages Production
+      id: cloudflare-upload
       uses: "./.github/actions/publish_to_pages_production"
       with:
         CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      continue-on-error: true
     - name: Upload to vercel
+      id: vercel-upload
       uses: 'deriv-com/shared-actions/.github/actions/vercel_DR_publish@master'
       with:
         VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -66,12 +71,31 @@ jobs:
         ENVIRONMENT: Production
         VERCEL_SCOPE: deriv
         ALIAS_DOMAIN_URL: 'app-dr.deriv.com'
+      continue-on-error: true
     - name: Upload Build Artifact
+      id: artifact-upload
       uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
       with:
         name: build
         path: packages/core/dist
         retention-days: 1
+      continue-on-error: true
+    - name: Check for failures
+      id: check-failures
+      run: |
+        if [[ ${{ steps.build.outcome }} != 'success' ]]; then
+          echo "FAILED_STEP=App build" >> $GITHUB_ENV
+        elif [[ ${{ steps.tests.outcome }} != 'success' ]]; then
+          echo "FAILED_STEP=Testcases" >> $GITHUB_ENV
+        elif [[ ${{ steps.cloudflare-upload.outcome }} != 'success' ]]; then
+          echo "FAILED_STEP=Cloudflare publish" >> $GITHUB_ENV
+        elif [[ "${{ steps.vercel-upload.outcome }}" != "success" ]]; then
+            echo "FAILED_STEP=Vercel deployment" >> $GITHUB_ENV
+        elif [[ "${{ steps.artifact-upload.outcome }}" != "success" ]]; then
+            echo "FAILED_STEP=Artifact upload" >> $GITHUB_ENV
+        else
+            echo "FAILED_STEP=None" >> $GITHUB_ENV
+        fi
 
   send_slack_failure:
     name: Send Release Slack notification failure
@@ -84,7 +108,7 @@ jobs:
         uses: "deriv-com/shared-actions/.github/actions/send_slack_notification@master"
         with:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          MESSAGE: "${{ env.RELEASE_TYPE }} Release failed for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }}"
+          MESSAGE: "${{ env.RELEASE_TYPE }} Release failed at step: ${{env.FAILED_STEP}} for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }}"
 
   send_slack_success:
     name: Send Release Slack notification success

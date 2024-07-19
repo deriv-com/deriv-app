@@ -52,4 +52,4 @@ jobs:
         VERCEL_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
         ENVIRONMENT: Preview
         VERCEL_SCOPE: deriv
-        ALIAS_DOMAIN_URL: 'test.cf-pages-deriv-app.deriv.com'
+        ALIAS_DOMAIN_URL: 'test.cf-pages-deriv-app-dr.deriv.com'

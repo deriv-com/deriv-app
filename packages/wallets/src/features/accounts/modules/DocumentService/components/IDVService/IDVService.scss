@@ -26,11 +26,6 @@
         }
     }
 
-    & .wallets-dropdown,
-    & .wallets-textfield {
-        max-width: 68rem;
-    }
-
     &__buttons {
         display: flex;
         gap: 0.8rem;
@@ -39,11 +34,7 @@
     }
 
     &__dropdown {
-        padding-bottom: 0.8rem;
-
-        @include mobile {
-            padding-bottom: 1.6rem;
-        }
+        padding-bottom: 3.6rem;
     }
 
     &__title {

@@ -4,6 +4,10 @@ import userEvent from '@testing-library/user-event';
 import { TERM } from 'AppV2/Utils/contract-description-utils';
 import VanillasTradeDescription from '../vanillas-trade-description';
 
+jest.mock('@lottiefiles/dotlottie-react', () => ({
+    DotLottieReact: jest.fn(() => <div>DotLottieReact</div>),
+}));
+
 describe('VanillasTradeDescription', () => {
     it('should render a proper content', () => {
         render(<VanillasTradeDescription onTermClick={jest.fn()} />);

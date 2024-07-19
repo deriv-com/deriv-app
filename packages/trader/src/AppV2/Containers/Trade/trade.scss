@@ -17,6 +17,10 @@
         min-height: var(--core-spacing-1600);
         white-space: nowrap;
         scrollbar-width: none;
+
+        button {
+            background-color: transparent;
+        }
     }
     &__assets {
         padding: 0 var(--core-spacing-800);

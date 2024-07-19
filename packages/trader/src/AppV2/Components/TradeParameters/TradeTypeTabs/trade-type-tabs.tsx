@@ -3,16 +3,14 @@ import { observer } from 'mobx-react';
 import clsx from 'clsx';
 import { SegmentedControlSingleChoice } from '@deriv-com/quill-ui';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { isTurbosContract, isVanillaContract, TRADE_TYPES } from '@deriv/shared';
+import { TRADE_TYPES } from '@deriv/shared';
 
 type TTradeTypeTabsProps = {
     is_minimized?: boolean;
 };
 
 const TradeTypeTabs = observer(({ is_minimized }: TTradeTypeTabsProps) => {
-    const { contract_type, onChange } = useTraderStore();
-    const is_turbos = isTurbosContract(contract_type);
-    const is_vanilla = isVanillaContract(contract_type);
+    const { contract_type, is_turbos, is_vanilla, onChange } = useTraderStore();
     const tab_list = [
         { label: 'Up', value: TRADE_TYPES.TURBOS.LONG, is_displayed: is_turbos },
         { label: 'Down', value: TRADE_TYPES.TURBOS.SHORT, is_displayed: is_turbos },

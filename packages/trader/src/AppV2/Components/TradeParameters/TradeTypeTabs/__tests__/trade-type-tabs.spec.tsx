@@ -35,6 +35,7 @@ describe('TradeTypeTabs', () => {
 
     it('should render correct tabs name for Vanillas', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.VANILLA.CALL;
+        default_mock_store.modules.trade.is_vanilla = true;
         render(mockTradeTypeTabs({ is_minimized: true }));
 
         expect(screen.getByText('Call')).toBeInTheDocument();
@@ -45,6 +46,7 @@ describe('TradeTypeTabs', () => {
 
     it('should call onChange function if user clicks on another tab and not call it if he clicks on the already chosen one', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.TURBOS.LONG;
+        default_mock_store.modules.trade.is_turbos = true;
         render(mockTradeTypeTabs());
 
         const current_tab = screen.getByText('Up');

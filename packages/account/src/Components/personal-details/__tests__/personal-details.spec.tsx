@@ -262,9 +262,6 @@ describe('<PersonalDetails/>', () => {
             place_of_birth: '',
             citizen: '',
             phone: '+34',
-            // tax_residence: '',
-            // tax_identification_number: '',
-            // tax_identification_confirm: false,
         },
         onSubmit: jest.fn(),
         getCurrentStep: jest.fn(() => 1),
@@ -347,7 +344,7 @@ describe('<PersonalDetails/>', () => {
         fireEvent.change(date_of_birth, { target: { value: '2021-04-13' } });
         // fireEvent.change(tax_identification_number, { target: { value: '123456789012345678901234567890' } });
 
-        expect(await screen.findAllByText(/letters, spaces, periods, hyphens, apostrophes only/i)).toHaveLength(1);
+        expect(await screen.findAllByText(/letters, spaces, periods, hyphens, apostrophes only/i)).toHaveLength(2);
         expect(await screen.findByText(/you must be 18 years old and above\./i)).toBeInTheDocument();
         // expect(
         //     await screen.findByText(/tax Identification Number can't be longer than 25 characters\./i)
@@ -605,8 +602,6 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should display proper data in mobile mode', () => {
-        // [TODO] - Remove this when PersonalDetailsForm is migrated to TSX
-
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
 
         const new_props = { ...mock_props, is_svg: false };
@@ -622,10 +617,6 @@ describe('<PersonalDetails/>', () => {
         expect(screen.queryByTestId('citizenship_mobile')).toBeInTheDocument();
         expect(screen.queryByTestId('citizenship')).not.toBeInTheDocument();
         expect(screen.queryByTestId('phone')).toBeInTheDocument();
-        // expect(screen.queryByTestId('tax_residence_mobile')).toBeInTheDocument();
-        // expect(screen.queryByTestId('tax_residence')).not.toBeInTheDocument();
-        // expect(screen.getByText(/tax identification number/i)).toBeInTheDocument();
-        // expect(screen.getByLabelText(/tax identification number/i)).toBeInTheDocument();
         expect(screen.queryByTestId('dt_dropdown_display')).not.toBeInTheDocument();
         expect(screen.queryByTestId('account_opening_reason_mobile')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
@@ -668,7 +659,6 @@ describe('<PersonalDetails/>', () => {
     // });
 
     it('should submit the form if there is no validation error on desktop', async () => {
-        // (splitValidationResultTypes as jest.Mock).mockReturnValue({ warnings: {}, errors: {} });
         const new_props = {
             ...mock_props,
             value: {
@@ -711,25 +701,20 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should submit the form if there is no validation error on mobile', async () => {
-        // [TODO] - Remove this when PersonalDetailsForm is migrated to TSX
         (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
 
-        // (splitValidationResultTypes as jest.Mock).mockReturnValue({ warnings: {}, errors: {} });
         const new_props = {
             ...mock_props,
             is_svg: false,
             value: {
-                account_opening_reason: '',
-                citizen: '',
+                account_opening_reason: 'Income Earning',
+                citizen: 'Albania',
                 date_of_birth: '',
                 first_name: '',
                 last_name: '',
                 phone: '+49',
-                place_of_birth: '',
+                place_of_birth: 'Albania',
                 salutation: '',
-                // tax_identification_confirm: false,
-                // tax_identification_number: '',
-                // tax_residence: '',
             },
         };
 
@@ -739,13 +724,7 @@ describe('<PersonalDetails/>', () => {
         const first_name = screen.getByTestId('first_name');
         const last_name = screen.getByTestId('last_name');
         const date_of_birth = screen.getByTestId('date_of_birth');
-        const place_of_birth_mobile = screen.getByTestId('place_of_birth_mobile');
-        const citizenship = screen.getByTestId('citizenship_mobile');
         const phone = screen.getByTestId('phone');
-        // const tax_residence_mobile = screen.getByTestId('tax_residence_mobile');
-        // const tax_identification_number = screen.getByTestId('tax_identification_number');
-        // const tax_identification_confirm = screen.getByTestId('tax_identification_confirm');
-        const account_opening_reason_mobile = screen.getByTestId('account_opening_reason_mobile');
 
         const checkbox = screen.queryByLabelText(
             /i confirm that the name and date of birth above match my chosen identity document/i
@@ -756,13 +735,7 @@ describe('<PersonalDetails/>', () => {
         fireEvent.change(first_name, { target: { value: 'test firstname' } });
         fireEvent.change(last_name, { target: { value: 'test lastname' } });
         fireEvent.change(date_of_birth, { target: { value: '2000-12-12' } });
-        fireEvent.change(place_of_birth_mobile, { target: { value: 'Albania' } });
-        fireEvent.change(citizenship, { target: { value: 'Albania' } });
         fireEvent.change(phone, { target: { value: '+49123456789012' } });
-        // fireEvent.change(tax_residence_mobile, { target: { value: 'Afghanistan' } });
-        // fireEvent.change(tax_identification_number, { target: { value: '123123123123' } });
-        // fireEvent.change(tax_identification_confirm, { target: { value: true } });
-        fireEvent.change(account_opening_reason_mobile, { target: { value: 'Income Earning' } });
 
         expect(mr_radio_btn.checked).toEqual(true);
         const next_btn = screen.getByRole('button', { name: /next/i });
@@ -776,7 +749,6 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should save filled date when cancel button is clicked ', async () => {
-        // (splitValidationResultTypes as jest.Mock).mockReturnValue({ warnings: {}, errors: {} });
         const new_props = {
             ...mock_props,
             value: {

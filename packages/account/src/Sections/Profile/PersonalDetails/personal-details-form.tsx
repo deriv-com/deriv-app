@@ -16,7 +16,12 @@ import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
 import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
 import InputGroup from './input-group';
-import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
+import {
+    getPersonalDetailsInitialValues,
+    getPersonalDetailsValidationSchema,
+    makeSettingsRequest,
+    TPersonalDetailsInitialValues,
+} from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
 import { VerifyButton } from './verify-button';
 import { useInvalidateQuery } from '@deriv/api';
@@ -102,7 +107,7 @@ const PersonalDetailsForm = observer(() => {
 
     const onSubmit = async (
         values: PersonalDetailsValueTypes,
-        { setStatus, setSubmitting }: FormikHelpers<GetSettings>
+        { setStatus, setSubmitting }: FormikHelpers<PersonalDetailsValueTypes>
     ) => {
         setStatus({ msg: '' });
         const request = makeSettingsRequest({ ...values }, residence_list, states_list, is_virtual);

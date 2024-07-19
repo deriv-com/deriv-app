@@ -45,19 +45,17 @@ jest.mock('@deriv/components', () => {
 });
 describe('<FinancialAssessment/>', () => {
     const mock = mockStore({});
-    const rendercomponent = () => {
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+    const renderComponent = () =>
         render(
             <BrowserRouter>
-                <FinancialAssessment />
-            </BrowserRouter>,
-            { wrapper }
+                <StoreProvider store={mock}>
+                    <FinancialAssessment />
+                </StoreProvider>
+            </BrowserRouter>
         );
-    };
+
     it('should render FinancialAssessment component', async () => {
-        rendercomponent();
+        renderComponent();
         await waitFor(() => {
             expect(screen.getByText('Financial information')).toBeInTheDocument();
             expect(screen.getByText('Source of income')).toBeInTheDocument();
@@ -93,7 +91,7 @@ describe('<FinancialAssessment/>', () => {
                 },
             })
         );
-        rendercomponent();
+        renderComponent();
         await waitFor(() => {
             expect(screen.getByText('Employment status')).toBeInTheDocument();
             expect(screen.getByText('Industry of employment')).toBeInTheDocument();
@@ -121,7 +119,7 @@ describe('<FinancialAssessment/>', () => {
                 },
             })
         );
-        rendercomponent();
+        renderComponent();
         await waitFor(() => {
             expect(screen.getByText('Employment status')).toBeInTheDocument();
             expect(screen.getByText('Industry of employment')).toBeInTheDocument();

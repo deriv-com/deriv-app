@@ -14,8 +14,8 @@ export const getPersonalDetailsInitialValues = (
     residence_list: ResidenceList,
     states_list: StatesList,
     is_virtual?: boolean
-) => {
-    const virtualAccountInitialValues: GetSettings = {
+): PersonalDetailsValueTypes => {
+    const virtualAccountInitialValues: PersonalDetailsValueTypes = {
         email_consent: account_settings.email_consent ?? 0,
         residence: account_settings.residence,
     };

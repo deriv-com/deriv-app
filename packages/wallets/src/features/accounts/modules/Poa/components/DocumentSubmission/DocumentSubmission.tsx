@@ -5,8 +5,8 @@ import { LabelPairedArrowUpFromBracketXlFillIcon } from '@deriv/quill-icons';
 import { Dropzone, WalletText } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
 import i18n from '../../../../../../translations/i18n';
-import { getExampleImagesConfig } from '../../constants';
-import { TPoaDocument } from '../../types';
+import { TDocumentSubmission } from '../../types';
+import { getExampleImagesConfig } from '../../utils';
 import { CommonMistakesExamples } from '../CommonMistakesExamples';
 import './DocumentSubmission.scss';
 
@@ -18,7 +18,7 @@ const listItems = [
 
 const DocumentSubmission: React.FC = () => {
     const { isMobile } = useDevice();
-    const { setFieldValue } = useFormikContext<TPoaDocument>();
+    const { setFieldValue } = useFormikContext<TDocumentSubmission>();
     const { t } = useTranslation();
 
     return (
@@ -72,7 +72,7 @@ const DocumentSubmission: React.FC = () => {
                         hoverMessage='Upload your file here'
                         icon={<LabelPairedArrowUpFromBracketXlFillIcon fill='#C7E5E5' height='32' width='30' />}
                         maxSize={8388608}
-                        onFileChange={(file?: File) => setFieldValue('poaDocument', file)}
+                        onFileChange={(file?: File) => setFieldValue('poaFile', file)}
                         title={t('Drag and drop a file or click to browse your files.')}
                         titleType='bold'
                     />

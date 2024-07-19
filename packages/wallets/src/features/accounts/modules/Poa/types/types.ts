@@ -1,4 +1,4 @@
-import { THooks } from '../../../../types';
+import { THooks } from '../../../../../types';
 
 export type TAddressDetails = {
     firstLine: THooks.AccountSettings['address_line_1'];
@@ -8,4 +8,4 @@ export type TAddressDetails = {
     zipCodeLine: THooks.AccountSettings['address_postcode'];
 };
 
-export type TPoaDocument = { poaDocument?: File };
+export type TDocumentSubmission = { poaFile?: File };

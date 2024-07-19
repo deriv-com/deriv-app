@@ -11,7 +11,11 @@ import { usePhoneNumberVerificationSetTimer, useVerifyEmail } from '@deriv/hooks
 import { useDevice } from '@deriv-com/ui';
 import './verify-button.scss';
 
-export const VerifyButton = observer(() => {
+type TVerifyButton = {
+    disable: boolean;
+};
+
+export const VerifyButton = observer(({ disable }: TVerifyButton) => {
     const [open_popover, setOpenPopover] = useState(false);
     const { client, ui } = useStore();
     const { setShouldShowPhoneNumberOTP } = ui;
@@ -31,7 +35,7 @@ export const VerifyButton = observer(() => {
     }, [WS.isSuccess, history]);
 
     const redirectToPhoneVerification = () => {
-        if (next_otp_request) return;
+        if (next_otp_request || disable) return;
         setVerificationCode('', 'phone_number_verification');
         setShouldShowPhoneNumberOTP(false);
         sendPhoneNumberVerifyEmail();
@@ -70,7 +74,7 @@ export const VerifyButton = observer(() => {
                     weight='bold'
                     color='red'
                     className={clsx('phone-verification-btn--not-verified', {
-                        'phone-verification-btn--not-verified--disabled': !!next_otp_request,
+                        'phone-verification-btn--not-verified--disabled': !!next_otp_request || disable,
                     })}
                     disabled={true}
                     onClick={redirectToPhoneVerification}

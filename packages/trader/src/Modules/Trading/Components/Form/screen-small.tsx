@@ -214,6 +214,7 @@ const ScreenSmall = observer(({ is_trade_enabled }: { is_trade_enabled: boolean 
         payout_per_point,
         payout_choices,
         setPayoutWheelPicker,
+        barrier_1,
     } = trade_store;
     const is_allow_equal = !!trade_store.is_equal;
 
@@ -254,6 +255,7 @@ const ScreenSmall = observer(({ is_trade_enabled }: { is_trade_enabled: boolean 
                 <PayoutPerPointMobileInput
                     togglePayoutWheelPicker={togglePayoutWheelPicker}
                     currency={currency}
+                    selectedBarrier={barrier_1}
                     onPayoutClick={setPayoutWheelPicker}
                     payoutChoices={payout_choices}
                     payout_per_point={payout_per_point}

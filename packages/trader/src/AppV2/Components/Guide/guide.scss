@@ -13,6 +13,10 @@
         white-space: nowrap;
         -ms-overflow-style: none;
         scrollbar-width: none;
+
+        button {
+            background-color: transparent;
+        }
     }
 
     &__wrapper {

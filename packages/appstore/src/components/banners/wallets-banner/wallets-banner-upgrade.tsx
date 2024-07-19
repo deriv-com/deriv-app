@@ -1,12 +1,40 @@
 import React from 'react';
+import { Analytics, TEvents } from '@deriv-com/analytics';
 import { Button, Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 
-const WalletsBannerUpgrade = observer(() => {
+const trackAnalyticsEvent = (
+    action: TEvents['ce_tradershub_banner']['action'],
+    account_mode: TEvents['ce_tradershub_banner']['account_mode']
+) => {
+    Analytics.trackEvent('ce_tradershub_banner', {
+        action,
+        form_name: 'ce_tradershub_banner',
+        account_mode,
+        banner_name: 'lets_go_wallets_step_1_2',
+        banner_type: 'with_cta',
+    });
+};
+
+type TProps = {
+    is_upgrading: boolean;
+};
+
+const WalletsBannerUpgrade: React.FC<TProps> = observer(({ is_upgrading }) => {
     const { traders_hub, ui } = useStore();
     const { is_desktop, is_mobile } = ui;
-    const { toggleWalletsUpgrade } = traders_hub;
+    const { is_demo, toggleWalletsUpgrade } = traders_hub;
+    const account_mode = is_demo ? 'demo' : 'real';
+
+    React.useEffect(() => {
+        trackAnalyticsEvent('open', account_mode);
+    }, [account_mode]);
+
+    const onWalletsUpgradeHandler = () => {
+        toggleWalletsUpgrade(true);
+        trackAnalyticsEvent('click_cta', account_mode);
+    };
 
     return (
         <div className='wallets-banner wallets-banner-upgrade'>
@@ -22,10 +50,11 @@ const WalletsBannerUpgrade = observer(() => {
                 </div>
                 <Button
                     className='wallets-banner-upgrade__button'
+                    is_disabled={is_upgrading}
                     text={localize("Let's go")}
                     primary
                     large
-                    onClick={() => toggleWalletsUpgrade(true)}
+                    onClick={onWalletsUpgradeHandler}
                 />
             </div>
             <Icon

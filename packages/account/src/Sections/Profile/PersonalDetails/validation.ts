@@ -33,7 +33,6 @@ export const getPersonalDetailsInitialValues = (
         last_name: account_settings.last_name,
         phone: account_settings.phone,
         employment_status: account_settings?.employment_status,
-        tax_identification_number: account_settings.tax_identification_number ?? '',
         tax_residence:
             (account_settings?.tax_residence
                 ? residence_list.find(item => item.value === account_settings?.tax_residence)?.text
@@ -51,6 +50,15 @@ export const getPersonalDetailsInitialValues = (
             }
         }
     });
+
+    // @ts-expect-error need to fix the type for tax_identification_number in GetSettings because it should be boolean
+    if (account_settings?.confirm_no_tax_details) {
+        // @ts-expect-error need to fix the type for tax_identification_number in GetSettings because it should be boolean
+        initialValues.confirm_no_tax_details = account_settings.confirm_no_tax_details;
+        initialValues.tax_identification_number = '';
+    } else {
+        initialValues.tax_identification_number = account_settings.tax_identification_number ?? '';
+    }
 
     if (account_settings.address_state) {
         initialValues.address_state = states_list.length
@@ -111,8 +119,6 @@ export const makeSettingsRequest = (
             : request.address_state;
     }
     delete request.tax_identification_confirm;
-
-    delete request?.confirm_no_tax_details;
 
     return request;
 };

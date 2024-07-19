@@ -7,7 +7,7 @@ import {
 } from '../../Components/forms/form-fields';
 import { isFieldImmutable } from '../../Helpers/utils';
 import { Checkbox, useOnClickOutside } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { useTranslations } from '@deriv-com/translations';
 import { getLegalEntityName } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
 import { useResidenceList } from '@deriv/hooks';
@@ -32,6 +32,7 @@ const EmploymentTaxDetailsContainer = ({
     const { values, setFieldValue, touched, errors, setValues, validateField } = useFormikContext<FormikValues>();
     const { isDesktop } = useDevice();
     const { data: residence_list } = useResidenceList();
+    const { localize } = useTranslations();
 
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = useState(false);
@@ -111,12 +112,12 @@ const EmploymentTaxDetailsContainer = ({
             values.tax_residence) ||
         values.confirm_no_tax_details;
 
-    const isTaxInfoDisabled = (field_name: string) =>
+    const isFieldDisabled = (field_name: string) =>
         isFieldImmutable(field_name, editable_fields) || !!values.confirm_no_tax_details;
 
     return (
         <Fragment>
-            <EmploymentStatusField required is_disabled={isFieldImmutable('employment_status', editable_fields)} />
+            <EmploymentStatusField required is_disabled={isFieldDisabled('employment_status')} />
 
             {should_show_no_tax_details_checkbox && (
                 <Checkbox
@@ -144,7 +145,7 @@ const EmploymentTaxDetailsContainer = ({
             )}
             <div ref={tax_residence_ref} className='account-form__fieldset'>
                 <TaxResidenceField
-                    disabled={isTaxInfoDisabled('tax_residence')}
+                    disabled={isFieldDisabled('tax_residence')}
                     is_tax_residence_popover_open={is_tax_residence_popover_open}
                     setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                     setIsTinPopoverOpen={setIsTinPopoverOpen}
@@ -152,7 +153,7 @@ const EmploymentTaxDetailsContainer = ({
             </div>
             <div ref={tin_ref} className='account-form__fieldset'>
                 <TaxIdentificationNumberField
-                    disabled={isTaxInfoDisabled('tax_identification_number')}
+                    disabled={isFieldDisabled('tax_identification_number')}
                     is_tin_popover_open={is_tin_popover_open}
                     setIsTinPopoverOpen={setIsTinPopoverOpen}
                     setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}

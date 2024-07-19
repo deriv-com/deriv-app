@@ -1,12 +1,7 @@
 import React from 'react';
 import { Field, Formik, Form, FormikErrors, FormikHelpers, FormikValues } from 'formik';
 import { AccountStatusResponse, DocumentUploadRequest } from '@deriv/api-types';
-import {
-    Autocomplete,
-    Button,
-    FormSubmitErrorMessage,
-    SelectNative,
-} from '@deriv/components';
+import { Autocomplete, Button, FormSubmitErrorMessage, SelectNative } from '@deriv/components';
 import { useFileUploader } from '@deriv/hooks';
 import { useTranslations, Localize } from '@deriv-com/translations';
 import { isEqualArray, WS } from '@deriv/shared';
@@ -32,15 +27,15 @@ type TInitialValues = {
 const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
     const [document_file, setDocumentFile] = React.useState<File[]>([]);
     const [file_selection_error, setFileSelectionError] = React.useState<string | null>(null);
-const { localize } = useTranslations();
+    const { localize } = useTranslations();
     const { notifications } = useStore();
     const { addNotificationMessageByKey, removeNotificationMessage, removeNotificationByKey } = notifications;
     const { isMobile, isDesktop } = useDevice();
 
     const { upload } = useFileUploader();
 
-        const poinc_documents_list = React.useMemo(() => getPoincDocumentsList(), []);
-        const poinc_uploader_files_descriptions = React.useMemo(() => getFileUploaderDescriptions('poinc'), []);
+    const poinc_documents_list = React.useMemo(() => getPoincDocumentsList(), []);
+    const poinc_uploader_files_descriptions = React.useMemo(() => getFileUploaderDescriptions('poinc'), []);
 
     const initial_form_values: TInitialValues = {
         document_type: '',

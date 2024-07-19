@@ -1,25 +1,37 @@
-import React, { ComponentProps, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import classNames from 'classnames';
 import { Trans, useTranslation } from 'react-i18next';
+import { useEventListener, useOnClickOutside } from 'usehooks-ts';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
+import { LabelPairedChevronDownLgFillIcon } from '@deriv/quill-icons';
 import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { THooks } from '../../types';
-import { WalletDropdown, WalletText } from '../Base';
+import reactNodeToString from '../../utils/react-node-to-string';
+import { WalletText, WalletTextField } from '../Base';
 import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import './WalletListCardDropdown.scss';
 
-type WalletList = ComponentProps<typeof WalletDropdown>['list'] | undefined;
+type WalletList = {
+    currency: THooks.WalletAccountsList['currency'];
+    currencyConfig: THooks.WalletAccountsList['currency_config'];
+    loginid: THooks.WalletAccountsList['loginid'];
+    text: React.ReactNode;
+}[];
 
 const WalletListCardDropdown = () => {
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const switchWalletAccount = useWalletAccountSwitcher();
     const { t } = useTranslation();
-    const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
-    const [inputWidth, setInputWidth] = useState('auto');
+    const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
     const loginId = activeWallet?.loginid;
+    const [inputWidth, setInputWidth] = useState('auto');
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedText, setSelectedText] = useState('');
 
     const generateTitleText = useCallback(
         (wallet: THooks.WalletAccountsList) => {
@@ -28,73 +40,125 @@ const WalletListCardDropdown = () => {
         [t]
     );
 
-    useEffect(() => {
-        const selectedWallet = wallets?.find(wallet => wallet.loginid === loginId);
-        if (selectedWallet) {
-            const selectedTextWidth = generateTitleText(selectedWallet).length;
-            setInputWidth(`${selectedTextWidth * 10 - 20}px`);
-        }
-    }, [generateTitleText, wallets, loginId]);
-
     const walletList: WalletList = useMemo(() => {
-        return wallets
-            ?.filter(wallet => !wallet.is_virtual)
-            ?.map(wallet => ({
-                listItem: (
-                    <div className='wallets-list-card-dropdown__item'>
-                        <WalletCurrencyIcon currency={wallet.currency ?? 'USD'} rounded />
-                        <div className='wallets-list-card-dropdown__item-content'>
-                            <WalletText size='2xs'>
-                                <Trans defaults={`${wallet.currency} Wallet`} />
-                            </WalletText>
-                            {isBalanceLoading ? (
-                                <div
-                                    className='wallets-skeleton wallets-list-card-dropdown__balance-loader'
-                                    data-testid='dt_wallets_list_card_dropdown_balance_loader'
-                                />
-                            ) : (
-                                <WalletText size='sm' weight='bold'>
-                                    <Trans
-                                        defaults={displayMoney(
-                                            balanceData?.[wallet.loginid]?.balance,
-                                            wallet?.currency,
-                                            {
-                                                fractional_digits: wallet?.currency_config?.fractional_digits,
-                                            }
-                                        )}
-                                    />
-                                </WalletText>
-                            )}
-                        </div>
-                    </div>
-                ),
-                text: generateTitleText(wallet),
-                value: wallet.loginid,
-            }));
-    }, [balanceData, generateTitleText, isBalanceLoading, wallets]);
+        return (
+            wallets
+                ?.filter(wallet => !wallet.is_virtual)
+                .map(wallet => ({
+                    currency: wallet.currency,
+                    currencyConfig: wallet.currency_config,
+                    loginid: wallet.loginid,
+                    text: generateTitleText(wallet),
+                })) ?? []
+        );
+    }, [generateTitleText, wallets]);
+
+    useOnClickOutside(dropdownRef, () => {
+        setIsOpen(false);
+    });
+
+    useEventListener('keydown', (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+            setIsOpen(false);
+        }
+    });
+
+    const handleInputClick = useCallback(() => {
+        setIsOpen(prevIsOpen => !prevIsOpen);
+    }, []);
+
+    const handleItemClick = (value: string, text: string) => {
+        switchWalletAccount(value);
+        setSelectedText(text);
+        setIsOpen(false);
+    };
+
+    useEffect(() => {
+        if (loginId && wallets) {
+            const selectedWallet = wallets.find(wallet => wallet.loginid === loginId);
+            if (selectedWallet) {
+                const titleText = generateTitleText(selectedWallet);
+                setSelectedText(titleText);
+                setInputWidth(`${titleText.length * 10 - 20}px`);
+            }
+        }
+    }, [generateTitleText, loginId, wallets]);
 
     return (
-        <div className='wallets-list-card-dropdown'>
-            {wallets && (
-                <WalletDropdown
-                    inputWidth={inputWidth}
-                    list={walletList ?? []}
-                    listHeader={
-                        <WalletText size='sm' weight='bold'>
-                            <Trans defaults='Select Wallet' />
-                        </WalletText>
-                    }
-                    name='wallets-list-card-dropdown'
-                    onSelect={selectedItem => {
-                        switchWalletAccount(selectedItem);
-                    }}
-                    showListHeader
-                    showMessageContainer={false}
-                    typeVariant='listcard'
-                    value={loginId}
-                />
+        <React.Fragment>
+            {walletList.length > 0 && (
+                <div className='wallets-listcard-dropdown' ref={dropdownRef}>
+                    <WalletTextField
+                        data-testid='dt_wallets_listcard_dropdown'
+                        inputWidth={inputWidth}
+                        name='wallets-list-card-dropdown'
+                        onClickCapture={handleInputClick}
+                        readOnly
+                        renderRightIcon={() => (
+                            <button
+                                className={classNames('wallets-listcard-dropdown__button', {
+                                    'wallets-listcard-dropdown__button--active': isOpen,
+                                })}
+                                onClick={handleInputClick}
+                            >
+                                <LabelPairedChevronDownLgFillIcon />
+                            </button>
+                        )}
+                        showMessageContainer={false}
+                        type='text'
+                        typeVariant='listcard'
+                        value={selectedText}
+                    />
+                    {isOpen && (
+                        <ul className='wallets-listcard-dropdown__items'>
+                            <div className='wallets-listcard-dropdown__items-header'>
+                                <WalletText size='sm' weight='bold'>
+                                    <Trans defaults='Select Wallet' />
+                                </WalletText>
+                            </div>
+                            {walletList.map((wallet, index) => (
+                                <li
+                                    className={classNames('wallets-listcard-dropdown__item', {
+                                        'wallets-listcard-dropdown__item--active': loginId === wallet.loginid,
+                                    })}
+                                    id={`wallets-listcard-dropdown__item-${index}`}
+                                    key={wallet.loginid}
+                                    onClick={() => handleItemClick(wallet.loginid, reactNodeToString(wallet.text))}
+                                >
+                                    <div className='wallets-listcard-dropdown__list-item'>
+                                        <WalletCurrencyIcon currency={wallet.currency ?? 'USD'} rounded />
+                                        <div className='wallets-listcard-dropdown__list-content'>
+                                            <WalletText size='2xs'>
+                                                <Trans defaults={`${wallet.currency} Wallet`} />
+                                            </WalletText>
+                                            {isBalanceLoading ? (
+                                                <div
+                                                    className='wallets-skeleton wallets-list-card-dropdown__balance-loader'
+                                                    data-testid='dt_wallets_list_card_dropdown_balance_loader'
+                                                />
+                                            ) : (
+                                                <WalletText size='sm' weight='bold'>
+                                                    <Trans
+                                                        defaults={displayMoney(
+                                                            balanceData?.[wallet.loginid]?.balance,
+                                                            wallet?.currency,
+                                                            {
+                                                                fractional_digits:
+                                                                    wallet?.currencyConfig?.fractional_digits,
+                                                            }
+                                                        )}
+                                                    />
+                                                </WalletText>
+                                            )}
+                                        </div>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
             )}
-        </div>
+        </React.Fragment>
     );
 };
 

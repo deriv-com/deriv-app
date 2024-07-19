@@ -10,31 +10,30 @@ import { Footer } from '../../../components';
 import { GeneralDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
 import { ManualUploadErrorMessage } from '../ManualUploadErrorMessage';
-import { SelfieUpload } from '../SelfieUpload';
-import { useSelfieUpload } from '../SelfieUpload/hooks';
+import { SelfieUpload, useSelfieUpload } from '../SelfieUpload';
 import { usePassportUpload } from './hooks';
 import './PassportUpload.scss';
 
-const PassportUpload: TManualDocumentComponent = ({ onClickBack, onCompletion }) => {
+const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onClickBack, onCompletion }) => {
     const {
         error: errorPassportUpload,
         initialValues: initialValuesPassportUpload,
         isSuccess: isPassportUploadSuccess,
         resetError,
-        submit: submitPassport,
-    } = usePassportUpload();
+        submit: uploadPassport,
+    } = usePassportUpload(documentIssuingCountryCode);
     const {
         error: errorSelfieUpload,
         initialValues: initialValuesSelfieUpload,
         isSuccess: isSelfieUploadSuccess,
-        submit: submitSelfie,
-    } = useSelfieUpload();
+        submit: uploadSelfie,
+    } = useSelfieUpload(documentIssuingCountryCode);
     const [showSelfieUpload, setShowSelfieUpload] = useState(false);
     const [uploadError, setUploadError] = useState<TSocketError<'document_upload'>['error']>();
 
     const submit = async (values: FormikValues) => {
-        await submitPassport(values);
-        await submitSelfie(values);
+        await uploadPassport(values);
+        await uploadSelfie(values);
         if (errorPassportUpload || errorSelfieUpload) {
             setUploadError(errorPassportUpload || errorSelfieUpload);
         } else if (isPassportUploadSuccess && isSelfieUploadSuccess && onCompletion) {

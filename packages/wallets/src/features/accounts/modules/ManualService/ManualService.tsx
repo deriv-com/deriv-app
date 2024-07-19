@@ -26,7 +26,13 @@ const ManualService: React.FC<TManualServiceProps> = ({ onCompletion }) => {
 
     if (selectedManualDocument) {
         SelectedDocument = manualDocumentsMapper[selectedManualDocument].component;
-        return <SelectedDocument onClickBack={resetSelectedDocument} onCompletion={onCompletion} />;
+        return (
+            <SelectedDocument
+                documentIssuingCountryCode={accountSettings.country_code}
+                onClickBack={resetSelectedDocument}
+                onCompletion={onCompletion}
+            />
+        );
     }
 
     return (

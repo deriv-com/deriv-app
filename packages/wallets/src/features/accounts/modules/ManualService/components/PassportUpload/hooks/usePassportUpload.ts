@@ -1,5 +1,6 @@
 import { FormikValues } from 'formik';
 import { useDocumentUpload } from '@deriv/api-v2';
+import { THooks } from '../../../../../../../types';
 
 type TPassportUploadValues = {
     passportExpiryDate: string | null;
@@ -7,13 +8,13 @@ type TPassportUploadValues = {
     passportNumber: string;
 };
 
-const usePassportUpload = () => {
+const usePassportUpload = (documentIssuingCountryCode: THooks.AccountSettings['country_code']) => {
     const { error, isLoading, isSuccess, reset: resetError, upload } = useDocumentUpload();
 
     const submit = (values: FormikValues) => {
         return upload({
             document_id: values.passportNumber,
-            document_issuing_country: settings?.country_code ?? undefined,
+            document_issuing_country: documentIssuingCountryCode ?? undefined,
             document_type: 'passport',
             expiration_date: values.passportExpiryDate,
             file: values.passport,

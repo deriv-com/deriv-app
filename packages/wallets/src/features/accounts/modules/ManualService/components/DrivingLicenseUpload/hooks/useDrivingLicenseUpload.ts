@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FormikHelpers, FormikValues } from 'formik';
 import { useDocumentUpload } from '@deriv/api-v2';
+import { THooks } from '../../../../../../../types';
 
 type TDrivingLicenseUploadValues = {
     drivingLicenceNumber: string;
@@ -9,7 +10,7 @@ type TDrivingLicenseUploadValues = {
     drivingLicenseExpiryDate: string;
 };
 
-const useDrivingLicenseUpload = () => {
+const useDrivingLicenseUpload = (documentIssuingCountryCode: THooks.AccountSettings['country_code']) => {
     const { error: _error, isSuccess, reset: resetError, upload } = useDocumentUpload();
     const [isDrivingLicenseUploadSuccess, setIsDrivingLicenseUploadSuccess] = useState(false);
 
@@ -21,7 +22,7 @@ const useDrivingLicenseUpload = () => {
     const uploadFront = (values: FormikValues) => {
         return upload({
             document_id: values.drivingLicenceNumber,
-            document_issuing_country: settings?.country_code ?? undefined,
+            document_issuing_country: documentIssuingCountryCode ?? undefined,
             document_type: 'driving_licence',
             expiration_date: values.drivingLicenseExpiryDate,
             file: values.drivingLicenseCardFront,
@@ -32,7 +33,7 @@ const useDrivingLicenseUpload = () => {
     const uploadBack = (values: FormikValues) => {
         return upload({
             document_id: values.drivingLicenceNumber,
-            document_issuing_country: settings?.country_code ?? undefined,
+            document_issuing_country: documentIssuingCountryCode ?? undefined,
             document_type: 'driving_licence',
             expiration_date: values.drivingLicenseExpiryDate,
             file: values.drivingLicenseCardBack,
@@ -52,7 +53,7 @@ const useDrivingLicenseUpload = () => {
         }
     };
 
-    return { error: _error?.error, initialValues, isDrivingLicenseUploadSuccess, resetError, submit };
+    return { error: _error?.error, initialValues, isSuccess: isDrivingLicenseUploadSuccess, resetError, submit };
 };
 
 export default useDrivingLicenseUpload;

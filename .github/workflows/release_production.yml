@@ -12,6 +12,7 @@ jobs:
     runs-on: Runner_16cores_Deriv-app
     outputs:
       RELEASE_VERSION: ${{ steps.extract_version.outputs.RELEASE_VERSION }}
+      FAILED_STEP: ${{ steps.check-failures.outputs.FAILED_STEP}}
     steps:
     - name: Checkout
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
@@ -84,41 +85,36 @@ jobs:
       id: check-failures
       run: |
         if [[ ${{ steps.build.outcome }} != 'success' ]]; then
-          echo "FAILED_STEP=App build" >> $GITHUB_ENV
+          echo "FAILED_STEP=App build" >> $GITHUB_OUTPUT
         elif [[ ${{ steps.tests.outcome }} != 'success' ]]; then
-          echo "FAILED_STEP=Testcases" >> $GITHUB_ENV
+          echo "FAILED_STEP=Testcases" >> $GITHUB_OUTPUT
         elif [[ ${{ steps.cloudflare-upload.outcome }} != 'success' ]]; then
-          echo "FAILED_STEP=Cloudflare publish" >> $GITHUB_ENV
+          echo "FAILED_STEP=Cloudflare publish" >> $GITHUB_OUTPUT
         elif [[ "${{ steps.vercel-upload.outcome }}" != "success" ]]; then
-            echo "FAILED_STEP=Vercel deployment" >> $GITHUB_ENV
+            echo "FAILED_STEP=Vercel deployment" >> $GITHUB_OUTPUT
         elif [[ "${{ steps.artifact-upload.outcome }}" != "success" ]]; then
-            echo "FAILED_STEP=Artifact upload" >> $GITHUB_ENV
+            echo "FAILED_STEP=Artifact upload" >> $GITHUB_OUTPUT
         else
-            echo "FAILED_STEP=None" >> $GITHUB_ENV
+            echo "FAILED_STEP=None" >> $GITHUB_OUTPUT
         fi
 
-  send_slack_failure:
-    name: Send Release Slack notification failure
-    runs-on: Runner_8cores_Deriv-app
+  send_slack_notification: 
+    name: Send Release Slack notification
     environment: Production
-    if: failure()
+    runs-on: ubuntu-latest
+    if: always()
     needs: [build_test_and_publish]
     steps:
-      - name: Send Slack Notification
-        uses: "deriv-com/shared-actions/.github/actions/send_slack_notification@master"
-        with:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          MESSAGE: "${{ env.RELEASE_TYPE }} Release failed at step: ${{env.FAILED_STEP}} for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }}"
-
-  send_slack_success:
-    name: Send Release Slack notification success
-    runs-on: Runner_8cores_Deriv-app
-    environment: Production
-    if: success()
-    needs: [build_test_and_publish]
-    steps:
-      - name: Send Slack Notification
-        uses: "deriv-com/shared-actions/.github/actions/send_slack_notification@master"
-        with:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          MESSAGE: "${{ env.RELEASE_TYPE }} Release succeeded for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }}"
+          - name: Create Slack Message
+            id: create_slack_message
+            run: |
+              if [[ "${{ needs.build_test_and_publish.result }}" == 'success' ]]; then
+                  echo "message=${{ env.RELEASE_TYPE }} Release succeeded for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }}" >> $GITHUB_OUTPUT
+                else
+                  echo "message=${{ env.RELEASE_TYPE }} Release failed at step: ${{needs.build_test_and_publish.outputs.FAILED_STEP}} for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }}" >> $GITHUB_OUTPUT
+                fi
+          - name: Send Slack Notification
+            uses: "deriv-com/shared-actions/.github/actions/send_slack_notification@master"
+            with:
+              SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+              MESSAGE: ${{ steps.create_slack_message.outputs.message }}

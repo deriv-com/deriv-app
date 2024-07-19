@@ -11,14 +11,19 @@ const LandscapeBlocker = observer(() => {
     const {
         client: { has_wallet },
     } = useStore();
-    const { isMobile, isTablet } = useDevice();
-    console.log(isMobile, 'isMobile', isTablet, 'isTablet', isTabletOs, 'isTabletOS', isMobileOs(), 'isMobileOS')
+    const { isTablet } = useDevice();
     const location = useLocation();
     const pathname = location?.pathname;
     const is_hidden_landscape_blocker = isDisabledLandscapeBlockerRoute(pathname);
     const shouldShowDtraderTabletView = pathname === routes.trade && isTabletOs;
+    const showBlockerDtraderMobileLandscapeView = isTablet && isMobileOs() && pathname === routes.trade;
 
-    if (!has_wallet && (is_hidden_landscape_blocker || shouldShowDtraderTabletView)) return null;
+    if (
+        !has_wallet &&
+        !showBlockerDtraderMobileLandscapeView &&
+        (is_hidden_landscape_blocker || shouldShowDtraderTabletView)
+    )
+        return null;
 
     return (
         <div id='landscape_blocker' className='landscape-blocker'>

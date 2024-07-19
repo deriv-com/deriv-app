@@ -16,12 +16,7 @@ import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
 import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
 import InputGroup from './input-group';
-import {
-    getPersonalDetailsInitialValues,
-    getPersonalDetailsValidationSchema,
-    makeSettingsRequest,
-    TPersonalDetailsInitialValues,
-} from './validation';
+import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
 import { useInvalidateQuery } from '@deriv/api';
 import { useStatesList, useResidenceList, useTinValidations } from '@deriv/hooks';

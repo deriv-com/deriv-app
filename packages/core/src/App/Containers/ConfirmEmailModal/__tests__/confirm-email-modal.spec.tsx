@@ -2,22 +2,21 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { WS } from 'Services';
+import { WS } from '@deriv/shared';
 import { ConfirmEmailModal } from '../confirm-email-modal';
 
-jest.mock('@deriv/account', () => ({
-    ...jest.requireActual('Services'),
-    SentEmailModal: jest.fn(({ onClose, onClickSendEmail }) => (
+jest.mock('@deriv/account/src/Components/sent-email-modal', () =>
+    jest.fn(({ onClose, onClickSendEmail }) => (
         <div>
             SentEmailModal
             <button onClick={onClose}>Close</button>
             <button onClick={onClickSendEmail}>ClickSendEmail</button>
         </div>
-    )),
-}));
+    ))
+);
 
-jest.mock('Services', () => ({
-    ...jest.requireActual('Services'),
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
     WS: {
         changeEmail: jest.fn(() => Promise.resolve({})),
     },

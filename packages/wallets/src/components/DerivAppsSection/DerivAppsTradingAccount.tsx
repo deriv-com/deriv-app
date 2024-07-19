@@ -26,7 +26,7 @@ const DerivAppsTradingAccount = () => {
             <div className='wallets-deriv-apps-section__details'>
                 <div className='wallets-deriv-apps-section__title-and-badge'>
                     <WalletText size='sm'>Options</WalletText>
-                    <WalletListCardBadge isDemo={activeWallet?.is_virtual} label={activeWallet?.landing_company_name} />
+                    {activeWallet?.is_virtual && <WalletListCardBadge />}
                 </div>
                 {isBalanceLoading ? (
                     <div className='wallets-skeleton wallets-deriv-apps-balance-loader' />

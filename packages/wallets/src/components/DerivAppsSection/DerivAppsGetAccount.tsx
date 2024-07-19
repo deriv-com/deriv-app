@@ -36,8 +36,6 @@ const DerivAppsGetAccount: React.FC = () => {
 
     const { data: balanceData } = useAllBalanceSubscription();
 
-    const landingCompanyName = activeWallet?.landing_company_name?.toLocaleUpperCase();
-
     const createTradingAccount = async () => {
         if (!activeWallet?.is_virtual) {
             const createAccountResponse = await createNewRealAccount({
@@ -69,6 +67,7 @@ const DerivAppsGetAccount: React.FC = () => {
                     fractional_digits: activeWallet?.currency_config?.fractional_digits,
                 }
             );
+
             show(
                 <ModalStepWrapper
                     renderFooter={isDesktop ? undefined : () => <DerivAppsSuccessFooter />}
@@ -76,10 +75,10 @@ const DerivAppsGetAccount: React.FC = () => {
                     shouldHideHeader={isDesktop}
                 >
                     <CFDSuccess
-                        description={`Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your Options (${landingCompanyName}) account to start trading.`}
+                        description={`Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your Options account to start trading.`}
                         displayBalance={displayBalance}
                         renderButton={() => <DerivAppsSuccessFooter />}
-                        title={`Your Options (${landingCompanyName}) account is ready`}
+                        title={`Your Options account is ready`}
                     />
                 </ModalStepWrapper>,
                 {

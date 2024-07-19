@@ -9,6 +9,8 @@
     height: 10.4rem;
     transform: translateX(0);
     transition: transform var(--core-motion-duration-200) var(--motion-easing-inandout);
+    text-decoration: none;
+    color: unset;
 
     .dc-icon {
         display: flex;
@@ -82,6 +84,7 @@
         transition: opacity var(--core-motion-duration-200) var(--motion-easing-inandout);
 
         button {
+            all: unset;
             display: flex;
             justify-content: center;
             align-items: center;

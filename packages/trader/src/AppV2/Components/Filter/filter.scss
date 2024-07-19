@@ -36,6 +36,7 @@
 
 .custom-time-filter {
     &__wrapper {
+        all: unset;
         display: flex;
         gap: var(--core-spacing-400);
         margin-block: var(--core-spacing-400);

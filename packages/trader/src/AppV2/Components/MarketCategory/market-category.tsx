@@ -15,7 +15,7 @@ type TMarketCategory = {
 
 const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen, isOpen }: TMarketCategory) => {
     const itemRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-    const timerRef = useRef<NodeJS.Timeout>();
+    const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
     useEffect(() => {
         if (isOpen && category.market === 'all' && selectedSymbol && itemRefs.current[selectedSymbol]) {

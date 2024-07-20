@@ -65,63 +65,62 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
                         )}
                         title='Add a real MT5 account'
                     >
-                        <div
-                            className='wallets-identity-card-document-upload'
-                            data-testid='dt_identity-card-document-upload'
-                        >
-                            <WalletText>First, enter your Identity card number and the expiry date.</WalletText>
-                            <div className='wallets-identity-card-document-upload__input-group'>
-                                <FormField
-                                    defaultValue={values.identityCardNumber ?? ''}
-                                    label='Identity card number*'
-                                    name='identityCardNumber'
-                                />
-                                <DatePicker
-                                    defaultValue={values.identityCardExpiryDate ?? ''}
-                                    label='Expiry date*'
-                                    minDate={moment().add(2, 'days').toDate()}
-                                    name='identityCardExpiryDate'
-                                    placeholder='DD/MM/YYYY'
-                                />
-                            </div>
-                            <Divider color='var(--border-divider)' height={2} />
-                            <div className='wallets-identity-card-document-upload__document-upload'>
-                                <WalletText>Next, upload the front and back of your identity card.</WalletText>
-                                <div className='wallets-identity-card-document-upload__dropzone'>
-                                    <Dropzone
-                                        buttonText='Drop file or click here to upload'
-                                        defaultFile={values.identityCardFront}
-                                        description='Upload the front of your identity card.'
-                                        fileFormats={[
-                                            'image/jpeg',
-                                            'image/jpg',
-                                            'image/png',
-                                            'image/gif',
-                                            'application/pdf',
-                                        ]}
-                                        icon={<IdentityCardFront />}
-                                        maxSize={8388608}
-                                        noClick
-                                        onFileChange={(file?: File) => setFieldValue('identityCardFront', file)}
+                        <div className='wallets-identity-card-upload' data-testid='dt_identity-card-upload'>
+                            <div className='wallets-identity-card-upload__wrapper'>
+                                <WalletText>First, enter your Identity card number and the expiry date.</WalletText>
+                                <div className='wallets-identity-card-upload__input-group'>
+                                    <FormField
+                                        defaultValue={values.identityCardNumber ?? ''}
+                                        label='Identity card number*'
+                                        name='identityCardNumber'
                                     />
-                                    <Dropzone
-                                        buttonText='Drop file or click here to upload'
-                                        defaultFile={values.identityCardBack}
-                                        description='Upload the back of your identity card.'
-                                        fileFormats={[
-                                            'image/jpeg',
-                                            'image/jpg',
-                                            'image/png',
-                                            'image/gif',
-                                            'application/pdf',
-                                        ]}
-                                        icon={<IdentityCardBack />}
-                                        maxSize={8388608}
-                                        noClick
-                                        onFileChange={(file?: File) => setFieldValue('identityCardBack', file)}
+                                    <DatePicker
+                                        defaultValue={values.identityCardExpiryDate ?? ''}
+                                        label='Expiry date*'
+                                        minDate={moment().add(2, 'days').toDate()}
+                                        name='identityCardExpiryDate'
+                                        placeholder='DD/MM/YYYY'
                                     />
                                 </div>
-                                <DocumentRules hints={GeneralDocumentRules} />
+                                <Divider color='var(--border-divider)' height={2} />
+                                <div className='wallets-identity-card-upload__document-upload'>
+                                    <WalletText>Next, upload the front and back of your identity card.</WalletText>
+                                    <div className='wallets-identity-card-upload__dropzone'>
+                                        <Dropzone
+                                            buttonText='Drop file or click here to upload'
+                                            defaultFile={values.identityCardFront}
+                                            description='Upload the front of your identity card.'
+                                            fileFormats={[
+                                                'image/jpeg',
+                                                'image/jpg',
+                                                'image/png',
+                                                'image/gif',
+                                                'application/pdf',
+                                            ]}
+                                            icon={<IdentityCardFront />}
+                                            maxSize={8388608}
+                                            noClick
+                                            onFileChange={(file?: File) => setFieldValue('identityCardFront', file)}
+                                        />
+                                        <Dropzone
+                                            buttonText='Drop file or click here to upload'
+                                            defaultFile={values.identityCardBack}
+                                            description='Upload the back of your identity card.'
+                                            fileFormats={[
+                                                'image/jpeg',
+                                                'image/jpg',
+                                                'image/png',
+                                                'image/gif',
+                                                'application/pdf',
+                                            ]}
+                                            icon={<IdentityCardBack />}
+                                            maxSize={8388608}
+                                            noClick
+                                            onFileChange={(file?: File) => setFieldValue('identityCardBack', file)}
+                                        />
+                                    </div>
+                                    <DocumentRules hints={GeneralDocumentRules} />
+                                </div>
                             </div>
                         </div>
                     </ModalStepWrapper>

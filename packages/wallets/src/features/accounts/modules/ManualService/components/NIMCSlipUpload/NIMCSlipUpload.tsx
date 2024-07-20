@@ -62,53 +62,52 @@ const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                         )}
                         title='Add a real MT5 account'
                     >
-                        <div
-                            className='wallets-nimc-slip-document-upload'
-                            data-testid='dt_driving-license-document-upload'
-                        >
-                            <WalletText>First, enter your NIMC slip number.</WalletText>
-                            <FormField label='NIMC slip number*' name='nimcNumber' />
-                            <Divider color='var(--border-divider)' height={2} />
-                            <div className='wallets-nimc-slip-document-upload__document-section'>
-                                <WalletText>Next, upload both of the following documents.</WalletText>
-                                <div className='wallets-nimc-slip-document-upload__dropzones'>
-                                    <div className='wallets-nimc-slip-document-upload__dropzones--left'>
-                                        <Dropzone
-                                            buttonText='Drop file or click here to upload'
-                                            defaultFile={values.nimcCardFront}
-                                            description='Upload your NIMC slip.'
-                                            fileFormats={[
-                                                'image/jpeg',
-                                                'image/jpg',
-                                                'image/png',
-                                                'image/gif',
-                                                'application/pdf',
-                                            ]}
-                                            icon={<NIMCSlipFront />}
-                                            maxSize={8388608}
-                                            onFileChange={(file?: File) => setFieldValue('nimcCardFront', file)}
-                                        />
+                        <div className='wallets-nimc-slip-upload' data-testid='dt_nimc-upload'>
+                            <div className='wallets-nimc-slip-upload__wrapper'>
+                                <WalletText>First, enter your NIMC slip number.</WalletText>
+                                <FormField label='NIMC slip number*' name='nimcNumber' />
+                                <Divider color='var(--border-divider)' height={2} />
+                                <div className='wallets-nimc-slip-upload__document-section'>
+                                    <WalletText>Next, upload both of the following documents.</WalletText>
+                                    <div className='wallets-nimc-slip-upload__dropzones'>
+                                        <div className='wallets-nimc-slip-upload__dropzones--left'>
+                                            <Dropzone
+                                                buttonText='Drop file or click here to upload'
+                                                defaultFile={values.nimcCardFront}
+                                                description='Upload your NIMC slip.'
+                                                fileFormats={[
+                                                    'image/jpeg',
+                                                    'image/jpg',
+                                                    'image/png',
+                                                    'image/gif',
+                                                    'application/pdf',
+                                                ]}
+                                                icon={<NIMCSlipFront />}
+                                                maxSize={8388608}
+                                                onFileChange={(file?: File) => setFieldValue('nimcCardFront', file)}
+                                            />
+                                        </div>
+                                        <div className='wallets-nimc-slip-upload__dropzones--right'>
+                                            <Dropzone
+                                                buttonText='Drop file or click here to upload'
+                                                defaultFile={values.nimcCardBack}
+                                                description='Upload your proof of age: birth certificate or age declaration document.'
+                                                fileFormats={[
+                                                    'image/jpeg',
+                                                    'image/jpg',
+                                                    'image/png',
+                                                    'image/gif',
+                                                    'application/pdf',
+                                                ]}
+                                                icon={<ProofOfAgeIcon />}
+                                                maxSize={8388608}
+                                                noClick
+                                                onFileChange={(file?: File) => setFieldValue('nimcCardBack', file)}
+                                            />
+                                        </div>
                                     </div>
-                                    <div className='wallets-nimc-slip-document-upload__dropzones--right'>
-                                        <Dropzone
-                                            buttonText='Drop file or click here to upload'
-                                            defaultFile={values.nimcCardBack}
-                                            description='Upload your proof of age: birth certificate or age declaration document.'
-                                            fileFormats={[
-                                                'image/jpeg',
-                                                'image/jpg',
-                                                'image/png',
-                                                'image/gif',
-                                                'application/pdf',
-                                            ]}
-                                            icon={<ProofOfAgeIcon />}
-                                            maxSize={8388608}
-                                            noClick
-                                            onFileChange={(file?: File) => setFieldValue('nimcCardBack', file)}
-                                        />
-                                    </div>
+                                    <DocumentRules hints={NIMCDocumentRules} />
                                 </div>
-                                <DocumentRules hints={NIMCDocumentRules} />
                             </div>
                         </div>
                     </ModalStepWrapper>

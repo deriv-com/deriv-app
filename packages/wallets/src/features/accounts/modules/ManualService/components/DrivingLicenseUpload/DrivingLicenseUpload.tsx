@@ -69,63 +69,66 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                         )}
                         title='Add a real MT5 account'
                     >
-                        <div
-                            className='wallets-driving-license-upload'
-                            data-testid='dt_driving-license-document-upload'
-                        >
-                            <WalletText>First, enter your Driving licence number and the expiry date.</WalletText>
-                            <div className='wallets-driving-license-upload__input-group'>
-                                <FormField
-                                    defaultValue={values.drivingLicenseNumber ?? ''}
-                                    label='Driving licence number*'
-                                    name='drivingLicenseNumber'
-                                />
-                                <DatePicker
-                                    defaultValue={values.drivingLicenseExpiryDate ?? ''}
-                                    label='Expiry date*'
-                                    minDate={moment().add(2, 'days').toDate()}
-                                    name='drivingLicenseExpiryDate'
-                                    placeholder='DD/MM/YYYY'
-                                />
-                            </div>
-                            <Divider color='var(--border-divider)' height={2} />
-                            <div className='wallets-driving-license-upload__document-upload'>
-                                <WalletText>Next, upload the front and back of your driving licence.</WalletText>
-                                <div className='wallets-driving-license-upload__dropzone'>
-                                    <Dropzone
-                                        buttonText='Drop file or click here to upload'
-                                        defaultFile={values.drivingLicenseCardFront}
-                                        description='Upload the front of your driving licence.'
-                                        fileFormats={[
-                                            'image/jpeg',
-                                            'image/jpg',
-                                            'image/png',
-                                            'image/gif',
-                                            'application/pdf',
-                                        ]}
-                                        icon={<DrivingLicenseCardFront />}
-                                        maxSize={8388608}
-                                        noClick
-                                        onFileChange={(file?: File) => setFieldValue('drivingLicenseCardFront', file)}
+                        <div className='wallets-driving-license-upload' data-testid='dt_driving-license-upload'>
+                            <div className='wallets-driving-license-upload__wrapper'>
+                                <WalletText>First, enter your Driving licence number and the expiry date.</WalletText>
+                                <div className='wallets-driving-license-upload__input-group'>
+                                    <FormField
+                                        defaultValue={values.drivingLicenseNumber ?? ''}
+                                        label='Driving licence number*'
+                                        name='drivingLicenseNumber'
                                     />
-                                    <Dropzone
-                                        buttonText='Drop file or click here to upload'
-                                        defaultFile={values.drivingLicenseCardBack}
-                                        description='Upload the back of your driving licence.'
-                                        fileFormats={[
-                                            'image/jpeg',
-                                            'image/jpg',
-                                            'image/png',
-                                            'image/gif',
-                                            'application/pdf',
-                                        ]}
-                                        icon={<DrivingLicenseCardBack />}
-                                        maxSize={8388608}
-                                        noClick
-                                        onFileChange={(file?: File) => setFieldValue('drivingLicenseCardBack', file)}
+                                    <DatePicker
+                                        defaultValue={values.drivingLicenseExpiryDate ?? ''}
+                                        label='Expiry date*'
+                                        minDate={moment().add(2, 'days').toDate()}
+                                        name='drivingLicenseExpiryDate'
+                                        placeholder='DD/MM/YYYY'
                                     />
                                 </div>
-                                <DocumentRules hints={GeneralDocumentRules} />
+                                <Divider color='var(--border-divider)' height={2} />
+                                <div className='wallets-driving-license-upload__document-upload'>
+                                    <WalletText>Next, upload the front and back of your driving licence.</WalletText>
+                                    <div className='wallets-driving-license-upload__dropzone'>
+                                        <Dropzone
+                                            buttonText='Drop file or click here to upload'
+                                            defaultFile={values.drivingLicenseCardFront}
+                                            description='Upload the front of your driving licence.'
+                                            fileFormats={[
+                                                'image/jpeg',
+                                                'image/jpg',
+                                                'image/png',
+                                                'image/gif',
+                                                'application/pdf',
+                                            ]}
+                                            icon={<DrivingLicenseCardFront />}
+                                            maxSize={8388608}
+                                            noClick
+                                            onFileChange={(file?: File) =>
+                                                setFieldValue('drivingLicenseCardFront', file)
+                                            }
+                                        />
+                                        <Dropzone
+                                            buttonText='Drop file or click here to upload'
+                                            defaultFile={values.drivingLicenseCardBack}
+                                            description='Upload the back of your driving licence.'
+                                            fileFormats={[
+                                                'image/jpeg',
+                                                'image/jpg',
+                                                'image/png',
+                                                'image/gif',
+                                                'application/pdf',
+                                            ]}
+                                            icon={<DrivingLicenseCardBack />}
+                                            maxSize={8388608}
+                                            noClick
+                                            onFileChange={(file?: File) =>
+                                                setFieldValue('drivingLicenseCardBack', file)
+                                            }
+                                        />
+                                    </div>
+                                    <DocumentRules hints={GeneralDocumentRules} />
+                                </div>
                             </div>
                         </div>
                     </ModalStepWrapper>

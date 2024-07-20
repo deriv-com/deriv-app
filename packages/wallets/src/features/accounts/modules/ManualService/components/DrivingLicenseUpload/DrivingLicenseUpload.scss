@@ -1,10 +1,27 @@
 .wallets-driving-license-upload {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    padding: 2.4rem;
-    gap: 2.4rem;
-    background: var(--light-8-primary-background, #fff);
+    align-items: center;
+
+    @include desktop {
+        width: 99.6rem;
+        height: 60rem;
+    }
+
+    &__wrapper {
+        width: 100%;
+        max-width: 67.2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2.4rem;
+        gap: 2.4rem;
+        background: var(--light-8-primary-background, #fff);
+
+        @include mobile {
+            max-width: 100%;
+        }
+    }
 
     @include mobile {
         width: 100%;

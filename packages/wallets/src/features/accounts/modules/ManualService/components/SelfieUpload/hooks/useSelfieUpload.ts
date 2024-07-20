@@ -4,10 +4,10 @@ import { THooks } from '../../../../../../../types';
 import { TSelfieUploadValues } from '../types';
 
 const useSelfieUpload = (documentIssuingCountryCode: THooks.AccountSettings['country_code']) => {
-    const { error, isSuccess, reset, upload } = useDocumentUpload();
+    const { error, isLoading, isSuccess, reset, upload: _upload } = useDocumentUpload();
 
-    const submit = (values: FormikValues) => {
-        return upload({
+    const upload = (values: FormikValues) => {
+        return _upload({
             document_issuing_country: documentIssuingCountryCode ?? undefined,
             document_type: 'selfie_with_id',
             file: values.selfieFile,
@@ -16,7 +16,23 @@ const useSelfieUpload = (documentIssuingCountryCode: THooks.AccountSettings['cou
 
     const initialValues = {} as TSelfieUploadValues;
 
-    return { error: error?.error, initialValues, isSuccess, resetError: reset, submit };
+    return {
+        /** contains error data if any error encountered during selfie upload */
+        error: error?.error,
+
+        /** initial values for the selfie forms */
+        initialValues,
+        isLoading,
+
+        /** `true` if successfully uploaded selfie files */
+        isSuccess,
+
+        /** reset selfie upload API errors */
+        resetError: reset,
+
+        /** upload selfie file */
+        upload,
+    };
 };
 
 export default useSelfieUpload;

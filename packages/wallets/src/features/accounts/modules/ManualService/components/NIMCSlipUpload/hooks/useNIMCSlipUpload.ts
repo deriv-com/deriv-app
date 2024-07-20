@@ -4,19 +4,18 @@ import { useDocumentUpload } from '@deriv/api-v2';
 import { THooks } from '../../../../../../../types';
 import { TSelfieUploadValues, useSelfieUpload } from '../../SelfieUpload';
 
-type TDrivingLicenseUploadValues = TSelfieUploadValues & {
-    drivingLicenseCardBack?: File;
-    drivingLicenseCardFront?: File;
-    drivingLicenseExpiryDate: string;
-    drivingLicenseNumber: string;
+type TNIMCSlipUploadValues = TSelfieUploadValues & {
+    nimcCardBack?: File;
+    nimcCardFront?: File;
+    nimcNumber: string;
 };
 
-const useDrivingLicenseUpload = (documentIssuingCountryCode: THooks.AccountSettings['country_code']) => {
+const useNIMCSlipUpload = (documentIssuingCountryCode: THooks.AccountSettings['country_code']) => {
     const {
-        error: errorDrivingLicenseUpload,
-        isLoading: isDrivingLicenseUploading,
-        isSuccess: isDrivingLicenseUploadSuccess,
-        reset: resetErrorDrivingLicenseUpload,
+        error: errorNIMCUpload,
+        isLoading: isNIMCUploading,
+        isSuccess: isNIMCUploadSuccess,
+        reset: resetErrorNIMCUpload,
         upload: _upload,
     } = useDocumentUpload();
     const {
@@ -27,19 +26,14 @@ const useDrivingLicenseUpload = (documentIssuingCountryCode: THooks.AccountSetti
         upload: uploadSelfie,
     } = useSelfieUpload(documentIssuingCountryCode);
 
-    const initialValues = {
-        drivingLicenseExpiryDate: '',
-        drivingLicenseNumber: '',
-    } as TDrivingLicenseUploadValues;
-
     const uploadFront = useCallback(
-        (values: FormikValues | TDrivingLicenseUploadValues) => {
+        (values: FormikValues) => {
             return _upload({
-                document_id: values.drivingLicenseNumber,
+                document_id: values.identityCardNumber,
                 document_issuing_country: documentIssuingCountryCode ?? undefined,
-                document_type: 'driving_licence',
-                expiration_date: values.drivingLicenseExpiryDate,
-                file: values.drivingLicenseCardFront,
+                document_type: 'national_identity_card',
+                expiration_date: values.identityCardExpiryDate,
+                file: values.identityCardFront,
                 page_type: 'front',
             });
         },
@@ -47,13 +41,13 @@ const useDrivingLicenseUpload = (documentIssuingCountryCode: THooks.AccountSetti
     );
 
     const uploadBack = useCallback(
-        (values: FormikValues | TDrivingLicenseUploadValues) => {
+        (values: FormikValues) => {
             return _upload({
-                document_id: values.drivingLicenseNumber,
+                document_id: values.identityCardNumber,
                 document_issuing_country: documentIssuingCountryCode ?? undefined,
-                document_type: 'driving_licence',
-                expiration_date: values.drivingLicenseExpiryDate,
-                file: values.drivingLicenseCardBack,
+                document_type: 'national_identity_card',
+                expiration_date: values.identityCardExpiryDate,
+                file: values.identityCardBack,
                 page_type: 'back',
             });
         },
@@ -70,24 +64,28 @@ const useDrivingLicenseUpload = (documentIssuingCountryCode: THooks.AccountSetti
     );
 
     const resetError = useCallback(() => {
-        if (errorDrivingLicenseUpload?.error || errorSelfieUpload) {
-            resetErrorDrivingLicenseUpload();
+        if (errorNIMCUpload?.error || errorSelfieUpload) {
+            resetErrorNIMCUpload();
             resetErrorSelfieUpload();
         }
-    }, [errorDrivingLicenseUpload?.error, errorSelfieUpload, resetErrorDrivingLicenseUpload, resetErrorSelfieUpload]);
+    }, [errorNIMCUpload?.error, errorSelfieUpload, resetErrorNIMCUpload, resetErrorSelfieUpload]);
+
+    const initialValues = {
+        nimcNumber: '',
+    } as TNIMCSlipUploadValues;
 
     return {
         /** contains error data if any error encountered during driving-license/selfie upload */
-        error: errorDrivingLicenseUpload?.error ?? errorSelfieUpload,
+        error: errorNIMCUpload?.error ?? errorSelfieUpload,
 
         /** initial values for the driving-license and selfie forms */
         initialValues,
 
         /** `true` if successfully uploaded driving-license front/back and selfie files */
-        isSuccess: isDrivingLicenseUploadSuccess && isSelfieUploadSuccess,
+        isSuccess: isNIMCUploadSuccess && isSelfieUploadSuccess,
 
         /** `true` if driving-license and selfie upload is in progress */
-        isUploading: isDrivingLicenseUploading && isSelfieUploading,
+        isUploading: isNIMCUploading && isSelfieUploading,
 
         /** reset all API errors */
         resetError,
@@ -97,4 +95,4 @@ const useDrivingLicenseUpload = (documentIssuingCountryCode: THooks.AccountSetti
     };
 };
 
-export default useDrivingLicenseUpload;
+export default useNIMCSlipUpload;

@@ -11,9 +11,15 @@ import { THooks } from '../../../../../types';
 import { DrivingLicenseUpload, IdentityCardUpload, NIMCSlipUpload, PassportUpload } from '../components';
 
 type TManualDocumentComponentProps = {
+    // eslint-disable-next-line lines-around-comment
+    /** clients country code which is required to be passed during document upload */
     documentIssuingCountryCode?: THooks.AccountSettings['country_code'];
-    onClickBack?: () => void;
-    onCompletion?: () => void;
+
+    /** used to go back to the manual document selection page from the document upload page */
+    onClickBack?: VoidFunction;
+
+    /** callback to be called after successful completion of manual document upload */
+    onCompletion?: VoidFunction;
 };
 
 export type TManualDocumentComponent = React.FC<TManualDocumentComponentProps>;

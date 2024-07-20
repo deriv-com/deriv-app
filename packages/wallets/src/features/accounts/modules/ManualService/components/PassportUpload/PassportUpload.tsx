@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Formik, FormikValues } from 'formik';
+import { Formik } from 'formik';
 import moment from 'moment';
-import { TSocketError } from '@deriv/api-v2/types';
 import { Divider } from '@deriv-com/ui';
 import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
 import PassportPlaceholder from '../../../../../../public/images/accounts/passport-placeholder.svg';
@@ -9,45 +8,23 @@ import { Footer } from '../../../components';
 import { GeneralDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
 import { ManualUploadErrorMessage } from '../ManualUploadErrorMessage';
-import { SelfieUpload, useSelfieUpload } from '../SelfieUpload';
+import { SelfieUpload } from '../SelfieUpload';
 import { usePassportUpload } from './hooks';
 import { passportUploadValidator } from './utils';
 import './PassportUpload.scss';
 
 const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onClickBack, onCompletion }) => {
-    const {
-        error: errorPassportUpload,
-        initialValues: initialValuesPassportUpload,
-        isSuccess: isPassportUploadSuccess,
-        resetError,
-        submit: uploadPassport,
-    } = usePassportUpload(documentIssuingCountryCode);
-    const {
-        error: errorSelfieUpload,
-        initialValues: initialValuesSelfieUpload,
-        isSuccess: isSelfieUploadSuccess,
-        submit: uploadSelfie,
-    } = useSelfieUpload(documentIssuingCountryCode);
+    const { error, initialValues, isSuccess, isUploading, resetError, upload } =
+        usePassportUpload(documentIssuingCountryCode);
     const [showSelfieUpload, setShowSelfieUpload] = useState(false);
-    const [uploadError, setUploadError] = useState<TSocketError<'document_upload'>['error']>();
 
-    const submit = async (values: FormikValues) => {
-        await uploadPassport(values);
-        await uploadSelfie(values);
-        if (errorPassportUpload || errorSelfieUpload) {
-            setUploadError(errorPassportUpload || errorSelfieUpload);
-        } else if (isPassportUploadSuccess && isSelfieUploadSuccess && onCompletion) {
-            onCompletion();
-        }
-    };
+    if (!error && isSuccess && onCompletion) {
+        onCompletion();
+    }
 
     return (
-        <Formik
-            initialValues={{ ...initialValuesPassportUpload, ...initialValuesSelfieUpload }}
-            onSubmit={submit}
-            validationSchema={passportUploadValidator}
-        >
-            {({ dirty, errors, handleSubmit, setFieldValue, values }) => {
+        <Formik initialValues={initialValues} onSubmit={upload} validationSchema={passportUploadValidator}>
+            {({ dirty, errors, handleSubmit, resetForm, setFieldValue, values }) => {
                 const handleFileChange = (file?: File) => {
                     setFieldValue('passportFile', file);
                 };
@@ -60,8 +37,16 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                     }
                 };
 
-                if (uploadError) {
-                    return <ManualUploadErrorMessage errorCode={uploadError.code} onRetry={resetError} />;
+                if (error) {
+                    return (
+                        <ManualUploadErrorMessage
+                            errorCode={error.code}
+                            onRetry={() => {
+                                resetError();
+                                resetForm();
+                            }}
+                        />
+                    );
                 }
 
                 if (showSelfieUpload) {
@@ -81,6 +66,7 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                         renderFooter={() => (
                             <Footer
                                 disableNext={!isPassportFormDirty}
+                                isNextLoading={isUploading}
                                 onClickBack={onClickBack}
                                 onClickNext={handleOnClickNext}
                             />

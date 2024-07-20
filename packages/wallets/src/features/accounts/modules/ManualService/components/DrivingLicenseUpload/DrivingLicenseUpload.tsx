@@ -1,55 +1,31 @@
 import React, { useState } from 'react';
-import { Formik, FormikHelpers, FormikValues } from 'formik';
+import { Formik } from 'formik';
 import moment from 'moment';
-import { TSocketError } from '@deriv/api-v2/types';
 import { Divider } from '@deriv-com/ui';
 import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
 import DrivingLicenseCardBack from '../../../../../../public/images/accounts/document-back.svg';
 import DrivingLicenseCardFront from '../../../../../../public/images/accounts/driving-license-front.svg';
-// import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
 import { Footer } from '../../../components';
 import { GeneralDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
 import { ManualUploadErrorMessage } from '../ManualUploadErrorMessage';
-import { SelfieUpload, useSelfieUpload } from '../SelfieUpload';
+import { SelfieUpload } from '../SelfieUpload';
 import { useDrivingLicenseUpload } from './hooks';
+import { drivingLicenseUploadValidator } from './utils';
 import './DrivingLicenseUpload.scss';
 
 const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onClickBack, onCompletion }) => {
-    const {
-        error: errorDrivingLicenseUpload,
-        initialValues: initialValuesDrivingLicenseUpload,
-        isSuccess: isDrivingLicenseUploadSuccess,
-        resetError: resetErrorDrivingLicenseUpload,
-        submit: uploadDrivingLicense,
-    } = useDrivingLicenseUpload(documentIssuingCountryCode);
-    const {
-        error: errorSelfieUpload,
-        initialValues: initialValuesSelfieUpload,
-        isSuccess: isSelfieUploadSuccess,
-        resetError: resetErrorSelfieUpload,
-        submit: uploadSelfie,
-    } = useSelfieUpload(documentIssuingCountryCode);
+    const { error, initialValues, isSuccess, resetError, upload } = useDrivingLicenseUpload(documentIssuingCountryCode);
     const [showSelfieUpload, setShowSelfieUpload] = useState(false);
-    const [uploadError, setUploadError] = useState<TSocketError<'document_upload'>['error']>();
 
-    const submit = async (values: FormikValues, helpers: FormikHelpers<typeof initialValuesDrivingLicenseUpload>) => {
-        await uploadDrivingLicense(values, helpers);
-        await uploadSelfie(values);
-        if (errorDrivingLicenseUpload || errorSelfieUpload) {
-            setUploadError(errorDrivingLicenseUpload || errorSelfieUpload);
-        } else if (isDrivingLicenseUploadSuccess && isSelfieUploadSuccess && onCompletion) {
-            onCompletion();
-        }
-    };
+    if (!error && isSuccess && onCompletion) {
+        onCompletion();
+    }
 
     return (
-        <Formik
-            initialValues={{ ...initialValuesDrivingLicenseUpload, ...initialValuesSelfieUpload }}
-            onSubmit={submit}
-        >
+        <Formik initialValues={initialValues} onSubmit={upload} validationSchema={drivingLicenseUploadValidator}>
             {({ dirty, errors, handleSubmit, resetForm, setFieldValue, values }) => {
-                const isDrivingLicenseFormDirty =
+                const isDrivingLicenseFormValid =
                     dirty &&
                     !errors.drivingLicenseNumber &&
                     !errors.drivingLicenseExpiryDate &&
@@ -57,19 +33,17 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                     !errors.drivingLicenseCardFront;
 
                 const onErrorRetry = () => {
-                    resetErrorDrivingLicenseUpload();
-                    resetErrorSelfieUpload();
+                    resetError();
                     resetForm();
+                    setShowSelfieUpload(false);
                 };
 
                 const handleOnClickNext = () => {
-                    if (isDrivingLicenseFormDirty) {
-                        setShowSelfieUpload(true);
-                    }
+                    setShowSelfieUpload(true);
                 };
 
-                if (uploadError) {
-                    return <ManualUploadErrorMessage errorCode={uploadError.code} onRetry={onErrorRetry} />;
+                if (error) {
+                    return <ManualUploadErrorMessage errorCode={error.code} onRetry={onErrorRetry} />;
                 }
 
                 if (showSelfieUpload) {
@@ -88,7 +62,7 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                         disableAnimation
                         renderFooter={() => (
                             <Footer
-                                disableNext={!isDrivingLicenseFormDirty}
+                                disableNext={!isDrivingLicenseFormValid}
                                 onClickBack={onClickBack}
                                 onClickNext={handleOnClickNext}
                             />
@@ -105,7 +79,6 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                                     defaultValue={values.drivingLicenseNumber ?? ''}
                                     label='Driving licence number*'
                                     name='drivingLicenseNumber'
-                                    // validationSchema={documentRequiredValidator('Driving licence number')}
                                 />
                                 <DatePicker
                                     defaultValue={values.drivingLicenseExpiryDate ?? ''}
@@ -113,7 +86,6 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                                     minDate={moment().add(2, 'days').toDate()}
                                     name='drivingLicenseExpiryDate'
                                     placeholder='DD/MM/YYYY'
-                                    // validationSchema={expiryDateValidator}
                                 />
                             </div>
                             <Divider color='var(--border-divider)' height={2} />

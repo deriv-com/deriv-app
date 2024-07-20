@@ -1,1 +1,1 @@
-export { default as useNIMCUpload } from './useNIMCUpload';
+export { default as useNIMCSlipUpload } from './useNIMCSlipUpload';

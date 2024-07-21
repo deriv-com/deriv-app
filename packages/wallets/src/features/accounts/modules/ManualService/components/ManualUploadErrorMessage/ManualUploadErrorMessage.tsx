@@ -14,11 +14,7 @@ const errorCodeToDescriptionMapper: Record<string, string> = {
 } as const;
 
 const ManualUploadErrorMessage: React.FC<TManualUploadErrorMessageProps> = ({ errorCode, onRetry }) => {
-    const ActionButton = () => (
-        <Button onClick={onRetry} size='lg'>
-            Try again
-        </Button>
-    );
+    const ActionButton = () => <Button onClick={onRetry}>Try again</Button>;
 
     return (
         <ModalStepWrapper title='Submit your proof of identity'>

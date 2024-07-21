@@ -26,14 +26,17 @@ const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
             {({ dirty, errors, handleSubmit, resetForm, setFieldValue, values }) => {
                 const isNIMCFormValid = dirty && !errors.nimcNumber && !errors.nimcCardFront && !errors.nimcCardBack;
 
+                const handleOnClickNext = () => {
+                    setShowSelfieUpload(true);
+                };
+
                 const onErrorRetry = () => {
                     resetError();
                     resetForm();
                     setShowSelfieUpload(false);
-                };
-
-                const handleOnClickNext = () => {
-                    setShowSelfieUpload(true);
+                    if (onClickBack) {
+                        onClickBack();
+                    }
                 };
 
                 if (error) {

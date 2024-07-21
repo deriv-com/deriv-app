@@ -37,16 +37,17 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                     }
                 };
 
+                const onErrorRetry = () => {
+                    resetError();
+                    resetForm();
+                    setShowSelfieUpload(false);
+                    if (onClickBack) {
+                        onClickBack();
+                    }
+                };
+
                 if (error) {
-                    return (
-                        <ManualUploadErrorMessage
-                            errorCode={error.code}
-                            onRetry={() => {
-                                resetError();
-                                resetForm();
-                            }}
-                        />
-                    );
+                    return <ManualUploadErrorMessage errorCode={error.code} onRetry={onErrorRetry} />;
                 }
 
                 if (showSelfieUpload) {

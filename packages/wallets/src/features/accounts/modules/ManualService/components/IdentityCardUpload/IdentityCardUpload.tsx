@@ -24,7 +24,7 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
 
     return (
         <Formik initialValues={initialValues} onSubmit={upload} validationSchema={identityCardUploadValidator}>
-            {({ dirty, errors, handleSubmit, setFieldValue, values }) => {
+            {({ dirty, errors, handleSubmit, resetForm, setFieldValue, values }) => {
                 const isIdentityCardFormValid =
                     dirty &&
                     !errors.identityCardNumber &&
@@ -38,8 +38,17 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
                     }
                 };
 
+                const onErrorRetry = () => {
+                    resetError();
+                    resetForm();
+                    setShowSelfieUpload(false);
+                    if (onClickBack) {
+                        onClickBack();
+                    }
+                };
+
                 if (error) {
-                    return <ManualUploadErrorMessage errorCode={error?.code} onRetry={resetError} />;
+                    return <ManualUploadErrorMessage errorCode={error?.code} onRetry={onErrorRetry} />;
                 }
 
                 if (showSelfieUpload) {

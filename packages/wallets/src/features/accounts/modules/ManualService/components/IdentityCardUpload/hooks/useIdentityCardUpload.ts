@@ -61,10 +61,10 @@ const useIdentityCardUpload = (documentIssuingCountryCode: THooks.AccountSetting
     );
 
     const upload = useCallback(
-        async (values: FormikValues) => {
+        async (values: FormikValues | TIdentityCardUploadValues) => {
             await uploadFront(values);
             await uploadBack(values);
-            await uploadSelfie(values);
+            await uploadSelfie(values, values.identityCardNumber);
         },
         [uploadBack, uploadFront, uploadSelfie]
     );

@@ -55,10 +55,10 @@ const useNIMCSlipUpload = (documentIssuingCountryCode: THooks.AccountSettings['c
     );
 
     const upload = useCallback(
-        async (values: FormikValues) => {
+        async (values: FormikValues | TNIMCSlipUploadValues) => {
             await uploadFront(values);
             await uploadBack(values);
-            await uploadSelfie(values);
+            await uploadSelfie(values, values.nimcNumber);
         },
         [uploadBack, uploadFront, uploadSelfie]
     );

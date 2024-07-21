@@ -49,7 +49,7 @@ const usePassportUpload = (documentIssuingCountryCode: THooks.AccountSettings['c
                 setUploadError(errorPassportUpload.error);
             }
             // wait on selfie upload and set uploadError if any
-            await uploadSelfie(values);
+            await uploadSelfie(values, values.passportNumber);
             if (errorSelfieUpload) {
                 setUploadError(errorSelfieUpload);
             }

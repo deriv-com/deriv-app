@@ -14,7 +14,8 @@ import { nimcSlipUploadValidator } from './utils';
 import './NIMCSlipUpload.scss';
 
 const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onClickBack, onCompletion }) => {
-    const { error, initialValues, isSuccess, resetError, upload } = useNIMCSlipUpload(documentIssuingCountryCode);
+    const { error, initialValues, isSuccess, isUploading, resetError, upload } =
+        useNIMCSlipUpload(documentIssuingCountryCode);
     const [showSelfieUpload, setShowSelfieUpload] = useState(false);
 
     if (!error && isSuccess && onCompletion) {
@@ -58,7 +59,9 @@ const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                         disableAnimation
                         renderFooter={() => (
                             <Footer
-                                disableNext={!isNIMCFormValid}
+                                disableBack={isUploading}
+                                disableNext={!isNIMCFormValid || isUploading}
+                                isNextLoading={isUploading}
                                 onClickBack={onClickBack}
                                 onClickNext={handleOnClickNext}
                             />

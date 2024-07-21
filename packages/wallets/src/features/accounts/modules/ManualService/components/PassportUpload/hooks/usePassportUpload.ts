@@ -75,7 +75,7 @@ const usePassportUpload = (documentIssuingCountryCode: THooks.AccountSettings['c
         isSuccess: isPassportUploadSuccess && isSelfieUploadSuccess,
 
         /** `true` if passport and selfie upload is in progress */
-        isUploading: isPassportUploading && isSelfieUploading,
+        isUploading: isPassportUploading || isSelfieUploading,
 
         /** reset all API errors */
         resetError,

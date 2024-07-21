@@ -85,7 +85,7 @@ const useNIMCSlipUpload = (documentIssuingCountryCode: THooks.AccountSettings['c
         isSuccess: isNIMCUploadSuccess && isSelfieUploadSuccess,
 
         /** `true` if driving-license and selfie upload is in progress */
-        isUploading: isNIMCUploading && isSelfieUploading,
+        isUploading: isNIMCUploading || isSelfieUploading,
 
         /** reset all API errors */
         resetError,

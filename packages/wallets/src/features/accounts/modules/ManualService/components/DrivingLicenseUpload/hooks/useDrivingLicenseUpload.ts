@@ -87,7 +87,7 @@ const useDrivingLicenseUpload = (documentIssuingCountryCode: THooks.AccountSetti
         isSuccess: isDrivingLicenseUploadSuccess && isSelfieUploadSuccess,
 
         /** `true` if driving-license and selfie upload is in progress */
-        isUploading: isDrivingLicenseUploading && isSelfieUploading,
+        isUploading: isDrivingLicenseUploading || isSelfieUploading,
 
         /** reset all API errors */
         resetError,

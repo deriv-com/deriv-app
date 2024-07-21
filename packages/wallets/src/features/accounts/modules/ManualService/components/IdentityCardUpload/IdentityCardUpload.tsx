@@ -15,7 +15,8 @@ import { identityCardUploadValidator } from './utils';
 import './IdentityCardUpload.scss';
 
 const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onClickBack, onCompletion }) => {
-    const { error, initialValues, isSuccess, resetError, upload } = useIdentityCardUpload(documentIssuingCountryCode);
+    const { error, initialValues, isSuccess, isUploading, resetError, upload } =
+        useIdentityCardUpload(documentIssuingCountryCode);
     const [showSelfieUpload, setShowSelfieUpload] = useState(false);
 
     if (!error && isSuccess && onCompletion) {
@@ -67,7 +68,9 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
                         disableAnimation
                         renderFooter={() => (
                             <Footer
-                                disableNext={!isIdentityCardFormValid}
+                                disableBack={isUploading}
+                                disableNext={!isIdentityCardFormValid || isUploading}
+                                isNextLoading={isUploading}
                                 onClickBack={onClickBack}
                                 onClickNext={handleOnClickNext}
                             />

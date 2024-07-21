@@ -87,7 +87,7 @@ const useIdentityCardUpload = (documentIssuingCountryCode: THooks.AccountSetting
         isSuccess: isIdentityCardUploadSuccess && isSelfieUploadSuccess,
 
         /** `true` if identity-card and selfie upload is in progress */
-        isUploading: isIdentityCardUploading && isSelfieUploading,
+        isUploading: isIdentityCardUploading || isSelfieUploading,
 
         /** reset all API errors */
         resetError,

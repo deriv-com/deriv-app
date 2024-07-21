@@ -15,7 +15,8 @@ import { drivingLicenseUploadValidator } from './utils';
 import './DrivingLicenseUpload.scss';
 
 const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onClickBack, onCompletion }) => {
-    const { error, initialValues, isSuccess, resetError, upload } = useDrivingLicenseUpload(documentIssuingCountryCode);
+    const { error, initialValues, isSuccess, isUploading, resetError, upload } =
+        useDrivingLicenseUpload(documentIssuingCountryCode);
     const [showSelfieUpload, setShowSelfieUpload] = useState(false);
 
     if (!error && isSuccess && onCompletion) {
@@ -65,7 +66,9 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                         disableAnimation
                         renderFooter={() => (
                             <Footer
-                                disableNext={!isDrivingLicenseFormValid}
+                                disableBack={isUploading}
+                                disableNext={!isDrivingLicenseFormValid || isUploading}
+                                isNextLoading={isUploading}
                                 onClickBack={onClickBack}
                                 onClickNext={handleOnClickNext}
                             />

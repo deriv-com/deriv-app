@@ -28,11 +28,11 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                 const handleFileChange = (file?: File) => {
                     setFieldValue('passportFile', file);
                 };
-                const isPassportFormDirty =
+                const isPassportFormValid =
                     dirty && !errors.passportExpiryDate && !errors.passportFile && !errors.passportNumber;
 
                 const handleOnClickNext = () => {
-                    if (isPassportFormDirty) {
+                    if (isPassportFormValid) {
                         setShowSelfieUpload(true);
                     }
                 };
@@ -66,7 +66,8 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                         disableAnimation
                         renderFooter={() => (
                             <Footer
-                                disableNext={!isPassportFormDirty}
+                                disableBack={isUploading}
+                                disableNext={!isPassportFormValid || isUploading}
                                 isNextLoading={isUploading}
                                 onClickBack={onClickBack}
                                 onClickNext={handleOnClickNext}

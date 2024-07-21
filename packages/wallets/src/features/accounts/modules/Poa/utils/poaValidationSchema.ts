@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { fileValidator } from '../../ManualService/components/utils';
 
 export const poaValidationSchema = Yup.object().shape({
     firstLine: Yup.string()
@@ -9,7 +10,7 @@ export const poaValidationSchema = Yup.object().shape({
             /^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{0,70}$/u,
             "Use only the following special characters: . , ' : ; ( ) ° @ # / -'"
         ),
-    poaDocument: Yup.mixed().required(),
+    poaFile: fileValidator,
     secondLine: Yup.string()
         .trim()
         .max(70, 'Should be less than 70.')

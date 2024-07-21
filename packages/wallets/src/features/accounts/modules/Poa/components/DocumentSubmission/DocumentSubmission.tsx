@@ -18,7 +18,7 @@ const listItems = [
 
 const DocumentSubmission: React.FC = () => {
     const { isMobile } = useDevice();
-    const { setFieldValue } = useFormikContext<TDocumentSubmission>();
+    const { setFieldValue, values } = useFormikContext<TDocumentSubmission>();
     const { t } = useTranslation();
 
     return (
@@ -63,6 +63,7 @@ const DocumentSubmission: React.FC = () => {
                         {t('Upload file')}
                     </WalletText>
                     <Dropzone
+                        defaultFile={values.poaFile}
                         description={t(
                             'Remember, selfies, pictures of houses, or non-related images will be rejected.'
                         )}

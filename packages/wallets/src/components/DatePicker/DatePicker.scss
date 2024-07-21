@@ -52,14 +52,13 @@
 
                 &__arrow {
                     font-size: 2.4rem;
-                    transform: translateY(-1.2rem);
-                    justify-content: center;
-                    align-items: center;
+                    text-align: center;
                 }
 
                 &__label {
+                    text-align: center;
                     font-weight: bold;
-                    transform: translateY(-0.4rem);
+                    font-size: 1.2rem;
                 }
 
                 button {

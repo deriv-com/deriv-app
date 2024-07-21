@@ -28,6 +28,7 @@ const DatePicker = ({
     name,
 }: TDatePickerProps) => {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+    const [hasTouched, setHasTouched] = useState(false);
     const datePickerRef = useRef<HTMLDivElement>(null);
     const inputDateRef = useRef<HTMLInputElement>(null);
 
@@ -45,11 +46,14 @@ const DatePicker = ({
                 return (
                     <div className='wallets-datepicker' ref={datePickerRef}>
                         <WalletTextField
+                            defaultValue={field.value ? getFormattedDateString(field.value, displayFormat) : ''}
                             disabled={disabled}
-                            errorMessage={form.errors[name]}
+                            errorMessage={hasTouched && form.errors[name] ? form.errors[name] : undefined}
                             inputMode='none'
+                            isInvalid={hasTouched && !!form.errors[name]}
                             label={label}
                             message={message}
+                            onBlur={() => setHasTouched(true)}
                             onClick={toggleCalendar}
                             onKeyDown={e => e.preventDefault()}
                             ref={inputDateRef}

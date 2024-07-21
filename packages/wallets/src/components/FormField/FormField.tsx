@@ -42,9 +42,11 @@ const FormField = forwardRef(
                             errorMessage={hasTouched && (form.errors[name] || errorMessage)}
                             isInvalid={(hasTouched && isInvalid) || (hasTouched && Boolean(form.errors[name]))}
                             name={field.name}
+                            onBlur={() => {
+                                setHasTouched(true);
+                            }}
                             onChange={field.onChange}
                             onFocus={e => {
-                                setHasTouched(true);
                                 field.onBlur(e);
                             }}
                             ref={ref}

@@ -19,7 +19,7 @@ const Poi: React.FC<TPoiProps> = ({ onCompletion }) => {
     const service = poiData?.current.service as THooks.POI['current']['service'];
 
     if (service === 'manual') {
-        return <ManualService />;
+        return <ManualService onCompletion={onCompletion} />;
     }
 
     return <DocumentService onCompletion={onCompletion} />;

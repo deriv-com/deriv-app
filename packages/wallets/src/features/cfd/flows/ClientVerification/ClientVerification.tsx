@@ -1,8 +1,10 @@
 import React, { useMemo, useState } from 'react';
+import { useModal } from 'src/components/ModalProvider';
 import { useMT5AccountsList, usePOA, usePOI, useSettings } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { THooks } from '../../../../types';
 import { Poa, Poi, TaxInformation } from '../../../accounts';
+import { MT5PasswordModal } from '../../modals';
 import { ResubmissionSuccessMessage } from './components';
 
 type TClientVerificationProps = {
@@ -24,9 +26,11 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({ selectedJurisd
     const { data: poaData, isLoading: isPoaDataLoading } = usePOA();
     const { data: accountSettings, isLoading: isAccountSettingsLoading } = useSettings();
     const { data: mt5AccountsList, isLoading: isMT5AccountsListLoading } = useMT5AccountsList();
+    const { getModalState } = useModal();
 
     const [isPoaJustCompleted, setIsPoaJustCompleted] = useState(false);
     const [isPoiJustCompleted, setIsPoiJustCompleted] = useState(false);
+    const [isTaxInformationJustCompleted, setIsTaxInformationJustCompleted] = useState(false);
 
     const isLoading = isAccountSettingsLoading || isMT5AccountsListLoading || isPoaDataLoading || isPoiDataLoading;
 
@@ -57,8 +61,14 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({ selectedJurisd
     );
 
     const shouldSubmitPoi = isPoiRequired && !isPoiJustCompleted;
+
     const shouldSubmitPoa = isPoaRequired && !isPoaJustCompleted;
-    const shouldSubmitTaxInformation = isTaxInformationRequired && isPoaJustCompleted && !isPoaRequired;
+
+    const shouldSubmitTaxInformation = isTaxInformationRequired && !isTaxInformationJustCompleted;
+
+    // client resubmits the docs if MT5 account is created but the verification of their docs fail
+    const hasResubmittedDocuments =
+        clientsHasMT5Accounts && !shouldSubmitPoi && !shouldSubmitPoa && !shouldSubmitTaxInformation;
 
     const onPoaCompletion = () => {
         setIsPoaJustCompleted(true);
@@ -66,8 +76,9 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({ selectedJurisd
     const onPoiCompletion = () => {
         setIsPoiJustCompleted(true);
     };
-
-    // return <ResubmissionSuccessMessage message="We'll review your documents and notify you of its status within" />;
+    const onTaxInformationCompletion = () => {
+        setIsTaxInformationJustCompleted(true);
+    };
 
     if (isLoading) return <Loader />;
 
@@ -80,16 +91,22 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({ selectedJurisd
     }
 
     if (shouldSubmitTaxInformation) {
-        return <TaxInformation />;
+        return <TaxInformation onCompletion={onTaxInformationCompletion} />;
     }
 
-    if (clientsHasMT5Accounts && !shouldSubmitPoi && !shouldSubmitPoa) {
-        /* 
-            formValues.service === 'manual'
+    if (hasResubmittedDocuments) {
+        const resubmissionMessage =
+            poiData?.current.service === 'manual'
                 ? "We'll review your documents and notify you of its status within 1 - 3 working days."
-                : "We'll review your documents and notify you of its status within 5 minutes."
-                return <ResubmissionSuccessMessage message="We'll review your documents and notify you of its status within" />;
-        */
+                : "We'll review your documents and notify you of its status within 5 minutes.";
+
+        return <ResubmissionSuccessMessage message={resubmissionMessage} />;
+    }
+
+    if (!hasResubmittedDocuments) {
+        const marketType = getModalState('marketType') ?? 'all';
+        const platform = getModalState('platform') ?? 'mt5';
+        return <MT5PasswordModal marketType={marketType} platform={platform} />;
     }
 
     return null;

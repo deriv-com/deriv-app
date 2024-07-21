@@ -1,15 +1,15 @@
 import React from 'react';
 import { Formik } from 'formik';
-import * as Yup from 'yup';
 import { Loader } from '@deriv-com/ui';
-import { FormField, ModalStepWrapper, WalletButton, WalletDropdown, WalletText } from '../../../../components';
+import { FormField, ModalStepWrapper, WalletDropdown, WalletText } from '../../../../components';
+import { Footer } from '../components';
 import { NeedHelpMessage } from './components';
 import { useTaxInformation } from './hooks';
-import { accountOpeningReasonList } from './utils';
+import { accountOpeningReasonList, getTinValidator, taxInformationValidator } from './utils';
 import './TaxInformation.scss';
 
 type TTaxInformationProps = {
-    onCompletion?: () => void;
+    onCompletion?: VoidFunction;
 };
 
 const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
@@ -23,36 +23,18 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
         onSubmit,
     } = useTaxInformation();
 
-    const getTinValidator = (pattern: string) => {
-        if (pattern) {
-            return Yup.string()
-                .required('Please fill in Tax identification number.')
-                .matches(new RegExp(pattern), 'The format is incorrect.');
-        }
-    };
-
-    const Footer = ({ disabled, onSubmit }: { disabled: boolean; onSubmit: () => void }) => {
-        return (
-            <div className='wallets-tax-information__footer'>
-                <WalletButton disabled={disabled} onClick={onSubmit} type='submit'>
-                    Next
-                </WalletButton>
-            </div>
-        );
-    };
-
     if (isTaxInformationSubmitted && onCompletion) {
         onCompletion();
     }
 
     return (
-        <Formik initialValues={initialValues} onSubmit={onSubmit}>
+        <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={taxInformationValidator}>
             {({ errors, handleSubmit, setFieldValue, values }) => {
                 const isValid = !!Object.keys(errors).length;
 
                 return (
                     <ModalStepWrapper
-                        renderFooter={() => <Footer disabled={isValid} onSubmit={handleSubmit} />}
+                        renderFooter={() => <Footer disableNext={isValid} onClickNext={handleSubmit} />}
                         title='Add a real MT5 account'
                     >
                         <div className='wallets-tax-information'>

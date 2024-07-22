@@ -27,9 +27,8 @@ const ServerMaintenance: React.FC = () => {
             </WalletText>
             <div className='wallets-server-maintenance__content'>
                 <WalletText size='sm'>
-                    {`We’re currently performing server maintenance, which may continue until ${getMaintenanceTime(
-                        'mt5'
-                    )}. Please expect some disruptions during this time.`}
+                    We’re currently performing server maintenance, which may continue until {getMaintenanceTime('mt5')}.
+                    Please expect some disruptions during this time.
                 </WalletText>
             </div>
             <div className='wallets-server-maintenance__footer'>

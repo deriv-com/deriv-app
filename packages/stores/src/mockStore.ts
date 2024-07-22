@@ -620,6 +620,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             markers_array: [],
             onUnmount: jest.fn(),
             prev_chart_type: '',
+            prev_contract: {},
             prev_granularity: null,
             removeContract: jest.fn(),
             savePreviousChartMode: jest.fn(),

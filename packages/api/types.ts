@@ -3,8 +3,6 @@ import type {
     AccountLimitsResponse,
     AccountStatusRequest,
     AccountStatusResponse,
-    TradingPlatformStatusRequest,
-    TradingPlatformStatusResponse,
     ActiveSymbolsRequest,
     ActiveSymbolsResponse,
     APITokenRequest,
@@ -2341,7 +2339,30 @@ type ChangeEmailResponse = {
     msg_type: 'change_email';
     req_id?: number;
 };
-
+/**
+ * Get list of platform and their server status
+ */
+type TradingPlatformStatusRequest = {
+    /**
+     * Must be 1
+     */
+    trading_platform_status: 1;
+};
+/**
+ * response containing platform and their server status.
+ */
+type TradingPlatformStatusResponse = {
+    trading_platform_status: {
+        /**
+         * types of cfd platforms
+         */
+        platform: 'mt5' | 'ctrader' | 'dxtrade';
+        /**
+         * possible server statuses
+         */
+        status: 'active' | 'maintenance' | 'unavailable';
+    }[];
+};
 type TSocketEndpoints = {
     active_symbols: {
         request: ActiveSymbolsRequest;

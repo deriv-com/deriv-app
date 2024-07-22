@@ -215,8 +215,6 @@ import type {
     TradingPlatformInvestorPasswordResetResponse,
     TradingPlatformPasswordResetRequest,
     TradingPlatformPasswordResetResponse,
-    TradingPlatformStatusRequest,
-    TradingPlatformStatusResponse,
     TradingTimesRequest,
     TradingTimesResponse,
     TransactionsStreamRequest,
@@ -2267,6 +2265,17 @@ type MT5AccountListResponse = {
 };
 
 type TAccountList = NonNullable<AccountListResponse['account_list']>[number] & { excluded_until: Date };
+
+type TradingPlatformStatusRequest = {
+    trading_platform_status: 1;
+};
+
+type TradingPlatformStatusResponse = {
+    trading_platform_status: {
+        platform: 'mt5' | 'ctrader' | 'dxtrade';
+        status: 'active' | 'maintenance' | 'unavailable';
+    }[];
+};
 
 interface IExtendedAccountListResponse extends AccountListResponse {
     account_list?: TAccountList[];

@@ -38,7 +38,7 @@ export type TMessageFnProps = {
     displayMoney?: (amount: number, currency: string, fractionalDigits: number) => string;
     fiatAccount?: THooks.WalletAccountsList;
     limits?: THooks.AccountLimits;
-    platformStatus: string;
+    platformStatus?: string;
     sourceAccount: NonNullable<TAccount>;
     sourceAmount: number;
     targetAccount: TAccount;

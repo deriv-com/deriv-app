@@ -36,7 +36,7 @@ describe('VerifyButton', () => {
         return render(
             <Router history={history}>
                 <StoreProvider store={mock_store}>
-                    <VerifyButton />
+                    <VerifyButton is_disabled={false} />
                 </StoreProvider>
             </Router>
         );

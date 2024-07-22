@@ -6,7 +6,6 @@ import { WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { PlatformDetails } from '../../../../constants';
 import { MT5TradeModal } from '../../../../modals';
-import './AddedDxtradeAccountsList.scss';
 
 const AddedDxtradeAccountsList: React.FC = () => {
     const { data } = useDxtradeAccountsList();
@@ -20,7 +19,7 @@ const AddedDxtradeAccountsList: React.FC = () => {
                     onClick={() => show(<MT5TradeModal platform={PlatformDetails.dxtrade.platform} />)}
                 >
                     <TradingAccountCard.Icon>{PlatformDetails.dxtrade.icon}</TradingAccountCard.Icon>
-                    <TradingAccountCard.Content className='wallets-added-dxtrade__details'>
+                    <TradingAccountCard.Content>
                         <WalletText size='sm'>{PlatformDetails.dxtrade.title}</WalletText>
                         <WalletText size='sm' weight='bold'>
                             {account?.display_balance}

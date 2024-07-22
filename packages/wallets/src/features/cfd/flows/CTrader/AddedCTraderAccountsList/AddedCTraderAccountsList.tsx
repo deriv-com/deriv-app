@@ -6,7 +6,6 @@ import { WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { PlatformDetails } from '../../../constants';
 import { MT5TradeModal } from '../../../modals';
-import './AddedCTraderAccountsList.scss';
 
 const AddedCTraderAccountsList: React.FC = () => {
     const { data: cTraderAccounts } = useCtraderAccountsList();
@@ -19,17 +18,15 @@ const AddedCTraderAccountsList: React.FC = () => {
                     key={`added-ctrader-${account.login}`}
                     onClick={() => show(<MT5TradeModal platform={PlatformDetails.ctrader.platform} />)}
                 >
-                    <TradingAccountCard.Icon className='wallets-added-ctrader__icon'>
-                        {PlatformDetails.ctrader.icon}
-                    </TradingAccountCard.Icon>
-                    <TradingAccountCard.Content className='wallets-added-ctrader__details'>
+                    <TradingAccountCard.Icon>{PlatformDetails.ctrader.icon}</TradingAccountCard.Icon>
+                    <TradingAccountCard.Content>
                         <WalletText size='sm'>{PlatformDetails.ctrader.title}</WalletText>
                         <WalletText size='sm' weight='bold'>
                             {account?.display_balance}
                         </WalletText>
                         <WalletText size='xs'>{account.login}</WalletText>
                     </TradingAccountCard.Content>
-                    <TradingAccountCard.Button className='wallets-added-ctrader__icon'>
+                    <TradingAccountCard.Button>
                         <LabelPairedChevronRightCaptionRegularIcon width={16} />
                     </TradingAccountCard.Button>
                 </TradingAccountCard>

@@ -53,7 +53,7 @@ const OptionsAndMultipliersListing: React.FC<TSubscribedBalance> = ({ balance })
                             <TradingAccountCard.Icon>
                                 <LinkTitle platform={key} />
                             </TradingAccountCard.Icon>
-                            <TradingAccountCard.Content className='wallets-options-and-multipliers-listing__content__details'>
+                            <TradingAccountCard.Content>
                                 <WalletText size='sm'>
                                     <Trans defaults={title} />
                                 </WalletText>

@@ -51,19 +51,5 @@
             grid-template-columns: auto;
             gap: 0;
         }
-
-        &__icon {
-            cursor: pointer;
-        }
-
-        &__details {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-    }
-
-    &__icon {
-        width: fit-content;
     }
 }

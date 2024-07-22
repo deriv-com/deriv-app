@@ -6,7 +6,6 @@ import { useModal } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
 import { MarketTypeDetails } from '../../../constants';
 import { JurisdictionModal, MT5PasswordModal } from '../../../modals';
-import './AvailableMT5AccountsList.scss';
 
 type TProps = {
     account: THooks.SortedMT5Accounts;
@@ -27,7 +26,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     return (
         <TradingAccountCard onClick={onButtonClick}>
             <TradingAccountCard.Icon>{MarketTypeDetails[account.market_type || 'all'].icon}</TradingAccountCard.Icon>
-            <TradingAccountCard.Content className='wallets-available-mt5__details'>
+            <TradingAccountCard.Content>
                 <WalletText size='sm'>{title}</WalletText>
                 <WalletText size='xs'>{description}</WalletText>
             </TradingAccountCard.Content>

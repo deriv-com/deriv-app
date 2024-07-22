@@ -7,7 +7,6 @@ import { WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { PlatformDetails } from '../../../constants';
 import { CTraderSuccessModal } from '../../../modals/CTraderSuccessModal';
-import './AvailableCTraderAccountsList.scss';
 
 const AvailableCTraderAccountsList: React.FC = () => {
     const { hide, show } = useModal();
@@ -58,14 +57,12 @@ const AvailableCTraderAccountsList: React.FC = () => {
 
     return (
         <TradingAccountCard disabled={isCFDAccountCreationLoading || isCFDAccountCreationSuccess} onClick={onSubmit}>
-            <TradingAccountCard.Icon className='wallets-available-ctrader__icon'>
-                {PlatformDetails.ctrader.icon}
-            </TradingAccountCard.Icon>
-            <TradingAccountCard.Content className='wallets-available-ctrader__details'>
+            <TradingAccountCard.Icon>{PlatformDetails.ctrader.icon}</TradingAccountCard.Icon>
+            <TradingAccountCard.Content>
                 <WalletText size='sm'>{PlatformDetails.ctrader.title}</WalletText>
                 <WalletText size='xs'>{t('CFDs on financial and derived instruments with copy trading.')}</WalletText>
             </TradingAccountCard.Content>
-            <TradingAccountCard.Button className='wallets-available-ctrader__icon'>
+            <TradingAccountCard.Button>
                 <LabelPairedChevronRightCaptionRegularIcon width={16} />
             </TradingAccountCard.Button>
         </TradingAccountCard>

@@ -6,7 +6,6 @@ import TradingAccountCardIcon from './TradingAccountCardIcon';
 import './TradingAccountCard.scss';
 
 type TProps = {
-    children: React.ReactNode;
     className?: string;
     disabled?: ComponentProps<'button'>['disabled'];
     onClick?: ComponentProps<'button'>['onClick'];

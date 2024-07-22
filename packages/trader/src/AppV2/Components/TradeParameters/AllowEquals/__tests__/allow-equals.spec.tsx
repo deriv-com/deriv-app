@@ -14,7 +14,7 @@ jest.mock('Stores/Modules/Trading/Helpers/allow-equals', () => ({
     hasDurationForCallPutEqual: jest.fn(() => true),
 }));
 
-const title = 'Allow equals.';
+const title = 'Allow equals';
 const mediaQueryList = {
     matches: true,
     addEventListener: jest.fn(),

@@ -1,38 +1,36 @@
 import React from 'react';
 
+type THeaderProps = {
+    current_index: number;
+    onNextClick: () => void;
+    onPrevClick: () => void;
+};
 type TCarousel = {
-    default_page_index?: number;
-    onChange?: (new_page_index: number) => void;
-    pages: { id: number; component: (onNextClick: () => void) => JSX.Element }[];
-    should_reset_carousel?: boolean;
+    CarouselHeader: ({ current_index, onNextClick, onPrevClick }: THeaderProps) => JSX.Element;
+    pages: { id: number; component: JSX.Element }[];
 };
 
-const Carousel = ({ default_page_index, onChange, pages, should_reset_carousel }: TCarousel) => {
-    const [current_index, setCurrentIndex] = React.useState(default_page_index ?? 0);
+const Carousel = ({ CarouselHeader, pages }: TCarousel) => {
+    const [current_index, setCurrentIndex] = React.useState(0);
 
-    const pages_length = pages.length;
-
-    const onNextClick = () => setCurrentIndex((current_index + 1) % pages_length);
-    const onPrevClick = () => setCurrentIndex((current_index - 1 + pages_length) % pages_length);
-    const onPageChange = () => onChange?.(current_index);
-
-    React.useEffect(() => {
-        if (should_reset_carousel) setCurrentIndex(0);
-    }, [should_reset_carousel]);
+    const onNextClick = () => setCurrentIndex((current_index + 1) % pages.length);
+    const onPrevClick = () => setCurrentIndex((current_index - 1 + pages.length) % pages.length);
 
     return (
-        <ul className='carousel'>
-            {pages.map(({ component, id }) => (
-                <li
-                    className='carousel__item'
-                    style={{ transform: `translateX(-${current_index * 100}%)` }}
-                    key={id}
-                    onClick={onPageChange}
-                >
-                    {component(current_index ? onPrevClick : onNextClick)}
-                </li>
-            ))}
-        </ul>
+        <React.Fragment>
+            <CarouselHeader current_index={current_index} onNextClick={onNextClick} onPrevClick={onPrevClick} />
+            <ul className='carousel'>
+                {pages.map(({ component, id }) => (
+                    <li
+                        className='carousel__item'
+                        style={{ transform: `translateX(-${current_index * 100}%)` }}
+                        key={id}
+                    >
+                        {component}
+                    </li>
+                ))}
+            </ul>
+        </React.Fragment>
     );
 };
 

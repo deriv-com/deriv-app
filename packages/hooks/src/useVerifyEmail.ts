@@ -5,6 +5,9 @@ import useCountdown from './useCountdown';
 
 const RESEND_COUNTDOWN = 60;
 
+/**
+ * @deprecated Please use useVerifyEmail from @deriv/api instead
+ */
 const useVerifyEmail = (
     type: Parameters<ReturnType<typeof useRequest<'verify_email'>>['mutate']>[0]['payload']['type']
 ) => {
@@ -29,12 +32,7 @@ const useVerifyEmail = (
         [WS, client.email, counter, type]
     );
 
-    const sendPhoneNumberVerifyEmail = useCallback(() => {
-        WS.mutate({ payload: { verify_email: client.email, type } });
-    }, [WS, client.email, type]);
-
     return {
-        WS,
         is_loading: WS.isLoading,
         error: WS.error,
         data: WS.data,
@@ -43,7 +41,6 @@ const useVerifyEmail = (
         sent_count,
         has_been_sent: sent_count !== 0,
         send,
-        sendPhoneNumberVerifyEmail,
     };
 };
 

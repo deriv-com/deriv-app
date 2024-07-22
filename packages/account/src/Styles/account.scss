@@ -323,7 +323,7 @@ $MIN_HEIGHT_FLOATING: calc(
             max-width: 400px;
 
             &--phone {
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     padding-inline-end: 2.5rem;
                 }
             }

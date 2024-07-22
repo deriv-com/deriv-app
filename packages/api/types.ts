@@ -2824,10 +2824,6 @@ type TSocketEndpoints = {
         request: TradingTimesRequest;
         response: TradingTimesResponse;
     };
-    trading_platform_status: {
-        request: TradingPlatformStatusRequest;
-        response: TradingPlatformStatusResponse;
-    };
     transaction: {
         request: TransactionsStreamRequest;
         response: TransactionsStreamResponse;

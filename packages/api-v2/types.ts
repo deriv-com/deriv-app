@@ -2722,10 +2722,6 @@ type TSocketEndpoints = {
         request: ServerListRequest;
         response: ServerListResponse;
     };
-    trading_platform_status: {
-        request: TradingPlatformStatusRequest;
-        response: TradingPlatformStatusResponse;
-    };
     trading_times: {
         request: TradingTimesRequest;
         response: TradingTimesResponse;

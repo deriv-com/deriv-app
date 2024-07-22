@@ -13,6 +13,7 @@ import {
     UILoader,
     Text,
 } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
 import { localize, Localize } from '@deriv/translations';
 import { isMobile, getCFDPlatformLabel } from '@deriv/shared';
 import { FormikErrors } from 'formik';
@@ -284,6 +285,7 @@ const CFDPasswordManagerModal = observer(
         selected_server,
     }: TCFDPasswordManagerModal) => {
         const { client, ui } = useStore();
+        const { isDesktop } = useDevice();
 
         const { email } = client;
         const { enableApp, disableApp } = ui;
@@ -355,7 +357,7 @@ const CFDPasswordManagerModal = observer(
                         title={getTitle()}
                         toggleModal={toggleModal}
                         height='688px'
-                        width='904px'
+                        width={!isDesktop ? '70rem' : '90.4rem'}
                         should_header_stick_body={false}
                     >
                         <CFDPasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />

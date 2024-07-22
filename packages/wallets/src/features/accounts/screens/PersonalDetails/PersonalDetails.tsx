@@ -92,7 +92,6 @@ const PersonalDetails = () => {
                                 name='wallets-personal-details__dropdown-citizenship'
                                 onSelect={selectedItem => setFormValues('citizenship', selectedItem)}
                                 value={formValues?.citizenship ?? getSettings?.citizen}
-                                variant='comboBox'
                             />
                         </div>
                         <div className='wallets-personal-details__dropdown'>
@@ -109,7 +108,6 @@ const PersonalDetails = () => {
                                 name='wallets-personal-details__dropdown-pob'
                                 onSelect={selectedItem => setFormValues('placeOfBirth', selectedItem)}
                                 value={getSettings?.place_of_birth ?? ''}
-                                variant='comboBox'
                             />
                         </div>
                         <div className='wallets-personal-details__dropdown'>
@@ -136,7 +134,6 @@ const PersonalDetails = () => {
                                     setFormValues('taxResidence', selectedItem);
                                 }}
                                 value={formValues?.taxResidence ?? getSettings?.tax_residence}
-                                variant='comboBox'
                             />
                         </div>
                         <FlowTextField

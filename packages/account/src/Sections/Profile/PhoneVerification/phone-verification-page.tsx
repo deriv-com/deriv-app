@@ -10,6 +10,7 @@ import { observer, useStore } from '@deriv/stores';
 import { useSendOTPVerificationCode } from '@deriv/hooks';
 import { Loading } from '@deriv/components';
 import { useEffect, useState } from 'react';
+import DemoMessage from '../../../Components/demo-message';
 
 const PhoneVerificationPage = observer(() => {
     const [otp_verification, setOtpVerification] = useState({
@@ -29,6 +30,7 @@ const PhoneVerificationPage = observer(() => {
     const {
         verification_code: { phone_number_verification: phone_number_verification_code },
         is_authorize,
+        is_virtual,
     } = client;
 
     useEffect(() => {
@@ -51,6 +53,7 @@ const PhoneVerificationPage = observer(() => {
         }
     }, [email_otp_error, is_email_verified, phone_number_verification_code, is_authorize]);
 
+    if (is_virtual) return <DemoMessage />;
     if (is_loading) {
         return <Loading is_fullscreen={false} />;
     }

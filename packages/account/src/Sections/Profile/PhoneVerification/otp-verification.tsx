@@ -16,7 +16,7 @@ type TOTPVerification = {
 
 const OTPVerification = observer(({ phone_verification_type, setOtpVerification }: TOTPVerification) => {
     const { client, ui } = useStore();
-    const { setVerificationCode } = client;
+    const { setVerificationCode, is_authorize } = client;
     const { data: account_settings, invalidate } = useSettings();
     const [should_show_phone_number_verified_modal, setShouldShowPhoneNumberVerifiedModal] = useState(false);
     const [should_show_didnt_get_the_code_modal, setShouldShowDidntGetTheCodeModal] = useState(false);
@@ -43,9 +43,11 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     }, [invalidate]);
 
     useEffect(() => {
-        setIsButtonDisabled(true);
-        reInitializeGetSettings();
-    }, [reInitializeGetSettings]);
+        if (is_authorize) {
+            setIsButtonDisabled(true);
+            reInitializeGetSettings();
+        }
+    }, [reInitializeGetSettings, is_authorize]);
 
     useEffect(() => {
         if (is_phone_number_verified) {

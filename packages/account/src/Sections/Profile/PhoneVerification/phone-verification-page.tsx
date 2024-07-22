@@ -10,7 +10,6 @@ import { observer, useStore } from '@deriv/stores';
 import { useSendOTPVerificationCode } from '@deriv/hooks';
 import { Loading } from '@deriv/components';
 import { useEffect, useState } from 'react';
-import DemoMessage from '../../../Components/demo-message';
 import { Redirect } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 
@@ -56,8 +55,7 @@ const PhoneVerificationPage = observer(() => {
         }
     }, [email_otp_error, is_email_verified, phone_number_verification_code, is_authorize]);
 
-    if (!is_phone_number_verification_enabled) return <Redirect to={routes.personal_details} />;
-    if (is_virtual) return <DemoMessage />;
+    if (!is_phone_number_verification_enabled || is_virtual) return <Redirect to={routes.personal_details} />;
     if (is_loading) {
         return <Loading is_fullscreen={false} />;
     }

@@ -12,7 +12,7 @@ type TDurationProps = {
 
 const Duration = observer(({ is_minimized }: TDurationProps) => {
     const { duration, duration_unit } = useTraderStore();
-    const { name_plural, name } = getUnitMap()[duration_unit];
+    const { name_plural, name } = getUnitMap()[duration_unit] ?? {};
     const duration_unit_text = name_plural ?? name;
 
     return (

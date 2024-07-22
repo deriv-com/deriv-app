@@ -69,6 +69,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const activeTabRef = useRef<HTMLButtonElement>(null);
     const history = useHistory();
     const location = useLocation();
+    const accountsActiveTabIndexRef = useRef<number>(location.state?.accountsActiveTabIndex ?? 0);
 
     const tabs = activeWallet?.is_virtual ? virtualAccountTabs : realAccountTabs;
     const isDemo = activeWallet?.is_virtual;
@@ -107,7 +108,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                             <WalletText color={isDemo ? 'system-dark-2-general-text' : 'general'} size='md'>
                                 {activeWallet?.currency} Wallet
                             </WalletText>
-                            {isDemo && <WalletListCardBadge isDemo={isDemo} label='virtual' />}
+                            {isDemo && <WalletListCardBadge />}
                         </div>
                         {isLoading ? (
                             <div className='wallets-skeleton wallets-cashier-header__loader' />
@@ -140,8 +141,11 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                             className={classNames('wallets-cashier-header__close-icon', {
                                 'wallets-cashier-header__close-icon--white': isDemo,
                             })}
+                            data-testid='dt_close_btn'
                             iconSize='xs'
-                            onClick={() => history.push('/')}
+                            onClick={() =>
+                                history.push('/', { accountsActiveTabIndex: accountsActiveTabIndexRef?.current })
+                            }
                         />
                     </div>
                 </section>

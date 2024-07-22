@@ -77,7 +77,7 @@ describe('useOrderDetails', () => {
             [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
             [CARD_LABELS.DURATION]: '5 Ticks',
             [CARD_LABELS.BARRIER]: '1000',
-            [CARD_LABELS.PAYOUT_PER_POINT]: '1',
+            [CARD_LABELS.PAYOUT_PER_POINT]: '1 USD',
             [CARD_LABELS.STAKE]: '100.00 USD',
             [CARD_LABELS.TAKE_PROFIT]: '200.00 USD',
         });
@@ -102,7 +102,7 @@ describe('useOrderDetails', () => {
             [CARD_LABELS.DURATION]: '3/5 Ticks',
             [CARD_LABELS.GROWTH_RATE]: '1000%',
             [CARD_LABELS.STAKE]: '100.00 USD',
-            [CARD_LABELS.TAKE_PROFIT]: '200 USD',
+            [CARD_LABELS.TAKE_PROFIT]: '200.00 USD',
         });
     });
 
@@ -113,7 +113,7 @@ describe('useOrderDetails', () => {
             [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
             [CARD_LABELS.STRIKE_PRICE]: ' - ',
             [CARD_LABELS.DURATION]: '5 minutes',
-            [CARD_LABELS.PAYOUT_PER_POINT]: '1',
+            [CARD_LABELS.PAYOUT_PER_POINT]: '1 USD',
             [CARD_LABELS.STAKE]: '100.00 USD',
         });
     });

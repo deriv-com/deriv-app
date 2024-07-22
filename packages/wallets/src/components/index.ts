@@ -31,7 +31,6 @@ export * from './WalletMarketCurrencyIcon';
 export * from './WalletMarketIcon';
 export * from './WalletsActionScreen';
 export * from './WalletsAddMoreCarousel';
-export * from './WalletsAppLinkedWithWalletIcon';
 export * from './WalletsCarousel';
 export * from './WalletsCarouselContent';
 export * from './WalletsCarouselHeader';

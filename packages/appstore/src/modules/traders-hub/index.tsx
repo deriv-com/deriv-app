@@ -2,13 +2,14 @@ import React, { lazy, Suspense } from 'react';
 import { ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { routes, checkServerMaintenance, startPerformanceEventTimer } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, useLocalize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
 import CFDsListing from 'Components/cfds-listing';
 import ModalManager from 'Components/modals/modal-manager';
 import MainTitleBar from 'Components/main-title-bar';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
+import AfterSignupFlow from 'Components/after-signup-flow';
 import { useContentFlag, useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import classNames from 'classnames';
 import './traders-hub.scss';
@@ -41,15 +42,9 @@ const OrderedPlatformSections = observer(
 );
 
 const TradersHub = observer(() => {
-    const { localize } = useLocalize();
     const { isDesktop } = useDevice();
     const { traders_hub, client, ui } = useStore();
-    const {
-        notification_messages_ui: Notifications,
-        openRealAccountSignup,
-        is_from_signup_account,
-        setIsFromSignupAccount,
-    } = ui;
+    const { notification_messages_ui: Notifications } = ui;
     const {
         is_landing_company_loaded,
         is_logged_in,
@@ -57,13 +52,12 @@ const TradersHub = observer(() => {
         is_logging_in,
         is_account_setting_loaded,
         is_mt5_allowed,
-        has_active_real_account,
         website_status,
         has_any_real_account,
         is_eu,
     } = client;
 
-    const { is_cr_demo, is_eu_demo, is_eu_real } = useContentFlag();
+    const { is_eu_demo, is_eu_real } = useContentFlag();
     const { selected_platform_type, setTogglePlatformType, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef<HTMLDivElement>(null);
 
@@ -71,36 +65,11 @@ const TradersHub = observer(() => {
         (!is_switching && !is_logging_in && is_account_setting_loaded && is_landing_company_loaded) ||
         checkServerMaintenance(website_status);
 
-    const [direct_to_real_account_creation] = useGrowthbookGetFeatureValue({
-        featureFlag: 'direct-real-account-creation-flow',
-        defaultValue: false,
-    });
-
     React.useEffect(() => {
         if (is_eu_user) {
             setTogglePlatformType('cfd');
         }
-        if (!has_active_real_account && is_from_signup_account && is_logged_in) {
-            if (direct_to_real_account_creation && is_cr_demo) {
-                openRealAccountSignup('svg');
-                setIsFromSignupAccount(false);
-            } else if (is_eu_demo) {
-                openRealAccountSignup('maltainvest');
-                setIsFromSignupAccount(false);
-            }
-        }
-    }, [
-        is_cr_demo,
-        is_eu_demo,
-        has_active_real_account,
-        is_eu_user,
-        is_from_signup_account,
-        is_logged_in,
-        direct_to_real_account_creation,
-        openRealAccountSignup,
-        setIsFromSignupAccount,
-        setTogglePlatformType,
-    ]);
+    }, [is_eu_user, setTogglePlatformType]);
 
     React.useEffect(() => {
         if (is_eu_user) setTogglePlatformType('cfd');
@@ -181,6 +150,7 @@ const TradersHub = observer(() => {
 
     return (
         <React.Fragment>
+            <AfterSignupFlow />
             <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop}>
                 {can_show_notify && <Notifications />}
                 <div

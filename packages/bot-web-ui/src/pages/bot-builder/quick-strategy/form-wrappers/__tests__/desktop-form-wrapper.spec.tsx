@@ -30,8 +30,13 @@ jest.mock('@deriv/bot-skeleton', () => ({
 }));
 
 window.Blockly = {
+    utils: {
+        xml: {
+            textToDom: jest.fn(),
+            domToText: jest.fn(),
+        },
+    },
     Xml: {
-        textToDom: jest.fn(),
         domToText: jest.fn(),
     },
 };

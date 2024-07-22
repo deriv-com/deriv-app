@@ -6,6 +6,7 @@ const tradingPlatformStatusMessageFn = ({ platformStatus }: TMessageFnProps) => 
             case 'maintenance':
                 return 'We’re currently performing server maintenance, which may continue until 03:00 GMT. Please expect some disruptions during this time.';
             default:
+                return 'The server is temporarily unavailable for this account. We’re working to resolve this.';
         }
     };
     return {

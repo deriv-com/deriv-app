@@ -117,6 +117,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     return (
         <button
             className='wallets-transfer-form-dropdown'
+            data-testid='dt_wallets_transfer_form_dropdown'
             onClick={() => {
                 modal.show(
                     <TransferFormAccountSelection
@@ -157,7 +158,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                 <>
                     {selectedAccount?.demo_account ? (
                         <div className='wallets-transfer-form-dropdown__badge'>
-                            <WalletListCardBadge isDemo={Boolean(selectedAccount?.demo_account)} label='virtual' />
+                            <WalletListCardBadge />
                         </div>
                     ) : null}
                     {!hasPlatformStatus && (

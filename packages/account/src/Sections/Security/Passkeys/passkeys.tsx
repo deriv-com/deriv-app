@@ -33,7 +33,7 @@ export type TCurrentManagedPasskey = {
 const Passkeys = observer(() => {
     const { client, common } = useStore();
     const { isMobile } = useDevice();
-    const { is_passkey_supported } = client;
+    const { is_passkey_supported, setPasskeysStatusToCookie } = client;
     const is_network_on = common.network_status.class === 'online';
 
     const error_modal_timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -92,8 +92,9 @@ const Passkeys = observer(() => {
         if (is_passkey_registered) {
             passkeysMenuActionEventTrack('create_passkey_finished');
             setPasskeyStatus(PASSKEY_STATUS_CODES.CREATED);
+            setPasskeysStatusToCookie('available');
         }
-    }, [is_passkey_registered]);
+    }, [is_passkey_registered, setPasskeysStatusToCookie]);
 
     useEffect(() => {
         if (error) {

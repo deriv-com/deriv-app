@@ -37,6 +37,7 @@ describe('ConfirmPhoneNumber', () => {
                 verification_code: {
                     phone_number_verification: '',
                 },
+                is_phone_number_verification_enabled: true,
             },
             ui: {
                 is_redirected_from_email: false,

@@ -610,6 +610,8 @@ type TClientStore = {
     is_wallet_migration_request_is_in_progress: boolean;
     is_passkey_supported: boolean;
     setIsPasskeySupported: (value: boolean) => void;
+    is_phone_number_verification_enabled: boolean;
+    setIsPhoneNumberVerificationEnabled: (value: boolean) => void;
     should_show_effortless_login_modal: boolean;
     setShouldShowEffortlessLoginModal: (value: boolean) => void;
     fetchShouldShowEffortlessLoginModal: () => void;

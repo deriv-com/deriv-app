@@ -315,6 +315,7 @@ export default class NotificationStore extends BaseStore {
             is_identity_verification_needed,
             is_logged_in,
             is_virtual,
+            is_phone_number_verification_enabled,
             is_tnc_needed,
             landing_company_shortcode,
             loginid,
@@ -349,7 +350,8 @@ export default class NotificationStore extends BaseStore {
         const show_phone_number_verification_notification =
             !account_settings?.phone_number_verification?.verified &&
             !is_next_email_attempt_timer_running &&
-            !is_virtual;
+            !is_virtual &&
+            is_phone_number_verification_enabled;
         let has_missing_required_field;
 
         const is_server_down = checkServerMaintenance(website_status);

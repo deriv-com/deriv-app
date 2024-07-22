@@ -161,6 +161,7 @@ export default class ClientStore extends BaseStore {
     is_wallet_migration_request_is_in_progress = false;
 
     is_passkey_supported = false;
+    is_phone_number_verification_enabled = false;
     should_show_effortless_login_modal = false;
 
     subscriptions = {};
@@ -239,6 +240,7 @@ export default class ClientStore extends BaseStore {
             wallet_migration_state: observable,
             is_wallet_migration_request_is_in_progress: observable,
             is_passkey_supported: observable,
+            is_phone_number_verification_enabled: observable,
             should_show_effortless_login_modal: observable,
             balance: computed,
             account_open_date: computed,
@@ -407,6 +409,7 @@ export default class ClientStore extends BaseStore {
             startWalletMigration: action.bound,
             resetWalletMigration: action.bound,
             setIsPasskeySupported: action.bound,
+            setIsPhoneNumberVerificationEnabled: action.bound,
             setShouldShowEffortlessLoginModal: action.bound,
             fetchShouldShowEffortlessLoginModal: action.bound,
             getExchangeRate: action.bound,
@@ -2715,6 +2718,10 @@ export default class ClientStore extends BaseStore {
 
     setIsPasskeySupported(is_passkey_supported = false) {
         this.is_passkey_supported = is_passkey_supported;
+    }
+
+    setIsPhoneNumberVerificationEnabled(is_phone_number_verification_enabled = false) {
+        this.is_phone_number_verification_enabled = is_phone_number_verification_enabled;
     }
 
     setShouldShowEffortlessLoginModal(should_show_effortless_login_modal = true) {

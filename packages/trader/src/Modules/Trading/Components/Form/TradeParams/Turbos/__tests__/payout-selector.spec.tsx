@@ -12,16 +12,15 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(),
 }));
 
-jest.mock(
-    'Modules/Trading/Components/Elements/PayoutPerPoint/payout-per-point-input',
-    () =>
-        ({ onPayoutClick }: { onPayoutClick: (option: number) => void }) =>
-            (
-                <div data-testid='payout-per-point-input'>
-                    <button onClick={() => onPayoutClick(30)}>Click me</button>
-                </div>
-            )
-);
+jest.mock('Modules/Trading/Components/Elements/PayoutPerPoint/payout-per-point-input', () => {
+    const MockPayoutPerPointInput = ({ onPayoutClick }: { onPayoutClick: (option: number) => void }) => (
+        <div data-testid='payout-per-point-input'>
+            <button onClick={() => onPayoutClick(30)}>Click me</button>
+        </div>
+    );
+    MockPayoutPerPointInput.displayName = 'MockPayoutPerPointInput';
+    return MockPayoutPerPointInput;
+});
 
 const mockUseTraderStore = useTraderStore as jest.Mock;
 const mockUseDevice = useDevice as jest.Mock;

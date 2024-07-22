@@ -34,7 +34,7 @@
     "dependencies": {
         "@deriv-com/utils": "^0.0.25",
         "@deriv/api": "^1.0.0",
-        "@deriv/api-types": "1.0.1253",
+        "@deriv/api-types": "1.0.1307",
         "@deriv/components": "^1.0.0",
         "@deriv/hooks": "^1.0.0",
         "@deriv/shared": "^1.0.0",

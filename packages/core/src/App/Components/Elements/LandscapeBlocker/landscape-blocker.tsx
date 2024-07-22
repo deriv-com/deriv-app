@@ -16,7 +16,8 @@ const LandscapeBlocker = observer(() => {
     const pathname = location?.pathname;
     const is_hidden_landscape_blocker = isDisabledLandscapeBlockerRoute(pathname);
     const shouldShowDtraderTabletView = pathname === routes.trade && isTabletOs;
-    const showBlockerDtraderMobileLandscapeView = !isMobile && isMobileOs() && pathname.startsWith(routes.trade);
+    const showBlockerDtraderMobileLandscapeView =
+        !isMobile && isMobileOs() && (pathname.startsWith(routes.trade) || pathname.startsWith(routes.reports));
 
     if (
         !has_wallet &&

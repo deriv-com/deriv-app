@@ -9,7 +9,7 @@ import { LabelPairedChevronsDownCaptionRegularIcon, LabelPairedChevronsUpCaption
 import './payout-selector.scss';
 
 const PayoutSelector = observer(() => {
-    const { barrier_1, payout_choices, setPayoutWheelPicker, togglePayoutWheelPicker, payout_per_point, currency } =
+    const { barrier_1, payout_choices, setPayoutPerPoint, togglePayoutWheelPicker, payout_per_point, currency } =
         useTraderStore();
     const { isMobile } = useDevice();
 
@@ -18,7 +18,7 @@ const PayoutSelector = observer(() => {
     };
 
     const onPayoutClick = (value: number) => {
-        setPayoutWheelPicker(value);
+        setPayoutPerPoint(value);
     };
 
     const header_tooltip_text = (

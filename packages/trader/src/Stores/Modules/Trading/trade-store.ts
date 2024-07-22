@@ -522,7 +522,7 @@ export default class TradeStore extends BaseStore {
             show_digits_stats: computed,
             updateStore: action.bound,
             updateSymbol: action.bound,
-            setPayoutWheelPicker: action.bound,
+            setPayoutPerPoint: action.bound,
         });
 
         // Adds intercept to change min_max value of duration validation
@@ -1918,7 +1918,7 @@ export default class TradeStore extends BaseStore {
     togglePayoutWheelPicker() {
         this.open_payout_wheelpicker = !this.open_payout_wheelpicker;
     }
-    setPayoutWheelPicker(val: number) {
+    setPayoutPerPoint(val: number) {
         if (val && val !== this.payout_per_point) {
             this.payout_per_point = val;
             this.onChange({

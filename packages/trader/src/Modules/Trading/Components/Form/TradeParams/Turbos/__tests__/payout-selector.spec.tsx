@@ -28,7 +28,7 @@ const mockUseDevice = useDevice as jest.Mock;
 const mockTraderStore = {
     barrier_1: '1.2345',
     payout_choices: [10, 20, 30, 40],
-    setPayoutWheelPicker: jest.fn(),
+    setPayoutPerPoint: jest.fn(),
     togglePayoutWheelPicker: jest.fn(),
     payout_per_point: 20,
     currency: 'USD',
@@ -57,10 +57,10 @@ describe('PayoutSelector Component', () => {
         expect(screen.getByText('Payout per point')).toBeInTheDocument();
     });
 
-    test('should call setPayoutWheelPicker when an option is clicked in PayoutPerPointInput', () => {
+    test('should call setPayoutPerPoint when an option is clicked in PayoutPerPointInput', () => {
         render(<PayoutSelector />);
         fireEvent.click(screen.getByText('Click me'));
-        expect(mockTraderStore.setPayoutWheelPicker).toHaveBeenCalledWith(30);
+        expect(mockTraderStore.setPayoutPerPoint).toHaveBeenCalledWith(30);
     });
 
     test('should call togglePayoutWheelPicker when mobile widget is clicked', () => {

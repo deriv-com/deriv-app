@@ -57,8 +57,7 @@ export const isDesktopOs = () => {
     return !!['windows', 'mac', 'linux'].find(system => system === os);
 };
 
-export const isMobileOs = () =>
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+export const isMobileOs = () => /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 export const isTabletOs =
     /ipad|android 3.0|xoom|sch-i800|playbook|tablet|kindle/i.test(navigator.userAgent.toLowerCase()) ||

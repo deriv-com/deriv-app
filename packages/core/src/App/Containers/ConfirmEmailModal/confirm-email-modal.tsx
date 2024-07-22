@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { SentEmailModal } from '@deriv/account';
+import SentEmailModal from '@deriv/account/src/Components/sent-email-modal';
 import { observer, useStore } from '@deriv/stores';
-import { WS } from 'Services';
+import { WS, removeActionParam } from '@deriv/shared';
 import { TSocketError, TSocketRequest, TSocketResponse } from '@deriv/api/types';
 
 type TConfirmEmailModal = {
@@ -43,6 +43,7 @@ export const ConfirmEmailModal = observer(
                     } else {
                         setIsSendEmailModalOpen(true);
                     }
+                    removeActionParam('request_email');
                     setVerificationCode('', 'request_email');
                 }
             );

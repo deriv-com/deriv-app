@@ -10,7 +10,6 @@ import {
     getIDVNotApplicableOption,
     IDV_ERROR_STATUS,
     AUTH_STATUS_CODES,
-    VERIFICATION_SERVICES,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getIDVDocuments } from '../Configs/idv-document-config';
@@ -278,9 +277,3 @@ export const verifyFields = (status: TIDVErrorStatus) => {
 
 export const isSpecialPaymentMethod = (payment_method_icon: string) =>
     ['IcOnlineNaira', 'IcAstroPayLight', 'IcAstroPayDark'].some(icon => icon === payment_method_icon);
-
-export const convertPhoneTypeDisplay = (phone_verification_type: string) => {
-    if (phone_verification_type === VERIFICATION_SERVICES.SMS) return phone_verification_type.toUpperCase();
-
-    return 'WhatsApp';
-};

@@ -1,17 +1,18 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Localize } from '@deriv/translations';
 import { Loading } from '@deriv/components';
-import { Text } from '@deriv-com/quill-ui';
 import { useDevice } from '@deriv-com/ui';
 import { getUrlBase } from '@deriv/shared';
 import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 type TVideoFragment = {
     contract_type: string;
 };
+
 const VideoFragment = ({ contract_type }: TVideoFragment) => {
     const [is_loading, setIsLoading] = React.useState(true);
+    const [dotLottie, setDotLottie] = React.useState<EventTarget | null>(null);
 
     const { isMobile } = useDevice();
 
@@ -21,7 +22,17 @@ const VideoFragment = ({ contract_type }: TVideoFragment) => {
             getUrlBase(`/public/videos/${contract_type.toLowerCase()}_${isMobile ? 'mobile' : 'desktop'}.${extension}`),
         [contract_type, isMobile]
     );
-    const mp4_src = React.useMemo(() => getVideoSource('mp4'), [getVideoSource]);
+    const lottie_src = React.useMemo(() => getVideoSource('lottie'), [getVideoSource]);
+
+    React.useEffect(() => {
+        const onLoad = () => setIsLoading(false);
+
+        if (dotLottie) dotLottie.addEventListener('load', onLoad);
+
+        return () => {
+            if (dotLottie) dotLottie.removeEventListener('load', onLoad);
+        };
+    }, [dotLottie]);
 
     return (
         <div
@@ -31,22 +42,16 @@ const VideoFragment = ({ contract_type }: TVideoFragment) => {
             })}
         >
             {is_loading && <Loading is_fullscreen={false} />}
-            <video
-                autoPlay
-                className='video-fragment'
-                data-testid='dt_video_fragment'
+            <DotLottieReact
+                autoplay
+                dotLottieRefCallback={
+                    ((dotLottie: EventTarget | null) => setDotLottie(dotLottie)) as React.ComponentProps<
+                        typeof DotLottieReact
+                    >['dotLottieRefCallback']
+                }
+                src={lottie_src}
                 loop
-                onLoadedData={() => setIsLoading(false)}
-                playsInline
-                preload='auto'
-                muted
-            >
-                {/* a browser will select a source with extension it recognizes */}
-                <source src={mp4_src} type='video/mp4' />
-                <Text size='sm'>
-                    <Localize i18n_default_text='Unfortunately, your browser does not support the video.' />
-                </Text>
-            </video>
+            />
         </div>
     );
 };

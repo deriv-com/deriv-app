@@ -18,16 +18,16 @@ type SwipeState = {
 };
 
 export function getTargetIndex({
-    deltaY = 0,
-    snapTolerance = 0.5,
-    optionHeight = 0,
-    options = [],
-    selectedIndex = 0,
+    deltaY,
+    snapTolerance,
+    optionHeight,
+    options,
+    selectedIndex,
 }: {
     deltaY: number;
     snapTolerance: number;
     optionHeight: number;
-    options: string[];
+    options: number[];
     selectedIndex: number;
 }) {
     const absDeltaY = Math.abs(deltaY);
@@ -137,7 +137,7 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
                 </div>
             </div>
             <div className='picker-viewport'>
-                <div className='picker-wheel' style={wheelStyle} {...swipeableHandlers}>
+                <div className='picker-wheel' data-testid='picker-wheel' style={wheelStyle} {...swipeableHandlers}>
                     {options.map((option, index) => (
                         <motion.div
                             key={`option-${index}`}

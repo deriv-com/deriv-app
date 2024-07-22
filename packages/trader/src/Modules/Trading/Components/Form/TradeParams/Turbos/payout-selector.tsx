@@ -6,9 +6,9 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { useDevice } from '@deriv-com/ui';
 import PayoutPerPointInput from 'Modules/Trading/Components/Elements/PayoutPerPoint/payout-per-point-input';
 import { LabelPairedChevronsDownCaptionRegularIcon, LabelPairedChevronsUpCaptionRegularIcon } from '@deriv/quill-icons';
-import './barrier-selector.scss';
+import './payout-selector.scss';
 
-const BarrierSelector = observer(() => {
+const PayoutSelector = observer(() => {
     const { barrier_1, payout_choices, setPayoutWheelPicker, togglePayoutWheelPicker, payout_per_point, currency } =
         useTraderStore();
     const { isMobile } = useDevice();
@@ -28,7 +28,7 @@ const BarrierSelector = observer(() => {
     );
     if (isMobile) {
         return (
-            <div className='mobile-widget barrier-selector' onClick={toggleBarriersTable}>
+            <div className='mobile-widget payout-selector' onClick={toggleBarriersTable}>
                 <Text size='xs' color='prominent' align='center' className='payout-field'>
                     {payout_per_point}
                     {Number(payout_per_point) < 0 ? (
@@ -59,4 +59,4 @@ const BarrierSelector = observer(() => {
     );
 });
 
-export default BarrierSelector;
+export default PayoutSelector;

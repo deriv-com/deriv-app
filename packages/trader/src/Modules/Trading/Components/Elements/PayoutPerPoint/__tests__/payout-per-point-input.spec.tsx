@@ -6,93 +6,68 @@ import { useDevice } from '@deriv/components';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
-    useDevice: jest.fn(),
-}));
-
-jest.mock('@deriv/translations', () => ({
-    Localize: ({ i18n_default_text }) => <span>{i18n_default_text}</span>,
-    localize: text => text,
-}));
-
-jest.mock('@deriv/quill-icons', () => ({
-    LabelPairedChevronsDownCaptionRegularIcon: ({ width, height, style }) => (
-        <svg data-testid='LabelPairedChevronsDownCaptionRegularIcon' width={width} height={height} style={style}>
-            <path d='M0 0h24v24H0z' fill='none' />
-            <path d='M12 2L2 22h20L12 2zm0 3.3L17.4 20H6.6L12 5.3zm0 7.7c.55 0 1 .45 1 1v2h-2v-2c0-.55.45-1 1-1zm-1 3h2v2h-2v-2z' />
-        </svg>
-    ),
-    LabelPairedChevronsUpCaptionRegularIcon: ({ width, height, style }) => (
-        <svg data-testid='LabelPairedChevronsUpCaptionRegularIcon' width={width} height={height} style={style}>
-            <path d='M0 0h24v24H0z' fill='none' />
-            <path d='M12 2L2 22h20L12 2zm0 3.3L17.4 20H6.6L12 5.3zm0 7.7c.55 0 1 .45 1 1v2h-2v-2c0-.55.45-1 1-1zm-1 3h2v2h-2v-2z' />
-        </svg>
-    ),
-}));
-
-jest.mock('../../../Form/WheelPicker', () =>
-    jest.fn(({ options, defaultValue, onClick, currency }) => (
-        <div role='button' onClick={() => onClick(defaultValue)}>
-            MockWheelPicker - {currency}
+    useDevice: jest.fn(() => ({ is_desktop: true })),
+    Popover: ({ children }: { children: React.ReactNode }) => (
+        <div role='img' aria-label='info'>
+            {children}
         </div>
-    ))
-);
+    ),
+}));
 
-describe('PayoutPerPointInput', () => {
-    const defaultProps = {
-        payoutOptions: [10, 20, 30],
-        onPayoutClick: jest.fn(),
-        selectedBarrier: '5',
-        defaultPayout: 10,
-        currency: 'USD',
-        tooltipText: 'Tooltip text',
-    };
+// eslint-disable-next-line react/display-name
+jest.mock('../../../Form/WheelPicker', () => (props: { options: number[]; onClick: (arg0: number) => void }) => (
+    <div data-testid='wheel-picker'>
+        {props.options.map((option: number, index: number) => (
+            <div key={index} onClick={() => props.onClick(option)}>
+                {option}
+            </div>
+        ))}
+    </div>
+));
 
-    beforeEach(() => {
+const payoutOptions = [10, 20, 30, 40];
+const mockOnPayoutClick = jest.fn();
+const selectedBarrier = '1.2345';
+const defaultPayout = 20;
+const currency = 'USD';
+const tooltipText = 'Sample tooltip text';
+
+const renderComponent = (isDesktop: boolean) => {
+    (useDevice as jest.Mock).mockReturnValue({ is_desktop: isDesktop });
+    return render(
+        <PayoutPerPointInput
+            payoutOptions={payoutOptions}
+            onPayoutClick={mockOnPayoutClick}
+            selectedBarrier={selectedBarrier}
+            defaultPayout={defaultPayout}
+            currency={currency}
+            tooltipText={tooltipText}
+        />
+    );
+};
+
+describe('PayoutPerPointInput Component', () => {
+    afterEach(() => {
         jest.clearAllMocks();
     });
 
-    test('renders correctly on desktop device', () => {
-        (useDevice as jest.Mock).mockReturnValue({ is_desktop: true });
-
-        render(<PayoutPerPointInput {...defaultProps} />);
-
+    test('should render component for desktop', () => {
+        renderComponent(true);
         expect(screen.getByText('Payout per Point')).toBeInTheDocument();
         expect(screen.getByText('Distance to current spot')).toBeInTheDocument();
-        expect(screen.getByText('5')).toBeInTheDocument();
+        expect(screen.getByText(selectedBarrier)).toBeInTheDocument();
     });
 
-    test('does not render on mobile device', () => {
-        (useDevice as jest.Mock).mockReturnValue({ is_desktop: false });
-
-        render(<PayoutPerPointInput {...defaultProps} />);
-
+    test('should not render component for mobile', () => {
+        renderComponent(false);
         expect(screen.queryByText('Payout per Point')).not.toBeInTheDocument();
+        expect(screen.queryByText('Distance to current spot')).not.toBeInTheDocument();
     });
 
-    test('WheelPicker component is rendered with correct props', () => {
-        (useDevice as jest.Mock).mockReturnValue({ is_desktop: true });
-
-        render(<PayoutPerPointInput {...defaultProps} />);
-
-        const wheelPicker = screen.getByRole('button', { name: /USD/i });
-        expect(wheelPicker).toBeInTheDocument();
-    });
-
-    test('barrier text and icon are displayed correctly for positive barrier', () => {
-        (useDevice as jest.Mock).mockReturnValue({ is_desktop: true });
-
-        render(<PayoutPerPointInput {...defaultProps} selectedBarrier='5' />);
-
-        expect(screen.getByText('5')).toBeInTheDocument();
-        expect(screen.getByTestId('LabelPairedChevronsUpCaptionRegularIcon')).toBeInTheDocument();
-    });
-
-    test('barrier text and icon are displayed correctly for negative barrier', () => {
-        (useDevice as jest.Mock).mockReturnValue({ is_desktop: true });
-
-        render(<PayoutPerPointInput {...defaultProps} selectedBarrier='-5' />);
-
-        expect(screen.getByText('-5')).toBeInTheDocument();
-        expect(screen.getByTestId('LabelPairedChevronsDownCaptionRegularIcon')).toBeInTheDocument();
+    test('should call onPayoutClick when an option is selected in WheelPicker', () => {
+        renderComponent(true);
+        const option = screen.getByText('30');
+        fireEvent.click(option);
+        expect(mockOnPayoutClick).toHaveBeenCalledWith(30);
     });
 });

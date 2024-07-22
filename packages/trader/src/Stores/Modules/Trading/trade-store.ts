@@ -1878,14 +1878,6 @@ export default class TradeStore extends BaseStore {
 
     setBarrierChoices(barrier_choices: string[]) {
         this.barrier_choices = barrier_choices ?? [];
-        // if (this.is_turbos) {
-        //     const stored_barriers_data = { barrier: this.barrier_1, barrier_choices };
-        //     if (getContractSubtype(this.contract_type) === 'Long') {
-        //         this.long_barriers = stored_barriers_data;
-        //     } else {
-        //         this.short_barriers = stored_barriers_data;
-        //     }
-        // }
         if (this.is_vanilla) {
             this.strike_price_choices = { barrier: this.barrier_1, barrier_choices };
         }

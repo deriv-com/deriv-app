@@ -186,14 +186,14 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         trade_types: [CONTRACT_TYPES.TURBOS.LONG],
         basis: ['stake'],
         barrier_count: 1,
-        components: ['trade_type_tabs', 'barrier_selector', 'take_profit'],
+        components: ['trade_type_tabs', 'payout_selector', 'take_profit'],
     },
     [TRADE_TYPES.TURBOS.SHORT]: {
         title: localize('Turbos'),
         trade_types: [CONTRACT_TYPES.TURBOS.SHORT],
         basis: ['stake'],
         barrier_count: 1,
-        components: ['trade_type_tabs', 'barrier_selector', 'take_profit'],
+        components: ['trade_type_tabs', 'payout_selector', 'take_profit'],
     },
     [TRADE_TYPES.VANILLA.CALL]: {
         title: localize('Call/Put'),

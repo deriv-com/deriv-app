@@ -23,7 +23,7 @@ import 'Sass/app/_common/mobile-widget.scss';
 import classNames from 'classnames';
 import AccumulatorsStats from 'Modules/Contract/Components/AccumulatorsStats';
 import Strike from 'Modules/Trading/Components/Form/TradeParams/strike';
-import BarrierSelector from 'Modules/Trading/Components/Form/TradeParams/Turbos/barrier-selector';
+import PayoutSelector from 'Modules/Trading/Components/Form/TradeParams/Turbos/payout-selector';
 import PayoutPerPointMobile from 'Modules/Trading/Components/Elements/payout-per-point-mobile';
 import TradeTypeTabs from 'Modules/Trading/Components/Form/TradeParams/trade-type-tabs';
 import { observer } from '@deriv/stores';
@@ -132,7 +132,7 @@ const CollapsibleTradeParams = ({
                 </div>
             )}
             {!is_accumulator && <MobileWidget />}
-            {is_turbos && <BarrierSelector />}
+            {is_turbos && <PayoutSelector />}
             {has_allow_equals && (
                 <div data-collapsible='true'>
                     <AllowEqualsMobile />

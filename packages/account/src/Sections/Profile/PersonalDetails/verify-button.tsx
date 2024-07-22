@@ -25,7 +25,7 @@ export const VerifyButton = observer(({ is_disabled }: TVerifyButton) => {
     const history = useHistory();
     //@ts-expect-error remove this comment when types are added in GetSettings api types
     const { sendPhoneNumberVerifyEmail, WS } = useVerifyEmail('phone_number_verification');
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { next_otp_request } = usePhoneNumberVerificationSetTimer();
 
     useEffect(() => {
@@ -51,7 +51,7 @@ export const VerifyButton = observer(({ is_disabled }: TVerifyButton) => {
                     </CaptionText>
                     <Popover
                         data_testid='dt_phone_verification_popover'
-                        alignment={isMobile ? 'top' : 'right'}
+                        alignment={!isDesktop ? 'top' : 'right'}
                         className='phone-verification__popover'
                         icon='info'
                         is_open={open_popover}

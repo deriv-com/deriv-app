@@ -25,11 +25,14 @@ const ServerMaintenance: React.FC = () => {
             <WalletText size='md' weight='bold'>
                 Server Maintenance
             </WalletText>
-            <div className='wallets-server-maintenance__content'>
+            <div>
                 <WalletText size='sm'>
-                    We’re currently performing server maintenance, which may continue until {getMaintenanceTime('mt5')}.
-                    Please expect some disruptions during this time.
+                    We’re currently performing server maintenance, which may continue until{' '}
                 </WalletText>
+                <WalletText size='sm' weight='bold'>
+                    {getMaintenanceTime('mt5')}
+                </WalletText>
+                <WalletText size='sm'>. Please expect some disruptions during this time.</WalletText>
             </div>
             <div className='wallets-server-maintenance__footer'>
                 <WalletButton onClick={() => hide()} size={isMobile ? 'md' : 'lg'} variant='outlined'>

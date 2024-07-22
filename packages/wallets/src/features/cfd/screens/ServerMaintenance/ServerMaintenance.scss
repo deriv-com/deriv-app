@@ -13,15 +13,6 @@
         gap: 1.6rem;
     }
 
-    &__content {
-        display: flex;
-        gap: 2rem;
-
-        @include mobile {
-            gap: 1rem;
-        }
-    }
-
     &__footer {
         display: flex;
         justify-content: flex-end;

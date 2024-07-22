@@ -27,7 +27,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const onButtonClick = useCallback(() => {
         switch (platformStatus) {
             case 'maintenance':
-                return show(<ServerMaintenanceModal />);
+                return show(<ServerMaintenanceModal platform={account.platform} />);
             case 'unavailable':
                 return show(<AccountUnavailableModal />);
             case 'active':

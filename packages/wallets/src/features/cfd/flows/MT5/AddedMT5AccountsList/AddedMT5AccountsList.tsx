@@ -54,7 +54,8 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 <div className='wallets-added-mt5__icon'>{MarketTypeDetails[account.market_type || 'all'].icon}</div>
             }
             onClick={() => {
-                if (platformStatus === 'maintenance') return show(<ServerMaintenanceModal />);
+                if (platformStatus === 'maintenance')
+                    return show(<ServerMaintenanceModal platform={account.platform} />);
                 if (account.status === 'unavailable') return show(<AccountUnavailableModal />);
                 if (platformStatus === 'active') {
                     return jurisdictionStatus.is_failed

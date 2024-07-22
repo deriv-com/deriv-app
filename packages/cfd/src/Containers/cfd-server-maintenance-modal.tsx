@@ -11,17 +11,15 @@ const CFDServerMaintenanceModal = observer(() => {
 
     const { setServerMaintenanceModal, is_server_maintenance_modal_visible } = cfd;
 
-    const getMaintenanceTime = () => {
-        switch (platform) {
-            case CFD_PLATFORMS.DXTRADE:
-                return '08:00 GMT';
-            case CFD_PLATFORMS.CTRADER:
-                return '10:00 GMT';
-            case CFD_PLATFORMS.MT5:
-            default:
-                return '03:00 GMT';
-        }
+    const maintenance_time: {
+        [key: string]: string;
+    } = {
+        [CFD_PLATFORMS.DXTRADE]: '08:00 GMT',
+        [CFD_PLATFORMS.CTRADER]: '10:00 GMT',
+        [CFD_PLATFORMS.MT5]: '03:00 GMT',
     };
+
+    const platformKey: keyof typeof maintenance_time = platform;
 
     return (
         <Modal
@@ -34,7 +32,7 @@ const CFDServerMaintenanceModal = observer(() => {
         >
             <Modal.Body>
                 <Localize
-                    i18n_default_text={`We’re currently performing server maintenance, which may continue until <0>${getMaintenanceTime()}</0>. Please expect some disruptions during this time.`}
+                    i18n_default_text={`We’re currently performing server maintenance, which may continue until <0>${maintenance_time[platformKey]}</0>. Please expect some disruptions during this time.`}
                     components={[<strong key={0} />]}
                 />
             </Modal.Body>

@@ -38,13 +38,11 @@
                 border: var(--core-borderWidth-75) solid var(--core-color-opacity-black-100);
                 background-color: var(--core-color-solid-slate-50);
             }
-            &--active {
-                button {
-                    background-color: var(--core-color-solid-slate-1400);
+            button.active {
+                background-color: var(--core-color-solid-slate-1400);
 
-                    p {
-                        color: var(--core-color-solid-slate-50);
-                    }
+                p {
+                    color: var(--core-color-solid-slate-50);
                 }
             }
             .percentage {

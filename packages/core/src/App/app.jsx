@@ -108,18 +108,17 @@ const AppWithoutTranslation = ({ root_store }) => {
         }
     }, [root_store.client.email]);
 
-    const getLoader = () => {
-        if (isDTraderV2())
-            return (
-                <Loading.DTraderV2
-                    initial_app_loading
-                    is_contract_details={location.pathname.startsWith('/contract/')}
-                    is_positions={location.pathname === routes.trader_positions}
-                    is_closed_tab={getPositionsV2TabIndexFromURL() === 1}
-                />
-            );
-        return <Loading />;
-    };
+    const getLoader = () =>
+        isDTraderV2() ? (
+            <Loading.DTraderV2
+                initial_app_loading
+                is_contract_details={location.pathname.startsWith('/contract/')}
+                is_positions={location.pathname === routes.trader_positions}
+                is_closed_tab={getPositionsV2TabIndexFromURL() === 1}
+            />
+        ) : (
+            <Loading />
+        );
 
     return (
         <>

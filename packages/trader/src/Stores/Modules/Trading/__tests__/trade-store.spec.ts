@@ -310,4 +310,32 @@ describe('TradeStore', () => {
             await waitFor(() => expect(spyTrackEvent).not.toHaveBeenCalled());
         });
     });
+    describe('setDigitStats', () => {
+        const digit_stats = [120, 86, 105, 94, 85, 86, 124, 107, 90, 103];
+        it('should set digit_stats', () => {
+            expect(mockedTradeStore.digit_stats).toEqual([]);
+
+            mockedTradeStore.setDigitStats(digit_stats);
+
+            expect(mockedTradeStore.digit_stats).toEqual(digit_stats);
+        });
+    });
+    describe('setDigitTick', () => {
+        const tick_data = {
+            ask: 405.76,
+            bid: 405.56,
+            epoch: 1721636565,
+            id: 'f90a93f8-965a-28ab-a830-6253bff4cc98',
+            pip_size: 2,
+            quote: 405.66,
+            symbol,
+        };
+        it('should set digit_tick', () => {
+            expect(mockedTradeStore.digit_tick).toBeNull();
+
+            mockedTradeStore.setDigitTick(tick_data);
+
+            expect(mockedTradeStore.digit_tick).toEqual(tick_data);
+        });
+    });
 });

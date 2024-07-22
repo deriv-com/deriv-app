@@ -99,7 +99,7 @@
             @keyframes enter-from-left {
                 from {
                     transform: translateX(50%);
-                    margin-right: 50%;
+                    margin-inline-end: 50%;
                 }
             }
         }

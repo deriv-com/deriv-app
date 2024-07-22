@@ -5,8 +5,8 @@ type TLastDigitSelectorProps = {
     digits: number[];
     digit_stats: number[];
     is_stats_mode?: boolean;
-    onDigitSelect: (digit: number) => void;
-    selected_digit: number;
+    onDigitSelect?: (digit: number) => void;
+    selected_digit?: number;
 };
 
 const LastDigitSelector = ({

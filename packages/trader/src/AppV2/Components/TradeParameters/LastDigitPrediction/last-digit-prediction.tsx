@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import clsx from 'clsx';
 import { ActionSheet, CaptionText, TextField } from '@deriv-com/quill-ui';
+import { Skeleton } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import LastDigitSelector from './last-digit-selector';
@@ -15,7 +16,6 @@ const displayed_digits = [...Array(10).keys()]; // digits array [0 - 9]
 
 const LastDigitPrediction = observer(({ is_minimized, is_stats_mode }: TLastDigitSelectorProps) => {
     const { digit_stats = [], last_digit, onChange } = useTraderStore();
-
     const [is_open, setIsOpen] = React.useState(false);
     const [selected_digit, setSelectedDigit] = React.useState(last_digit);
 
@@ -69,6 +69,7 @@ const LastDigitPrediction = observer(({ is_minimized, is_stats_mode }: TLastDigi
                 </ActionSheet.Root>
             </>
         );
+    if (!digit_stats.length) return <Skeleton height={182} />;
     return (
         <div className={clsx('last-digit-prediction', is_stats_mode && 'last-digit-prediction--stats-mode')}>
             {!is_stats_mode && (

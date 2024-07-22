@@ -15,6 +15,7 @@ const ACTIONS = {
     DEC: 'decrement',
     ADD10: 'add10',
 } as const;
+const TOTAL_ANIMATION_TIME = 240;
 
 const CurrentSpotDisplay = ({ has_tick_count, spot, tick }: TCurrentSpotDisplayProps) => {
     const last_digit = Number(spot?.slice(-1));
@@ -31,7 +32,12 @@ const CurrentSpotDisplay = ({ has_tick_count, spot, tick }: TCurrentSpotDisplayP
     const spin_timeout_id = React.useRef<ReturnType<typeof setTimeout>>();
     const spinning_wrapper_ref = React.useRef<HTMLDivElement>(null);
 
-    const spinLastDigit = (action: string, interval_ms: number, start: number, end: number) => {
+    const spinLastDigit = (
+        action: typeof ACTIONS[keyof typeof ACTIONS],
+        interval_ms: number,
+        start: number,
+        end: number
+    ) => {
         clearInterval(spin_interval_id.current);
         const interval_id = setInterval(() => {
             if (action === ACTIONS.INC && last_digit_ref.current < end) {
@@ -54,7 +60,7 @@ const CurrentSpotDisplay = ({ has_tick_count, spot, tick }: TCurrentSpotDisplayP
         if (isNaN(prev_last_digit) || isNaN(last_digit) || !spot) return;
 
         const diff = Math.abs(Number(prev_last_digit) - last_digit);
-        const timeout_speed = diff > 0 ? Math.floor(240 / diff) : 240;
+        const timeout_speed = diff > 0 ? Math.floor(TOTAL_ANIMATION_TIME / diff) : TOTAL_ANIMATION_TIME;
         const should_increment = Number(prev_last_digit) <= last_digit;
 
         spinning_wrapper_ref.current?.style.setProperty('--animation-time', `${timeout_speed}ms`);
@@ -69,10 +75,10 @@ const CurrentSpotDisplay = ({ has_tick_count, spot, tick }: TCurrentSpotDisplayP
             setShouldEnterFromTop(false);
             setShouldEnterFromBottom(false);
             setDisplayedLastDigit(last_digit_ref.current % 10);
-        }, 240);
+        }, TOTAL_ANIMATION_TIME); // equal to total animation time
 
         const getAction = () => {
-            let action: string = ACTIONS.ADD10;
+            let action: typeof ACTIONS[keyof typeof ACTIONS] = ACTIONS.ADD10;
             if (Number(prev_last_digit) < last_digit) {
                 action = ACTIONS.INC;
             } else if (Number(prev_last_digit) > last_digit) {
@@ -99,7 +105,7 @@ const CurrentSpotDisplay = ({ has_tick_count, spot, tick }: TCurrentSpotDisplayP
             )}
             <div className='current-spot'>
                 <Text size='xl' bold>
-                    {spot?.slice(0, -1)}
+                    {spot.slice(0, -1)}
                 </Text>
                 <div className='current-spot__last-digit-container'>
                     <div

@@ -19,14 +19,20 @@ const Digit = ({ digit, digit_stats = [], is_active, is_disabled, is_max, is_min
 
     if (!digit && isNaN(digit)) return null;
     return (
-        <div key={digit} className={clsx('digit', is_active && 'digit--active')}>
-            <button disabled={is_disabled} onClick={() => onClick?.(digit)} name='last_digit'>
+        <div key={digit} className='digit'>
+            <button
+                className={clsx(is_active && 'active')}
+                disabled={is_disabled}
+                onClick={() => onClick?.(digit)}
+                name='last_digit'
+            >
                 <Text size='xl'>{digit}</Text>
             </button>
             {!!display_percentage && (
                 <CaptionText
                     size='sm'
                     className={clsx('percentage', is_max && 'percentage--max', is_min && 'percentage--min')}
+                    data-testid='dt_digit_stats_percentage'
                 >
                     {display_percentage}%
                 </CaptionText>

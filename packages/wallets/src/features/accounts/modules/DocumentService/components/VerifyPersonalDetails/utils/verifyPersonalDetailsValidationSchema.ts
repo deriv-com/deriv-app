@@ -1,9 +1,7 @@
 import * as Yup from 'yup';
 
-export const areDetailsVerifiedValidator = (value = false) => {
-    if (!value) {
-        return 'Please verify personal details to proceed.';
-    }
+export const validateArePersonalDetailsVerified = (value: boolean) => {
+    if (!value) return 'Please verify personal details to proceed.';
 };
 
 export const dateOfBirthValidator = Yup.date().required('Please enter your date of birth');

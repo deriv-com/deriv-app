@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { Field, useFormikContext } from 'formik';
 import moment from 'moment';
@@ -7,12 +7,17 @@ import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import { DatePicker, FormField, InlineMessage, WalletText } from '../../../../../../components';
 import { ErrorMessage } from './components';
 import { TVerifyPersonalDetailsValues } from './types';
-import { areDetailsVerifiedValidator, dateOfBirthValidator, firstNameValidator, lastNameValidator } from './utils';
+import {
+    dateOfBirthValidator,
+    firstNameValidator,
+    lastNameValidator,
+    validateArePersonalDetailsVerified,
+} from './utils';
 import './VerifyPersonalDetails.scss';
 
 type TVerifyPersonalDetailsProps = {
     error?: TSocketError<'get_settings'>['error'] | TSocketError<'set_settings'>['error'];
-    onVerification?: () => void;
+    onVerification?: VoidFunction;
 };
 
 const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, onVerification }) => {
@@ -25,17 +30,14 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
         [errors.dateOfBirth, errors.firstName, errors.lastName]
     );
 
-    const handleTNCChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.checked && isValid) {
-            setFieldValue('areDetailsVerified', true);
-            if (onVerification) {
-                onVerification();
-            }
+    useEffect(() => {
+        if (values.arePersonalDetailsVerified && onVerification) {
+            onVerification();
         }
-    };
+    }, [onVerification, values.arePersonalDetailsVerified]);
 
-    const handleDateChange = (dateString: string | null) => {
-        setFieldValue('dateOfBirth', dateString);
+    const handleTNCChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFieldValue('arePersonalDetailsVerified', event.target.checked);
     };
 
     return (
@@ -49,7 +51,7 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
             <div className='wallets-verify-personal-details__body'>
                 <div className='wallets-verify-personal-details__content'>
                     <FormField
-                        disabled={values.areDetailsVerified}
+                        disabled={values.arePersonalDetailsVerified}
                         label='First name*'
                         message='Your first name as in your identity document'
                         name='firstName'
@@ -58,7 +60,7 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
                         width='100%'
                     />
                     <FormField
-                        disabled={values.areDetailsVerified}
+                        disabled={values.arePersonalDetailsVerified}
                         label='Last name*'
                         message='Your last name as in your identity document'
                         name='lastName'
@@ -67,7 +69,7 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
                         width='100%'
                     />
                     <DatePicker
-                        disabled={values.areDetailsVerified}
+                        disabled={values.arePersonalDetailsVerified}
                         displayFormat={dateDisplayFormat}
                         label='Date of birth*'
                         maxDate={moment().subtract(18, 'years').toDate()}
@@ -75,7 +77,6 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
                         minDate={moment().subtract(100, 'years').toDate()}
                         mobileAlignment='above'
                         name='dateOfBirth'
-                        onDateChange={handleDateChange}
                         showMessage
                         validationSchema={dateOfBirthValidator}
                     />
@@ -98,7 +99,7 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
                     name='arePersonalDetailsVerified'
                     onClick={handleTNCChecked}
                     type='checkbox'
-                    validate={areDetailsVerifiedValidator}
+                    validate={validateArePersonalDetailsVerified}
                 />
                 <label htmlFor='idv-checkbox'>
                     <WalletText lineHeight='2xs' size='sm'>

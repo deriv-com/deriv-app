@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { FormikValues } from 'formik';
 import { useSettings } from '@deriv/api-v2';
 import { getFormattedDateString } from '../../../../../../../utils/utils';
 import type { TVerifyPersonalDetailsValues } from '../types';
@@ -8,7 +9,7 @@ const useVerifyPersonalDetails = () => {
     const [isSubmissionInitiated, setIsSubmissionInitiated] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
-    const initialFormValues = useMemo(
+    const initialValues = useMemo(
         () => ({
             arePersonalDetailsVerified: false,
             dateOfBirth: getFormattedDateString(new Date((settings.date_of_birth ?? 0) * 1000)),
@@ -18,7 +19,7 @@ const useVerifyPersonalDetails = () => {
         [settings.date_of_birth, settings.first_name, settings.last_name]
     );
 
-    const submit = (values: TVerifyPersonalDetailsValues) => {
+    const submit = (values: FormikValues | TVerifyPersonalDetailsValues) => {
         const isDirty =
             settings.date_of_birth !== values.dateOfBirth ||
             settings.first_name !== values.firstName ||
@@ -47,7 +48,14 @@ const useVerifyPersonalDetails = () => {
         setIsSubmissionInitiated(false);
     }
 
-    return { error: error?.error, initialFormValues, isLoading, isSubmitted, submit };
+    return {
+        error: error?.error,
+        initialValues,
+        isLoading,
+        isSubmitted,
+        isSubmitting: isLoading && isSubmissionInitiated,
+        submit,
+    };
 };
 
 export default useVerifyPersonalDetails;

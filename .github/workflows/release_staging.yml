@@ -60,4 +60,4 @@ jobs:
         VERCEL_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
         ENVIRONMENT: Preview
         VERCEL_SCOPE: deriv
-        ALIAS_DOMAIN_URL: 'staging-app-dr.deriv.com'
+        ALIAS_DOMAIN_URL: 'staging-app-dr.binary.sx'

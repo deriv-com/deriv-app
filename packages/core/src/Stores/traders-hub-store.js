@@ -43,6 +43,7 @@ export default class TradersHubStore extends BaseStore {
     is_cfd_restricted_country = false;
     is_financial_restricted_country = false;
     is_setup_real_account_or_go_to_demo_modal_visible = false;
+    available_accounts = {};
 
     constructor(root_store) {
         const local_storage_properties = [
@@ -81,6 +82,7 @@ export default class TradersHubStore extends BaseStore {
             is_cfd_restricted_country: observable,
             is_financial_restricted_country: observable,
             is_setup_real_account_or_go_to_demo_modal_visible: observable,
+            available_accounts: observable,
             closeModal: action.bound,
             content_flag: computed,
             getAccount: action.bound,
@@ -127,6 +129,7 @@ export default class TradersHubStore extends BaseStore {
             setWalletsMigrationFailedPopup: action.bound,
             cleanup: action.bound,
             setIsSetupRealAccountOrGoToDemoModalVisible: action.bound,
+            setTradingPlatformAvailability: action.bound,
         });
 
         reaction(
@@ -147,6 +150,7 @@ export default class TradersHubStore extends BaseStore {
             () => {
                 this.getAvailablePlatforms();
                 this.getAvailableCFDAccounts();
+                this.setTradingPlatformAvailability();
             }
         );
 
@@ -470,6 +474,12 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableMt5Accounts() {
+        if (this.root_store.client.is_logged_in) {
+            this.available_mt5_accounts = this.available_cfd_accounts.filter(account => {
+                return this.available_accounts[account.product] || account.product === 'standard';
+            });
+            return;
+        }
         if (this.is_eu_user && !this.is_demo_low_risk) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
                 ['EU', 'All'].some(region => region === account.availability)
@@ -851,6 +861,12 @@ export default class TradersHubStore extends BaseStore {
 
     setWalletsMigrationFailedPopup(value) {
         this.is_wallet_migration_failed = value;
+    }
+
+    setTradingPlatformAvailability() {
+        this.root_store.client.trading_platform_available_accounts.forEach(account => {
+            this.available_accounts[account.product] = true;
+        });
     }
 
     cleanup() {

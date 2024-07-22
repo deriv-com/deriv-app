@@ -1,4 +1,4 @@
-import { makeObservable, observable, action } from 'mobx';
+import { makeObservable, observable, action, override } from 'mobx';
 import { TRootStore } from 'Types';
 import { getFilteredContractTypes } from 'AppV2/Utils/positions-utils';
 import BaseStore from 'Stores/base-store';
@@ -22,6 +22,7 @@ export default class PositionsStore extends BaseStore {
             setOpenContractTypeFilter: action.bound,
             setTimeFilter: action.bound,
             setCustomTimeRangeFilter: action.bound,
+            onUnmount: override,
         });
     }
 
@@ -40,5 +41,12 @@ export default class PositionsStore extends BaseStore {
 
     setCustomTimeRangeFilter(newCustomTimeFilter?: string) {
         this.customTimeRangeFilter = newCustomTimeFilter || '';
+    }
+
+    onUnmount() {
+        this.setClosedContractTypeFilter([]);
+        this.setOpenContractTypeFilter([]);
+        this.setTimeFilter('');
+        this.setCustomTimeRangeFilter('');
     }
 }

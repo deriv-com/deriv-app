@@ -6,19 +6,21 @@ type THeaderProps = {
     onPrevClick: () => void;
 };
 type TCarousel = {
-    CarouselHeader: ({ current_index, onNextClick, onPrevClick }: THeaderProps) => JSX.Element;
+    header: ({ current_index, onNextClick, onPrevClick }: THeaderProps) => JSX.Element;
     pages: { id: number; component: JSX.Element }[];
 };
 
-const Carousel = ({ CarouselHeader, pages }: TCarousel) => {
+const Carousel = ({ header, pages }: TCarousel) => {
     const [current_index, setCurrentIndex] = React.useState(0);
+
+    const HeaderComponent = header;
 
     const onNextClick = () => setCurrentIndex((current_index + 1) % pages.length);
     const onPrevClick = () => setCurrentIndex((current_index - 1 + pages.length) % pages.length);
 
     return (
         <React.Fragment>
-            <CarouselHeader current_index={current_index} onNextClick={onNextClick} onPrevClick={onPrevClick} />
+            <HeaderComponent current_index={current_index} onNextClick={onNextClick} onPrevClick={onPrevClick} />
             <ul className='carousel'>
                 {pages.map(({ component, id }) => (
                     <li

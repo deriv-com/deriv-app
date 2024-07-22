@@ -94,7 +94,7 @@ const AllowEquals = observer(({ is_minimized }: TAllowEqualsProps) => {
             />
             <ActionSheet.Root isOpen={is_open} onClose={onActionSheetClose} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>
-                    <Carousel CarouselHeader={AllowEqualsHeader} pages={action_sheet_content} />
+                    <Carousel header={AllowEqualsHeader} pages={action_sheet_content} />
                 </ActionSheet.Portal>
             </ActionSheet.Root>
         </React.Fragment>

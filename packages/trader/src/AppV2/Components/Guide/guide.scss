@@ -28,6 +28,8 @@
     &__contract-description {
         overflow-y: auto;
         height: calc(90vh - 23rem);
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 
     &__button {
@@ -148,6 +150,12 @@
 
         &--accumulator {
             margin-block-end: var(--component-actionSheet-spacing-padding-sm);
+        }
+    }
+
+    &__lottie-player {
+        &--loading {
+            display: none;
         }
     }
 }

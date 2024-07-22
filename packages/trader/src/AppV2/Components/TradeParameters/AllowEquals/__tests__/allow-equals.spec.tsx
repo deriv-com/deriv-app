@@ -2,10 +2,10 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
-import TraderProviders from '../../../../../trader-providers';
-import { ReportsStoreProvider } from '../../../../../../../reports/src/Stores/useReportsStores';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import { hasCallPutEqual, hasDurationForCallPutEqual } from 'Stores/Modules/Trading/Helpers/allow-equals';
+import TraderProviders from '../../../../../trader-providers';
+import { ReportsStoreProvider } from '../../../../../../../reports/src/Stores/useReportsStores';
 import AllowEquals from '../allow-equals';
 
 jest.mock('Stores/Modules/Trading/Helpers/allow-equals', () => ({

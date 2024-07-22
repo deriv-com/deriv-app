@@ -3,9 +3,9 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { TRADE_TYPES } from '@deriv/shared';
 import { mockStore } from '@deriv/stores';
+import ModulesProvider from 'Stores/Providers/modules-providers';
 import TraderProviders from '../../../../../trader-providers';
 import { ReportsStoreProvider } from '../../../../../../../reports/src/Stores/useReportsStores';
-import ModulesProvider from 'Stores/Providers/modules-providers';
 import TradeTypeTabs from '../trade-type-tabs';
 
 describe('TradeTypeTabs', () => {

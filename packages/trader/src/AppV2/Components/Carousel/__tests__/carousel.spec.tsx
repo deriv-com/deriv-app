@@ -15,11 +15,7 @@ const mock_pages = [
     },
 ];
 
-const MockHeader: React.ComponentProps<typeof Carousel>['CarouselHeader'] = ({
-    current_index,
-    onNextClick,
-    onPrevClick,
-}) => (
+const MockHeader: React.ComponentProps<typeof Carousel>['header'] = ({ current_index, onNextClick, onPrevClick }) => (
     <React.Fragment>
         <div>Current Index: {current_index}</div>
         <button onClick={onNextClick}>Next</button>
@@ -29,7 +25,7 @@ const MockHeader: React.ComponentProps<typeof Carousel>['CarouselHeader'] = ({
 
 const mock_props = {
     pages: mock_pages,
-    CarouselHeader: MockHeader,
+    header: MockHeader,
 };
 
 describe('Carousel', () => {

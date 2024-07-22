@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Modal, Text, Icon, Loading } from '@deriv/components';
 import { localize, Localize, getLanguage } from '@deriv/translations';
-import { redirectToLogin } from '@deriv/shared';
+import { redirectToLogin, removeActionParam } from '@deriv/shared';
 import { WS } from 'Services';
 import { observer, useStore } from '@deriv/stores';
 
@@ -17,6 +17,7 @@ const UpdateEmailModal = observer(() => {
 
     const onClickButton = () => {
         toggleUpdateEmailModal(false);
+        removeActionParam('system_email_change');
         if (is_logged_in) {
             logoutClient().then(() => {
                 redirectToLogin(false, getLanguage(), false);

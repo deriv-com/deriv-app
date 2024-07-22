@@ -306,26 +306,6 @@ type KycAuthStatus = {
 };
 
 type TPrivateSocketEndpoints = {
-    trading_platform_status: {
-        request: {
-            /**
-             * Must be `1`
-             */
-            trading_platform_status: 1;
-        };
-        response: {
-            trading_platform_status: {
-                /**
-                 * cfd platforms
-                 */
-                platform: 'ctrader' | 'dxtrade' | 'mt5';
-                /**
-                 * possible platform statuses.
-                 */
-                status: 'active' | 'unavailable' | 'maintenance';
-            };
-        };
-    };
     available_accounts: {
         request: {
             /**
@@ -2815,6 +2795,10 @@ type TSocketEndpoints = {
     trading_platform_password_reset: {
         request: TradingPlatformPasswordResetRequest;
         response: TradingPlatformPasswordResetResponse;
+    };
+    trading_platform_status: {
+        request: TradingPlatformStatusRequest;
+        response: TradingPlatformStatusResponse;
     };
     trading_servers: {
         request: ServerListRequest;

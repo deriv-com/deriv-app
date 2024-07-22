@@ -1,18 +1,19 @@
-import useQuery from '../useQuery';
-import useAuthorize from './useAuthorize';
+import useAuthorizedQuery from '../useAuthorizedQuery';
 
 /** A custom hook that gets the list of statuses of ctrader dxtrade mt5 platform. */
 const useTradingPlatformStatus = () => {
-    const { isSuccess } = useAuthorize();
-    const { data } = useQuery('trading_platform_status', {
-        options: { enabled: isSuccess },
-    });
-
-    const tradingPlatformStatusData = data?.trading_platform_status;
+    const { data: trading_platform_status, ...rest } = useAuthorizedQuery(
+        'trading_platform_status',
+        {},
+        {
+            refetchInterval: 120000,
+        }
+    );
 
     return {
         /** List of cfd platform statuses */
-        data: tradingPlatformStatusData,
+        data: trading_platform_status?.trading_platform_status,
+        ...rest,
     };
 };
 

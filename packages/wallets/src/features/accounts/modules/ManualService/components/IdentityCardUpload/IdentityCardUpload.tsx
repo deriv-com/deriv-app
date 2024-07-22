@@ -94,7 +94,11 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
                                         placeholder='DD/MM/YYYY'
                                     />
                                 </div>
-                                <Divider color='var(--border-divider)' height={2} />
+                                <Divider
+                                    className='wallets-identity-card-upload__divider'
+                                    color='var(--border-divider)'
+                                    height={2}
+                                />
                                 <div className='wallets-identity-card-upload__document-upload'>
                                     <WalletText>Next, upload the front and back of your identity card.</WalletText>
                                     <div className='wallets-identity-card-upload__dropzone'>

@@ -6,6 +6,6 @@ export const identityCardUploadValidator = Yup.object().shape({
     identityCardBack: fileValidator,
     identityCardExpiryDate: expiryDateValidator,
     identityCardFront: fileValidator,
-    identityCardNumber: Yup.string().required(),
+    identityCardNumber: Yup.string().required('Identity card number is required.'),
     selfieFile: selfieUploadValidator,
 });

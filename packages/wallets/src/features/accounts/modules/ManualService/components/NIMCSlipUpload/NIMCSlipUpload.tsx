@@ -72,7 +72,11 @@ const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                             <div className='wallets-nimc-slip-upload__wrapper'>
                                 <WalletText>First, enter your NIMC slip number.</WalletText>
                                 <FormField label='NIMC slip number*' name='nimcNumber' />
-                                <Divider color='var(--border-divider)' height={2} />
+                                <Divider
+                                    className='wallets-nimc-slip-upload__divider'
+                                    color='var(--border-divider)'
+                                    height={2}
+                                />
                                 <div className='wallets-nimc-slip-upload__document-section'>
                                     <WalletText>Next, upload both of the following documents.</WalletText>
                                     <div className='wallets-nimc-slip-upload__dropzones'>

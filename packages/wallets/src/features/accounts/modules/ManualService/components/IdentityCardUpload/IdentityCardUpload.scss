@@ -29,6 +29,7 @@
 
     &__input-group {
         width: 100%;
+        min-height: 7.8rem;
     }
 
     &__document-upload {
@@ -39,6 +40,10 @@
         @include mobile {
             gap: 1.6rem;
         }
+    }
+
+    &__divider {
+        width: 100%;
     }
 
     &__input-group,

@@ -92,7 +92,11 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                                         placeholder='DD/MM/YYYY'
                                     />
                                 </div>
-                                <Divider color='var(--border-divider)' height={2} />
+                                <Divider
+                                    className='wallets-driving-license-upload__divider'
+                                    color='var(--border-divider)'
+                                    height={2}
+                                />
                                 <div className='wallets-driving-license-upload__document-upload'>
                                     <WalletText>Next, upload the front and back of your driving licence.</WalletText>
                                     <div className='wallets-driving-license-upload__dropzone'>

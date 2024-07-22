@@ -41,6 +41,7 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 2.4rem;
         width: 100%;
+        min-height: 7.8rem;
 
         @include mobile {
             grid-template-columns: unset;

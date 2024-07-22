@@ -833,6 +833,7 @@ export default class TradersHubStore extends BaseStore {
     setTradingPlatformAvailability() {
         this.root_store.client.trading_platform_available_accounts.forEach(account => {
             if (account.product === 'synthetic') {
+                // `trading_platform_available_accounts` doesn't have an entry for 'standard', so adding this to the available accounts.
                 this.available_accounts[account.sub_account_type] = true;
             } else {
                 this.available_accounts[account.product] = true;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useWalletMigration } from '@deriv/hooks';
 import { makeLazyLoader, moduleLoader } from '@deriv/shared';
@@ -167,6 +168,17 @@ const CTraderTransferModal = makeLazyLoader(
     () => <Loading />
 )();
 
+const SetupRealAccountOrGoToDemoModal = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "modal_setup-real-account-or-go-to-demo" */ './setup-real-account-or-go-to-demo-modal'
+                )
+        ),
+    () => <Loading />
+)();
+
 type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
 };
@@ -220,6 +232,7 @@ const ModalManager = () => {
         is_failed_verification_modal_visible,
         is_regulators_compare_modal_visible,
         is_wallet_migration_failed,
+        is_setup_real_account_or_go_to_demo_modal_visible,
     } = traders_hub;
 
     const [password_manager, setPasswordManager] = React.useState<{
@@ -289,6 +302,12 @@ const ModalManager = () => {
         is_mt5_password_invalid_format_modal_visible ||
         is_sent_email_modal_enabled;
 
+    const url_params = new URLSearchParams(useLocation().search);
+    const url_action_param = url_params.get('action');
+    if (url_action_param) {
+        return null;
+    }
+
     return (
         <React.Fragment>
             {is_jurisdiction_modal_visible && <JurisdictionModal openPasswordModal={openRealPasswordModal} />}
@@ -344,6 +363,7 @@ const ModalManager = () => {
                     {(is_eligible || is_real_wallets_upgrade_on || is_in_progress) && <WalletsUpgradeModal />}
                 </React.Fragment>
             )}
+            {is_setup_real_account_or_go_to_demo_modal_visible && <SetupRealAccountOrGoToDemoModal />}
         </React.Fragment>
     );
 };

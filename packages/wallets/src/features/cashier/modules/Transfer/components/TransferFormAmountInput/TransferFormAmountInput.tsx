@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useFormikContext } from 'formik';
 import { useDebounce } from 'usehooks-ts';
+import { Button } from '@deriv-com/ui';
 import { ATMAmountInput, Timer } from '../../../../../../components';
 import useInputDecimalFormatter from '../../../../../../hooks/useInputDecimalFormatter';
 import { useTransfer } from '../../provider';
@@ -21,6 +22,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
 
     const {
         USDExchangeRates,
+        activeWallet,
         activeWalletExchangeRates,
         preferredLanguage,
         refetchAccountLimits,
@@ -40,6 +42,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     const isAmountInputDisabled = !hasFunds || (fieldName === 'toAmount' && !toAccount);
     const isAmountFieldActive = fieldName === values.activeAmountFieldName;
     const isTimerVisible = !isFromAmountField && toAccount && !isSameCurrency && fromAmount > 0 && toAmount > 0;
+    const isMaxBtnVisible = isFromAmountField && activeWallet?.account_type === 'crypto';
 
     const amountValue = isFromAmountField ? fromAmount : toAmount;
     const debouncedAmountValue = useDebounce(amountValue, DEBOUNCE_DELAY_MS);
@@ -166,6 +169,16 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
         setFieldValue,
     ]);
 
+    const onMaxBtnClickHandler = useCallback(
+        async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            const walletBalance = Number(fromAccount?.balance);
+            e.preventDefault();
+            await setFieldValue('activeAmountFieldName', 'fromAmount');
+            setFieldValue('fromAmount', walletBalance);
+        },
+        [fromAccount?.balance, setFieldValue]
+    );
+
     return (
         <div className='wallets-transfer-form-amount-input'>
             <ATMAmountInput
@@ -185,6 +198,18 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
                 <div className='wallets-transfer-form-amount-input__timer'>
                     <Timer key={toAmount} onComplete={onTimerCompleteHandler} />
                 </div>
+            )}
+            {isMaxBtnVisible && (
+                <Button
+                    className='wallets-transfer-form-amount-input__max-btn'
+                    color='black'
+                    disabled={!hasFunds}
+                    onClick={onMaxBtnClickHandler}
+                    size='sm'
+                    variant='outlined'
+                >
+                    Max
+                </Button>
             )}
         </div>
     );

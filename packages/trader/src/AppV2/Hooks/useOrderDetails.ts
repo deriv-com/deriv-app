@@ -47,6 +47,11 @@ const transformMultiplierData = (data: TContractInfo) => {
         [CARD_LABELS.MULTIPLIER]: data.multiplier ? `x${data.multiplier}` : '',
         [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
         [CARD_LABELS.COMMISSION]: data.commission ? `${data.commission} ${data.currency}` : '',
+        ...{
+            ...(data.cancellation?.ask_price && {
+                [CARD_LABELS.DEAL_CANCEL_FEE]: [data.cancellation?.ask_price, `(${CARD_LABELS.ACTIVE})`],
+            }),
+        },
         [CARD_LABELS.TAKE_PROFIT]:
             data.limit_order?.take_profit?.order_amount && data.currency
                 ? `${formatMoney(data.currency, data.limit_order.take_profit.order_amount, true)} ${data.currency}`
@@ -130,11 +135,11 @@ const transformVanillaData = (data: TContractInfo) => {
     const commonFields = getCommonFields(data);
     return {
         [CARD_LABELS.REFERENCE_ID]: commonFields[`${CARD_LABELS.REFERENCE_ID}`],
+        [CARD_LABELS.DURATION]: `${getDurationTime(data) ?? ''} ${getDurationUnitText(getDurationPeriod(data)) ?? ''}`,
         [CARD_LABELS.STRIKE_PRICE]:
             (isResetContract(data.contract_type) ? addComma(data.entry_spot_display_value) : getBarrierValue(data)) ||
             ' - ',
-        [CARD_LABELS.DURATION]: `${getDurationTime(data) ?? ''} ${getDurationUnitText(getDurationPeriod(data)) ?? ''}`,
-        [CARD_LABELS.PAYOUT_PER_POINT]: commonFields[CARD_LABELS.PAYOUT_PER_POINT],
+        [CARD_LABELS.PAYOUT_PER_POINT]: `${commonFields[CARD_LABELS.PAYOUT_PER_POINT]} ${data.currency}`,
         [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
     };
 };

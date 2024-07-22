@@ -116,13 +116,17 @@ const RiskManagementItem = observer(
                         ))}
                     {is_valid_to_cancel && is_deal_cancellation && <DealCancellationRemainingTime />}
                 </div>
-                {!is_accumulator && isToggleOn && (
+                {!is_accumulator && isToggleOn && currency && (
                     <TextField
                         variant='fill'
                         inputSize='md'
                         disabled={isSheetOpen}
                         textAlignment='center'
-                        value={`${finalValue.toFixed(2)} ${currency}`}
+                        value={`${formatMoney(
+                            currency,
+                            type == 'stop_loss' ? -finalValue : finalValue,
+                            true
+                        )} ${currency}`}
                         onClick={() => {
                             clearContractUpdateConfigValues();
                             setStepperValue(finalValue);

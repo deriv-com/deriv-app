@@ -18,7 +18,7 @@ import Devtools from './Devtools';
 import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 import initDatadog from '../Utils/Datadog';
 import { ThemeProvider } from '@deriv-com/quill-ui';
-import { useGrowthbookGetFeatureValue, useGrowthbookIsOn } from '@deriv/hooks';
+import { useGrowthbookIsOn } from '@deriv/hooks';
 import { useTranslations } from '@deriv-com/translations';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
@@ -34,9 +34,8 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const [isServicePasskeysFFEnabled] = useGrowthbookIsOn({
         featureFlag: 'service_passkeys',
     });
-    const [isPhoneNumberVerificationEnabled] = useGrowthbookGetFeatureValue({
+    const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookIsOn({
         featureFlag: 'phone_number_verification',
-        defaultValue: false,
     });
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());
@@ -48,23 +47,18 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     }, [current_language, switchLanguage]);
 
     React.useEffect(() => {
+        if (isPhoneNumberVerificationGBLoaded && isPhoneNumberVerificationEnabled) {
+            store.client.setIsPhoneNumberVerificationEnabled(isPhoneNumberVerificationEnabled);
+        }
+    }, [isPhoneNumberVerificationEnabled, store.client, isPhoneNumberVerificationGBLoaded]);
+
+    React.useEffect(() => {
         if (isGBLoaded && isWebPasskeysFFEnabled && isServicePasskeysFFEnabled) {
             store.client.setIsPasskeySupported(
                 is_passkeys_supported && isServicePasskeysFFEnabled && isWebPasskeysFFEnabled && isMobile
             );
         }
-        if (isPhoneNumberVerificationEnabled) {
-            store.client.setIsPhoneNumberVerificationEnabled(isPhoneNumberVerificationEnabled);
-        }
-    }, [
-        isServicePasskeysFFEnabled,
-        isGBLoaded,
-        isWebPasskeysFFEnabled,
-        is_passkeys_supported,
-        isMobile,
-        store.client,
-        isPhoneNumberVerificationEnabled,
-    ]);
+    }, [isServicePasskeysFFEnabled, isGBLoaded, isWebPasskeysFFEnabled, is_passkeys_supported, isMobile, store.client]);
 
     React.useEffect(() => {
         initDatadog(tracking_datadog);

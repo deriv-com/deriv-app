@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { TInstrumentsIcon } from 'Components/props.types';
 import TradingInstrumentsIcon from '../../Assets/svgs/trading-instruments';
+import { LabelPairedBasketShoppingCaptionRegularIcon } from '@deriv/quill-icons';
 
 const InstrumentsIconWithLabel = ({ icon, text, highlighted, className, is_asterisk }: TInstrumentsIcon) => {
     return (
@@ -13,6 +14,7 @@ const InstrumentsIconWithLabel = ({ icon, text, highlighted, className, is_aster
             className={className}
         >
             <TradingInstrumentsIcon icon={icon} size={24} className='trading-instruments__icon' />
+            <LabelPairedBasketShoppingCaptionRegularIcon style={{ background: 'grey', color: 'white' }} />
             <Text as='p' weight='bolder' line_height='xs' size='xxs' align='left' className='trading-instruments__text'>
                 {text}
             </Text>

@@ -298,6 +298,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             should_show_effortless_login_modal: false,
             setIsPasskeySupported: jest.fn(),
             setIsPhoneNumberVerificationEnabled: jest.fn(),
+            setPasskeysStatusToCookie: jest.fn(),
             setShouldShowEffortlessLoginModal: jest.fn(),
             fetchShouldShowEffortlessLoginModal: jest.fn(),
             exchange_rates: {},

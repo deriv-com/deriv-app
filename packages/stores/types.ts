@@ -612,6 +612,7 @@ type TClientStore = {
     setIsPasskeySupported: (value: boolean) => void;
     is_phone_number_verification_enabled: boolean;
     setIsPhoneNumberVerificationEnabled: (value: boolean) => void;
+    setPasskeysStatusToCookie: (status: 'available' | 'not_available') => void;
     should_show_effortless_login_modal: boolean;
     setShouldShowEffortlessLoginModal: (value: boolean) => void;
     fetchShouldShowEffortlessLoginModal: () => void;

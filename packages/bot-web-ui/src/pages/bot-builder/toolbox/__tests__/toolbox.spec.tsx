@@ -17,49 +17,51 @@ jest.mock('@deriv/bot-skeleton/src/scratch/xml/main.xml', () => '<xml>sample</xm
 
 window.Blockly = {
     derivWorkspace: { options: { readonly: jest.fn() }, getToolboxCategoryCallback: jest.fn(() => jest.fn(() => [])) },
-    Xml: {
-        textToDom: () => ({
-            getElementsByTagName: () => ({ length: 0 }),
-            childNodes: [
-                {
-                    tagName: 'CATEGORY',
-                    id: 'Trade parameters',
-                    getAttribute: () => 'Trade parameters',
-                    childNodes: [],
-                    children: [],
-                },
-                {
-                    tagName: 'CATEGORY',
-                    id: 'Utility',
-                    getAttribute: () => 'Utility',
-                    childNodes: [
-                        {
-                            tagName: 'CATEGORY',
-                            id: 'Math',
-                            getAttribute: () => 'Math',
-                            childNodes: [],
-                            children: [],
-                        },
-                    ],
-                    children: [
-                        {
-                            tagName: 'CATEGORY',
-                            id: 'Math',
-                            getAttribute: () => 'Math',
-                            childNodes: [],
-                            children: [],
-                        },
-                    ],
-                },
-                {
-                    tagName: 'NOCATEGORY',
-                    id: 'Trade parameters',
-                    getAttribute: () => 'Trade parameters',
-                    childNodes: [],
-                    children: [],
-                },
-            ],
-        }),
+    utils: {
+        xml: {
+            textToDom: () => ({
+                getElementsByTagName: () => ({ length: 0 }),
+                childNodes: [
+                    {
+                        tagName: 'CATEGORY',
+                        id: 'Trade parameters',
+                        getAttribute: () => 'Trade parameters',
+                        childNodes: [],
+                        children: [],
+                    },
+                    {
+                        tagName: 'CATEGORY',
+                        id: 'Utility',
+                        getAttribute: () => 'Utility',
+                        childNodes: [
+                            {
+                                tagName: 'CATEGORY',
+                                id: 'Math',
+                                getAttribute: () => 'Math',
+                                childNodes: [],
+                                children: [],
+                            },
+                        ],
+                        children: [
+                            {
+                                tagName: 'CATEGORY',
+                                id: 'Math',
+                                getAttribute: () => 'Math',
+                                childNodes: [],
+                                children: [],
+                            },
+                        ],
+                    },
+                    {
+                        tagName: 'NOCATEGORY',
+                        id: 'Trade parameters',
+                        getAttribute: () => 'Trade parameters',
+                        childNodes: [],
+                        children: [],
+                    },
+                ],
+            }),
+        },
     },
 };
 

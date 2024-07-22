@@ -75,6 +75,13 @@ type TBarriers = Array<
         isSingleBarrier?: boolean;
     }
 >;
+
+type PriceResponse = PriceProposalResponse & {
+    proposal: PriceProposalResponse['proposal'] & {
+        payout_choices: number[];
+    };
+};
+
 export type TChartLayout = {
     adj: boolean;
     aggregationType: string;
@@ -173,7 +180,6 @@ type TStakeBoundary = Record<
 >;
 type TTicksHistoryResponse = TicksHistoryResponse | TicksStreamResponse;
 type TBarriersData = Record<string, never> | { barrier: string; barrier_choices?: string[] };
-type TPayoutData = Record<string, never> | { barrier: string; payout_choices: number[] };
 
 const store_name = 'trade_store';
 const g_subscribers_map: Partial<Record<string, ReturnType<typeof WS.subscribeTicksHistory>>> = {}; // blame amin.m
@@ -1336,7 +1342,7 @@ export default class TradeStore extends BaseStore {
         this.is_market_closed = status;
     }
 
-    onProposalResponse(response: TResponse<PriceProposalRequest, PriceProposalResponse, 'proposal'>) {
+    onProposalResponse(response: TResponse<PriceProposalRequest, PriceResponse, 'proposal'>) {
         const { contract_type } = response.echo_req;
         const prev_proposal_info = getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};

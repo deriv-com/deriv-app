@@ -103,9 +103,9 @@ const RiskManagementItem = observer(
                         />
                     </span>
                     {!is_deal_cancellation &&
-                        (is_accumulator ? (
+                        (is_accumulator && currency ? (
                             <Text size='sm'>
-                                {finalValue} {currency}
+                                {formatMoney(currency, finalValue, true)} {currency}
                             </Text>
                         ) : (
                             <ToggleSwitch

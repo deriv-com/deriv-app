@@ -830,20 +830,6 @@ export default class TradersHubStore extends BaseStore {
         this.is_wallet_migration_failed = value;
     }
 
-    setTradingPlatformAvailability() {
-        this.root_store.client.trading_platform_available_accounts.forEach(account => {
-            if (account.product === 'synthetic') {
-                // `trading_platform_available_accounts` doesn't have an entry for 'standard', so adding this to the available accounts.
-                this.available_accounts[account.sub_account_type] = true;
-            } else {
-                this.available_accounts[account.product] = true;
-            }
-        });
-        if (this.root_store.client.ctrader_trading_platform_available_accounts.length > 0) {
-            this.available_accounts.ctrader = true;
-        }
-    }
-
     cleanup() {
         if (
             !localStorage.getItem('active_loginid') ||
@@ -858,5 +844,20 @@ export default class TradersHubStore extends BaseStore {
 
     setIsSetupRealAccountOrGoToDemoModalVisible(value) {
         this.is_setup_real_account_or_go_to_demo_modal_visible = value;
+    }
+
+    setTradingPlatformAvailability() {
+        this.root_store.client.trading_platform_available_accounts.forEach(account => {
+            if (account.product === 'synthetic') {
+                // `trading_platform_available_accounts` does not have an entry for 'standard' accounts,
+                // so adding 'standard' sub-account type to the available accounts for synthetic products.
+                this.available_accounts[account.sub_account_type] = true;
+            } else {
+                this.available_accounts[account.product] = true;
+            }
+        });
+        if (this.root_store.client.ctrader_trading_platform_available_accounts.length > 0) {
+            this.available_accounts.ctrader = true;
+        }
     }
 }

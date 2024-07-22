@@ -86,11 +86,11 @@ describe('WalletListCardDropdown', () => {
     it('displays correct wallet details with balance in items list', () => {
         (mockUseAllBalanceSubscription as jest.Mock).mockReturnValue({
             data: {
-                CR1: {
-                    balance: '1000.00',
-                },
                 BTC1: {
                     balance: '1.0000000',
+                },
+                CR1: {
+                    balance: '1000.00',
                 },
             },
             isLoading: false,

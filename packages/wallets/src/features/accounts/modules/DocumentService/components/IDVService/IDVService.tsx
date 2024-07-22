@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Form, Formik } from 'formik';
+import React, { useEffect, useState } from 'react';
+import { Formik } from 'formik';
 import { Loader } from '@deriv-com/ui';
-import { FormField, ModalStepWrapper, WalletButton, WalletDropdown, WalletText } from '../../../../../../components';
+import { FormField, ModalStepWrapper, WalletDropdown, WalletText } from '../../../../../../components';
+import { Footer } from '../../../components';
 import {
     TVerifyPersonalDetailsValues,
     useVerifyPersonalDetails,
@@ -25,46 +26,46 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
         error: errorIDVDetails,
         initialFormValues: initialIDVValues,
         isLoading: isIDVDataLoading,
-        isSubmitted: isIDVDetailsSubmitted,
+        isSubmitted: isIDVSubmitted,
+        isSubmitting: isIDVSubmitting,
         previousSubmissionErrorStatus,
         submit: submitIDVDetails,
     } = useIDVService();
     const {
         error: errorPersonalDetails,
-        initialFormValues: initialPersonalDetailsValues,
+        initialValues: initialPersonalDetailsValues,
         isLoading: isPersonalDetailsDataLoading,
         isSubmitted: isPersonalDetailsSubmitted,
+        isSubmitting: isPersonalDetailsSubmitting,
         submit: submitPersonalDetails,
     } = useVerifyPersonalDetails();
     const [clientHasDocuments, setClientHasDocuments] = useState<boolean>(true);
 
-    const Footer = ({ disabled }: { disabled?: boolean }) => {
-        return (
-            <WalletButton disabled={disabled && clientHasDocuments} type='submit'>
-                Next
-            </WalletButton>
-        );
+    const isDataLoading = isIDVDataLoading || isPersonalDetailsDataLoading;
+    const isSubmitting = isIDVSubmitting && isPersonalDetailsSubmitting;
+    const isSubmitted = isIDVSubmitted && isPersonalDetailsSubmitted;
+
+    const errorMessage = previousSubmissionErrorStatus ?? errorIDVDetails?.code ?? errorPersonalDetails?.code;
+
+    const submit = (values: TIDVServiceValues & TVerifyPersonalDetailsValues) => {
+        if (clientHasDocuments) {
+            submitPersonalDetails(values);
+            submitIDVDetails(values);
+        }
     };
 
-    const onSubmit = (values: TIDVServiceValues & TVerifyPersonalDetailsValues) => {
-        submitPersonalDetails(values);
-        submitIDVDetails(values);
-    };
+    useEffect(() => {
+        //  If IDV submission is successful, invoke external callback onCompletion()
+        if (isSubmitted && onCompletion) {
+            onCompletion();
+        }
+    }, [isSubmitted, onCompletion]);
 
-    //  If IDV submission is successful, invoke external callback onCompletion()
-    if (isIDVDetailsSubmitted && isPersonalDetailsSubmitted && onCompletion) {
-        onCompletion();
-    }
-
-    if (isIDVDataLoading || isPersonalDetailsDataLoading) return <Loader />;
-
-    if (errorIDVDetails) {
-        // Handle IDV error screen
-    }
+    if (isDataLoading) return <Loader />;
 
     return (
-        <Formik initialValues={{ ...initialIDVValues, ...initialPersonalDetailsValues }} onSubmit={onSubmit}>
-            {({ dirty, isValid, setFieldValue, values }) => {
+        <Formik initialValues={{ ...initialIDVValues, ...initialPersonalDetailsValues }} onSubmit={submit}>
+            {({ handleSubmit, isValid, setFieldValue, values }) => {
                 const document = availableDocumentOptions[values.documentType];
                 const documentNumberExample =
                     values.documentType && clientHasDocuments
@@ -75,80 +76,86 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                         ? documentExamples?.[values.documentType].additionalDocumentExampleFormat
                         : '';
 
+                const disableSubmission = !isValid || isSubmitting || !values.documentType;
+
+                const handleSelectDocument = (selectedItem: string) => {
+                    setFieldValue('documentType', selectedItem);
+                    setClientHasDocuments(selectedItem !== 'none');
+                };
+
+                if (!errorMessage && isSubmitting) {
+                    // loader
+                }
+
                 return (
-                    <Form>
-                        <ModalStepWrapper
-                            renderFooter={() => <Footer disabled={!isValid || !dirty || !values.documentNumber} />}
-                            title='Add a real MT5 account'
-                        >
-                            <div className='wallets-idv-service'>
-                                <div className='wallets-idv-service__body'>
-                                    {previousSubmissionErrorStatus && (
-                                        <ErrorMessage message={previousSubmissionErrorStatus} />
-                                    )}
-                                    <div className='wallets-idv-service__title'>
-                                        <WalletText weight='bold'>Identity verification</WalletText>
-                                    </div>
-                                    <WalletDropdown
-                                        errorMessage={'Document type is required'}
-                                        isRequired
-                                        label='Choose the document type'
-                                        list={displayedDocumentsList}
-                                        name='documentType'
-                                        onSelect={selectedItem => {
-                                            setFieldValue('documentType', selectedItem);
-                                            setClientHasDocuments(selectedItem !== 'none');
-                                        }}
-                                        value={values?.documentType}
-                                        variant='comboBox'
-                                    />
-                                    {clientHasDocuments && (
-                                        <>
+                    <ModalStepWrapper
+                        renderFooter={() => (
+                            <Footer disableNext={disableSubmission && !clientHasDocuments} onClickNext={handleSubmit} />
+                        )}
+                        title='Add a real MT5 account'
+                    >
+                        <div className='wallets-idv-service'>
+                            <div className='wallets-idv-service__body'>
+                                {!!errorMessage && <ErrorMessage message={errorMessage} />}
+                                <div className='wallets-idv-service__title'>
+                                    <WalletText weight='bold'>Identity verification</WalletText>
+                                </div>
+                                <WalletDropdown
+                                    errorMessage={'Document type is required'}
+                                    isRequired
+                                    label='Choose the document type'
+                                    list={displayedDocumentsList}
+                                    name='documentType'
+                                    onSelect={handleSelectDocument}
+                                    value={values?.documentType}
+                                    variant='comboBox'
+                                />
+                                {clientHasDocuments && (
+                                    <>
+                                        <FormField
+                                            disabled={!values.documentType}
+                                            label='Enter your document number'
+                                            message={documentNumberExample ? `Example: ${documentNumberExample}` : ''}
+                                            name='documentNumber'
+                                            showMessage={!!values.documentType}
+                                            validationSchema={
+                                                clientHasDocuments && document && documentNumberExample
+                                                    ? getDocumentNumberValidator(document, documentNumberExample)
+                                                    : undefined
+                                            }
+                                        />
+                                        {document && document.additional && (
                                             <FormField
                                                 disabled={!values.documentType}
-                                                label='Enter your document number'
+                                                label={`Enter your ${document.additional?.value ?? ''} number`}
                                                 message={
-                                                    documentNumberExample ? `Example: ${documentNumberExample}` : ''
+                                                    additionalDocumentNumberExample
+                                                        ? `Example: ${additionalDocumentNumberExample}`
+                                                        : ''
                                                 }
-                                                name='documentNumber'
+                                                name='additionalDocumentNumber'
                                                 showMessage={!!values.documentType}
                                                 validationSchema={
-                                                    document && documentNumberExample
-                                                        ? getDocumentNumberValidator(document, documentNumberExample)
+                                                    clientHasDocuments &&
+                                                    document.additional &&
+                                                    additionalDocumentNumberExample
+                                                        ? getDocumentNumberValidator(
+                                                              document.additional,
+                                                              additionalDocumentNumberExample
+                                                          )
                                                         : undefined
                                                 }
                                             />
-                                            {document && document.additional && (
-                                                <FormField
-                                                    disabled={!values.documentType}
-                                                    label={`Enter your ${document.additional?.value ?? ''} number`}
-                                                    message={
-                                                        additionalDocumentNumberExample
-                                                            ? `Example: ${additionalDocumentNumberExample}`
-                                                            : ''
-                                                    }
-                                                    name='additionalDocumentNumber'
-                                                    showMessage={!!values.documentType}
-                                                    validationSchema={
-                                                        document.additional && additionalDocumentNumberExample
-                                                            ? getDocumentNumberValidator(
-                                                                  document.additional,
-                                                                  additionalDocumentNumberExample
-                                                              )
-                                                            : undefined
-                                                    }
-                                                />
-                                            )}
-                                            <div className='wallets-idv-service__title'>
-                                                <WalletText weight='bold'>Details</WalletText>
-                                            </div>
-                                        </>
-                                    )}
-                                </div>
-                                {clientHasDocuments && <VerifyPersonalDetails error={errorPersonalDetails} />}
+                                        )}
+                                        <div className='wallets-idv-service__title'>
+                                            <WalletText weight='bold'>Details</WalletText>
+                                        </div>
+                                    </>
+                                )}
                             </div>
-                        </ModalStepWrapper>
-                    </Form>
+                            {clientHasDocuments && <VerifyPersonalDetails error={errorPersonalDetails} />}
+                        </div>
+                    </ModalStepWrapper>
                 );
             }}
         </Formik>

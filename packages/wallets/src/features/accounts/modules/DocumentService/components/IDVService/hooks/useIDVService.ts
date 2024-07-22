@@ -19,12 +19,12 @@ const useIDVService = () => {
     const { data: settings, isLoading: isSettingsLoading } = useSettings();
     const {
         error,
-        isLoading: isIDVSubmitting,
+        isLoading: isSubmitting,
         isSuccess: isIDVSubmissionSuccess,
         submitIDVDocuments,
     } = useIdentityDocumentVerificationAdd();
 
-    const isLoading = isPOIStatusLoading || isResidenceListLoading || isSettingsLoading || isIDVSubmitting;
+    const isLoading = isPOIStatusLoading || isResidenceListLoading || isSettingsLoading;
 
     const [displayedDocumentsList, availableDocumentOptions] = useMemo(() => {
         const documents: Record<string, TDocumentTypeItem> = {};
@@ -100,6 +100,7 @@ const useIDVService = () => {
         initialFormValues,
         isLoading,
         isSubmitted,
+        isSubmitting,
         previousSubmissionErrorStatus,
         submit,
     };

@@ -1,23 +1,28 @@
 import React from 'react';
-import classNames from 'classnames';
+import { usePOI } from '@deriv/api-v2';
+import { Loader } from '@deriv-com/ui';
+import { THooks } from '../../../../types';
 import { IDVService, Onfido } from './components';
-import './DocumentService.scss';
 
 type TDocumentServiceProps = {
-    onCompletion?: () => void;
+    onCompletion?: VoidFunction;
 };
 
 const DocumentService: React.FC<TDocumentServiceProps> = ({ onCompletion }) => {
-    return (
-        <div
-            className={classNames('wallets-document-service', {
-                // 'wallets-document-service--reverse': isOnfido,
-            })}
-        >
-            {/* <IDVService onCompletion={onCompletion} /> */}
-            <Onfido onCompletion={onCompletion} />
-        </div>
-    );
+    const { data: poiData, isLoading } = usePOI();
+    if (!poiData || isLoading) return <Loader />;
+
+    const service = poiData.current.service as THooks.POI['current']['service'];
+
+    if (service === 'onfido') {
+        return <Onfido onCompletion={onCompletion} />;
+    }
+
+    if (service === 'idv') {
+        return <IDVService onCompletion={onCompletion} />;
+    }
+
+    return null;
 };
 
 export default DocumentService;

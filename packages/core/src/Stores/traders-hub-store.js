@@ -509,9 +509,9 @@ export default class TradersHubStore extends BaseStore {
             });
             return;
         }
-        this.available_ctrader_accounts = this.available_cfd_accounts.filter(account => {
-            return account.platform === CFD_PLATFORMS.CTRADER;
-        });
+        this.available_ctrader_accounts = this.available_cfd_accounts.filter(
+            account => account.platform === CFD_PLATFORMS.CTRADER
+        );
     }
 
     getExistingAccounts(platform, market_type, product) {

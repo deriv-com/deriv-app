@@ -1,7 +1,8 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import WheelPicker from '../wheel-picker';
+import userEvent from '@testing-library/user-event';
 
 const options = [10, 20, 30, 40];
 const mockOnClick = jest.fn();
@@ -25,14 +26,14 @@ describe('WheelPicker Component', () => {
     test('should call onClick with the correct value when up button is clicked', () => {
         renderComponent(20);
         const upButton = screen.getByTestId('up-btn');
-        fireEvent.click(upButton);
+        userEvent.click(upButton);
         expect(mockOnClick).toHaveBeenCalledWith(10);
     });
 
     test('should call onClick with the correct value when down button is clicked', () => {
         renderComponent(20);
         const downButton = screen.getByTestId('down-btn');
-        fireEvent.click(downButton);
+        userEvent.click(downButton);
         expect(mockOnClick).toHaveBeenCalledWith(30);
     });
 

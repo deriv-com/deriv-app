@@ -1,8 +1,9 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import PayoutPerPointInput from '../payout-per-point-input';
 import { useDevice } from '@deriv/components';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -67,7 +68,7 @@ describe('PayoutPerPointInput Component', () => {
     test('should call onPayoutClick when an option is selected in WheelPicker', () => {
         renderComponent(true);
         const option = screen.getByText('30');
-        fireEvent.click(option);
+        userEvent.click(option);
         expect(mockOnPayoutClick).toHaveBeenCalledWith(30);
     });
 });

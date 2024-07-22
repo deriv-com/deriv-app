@@ -1,7 +1,8 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import PayoutPerPointMobileInput from '../payout-per-point-mobile-input';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -61,8 +62,8 @@ describe('PayoutPerPointMobileInput', () => {
     test('Save button works correctly', () => {
         render(<PayoutPerPointMobileInput {...defaultProps} />);
 
-        fireEvent.click(screen.getByText('Set Value'));
-        fireEvent.click(screen.getByText('Save'));
+        userEvent.click(screen.getByText('Set Value'));
+        userEvent.click(screen.getByText('Save'));
 
         expect(defaultProps.togglePayoutWheelPicker).toHaveBeenCalled();
         expect(defaultProps.onPayoutClick).toHaveBeenCalledWith(defaultProps.payoutChoices[0]);
@@ -71,7 +72,7 @@ describe('PayoutPerPointMobileInput', () => {
     test('Close button works correctly', () => {
         render(<PayoutPerPointMobileInput {...defaultProps} />);
 
-        fireEvent.click(screen.getByText('IcCross'));
+        userEvent.click(screen.getByText('IcCross'));
 
         expect(defaultProps.togglePayoutWheelPicker).toHaveBeenCalled();
         expect(defaultProps.onPayoutClick).toHaveBeenCalledWith(defaultProps.payout_per_point);

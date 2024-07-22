@@ -3,8 +3,8 @@ import {
     useActiveLinkedToTradingAccount,
     useActiveWalletAccount,
     useCreateNewRealAccount,
-    useSettings,
     useInvalidateQuery,
+    useSettings,
 } from '@deriv/api-v2';
 import { toMoment } from '@deriv/utils';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
@@ -32,8 +32,6 @@ const DerivAppsGetAccount: React.FC = () => {
 
     const { data: activeLinkedToTradingAccount, isLoading: isActiveLinkedToTradingAccountLoading } =
         useActiveLinkedToTradingAccount();
-
-    const landingCompanyName = activeWallet?.landing_company_name?.toLocaleUpperCase();
 
     const createTradingAccount = async () => {
         if (!activeWallet?.is_virtual) {
@@ -66,10 +64,10 @@ const DerivAppsGetAccount: React.FC = () => {
                     shouldHideHeader={isDesktop}
                 >
                     <CFDSuccess
-                        description={`Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your Options (${landingCompanyName}) account to start trading.`}
+                        description={`Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your Options account to start trading.`}
                         displayBalance={activeLinkedToTradingAccount?.display_balance ?? '0.00'}
                         renderButton={() => <DerivAppsSuccessFooter />}
-                        title={`Your Options (${landingCompanyName}) account is ready`}
+                        title={`Your Options account is ready`}
                     />
                 </ModalStepWrapper>,
                 {
@@ -83,7 +81,7 @@ const DerivAppsGetAccount: React.FC = () => {
     return (
         <div className='wallets-deriv-apps-section wallets-deriv-apps-section__get-account'>
             <div className='wallets-deriv-apps-section__icon'>
-                <WalletMarketIcon icon='IcWalletOptionsLight' size='lg' />
+                <WalletMarketIcon icon='standard' size='lg' />
             </div>
             <div className='wallets-deriv-apps-section__get-content'>
                 <div className='wallets-deriv-apps-section__details'>

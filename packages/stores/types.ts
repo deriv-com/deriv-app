@@ -472,6 +472,7 @@ type TClientStore = {
     is_proof_of_ownership_enabled: boolean;
     is_poa_expired: boolean;
     is_populating_dxtrade_account_list: boolean;
+    is_populating_ctrader_account_list: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
     is_high_risk: boolean;
@@ -689,6 +690,7 @@ type TUiStore = {
     is_dark_mode_on: boolean;
     is_loading: boolean;
     is_reports_visible: boolean;
+    is_reset_password_modal_visible: boolean;
     is_route_modal_on: boolean;
     is_language_settings_modal_on: boolean;
     is_verification_modal_visible: boolean;
@@ -761,6 +763,7 @@ type TUiStore = {
     togglePositionsDrawer: () => void;
     toggleReadyToDepositModal: () => void;
     toggleResetEmailModal: (state_change: boolean) => void;
+    toggleResetPasswordModal: (state_change: boolean) => void;
     toggleServicesErrorModal: (is_visible: boolean) => void;
     toggleSetCurrencyModal: () => void;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
@@ -1090,13 +1093,13 @@ type TTradersHubStore = {
     available_dxtrade_accounts: TAvailableCFDAccounts[];
     available_ctrader_accounts: TAvailableCFDAccounts[];
     is_demo_low_risk: boolean;
-    is_mt5_notification_modal_visible: boolean;
-    setMT5NotificationModal: (value: boolean) => void;
     has_any_real_account: boolean;
     startTrade: (platform?: TPlatform, existing_account?: DetailsOfEachMT5Loginid) => void;
     getAccount: () => void;
     showTopUpModal: (existing_account?: DetailsOfEachMT5Loginid) => void;
     is_regulators_compare_modal_visible: boolean;
+    is_setup_real_account_or_go_to_demo_modal_visible: boolean;
+    setIsSetupRealAccountOrGoToDemoModalVisible: (value: boolean) => void;
 };
 
 type TContractReplay = {

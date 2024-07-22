@@ -1,5 +1,6 @@
 // auto-generated file. DO NOT MODIFY.
 
+import './appstore/ic-appstore-account.svg';
 import './appstore/ic-appstore-add-rounded.svg';
 import './appstore/ic-appstore-add-square.svg';
 import './appstore/ic-appstore-add.svg';
@@ -280,6 +281,7 @@ import './common/ic-amplifier.svg';
 import './common/ic-archive.svg';
 import './common/ic-arrow-down-bold.svg';
 import './common/ic-arrow-down.svg';
+import './common/ic-arrow-drop-down.svg';
 import './common/ic-arrow-left-bold.svg';
 import './common/ic-arrow-left-curly.svg';
 import './common/ic-arrow-left.svg';
@@ -585,6 +587,7 @@ import './common/ic-regulatory-information.svg';
 import './common/ic-remove-token.svg';
 import './common/ic-replay.svg';
 import './common/ic-reports.svg';
+import './common/ic-reset-time.svg';
 import './common/ic-reset.svg';
 import './common/ic-sample-credit-card.svg';
 import './common/ic-save-filled.svg';

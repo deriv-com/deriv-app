@@ -1,7 +1,8 @@
 import React from 'react';
 import { useSettings, useStatesList } from '@deriv/api-v2';
+import { Dropdown } from '@deriv-com/ui';
 import { FlowTextField, useFlow } from '../../../../components';
-import { InlineMessage, WalletDropdown, WalletText } from '../../../../components/Base';
+import { InlineMessage, WalletText } from '../../../../components/Base';
 import {
     addressFirstLineValidator,
     addressSecondLineValidator,
@@ -49,14 +50,18 @@ const AddressSection: React.FC = () => {
                     name='townCityLine'
                     validationSchema={cityValidator}
                 />
-                <WalletDropdown
-                    label='State/Province'
-                    list={statesList}
-                    listHeight='sm'
-                    name='stateProvinceDropdownLine'
-                    onSelect={selectedItem => setFormValues('stateProvinceDropdownLine', selectedItem)}
-                    value={getSettings?.address_state ?? ''}
-                />
+                <div className='wallets-address-section__dropdown'>
+                    <Dropdown
+                        data-testid='dt_wallets_address_section_dropdown'
+                        isFullWidth
+                        label='State/Province'
+                        list={statesList}
+                        listHeight='sm'
+                        name='stateProvinceDropdownLine'
+                        onSelect={selectedItem => setFormValues('stateProvinceDropdownLine', selectedItem)}
+                        value={getSettings?.address_state ?? ''}
+                    />
+                </div>
                 <FlowTextField
                     defaultValue={getSettings?.address_postcode ?? ''}
                     label='Postal/ZIP code'

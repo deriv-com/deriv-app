@@ -1,6 +1,4 @@
-export * from '../WalletsPrimaryTabs';
 export * from './ATMAmountInput';
-export * from './Divider';
 export * from './IconButton';
 export * from './InlineMessage';
 export * from './ModalStepWrapper';
@@ -13,7 +11,6 @@ export * from './WalletButton';
 export * from './WalletButtonGroup';
 export * from './WalletCheckbox';
 export * from './WalletClipboard';
-export * from './WalletDropdown';
 export * from './WalletLink';
 export * from './WalletPasswordFieldLazy';
 export * from './WalletText';

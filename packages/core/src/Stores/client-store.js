@@ -73,6 +73,7 @@ export default class ClientStore extends BaseStore {
     is_populating_account_list = false;
     is_populating_mt5_account_list = true;
     is_populating_dxtrade_account_list = true;
+    is_populating_ctrader_account_list = true;
     website_status = {};
     account_settings = {};
     account_status = {};
@@ -85,6 +86,7 @@ export default class ClientStore extends BaseStore {
     has_enabled_two_fa = false;
     has_changed_two_fa = false;
     landing_companies = {};
+    is_new_session = false;
 
     // All possible landing companies of user between all
     standpoint = {
@@ -192,6 +194,7 @@ export default class ClientStore extends BaseStore {
             is_populating_account_list: observable,
             is_populating_mt5_account_list: observable,
             is_populating_dxtrade_account_list: observable,
+            is_populating_ctrader_account_list: observable,
             website_status: observable,
             account_settings: observable,
             account_status: observable,
@@ -433,12 +436,20 @@ export default class ClientStore extends BaseStore {
 
         reaction(
             () => [this.account_settings],
-            () => {
-                const language = getRedirectionLanguage(this.account_settings?.preferred_language);
-                window.history.replaceState({}, document.title, urlForLanguage(language));
+            async () => {
+                const language = getRedirectionLanguage(this.account_settings?.preferred_language, this.is_new_session);
+                const should_update_preferred_language =
+                    language !== this.account_settings?.preferred_language &&
+                    this.preferred_language !== this.account_settings?.preferred_language;
 
-                this.setPreferredLanguage(language);
-                LocalStore.set(LANGUAGE_KEY, language);
+                if (should_update_preferred_language) {
+                    window.history.replaceState({}, document.title, urlForLanguage(language));
+                    this.setPreferredLanguage(language);
+                    await WS.setSettings({
+                        set_settings: 1,
+                        preferred_language: language,
+                    });
+                }
             }
         );
 
@@ -1068,7 +1079,7 @@ export default class ClientStore extends BaseStore {
     };
 
     setCookieAccount() {
-        const domain = /deriv\.(com|me)/.test(window.location.hostname)
+        const domain = /deriv\.(com|me|be)/.test(window.location.hostname)
             ? deriv_urls.DERIV_HOST_NAME
             : window.location.hostname;
 
@@ -1505,7 +1516,7 @@ export default class ClientStore extends BaseStore {
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
-        if (action_param === 'request_email' && this.is_logged_in) {
+        if (action_param === 'request_email') {
             const request_email_code = code_param ?? LocalStore.get(`verification_code.${action_param}`) ?? '';
             if (request_email_code) {
                 this.setVerificationCode(request_email_code, action_param);
@@ -1548,9 +1559,12 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 this.is_populating_account_list = false;
             });
-            const language = getRedirectionLanguage(authorize_response.authorize.preferred_language);
+            const language = getRedirectionLanguage(
+                authorize_response.authorize.preferred_language,
+                this.is_new_session
+            );
             const stored_language = LocalStore.get(LANGUAGE_KEY);
-            if (language !== 'EN' && stored_language && language !== stored_language) {
+            if (stored_language && language !== stored_language) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));
                 await this.root_store.common.changeSelectedLanguage(language);
             }
@@ -1834,7 +1848,6 @@ export default class ClientStore extends BaseStore {
 
         // set local storage
         this.root_store.gtm.setLoginFlag();
-
         await this.init();
 
         // broadcastAccountChange is already called after new connection is authorized
@@ -2111,6 +2124,8 @@ export default class ClientStore extends BaseStore {
                     is_social_signup_provider = true;
                 }
             });
+
+            this.is_new_session = Object.keys(obj_params).length > 0;
 
             // delete account query params - but keep other query params (e.g. utm)
             Object.keys(obj_params).forEach(key => search_params.delete(key));
@@ -2673,7 +2688,7 @@ export default class ClientStore extends BaseStore {
         this.setIsWalletMigrationRequestIsInProgress(true);
         try {
             await WS.authorized.startWalletMigration();
-            this.getWalletMigrationState();
+            await this.getWalletMigrationState();
         } catch (error) {
             // eslint-disable-next-line no-console
             console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);

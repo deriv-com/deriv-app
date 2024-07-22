@@ -20,12 +20,12 @@ const DerivAppsTradingAccount: React.FC<TSubscribedBalance> = ({ balance }) => {
     return (
         <div className='wallets-deriv-apps-section wallets-deriv-apps-section__border'>
             <div className={isMobile ? 'wallets-deriv-apps-section__icon-small' : 'wallets-deriv-apps-section__icon'}>
-                <WalletMarketIcon icon='IcWalletOptionsLight' size={isMobile ? 'md' : 'lg'} />
+                <WalletMarketIcon icon='standard' size={isMobile ? 'md' : 'lg'} />
             </div>
             <div className='wallets-deriv-apps-section__details'>
                 <div className='wallets-deriv-apps-section__title-and-badge'>
                     <WalletText size='sm'>Options</WalletText>
-                    <WalletListCardBadge isDemo={activeWallet?.is_virtual} label={activeWallet?.landing_company_name} />
+                    {activeWallet?.is_virtual && <WalletListCardBadge />}
                 </div>
                 {isLoading ? (
                     <div className='wallets-skeleton wallets-deriv-apps-balance-loader' />

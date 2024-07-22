@@ -44,12 +44,12 @@ Blockly.Blocks.accumulator_take_profit = {
         };
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
         if (
             (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
-            event.type === Blockly.Events.END_DRAG
+            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
             this.setCurrency();
         }
@@ -71,4 +71,4 @@ Blockly.Blocks.accumulator_take_profit = {
     },
 };
 
-Blockly.JavaScript.accumulator_take_profit = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.accumulator_take_profit = () => {};

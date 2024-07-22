@@ -33,6 +33,8 @@ import {
     getUrlP2P,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
+import { URLConstants } from '@deriv-com/utils';
+
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
 
 import { requestLogout, WS } from 'Services';
@@ -406,6 +408,7 @@ export default class ClientStore extends BaseStore {
             startWalletMigration: action.bound,
             resetWalletMigration: action.bound,
             setIsPasskeySupported: action.bound,
+            setPasskeysStatusToCookie: action.bound,
             setShouldShowEffortlessLoginModal: action.bound,
             fetchShouldShowEffortlessLoginModal: action.bound,
             getExchangeRate: action.bound,
@@ -2718,6 +2721,28 @@ export default class ClientStore extends BaseStore {
         this.should_show_effortless_login_modal = should_show_effortless_login_modal;
     }
 
+    setPasskeysStatusToCookie(status) {
+        let domain = /deriv.com/.test(window.location.hostname) ? URLConstants.derivHost : window.location.hostname;
+
+        if (/deriv.dev/.test(window.location.hostname)) {
+            //set domain for dev environment (FE deployment and login page on qa-box)
+            domain = 'deriv.dev';
+        }
+
+        const expirationDate = new Date();
+        expirationDate.setFullYear(expirationDate.getFullYear() + 1); // Set to expire in 1 year
+
+        const is_available = status === 'available';
+
+        Cookies.set('passkeys_available', String(is_available), {
+            expires: expirationDate,
+            path: '/',
+            domain,
+            secure: true,
+            sameSite: 'None',
+        });
+    }
+
     async fetchShouldShowEffortlessLoginModal() {
         try {
             const stored_value = localStorage.getItem('show_effortless_login_modal');
@@ -2731,6 +2756,7 @@ export default class ClientStore extends BaseStore {
                 if (data?.passkeys_list?.length === 0) {
                     this.setShouldShowEffortlessLoginModal(true);
                 } else {
+                    this.setPasskeysStatusToCookie('available');
                     this.setShouldShowEffortlessLoginModal(false);
                     localStorage.setItem('show_effortless_login_modal', JSON.stringify(false));
                 }

@@ -39,6 +39,5 @@ export const getCFDAvailableAccount = () => [
         market_type: 'all',
         product: 'ctrader',
         icon: 'CTrader',
-        availability: 'Non-EU',
     },
 ];

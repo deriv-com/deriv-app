@@ -101,7 +101,7 @@ const AccountOption = ({
             </div>
 
             <span className='account-transfer-form__balance'>
-                {has_show_account_status /* && is_selected_from */ ? (
+                {has_show_account_status ? (
                     getAccountStatusText()
                 ) : (
                     <Money
@@ -462,7 +462,7 @@ const AccountTransferForm = observer(
                 const getMaintenanceTime = () => {
                     if (selected_to.is_dxtrade) return '08:00 GMT';
                     if (selected_to.is_ctrader) return '10:00 GMT';
-                    return '03:00 GMT'; // mt5
+                    return '03:00 GMT';
                 };
                 hint_text = (
                     <Localize

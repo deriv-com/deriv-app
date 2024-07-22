@@ -39,7 +39,7 @@ const CFDServerMaintenanceModal = observer(() => {
                 />
             </Modal.Body>
             <Modal.Footer>
-                <Button type='button' onClick={() => setServerMaintenanceModal(false)} secondary medium>
+                <Button onClick={() => setServerMaintenanceModal(false)} secondary medium>
                     <Localize i18n_default_text='OK' />
                 </Button>
             </Modal.Footer>

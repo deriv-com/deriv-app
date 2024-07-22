@@ -4,8 +4,8 @@ import moment from 'moment';
 import { useHover } from 'usehooks-ts';
 import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api-v2';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
-import { Divider } from '@deriv-com/ui';
-import { Tooltip, WalletButton, WalletText } from '../../../../../../components/Base';
+import { Button, Divider } from '@deriv-com/ui';
+import { Tooltip, WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
 import useDevice from '../../../../../../hooks/useDevice';
@@ -203,9 +203,16 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                 </div>
 
                 {isMobile && !!transaction.is_valid_to_cancel && (
-                    <WalletButton isFullWidth onClick={onCancelButtonClick} size='sm' variant='outlined'>
+                    <Button
+                        borderWidth='sm'
+                        color='black'
+                        isFullWidth
+                        onClick={onCancelButtonClick}
+                        size='sm'
+                        variant='outlined'
+                    >
                         Cancel transaction
-                    </WalletButton>
+                    </Button>
                 )}
             </div>
         </React.Fragment>

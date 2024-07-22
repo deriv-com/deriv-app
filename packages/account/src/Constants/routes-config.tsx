@@ -27,10 +27,6 @@ const Passwords = makeLazyLoader(
     () => <Loading />
 )();
 
-const PhoneVerificationPage = makeLazyLoader(
-    () => moduleLoader(() => import('../Sections/Profile/PhoneVerification')),
-    () => <Loading />
-)();
 const AccountLimits = makeLazyLoader(
     () => moduleLoader(() => import('../Sections/Security/AccountLimits')),
     () => <Loading />
@@ -109,12 +105,6 @@ const initRoutesConfig = () => [
                 getTitle: () => localize('Profile'),
                 icon: 'IcUserOutline',
                 subroutes: [
-                    {
-                        path: routes.phone_verification,
-                        component: PhoneVerificationPage,
-                        getTitle: () => localize('Personal details'),
-                        is_hidden: true,
-                    },
                     {
                         path: routes.personal_details,
                         component: PersonalDetails,

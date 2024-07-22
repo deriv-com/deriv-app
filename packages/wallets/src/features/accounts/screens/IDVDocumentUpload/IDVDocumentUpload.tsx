@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import * as Yup from 'yup';
 import { usePOI, useResidenceList, useSettings } from '@deriv/api-v2';
-import { FlowTextField, useFlow, WalletDropdown, WalletText } from '../../../../components';
+import { Dropdown } from '@deriv-com/ui';
+import { FlowTextField, useFlow, WalletText } from '../../../../components';
 import { InlineMessage } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
@@ -121,21 +122,25 @@ const IDVDocumentUpload = () => {
                 <div className='wallets-idv-document-upload__title'>
                     <WalletText weight='bold'>Identity verification</WalletText>
                 </div>
-                <WalletDropdown
-                    errorMessage={'Document type is required'}
-                    isRequired
-                    label='Choose the document type'
-                    list={documentsDropdownList}
-                    name='documentType'
-                    onChange={inputValue => {
-                        setFormValues('documentType', textToValueMapper[inputValue]);
-                    }}
-                    onSelect={selectedItem => {
-                        setFormValues('documentType', selectedItem);
-                    }}
-                    value={formValues?.documentType}
-                    variant='comboBox'
-                />
+                <div className='wallets-idv-document-upload__dropdown'>
+                    <Dropdown
+                        data-testid='dt_wallets_idv_document_upload_dropdown'
+                        errorMessage='Document type is required'
+                        isFullWidth
+                        isRequired
+                        label='Choose the document type'
+                        list={documentsDropdownList}
+                        name='documentType'
+                        onSearch={inputValue => {
+                            setFormValues('documentType', textToValueMapper[inputValue]);
+                        }}
+                        onSelect={selectedItem => {
+                            setFormValues('documentType', selectedItem);
+                        }}
+                        value={formValues?.documentType}
+                        variant='comboBox'
+                    />
+                </div>
                 <FlowTextField
                     disabled={!formValues.documentType}
                     label='Enter your document number'

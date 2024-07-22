@@ -474,9 +474,10 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableMt5Accounts() {
+        console.log('==>', this.available_accounts);
         if (this.root_store.client.is_logged_in) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account => {
-                return this.available_accounts[account.product] || account.product === 'standard';
+                return this.available_accounts[account.product];
             });
             return;
         }
@@ -865,7 +866,11 @@ export default class TradersHubStore extends BaseStore {
 
     setTradingPlatformAvailability() {
         this.root_store.client.trading_platform_available_accounts.forEach(account => {
-            this.available_accounts[account.product] = true;
+            if (account.product === 'synthetic') {
+                this.available_accounts[account.sub_account_type] = true;
+            } else {
+                this.available_accounts[account.product] = true;
+            }
         });
     }
 

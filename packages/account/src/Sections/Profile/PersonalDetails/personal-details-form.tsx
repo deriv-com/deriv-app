@@ -52,6 +52,7 @@ const PersonalDetailsForm = observer(() => {
         is_virtual,
         current_landing_company,
         updateAccountStatus,
+        fetchAccountSettings,
         residence,
         is_svg,
     } = client;
@@ -81,6 +82,10 @@ const PersonalDetailsForm = observer(() => {
         is_timeout_started: false,
         timeout_callback: () => null,
     });
+
+    useEffect(() => {
+        fetchAccountSettings();
+    }, [fetchAccountSettings]);
 
     useEffect(() => {
         const init = async () => {

@@ -162,29 +162,33 @@ const EmploymentTaxDetailsContainer = ({
                     setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                 />
             </div>
-            <Checkbox
-                name='tax_identification_confirm'
-                className='employment_tax_detail_field-checkbox'
-                data-lpignore
-                onChange={() => setFieldValue('tax_identification_confirm', !values.tax_identification_confirm, true)}
-                value={values.tax_identification_confirm}
-                label={
-                    should_display_long_message
-                        ? localize(
-                              'I hereby confirm that the tax information provided is true and complete. I will also inform {{legal_entity_name}} about any changes to this information.',
-                              {
-                                  legal_entity_name: getLegalEntityName('maltainvest'),
-                              }
-                          )
-                        : localize('I confirm that my tax information is accurate and complete.')
-                }
-                withTabIndex={0}
-                data-testid='tax_identification_confirm'
-                has_error={!!(touched.tax_identification_confirm && errors.tax_identification_confirm)}
-                label_font_size={!isDesktop ? 'xxs' : 'xs'}
-                label_line_height='m'
-                disabled={is_tax_details_confirm_disabled}
-            />
+            {!is_tin_autoset && (
+                <Checkbox
+                    name='tax_identification_confirm'
+                    className='employment_tax_detail_field-checkbox'
+                    data-lpignore
+                    onChange={() =>
+                        setFieldValue('tax_identification_confirm', !values.tax_identification_confirm, true)
+                    }
+                    value={values.tax_identification_confirm}
+                    label={
+                        should_display_long_message
+                            ? localize(
+                                  'I hereby confirm that the tax information provided is true and complete. I will also inform {{legal_entity_name}} about any changes to this information.',
+                                  {
+                                      legal_entity_name: getLegalEntityName('maltainvest'),
+                                  }
+                              )
+                            : localize('I confirm that my tax information is accurate and complete.')
+                    }
+                    withTabIndex={0}
+                    data-testid='tax_identification_confirm'
+                    has_error={!!(touched.tax_identification_confirm && errors.tax_identification_confirm)}
+                    label_font_size={!isDesktop ? 'xxs' : 'xs'}
+                    label_line_height='m'
+                    disabled={is_tax_details_confirm_disabled}
+                />
+            )}
         </Fragment>
     );
 };

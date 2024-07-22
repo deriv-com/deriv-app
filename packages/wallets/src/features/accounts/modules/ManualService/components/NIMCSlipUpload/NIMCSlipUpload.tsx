@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Formik } from 'formik';
-import { Divider } from '@deriv-com/ui';
+import { Divider, Loader } from '@deriv-com/ui';
 import { Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
 import NIMCSlipFront from '../../../../../../public/images/accounts/nimc-slip-front.svg';
 import ProofOfAgeIcon from '../../../../../../public/images/accounts/proof-of-age.svg';
@@ -20,6 +20,11 @@ const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
 
     if (!error && isSuccess && onCompletion) {
         onCompletion();
+        return null;
+    }
+
+    if (isUploading) {
+        return <Loader />;
     }
 
     return (

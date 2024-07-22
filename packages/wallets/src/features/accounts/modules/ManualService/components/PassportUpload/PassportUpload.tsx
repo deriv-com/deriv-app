@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Formik } from 'formik';
 import moment from 'moment';
-import { Divider } from '@deriv-com/ui';
+import { Divider, Loader } from '@deriv-com/ui';
 import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
 import PassportPlaceholder from '../../../../../../public/images/accounts/passport-placeholder.svg';
 import { Footer } from '../../../components';
@@ -20,6 +20,11 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
 
     if (!error && isSuccess && onCompletion) {
         onCompletion();
+        return null;
+    }
+
+    if (isUploading) {
+        return <Loader />;
     }
 
     return (

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Formik } from 'formik';
 import moment from 'moment';
-import { Divider } from '@deriv-com/ui';
+import { Divider, Loader } from '@deriv-com/ui';
 import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
 import DrivingLicenseCardBack from '../../../../../../public/images/accounts/document-back.svg';
 import DrivingLicenseCardFront from '../../../../../../public/images/accounts/driving-license-front.svg';
@@ -21,6 +21,11 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
 
     if (!error && isSuccess && onCompletion) {
         onCompletion();
+        return null;
+    }
+
+    if (isUploading) {
+        return <Loader />;
     }
 
     return (

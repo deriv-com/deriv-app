@@ -6,7 +6,7 @@ import { DocumentSelection } from './components';
 import { manualDocumentsMapper, TManualDocumentComponent, TManualDocumentType } from './utils';
 
 type TManualServiceProps = {
-    onCompletion?: () => void;
+    onCompletion?: VoidFunction;
 };
 
 type TSelectedManualDocument = keyof TManualDocumentType | undefined;

@@ -76,9 +76,17 @@ type TBarriers = Array<
     }
 >;
 
-type PriceResponse = PriceProposalResponse & {
+export type ProposalResponse = PriceProposalResponse & {
     proposal: PriceProposalResponse['proposal'] & {
         payout_choices: number[];
+    };
+    error?: PriceProposalResponse['error'] & {
+        code: string;
+        message: string;
+        details?: {
+            payout_per_point_choices?: number[];
+            [k: string]: unknown;
+        };
     };
 };
 
@@ -1342,7 +1350,7 @@ export default class TradeStore extends BaseStore {
         this.is_market_closed = status;
     }
 
-    onProposalResponse(response: TResponse<PriceProposalRequest, PriceResponse, 'proposal'>) {
+    onProposalResponse(response: TResponse<PriceProposalRequest, ProposalResponse, 'proposal'>) {
         const { contract_type } = response.echo_req;
         const prev_proposal_info = getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};

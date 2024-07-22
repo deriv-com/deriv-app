@@ -25,23 +25,17 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     }, [activeWallet?.is_virtual, show, account.market_type, account.platform, setModalState]);
 
     return (
-        <TradingAccountCard
-            leading={
-                <div className='wallets-available-mt5__icon'>
-                    {MarketTypeDetails[account.market_type || 'all'].icon}
-                </div>
-            }
-            onClick={onButtonClick}
-            trailing={
-                <div className='wallets-available-mt5__icon'>
-                    <LabelPairedChevronRightCaptionRegularIcon width={16} />
-                </div>
-            }
-        >
-            <div className='wallets-available-mt5__details'>
+        <TradingAccountCard onClick={onButtonClick}>
+            <TradingAccountCard.Icon className='wallets-available-mt5__icon'>
+                {MarketTypeDetails[account.market_type || 'all'].icon}
+            </TradingAccountCard.Icon>
+            <TradingAccountCard.Content className='wallets-available-mt5__details'>
                 <WalletText size='sm'>{title}</WalletText>
                 <WalletText size='xs'>{description}</WalletText>
-            </div>
+            </TradingAccountCard.Content>
+            <TradingAccountCard.Button className='wallets-available-mt5__icon'>
+                <LabelPairedChevronRightCaptionRegularIcon width={16} />
+            </TradingAccountCard.Button>
         </TradingAccountCard>
     );
 };

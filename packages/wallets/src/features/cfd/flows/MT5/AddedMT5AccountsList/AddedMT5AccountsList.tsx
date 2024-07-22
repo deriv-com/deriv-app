@@ -31,9 +31,6 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     return (
         <TradingAccountCard
             disabled={jurisdictionStatus.is_pending}
-            leading={
-                <div className='wallets-added-mt5__icon'>{MarketTypeDetails[account.market_type || 'all'].icon}</div>
-            }
             onClick={() => {
                 jurisdictionStatus.is_failed
                     ? show(<VerificationFailedModal selectedJurisdiction={account.landing_company_short} />, {
@@ -47,17 +44,11 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                           />
                       );
             }}
-            trailing={
-                <div
-                    className={classNames('wallets-added-mt5__icon', {
-                        'wallets-added-mt5__icon--pending': jurisdictionStatus.is_pending,
-                    })}
-                >
-                    <LabelPairedChevronRightCaptionRegularIcon width={16} />
-                </div>
-            }
         >
-            <div className='wallets-added-mt5__details'>
+            <TradingAccountCard.Icon className='wallets-added-mt5__icon'>
+                {MarketTypeDetails[account.market_type || 'all'].icon}
+            </TradingAccountCard.Icon>
+            <TradingAccountCard.Content className='wallets-added-mt5__details'>
                 <div className='wallets-added-mt5__details-title'>
                     <WalletText size='sm'>{title}</WalletText>
                     {!activeWallet?.is_virtual && (
@@ -110,7 +101,14 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         </InlineMessage>
                     </div>
                 )}
-            </div>
+            </TradingAccountCard.Content>
+            <TradingAccountCard.Button
+                className={classNames('wallets-added-mt5__icon', {
+                    'wallets-added-mt5__icon--pending': jurisdictionStatus.is_pending,
+                })}
+            >
+                <LabelPairedChevronRightCaptionRegularIcon width={16} />
+            </TradingAccountCard.Button>
         </TradingAccountCard>
     );
 };

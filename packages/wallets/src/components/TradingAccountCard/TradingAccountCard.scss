@@ -31,12 +31,16 @@
         }
     }
 
+    &__icon {
+        flex: 0 1 auto;
+    }
+
     &__content {
-        display: flex;
-        gap: 1.6rem;
-        align-items: center;
-        flex-grow: 1;
-        height: 100%;
+        flex: 1 1 auto;
         border-bottom: 1px solid var(--system-light-6-hover-background, #e6e9e9);
+    }
+
+    &__button {
+        flex: 0 1 auto;
     }
 }

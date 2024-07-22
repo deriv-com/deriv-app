@@ -46,29 +46,29 @@ const OptionsAndMultipliersListing: React.FC<TSubscribedBalance> = ({ balance })
                             {...account}
                             disabled={!activeLinkedToTradingAccount?.loginid}
                             key={`trading-account-card-${title}`}
-                            leading={<LinkTitle platform={key} />}
                             onClick={() => {
                                 account.isExternal ? window.open(redirect, '_blank') : history.push(redirect as TRoute);
                             }}
-                            trailing={
-                                activeLinkedToTradingAccount?.loginid ? (
-                                    <div className='wallets-options-and-multipliers-listing__icon'>
-                                        <LabelPairedChevronRightCaptionRegularIcon
-                                            data-testid='dt_label_paired_chevron'
-                                            width={16}
-                                        />
-                                    </div>
-                                ) : null
-                            }
                         >
-                            <div className='wallets-options-and-multipliers-listing__content__details'>
+                            <TradingAccountCard.Icon>
+                                <LinkTitle platform={key} />
+                            </TradingAccountCard.Icon>
+                            <TradingAccountCard.Content className='wallets-options-and-multipliers-listing__content__details'>
                                 <WalletText size='sm'>
                                     <Trans defaults={title} />
                                 </WalletText>
                                 <WalletText size='xs'>
                                     <Trans defaults={description} />
                                 </WalletText>
-                            </div>
+                            </TradingAccountCard.Content>
+                            {activeLinkedToTradingAccount?.loginid && (
+                                <TradingAccountCard.Button>
+                                    <LabelPairedChevronRightCaptionRegularIcon
+                                        data-testid='dt_label_paired_chevron'
+                                        width={16}
+                                    />
+                                </TradingAccountCard.Button>
+                            )}
                         </TradingAccountCard>
                     );
                 })}

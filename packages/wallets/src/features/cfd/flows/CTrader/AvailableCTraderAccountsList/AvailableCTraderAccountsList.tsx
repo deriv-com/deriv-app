@@ -57,20 +57,17 @@ const AvailableCTraderAccountsList: React.FC = () => {
     }, [accountType, activeWallet?.wallet_currency_type, error?.error?.message, status]);
 
     return (
-        <TradingAccountCard
-            disabled={isCFDAccountCreationLoading || isCFDAccountCreationSuccess}
-            leading={<div className='wallets-available-ctrader__icon'>{PlatformDetails.ctrader.icon}</div>}
-            onClick={onSubmit}
-            trailing={
-                <div className='wallets-available-ctrader__icon'>
-                    <LabelPairedChevronRightCaptionRegularIcon width={16} />
-                </div>
-            }
-        >
-            <div className='wallets-available-ctrader__details'>
+        <TradingAccountCard disabled={isCFDAccountCreationLoading || isCFDAccountCreationSuccess} onClick={onSubmit}>
+            <TradingAccountCard.Icon className='wallets-available-ctrader__icon'>
+                {PlatformDetails.ctrader.icon}
+            </TradingAccountCard.Icon>
+            <TradingAccountCard.Content className='wallets-available-ctrader__details'>
                 <WalletText size='sm'>{PlatformDetails.ctrader.title}</WalletText>
                 <WalletText size='xs'>{t('CFDs on financial and derived instruments with copy trading.')}</WalletText>
-            </div>
+            </TradingAccountCard.Content>
+            <TradingAccountCard.Button className='wallets-available-ctrader__icon'>
+                <LabelPairedChevronRightCaptionRegularIcon width={16} />
+            </TradingAccountCard.Button>
         </TradingAccountCard>
     );
 };

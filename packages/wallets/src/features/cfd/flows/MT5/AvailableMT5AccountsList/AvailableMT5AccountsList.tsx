@@ -1,8 +1,6 @@
 import React, { useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useActiveWalletAccount, useTradingPlatformStatus } from '@deriv/api-v2';
-import { LabelPairedChevronRightCaptionRegularIcon, LegacyWarningIcon } from '@deriv/quill-icons';
-import { Badge } from '@deriv-com/ui';
+import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { TradingAccountCard, WalletText } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
@@ -17,10 +15,11 @@ type TProps = {
 const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: tradingPlatformStatus } = useTradingPlatformStatus();
+
     const { setModalState, show } = useModal();
-    const { t } = useTranslation();
 
     const { description, title } = MarketTypeDetails[account.market_type || 'all'];
+
     const platformStatus = tradingPlatformStatus?.find(
         (status: { platform: string; status: string }) => status.platform === account.platform
     )?.status;
@@ -55,23 +54,9 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
             }
             onClick={onButtonClick}
             trailing={
-                platformStatus !== 'active' ? (
-                    <Badge
-                        badgeSize='xs'
-                        color='warning'
-                        isBold
-                        leftIcon={<LegacyWarningIcon iconSize='xs' />}
-                        padding='tight'
-                        rounded='sm'
-                        variant='bordered'
-                    >
-                        {t(platformStatus)}
-                    </Badge>
-                ) : (
-                    <div className='wallets-available-mt5__icon'>
-                        <LabelPairedChevronRightCaptionRegularIcon width={16} />
-                    </div>
-                )
+                <div className='wallets-available-mt5__icon'>
+                    <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                </div>
             }
         >
             <div className='wallets-available-mt5__details'>

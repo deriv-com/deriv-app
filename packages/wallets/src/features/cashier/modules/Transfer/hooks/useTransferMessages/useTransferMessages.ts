@@ -46,6 +46,9 @@ const useTransferMessages = ({
         (status: { platform: string; status: string }) =>
             status.platform === fromAccount?.account_type || status.platform === toAccount?.account_type
     )?.status;
+    const isServerMaintenance = platformStatus === 'maintenance';
+    const isAccountUnavailable = fromAccount?.status === 'unavailable' || toAccount?.status === 'unavailable';
+    const hasTradingPlatformStatus = isServerMaintenance || isAccountUnavailable;
 
     const isTransferBetweenWallets =
         fromAccount?.account_category === 'wallet' && toAccount?.account_category === 'wallet';
@@ -81,8 +84,7 @@ const useTransferMessages = ({
         if (isTransferBetweenWallets) {
             messageFns.push(transferFeesBetweenWalletsMessageFn);
         }
-
-        if (platformStatus) {
+        if (hasTradingPlatformStatus) {
             messageFns.push(tradingPlatformStatusMessageFn);
         }
 
@@ -120,6 +122,7 @@ const useTransferMessages = ({
         formData.fromAmount,
         formData.toAmount,
         fromAccount,
+        hasTradingPlatformStatus,
         isAccountVerified,
         isTransferBetweenWallets,
         platformStatus,

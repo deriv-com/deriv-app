@@ -1,6 +1,7 @@
 import React, { RefObject, useCallback, useEffect, useMemo } from 'react';
 import { useFormikContext } from 'formik';
 import { useHistory } from 'react-router-dom';
+import { useTradingPlatformStatus } from '@deriv/api-v2';
 import { LegacyChevronDown2pxIcon } from '@deriv/quill-icons';
 import { WalletListCardBadge, WalletText } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
@@ -22,6 +23,8 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     const { fromAccount, toAccount } = values;
     const { isMobile } = useDevice();
     const modal = useModal();
+    const { data: tradingPlatformStatus } = useTradingPlatformStatus();
+
     const isFromAccountDropdown = fieldName === 'fromAccount';
 
     const fromAccountList = useMemo(() => {
@@ -51,6 +54,11 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
         location.pathname === '/wallet/account-transfer' ? location.state?.toAccountLoginId : undefined;
     const shouldDefaultUSDWallet =
         location.pathname === '/wallet/account-transfer' ? location.state?.shouldSelectDefaultWallet : false;
+
+    const platformStatus = tradingPlatformStatus?.find(
+        (status: { platform: string; status: string }) => status.platform === selectedAccount?.account_type
+    )?.status;
+    const hasPlatformStatus = selectedAccount?.status === 'unavailable' || platformStatus === 'maintenance';
 
     const toDefaultAccount = useMemo(
         () => toAccountList.walletAccounts.find(wallet => wallet.currency === 'USD'),
@@ -152,7 +160,12 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                             <WalletListCardBadge isDemo={Boolean(selectedAccount?.demo_account)} label='virtual' />
                         </div>
                     ) : null}
-                    <LegacyChevronDown2pxIcon className='wallets-transfer-form-dropdown__icon-dropdown' iconSize='xs' />
+                    {!hasPlatformStatus && (
+                        <LegacyChevronDown2pxIcon
+                            className='wallets-transfer-form-dropdown__icon-dropdown'
+                            iconSize='xs'
+                        />
+                    )}
                 </>
             )}
         </button>

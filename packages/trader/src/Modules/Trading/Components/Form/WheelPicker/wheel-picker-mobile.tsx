@@ -49,7 +49,7 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
     onChange,
     currency,
     options,
-    optionHeight = 30,
+    optionHeight = 28,
 }) => {
     const [selectedIndex, setSelectedIndex] = useState<number>(options.length - 1);
     const [optionWidth, setOptionWidth] = useState<number>(0);
@@ -113,6 +113,12 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
         top: `calc(50% - ${optionHeight / 2}px)`,
     };
 
+    const getFontSize = (index: number) => {
+        if (index === selectedIndex) return 'xsm';
+        if (index === selectedIndex - 1 || index === selectedIndex + 1) return 'xs';
+        return 'xxs';
+    };
+
     return (
         <div className='wheel-picker-mobile'>
             <div className='picker-selected-wrapper'>
@@ -142,7 +148,7 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
                         >
                             <div ref={index === selectedIndex ? optionRef : null}>
                                 <Text
-                                    size={index === selectedIndex ? 's' : 'xs'}
+                                    size={getFontSize(index)}
                                     weight={index === selectedIndex ? 'bolder' : 'bold'}
                                     color={index === selectedIndex ? '' : 'disabled-1'}
                                     align='center'

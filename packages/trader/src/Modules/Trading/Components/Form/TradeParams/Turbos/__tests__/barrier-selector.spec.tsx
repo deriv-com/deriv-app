@@ -1,88 +1,67 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import userEvent from '@testing-library/user-event';
+import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 import BarrierSelector from '../barrier-selector';
-import { mockStore } from '@deriv/stores';
-import TraderProviders from '../../../../../../../trader-providers';
+import { useTraderStore } from 'Stores/useTraderStores';
+import { useDevice } from '@deriv-com/ui';
+import { localize } from '@deriv/translations';
 
-const mocked_root_store = {
-    modules: {
-        trade: {
-            barrier_1: '16',
-            onChange: jest.fn(e => {
-                if (mocked_root_store.modules) {
-                    mocked_root_store.modules.trade.barrier_1 = e.target.value;
-                }
-            }),
-            setHoveredBarrier: jest.fn(),
-            barrier_choices: ['16', '33', '40'],
-        },
-    },
-};
-
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('Stores/useTraderStores', () => ({
+    useTraderStore: jest.fn(),
 }));
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
-    return {
-        ...original_module,
-        Icon: jest.fn(() => <div>IcCross</div>),
+jest.mock('@deriv-com/ui', () => ({
+    useDevice: jest.fn(),
+}));
+
+jest.mock('@deriv/components', () => ({
+    Text: ({ children }: { children: React.ReactNode }) => <span>{children}</span>,
+}));
+
+jest.mock('@deriv/translations', () => ({
+    Localize: ({ children }: { children: React.ReactNode }) => <span>{children}</span>,
+    localize: jest.fn(),
+}));
+
+jest.mock('Modules/Trading/Components/Elements/PayoutPerPoint/payout-per-point-input', () =>
+    jest.fn(() => <div>PayoutPerPointInput</div>)
+);
+
+jest.mock('@deriv/quill-icons', () => ({
+    LabelPairedChevronsDownCaptionRegularIcon: () => <svg data-testid='LabelPairedChevronsDownCaptionRegularIcon' />,
+    LabelPairedChevronsUpCaptionRegularIcon: () => <svg data-testid='LabelPairedChevronsUpCaptionRegularIcon' />,
+}));
+
+describe('BarrierSelector', () => {
+    const mockUseTraderStore = {
+        barrier_1: '100',
+        payout_choices: [10, 20, 30],
+        setPayoutWheelPicker: jest.fn(),
+        togglePayoutWheelPicker: jest.fn(),
+        payout_per_point: 20,
+        currency: 'USD',
     };
-});
 
-describe('<BarrierSelector/>', () => {
-    const barriers_list_header = 'Barriers';
-    let current_barrier: HTMLElement;
     beforeEach(() => {
-        render(
-            <TraderProviders store={mockStore(mocked_root_store)}>
-                <BarrierSelector />
-            </TraderProviders>
-        );
-        current_barrier = screen.getByTestId('current_barrier');
+        jest.clearAllMocks();
+        (useTraderStore as jest.Mock).mockReturnValue(mockUseTraderStore);
     });
-    it('should render properly with Barrier inside it', () => {
-        const barrier_title = screen.getByText('Barrier');
 
-        expect(barrier_title).toBeInTheDocument();
-    });
-    it('barrier_1 value is selected by default', () => {
-        expect(screen.getByText('16')).toBeInTheDocument();
-    });
-    it('barrier list should not be rendered by default', () => {
-        expect(screen.queryByText(barriers_list_header)).not.toBeInTheDocument();
-    });
-    it('barrier list is displayed after clicking on the current barrier', () => {
-        userEvent.click(current_barrier);
+    test('renders correctly on desktop devices', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
 
-        expect(screen.getByText(barriers_list_header)).toBeInTheDocument();
-    });
-    it('should render all available barrier values from barrier_choices in barrier list when it is expanded', () => {
-        userEvent.click(current_barrier);
+        render(<BarrierSelector />);
 
-        ['16', '33', '40'].forEach(barrier => expect(screen.getByTestId(barrier)).toBeInTheDocument());
+        expect(screen.getByText('PayoutPerPointInput')).toBeInTheDocument();
     });
-    it('onChange should be called with the new barrier option when it is clicked', () => {
-        userEvent.click(current_barrier);
-        const clicked_barrier = screen.getByTestId('33');
-        userEvent.click(clicked_barrier);
-        expect(mocked_root_store.modules?.trade.barrier_1).toBe('33');
-    });
-    it('barrier list should not be rendered when cross icon is clicked', () => {
-        userEvent.click(current_barrier);
-        const icon_cross = screen.getAllByText('IcCross');
-        userEvent.click(icon_cross[0]);
 
-        expect(screen.queryByText(barriers_list_header)).not.toBeInTheDocument();
-    });
-    it('barrier list should not be rendered when the new barrier option was clicked', () => {
-        userEvent.click(current_barrier);
-        const clicked_barrier = screen.getByTestId('33');
-        userEvent.click(clicked_barrier);
+    test('toggles the barriers table correctly', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
-        expect(screen.queryByText(barriers_list_header)).not.toBeInTheDocument();
+        render(<BarrierSelector />);
+
+        fireEvent.click(screen.getByText(mockUseTraderStore.payout_per_point));
+
+        expect(mockUseTraderStore.togglePayoutWheelPicker).toHaveBeenCalled();
     });
 });

@@ -126,11 +126,6 @@ const CollapsibleTradeParams = ({
                     <BarrierMobile />
                 </div>
             )}
-            {isVisible('barrier_selector') && (
-                <div data-collapsible='true'>
-                    <BarrierSelector />
-                </div>
-            )}
             {isVisible('strike') && (
                 <div data-collapsible='true'>
                     <Strike />
@@ -165,6 +160,11 @@ const CollapsibleTradeParams = ({
                     <AccumulatorsInfoDisplay />
                 </div>,
             ]}
+            {isVisible('barrier_selector') && (
+                <div data-collapsible='true'>
+                    <BarrierSelector />
+                </div>
+            )}
             {is_turbos && (
                 <div data-collapsible='true' className={classNames('take-profit', 'mobile-widget')}>
                     <TakeProfit
@@ -176,6 +176,7 @@ const CollapsibleTradeParams = ({
                 </div>
             )}
             {is_vanilla && <PayoutPerPointMobile />}
+
             <div
                 className={classNames({
                     'purchase-container': !is_vanilla,

@@ -1905,7 +1905,7 @@ export default class TradeStore extends BaseStore {
         this.open_payout_wheelpicker = !this.open_payout_wheelpicker;
     }
     setPayoutWheelPicker(val: number) {
-        if (val !== this.payout_per_point) {
+        if (val && val !== this.payout_per_point) {
             this.payout_per_point = val;
             this.onChange({
                 target: {

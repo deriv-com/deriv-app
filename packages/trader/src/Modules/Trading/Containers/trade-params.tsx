@@ -34,14 +34,7 @@ const TradeParams = observer(({ is_minimized = false }: TTradeParams) => {
                     {isVisible('trade_type_tabs') && <TradeTypeTabs key={'trade_type_tabs'} />}
                 </Fieldset>
                 {isVisible('amount') && <Amount key={'amount'} is_minimized={is_minimized} />}
-                {(isVisible('trade_type_tabs') || isVisible('strike') || isVisible('barrier_selector')) && (
-                    <Fieldset
-                        className={classNames('trade-container__fieldset', 'trade-container__fieldset--no-padding')}
-                    >
-                        {isVisible('barrier_selector') && <BarrierSelector key={'barrier_selector'} />}
-                        {isVisible('strike') && <Strike key={'strike'} />}
-                    </Fieldset>
-                )}
+                {isVisible('barrier_selector') && <BarrierSelector key={'barrier_selector'} />}
                 {isVisible('duration') && <Duration key={'duration'} is_minimized={is_minimized} />}
                 {isVisible('take_profit') && <TakeProfit key={'take_profit'} />}
             </>

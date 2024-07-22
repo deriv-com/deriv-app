@@ -18,10 +18,15 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        &__icon {
-            width: 3.2rem;
-            padding-left: 2.2rem;
+        &__btn {
+            padding: 0rem 0.8rem;
+            min-width: 1.6rem;
             background: var(--general-section-1);
+            :disabled {
+                .chevron-icon svg {
+                    stroke: #f2f3f4;
+                }
+            }
         }
         &--chevron-up {
             transform: rotate(180deg);
@@ -34,8 +39,8 @@
     flex-direction: column;
     width: 100%;
     gap: 0.1rem;
+    height: 13rem;
     text-align: center;
-    height: 14rem;
     margin: 0;
     position: relative;
     .picker-selected-wrapper {
@@ -54,8 +59,8 @@
             border-radius: 0.5rem;
             position: relative;
             .currency-label {
-                font-size: 1.6rem;
-                padding-top: 0.8rem;
+                font-size: 1.8rem;
+                padding-top: 0.7rem;
             }
         }
     }

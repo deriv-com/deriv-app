@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Icon, PageOverlay, Popover, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import WheelPickerMobile from '../../Form/WheelPicker/wheel-picker-mobile';
 import './payout-per-point.scss';
-import PayoutPerPointMobile from '../payout-per-point-mobile';
 import Fieldset from 'App/Components/Form/fieldset';
+import { LabelPairedChevronsDownCaptionRegularIcon, LabelPairedChevronsUpCaptionRegularIcon } from '@deriv/quill-icons';
 
 const PayoutPerPointMobileInput = ({
     togglePayoutWheelPicker,
@@ -21,19 +21,36 @@ const PayoutPerPointMobileInput = ({
     currency: string;
     payout_per_point?: number;
 }) => {
+    const [initialPayout, setInitialPayout] = useState<number | null>(null);
+
     const [payoutValue, setPayoutValue] = useState(payoutChoices[2] || payoutChoices[0]);
+
+    useEffect(() => {
+        if (initialPayout == null && payout_per_point) {
+            setInitialPayout(payout_per_point);
+        }
+    }, []);
+
     const onSave = () => {
         togglePayoutWheelPicker();
         onPayoutClick(payoutValue);
     };
+
+    const onClose = () => {
+        togglePayoutWheelPicker();
+        if (initialPayout) {
+            onPayoutClick(initialPayout);
+        }
+    };
+
     const turbos_payout_message = (
         <Localize i18n_default_text='This is the amount you’ll receive at expiry for every point of change in the underlying price, if the spot price never touches or breaches the barrier throughout the contract duration.' />
     );
     return (
-        <PageOverlay onClickClose={togglePayoutWheelPicker}>
+        <PageOverlay onClickClose={onClose}>
             <div className='payout-per-point-mobile'>
                 <Fieldset className='payout-per-point-mobile__header'>
-                    <div className='payout-per-point__label-wrapper'>
+                    <div className='payout-per-point-mobile__header__title'>
                         <Text size='xs' weight='bold' color='default' as='h1'>
                             {localize('Payout per Point')}
                         </Text>
@@ -47,7 +64,7 @@ const PayoutPerPointMobileInput = ({
                             message={turbos_payout_message}
                         />
                     </div>
-                    <div role='button' className='cross-icon' onClick={togglePayoutWheelPicker}>
+                    <div role='button' className='cross-icon' onClick={onClose}>
                         <Icon icon='IcCross' data_testid='dt_modal_close_icon' />
                     </div>
                 </Fieldset>
@@ -57,19 +74,37 @@ const PayoutPerPointMobileInput = ({
                     currency={currency}
                     onChange={val => {
                         setPayoutValue(val);
+                        onPayoutClick(payoutValue);
                     }}
                 />
-                <Text
-                    size={'xxs'}
-                    className='distance-to-spot'
-                    line_height='l'
-                    weight={'bold'}
-                    color={'default'}
-                    align='center'
-                    as='p'
-                >
-                    {localize('Distance to current spot: ')} {selectedBarrier}
-                </Text>
+                <Fieldset className='actions-wrapper'>
+                    <Text
+                        size={'xxs'}
+                        line_height='l'
+                        color={'default'}
+                        align='center'
+                        as='p'
+                        className='distance-to-current-spot'
+                    >
+                        {localize('Distance to current spot')}{' '}
+                        <div className='barrier-value'>
+                            {selectedBarrier}
+                            {Number(selectedBarrier) < 0 ? (
+                                <LabelPairedChevronsDownCaptionRegularIcon
+                                    width={12}
+                                    height={12}
+                                    className='indicator-icon'
+                                />
+                            ) : (
+                                <LabelPairedChevronsUpCaptionRegularIcon
+                                    width={12}
+                                    height={12}
+                                    className='indicator-icon'
+                                />
+                            )}
+                        </div>
+                    </Text>
+                </Fieldset>
                 <Button className='save-button' onClick={onSave}>
                     {localize('Save')}
                 </Button>

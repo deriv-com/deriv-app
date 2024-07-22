@@ -4,16 +4,17 @@ import { Popover, Text, useDevice } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset';
 import { Localize, localize } from '@deriv/translations';
 import './payout-per-point.scss';
+import { LabelPairedChevronsDownCaptionRegularIcon, LabelPairedChevronsUpCaptionRegularIcon } from '@deriv/quill-icons';
 
 const PayoutPerPointInput = ({
-    barriersList,
+    payoutOptions,
     onPayoutClick,
     selectedBarrier,
     defaultPayout,
     currency,
     tooltipText,
 }: {
-    barriersList: number[];
+    payoutOptions: number[];
     onPayoutClick: (option: number) => void;
     selectedBarrier: string;
     defaultPayout: number;
@@ -29,15 +30,16 @@ const PayoutPerPointInput = ({
             className={'trade-container__fieldset payout-per-point-input'}
             header={localize('Payout per Point')}
             header_tooltip={tooltipText}
+            popover_wrapper_class='popover_wrapper_class'
         >
             <WheelPicker
-                options={barriersList}
+                options={payoutOptions}
                 defaultValue={defaultPayout}
                 onClick={onPayoutClick}
                 currency={currency}
             />
             <Fieldset className='actions-wrapper'>
-                <Text size={'xxs'} line_height='l' color={'default'} align='center' as='p'>
+                <Text size={'xxxs'} line_height='l' color='default' align='center' as='p'>
                     {localize('Distance to current spot')}
                 </Text>
                 <Popover
@@ -50,16 +52,31 @@ const PayoutPerPointInput = ({
                     zIndex='9999'
                     message={turbos_payout_message}
                 >
-                    <Text
-                        size={'xxxs'}
-                        line_height='l'
-                        color={'default'}
-                        align='center'
-                        as='p'
-                        className='learn-more_title'
-                    >
-                        {selectedBarrier}
-                    </Text>
+                    <div className='distance-to-current-spot'>
+                        <Text
+                            size={'xxxs'}
+                            line_height='l'
+                            color={'default'}
+                            align='center'
+                            as='p'
+                            className='barrier-value'
+                        >
+                            {selectedBarrier}
+                            {Number(selectedBarrier) < 0 ? (
+                                <LabelPairedChevronsDownCaptionRegularIcon
+                                    width={12}
+                                    height={12}
+                                    className='indicator-icon'
+                                />
+                            ) : (
+                                <LabelPairedChevronsUpCaptionRegularIcon
+                                    width={12}
+                                    height={12}
+                                    className='indicator-icon'
+                                />
+                            )}
+                        </Text>
+                    </div>
                 </Popover>
             </Fieldset>
         </Fieldset>

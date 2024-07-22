@@ -1,17 +1,16 @@
 import React from 'react';
-import BarriersList from '../barriers-list';
-import { Icon, Text, Popover } from '@deriv/components';
-import Fieldset from 'App/Components/Form/fieldset';
+import { Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { useDevice } from '@deriv-com/ui';
 import PayoutPerPointInput from 'Modules/Trading/Components/Elements/PayoutPerPoint/payout-per-point-input';
+import { LabelPairedChevronsDownCaptionRegularIcon, LabelPairedChevronsUpCaptionRegularIcon } from '@deriv/quill-icons';
+import './barrier-selector.scss';
 
 const BarrierSelector = observer(() => {
     const { barrier_1, payout_choices, setPayoutWheelPicker, togglePayoutWheelPicker, payout_per_point, currency } =
         useTraderStore();
-    const [selected_barrier, setSelectedBarrier] = React.useState(barrier_1);
     const { isMobile } = useDevice();
 
     const toggleBarriersTable = () => {
@@ -22,45 +21,41 @@ const BarrierSelector = observer(() => {
         setPayoutWheelPicker(value);
     };
 
-    React.useEffect(() => {
-        setSelectedBarrier(barrier_1);
-    }, [barrier_1]);
-
     const header_tooltip_text = (
         <div className='trade-container__barriers-tooltip'>
             <Localize i18n_default_text='You receive a payout at expiry if the spot price never touches or breaches the barrier throughout the contract duration. Otherwise, your contract will be terminated early.' />
         </div>
     );
-
     if (isMobile) {
         return (
-            <React.Fragment>
-                <div className='mobile-widget' onClick={toggleBarriersTable}>
-                    <Text size='xs' color='prominent' align='center'>
-                        {payout_per_point}
-                    </Text>
-                    <Text size='xs' color='prominent' align='center' weight='bold'>
-                        {barrier_1}
-                    </Text>
-                    <Text size='xs' color='less-prominent' align='center'>
-                        {localize('Payout per point')}
-                    </Text>
-                </div>
-            </React.Fragment>
+            <div className='mobile-widget barrier-selector' onClick={toggleBarriersTable}>
+                <Text size='xs' color='prominent' align='center' className='payout-field'>
+                    {payout_per_point}
+                    {Number(payout_per_point) < 0 ? (
+                        <LabelPairedChevronsDownCaptionRegularIcon className='indicator-icon' />
+                    ) : (
+                        <LabelPairedChevronsUpCaptionRegularIcon className='indicator-icon' />
+                    )}
+                </Text>
+                <Text size='xs' color='prominent' align='center' weight='bold'>
+                    {barrier_1} {currency}
+                </Text>
+                <Text size='xs' color='less-prominent' align='center'>
+                    {localize('Payout per point')}
+                </Text>
+            </div>
         );
     }
 
     return (
-        <React.Fragment>
-            <PayoutPerPointInput
-                currency={currency}
-                defaultPayout={payout_per_point}
-                barriersList={payout_choices}
-                onPayoutClick={onPayoutClick}
-                tooltipText={header_tooltip_text}
-                selectedBarrier={selected_barrier}
-            />
-        </React.Fragment>
+        <PayoutPerPointInput
+            currency={currency}
+            defaultPayout={payout_per_point}
+            payoutOptions={payout_choices}
+            onPayoutClick={onPayoutClick}
+            tooltipText={header_tooltip_text}
+            selectedBarrier={barrier_1}
+        />
     );
 });
 

@@ -40,20 +40,14 @@ type WheelPickerType = {
 };
 
 const WheelPicker = ({ options, onClick, defaultValue, currency }: WheelPickerType) => {
-    const getDefaultIndex = () => {
-        if (defaultValue) {
-            const index = options.indexOf(defaultValue);
-            return index !== -1 ? index : 0;
-        }
-        return 0;
-    };
-
-    const [selectedIndex, setSelectedIndex] = useState(getDefaultIndex());
+    const [selectedIndex, setSelectedIndex] = useState(Math.floor(options.length / 2));
     const [direction, setDirection] = useState('down');
 
     useEffect(() => {
-        onClick(options[selectedIndex]);
-    }, [selectedIndex, onClick, options]);
+        if (defaultValue) {
+            setSelectedIndex(options.indexOf(defaultValue));
+        }
+    }, [defaultValue, options]);
 
     const handleIndexChange = (newIndex: number, newDirection: 'up' | 'down') => {
         setDirection(newDirection);
@@ -92,46 +86,59 @@ const WheelPicker = ({ options, onClick, defaultValue, currency }: WheelPickerTy
     return (
         <div className='wheel-picker'>
             <div className='wheel-picker__wheel' key={selectedIndex}>
-                {visibleValues().map((value: string | number, index: number) => (
-                    <motion.div
-                        key={index}
-                        variants={variants}
-                        custom={direction}
-                        initial='enter'
-                        animate='center'
-                        exit='exit'
-                    >
-                        <Text
-                            size={index === 1 ? 'xs' : 'xxs'}
-                            line_height={index === 1 ? 'l' : 'm'}
-                            weight={index === 1 ? 'bolder' : 'bold'}
-                            color={index === 1 ? 'default' : 'disabled-1'}
-                            align='center'
-                            as='p'
-                            className={index === 1 ? '' : 'wheel-picker__wheel__placeholder'}
+                {options.length > 0 &&
+                    visibleValues().map((value: string | number, index: number) => (
+                        <motion.div
+                            key={index}
+                            variants={variants}
+                            custom={direction}
+                            initial='enter'
+                            animate='center'
+                            exit='exit'
                         >
-                            {value} {value !== '' && currency}
-                        </Text>
-                    </motion.div>
-                ))}
+                            <Text
+                                size={index === 1 ? 'xs' : 'xxs'}
+                                line_height={index === 1 ? 'l' : 'm'}
+                                weight={index === 1 ? 'bolder' : 'bold'}
+                                color={index === 1 ? 'default' : 'disabled-1'}
+                                align='center'
+                                as='p'
+                                className={index === 1 ? '' : 'wheel-picker__wheel__placeholder'}
+                            >
+                                {value} {value !== '' && currency}
+                            </Text>
+                        </motion.div>
+                    ))}
             </div>
             <div className='wheel-picker__actions'>
                 <Button
+                    disabled={selectedIndex === 0}
                     small
-                    className='wheel-picker__actions__icon'
-                    icon={<Icon icon='IcChevronUp' />}
+                    className='wheel-picker__actions__btn'
                     data-testid='up-btn'
                     name='up-btn'
                     onClick={handleIncrease}
-                />
+                >
+                    <Icon
+                        icon='IcChevronUp'
+                        color={selectedIndex === 0 ? 'disabled' : 'black'}
+                        className='chevron-icon'
+                    />
+                </Button>
                 <Button
                     small
-                    className='wheel-picker__actions__icon wheel-picker__actions--chevron-up'
-                    icon={<Icon icon='IcChevronUp' className='chevron-up' />}
+                    disabled={selectedIndex === options.length - 1}
+                    className='wheel-picker__actions__btn  wheel-picker__actions--chevron-up'
                     name='down-btn'
                     data-testid='down-btn'
                     onClick={handleDecrease}
-                />
+                >
+                    <Icon
+                        icon='IcChevronUp'
+                        color={selectedIndex === options.length - 1 ? 'disabled' : 'black'}
+                        className='chevron-up'
+                    />
+                </Button>
             </div>
         </div>
     );

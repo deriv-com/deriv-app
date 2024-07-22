@@ -1,7 +1,28 @@
 .payout-per-point-input {
+    padding-bottom: 0rem;
+    .popover_wrapper_class {
+        margin-top: 0.3rem;
+    }
     .actions-wrapper {
+        margin-top: 0.6rem;
         display: flex;
         justify-content: space-between;
+        .distance-to-current-spot {
+            display: flex;
+            .barrier-value {
+                margin-bottom: 0.8rem;
+                background-color: var(--general-section-1);
+                border: none;
+                border-bottom: 1px dotted var(--text-general);
+                padding: 0;
+                display: flex;
+                cursor: pointer;
+                .indicator-icon {
+                    margin-left: 0.2rem;
+                    margin-top: 0.3rem;
+                }
+            }
+        }
     }
 }
 
@@ -11,12 +32,15 @@
     border-radius: 0.4rem;
     display: flex;
     height: 250px;
-    padding: 0.8rem;
-    margin-top: 0.8rem;
+    padding: 0.6rem 0.8rem;
     flex-direction: column;
     &__header {
         padding: 0.8rem;
         display: flex;
+        &__title {
+            display: flex;
+            gap: 0;
+        }
         .popover-icon {
             margin-left: 0.8rem;
             margin-top: 0.2rem;
@@ -27,9 +51,24 @@
         }
     }
 
-    .distance-to-spot {
-        color: var(--text-general);
-        margin-bottom: 0.2rem;
+    .distance-to-current-spot {
+        display: flex;
+        justify-content: center;
+        margin-top: 0.2rem;
+        .barrier-value {
+            margin-bottom: 0.8rem;
+            margin-left: 0.4rem;
+            background-color: var(--general-section-1);
+            border: none;
+            border-bottom: 1px dotted var(--text-general);
+            padding: 0;
+            display: flex;
+            cursor: pointer;
+            .indicator-icon {
+                margin-left: 0.2rem;
+                margin-top: 0.4rem;
+            }
+        }
     }
 
     .save-button {
@@ -38,5 +77,6 @@
         color: var(--text-general);
         padding: 0.8px 1.6rem;
         font-weight: bold;
+        margin-top: auto;
     }
 }

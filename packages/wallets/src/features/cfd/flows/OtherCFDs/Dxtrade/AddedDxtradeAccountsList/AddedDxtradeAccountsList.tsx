@@ -19,9 +19,7 @@ const AddedDxtradeAccountsList: React.FC = () => {
                     key={account?.account_id}
                     onClick={() => show(<MT5TradeModal platform={PlatformDetails.dxtrade.platform} />)}
                 >
-                    <TradingAccountCard.Icon className='wallets-added-dxtrade__icon'>
-                        {PlatformDetails.dxtrade.icon}
-                    </TradingAccountCard.Icon>
+                    <TradingAccountCard.Icon>{PlatformDetails.dxtrade.icon}</TradingAccountCard.Icon>
                     <TradingAccountCard.Content className='wallets-added-dxtrade__details'>
                         <WalletText size='sm'>{PlatformDetails.dxtrade.title}</WalletText>
                         <WalletText size='sm' weight='bold'>
@@ -29,7 +27,7 @@ const AddedDxtradeAccountsList: React.FC = () => {
                         </WalletText>
                         <WalletText size='xs'>{account?.login}</WalletText>
                     </TradingAccountCard.Content>
-                    <TradingAccountCard.Button className='wallets-added-dxtrade__icon'>
+                    <TradingAccountCard.Button>
                         <LabelPairedChevronRightCaptionRegularIcon width={16} />
                     </TradingAccountCard.Button>
                 </TradingAccountCard>

@@ -1,12 +1,6 @@
-.wallets-added-dxtrade {
-    &__icon {
-        width: fit-content;
-    }
-
-    &__details {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        flex-grow: 1;
-    }
+.wallets-added-dxtrade__details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
 }

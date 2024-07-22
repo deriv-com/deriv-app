@@ -45,9 +45,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                       );
             }}
         >
-            <TradingAccountCard.Icon className='wallets-added-mt5__icon'>
-                {MarketTypeDetails[account.market_type || 'all'].icon}
-            </TradingAccountCard.Icon>
+            <TradingAccountCard.Icon>{MarketTypeDetails[account.market_type || 'all'].icon}</TradingAccountCard.Icon>
             <TradingAccountCard.Content className='wallets-added-mt5__details'>
                 <div className='wallets-added-mt5__details-title'>
                     <WalletText size='sm'>{title}</WalletText>
@@ -103,7 +101,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 )}
             </TradingAccountCard.Content>
             <TradingAccountCard.Button
-                className={classNames('wallets-added-mt5__icon', {
+                className={classNames({
                     'wallets-added-mt5__icon--pending': jurisdictionStatus.is_pending,
                 })}
             >

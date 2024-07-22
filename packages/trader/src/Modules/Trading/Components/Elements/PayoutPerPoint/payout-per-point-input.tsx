@@ -23,13 +23,13 @@ const PayoutPerPointInput = ({
 }) => {
     const { is_desktop } = useDevice();
     const turbos_payout_message = (
-        <Localize i18n_default_text='This is the amount you’ll receive at expiry for every point of change in the underlying price, if the spot price never touches or breaches the barrier throughout the contract duration.' />
+        <Localize i18n_default_text='The ammount you will receive at expiry for every point of change above the barrier.' />
     );
     return is_desktop ? (
         <Fieldset
             className={'trade-container__fieldset payout-per-point-input'}
             header={localize('Payout per Point')}
-            header_tooltip={tooltipText}
+            header_tooltip={turbos_payout_message}
             popover_wrapper_class='popover_wrapper_class'
         >
             <WheelPicker
@@ -50,7 +50,7 @@ const PayoutPerPointInput = ({
                     disable_target_icon
                     icon='info'
                     zIndex='9999'
-                    message={turbos_payout_message}
+                    message={tooltipText}
                 >
                     <div className='distance-to-current-spot'>
                         <Text

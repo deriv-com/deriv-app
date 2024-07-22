@@ -43,8 +43,10 @@ const PayoutPerPointMobileInput = ({
         }
     };
 
-    const turbos_payout_message = (
-        <Localize i18n_default_text='This is the amount you’ll receive at expiry for every point of change in the underlying price, if the spot price never touches or breaches the barrier throughout the contract duration.' />
+    const header_tooltip_text = (
+        <div className='trade-container__barriers-tooltip'>
+            <Localize i18n_default_text='You receive a payout at expiry if the spot price never touches or breaches the barrier throughout the contract duration. Otherwise, your contract will be terminated early.' />
+        </div>
     );
     return (
         <PageOverlay onClickClose={onClose}>
@@ -61,7 +63,7 @@ const PayoutPerPointMobileInput = ({
                             is_bubble_hover_enabled
                             margin={0}
                             zIndex='9999'
-                            message={turbos_payout_message}
+                            message={header_tooltip_text}
                         />
                     </div>
                     <div role='button' className='cross-icon' onClick={onClose}>
@@ -87,22 +89,32 @@ const PayoutPerPointMobileInput = ({
                         className='distance-to-current-spot'
                     >
                         {localize('Distance to current spot')}{' '}
-                        <div className='barrier-value'>
-                            {selectedBarrier}
-                            {Number(selectedBarrier) < 0 ? (
-                                <LabelPairedChevronsDownCaptionRegularIcon
-                                    width={12}
-                                    height={12}
-                                    className='indicator-icon'
-                                />
-                            ) : (
-                                <LabelPairedChevronsUpCaptionRegularIcon
-                                    width={12}
-                                    height={12}
-                                    className='indicator-icon'
-                                />
-                            )}
-                        </div>
+                        <Popover
+                            alignment='top'
+                            className='popover-icon'
+                            is_bubble_hover_enabled
+                            disable_target_icon
+                            icon='info'
+                            zIndex='9999'
+                            message={header_tooltip_text}
+                        >
+                            <div className='barrier-value'>
+                                {selectedBarrier}
+                                {Number(selectedBarrier) < 0 ? (
+                                    <LabelPairedChevronsDownCaptionRegularIcon
+                                        width={12}
+                                        height={12}
+                                        className='indicator-icon'
+                                    />
+                                ) : (
+                                    <LabelPairedChevronsUpCaptionRegularIcon
+                                        width={12}
+                                        height={12}
+                                        className='indicator-icon'
+                                    />
+                                )}
+                            </div>
+                        </Popover>
                     </Text>
                 </Fieldset>
                 <Button className='save-button' onClick={onSave}>

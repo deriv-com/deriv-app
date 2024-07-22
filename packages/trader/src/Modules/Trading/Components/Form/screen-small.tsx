@@ -132,6 +132,7 @@ const CollapsibleTradeParams = ({
                 </div>
             )}
             {!is_accumulator && <MobileWidget />}
+            {is_turbos && <BarrierSelector />}
             {has_allow_equals && (
                 <div data-collapsible='true'>
                     <AllowEqualsMobile />
@@ -160,11 +161,7 @@ const CollapsibleTradeParams = ({
                     <AccumulatorsInfoDisplay />
                 </div>,
             ]}
-            {isVisible('barrier_selector') && (
-                <div data-collapsible='true'>
-                    <BarrierSelector />
-                </div>
-            )}
+
             {is_turbos && (
                 <div data-collapsible='true' className={classNames('take-profit', 'mobile-widget')}>
                     <TakeProfit

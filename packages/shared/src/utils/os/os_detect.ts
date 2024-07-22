@@ -59,7 +59,7 @@ export const isDesktopOs = () => {
 
 export const isMobileOs = () =>
     (/android/i.test(navigator.userAgent.toLowerCase()) && /mobile/i.test(navigator.userAgent.toLowerCase())) ||
-    /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    /webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|mobile/i.test(navigator.userAgent);
 
 export const isTabletOs =
     /ipad|android 3.0|xoom|sch-i800|playbook|tablet|kindle/i.test(navigator.userAgent.toLowerCase()) ||

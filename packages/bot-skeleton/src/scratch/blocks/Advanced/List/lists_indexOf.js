@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.lists_indexOf = {
     init() {
@@ -53,6 +54,9 @@ Blockly.Blocks.lists_indexOf = {
             VALUE: null,
             FIND: null,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

@@ -23,7 +23,7 @@ import { useTranslations } from '@deriv-com/translations';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
-    const { has_wallet } = store.client;
+    const { has_wallet, setIsPhoneNumberVerificationEnabled } = store.client;
     const { current_language } = store.common;
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
@@ -48,9 +48,9 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
 
     React.useEffect(() => {
         if (isPhoneNumberVerificationGBLoaded && isPhoneNumberVerificationEnabled) {
-            store.client.setIsPhoneNumberVerificationEnabled(isPhoneNumberVerificationEnabled);
+            setIsPhoneNumberVerificationEnabled(isPhoneNumberVerificationEnabled);
         }
-    }, [isPhoneNumberVerificationEnabled, store.client, isPhoneNumberVerificationGBLoaded]);
+    }, [isPhoneNumberVerificationEnabled, setIsPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded]);
 
     React.useEffect(() => {
         if (isGBLoaded && isWebPasskeysFFEnabled && isServicePasskeysFFEnabled) {

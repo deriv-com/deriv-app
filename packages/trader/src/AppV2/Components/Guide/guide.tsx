@@ -28,7 +28,7 @@ const Guide = ({ has_label = false }: TGuide) => {
                 variant={has_label ? 'secondary' : 'tertiary'}
             >
                 {has_label && (
-                    <Text size='sm' bold color='quill-typography__color--prominent'>
+                    <Text size='sm' bold color='quill-typography__color--prominent' key='guide'>
                         <Localize i18n_default_text='Guide' />
                     </Text>
                 )}

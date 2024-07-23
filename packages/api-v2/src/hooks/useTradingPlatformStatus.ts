@@ -1,4 +1,10 @@
 import useAuthorizedQuery from '../useAuthorizedQuery';
+import useQuery from '../useQuery';
+
+type TPlatformStatus = Exclude<
+    NonNullable<ReturnType<typeof useQuery<'trading_platform_status'>>['data']>['trading_platform_status'][0],
+    undefined
+>;
 
 /** A custom hook that gets the list of statuses of ctrader dxtrade mt5 platform. */
 const useTradingPlatformStatus = () => {
@@ -17,10 +23,8 @@ const useTradingPlatformStatus = () => {
      * @param platform The platform identifier (e.g., 'ctrader', 'dxtrade', 'mt5').
      * @returns The status of the identified platform ('active', 'maintenance', 'unavailable').
      */
-    const getPlatformStatus = (platform: string) => {
-        return tradingPlatformStatusData?.find(
-            (status: { platform: string; status: string }) => status.platform === platform
-        )?.status;
+    const getPlatformStatus = (platform: TPlatformStatus['platform']) => {
+        return tradingPlatformStatusData?.find((status: TPlatformStatus) => status.platform === platform)?.status;
     };
 
     return {

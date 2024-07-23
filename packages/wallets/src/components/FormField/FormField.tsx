@@ -16,11 +16,10 @@ export interface TFormFieldProps extends WalletTextFieldProps {
  */
 const FormField = forwardRef(
     (
-        { disabled, errorMessage, isInvalid, name, validationSchema, ...rest }: TFormFieldProps,
+        { disabled, errorMessage, name, showMessage, validationSchema, ...rest }: TFormFieldProps,
         ref: Ref<HTMLInputElement>
     ) => {
-        const [hasTouched, setHasTouched] = useState(false);
-
+        const [isInitialTouched, setIsInitialTouched] = useState(false);
         const validateField = (value: unknown) => {
             try {
                 if (validationSchema) {
@@ -34,22 +33,26 @@ const FormField = forwardRef(
         return (
             <Field name={name} validate={validateField}>
                 {({ field, form }: FieldProps) => {
+                    const isFieldInvalid = Boolean(isInitialTouched && form.errors[name]);
                     return (
                         <WalletTextField
                             {...rest}
                             defaultValue={field.value}
                             disabled={disabled}
-                            errorMessage={hasTouched && (form.errors[name] || errorMessage)}
-                            isInvalid={(hasTouched && isInvalid) || (hasTouched && Boolean(form.errors[name]))}
+                            errorMessage={isFieldInvalid && (form.errors[name] ?? errorMessage)}
+                            isInvalid={isFieldInvalid}
                             name={field.name}
                             onBlur={() => {
-                                setHasTouched(true);
+                                if (!isInitialTouched) {
+                                    setIsInitialTouched(true);
+                                }
                             }}
                             onChange={field.onChange}
                             onFocus={e => {
                                 field.onBlur(e);
                             }}
                             ref={ref}
+                            showMessage={!isFieldInvalid && showMessage}
                         />
                     );
                 }}

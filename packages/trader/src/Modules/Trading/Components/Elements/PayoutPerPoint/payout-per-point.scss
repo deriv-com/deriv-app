@@ -42,12 +42,13 @@
             gap: 0;
         }
         .popover-icon {
-            margin-left: 0.8rem;
+            margin-inline-start: var(--core-spacing-400);  
+            margin-inline-start: 0.8rem;
             margin-top: 0.2rem;
         }
         .cross-icon {
             margin-top: 0.2rem;
-            margin-left: auto;
+            margin-inline-start: auto;
         }
     }
 
@@ -57,7 +58,7 @@
         margin-top: 0.2rem;
         .barrier-value {
             margin-bottom: 0.8rem;
-            margin-left: 0.4rem;
+            margin-inline-start: 0.4rem;
             background-color: var(--general-section-1);
             border: none;
             border-bottom: 1px dotted var(--text-general);
@@ -65,7 +66,7 @@
             display: flex;
             cursor: pointer;
             .indicator-icon {
-                margin-left: 0.2rem;
+                margin-inline-start: 0.2rem;
                 margin-top: 0.4rem;
             }
         }

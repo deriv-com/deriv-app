@@ -1413,25 +1413,26 @@ export default class TradeStore extends BaseStore {
 
         if (!this.main_barrier || this.main_barrier?.shade) {
             if (this.is_turbos) {
-                let chart_barrier = (
-                    Number(response.proposal?.contract_details?.barrier) - Number(response.proposal?.spot)
-                ).toFixed(3);
+                if (response.proposal) {
+                    let chart_barrier = (
+                        Number(response.proposal?.contract_details?.barrier) - Number(response.proposal?.spot)
+                    ).toFixed(3);
 
-                if (Number(chart_barrier) > 0) {
-                    chart_barrier = `+${chart_barrier}`;
+                    if (Number(chart_barrier) > 0) {
+                        chart_barrier = `+${chart_barrier}`;
+                    }
+                    this.setMainBarrier({
+                        ...response.echo_req,
+                        ...{
+                            barrier: String(chart_barrier),
+                        },
+                    });
                 }
-                this.setMainBarrier({
-                    ...response.echo_req,
-                    ...{
-                        barrier: String(chart_barrier),
-                    },
-                });
             } else {
                 this.setMainBarrier(response.echo_req);
             }
         }
 
-        // IF ERROR
         if (this.hovered_contract_type === contract_type) {
             setLimitOrderBarriers({
                 barriers: this.root_store.portfolio.barriers,

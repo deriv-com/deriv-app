@@ -27,9 +27,9 @@ const ContractInfo = ({
     is_accumulator,
     is_loading,
     is_multiplier,
+    is_turbos,
     is_vanilla_fx,
     is_vanilla,
-    is_turbos,
     proposal_info,
     should_fade,
     type,
@@ -84,7 +84,7 @@ const ContractInfo = ({
     };
 
     return (
-        <div className={classNames('trade-container__price')}>
+        <div className='trade-container__price'>
             <div
                 id={`dt_purchase_${type.toLowerCase()}_price`}
                 data-testid={`dt_purchase_${type.toLowerCase()}_price`}

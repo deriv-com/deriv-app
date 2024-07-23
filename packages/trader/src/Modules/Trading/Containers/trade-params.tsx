@@ -45,7 +45,7 @@ const TradeParams = observer(({ is_minimized = false }: TTradeParams) => {
             {isVisible('barrier') && <Barrier key={'barrier'} is_minimized={is_minimized} />}
             {isVisible('last_digit') && <LastDigit key={'last_digit'} is_minimized={is_minimized} />}
             {isVisible('accumulator') && <Accumulator key={'accumulator'} />}
-            {(isVisible('trade_type_tabs') || isVisible('strike') || isVisible('"payout_selector"')) && (
+            {(isVisible('trade_type_tabs') || isVisible('strike') || isVisible('payout_selector')) && (
                 <Fieldset className={classNames('trade-container__fieldset', 'trade-container__fieldset--no-padding')}>
                     {isVisible('trade_type_tabs') && <TradeTypeTabs key={'trade_type_tabs'} />}
                     {isVisible('strike') && <Strike key={'strike'} />}

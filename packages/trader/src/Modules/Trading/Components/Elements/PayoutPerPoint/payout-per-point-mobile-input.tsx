@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Icon, PageOverlay, Popover, Text } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import WheelPickerMobile from '../../Form/WheelPicker/wheel-picker-mobile';
 import './payout-per-point.scss';
 import Fieldset from 'App/Components/Form/fieldset';
@@ -54,7 +54,7 @@ const PayoutPerPointMobileInput = ({
                 <Fieldset className='payout-per-point-mobile__header'>
                     <div className='payout-per-point-mobile__header__title'>
                         <Text size='xs' weight='bold' color='default' as='h1'>
-                            {localize('Payout per Point')}
+                            <Localize i18n_default_text='Payout per Point' />
                         </Text>
                         <Popover
                             alignment='bottom'
@@ -81,14 +81,14 @@ const PayoutPerPointMobileInput = ({
                 />
                 <Fieldset className='actions-wrapper'>
                     <Text
-                        size={'xxs'}
+                        size='xxs'
                         line_height='l'
-                        color={'default'}
+                        color='default'
                         align='center'
                         as='p'
                         className='distance-to-current-spot'
                     >
-                        {localize('Distance to current spot')}{' '}
+                        <Localize i18n_default_text='Distance to current spot' />
                         <Popover
                             alignment='top'
                             className='popover-icon'
@@ -118,7 +118,7 @@ const PayoutPerPointMobileInput = ({
                     </Text>
                 </Fieldset>
                 <Button className='save-button' onClick={onSave}>
-                    {localize('Save')}
+                    <Localize i18n_default_text='Save' />
                 </Button>
             </div>
         </PageOverlay>

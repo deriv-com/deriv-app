@@ -96,7 +96,7 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
     }, [selectedIndex, options, optionHeight]);
 
     useEffect(() => {
-        if (onChange) onChange(options[selectedIndex]);
+        onChange?.(options[selectedIndex]);
         if (optionRef.current) {
             setOptionWidth(optionRef.current.offsetWidth);
         }

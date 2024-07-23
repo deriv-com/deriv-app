@@ -2,7 +2,7 @@
     .payout-field {
         display: flex;
         .indicator-icon {
-            margin-left: 0.4rem;
+            margin-inline-start: var(--core-spacing-200);
         }
     }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import WheelPicker from '../../Form/WheelPicker';
 import { Popover, Text, useDevice } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import './payout-per-point.scss';
 import { LabelPairedChevronsDownCaptionRegularIcon, LabelPairedChevronsUpCaptionRegularIcon } from '@deriv/quill-icons';
 
@@ -23,12 +23,15 @@ const PayoutPerPointInput = ({
 }) => {
     const { is_desktop } = useDevice();
     const turbos_payout_message = (
-        <Localize i18n_default_text='The ammount you will receive at expiry for every point of change above the barrier.' />
+        <Localize i18n_default_text='The amount you will receive at expiry for every point of change above the barrier.' />
     );
-    return is_desktop ? (
+    if (!is_desktop) {
+        return null;
+    }
+    return (
         <Fieldset
-            className={'trade-container__fieldset payout-per-point-input'}
-            header={localize('Payout per Point')}
+            className='trade-container__fieldset payout-per-point-input'
+            header={<Localize i18n_default_text='Payout per Point' />}
             header_tooltip={turbos_payout_message}
             popover_wrapper_class='popover_wrapper_class'
         >
@@ -39,8 +42,8 @@ const PayoutPerPointInput = ({
                 currency={currency}
             />
             <Fieldset className='actions-wrapper'>
-                <Text size={'xxxs'} line_height='l' color='default' align='center' as='p'>
-                    {localize('Distance to current spot')}
+                <Text size='xxxs' line_height='l' color='default' align='center' as='p'>
+                    <Localize i18n_default_text='Distance to current spot' />
                 </Text>
                 <Popover
                     alignment='left'
@@ -54,9 +57,9 @@ const PayoutPerPointInput = ({
                 >
                     <div className='distance-to-current-spot'>
                         <Text
-                            size={'xxxs'}
+                            size='xxxs'
                             line_height='l'
-                            color={'default'}
+                            color='default'
                             align='center'
                             as='p'
                             className='barrier-value'
@@ -80,8 +83,6 @@ const PayoutPerPointInput = ({
                 </Popover>
             </Fieldset>
         </Fieldset>
-    ) : (
-        <></>
     );
 };
 

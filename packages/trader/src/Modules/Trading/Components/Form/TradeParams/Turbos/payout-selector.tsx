@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { useDevice } from '@deriv-com/ui';
@@ -41,7 +41,7 @@ const PayoutSelector = observer(() => {
                     {barrier_1} {currency}
                 </Text>
                 <Text size='xs' color='less-prominent' align='center'>
-                    {localize('Payout per point')}
+                    <Localize i18n_default_text='Payout per point' />
                 </Text>
             </div>
         );

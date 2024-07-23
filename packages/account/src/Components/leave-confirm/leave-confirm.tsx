@@ -46,43 +46,33 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
     const history = useHistory();
     const location = useLocation();
     const { isMobile } = useDevice();
-    const [nextLocation, setNextLocation] = React.useState(location);
-
-    const handleHistoryBlock = React.useCallback(
-        (locate: { pathname: string }) => {
+    const [nextLocation, setNextLocation] = React.useState<string | null>(location.pathname);
+    React.useEffect(() => {
+        const unblock = history.block((location: Location) => {
             if (dirty && !showModal) {
-                setNextLocation(locate.pathname);
+                if (onDirty) onDirty(false);
+                setNextLocation(location.pathname);
                 setShowModal(true);
                 return false;
             }
             return true;
-        },
-        [dirty, showModal]
-    );
-
-    React.useEffect(() => {
-        const unblock = history.block(handleHistoryBlock);
-
-        return () => {
-            unblock();
-        };
-    }, [history, handleHistoryBlock]);
-
+        });
+        return () => unblock();
+    }, [dirty, showModal, history, onDirty]);
     const leave = React.useCallback(() => {
         if (nextLocation) {
-            setShowModal(true);
+            setShowModal(false);
             history.push(nextLocation);
-        }
-        if (onDirty) {
-            onDirty(true);
+            if (onDirty) {
+                onDirty(false);
+            }
         }
     }, [nextLocation, history, onDirty]);
 
     const back = () => {
-        setNextLocation(location);
         setShowModal(false);
         if (onDirty) {
-            onDirty(false);
+            onDirty(true);
         }
     };
 

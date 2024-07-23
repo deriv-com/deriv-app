@@ -2713,12 +2713,16 @@ export default class ClientStore extends BaseStore {
     }
 
     async fetchShouldShowPasskeyNotification() {
-        try {
-            const data = await WS.authorized.send({ passkeys_list: 1 });
-            const should_show = data?.passkeys_list?.length === 0 && this.root_store.ui?.is_mobile;
-            this.setShouldShowPasskeyNotification(should_show);
-        } catch (e) {
-            //error handling needed
+        if (this.root_store.ui?.is_mobile) {
+            try {
+                const data = await WS.authorized.send({ passkeys_list: 1 });
+                const is_passkeys_empty = data?.passkeys_list?.length === 0;
+                this.setShouldShowPasskeyNotification(is_passkeys_empty);
+            } catch (e) {
+                //error handling needed
+            }
+        } else {
+            this.setShouldShowPasskeyNotification(false);
         }
     }
 

@@ -1,16 +1,20 @@
 import React, { ComponentProps } from 'react';
-import { APIProvider, useBalance } from '@deriv/api-v2';
+import { APIProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../AuthProvider';
+import useAllBalanceSubscription from '../../../hooks/useAllBalanceSubscription';
 import WalletCard from '../WalletCard';
 
-jest.mock('@deriv/api-v2', () => ({
-    ...jest.requireActual('@deriv/api-v2'),
-    useBalance: jest.fn(() => ({
-        ...jest.requireActual('@deriv/api-v2').useBalance(),
+jest.mock('../../../hooks/useAllBalanceSubscription', () =>
+    jest.fn(() => ({
+        data: undefined,
         isLoading: false,
-    })),
-}));
+    }))
+);
+
+const mockUseAllBalanceSubscription = useAllBalanceSubscription as jest.MockedFunction<
+    typeof useAllBalanceSubscription
+>;
 
 describe('WalletCard', () => {
     let mockProps: ComponentProps<typeof WalletCard> = {
@@ -100,10 +104,9 @@ describe('WalletCard', () => {
     });
 
     it('should show balance loader when balance is loading', () => {
-        (useBalance as jest.Mock).mockImplementation(() => ({
-            ...jest.requireActual('@deriv/api-v2').useBalance(),
+        (mockUseAllBalanceSubscription as jest.Mock).mockReturnValue({
             isLoading: true,
-        }));
+        });
         render(
             <APIProvider>
                 <WalletsAuthProvider>
@@ -116,8 +119,7 @@ describe('WalletCard', () => {
     });
 
     it('should show balance when balance is loaded', () => {
-        (useBalance as jest.Mock).mockImplementation(() => ({
-            ...jest.requireActual('@deriv/api-v2').useBalance(),
+        (mockUseAllBalanceSubscription as jest.Mock).mockReturnValue(() => ({
             isLoading: false,
         }));
         render(

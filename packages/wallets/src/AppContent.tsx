@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDerivAccountsList } from '@deriv/api-v2';
 import { Analytics } from '@deriv-com/analytics';
+import useAllBalanceSubscription from './hooks/useAllBalanceSubscription';
 import { defineViewportHeight } from './utils/utils';
 import { WalletLanguageSidePanel } from './components';
 import { Router } from './routes';
@@ -9,6 +11,19 @@ import './AppContent.scss';
 const AppContent: React.FC = () => {
     const [isPanelOpen, setIsPanelOpen] = useState(false);
     const { i18n } = useTranslation();
+    const { isSubscribed, subscribeToAllBalance, unsubscribeFromAllBalance } = useAllBalanceSubscription();
+    const { data: derivAccountList, isRefetching } = useDerivAccountsList();
+
+    useEffect(() => {
+        if ((derivAccountList?.length ?? 0) > 0 && !isRefetching && !isSubscribed) {
+            subscribeToAllBalance();
+        }
+        return () => {
+            if (isSubscribed) {
+                unsubscribeFromAllBalance();
+            }
+        };
+    }, [derivAccountList?.length, isRefetching, isSubscribed, subscribeToAllBalance, unsubscribeFromAllBalance]);
 
     useEffect(() => {
         const handleShortcutKey = (event: globalThis.KeyboardEvent) => {

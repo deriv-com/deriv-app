@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.variables_set = {
     init() {
@@ -36,6 +37,9 @@ Blockly.Blocks.variables_set = {
             display_name: localize('Set variable'),
             description: localize('Assigns a given value to a variable'),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

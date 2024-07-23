@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.lists_getIndex = {
     init() {
@@ -94,6 +95,9 @@ Blockly.Blocks.lists_getIndex = {
         this.getInput('AT').appendField(menu, 'WHERE');
 
         this.initSvg();
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

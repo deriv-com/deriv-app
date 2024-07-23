@@ -12,8 +12,8 @@ import CurrentSpot from 'AppV2/Components/CurrentSpot';
 import { TradeChart } from '../Chart';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import TemporaryTradeTypes from './trade-types';
-import TemporaryAssets from './assets';
 import LastDigitPrediction from 'AppV2/Components/TradeParameters/LastDigitPrediction';
+import MarketSelector from 'AppV2/Components/MarketSelector';
 
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
@@ -73,7 +73,7 @@ const Trade = observer(() => {
                             onTradeTypeSelect={onTradeTypeSelect}
                             trade_types={trade_types}
                         />
-                        <TemporaryAssets onChange={onChange} symbol={symbol} symbols={symbols} />
+                        <MarketSelector />
                         {isDigitTradeType(contract_type) && <CurrentSpot />}
                         {contract_type === TRADE_TYPES.EVEN_ODD && <LastDigitPrediction is_stats_mode />}
                         <TradeParametersContainer>

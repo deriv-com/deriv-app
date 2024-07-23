@@ -88,7 +88,7 @@
     },
     "dependencies": {
         "@cloudflare/stream-react": "^1.9.1",
-        "@deriv-com/analytics": "1.9.0",
+        "@deriv-com/analytics": "1.10.0",
         "@deriv-com/quill-tokens": "^2.0.4",
         "@deriv-com/quill-ui": "1.13.17",
         "@deriv-com/utils": "^0.0.25",

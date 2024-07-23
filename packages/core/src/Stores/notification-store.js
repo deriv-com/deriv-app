@@ -12,6 +12,7 @@ import {
     getMarketName,
     getPathname,
     getPlatformSettings,
+    shouldShowPhoneVerificationNotification,
     getStaticUrl,
     getTotalProfit,
     getTradeTypeName,
@@ -41,6 +42,7 @@ import {
     poi_notifications,
 } from './Helpers/client-notifications';
 import BaseStore from './base-store';
+import dayjs from 'dayjs';
 
 export default class NotificationStore extends BaseStore {
     is_notifications_visible = false;
@@ -302,6 +304,7 @@ export default class NotificationStore extends BaseStore {
     }
 
     async handleClientNotifications() {
+        const current_time = dayjs();
         const {
             account_settings,
             account_status,
@@ -311,6 +314,8 @@ export default class NotificationStore extends BaseStore {
             is_eu,
             is_identity_verification_needed,
             is_logged_in,
+            is_virtual,
+            is_phone_number_verification_enabled,
             is_tnc_needed,
             landing_company_shortcode,
             loginid,
@@ -338,7 +343,15 @@ export default class NotificationStore extends BaseStore {
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.trustpilot?.key
         );
-
+        const is_next_email_attempt_timer_running = shouldShowPhoneVerificationNotification(
+            account_settings?.phone_number_verification?.next_email_attempt,
+            current_time
+        );
+        const show_phone_number_verification_notification =
+            !account_settings?.phone_number_verification?.verified &&
+            !is_next_email_attempt_timer_running &&
+            !is_virtual &&
+            is_phone_number_verification_enabled;
         let has_missing_required_field;
 
         const is_server_down = checkServerMaintenance(website_status);
@@ -378,6 +391,9 @@ export default class NotificationStore extends BaseStore {
                 this.removeNotificationByKey({ key: this.client_notifications.two_f_a?.key });
             }
 
+            if (show_phone_number_verification_notification) {
+                this.addNotificationMessage(this.client_notifications.phone_number_verification);
+            }
             if (malta_account && is_financial_information_incomplete) {
                 this.addNotificationMessage(this.client_notifications.need_fa);
             } else {
@@ -742,7 +758,7 @@ export default class NotificationStore extends BaseStore {
 
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
-        const { has_enabled_two_fa, setTwoFAChangedStatus, logout } = this.root_store.client;
+        const { has_enabled_two_fa, setTwoFAChangedStatus, logout, email } = this.root_store.client;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
 
         const platform_name_trader = getPlatformSettings('trader').name;
@@ -1052,6 +1068,19 @@ export default class NotificationStore extends BaseStore {
                 header: localize('Password updated.'),
                 message: <Localize i18n_default_text='Please log in with your updated password.' />,
                 type: 'info',
+            },
+            phone_number_verification: {
+                key: 'phone_number_verification',
+                header: localize('Verify your phone number'),
+                message: <Localize i18n_default_text='Keep your account safe. Verify your phone number now.' />,
+                type: 'warning',
+                action: {
+                    onClick: () => {
+                        WS.verifyEmail(email, 'phone_number_verification');
+                    },
+                    route: routes.phone_verification,
+                    text: localize('Get started'),
+                },
             },
             poa_rejected_for_mt5: {
                 action: {

@@ -29,6 +29,7 @@ import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
+import { VerifyButton } from './verify-button';
 import { useInvalidateQuery } from '@deriv/api';
 import { useStatesList, useResidenceList } from '@deriv/hooks';
 
@@ -57,6 +58,7 @@ const PersonalDetailsForm = observer(() => {
         authentication_status,
         is_eu,
         is_virtual,
+        is_phone_number_verification_enabled,
         current_landing_company,
         updateAccountStatus,
         residence,
@@ -360,6 +362,10 @@ const PersonalDetailsForm = observer(() => {
                                             name='phone'
                                             id={'phone'}
                                             label={localize('Phone number*')}
+                                            className={clsx({
+                                                'account-form__fieldset--phone':
+                                                    account_settings?.phone_number_verification?.verified,
+                                            })}
                                             //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
                                             value={values.phone}
                                             onChange={handleChange}
@@ -369,6 +375,8 @@ const PersonalDetailsForm = observer(() => {
                                             disabled={isFieldDisabled('phone')}
                                             data-testid='dt_phone'
                                         />
+                                        {is_phone_number_verification_enabled &&
+                                            account_settings.phone === values.phone && <VerifyButton />}
                                     </fieldset>
                                 )}
                                 <Fragment>

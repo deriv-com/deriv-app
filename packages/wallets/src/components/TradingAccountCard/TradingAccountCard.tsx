@@ -5,6 +5,12 @@ import TradingAccountCardContent from './TradingAccountCardContent';
 import TradingAccountCardIcon from './TradingAccountCardIcon';
 import './TradingAccountCard.scss';
 
+export type TCommonProps = {
+    children: React.ReactNode;
+    className?: string;
+    'data-testid'?: string;
+};
+
 type TProps = {
     className?: string;
     disabled?: ComponentProps<'button'>['disabled'];

@@ -83,7 +83,7 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                     label={
                         is_valid_to_sell
                             ? `${cardLabels.CLOSE} @ ${FormatUtils.formatMoney(bid_price || 0, {
-                                  currency: currency as any,
+                                  currency: currency as any, // currency types mismatched between utils and shared
                               })} ${currency}`
                             : cardLabels.RESALE_NOT_OFFERED
                     }

@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { runIrreversibleEvents } from '../../../utils';
+import { runIrreversibleEvents, modifyContextMenu } from '../../../utils';
 import ApiHelpers from '../../../../services/api/api-helpers';
 
 /* eslint-disable */
@@ -37,6 +37,9 @@ Blockly.Blocks.trade_definition_market = {
 
         this.setMovable(false);
         this.setDeletable(false);
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     onchange(event) {
         const allowed_events = ['BLOCK_CREATE', 'BLOCK_CHANGE', 'BLOCK_DRAG'];

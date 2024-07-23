@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.lists_getSublist = {
     init() {
@@ -84,6 +85,9 @@ Blockly.Blocks.lists_getSublist = {
         this.initSvg();
         //commented this line breaks the backward compatibility
         //this.render(false);
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

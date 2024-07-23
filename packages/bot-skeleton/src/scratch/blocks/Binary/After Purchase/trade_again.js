@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.trade_again = {
     init() {
@@ -27,10 +28,13 @@ Blockly.Blocks.trade_again = {
             key_words: localize('restart'),
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     restricted_parents: ['after_purchase'],
 };
 
-Blockly.JavaScript.trade_again = () => {
+Blockly.JavaScript.javascriptGenerator.forBlock.trade_again = () => {
     const code = `
         Bot.isTradeAgain(true);\n
         return true;\n

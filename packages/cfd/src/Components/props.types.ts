@@ -314,7 +314,7 @@ export type TSuccessDialogProps = {
     icon_type?: string;
     is_medium_button?: boolean;
     has_close_icon: boolean;
-    width: string;
+    width?: string;
     has_cancel?: boolean;
     has_submit?: boolean;
 };

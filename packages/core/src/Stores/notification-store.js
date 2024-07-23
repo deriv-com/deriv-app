@@ -306,7 +306,6 @@ export default class NotificationStore extends BaseStore {
     }
 
     async handleClientNotifications() {
-        // console.log('handleClientNotifications called when is-mobile is ', this.root_store.ui?.is_mobile);
         const {
             account_settings,
             account_status,
@@ -355,7 +354,6 @@ export default class NotificationStore extends BaseStore {
         }
 
         if (is_logged_in) {
-            // console.log('should_show_passkey_notification', this.root_store.client.should_show_passkey_notification);
             if (isEmptyObject(account_status)) return;
             const {
                 authentication: { document, identity, income, needs_verification, ownership } = {},

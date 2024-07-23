@@ -129,9 +129,6 @@ export default class UIStore extends BaseStore {
     prompt_when = false;
     promptFn = () => {};
 
-    //phone number verification
-    should_show_phone_number_otp = false;
-
     //warn user if they want to close create real account modal
     is_closing_create_real_account_modal = false;
 
@@ -170,7 +167,6 @@ export default class UIStore extends BaseStore {
     should_show_assessment_complete_modal = false;
     app_contents_scroll_ref = null;
     is_deriv_account_needed_modal_visible = false;
-    is_redirected_from_email = false;
     is_wallet_modal_visible = false;
     is_ready_to_deposit_modal_visible = false;
     is_need_real_account_for_cashier_modal_visible = false;
@@ -263,7 +259,6 @@ export default class UIStore extends BaseStore {
             is_dark_mode_on: observable,
             is_deriv_account_needed_modal_visible: observable,
             is_from_signup_account: observable,
-            is_redirected_from_email: observable,
             is_wallet_modal_visible: observable,
 
             is_history_tab_active: observable,
@@ -301,7 +296,6 @@ export default class UIStore extends BaseStore {
             real_account_signup: observable,
             reports_route_tab_index: observable,
             settings_extension: observable,
-            should_show_phone_number_otp: observable,
             should_show_appropriateness_warning_modal: observable,
             should_show_assessment_complete_modal: observable,
             should_show_cancel: observable,
@@ -352,7 +346,6 @@ export default class UIStore extends BaseStore {
             resetPurchaseStates: action.bound,
             resetRealAccountSignupParams: action.bound,
             resetRealAccountSignupTarget: action.bound,
-            setShouldShowPhoneNumberOTP: action.bound,
             setAccountSwitcherDisabledMessage: action.bound,
             setAppContentsScrollRef: action.bound,
             setCFDPasswordResetModal: action.bound,
@@ -374,7 +367,6 @@ export default class UIStore extends BaseStore {
             shouldNavigateAfterChooseCrypto: action.bound,
             setIsMT5VerificationFailedModal: action.bound,
             setShouldShowRiskWarningModal: action.bound,
-            setRedirectFromEmail: action.bound,
             setIsWalletModalVisible: action.bound,
             setIsRealTabEnabled: action.bound,
             setIsTradingAssessmentForExistingUserEnabled: action.bound,
@@ -449,10 +441,6 @@ export default class UIStore extends BaseStore {
 
     setIsRealTabEnabled(is_real_tab_enabled) {
         this.is_real_tab_enabled = is_real_tab_enabled;
-    }
-
-    setShouldShowPhoneNumberOTP(should_show_phone_number_otp) {
-        this.should_show_phone_number_otp = should_show_phone_number_otp;
     }
 
     setHashedValue(url_hashed_values) {
@@ -871,10 +859,6 @@ export default class UIStore extends BaseStore {
 
     openDerivRealAccountNeededModal() {
         this.is_deriv_account_needed_modal_visible = !this.is_deriv_account_needed_modal_visible;
-    }
-
-    setRedirectFromEmail(value) {
-        this.is_redirected_from_email = value;
     }
 
     setIsWalletModalVisible(value) {

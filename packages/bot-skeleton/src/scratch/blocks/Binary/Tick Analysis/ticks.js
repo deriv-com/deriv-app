@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.ticks = {
     init() {
@@ -21,6 +22,9 @@ Blockly.Blocks.ticks = {
             display_name: localize('Tick list'),
             description: localize('This block gives you a list of the last 1000 tick values.'),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 
@@ -46,12 +50,18 @@ Blockly.Blocks.ticks_string = {
             description: localize('Tick List String Description'),
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     onchange: Blockly.Blocks.ticks.onchange,
 };
 
-Blockly.JavaScript.ticks = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.ticks = block => {
     const parent = block.getParent();
     const type_list = ['notify', 'text_print'];
-    return [`Bot.getTicks(${type_list.includes(parent?.type)})`, Blockly.JavaScript.ORDER_ATOMIC];
+    return [`Bot.getTicks(${type_list.includes(parent?.type)})`, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };
-Blockly.JavaScript.ticks_string = () => ['Bot.getTicks(true)', Blockly.JavaScript.ORDER_ATOMIC];
+Blockly.JavaScript.javascriptGenerator.forBlock.ticks_string = () => [
+    'Bot.getTicks(true)',
+    Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+];

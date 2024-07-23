@@ -89,7 +89,7 @@ const AppModals = observer(() => {
         is_trading_experience_incomplete,
         should_show_effortless_login_modal,
     } = client;
-    const { content_flag } = traders_hub;
+    const { content_flag, is_setup_real_account_or_go_to_demo_modal_visible } = traders_hub;
     const { is_from_derivgo } = common;
     const {
         is_account_needed_modal_on,
@@ -142,7 +142,8 @@ const AppModals = observer(() => {
         !should_show_appropriateness_warning_modal &&
         !should_show_risk_warning_modal &&
         !is_from_signup_account &&
-        !is_real_acc_signup_on;
+        !is_real_acc_signup_on &&
+        !is_setup_real_account_or_go_to_demo_modal_visible;
 
     const should_show_trading_assessment_existing_user_form =
         is_logged_in &&

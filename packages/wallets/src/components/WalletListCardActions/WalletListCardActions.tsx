@@ -17,9 +17,7 @@ type TProps = {
     accountsActiveTabIndex?: number;
 };
 
-const GetWalletHeaderButtons = (isDemo?: boolean) => {
-    const { localize } = useTranslations();
-
+const getWalletHeaderButtons = (localize: ReturnType<typeof useTranslations>['localize'], isDemo?: boolean) => {
     const buttons = [
         {
             className: isDemo ? 'wallets-mobile-actions-content-icon' : 'wallets-mobile-actions-content-icon--primary',
@@ -66,7 +64,7 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
         return (
             <div className='wallets-mobile-actions__container'>
                 <div className='wallets-mobile-actions'>
-                    {GetWalletHeaderButtons(isDemo).map(button => (
+                    {getWalletHeaderButtons(localize, isDemo).map(button => (
                         <div className='wallets-mobile-actions-content' key={button.name}>
                             <IconButton
                                 aria-label={button.name}
@@ -89,7 +87,7 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
 
     return (
         <div className='wallets-header__actions'>
-            {GetWalletHeaderButtons(isDemo).map(button => (
+            {getWalletHeaderButtons(localize, isDemo).map(button => (
                 <WalletButton
                     ariaLabel={button.name}
                     icon={button.icon}

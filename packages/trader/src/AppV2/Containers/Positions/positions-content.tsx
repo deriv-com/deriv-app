@@ -70,6 +70,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
 
     const contractCards = isClosedTab ? (
         <ContractCardsSections
+            currency={currency}
             positions={filteredPositions as TClosedPosition[]}
             isLoadingMore={isFetchingClosedPositions}
             hasBottomMargin={shouldShowTakeProfit}

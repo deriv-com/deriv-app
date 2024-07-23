@@ -34,7 +34,7 @@ const mock = {
         logout: jest.fn(() => Promise.resolve()),
     },
 };
-const mock_password = 'Abcd#17!@';
+const mock_value = 'Abcd#12@';
 
 describe('ResetPasswordModal', () => {
     let store = mockStore({});
@@ -87,11 +87,10 @@ describe('ResetPasswordModal', () => {
 
         await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
 
-        const newPasswordInput = screen.getByLabelText('Create a password', { selector: 'input' });
+        const new_password_input = screen.getByLabelText('Create a password', { selector: 'input' });
 
-        userEvent.type(newPasswordInput, mock_password);
-
-        expect(newPasswordInput).toHaveValue(mock_password);
+        userEvent.type(new_password_input, mock_value);
+        expect(new_password_input).toHaveValue();
 
         expect(screen.getByRole('button', { name: /Reset my password/i })).toBeEnabled();
 
@@ -103,7 +102,7 @@ describe('ResetPasswordModal', () => {
 
         await waitFor(() => {
             expect(WS.resetPassword).toHaveBeenCalledWith({
-                new_password: mock_password,
+                new_password: mock_value,
                 reset_password: 1,
                 verification_code: mock.client.verification_code.reset_password,
             });

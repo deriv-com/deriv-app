@@ -158,7 +158,7 @@ describe('OpenPositions', () => {
         render(mockedOpenPositions());
 
         expect(screen.getByText(notifications)).toBeInTheDocument();
-        expect(screen.getByRole('combobox')).toHaveValue(options);
+        expect(screen.getByRole('combobox')).toHaveValue(options.toLowerCase());
         expect(screen.getByText(data_list)).toBeInTheDocument();
     });
     it('should render notifications and No positions message but no filter and no DataTable if positions are empty on desktop', () => {
@@ -253,9 +253,9 @@ describe('OpenPositions', () => {
         (useDevice as jest.Mock).mockImplementation(() => ({ isDesktop: false }));
         render(mockedOpenPositions());
 
-        expect(screen.getByRole('combobox')).toHaveValue(options);
-        userEvent.selectOptions(screen.getByRole('combobox'), accumulators);
-        expect(screen.getAllByRole('combobox')[0]).toHaveValue(accumulators);
+        expect(screen.getByRole('combobox')).toHaveValue(options.toLowerCase());
+        userEvent.selectOptions(screen.getByRole('combobox'), accumulators.toLowerCase());
+        expect(screen.getAllByRole('combobox')[0]).toHaveValue(accumulators.toLowerCase());
     });
     it('should set 1% Growth rate filter when it is selected from the dropdown for Accumulators on desktop', () => {
         store.portfolio.is_accumulator = true;
@@ -271,7 +271,7 @@ describe('OpenPositions', () => {
         store.portfolio.is_accumulator = true;
         render(mockedOpenPositions());
 
-        expect(screen.getAllByRole('combobox')[1]).toHaveValue(all_growth_rates);
+        expect(screen.getAllByRole('combobox')[1]).toHaveValue(all_growth_rates.toLowerCase());
         userEvent.selectOptions(screen.getAllByRole('combobox')[1], five_percent);
         expect(screen.getAllByRole('combobox')[1]).toHaveValue(five_percent);
     });

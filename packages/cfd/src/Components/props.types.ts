@@ -297,3 +297,24 @@ export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
 
     openFailedVerificationModal?: (from_account: string) => void;
 };
+
+export type TSuccessDialogProps = {
+    is_open: boolean;
+    toggleModal: () => void;
+    onCancel?: () => void;
+    onSubmit?: () => void;
+    classNameMessage?: string;
+    message: string | React.ReactElement;
+    icon: React.ReactElement;
+    icon_size?: string;
+    text_submit?: string;
+    text_cancel?: string;
+    heading?: string | React.ReactElement;
+    title?: string;
+    icon_type?: string;
+    is_medium_button?: boolean;
+    has_close_icon: boolean;
+    width: string;
+    has_cancel?: boolean;
+    has_submit?: boolean;
+};

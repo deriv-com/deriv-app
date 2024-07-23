@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.lists_isEmpty = {
     init() {
@@ -36,6 +37,9 @@ Blockly.Blocks.lists_isEmpty = {
         return {
             VALUE: null,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

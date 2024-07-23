@@ -943,7 +943,7 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Enable passkey'),
                 },
                 key: 'enable_passkey',
-                header: localize('Level up your security!'),
+                header: localize('Level up your security'),
                 message: localize('Strengthen your account’s security today with the latest passkeys feature.'),
                 type: 'announce',
                 should_show_again: true,

@@ -545,6 +545,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             startTrade: jest.fn(),
             showTopUpModal: jest.fn(),
             is_regulators_compare_modal_visible: false,
+            is_cfd_restricted_country: false,
+            setIsCFDRestrictedCountry: jest.fn(),
+            is_financial_restricted_country: false,
+            setIsFinancialRestrictedCountry: jest.fn(),
             is_setup_real_account_or_go_to_demo_modal_visible: false,
             setIsSetupRealAccountOrGoToDemoModalVisible: jest.fn(),
         },
@@ -736,6 +740,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             data: undefined,
             update: jest.fn(),
             unmount: jest.fn(),
+            cleanup: jest.fn(),
         },
         gtm: {
             is_gtm_applicable: false,

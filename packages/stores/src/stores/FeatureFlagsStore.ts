@@ -9,7 +9,14 @@ const FLAGS = {
 } satisfies Record<string, boolean>;
 
 export default class FeatureFlagsStore extends BaseStore<{ [k in keyof typeof FLAGS]: boolean }> {
+    private static instance: FeatureFlagsStore | null = null;
+
     constructor() {
+        // Call cleanup on the existing instance if it exists
+        if (FeatureFlagsStore.instance) {
+            FeatureFlagsStore.instance.cleanup();
+        }
+
         super('FeatureFlagsStore', () => {
             // Set the default values for the first time.
             if (!this.data) this.update(FLAGS);
@@ -30,5 +37,12 @@ export default class FeatureFlagsStore extends BaseStore<{ [k in keyof typeof FL
         });
 
         this.data = FLAGS;
+
+        // Assign the new instance to the static property
+        FeatureFlagsStore.instance = this;
+    }
+
+    cleanup() {
+        this.unmount();
     }
 }

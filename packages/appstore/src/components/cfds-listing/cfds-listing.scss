@@ -460,6 +460,7 @@
         padding: 1.6rem 2.4rem;
         border-radius: $BORDER_RADIUS * 2;
         margin-top: 0.8rem;
+        max-width: 65rem;
 
         &--ordered-list {
             list-style-type: decimal;
@@ -803,7 +804,6 @@
             flex-direction: column;
         }
         &-wrapper {
-            width: 100%;
             overflow: scroll;
         }
     }

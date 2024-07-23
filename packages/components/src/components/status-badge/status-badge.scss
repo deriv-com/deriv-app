@@ -19,6 +19,9 @@
         &--unavailable {
             border-color: var(--status-warning);
             color: var(--status-warning);
+            height: 2.1rem;
+            font-size: var(--text-size-xxxs);
+            align-items: center;
         }
         &--failed {
             border-color: var(--status-danger);
@@ -27,6 +30,7 @@
 
         &--icon {
             padding: 0.1rem 0.5rem 0 0;
+            height: 1.5rem;
         }
 
         &__arrow {

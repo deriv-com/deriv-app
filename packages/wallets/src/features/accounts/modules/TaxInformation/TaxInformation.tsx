@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { Loader } from '@deriv-com/ui';
-import { FormField, ModalStepWrapper, WalletDropdown, WalletText } from '../../../../components';
+import { FormDropdown, FormField, ModalStepWrapper, WalletText } from '../../../../components';
 import { Footer } from '../components';
 import { NeedHelpMessage } from './components';
 import { useTaxInformation } from './hooks';
@@ -52,7 +52,7 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                     </div>
                                     <NeedHelpMessage />
                                     <div className='wallets-tax-information__form'>
-                                        <WalletDropdown
+                                        <FormDropdown
                                             label='Citizenship*'
                                             list={countryList}
                                             listHeight='sm'
@@ -61,7 +61,7 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                             value={values?.citizenship ?? initialValues?.citizenship}
                                             variant='comboBox'
                                         />
-                                        <WalletDropdown
+                                        <FormDropdown
                                             disabled={initialValues?.placeOfBirth !== ''}
                                             label='Place of birth*'
                                             list={countryList}
@@ -71,7 +71,7 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                             value={initialValues?.placeOfBirth ?? ''}
                                             variant='comboBox'
                                         />
-                                        <WalletDropdown
+                                        <FormDropdown
                                             errorMessage={values.taxResidence ?? 'Tax residence is required'}
                                             isRequired
                                             label='Tax residence*'
@@ -94,7 +94,7 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                                 countryCodeToPatternMapper[values.taxResidence ?? '']
                                             )}
                                         />
-                                        <WalletDropdown
+                                        <FormDropdown
                                             label='Account opening reason*'
                                             list={accountOpeningReasonList}
                                             name='accountOpeningReason'

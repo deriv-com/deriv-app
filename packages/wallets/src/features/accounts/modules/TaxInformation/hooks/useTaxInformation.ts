@@ -37,7 +37,7 @@ const useTaxInformation = () => {
     const countryList = useMemo(
         () =>
             residenceList.map(residence => ({
-                text: residence.text as React.ReactNode,
+                text: residence.text,
                 value: residence.value ?? '',
             })),
         [residenceList]

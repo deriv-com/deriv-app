@@ -1,4 +1,4 @@
-import React, { forwardRef, Ref, useState } from 'react';
+import React, { forwardRef, Ref } from 'react';
 import { Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
 import WalletTextField, { WalletTextFieldProps } from '../Base/WalletTextField/WalletTextField';
@@ -10,16 +10,14 @@ export interface TFormFieldProps extends WalletTextFieldProps {
 }
 
 /**
- * This component is just a wrapper to the Field Formik component and WalletTextField
- * Use this component when you are using the FlowProvider with a form and several inputs,
- * and you want those input values to be tracked and validated
+ * A WalletTextField component wrapped with Formik Field to provide form validations and
+ * other Formik functionalities.
  */
 const FormField = forwardRef(
     (
         { disabled, errorMessage, name, showMessage, validationSchema, ...rest }: TFormFieldProps,
         ref: Ref<HTMLInputElement>
     ) => {
-        const [isInitialTouched, setIsInitialTouched] = useState(false);
         const validateField = (value: unknown) => {
             try {
                 if (validationSchema) {
@@ -33,7 +31,7 @@ const FormField = forwardRef(
         return (
             <Field name={name} validate={validateField}>
                 {({ field, form }: FieldProps) => {
-                    const isFieldInvalid = Boolean(isInitialTouched && form.errors[name]);
+                    const isFieldInvalid = Boolean((form.touched[name] || field.value) && form.errors[name]);
                     return (
                         <WalletTextField
                             {...rest}
@@ -43,13 +41,11 @@ const FormField = forwardRef(
                             isInvalid={isFieldInvalid}
                             name={field.name}
                             onBlur={() => {
-                                if (!isInitialTouched) {
-                                    setIsInitialTouched(true);
-                                }
+                                form.setFieldTouched(name);
                             }}
-                            onChange={field.onChange}
-                            onFocus={e => {
-                                field.onBlur(e);
+                            onChange={() => {
+                                form.setFieldTouched(name);
+                                return field.onChange;
                             }}
                             ref={ref}
                             showMessage={!isFieldInvalid && showMessage}

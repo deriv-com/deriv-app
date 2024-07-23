@@ -1,20 +1,14 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import { Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
-import { WalletDropdown } from '../Base';
-import type { TWalletDropdownProps } from '../Base/WalletDropdown/WalletDropdown';
+import { Dropdown } from '@deriv-com/ui';
 
-export interface TFormDropdownProps extends TWalletDropdownProps {
+export type TFormDropdownProps = ComponentProps<typeof Dropdown> & {
     name: string;
     validationSchema?: Yup.AnySchema;
-}
+};
 
-/**
- * This component is just a wrapper to the Field Formik component and WalletTextField
- * Use this component when you are using the FlowProvider with a form and several inputs,
- * and you want those input values to be tracked and validated
- */
-const FormDropdown = ({ disabled, errorMessage, name, validationSchema, ...rest }: TFormDropdownProps) => {
+const FormDropdown = ({ disabled, isRequired, name, onSelect, validationSchema, ...rest }: TFormDropdownProps) => {
     const validateField = (value: unknown) => {
         try {
             if (validationSchema) {
@@ -24,23 +18,28 @@ const FormDropdown = ({ disabled, errorMessage, name, validationSchema, ...rest 
             return (err as Yup.ValidationError).message;
         }
     };
-
     return (
         <Field name={name} validate={validateField}>
             {({ field, form }: FieldProps) => {
+                const isFieldInvalid = Boolean(form.touched[name] && isRequired && form.errors[name]);
                 return (
-                    <WalletDropdown
-                        {...rest}
-                        disabled={disabled}
-                        errorMessage={form.touched[name] && (form.errors[name] || errorMessage)}
-                        isRequired={form.touched[name] && (!!form.errors[name] || !!errorMessage)}
-                        name={name}
-                        onChange={field.onChange}
-                        onFocus={() => {
-                            form.setFieldTouched(name);
-                        }}
-                        value={field.value}
-                    />
+                    <div className='wallets-form-field'>
+                        <Dropdown
+                            {...rest}
+                            disabled={disabled}
+                            errorMessage={isFieldInvalid ? (form.errors[name] as string) : ''}
+                            name={name}
+                            onBlur={() => {
+                                form.setFieldTouched(name);
+                            }}
+                            onChange={field.onChange}
+                            onSelect={value => {
+                                form.setFieldValue(name, value);
+                                return onSelect(value as string);
+                            }}
+                            value={field.value}
+                        />
+                    </div>
                 );
             }}
         </Field>

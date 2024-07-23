@@ -1,9 +1,8 @@
 import React from 'react';
-import { render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import { render, screen, waitFor, waitForElementToBeRemoved, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { WS } from '@deriv/shared';
 import ResetPasswordModal from '../reset-password-modal';
-import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { APIProvider } from '@deriv/api';
 import { TStores } from '@deriv/stores/types';
@@ -34,7 +33,6 @@ const mock = {
         logout: jest.fn(() => Promise.resolve()),
     },
 };
-const mock_value = 'Abcd#12@';
 
 describe('ResetPasswordModal', () => {
     let store = mockStore({});
@@ -81,20 +79,23 @@ describe('ResetPasswordModal', () => {
     });
 
     it('should change input of password and trigger change password button', async () => {
+        const mock_value = 'Abcd#12@';
         WS.resetPassword.mockReturnValue(Promise.resolve({ reset_password: 1 }));
 
         renderComponent(store);
 
         await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
 
-        const new_password_input = screen.getByLabelText('Create a password', { selector: 'input' });
+        const new_input = screen.getByLabelText('Create a password', { selector: 'input' });
 
-        userEvent.type(new_password_input, mock_value);
-        expect(new_password_input).toHaveValue();
+        fireEvent.change(new_input, {
+            target: { value: 'hN795jCWkDtPy5@' },
+        });
+        expect(new_input).toHaveValue();
 
         expect(screen.getByRole('button', { name: /Reset my password/i })).toBeEnabled();
 
-        userEvent.click(
+        fireEvent.click(
             screen.getByRole('button', {
                 name: /reset my password/i,
             })
@@ -102,7 +103,7 @@ describe('ResetPasswordModal', () => {
 
         await waitFor(() => {
             expect(WS.resetPassword).toHaveBeenCalledWith({
-                new_password: mock_value,
+                new_password: 'hN795jCWkDtPy5@',
                 reset_password: 1,
                 verification_code: mock.client.verification_code.reset_password,
             });

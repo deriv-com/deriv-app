@@ -28,7 +28,7 @@ const PayoutSelector = observer(() => {
     );
     if (isMobile) {
         return (
-            <div role='button' className='mobile-widget payout-selector' onClick={toggleBarriersTable}>
+            <button role='button' className='mobile-widget payout-selector' onClick={toggleBarriersTable}>
                 <Text size='xs' color='prominent' align='center' className='payout-field'>
                     {payout_per_point}
                     {Number(payout_per_point) < 0 ? (
@@ -43,7 +43,7 @@ const PayoutSelector = observer(() => {
                 <Text size='xs' color='less-prominent' align='center'>
                     <Localize i18n_default_text='Payout per point' />
                 </Text>
-            </div>
+            </button>
         );
     }
 

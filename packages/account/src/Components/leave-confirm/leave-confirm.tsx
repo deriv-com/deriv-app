@@ -46,7 +46,7 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
     const history = useHistory();
     const location = useLocation();
     const { isMobile } = useDevice();
-    const [nextLocation, setNextLocation] = React.useState<string | null>(location.pathname);
+    const [nextLocation, setNextLocation] = React.useState(location.pathname);
     React.useEffect(() => {
         const unblock = history.block((location: Location) => {
             if (dirty && !showModal) {
@@ -93,10 +93,15 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
 
 export const TransitionBlockerWithRouter = withRouter(TransitionBlocker);
 
-const LeaveConfirm = ({ onDirty }: { onDirty?: (prop: boolean) => void }) => (
-    <FormikConsumer>
-        {formik => <TransitionBlockerWithRouter onDirty={onDirty} dirty={formik.dirty && formik.submitCount === 0} />}
-    </FormikConsumer>
-);
+const LeaveConfirm = ({ onDirty }: { onDirty?: (prop: boolean) => void }) => {
+    // Add code block here
+    return (
+        <FormikConsumer>
+            {formik => (
+                <TransitionBlockerWithRouter onDirty={onDirty} dirty={formik.dirty && formik.submitCount === 0} />
+            )}
+        </FormikConsumer>
+    );
+};
 
 export default LeaveConfirm;

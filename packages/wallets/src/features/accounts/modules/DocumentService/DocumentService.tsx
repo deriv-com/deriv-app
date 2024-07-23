@@ -6,9 +6,10 @@ import { IDVService, Onfido } from './components';
 
 type TDocumentServiceProps = {
     onCompletion?: VoidFunction;
+    onDocumentNotAvailable?: VoidFunction;
 };
 
-const DocumentService: React.FC<TDocumentServiceProps> = ({ onCompletion }) => {
+const DocumentService: React.FC<TDocumentServiceProps> = ({ onCompletion, onDocumentNotAvailable }) => {
     const { data: poiData, isLoading } = usePOI();
     if (!poiData || isLoading) return <Loader />;
 
@@ -19,7 +20,7 @@ const DocumentService: React.FC<TDocumentServiceProps> = ({ onCompletion }) => {
     }
 
     if (service === 'idv') {
-        return <IDVService onCompletion={onCompletion} />;
+        return <IDVService onCompletion={onCompletion} onDocumentNotAvailable={onDocumentNotAvailable} />;
     }
 
     return null;

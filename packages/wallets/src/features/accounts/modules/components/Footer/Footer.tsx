@@ -6,7 +6,6 @@ type TFooterProps = {
     backText?: string;
     disableBack?: boolean;
     disableNext?: boolean;
-    isNextLoading?: boolean;
     nextText?: string;
     onClickBack?: VoidFunction;
     onClickNext?: VoidFunction;
@@ -16,7 +15,6 @@ const Footer: React.FC<TFooterProps> = ({
     backText = 'Back',
     disableBack = false,
     disableNext = false,
-    isNextLoading = false,
     nextText = 'Next',
     onClickBack,
     onClickNext,
@@ -37,12 +35,7 @@ const Footer: React.FC<TFooterProps> = ({
                 </Button>
             )}
             {onClickNext && (
-                <Button
-                    disabled={disableNext || isNextLoading}
-                    isFullWidth={isMobile}
-                    isLoading={isNextLoading}
-                    onClick={onClickNext}
-                >
+                <Button disabled={disableNext} isFullWidth={isMobile} onClick={onClickNext}>
                     {nextText}
                 </Button>
             )}

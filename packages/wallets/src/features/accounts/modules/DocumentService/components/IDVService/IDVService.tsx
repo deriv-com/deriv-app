@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import { Loader } from '@deriv-com/ui';
-import { FormField, ModalStepWrapper, WalletDropdown, WalletText } from '../../../../../../components';
+import { FormDropdown, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
 import { Footer } from '../../../components';
 import {
     TVerifyPersonalDetailsValues,
@@ -11,14 +11,15 @@ import {
 import { ErrorMessage } from './components';
 import { useIDVService } from './hooks';
 import { TIDVServiceValues } from './types';
-import { getDocumentNumberValidator } from './utils';
+import { documentTypeValidator, getDocumentNumberValidator } from './utils';
 import './IDVService.scss';
 
 type TIDVServiceProps = {
-    onCompletion?: () => void;
+    onCompletion?: VoidFunction;
+    onDocumentNotAvailable?: VoidFunction;
 };
 
-const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCompletion }) => {
+const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCompletion, onDocumentNotAvailable }) => {
     const {
         availableDocumentOptions,
         displayedDocumentsList,
@@ -51,6 +52,8 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
         if (clientHasDocuments) {
             submitPersonalDetails(values);
             submitIDVDetails(values);
+        } else if (onDocumentNotAvailable) {
+            return onDocumentNotAvailable();
         }
     };
 
@@ -65,33 +68,34 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
 
     return (
         <Formik initialValues={{ ...initialIDVValues, ...initialPersonalDetailsValues }} onSubmit={submit}>
-            {({ handleSubmit, isValid, setFieldValue, values }) => {
+            {({ handleSubmit, isValid, values }) => {
                 const document = availableDocumentOptions[values.documentType];
                 const documentNumberExample =
-                    values.documentType && clientHasDocuments
+                    values.documentType &&
+                    documentExamples &&
+                    documentExamples[values.documentType] &&
+                    clientHasDocuments
                         ? documentExamples?.[values.documentType].exampleFormat
                         : '';
+
                 const additionalDocumentNumberExample =
-                    values.documentType && clientHasDocuments
+                    values.documentType && clientHasDocuments && documentExamples && document.additional
                         ? documentExamples?.[values.documentType].additionalDocumentExampleFormat
                         : '';
 
-                const disableSubmission = !isValid || isSubmitting || !values.documentType;
+                const disableSubmission = (!isValid && clientHasDocuments) || isSubmitting || !values.documentType;
 
                 const handleSelectDocument = (selectedItem: string) => {
-                    setFieldValue('documentType', selectedItem);
                     setClientHasDocuments(selectedItem !== 'none');
                 };
 
                 if (!errorMessage && isSubmitting) {
-                    // loader
+                    return <Loader />;
                 }
 
                 return (
                     <ModalStepWrapper
-                        renderFooter={() => (
-                            <Footer disableNext={disableSubmission && !clientHasDocuments} onClickNext={handleSubmit} />
-                        )}
+                        renderFooter={() => <Footer disableNext={disableSubmission} onClickNext={handleSubmit} />}
                         title='Add a real MT5 account'
                     >
                         <div className='wallets-idv-service'>
@@ -100,13 +104,15 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                                 <div className='wallets-idv-service__title'>
                                     <WalletText weight='bold'>Identity verification</WalletText>
                                 </div>
-                                <WalletDropdown
+                                <FormDropdown
                                     errorMessage={'Document type is required'}
+                                    isFullWidth
                                     isRequired
                                     label='Choose the document type'
                                     list={displayedDocumentsList}
                                     name='documentType'
                                     onSelect={handleSelectDocument}
+                                    validationSchema={documentTypeValidator}
                                     value={values?.documentType}
                                     variant='comboBox'
                                 />

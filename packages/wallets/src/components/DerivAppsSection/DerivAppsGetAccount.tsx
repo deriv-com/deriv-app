@@ -12,6 +12,7 @@ import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import { ModalStepWrapper, WalletButton, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';
+import { TradingAccountCard } from '../TradingAccountCard';
 import { WalletMarketIcon } from '../WalletMarketIcon';
 import { DerivAppsSuccessFooter } from './DerivAppsSuccessFooter';
 
@@ -79,17 +80,15 @@ const DerivAppsGetAccount: React.FC = () => {
     }, [addTradingAccountToLocalStorage, isAccountCreationSuccess]);
 
     return (
-        <div className='wallets-deriv-apps-section wallets-deriv-apps-section__get-account'>
-            <div className='wallets-deriv-apps-section__icon'>
-                <WalletMarketIcon icon='standard' size='lg' />
-            </div>
-            <div className='wallets-deriv-apps-section__get-content'>
-                <div className='wallets-deriv-apps-section__details'>
-                    <WalletText size='sm' weight='bold'>
-                        Options
-                    </WalletText>
-                    <WalletText size={isDesktop ? '2xs' : 'xs'}>One options account for all platforms.</WalletText>
-                </div>
+        <TradingAccountCard className='wallets-deriv-apps-section wallets-deriv-apps-section__border'>
+            <TradingAccountCard.Icon>
+                <WalletMarketIcon icon='standard' size={isDesktop ? 'lg' : 'md'} />
+            </TradingAccountCard.Icon>
+            <TradingAccountCard.Content>
+                <WalletText size='sm'>Options</WalletText>
+                <WalletText size={isDesktop ? '2xs' : 'xs'}>One options account for all platforms.</WalletText>
+            </TradingAccountCard.Content>
+            <TradingAccountCard.Button>
                 <WalletButton
                     color='primary-light'
                     disabled={isAccountCreationLoading || isActiveLinkedToTradingAccountLoading}
@@ -97,8 +96,8 @@ const DerivAppsGetAccount: React.FC = () => {
                 >
                     Get
                 </WalletButton>
-            </div>
-        </div>
+            </TradingAccountCard.Button>
+        </TradingAccountCard>
     );
 };
 

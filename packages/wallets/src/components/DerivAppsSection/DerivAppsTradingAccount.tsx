@@ -6,6 +6,7 @@ import { LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
 import useDevice from '../../hooks/useDevice';
 import { TSubscribedBalance } from '../../types';
 import { WalletText } from '../Base';
+import { TradingAccountCard } from '../TradingAccountCard';
 import { WalletListCardBadge } from '../WalletListCardBadge';
 import { WalletMarketIcon } from '../WalletMarketIcon';
 
@@ -18,11 +19,11 @@ const DerivAppsTradingAccount: React.FC<TSubscribedBalance> = ({ balance }) => {
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
 
     return (
-        <div className='wallets-deriv-apps-section wallets-deriv-apps-section__border'>
-            <div className={isMobile ? 'wallets-deriv-apps-section__icon-small' : 'wallets-deriv-apps-section__icon'}>
+        <TradingAccountCard className='wallets-deriv-apps-section wallets-deriv-apps-section__border'>
+            <TradingAccountCard.Icon>
                 <WalletMarketIcon icon='standard' size={isMobile ? 'md' : 'lg'} />
-            </div>
-            <div className='wallets-deriv-apps-section__details'>
+            </TradingAccountCard.Icon>
+            <TradingAccountCard.Content>
                 <div className='wallets-deriv-apps-section__title-and-badge'>
                     <WalletText size='sm'>Options</WalletText>
                     {activeWallet?.is_virtual && <WalletListCardBadge />}
@@ -44,18 +45,20 @@ const DerivAppsTradingAccount: React.FC<TSubscribedBalance> = ({ balance }) => {
                 <WalletText color='less-prominent' lineHeight='sm' size='xs' weight='bold'>
                     {activeLinkedToTradingAccount?.loginid}
                 </WalletText>
-            </div>
-            <button
-                className='wallets-deriv-apps-section__button'
-                onClick={() => {
-                    history.push('/wallet/account-transfer', {
-                        toAccountLoginId: activeLinkedToTradingAccount?.loginid,
-                    });
-                }}
-            >
-                <LabelPairedArrowUpArrowDownSmBoldIcon />
-            </button>
-        </div>
+            </TradingAccountCard.Content>
+            <TradingAccountCard.Button>
+                <button
+                    className='wallets-deriv-apps-section__button'
+                    onClick={() => {
+                        history.push('/wallet/account-transfer', {
+                            toAccountLoginId: activeLinkedToTradingAccount?.loginid,
+                        });
+                    }}
+                >
+                    <LabelPairedArrowUpArrowDownSmBoldIcon />
+                </button>
+            </TradingAccountCard.Button>
+        </TradingAccountCard>
     );
 };
 

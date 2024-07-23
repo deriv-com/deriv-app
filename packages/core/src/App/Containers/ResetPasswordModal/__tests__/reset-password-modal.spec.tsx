@@ -79,7 +79,7 @@ describe('ResetPasswordModal', () => {
     });
 
     it('should change input of password and trigger change password button', async () => {
-        const mock_value = 'Abcd#12@';
+        const mock_value = 'hN795jCWkDtPy5@';
         WS.resetPassword.mockReturnValue(Promise.resolve({ reset_password: 1 }));
 
         renderComponent(store);
@@ -103,7 +103,7 @@ describe('ResetPasswordModal', () => {
 
         await waitFor(() => {
             expect(WS.resetPassword).toHaveBeenCalledWith({
-                new_password: 'hN795jCWkDtPy5@',
+                new_password: mock_value,
                 reset_password: 1,
                 verification_code: mock.client.verification_code.reset_password,
             });

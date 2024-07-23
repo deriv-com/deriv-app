@@ -6,6 +6,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { Button } from '@deriv-com/quill-ui';
 import { useDevice } from '@deriv-com/ui';
 import {
+    CONTRACT_TYPES,
     getContractTypeDisplay,
     getIndicativePrice,
     hasContractEntered,
@@ -72,6 +73,20 @@ const PurchaseButton = observer(() => {
     const current_stake =
         (is_valid_to_sell && active_accu_contract && getIndicativePrice(active_accu_contract.contract_info)) || null;
 
+    const getButtonType = (index: number, trade_type: string) => {
+        const purchase_button_trade_types = [
+            CONTRACT_TYPES.VANILLA.CALL,
+            CONTRACT_TYPES.TURBOS.LONG,
+            CONTRACT_TYPES.ACCUMULATOR,
+        ] as string[];
+
+        const sell_button_trade_types = [CONTRACT_TYPES.VANILLA.PUT, CONTRACT_TYPES.TURBOS.SHORT] as string[];
+
+        if (purchase_button_trade_types.includes(trade_type)) return 'purchase';
+        if (sell_button_trade_types.includes(trade_type)) return 'sell';
+        return index ? 'sell' : 'purchase';
+    };
+
     React.useEffect(() => {
         if (is_purchase_enabled) setLoadingButtonIndex(null);
     }, [is_purchase_enabled]);
@@ -111,7 +126,7 @@ const PurchaseButton = observer(() => {
                 return (
                     <Button
                         key={trade_type}
-                        color={!index || is_single_button ? 'purchase' : 'sell'}
+                        color={getButtonType(index, trade_type)}
                         size='lg'
                         label={getContractTypeDisplay(trade_type, { isHighLow: is_high_low, showButtonName: true })}
                         fullWidth

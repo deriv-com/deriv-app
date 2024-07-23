@@ -12,16 +12,12 @@ export default class FeatureFlagsStore extends BaseStore<{ [k in keyof typeof FL
     private static instance: FeatureFlagsStore | null = null;
 
     constructor() {
-        // Call cleanup on the existing instance if it exists
         if (FeatureFlagsStore.instance) {
             FeatureFlagsStore.instance.cleanup();
         }
 
         super('FeatureFlagsStore', () => {
-            // Set the default values for the first time.
             if (!this.data) this.update(FLAGS);
-
-            // Update the store data if a new flag was added or removed.
             if (this.data && Object.keys(this.data).length !== Object.keys(FLAGS).length) {
                 this.update(old => {
                     const data = FLAGS;
@@ -37,8 +33,6 @@ export default class FeatureFlagsStore extends BaseStore<{ [k in keyof typeof FL
         });
 
         this.data = FLAGS;
-
-        // Assign the new instance to the static property
         FeatureFlagsStore.instance = this;
     }
 

@@ -17,7 +17,9 @@ export default class FeatureFlagsStore extends BaseStore<{ [k in keyof typeof FL
         }
 
         super('FeatureFlagsStore', () => {
+            // Set the default values for the first time.
             if (!this.data) this.update(FLAGS);
+            // Update the store data if a new flag was added or removed.
             if (this.data && Object.keys(this.data).length !== Object.keys(FLAGS).length) {
                 this.update(old => {
                     const data = FLAGS;

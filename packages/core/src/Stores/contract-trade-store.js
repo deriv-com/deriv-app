@@ -432,7 +432,7 @@ export default class ContractTradeStore extends BaseStore {
     get prev_contract() {
         const applicable_contracts = this.applicable_contracts();
         const length = this.contracts[0]?.contract_info.current_spot_time ? applicable_contracts.length : -1;
-        return length > 1 ? applicable_contracts[length - 2] : {};
+        return applicable_contracts[length - 2];
     }
 
     clearError() {

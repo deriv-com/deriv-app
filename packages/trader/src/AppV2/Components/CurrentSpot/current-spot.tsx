@@ -34,6 +34,7 @@ const CurrentSpot = observer(() => {
     let tick = digit_tick;
 
     const is_contract_elapsed = isContractElapsed(contract_info, tick);
+    const is_prev_contract_elapsed = isContractElapsed(prev_contract?.contract_info, tick);
     const status = !is_contract_elapsed && !!tick ? display_status : null;
 
     // tick from contract_info.tick_stream differs from a ticks_history API tick.
@@ -85,7 +86,7 @@ const CurrentSpot = observer(() => {
     const should_show_tick_count = has_contract && has_relevant_tick_data;
     const should_enter_from_left =
         !prev_contract?.contract_info ||
-        !!(prev_contract?.contract_info?.is_sold && last_contract.contract_info?.tick_stream?.length === 1);
+        !!(is_prev_contract_elapsed && last_contract.contract_info?.tick_stream?.length === 1);
 
     const setNewData = React.useCallback(() => {
         setDisplayedTick(current_tick);
@@ -94,9 +95,7 @@ const CurrentSpot = observer(() => {
 
     React.useEffect(() => {
         const has_multiple_contracts =
-            prev_contract?.contract_info &&
-            !prev_contract?.contract_info?.is_sold &&
-            last_contract.contract_info?.entry_tick;
+            prev_contract?.contract_info && !is_prev_contract_elapsed && last_contract.contract_info?.entry_tick;
         const is_next_contract_opened = prev_contract_id && contract_id && prev_contract_id !== contract_id;
         if (has_multiple_contracts && is_next_contract_opened) {
             setShouldEnterFromTop(true);
@@ -107,7 +106,15 @@ const CurrentSpot = observer(() => {
         } else if (!should_enter_from_top) {
             setNewData();
         }
-    }, [contract_id, last_contract, prev_contract, prev_contract_id, setNewData, should_enter_from_top]);
+    }, [
+        contract_id,
+        is_prev_contract_elapsed,
+        last_contract,
+        prev_contract,
+        prev_contract_id,
+        setNewData,
+        should_enter_from_top,
+    ]);
 
     React.useEffect(() => {
         // TODO: move this logic to Assets feature when it's available:

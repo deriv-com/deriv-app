@@ -8,9 +8,10 @@ Blockly.Blocks.trade_definition_restartbuysell = {
             }),
             args0: [
                 {
-                    type: 'field_image_checkbox',
+                    type: 'field_checkbox',
                     name: 'TIME_MACHINE_ENABLED',
                     checked: false,
+                    class: 'blocklyCheckbox',
                 },
             ],
             colour: Blockly.Colours.Base.colour,
@@ -30,7 +31,7 @@ Blockly.Blocks.trade_definition_restartbuysell = {
         });
     },
     onchange(/* event */) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
@@ -39,4 +40,4 @@ Blockly.Blocks.trade_definition_restartbuysell = {
     enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
     required_inputs: ['TIME_MACHINE_ENABLED'],
 };
-Blockly.JavaScript.trade_definition_restartbuysell = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_restartbuysell = () => {};

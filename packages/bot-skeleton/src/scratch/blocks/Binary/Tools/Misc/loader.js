@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { loadBlocksFromRemote, runIrreversibleEvents } from '../../../../utils';
+import { loadBlocksFromRemote, runIrreversibleEvents, modifyContextMenu } from '../../../../utils';
 import { observer as globalObserver } from '../../../../../utils/observer';
 import { LogTypes } from '../../../../../constants/messages';
 
@@ -26,6 +26,9 @@ Blockly.Blocks.loader = {
             category: Blockly.Categories.Miscellaneous,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     meta() {
         return {
             display_name: localize('Loads from URL'),
@@ -35,7 +38,7 @@ Blockly.Blocks.loader = {
         };
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 
@@ -92,4 +95,4 @@ Blockly.Blocks.loader = {
     },
 };
 
-Blockly.JavaScript.loader = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.loader = () => {};

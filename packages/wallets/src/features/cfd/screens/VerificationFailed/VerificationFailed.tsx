@@ -9,7 +9,9 @@ import './VerificationFailed.scss';
 
 const LazyVerification = lazy(
     () =>
-        import(/* webpackChunkName: "wallets-verification-flow" */ '../../flows/ClientVerification/ClientVerification')
+        import(
+            /* webpackChunkName: "wallets-client-verification" */ '../../flows/ClientVerification/ClientVerification'
+        )
 );
 
 const getDocumentTitle = (isPOIFailed?: boolean, isPOAFailed?: boolean) => {

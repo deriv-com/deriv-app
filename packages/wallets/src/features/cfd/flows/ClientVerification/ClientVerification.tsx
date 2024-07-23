@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
-import { useModal } from 'src/components/ModalProvider';
 import { useMT5AccountsList, usePOA, usePOI, useSettings } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
+import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
 import { Poa, Poi, TaxInformation } from '../../../accounts';
 import { MT5PasswordModal } from '../../modals';

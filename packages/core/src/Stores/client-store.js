@@ -456,12 +456,7 @@ export default class ClientStore extends BaseStore {
         reaction(
             () => [this.is_logged_in, this.is_authorize, this.is_passkey_supported, this.root_store.ui?.is_mobile],
             () => {
-                if (
-                    this.is_logged_in &&
-                    this.is_authorize &&
-                    this.is_passkey_supported &&
-                    this.root_store.ui?.is_mobile
-                ) {
+                if (this.is_logged_in && this.is_authorize && this.is_passkey_supported) {
                     this.fetchShouldShowPasskeyNotification();
                 }
             }
@@ -2720,9 +2715,8 @@ export default class ClientStore extends BaseStore {
     async fetchShouldShowPasskeyNotification() {
         try {
             const data = await WS.authorized.send({ passkeys_list: 1 });
-            if (data?.passkeys_list?.length === 0) {
-                this.setShouldShowPasskeyNotification(true);
-            }
+            const should_show = data?.passkeys_list?.length === 0 && this.root_store.ui?.is_mobile;
+            this.setShouldShowPasskeyNotification(should_show);
         } catch (e) {
             //error handling needed
         }

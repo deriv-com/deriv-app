@@ -119,6 +119,7 @@ export default class NotificationStore extends BaseStore {
                 root_store.client.is_eu,
                 root_store.client.has_enabled_two_fa,
                 root_store.client.has_changed_two_fa,
+                root_store.client.should_show_passkey_notification,
                 this.p2p_order_props.order_id,
             ],
             () => {
@@ -305,6 +306,7 @@ export default class NotificationStore extends BaseStore {
     }
 
     async handleClientNotifications() {
+        // console.log('handleClientNotifications called when is-mobile is ', this.root_store.ui?.is_mobile);
         const {
             account_settings,
             account_status,
@@ -353,6 +355,7 @@ export default class NotificationStore extends BaseStore {
         }
 
         if (is_logged_in) {
+            // console.log('should_show_passkey_notification', this.root_store.client.should_show_passkey_notification);
             if (isEmptyObject(account_status)) return;
             const {
                 authentication: { document, identity, income, needs_verification, ownership } = {},
@@ -411,6 +414,8 @@ export default class NotificationStore extends BaseStore {
 
             if (this.root_store.client.should_show_passkey_notification) {
                 this.addNotificationMessage(this.client_notifications.enable_passkey);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.enable_passkey });
             }
 
             const client = accounts[loginid];

@@ -17,7 +17,7 @@ jest.mock('AppV2/Components/BottomNav', () =>
 jest.mock('AppV2/Components/CurrentSpot', () => jest.fn(() => <div>Current Spot</div>));
 jest.mock('AppV2/Components/PurchaseButton', () => jest.fn(() => <div>Purchase Button</div>));
 jest.mock('../trade-types', () => jest.fn(() => <div>Trade Types Selection</div>));
-jest.mock('../assets', () => jest.fn(() => <div>Asset Selection</div>));
+jest.mock('AppV2/Components/MarketSelector', () => jest.fn(() => <div>MarketSelector</div>));
 jest.mock('../../Chart', () => ({
     ...jest.requireActual('../../Chart'),
     TradeChart: jest.fn(() => <div>Chart</div>),
@@ -107,7 +107,7 @@ describe('Trade', () => {
         expect(screen.queryByText('Current Spot')).not.toBeInTheDocument();
 
         expect(screen.getByText('Trade Types Selection')).toBeInTheDocument();
-        expect(screen.getByText('Asset Selection')).toBeInTheDocument();
+        expect(screen.getByText('MarketSelector')).toBeInTheDocument();
         expect(screen.getAllByText('Trade Parameters')).toHaveLength(2);
         expect(screen.getByText('Chart')).toBeInTheDocument();
         expect(screen.getByText('Purchase Button')).toBeInTheDocument();

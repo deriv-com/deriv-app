@@ -50,23 +50,25 @@
             margin-inline-start: auto;
         }
     }
-
-    .distance-to-current-spot {
+    .actions-wrapper {
         display: flex;
         justify-content: center;
-        margin-top: 0.2rem;
-        .barrier-value {
-            margin-bottom: 0.8rem;
-            margin-inline-start: 0.4rem;
-            background-color: var(--general-section-1);
-            border: none;
-            border-bottom: 1px dotted var(--text-general);
-            padding: 0;
+        .distance-to-current-spot {
             display: flex;
-            cursor: pointer;
-            .indicator-icon {
-                margin-inline-start: 0.2rem;
-                margin-top: 0.4rem;
+            justify-content: center;
+            margin-top: 0.2rem;
+            &__value {
+                margin-top: 0.5rem;
+                margin-inline-start: 0.4rem;
+                background-color: var(--general-section-1);
+                border: none;
+                border-bottom: 1px dotted var(--text-general);
+                padding: 0;
+                display: flex;
+                cursor: pointer;
+                .indicator-icon {
+                    margin-inline-start: 0.2rem;
+                }
             }
         }
     }

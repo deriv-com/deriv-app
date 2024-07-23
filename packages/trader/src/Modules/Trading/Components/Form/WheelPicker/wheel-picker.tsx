@@ -2,33 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { Button, Icon, Text } from '@deriv/components';
 import { motion } from 'framer-motion';
 
+const transition = {
+    duration: 0.24,
+    ease: [0, 0, 0, 1],
+};
+
 const variants = {
     enter: (direction: 'up' | 'down') => ({
         x: 0,
         y: direction === 'down' ? 30 : -30,
         opacity: 0,
-        transition: {
-            duration: 0.24,
-            ease: [0, 0, 0, 1],
-        },
+        transition,
     }),
     center: {
         x: 0,
         y: 0,
         opacity: 1,
-        transition: {
-            duration: 0.24,
-            ease: [0, 0, 0, 1],
-        },
+        transition,
     },
     exit: (direction: 'up' | 'down') => ({
         x: 0,
         y: direction === 'down' ? -30 : 30,
         opacity: 0,
-        transition: {
-            duration: 0.24,
-            ease: [0, 0, 0, 1],
-        },
+        transition,
     }),
 };
 

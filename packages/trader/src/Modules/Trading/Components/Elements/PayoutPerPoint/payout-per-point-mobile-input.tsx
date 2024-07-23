@@ -43,9 +43,14 @@ const PayoutPerPointMobileInput = ({
         }
     };
 
-    const header_tooltip_text = (
+    const distance_tooltip_text = (
         <div className='trade-container__barriers-tooltip'>
             <Localize i18n_default_text='You receive a payout at expiry if the spot price never touches or breaches the barrier throughout the contract duration. Otherwise, your contract will be terminated early.' />
+        </div>
+    );
+    const header_tooltip_text = (
+        <div className='trade-container__barriers-tooltip'>
+            <Localize i18n_default_text='The amount you’ll receive at expiry for every point of change above the barrier' />
         </div>
     );
     return (
@@ -66,9 +71,9 @@ const PayoutPerPointMobileInput = ({
                             message={header_tooltip_text}
                         />
                     </div>
-                    <div role='button' className='cross-icon' onClick={onClose}>
+                    <button className='cross-icon' onClick={onClose}>
                         <Icon icon='IcCross' data_testid='dt_modal_close_icon' />
-                    </div>
+                    </button>
                 </Fieldset>
                 <WheelPickerMobile
                     options={payoutChoices}
@@ -89,33 +94,35 @@ const PayoutPerPointMobileInput = ({
                         className='distance-to-current-spot'
                     >
                         <Localize i18n_default_text='Distance to current spot' />
-                        <Popover
-                            alignment='top'
-                            className='popover-icon'
-                            is_bubble_hover_enabled
-                            disable_target_icon
-                            icon='info'
-                            zIndex='9999'
-                            message={header_tooltip_text}
-                        >
-                            <div className='barrier-value'>
-                                {selectedBarrier}
-                                {Number(selectedBarrier) < 0 ? (
-                                    <LabelPairedChevronsDownCaptionRegularIcon
-                                        width={12}
-                                        height={12}
-                                        className='indicator-icon'
-                                    />
-                                ) : (
-                                    <LabelPairedChevronsUpCaptionRegularIcon
-                                        width={12}
-                                        height={12}
-                                        className='indicator-icon'
-                                    />
-                                )}
-                            </div>
-                        </Popover>
                     </Text>
+                    <Popover
+                        alignment='top'
+                        className='popover-icon'
+                        is_bubble_hover_enabled
+                        disable_target_icon
+                        icon='info'
+                        zIndex='9999'
+                        message={distance_tooltip_text}
+                    >
+                        <div className='distance-to-current-spot__value'>
+                            <Text size='xxs' line_height='xs' color='default' align='center' as='p'>
+                                {selectedBarrier}
+                            </Text>
+                            {Number(selectedBarrier) < 0 ? (
+                                <LabelPairedChevronsDownCaptionRegularIcon
+                                    width={12}
+                                    height={12}
+                                    className='indicator-icon'
+                                />
+                            ) : (
+                                <LabelPairedChevronsUpCaptionRegularIcon
+                                    width={12}
+                                    height={12}
+                                    className='indicator-icon'
+                                />
+                            )}
+                        </div>
+                    </Popover>
                 </Fieldset>
                 <Button className='save-button' onClick={onSave}>
                     <Localize i18n_default_text='Save' />

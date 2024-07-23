@@ -22,6 +22,7 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
             label={<Localize i18n_default_text='Duration' />}
             value={`${duration} ${duration_unit_text}`}
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
+            id={`duration${is_minimized ? '--minimized' : ''}`}
         />
     );
 });

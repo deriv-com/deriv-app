@@ -18,6 +18,7 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
             label={<Localize i18n_default_text='Barrier' />}
             value={barrier_1}
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
+            id={`barrier${is_minimized ? '--minimized' : ''}`}
         />
     );
 });

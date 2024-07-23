@@ -18,6 +18,7 @@ const Multiplier = observer(({ is_minimized }: TMultiplierProps) => {
             label={<Localize i18n_default_text='Multiplier' />}
             value={`x${multiplier}`}
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
+            id={`multiplier${is_minimized ? '--minimized' : ''}`}
         />
     );
 });

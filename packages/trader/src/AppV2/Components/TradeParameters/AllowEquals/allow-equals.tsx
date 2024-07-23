@@ -91,6 +91,7 @@ const AllowEquals = observer(({ is_minimized }: TAllowEqualsProps) => {
                 value={is_equal ? localize('Enabled') : '-'}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 onClick={() => setIsOpen(true)}
+                id={`allow-equal${is_minimized ? '--minimized' : ''}`}
             />
             <ActionSheet.Root isOpen={is_open} onClose={onActionSheetClose} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>

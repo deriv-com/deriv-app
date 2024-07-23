@@ -20,6 +20,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
             value={take_profit ? `${take_profit} ${getCurrencyDisplayCode(currency)}` : localize('Not set')}
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
             disabled={has_open_accu_contract}
+            id={`take-profit${is_minimized ? '--minimized' : ''}`}
         />
     );
 });

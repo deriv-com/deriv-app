@@ -30,6 +30,7 @@ const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
             label={<Localize i18n_default_text='Payout per point' />}
             value={`${payout_per_point} ${getCurrencyDisplayCode(currency)}`}
             className={classname}
+            id={`payout${is_minimized ? '--minimized' : ''}`}
         />
     );
 });

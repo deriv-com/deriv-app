@@ -15,6 +15,7 @@ const RiskManagement = ({ is_minimized }: TRiskManagementProps) => {
             label={<Localize i18n_default_text='Risk Management' />}
             value={localize('Not set')}
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
+            id={`risk${is_minimized ? '--minimized' : ''}`}
         />
     );
 };

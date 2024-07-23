@@ -18,6 +18,7 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
             label={<Localize i18n_default_text='Strike price' />}
             value={barrier_1}
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
+            id={`strike${is_minimized ? '--minimized' : ''}`}
         />
     );
 });

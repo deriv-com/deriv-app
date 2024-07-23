@@ -31,6 +31,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
             label={<Localize i18n_default_text='Stake' />}
             value={`${amount} ${getCurrencyDisplayCode(currency)}`}
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
+            id={`stake${is_minimized ? '--minimized' : ''}`}
         />
     );
 });

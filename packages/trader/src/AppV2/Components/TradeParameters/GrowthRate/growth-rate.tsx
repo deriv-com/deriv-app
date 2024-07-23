@@ -20,6 +20,7 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
             value={`${getGrowthRatePercentage(growth_rate)}%`}
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
             disabled={has_open_accu_contract}
+            id={`growth-rate${is_minimized ? '--minimized' : ''}`}
         />
     );
 });

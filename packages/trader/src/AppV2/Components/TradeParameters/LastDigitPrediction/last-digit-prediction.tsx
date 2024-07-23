@@ -45,6 +45,7 @@ const LastDigitPrediction = observer(({ is_minimized, is_stats_mode }: TLastDigi
                     value={last_digit}
                     className={clsx('trade-params__option', 'trade-params__option--minimized')}
                     onClick={() => setIsOpen(true)}
+                    id={`last-digit${is_minimized ? '--minimized' : ''}`}
                 />
                 <ActionSheet.Root isOpen={is_open} onClose={onActionSheetClose} position='left' expandable={false}>
                     <ActionSheet.Portal shouldCloseOnDrag>

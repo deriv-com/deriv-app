@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.trade_definition_restartbuysell = {
     init() {
@@ -36,6 +37,9 @@ Blockly.Blocks.trade_definition_restartbuysell = {
         }
 
         this.enforceLimitations();
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
     required_inputs: ['TIME_MACHINE_ENABLED'],

@@ -622,9 +622,11 @@ const common_included_items = [download_option];
 const all_context_menu_options = [
     localize('Duplicate'),
     localize('Add Comment'),
+    localize('Remove Comment'),
     localize('Collapse Block'),
     localize('Expand Block'),
     localize('Disable Block'),
+    localize('Enable Block'),
     localize('Download Block'),
 ];
 

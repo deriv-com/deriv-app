@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.controls_repeat = {
     init() {
@@ -42,6 +43,9 @@ Blockly.Blocks.controls_repeat = {
                 'This block repeats the instructions contained within for a specific number of times.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

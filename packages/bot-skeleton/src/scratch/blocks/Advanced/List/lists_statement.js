@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { minusIconDark } from '../../images';
-import { runIrreversibleEvents, runGroupedEvents } from '../../../utils';
+import { runIrreversibleEvents, runGroupedEvents, modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.lists_statement = {
     required_parent_type: 'lists_create_with',
@@ -81,6 +81,9 @@ Blockly.Blocks.lists_statement = {
                 }
             }
         }
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

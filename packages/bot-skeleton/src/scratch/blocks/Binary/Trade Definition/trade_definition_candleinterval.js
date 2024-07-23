@@ -1,5 +1,6 @@
 import { localize } from '@deriv/translations';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.trade_definition_candleinterval = {
     init() {
@@ -28,6 +29,9 @@ Blockly.Blocks.trade_definition_candleinterval = {
         }
 
         this.enforceLimitations();
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
 };

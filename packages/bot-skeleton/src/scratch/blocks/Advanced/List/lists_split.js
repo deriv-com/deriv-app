@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.lists_split = {
     init() {
@@ -69,6 +70,9 @@ Blockly.Blocks.lists_split = {
 
         this.initSvg();
         //this.render(false);
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

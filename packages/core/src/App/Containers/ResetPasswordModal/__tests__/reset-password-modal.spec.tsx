@@ -79,6 +79,7 @@ describe('ResetPasswordModal', () => {
     });
 
     it('should change input of password and trigger change password button', async () => {
+        const test = 'Tpt#&te1743!@';
         WS.resetPassword.mockReturnValue(Promise.resolve({ reset_password: 1 }));
 
         renderComponent(store);
@@ -87,9 +88,9 @@ describe('ResetPasswordModal', () => {
 
         const new_password = screen.getByLabelText('Create a password', { selector: 'input' });
 
-        userEvent.type(new_password, 'Tpt#&te1743!@');
+        userEvent.type(new_password, test);
 
-        expect(new_password).toHaveValue('Tpt#&te1743!@');
+        expect(new_password).toHaveValue(test);
         expect(screen.getByRole('button', { name: /Reset my password/i })).toBeEnabled();
 
         userEvent.click(
@@ -99,21 +100,12 @@ describe('ResetPasswordModal', () => {
         );
         await waitFor(() => {
             expect(WS.resetPassword).toHaveBeenCalledWith({
-                new_password: 'Tpt#&te1743!@',
+                new_password: test,
                 reset_password: 1,
-                verification_code: '@rnv!sv',
+                verification_code: mock.client.verification_code.reset_password,
             });
         });
         expect(store.client.setVerificationCode).toHaveBeenCalledTimes(1);
-
-        await waitFor(() => {
-            expect(WS.resetPassword).toHaveBeenCalledWith({
-                new_password: 'Tpt#&te1743!@',
-                reset_password: 1,
-                verification_code: '@rnv!sv',
-            });
-        });
-
         expect(store.client.logout).toHaveBeenCalledTimes(1);
         expect(screen.getByText('Your password has been changed')).toBeInTheDocument();
     });

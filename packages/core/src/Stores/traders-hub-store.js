@@ -463,7 +463,6 @@ export default class TradersHubStore extends BaseStore {
         const is_restricted =
             this.is_financial_restricted_country || (financial_company?.shortcode === 'svg' && !gaming_company);
         // update the flag in the store
-        // this.is_financial_restricted_country = is_restricted;
         this.setIsFinancialRestrictedCountry(is_restricted);
 
         return is_restricted;

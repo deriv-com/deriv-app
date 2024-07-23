@@ -23,7 +23,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     const { fromAccount, toAccount } = values;
     const { isMobile } = useDevice();
     const modal = useModal();
-    const { data: tradingPlatformStatus } = useTradingPlatformStatus();
+    const { getPlatformStatus } = useTradingPlatformStatus();
 
     const isFromAccountDropdown = fieldName === 'fromAccount';
 
@@ -55,9 +55,8 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     const shouldDefaultUSDWallet =
         location.pathname === '/wallet/account-transfer' ? location.state?.shouldSelectDefaultWallet : false;
 
-    const platformStatus = tradingPlatformStatus?.find(
-        (status: { platform: string; status: string }) => status.platform === selectedAccount?.account_type
-    )?.status;
+    const platformStatus = getPlatformStatus(selectedAccount?.account_type);
+
     const hasPlatformStatus = selectedAccount?.status === 'unavailable' || platformStatus === 'maintenance';
 
     const toDefaultAccount = useMemo(

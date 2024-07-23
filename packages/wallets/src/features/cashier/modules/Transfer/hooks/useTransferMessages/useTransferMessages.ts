@@ -40,12 +40,10 @@ const useTransferMessages = ({
     const { data: walletAccounts } = useWalletAccountsList();
     const { preferred_language: preferredLanguage } = authorizeData;
     const { data: poi } = usePOI();
-    const { data: tradingPlatformStatus } = useTradingPlatformStatus();
+    const { getPlatformStatus } = useTradingPlatformStatus();
 
-    const platformStatus = tradingPlatformStatus?.find(
-        (status: { platform: string; status: string }) =>
-            status.platform === fromAccount?.account_type || status.platform === toAccount?.account_type
-    )?.status;
+    const platformStatus = getPlatformStatus(fromAccount?.account_type) || getPlatformStatus(toAccount?.account_type);
+
     const isServerMaintenance = platformStatus === 'maintenance';
     const isAccountUnavailable = fromAccount?.status === 'unavailable' || toAccount?.status === 'unavailable';
     const hasTradingPlatformStatus = isServerMaintenance || isAccountUnavailable;

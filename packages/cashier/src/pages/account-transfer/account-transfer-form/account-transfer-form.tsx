@@ -25,7 +25,7 @@ import SideNote from '../../../components/side-note';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import { TAccount, TAccountsList, TError, TReactChangeEvent } from '../../../types';
 import AccountTransferReceipt from '../account-transfer-receipt/account-transfer-receipt';
-import { useMFAccountStatus, useExchangeRate, useTradingPlatformStatus } from '@deriv/hooks';
+import { useMFAccountStatus, useExchangeRate, useTradingPlatformStatus, TPlatformStatus } from '@deriv/hooks';
 
 import AccountTransferNote from './account-transfer-form-side-note';
 
@@ -267,7 +267,7 @@ const AccountTransferForm = observer(
             return [];
         };
 
-        const { data: tradingPlatformStatusData } = useTradingPlatformStatus();
+        const { getPlatformStatus } = useTradingPlatformStatus();
 
         React.useEffect(() => {
             if (selected_from?.currency && selected_to?.currency) {
@@ -302,7 +302,7 @@ const AccountTransferForm = observer(
                 } else {
                     platform = 'dxtrade';
                 }
-                const is_server_maintenance = tradingPlatformStatusData?.find(p => p.platform === platform)?.status;
+                const is_server_maintenance = getPlatformStatus(platform as TPlatformStatus['platform']);
                 const is_account_unavailable = account.status === MT5_ACCOUNT_STATUS.UNAVAILABLE;
 
                 const text = (

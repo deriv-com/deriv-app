@@ -10,7 +10,6 @@ import {
     makeLazyLoader,
     moduleLoader,
     setPerformanceValue,
-    WS,
 } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
 import { localize } from '@deriv/translations';
@@ -22,7 +21,7 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 import CompareAccount from 'Components/compare-account';
 import CFDsDescription from 'Components/elements/cfds-description';
 import { getHasDivider } from 'Constants/utils';
-import { useMT5SVGEligibleToMigrate, useTradingPlatformStatus } from '@deriv/hooks';
+import { useMT5SVGEligibleToMigrate, useTradingPlatformStatus, TPlatformStatus } from '@deriv/hooks';
 
 import './cfds-listing.scss';
 
@@ -101,10 +100,10 @@ const CFDsListing = observer(() => {
     const { has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
     const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
 
-    const { data: tradingPlatformStatusData } = useTradingPlatformStatus();
+    const { getPlatformStatus } = useTradingPlatformStatus();
 
-    const getTradingPlatformStatus = (platform?: string) => {
-        const status = tradingPlatformStatusData?.find(p => p.platform === platform)?.status;
+    const getTradingPlatformStatus = (platform: TPlatformStatus['platform']) => {
+        const status = getPlatformStatus(platform);
 
         switch (status) {
             case TRADING_PLATFORM_STATUS.MAINTENANCE:

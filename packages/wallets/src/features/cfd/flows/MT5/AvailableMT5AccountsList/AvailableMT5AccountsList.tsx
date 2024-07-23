@@ -14,15 +14,11 @@ type TProps = {
 
 const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { data: tradingPlatformStatus } = useTradingPlatformStatus();
-
+    const { getPlatformStatus } = useTradingPlatformStatus();
     const { setModalState, show } = useModal();
 
     const { description, title } = MarketTypeDetails[account.market_type || 'all'];
-
-    const platformStatus = tradingPlatformStatus?.find(
-        (status: { platform: string; status: string }) => status.platform === account.platform
-    )?.status;
+    const platformStatus = getPlatformStatus(account.platform);
 
     const onButtonClick = useCallback(() => {
         switch (platformStatus) {

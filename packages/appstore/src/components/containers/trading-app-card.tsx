@@ -55,7 +55,7 @@ const TradingAppCard = ({
     } = useStore();
     const { setIsVerificationModalVisible } = ui;
     const { is_eu_user, is_demo_low_risk, content_flag, is_real, selected_account_type } = traders_hub;
-    const { current_language } = common;
+    const { current_language, setAppstorePlatform } = common;
     const { is_account_being_created, setAccountUnavailableModal, setServerMaintenanceModal } = cfd;
     const { account_status: { authentication } = {} } = client;
 
@@ -207,7 +207,10 @@ const TradingAppCard = ({
                             account_status={mt5_acc_auth_status}
                             icon={badge_icon}
                             text={badge_text}
-                            onClick={() => handleStatusBadgeClick(mt5_acc_auth_status)}
+                            onClick={() => {
+                                setAppstorePlatform(platform);
+                                handleStatusBadgeClick(mt5_acc_auth_status);
+                            }}
                         />
                     )}
                     <OpenPositionsSVGModal

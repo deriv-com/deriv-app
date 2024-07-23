@@ -34,10 +34,8 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { show } = useModal();
     const { t } = useTranslation();
 
-    const { data: tradingPlatformStatus } = useTradingPlatformStatus();
-    const platformStatus = tradingPlatformStatus?.find(
-        (status: { platform: string; status: string }) => status.platform === account.platform
-    )?.status;
+    const { getPlatformStatus } = useTradingPlatformStatus();
+    const platformStatus = getPlatformStatus(account.platform);
 
     const hasPlatformStatus = account.status === 'unavailable' || platformStatus === 'maintenance';
 

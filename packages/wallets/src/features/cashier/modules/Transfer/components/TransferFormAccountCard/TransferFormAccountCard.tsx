@@ -23,14 +23,12 @@ type TProps = {
 const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) => {
     const { isMobile } = useDevice();
     const { t } = useTranslation();
-    const { data: tradingPlatformStatus } = useTradingPlatformStatus();
+    const { getPlatformStatus } = useTradingPlatformStatus();
 
     const isInput = type === 'input';
     const isModal = type === 'modal';
 
-    const platformStatus = tradingPlatformStatus?.find(
-        (status: { platform: string; status: string }) => status.platform === account?.account_type
-    )?.status;
+    const platformStatus = getPlatformStatus(account?.account_type);
 
     const hasPlatformStatus = account?.status === 'unavailable' || platformStatus === 'maintenance';
 

@@ -5,6 +5,7 @@ import { Field, FieldProps, Form, Formik } from 'formik';
 
 import { Button, Dropdown, InlineMessage, Input, Loading, Money, StatusBadge, Text } from '@deriv/components';
 import {
+    CFD_PLATFORMS,
     getCurrencyDisplayCode,
     getCurrencyName,
     getDecimalPlaces,
@@ -12,6 +13,7 @@ import {
     MT5_ACCOUNT_STATUS,
     routes,
     startPerformanceEventTimer,
+    TRADING_PLATFORM_STATUS,
     validNumber,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -76,10 +78,16 @@ const AccountOption = ({
                     <Localize i18n_default_text='Verification failed' />
                 </Text>
             );
-        } else if (is_server_maintenance === 'maintenance') {
+        } else if (is_server_maintenance === TRADING_PLATFORM_STATUS.MAINTENANCE) {
             return <StatusBadge account_status='under_maintenance' icon='IcAlertWarning' text='Server Maintenance' />;
         } else if (is_account_unavailable) {
-            return <StatusBadge account_status='unavailable' icon='IcAlertWarning' text='Unavailable' />;
+            return (
+                <StatusBadge
+                    account_status={TRADING_PLATFORM_STATUS.UNAVAILABLE}
+                    icon='IcAlertWarning'
+                    text='Unavailable'
+                />
+            );
         }
     };
 
@@ -202,7 +210,7 @@ const AccountTransferForm = observer(
             selected_to.status === MT5_ACCOUNT_STATUS.UNAVAILABLE;
         const is_maintenance_status_present = selected_to.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
 
-        const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
+        const platform_name_dxtrade = getPlatformSettings(CFD_PLATFORMS.DXTRADE).name;
 
         const history = useHistory();
 
@@ -296,11 +304,11 @@ const AccountTransferForm = observer(
                 const is_selected_from = account.value === selected_from.value;
                 let platform;
                 if (account.is_mt) {
-                    platform = 'mt5';
+                    platform = CFD_PLATFORMS.MT5;
                 } else if (account.is_ctrader) {
-                    platform = 'ctrader';
+                    platform = CFD_PLATFORMS.CTRADER;
                 } else {
-                    platform = 'dxtrade';
+                    platform = CFD_PLATFORMS.DXTRADE;
                 }
                 const is_server_maintenance = getPlatformStatus(platform as TPlatformStatus['platform']);
                 const is_account_unavailable = account.status === MT5_ACCOUNT_STATUS.UNAVAILABLE;

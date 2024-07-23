@@ -12,6 +12,7 @@ import {
 } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../../../types';
+import { TRADING_PLATFORM_STATUS } from '../../../../../cfd/constants';
 import type { TAccount } from '../../types';
 import './TransferFormAccountCard.scss';
 
@@ -30,11 +31,12 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) 
 
     const platformStatus = getPlatformStatus(account?.account_type);
 
-    const hasPlatformStatus = account?.status === 'unavailable' || platformStatus === 'maintenance';
+    const hasPlatformStatus =
+        account?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE || TRADING_PLATFORM_STATUS.MAINTENANCE;
 
     const getBadgeText = () => {
-        if (account?.status === 'unavailable') return t('Account unavailable');
-        if (platformStatus === 'maintenance') return t('Server maintenance');
+        if (account?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE) return t('Account unavailable');
+        if (platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE) return t('Server maintenance');
         return '';
     };
 

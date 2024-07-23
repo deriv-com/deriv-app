@@ -8,6 +8,7 @@ import {
 } from '@deriv/api-v2';
 import { displayMoney as displayMoney_ } from '@deriv/api-v2/src/utils';
 import { THooks } from '../../../../../../types';
+import { TRADING_PLATFORM_STATUS } from '../../../../../cfd/constants';
 import { TAccount, TInitialTransferFormValues, TMessageFnProps, TTransferMessage } from '../../types';
 import tradingPlatformStatusMessageFn from './utils/tradingPlatformStatusMessageFn';
 import {
@@ -44,8 +45,10 @@ const useTransferMessages = ({
 
     const platformStatus = getPlatformStatus(fromAccount?.account_type) || getPlatformStatus(toAccount?.account_type);
 
-    const isServerMaintenance = platformStatus === 'maintenance';
-    const isAccountUnavailable = fromAccount?.status === 'unavailable' || toAccount?.status === 'unavailable';
+    const isServerMaintenance = platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
+    const isAccountUnavailable =
+        fromAccount?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE ||
+        toAccount?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE;
     const hasTradingPlatformStatus = isServerMaintenance || isAccountUnavailable;
 
     const isTransferBetweenWallets =

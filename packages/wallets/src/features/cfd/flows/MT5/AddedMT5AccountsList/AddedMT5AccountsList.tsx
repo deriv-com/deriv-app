@@ -9,7 +9,13 @@ import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import useDevice from '../../../../../hooks/useDevice';
 import { THooks } from '../../../../../types';
-import { MarketTypeDetails, PlatformDetails } from '../../../constants';
+import {
+    JURISDICTION,
+    MARKET_TYPE,
+    MarketTypeDetails,
+    PlatformDetails,
+    TRADING_PLATFORM_STATUS,
+} from '../../../constants';
 import {
     AccountUnavailableModal,
     MT5TradeModal,
@@ -26,10 +32,10 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useAuthorize();
     const { getVerificationStatus } = useJurisdictionStatus();
     const jurisdictionStatus = useMemo(
-        () => getVerificationStatus(account.landing_company_short || 'svg', account.status),
+        () => getVerificationStatus(account.landing_company_short || JURISDICTION.SVG, account.status),
         [account.landing_company_short, account.status, getVerificationStatus]
     );
-    const { title } = MarketTypeDetails[account.market_type ?? 'all'];
+    const { title } = MarketTypeDetails[account.market_type ?? MARKET_TYPE.ALL];
     const { isMobile } = useDevice();
     const { show } = useModal();
     const { t } = useTranslation();
@@ -37,11 +43,13 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { getPlatformStatus } = useTradingPlatformStatus();
     const platformStatus = getPlatformStatus(account.platform);
 
-    const hasPlatformStatus = account.status === 'unavailable' || platformStatus === 'maintenance';
+    const hasPlatformStatus =
+        account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE ||
+        platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
 
     const getBadgeText = () => {
-        if (account.status === 'unavailable') return t('Account unavailable');
-        if (platformStatus === 'maintenance') return t('Server maintenance');
+        if (account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE) return t('Account unavailable');
+        if (platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE) return t('Server maintenance');
         return '';
     };
 
@@ -49,20 +57,22 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         <TradingAccountCard
             disabled={jurisdictionStatus.is_pending}
             leading={
-                <div className='wallets-added-mt5__icon'>{MarketTypeDetails[account.market_type || 'all'].icon}</div>
+                <div className='wallets-added-mt5__icon'>
+                    {MarketTypeDetails[account.market_type || MARKET_TYPE.ALL].icon}
+                </div>
             }
             onClick={() => {
-                if (platformStatus === 'maintenance')
+                if (platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE)
                     return show(<ServerMaintenanceModal platform={account.platform} />);
-                if (account.status === 'unavailable') return show(<AccountUnavailableModal />);
-                if (platformStatus === 'active') {
+                if (account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE) return show(<AccountUnavailableModal />);
+                if (platformStatus === TRADING_PLATFORM_STATUS.ACTIVE) {
                     return jurisdictionStatus.is_failed
                         ? show(<VerificationFailedModal selectedJurisdiction={account.landing_company_short} />, {
                               defaultRootId: 'wallets_modal_root',
                           })
                         : show(
                               <MT5TradeModal
-                                  marketType={account.market_type ?? 'all'}
+                                  marketType={account.market_type ?? MARKET_TYPE.ALL}
                                   mt5Account={account}
                                   platform={PlatformDetails.mt5.platform}
                               />

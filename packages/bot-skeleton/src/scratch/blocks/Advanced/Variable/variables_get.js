@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.variables_get = {
     init() {
@@ -53,6 +54,9 @@ Blockly.Blocks.variables_get = {
                 }
             });
         }
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

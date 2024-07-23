@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { emptyTextValidator } from '../../../utils';
+import { emptyTextValidator, modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.lists_repeat = {
     init() {
@@ -42,6 +42,9 @@ Blockly.Blocks.lists_repeat = {
             ITEM: emptyTextValidator,
             NUM: emptyTextValidator,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

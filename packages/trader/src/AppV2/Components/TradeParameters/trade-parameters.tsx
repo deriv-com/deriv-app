@@ -35,21 +35,25 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
                 is_minimized && 'trade-params__options__wrapper--minimized'
             )}
         >
-            {isVisible('trade_type_tabs') && <TradeTypeTabs is_minimized={is_minimized} />}
-            {isVisible('last_digit') && <LastDigitPrediction is_minimized={is_minimized} />}
-            {isVisible('duration') && <Duration is_minimized={is_minimized} />}
-            {isVisible('strike') && <Strike is_minimized={is_minimized} />}
-            {isVisible('payout_per_point') && <PayoutPerPoint is_minimized={is_minimized} />}
-            {isVisible('barrier') && <Barrier is_minimized={is_minimized} />}
-            {isVisible('growth_rate') && <GrowthRate is_minimized={is_minimized} />}
-            {isVisible('multiplier') && <Multiplier is_minimized={is_minimized} />}
-            {isVisible('stake') && <Stake is_minimized={is_minimized} />}
-            {isVisible('allow_equals') && <AllowEquals is_minimized={is_minimized} />}
-            {isVisible('take_profit') && <TakeProfit is_minimized={is_minimized} />}
-            {isVisible('risk_management') && <RiskManagement is_minimized={is_minimized} />}
-            {/* {isVisible('expiration') && <MultipliersExpirationInfo />} */}
-            {isVisible('accu_info_display') && <AccumulatorsInformation is_minimized={is_minimized} />}
-            {isVisible('mult_info_display') && <MultipliersInformation is_minimized={is_minimized} />}
+            {isVisible('trade_type_tabs') && <TradeTypeTabs is_minimized={is_minimized} key='trade_type_tabs' />}
+            {isVisible('last_digit') && <LastDigitPrediction is_minimized={is_minimized} key='last_digit' />}
+            {isVisible('duration') && <Duration is_minimized={is_minimized} key='duration' />}
+            {isVisible('strike') && <Strike is_minimized={is_minimized} key='strike' />}
+            {isVisible('payout_per_point') && <PayoutPerPoint is_minimized={is_minimized} key='payout_per_point' />}
+            {isVisible('barrier') && <Barrier is_minimized={is_minimized} key='barrier' />}
+            {isVisible('growth_rate') && <GrowthRate is_minimized={is_minimized} key='growth_rate' />}
+            {isVisible('multiplier') && <Multiplier is_minimized={is_minimized} key='multiplier' />}
+            {isVisible('stake') && <Stake is_minimized={is_minimized} key='stake' />}
+            {isVisible('allow_equals') && <AllowEquals is_minimized={is_minimized} key='allow_equals' />}
+            {isVisible('take_profit') && <TakeProfit is_minimized={is_minimized} key='take_profit' />}
+            {isVisible('risk_management') && <RiskManagement is_minimized={is_minimized} key='risk_management' />}
+            {/* {isVisible('expiration') && <MultipliersExpirationInfo key='expiration' />} */}
+            {isVisible('accu_info_display') && (
+                <AccumulatorsInformation is_minimized={is_minimized} key='accu_info_display' />
+            )}
+            {isVisible('mult_info_display') && (
+                <MultipliersInformation is_minimized={is_minimized} key='mult_info_display' />
+            )}
         </div>
     );
 });

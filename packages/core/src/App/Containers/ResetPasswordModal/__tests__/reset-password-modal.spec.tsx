@@ -80,16 +80,15 @@ describe('ResetPasswordModal', () => {
 
     it('should change input of password and trigger change password button', async () => {
         WS.resetPassword.mockReturnValue(Promise.resolve({ reset_password: 1 }));
-
+        const mock_password = 'Tpt#&te1743!@';
         renderComponent(store);
-
         await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
 
         const new_password = screen.getByLabelText('Create a password', { selector: 'input' });
 
-        userEvent.type(new_password, 'Tpt#&te1743!@');
+        userEvent.type(new_password, mock_password);
 
-        expect(new_password).toHaveValue('Tpt#&te1743!@');
+        expect(new_password).toHaveValue(mock_password);
         expect(screen.getByRole('button', { name: /Reset my password/i })).toBeEnabled();
 
         userEvent.click(
@@ -99,7 +98,7 @@ describe('ResetPasswordModal', () => {
         );
         await waitFor(() => {
             expect(WS.resetPassword).toHaveBeenCalledWith({
-                new_password: 'Tpt#&te1743!@',
+                new_password: mock_password,
                 reset_password: 1,
                 verification_code: '@rnv!sv',
             });
@@ -108,7 +107,7 @@ describe('ResetPasswordModal', () => {
 
         await waitFor(() => {
             expect(WS.resetPassword).toHaveBeenCalledWith({
-                new_password: 'Tpt#&te1743!@',
+                new_password: mock_password,
                 reset_password: 1,
                 verification_code: '@rnv!sv',
             });

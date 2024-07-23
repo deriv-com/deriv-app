@@ -1082,3 +1082,5 @@ import './wallet/ic-wallet-upgrade-completed.svg';
 import './wallet/ic-wallet-upgrade-logout.svg';
 import './wallet/ic-wallet-usd-coin-dark.svg';
 import './wallet/ic-wallet-usd-coin-light.svg';
+import './wallet/ic-wallet-xrp-dark.svg';
+import './wallet/ic-wallet-xrp-light.svg';

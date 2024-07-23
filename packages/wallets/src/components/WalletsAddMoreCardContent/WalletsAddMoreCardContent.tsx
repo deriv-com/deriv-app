@@ -22,6 +22,7 @@ const walletDescriptionMapper: TWalletDescriptionMapper = {
     USD: 'Deposit and withdraw US dollars using credit or debit cards, e-wallets, or bank wires.',
     USDC: 'Deposit and withdraw USD Coin, hosted on the Ethereum blockchain.',
     UST: 'Deposit and withdraw Tether Omni, hosted on the Bitcoin blockchain.',
+    XRP: 'Deposit and withdraw XRP, the cryptocurrency with fast and affordable transactions, hosted on the XRP Ledger blockchain.',
 };
 
 const WalletsAddMoreCardContent: React.FC<TProps> = ({ currency }) => {

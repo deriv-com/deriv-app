@@ -15,6 +15,7 @@ import {
     CurrencyUsdcIcon,
     CurrencyUsdIcon,
     CurrencyUsdtIcon,
+    CurrencyXrpIcon,
     DerivProductDerivBotBrandLightLogoHorizontalIcon,
     DerivProductDerivGoBrandLightLogoHorizontalIcon,
     DerivProductDerivTraderBrandLightLogoHorizontalIcon,
@@ -26,6 +27,7 @@ import {
     PaymentMethodLitecoinBrandIcon,
     PaymentMethodTetherUsdtBrandIcon,
     PaymentMethodUsdCoinBrandIcon,
+    PaymentMethodXrpBrandIcon,
 } from '@deriv/quill-icons';
 import { TCurrencyIconTypes, TIconTypes } from '../types';
 
@@ -69,6 +71,7 @@ export const roundedCurrencyIcons: TCurrencyIconTypes = {
     USDC: CurrencyUsdcIcon,
     USDT: CurrencyUsdtIcon,
     UST: CurrencyUsdtIcon,
+    XRP: CurrencyXrpIcon,
 };
 
 export const horizontalCurrencyIcons: TCurrencyIconTypes = {
@@ -81,4 +84,5 @@ export const horizontalCurrencyIcons: TCurrencyIconTypes = {
     USDC: PaymentMethodUsdCoinBrandIcon,
     USDT: PaymentMethodTetherUsdtBrandIcon,
     UST: PaymentMethodTetherUsdtBrandIcon,
+    XRP: PaymentMethodXrpBrandIcon,
 };

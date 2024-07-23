@@ -69,6 +69,7 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
     }, [nextLocation, history, onDirty]);
     const back = () => {
         setShowModal(false);
+        setNextLocation(location.pathname);
         if (onDirty) {
             onDirty(true);
         }

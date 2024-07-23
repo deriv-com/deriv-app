@@ -7,6 +7,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { SmartChart } from 'Modules/SmartChart';
 import AccumulatorsChartElements from 'Modules/SmartChart/Components/Markers/accumulators-chart-elements';
 import ToolbarWidgets from 'Modules/SmartChart/Components/toolbar-widgets';
+import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 
 type TBottomWidgetsParams = {
     digits: number[];
@@ -14,12 +15,13 @@ type TBottomWidgetsParams = {
 };
 type TBottomWidgetsMobile = TBottomWidgetsParams & {
     setDigitStats: (digits: number[]) => void;
-    setDigitTick: (tick: TickSpotData | null) => void;
+    setTickData: (tick: TickSpotData | null) => void;
 };
 
-const BottomWidgetsMobile = ({ digits, tick, setDigitTick, setDigitStats }: TBottomWidgetsMobile) => {
+const BottomWidgetsMobile = ({ digits, tick, setTickData, setDigitStats }: TBottomWidgetsMobile) => {
+    // Using bottom widgets in V2 to get tick data for all trade types and to get digit stats for Digit trade types
     React.useEffect(() => {
-        setDigitTick(tick);
+        setTickData(tick);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tick]);
 
@@ -49,8 +51,8 @@ const TradeChart = observer(() => {
     const { all_positions } = portfolio;
     const { is_chart_countdown_visible, is_chart_layout_default, is_dark_mode_on, is_positions_drawer_on } = ui;
     const { current_language, is_socket_opened } = common;
+    const { default_symbol, activeSymbols: active_symbols } = useActiveSymbols({});
     const {
-        active_symbols,
         barriers_flattened: extra_barriers,
         chartStateChange,
         chart_layout,
@@ -61,9 +63,9 @@ const TradeChart = observer(() => {
         main_barrier_flattened: main_barrier,
         setChartStatus,
         setDigitStats,
-        setDigitTick,
+        setTickData,
         show_digits_stats,
-        symbol,
+        symbol: symbol_from_store,
         onChange,
         prev_contract_type,
         wsForget,
@@ -72,6 +74,7 @@ const TradeChart = observer(() => {
         wsSubscribe,
     } = useTraderStore();
 
+    const symbol = symbol_from_store ?? default_symbol;
     const is_accumulator = isAccumulatorContract(contract_type);
     const settings = {
         countdown: is_chart_countdown_visible,
@@ -87,12 +90,7 @@ const TradeChart = observer(() => {
 
     const bottomWidgets = React.useCallback(({ digits, tick }: TBottomWidgetsParams) => {
         return (
-            <BottomWidgetsMobile
-                digits={digits}
-                tick={tick}
-                setDigitTick={setDigitTick}
-                setDigitStats={setDigitStats}
-            />
+            <BottomWidgetsMobile digits={digits} tick={tick} setTickData={setTickData} setDigitStats={setDigitStats} />
         );
     }, []);
 
@@ -130,10 +128,10 @@ const TradeChart = observer(() => {
             ref={ref}
             barriers={barriers}
             contracts_array={markers_array}
-            bottomWidgets={show_digits_stats ? bottomWidgets : undefined}
+            bottomWidgets={bottomWidgets}
             crosshair={isMobile ? 0 : undefined}
             crosshairTooltipLeftAllow={560}
-            showLastDigitStats={show_digits_stats}
+            showLastDigitStats
             chartControlsWidgets={null}
             chartStatusListener={(v: boolean) => setChartStatus(!v, true)}
             chartType={chart_type}

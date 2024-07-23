@@ -7,14 +7,17 @@ import { Localize } from '@deriv/translations';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { Skeleton } from '@deriv/components';
 
 const MarketSelector = observer(() => {
     const [isOpen, setIsOpen] = useState(false);
     const { default_symbol, activeSymbols } = useActiveSymbols({});
-    const { symbol: storeSymbol } = useTraderStore();
+    const { symbol: storeSymbol, tick_data } = useTraderStore();
     const currentSymbol = activeSymbols.find(
         symbol => symbol.symbol === storeSymbol || symbol.symbol === default_symbol
     );
+    const { pip_size, quote } = tick_data ?? {};
+    const current_spot = quote?.toFixed(pip_size);
 
     return (
         <React.Fragment>
@@ -35,7 +38,11 @@ const MarketSelector = observer(() => {
                             )}
                             <LabelPairedChevronDownMdRegularIcon />
                         </div>
-                        <CaptionText className='market-selector-info__price'>1234</CaptionText>
+                        {current_spot ? (
+                            <CaptionText className='market-selector-info__price'>{current_spot}</CaptionText>
+                        ) : (
+                            <Skeleton height={18} width={64} />
+                        )}
                     </div>
                 </div>
             </div>

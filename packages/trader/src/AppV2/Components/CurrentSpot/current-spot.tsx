@@ -27,11 +27,11 @@ const CurrentSpot = observer(() => {
         is_digit_contract,
         is_ended,
     } = last_contract.contract_info?.entry_tick || !prev_contract ? last_contract : prev_contract;
-    const { digit_tick, symbol, setDigitTick } = useTraderStore();
+    const { tick_data, symbol } = useTraderStore();
     const { contract_id, entry_tick, date_start, contract_type, tick_stream, underlying } = contract_info;
     const prev_contract_id = usePrevious(contract_id);
 
-    let tick = digit_tick;
+    let tick = tick_data;
 
     const is_contract_elapsed = isContractElapsed(contract_info, tick);
     const is_prev_contract_elapsed = isContractElapsed(prev_contract?.contract_info, tick);
@@ -115,12 +115,6 @@ const CurrentSpot = observer(() => {
         setNewData,
         should_enter_from_top,
     ]);
-
-    React.useEffect(() => {
-        // TODO: move this logic to Assets feature when it's available:
-        setDigitTick(null);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [symbol]);
 
     React.useEffect(() => {
         return () => {

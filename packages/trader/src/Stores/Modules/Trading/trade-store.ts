@@ -247,9 +247,9 @@ export default class TradeStore extends BaseStore {
 
     // Last Digit
     digit_stats: number[] = [];
-    digit_tick: TickSpotData | null = null;
     last_digit = 5;
     is_mobile_digit_view_selected = false;
+    tick_data: TickSpotData | null = null;
 
     // Purchase
     proposal_info: TProposalInfo = {};
@@ -381,7 +381,6 @@ export default class TradeStore extends BaseStore {
             contract_types_list: observable,
             currency: observable,
             digit_stats: observable,
-            digit_tick: observable,
             duration_min_max: observable,
             duration_unit: observable,
             duration_units_list: observable,
@@ -392,8 +391,6 @@ export default class TradeStore extends BaseStore {
             expiry_time: observable,
             expiry_type: observable,
             form_components: observable,
-            setDigitStats: action.bound,
-            setDigitTick: action.bound,
             growth_rate: observable,
             has_cancellation: observable,
             has_equals_only: observable,
@@ -431,6 +428,8 @@ export default class TradeStore extends BaseStore {
             setHoveredBarrier: action.bound,
             sessions: observable,
             setDefaultGrowthRate: action.bound,
+            setDigitStats: action.bound,
+            setTickData: action.bound,
             short_barriers: observable,
             should_show_active_symbols_loading: observable,
             should_skip_prepost_lifecycle: observable,
@@ -443,6 +442,7 @@ export default class TradeStore extends BaseStore {
             stop_out: observable,
             symbol: observable,
             take_profit: observable,
+            tick_data: observable,
             tick_size_barrier_percentage: observable,
             ticks_history_stats: observable,
             trade_types: observable,
@@ -1261,8 +1261,8 @@ export default class TradeStore extends BaseStore {
         this.digit_stats = digit_stats;
     }
 
-    setDigitTick(tick: TickSpotData | null) {
-        this.digit_tick = tick;
+    setTickData(tick: TickSpotData | null) {
+        this.tick_data = tick;
     }
 
     setMobileDigitView(bool: boolean) {

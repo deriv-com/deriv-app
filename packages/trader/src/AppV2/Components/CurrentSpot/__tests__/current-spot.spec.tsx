@@ -226,9 +226,8 @@ describe('CurrentSpot', () => {
         default_mock_store = mockStore({
             modules: {
                 trade: {
-                    digit_tick: null,
+                    tick_data: null,
                     symbol,
-                    setDigitTick: jest.fn(),
                 },
             },
         });
@@ -248,14 +247,14 @@ describe('CurrentSpot', () => {
         expect(screen.getByTestId('dt_skeleton')).toBeInTheDocument();
     });
     it('should render spot (tick.quote) without tick count if has tick data but no contract data', () => {
-        default_mock_store.modules.trade.digit_tick = tick_data;
+        default_mock_store.modules.trade.tick_data = tick_data;
         render(mockCurrentSpot());
 
         expect(screen.getByText(current_spot)).toBeInTheDocument();
         expect(screen.getByText(current_last_digit)).toBeInTheDocument();
     });
     it('should render the latest tick_stream spot from last contract info together with tick count when has last contract data', () => {
-        default_mock_store.modules.trade.digit_tick = tick_data;
+        default_mock_store.modules.trade.tick_data = tick_data;
         default_mock_store.contract_trade.last_contract = ongoing_contract;
         default_mock_store.contract_trade.prev_contract = closed_contract;
         render(mockCurrentSpot());
@@ -266,7 +265,7 @@ describe('CurrentSpot', () => {
         expect(screen.getByText(spot.slice(-1))).toBeInTheDocument();
     });
     it('should render 2 tick counts for animation purposes when next contract is opened while previous contract is ongoing', () => {
-        default_mock_store.modules.trade.digit_tick = tick_data;
+        default_mock_store.modules.trade.tick_data = tick_data;
         default_mock_store.contract_trade.prev_contract = {
             ...ongoing_contract,
             contract_info: {
@@ -307,7 +306,7 @@ describe('CurrentSpot', () => {
         expect(screen.getByText(new_spot.slice(-1))).toBeInTheDocument();
     });
     it('should render spot (tick.quote) without tick count if last contract is closed', () => {
-        default_mock_store.modules.trade.digit_tick = tick_data;
+        default_mock_store.modules.trade.tick_data = tick_data;
         default_mock_store.contract_trade.last_contract = closed_contract;
         render(mockCurrentSpot());
 

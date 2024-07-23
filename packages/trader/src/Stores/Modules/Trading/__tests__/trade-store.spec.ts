@@ -320,7 +320,7 @@ describe('TradeStore', () => {
             expect(mockedTradeStore.digit_stats).toEqual(digit_stats);
         });
     });
-    describe('setDigitTick', () => {
+    describe('setTickData', () => {
         const tick_data = {
             ask: 405.76,
             bid: 405.56,
@@ -330,12 +330,12 @@ describe('TradeStore', () => {
             quote: 405.66,
             symbol,
         };
-        it('should set digit_tick', () => {
-            expect(mockedTradeStore.digit_tick).toBeNull();
+        it('should set tick_data', () => {
+            expect(mockedTradeStore.tick_data).toBeNull();
 
-            mockedTradeStore.setDigitTick(tick_data);
+            mockedTradeStore.setTickData(tick_data);
 
-            expect(mockedTradeStore.digit_tick).toEqual(tick_data);
+            expect(mockedTradeStore.tick_data).toEqual(tick_data);
         });
     });
 });

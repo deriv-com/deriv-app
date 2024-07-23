@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     background-color: var(--core-color-solid-slate-75);
-    padding: var(--core-spacing-400);
+    padding: 0 var(--core-spacing-400) var(--core-spacing-400);
     gap: var(--core-spacing-400);
 
     &__trade-types {

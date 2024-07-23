@@ -66,16 +66,16 @@ const Trade = observer(() => {
     return (
         <BottomNav onScroll={onScroll}>
             {symbols.length && trade_types.length ? (
-                <div className='trade'>
-                    <TemporaryTradeTypes
-                        contract_type={contract_type}
-                        onTradeTypeSelect={onTradeTypeSelect}
-                        trade_types={trade_types}
-                    />
-                    <TemporaryAssets onChange={onChange} symbol={symbol} symbols={symbols} />
-                    {isDigitTradeType(contract_type) && <CurrentSpot />}
-                    {contract_type === TRADE_TYPES.EVEN_ODD && <LastDigitPrediction is_stats_mode />}
-                    <div className='trade__section__wrapper'>
+                <React.Fragment>
+                    <div className='trade'>
+                        <TemporaryTradeTypes
+                            contract_type={contract_type}
+                            onTradeTypeSelect={onTradeTypeSelect}
+                            trade_types={trade_types}
+                        />
+                        <TemporaryAssets onChange={onChange} symbol={symbol} symbols={symbols} />
+                        {isDigitTradeType(contract_type) && <CurrentSpot />}
+                        {contract_type === TRADE_TYPES.EVEN_ODD && <LastDigitPrediction is_stats_mode />}
                         <TradeParametersContainer>
                             <TradeParameters />
                         </TradeParametersContainer>
@@ -87,7 +87,7 @@ const Trade = observer(() => {
                         <TradeParameters is_minimized />
                     </TradeParametersContainer>
                     <PurchaseButton />
-                </div>
+                </React.Fragment>
             ) : (
                 <Loading.DTraderV2 />
             )}

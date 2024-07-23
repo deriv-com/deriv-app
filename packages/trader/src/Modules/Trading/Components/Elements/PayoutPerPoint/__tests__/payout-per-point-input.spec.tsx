@@ -19,9 +19,9 @@ jest.mock('@deriv/components', () => ({
 jest.mock('../../../Form/WheelPicker', () => (props: { options: number[]; onClick: (arg0: number) => void }) => (
     <div data-testid='wheel-picker'>
         {props.options.map((option: number, index: number) => (
-            <div key={index} onClick={() => props.onClick(option)}>
+            <button key={index} onClick={() => props.onClick(option)}>
                 {option}
-            </div>
+            </button>
         ))}
     </div>
 ));

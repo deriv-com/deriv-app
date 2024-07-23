@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-    RouteComponentProps,
-    useHistory,
-    withRouter,
-    useLocation,
-    RouteComponentProps,
-    useHistory,
-    withRouter,
-    useLocation,
-} from 'react-router-dom';
+import { useHistory, useLocation, RouteComponentProps, withRouter } from 'react-router-dom';
 import { FormikConsumer } from 'formik';
 import { Button, Icon, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';

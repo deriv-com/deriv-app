@@ -26,7 +26,6 @@ export default class TradersHubStore extends BaseStore {
     is_first_time_visit = true;
     is_failed_verification_modal_visible = false;
     is_regulators_compare_modal_visible = false;
-    is_mt5_notification_modal_visible = false;
     account_type_card = '';
     selected_platform_type = 'options';
     mt5_existing_account = {};
@@ -43,6 +42,7 @@ export default class TradersHubStore extends BaseStore {
     active_modal_wallet_id;
     is_cfd_restricted_country = false;
     is_financial_restricted_country = false;
+    is_setup_real_account_or_go_to_demo_modal_visible = false;
 
     constructor(root_store) {
         const local_storage_properties = [
@@ -64,7 +64,6 @@ export default class TradersHubStore extends BaseStore {
             combined_cfd_mt5_accounts: observable,
             is_account_transfer_modal_open: observable,
             is_regulators_compare_modal_visible: observable,
-            is_mt5_notification_modal_visible: observable,
             is_failed_verification_modal_visible: observable,
             modal_data: observable,
             is_onboarding_visited: observable,
@@ -81,6 +80,7 @@ export default class TradersHubStore extends BaseStore {
             is_wallet_migration_failed: observable,
             is_cfd_restricted_country: observable,
             is_financial_restricted_country: observable,
+            is_setup_real_account_or_go_to_demo_modal_visible: observable,
             closeModal: action.bound,
             content_flag: computed,
             getAccount: action.bound,
@@ -118,7 +118,6 @@ export default class TradersHubStore extends BaseStore {
             closeAccountTransferModal: action.bound,
             setIsOnboardingVisited: action.bound,
             setIsFirstTimeVisit: action.bound,
-            setMT5NotificationModal: action.bound,
             toggleFailedVerificationModalVisibility: action.bound,
             setMT5ExistingAccount: action.bound,
             openFailedVerificationModal: action.bound,
@@ -127,6 +126,7 @@ export default class TradersHubStore extends BaseStore {
             toggleWalletsUpgrade: action.bound,
             setWalletsMigrationFailedPopup: action.bound,
             cleanup: action.bound,
+            setIsSetupRealAccountOrGoToDemoModalVisible: action.bound,
         });
 
         reaction(
@@ -378,10 +378,6 @@ export default class TradersHubStore extends BaseStore {
 
     toggleRegulatorsCompareModal() {
         this.is_regulators_compare_modal_visible = !this.is_regulators_compare_modal_visible;
-    }
-
-    setMT5NotificationModal(is_visible) {
-        this.is_mt5_notification_modal_visible = is_visible;
     }
 
     get has_any_real_account() {
@@ -867,5 +863,9 @@ export default class TradersHubStore extends BaseStore {
             this.is_financial_restricted_country = false;
             this.available_platforms = [];
         }
+    }
+
+    setIsSetupRealAccountOrGoToDemoModalVisible(value) {
+        this.is_setup_real_account_or_go_to_demo_modal_visible = value;
     }
 }

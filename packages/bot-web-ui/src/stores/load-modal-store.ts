@@ -235,7 +235,7 @@ export default class LoadModalStore implements ILoadModalStore {
         const workspace = window.Blockly.derivWorkspace;
         if (workspace) {
             window.Blockly.derivWorkspace.asyncClear();
-            window.Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.cached_xml.main), workspace);
+            window.Blockly.Xml.domToWorkspace(window.Blockly.utils.xml.textToDom(workspace.cached_xml.main), workspace);
             window.Blockly.derivWorkspace.strategy_to_load = workspace.cached_xml.main;
         }
     };
@@ -275,7 +275,7 @@ export default class LoadModalStore implements ILoadModalStore {
         if (!this.selected_strategy) {
             window.Blockly.derivWorkspace.asyncClear();
             window.Blockly.Xml.domToWorkspace(
-                window.Blockly.Xml.textToDom(window.Blockly.derivWorkspace.strategy_to_load),
+                window.Blockly.utils.xml.textToDom(window.Blockly.derivWorkspace.strategy_to_load),
                 window.Blockly.derivWorkspace
             );
             this.is_open_button_loading = false;
@@ -442,6 +442,8 @@ export default class LoadModalStore implements ILoadModalStore {
                 },
                 readOnly: true,
                 scrollbars: true,
+                renderer: 'zelos',
+                theme: window?.Blockly?.Themes?.zelos_renderer,
             });
         }
         this.refreshStrategiesTheme();
@@ -552,6 +554,8 @@ export default class LoadModalStore implements ILoadModalStore {
                     },
                     readOnly: true,
                     scrollbars: true,
+                    renderer: 'zelos',
+                    theme: window?.Blockly?.Themes?.zelos_renderer,
                 });
                 load_options.workspace = this.local_workspace;
                 if (load_options.workspace) {

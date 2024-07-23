@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Analytics } from '@deriv-com/analytics';
 import { defineViewportHeight } from './utils/utils';
 import { WalletLanguageSidePanel } from './components';
 import { Router } from './routes';
@@ -25,6 +26,13 @@ const AppContent: React.FC = () => {
 
     useEffect(() => {
         defineViewportHeight();
+    }, []);
+
+    useEffect(() => {
+        Analytics.trackEvent('ce_wallets_homepage_form', {
+            action: 'open',
+            form_name: 'ce_wallets_homepage_form',
+        });
     }, []);
 
     return (

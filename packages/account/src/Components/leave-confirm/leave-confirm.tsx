@@ -1,5 +1,14 @@
 import React from 'react';
-import { RouteComponentProps, useHistory, withRouter, useLocation } from 'react-router-dom';
+import {
+    RouteComponentProps,
+    useHistory,
+    withRouter,
+    useLocation,
+    RouteComponentProps,
+    useHistory,
+    withRouter,
+    useLocation,
+} from 'react-router-dom';
 import { FormikConsumer } from 'formik';
 import { Button, Icon, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
@@ -72,6 +81,10 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
         if (onDirty) {
             onDirty(true);
         }
+        setShowModal(false);
+        if (onDirty) {
+            onDirty(true);
+        }
     };
     return (
         <>
@@ -87,6 +100,7 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
         </>
     );
 };
+
 export const TransitionBlockerWithRouter = withRouter(TransitionBlocker);
 const LeaveConfirm = ({ onDirty }: { onDirty?: (prop: boolean) => void }) => {
     return (

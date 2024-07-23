@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.controls_whileUntil = {
     init() {
@@ -49,6 +50,9 @@ Blockly.Blocks.controls_whileUntil = {
         return {
             BOOL: null,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

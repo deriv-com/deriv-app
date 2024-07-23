@@ -24,6 +24,7 @@ import type {
     useMT5AccountsList,
     usePOA,
     usePOI,
+    useSettings,
     useSortedMT5Accounts,
     useTransactions,
     useTransferBetweenAccounts,
@@ -64,6 +65,7 @@ export namespace THooks {
     export type TransferAccount = NonNullable<
         NonNullable<ReturnType<typeof useTransferBetweenAccounts>['data']>['accounts']
     >[number];
+    export type AccountSettings = NonNullable<ReturnType<typeof useSettings>['data']>;
 }
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace TPlatforms {

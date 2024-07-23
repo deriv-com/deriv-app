@@ -1,4 +1,4 @@
-import unixToDateString from '../utils';
+import { unixToDateString } from '../utils';
 import '@testing-library/jest-dom';
 
 describe('unixToDateString', () => {

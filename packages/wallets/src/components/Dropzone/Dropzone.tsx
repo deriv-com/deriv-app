@@ -11,7 +11,8 @@ import React, {
 import classNames from 'classnames';
 import { useDropzone } from 'react-dropzone';
 import { DerivLightDropzoneFrameIcon, DerivLightIcCloudUploadIcon, LegacyClose2pxIcon } from '@deriv/quill-icons';
-import { IconButton, WalletButton, WalletText } from '../Base';
+import { Button } from '@deriv-com/ui';
+import { IconButton, WalletText } from '../Base';
 import './Dropzone.scss';
 
 type TProps = {
@@ -129,9 +130,9 @@ const Dropzone: React.FC<TProps> = ({
                             </WalletText>
                             {buttonText && (
                                 <div className='wallets-dropzone__placeholder-text'>
-                                    <WalletButton onClick={open} variant='outlined'>
+                                    <Button color='black' onClick={open} variant='outlined'>
                                         {buttonText}
-                                    </WalletButton>
+                                    </Button>
                                 </div>
                             )}
                         </div>

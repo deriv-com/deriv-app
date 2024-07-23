@@ -34,9 +34,11 @@ const mock = {
         logout: jest.fn(() => Promise.resolve()),
     },
 };
+const mock_password = 'Abcd#17!@';
 
 describe('ResetPasswordModal', () => {
     let store = mockStore({});
+
     beforeEach(() => {
         store = mockStore(mock);
     });
@@ -79,18 +81,18 @@ describe('ResetPasswordModal', () => {
     });
 
     it('should change input of password and trigger change password button', async () => {
-        const test = 'Tpt#&te1743!@';
         WS.resetPassword.mockReturnValue(Promise.resolve({ reset_password: 1 }));
 
         renderComponent(store);
 
         await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
 
-        const new_password = screen.getByLabelText('Create a password', { selector: 'input' });
+        const newPasswordInput = screen.getByLabelText('Create a password', { selector: 'input' });
 
-        userEvent.type(new_password, test);
+        userEvent.type(newPasswordInput, mock_password);
 
-        expect(new_password).toHaveValue(test);
+        expect(newPasswordInput).toHaveValue(mock_password);
+
         expect(screen.getByRole('button', { name: /Reset my password/i })).toBeEnabled();
 
         userEvent.click(
@@ -98,15 +100,18 @@ describe('ResetPasswordModal', () => {
                 name: /reset my password/i,
             })
         );
+
         await waitFor(() => {
             expect(WS.resetPassword).toHaveBeenCalledWith({
-                new_password: test,
+                new_password: mock_password,
                 reset_password: 1,
                 verification_code: mock.client.verification_code.reset_password,
             });
         });
+
         expect(store.client.setVerificationCode).toHaveBeenCalledTimes(1);
         expect(store.client.logout).toHaveBeenCalledTimes(1);
+
         expect(screen.getByText('Your password has been changed')).toBeInTheDocument();
     });
 });

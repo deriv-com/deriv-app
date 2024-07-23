@@ -20,7 +20,7 @@ jest.mock('@deriv/shared', () => ({
     })),
     redirectToLogin: jest.fn(),
 }));
-
+const pass = '@rnv!sv';
 const mock = {
     ui: {
         is_reset_password_modal_visible: true,
@@ -28,7 +28,7 @@ const mock = {
     },
     client: {
         verification_code: {
-            reset_password: '@rnv!sv',
+            reset_password: pass,
         },
         setVerificationCode: jest.fn(),
         logout: jest.fn(() => Promise.resolve()),
@@ -100,7 +100,7 @@ describe('ResetPasswordModal', () => {
             expect(WS.resetPassword).toHaveBeenCalledWith({
                 new_password: mock_password,
                 reset_password: 1,
-                verification_code: '@rnv!sv',
+                verification_code: pass,
             });
         });
         expect(store.client.setVerificationCode).toHaveBeenCalledTimes(1);
@@ -109,7 +109,7 @@ describe('ResetPasswordModal', () => {
             expect(WS.resetPassword).toHaveBeenCalledWith({
                 new_password: mock_password,
                 reset_password: 1,
-                verification_code: '@rnv!sv',
+                verification_code: pass,
             });
         });
 

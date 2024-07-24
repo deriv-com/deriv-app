@@ -154,7 +154,7 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
             this.setGoogleDriveTokenValid(false);
             // eslint-disable-next-line no-console
             console.log('Google Drive Error: Token invalid signing user out');
-            globalObserver.emit('ui.log.error', 'Google Drive Error: Token invalid signing user out');
+            globalObserver.emit('ui.log.error', localize('Google Drive Error: Token invalid signing user out'));
             await this.signOut();
         }
     }

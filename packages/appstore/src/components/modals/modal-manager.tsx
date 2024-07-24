@@ -326,12 +326,6 @@ const ModalManager = () => {
         is_mt5_password_invalid_format_modal_visible ||
         is_sent_email_modal_enabled;
 
-    const url_params = new URLSearchParams(useLocation().search);
-    const url_action_param = url_params.get('action');
-    if (url_action_param) {
-        return null;
-    }
-
     return (
         <React.Fragment>
             {is_server_maintenance_modal_visible && <CFDServerMaintenanceModal />}

@@ -295,6 +295,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_passkey_supported: false,
             should_show_effortless_login_modal: false,
             setIsPasskeySupported: jest.fn(),
+            setPasskeysStatusToCookie: jest.fn(),
             setShouldShowEffortlessLoginModal: jest.fn(),
             fetchShouldShowEffortlessLoginModal: jest.fn(),
             exchange_rates: {},
@@ -648,6 +649,14 @@ const mock = (): TStores & { is_mock: boolean } => {
                 setOpenContractTypeFilter: jest.fn(),
                 setTimeFilter: jest.fn(),
                 setCustomTimeRangeFilter: jest.fn(),
+            },
+            markets: {
+                favoriteIndicators: [],
+                favoriteSymbols: [],
+                removeFavoriteIndicator: jest.fn(),
+                removeFavoriteSymbol: jest.fn(),
+                setFavoriteIndicators: jest.fn(),
+                setFavoriteSymbols: jest.fn(),
             },
             trade: {
                 accumulator_range_list: [],

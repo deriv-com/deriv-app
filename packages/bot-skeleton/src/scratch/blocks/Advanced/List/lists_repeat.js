@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { emptyTextValidator } from '../../../utils';
+import { emptyTextValidator, modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.lists_repeat = {
     init() {
@@ -21,6 +21,7 @@ Blockly.Blocks.lists_repeat = {
                     name: 'NUM',
                 },
             ],
+            inputsInline: true,
             output: null,
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Base.colour,
@@ -42,11 +43,14 @@ Blockly.Blocks.lists_repeat = {
             NUM: emptyTextValidator,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-Blockly.JavaScript.lists_repeat = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.lists_repeat = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const function_name = Blockly.JavaScript.provideFunction_('listsRepeat', [
+    const function_name = Blockly.JavaScript.javascriptGenerator.provideFunction_('listsRepeat', [
         // eslint-disable-next-line no-underscore-dangle
         `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(value, n) {
             var array = [];
@@ -57,9 +61,19 @@ Blockly.JavaScript.lists_repeat = block => {
         }`,
     ]);
 
-    const element = Blockly.JavaScript.valueToCode(block, 'ITEM', Blockly.JavaScript.ORDER_COMMA) || 'null';
-    const repeat_count = Blockly.JavaScript.valueToCode(block, 'NUM', Blockly.JavaScript.ORDER_COMMA) || '0';
+    const element =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'ITEM',
+            Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+        ) || 'null';
+    const repeat_count =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'NUM',
+            Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+        ) || '0';
     const code = `${function_name}(${element}, ${repeat_count})`;
 
-    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

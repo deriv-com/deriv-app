@@ -13,7 +13,7 @@ import {
 } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
 import { localize, Localize } from '@deriv/translations';
-import { isMobile, getCFDPlatformLabel, isDesktop } from '@deriv/shared';
+import { isMobile, getCFDPlatformLabel } from '@deriv/shared';
 import { FormikErrors } from 'formik';
 import CFDStore from '../Stores/Modules/CFD/cfd-store';
 import TradingPasswordManager from './trading-password-manager';
@@ -152,6 +152,7 @@ const CFDPasswordManagerTabContent = ({
     onChangeActiveTabIndex,
     account_group,
 }: TCFDPasswordManagerTabContent) => {
+    const { isDesktop } = useDevice();
     const [active_tab_index, setActiveTabIndex] = React.useState<number>(0);
     const [error_message_investor, setErrorMessageInvestor] = React.useState<string>('');
     const [is_submit_success_investor, setSubmitSuccessInvestor] = React.useState<boolean>(false);

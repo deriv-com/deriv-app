@@ -2,7 +2,7 @@ import React from 'react';
 import { StandaloneGripDotsVerticalBoldIcon, StandaloneCircleMinusFillIcon } from '@deriv/quill-icons';
 import clsx from 'clsx';
 
-type DraggableListItemProps = {
+type TDraggableListItemProps = {
     active?: boolean;
     disabled?: boolean;
     leftIcon?: React.ReactNode;
@@ -12,7 +12,7 @@ type DraggableListItemProps = {
     title: string;
 };
 
-const DraggableListItem: React.FC<DraggableListItemProps> = ({
+const DraggableListItem: React.FC<TDraggableListItemProps> = ({
     active,
     disabled,
     leftIcon,
@@ -27,22 +27,24 @@ const DraggableListItem: React.FC<DraggableListItemProps> = ({
     return (
         <div className={clsx('draggable-list-item', { 'draggable-list-item--active': active })}>
             <div className='draggable-list-item__left'>
-                <div
+                <button
                     className='draggable-list-item__left-icon'
                     data-testid='dt_draggable_list_item_left_icon'
                     onClick={onLeftIconClick}
+                    disabled={disabled}
                 >
                     {leftIcon || default_left_icon}
-                </div>
+                </button>
                 <div className='draggable-list-item__title'>{title}</div>
             </div>
-            <div
+            <button
                 className={clsx('draggable-list-item__icon', { 'draggable-list-item__icon--disabled': disabled })}
                 data-testid='dt_draggable_list_item_icon'
-                onClick={disabled ? undefined : onRightIconClick}
+                onClick={onRightIconClick}
+                disabled={disabled}
             >
                 {rightIcon || default_right_icon}
-            </div>
+            </button>
         </div>
     );
 };

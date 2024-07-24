@@ -1,30 +1,30 @@
 import React, { useState } from 'react';
-import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable, DropResult, DragStart } from 'react-beautiful-dnd';
 import { Text } from '@deriv-com/quill-ui';
 import DraggableListItem from './draggable-list-item';
 import { Localize } from '@deriv/translations';
 
-export type DraggableListItem = {
+export type TDraggableListItem = {
     id: string;
     title: string;
     icon?: React.ReactNode;
 };
 
-export type DraggableListCategory = {
+export type TDraggableListCategory = {
     id: string;
     title?: string;
     button_title?: string;
-    items: DraggableListItem[];
+    items: TDraggableListItem[];
 };
 
-export type DraggableListProps = {
-    categories: DraggableListCategory[];
-    onRightIconClick: (item: DraggableListItem) => void;
+export type TDraggableListProps = {
+    categories: TDraggableListCategory[];
+    onRightIconClick: (item: TDraggableListItem) => void;
     onSave?: () => void;
-    onDrag?: (categories: DraggableListCategory[]) => void;
+    onDrag?: (categories: TDraggableListCategory[]) => void;
 };
 
-const DraggableList: React.FC<DraggableListProps> = ({ categories, onRightIconClick, onSave, onDrag }) => {
+const DraggableList: React.FC<TDraggableListProps> = ({ categories, onRightIconClick, onSave, onDrag }) => {
     const [category_list, setCategoryList] = useState(categories);
     const [draggedItemId, setDraggedItemId] = useState<string | null>(null);
 
@@ -62,10 +62,10 @@ const DraggableList: React.FC<DraggableListProps> = ({ categories, onRightIconCl
             items: source_items,
         };
         setCategoryList(new_category_list);
-        onDrag && onDrag(new_category_list);
+        onDrag?.(new_category_list);
     };
 
-    const handleOnDragStart = (start: any) => {
+    const handleOnDragStart = (start: DragStart) => {
         setDraggedItemId(start.draggableId);
     };
 
@@ -107,9 +107,7 @@ const DraggableList: React.FC<DraggableListProps> = ({ categories, onRightIconCl
                                                 ref={provided.innerRef}
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
-                                                className={`draggable-list-category__item ${
-                                                    draggedItemId === item.id ? 'is-clicked' : ''
-                                                }`}
+                                                className='draggable-list-category__item'
                                             >
                                                 <DraggableListItem
                                                     title={item.title}

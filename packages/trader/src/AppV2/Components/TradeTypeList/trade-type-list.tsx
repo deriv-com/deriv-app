@@ -3,24 +3,24 @@ import TradeTypeListItem from './trade-type-list-item';
 import { Text } from '@deriv-com/quill-ui';
 import './trade-type-list.scss';
 
-type TradeTypeItem = {
+type TTradeTypeItem = {
     id: string;
     title: string;
     icon?: React.ReactNode;
-}
+};
 
-type TradeTypeCategory = {
+type TTradeTypeCategory = {
     id: string;
     title?: string;
-    items: TradeTypeItem[];
-}
+    items: TTradeTypeItem[];
+};
 
-type TradeTypeListProps = {
-    categories: TradeTypeCategory[];
-    onRightIconClick: (item: TradeTypeItem) => void;
-}
+type TTradeTypeListProps = {
+    categories: TTradeTypeCategory[];
+    onRightIconClick: (item: TTradeTypeItem) => void;
+};
 
-const TradeTypeList: React.FC<TradeTypeListProps> = ({ categories, onRightIconClick }) => {
+const TradeTypeList: React.FC<TTradeTypeListProps> = ({ categories, onRightIconClick }) => {
     const [category_list, setCategoryList] = useState(categories);
 
     React.useEffect(() => {
@@ -34,16 +34,10 @@ const TradeTypeList: React.FC<TradeTypeListProps> = ({ categories, onRightIconCl
                     <Text size='sm' bold className='draggable-list-category-title'>
                         {category?.title}
                     </Text>
-                    <div
-                        className='trade-type-list-category__droppable-area'
-                    >
-                        {category.items.map((item) => (
-                            <div
-                            >
-                                <TradeTypeListItem 
-                                    title={item.title}
-                                    onRightIconClick={() => onRightIconClick(item)}
-                                />
+                    <div className='trade-type-list-category__droppable-area'>
+                        {category.items.map(item => (
+                            <div>
+                                <TradeTypeListItem title={item.title} onRightIconClick={() => onRightIconClick(item)} />
                             </div>
                         ))}
                     </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StandaloneCirclePlusFillIcon } from '@deriv/quill-icons';
 
-type TradeTypeListItemProps = {
+type TTradeTypeListItemProps = {
     title: string;
     leftIcon?: React.ReactNode;
     rightIcon?: React.ReactNode;
@@ -9,7 +9,7 @@ type TradeTypeListItemProps = {
     onRightIconClick?: () => void;
 };
 
-const TradeTypeListItem: React.FC<TradeTypeListItemProps> = ({
+const TradeTypeListItem: React.FC<TTradeTypeListItemProps> = ({
     title,
     leftIcon,
     rightIcon,
@@ -21,14 +21,14 @@ const TradeTypeListItem: React.FC<TradeTypeListItemProps> = ({
     return (
         <div className='trade-type-list-item'>
             {leftIcon && (
-                <div className='trade-type-list-item__left-icon' onClick={onLeftIconClick}>
+                <button className='trade-type-list-item__left-icon' onClick={onLeftIconClick}>
                     {leftIcon}
-                </div>
+                </button>
             )}
             <div className='trade-type-list-item__title'>{title}</div>
-            <div className='trade-type-list-item__icon' onClick={onRightIconClick}>
+            <button className='trade-type-list-item__icon' onClick={onRightIconClick}>
                 {rightIcon || default_icon}
-            </div>
+            </button>
         </div>
     );
 };

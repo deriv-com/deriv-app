@@ -8,36 +8,35 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { Localize } from '@deriv/translations';
 
 const Trade = observer(() => {
-    const trade_store = useTraderStore();
-    const { contract_types_list, prepareTradeStore } = trade_store;
+    const { contract_types_list, onMount, onUnmount } = useTraderStore();
 
-    type Category = {
+    type TCategory = {
         text: string;
         value: string;
     };
 
-    type Item = {
+    type TItem = {
         id: string;
         title: string;
         icon?: React.ReactNode;
     };
 
-    type DataObject = {
+    type TDataObject = {
         [key: string]: {
-            categories: Category[];
+            categories: TCategory[];
         };
     };
 
-    type ResultItem = {
+    type TResultItem = {
         id: string;
         title?: string;
         button_title?: string;
         onButtonClick?: () => void;
-        items: Item[];
+        items: TItem[];
     };
 
-    const createArrayFromCategories = (data: DataObject): Item[] => {
-        const result: Item[] = [];
+    const createArrayFromCategories = (data: TDataObject): TItem[] => {
+        const result: TItem[] = [];
         let id_counter = 1;
 
         for (const key in data) {
@@ -55,8 +54,8 @@ const Trade = observer(() => {
         return result;
     };
 
-    const [other_trade_types, setOtherTradeTypes] = React.useState<ResultItem[]>([]);
-    const [pinned_trade_types, setPinnedTradeTypes] = React.useState<ResultItem[]>([]);
+    const [other_trade_types, setOtherTradeTypes] = React.useState<TResultItem[]>([]);
+    const [pinned_trade_types, setPinnedTradeTypes] = React.useState<TResultItem[]>([]);
 
     const [open, setOpen] = React.useState<boolean>();
 
@@ -75,7 +74,7 @@ const Trade = observer(() => {
         setOpen(true);
     };
 
-    const handleAddPinnedClick = (item: Item) => {
+    const handleAddPinnedClick = (item: TItem) => {
         setOtherTradeTypes(prev_categories =>
             prev_categories.map(category => ({
                 ...category,
@@ -100,7 +99,7 @@ const Trade = observer(() => {
         });
     };
 
-    const handleRemovePinnedClick = (item: Item) => {
+    const handleRemovePinnedClick = (item: TItem) => {
         setPinnedTradeTypes(prev_categories =>
             prev_categories.map(category => ({
                 ...category,
@@ -146,7 +145,7 @@ const Trade = observer(() => {
         const saved_other_trade_types = localStorage.getItem('other_trade_types');
         const saved_pinned_trade_types = localStorage.getItem('pinned_trade_types');
 
-        prepareTradeStore();
+        onMount();
 
         if (saved_other_trade_types) {
             setOtherTradeTypes(JSON.parse(saved_other_trade_types));
@@ -155,6 +154,10 @@ const Trade = observer(() => {
         if (saved_pinned_trade_types) {
             setPinnedTradeTypes(JSON.parse(saved_pinned_trade_types));
         }
+
+        return () => {
+            onUnmount();
+        };
     }, []);
 
     const savePinnedToLocalStorage = () => {
@@ -163,7 +166,7 @@ const Trade = observer(() => {
         setOpen(false);
     };
 
-    const handleOnDrag = (categories: ResultItem[]) => {
+    const handleOnDrag = (categories: TResultItem[]) => {
         setPinnedTradeTypes(categories);
     };
 

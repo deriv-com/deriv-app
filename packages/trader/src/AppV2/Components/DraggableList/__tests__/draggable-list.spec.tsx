@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import DraggableList, { DraggableListProps, DraggableListCategory } from '../draggable-list';
+import DraggableList, { TDraggableListProps, TDraggableListCategory } from '../draggable-list';
 
 jest.mock('react-beautiful-dnd', () => ({
     DragDropContext: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
@@ -14,7 +14,7 @@ jest.mock('react-beautiful-dnd', () => ({
 }));
 
 describe('DraggableList', () => {
-    const categories: DraggableListCategory[] = [
+    const categories: TDraggableListCategory[] = [
         {
             id: 'category1',
             title: 'Category 1',
@@ -33,7 +33,7 @@ describe('DraggableList', () => {
         },
     ];
 
-    const renderComponent = (props: Partial<DraggableListProps> = {}): RenderResult =>
+    const renderComponent = (props: Partial<TDraggableListProps> = {}): RenderResult =>
         render(<DraggableList categories={categories} onRightIconClick={jest.fn()} {...props} />);
 
     it('renders categories and items correctly', () => {

@@ -32,7 +32,6 @@ const SuccessDialog = ({
             small={!title}
             title={title}
             width={width}
-            data-testid='dt_cfd_success_dialog'
         >
             <Modal.Body>
                 <div

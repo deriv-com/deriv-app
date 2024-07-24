@@ -2,7 +2,6 @@ import React, { FC, useCallback } from 'react';
 import { Divider, Tab, Tabs } from '@deriv-com/ui';
 import { CFDPlatformsList } from '../../features';
 import useDevice from '../../hooks/useDevice';
-import { TSubscribedBalance } from '../../types';
 import { OptionsAndMultipliersListing } from '../OptionsAndMultipliersListing';
 import './AccountsList.scss';
 
@@ -10,11 +9,10 @@ const tabs = ['CFDs', 'Options'];
 
 type TProps = {
     accountsActiveTabIndex?: number;
-    balance: TSubscribedBalance['balance'];
     onTabClickHandler?: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, balance, onTabClickHandler }) => {
+const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, onTabClickHandler }) => {
     const { isMobile } = useDevice();
 
     const onChangeTabHandler = useCallback((activeTab: number) => onTabClickHandler?.(activeTab), [onTabClickHandler]);
@@ -32,7 +30,7 @@ const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, balance, onTabClickH
                     <Divider color='var(--wallets-banner-border-color)' />
                 </Tab>
                 <Tab className='wallets-accounts-list__tab' title='Options'>
-                    <OptionsAndMultipliersListing balance={balance} />
+                    <OptionsAndMultipliersListing />
                     <Divider color='var(--wallets-banner-border-color)' />
                 </Tab>
             </Tabs>
@@ -45,7 +43,7 @@ const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, balance, onTabClickH
                 <Divider color='var(--border-divider)' height={2} />
                 <CFDPlatformsList />
                 <Divider color='var(--border-divider)' height={2} />
-                <OptionsAndMultipliersListing balance={balance} />
+                <OptionsAndMultipliersListing />
             </div>
         </div>
     );

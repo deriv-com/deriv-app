@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useActiveWalletAccount, useBalanceSubscription } from '@deriv/api-v2';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import {
     LabelPairedArrowsRotateMdRegularIcon,
@@ -13,6 +13,7 @@ import {
 } from '@deriv/quill-icons';
 import { WalletCurrencyIcon, WalletGradientBackground, WalletText } from '../../../../components';
 import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
+import useAllBalanceSubscription from '../../../../hooks/useAllBalanceSubscription';
 import useDevice from '../../../../hooks/useDevice';
 import './WalletCashierHeader.scss';
 
@@ -63,7 +64,7 @@ const virtualAccountTabs = [
 
 const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { data: balanceData, isLoading, subscribe, unsubscribe } = useBalanceSubscription();
+    const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
     const { isMobile } = useDevice();
     const activeTabRef = useRef<HTMLButtonElement>(null);
     const history = useHistory();
@@ -78,15 +79,6 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
             activeTabRef.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'center' });
         }
     }, [location.pathname, isMobile]);
-
-    useEffect(() => {
-        subscribe({
-            loginid: activeWallet?.loginid,
-        });
-        return () => {
-            unsubscribe();
-        };
-    }, [activeWallet?.loginid, subscribe, unsubscribe]);
 
     return (
         <WalletGradientBackground
@@ -109,13 +101,20 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                             </WalletText>
                             {isDemo && <WalletListCardBadge />}
                         </div>
-                        {isLoading ? (
-                            <div className='wallets-skeleton wallets-cashier-header__loader' />
+                        {isBalanceLoading ? (
+                            <div
+                                className='wallets-skeleton wallets-cashier-header__loader'
+                                data-testid='dt_wallets_cashier_header_balance_loader'
+                            />
                         ) : (
                             <WalletText color={isDemo ? 'white' : 'general'} size='xl' weight='bold'>
-                                {displayMoney?.(balanceData?.balance ?? 0, activeWallet?.currency || '', {
-                                    fractional_digits: activeWallet?.currency_config?.fractional_digits,
-                                })}
+                                {displayMoney(
+                                    balanceData?.[activeWallet?.loginid ?? '']?.balance,
+                                    activeWallet?.currency,
+                                    {
+                                        fractional_digits: activeWallet?.currency_config?.fractional_digits,
+                                    }
+                                )}
                             </WalletText>
                         )}
                     </div>

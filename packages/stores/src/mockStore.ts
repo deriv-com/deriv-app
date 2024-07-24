@@ -650,6 +650,14 @@ const mock = (): TStores & { is_mock: boolean } => {
                 setTimeFilter: jest.fn(),
                 setCustomTimeRangeFilter: jest.fn(),
             },
+            markets: {
+                favoriteIndicators: [],
+                favoriteSymbols: [],
+                removeFavoriteIndicator: jest.fn(),
+                removeFavoriteSymbol: jest.fn(),
+                setFavoriteIndicators: jest.fn(),
+                setFavoriteSymbols: jest.fn(),
+            },
             trade: {
                 accumulator_range_list: [],
                 active_symbols: [],

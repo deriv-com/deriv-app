@@ -6,8 +6,9 @@ import { displayMoney } from '@deriv/api-v2/src/utils';
 import { LabelPairedChevronDownLgFillIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
+import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
-import { THooks, TSubscribedBalance } from '../../types';
+import { THooks } from '../../types';
 import reactNodeToString from '../../utils/react-node-to-string';
 import { WalletTextField } from '../Base';
 import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
@@ -20,13 +21,13 @@ type WalletList = {
     text: React.ReactNode;
 }[];
 
-const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
+const WalletListCardDropdown = () => {
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const switchWalletAccount = useWalletAccountSwitcher();
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    const { data: balanceData } = balance;
+    const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
     const loginId = activeWallet?.loginid;
     const [inputWidth, setInputWidth] = useState('auto');
     const [isOpen, setIsOpen] = useState(false);
@@ -125,15 +126,23 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
                                         <WalletCurrencyIcon currency={wallet.currency ?? 'USD'} rounded />
                                         <div className='wallets-listcard-dropdown__list-content'>
                                             <Text size='2xs'>{wallet.currency} Wallet</Text>
-                                            <Text size='sm' weight='bold'>
-                                                {displayMoney?.(
-                                                    balanceData?.accounts?.[wallet.loginid]?.balance ?? 0,
-                                                    wallet?.currency || '',
-                                                    {
-                                                        fractional_digits: wallet?.currencyConfig?.fractional_digits,
-                                                    }
-                                                )}
-                                            </Text>
+                                            {isBalanceLoading ? (
+                                                <div
+                                                    className='wallets-skeleton wallets-list-card-dropdown__balance-loader'
+                                                    data-testid='dt_wallets_list_card_dropdown_balance_loader'
+                                                />
+                                            ) : (
+                                                <Text size='sm' weight='bold'>
+                                                    {displayMoney(
+                                                        balanceData?.[wallet.loginid]?.balance,
+                                                        wallet?.currency,
+                                                        {
+                                                            fractional_digits:
+                                                                wallet?.currencyConfig?.fractional_digits,
+                                                        }
+                                                    )}
+                                                </Text>
+                                            )}
                                         </div>
                                     </div>
                                 </li>

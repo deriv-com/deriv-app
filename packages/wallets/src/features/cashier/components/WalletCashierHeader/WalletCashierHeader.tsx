@@ -11,10 +11,10 @@ import {
     LabelPairedSquareListMdRegularIcon,
     LegacyClose2pxIcon,
 } from '@deriv/quill-icons';
+import { useDevice } from '@deriv-com/ui';
 import { WalletCurrencyIcon, WalletGradientBackground, WalletText } from '../../../../components';
 import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
 import useAllBalanceSubscription from '../../../../hooks/useAllBalanceSubscription';
-import useDevice from '../../../../hooks/useDevice';
 import i18n from '../../../../translations/i18n';
 import './WalletCashierHeader.scss';
 
@@ -66,7 +66,7 @@ const virtualAccountTabs = [
 const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
-    const { isMobile } = useDevice();
+    const { isDesktop, isMobile } = useDevice();
     const activeTabRef = useRef<HTMLButtonElement>(null);
     const history = useHistory();
     const location = useLocation();
@@ -76,10 +76,10 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const isDemo = activeWallet?.is_virtual;
 
     useEffect(() => {
-        if (isMobile && activeTabRef.current) {
+        if (!isDesktop && activeTabRef.current) {
             activeTabRef.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'center' });
         }
-    }, [location.pathname, isMobile]);
+    }, [location.pathname, isDesktop]);
 
     return (
         <WalletGradientBackground

@@ -1,7 +1,7 @@
 import React from 'react';
 import QRCode from 'qrcode.react';
+import { useDevice } from '@deriv-com/ui';
 import { WalletClipboard, WalletText } from '../../../../../../components/Base';
-import useDevice from '../../../../../../hooks/useDevice';
 import './DepositCryptoAddress.scss';
 
 type TProps = {
@@ -21,6 +21,7 @@ const DepositCryptoAddress: React.FC<TProps> = ({ depositCryptoAddress }) => {
                     </WalletText>
                 </div>
                 <div className='wallets-deposit-crypto-address__hash-clipboard'>
+                    {/* TODO: Replace this with deriv-com/ui */}
                     <WalletClipboard
                         infoMessage={isMobile ? undefined : 'copy'}
                         popoverAlignment={isMobile ? 'left' : 'bottom'}

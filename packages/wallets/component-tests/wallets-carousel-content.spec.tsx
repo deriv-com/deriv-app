@@ -85,10 +85,10 @@ test.describe('Wallets - Mobile carousel', () => {
             )
             .innerText();
 
-        expect(card1text).toBe('0.00 USD');
-        expect(card2text).toBe('0.00000000 BTC');
+        expect(card1text).toBe('9,988,000.89 USD');
+        expect(card2text).toBe('10.00000000 BTC');
         expect(card3text).toBe('0.00000000 ETH');
-        expect(card4text).toBe('0.00 USD');
+        expect(card4text).toBe('10,000.00 USD');
     });
 
     test('renders progress bar with active item and updates it when swiping', async ({ baseURL }) => {

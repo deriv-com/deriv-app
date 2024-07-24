@@ -358,12 +358,17 @@ export default class LoadModalStore implements ILoadModalStore {
 
     onDriveOpen = async () => {
         const { google_drive } = this.root_store;
+        const { checkGoogleDriveAccessToken } = google_drive;
+        await checkGoogleDriveAccessToken();
         if (google_drive) {
             google_drive.upload_id = uuidv4();
         }
         rudderStackSendUploadStrategyStartEvent({ upload_provider: 'google_drive', upload_id: google_drive.upload_id });
         const { loadFile } = this.root_store.google_drive;
-        const { xml_doc, file_name } = await loadFile();
+        const load_file = await loadFile();
+        if (!load_file) return;
+        const xml_doc = load_file?.xml_doc;
+        const file_name = load_file?.file_name;
         await load({
             block_string: xml_doc,
             file_name,

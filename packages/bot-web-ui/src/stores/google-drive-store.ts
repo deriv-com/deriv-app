@@ -46,6 +46,8 @@ export interface IGoogleDriveStore {
         title: string,
         callback: (data: TPickerCallbackResponse) => void
     ) => void;
+    is_google_drive_authenticated: boolean;
+    setGoogleDriveAuthenticated: (is_authenticated: boolean) => void;
 }
 
 export default class GoogleDriveStore implements IGoogleDriveStore {
@@ -65,6 +67,7 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
         makeObservable(this, {
             is_authorised: observable,
             upload_id: observable,
+            is_google_drive_authenticated: observable,
             updateSigninStatus: action.bound,
             saveFile: action.bound,
             loadFile: action.bound,
@@ -77,6 +80,8 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
             createSaveFilePicker: action.bound,
             createLoadFilePicker: action.bound,
             showGoogleDriveFilePicker: action.bound,
+            setGoogleDriveAuthenticated: action.bound,
+            checkGoogleDriveAccessToken: action.bound,
         });
 
         this.root_store = root_store;
@@ -86,9 +91,15 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
         this.access_token = localStorage.getItem('google_access_token') ?? '';
         importExternal('https://accounts.google.com/gsi/client').then(() => this.initialiseClient());
         importExternal('https://apis.google.com/js/api.js').then(() => this.initialise());
+        if (this.access_token) this.checkGoogleDriveAccessToken();
     }
 
+    is_google_drive_authenticated = false;
     is_authorised = !!localStorage.getItem('google_access_token');
+
+    setGoogleDriveAuthenticated = (is_google_drive_authenticated: boolean) => {
+        this.is_google_drive_authenticated = is_google_drive_authenticated;
+    };
 
     setKey = () => {
         const { SCOPE, DISCOVERY_DOCS } = config.GOOGLE_DRIVE;
@@ -121,6 +132,32 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
         this.is_authorised = is_signed_in;
     }
 
+    async checkGoogleDriveAccessToken() {
+        const google_access_token = localStorage.getItem('google_access_token') || this.access_token || '';
+        const GET_TOKEN_INFO_URL = 'https://www.googleapis.com/oauth2/v3/tokeninfo';
+        const REQUEST_URL = `${GET_TOKEN_INFO_URL}?access_token=${google_access_token}`;
+        try {
+            const response = await fetch(REQUEST_URL, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (!response.ok) {
+                this.setGoogleDriveAuthenticated(response.ok);
+                throw new Error('Failed to fetch access token');
+            }
+            this.setGoogleDriveAuthenticated(response.ok);
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log(error);
+            this.setGoogleDriveAuthenticated(false);
+            // eslint-disable-next-line no-console
+            console.log('Error: Token invalid signing user out');
+            await this.signOut();
+        }
+    }
+
     async signIn() {
         if (!this.is_authorised) {
             await this.client.requestAccessToken();
@@ -129,9 +166,9 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
 
     async signOut() {
         if (this.access_token) {
-            await gapi.client.setToken({ access_token: '' });
-            await google.accounts.oauth2.revoke(this.access_token);
-            localStorage.removeItem('google_access_token');
+            await window?.gapi?.client?.setToken({ access_token: '' });
+            await window?.google?.accounts?.oauth2?.revoke(this.access_token);
+            localStorage?.removeItem('google_access_token');
             this.access_token = '';
         }
         this.updateSigninStatus(false);
@@ -163,6 +200,7 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
     }
 
     async loadFile() {
+        if (!this.is_google_drive_authenticated) return;
         await this.signIn();
 
         if (this.access_token) gapi.client.setToken({ access_token: this.access_token });

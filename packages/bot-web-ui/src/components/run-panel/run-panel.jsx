@@ -12,7 +12,7 @@ import { popover_zindex } from 'Constants/z-indexes';
 import { connect } from 'Stores/connect';
 
 const StatisticsTile = ({ content, contentClassName, title }) => (
-    <div className='run-panel__tile'>
+    <div className='run-panel__tile' data-testid='dt-run-panel'>
         <div className='run-panel__tile-title'>{title}</div>
         <div className={classNames('run-panel__tile-content', contentClassName)}>{content}</div>
     </div>

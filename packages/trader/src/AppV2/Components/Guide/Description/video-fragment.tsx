@@ -41,7 +41,7 @@ const VideoFragment = ({ contract_type }: TVideoFragment) => {
                     contract_type.toLowerCase() === CONTRACT_LIST.ACCUMULATORS.toLowerCase(),
             })}
         >
-            {is_loading && <Skeleton width={248} height={161} />}
+            {is_loading && <Skeleton width={248} height={161} className='skeleton-video-loader' />}
             <DotLottieReact
                 autoplay
                 dotLottieRefCallback={
@@ -51,9 +51,6 @@ const VideoFragment = ({ contract_type }: TVideoFragment) => {
                 }
                 src={lottie_src}
                 loop
-                className={classNames('video-fragment__lottie-player', {
-                    'video-fragment__lottie-player--loading': is_loading,
-                })}
             />
         </div>
     );

@@ -146,16 +146,18 @@
         margin-block-end: var(--component-actionSheet-spacing-padding-md);
         width: 24.8rem;
         height: 16.1rem;
+        position: relative;
         margin-inline: auto;
 
         &--accumulator {
             margin-block-end: var(--component-actionSheet-spacing-padding-sm);
         }
-    }
 
-    &__lottie-player {
-        &--loading {
-            width: 0;
+        .skeleton-video-loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
     }
 }

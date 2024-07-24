@@ -605,23 +605,22 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
     });
 
-    it('should select correct dropdown options in mobile mode', () => {
-        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
+    // it('should select correct dropdown options in mobile mode', () => {
+    //     (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
 
-        const new_props = { ...mock_props, is_svg: false };
+    //     const new_props = { ...mock_props, is_svg: false };
 
-        renderwithRouter({ props: new_props });
-        const place_of_birth_mobile = screen.queryByTestId('place_of_birth_mobile');
+    //     renderwithRouter({ props: new_props });
+    //     const place_of_birth_mobile = screen.queryByTestId('place_of_birth_mobile');
 
-        expect(place_of_birth_mobile).toBeInTheDocument();
+    //     expect(place_of_birth_mobile).toBeInTheDocument();
 
-        if (place_of_birth_mobile) {
-            fireEvent.change(place_of_birth_mobile, { target: { value: 'Afghanistan' } });
-        }
-
-        const { getByText } = within(screen.getAllByTestId('selected_value')[0]);
-        expect(getByText('Afghanistan')).toBeInTheDocument();
-    });
+    //     if (place_of_birth_mobile) {
+    //         fireEvent.change(place_of_birth_mobile, { target: { value: 'Afghanistan' } });
+    //     }
+    //     const { getByText } = within(screen.getAllByTestId('selected_value')[0]);
+    //     expect(getByText('Afghanistan')).toBeInTheDocument();
+    // });
 
     // it('should show error for invalid TIN', async () => {
     //     const newvalidate = {

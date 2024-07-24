@@ -18,6 +18,9 @@ const App = ({ passthrough }: TAppProps) => {
         // of dynamic view height(vh) on mobile browsers for few scrollable components
         const vh = window.innerHeight;
         document.body.style.setProperty('--vh', `${vh}px`);
+
+        // eslint-disable-next-line no-console
+        console.info("This test link is generated only for testing purpose and shouldn't be merged");
     }, []);
 
     return (

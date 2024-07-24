@@ -23,11 +23,12 @@ const Guide = ({ has_label = false }: TGuide) => {
         <React.Fragment>
             <Button
                 color='black'
+                icon={<LabelPairedPresentationScreenSmRegularIcon key='guide-button-icon' />}
                 onClick={() => setIsDescriptionOpened(true)}
                 variant={has_label ? 'secondary' : 'tertiary'}
                 key='guide'
             >
-                <LabelPairedPresentationScreenSmRegularIcon />
+                {/* <LabelPairedPresentationScreenSmRegularIcon /> */}
                 {has_label && (
                     <Text size='sm' bold color='quill-typography__color--prominent'>
                         <Localize i18n_default_text='Guide' />

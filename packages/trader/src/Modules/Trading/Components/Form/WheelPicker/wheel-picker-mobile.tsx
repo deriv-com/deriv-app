@@ -57,16 +57,22 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
     const [swipe, setSwipe] = useState<SwipeState>({ startY: 0, deltaY: 0, translateY: 0 });
     const optionRef = useRef<HTMLDivElement>(null);
 
+    const calculateLimits = (swipeStartY: number, deltaY: number, optionHeight: number, optionsLength: number) => {
+        const MIN = 0;
+        const MAX = optionHeight * (optionsLength - 1);
+        const translateY = Math.min(MAX, Math.max(MIN, swipeStartY + deltaY));
+        const newIndex = Math.min(optionsLength - 1, Math.max(0, Math.round(translateY / optionHeight)));
+
+        return { translateY, newIndex };
+    };
+
     const swipeableHandlers = useSwipeable({
         onSwipeStart: () => {
             setSwipe(swipe => ({ ...swipe, startY: swipe.translateY }));
         },
         onSwiping: ({ deltaY, first }) => {
             if (first) return;
-            const MIN = 0;
-            const MAX = optionHeight * (options.length - 1);
-            const translateY = Math.min(MAX, Math.max(MIN, swipe.startY + deltaY));
-            const newIndex = Math.min(options.length - 1, Math.max(0, Math.round(translateY / optionHeight)));
+            const { translateY, newIndex } = calculateLimits(swipe.startY, deltaY, optionHeight, options.length);
             setSwipe(swipe => ({
                 ...swipe,
                 deltaY,
@@ -75,11 +81,9 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
             setSelectedIndex(newIndex);
         },
         onSwiped: ({ deltaY }) => {
-            const MIN = 0;
-            const MAX = optionHeight * (options.length - 1);
-            const translateY = Math.min(MAX, Math.max(MIN, swipe.startY + deltaY));
-            const newIndex = Math.min(options.length - 1, Math.max(0, Math.round(translateY / optionHeight)));
+            const { newIndex } = calculateLimits(swipe.startY, deltaY, optionHeight, options.length);
             setSwipe(swipe => ({ ...swipe, deltaY: 0, translateY: optionHeight * newIndex }));
+            setSelectedIndex(newIndex);
         },
         trackMouse: true,
         delta: optionHeight,

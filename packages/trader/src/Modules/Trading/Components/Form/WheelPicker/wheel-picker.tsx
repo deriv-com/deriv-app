@@ -64,18 +64,7 @@ const WheelPicker = ({ options, onClick, defaultValue, currency }: WheelPickerTy
     };
 
     const visibleValues = () => {
-        const values = [];
-        if (selectedIndex > 0) {
-            values.push(options[selectedIndex - 1]);
-        } else {
-            values.push('');
-        }
-        values.push(options[selectedIndex]);
-        if (selectedIndex < options.length - 1) {
-            values.push(options[selectedIndex + 1]);
-        } else {
-            values.push('');
-        }
+        const values = [options[selectedIndex - 1] || '', options[selectedIndex], options[selectedIndex + 1] || ''];
         return values;
     };
 

@@ -191,6 +191,7 @@ export default class TradeStore extends BaseStore {
     is_market_closed = false;
     previous_symbol = '';
     active_symbols: ActiveSymbols = [];
+    active_symbols_v2: ActiveSymbols = [];
 
     form_components: string[] = [];
 
@@ -362,6 +363,7 @@ export default class TradeStore extends BaseStore {
         makeObservable(this, {
             accumulator_range_list: observable,
             active_symbols: observable,
+            active_symbols_v2: observable,
             amount: observable,
             barrier_1: observable,
             barrier_2: observable,
@@ -490,6 +492,7 @@ export default class TradeStore extends BaseStore {
             resetPreviousSymbol: action.bound,
             sendTradeParamsAnalytics: action.bound,
             setActiveSymbols: action.bound,
+            setActiveSymbolsV2: action.bound,
             setBarrierChoices: action.bound,
             setChartModeFromURL: action.bound,
             setChartStatus: action.bound,
@@ -1834,6 +1837,10 @@ export default class TradeStore extends BaseStore {
 
     setStakeBoundary(type: string, min_stake?: number, max_stake?: number) {
         if (min_stake && max_stake) this.stake_boundary[type] = { min_stake, max_stake };
+    }
+
+    setActiveSymbolsV2(active_symbols: ActiveSymbols) {
+        this.active_symbols_v2 = this.active_symbols = active_symbols;
     }
 
     setBarrierChoices(barrier_choices: string[]) {

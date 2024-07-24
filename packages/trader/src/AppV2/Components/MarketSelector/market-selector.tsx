@@ -29,7 +29,7 @@ const MarketSelector = observer(() => {
                             <Text bold>{currentSymbol?.display_name}</Text>
                             {!currentSymbol?.exchange_is_open && (
                                 <Tag
-                                    label={<Localize i18n_default_text='CLOSED' />}
+                                    label={<Localize key='closed' i18n_default_text='CLOSED' />}
                                     color='error'
                                     variant='fill'
                                     showIcon={false}

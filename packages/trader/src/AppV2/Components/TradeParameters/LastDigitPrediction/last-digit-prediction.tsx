@@ -47,7 +47,7 @@ const LastDigitPrediction = observer(({ is_minimized, is_stats_mode }: TLastDigi
                             key={`last-digit-prediction${is_minimized ? '-minimized' : ''}`}
                         />
                     }
-                    value={last_digit}
+                    value={last_digit.toString()} // TextField doesn't render a numeric 0 value in quill-ui
                     className={clsx('trade-params__option', 'trade-params__option--minimized')}
                     onClick={() => setIsOpen(true)}
                 />

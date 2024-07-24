@@ -6,6 +6,8 @@ import ResetPasswordModal from '../reset-password-modal';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { APIProvider } from '@deriv/api';
 import { TStores } from '@deriv/stores/types';
+import { pass, newPass } from './testfileConstants';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -26,6 +28,9 @@ const mock = {
         is_loading: false,
     },
     client: {
+        verification_code: {
+            reset_password: pass,
+        },
         setVerificationCode: jest.fn(),
         logout: jest.fn(() => Promise.resolve()),
     },
@@ -72,5 +77,45 @@ describe('ResetPasswordModal', () => {
                 /strong passwords contain at least 8 characters\. combine uppercase and lowercase letters, numbers, and symbols\./i
             )
         ).toBeInTheDocument();
+    });
+
+    it('should change input of password and trigger change password button', async () => {
+        WS.resetPassword.mockReturnValue(Promise.resolve({ reset_password: 1 }));
+
+        renderComponent(store);
+
+        await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
+
+        const new_password = screen.getByLabelText('Create a password', { selector: 'input' });
+
+        userEvent.type(new_password, newPass);
+
+        expect(new_password).toHaveValue(newPass);
+        expect(screen.getByRole('button', { name: /Reset my password/i })).toBeEnabled();
+
+        userEvent.click(
+            screen.getByRole('button', {
+                name: /reset my password/i,
+            })
+        );
+        await waitFor(() => {
+            expect(WS.resetPassword).toHaveBeenCalledWith({
+                new_password: newPass,
+                reset_password: 1,
+                verification_code: pass,
+            });
+        });
+        expect(store.client.setVerificationCode).toHaveBeenCalledTimes(1);
+
+        await waitFor(() => {
+            expect(WS.resetPassword).toHaveBeenCalledWith({
+                new_password: newPass,
+                reset_password: 1,
+                verification_code: pass,
+            });
+        });
+
+        expect(store.client.logout).toHaveBeenCalledTimes(1);
+        expect(screen.getByText('Your password has been changed')).toBeInTheDocument();
     });
 });

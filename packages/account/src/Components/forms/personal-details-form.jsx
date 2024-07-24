@@ -52,6 +52,7 @@ const PersonalDetailsForm = props => {
     const is_svg_only = is_svg && !is_eu_user;
 
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
+    const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
 
     const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched } = useFormikContext();
 
@@ -59,7 +60,10 @@ const PersonalDetailsForm = props => {
         if (is_tax_residence_popover_open) {
             setIsTaxResidencePopoverOpen(false);
         }
-    }, [is_tax_residence_popover_open]);
+        if (is_tin_popover_open) {
+            setIsTinPopoverOpen(false);
+        }
+    }, [is_tax_residence_popover_open, is_tin_popover_open]);
 
     React.useEffect(() => {
         if (should_close_tooltip) {
@@ -421,11 +425,15 @@ const PersonalDetailsForm = props => {
                                         residence_list={residence_list}
                                         required
                                         setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
+                                        setIsTinPopoverOpen={setIsTinPopoverOpen}
                                         is_tax_residence_popover_open={is_tax_residence_popover_open}
                                     />
                                 )}
                                 {'tax_identification_number' in values && (
                                     <TaxIdentificationNumberField
+                                        is_tin_popover_open={is_tin_popover_open}
+                                        setIsTinPopoverOpen={setIsTinPopoverOpen}
+                                        setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                                         disabled={isFieldImmutable('tax_identification_number', editable_fields)}
                                         required
                                     />
@@ -557,11 +565,15 @@ const PersonalDetailsForm = props => {
                                 disabled={isFieldImmutable('tax_residence', editable_fields)}
                                 residence_list={residence_list}
                                 setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
+                                setIsTinPopoverOpen={setIsTinPopoverOpen}
                                 is_tax_residence_popover_open={is_tax_residence_popover_open}
                             />
                         )}
                         {'tax_identification_number' in values && (
                             <TaxIdentificationNumberField
+                                is_tin_popover_open={is_tin_popover_open}
+                                setIsTinPopoverOpen={setIsTinPopoverOpen}
+                                setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                                 disabled={isFieldImmutable('tax_identification_number', editable_fields)}
                             />
                         )}
@@ -669,6 +681,7 @@ const TaxResidenceField = ({
     residence_list,
     required = false,
     setIsTaxResidencePopoverOpen,
+    setIsTinPopoverOpen,
     is_tax_residence_popover_open,
     disabled,
 }) => {
@@ -717,6 +730,7 @@ const TaxResidenceField = ({
                         data-testid='tax_residence_pop_over'
                         onClick={e => {
                             setIsTaxResidencePopoverOpen(true);
+                            setIsTinPopoverOpen(false);
                             e.stopPropagation();
                         }}
                     >
@@ -737,7 +751,14 @@ const TaxResidenceField = ({
     );
 };
 
-const TaxIdentificationNumberField = ({ disabled, required = false }) => {
+const TaxIdentificationNumberField = ({
+    is_tin_popover_open,
+    setIsTinPopoverOpen,
+    setIsTaxResidencePopoverOpen,
+    disabled,
+    required = false,
+}) => {
+    const { isDesktop } = useDevice();
     return (
         <div className='details-form__tax'>
             <FormInputField
@@ -748,6 +769,38 @@ const TaxIdentificationNumberField = ({ disabled, required = false }) => {
                 disabled={disabled}
                 required={required}
             />
+            <div
+                data-testid='tax_identification_number_pop_over'
+                onClick={e => {
+                    setIsTaxResidencePopoverOpen(false);
+                    setIsTinPopoverOpen(true);
+                    if (e.target.tagName !== 'A') e.stopPropagation();
+                }}
+            >
+                <Popover
+                    alignment={isDesktop ? 'right' : 'left'}
+                    icon='info'
+                    is_open={is_tin_popover_open}
+                    message={
+                        <Localize
+                            i18n_default_text={
+                                "Don't know your tax identification number? Click <0>here</0> to learn more."
+                            }
+                            components={[
+                                <a
+                                    key={0}
+                                    className='link link--red'
+                                    rel='noopener noreferrer'
+                                    target='_blank'
+                                    href='https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
+                                />,
+                            ]}
+                        />
+                    }
+                    zIndex={9998}
+                    disable_message_icon
+                />
+            </div>
         </div>
     );
 };

@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 import { useTradingPlatformStatus } from '@deriv/api-v2';
 import { LegacyWarningIcon } from '@deriv/quill-icons';
 import { Badge } from '@deriv-com/ui';
@@ -23,7 +22,6 @@ type TProps = {
 
 const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) => {
     const { isMobile } = useDevice();
-    const { t } = useTranslation();
     const { getPlatformStatus } = useTradingPlatformStatus();
 
     const isInput = type === 'input';
@@ -35,8 +33,8 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) 
         account?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE || TRADING_PLATFORM_STATUS.MAINTENANCE;
 
     const getBadgeText = () => {
-        if (account?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE) return t('Account unavailable');
-        if (platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE) return t('Server maintenance');
+        if (account?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE) return 'Account unavailable';
+        if (platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE) return 'Server maintenance';
         return '';
     };
 
@@ -75,17 +73,20 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) 
                 <WalletText size={isInput ? '2xs' : 'xs'}>Balance: {account?.displayBalance}</WalletText>
             </div>
 
-            {hasPlatformStatus && (
+            {account?.status && hasPlatformStatus && (
                 <Badge
-                    badgeSize='xs'
+                    badgeSize='sm'
+                    className='wallets-transfer-form-account-card--badge'
                     color='warning'
                     isBold
                     leftIcon={<LegacyWarningIcon iconSize='xs' />}
-                    padding='tight'
+                    padding='loose'
                     rounded='sm'
                     variant='bordered'
                 >
-                    {getBadgeText()}
+                    <WalletText color='warning' lineHeight='2xl' size='2xs' weight='bold'>
+                        {getBadgeText()}
+                    </WalletText>
                 </Badge>
             )}
 

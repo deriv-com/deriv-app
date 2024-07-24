@@ -48,8 +48,8 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
 
     const getBadgeText = () => {
-        if (account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE) return t('Account unavailable');
-        if (platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE) return t('Server maintenance');
+        if (account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE) return 'Account unavailable';
+        if (platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE) return 'Server maintenance';
         return '';
     };
 
@@ -87,15 +87,18 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 >
                     {hasPlatformStatus ? (
                         <Badge
-                            badgeSize='xs'
+                            badgeSize='md'
+                            className='wallets-added-mt5__icon--badge'
                             color='warning'
                             isBold
                             leftIcon={<LegacyWarningIcon iconSize='xs' />}
-                            padding='tight'
+                            padding='loose'
                             rounded='sm'
                             variant='bordered'
                         >
-                            {getBadgeText()}
+                            <WalletText color='warning' lineHeight='2xl' size='2xs' weight='bold'>
+                                {getBadgeText()}
+                            </WalletText>
                         </Badge>
                     ) : (
                         <div className='wallets-available-mt5__icon'>

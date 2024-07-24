@@ -46,8 +46,8 @@ export interface IGoogleDriveStore {
         title: string,
         callback: (data: TPickerCallbackResponse) => void
     ) => void;
-    is_google_drive_authenticated: boolean;
-    setGoogleDriveAuthenticated: (is_authenticated: boolean) => void;
+    is_google_drive_token_valid: boolean;
+    setGoogleDriveTokenValid: (is_authenticated: boolean) => void;
 }
 
 export default class GoogleDriveStore implements IGoogleDriveStore {
@@ -67,7 +67,7 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
         makeObservable(this, {
             is_authorised: observable,
             upload_id: observable,
-            is_google_drive_authenticated: observable,
+            is_google_drive_token_valid: observable,
             updateSigninStatus: action.bound,
             saveFile: action.bound,
             loadFile: action.bound,
@@ -80,7 +80,7 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
             createSaveFilePicker: action.bound,
             createLoadFilePicker: action.bound,
             showGoogleDriveFilePicker: action.bound,
-            setGoogleDriveAuthenticated: action.bound,
+            setGoogleDriveTokenValid: action.bound,
             checkGoogleDriveAccessToken: action.bound,
         });
 
@@ -94,11 +94,11 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
         if (this.access_token) this.checkGoogleDriveAccessToken();
     }
 
-    is_google_drive_authenticated = false;
+    is_google_drive_token_valid = false;
     is_authorised = !!localStorage.getItem('google_access_token');
 
-    setGoogleDriveAuthenticated = (is_google_drive_authenticated: boolean) => {
-        this.is_google_drive_authenticated = is_google_drive_authenticated;
+    setGoogleDriveTokenValid = (is_google_drive_token_valid: boolean) => {
+        this.is_google_drive_token_valid = is_google_drive_token_valid;
     };
 
     setKey = () => {
@@ -144,14 +144,14 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
                 },
             });
             if (!response.ok) {
-                this.setGoogleDriveAuthenticated(response.ok);
+                this.setGoogleDriveTokenValid(response.ok);
                 throw new Error('Failed to fetch access token');
             }
-            this.setGoogleDriveAuthenticated(response.ok);
+            this.setGoogleDriveTokenValid(response.ok);
         } catch (error) {
             // eslint-disable-next-line no-console
             console.log(error);
-            this.setGoogleDriveAuthenticated(false);
+            this.setGoogleDriveTokenValid(false);
             // eslint-disable-next-line no-console
             console.log('Google Drive Error: Token invalid signing user out');
             globalObserver.emit('ui.log.error', 'Google Drive Error: Token invalid signing user out');
@@ -201,7 +201,7 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
     }
 
     async loadFile() {
-        if (!this.is_google_drive_authenticated) return;
+        if (!this.is_google_drive_token_valid) return;
         await this.signIn();
 
         if (this.access_token) gapi.client.setToken({ access_token: this.access_token });

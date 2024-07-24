@@ -12,7 +12,12 @@ const RiskManagement = ({ is_minimized }: TRiskManagementProps) => {
         <TextField
             variant='fill'
             readOnly
-            label={<Localize i18n_default_text='Risk Management' />}
+            label={
+                <Localize
+                    i18n_default_text='Risk Management'
+                    key={`risk-management${is_minimized ? '-minimized' : ''}`}
+                />
+            }
             value={localize('Not set')}
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
         />

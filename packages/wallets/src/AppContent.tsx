@@ -13,13 +13,13 @@ const AppContent: React.FC = () => {
     const { i18n } = useTranslation();
     const { isSubscribed, subscribeToAllBalance, unsubscribeFromAllBalance } = useAllBalanceSubscription();
     const { data: derivAccountList } = useDerivAccountsList();
-    const previousDerivAccountListRef = useRef(0);
+    const previousDerivAccountListLenghtRef = useRef(0);
 
     useEffect(() => {
         if (!derivAccountList?.length) return;
-        if (previousDerivAccountListRef.current !== derivAccountList.length || !isSubscribed) {
+        if (previousDerivAccountListLenghtRef.current !== derivAccountList.length || !isSubscribed) {
             subscribeToAllBalance();
-            previousDerivAccountListRef.current = derivAccountList.length;
+            previousDerivAccountListLenghtRef.current = derivAccountList.length;
         }
         return () => {
             if (isSubscribed) {

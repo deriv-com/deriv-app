@@ -32,6 +32,8 @@
 
     &--delayed-loading {
         align-items: center;
+        justify-content: center;
+        height: calc(100vh - 34.2rem);
     }
 
     .dc-contract-card {

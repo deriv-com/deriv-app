@@ -1,6 +1,6 @@
 import React from 'react';
-import { localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
+import { localize } from '@deriv/translations';
 
 export const message_running_bot = localize('Your bot is running and waiting for a signal to buy a contract.');
 

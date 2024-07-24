@@ -7,7 +7,7 @@ import { WalletText } from '../Base';
 import './WalletListHeader.scss';
 
 const WalletListHeader: React.FC = () => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const switchWalletAccount = useWalletAccountSwitcher();
@@ -31,7 +31,7 @@ const WalletListHeader: React.FC = () => {
         setIsChecked(!isDemo);
     }, [isDemo]);
 
-    if (isMobile) return null;
+    if (!isDesktop) return null;
 
     return (
         <div className='wallets-list-header'>

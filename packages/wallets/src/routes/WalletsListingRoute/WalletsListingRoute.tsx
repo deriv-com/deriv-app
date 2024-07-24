@@ -14,18 +14,18 @@ const LazyWalletsCarousel = lazy(() => import('../../components/WalletsCarousel/
 const LazyDesktopWalletsList = lazy(() => import('../../components/DesktopWalletsList/DesktopWalletsList'));
 
 const WalletsListingRoute: React.FC = () => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     return (
         <div className='wallets-listing-route'>
             <WalletListHeader />
-            {isMobile ? (
-                <React.Suspense fallback={<WalletsResponsiveLoader />}>
-                    <LazyWalletsCarousel />
-                </React.Suspense>
-            ) : (
+            {isDesktop ? (
                 <React.Suspense fallback={<WalletsCardLoader />}>
                     <LazyDesktopWalletsList />
+                </React.Suspense>
+            ) : (
+                <React.Suspense fallback={<WalletsResponsiveLoader />}>
+                    <LazyWalletsCarousel />
                 </React.Suspense>
             )}
             <WalletsAddMoreCarousel />

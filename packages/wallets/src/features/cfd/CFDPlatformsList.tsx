@@ -10,7 +10,7 @@ import './CFDPlatformsList.scss';
 
 const CFDPlatformsList: React.FC = () => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { t } = useTranslation();
     const history = useHistory();
     const CFDsDescription =
@@ -19,7 +19,30 @@ const CFDPlatformsList: React.FC = () => {
     return (
         <div className='wallets-cfd-list'>
             <section className='wallets-cfd-list__header'>
-                {isMobile ? (
+                {isDesktop ? (
+                    <React.Fragment>
+                        <div className='wallets-cfd-list__header-compare-accounts'>
+                            <WalletText size='xl' weight='bold'>
+                                {t('CFDs')}
+                            </WalletText>
+                            <WalletButton
+                                onClick={() => {
+                                    history.push('/compare-accounts');
+                                }}
+                                size='sm'
+                                variant='ghost'
+                            >
+                                {t('Compare accounts')}
+                            </WalletButton>
+                        </div>
+                        <WalletText size='md'>
+                            <Trans
+                                components={[<WalletLink key={0} staticUrl='/trade-types/cfds/' />]}
+                                defaults={CFDsDescription}
+                            />
+                        </WalletText>
+                    </React.Fragment>
+                ) : (
                     <div className='wallets-cfd-list__header-description'>
                         <WalletText size='sm'>
                             <Trans
@@ -45,29 +68,6 @@ const CFDPlatformsList: React.FC = () => {
                         >
                             Compare accounts
                         </WalletButton>
-                    </div>
-                ) : (
-                    <div>
-                        <div className='wallets-cfd-list__header-compare-accounts'>
-                            <WalletText size='xl' weight='bold'>
-                                {t('CFDs')}
-                            </WalletText>
-                            <WalletButton
-                                onClick={() => {
-                                    history.push('/compare-accounts');
-                                }}
-                                size='sm'
-                                variant='ghost'
-                            >
-                                {t('Compare accounts')}
-                            </WalletButton>
-                        </div>
-                        <WalletText size='md'>
-                            <Trans
-                                components={[<WalletLink key={0} staticUrl='/trade-types/cfds/' />]}
-                                defaults={CFDsDescription}
-                            />
-                        </WalletText>
                     </div>
                 )}
             </section>

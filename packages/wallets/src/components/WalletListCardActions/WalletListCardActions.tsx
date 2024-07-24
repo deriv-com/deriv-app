@@ -51,53 +51,53 @@ const getWalletHeaderButtons = (isDemo?: boolean) => {
 
 const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const history = useHistory();
 
     const isActive = activeWallet?.is_active;
     const isDemo = activeWallet?.is_virtual;
 
-    if (isMobile)
+    if (isDesktop)
         return (
-            <div className='wallets-mobile-actions__container'>
-                <div className='wallets-mobile-actions'>
-                    {getWalletHeaderButtons(isDemo).map(button => (
-                        <div className='wallets-mobile-actions-content' key={button.name}>
-                            <IconButton
-                                aria-label={button.name}
-                                className={button.className}
-                                color={button.color}
-                                icon={button.icon}
-                                onClick={() => {
-                                    history.push(`/wallet/${button.name}`, { accountsActiveTabIndex });
-                                }}
-                                size='lg'
-                            />
-                            <WalletText size='sm' weight={button.text === 'Deposit' ? 'bold' : 'normal'}>
-                                {button.text}
-                            </WalletText>
-                        </div>
-                    ))}
-                </div>
+            <div className='wallets-header__actions'>
+                {getWalletHeaderButtons(isDemo).map(button => (
+                    <WalletButton
+                        ariaLabel={button.name}
+                        icon={button.icon}
+                        key={button.name}
+                        onClick={() => {
+                            history.push(`/wallet/${button.name}`);
+                        }}
+                        rounded='lg'
+                        variant={button.variant}
+                    >
+                        {isActive ? button.text : ''}
+                    </WalletButton>
+                ))}
             </div>
         );
 
     return (
-        <div className='wallets-header__actions'>
-            {getWalletHeaderButtons(isDemo).map(button => (
-                <WalletButton
-                    ariaLabel={button.name}
-                    icon={button.icon}
-                    key={button.name}
-                    onClick={() => {
-                        history.push(`/wallet/${button.name}`);
-                    }}
-                    rounded='lg'
-                    variant={button.variant}
-                >
-                    {isActive ? button.text : ''}
-                </WalletButton>
-            ))}
+        <div className='wallets-mobile-actions__container'>
+            <div className='wallets-mobile-actions'>
+                {getWalletHeaderButtons(isDemo).map(button => (
+                    <div className='wallets-mobile-actions-content' key={button.name}>
+                        <IconButton
+                            aria-label={button.name}
+                            className={button.className}
+                            color={button.color}
+                            icon={button.icon}
+                            onClick={() => {
+                                history.push(`/wallet/${button.name}`, { accountsActiveTabIndex });
+                            }}
+                            size='lg'
+                        />
+                        <WalletText size='sm' weight={button.text === 'Deposit' ? 'bold' : 'normal'}>
+                            {button.text}
+                        </WalletText>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

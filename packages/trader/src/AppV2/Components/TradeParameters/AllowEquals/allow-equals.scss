@@ -4,10 +4,10 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
 
 .allow-equals {
     &__wrapper {
-        height: calc(40vh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $FOOTER_BUTTON_HEIGHT);
+        height: calc(40dvh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $FOOTER_BUTTON_HEIGHT);
 
         &--definition {
-            height: calc(40vh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
+            height: calc(40dvh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
         }
     }
 

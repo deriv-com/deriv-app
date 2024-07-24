@@ -14,8 +14,8 @@ export const getPersonalDetailsInitialValues = (
     residence_list: ResidenceList,
     states_list: StatesList,
     is_virtual?: boolean
-) => {
-    const virtualAccountInitialValues: GetSettings = {
+): PersonalDetailsValueTypes => {
+    const virtualAccountInitialValues: PersonalDetailsValueTypes = {
         email_consent: account_settings.email_consent ?? 0,
         residence: account_settings.residence,
     };
@@ -33,7 +33,6 @@ export const getPersonalDetailsInitialValues = (
         last_name: account_settings.last_name,
         phone: account_settings.phone,
         employment_status: account_settings?.employment_status,
-        tax_identification_number: account_settings.tax_identification_number ?? '',
         tax_residence:
             (account_settings?.tax_residence
                 ? residence_list.find(item => item.value === account_settings?.tax_residence)?.text
@@ -52,6 +51,15 @@ export const getPersonalDetailsInitialValues = (
         }
     });
 
+    // @ts-expect-error need to fix the type for tax_identification_number in GetSettings because it should be boolean
+    if (account_settings?.confirm_no_tax_details) {
+        // @ts-expect-error need to fix the type for tax_identification_number in GetSettings because it should be boolean
+        initialValues.confirm_no_tax_details = account_settings.confirm_no_tax_details;
+        initialValues.tax_identification_number = '';
+    } else {
+        initialValues.tax_identification_number = account_settings.tax_identification_number ?? '';
+    }
+
     if (account_settings.address_state) {
         initialValues.address_state = states_list.length
             ? getLocation(states_list, account_settings.address_state, 'text')
@@ -60,6 +68,10 @@ export const getPersonalDetailsInitialValues = (
 
     if (account_settings.request_professional_status) {
         initialValues.request_professional_status = account_settings.request_professional_status;
+    }
+
+    if (!account_settings.tax_residence || !account_settings.tax_identification_number) {
+        initialValues.tax_identification_confirm = false;
     }
 
     return initialValues;
@@ -83,7 +95,6 @@ export const makeSettingsRequest = (
         request.last_name = request.last_name.trim();
     }
     if (request.date_of_birth) {
-        // @ts-expect-error need to fix the type for date_of_birth in GetSettings because it should be string not number
         request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
     }
 
@@ -111,8 +122,6 @@ export const makeSettingsRequest = (
             : request.address_state;
     }
     delete request.tax_identification_confirm;
-
-    delete request?.confirm_no_tax_details;
 
     return request;
 };

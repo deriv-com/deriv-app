@@ -7,7 +7,7 @@ import {
 } from '../../Components/forms/form-fields';
 import { isFieldImmutable } from '../../Helpers/utils';
 import { Checkbox, useOnClickOutside } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { useTranslations } from '@deriv-com/translations';
 import { getLegalEntityName } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
 import { useResidenceList } from '@deriv/hooks';
@@ -20,6 +20,7 @@ type TEmploymentTaxDetailsContainerProps = {
     should_display_long_message?: boolean;
     handleChange: (value: string) => void;
     tin_validation_config: TinValidations;
+    is_tin_autoset?: boolean;
 };
 
 const EmploymentTaxDetailsContainer = ({
@@ -28,10 +29,12 @@ const EmploymentTaxDetailsContainer = ({
     should_display_long_message,
     tin_validation_config,
     handleChange,
+    is_tin_autoset,
 }: TEmploymentTaxDetailsContainerProps) => {
     const { values, setFieldValue, touched, errors, setValues, validateField } = useFormikContext<FormikValues>();
     const { isDesktop } = useDevice();
     const { data: residence_list } = useResidenceList();
+    const { localize } = useTranslations();
 
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = useState(false);
@@ -106,17 +109,18 @@ const EmploymentTaxDetailsContainer = ({
     const { is_tin_mandatory, tin_employment_status_bypass } = tin_validation_config;
 
     const should_show_no_tax_details_checkbox =
-        (!is_tin_mandatory &&
+        !is_tin_autoset &&
+        ((!is_tin_mandatory &&
             tin_employment_status_bypass?.includes(values.employment_status) &&
-            values.tax_residence) ||
-        values.confirm_no_tax_details;
+            !!values.tax_residence) ||
+            values.confirm_no_tax_details);
 
-    const isTaxInfoDisabled = (field_name: string) =>
+    const isFieldDisabled = (field_name: string) =>
         isFieldImmutable(field_name, editable_fields) || !!values.confirm_no_tax_details;
 
     return (
         <Fragment>
-            <EmploymentStatusField required is_disabled={isFieldImmutable('employment_status', editable_fields)} />
+            <EmploymentStatusField required is_disabled={isFieldDisabled('employment_status')} />
 
             {should_show_no_tax_details_checkbox && (
                 <Checkbox
@@ -144,7 +148,7 @@ const EmploymentTaxDetailsContainer = ({
             )}
             <div ref={tax_residence_ref} className='account-form__fieldset'>
                 <TaxResidenceField
-                    disabled={isTaxInfoDisabled('tax_residence')}
+                    disabled={isFieldDisabled('tax_residence')}
                     is_tax_residence_popover_open={is_tax_residence_popover_open}
                     setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                     setIsTinPopoverOpen={setIsTinPopoverOpen}
@@ -152,35 +156,39 @@ const EmploymentTaxDetailsContainer = ({
             </div>
             <div ref={tin_ref} className='account-form__fieldset'>
                 <TaxIdentificationNumberField
-                    disabled={isTaxInfoDisabled('tax_identification_number')}
+                    disabled={isFieldDisabled('tax_identification_number')}
                     is_tin_popover_open={is_tin_popover_open}
                     setIsTinPopoverOpen={setIsTinPopoverOpen}
                     setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                 />
             </div>
-            <Checkbox
-                name='tax_identification_confirm'
-                className='employment_tax_detail_field-checkbox'
-                data-lpignore
-                onChange={() => setFieldValue('tax_identification_confirm', !values.tax_identification_confirm, true)}
-                value={values.tax_identification_confirm}
-                label={
-                    should_display_long_message
-                        ? localize(
-                              'I hereby confirm that the tax information provided is true and complete. I will also inform {{legal_entity_name}} about any changes to this information.',
-                              {
-                                  legal_entity_name: getLegalEntityName('maltainvest'),
-                              }
-                          )
-                        : localize('I confirm that my tax information is accurate and complete.')
-                }
-                withTabIndex={0}
-                data-testid='tax_identification_confirm'
-                has_error={!!(touched.tax_identification_confirm && errors.tax_identification_confirm)}
-                label_font_size={!isDesktop ? 'xxs' : 'xs'}
-                label_line_height='m'
-                disabled={is_tax_details_confirm_disabled}
-            />
+            {!is_tin_autoset && (
+                <Checkbox
+                    name='tax_identification_confirm'
+                    className='employment_tax_detail_field-checkbox'
+                    data-lpignore
+                    onChange={() =>
+                        setFieldValue('tax_identification_confirm', !values.tax_identification_confirm, true)
+                    }
+                    value={values.tax_identification_confirm}
+                    label={
+                        should_display_long_message
+                            ? localize(
+                                  'I hereby confirm that the tax information provided is true and complete. I will also inform {{legal_entity_name}} about any changes to this information.',
+                                  {
+                                      legal_entity_name: getLegalEntityName('maltainvest'),
+                                  }
+                              )
+                            : localize('I confirm that my tax information is accurate and complete.')
+                    }
+                    withTabIndex={0}
+                    data-testid='tax_identification_confirm'
+                    has_error={!!(touched.tax_identification_confirm && errors.tax_identification_confirm)}
+                    label_font_size={!isDesktop ? 'xxs' : 'xs'}
+                    label_line_height='m'
+                    disabled={is_tax_details_confirm_disabled}
+                />
+            )}
         </Fragment>
     );
 };

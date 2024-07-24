@@ -470,7 +470,7 @@ const FinancialAssessment = observer(() => {
                                     </fieldset>
                                     {!is_mf && (
                                         <fieldset className='account-form__fieldset'>
-                                            <EmploymentStatusField required is_disabled={false} />
+                                            <EmploymentStatusField is_disabled={false} />
                                         </fieldset>
                                     )}
                                     <fieldset className='account-form__fieldset'>

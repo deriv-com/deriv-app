@@ -4,6 +4,7 @@ import {
     makeSettingsRequest,
 } from '../validation';
 import { ResidenceList } from '@deriv/api-types';
+import * as Yup from 'yup';
 
 describe('getPersonalDetailsValidationSchema', () => {
     const valid_data = {
@@ -16,6 +17,8 @@ describe('getPersonalDetailsValidationSchema', () => {
         tax_identification_number: '123123123',
         tax_residence: 'Germany',
         employment_status: 'Employed',
+        date_of_birth: '1990-01-01',
+        tax_identification_confirm: true,
     };
 
     const invalid_data = {
@@ -27,16 +30,14 @@ describe('getPersonalDetailsValidationSchema', () => {
         citizen: '',
     };
 
-    const mock_residence_list = [] as ResidenceList;
-
     it('should validate a valid input for non-eu users', async () => {
-        const validationSchema = getPersonalDetailsValidationSchema(mock_residence_list, false);
+        const validationSchema = getPersonalDetailsValidationSchema();
         const isValid = await validationSchema.isValid(valid_data);
         expect(isValid).toBe(true);
     });
 
     it('should not validate an invalid input for non-eu users', async () => {
-        const validationSchema = getPersonalDetailsValidationSchema(mock_residence_list, false);
+        const validationSchema = getPersonalDetailsValidationSchema();
         try {
             await validationSchema.isValid(invalid_data);
         } catch (error) {
@@ -46,13 +47,13 @@ describe('getPersonalDetailsValidationSchema', () => {
     });
 
     it('should validate a valid input for eu users', async () => {
-        const validationSchema = getPersonalDetailsValidationSchema(mock_residence_list, false);
+        const validationSchema = getPersonalDetailsValidationSchema();
         const isValid = await validationSchema.isValid(valid_data);
         expect(isValid).toBe(true);
     });
 
     it('should return empty object for virtual account', () => {
-        const validationSchema = getPersonalDetailsValidationSchema(mock_residence_list, true);
+        const validationSchema = getPersonalDetailsValidationSchema(true);
         expect(validationSchema.fields).toEqual({});
     });
 });

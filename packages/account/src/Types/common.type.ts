@@ -318,7 +318,8 @@ export type TListItem = {
     value?: string;
 };
 
-export type PersonalDetailsValueTypes = GetSettings & {
+export type PersonalDetailsValueTypes = Omit<GetSettings, 'date_of_birth'> & {
+    date_of_birth?: string;
     tax_identification_confirm?: boolean;
     confirm_no_tax_details?: boolean;
 };

@@ -52,6 +52,7 @@ const PersonalDetailsForm = observer(() => {
         is_virtual,
         current_landing_company,
         updateAccountStatus,
+        fetchAccountSettings,
         residence,
         is_svg,
     } = client;
@@ -83,6 +84,10 @@ const PersonalDetailsForm = observer(() => {
     });
 
     useEffect(() => {
+        fetchAccountSettings();
+    }, [fetchAccountSettings]);
+
+    useEffect(() => {
         const init = async () => {
             try {
                 // Order of API calls is important
@@ -101,7 +106,7 @@ const PersonalDetailsForm = observer(() => {
 
     const onSubmit = async (
         values: PersonalDetailsValueTypes,
-        { setStatus, setSubmitting }: FormikHelpers<GetSettings>
+        { setStatus, setSubmitting }: FormikHelpers<PersonalDetailsValueTypes>
     ) => {
         setStatus({ msg: '' });
         const request = makeSettingsRequest({ ...values }, residence_list, states_list, is_virtual);
@@ -380,6 +385,9 @@ const PersonalDetailsForm = observer(() => {
                                             parent_ref={scroll_div_ref}
                                             handleChange={mutate}
                                             tin_validation_config={tin_validation_config}
+                                            is_tin_autoset={
+                                                account_settings.tax_identification_number === 'Approved000'
+                                            }
                                         />
                                         {!is_virtual && (
                                             <Fragment>

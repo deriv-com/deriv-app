@@ -46,14 +46,15 @@ const CashierOnboardingP2PCard: React.FC = observer(() => {
     if (!should_show_p2p_card) return null;
 
     return (
-        <CashierOnboardingCard
-            title={localize('Deposit with Deriv P2P')}
-            description={localize(
-                'Deposit with your local currency via peer-to-peer exchange with fellow traders in your country.'
-            )}
-            depositCategory='p2p'
-            onClick={is_dialog_visible ? undefined : onClick}
-        >
+        <React.Fragment>
+            <CashierOnboardingCard
+                title={localize('Deposit with Deriv P2P')}
+                description={localize(
+                    'Deposit with your local currency via peer-to-peer exchange with fellow traders in your country.'
+                )}
+                depositCategory='p2p'
+                onClick={is_dialog_visible ? undefined : onClick}
+            />
             {can_switch_to_fiat_account && (
                 <SwitchToFiatAccountDialog
                     is_visible={is_dialog_visible}
@@ -61,7 +62,7 @@ const CashierOnboardingP2PCard: React.FC = observer(() => {
                     onSwitchDone={onSwitchDone}
                 />
             )}
-        </CashierOnboardingCard>
+        </React.Fragment>
     );
 });
 

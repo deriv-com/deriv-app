@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { memo, useEffect, useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Icon from '../icon/icon';
 import { TItem } from './vertical-tab-header';
@@ -51,10 +51,15 @@ const SideNotes = ({ class_name, side_notes }: TSideNotes) => {
 };
 
 const ContentWrapper = ({ children, has_side_note }: React.PropsWithChildren<TContentWrapper>) => {
-    if (has_side_note) {
-        return <div className='dc-vertical-tab__content-inner'>{children}</div>;
-    }
-    return children as JSX.Element;
+    return (
+        <div
+            className={classNames({
+                'dc-vertical-tab__content-inner': has_side_note,
+            })}
+        >
+            {children}
+        </div>
+    );
 };
 
 const Content = memo(({ is_routed, items, selected }: TContent) => {

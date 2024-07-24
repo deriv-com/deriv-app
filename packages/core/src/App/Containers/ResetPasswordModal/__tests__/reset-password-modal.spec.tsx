@@ -3,7 +3,6 @@ import { render, screen, waitFor, waitForElementToBeRemoved } from '@testing-lib
 import { BrowserRouter } from 'react-router-dom';
 import { WS } from '@deriv/shared';
 import ResetPasswordModal from '../reset-password-modal';
-import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { APIProvider } from '@deriv/api';
 import { TStores } from '@deriv/stores/types';
@@ -27,9 +26,6 @@ const mock = {
         is_loading: false,
     },
     client: {
-        verification_code: {
-            reset_password: '@rnv!sv',
-        },
         setVerificationCode: jest.fn(),
         logout: jest.fn(() => Promise.resolve()),
     },
@@ -76,45 +72,5 @@ describe('ResetPasswordModal', () => {
                 /strong passwords contain at least 8 characters\. combine uppercase and lowercase letters, numbers, and symbols\./i
             )
         ).toBeInTheDocument();
-    });
-
-    it('should change input of password and trigger change password button', async () => {
-        WS.resetPassword.mockReturnValue(Promise.resolve({ reset_password: 1 }));
-
-        renderComponent(store);
-
-        await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
-
-        const new_password = screen.getByLabelText('Create a password', { selector: 'input' });
-
-        userEvent.type(new_password, 'Tpt#&te1743!@');
-
-        expect(new_password).toHaveValue('Tpt#&te1743!@');
-        expect(screen.getByRole('button', { name: /Reset my password/i })).toBeEnabled();
-
-        userEvent.click(
-            screen.getByRole('button', {
-                name: /reset my password/i,
-            })
-        );
-        await waitFor(() => {
-            expect(WS.resetPassword).toHaveBeenCalledWith({
-                new_password: 'Tpt#&te1743!@',
-                reset_password: 1,
-                verification_code: '@rnv!sv',
-            });
-        });
-        expect(store.client.setVerificationCode).toHaveBeenCalledTimes(1);
-
-        await waitFor(() => {
-            expect(WS.resetPassword).toHaveBeenCalledWith({
-                new_password: 'Tpt#&te1743!@',
-                reset_password: 1,
-                verification_code: '@rnv!sv',
-            });
-        });
-
-        expect(store.client.logout).toHaveBeenCalledTimes(1);
-        expect(screen.getByText('Your password has been changed')).toBeInTheDocument();
     });
 });

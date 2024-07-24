@@ -41,11 +41,13 @@
             height: 4rem;
             @include mobile-or-tablet-screen {
                 width: 100%;
+                max-width: 60rem;
             }
         }
         @include mobile-or-tablet-screen {
-            position: sticky;
             bottom: 0;
+            position: sticky;
+            justify-content: center;
         }
     }
     &__wrapper {
@@ -229,6 +231,11 @@
             margin: unset;
             padding: 1.6rem 0.8rem;
             box-shadow: 0px -4px 4px rgba(0, 0, 0, 0.08);
+        }
+        &--text {
+            @include mobile-or-tablet-screen {
+                max-width: 60rem;
+            }
         }
         &--pending {
             color: $color-yellow;

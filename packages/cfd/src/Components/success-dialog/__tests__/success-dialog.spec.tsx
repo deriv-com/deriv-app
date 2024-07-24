@@ -1,21 +1,25 @@
 import React from 'react';
-import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
 import SuccessDialog from '../success-dialog';
-import { CFDStoreProvider } from '../../../Stores/Modules/CFD/Helpers/useCfdStores';
-
-const mock_store = mockStore({});
-
-const wrapper = ({ children }) => (
-    <StoreProvider store={mock_store}>
-        <CFDStoreProvider>{children}</CFDStoreProvider>;
-    </StoreProvider>
-);
 
 describe('<SuccessDialog />', () => {
+    let modal_root_el: HTMLElement;
+
+    beforeAll(() => {
+        modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
+        document.body.appendChild(modal_root_el);
+    });
+
+    afterAll(() => {
+        document.body.removeChild(modal_root_el);
+    });
     it('should render SuccessDialog when is_open is true', () => {
-        render(<SuccessDialog is_open={true} />, { wrapper });
-        // expect(screen.getBYC('dt_cfd_success_dialog')).toBeInTheDocument();
+        render(<SuccessDialog is_open={true} />);
+        expect(
+            screen.getByRole('heading', {
+                name: /success!/i,
+            })
+        ).toBeInTheDocument();
     });
 });

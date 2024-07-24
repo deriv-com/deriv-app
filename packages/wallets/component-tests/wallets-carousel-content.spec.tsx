@@ -6,6 +6,7 @@ import { mockProposalOpenContract } from './mocks/mockProposalOpenContract';
 import mockWalletsAuthorize, { DEFAULT_WALLET_ACCOUNTS } from './mocks/mockWalletsAuthorize';
 import mockWalletsLoggedIn from './mocks/mockWalletsLoggedIn';
 import { mockAccountList } from './mocks/mockAccountList';
+import { mockBalance } from './mocks/mockBalance';
 
 const CAROUSEL_SELECTOR = '.wallets-carousel-content__cards .wallets-card:nth-child(1)';
 
@@ -49,6 +50,7 @@ test.describe('Wallets - Mobile carousel', () => {
                 mockCryptoConfig,
                 mockProposalOpenContract,
                 mockAccountList,
+                mockBalance,
             ],
             page: mobilePage,
             state: {

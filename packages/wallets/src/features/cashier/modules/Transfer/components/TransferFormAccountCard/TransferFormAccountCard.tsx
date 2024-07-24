@@ -46,9 +46,7 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) 
                         />
                     )}
                 </div>
-                {isInput && isMobile && !!account?.demo_account && (
-                    <WalletListCardBadge isDemo={Boolean(account?.demo_account)} label='virtual' />
-                )}
+                {isInput && isMobile && !!account?.demo_account && <WalletListCardBadge />}
             </div>
 
             <div className='wallets-transfer-form-account-card__content'>
@@ -60,7 +58,7 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) 
 
             {isModal && !!account?.demo_account && (
                 <div className='wallets-transfer-form-account-card__modal-badge'>
-                    <WalletListCardBadge isDemo={Boolean(account?.demo_account)} label='virtual' />
+                    <WalletListCardBadge />
                 </div>
             )}
         </div>

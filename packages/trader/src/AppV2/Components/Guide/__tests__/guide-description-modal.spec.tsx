@@ -18,6 +18,10 @@ const mediaQueryList = {
     removeEventListener: jest.fn(),
 };
 
+jest.mock('@lottiefiles/dotlottie-react', () => ({
+    DotLottieReact: jest.fn(() => <div>DotLottieReact</div>),
+}));
+
 window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
 
 describe('DescriptionModal', () => {

@@ -49,6 +49,10 @@ const mockWs = {
     wait: jest.fn(),
 };
 
+jest.mock('@lottiefiles/dotlottie-react', () => ({
+    DotLottieReact: jest.fn(() => <div>DotLottieReact</div>),
+}));
+
 jest.mock('AppV2/Components/BottomNav', () => {
     const MockedBottomNav = () => <div data-testid='mocked-bottom-nav' />;
     MockedBottomNav.displayName = 'MockedBottomNav';

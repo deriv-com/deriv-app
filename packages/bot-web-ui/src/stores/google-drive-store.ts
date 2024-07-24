@@ -1,5 +1,5 @@
 import { action, makeObservable, observable } from 'mobx';
-import { config, importExternal } from '@deriv/bot-skeleton';
+import { config, importExternal, observer as globalObserver } from '@deriv/bot-skeleton';
 import { getLanguage, localize } from '@deriv/translations';
 import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { button_status } from 'Constants/button-status';
@@ -153,7 +153,8 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
             console.log(error);
             this.setGoogleDriveAuthenticated(false);
             // eslint-disable-next-line no-console
-            console.log('Error: Token invalid signing user out');
+            console.log('Google Drive Error: Token invalid signing user out');
+            globalObserver.emit('ui.log.error', 'Google Drive Error: Token invalid signing user out');
             await this.signOut();
         }
     }

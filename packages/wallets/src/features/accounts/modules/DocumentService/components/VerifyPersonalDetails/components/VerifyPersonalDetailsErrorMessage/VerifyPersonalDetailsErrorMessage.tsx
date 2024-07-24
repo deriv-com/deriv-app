@@ -7,7 +7,7 @@ type TErrorMessageProps = {
     error: TSocketError<'get_settings'>['error']['code'] | TSocketError<'set_settings'>['error']['code'];
 };
 
-const ErrorMessage: React.FC<TErrorMessageProps> = ({ error }) => {
+const VerifyPersonalDetailsErrorMessage: React.FC<TErrorMessageProps> = ({ error }) => {
     const { isMobile } = useDevice();
 
     const handleOnClickLink = () => window.LC_API.open_chat_window();
@@ -34,4 +34,4 @@ const ErrorMessage: React.FC<TErrorMessageProps> = ({ error }) => {
     );
 };
 
-export default ErrorMessage;
+export default VerifyPersonalDetailsErrorMessage;

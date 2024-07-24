@@ -5,7 +5,7 @@ import { FormDropdown, FormField, ModalStepWrapper, WalletText } from '../../../
 import { Footer } from '../components';
 import { NeedHelpMessage } from './components';
 import { useTaxInformation } from './hooks';
-import { accountOpeningReasonList, getTinValidator, taxInformationValidator } from './utils';
+import { accountOpeningReasonList, getTinValidator, taxInformationValidationSchema } from './utils';
 import './TaxInformation.scss';
 
 type TTaxInformationProps = {
@@ -28,13 +28,13 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
     }
 
     return (
-        <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={taxInformationValidator}>
-            {({ errors, handleSubmit, setFieldValue, values }) => {
-                const isValid = !!Object.keys(errors).length;
-
+        <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={taxInformationValidationSchema}>
+            {({ errors, handleSubmit, isValid, setFieldValue, values }) => {
+                // console.log('values', values);
+                // console.log('errors', errors);
                 return (
                     <ModalStepWrapper
-                        renderFooter={() => <Footer disableNext={isValid} onClickNext={handleSubmit} />}
+                        renderFooter={() => <Footer disableNext={!isValid} onClickNext={handleSubmit} />}
                         title='Add a real MT5 account'
                     >
                         <div className='wallets-tax-information'>
@@ -53,26 +53,27 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                     <NeedHelpMessage />
                                     <div className='wallets-tax-information__form'>
                                         <FormDropdown
+                                            isFullWidth
+                                            isRequired
                                             label='Citizenship*'
                                             list={countryList}
                                             listHeight='sm'
                                             name='citizenship'
                                             onSelect={selectedItem => setFieldValue('citizenship', selectedItem)}
-                                            value={values?.citizenship ?? initialValues?.citizenship}
-                                            variant='comboBox'
                                         />
                                         <FormDropdown
                                             disabled={initialValues?.placeOfBirth !== ''}
+                                            isFullWidth
+                                            isRequired
                                             label='Place of birth*'
                                             list={countryList}
                                             listHeight='sm'
                                             name='placeOfBirth'
                                             onSelect={selectedItem => setFieldValue('placeOfBirth', selectedItem)}
-                                            value={initialValues?.placeOfBirth ?? ''}
-                                            variant='comboBox'
                                         />
                                         <FormDropdown
                                             errorMessage={values.taxResidence ?? 'Tax residence is required'}
+                                            isFullWidth
                                             isRequired
                                             label='Tax residence*'
                                             list={countryList}
@@ -85,9 +86,9 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                                 setFieldValue('taxResidence', selectedItem);
                                             }}
                                             value={values.taxResidence ?? ''}
-                                            variant='comboBox'
                                         />
                                         <FormField
+                                            disabled={Boolean(!values.taxResidence || errors.taxResidence)}
                                             label='Tax identification number*'
                                             name='taxIdentificationNumber'
                                             validationSchema={getTinValidator(
@@ -95,13 +96,14 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                             )}
                                         />
                                         <FormDropdown
+                                            isFullWidth
+                                            isRequired
                                             label='Account opening reason*'
                                             list={accountOpeningReasonList}
                                             name='accountOpeningReason'
                                             onSelect={selectedItem =>
                                                 setFieldValue('accountOpeningReason', selectedItem)
                                             }
-                                            value={values.accountOpeningReason ?? ''}
                                             variant='comboBox'
                                         />
                                     </div>

@@ -41,11 +41,15 @@ const FormField = forwardRef(
                             isInvalid={isFieldInvalid}
                             name={field.name}
                             onBlur={() => {
-                                form.setFieldTouched(name);
+                                if (!form.touched[name]) {
+                                    form.setFieldTouched(name);
+                                }
                             }}
-                            onChange={() => {
-                                form.setFieldTouched(name);
-                                return field.onChange;
+                            onChange={e => {
+                                form.setFieldValue(name, e.target.value);
+                                if (!form.touched[name]) {
+                                    form.setFieldTouched(name);
+                                }
                             }}
                             ref={ref}
                             showMessage={!isFieldInvalid && showMessage}

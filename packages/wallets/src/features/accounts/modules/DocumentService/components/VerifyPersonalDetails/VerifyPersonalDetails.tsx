@@ -5,7 +5,7 @@ import moment from 'moment';
 import { TSocketError } from '@deriv/api-v2/types';
 import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import { DatePicker, FormField, InlineMessage, WalletText } from '../../../../../../components';
-import { ErrorMessage } from './components';
+import { VerifyPersonalDetailsErrorMessage } from './components';
 import { TVerifyPersonalDetailsValues } from './types';
 import {
     dateOfBirthValidator,
@@ -107,7 +107,7 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
                     </WalletText>
                 </label>
             </div>
-            {error && <ErrorMessage error={error?.code} />}
+            {error && <VerifyPersonalDetailsErrorMessage error={error?.code} />}
         </div>
     );
 };

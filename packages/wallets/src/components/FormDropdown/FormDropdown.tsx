@@ -2,6 +2,7 @@ import React, { ComponentProps } from 'react';
 import { Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
 import { Dropdown } from '@deriv-com/ui';
+import './FormDropdown.scss';
 
 export type TFormDropdownProps = ComponentProps<typeof Dropdown> & {
     name: string;
@@ -23,19 +24,22 @@ const FormDropdown = ({ disabled, isRequired, name, onSelect, validationSchema, 
             {({ field, form }: FieldProps) => {
                 const isFieldInvalid = Boolean(form.touched[name] && isRequired && form.errors[name]);
                 return (
-                    <div className='wallets-form-field'>
+                    <div className='wallets-form-dropdown'>
                         <Dropdown
                             {...rest}
                             disabled={disabled}
                             errorMessage={isFieldInvalid ? (form.errors[name] as string) : ''}
                             name={name}
                             onBlur={() => {
-                                form.setFieldTouched(name);
+                                if (!form.touched[name]) {
+                                    form.setFieldTouched(name);
+                                }
                             }}
-                            onChange={field.onChange}
                             onSelect={value => {
-                                form.setFieldValue(name, value);
-                                return onSelect(value as string);
+                                if (!form.touched[name]) {
+                                    form.setFieldTouched(name);
+                                }
+                                onSelect(value as string);
                             }}
                             value={field.value}
                         />

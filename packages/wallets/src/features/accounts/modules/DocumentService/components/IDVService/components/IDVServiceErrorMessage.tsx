@@ -1,9 +1,9 @@
 import React from 'react';
 import { InlineMessage, WalletText } from '../../../../../../../components';
 import useDevice from '../../../../../../../hooks/useDevice';
-import './ErrorMessage.scss';
+import './IDVServiceErrorMessage.scss';
 
-const ErrorMessage = ({ message }: { message: string }) => {
+const IDVServiceErrorMessage = ({ message }: { message: string }) => {
     const { isMobile } = useDevice();
 
     return (
@@ -17,4 +17,4 @@ const ErrorMessage = ({ message }: { message: string }) => {
     );
 };
 
-export default ErrorMessage;
+export default IDVServiceErrorMessage;

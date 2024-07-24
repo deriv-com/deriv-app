@@ -26,6 +26,7 @@ const AddressSection: React.FC = () => {
                 <FormField label='Second line of address (optional)' name='secondLine' />
                 <FormField label='Town/City*' name='townCityLine' />
                 <FormDropdown
+                    isFullWidth
                     label='State/Province'
                     list={status.statesList}
                     listHeight='sm'

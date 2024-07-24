@@ -40,7 +40,7 @@ const Poa: React.FC<TPoaProps> = ({ onCompletion }) => {
         >
             {({ handleSubmit, isValid }) => {
                 if (errorPoaUpload?.documentUpload) {
-                    <PoaUploadErrorMessage errorCode={errorPoaUpload.documentUpload.code} />;
+                    return <PoaUploadErrorMessage errorCode={errorPoaUpload.documentUpload.code} />;
                 }
 
                 return (

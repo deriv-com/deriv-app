@@ -8,7 +8,7 @@ import {
     useVerifyPersonalDetails,
     VerifyPersonalDetails,
 } from '../VerifyPersonalDetails';
-import { ErrorMessage } from './components';
+import { IDVServiceErrorMessage } from './components';
 import { useIDVService } from './hooks';
 import { TIDVServiceValues } from './types';
 import { documentTypeValidator, getDocumentNumberValidator } from './utils';
@@ -25,7 +25,7 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
         displayedDocumentsList,
         documentExamples,
         error: errorIDVDetails,
-        initialFormValues: initialIDVValues,
+        initialValues: initialIDVValues,
         isLoading: isIDVDataLoading,
         isSubmitted: isIDVSubmitted,
         isSubmitting: isIDVSubmitting,
@@ -100,7 +100,7 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                     >
                         <div className='wallets-idv-service'>
                             <div className='wallets-idv-service__body'>
-                                {!!errorMessage && <ErrorMessage message={errorMessage} />}
+                                {!!errorMessage && <IDVServiceErrorMessage message={errorMessage} />}
                                 <div className='wallets-idv-service__title'>
                                     <WalletText weight='bold'>Identity verification</WalletText>
                                 </div>

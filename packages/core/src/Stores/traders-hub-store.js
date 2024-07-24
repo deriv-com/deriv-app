@@ -414,6 +414,7 @@ export default class TradersHubStore extends BaseStore {
                 market_type: 'financial',
                 product: 'financial',
                 icon: !this.is_eu_user || this.is_demo_low_risk ? 'Financial' : 'CFDs',
+                availability: 'All',
             },
             {
                 name: 'Swap-Free',
@@ -422,6 +423,7 @@ export default class TradersHubStore extends BaseStore {
                 market_type: 'all',
                 product: 'swap_free',
                 icon: 'SwapFree',
+                availability: 'Non-EU',
             },
             {
                 name: localize('Zero Spread'),
@@ -430,6 +432,7 @@ export default class TradersHubStore extends BaseStore {
                 market_type: 'all',
                 product: 'zero_spread',
                 icon: 'ZeroSpread',
+                availability: 'Non-EU',
             },
         ];
         this.available_cfd_accounts = all_available_accounts.map(account => {
@@ -471,6 +474,28 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableMt5Accounts() {
+        if (this.is_eu_user && !this.is_demo_low_risk) {
+            this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
+                ['EU', 'All'].some(region => region === account.availability)
+            );
+            return;
+        }
+        if (this.financial_restricted_countries) {
+            this.available_mt5_accounts = this.available_cfd_accounts.filter(
+                account => account.market_type === 'financial' && account.platform === CFD_PLATFORMS.MT5
+            );
+            return;
+        }
+
+        if (this.CFDs_restricted_countries) {
+            this.available_mt5_accounts = this.available_cfd_accounts.filter(
+                account =>
+                    account.market_type !== 'financial' &&
+                    account.market_type !== 'all' &&
+                    account.platform === CFD_PLATFORMS.MT5
+            );
+            return;
+        }
         if (this.root_store.client.is_logged_in) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account => {
                 return account.platform === CFD_PLATFORMS.MT5 && this.available_accounts[account.product];
@@ -503,6 +528,18 @@ export default class TradersHubStore extends BaseStore {
         );
     }
     getAvailableCTraderAccounts() {
+        if (this.CFDs_restricted_countries || this.financial_restricted_countries) {
+            this.available_ctrader_accounts = [];
+            return;
+        }
+        if (this.is_eu_user && !this.is_demo_low_risk) {
+            this.available_ctrader_accounts = this.available_cfd_accounts.filter(
+                account =>
+                    ['EU', 'All'].some(region => region === account.availability) &&
+                    account.platform === CFD_PLATFORMS.CTRADER
+            );
+            return;
+        }
         if (this.root_store.client.is_logged_in) {
             this.available_ctrader_accounts = this.available_cfd_accounts.filter(account => {
                 return account.platform === CFD_PLATFORMS.CTRADER && this.available_accounts[account.product];

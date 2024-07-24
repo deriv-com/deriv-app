@@ -55,10 +55,6 @@ const useTaxInformation = () => {
         ]
     );
 
-    const getCountryCode = (selected: string) => {
-        residenceList.find(residence => residence.text?.toLowerCase() === selected.toLowerCase())?.value;
-    };
-
     const onSubmit = (values: FormikValues | TTaxInformationValues) => {
         if (
             values &&
@@ -87,7 +83,6 @@ const useTaxInformation = () => {
         countryCodeToPatternMapper,
         countryList,
         error,
-        getCountryCode,
         initialValues,
         isLoading,
         isSubmitted,

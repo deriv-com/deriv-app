@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text } from '@deriv-com/quill-ui';
 import BottomNav from 'AppV2/Components/BottomNav';
+import MarketSelector from 'AppV2/Components/MarketSelector';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Loading } from '@deriv/components';
@@ -17,9 +17,9 @@ const Trade = observer(() => {
 
     return (
         <BottomNav>
+            <MarketSelector />
             {active_symbols.length ? (
                 <React.Fragment>
-                    <Text size='sm'>Trade</Text>
                     <Guide has_label />
                     <Guide />
                 </React.Fragment>

@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../utils';
 
 Blockly.Blocks.math_number_positive = {
     init: Blockly.Blocks.math_number.init,
@@ -15,6 +16,11 @@ Blockly.Blocks.math_number_positive = {
         }
         return null;
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-Blockly.JavaScript.math_number_positive = Blockly.JavaScript.math_number;
+Blockly.JavaScript.javascriptGenerator.forBlock.math_number_positive = block => {
+    return Blockly.JavaScript.javascriptGenerator.forBlock.math_number(block);
+};

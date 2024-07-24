@@ -1508,7 +1508,9 @@ export default class TradeStore extends BaseStore {
                 });
 
                 this.barrier_1 = String(
-                    Number(response.proposal?.contract_details?.barrier) - Number(response.proposal?.spot)
+                    (Number(response.proposal?.contract_details?.barrier) - Number(response.proposal?.spot)).toFixed(
+                        getBarrierPipSize(response.proposal?.contract_details?.barrier)
+                    )
                 );
             }
         } else {

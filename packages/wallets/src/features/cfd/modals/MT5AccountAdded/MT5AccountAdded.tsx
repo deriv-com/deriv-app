@@ -1,9 +1,9 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useJurisdictionStatus, useMT5AccountsList, usePOA, usePOI } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
-import useDevice from '../../../../hooks/useDevice';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS, companyNamesAndUrls, MARKET_TYPE, MarketTypeDetails, PlatformDetails } from '../../constants';
 import { CFDSuccess } from '../../screens/CFDSuccess';
@@ -22,7 +22,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
     const { getVerificationStatus, isSuccess } = useJurisdictionStatus();
 
     const history = useHistory();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { getModalState, hide } = useModal();
 
     const addedAccount = mt5Accounts?.find(acc => acc.login === account?.login);
@@ -46,13 +46,14 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
     })`;
 
     const isDemo = activeWallet?.is_virtual;
+    const buttonSize = isDesktop ? 'md' : 'lg';
 
     const renderAccountSuccessButton = useCallback(
         (isTransferAllowed = false) => {
             if (isTransferAllowed) {
                 return (
                     <WalletButtonGroup isFlex isFullWidth>
-                        <WalletButton onClick={hide} size={isMobile ? 'lg' : 'md'} variant='outlined'>
+                        <WalletButton onClick={hide} size={buttonSize} variant='outlined'>
                             Maybe later
                         </WalletButton>
                         <WalletButton
@@ -60,7 +61,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                                 hide();
                                 history.push('/wallet/account-transfer', { toAccountLoginId: addedAccount?.loginid });
                             }}
-                            size={isMobile ? 'lg' : 'md'}
+                            size={buttonSize}
                         >
                             Transfer funds
                         </WalletButton>
@@ -69,13 +70,13 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
             }
             return (
                 <div className='wallets-success-btn'>
-                    <WalletButton isFullWidth onClick={hide} size={isMobile ? 'lg' : 'md'}>
+                    <WalletButton isFullWidth onClick={hide} size={buttonSize}>
                         OK
                     </WalletButton>
                 </div>
             );
         },
-        [hide, history, addedAccount?.loginid, isMobile]
+        [hide, buttonSize, history, addedAccount?.loginid]
     );
 
     const renderSuccessDescription = useMemo(() => {
@@ -155,11 +156,11 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
 
     if (isLoading) return null;
 
-    if (isMobile) {
-        return <ModalStepWrapper renderFooter={renderAccountSuccessButton}>{renderMainContent}</ModalStepWrapper>;
+    if (isDesktop) {
+        return <ModalWrapper hideCloseButton>{renderMainContent}</ModalWrapper>;
     }
 
-    return <ModalWrapper hideCloseButton>{renderMainContent}</ModalWrapper>;
+    return <ModalStepWrapper renderFooter={renderAccountSuccessButton}>{renderMainContent}</ModalStepWrapper>;
 };
 
 export default MT5AccountAdded;

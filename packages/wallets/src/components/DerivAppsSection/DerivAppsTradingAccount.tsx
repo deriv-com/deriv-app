@@ -4,7 +4,7 @@ import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useAuthorize }
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
 import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
-import useDevice from '../../hooks/useDevice';
+import { useDevice } from '@deriv-com/ui';
 import { WalletText } from '../Base';
 import { WalletListCardBadge } from '../WalletListCardBadge';
 import { WalletMarketIcon } from '../WalletMarketIcon';

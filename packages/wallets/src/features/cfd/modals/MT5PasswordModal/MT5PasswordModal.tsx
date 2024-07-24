@@ -9,10 +9,10 @@ import {
     useTradingPlatformPasswordChange,
     useVerifyEmail,
 } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
-import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
@@ -55,7 +55,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         status: emailVerificationStatus,
     } = useVerifyEmail();
     const { data: mt5AccountsData } = useMT5AccountsList();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { getModalState, hide } = useModal();
     const { data: settingsData } = useSettings();
 
@@ -282,7 +282,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
 
     if (emailVerificationStatus === 'success') {
         return (
-            <ModalWrapper isFullscreen={isMobile}>
+            <ModalWrapper isFullscreen={!isDesktop}>
                 <SentEmailContent isForgottenPassword platform={CFD_PLATFORMS.MT5} />
             </ModalWrapper>
         );
@@ -312,7 +312,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         );
     }
 
-    if (isMobile) {
+    if (!isDesktop) {
         return (
             <ModalStepWrapper renderFooter={!updateMT5Password ? renderFooter : undefined} title={renderTitle()}>
                 {PasswordComponent}

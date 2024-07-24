@@ -1,9 +1,9 @@
 import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
 import { useActiveWalletAccount } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { WalletMarketCurrencyIcon, WalletSuccess, WalletText } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
-import useDevice from '../../../../hooks/useDevice';
 import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS, MARKET_TYPE, MarketTypeDetails, PlatformDetails } from '../../constants';
 import './CFDSuccess.scss';

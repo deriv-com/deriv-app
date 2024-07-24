@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { Trans } from 'react-i18next';
 import { DerivLightIcMt5PasswordUpdatedIcon, DerivLightMt5SuccessPasswordResetIcon } from '@deriv/quill-icons';
-import useDevice from '../../hooks/useDevice';
+import { useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper, WalletButton } from '../Base';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { DerivLightIcDxtradePasswordIcon } from '@deriv/quill-icons';
-import useDevice from '../../hooks/useDevice';
+import { useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../Base';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 import './WalletsErrorMT5InvestorPassword.scss';

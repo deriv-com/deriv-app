@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import useDevice from '../../hooks/useDevice';
+import { useDevice } from '@deriv-com/ui';
 import { WalletButton } from '../Base';
 import { useModal } from '../ModalProvider';
 import './DerivAppsSuccessFooter.scss';

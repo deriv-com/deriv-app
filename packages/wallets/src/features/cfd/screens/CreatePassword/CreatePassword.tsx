@@ -1,7 +1,7 @@
 import React from 'react';
 import { DerivLightDmt5PasswordIcon, DerivLightIcDxtradePasswordIcon } from '@deriv/quill-icons';
+import { useDevice } from '@deriv-com/ui';
 import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
-import useDevice from '../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../types';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
 import { CFD_PLATFORMS, PlatformDetails } from '../../constants';

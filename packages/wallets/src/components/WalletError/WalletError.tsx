@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react';
 import { LegacyWarningIcon } from '@deriv/quill-icons';
-import useDevice from '../../hooks/useDevice';
+import { useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../Base';
 import WalletButton from '../Base/WalletButton/WalletButton';
 import { WalletsActionScreen } from '../WalletsActionScreen';

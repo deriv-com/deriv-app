@@ -1,7 +1,7 @@
 import React, { ComponentProps, FC } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components';
-import useDevice from '../../../../hooks/useDevice';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess } from '../../screens';
 
@@ -18,57 +18,59 @@ const SuccessModal: FC<TProps> = ({
     onSecondaryClick,
     platform = 'dxtrade',
 }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { data: activeWallet } = useActiveWalletAccount();
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
     const title = `Your ${PlatformDetails[platform].title}${
         accountType === 'demo' ? ` ${accountType}` : ''
     } account is ready`;
 
+    const buttonSize = isDesktop ? 'md' : 'lg';
+
     const renderButton = () => {
         return accountType === 'demo' ? (
             <div className='wallets-success-btn'>
-                <WalletButton isFullWidth onClick={onSecondaryClick} size={isMobile ? 'lg' : 'md'}>
+                <WalletButton isFullWidth onClick={onSecondaryClick} size={buttonSize}>
                     OK
                 </WalletButton>
             </div>
         ) : (
             <WalletButtonGroup isFlex isFullWidth>
-                <WalletButton onClick={onSecondaryClick} size={isMobile ? 'lg' : 'md'} variant='outlined'>
+                <WalletButton onClick={onSecondaryClick} size={buttonSize} variant='outlined'>
                     Maybe later
                 </WalletButton>
-                <WalletButton onClick={onPrimaryClick} size={isMobile ? 'lg' : 'md'}>
+                <WalletButton onClick={onPrimaryClick} size={buttonSize}>
                     Transfer funds
                 </WalletButton>
             </WalletButtonGroup>
         );
     };
 
-    if (isMobile) {
+    if (isDesktop) {
         return (
-            <ModalStepWrapper renderFooter={renderButton} title={' '}>
+            <ModalWrapper hideCloseButton>
                 <CFDSuccess
                     description={description}
                     displayBalance={displayBalance}
                     marketType={marketType}
                     platform={platform}
+                    renderButton={renderButton}
                     title={title}
                 />
-            </ModalStepWrapper>
+            </ModalWrapper>
         );
     }
 
     return (
-        <ModalWrapper hideCloseButton>
+        <ModalStepWrapper renderFooter={renderButton} title={' '}>
             <CFDSuccess
                 description={description}
                 displayBalance={displayBalance}
                 marketType={marketType}
                 platform={platform}
-                renderButton={renderButton}
                 title={title}
             />
-        </ModalWrapper>
+        </ModalStepWrapper>
     );
 };
 

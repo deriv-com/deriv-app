@@ -1,7 +1,7 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import useDevice from '../../hooks/useDevice';
+import { useDevice } from '@deriv-com/ui';
 import { WalletButton, WalletText } from '../Base';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 import './Page404.scss';

@@ -10,8 +10,8 @@ import {
     DerivLightIcTypoEmailPasskeyIcon,
     DerivLightIcWrongEmailPasskeyIcon,
 } from '@deriv/quill-icons';
+import { useDevice } from '@deriv-com/ui';
 import { PlatformDetails } from '../../features/cfd/constants';
-import useDevice from '../../hooks/useDevice';
 import useSendPasswordResetEmail from '../../hooks/useSendPasswordResetEmail';
 import { TPlatforms } from '../../types';
 import { WalletButton, WalletText } from '../Base';
@@ -67,13 +67,13 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
     const [shouldShowResendEmailReasons, setShouldShowResendEmailReasons] = useState(false);
     const [hasCountdownStarted, setHasCountdownStarted] = useState(false);
     const { error: resetPasswordError, sendEmail } = useSendPasswordResetEmail();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const mt5Platform = PlatformDetails.mt5.platform;
     const { title } = PlatformDetails[platform ?? mt5Platform];
     const titleSize = 'md';
     const descriptionSize = 'sm';
-    const emailButtonTextSize = isMobile ? 'md' : 'sm';
-    const emailReasonsSize = isMobile ? 'sm' : 'xs';
+    const emailButtonTextSize = isDesktop ? 'sm' : 'md';
+    const emailReasonsSize = isDesktop ? 'xs' : 'sm';
     const [count, { resetCountdown, startCountdown }] = useCountdown({
         countStart: 60,
         intervalMs: 1000,

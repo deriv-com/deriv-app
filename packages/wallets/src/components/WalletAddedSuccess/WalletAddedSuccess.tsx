@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import useDevice from '../../hooks/useDevice';
+import { useDevice } from '@deriv-com/ui';
 import { THooks } from '../../types';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../Base';
 import { WalletCard } from '../WalletCard';
@@ -18,7 +18,7 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
     onPrimaryButtonClick,
     onSecondaryButtonClick,
 }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const description = 'Make a deposit into your new Wallet.';
     const title = useMemo(() => `Your ${currency} wallet is ready`, [currency]);
     const renderFooter = useCallback(
@@ -43,22 +43,22 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
         [currency, displayBalance]
     );
 
-    if (isMobile)
+    if (isDesktop)
         return (
-            <ModalStepWrapper renderFooter={renderFooter} title=''>
-                <WalletSuccess description={description} renderIcon={renderIcon} title={title} />
-            </ModalStepWrapper>
+            <ModalWrapper hideCloseButton>
+                <WalletSuccess
+                    description={description}
+                    renderButtons={renderFooter}
+                    renderIcon={renderIcon}
+                    title={title}
+                />
+            </ModalWrapper>
         );
 
     return (
-        <ModalWrapper hideCloseButton>
-            <WalletSuccess
-                description={description}
-                renderButtons={renderFooter}
-                renderIcon={renderIcon}
-                title={title}
-            />
-        </ModalWrapper>
+        <ModalStepWrapper renderFooter={renderFooter} title=''>
+            <WalletSuccess description={description} renderIcon={renderIcon} title={title} />
+        </ModalStepWrapper>
     );
 };
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
-import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password-validation';
 import { CFD_PLATFORMS, MarketTypeDetails, PlatformDetails } from '../../constants';

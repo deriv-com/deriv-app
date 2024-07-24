@@ -1,9 +1,8 @@
 import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { useAvailableMT5Accounts } from '@deriv/api-v2';
-import { Loader } from '@deriv-com/ui';
+import { Loader, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
-import useDevice from '../../../../hooks/useDevice';
 import { DynamicLeverageContext } from '../../components/DynamicLeverageContext';
 import { PlatformDetails } from '../../constants';
 import { DynamicLeverageScreen, DynamicLeverageTitle } from '../../screens/DynamicLeverage';
@@ -22,7 +21,7 @@ const JurisdictionModal = () => {
 
     const { getModalState, setModalState, show } = useModal();
     const { isLoading } = useAvailableMT5Accounts();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     const marketType = getModalState('marketType') ?? 'all';
     const platform = getModalState('platform') ?? PlatformDetails.mt5.platform;
@@ -48,7 +47,7 @@ const JurisdictionModal = () => {
         : () => (
               <WalletButton
                   disabled={!selectedJurisdiction || (selectedJurisdiction !== 'svg' && !isCheckBoxChecked)}
-                  isFullWidth={isMobile}
+                  isFullWidth={!isDesktop}
                   onClick={() => show(<JurisdictionFlow />)}
               >
                   Next

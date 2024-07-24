@@ -1,6 +1,6 @@
 import React, { ComponentProps, FC } from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components';
-import useDevice from '../../../../hooks/useDevice';
 import { PlatformDetails } from '../../constants';
 import { CreatePassword } from '../../screens';
 
@@ -11,25 +11,10 @@ const CreatePasswordModal: FC<ComponentProps<typeof CreatePassword>> = ({
     password,
     platform,
 }) => {
-    const { isMobile } = useDevice();
-    if (isMobile) {
+    const { isDesktop } = useDevice();
+    if (isDesktop) {
         return (
-            <ModalStepWrapper
-                renderFooter={() => {
-                    return (
-                        <WalletButton
-                            disabled={!password || isLoading}
-                            isFullWidth
-                            isLoading={isLoading}
-                            onClick={onPrimaryClick}
-                            size={isMobile ? 'lg' : 'md'}
-                        >
-                            {`Create ${PlatformDetails[platform].title} password`}
-                        </WalletButton>
-                    );
-                }}
-                title={''}
-            >
+            <ModalWrapper>
                 <CreatePassword
                     isLoading={isLoading}
                     onPasswordChange={onPasswordChange}
@@ -37,12 +22,27 @@ const CreatePasswordModal: FC<ComponentProps<typeof CreatePassword>> = ({
                     password={password}
                     platform={platform}
                 />
-            </ModalStepWrapper>
+            </ModalWrapper>
         );
     }
 
     return (
-        <ModalWrapper>
+        <ModalStepWrapper
+            renderFooter={() => {
+                return (
+                    <WalletButton
+                        disabled={!password || isLoading}
+                        isFullWidth
+                        isLoading={isLoading}
+                        onClick={onPrimaryClick}
+                        size={isDesktop ? 'md' : 'lg'}
+                    >
+                        {`Create ${PlatformDetails[platform].title} password`}
+                    </WalletButton>
+                );
+            }}
+            title={''}
+        >
             <CreatePassword
                 isLoading={isLoading}
                 onPasswordChange={onPasswordChange}
@@ -50,7 +50,7 @@ const CreatePasswordModal: FC<ComponentProps<typeof CreatePassword>> = ({
                 password={password}
                 platform={platform}
             />
-        </ModalWrapper>
+        </ModalStepWrapper>
     );
 };
 

@@ -66,7 +66,7 @@ const useIDVService = () => {
         return [list, documents];
     }, [isResidenceListSuccess, residenceList, settings.citizen]);
 
-    const status = poiStatus?.current.status;
+    const status = poiStatus?.current.status ?? 'none';
 
     const previousSubmissionErrorStatus =
         status === statusCodes.expired || status === statusCodes.rejected ? statusMessage[status] : null;

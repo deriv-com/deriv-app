@@ -1,8 +1,20 @@
+import { THooks } from '../../../../../../../types';
 /* eslint-disable sort-keys */
 type TDocumentNumberExamples = Record<
     string,
     Record<string, { additionalDocumentExampleFormat?: string; exampleFormat: string; newDisplayName?: string }>
 >;
+
+type TStatusCodes = Exclude<THooks.POA['status'] | THooks.POI['current']['status'], undefined>;
+
+export const statusCodes: Record<TStatusCodes, string> = {
+    expired: 'expired',
+    none: 'none',
+    pending: 'pending',
+    rejected: 'rejected',
+    suspected: 'suspected',
+    verified: 'verified',
+} as const;
 
 export const documentNumberExamples: TDocumentNumberExamples = {
     ke: {

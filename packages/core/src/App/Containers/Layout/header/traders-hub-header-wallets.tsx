@@ -1,6 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, Icon, MobileWrapper, Popover, StaticUrl } from '@deriv/components';
+import { Icon, Popover, StaticUrl } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
 import { routes, platforms, isTabletOs } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
@@ -26,6 +27,7 @@ const TradersHubHeaderWallets = observer(() => {
     const { platform } = common;
     const { modal_data } = traders_hub;
     const { header_extension, is_app_disabled, is_route_modal_on } = ui;
+    const { isDesktop } = useDevice();
 
     const accountSettings = (
         <BinaryLink className='traders-hub-header__setting' to={routes.personal_details}>
@@ -49,63 +51,71 @@ const TradersHubHeaderWallets = observer(() => {
             })}
         >
             <div className='traders-hub-header__menu-left'>
-                <MobileWrapper>
-                    <ToggleMenuDrawer {...{ platform_config: filterPlatformsForClients(platform_config) }} />
-                    {header_extension && is_logged_in && <div>{header_extension}</div>}
-                    <div className={'traders-hub-header__logo-wrapper'}>
+                {!isDesktop && (
+                    <React.Fragment>
+                        <ToggleMenuDrawer {...{ platform_config: filterPlatformsForClients(platform_config) }} />
+                        {header_extension && is_logged_in && <div>{header_extension}</div>}
+                        <div className={'traders-hub-header__logo-wrapper'}>
+                            <div className='traders-hub-header-wallets__logo'>
+                                <StaticUrl href='/'>
+                                    <DerivBrandShortLogo />
+                                </StaticUrl>
+                            </div>
+                        </div>
+                    </React.Fragment>
+                )}
+                {isDesktop && (
+                    <React.Fragment>
                         <div className='traders-hub-header-wallets__logo'>
                             <StaticUrl href='/'>
                                 <DerivBrandShortLogo />
                             </StaticUrl>
                         </div>
-                    </div>
-                </MobileWrapper>
-                <DesktopWrapper>
-                    <div className='traders-hub-header-wallets__logo'>
-                        <StaticUrl href='/'>
-                            <DerivBrandShortLogo />
-                        </StaticUrl>
-                    </div>
-                    <div className='traders-hub-header__divider' />
-                    <TradersHubHomeButton />
-                </DesktopWrapper>
+                        <div className='traders-hub-header__divider' />
+                        <TradersHubHomeButton />
+                    </React.Fragment>
+                )}
                 <MenuLinks {...{ is_traders_hub_routes: true }} />
             </div>
-            <DesktopWrapper>
-                <div className='traders-hub-header__menu-right'>
-                    <div className='traders-hub-header__divider' />
-                    <div className='traders-hub-header__menu-right--items'>
-                        <div className='traders-hub-header__menu-right--items--onboarding'>
-                            <TradersHubOnboarding />
+            {isDesktop && (
+                <React.Fragment>
+                    <div className='traders-hub-header__menu-right'>
+                        <div className='traders-hub-header__divider' />
+                        <div className='traders-hub-header__menu-right--items'>
+                            <div className='traders-hub-header__menu-right--items--onboarding'>
+                                <TradersHubOnboarding />
+                            </div>
+                            <div className='traders-hub-header__menu-right--items--notifications'>
+                                <ShowNotifications />
+                            </div>
+                            {isTabletOs ? (
+                                accountSettings
+                            ) : (
+                                <Popover
+                                    classNameBubble='account-settings-toggle__tooltip'
+                                    alignment='bottom'
+                                    message={<Localize i18n_default_text='Manage account settings' />}
+                                    should_disable_pointer_events
+                                    zIndex='9999'
+                                >
+                                    {accountSettings}
+                                </Popover>
+                            )}
                         </div>
-                        <div className='traders-hub-header__menu-right--items--notifications'>
-                            <ShowNotifications />
+                    </div>
+                    <RealAccountSignup />
+                </React.Fragment>
+            )}
+            {!isDesktop && (
+                <React.Fragment>
+                    <div className='traders-hub-header__mobile-parent'>
+                        <div className='traders-hub-header__menu-middle'>
+                            <DefaultMobileLinks />
                         </div>
-                        {isTabletOs ? (
-                            accountSettings
-                        ) : (
-                            <Popover
-                                classNameBubble='account-settings-toggle__tooltip'
-                                alignment='bottom'
-                                message={<Localize i18n_default_text='Manage account settings' />}
-                                should_disable_pointer_events
-                                zIndex='9999'
-                            >
-                                {accountSettings}
-                            </Popover>
-                        )}
                     </div>
-                </div>
-                <RealAccountSignup />
-            </DesktopWrapper>
-            <MobileWrapper>
-                <div className='traders-hub-header__mobile-parent'>
-                    <div className='traders-hub-header__menu-middle'>
-                        <DefaultMobileLinks />
-                    </div>
-                </div>
-                <RealAccountSignup />
-            </MobileWrapper>
+                    <RealAccountSignup />
+                </React.Fragment>
+            )}
             <SetAccountCurrencyModal />
             <CurrencySelectionModal is_visible={modal_data.active_modal === 'currency_selection'} />
         </header>

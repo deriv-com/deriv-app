@@ -41,7 +41,12 @@ const LastDigitPrediction = observer(({ is_minimized, is_stats_mode }: TLastDigi
                 <TextField
                     variant='fill'
                     readOnly
-                    label={<Localize i18n_default_text='Last digit prediction' />}
+                    label={
+                        <Localize
+                            i18n_default_text='Last digit prediction'
+                            key={`last-digit${is_minimized ? '--minimized' : ''}`}
+                        />
+                    }
                     value={last_digit}
                     className={clsx('trade-params__option', 'trade-params__option--minimized')}
                     onClick={() => setIsOpen(true)}

@@ -19,7 +19,7 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
         <TextField
             variant='fill'
             readOnly
-            label={<Localize i18n_default_text='Duration' />}
+            label={<Localize i18n_default_text='Duration' key={`duration${is_minimized ? '--minimized' : ''}`} />}
             value={`${duration} ${duration_unit_text}`}
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
             id={`duration${is_minimized ? '--minimized' : ''}`}

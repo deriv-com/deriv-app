@@ -28,7 +28,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         <TextField
             variant='fill'
             readOnly
-            label={<Localize i18n_default_text='Stake' />}
+            label={<Localize i18n_default_text='Stake' key={`stake${is_minimized ? '--minimized' : ''}`} />}
             value={`${amount} ${getCurrencyDisplayCode(currency)}`}
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
             id={`stake${is_minimized ? '--minimized' : ''}`}

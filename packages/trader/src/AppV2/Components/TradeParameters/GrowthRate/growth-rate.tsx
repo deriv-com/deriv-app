@@ -16,7 +16,7 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
         <TextField
             variant='fill'
             readOnly
-            label={<Localize i18n_default_text='Growth rate' />}
+            label={<Localize i18n_default_text='Growth rate' key={`growth-rate${is_minimized ? '--minimized' : ''}`} />}
             value={`${getGrowthRatePercentage(growth_rate)}%`}
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
             disabled={has_open_accu_contract}

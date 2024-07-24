@@ -15,7 +15,7 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
         <TextField
             variant='fill'
             readOnly
-            label={<Localize i18n_default_text='Barrier' />}
+            label={<Localize i18n_default_text='Barrier' key={`barrier${is_minimized ? '--minimized' : ''}`} />}
             value={barrier_1}
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
             id={`barrier${is_minimized ? '--minimized' : ''}`}

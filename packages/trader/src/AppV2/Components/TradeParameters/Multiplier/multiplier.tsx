@@ -15,7 +15,7 @@ const Multiplier = observer(({ is_minimized }: TMultiplierProps) => {
         <TextField
             variant='fill'
             readOnly
-            label={<Localize i18n_default_text='Multiplier' />}
+            label={<Localize i18n_default_text='Multiplier' key={`multiplier${is_minimized ? '--minimized' : ''}`} />}
             value={`x${multiplier}`}
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
             id={`multiplier${is_minimized ? '--minimized' : ''}`}

@@ -27,7 +27,7 @@ const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
         <TextField
             variant='fill'
             readOnly
-            label={<Localize i18n_default_text='Payout per point' />}
+            label={<Localize i18n_default_text='Payout per point' key={`payout${is_minimized ? '--minimized' : ''}`} />}
             value={`${payout_per_point} ${getCurrencyDisplayCode(currency)}`}
             className={classname}
             id={`payout${is_minimized ? '--minimized' : ''}`}

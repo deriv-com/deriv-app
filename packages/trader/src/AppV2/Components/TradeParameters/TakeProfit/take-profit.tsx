@@ -16,7 +16,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
         <TextField
             variant='fill'
             readOnly
-            label={<Localize i18n_default_text='Take profit' />}
+            label={<Localize i18n_default_text='Take profit' key={`take-profit${is_minimized ? '--minimized' : ''}`} />}
             value={take_profit ? `${take_profit} ${getCurrencyDisplayCode(currency)}` : localize('Not set')}
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
             disabled={has_open_accu_contract}

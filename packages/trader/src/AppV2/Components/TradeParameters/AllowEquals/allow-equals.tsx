@@ -87,7 +87,12 @@ const AllowEquals = observer(({ is_minimized }: TAllowEqualsProps) => {
             <TextField
                 variant='fill'
                 readOnly
-                label={<Localize i18n_default_text='Allow equals' />}
+                label={
+                    <Localize
+                        i18n_default_text='Allow equals'
+                        key={`allow-equal${is_minimized ? '--minimized' : ''}`}
+                    />
+                }
                 value={is_equal ? localize('Enabled') : '-'}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 onClick={() => setIsOpen(true)}

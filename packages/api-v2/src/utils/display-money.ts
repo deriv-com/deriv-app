@@ -5,8 +5,8 @@ type TCurrency = NonNullable<ReturnType<typeof useAuthorize>['data']['currency']
 type TPreferredLanguage = ReturnType<typeof useAuthorize>['data']['preferred_language'];
 
 export const displayMoney = (
-    amount: number,
-    currency: TCurrency,
+    amount = 0,
+    currency: TCurrency = '',
     options?: {
         fractional_digits?: number;
         preferred_language?: TPreferredLanguage;

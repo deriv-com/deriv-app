@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.controls_flow_statements = {
     init() {
@@ -36,6 +37,9 @@ Blockly.Blocks.controls_flow_statements = {
                 'This block is used to either terminate or continue a loop, and can be placed anywhere within a loop block.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

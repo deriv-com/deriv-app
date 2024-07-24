@@ -1,0 +1,18 @@
+.market-selector {
+    display: flex;
+    align-items: center;
+    gap: var(--core-spacing-400);
+
+    &__container {
+        padding: var(--core-spacing-400) var(--core-spacing-800);
+    }
+    &-info {
+        display: flex;
+        flex-direction: column;
+
+        &__label {
+            display: flex;
+            gap: var(--core-spacing-400);
+        }
+    }
+}

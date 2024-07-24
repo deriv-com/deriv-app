@@ -1,0 +1,12 @@
+.symbol-search-results {
+    &__container {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        height: 100%;
+    }
+    &--suggestion {
+        text-align: center;
+        margin: var(--core-spacing-800) var(--core-spacing-2400) 0 var(--core-spacing-2400);
+    }
+}

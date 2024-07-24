@@ -2162,66 +2162,65 @@ type TPrivateSocketEndpoints = {
          */
         req_id?: number;
         [k: string]: unknown;
-
-        kyc_auth_status: {
-            request: {
-                /**
-                 * Must be `1`
-                 */
-                kyc_auth_status: 1;
-                /**
-                 * The country for which service availability is being verified, 2-letter country code
-                 */
-                country?: string;
-                /**
-                 * Indicates which landing companies to get the KYC authentication status for.
-                 */
-                landing_companies?: (
-                    | 'iom'
-                    | 'malta'
-                    | 'maltainvest'
-                    | 'svg'
-                    | 'virtual'
-                    | 'vanuatu'
-                    | 'labuan'
-                    | 'samoa'
-                    | 'samoa-virtual'
-                    | 'bvi'
-                    | 'dsl'
-                )[];
-                /**
-                 * [Optional] The login id of the user. If left unspecified, it defaults to the initial authorized token's login id.
-                 */
-                loginid?: string;
-                /**
-                 * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
-                 */
-                passthrough?: {
-                    [k: string]: unknown;
-                };
-                /**
-                 * [Optional] Used to map request to response.
-                 */
-                req_id?: number;
-            };
-            response: {
-                kyc_auth_status?: KycAuthStatus;
-                /**
-                 * Echo of the request made.
-                 */
-                echo_req: {
-                    [k: string]: unknown;
-                };
-                /**
-                 * Action name of the request made.
-                 */
-                msg_type: 'kyc_auth_status';
-                /**
-                 * Optional field sent in request to map to response, present only when request contains `req_id`.
-                 */
-                req_id?: number;
+    };
+    kyc_auth_status: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            kyc_auth_status: 1;
+            /**
+             * The country for which service availability is being verified, 2-letter country code
+             */
+            country?: string;
+            /**
+             * Indicates which landing companies to get the KYC authentication status for.
+             */
+            landing_companies?: (
+                | 'iom'
+                | 'malta'
+                | 'maltainvest'
+                | 'svg'
+                | 'virtual'
+                | 'vanuatu'
+                | 'labuan'
+                | 'samoa'
+                | 'samoa-virtual'
+                | 'bvi'
+                | 'dsl'
+            )[];
+            /**
+             * [Optional] The login id of the user. If left unspecified, it defaults to the initial authorized token's login id.
+             */
+            loginid?: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+             */
+            passthrough?: {
                 [k: string]: unknown;
             };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            kyc_auth_status?: KycAuthStatus;
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'kyc_auth_status';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
         };
     };
 };

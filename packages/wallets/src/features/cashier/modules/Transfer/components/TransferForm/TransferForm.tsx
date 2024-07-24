@@ -3,6 +3,7 @@ import { Formik } from 'formik';
 import { Loader } from '@deriv-com/ui';
 import { WalletButton } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
+import { TRADING_PLATFORM_STATUS } from '../../../../../cfd/constants';
 import { useTransfer } from '../../provider';
 import type { TInitialTransferFormValues } from '../../types';
 import { TransferFormAmountInput } from '../TransferFormAmountInput';
@@ -23,6 +24,10 @@ const TransferForm = () => {
         toAccount: undefined,
         toAmount: 0,
     };
+
+    const hasPlatformStatus =
+        activeWallet?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE ||
+        activeWallet?.status === TRADING_PLATFORM_STATUS.MAINTENANCE;
 
     const onSubmit = useCallback(
         (values: TInitialTransferFormValues) => requestTransferBetweenAccounts(values),
@@ -55,7 +60,7 @@ const TransferForm = () => {
                         </div>
                         <div className='wallets-transfer__submit-button' data-testid='dt_transfer_form_submit_btn'>
                             <WalletButton
-                                disabled={!values.fromAmount || !values.toAmount || values.isError}
+                                disabled={!values.fromAmount || !values.toAmount || values.isError || hasPlatformStatus}
                                 size={isMobile ? 'md' : 'lg'}
                                 type='submit'
                             >

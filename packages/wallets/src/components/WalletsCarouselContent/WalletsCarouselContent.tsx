@@ -1,13 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useEmblaCarousel, { EmblaCarouselType, EmblaEventType } from 'embla-carousel-react';
 import { useHistory } from 'react-router-dom';
-import {
-    useActiveWalletAccount,
-    useBalanceSubscription,
-    useCurrencyConfig,
-    useMobileCarouselWalletsList,
-} from '@deriv/api-v2';
+import { useActiveWalletAccount, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
+import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { THooks } from '../../types';
 import { ProgressBar, WalletText } from '../Base';
@@ -37,13 +33,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ accountsActiveTabIndex }) =>
 
     const { data: walletAccountsList, isLoading: isWalletAccountsListLoading } = useMobileCarouselWalletsList();
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
-    const {
-        data: balanceData,
-        isLoading: isBalanceLoading,
-        isSubscribed,
-        subscribe,
-        unsubscribe,
-    } = useBalanceSubscription();
+    const { data: balanceData } = useAllBalanceSubscription();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
     const [selectedLoginId, setSelectedLoginId] = useState('');
@@ -55,6 +45,16 @@ const WalletsCarouselContent: React.FC<TProps> = ({ accountsActiveTabIndex }) =>
     const walletsAccountsListRef = useRef(walletAccountsList);
     const transitionNodes = useRef<HTMLElement[]>([]);
     const transitionFactor = useRef(0);
+
+    const getBalance = (
+        loginid: string,
+        currency?: string,
+        wallet?: ReturnType<typeof useActiveWalletAccount>['data']
+    ) => {
+        return displayMoney(balanceData?.[loginid]?.balance, currency, {
+            fractional_digits: wallet?.currency_config?.fractional_digits,
+        });
+    };
 
     // sets the transition nodes to be scaled
     const setTransitionNodes = useCallback((walletsCarouselEmblaApi: EmblaCarouselType) => {
@@ -181,17 +181,10 @@ const WalletsCarouselContent: React.FC<TProps> = ({ accountsActiveTabIndex }) =>
                 if (index !== -1) {
                     walletsCarouselEmblaApi?.scrollTo(index);
                 }
-                if (isSubscribed) unsubscribe();
-                subscribe({ loginid: selectedLoginId });
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedLoginId, walletAccountsList]);
-
-    // unsubscribe to the balance call if the whole component unmounts
-    useEffect(() => {
-        return () => unsubscribe();
-    }, [unsubscribe]);
 
     // initial loading
     useEffect(() => {
@@ -254,17 +247,9 @@ const WalletsCarouselContent: React.FC<TProps> = ({ accountsActiveTabIndex }) =>
                         {walletAccountsList?.map((account, index) => (
                             <WalletCard
                                 balance={
-                                    !isBalanceLoading &&
-                                    account.loginid === activeWallet?.loginid &&
-                                    balanceData.loginid === selectedLoginId
-                                        ? displayMoney(
-                                              balanceData.balance ?? account.balance,
-                                              activeWallet?.currency ?? '',
-                                              {
-                                                  fractional_digits: activeWallet?.currency_config?.fractional_digits,
-                                              }
-                                          )
-                                        : account.display_balance
+                                    account.loginid === activeWallet?.loginid
+                                        ? getBalance(activeWallet?.loginid, activeWallet?.currency, activeWallet)
+                                        : getBalance(account.loginid, account?.currency, account)
                                 }
                                 currency={account.currency || 'USD'}
                                 iconSize='lg'

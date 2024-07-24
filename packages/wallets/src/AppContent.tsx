@@ -17,7 +17,7 @@ const AppContent: React.FC = () => {
 
     useEffect(() => {
         if (!derivAccountList?.length) return;
-        if (previousDerivAccountListRef.current !== derivAccountList.length) {
+        if (previousDerivAccountListRef.current !== derivAccountList.length || !isSubscribed) {
             subscribeToAllBalance();
             previousDerivAccountListRef.current = derivAccountList.length;
         }

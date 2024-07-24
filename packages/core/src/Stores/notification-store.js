@@ -119,6 +119,7 @@ export default class NotificationStore extends BaseStore {
                 root_store.client.is_eu,
                 root_store.client.has_enabled_two_fa,
                 root_store.client.has_changed_two_fa,
+                root_store.client.should_show_passkey_notification,
                 this.p2p_order_props.order_id,
             ],
             () => {
@@ -411,6 +412,8 @@ export default class NotificationStore extends BaseStore {
 
             if (this.root_store.client.should_show_passkey_notification) {
                 this.addNotificationMessage(this.client_notifications.enable_passkey);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.enable_passkey });
             }
 
             const client = accounts[loginid];
@@ -938,7 +941,7 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Enable passkey'),
                 },
                 key: 'enable_passkey',
-                header: localize('Level up your security!'),
+                header: localize('Level up your security'),
                 message: localize('Strengthen your account’s security today with the latest passkeys feature.'),
                 type: 'announce',
                 should_show_again: true,

@@ -936,6 +936,7 @@
     @include mobile-or-tablet-screen {
         padding: 0 1.6rem;
         margin-top: 2.4rem;
+        max-width: 60rem;
 
         &__scroll-wrapper {
             overflow-y: auto;

@@ -1,4 +1,5 @@
 import React, { lazy } from 'react';
+import { useDevice } from '@deriv-com/ui';
 import {
     WalletListHeader,
     WalletsAddMoreCarousel,
@@ -7,7 +8,6 @@ import {
     WalletTourGuide,
 } from '../../components';
 import ResetMT5PasswordHandler from '../../features/cfd/ResetMT5PasswordHandler';
-import useDevice from '../../hooks/useDevice';
 import './WalletsListingRoute.scss';
 
 const LazyWalletsCarousel = lazy(() => import('../../components/WalletsCarousel/WalletsCarousel'));

@@ -2,7 +2,7 @@
     background-color: var(--general-main-1, #ffffff);
     width: 100%;
 
-    @include mobile {
+    @include mobile-screen {
         width: 100vw;
     }
 

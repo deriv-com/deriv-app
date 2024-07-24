@@ -7,7 +7,7 @@ import {
     LabelPairedMinusMdBoldIcon,
     LabelPairedPlusMdBoldIcon,
 } from '@deriv/quill-icons';
-import useDevice from '../../hooks/useDevice';
+import { useDevice } from '@deriv-com/ui';
 import { IconButton, WalletButton, WalletText } from '../Base';
 import './WalletListCardActions.scss';
 

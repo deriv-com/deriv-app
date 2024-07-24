@@ -7,7 +7,7 @@
     align-items: center;
     gap: 1.6rem;
 
-    @include desktop {
+    @include desktop-screen {
         min-width: 35.2rem;
     }
 
@@ -16,7 +16,7 @@
     }
 
     &__get-account {
-        @include mobile-or-tablet-screen {
+        @include mobile-screen {
             padding: 0;
         }
     }

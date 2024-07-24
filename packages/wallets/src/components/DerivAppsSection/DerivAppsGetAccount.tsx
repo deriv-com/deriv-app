@@ -8,9 +8,9 @@ import {
 } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { toMoment } from '@deriv/utils';
+import { useDevice } from '@deriv-com/ui';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
 import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
-import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import { ModalStepWrapper, WalletButton, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';

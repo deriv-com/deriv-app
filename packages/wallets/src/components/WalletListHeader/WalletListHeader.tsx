@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
-import useDevice from '../../hooks/useDevice';
+import { useDevice } from '@deriv-com/ui';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { WalletText } from '../Base';
 import './WalletListHeader.scss';

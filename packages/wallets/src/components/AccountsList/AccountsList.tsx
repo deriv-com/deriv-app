@@ -1,8 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Divider, Tab, Tabs } from '@deriv-com/ui';
+import { Divider, Tab, Tabs, useDevice } from '@deriv-com/ui';
 import { CFDPlatformsList } from '../../features';
-import useDevice from '../../hooks/useDevice';
 import { OptionsAndMultipliersListing } from '../OptionsAndMultipliersListing';
 import './AccountsList.scss';
 
@@ -40,11 +39,11 @@ const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, onTabClickHandler })
         >
             <Tab className='wallets-accounts-list__tab' title={t('CFDs')}>
                 <CFDPlatformsList />
-                <Divider color='var(--wallets-banner-border-color)' />
+                <Divider className='wallets-accounts-list__divider' color='var(--wallets-banner-border-color)' />
             </Tab>
             <Tab className='wallets-accounts-list__tab' title={t('Options')}>
                 <OptionsAndMultipliersListing />
-                <Divider color='var(--wallets-banner-border-color)' />
+                <Divider className='wallets-accounts-list__divider' color='var(--wallets-banner-border-color)' />
             </Tab>
         </Tabs>
     );

@@ -66,7 +66,6 @@ const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                             <Footer
                                 disableBack={isUploading}
                                 disableNext={!isNIMCFormValid || isUploading}
-                                isNextLoading={isUploading}
                                 onClickBack={onClickBack}
                                 onClickNext={handleOnClickNext}
                             />

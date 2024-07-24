@@ -73,7 +73,6 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                             <Footer
                                 disableBack={isUploading}
                                 disableNext={!isPassportFormValid || isUploading}
-                                isNextLoading={isUploading}
                                 onClickBack={onClickBack}
                                 onClickNext={handleOnClickNext}
                             />

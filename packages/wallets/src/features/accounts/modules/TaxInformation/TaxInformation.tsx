@@ -16,7 +16,6 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
     const {
         countryCodeToPatternMapper,
         countryList,
-        getTaxResidence,
         initialValues,
         isLoading,
         isSubmitted: isTaxInformationSubmitted,
@@ -30,8 +29,6 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
     return (
         <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={taxInformationValidationSchema}>
             {({ errors, handleSubmit, isValid, setFieldValue, values }) => {
-                // console.log('values', values);
-                // console.log('errors', errors);
                 return (
                     <ModalStepWrapper
                         renderFooter={() => <Footer disableNext={!isValid} onClickNext={handleSubmit} />}
@@ -59,7 +56,6 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                             list={countryList}
                                             listHeight='sm'
                                             name='citizenship'
-                                            onSelect={selectedItem => setFieldValue('citizenship', selectedItem)}
                                         />
                                         <FormDropdown
                                             disabled={initialValues?.placeOfBirth !== ''}
@@ -72,20 +68,12 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                             onSelect={selectedItem => setFieldValue('placeOfBirth', selectedItem)}
                                         />
                                         <FormDropdown
-                                            errorMessage={values.taxResidence ?? 'Tax residence is required'}
                                             isFullWidth
                                             isRequired
                                             label='Tax residence*'
                                             list={countryList}
                                             listHeight='sm'
                                             name='taxResidence'
-                                            onChange={value => {
-                                                setFieldValue('taxResidence', getTaxResidence(value));
-                                            }}
-                                            onSelect={selectedItem => {
-                                                setFieldValue('taxResidence', selectedItem);
-                                            }}
-                                            value={values.taxResidence ?? ''}
                                         />
                                         <FormField
                                             disabled={Boolean(!values.taxResidence || errors.taxResidence)}
@@ -101,9 +89,6 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                             label='Account opening reason*'
                                             list={accountOpeningReasonList}
                                             name='accountOpeningReason'
-                                            onSelect={selectedItem =>
-                                                setFieldValue('accountOpeningReason', selectedItem)
-                                            }
                                             variant='comboBox'
                                         />
                                     </div>

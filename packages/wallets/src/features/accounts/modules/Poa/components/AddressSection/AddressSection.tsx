@@ -5,7 +5,7 @@ import { TAddressDetails } from '../../types';
 import './AddressSection.scss';
 
 const AddressSection: React.FC = () => {
-    const { setFieldValue, status, values } = useFormikContext<TAddressDetails>();
+    const { status } = useFormikContext<TAddressDetails>();
 
     return (
         <div className='wallets-address-section'>
@@ -31,8 +31,6 @@ const AddressSection: React.FC = () => {
                     list={status.statesList}
                     listHeight='sm'
                     name='stateProvinceLine'
-                    onSelect={selectedItem => setFieldValue('stateProvinceLine', selectedItem)}
-                    value={values.stateProvinceLine ?? ''}
                 />
                 <FormField label='Postal/ZIP code' name='zipCodeLine' />
             </div>

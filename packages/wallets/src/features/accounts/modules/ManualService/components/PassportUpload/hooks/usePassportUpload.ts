@@ -1,7 +1,6 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { FormikValues } from 'formik';
 import { useDocumentUpload } from '@deriv/api-v2';
-import { TSocketError } from '@deriv/api-v2/types';
 import { THooks } from '../../../../../../../types';
 import { TSelfieUploadValues, useSelfieUpload } from '../../SelfieUpload';
 
@@ -27,7 +26,6 @@ const usePassportUpload = (documentIssuingCountryCode: THooks.AccountSettings['c
         resetError: resetErrorSelfieUpload,
         upload: uploadSelfie,
     } = useSelfieUpload(documentIssuingCountryCode);
-    const [uploadError, setUploadError] = useState<TSocketError<'document_upload'>['error']>();
 
     const initialValues = {
         ...initialValuesSelfieUpload,
@@ -45,34 +43,30 @@ const usePassportUpload = (documentIssuingCountryCode: THooks.AccountSettings['c
                 expiration_date: values.passportExpiryDate,
                 file: values.passportFile,
             });
-            if (errorPassportUpload) {
-                setUploadError(errorPassportUpload.error);
-            }
+
             // wait on selfie upload and set uploadError if any
             await uploadSelfie(values, values.passportNumber);
-            if (errorSelfieUpload) {
-                setUploadError(errorSelfieUpload);
-            }
         },
-        [documentIssuingCountryCode, errorPassportUpload, errorSelfieUpload, uploadPassport, uploadSelfie]
+        [documentIssuingCountryCode, uploadPassport, uploadSelfie]
     );
 
     const resetError = useCallback(() => {
-        if (uploadError) {
+        if (errorPassportUpload?.error || errorSelfieUpload) {
             resetErrorPassportUpload();
             resetErrorSelfieUpload();
         }
-    }, [resetErrorPassportUpload, resetErrorSelfieUpload, uploadError]);
+    }, [errorPassportUpload?.error, errorSelfieUpload, resetErrorPassportUpload, resetErrorSelfieUpload]);
 
     return {
         /** contains error data if any error encountered during passport/selfie upload */
-        error: uploadError,
+        error: errorPassportUpload?.error ?? errorSelfieUpload,
 
         /** initial values for the passport and selfie forms */
         initialValues,
 
         /** `true` if successfully uploaded passport and selfie files */
-        isSuccess: isPassportUploadSuccess && isSelfieUploadSuccess,
+        isSuccess:
+            isPassportUploadSuccess && isSelfieUploadSuccess && !(errorPassportUpload?.error || errorSelfieUpload),
 
         /** `true` if passport and selfie upload is in progress */
         isUploading: isPassportUploading || isSelfieUploading,

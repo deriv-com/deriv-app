@@ -1,13 +1,13 @@
 import React, { useMemo, useState } from 'react';
-import { useMT5AccountsList, usePOA, usePOI, useSettings } from '@deriv/api-v2';
+import { useInvalidateQuery, useMT5AccountsList, usePOA, usePOI, useSettings } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
 import { Poa, Poi, TaxInformation } from '../../../accounts';
-import { MT5PasswordModal } from '../../modals';
 import { ResubmissionSuccessMessage } from './components';
 
 type TClientVerificationProps = {
+    onFirstTimeCompletion?: VoidFunction;
     selectedJurisdiction?: string;
 };
 type TStatusCodes = Exclude<THooks.POA['status'] | THooks.POI['current']['status'], undefined>;
@@ -21,12 +21,13 @@ const isSubmissionRequired: Record<TStatusCodes, boolean> = {
     verified: false,
 };
 
-const ClientVerification: React.FC<TClientVerificationProps> = ({ selectedJurisdiction }) => {
+const ClientVerification: React.FC<TClientVerificationProps> = ({ onFirstTimeCompletion, selectedJurisdiction }) => {
     const { data: poiData, isLoading: isPoiDataLoading } = usePOI();
     const { data: poaData, isLoading: isPoaDataLoading } = usePOA();
     const { data: accountSettings, isLoading: isAccountSettingsLoading } = useSettings();
     const { data: mt5AccountsList, isLoading: isMT5AccountsListLoading } = useMT5AccountsList();
-    const { getModalState } = useModal();
+    const invalidate = useInvalidateQuery();
+    const { hide } = useModal();
 
     const [isPoaJustCompleted, setIsPoaJustCompleted] = useState(false);
     const [isPoiJustCompleted, setIsPoiJustCompleted] = useState(false);
@@ -100,13 +101,19 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({ selectedJurisd
                 ? "We'll review your documents and notify you of its status within 1 - 3 working days."
                 : "We'll review your documents and notify you of its status within 5 minutes.";
 
-        return <ResubmissionSuccessMessage message={resubmissionMessage} />;
-    }
-
-    if (!hasResubmittedDocuments) {
-        const marketType = getModalState('marketType') ?? 'all';
-        const platform = getModalState('platform') ?? 'mt5';
-        return <MT5PasswordModal marketType={marketType} platform={platform} />;
+        return (
+            <ResubmissionSuccessMessage
+                message={resubmissionMessage}
+                onCompletion={() => {
+                    // invalidate mt5_login_list for updating the status badge in TradingAccountCard on Trader's Hub
+                    invalidate('mt5_login_list');
+                    hide();
+                }}
+            />
+        );
+    } else if (onFirstTimeCompletion) {
+        // proceed to MT5 account creation
+        onFirstTimeCompletion();
     }
 
     return null;

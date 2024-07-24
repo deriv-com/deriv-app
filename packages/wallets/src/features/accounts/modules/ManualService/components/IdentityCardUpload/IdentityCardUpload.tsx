@@ -75,7 +75,6 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
                             <Footer
                                 disableBack={isUploading}
                                 disableNext={!isIdentityCardFormValid || isUploading}
-                                isNextLoading={isUploading}
                                 onClickBack={onClickBack}
                                 onClickNext={handleOnClickNext}
                             />

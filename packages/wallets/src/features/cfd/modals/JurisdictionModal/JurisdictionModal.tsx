@@ -35,13 +35,19 @@ const JurisdictionModal = () => {
     }, [isDynamicLeverageVisible, setIsDynamicLeverageVisible]);
 
     const JurisdictionFlow = () => {
-        if (selectedJurisdiction === 'svg') {
+        const [showMt5PasswordModal, setShowMt5PasswordModal] = useState(false);
+        if (selectedJurisdiction === 'svg' || showMt5PasswordModal) {
             return <MT5PasswordModal marketType={marketType} platform={platform} />;
         }
 
         return (
             <Suspense fallback={<Loader />}>
-                <LazyVerification selectedJurisdiction={selectedJurisdiction} />
+                <LazyVerification
+                    onFirstTimeCompletion={() => {
+                        setShowMt5PasswordModal(true);
+                    }}
+                    selectedJurisdiction={selectedJurisdiction}
+                />
             </Suspense>
         );
     };

@@ -105,7 +105,6 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                                     <WalletText weight='bold'>Identity verification</WalletText>
                                 </div>
                                 <FormDropdown
-                                    errorMessage={'Document type is required'}
                                     isFullWidth
                                     isRequired
                                     label='Choose the document type'

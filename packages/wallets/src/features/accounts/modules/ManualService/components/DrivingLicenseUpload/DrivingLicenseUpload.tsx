@@ -73,7 +73,6 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                             <Footer
                                 disableBack={isUploading}
                                 disableNext={!isDrivingLicenseFormValid || isUploading}
-                                isNextLoading={isUploading}
                                 onClickBack={onClickBack}
                                 onClickNext={handleOnClickNext}
                             />

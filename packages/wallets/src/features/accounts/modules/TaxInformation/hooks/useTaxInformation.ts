@@ -21,7 +21,6 @@ const useTaxInformation = () => {
         const countryCodeToPatternMapping: Record<string, string> = {};
 
         if (isResidenceListSuccess) {
-            // @ts-expect-error broken types for response of residence_list API call
             residenceList.forEach(residence => {
                 if (residence.value && !(residence.value in countryCodeToPatternMapping)) {
                     countryCodeToPatternMapping[residence.value] = residence?.tin_format?.[0] ?? '';
@@ -32,7 +31,6 @@ const useTaxInformation = () => {
     }, [isResidenceListSuccess, residenceList]);
 
     const countryList = useMemo(() => {
-        // @ts-expect-error broken types for response of residence_list API call
         return residenceList.map(residence => ({
             text: residence.text,
             value: residence.value ?? '',
@@ -57,8 +55,7 @@ const useTaxInformation = () => {
         ]
     );
 
-    const getTaxResidence = (selected: string) => {
-        // @ts-expect-error broken types for response of residence_list API call
+    const getCountryCode = (selected: string) => {
         residenceList.find(residence => residence.text?.toLowerCase() === selected.toLowerCase())?.value;
     };
 
@@ -90,7 +87,7 @@ const useTaxInformation = () => {
         countryCodeToPatternMapper,
         countryList,
         error,
-        getTaxResidence,
+        getCountryCode,
         initialValues,
         isLoading,
         isSubmitted,

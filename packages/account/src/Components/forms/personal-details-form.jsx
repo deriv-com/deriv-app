@@ -21,7 +21,7 @@ import { DateOfBirthField, FormInputField } from './form-fields';
 import FormSubHeader from '../form-sub-header';
 import InlineNoteWithIcon from '../inline-note-with-icon';
 import { useDevice } from '@deriv-com/ui';
-import { OECD_TIN_FORMAT_URL } from 'Constants/external-urls';
+import { OECD_TIN_FORMAT_URL } from '../../Constants/external-urls';
 
 const PersonalDetailsForm = props => {
     const { isDesktop } = useDevice();

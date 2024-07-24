@@ -1,5 +1,5 @@
 import { ChangeEventHandler } from 'react';
-import { Text, Icon } from '@deriv/components';
+import { Text } from '@deriv/components';
 import clsx from 'clsx';
 import { TranslationFlag } from '@deriv/shared';
 

@@ -79,6 +79,9 @@ type TBarriers = Array<
 export type ProposalResponse = PriceProposalResponse & {
     proposal: PriceProposalResponse['proposal'] & {
         payout_choices: number[];
+        contract_details: {
+            barrier: string;
+        };
     };
     error?: PriceProposalResponse['error'] & {
         code: string;
@@ -1414,9 +1417,10 @@ export default class TradeStore extends BaseStore {
         if (!this.main_barrier || this.main_barrier?.shade) {
             if (this.is_turbos) {
                 if (response.proposal) {
+                    const barrier_pipSize = response.proposal?.contract_details?.barrier.split('.')[1];
                     let chart_barrier = (
                         Number(response.proposal?.contract_details?.barrier) - Number(response.proposal?.spot)
-                    ).toFixed(3);
+                    ).toFixed(barrier_pipSize.length);
 
                     if (Number(chart_barrier) > 0) {
                         chart_barrier = `+${chart_barrier}`;
@@ -1505,7 +1509,7 @@ export default class TradeStore extends BaseStore {
                 });
 
                 this.barrier_1 = String(
-                    (Number(response.proposal?.contract_details?.barrier) - Number(response.proposal?.spot)).toFixed(3)
+                    Number(response.proposal?.contract_details?.barrier) - Number(response.proposal?.spot)
                 );
             }
         } else {
@@ -1519,18 +1523,20 @@ export default class TradeStore extends BaseStore {
                 if (payout_choices) {
                     this.setPayoutChoices(payout_choices as number[]);
                     this.setStakeBoundary(contract_type, min_stake, max_stake);
+                    const barrier_pipSize = response.proposal?.contract_details?.barrier.split('.')[1];
+
                     if (
                         this.barrier_1 !==
                         String(
                             (
                                 Number(response.proposal?.contract_details?.barrier) - Number(response.proposal?.spot)
-                            ).toFixed(3)
+                            ).toFixed(barrier_pipSize.length)
                         )
                     ) {
                         this.barrier_1 = String(
                             (
                                 Number(response.proposal?.contract_details?.barrier) - Number(response.proposal?.spot)
-                            ).toFixed(3)
+                            ).toFixed(barrier_pipSize.length)
                         );
                     }
                 }

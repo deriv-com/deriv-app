@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { LegacyArrowRight2pxIcon } from '@deriv/quill-icons';
+import { useDevice } from '@deriv-com/ui';
 import { AppCard, WalletButton, WalletCard, WalletText } from '../../../../../../components';
-import useDevice from '../../../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../../../types';
 import { useTransfer } from '../../provider';
 import './TransferReceipt.scss';
@@ -48,7 +48,7 @@ const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balan
 
 const TransferReceipt = () => {
     const { activeWallet, receipt, resetTransfer } = useTransfer();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     if (!receipt) return null;
 
@@ -105,8 +105,8 @@ const TransferReceipt = () => {
             <div className='wallets-transfer-receipt__button'>
                 <WalletButton
                     onClick={() => resetTransfer()}
-                    size={isMobile ? 'md' : 'lg'}
-                    textSize={isMobile ? 'md' : 'sm'}
+                    size={isDesktop ? 'lg' : 'md'}
+                    textSize={isDesktop ? 'sm' : 'md'}
                 >
                     Make a new transfer
                 </WalletButton>

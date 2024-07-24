@@ -1,8 +1,7 @@
 import React, { useCallback, useRef } from 'react';
 import { Formik } from 'formik';
-import { Loader } from '@deriv-com/ui';
+import { Loader, useDevice } from '@deriv-com/ui';
 import { WalletButton } from '../../../../../../components';
-import useDevice from '../../../../../../hooks/useDevice';
 import { useTransfer } from '../../provider';
 import type { TInitialTransferFormValues } from '../../types';
 import { TransferFormAmountInput } from '../TransferFormAmountInput';
@@ -11,7 +10,7 @@ import { TransferMessages } from '../TransferMessages';
 import './TransferForm.scss';
 
 const TransferForm = () => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { activeWallet, isLoading, requestTransferBetweenAccounts } = useTransfer();
     const mobileAccountsListRef = useRef<HTMLDivElement | null>(null);
 
@@ -56,7 +55,7 @@ const TransferForm = () => {
                         <div className='wallets-transfer__submit-button' data-testid='dt_transfer_form_submit_btn'>
                             <WalletButton
                                 disabled={!values.fromAmount || !values.toAmount || values.isError}
-                                size={isMobile ? 'md' : 'lg'}
+                                size={isDesktop ? 'lg' : 'md'}
                                 type='submit'
                             >
                                 Transfer

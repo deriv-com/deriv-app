@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
+import { useDevice } from '@deriv-com/ui';
 import {
     WalletCurrencyCard,
     WalletListCardBadge,
     WalletMarketCurrencyIcon,
     WalletText,
 } from '../../../../../../components';
-import useDevice from '../../../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../../../types';
 import type { TAccount } from '../../types';
 import './TransferFormAccountCard.scss';
@@ -17,7 +17,7 @@ type TProps = {
 };
 
 const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const isInput = type === 'input';
     const isModal = type === 'modal';
 
@@ -46,7 +46,7 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) 
                         />
                     )}
                 </div>
-                {isInput && isMobile && !!account?.demo_account && <WalletListCardBadge />}
+                {isInput && !isDesktop && !!account?.demo_account && <WalletListCardBadge />}
             </div>
 
             <div className='wallets-transfer-form-account-card__content'>

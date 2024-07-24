@@ -1,4 +1,4 @@
-import ChartPlaceholder from './chart-placeholder';
-import './chart.scss';
+import ContractDetailsChart from './contract-details-chart';
+import './contract-details-chart.scss';
 
-export default ChartPlaceholder;
+export default ContractDetailsChart;

@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.lists_isEmpty = {
     init() {
@@ -14,6 +15,7 @@ Blockly.Blocks.lists_isEmpty = {
                     check: ['Array'],
                 },
             ],
+            inputsInline: true,
             output: 'Boolean',
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Base.colour,
@@ -36,12 +38,20 @@ Blockly.Blocks.lists_isEmpty = {
             VALUE: null,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-Blockly.JavaScript.lists_isEmpty = block => {
-    const list = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_MEMBER) || '[]';
+Blockly.JavaScript.javascriptGenerator.forBlock.lists_isEmpty = block => {
+    const list =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'VALUE',
+            Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+        ) || '[]';
     const isVariable = block.workspace.getAllVariables().findIndex(variable => variable.name === list) !== -1;
 
     const code = isVariable ? `!${list} || !${list}.length` : `!${list}.length`;
-    return [code, Blockly.JavaScript.ORDER_LOGICAL_NOT];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_NOT];
 };

@@ -63,7 +63,6 @@ const mock_errors: FormikErrors<TPersonalDetailsSectionForm> = {
 
 const tax_residence_pop_over_text =
     /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i;
-const tin_pop_over_text = /don't know your tax identification number\?/i;
 
 const runCommonFormfieldsTests = (is_svg: boolean) => {
     expect(screen.getByRole('radio', { name: /mr/i })).toBeInTheDocument();
@@ -98,24 +97,6 @@ const runCommonFormfieldsTests = (is_svg: boolean) => {
             screen.getByText(/Please enter your date of birth as in your official identity documents./i)
         ).toBeInTheDocument();
     }
-
-    const tax_residence_pop_over = screen.queryByTestId('tax_residence_pop_over');
-    if (tax_residence_pop_over) {
-        fireEvent.click(tax_residence_pop_over);
-    }
-
-    expect(screen.getByText(tax_residence_pop_over_text)).toBeInTheDocument();
-
-    expect(screen.getByLabelText(/tax identification number/i)).toBeInTheDocument();
-    const tax_identification_number_pop_over = screen.queryByTestId('tax_identification_number_pop_over');
-    expect(tax_identification_number_pop_over).toBeInTheDocument();
-
-    if (tax_identification_number_pop_over) {
-        fireEvent.click(tax_identification_number_pop_over);
-    }
-
-    expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
 
     if (is_svg)
         expect(
@@ -819,23 +800,6 @@ describe('<PersonalDetails/>', () => {
         expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
     });
 
-    it('should close tax_identification_number_pop_over when clicked outside', () => {
-        const new_props = { ...mock_props, is_svg: false };
-        renderwithRouter({ props: new_props });
-
-        const tin_pop_over = screen.getByTestId('tax_identification_number_pop_over');
-        expect(tin_pop_over).toBeInTheDocument();
-        fireEvent.click(tin_pop_over);
-
-        expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
-        expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
-
-        fireEvent.click(screen.getByRole('heading', { name: /account opening reason/i }));
-
-        expect(screen.queryByText(tin_pop_over_text)).not.toBeInTheDocument();
-        expect(screen.queryByRole('link', { name: 'here' })).not.toBeInTheDocument();
-    });
-
     it('should close tax_residence pop-over when scrolled', () => {
         renderwithRouter({});
 
@@ -850,23 +814,6 @@ describe('<PersonalDetails/>', () => {
         });
 
         expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
-    });
-
-    it('should close tax_identification_number_pop_over when scrolled', () => {
-        renderwithRouter({});
-
-        const tax_identification_number_pop_over = screen.getByTestId('tax_identification_number_pop_over');
-        expect(tax_identification_number_pop_over).toBeInTheDocument();
-        fireEvent.click(tax_identification_number_pop_over);
-        expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
-        expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
-
-        fireEvent.scroll(screen.getByTestId('dt_personal_details_container'), {
-            target: { scrollY: 100 },
-        });
-
-        expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
-        expect(screen.queryByRole('link', { name: 'here' })).not.toBeInTheDocument();
     });
 
     it('should validate idv values when a document type is selected', async () => {

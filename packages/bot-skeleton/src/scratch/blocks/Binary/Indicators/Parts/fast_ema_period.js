@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../../utils';
 
 Blockly.Blocks.fast_ema_period = {
     init() {
@@ -21,6 +22,9 @@ Blockly.Blocks.fast_ema_period = {
         this.setMovable(false);
         this.setDeletable(false);
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     onchange: Blockly.Blocks.input_list.onchange,
     allowed_parents: ['macda_statement'],
     getRequiredValueInputs() {
@@ -30,4 +34,4 @@ Blockly.Blocks.fast_ema_period = {
     },
 };
 
-Blockly.JavaScript.fast_ema_period = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.fast_ema_period = () => {};

@@ -35,6 +35,11 @@
             }
         }
     }
+
+    &__dropdown {
+        padding-bottom: 2rem;
+    }
+
     &__inline {
         display: flex;
         align-items: flex-start;
@@ -58,13 +63,6 @@
 
         @include mobile {
             width: 100%;
-        }
-
-        & .wallets-dropdown,
-        & .wallets-textfield {
-            @include desktop {
-                max-width: 84rem;
-            }
         }
     }
 }

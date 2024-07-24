@@ -32,7 +32,7 @@ export type TCurrentManagedPasskey = {
 
 const Passkeys = observer(() => {
     const { client, common, notifications } = useStore();
-    const { is_passkey_supported, setShouldShowPasskeyNotification } = client;
+    const { is_passkey_supported, setShouldShowPasskeyNotification, setPasskeysStatusToCookie } = client;
     const { isMobile } = useDevice();
     const { removeNotificationByKey } = notifications;
     const is_network_on = common.network_status.class === 'online';
@@ -97,8 +97,9 @@ const Passkeys = observer(() => {
             removeNotificationByKey({ key: 'enable_passkey' });
             passkeysMenuActionEventTrack('create_passkey_finished');
             setPasskeyStatus(PASSKEY_STATUS_CODES.CREATED);
+            setPasskeysStatusToCookie('available');
         }
-    }, [is_passkey_registered]);
+    }, [is_passkey_registered, setPasskeysStatusToCookie]);
 
     useEffect(() => {
         if (error) {

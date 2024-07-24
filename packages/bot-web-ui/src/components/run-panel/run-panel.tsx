@@ -55,7 +55,7 @@ type TStatisticsInfoModal = {
 };
 
 const StatisticsTile = ({ content, contentClassName, title }: TStatisticsTile) => (
-    <div className='run-panel__tile'>
+    <div className='run-panel__tile' data-testid='dt-run-panel'>
         <div className='run-panel__tile-title'>{title}</div>
         <div className={classNames('run-panel__tile-content', contentClassName)}>{content}</div>
     </div>

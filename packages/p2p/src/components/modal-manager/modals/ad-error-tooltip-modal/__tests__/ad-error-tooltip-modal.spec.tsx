@@ -139,4 +139,11 @@ describe('<AdErrorTooltipModal />', () => {
             )
         ).toBeInTheDocument();
     });
+    it('should handle the error message for "advertiser_schedule', () => {
+        mock_props.visibility_status = ['advertiser_schedule'];
+        render(<AdErrorTooltipModal {...mock_props} />, { wrapper });
+        expect(
+            screen.getByText("This ad is not listed on Buy/Sell because it's outside your business hours.")
+        ).toBeInTheDocument();
+    });
 });

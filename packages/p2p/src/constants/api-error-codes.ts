@@ -9,6 +9,7 @@ export const api_error_codes = Object.freeze({
     ADVERTISER_ADS_PAUSED: 'advertiser_ads_paused',
     ADVERTISER_NOT_FOUND: 'AdvertiserNotFound',
     ADVERTISER_NOT_REGISTERED: 'AdvertiserNotRegistered',
+    ADVERTISER_SCHEDULE: 'advertiser_schedule',
     ADVERTISER_TEMP_BAN: 'advertiser_temp_ban',
     DUPLICATE_ADVERT: 'DuplicateAdvert',
     EXCESSIVE_VERIFICATION_FAILURES: 'ExcessiveVerificationFailures',

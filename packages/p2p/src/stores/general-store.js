@@ -46,6 +46,7 @@ export default class GeneralStore extends BaseStore {
     is_p2p_blocked_for_pa = false;
     is_p2p_user = null;
     is_restricted = false;
+    is_schedule_available = true;
     nickname = null;
     nickname_error = '';
     order_table_type = order_list.ACTIVE;
@@ -112,6 +113,7 @@ export default class GeneralStore extends BaseStore {
             is_p2p_user: observable,
             is_p2p_blocked_for_pa: observable,
             is_restricted: observable,
+            is_schedule_available: observable,
             nickname: observable,
             nickname_error: observable,
             order_table_type: observable,
@@ -166,6 +168,7 @@ export default class GeneralStore extends BaseStore {
             setIsP2pBlockedForPa: action.bound,
             setIsP2PUser: action.bound,
             setIsRestricted: action.bound,
+            setIsScheduleAvailable: action.bound,
             setNickname: action.bound,
             setNicknameError: action.bound,
             setOrderTableType: action.bound,
@@ -667,6 +670,10 @@ export default class GeneralStore extends BaseStore {
         this.is_restricted = is_restricted;
     }
 
+    setIsScheduleAvailable(is_schedule_available) {
+        this.is_schedule_available = is_schedule_available;
+    }
+
     setNickname(nickname) {
         this.nickname = nickname;
     }
@@ -741,11 +748,16 @@ export default class GeneralStore extends BaseStore {
             is_listed,
             name,
             payment_info,
+            schedule,
             show_name,
             upgradable_daily_limits,
         } = response?.p2p_advertiser_info || {};
 
+        const { my_profile_store } = this.root_store;
+
         if (!response.error) {
+            const { p2p_advertiser_info } = response;
+            const { is_schedule_available } = p2p_advertiser_info ?? {};
             this.setAdvertiserId(id);
             this.setAdvertiserInfo(response.p2p_advertiser_info);
             this.setContactInfo(contact_info);
@@ -762,6 +774,8 @@ export default class GeneralStore extends BaseStore {
             this.setShouldShowRealName(!!show_name);
             this.setIsRestricted(false);
             this.setIsAdvertiserInfoSubscribed(true);
+            this.setIsScheduleAvailable(!!(is_schedule_available === undefined || is_schedule_available));
+            my_profile_store.setBusinessHours(schedule);
 
             if (upgradable_daily_limits) this.showDailyLimitIncreaseNotification();
         } else {

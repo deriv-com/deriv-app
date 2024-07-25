@@ -33,16 +33,12 @@ const BuySellRowAction = ({
         showModal({ key: 'ErrorModal', props: { error_message: getEligibilityMessage(eligibility_status) } });
     };
 
+    const is_disabled = general_store.is_barred || !general_store.is_schedule_available;
+
     if (is_eligible) {
         if (is_buy_advert) {
             return (
-                <Button
-                    className={className}
-                    is_disabled={general_store.is_barred}
-                    onClick={onClick}
-                    primary
-                    small={is_desktop}
-                >
+                <Button className={className} is_disabled={is_disabled} onClick={onClick} primary small={is_desktop}>
                     <Localize
                         i18n_default_text='Buy {{ account_currency }}'
                         values={{
@@ -54,7 +50,7 @@ const BuySellRowAction = ({
         }
 
         return (
-            <Button is_disabled={general_store.is_barred} onClick={onClick} primary small={is_desktop}>
+            <Button is_disabled={is_disabled} onClick={onClick} primary small={is_desktop}>
                 <Localize
                     i18n_default_text='Sell {{ account_currency }}'
                     values={{

@@ -5,7 +5,7 @@ import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import { getInlineTextSize } from 'Utils/responsive';
 
-const TemporarilyBarredHint = () => {
+const TemporarilyBarredHint = ({ is_my_ads_page = false }: { is_my_ads_page: boolean }) => {
     const { general_store } = useStores();
 
     if (general_store.is_barred) {
@@ -16,6 +16,21 @@ const TemporarilyBarredHint = () => {
                         "You've been temporarily barred from using our services due to multiple cancellation attempts. Try again after {{date_time}} GMT.",
                         { date_time: general_store.blocked_until_date_time }
                     )}
+                    size={getInlineTextSize('sm', 'xs')}
+                />
+            </div>
+        );
+    }
+
+    if (!general_store.is_schedule_available) {
+        return (
+            <div className='temporarily-barred-hint' data-testid='dt_temporarily_barred_hint'>
+                <InlineMessage
+                    message={
+                        is_my_ads_page
+                            ? localize("This ad isn't listed on Buy/Sell because your business hours haven't started.")
+                            : localize('Orders are only available during business hours.')
+                    }
                     size={getInlineTextSize('sm', 'xs')}
                 />
             </div>

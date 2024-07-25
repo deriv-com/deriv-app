@@ -6,8 +6,8 @@ import './business-hour-modal-main.scss';
 
 type TBusinessHourModalMain = {
     business_days: {
-        day: JSX.Element;
-        short_day: JSX.Element;
+        day: string;
+        short_day: string;
         time: JSX.Element;
         start_time?: string | null;
         end_time?: string | null;
@@ -26,7 +26,7 @@ const BusinessHourModalMain = ({ business_days }: TBusinessHourModalMain) => {
             <SeparatorContainerLine />
             <div className='business-hour-modal-main__days'>
                 {business_days.map((day, idx) => {
-                    const text_weight = idx === today - 1 ? 'bold' : 'normal';
+                    const text_weight = idx === today ? 'bold' : 'normal';
 
                     return (
                         <div key={day.value} className='business-hour-modal-main__days__hours'>

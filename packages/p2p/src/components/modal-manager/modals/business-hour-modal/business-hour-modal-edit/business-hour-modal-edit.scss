@@ -86,7 +86,8 @@
 
                 .dc-list {
                     width: 20rem;
-                    left: -12rem;
+                    left: -0.5rem;
+                    top: 1rem;
                 }
 
                 &-group {
@@ -98,6 +99,12 @@
                     &--bold {
                         .dc-dropdown__display-text {
                             font-weight: bold;
+                        }
+                    }
+
+                    &__end-time {
+                        .dc-list {
+                            left: -11rem;
                         }
                     }
                 }
@@ -114,6 +121,10 @@
                 &__open-text {
                     display: flex;
                     gap: 0.2rem;
+
+                    &--disabled {
+                        pointer-events: none;
+                    }
                 }
             }
 

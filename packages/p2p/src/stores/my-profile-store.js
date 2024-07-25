@@ -12,6 +12,7 @@ export default class MyProfileStore extends BaseStore {
     advertiser_payment_methods = {};
     advertiser_payment_methods_error = '';
     available_payment_methods = {};
+    business_hours = [];
     error_message = '';
     form_error = '';
     full_name = '';
@@ -53,6 +54,7 @@ export default class MyProfileStore extends BaseStore {
             advertiser_payment_methods: observable,
             advertiser_payment_methods_error: observable,
             available_payment_methods: observable,
+            business_hours: observable,
             error_message: observable,
             form_error: observable,
             full_name: observable,
@@ -96,6 +98,7 @@ export default class MyProfileStore extends BaseStore {
             getSearchedTradePartners: action.bound,
             getSelectedPaymentMethodDetails: action.bound,
             getTradePartnersList: action.bound,
+            handleBusinessHoursSubmit: action.bound,
             handleChange: action.bound,
             handleSubmit: action.bound,
             handleToggle: action.bound,
@@ -110,6 +113,7 @@ export default class MyProfileStore extends BaseStore {
             setAdvertiserPaymentMethods: action.bound,
             setAdvertiserPaymentMethodsError: action.bound,
             setAvailablePaymentMethods: action.bound,
+            setBusinessHours: action.bound,
             setErrorMessage: action.bound,
             setFormError: action.bound,
             setFullName: action.bound,
@@ -408,6 +412,27 @@ export default class MyProfileStore extends BaseStore {
         });
     }
 
+    handleBusinessHoursSubmit(values) {
+        const { general_store } = this.root_store;
+        requestWS({
+            p2p_advertiser_update: 1,
+            schedule: values,
+        }).then(response => {
+            if (!response.error) {
+                general_store.hideModal();
+            } else {
+                general_store.showModal({
+                    key: 'ErrorModal',
+                    props: {
+                        error_message: response.error.message,
+                        has_close_icon: false,
+                        text_size: 'xs',
+                    },
+                });
+            }
+        });
+    }
+
     handleChange(e) {
         this.setSelectedSortValue(e.target.value);
         this.getTradePartnersList({ startIndex: 0 }, true);
@@ -602,6 +627,10 @@ export default class MyProfileStore extends BaseStore {
 
     setAvailablePaymentMethods(available_payment_methods) {
         this.available_payment_methods = available_payment_methods;
+    }
+
+    setBusinessHours(business_hours) {
+        this.business_hours = business_hours;
     }
 
     setErrorMessage(error_message) {

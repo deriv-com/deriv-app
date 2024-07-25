@@ -89,6 +89,10 @@ const AdErrorTooltipModal = ({
                 return (
                     <Localize i18n_default_text='You’re not allowed to use Deriv P2P to advertise. Please contact us via live chat for more information.' />
                 );
+            case api_error_codes.ADVERTISER_SCHEDULE:
+                return (
+                    <Localize i18n_default_text="This ad is not listed on Buy/Sell because it's outside your business hours." />
+                );
             default:
                 return <Localize i18n_default_text='Your ad is not listed' />;
         }

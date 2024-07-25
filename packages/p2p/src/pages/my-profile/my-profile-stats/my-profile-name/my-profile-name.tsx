@@ -11,6 +11,7 @@ import UserAvatar from 'Components/user/user-avatar';
 import { document_status_codes, identity_status_codes } from 'Constants/account-status-codes';
 import { useStores } from 'Stores';
 import { getIconSize, getTextSize } from 'Utils/responsive';
+import MyProfileNameBusinessHours from './my-profile-name-business-hours';
 import MyProfilePrivacy from '../my-profile-privacy';
 
 const MyProfileName = () => {
@@ -133,10 +134,9 @@ const MyProfileName = () => {
                                 <div className='my-profile-name__rating__row'>
                                     <BlockUserCount />
                                 </div>
-                                {/* TODO: uncomment when implementing business hours feature */}
-                                {/* <div className='my-profile-name__rating__row'>
+                                <div className='my-profile-name__rating__row'>
                                     <MyProfileNameBusinessHours />
-                                </div> */}
+                                </div>
                             </DesktopWrapper>
                         </div>
                         <MobileWrapper>
@@ -144,10 +144,9 @@ const MyProfileName = () => {
                                 <div className='my-profile-name__rating__row'>
                                     <BlockUserCount />
                                 </div>
-                                {/* TODO: uncomment when implementing business hours feature */}
-                                {/* <div className='my-profile-name__rating__row'>
+                                <div className='my-profile-name__rating__row'>
                                     <MyProfileNameBusinessHours />
-                                </div> */}
+                                </div>
                             </div>
                         </MobileWrapper>
                         <div className='my-profile-name__row'>

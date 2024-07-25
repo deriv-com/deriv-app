@@ -22,7 +22,7 @@ const PoaUploadErrorMessage: React.FC<TPoaUploadErrorMessage> = ({ errorCode, on
                 <ActionScreen
                     actionButtons={<ActionButtons />}
                     description={errorCodeToDescriptionMapper[errorCode]}
-                    icon={<DerivLightDeclinedPoaIcon />}
+                    icon={<DerivLightDeclinedPoaIcon height={120} width={120} />}
                     title='Proof of address documents upload failed'
                 />
             </div>

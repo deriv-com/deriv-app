@@ -31,7 +31,8 @@ const FormField = forwardRef(
         return (
             <Field name={name} validate={validateField}>
                 {({ field, form }: FieldProps) => {
-                    const isFieldInvalid = Boolean((form.touched[name] || field.value.length > 0) && form.errors[name]);
+                    const fieldHasValue = field.value && field.value.length > 0;
+                    const isFieldInvalid = Boolean((form.touched[name] || fieldHasValue) && form.errors[name]);
                     return (
                         <WalletTextField
                             {...rest}

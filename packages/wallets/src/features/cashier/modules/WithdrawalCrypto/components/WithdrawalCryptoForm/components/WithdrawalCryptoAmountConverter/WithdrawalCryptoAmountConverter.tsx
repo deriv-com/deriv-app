@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
+import { displayMoney } from '@deriv/api-v2/src/utils';
 import { LegacyArrowRight2pxIcon } from '@deriv/quill-icons';
 import { WalletTextField } from '../../../../../../../../components';
+import useAllBalanceSubscription from '../../../../../../../../hooks/useAllBalanceSubscription';
 import { useWithdrawalCryptoContext } from '../../../../provider';
 import type { TWithdrawalForm } from '../../../../types';
 import { validateCryptoInput, validateFiatInput } from '../../../../utils';
@@ -21,10 +23,15 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
 
     const [isCryptoInputActive, setIsCryptoInputActive] = useState(true);
     const { errors, setValues } = useFormikContext<TWithdrawalForm>();
+    const { data: balanceData } = useAllBalanceSubscription();
+    const balance = balanceData?.[activeWallet?.loginid ?? '']?.balance ?? 0;
+    const displayBalance = displayMoney(balance, activeWallet?.currency, {
+        fractional_digits: activeWallet?.currency_config?.fractional_digits,
+    });
 
     const onChangeCryptoInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         const convertedValue = !validateCryptoInput(
-            activeWallet,
+            { balance, currency: activeWallet?.currency ?? '', displayBalance },
             fractionalDigits,
             isClientVerified,
             accountLimits?.remainder ?? 0,
@@ -59,7 +66,7 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
                 name='cryptoAmount'
                 validate={(value: string) =>
                     validateCryptoInput(
-                        activeWallet,
+                        { balance, currency: activeWallet?.currency ?? '', displayBalance },
                         fractionalDigits,
                         isClientVerified,
                         accountLimits?.remainder ?? 0,

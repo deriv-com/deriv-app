@@ -81,7 +81,8 @@ const ReplayChart = observer(
 
         const has_ended = !!getEndTime(contract_info);
 
-        const { is_dtrader_v2_enabled } = useFeatureFlags();
+        const is_dtrader_v2_enabled =
+            useFeatureFlags()['is_dtrader_v2_enabled' as keyof ReturnType<typeof useFeatureFlags>];
 
         return (
             <SmartChart
@@ -108,7 +109,7 @@ const ReplayChart = observer(
                 stateChangeListener={chartStateChange}
                 symbol={symbol}
                 allTicks={all_ticks}
-                topWidgets={is_dtrader_v2_enabled && isMobile ? <></> : ChartTopWidgets}
+                topWidgets={is_dtrader_v2_enabled && isMobile ? () => <React.Fragment /> : ChartTopWidgets}
                 isConnectionOpened={is_socket_opened}
                 isStaticChart={
                     // forcing chart reload when start_epoch changes to an earlier epoch for ACCU closed contract:

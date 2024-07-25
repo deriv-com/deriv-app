@@ -11,6 +11,7 @@ import { AccountSwitcherWallet, AccountSwitcherWalletMobile } from 'App/Containe
 import { AccountsInfoLoader } from '../Components/Preloader';
 import AccountInfoWrapper from '../account-info-wrapper';
 import WalletBadge from './wallet-badge';
+import { useDevice } from '@deriv-com/ui';
 
 type TAccountInfoWallets = {
     toggleDialog: () => void;
@@ -109,9 +110,10 @@ const DesktopInfoIcons = observer(({ gradients, icons, icon_type }: TInfoIcons) 
 const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInfoWallets) => {
     const { client, ui } = useStore();
     const { switchAccount, is_logged_in, loginid, accounts } = client;
-    const { is_mobile, account_switcher_disabled_message } = ui;
+    const { account_switcher_disabled_message } = ui;
     const { data: wallet_list } = useStoreWalletAccountsList();
     const linked_wallets_accounts = useStoreLinkedWalletsAccounts();
+    const { isDesktop } = useDevice();
 
     const active_account = accounts?.[loginid ?? ''];
     const wallet_loginid = localStorage.getItem('active_wallet_loginid');
@@ -134,7 +136,7 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
 
     const linked_wallet = wallet_list?.find(wallet => wallet.dtrade_loginid === linked_dtrade_trading_account_loginid);
 
-    if (!linked_wallet) return <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />;
+    if (!linked_wallet) return <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={!isDesktop} speed={3} />;
 
     const show_badge = linked_wallet.is_malta_wallet || linked_wallet.is_virtual;
 
@@ -142,7 +144,7 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
         <div className='acc-info__wrapper'>
             <div className='acc-info__separator' />
             <AccountInfoWrapper
-                is_mobile={is_mobile}
+                is_mobile={!isDesktop}
                 is_disabled={Boolean(active_account?.is_disabled)}
                 disabled_message={account_switcher_disabled_message}
             >
@@ -157,14 +159,14 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                     // SonarLint offers to add handler for onKeyDown event if we have onClick event handler
                     onKeyDown={active_account?.is_disabled ? undefined : () => toggleDialog()}
                 >
-                    {is_mobile ? (
-                        <MobileInfoIcon
+                    {isDesktop ? (
+                        <DesktopInfoIcons
                             gradients={linked_wallet.gradients}
                             icons={linked_wallet.icons}
                             icon_type={linked_wallet.icon_type}
                         />
                     ) : (
-                        <DesktopInfoIcons
+                        <MobileInfoIcon
                             gradients={linked_wallet.gradients}
                             icons={linked_wallet.icons}
                             icon_type={linked_wallet.icon_type}
@@ -185,9 +187,7 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                     <DropdownArrow is_disabled={Boolean(active_account?.is_disabled)} />
                 </div>
             </AccountInfoWrapper>
-            {is_mobile ? (
-                <AccountSwitcherWalletMobile is_visible={is_dialog_on} toggle={toggleDialog} loginid={loginid} />
-            ) : (
+            {isDesktop ? (
                 <CSSTransition
                     in={is_dialog_on}
                     timeout={200}
@@ -202,6 +202,8 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                         <AccountSwitcherWallet is_visible={is_dialog_on} toggle={toggleDialog} />
                     </div>
                 </CSSTransition>
+            ) : (
+                <AccountSwitcherWalletMobile is_visible={is_dialog_on} toggle={toggleDialog} loginid={loginid} />
             )}
         </div>
     );

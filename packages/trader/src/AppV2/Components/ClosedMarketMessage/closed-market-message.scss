@@ -1,0 +1,26 @@
+.closed-market-message {
+    &--container {
+        display: flex;
+        width: 100%;
+        padding: var(--core-spacing-800);
+        justify-content: space-between;
+        align-items: center;
+        background-color: var(--semantic-color-slate-solid-surface-inverse-highest);
+        z-index: 3;
+        bottom: 0;
+        position: sticky;
+    }
+    &--left {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: var(--core-spacing-200);
+
+        &-message {
+            color: var(--semantic-color-slate-solid-surface-normal-lowest);
+        }
+    }
+    &--loading {
+        display: none;
+    }
+}

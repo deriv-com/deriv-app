@@ -5,6 +5,7 @@ import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Loading } from '@deriv/components';
 import Guide from 'AppV2/Components/Guide';
+import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
 
 const Trade = observer(() => {
     const { active_symbols, onMount, onUnmount } = useTraderStore();
@@ -26,6 +27,7 @@ const Trade = observer(() => {
             ) : (
                 <Loading.DTraderV2 />
             )}
+            <ClosedMarketMessage />
         </BottomNav>
     );
 });

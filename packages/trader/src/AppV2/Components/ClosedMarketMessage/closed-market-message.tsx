@@ -70,7 +70,10 @@ const ClosedMarketMessage = observer(() => {
     React.useEffect(() => {
         if (isMarketClosed(activeSymbols, symbol)) {
             setLoading(true);
-            const whenMarketOpens = async (days_offset: number, target_symbol: string) => {
+            const whenMarketOpens = async (
+                days_offset: number,
+                target_symbol: string
+            ): Promise<void | Record<string, unknown>> => {
                 if (days_offset > days_to_check_before_exit) return {};
                 let remaining_time_to_open;
                 const target_date = toMoment(new Date()).add(days_offset, 'days');

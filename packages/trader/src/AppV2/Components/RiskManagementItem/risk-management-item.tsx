@@ -157,7 +157,6 @@ const RiskManagementItem = observer(
                                     unitRight={currency}
                                     value={Math.abs(stepperValue)}
                                     onChange={onChange}
-                                    decimals={0}
                                     message={errorMessage}
                                 />
                             )}

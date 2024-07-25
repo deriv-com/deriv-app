@@ -2,13 +2,14 @@ import React from 'react';
 import { MobileFullPageModal, Modal, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import { Localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import {
     convertToGMTWithOverflow,
     convertToMinutesRange,
     formatTime,
     getDaysOfWeek,
+    isTimeEdited,
     splitTimeRange,
 } from 'Utils/business-hours';
 import BusinessHourModalEdit from './business-hour-modal-edit';
@@ -22,7 +23,7 @@ type TTimeRange = {
 };
 
 type TBusinessDay = {
-    day: string; // JSX.Element represents React node in TypeScript
+    day: string;
     short_day: string;
     time: JSX.Element;
     start_time: string | null;
@@ -42,7 +43,7 @@ const HeaderRenderer = ({ show_edit }: { show_edit: boolean }) => (
 
 const BusinessHourModal = () => {
     const [show_edit, setShowEdit] = React.useState(false);
-    const { hideModal, is_modal_open } = useModalManagerContext();
+    const { hideModal, is_modal_open, showModal } = useModalManagerContext();
     const { my_profile_store } = useStores();
     const { business_hours } = my_profile_store;
 
@@ -108,6 +109,24 @@ const BusinessHourModal = () => {
 
     const business_hours_input = formatBusinessDays(splitTimeRange(business_hours, getTimezoneOffset()));
 
+    const onClickCancel = () => {
+        const edited_data = ref.current?.getEditedData();
+        const is_edited = isTimeEdited(business_hours_input, edited_data);
+        if (is_edited) {
+            showModal({
+                key: 'AdCancelModal',
+                props: {
+                    cancel_text: localize('Discard'),
+                    confirm_label: localize('Keep editing'),
+                    message: localize('All unsaved changes to your business hours will be lost.'),
+                    title: localize('Discard changes?'),
+                },
+            });
+        } else {
+            setShowEdit(false);
+        }
+    };
+
     if (is_mobile) {
         return (
             <MobileFullPageModal
@@ -115,9 +134,10 @@ const BusinessHourModal = () => {
                 is_modal_open={is_modal_open}
                 renderPageFooterChildren={() => (
                     <BusinessHourModalFooter
+                        onClickCancel={onClickCancel}
+                        onClickSave={onClickSave}
                         setShowEdit={setShowEdit}
                         show_edit={show_edit}
-                        onClickSave={onClickSave}
                     />
                 )}
                 renderPageHeaderElement={<HeaderRenderer show_edit={show_edit} />}
@@ -149,7 +169,12 @@ const BusinessHourModal = () => {
                 )}
             </Modal.Body>
             <Modal.Footer className='business-hour-modal__footer'>
-                <BusinessHourModalFooter setShowEdit={setShowEdit} show_edit={show_edit} onClickSave={onClickSave} />
+                <BusinessHourModalFooter
+                    onClickSave={onClickSave}
+                    onClickCancel={onClickCancel}
+                    setShowEdit={setShowEdit}
+                    show_edit={show_edit}
+                />
             </Modal.Footer>
         </Modal>
     );

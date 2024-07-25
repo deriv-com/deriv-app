@@ -2,19 +2,21 @@ import React from 'react';
 import classNames from 'classnames';
 import { Dropdown, Icon, Text, Tooltip } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
-import { getHoursList } from 'Utils/business-hours';
+import { getDropdownList, getHoursList } from 'Utils/business-hours';
 import SeparatorContainerLine from 'Components/separator-container-line';
 import './business-hour-modal-edit.scss';
 
+type TData = {
+    day: string;
+    short_day: string;
+    time: JSX.Element;
+    start_time?: string | null;
+    end_time?: string | null;
+    value: string;
+};
+
 type TBusinessHourModalEditProps = {
-    data: {
-        day: string;
-        short_day: string;
-        time: JSX.Element;
-        start_time?: string | null;
-        end_time?: string | null;
-        value: string;
-    }[];
+    data: TData[];
 };
 
 type TDataItem = TBusinessHourModalEditProps['data'][number];
@@ -30,6 +32,7 @@ type TTimeDropdownProps = {
 };
 
 const TimeDropdown = ({ idx, today, onSelectTime, start_time, end_time, day }: TTimeDropdownProps) => {
+    const time_list = getHoursList();
     return (
         <div
             className={classNames('business-hour-modal-edit__selector-item__dropdown-group', {
@@ -38,7 +41,7 @@ const TimeDropdown = ({ idx, today, onSelectTime, start_time, end_time, day }: T
         >
             <Dropdown
                 is_align_text_left
-                list={getHoursList()}
+                list={getDropdownList(time_list, 'start', end_time)}
                 onChange={(e: TEvent) => onSelectTime(e, day)}
                 should_animate_suffix_icon
                 suffix_icon='IcArrowDropDown'
@@ -50,7 +53,7 @@ const TimeDropdown = ({ idx, today, onSelectTime, start_time, end_time, day }: T
             <Dropdown
                 className='business-hour-modal-edit__selector-item__dropdown-group__end-time'
                 is_align_text_left
-                list={getHoursList()}
+                list={getDropdownList(time_list, 'end', start_time)}
                 onChange={(e: TEvent) => onSelectTime(e, day, false)}
                 should_animate_suffix_icon
                 suffix_icon='IcArrowDropDown'
@@ -90,7 +93,7 @@ const getDropdownOpenStates = (data: TBusinessHourModalEditProps['data']): TDayS
 };
 
 const BusinessHourModalEdit = React.forwardRef(({ data }: TBusinessHourModalEditProps, ref) => {
-    const [edited_data, setEditedData] = React.useState(data);
+    const [edited_data, setEditedData] = React.useState<TData[]>(data);
     const [selected_days, setSelectedDays] = React.useState<string[]>([]);
     const [dropdownOpenStates, setDropdownOpenStates] = React.useState<TDayState>(getDropdownOpenStates(data));
     const today = new Date().getDay();

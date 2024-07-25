@@ -4,13 +4,14 @@ import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 type TAdCancelModalProps = {
+    cancel_text?: string;
     confirm_label: string;
     message: string;
     onConfirm?: () => void;
     title: string;
 };
 
-const AdCancelModal = ({ confirm_label, message, onConfirm, title }: TAdCancelModalProps) => {
+const AdCancelModal = ({ cancel_text, confirm_label, message, onConfirm, title }: TAdCancelModalProps) => {
     const { hideModal, is_modal_open } = useModalManagerContext();
 
     return (
@@ -23,7 +24,7 @@ const AdCancelModal = ({ confirm_label, message, onConfirm, title }: TAdCancelMo
             <Modal.Footer>
                 <Button
                     has_effect
-                    text={localize('Cancel')}
+                    text={cancel_text ?? localize('Cancel')}
                     onClick={() => {
                         hideModal({ should_hide_all_modals: true });
                         onConfirm?.();

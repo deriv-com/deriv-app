@@ -23,9 +23,20 @@ describe('<TemporarilyBarredHint />', () => {
         (useStores as jest.Mock).mockReturnValue({
             general_store: {
                 is_barred: false,
+                is_schedule_available: true,
             },
         });
-        const { container } = render(<TemporarilyBarredHint />);
-        expect(container).toBeEmptyDOMElement();
+        render(<TemporarilyBarredHint />);
+        expect(screen.queryByTestId('dt_temporarily_barred_hint')).not.toBeInTheDocument();
+    });
+
+    it('it should render <TemporarilyBarredHint /> component if client is not in the working hours', () => {
+        (useStores as jest.Mock).mockReturnValue({
+            general_store: {
+                is_schedule_available: false,
+            },
+        });
+        render(<TemporarilyBarredHint />);
+        expect(screen.getByText('Orders are only available during business hours.')).toBeInTheDocument();
     });
 });

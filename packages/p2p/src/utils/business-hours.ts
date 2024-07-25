@@ -15,7 +15,7 @@ type TDaysOfWeek = Record<
 >;
 
 type TBusinessDay = {
-    day: string; // JSX.Element represents React node in TypeScript
+    day: string;
     short_day: string;
     time: JSX.Element;
     start_time: string;
@@ -247,12 +247,16 @@ export const formatTime = (minutes: number): string => {
     return `${formattedHours}:${formattedMins} ${ampm}`;
 };
 
+type TTimeOption = {
+    text: string;
+    value: string;
+};
 /**
  * Function to get a list of hours in 15-minute intervals
  * @param intervalInMinutes
  * @returns {Array}
  */
-export const getHoursList = (intervalInMinutes = 15) => {
+export const getHoursList = (intervalInMinutes = 15): TTimeOption[] => {
     // Initialize an empty array to store the time options
     const hoursList = [];
 
@@ -380,4 +384,42 @@ export const convertToGMTWithOverflow = (times: TTimeRange[], offsetMinutes: num
     });
 
     return convertedTimes;
+};
+
+export const isTimeEdited = (data: TBusinessDay[], edited_data: TBusinessDay[]): boolean => {
+    if (data.length !== edited_data.length) {
+        return true;
+    }
+
+    return data.reduce((isDirty, item, index) => {
+        if (isDirty) {
+            return true;
+        }
+
+        const editedItem = edited_data[index];
+
+        return item.start_time !== editedItem.start_time || item.end_time !== editedItem.end_time;
+    }, false);
+};
+
+/**
+ * Function to add disabled property to hoursList based on start or end type
+ * @param hoursList
+ * @param type
+ * @param value
+ * @returns {Array}
+ */
+export const getDropdownList = (hoursList: TTimeOption[], type: string, value: string) => {
+    const referenceIndex = hoursList.findIndex(hour => hour.value === value);
+
+    return hoursList.map((hour, index) => {
+        let disabled = false;
+        if (type === 'start' && index > referenceIndex) {
+            disabled = true;
+        } else if (type === 'end' && index < referenceIndex) {
+            disabled = true;
+        }
+
+        return { ...hour, disabled };
+    });
 };

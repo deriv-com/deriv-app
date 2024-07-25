@@ -117,6 +117,8 @@ const CFDsListing = observer(() => {
         }
     };
 
+    const hasUnavailableAccount = combined_cfd_mt5_accounts.some(account => account.status === 'unavailable');
+
     const getMT5AccountAuthStatus = (current_acc_status?: string | null, jurisdiction?: string) => {
         if (jurisdiction) {
             switch (jurisdiction) {
@@ -249,6 +251,7 @@ const CFDsListing = observer(() => {
                                       existing_account?.landing_company_short
                                   )
                                 : '';
+
                         return (
                             <TradingAppCard
                                 action_type={existing_account.action_type}
@@ -271,6 +274,8 @@ const CFDsListing = observer(() => {
                                             account_mode: selected_account_type,
                                             account_name: track_account_subtitle,
                                         });
+                                        if (hasUnavailableAccount) return setAccountUnavailableModal(true);
+
                                         if (real_account_creation_unlock_date && no_real_mf_account_eu_regulator) {
                                             setShouldShowCooldownModal(true);
                                         } else if (no_real_cr_non_eu_regulator || no_real_mf_account_eu_regulator) {

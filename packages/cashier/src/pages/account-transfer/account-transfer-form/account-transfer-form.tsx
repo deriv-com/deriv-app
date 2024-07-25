@@ -52,8 +52,8 @@ const AccountOption = ({
 }: TAccountsList) => {
     const is_cfd_account = account.is_dxtrade || account.is_ctrader || account.is_mt;
 
-    const has_show_account_status = true;
-    is_pending_verification ||
+    const has_show_account_status =
+        is_pending_verification ||
         is_verification_needed ||
         is_verification_failed ||
         is_server_maintenance ||

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useActiveWalletAccount, useTradingPlatformStatus } from '@deriv/api-v2';
+import { useActiveWalletAccount, useMT5AccountsList, useTradingPlatformStatus } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { TradingAccountCard, WalletText } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
@@ -16,11 +16,15 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { getPlatformStatus } = useTradingPlatformStatus();
     const { setModalState, show } = useModal();
+    const { data: mt5Accounts } = useMT5AccountsList();
 
     const { description, title } = MarketTypeDetails[account.market_type || MARKET_TYPE.ALL];
     const platformStatus = getPlatformStatus(account.platform);
+    const hasUnavailableAccount = mt5Accounts?.some(account => account.status === 'unavailable');
 
     const onButtonClick = useCallback(() => {
+        if (hasUnavailableAccount) return show(<AccountUnavailableModal />);
+
         switch (platformStatus) {
             case TRADING_PLATFORM_STATUS.MAINTENANCE:
                 return show(<ServerMaintenanceModal platform={account.platform} />);
@@ -39,7 +43,15 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 setModalState('marketType', account.market_type);
                 break;
         }
-    }, [platformStatus, show, activeWallet?.is_virtual, account.market_type, account.platform, setModalState]);
+    }, [
+        hasUnavailableAccount,
+        show,
+        platformStatus,
+        account.platform,
+        account.market_type,
+        activeWallet?.is_virtual,
+        setModalState,
+    ]);
 
     return (
         <TradingAccountCard

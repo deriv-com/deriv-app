@@ -64,7 +64,8 @@ const TransferForm = () => {
                                     !values.fromAmount ||
                                     !values.toAmount ||
                                     values.isError ||
-                                    activeWallet?.status !== 'active'
+                                    activeWallet?.status !== 'active' ||
+                                    hasPlatformStatus
                                 }
                                 size={isMobile ? 'md' : 'lg'}
                                 type='submit'

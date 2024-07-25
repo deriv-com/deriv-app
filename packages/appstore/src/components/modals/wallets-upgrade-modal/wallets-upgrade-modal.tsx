@@ -65,7 +65,7 @@ const WalletsUpgradeModal = observer(() => {
                 <div className='wallets-upgrade-modal__content'>
                     <div className='wallets-upgrade-modal__media-container'>
                         <VideoPlayer
-                            height={is_desktop ? '320px' : '157px'}
+                            height={is_desktop ? '311px' : '157px'}
                             is_mobile={is_mobile}
                             muted
                             src='25df7df0d0af48090b086cd6f103d8f3'

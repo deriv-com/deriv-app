@@ -28,7 +28,7 @@ const useTradingPlatformStatus = () => {
         const platformStatus =
             platform === CFD_PLATFORMS.MT5 || platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER
                 ? tradingPlatformStatusData?.find((status: TPlatformStatus) => status.platform === platform)?.status
-                : TRADING_PLATFORM_STATUS.ACTIVE;
+                : TRADING_PLATFORM_STATUS.ACTIVE; // fallback status as cashier may return non-cfd platform (i.e. doughflow, p2p, paymentagent, etc)
 
         return platformStatus;
     };

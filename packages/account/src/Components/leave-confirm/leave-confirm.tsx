@@ -40,11 +40,15 @@ const LeaveConfirmMessage = ({ back, leave }: TLeaveConfirmMessage) => {
         </IconMessageContent>
     );
 };
+/**
+ *\ Blocks routing if Formik form is dirty
+ * Has to be a child of <Formik> for FormikConsumer to work
+ */
 export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
-    const [showModal, setShowModal] = React.useState(false);
     const history = useHistory();
     const location = useLocation();
     const { isMobile } = useDevice();
+    const [showModal, setShowModal] = React.useState(false);
     const [nextLocation, setNextLocation] = React.useState(location.pathname);
     React.useEffect(() => {
         const unblock = history.block((location: Location) => {

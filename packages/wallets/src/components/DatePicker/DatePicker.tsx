@@ -46,6 +46,7 @@ const DatePicker = ({
                 return (
                     <div className='wallets-datepicker' ref={datePickerRef}>
                         <WalletTextField
+                            autoComplete='off'
                             defaultValue={field.value ? getFormattedDateString(field.value, displayFormat) : ''}
                             disabled={disabled}
                             errorMessage={hasTouched && form.errors[name] ? form.errors[name] : undefined}

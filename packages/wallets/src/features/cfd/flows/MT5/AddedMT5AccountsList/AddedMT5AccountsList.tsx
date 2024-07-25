@@ -48,7 +48,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
 
     const getBadgeText = () => {
-        if (account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE) return 'Account unavailable';
+        if (account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE) return 'Unavailable';
         if (platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE) return 'Server maintenance';
         return '';
     };

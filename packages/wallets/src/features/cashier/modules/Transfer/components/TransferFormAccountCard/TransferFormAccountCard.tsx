@@ -33,7 +33,7 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) 
         account?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE || TRADING_PLATFORM_STATUS.MAINTENANCE;
 
     const getBadgeText = () => {
-        if (account?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE) return 'Account unavailable';
+        if (account?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE) return 'Unavailable';
         if (platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE) return 'Server maintenance';
         return '';
     };

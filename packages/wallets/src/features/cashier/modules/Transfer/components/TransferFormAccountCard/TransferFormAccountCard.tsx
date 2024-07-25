@@ -27,7 +27,7 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) 
     const isInput = type === 'input';
     const isModal = type === 'modal';
 
-    const platformStatus = getPlatformStatus(account?.account_type);
+    const platformStatus = getPlatformStatus(account?.account_type ?? '');
 
     const hasPlatformStatus =
         account?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE || TRADING_PLATFORM_STATUS.MAINTENANCE;

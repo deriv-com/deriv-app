@@ -43,7 +43,8 @@ const useTransferMessages = ({
     const { data: poi } = usePOI();
     const { getPlatformStatus } = useTradingPlatformStatus();
 
-    const platformStatus = getPlatformStatus(fromAccount?.account_type) || getPlatformStatus(toAccount?.account_type);
+    const platformStatus =
+        getPlatformStatus(fromAccount?.account_type ?? '') || getPlatformStatus(toAccount?.account_type ?? '');
 
     const isServerMaintenance = platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
     const isAccountUnavailable =

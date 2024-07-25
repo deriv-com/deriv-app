@@ -56,7 +56,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     const shouldDefaultUSDWallet =
         location.pathname === '/wallet/account-transfer' ? location.state?.shouldSelectDefaultWallet : false;
 
-    const platformStatus = getPlatformStatus(selectedAccount?.account_type);
+    const platformStatus = getPlatformStatus(selectedAccount?.account_type ?? '');
 
     const hasPlatformStatus =
         selectedAccount?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE ||

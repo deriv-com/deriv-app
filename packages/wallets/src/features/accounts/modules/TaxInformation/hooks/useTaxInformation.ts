@@ -2,6 +2,10 @@ import { useMemo, useState } from 'react';
 import { FormikValues } from 'formik';
 import { useResidenceList, useSettings } from '@deriv/api-v2';
 import { THooks } from '../../../../../types';
+import { TCountryList } from '../utils';
+
+type TCountryName = TCountryList[number]['text'];
+type TCountryCode = TCountryList[number]['value'];
 
 type TTaxInformationValues = {
     accountOpeningReason: THooks.AccountSettings['account_opening_reason'];
@@ -18,11 +22,11 @@ const useTaxInformation = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const countryCodeToPatternMapper = useMemo(() => {
-        const countryCodeToPatternMapping: Record<string, string> = {};
+        const countryCodeToPatternMapping: Record<TCountryCode, string> = {};
 
         if (isResidenceListSuccess) {
             residenceList.forEach(residence => {
-                if (residence.value && !(residence.value in countryCodeToPatternMapping)) {
+                if (residence.value && !((residence.value as TCountryCode) in countryCodeToPatternMapping)) {
                     countryCodeToPatternMapping[residence.value] = residence?.tin_format?.[0] ?? '';
                 }
             });
@@ -32,9 +36,9 @@ const useTaxInformation = () => {
 
     const countryList = useMemo(() => {
         return residenceList.map(residence => ({
-            text: residence.text,
-            value: residence.value ?? '',
-        }));
+            text: residence.text as TCountryName,
+            value: residence.value as TCountryCode,
+        })) as TCountryList;
     }, [residenceList]);
 
     const initialValues = useMemo(

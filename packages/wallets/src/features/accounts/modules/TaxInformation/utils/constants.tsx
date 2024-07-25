@@ -1,3 +1,7 @@
+type TCountryName = string;
+type TCountryCode = string;
+export type TCountryList = [{ text: TCountryName; value: TCountryCode }];
+
 export const accountOpeningReasonList = [
     {
         text: 'Hedging',

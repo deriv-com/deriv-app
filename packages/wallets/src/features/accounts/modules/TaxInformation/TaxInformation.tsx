@@ -5,7 +5,12 @@ import { FormDropdown, FormField, ModalStepWrapper, WalletText } from '../../../
 import { Footer } from '../components';
 import { NeedHelpMessage } from './components';
 import { useTaxInformation } from './hooks';
-import { accountOpeningReasonList, getTinValidator, taxInformationValidationSchema } from './utils';
+import {
+    accountOpeningReasonList,
+    getTaxResidenceValidator,
+    getTinValidator,
+    taxInformationValidationSchema,
+} from './utils';
 import './TaxInformation.scss';
 
 type TTaxInformationProps = {
@@ -74,14 +79,17 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                             list={countryList}
                                             listHeight='sm'
                                             name='taxResidence'
+                                            validationSchema={getTaxResidenceValidator(countryList)}
                                         />
                                         <FormField
                                             disabled={Boolean(!values.taxResidence || errors.taxResidence)}
                                             label='Tax identification number*'
                                             name='taxIdentificationNumber'
-                                            validationSchema={getTinValidator(
-                                                countryCodeToPatternMapper[values.taxResidence ?? '']
-                                            )}
+                                            validationSchema={
+                                                values.taxResidence
+                                                    ? getTinValidator(countryCodeToPatternMapper[values.taxResidence])
+                                                    : undefined
+                                            }
                                         />
                                         <FormDropdown
                                             isFullWidth

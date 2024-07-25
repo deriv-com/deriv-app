@@ -49,12 +49,14 @@ const SuccessDialog = ({
                         size={24}
                     />
                 </div>
-                {!heading && (
+                {!heading ? (
                     <Text as='h2' weight='bold' size='s' className='dc-modal-header__title'>
                         <Localize i18n_default_text='Success!' />
                     </Text>
+                ) : (
+                    <React.Fragment>{heading}</React.Fragment>
                 )}
-                {heading && heading}
+
                 {React.isValidElement(message) && message}
                 {!React.isValidElement(message) && <p className={classNameMessage}>{message}</p>}
             </Modal.Body>

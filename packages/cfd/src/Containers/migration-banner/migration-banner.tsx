@@ -33,7 +33,6 @@ const MigrationBanner = observer(({ is_trade_modal = false }: TMigrationBannerPr
     };
     const is_desktop_trade_modal = is_trade_modal && !is_mobile;
     const banner_img = is_dark_mode_on ? 'migrate_card_dark' : 'migrate_card';
-    const trade_modal_banner_img = is_dark_mode_on ? 'migrate_card_dark_modal' : 'migrate_card_modal';
     return (
         <div
             className={classNames('mt5-migration-banner', {
@@ -79,7 +78,7 @@ const MigrationBanner = observer(({ is_trade_modal = false }: TMigrationBannerPr
                     <Localize i18n_default_text='Upgrade' />
                 </Button>
             </div>
-            <MigrationBannerImage image={is_trade_modal ? trade_modal_banner_img : banner_img} />
+            <MigrationBannerImage image={banner_img} />
         </div>
     );
 });

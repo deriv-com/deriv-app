@@ -208,7 +208,9 @@ const AccountTransferForm = observer(
         const is_unavailable_status_present =
             selected_from.status === MT5_ACCOUNT_STATUS.UNAVAILABLE ||
             selected_to.status === MT5_ACCOUNT_STATUS.UNAVAILABLE;
-        const is_maintenance_status_present = selected_to.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
+        const is_maintenance_status_present =
+            selected_from.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE ||
+            selected_to.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
 
         const platform_name_dxtrade = getPlatformSettings(CFD_PLATFORMS.DXTRADE).name;
 
@@ -803,7 +805,9 @@ const AccountTransferForm = observer(
                                                         !!converter_to_error ||
                                                         !!errors.amount ||
                                                         shouldShowTransferButton(values.amount) ||
-                                                        is_mt5_restricted
+                                                        is_mt5_restricted ||
+                                                        is_unavailable_status_present ||
+                                                        is_maintenance_status_present
                                                     }
                                                     primary
                                                     large

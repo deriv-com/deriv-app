@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
+import { FormikValues } from 'formik';
 import { useIdentityDocumentVerificationAdd, usePOI, useResidenceList, useSettings } from '@deriv/api-v2';
 import { TDocumentTypeItem, TErrorMessageProps, TIDVServiceValues } from '../types';
 import { documentNumberExamples, statusCodes } from '../utils';
-import { FormikValues } from 'formik';
 
 const statusMessage: Partial<Record<TErrorMessageProps, string>> = {
     expired: 'Your identity document has expired.',
@@ -30,7 +30,6 @@ const useIDVService = () => {
         const documents: Record<string, TDocumentTypeItem> = {};
         const list: TDocumentTypeItem[] = [];
         if (isResidenceListSuccess) {
-            // @ts-expect-error broken types for response of residence_list API call
             const residence = residenceList.filter(residence => residence.value === settings.citizen)[0];
             if (residence) {
                 const supportedDocuments = residence.identity?.services?.idv?.documents_supported || {};
@@ -96,22 +95,31 @@ const useIDVService = () => {
     return {
         /** Contains information of all the available IDV documents in object format */
         availableDocumentOptions,
+
         /** Contains information of all the available IDV documents in list format for display purpose */
         displayedDocumentsList,
+
         /** Contains document number examples corresponding to the clients country */
         documentExamples,
+
         /** Error received (if any) while submitting the documents using `identity_verification_document_add` API call */
         error: error?.error,
+
         /** Initial Formik values */
         initialValues,
+
         /** Loading status for initial render of IDV form */
         isLoading,
+
         /** `true` if submission of IDV details is successful */
         isSubmitted,
+
         /** `true` if submission is in progress using the `identity_verification_document_add` API call */
         isSubmitting,
+
         /** Error status shown on upon IDV resubmission (provides the reason for resubmission) */
         previousSubmissionErrorStatus,
+
         /** Function to initiate IDV details submission */
         submit,
     };

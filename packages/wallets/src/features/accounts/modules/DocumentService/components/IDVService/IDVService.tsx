@@ -64,7 +64,7 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
         }
     }, [isSubmitted, onCompletion]);
 
-    if (isDataLoading) return <Loader />;
+    if (isDataLoading || (!errorMessage && isSubmitting)) return <Loader />;
 
     return (
         <Formik initialValues={{ ...initialIDVValues, ...initialPersonalDetailsValues }} onSubmit={submit}>
@@ -88,10 +88,6 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                 const handleSelectDocument = (selectedItem: string) => {
                     setClientHasDocuments(selectedItem !== 'none');
                 };
-
-                if (!errorMessage && isSubmitting) {
-                    return <Loader />;
-                }
 
                 return (
                     <ModalStepWrapper

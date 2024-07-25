@@ -77,10 +77,6 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
         if (onDirty) {
             onDirty(true);
         }
-        setShowModal(false);
-        if (onDirty) {
-            onDirty(true);
-        }
     };
     return (
         <>

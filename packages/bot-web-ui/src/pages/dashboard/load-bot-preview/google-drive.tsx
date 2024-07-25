@@ -77,7 +77,7 @@ const GoogleDrive = observer(() => {
                             </div>
                             {!is_google_drive_token_valid && (
                                 <div className='load-strategy__google-drive-terms__error'>
-                                    <Localize i18n_default_text='<0>Google Drive Error: Token invalid</0>' />
+                                    <Localize i18n_default_text='<0>Google Drive Error</0>' />
                                 </div>
                             )}
                         </div>

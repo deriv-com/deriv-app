@@ -153,7 +153,7 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
             console.log(error);
             this.setGoogleDriveTokenValid(false);
             // eslint-disable-next-line no-console
-            console.log('Google Drive Error: Token invalid');
+            console.log('Google Drive Error');
             await this.signOut();
         }
     }

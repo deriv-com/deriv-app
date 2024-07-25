@@ -13,6 +13,8 @@
     }
 
     &__eu-user {
+        padding-bottom: 11rem;
+
         @include mobile-or-tablet-screen {
             min-height: 650px;
         }

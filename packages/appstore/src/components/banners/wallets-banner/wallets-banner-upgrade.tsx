@@ -3,6 +3,7 @@ import { Analytics, TEvents } from '@deriv-com/analytics';
 import { Button, Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 
 const trackAnalyticsEvent = (
     action: TEvents['ce_tradershub_banner']['action'],
@@ -22,10 +23,25 @@ type TProps = {
 };
 
 const WalletsBannerUpgrade: React.FC<TProps> = observer(({ is_upgrading }) => {
-    const { traders_hub, ui } = useStore();
-    const { is_desktop, is_mobile } = ui;
+    const { traders_hub } = useStore();
+    const { isDesktop, isMobile, isTablet } = useDevice();
     const { is_demo, toggleWalletsUpgrade } = traders_hub;
     const account_mode = is_demo ? 'demo' : 'real';
+    let titleFontSize, iconHeight, iconWidth;
+
+    if (isTablet) {
+        titleFontSize = 'xsm';
+        iconHeight = 98;
+        iconWidth = 234;
+    } else if (isDesktop) {
+        titleFontSize = 'm';
+        iconHeight = 154;
+        iconWidth = 368;
+    } else {
+        titleFontSize = 'xs';
+        iconHeight = 138;
+        iconWidth = 124;
+    }
 
     React.useEffect(() => {
         trackAnalyticsEvent('open', account_mode);
@@ -43,8 +59,8 @@ const WalletsBannerUpgrade: React.FC<TProps> = observer(({ is_upgrading }) => {
                     <Localize
                         i18n_default_text='<0>Wallets</0><1> — A smarter way to manage your funds</1>'
                         components={[
-                            <Text key={0} weight='bold' size={is_desktop ? 'm' : 'xs'} />,
-                            <Text key={1} size={is_desktop ? 'm' : 'xs'} />,
+                            <Text key={0} weight='bold' size={titleFontSize} />,
+                            <Text key={1} size={titleFontSize} />,
                         ]}
                     />
                 </div>
@@ -58,11 +74,11 @@ const WalletsBannerUpgrade: React.FC<TProps> = observer(({ is_upgrading }) => {
                 />
             </div>
             <Icon
-                icon={`IcAppstoreWalletsUpgradeCoins${is_desktop ? 'Horizontal' : ''}`}
-                width={is_desktop ? 448 : 220}
-                height={is_desktop ? '100%' : 220}
+                icon={`IcAppstoreWalletsUpgradeCoins${isMobile ? '' : 'Horizontal'}`}
+                width={iconWidth}
+                height={iconHeight}
                 className='wallets-banner-upgrade__image'
-                data_testid={`dt_wallets_upgrade_coins${is_mobile ? '' : '_horizontal'}`}
+                data_testid={`dt_wallets_upgrade_coins${isMobile ? '' : '_horizontal'}`}
             />
         </div>
     );

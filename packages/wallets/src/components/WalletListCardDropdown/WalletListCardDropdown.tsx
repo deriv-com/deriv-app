@@ -5,8 +5,9 @@ import { useEventListener, useOnClickOutside } from 'usehooks-ts';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { LabelPairedChevronDownLgFillIcon } from '@deriv/quill-icons';
+import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
-import { THooks, TSubscribedBalance } from '../../types';
+import { THooks } from '../../types';
 import reactNodeToString from '../../utils/react-node-to-string';
 import { WalletText, WalletTextField } from '../Base';
 import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
@@ -19,14 +20,14 @@ type WalletList = {
     text: React.ReactNode;
 }[];
 
-const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
+const WalletListCardDropdown = () => {
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const switchWalletAccount = useWalletAccountSwitcher();
     const { t } = useTranslation();
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    const { data: balanceData } = balance;
+    const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
     const loginId = activeWallet?.loginid;
     const [inputWidth, setInputWidth] = useState('auto');
     const [isOpen, setIsOpen] = useState(false);
@@ -130,18 +131,25 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
                                             <WalletText size='2xs'>
                                                 <Trans defaults={`${wallet.currency} Wallet`} />
                                             </WalletText>
-                                            <WalletText size='sm' weight='bold'>
-                                                <Trans
-                                                    defaults={displayMoney?.(
-                                                        balanceData?.accounts?.[wallet.loginid]?.balance ?? 0,
-                                                        wallet?.currency || '',
-                                                        {
-                                                            fractional_digits:
-                                                                wallet?.currencyConfig?.fractional_digits,
-                                                        }
-                                                    )}
+                                            {isBalanceLoading ? (
+                                                <div
+                                                    className='wallets-skeleton wallets-list-card-dropdown__balance-loader'
+                                                    data-testid='dt_wallets_list_card_dropdown_balance_loader'
                                                 />
-                                            </WalletText>
+                                            ) : (
+                                                <WalletText size='sm' weight='bold'>
+                                                    <Trans
+                                                        defaults={displayMoney(
+                                                            balanceData?.[wallet.loginid]?.balance,
+                                                            wallet?.currency,
+                                                            {
+                                                                fractional_digits:
+                                                                    wallet?.currencyConfig?.fractional_digits,
+                                                            }
+                                                        )}
+                                                    />
+                                                </WalletText>
+                                            )}
                                         </div>
                                     </div>
                                 </li>

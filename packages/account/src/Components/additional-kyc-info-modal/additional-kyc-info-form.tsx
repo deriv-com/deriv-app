@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { Form, Formik } from 'formik';
 import React from 'react';
 import { useSettings } from '@deriv/api';
+import { OECD_TIN_FORMAT_URL } from '../../Constants/external-urls';
 import FormFieldInfo from '../form-field-info';
 import { FormInputField } from '../forms/form-fields';
 import FormSelectField from '../forms/form-select-field';
@@ -118,6 +119,23 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                 <FormInputField
                                     {...fields.tax_identification_number}
                                     data_testId='dt_tax_identification_number'
+                                />
+                                <FormFieldInfo
+                                    message={
+                                        <Localize
+                                            i18n_default_text="Don't know your tax identification number? <1 />Click <0>here</0> to learn more."
+                                            components={[
+                                                <a
+                                                    key={0}
+                                                    className='link'
+                                                    target='_blank'
+                                                    rel='noopener noreferrer'
+                                                    href={OECD_TIN_FORMAT_URL}
+                                                />,
+                                                <br key={1} />,
+                                            ]}
+                                        />
+                                    }
                                 />
                             </fieldset>
                             <fieldset className='additional-kyc-info-modal__form-field'>

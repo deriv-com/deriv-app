@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.trade_definition_restartonerror = {
     init() {
@@ -31,6 +32,9 @@ Blockly.Blocks.trade_definition_restartonerror = {
         }
 
         this.enforceLimitations();
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
     required_inputs: ['RESTARTONERROR'],

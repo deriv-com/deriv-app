@@ -1,6 +1,7 @@
 import { localize } from '@deriv/translations';
 import { config } from '../../../../constants/config';
 import { getContractTypeOptions } from '../../../shared';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.trade_definition_contracttype = {
     init() {
@@ -58,6 +59,9 @@ Blockly.Blocks.trade_definition_contracttype = {
                 });
             }
         }
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
 };

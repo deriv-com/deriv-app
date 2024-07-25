@@ -6,6 +6,7 @@ import TradeStore from '../trade-store';
 import { configure } from 'mobx';
 import { ContractType } from '../Helpers/contract-type';
 import { TRootStore } from 'Types';
+import { ActiveSymbols } from '@deriv/api-types';
 
 configure({ safeDescriptors: false });
 
@@ -27,7 +28,7 @@ const activeSymbols = [
         symbol,
         symbol_type: 'stockindex',
     },
-];
+] as ActiveSymbols;
 
 jest.mock('@deriv/shared', () => {
     const commonRiseFallProperties = {
@@ -336,6 +337,17 @@ describe('TradeStore', () => {
             mockedTradeStore.setTickData(tick_data);
 
             expect(mockedTradeStore.tick_data).toEqual(tick_data);
+        });
+    });
+    describe('setActiveSymbolsV2', () => {
+        it('should set active_symbols and has_symbols_for_v2', () => {
+            expect(mockedTradeStore.active_symbols).toEqual(activeSymbols);
+            expect(mockedTradeStore.has_symbols_for_v2).toEqual(false);
+
+            mockedTradeStore.setActiveSymbolsV2([...activeSymbols, ...activeSymbols]);
+
+            expect(mockedTradeStore.active_symbols).toEqual([...activeSymbols, ...activeSymbols]);
+            expect(mockedTradeStore.has_symbols_for_v2).toEqual(true);
         });
     });
 });

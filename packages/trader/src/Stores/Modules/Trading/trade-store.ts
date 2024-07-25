@@ -191,7 +191,7 @@ export default class TradeStore extends BaseStore {
     is_market_closed = false;
     previous_symbol = '';
     active_symbols: ActiveSymbols = [];
-    active_symbols_v2: ActiveSymbols = [];
+    has_symbols_for_v2 = false;
 
     form_components: string[] = [];
 
@@ -363,7 +363,6 @@ export default class TradeStore extends BaseStore {
         makeObservable(this, {
             accumulator_range_list: observable,
             active_symbols: observable,
-            active_symbols_v2: observable,
             amount: observable,
             barrier_1: observable,
             barrier_2: observable,
@@ -398,6 +397,7 @@ export default class TradeStore extends BaseStore {
             has_equals_only: observable,
             has_open_accu_contract: computed,
             has_stop_loss: observable,
+            has_symbols_for_v2: observable,
             has_take_profit: observable,
             hovered_barrier: observable,
             hovered_contract_type: observable,
@@ -1840,7 +1840,8 @@ export default class TradeStore extends BaseStore {
     }
 
     setActiveSymbolsV2(active_symbols: ActiveSymbols) {
-        this.active_symbols_v2 = this.active_symbols = active_symbols;
+        this.active_symbols = active_symbols;
+        this.has_symbols_for_v2 = !!active_symbols.length;
     }
 
     setBarrierChoices(barrier_choices: string[]) {

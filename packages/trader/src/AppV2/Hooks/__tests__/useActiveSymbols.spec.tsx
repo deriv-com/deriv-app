@@ -48,7 +48,7 @@ describe('useActiveSymbols', () => {
             modules: {
                 trade: {
                     active_symbols: not_logged_in_active_symbols,
-                    active_symbols_v2: not_logged_in_active_symbols,
+                    has_symbols_for_v2: true,
                     contract_type: TRADE_TYPES.RISE_FALL,
                     onChange: jest.fn(),
                     setActiveSymbolsV2: jest.fn(),
@@ -73,7 +73,7 @@ describe('useActiveSymbols', () => {
         (usePrevious as jest.Mock).mockReturnValueOnce(false).mockReturnValueOnce(TRADE_TYPES.RISE_FALL);
         mocked_store.client.is_logged_in = true;
         mocked_store.modules.trade.active_symbols = logged_in_active_symbols;
-        mocked_store.modules.trade.active_symbols_v2 = logged_in_active_symbols;
+        mocked_store.modules.trade.has_symbols_for_v2 = true;
         const { result } = renderHook(() => useActiveSymbols({ barrier_category: [] }), {
             wrapper,
         });
@@ -111,7 +111,7 @@ describe('useActiveSymbols', () => {
     it('should set active symbols from store when is_logged_in and contract_type are unchanged', async () => {
         (usePrevious as jest.Mock).mockReturnValueOnce(false).mockReturnValueOnce(TRADE_TYPES.RISE_FALL);
         mocked_store.modules.trade.active_symbols = [{ symbol: 'fromStore' }];
-        mocked_store.modules.trade.active_symbols_v2 = [{ symbol: 'fromStore' }];
+        mocked_store.modules.trade.has_symbols_for_v2 = true;
         const { result } = renderHook(() => useActiveSymbols({ barrier_category: [] }), {
             wrapper,
         });

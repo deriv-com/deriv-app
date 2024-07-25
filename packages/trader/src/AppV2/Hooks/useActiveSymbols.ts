@@ -15,8 +15,8 @@ const useActiveSymbols = ({ barrier_category = [] }: TUseActiveSymbols) => {
     const { is_logged_in } = client;
     const {
         active_symbols: symbols_from_store,
-        active_symbols_v2,
         contract_type,
+        has_symbols_for_v2,
         onChange,
         setActiveSymbolsV2,
         symbol,
@@ -61,20 +61,15 @@ const useActiveSymbols = ({ barrier_category = [] }: TUseActiveSymbols) => {
         const is_logged_in_changed = previous_logged_in !== undefined && previous_logged_in !== is_logged_in;
         const has_contract_type_changed =
             previous_contract_type && contract_type && previous_contract_type !== contract_type;
-        if (
-            !symbols_from_store.length ||
-            !active_symbols_v2.length ||
-            is_logged_in_changed ||
-            has_contract_type_changed
-        ) {
+        if (!symbols_from_store.length || !has_symbols_for_v2 || is_logged_in_changed || has_contract_type_changed) {
             fetchActiveSymbols(contract_type);
         } else {
             setActiveSymbols(symbols_from_store);
         }
     }, [
-        active_symbols_v2,
         contract_type,
         fetchActiveSymbols,
+        has_symbols_for_v2,
         is_logged_in,
         previous_contract_type,
         previous_logged_in,

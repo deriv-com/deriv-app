@@ -31,6 +31,7 @@ const ModalWrapper: FC<React.PropsWithChildren<TProps>> = ({
                 'wallets-modal-wrapper--fullscreen': isFullscreen,
             })}
         >
+            {/* TODO: Replace with quill icons */}
             {!hideCloseButton && <CloseIcon className='wallets-modal-wrapper__close-icon' onClick={hide} />}
             {children}
         </div>

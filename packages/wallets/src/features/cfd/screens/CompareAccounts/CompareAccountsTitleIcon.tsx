@@ -85,6 +85,7 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
                             message={labuanJurisdictionMessage}
                         >
                             <div ref={hoverRef}>
+                                {/* TODO: Replace with quill icons */}
                                 <InfoIcon />
                             </div>
                         </Tooltip>

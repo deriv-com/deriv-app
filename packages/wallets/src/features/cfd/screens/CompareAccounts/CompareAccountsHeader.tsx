@@ -23,6 +23,7 @@ const CompareAccountsHeader = ({ isDemo, isEuRegion }: TCompareAccountsHeader) =
                     {headerTitle}
                 </WalletText>
             </div>
+            {/* TODO: Replace with quill icons */}
             <CloseIcon
                 className='wallets-compare-accounts-header__close-icon'
                 onClick={() => {

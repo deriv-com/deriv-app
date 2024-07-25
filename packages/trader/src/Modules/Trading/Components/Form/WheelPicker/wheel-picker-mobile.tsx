@@ -44,6 +44,15 @@ export function getTargetIndex({
     return targetIndex;
 }
 
+const calculateLimits = (swipeStartY: number, deltaY: number, optionHeight: number, optionsLength: number) => {
+    const MIN = 0;
+    const MAX = optionHeight * (optionsLength - 1);
+    const translateY = Math.min(MAX, Math.max(MIN, swipeStartY + deltaY));
+    const newIndex = Math.min(optionsLength - 1, Math.max(0, Math.round(translateY / optionHeight)));
+
+    return { translateY, newIndex };
+};
+
 const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
     defaultValue,
     onChange,
@@ -55,23 +64,17 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
     const [optionWidth, setOptionWidth] = useState<number>(0);
 
     const [swipe, setSwipe] = useState<SwipeState>({ startY: 0, deltaY: 0, translateY: 0 });
-    const optionRef = useRef<HTMLDivElement>(null);
-
-    const calculateLimits = (swipeStartY: number, deltaY: number, optionHeight: number, optionsLength: number) => {
-        const MIN = 0;
-        const MAX = optionHeight * (optionsLength - 1);
-        const translateY = Math.min(MAX, Math.max(MIN, swipeStartY + deltaY));
-        const newIndex = Math.min(optionsLength - 1, Math.max(0, Math.round(translateY / optionHeight)));
-
-        return { translateY, newIndex };
-    };
+    const optionRef = useRef<HTMLDivElement | null>(null);
+    const pickerRef = useRef<HTMLDivElement>(null);
 
     const swipeableHandlers = useSwipeable({
-        onSwipeStart: () => {
-            setSwipe(swipe => ({ ...swipe, startY: swipe.translateY }));
+        onSwipeStart: eventData => {
+            if (pickerRef.current && pickerRef.current.contains(eventData.event.target as Node)) {
+                setSwipe(swipe => ({ ...swipe, startY: swipe.translateY }));
+            }
         },
-        onSwiping: ({ deltaY, first }) => {
-            if (first) return;
+        onSwiping: ({ deltaY, first, event }) => {
+            if (first || (pickerRef.current && !pickerRef.current.contains(event.target as Node))) return;
             const { translateY, newIndex } = calculateLimits(swipe.startY, deltaY, optionHeight, options.length);
             setSwipe(swipe => ({
                 ...swipe,
@@ -80,7 +83,8 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
             }));
             setSelectedIndex(newIndex);
         },
-        onSwiped: ({ deltaY }) => {
+        onSwiped: ({ deltaY, event }) => {
+            if (pickerRef.current && !pickerRef.current.contains(event.target as Node)) return;
             const { newIndex } = calculateLimits(swipe.startY, deltaY, optionHeight, options.length);
             setSwipe(swipe => ({ ...swipe, deltaY: 0, translateY: optionHeight * newIndex }));
             setSelectedIndex(newIndex);
@@ -140,7 +144,7 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
                     </Text>
                 </div>
             </div>
-            <div className='picker-viewport'>
+            <div className='picker-viewport' ref={pickerRef}>
                 <div className='picker-wheel' data-testid='picker-wheel' style={wheelStyle} {...swipeableHandlers}>
                     {options.map((option, index) => (
                         <motion.div
@@ -149,18 +153,17 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
                             className='picker-wheel__options'
                             onMouseUp={() => handleClick(index)}
                             transition={{ type: 'spring', stiffness: 300 }}
+                            ref={index === selectedIndex ? optionRef : null}
                         >
-                            <div ref={index === selectedIndex ? optionRef : null}>
-                                <Text
-                                    size={getFontSize(index)}
-                                    weight={index === selectedIndex ? 'bolder' : 'bold'}
-                                    color={index === selectedIndex ? '' : 'disabled-1'}
-                                    align='center'
-                                    as='p'
-                                >
-                                    {option}
-                                </Text>
-                            </div>
+                            <Text
+                                size={getFontSize(index)}
+                                weight={index === selectedIndex ? 'bolder' : 'bold'}
+                                color={index === selectedIndex ? '' : 'disabled-1'}
+                                align='center'
+                                as='p'
+                            >
+                                {option}
+                            </Text>
                         </motion.div>
                     ))}
                 </div>

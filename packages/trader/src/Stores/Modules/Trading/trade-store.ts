@@ -517,6 +517,7 @@ export default class TradeStore extends BaseStore {
             setIsTradeParamsExpanded: action.bound,
             setIsDigitsWidgetActive: action.bound,
             setMarketStatus: action.bound,
+            getTurbosChartBarrier: action.bound,
             setMobileDigitView: action.bound,
             setPreviousSymbol: action.bound,
             setSkipPrePostLifecycle: action.bound,
@@ -1353,6 +1354,13 @@ export default class TradeStore extends BaseStore {
         this.is_market_closed = status;
     }
 
+    // eslint-disable-next-line class-methods-use-this
+    getTurbosChartBarrier(response: ProposalResponse) {
+        return (Number(response.proposal?.contract_details?.barrier) - Number(response.proposal?.spot)).toFixed(
+            getBarrierPipSize(response.proposal?.contract_details?.barrier)
+        );
+    }
+
     onProposalResponse(response: TResponse<PriceProposalRequest, ProposalResponse, 'proposal'>) {
         const { contract_type } = response.echo_req;
         const prev_proposal_info = getPropertyValue(this.proposal_info, contract_type) || {};
@@ -1417,9 +1425,7 @@ export default class TradeStore extends BaseStore {
         if (!this.main_barrier || this.main_barrier?.shade) {
             if (this.is_turbos) {
                 if (response.proposal) {
-                    let chart_barrier = (
-                        Number(response.proposal?.contract_details?.barrier) - Number(response.proposal?.spot)
-                    ).toFixed(getBarrierPipSize(response.proposal?.contract_details?.barrier));
+                    let chart_barrier = this.getTurbosChartBarrier(response);
 
                     if (Number(chart_barrier) > 0) {
                         chart_barrier = `+${chart_barrier}`;
@@ -1506,12 +1512,7 @@ export default class TradeStore extends BaseStore {
                         value: payout_per_point_choices[payoutIndex],
                     },
                 });
-
-                this.barrier_1 = String(
-                    (Number(response.proposal?.contract_details?.barrier) - Number(response.proposal?.spot)).toFixed(
-                        getBarrierPipSize(response.proposal?.contract_details?.barrier)
-                    )
-                );
+                this.barrier_1 = String(this.getTurbosChartBarrier(response));
             }
         } else {
             this.validateAllProperties();
@@ -1522,21 +1523,18 @@ export default class TradeStore extends BaseStore {
             } else if (this.is_turbos) {
                 const { max_stake, min_stake, payout_choices } = response.proposal ?? {};
                 if (payout_choices) {
+                    if (this.payout_per_point == 0) {
+                        this.onChange({
+                            target: {
+                                name: 'payout_per_point',
+                                value: Math.floor(payout_choices.length / 2),
+                            },
+                        });
+                    }
                     this.setPayoutChoices(payout_choices as number[]);
                     this.setStakeBoundary(contract_type, min_stake, max_stake);
-                    if (
-                        this.barrier_1 !==
-                        String(
-                            (
-                                Number(response.proposal?.contract_details?.barrier) - Number(response.proposal?.spot)
-                            ).toFixed(getBarrierPipSize(response.proposal?.contract_details?.barrier))
-                        )
-                    ) {
-                        this.barrier_1 = String(
-                            (
-                                Number(response.proposal?.contract_details?.barrier) - Number(response.proposal?.spot)
-                            ).toFixed(getBarrierPipSize(response.proposal?.contract_details?.barrier))
-                        );
+                    if (this.barrier_1 !== String(this.getTurbosChartBarrier(response))) {
+                        this.barrier_1 = String(this.getTurbosChartBarrier(response));
                     }
                 }
             }

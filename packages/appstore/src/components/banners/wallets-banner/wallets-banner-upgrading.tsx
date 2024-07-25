@@ -25,7 +25,7 @@ const WalletsBannerUpgrading = observer(() => {
         titleFontSize = 'xs';
         descriptionFontSize = 'xxxs';
         iconHeight = 138;
-        iconWidth = 124;
+        iconWidth = 156;
     }
 
     React.useEffect(() => {

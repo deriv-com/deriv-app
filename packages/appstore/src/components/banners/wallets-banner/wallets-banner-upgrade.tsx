@@ -40,7 +40,7 @@ const WalletsBannerUpgrade: React.FC<TProps> = observer(({ is_upgrading }) => {
     } else {
         titleFontSize = 'xs';
         iconHeight = 138;
-        iconWidth = 124;
+        iconWidth = 156;
     }
 
     React.useEffect(() => {

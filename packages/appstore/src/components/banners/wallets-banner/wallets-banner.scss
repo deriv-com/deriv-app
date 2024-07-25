@@ -3,6 +3,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 0.2rem;
     height: 18rem;
     margin-block: 2.4rem;
     padding-block: 2.4rem;
@@ -34,8 +35,8 @@
             gap: 1.6rem;
 
             @include mobile-screen {
-                width: 18rem;
-                min-width: 18rem;
+                width: 19rem;
+                min-width: 19rem;
             }
 
             @include tablet-screen {
@@ -177,7 +178,7 @@
     margin-inline-end: 8rem;
 
     @include mobile-screen {
-        min-width: 12.4rem;
+        min-width: 15.6rem;
         margin-block-start: 0.4rem;
         margin-inline-end: unset;
     }

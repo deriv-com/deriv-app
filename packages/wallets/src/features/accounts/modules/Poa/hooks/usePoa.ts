@@ -106,7 +106,25 @@ const usePoa = () => {
         ]
     );
 
-    return { error, initialStatus, initialValues, isLoading, isSuccess: isSubmissionSuccess, upload };
+    return {
+        /** Error returned from API calls for address details update and POA document upload */
+        error,
+
+        /** Contains the shared countryList data which is shared between the AddressSection and DocumentSubmission components through the status object from Formik context*/
+        initialStatus,
+
+        /** Initial values for the POA form */
+        initialValues,
+
+        /** `true` if data required for initial render is loading */
+        isLoading,
+
+        /** `true` if the address details and document upload is successful */
+        isSuccess: isSubmissionSuccess,
+
+        /** Function to initiate upload of address details and document */
+        upload,
+    };
 };
 //
 export default usePoa;

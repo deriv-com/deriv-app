@@ -1,9 +1,9 @@
 import React, { FC, useRef } from 'react';
 import classNames from 'classnames';
 import { useHover } from 'usehooks-ts';
+import { useDevice } from '@deriv-com/ui';
 import { Tooltip, WalletClipboard, WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
-import useDevice from '../../../../../hooks/useDevice';
 import EditIcon from '../../../../../public/images/ic-edit.svg';
 import { ChangePassword } from '../../ChangePassword';
 import './MT5TradeDetailsItem.scss';

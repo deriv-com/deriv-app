@@ -1,3 +1,4 @@
+import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';

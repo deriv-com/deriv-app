@@ -20,7 +20,6 @@ jest.mock('@deriv/shared', () => ({
     })),
     redirectToLogin: jest.fn(),
 }));
-const pass = '@rnv!sv';
 const mock = {
     ui: {
         is_reset_password_modal_visible: true,
@@ -28,7 +27,7 @@ const mock = {
     },
     client: {
         verification_code: {
-            reset_password: pass,
+            reset_password: '@rnv!sv',
         },
         setVerificationCode: jest.fn(),
         logout: jest.fn(() => Promise.resolve()),
@@ -80,15 +79,14 @@ describe('ResetPasswordModal', () => {
 
     it('should change input of password and trigger change password button', async () => {
         WS.resetPassword.mockReturnValue(Promise.resolve({ reset_password: 1 }));
-        const mock_password = 'Tpt#&te1743!@';
         renderComponent(store);
         await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
 
         const new_password = screen.getByLabelText('Create a password', { selector: 'input' });
 
-        userEvent.type(new_password, mock_password);
+        userEvent.type(new_password, 'Tpt#&te1743!@');
 
-        expect(new_password).toHaveValue(mock_password);
+        expect(new_password).toHaveValue('Tpt#&te1743!@');
         expect(screen.getByRole('button', { name: /Reset my password/i })).toBeEnabled();
 
         userEvent.click(
@@ -98,18 +96,18 @@ describe('ResetPasswordModal', () => {
         );
         await waitFor(() => {
             expect(WS.resetPassword).toHaveBeenCalledWith({
-                new_password: mock_password,
+                new_password: 'Tpt#&te1743!@',
                 reset_password: 1,
-                verification_code: pass,
+                verification_code: '@rnv!sv',
             });
         });
         expect(store.client.setVerificationCode).toHaveBeenCalledTimes(1);
 
         await waitFor(() => {
             expect(WS.resetPassword).toHaveBeenCalledWith({
-                new_password: mock_password,
+                new_password: 'Tpt#&te1743!@',
                 reset_password: 1,
-                verification_code: pass,
+                verification_code: '@rnv!sv',
             });
         });
 

@@ -103,24 +103,24 @@ describe('<SuccessDialog />', () => {
         expect(mockSubmitFn).toBeCalled();
     });
 
-    it('should have medium className for cancel button when `is_medium_button` prop is true', () => {
-        render(<SuccessDialog is_open={true} has_cancel onCancel={mockCancelFn} is_medium_button />);
-        expect(
-            screen.getByRole('button', {
-                name: 'Maybe later',
-            })
-        ).toHaveClass('dc-btn__medium');
-    });
-
-    it('should have medium className for submit button when `is_medium_button` prop is true', () => {
+    it('should have medium className for buttons when `is_medium_button` prop is true', () => {
         render(
-            <SuccessDialog is_open={true} has_submit onSubmit={mockSubmitFn} text_submit='Submit' is_medium_button />
+            <SuccessDialog
+                is_open={true}
+                has_cancel
+                onCancel={mockCancelFn}
+                has_submit
+                onSubmit={mockSubmitFn}
+                is_medium_button
+                text_submit='Submit'
+            />
         );
-        expect(
-            screen.getByRole('button', {
-                name: 'Submit',
-            })
-        ).toHaveClass('dc-btn__medium');
+
+        const cancelButton = screen.getByRole('button', { name: 'Maybe later' });
+        const submitButton = screen.getByRole('button', { name: 'Submit' });
+
+        expect(cancelButton).toHaveClass('dc-btn__medium');
+        expect(submitButton).toHaveClass('dc-btn__medium');
     });
 
     it('should not render submit button when `has_submit` is true but `onSubmit` is not provided', () => {
@@ -131,11 +131,6 @@ describe('<SuccessDialog />', () => {
             })
         ).not.toBeInTheDocument();
     });
-
-    // it('should render default icon', () => {
-    //     render(<SuccessDialog is_open={true} />);
-    //     expect(screen.getByText(/iccheckmarkcircle/i)).toBeInTheDocument(); // Assuming the icon renders some text related to 'IcCheckmarkCircle'
-    // });
 
     // it('should render icon based on icon_size prop', () => {
     //     render(<SuccessDialog is_open={true} icon_size='xlarge' />);

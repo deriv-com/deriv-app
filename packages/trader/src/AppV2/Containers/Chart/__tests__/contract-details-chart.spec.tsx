@@ -7,7 +7,7 @@ import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 
 jest.mock('Modules/SmartChart', () => ({
-    SmartChart: () => <div data-testid='dt_mock_chart'>Mocked Chart</div>,
+    SmartChart: () => <div>Mocked Chart</div>,
 }));
 jest.mock('react-router-dom', () => ({
     useLocation: jest.fn(() => ({
@@ -28,8 +28,6 @@ describe('Contract Replay Chart', () => {
                 </TraderProviders>
             </Router>
         );
-        const mockChartElement = screen.getByTestId('dt_mock_chart');
-        expect(mockChartElement).toBeInTheDocument();
         expect(screen.getByText('Mocked Chart')).toBeInTheDocument();
     });
 });

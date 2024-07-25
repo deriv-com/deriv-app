@@ -5,7 +5,7 @@ import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../../trader-providers';
 
 jest.mock('Modules/SmartChart', () => ({
-    SmartChart: () => <div>Mocked Chart</div>,
+    SmartChart: () => <div data-testid='dt_mock_chart'>Mocked Chart</div>,
 }));
 
 describe('<ReplayChart>', () => {
@@ -23,6 +23,9 @@ describe('<ReplayChart>', () => {
                 <ReplayChart {...props} />
             </TraderProviders>
         );
+
+        const mockChartElement = screen.getByTestId('dt_mock_chart');
+        expect(mockChartElement).toBeInTheDocument();
         expect(screen.getByText('Mocked Chart')).toBeInTheDocument();
     });
 });

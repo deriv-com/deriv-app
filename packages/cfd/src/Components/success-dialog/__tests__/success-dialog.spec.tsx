@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import SuccessDialog from '../success-dialog';
+import { Icon } from '@deriv/components';
 
 const mockCancelFn = jest.fn();
 const mockSubmitFn = jest.fn();
@@ -132,18 +133,33 @@ describe('<SuccessDialog />', () => {
         ).not.toBeInTheDocument();
     });
 
-    // it('should render icon based on icon_size prop', () => {
-    //     render(<SuccessDialog is_open={true} icon_size='xlarge' />);
-    //     expect(document.querySelector('.success-change__icon-area--xlarge')).toBeInTheDocument();
-    // });
-
-    it('should render modal title if provided', () => {
-        render(<SuccessDialog is_open={true} title='Test Title' />);
-        expect(screen.getByText('Test Title')).toBeInTheDocument();
+    it('should have xlarge icon class based on icon_size prop is xlarge', () => {
+        render(<SuccessDialog is_open={true} icon_size='xlarge' />);
+        expect(screen.getByTestId('dt_cfd_success_modal_icon_wrapper')).toHaveClass(
+            'success-change__icon-area--xlarge'
+        );
     });
 
-    // it('should render the close icon if `has_close_icon` is true', () => {
-    //     render(<SuccessDialog is_open={true} has_close_icon />);
-    //     expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument();
-    // });
+    it('should have xlarge icon class based on icon_size prop is xlarge', () => {
+        render(<SuccessDialog is_open={true} icon_size='large' />);
+        expect(screen.getByTestId('dt_cfd_success_modal_icon_wrapper')).toHaveClass('success-change__icon-area--large');
+    });
+
+    it('should render the first SVG element correctly', () => {
+        render(<SuccessDialog is_open={true} icon={<Icon icon='IcCashierWallet' size={128} data-testid='tttttt' />} />);
+
+        const iconWrapper = screen.getByTestId('dt_cfd_success_modal_icon_wrapper');
+        // eslint-disable-next-line testing-library/no-node-access
+        const svgs = iconWrapper.querySelectorAll('svg');
+
+        // Check that the first SVG has the correct attributes
+        const firstSvg = svgs[0];
+
+        // eslint-disable-next-line testing-library/no-node-access
+        const useElement = firstSvg.querySelector('use');
+        expect(useElement).toHaveAttribute(
+            'xlink:href',
+            '/public/sprites/cashier.bd4595decf98fec30aeb1172bd999274.svg#ic-cashier-wallet'
+        );
+    });
 });

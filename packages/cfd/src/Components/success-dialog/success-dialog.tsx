@@ -39,6 +39,7 @@ const SuccessDialog = ({
                         'success-change__icon-area--large': icon_size === 'large',
                         'success-change__icon-area--xlarge': icon_size === 'xlarge',
                     })}
+                    data-testid={`dt_cfd_success_modal_icon_wrapper`}
                 >
                     {icon}
                     <Icon

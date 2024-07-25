@@ -94,7 +94,7 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
         if (this.access_token) this.checkGoogleDriveAccessToken();
     }
 
-    is_google_drive_token_valid = false;
+    is_google_drive_token_valid = true;
     is_authorised = !!localStorage.getItem('google_access_token');
 
     setGoogleDriveTokenValid = (is_google_drive_token_valid: boolean) => {
@@ -153,8 +153,7 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
             console.log(error);
             this.setGoogleDriveTokenValid(false);
             // eslint-disable-next-line no-console
-            console.log('Google Drive Error: Token invalid signing user out');
-            globalObserver.emit('ui.log.error', localize('Google Drive Error: Token invalid signing user out'));
+            console.log('Google Drive Error: Token invalid');
             await this.signOut();
         }
     }

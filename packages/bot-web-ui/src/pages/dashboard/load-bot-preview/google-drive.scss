@@ -23,3 +23,10 @@
 .picker-dialog {
     z-index: 9999 !important;
 }
+
+.load-strategy__google-drive-terms {
+    &__error {
+        color: var(--brand-red-coral);
+        font-weight: bold;
+    }
+}

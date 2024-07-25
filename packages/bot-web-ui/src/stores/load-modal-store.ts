@@ -489,6 +489,9 @@ export default class LoadModalStore implements ILoadModalStore {
         this.is_load_modal_open = !this.is_load_modal_open;
         if (this.selected_strategy_id) this.previewRecentStrategy(this.selected_strategy_id);
         this.setLoadedLocalFile(null);
+        const { google_drive } = this.root_store;
+        const { setGoogleDriveTokenValid } = google_drive;
+        setGoogleDriveTokenValid(true);
     };
 
     toggleTourLoadModal = (toggle = !this.is_load_modal_open) => {

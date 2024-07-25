@@ -12,7 +12,7 @@ import {
 const GoogleDrive = observer(() => {
     const { ui } = useStore();
     const { google_drive, load_modal } = useDBotStore();
-    const { is_authorised } = google_drive;
+    const { is_authorised, is_google_drive_token_valid } = google_drive;
     const { is_open_button_loading, onDriveConnect, onDriveOpen } = load_modal;
     const { is_desktop } = ui;
 
@@ -75,6 +75,11 @@ const GoogleDrive = observer(() => {
                                     ]}
                                 />
                             </div>
+                            {!is_google_drive_token_valid && (
+                                <div className='load-strategy__google-drive-terms__error'>
+                                    <Localize i18n_default_text='<0>Google Drive Error: Token invalid</0>' />
+                                </div>
+                            )}
                         </div>
                         <Button
                             text={localize('Sign in')}

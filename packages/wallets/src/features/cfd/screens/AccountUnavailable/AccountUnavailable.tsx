@@ -15,7 +15,7 @@ const AccountUnavailable: React.FC = () => {
             </WalletText>
             <div className='wallets-account-unavailable__content'>
                 <WalletText size='sm'>
-                    The server is temporarily unavailable for this account. We’re working to resolve this.{' '}
+                    The server is temporarily unavailable for this account. We’re working to resolve this.
                 </WalletText>
             </div>
             <div className='wallets-account-unavailable__footer'>

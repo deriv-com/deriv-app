@@ -232,6 +232,7 @@ import type {
     VerifyEmailRequest,
     VerifyEmailResponse,
 } from '@deriv/api-types';
+import { TCFDPlatforms } from '@deriv/shared';
 import type { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 /**
@@ -2252,7 +2253,7 @@ type TradingPlatformStatusRequest = {
 
 type TradingPlatformStatusResponse = {
     trading_platform_status: {
-        platform: 'mt5' | 'ctrader' | 'dxtrade';
+        platform: TCFDPlatforms;
         status: 'active' | 'maintenance' | 'unavailable';
     }[];
 };

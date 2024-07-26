@@ -28,7 +28,7 @@ const useTradingPlatformStatus = () => {
         const platformStatus =
             platform === CFD_PLATFORMS.MT5 || platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER
                 ? tradingPlatformStatusData?.find((status: TPlatformStatus) => status.platform === platform)?.status
-                : undefined; // cashier may pass non-cfd platform (i.e. doughflow, p2p, paymentagent, etc) which doesn't have status propertyçç
+                : undefined; // cashier may pass non-cfd platform (i.e. doughflow, p2p, paymentagent, etc) which doesn't have status property
 
         return platformStatus;
     };

@@ -63,7 +63,7 @@ export const manualDocumentsMapper: TManualDocumentType = {
     },
     'nimc-slip': {
         component: NIMCSlipUpload,
-        countries: ['NG'],
+        countries: ['ng'],
         description: 'Upload the front and back of your identity card.',
         icon: NIMCSlipIcon,
         title: 'NIMC slip and proof of age',

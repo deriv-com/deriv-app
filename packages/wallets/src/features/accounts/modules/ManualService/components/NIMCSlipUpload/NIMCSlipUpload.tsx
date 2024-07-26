@@ -98,6 +98,7 @@ const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                                                 ]}
                                                 icon={<NIMCSlipFront />}
                                                 maxSize={8388608}
+                                                noClick
                                                 onFileChange={(file?: File) => setFieldValue('nimcCardFront', file)}
                                             />
                                         </div>

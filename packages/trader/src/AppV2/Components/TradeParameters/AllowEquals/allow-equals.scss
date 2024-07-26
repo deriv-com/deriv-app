@@ -4,7 +4,7 @@ $HEADER_TITLE_HEIGHT: var(--core-size-3200);
 .allow-equals {
     &__wrapper {
         height: calc(400px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
-        padding-block-start: 0px;
+        padding-block-start: 0;
     }
 
     &__content {

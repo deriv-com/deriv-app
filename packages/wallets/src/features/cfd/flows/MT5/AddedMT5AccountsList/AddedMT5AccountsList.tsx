@@ -97,7 +97,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                             variant='bordered'
                         >
                             <WalletText color='warning' lineHeight='2xl' size='2xs' weight='bold'>
-                                {getBadgeText()}
+                                <span style={{ color: 'var(--status-warning, #ffad3a)' }}>{getBadgeText()}</span>
                             </WalletText>
                         </Badge>
                     ) : (

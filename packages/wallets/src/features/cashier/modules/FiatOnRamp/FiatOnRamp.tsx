@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { LegacyArrowLeft2pxIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
-import { WalletButton } from '../../../../components';
+import { Button, Text } from '@deriv-com/ui';
 import { FiatOnRampDisclaimer, FiatOnRampProviderCard } from './components';
 import { fiatOnRampProvider } from './constants';
 import './FiatOnRamp.scss';
@@ -21,13 +20,13 @@ const FiatOnRamp = () => {
             ) : (
                 <div className='wallets-fiat-onramp'>
                     <div className='wallets-fiat-onramp__actions'>
-                        <WalletButton
+                        <Button
                             color='white'
                             icon={<LegacyArrowLeft2pxIcon iconSize='xs' />}
                             onClick={() => history.push('/wallet/deposit')}
                         >
                             <Localize i18n_default_text='Back' />
-                        </WalletButton>
+                        </Button>
                     </div>
                     <div className='wallets-fiat-onramp__content'>
                         <div className='wallets-fiat-onramp__description'>

@@ -8,11 +8,6 @@ jest.mock('@deriv/api-v2', () => ({
 }));
 const mockUseMutation = useMutation as jest.Mock;
 
-jest.mock('@deriv-com/ui', () => ({
-    ...jest.requireActual('@deriv-com/ui'),
-    Loader: jest.fn(() => <div>Loading...</div>),
-}));
-
 describe('FiatOnRampDisclaimer', () => {
     beforeEach(() => {
         mockUseMutation.mockReturnValue({
@@ -47,7 +42,7 @@ describe('FiatOnRampDisclaimer', () => {
         const handleDisclaimer = jest.fn();
 
         render(<FiatOnRampDisclaimer handleDisclaimer={handleDisclaimer} />);
-        expect(screen.getByText('Loading...')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_derivs-loader')).toBeInTheDocument();
     });
 
     it('should call handleDisclaimer function on "Back" button click', () => {

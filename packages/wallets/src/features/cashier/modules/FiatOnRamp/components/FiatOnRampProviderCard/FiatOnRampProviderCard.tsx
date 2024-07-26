@@ -1,7 +1,6 @@
 import React, { MouseEventHandler } from 'react';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
-import { WalletButton } from '../../../../../../components';
+import { Button, Text } from '@deriv-com/ui';
 import './FiatOnRampProviderCard.scss';
 
 type TFiatOnRampProvider = {
@@ -49,9 +48,9 @@ const FiatOnRampProviderCard: React.FC<TFiatOnRampProvider> = ({
                     </div>
                 ))}
             </div>
-            <WalletButton onClick={handleDisclaimer} size='md'>
+            <Button onClick={handleDisclaimer} size='md'>
                 <Localize i18n_default_text='Select' />
-            </WalletButton>
+            </Button>
         </div>
     );
 };

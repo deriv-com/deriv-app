@@ -1,8 +1,8 @@
 import React from 'react';
 import { DerivLightEmailVerificationIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
-import { WalletButton, WalletsActionScreen } from '../../../../../components';
+import { Button, Text } from '@deriv-com/ui';
+import { WalletsActionScreen } from '../../../../../components';
 import './WithdrawalVerificationRequest.scss';
 
 type TProps = {
@@ -32,9 +32,9 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
                     </div>
                 }
                 renderButtons={() => (
-                    <WalletButton onClick={sendEmail} size='lg'>
+                    <Button onClick={sendEmail} size='lg'>
                         <Localize i18n_default_text='Send email' />
-                    </WalletButton>
+                    </Button>
                 )}
                 title={<Localize i18n_default_text='Confirm your identity to make a withdrawal.' />}
             />

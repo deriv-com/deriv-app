@@ -2,7 +2,8 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useMutation } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
-import { WalletButton, WalletsActionScreen } from '../../../../components';
+import { Button } from '@deriv-com/ui';
+import { WalletsActionScreen } from '../../../../components';
 //TODO: replace with quill-icons
 import IcResetDemoBalance from '../../../../public/images/ic-demo-reset-balance.svg';
 import IcResetDemoBalanceDone from '../../../../public/images/ic-demo-reset-balance-done.svg';
@@ -24,12 +25,14 @@ const ResetBalance = () => {
             }
             icon={isResetBalanceSuccess ? <IcResetDemoBalanceDone /> : <IcResetDemoBalance />}
             renderButtons={() => (
-                <WalletButton
+                <Button
+                    borderWidth='sm'
                     onClick={isResetBalanceSuccess ? () => history.push('/wallet/account-transfer') : resetBalance}
                     size='lg'
+                    textSize='md'
                 >
                     {isResetBalanceSuccess ? localize('Transfer funds') : localize('Reset balance')}
-                </WalletButton>
+                </Button>
             )}
             title={isResetBalanceSuccess ? localize('Success') : localize('Reset balance')}
         />

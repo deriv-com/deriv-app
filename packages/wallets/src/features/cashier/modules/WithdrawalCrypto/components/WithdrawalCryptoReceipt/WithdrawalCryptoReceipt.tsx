@@ -2,8 +2,8 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { LegacyArrowDown2pxIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
-import { WalletButton, WalletCard } from '../../../../../../components';
+import { Button, Text } from '@deriv-com/ui';
+import { WalletCard } from '../../../../../../components';
 import { TWithdrawalReceipt } from '../../types';
 import { WithdrawalCryptoDestinationAddress } from './components';
 import './WithdrawalCryptoReceipt.scss';
@@ -50,17 +50,18 @@ const WithdrawalCryptoReceipt: React.FC<TProps> = ({ onClose, withdrawalReceipt 
                 </Text>
             </div>
             <div className='wallets-withdrawal-crypto-receipt__actions'>
-                <WalletButton
-                    color='white'
+                <Button
+                    color='black'
                     onClick={() => history.push('/wallet/transactions')}
                     size='lg'
+                    textSize='md'
                     variant='outlined'
                 >
                     <Localize i18n_default_text='View transactions' />
-                </WalletButton>
-                <WalletButton onClick={onClose} size='lg'>
+                </Button>
+                <Button onClick={onClose} size='lg'>
                     <Localize i18n_default_text='Close' />
-                </WalletButton>
+                </Button>
             </div>
         </div>
     );

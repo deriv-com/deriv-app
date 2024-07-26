@@ -1,8 +1,7 @@
 import React, { MouseEventHandler, useCallback, useEffect } from 'react';
 import { useMutation } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
-import { WalletButton } from '../../../../../../components';
+import { Button, Text } from '@deriv-com/ui';
 import './FiatOnRampDisclaimer.scss';
 
 type TFiatOnRampDisclaimer = {
@@ -37,12 +36,12 @@ const FiatOnRampDisclaimer: React.FC<TFiatOnRampDisclaimer> = ({ handleDisclaime
                 />
             </Text>
             <div className='wallets-fiat-onramp-disclaimer__buttons'>
-                <WalletButton color='white' onClick={handleDisclaimer} size='md' variant='outlined'>
+                <Button color='white' onClick={handleDisclaimer} size='md' variant='outlined'>
                     <Localize i18n_default_text='Back' />
-                </WalletButton>
-                <WalletButton isLoading={isLoading} onClick={() => redirectToBanxa()} size='md'>
+                </Button>
+                <Button isLoading={isLoading} onClick={() => redirectToBanxa()} size='md'>
                     <Localize i18n_default_text='Continue' />
-                </WalletButton>
+                </Button>
             </div>
         </div>
     );

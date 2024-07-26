@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { WalletButton, WalletsActionScreen } from '../../../../../components';
+import { Button } from '@deriv-com/ui';
+import { WalletsActionScreen } from '../../../../../components';
 import EmailSent from '../../../../../public/images/email-sent.svg';
 import './WithdrawalVerificationSent.scss';
 
@@ -30,16 +31,19 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
                 renderButtons={
                     !showResend
                         ? () => (
-                              <WalletButton
+                              <Button
+                                  borderWidth='sm'
+                                  color='primary-transparent'
                                   onClick={() => {
                                       sendEmail();
                                       setShowResend(!showResend);
                                   }}
                                   size='lg'
+                                  textSize='md'
                                   variant='ghost'
                               >
                                   <Localize i18n_default_text="Didn't receive the email?" />
-                              </WalletButton>
+                              </Button>
                           )
                         : undefined
                 }
@@ -52,12 +56,12 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
                             <Localize i18n_default_text="Check your spam or junk folder. If it's not there, try resending the email." />
                         }
                         renderButtons={() => (
-                            <WalletButton disabled={!!counter} onClick={sendEmail} size='lg'>
+                            <Button disabled={!!counter} onClick={sendEmail} size='lg'>
                                 <Localize
                                     i18n_default_text='Resend email{{counter}}'
                                     values={{ counter: counter ? localize(' in {{counter}}s', { counter }) : '' }}
                                 />
-                            </WalletButton>
+                            </Button>
                         )}
                         title={<Localize i18n_default_text="Didn't receive the email?" />}
                     />

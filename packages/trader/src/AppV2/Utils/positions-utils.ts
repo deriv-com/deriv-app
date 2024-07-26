@@ -52,7 +52,7 @@ export const getProfit = (
     contract_info: TPortfolioPosition['contract_info'] | TClosedPosition['contract_info']
 ): string | number => {
     return (
-        (contract_info as TClosedPosition['contract_info']).profit_loss ??
+        (contract_info as TClosedPosition['contract_info']).profit_loss?.replaceAll(',', '') ??
         (isMultiplierContract(contract_info.contract_type)
             ? getTotalProfit(contract_info as TPortfolioPosition['contract_info'])
             : (contract_info as TPortfolioPosition['contract_info']).profit)

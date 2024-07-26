@@ -6,7 +6,7 @@ import { APIProvider } from '@deriv/api';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import PersonalDetailsForm from '../personal-details-form';
-import { useResidenceList } from '@deriv/hooks';
+import { useGrowthbookIsOn, useResidenceList } from '@deriv/hooks';
 
 afterAll(cleanup);
 jest.mock('@deriv/components', () => ({
@@ -32,6 +32,7 @@ jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useStatesList: jest.fn(() => ({ data: residence_list, isLoading: false })),
     useResidenceList: jest.fn(() => ({ data: residence_list, isLoading: false })),
+    useGrowthbookIsOn: jest.fn(),
 }));
 
 describe('<PersonalDetailsForm />', () => {
@@ -62,6 +63,10 @@ describe('<PersonalDetailsForm />', () => {
             </Router>
         );
     };
+
+    beforeEach(() => {
+        (useGrowthbookIsOn as jest.Mock).mockReturnValue([true]);
+    });
 
     it('should render successfully', async () => {
         renderComponent();

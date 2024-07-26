@@ -1072,6 +1072,7 @@ export default class NotificationStore extends BaseStore {
             phone_number_verification: {
                 key: 'phone_number_verification',
                 header: localize('Verify your phone number'),
+                platform: 'Account',
                 message: <Localize i18n_default_text='Keep your account safe. Verify your phone number now.' />,
                 type: 'warning',
                 action: {

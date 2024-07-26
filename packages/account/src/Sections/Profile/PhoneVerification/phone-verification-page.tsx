@@ -7,13 +7,14 @@ import OTPVerification from './otp-verification';
 import CancelPhoneVerificationModal from './cancel-phone-verification-modal';
 import VerificationLinkExpiredModal from './verification-link-expired-modal';
 import { observer, useStore } from '@deriv/stores';
-import { useSendOTPVerificationCode } from '@deriv/hooks';
+import { useGrowthbookIsOn, useSendOTPVerificationCode } from '@deriv/hooks';
 import { Loading } from '@deriv/components';
 import { useEffect, useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 
 const PhoneVerificationPage = observer(() => {
+    const history = useHistory();
     const [otp_verification, setOtpVerification] = useState({
         show_otp_verification: true,
         phone_verification_type: '',
@@ -25,6 +26,9 @@ const PhoneVerificationPage = observer(() => {
         setShouldShowCancelVerificationModal(true);
     };
     const { sendEmailOTPVerification, email_otp_error, is_email_verified } = useSendOTPVerificationCode();
+    const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookIsOn({
+        featureFlag: 'phone_number_verification',
+    });
 
     const { client, ui } = useStore();
     const { is_redirected_from_email, setRedirectFromEmail } = ui;
@@ -32,8 +36,13 @@ const PhoneVerificationPage = observer(() => {
         verification_code: { phone_number_verification: phone_number_verification_code },
         is_authorize,
         is_virtual,
-        is_phone_number_verification_enabled,
     } = client;
+
+    useEffect(() => {
+        if ((isPhoneNumberVerificationGBLoaded && !isPhoneNumberVerificationEnabled) || is_virtual) {
+            history.push(routes.personal_details);
+        }
+    }, [isPhoneNumberVerificationGBLoaded, isPhoneNumberVerificationEnabled, is_virtual, history]);
 
     useEffect(() => {
         if (is_redirected_from_email) {
@@ -55,10 +64,7 @@ const PhoneVerificationPage = observer(() => {
         }
     }, [email_otp_error, is_email_verified, phone_number_verification_code, is_authorize]);
 
-    if (is_virtual) {
-        return <Redirect to={routes.personal_details} />;
-    }
-    if (is_loading) {
+    if (is_loading || !isPhoneNumberVerificationGBLoaded) {
         return <Loading is_fullscreen={false} />;
     }
 

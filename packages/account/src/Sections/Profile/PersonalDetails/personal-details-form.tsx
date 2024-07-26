@@ -31,7 +31,7 @@ import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, ma
 import FormSelectField from 'Components/forms/form-select-field';
 import { VerifyButton } from './verify-button';
 import { useInvalidateQuery } from '@deriv/api';
-import { useStatesList, useResidenceList } from '@deriv/hooks';
+import { useStatesList, useResidenceList, useGrowthbookIsOn } from '@deriv/hooks';
 
 type TRestState = {
     show_form: boolean;
@@ -45,6 +45,9 @@ const PersonalDetailsForm = observer(() => {
     const [is_submit_success, setIsSubmitSuccess] = useState(false);
     const invalidate = useInvalidateQuery();
     const history = useHistory();
+    const [isPhoneNumberVerificationEnabled] = useGrowthbookIsOn({
+        featureFlag: 'phone_number_verification',
+    });
 
     const {
         client,
@@ -58,7 +61,6 @@ const PersonalDetailsForm = observer(() => {
         authentication_status,
         is_eu,
         is_virtual,
-        is_phone_number_verification_enabled,
         current_landing_company,
         updateAccountStatus,
         residence,
@@ -375,7 +377,7 @@ const PersonalDetailsForm = observer(() => {
                                             disabled={isFieldDisabled('phone')}
                                             data-testid='dt_phone'
                                         />
-                                        {is_phone_number_verification_enabled &&
+                                        {isPhoneNumberVerificationEnabled &&
                                             account_settings.phone === values.phone && <VerifyButton />}
                                     </fieldset>
                                 )}

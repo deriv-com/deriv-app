@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PhoneVerificationPage from '../phone-verification-page';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { useSendOTPVerificationCode } from '@deriv/hooks';
+import { useGrowthbookIsOn, useSendOTPVerificationCode } from '@deriv/hooks';
 
 jest.mock('../otp-verification.tsx', () => jest.fn(() => <div>Confirm Your Email</div>));
 jest.mock('../confirm-phone-number.tsx', () => jest.fn(() => <div>Confirm Phone Number</div>));
@@ -16,6 +16,7 @@ jest.mock('@deriv/hooks', () => ({
         is_email_verified: false,
         sendEmailOTPVerification: jest.fn(),
     })),
+    useGrowthbookIsOn: jest.fn(),
 }));
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -32,12 +33,12 @@ describe('ConfirmPhoneNumber', () => {
         );
     };
     beforeEach(() => {
+        (useGrowthbookIsOn as jest.Mock).mockReturnValue([true, true]);
         mock_store_data = mockStore({
             client: {
                 verification_code: {
                     phone_number_verification: '',
                 },
-                is_phone_number_verification_enabled: true,
             },
             ui: {
                 is_redirected_from_email: false,

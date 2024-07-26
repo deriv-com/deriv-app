@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import moment from 'moment';
 import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api-v2';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
-import { Divider, Tooltip } from '@deriv-com/ui';
-import { WalletButton, WalletText } from '../../../../../../components/Base';
+import { Button, Divider, Tooltip } from '@deriv-com/ui';
+import { WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
 import useDevice from '../../../../../../hooks/useDevice';
@@ -196,9 +196,16 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                 </div>
 
                 {isMobile && !!transaction.is_valid_to_cancel && (
-                    <WalletButton isFullWidth onClick={onCancelButtonClick} size='sm' variant='outlined'>
+                    <Button
+                        borderWidth='sm'
+                        color='black'
+                        isFullWidth
+                        onClick={onCancelButtonClick}
+                        size='sm'
+                        variant='outlined'
+                    >
                         Cancel transaction
-                    </WalletButton>
+                    </Button>
                 )}
             </div>
         </React.Fragment>

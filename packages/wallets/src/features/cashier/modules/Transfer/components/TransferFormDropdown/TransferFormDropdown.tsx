@@ -109,6 +109,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     return (
         <button
             className='wallets-transfer-form-dropdown'
+            data-testid='dt_wallets_transfer_form_dropdown'
             onClick={() => {
                 modal.show(
                     <TransferFormAccountSelection
@@ -135,7 +136,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                 </div>
 
                 {selectedAccount ? (
-                    <TransferFormAccountCard account={selectedAccount} activeWallet={activeWallet} type='input' />
+                    <TransferFormAccountCard account={selectedAccount} type='input' />
                 ) : (
                     <div className='wallets-transfer-form-dropdown__select-account-cta'>
                         <WalletText size='sm' weight='bold'>
@@ -149,7 +150,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                 <>
                     {selectedAccount?.demo_account ? (
                         <div className='wallets-transfer-form-dropdown__badge'>
-                            <WalletListCardBadge isDemo={Boolean(selectedAccount?.demo_account)} label='virtual' />
+                            <WalletListCardBadge />
                         </div>
                     ) : null}
                     <LegacyChevronDown2pxIcon className='wallets-transfer-form-dropdown__icon-dropdown' iconSize='xs' />

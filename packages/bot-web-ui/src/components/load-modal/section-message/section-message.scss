@@ -1,0 +1,40 @@
+.load-strategy__section_message {
+    --bg-section-message-warning: rgba(255, 156, 19, 0.08);
+
+    margin-top: -16px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+
+    padding: 16px;
+    border-radius: 16px;
+    background-color: var(--bg-section-message-warning);
+
+    .icon {
+        .dc-icon {
+            --fill-color1: rgb(225 141 0);
+        }
+
+        height: 16px;
+        width: 16px;
+        margin-right: 8px;
+    }
+
+    .text {
+        width: calc(100% - 24px);
+    }
+
+    @include mobile-or-tablet-screen {
+        margin-top: -8px;
+        margin-bottom: 8px;
+        margin-inline: -1.6rem;
+        border-radius: 0px;
+    }
+}
+
+.load-strategy__section_message + .load-strategy__local-dropzone-area {
+    height: calc(100% - 68px);
+    @include mobile-or-tablet-screen {
+        height: calc(100% - 76px);
+    }
+}

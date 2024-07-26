@@ -1,13 +1,10 @@
 import { useMemo } from 'react';
 import useAuthorize from './useAuthorize';
-import useBalance from './useBalance';
 import useCurrencyConfig from './useCurrencyConfig';
-import { displayMoney } from '../utils';
 
 /** A custom hook that gets the list of all wallet accounts for the current user. */
 const useWalletAccountsList = () => {
     const { data: authorize_data, ...rest } = useAuthorize();
-    const { data: balance_data } = useBalance();
     const { getConfig } = useCurrencyConfig();
 
     // Filter out non-wallet accounts.
@@ -57,31 +54,11 @@ const useWalletAccountsList = () => {
         });
     }, [filtered_accounts, getConfig]);
 
-    // Add balance to each wallet account
-    const modified_accounts_with_balance = useMemo(
-        () =>
-            modified_accounts?.map(wallet => {
-                const balance = balance_data?.accounts?.[wallet.loginid]?.balance || 0;
-
-                return {
-                    ...wallet,
-                    /** The balance of the wallet account. */
-                    balance,
-                    /** The balance of the wallet account in currency format. */
-                    display_balance: displayMoney(balance, wallet.currency_config?.display_code || 'USD', {
-                        fractional_digits: wallet.currency_config?.fractional_digits,
-                        preferred_language: authorize_data?.preferred_language,
-                    }),
-                };
-            }),
-        [balance_data?.accounts, modified_accounts, authorize_data?.preferred_language]
-    );
-
     // Sort wallet accounts alphabetically by fiat, crypto, then virtual.
     const sorted_accounts = useMemo(() => {
-        if (!modified_accounts_with_balance) return;
+        if (!modified_accounts) return;
 
-        return [...modified_accounts_with_balance].sort((a, b) => {
+        return [...modified_accounts].sort((a, b) => {
             if (a.is_virtual !== b.is_virtual) {
                 return a.is_virtual ? 1 : -1;
             } else if (a.currency_config?.is_crypto !== b.currency_config?.is_crypto) {
@@ -90,7 +67,7 @@ const useWalletAccountsList = () => {
 
             return (a.currency || 'USD').localeCompare(b.currency || 'USD');
         });
-    }, [modified_accounts_with_balance]);
+    }, [modified_accounts]);
 
     return {
         /** The list of wallet accounts for the current user. */

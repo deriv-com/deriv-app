@@ -3,11 +3,13 @@ import {
     useActiveLinkedToTradingAccount,
     useActiveWalletAccount,
     useCreateNewRealAccount,
-    useSettings,
     useInvalidateQuery,
+    useSettings,
 } from '@deriv/api-v2';
+import { displayMoney } from '@deriv/api-v2/src/utils';
 import { toMoment } from '@deriv/utils';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
+import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import { ModalStepWrapper, WalletButton, WalletText } from '../Base';
@@ -30,10 +32,9 @@ const DerivAppsGetAccount: React.FC = () => {
     const { addTradingAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
     const invalidate = useInvalidateQuery();
 
-    const { data: activeLinkedToTradingAccount, isLoading: isActiveLinkedToTradingAccountLoading } =
-        useActiveLinkedToTradingAccount();
+    const { isLoading: isActiveLinkedToTradingAccountLoading } = useActiveLinkedToTradingAccount();
 
-    const landingCompanyName = activeWallet?.landing_company_name?.toLocaleUpperCase();
+    const { data: balanceData } = useAllBalanceSubscription();
 
     const createTradingAccount = async () => {
         if (!activeWallet?.is_virtual) {
@@ -59,6 +60,14 @@ const DerivAppsGetAccount: React.FC = () => {
 
     useEffect(() => {
         if (isAccountCreationSuccess) {
+            const displayBalance = displayMoney(
+                balanceData?.[activeWallet?.loginid ?? '']?.balance,
+                activeWallet?.currency,
+                {
+                    fractional_digits: activeWallet?.currency_config?.fractional_digits,
+                }
+            );
+
             show(
                 <ModalStepWrapper
                     renderFooter={isDesktop ? undefined : () => <DerivAppsSuccessFooter />}
@@ -66,10 +75,10 @@ const DerivAppsGetAccount: React.FC = () => {
                     shouldHideHeader={isDesktop}
                 >
                     <CFDSuccess
-                        description={`Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your Options (${landingCompanyName}) account to start trading.`}
-                        displayBalance={activeLinkedToTradingAccount?.display_balance ?? '0.00'}
+                        description={`Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your Options account to start trading.`}
+                        displayBalance={displayBalance}
                         renderButton={() => <DerivAppsSuccessFooter />}
-                        title={`Your Options (${landingCompanyName}) account is ready`}
+                        title={`Your Options account is ready`}
                     />
                 </ModalStepWrapper>,
                 {
@@ -83,7 +92,7 @@ const DerivAppsGetAccount: React.FC = () => {
     return (
         <div className='wallets-deriv-apps-section wallets-deriv-apps-section__get-account'>
             <div className='wallets-deriv-apps-section__icon'>
-                <WalletMarketIcon icon='IcWalletOptionsLight' size='lg' />
+                <WalletMarketIcon icon='standard' size='lg' />
             </div>
             <div className='wallets-deriv-apps-section__get-content'>
                 <div className='wallets-deriv-apps-section__details'>

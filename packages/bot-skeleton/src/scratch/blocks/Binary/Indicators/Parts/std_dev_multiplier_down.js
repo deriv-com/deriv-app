@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../../utils';
 
 Blockly.Blocks.std_dev_multiplier_down = {
     init() {
@@ -28,6 +29,9 @@ Blockly.Blocks.std_dev_multiplier_down = {
             DOWNMULTIPLIER: null,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-Blockly.JavaScript.std_dev_multiplier_down = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.std_dev_multiplier_down = () => {};

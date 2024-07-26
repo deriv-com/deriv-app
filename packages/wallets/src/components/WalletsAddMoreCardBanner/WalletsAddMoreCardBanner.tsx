@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useCreateWallet } from '@deriv/api-v2';
 import { LabelPairedCheckMdFillIcon, LabelPairedPlusMdFillIcon } from '@deriv/quill-icons';
+import { useTranslations } from '@deriv-com/translations';
 import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
@@ -24,12 +25,17 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
     const history = useHistory();
     const modal = useModal();
     const { addWalletAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
+    const { localize } = useTranslations();
 
     useEffect(
         () => {
             if (status === 'error') {
                 modal.show(
-                    <WalletError buttonText='Close' errorMessage={error.error.message} onClick={() => modal.hide()} />
+                    <WalletError
+                        buttonText={localize('Close')}
+                        errorMessage={error.error.message}
+                        onClick={() => modal.hide()}
+                    />
                 );
             } else if (status === 'success') {
                 modal.show(
@@ -46,7 +52,15 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [data?.currency, data?.display_balance, data?.landing_company_shortcode, error?.error.message, isMobile, status]
+        [
+            data?.currency,
+            data?.display_balance,
+            data?.landing_company_shortcode,
+            error?.error.message,
+            isMobile,
+            status,
+            localize,
+        ]
     );
 
     return (
@@ -84,7 +98,7 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
                 }}
                 size={isMobile ? 'sm' : 'lg'}
             >
-                {isAdded ? 'Added' : 'Add'}
+                {isAdded ? localize('Added') : localize('Add')}
             </WalletButton>
         </div>
     );

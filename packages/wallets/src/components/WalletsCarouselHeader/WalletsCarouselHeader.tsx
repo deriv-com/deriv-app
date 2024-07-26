@@ -2,7 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
-import { IconButton, WalletText } from '../Base';
+import { Text } from '@deriv-com/ui';
+import { IconButton } from '../Base';
 import { WalletCurrencyCard } from '../WalletCurrencyCard';
 import './WalletsCarouselHeader.scss';
 
@@ -22,18 +23,18 @@ const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, is
             <div className='wallets-carousel-header__content'>
                 <WalletCurrencyCard currency={currency} isDemo={isDemo} size='md' />
                 <div className='wallets-carousel-header__details'>
-                    <WalletText color='general' size='sm'>
+                    <Text color='general' size='sm'>
                         {currency} Wallet
-                    </WalletText>
+                    </Text>
                     {isBalanceLoading ? (
                         <div
                             className='wallets-skeleton wallets-carousel-header__balance-loader'
                             data-testid='dt_wallets_carousel_header_balance_loader'
                         />
                     ) : (
-                        <WalletText color='general' size='lg' weight='bold'>
+                        <Text color='general' size='lg' weight='bold'>
                             {balance}
-                        </WalletText>
+                        </Text>
                     )}
                 </div>
             </div>

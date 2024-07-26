@@ -43,7 +43,6 @@ export default class TradersHubStore extends BaseStore {
     is_cfd_restricted_country = false;
     is_financial_restricted_country = false;
     is_setup_real_account_or_go_to_demo_modal_visible = false;
-    available_accounts = {};
 
     constructor(root_store) {
         const local_storage_properties = [
@@ -129,7 +128,7 @@ export default class TradersHubStore extends BaseStore {
             setWalletsMigrationFailedPopup: action.bound,
             cleanup: action.bound,
             setIsSetupRealAccountOrGoToDemoModalVisible: action.bound,
-            setTradingPlatformAvailability: action.bound,
+            dynamic_available_platforms: computed,
         });
 
         reaction(
@@ -150,7 +149,6 @@ export default class TradersHubStore extends BaseStore {
             () => {
                 this.getAvailablePlatforms();
                 this.getAvailableCFDAccounts();
-                this.setTradingPlatformAvailability();
             }
         );
 
@@ -480,9 +478,10 @@ export default class TradersHubStore extends BaseStore {
             );
             return;
         }
-        if (this.root_store.client.is_logged_in) {
+
+        if (Object.keys(this.dynamic_available_platforms).length > 0) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account => {
-                return account.platform === CFD_PLATFORMS.MT5 && this.available_accounts[account.product];
+                return account.platform === CFD_PLATFORMS.MT5 && this.dynamic_available_platforms[account.product];
             });
             return;
         }
@@ -520,9 +519,9 @@ export default class TradersHubStore extends BaseStore {
             );
             return;
         }
-        if (this.root_store.client.is_logged_in) {
+        if (Object.keys(this.dynamic_available_platforms).length > 0) {
             this.available_ctrader_accounts = this.available_cfd_accounts.filter(account => {
-                return account.platform === CFD_PLATFORMS.CTRADER && this.available_accounts[account.product];
+                return account.platform === CFD_PLATFORMS.CTRADER && this.dynamic_available_platforms[account.product];
             });
             return;
         }
@@ -863,18 +862,20 @@ export default class TradersHubStore extends BaseStore {
         this.is_setup_real_account_or_go_to_demo_modal_visible = value;
     }
 
-    setTradingPlatformAvailability() {
+    get dynamic_available_platforms() {
+        const available_accounts = {};
         this.root_store.client.trading_platform_available_accounts.forEach(account => {
             if (account.product === 'synthetic') {
                 // `trading_platform_available_accounts` does not have an entry for 'standard' accounts,
                 // so adding 'standard' sub-account type to the available accounts for synthetic products.
-                this.available_accounts[account.sub_account_type] = true;
+                available_accounts[account.sub_account_type] = true;
             } else {
-                this.available_accounts[account.product] = true;
+                available_accounts[account.product] = true;
             }
         });
         if (this.root_store.client.ctrader_trading_platform_available_accounts.length > 0) {
-            this.available_accounts.ctrader = true;
+            available_accounts.ctrader = true;
         }
+        return available_accounts;
     }
 }

@@ -169,7 +169,7 @@ const BusinessHourModalEdit = React.forwardRef(({ data }: TBusinessHourModalEdit
                 if (initialDay) {
                     // If the initial day is a full day(ie. 24hrs => 1440minutes) or if the day was closed previously, toggle the dropdown
                     if (
-                        (initialDay.end_time === FULL_DAY && initialDay.end_time === FULL_DAY) ||
+                        (initialDay.end_time === FULL_DAY && initialDay.start_time === FULL_DAY) ||
                         (initialDay.start_time === null && initialDay.end_time === null)
                     ) {
                         toggleDropdown(value);

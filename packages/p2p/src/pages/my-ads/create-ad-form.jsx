@@ -27,6 +27,7 @@ const CreateAdForm = ({ country_list }) => {
         p2p_settings: {
             adverts_archive_period,
             float_rate_offset_limit_string,
+            order_expiry_options,
             order_payment_period_string,
             rate_type,
         },
@@ -72,6 +73,13 @@ const CreateAdForm = ({ country_list }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const getOrderExpiryOption = () => {
+        if (order_expiry_options?.includes(Number(order_payment_period_string))) {
+            return order_payment_period_string;
+        }
+        return `${Math.max(...order_expiry_options)}`;
+    };
+
     return (
         <React.Fragment>
             <Formik
@@ -84,7 +92,7 @@ const CreateAdForm = ({ country_list }) => {
                     max_transaction: '',
                     min_transaction: '',
                     offer_amount: '',
-                    order_completion_time: order_payment_period_string,
+                    order_completion_time: getOrderExpiryOption(),
                     payment_info: my_ads_store.payment_info,
                     rate_type_string: rate_type,
                     rate_type: rate_type === ad_type.FLOAT ? '-0.01' : '',

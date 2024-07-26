@@ -16,6 +16,10 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
 
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
         button {
             background-color: transparent;
         }
@@ -33,6 +37,10 @@
         height: calc(90dvh - 23rem);
         -ms-overflow-style: none;
         scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
 
     &__button {

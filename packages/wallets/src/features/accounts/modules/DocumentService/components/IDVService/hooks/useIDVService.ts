@@ -69,7 +69,9 @@ const useIDVService = () => {
     const status = poiStatus?.current.status ?? 'none';
 
     const previousSubmissionErrorStatus =
-        status === statusCodes.expired || status === statusCodes.rejected ? statusMessage[status] : null;
+        status === statusCodes.expired || status === statusCodes.rejected
+            ? { code: status, message: statusMessage[status] }
+            : null;
 
     const submit = (values: FormikValues | TIDVServiceValues) => {
         submitIDVDocuments({

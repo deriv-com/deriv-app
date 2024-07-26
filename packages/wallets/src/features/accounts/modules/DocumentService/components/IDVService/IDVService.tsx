@@ -46,7 +46,7 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
     const isSubmitting = isIDVSubmitting && isPersonalDetailsSubmitting;
     const isSubmitted = isIDVSubmitted && isPersonalDetailsSubmitted;
 
-    const errorMessage = previousSubmissionErrorStatus ?? errorIDVDetails?.code ?? errorPersonalDetails?.code;
+    const errorMessage = previousSubmissionErrorStatus ?? errorIDVDetails ?? errorPersonalDetails;
 
     const submit = (values: TIDVServiceValues & TVerifyPersonalDetailsValues) => {
         if (clientHasDocuments) {
@@ -89,7 +89,7 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                     >
                         <div className='wallets-idv-service'>
                             <div className='wallets-idv-service__body'>
-                                {!!errorMessage && <IDVServiceErrorMessage message={errorMessage} />}
+                                {!!errorMessage?.message && <IDVServiceErrorMessage message={errorMessage.message} />}
                                 <div className='wallets-idv-service__title'>
                                     <WalletText weight='bold'>Identity verification</WalletText>
                                 </div>

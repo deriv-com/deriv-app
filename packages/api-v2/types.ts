@@ -232,7 +232,6 @@ import type {
     VerifyEmailRequest,
     VerifyEmailResponse,
 } from '@deriv/api-types';
-import { TCFDPlatforms } from '@deriv/shared';
 import type { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 /**
@@ -2253,7 +2252,12 @@ type TradingPlatformStatusRequest = {
 
 type TradingPlatformStatusResponse = {
     trading_platform_status: {
-        platform: TCFDPlatforms;
+        platform: Exclude<
+            NonNullable<
+                TSocketEndpoints['trading_platform_accounts']['response']['trading_platform_accounts']
+            >[0]['platform'],
+            undefined
+        >;
         status: 'active' | 'maintenance' | 'unavailable';
     }[];
 };

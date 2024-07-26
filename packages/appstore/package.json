@@ -27,7 +27,8 @@
     "license": "Apache-2.0",
     "dependencies": {
         "@deriv-com/analytics": "1.10.0",
-        "@deriv-com/translations": "1.3.3",
+        "@deriv-com/translations": "1.3.4",
+        "@deriv-com/ui": "1.29.9",
         "@deriv/account": "^1.0.0",
         "@deriv/cashier": "^1.0.0",
         "@deriv/cfd": "^1.0.0",

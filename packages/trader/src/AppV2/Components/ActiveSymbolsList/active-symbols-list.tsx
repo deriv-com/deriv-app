@@ -18,12 +18,14 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
     const [isSearching, setIsSearching] = useState(false);
     const [selectedSymbol, setSelectedSymbol] = useState(default_symbol);
     const [searchValue, setSearchValue] = useState('');
-    const { symbol } = useTraderStore();
+    const { setTickData, symbol } = useTraderStore();
 
     const marketCategoriesRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setSelectedSymbol(symbol ?? default_symbol);
+        setTickData(null);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [symbol, default_symbol]);
 
     return (

@@ -116,8 +116,8 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
 
     setGoogleDriveTokenExpiry = (seconds: number) => {
         const currentEpochTime = Math.floor(Date.now() / 1000);
-        const expiryTime = currentEpochTime + seconds;
-        localStorage.setItem('google_access_token_expiry', expiryTime.toString());
+        const expiry_time = currentEpochTime + seconds;
+        localStorage.setItem('google_access_token_expiry', expiry_time.toString());
     };
 
     initialiseClient = () => {
@@ -139,10 +139,10 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
     }
 
     async verifyGoogleDriveAccessToken() {
-        const expiryTime = localStorage?.getItem('google_access_token_expiry');
-        if (expiryTime) {
-            const currentEpochTime = Math.floor(Date.now() / 1000);
-            if (currentEpochTime > Number(expiryTime)) {
+        const expiry_time = localStorage?.getItem('google_access_token_expiry');
+        if (expiry_time) {
+            const current_epoch_time = Math.floor(Date.now() / 1000);
+            if (current_epoch_time > Number(expiry_time)) {
                 this.signOut();
                 this.setGoogleDriveTokenValid(false);
                 localStorage.removeItem('google_access_token_expiry');

@@ -55,7 +55,9 @@ const PhoneVerificationPage = observer(() => {
         }
     }, [email_otp_error, is_email_verified, phone_number_verification_code, is_authorize]);
 
-    if (!is_phone_number_verification_enabled || is_virtual) return <Redirect to={routes.personal_details} />;
+    if (is_virtual) {
+        return <Redirect to={routes.personal_details} />;
+    }
     if (is_loading) {
         return <Loading is_fullscreen={false} />;
     }

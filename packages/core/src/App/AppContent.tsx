@@ -47,7 +47,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     }, [current_language, switchLanguage]);
 
     React.useEffect(() => {
-        if (isPhoneNumberVerificationGBLoaded && isPhoneNumberVerificationEnabled) {
+        if (isPhoneNumberVerificationGBLoaded) {
             setIsPhoneNumberVerificationEnabled(isPhoneNumberVerificationEnabled);
         }
     }, [isPhoneNumberVerificationEnabled, setIsPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded]);

@@ -416,6 +416,7 @@ export default class ClientStore extends BaseStore {
             unsubscribeFromExchangeRate: action.bound,
             unsubscribeFromAllExchangeRates: action.bound,
             setExchangeRates: action.bound,
+            setMT5TradingPlatformAvailableAccounts: action.bound,
         });
 
         reaction(
@@ -433,6 +434,18 @@ export default class ClientStore extends BaseStore {
                 this.setCookieAccount();
                 if (!this.is_logged_in) {
                     this.root_store.traders_hub.cleanup();
+                }
+                if (!this.is_logged_in && this.clients_country) {
+                    this.setMT5TradingPlatformAvailableAccounts();
+                }
+            }
+        );
+
+        reaction(
+            () => [this.is_logged_in, this.clients_country],
+            () => {
+                if (!this.is_logged_in && this.clients_country) {
+                    this.setMT5TradingPlatformAvailableAccounts();
                 }
             }
         );
@@ -1593,8 +1606,10 @@ export default class ClientStore extends BaseStore {
             await WS.mt5LoginList().then(this.responseMt5LoginList);
             WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
 
-            WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
-            WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.CTRADER).then(
+            WS.tradingPlatformAvailableAccounts({
+                platform: CFD_PLATFORMS.MT5,
+            }).then(this.responseTradingPlatformAvailableAccounts);
+            WS.tradingPlatformAvailableAccounts({ platform: CFD_PLATFORMS.CTRADER }).then(
                 this.responseCTraderTradingPlatformAvailableAccounts
             );
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
@@ -2471,6 +2486,13 @@ export default class ClientStore extends BaseStore {
         if (!response.error) {
             this.ctrader_trading_platform_available_accounts = response.trading_platform_available_accounts;
         }
+    }
+
+    setMT5TradingPlatformAvailableAccounts() {
+        WS.tradingPlatformAvailableAccounts({
+            country_code: this.clients_country,
+            platform: CFD_PLATFORMS.MT5,
+        }).then(this.responseTradingPlatformAvailableAccounts);
     }
 
     responseTradingPlatformAccountsList(response) {

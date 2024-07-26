@@ -81,7 +81,6 @@ export default class TradersHubStore extends BaseStore {
             is_cfd_restricted_country: observable,
             is_financial_restricted_country: observable,
             is_setup_real_account_or_go_to_demo_modal_visible: observable,
-            available_accounts: observable,
             closeModal: action.bound,
             content_flag: computed,
             getAccount: action.bound,
@@ -472,12 +471,12 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableMt5Accounts() {
-        if (this.is_eu_user && !this.is_demo_low_risk) {
-            this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
-                ['EU', 'All'].some(region => region === account.availability)
-            );
-            return;
-        }
+        // if (this.is_eu_user && !this.is_demo_low_risk) {
+        //     this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
+        //         ['EU', 'All'].some(region => region === account.availability)
+        //     );
+        //     return;
+        // }
 
         if (Object.keys(this.dynamic_available_platforms).length > 0) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account => {

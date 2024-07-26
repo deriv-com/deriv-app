@@ -4,6 +4,8 @@
     }
 
     &__menu {
+        position: relative;
+        width: calc(100vw - var(--component-actionSheet-spacing-padding-lg));
         padding-inline-end: var(--component-actionSheet-spacing-padding-lg);
         margin-block-end: var(--component-actionSheet-spacing-padding-md);
         display: flex;
@@ -22,6 +24,7 @@
     &__wrapper {
         &--content {
             padding: var(--component-actionSheet-spacing-padding-lg) var(--component-actionSheet-spacing-padding-lg) 0;
+            overflow-x: hidden;
         }
     }
 

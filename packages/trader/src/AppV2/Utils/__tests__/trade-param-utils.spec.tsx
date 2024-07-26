@@ -7,7 +7,12 @@ describe('getTradeParams', () => {
     });
 
     it('should return correct array with keys for Multipliers if symbol does not start with "cry"', () => {
-        expect(getTradeParams()[TRADE_TYPES.MULTIPLIER]).toEqual(['multiplier', 'stake', 'risk_management']);
+        expect(getTradeParams()[TRADE_TYPES.MULTIPLIER]).toEqual([
+            'multiplier',
+            'stake',
+            'risk_management',
+            'mult_info_display',
+        ]);
     });
 
     it('should return correct array with keys for Multipliers if symbol starts with "cry"', () => {
@@ -16,6 +21,7 @@ describe('getTradeParams', () => {
             'stake',
             'risk_management',
             'expiration',
+            'mult_info_display',
         ]);
     });
 });

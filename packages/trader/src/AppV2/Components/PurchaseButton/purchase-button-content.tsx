@@ -32,19 +32,28 @@ const PurchaseButtonContent = ({
     is_vanilla_fx,
     is_reverse,
 }: TPurchaseButtonContent) => {
-    const localized_basis = getLocalizedBasis();
+    const {
+        current_stake: localized_current_stake,
+        max_payout,
+        payout,
+        payout_per_point,
+        payout_per_pip,
+        stake,
+    } = getLocalizedBasis();
 
     const getAmount = () => {
-        if (is_multiplier) return info.stake;
-        if (is_accumulator) return has_open_accu_contract ? Number(current_stake) : info.maximum_payout;
-        return info?.obj_contract_basis?.value;
+        const { stake, maximum_payout, obj_contract_basis } = info;
+
+        if (is_multiplier) return stake;
+        if (is_accumulator) return has_open_accu_contract ? Number(current_stake) : maximum_payout;
+        return obj_contract_basis?.value;
     };
     const getTextBasis = () => {
-        if (is_turbos || (is_vanilla && !is_vanilla_fx)) return localized_basis.payout_per_point;
-        if (is_vanilla_fx) return localized_basis.payout_per_pip;
-        if (is_multiplier) return localized_basis.stake;
-        if (is_accumulator) return has_open_accu_contract ? localized_basis.current_stake : localized_basis.max_payout;
-        return localized_basis.payout;
+        if (is_turbos || (is_vanilla && !is_vanilla_fx)) return payout_per_point;
+        if (is_vanilla_fx) return payout_per_pip;
+        if (is_multiplier) return stake;
+        if (is_accumulator) return has_open_accu_contract ? localized_current_stake : max_payout;
+        return payout;
     };
 
     const text_basis = getTextBasis();

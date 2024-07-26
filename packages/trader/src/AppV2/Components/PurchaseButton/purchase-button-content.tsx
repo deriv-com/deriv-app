@@ -7,7 +7,7 @@ import { Money } from '@deriv/components';
 
 type TPurchaseButtonContent = {
     current_stake?: number | null;
-    info: ReturnType<typeof useTraderStore>['proposal_info'][0];
+    info: ReturnType<typeof useTraderStore>['proposal_info'][0] | Record<string, never>;
     is_reverse?: boolean;
 } & Pick<
     ReturnType<typeof useTraderStore>,

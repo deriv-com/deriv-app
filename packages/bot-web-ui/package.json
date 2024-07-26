@@ -77,7 +77,7 @@
         "@deriv/bot-skeleton": "^1.0.0",
         "@deriv/components": "^1.0.0",
         "@deriv/hooks": "^1.0.0",
-        "@deriv/deriv-charts": "^2.1.25",
+        "@deriv/deriv-charts": "^2.2.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",

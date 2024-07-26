@@ -1,0 +1,6 @@
+{
+    "cleanUrls": true,
+    "outputDirectory": "packages/core/dist",
+    "buildCommand": "echo ✅  Skipping build to use existing built files",
+    "routes": [{ "handle": "filesystem" }, { "src": "/(.*)", "dest": "/index.html" }]
+}

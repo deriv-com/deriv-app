@@ -367,8 +367,8 @@ export default class LoadModalStore implements ILoadModalStore {
         const { loadFile } = this.root_store.google_drive;
         const load_file = await loadFile();
         if (!load_file) return;
-        const xml_doc = load_file?.xml_doc;
-        const file_name = load_file?.file_name;
+        const xml_doc = load_file?.xml;
+        const file_name = load_file?.name;
         await load({
             block_string: xml_doc,
             file_name,

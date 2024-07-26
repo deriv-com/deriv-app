@@ -480,22 +480,6 @@ export default class TradersHubStore extends BaseStore {
             );
             return;
         }
-        if (this.financial_restricted_countries) {
-            this.available_mt5_accounts = this.available_cfd_accounts.filter(
-                account => account.market_type === 'financial' && account.platform === CFD_PLATFORMS.MT5
-            );
-            return;
-        }
-
-        if (this.CFDs_restricted_countries) {
-            this.available_mt5_accounts = this.available_cfd_accounts.filter(
-                account =>
-                    account.market_type !== 'financial' &&
-                    account.market_type !== 'all' &&
-                    account.platform === CFD_PLATFORMS.MT5
-            );
-            return;
-        }
         if (this.root_store.client.is_logged_in) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account => {
                 return account.platform === CFD_PLATFORMS.MT5 && this.available_accounts[account.product];

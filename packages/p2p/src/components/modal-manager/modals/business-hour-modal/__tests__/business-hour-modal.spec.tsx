@@ -40,7 +40,7 @@ describe('<BusinessHourModal />', () => {
     it('it should render the Main screen for business hour modal', () => {
         render(<BusinessHourModal />, { wrapper });
 
-        expect(screen.getByText('Business hour')).toBeInTheDocument();
+        expect(screen.getByText('Set your business hours')).toBeInTheDocument();
         expect(
             screen.getByText(
                 'Set the hours you’re available to accept orders. Your ads will only be visible to others during these times.'
@@ -51,25 +51,25 @@ describe('<BusinessHourModal />', () => {
                 '*Some ads may not be immediately visible to potential buyers due to order processing times.'
             )
         ).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Edit business hours' })).toBeInTheDocument();
     });
 
     it('should show the edit screen when user clicks on Edit button', () => {
         render(<BusinessHourModal />, { wrapper });
 
-        const edit_button = screen.getByRole('button', { name: 'Edit' });
+        const edit_button = screen.getByRole('button', { name: 'Edit business hours' });
 
         userEvent.click(edit_button);
 
         expect(screen.getByText('Edit business hour')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
     });
 
     it('should hide the edit screen if the user clicks on Cancel button', () => {
         render(<BusinessHourModal />, { wrapper });
 
-        const edit_button = screen.getByRole('button', { name: 'Edit' });
+        const edit_button = screen.getByRole('button', { name: 'Edit business hours' });
 
         userEvent.click(edit_button);
 
@@ -77,8 +77,8 @@ describe('<BusinessHourModal />', () => {
 
         userEvent.click(cancel_button);
 
-        expect(screen.getByText('Business hour')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument();
+        expect(screen.getByText('Set your business hours')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Edit business hours' })).toBeInTheDocument();
 
         expect(screen.queryByText('Edit business hour')).not.toBeInTheDocument();
         expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
@@ -93,7 +93,7 @@ describe('<BusinessHourModal />', () => {
 
         render(<BusinessHourModal />, { wrapper });
 
-        expect(screen.getByText('Business hour')).toBeInTheDocument();
+        expect(screen.getByText('Set your business hours')).toBeInTheDocument();
         expect(
             screen.getByText(
                 'Set the hours you’re available to accept orders. Your ads will only be visible to others during these times.'
@@ -104,7 +104,7 @@ describe('<BusinessHourModal />', () => {
                 '*Some ads may not be immediately visible to potential buyers due to order processing times.'
             )
         ).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Edit business hours' })).toBeInTheDocument();
         expect(screen.getByTestId('dt_mobile_full_page_return_icon')).toBeInTheDocument();
     });
 
@@ -121,20 +121,20 @@ describe('<BusinessHourModal />', () => {
     it('should show edit page on mobile if the user clicks on Edit button', () => {
         render(<BusinessHourModal />, { wrapper });
 
-        const edit_button = screen.getByRole('button', { name: 'Edit' });
+        const edit_button = screen.getByRole('button', { name: 'Edit business hours' });
 
         userEvent.click(edit_button);
 
         expect(screen.getByText('Edit business hour')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
         expect(screen.getByTestId('dt_mobile_full_page_return_icon')).toBeInTheDocument();
     });
 
     it('should hide the edit screen if user clicks on back button from edit screen', () => {
         render(<BusinessHourModal />, { wrapper });
 
-        const edit_button = screen.getByRole('button', { name: 'Edit' });
+        const edit_button = screen.getByRole('button', { name: 'Edit business hours' });
 
         userEvent.click(edit_button);
 
@@ -142,8 +142,8 @@ describe('<BusinessHourModal />', () => {
 
         userEvent.click(back_button);
 
-        expect(screen.getByText('Business hour')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument();
+        expect(screen.getByText('Set your business hours')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Edit business hours' })).toBeInTheDocument();
 
         expect(screen.queryByText('Edit business hour')).not.toBeInTheDocument();
         expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();

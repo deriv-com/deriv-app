@@ -140,7 +140,7 @@ describe('<SuccessDialog />', () => {
         );
     });
 
-    it('should have xlarge icon class based on icon_size prop is xlarge', () => {
+    it('should have large icon class based on icon_size prop is large', () => {
         render(<SuccessDialog is_open={true} icon_size='large' />);
         expect(screen.getByTestId('dt_cfd_success_modal_icon_wrapper')).toHaveClass('success-change__icon-area--large');
     });

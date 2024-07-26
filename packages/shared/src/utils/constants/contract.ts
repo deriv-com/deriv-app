@@ -10,7 +10,9 @@ import { LocalStore } from '../storage';
 export const getLocalizedBasis = () =>
     ({
         accumulator: localize('Accumulators'),
+        current_stake: localize('Current stake'),
         multiplier: localize('Multiplier'),
+        max_payout: localize('Max payout'),
         payout_per_pip: localize('Payout per pip'),
         payout_per_point: localize('Payout per point'),
         payout: localize('Payout'),

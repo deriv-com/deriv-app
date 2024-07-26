@@ -5,7 +5,6 @@ export * from './ModalStepWrapper';
 export * from './ModalWrapper';
 export * from './ProgressBar';
 export * from './Tabs';
-export * from './Tooltip';
 export * from './WalletAlertMessage';
 export * from './WalletButton';
 export * from './WalletButtonGroup';

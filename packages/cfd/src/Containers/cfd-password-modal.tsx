@@ -1024,14 +1024,15 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             visible={should_show_password_dialog}
             onClose={closeModal}
             wrapper_classname='cfd-password-modal'
+            renderTitle={() => (
+                <PasswordModalHeader
+                    should_set_trading_password={should_set_trading_password}
+                    has_mt5_account={has_mt5_account}
+                    is_password_reset_error={is_password_reset}
+                    platform={platform}
+                />
+            )}
         >
-            <PasswordModalHeader
-                should_set_trading_password={should_set_trading_password}
-                has_mt5_account={has_mt5_account}
-                is_password_reset_error={is_password_reset}
-                platform={platform}
-            />
-
             {cfd_password_form}
         </MobileDialog>
     );

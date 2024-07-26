@@ -1,7 +1,6 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
-import { useTranslation } from 'react-i18next';
-import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
+import { useIsEuRegion } from '@deriv/api-v2';
 import { LabelPairedArrowUpFromBracketXlFillIcon } from '@deriv/quill-icons';
 import { Dropzone, WalletText } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
@@ -18,21 +17,21 @@ const listItems = [
 
 const DocumentSubmission: React.FC = () => {
     const { isMobile } = useDevice();
+    const { data: isEuRegion } = useIsEuRegion();
     const { setFieldValue, values } = useFormikContext<TDocumentSubmission>();
-    const { t } = useTranslation();
 
     return (
         <div className='wallets-poa__document'>
             <div className='wallets-poa__document__title'>
-                <WalletText weight='bold'>{t('Document submission')}</WalletText>
+                <WalletText weight='bold'>{'Document submission'}</WalletText>
                 <div className='wallets-poa__document__title__divider' />
             </div>
             <div className='wallets-poa__document__container'>
                 <div className='wallets-poa__document__container__disclaimer'>
                     <WalletText size='sm' weight='bold'>
-                        {
-                            'We accept only these types of documents as proof of address. The document must be recent (issued within last 12 months) and include your name and address:'
-                        }
+                        {`We accept only these types of documents as proof of address. The document must be recent (issued within last ${
+                            isEuRegion ? '6' : '12'
+                        } months) and include your name and address:`}
                     </WalletText>
 
                     <ul className='wallets-poa__document__container__disclaimer__list'>

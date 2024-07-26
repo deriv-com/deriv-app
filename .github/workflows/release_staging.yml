@@ -62,4 +62,4 @@ jobs:
         VERCEL_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
         ENVIRONMENT: Production
         VERCEL_SCOPE: deriv
-        ALIAS_DOMAIN_URL: 'app-dr.binary.sx'
+        ALIAS_DOMAIN_URL: 'staging-app-dr.binary.sx'

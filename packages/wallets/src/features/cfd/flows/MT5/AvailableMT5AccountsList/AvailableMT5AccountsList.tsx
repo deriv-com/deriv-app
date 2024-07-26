@@ -27,7 +27,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
 
         switch (platformStatus) {
             case TRADING_PLATFORM_STATUS.MAINTENANCE:
-                return show(<ServerMaintenanceModal platform={account.platform} />);
+                return show(<ServerMaintenanceModal />);
             case TRADING_PLATFORM_STATUS.UNAVAILABLE:
                 return show(<AccountUnavailableModal />);
             case TRADING_PLATFORM_STATUS.ACTIVE:

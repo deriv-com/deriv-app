@@ -62,8 +62,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 </div>
             }
             onClick={() => {
-                if (platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE)
-                    return show(<ServerMaintenanceModal platform={account.platform} />);
+                if (platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE) return show(<ServerMaintenanceModal />);
                 if (account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE) return show(<AccountUnavailableModal />);
                 if (platformStatus === TRADING_PLATFORM_STATUS.ACTIVE) {
                     return jurisdictionStatus.is_failed

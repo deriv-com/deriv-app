@@ -1,15 +1,10 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { ModalWrapper } from '../../../../components/Base';
-import { TPlatforms } from '../../../../types';
 import { ServerMaintenance } from '../../screens';
 
-type TServerMaintenanceModalProps = {
-    platform: TPlatforms.All;
-};
-
-const ServerMaintenanceModal: FC<TServerMaintenanceModalProps> = ({ platform }) => (
+const ServerMaintenanceModal = () => (
     <ModalWrapper>
-        <ServerMaintenance platform={platform} />
+        <ServerMaintenance />
     </ModalWrapper>
 );
 

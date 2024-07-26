@@ -12,7 +12,6 @@ jobs:
     runs-on: Runner_16cores_Deriv-app
     outputs:
       RELEASE_VERSION: ${{ steps.extract_version.outputs.RELEASE_VERSION }}
-      FAILED_STEP: ${{ steps.check-failures.outputs.FAILED_STEP}}
     steps:
     - name: Checkout
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
@@ -25,7 +24,6 @@ jobs:
       with:
         REMOTE_CONFIG_URL: ${{ vars.REMOTE_CONFIG_URL }}
     - name: Build
-      id: build
       uses: "./.github/actions/build"
       with:
         NODE_ENV: production
@@ -46,93 +44,97 @@ jobs:
         REMOTE_CONFIG_URL: ${{ vars.REMOTE_CONFIG_URL }}
         TRUSTPILOT_API_KEY: ${{ secrets.TRUSTPILOT_API_KEY }}
     - name: Run tests
-      id: tests
       run: npm test
     - name: Versioning
       uses: "./.github/actions/versioning"
       with:
-        RELEASE_TYPE: $RELEASE_TYPE
+        RELEASE_TYPE: ${{ env.RELEASE_TYPE }}
     - name: Extract version
       id: extract_version
       run: echo "RELEASE_VERSION=${version}" >> $GITHUB_OUTPUT
     - name: Publish to Cloudflare Pages Production
-      id: cloudflare-upload
       uses: "./.github/actions/publish_to_pages_production"
       with:
         CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      continue-on-error: true
-    # - name: Upload to vercel
-    #   id: vercel-upload
-    #   uses: 'deriv-com/shared-actions/.github/actions/vercel_DR_publish@master'
-    #   with:
-    #     VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-    #     VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-    #     VERCEL_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
-    #     ENVIRONMENT: Production
-    #     VERCEL_SCOPE: deriv
-    #     ALIAS_DOMAIN_URL: 'app-dr.binary.sx'
-    #   continue-on-error: true
     - name: Upload Build Artifact
-      id: artifact-upload
       uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
       with:
         name: build
         path: packages/core/dist
         retention-days: 1
-      continue-on-error: true
-    - name: Check for failures
-      id: check-failures
-      run: |
-        if [[ ${{ steps.build.outcome }} != 'success' ]]; then
-          echo "FAILED_STEP=App build" >> $GITHUB_OUTPUT
-        elif [[ ${{ steps.tests.outcome }} != 'success' ]]; then
-          echo "FAILED_STEP=Testcases" >> $GITHUB_OUTPUT
-        elif [[ ${{ steps.cloudflare-upload.outcome }} != 'success' ]]; then
-          echo "FAILED_STEP=Cloudflare publish" >> $GITHUB_OUTPUT
-        elif [[ "${{ steps.artifact-upload.outcome }}" != "success" ]]; then
-            echo "FAILED_STEP=Artifact upload" >> $GITHUB_OUTPUT
-        else
-            echo "FAILED_STEP=None" >> $GITHUB_OUTPUT
-        fi
-    - name: Create Slack Message
-      id: create_slack_message
-      run: |
-        if [[ "${{ needs.build_test_and_publish.result }}" == 'success' ]]; then
-          echo "message=${{ env.RELEASE_TYPE }} Release succeeded for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }}" >> $GITHUB_OUTPUT
-        else
-          echo "message=${{ env.RELEASE_TYPE }} Release failed at step: ${{needs.build_test_and_publish.outputs.FAILED_STEP}} for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }}" >> $GITHUB_OUTPUT
-        fi
-    - name: Send Slack Notification
-      uses: "deriv-com/shared-actions/.github/actions/send_slack_notification@master"
-      with:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        MESSAGE: ${{ steps.create_slack_message.outputs.message }}
-         
-  publish_to_vercel:
-        runs-on: ubuntu-latest
-        environment: Production
-        steps:
-            - name: Upload to vercel
-              uses: 'deriv-com/shared-actions/.github/actions/vercel_DR_publish@master'
-              id: dr_action
-              with:
-                VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-                VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-                VERCEL_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
-                ENVIRONMENT: Production
-                VERCEL_SCOPE: deriv
-                ALIAS_DOMAIN_URL: 'app-dr.binary.sx'
-            - name: Create Slack Message
-              id: create_dr_slack_message
-              run: |
-                if [[ "${{ steps.publish_to_vercel.outcome }}" == 'success' ]]; then
-                  echo "message=Publish to vercel succeeded for ${{ env.RELEASE_TYPE }} of app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }}" >> $GITHUB_OUTPUT
-                else
-                  echo "message=Publish to vercel failed for ${{ env.RELEASE_TYPE }} of app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }}" >> $GITHUB_OUTPUT
-                fi
-            - name: Send Slack Notification
-              uses: "deriv-com/shared-actions/.github/actions/send_slack_notification@master"
-              with:
-                SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-                MESSAGE: ${{ steps.create_dr_slack_message.outputs.message }}
+
+  send_slack_failure:
+    name: Send Release Slack notification failure
+    runs-on: Runner_8cores_Deriv-app
+    environment: Production
+    if: failure()
+    needs: [build_test_and_publish]
+    steps:
+      - name: Send Slack Notification
+        uses: "deriv-com/shared-actions/.github/actions/send_slack_notification@master"
+        with:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          MESSAGE: "${{ env.RELEASE_TYPE }} Release failed for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }}"
+
+  send_slack_success:
+    name: Send Release Slack notification success
+    runs-on: Runner_8cores_Deriv-app
+    environment: Production
+    if: success()
+    needs: [build_test_and_publish]
+    steps:
+      - name: Send Slack Notification
+        uses: "deriv-com/shared-actions/.github/actions/send_slack_notification@master"
+        with:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          MESSAGE: "${{ env.RELEASE_TYPE }} Release succeeded for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }}"
+
+  build_and_publish_to_DR_solution:
+    name: Build Docker image and push to Docker hub and K8S
+    runs-on: Runner_8cores_Deriv-app
+    environment: Production
+    needs: [build_test_and_publish]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      - name: Download Build Artifact
+        uses: actions/download-artifact@6b208ae046db98c579e8a3aa621ab581ff575935
+        with:
+          name: build
+          path: packages/core/dist
+      - name: Build Docker image and push to Docker hub and K8S
+        id: build_and_push_docker_image
+        uses: "./.github/actions/build_and_push_docker_image"
+        with:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKERHUB_ORGANISATION: ${{ secrets.DOCKERHUB_ORGANISATION }}
+          K8S_NAMESPACE: ${{ secrets.K8S_NAMESPACE }}
+          KUBE_SERVER: ${{ secrets.KUBE_SERVER }}
+          SERVICEACCOUNT_TOKEN: ${{ secrets.SERVICEACCOUNT_TOKEN }}
+          CA_CRT: ${{ secrets.CA_CRT }}
+          APP_VERSION: latest
+      - name: Send Slack Notification on Docker Publish and Kubernetes Deployment Failure
+        if: ${{ steps.build_and_push_docker_image.outcome != 'success' }}
+        uses: "deriv-com/shared-actions/.github/actions/send_slack_notification@master"
+        with:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          MESSAGE: "${{ env.RELEASE_TYPE }} Docker Publish and Kubernetes Deployment for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }} has Failed"
+      - name: Upload to vercel
+        id: vercel-upload
+        uses: 'deriv-com/shared-actions/.github/actions/vercel_DR_publish@master'
+        with:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
+          ENVIRONMENT: Production
+          VERCEL_SCOPE: deriv
+          ALIAS_DOMAIN_URL: 'app-dr.binary.sx'
+        
+      - name: Send DR Slack Notification
+        uses: "deriv-com/shared-actions/.github/actions/send_slack_notification@master"
+        if: ${{ steps.vercel-upload.outcome != 'success' }}
+        with:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          MESSAGE: Disaster Recovery Release to vercel failed for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }}

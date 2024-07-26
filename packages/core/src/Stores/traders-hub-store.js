@@ -512,10 +512,6 @@ export default class TradersHubStore extends BaseStore {
         );
     }
     getAvailableCTraderAccounts() {
-        if (this.CFDs_restricted_countries || this.financial_restricted_countries) {
-            this.available_ctrader_accounts = [];
-            return;
-        }
         if (this.is_eu_user && !this.is_demo_low_risk) {
             this.available_ctrader_accounts = this.available_cfd_accounts.filter(
                 account =>

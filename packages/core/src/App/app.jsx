@@ -10,7 +10,10 @@ import { CFDStore } from '@deriv/cfd';
 import { Loading } from '@deriv/components';
 import {
     POIProvider,
+    getPositionsV2TabIndexFromURL,
     initFormErrorMessages,
+    isDTraderV2,
+    routes,
     setSharedCFDText,
     setUrlLanguage,
     setWebsocket,
@@ -105,6 +108,18 @@ const AppWithoutTranslation = ({ root_store }) => {
         }
     }, [root_store.client.email]);
 
+    const getLoader = () =>
+        isDTraderV2() ? (
+            <Loading.DTraderV2
+                initial_app_loading
+                is_contract_details={location.pathname.startsWith('/contract/')}
+                is_positions={location.pathname === routes.trader_positions}
+                is_closed_tab={getPositionsV2TabIndexFromURL() === 1}
+            />
+        ) : (
+            <Loading />
+        );
+
     return (
         <>
             {is_translation_loaded ? (
@@ -116,7 +131,7 @@ const AppWithoutTranslation = ({ root_store }) => {
                                     <P2PSettingsProvider>
                                         <TranslationProvider defaultLang={language} i18nInstance={i18nInstance}>
                                             {/* This is required as translation provider uses suspense to reload language */}
-                                            <React.Suspense fallback={<Loading />}>
+                                            <React.Suspense fallback={getLoader()}>
                                                 <AppContent passthrough={platform_passthrough} />
                                             </React.Suspense>
                                         </TranslationProvider>

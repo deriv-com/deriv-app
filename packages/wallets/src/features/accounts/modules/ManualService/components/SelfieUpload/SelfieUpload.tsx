@@ -12,14 +12,14 @@ const SelfieUpload: TManualDocumentComponent = ({ onClickBack, onCompletion }) =
     const { isDesktop } = useDevice();
     const { dirty, errors, setFieldValue, values } = useFormikContext<TSelfieUploadValues>();
 
-    const isSelfieFormDirty = dirty && !errors.selfieFile;
+    const isSelfieFormValid = dirty && !errors.selfieFile;
 
     return (
         <ModalStepWrapper
             disableAnimation
             renderFooter={() => (
                 <Footer
-                    disableNext={!isSelfieFormDirty}
+                    disableNext={!isSelfieFormValid}
                     nextText='Confirm and upload'
                     onClickBack={onClickBack}
                     onClickNext={onCompletion}

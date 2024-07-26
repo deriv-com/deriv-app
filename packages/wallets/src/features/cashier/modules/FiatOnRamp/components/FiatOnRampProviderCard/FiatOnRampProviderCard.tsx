@@ -1,15 +1,16 @@
 import React, { MouseEventHandler } from 'react';
-import { WalletButton, WalletText } from '../../../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
+import { WalletButton } from '../../../../../../components';
 import './FiatOnRampProviderCard.scss';
 
 type TFiatOnRampProvider = {
-    description: string;
+    description: React.ReactNode;
     getPaymentIcons: () => { icon: JSX.Element; name: string }[];
     handleDisclaimer: MouseEventHandler<HTMLButtonElement>;
     icon: React.ReactNode;
-    name: string;
+    name: React.ReactNode;
 };
-
 const FiatOnRampProviderCard: React.FC<TFiatOnRampProvider> = ({
     description,
     getPaymentIcons,
@@ -23,10 +24,10 @@ const FiatOnRampProviderCard: React.FC<TFiatOnRampProvider> = ({
         <div className='wallets-fiat-onramp-provider'>
             <div className='wallets-fiat-onramp-provider__logo'>{icon}</div>
             <div className='wallets-fiat-onramp-provider__content'>
-                <WalletText color='prominent' size='md' weight='bold'>
+                <Text color='prominent' size='md' weight='bold'>
                     {name}
-                </WalletText>
-                <WalletText size='sm'>{description}</WalletText>
+                </Text>
+                <Text size='sm'>{description}</Text>
                 <div className='wallets-fiat-onramp-provider__icons'>
                     {paymentIcons.map(paymentIcon => (
                         <div
@@ -49,7 +50,7 @@ const FiatOnRampProviderCard: React.FC<TFiatOnRampProvider> = ({
                 ))}
             </div>
             <WalletButton onClick={handleDisclaimer} size='md'>
-                Select
+                <Localize i18n_default_text='Select' />
             </WalletButton>
         </div>
     );

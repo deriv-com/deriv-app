@@ -1,14 +1,21 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { WalletText } from '../../../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 
 const DepositCryptoCurrencyDetails = () => {
     const { data } = useActiveWalletAccount();
 
     return (
-        <WalletText align='center' size='md' weight='bold'>
-            Send only {data?.currency_config?.name} ({data?.currency_config?.display_code}) to this address
-        </WalletText>
+        <Text align='center' size='md' weight='bold'>
+            <Localize
+                i18n_default_text='Send only {{currencyConfigName}} ({{currencyConfigCode}}) to this address'
+                values={{
+                    currencyConfigCode: data?.currency_config?.display_code,
+                    currencyConfigName: data?.currency_config?.name,
+                }}
+            />
+        </Text>
     );
 };
 

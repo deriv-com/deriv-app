@@ -36,7 +36,7 @@ describe('WithdrawalCryptoReceipt', () => {
         expect(addressElement).toBeInTheDocument();
 
         const reviewTextElement = screen.getByText(
-            'Your withdrawal is currently in review. It will be processed within 24 hours. We’ll send you an email once your transaction has been processed.'
+            "Your withdrawal is currently in review. It will be processed within 24 hours. We'll send you an email once your transaction has been processed."
         );
         expect(reviewTextElement).toBeInTheDocument();
     });

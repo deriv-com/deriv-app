@@ -1,13 +1,15 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import useDevice from '../../hooks/useDevice';
-import { WalletButton, WalletText } from '../Base';
+import { WalletButton } from '../Base';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 import './Page404.scss';
 
 const Page404 = () => {
     const { isMobile } = useDevice();
+    const { localize } = useTranslations();
     const titleSize = isMobile ? 'md' : '2xl';
     const descriptionSize = isMobile ? 'sm' : 'md';
     const buttonSize = isMobile ? 'lg' : 'md';
@@ -24,7 +26,7 @@ const Page404 = () => {
     return (
         <div className='wallets-page-404'>
             <WalletsActionScreen
-                description={'You may have followed a broken link, or the page has moved to a new address.'}
+                description={localize('You may have followed a broken link, or the page has moved to a new address.')}
                 descriptionSize={descriptionSize}
                 icon={errorImage}
                 renderButtons={() => (
@@ -34,12 +36,12 @@ const Page404 = () => {
                         }}
                         size={buttonSize}
                     >
-                        <WalletText color='white' size={buttonTextSize} weight='bold'>
-                            <Trans defaults="Return to Trader's Hub" />
-                        </WalletText>
+                        <Text color='white' size={buttonTextSize} weight='bold'>
+                            <Localize i18n_default_text="Return to Trader's Hub" />
+                        </Text>
                     </WalletButton>
                 )}
-                title="We couldn't find that page"
+                title={localize("We couldn't find that page")}
                 titleSize={titleSize}
             />
         </div>

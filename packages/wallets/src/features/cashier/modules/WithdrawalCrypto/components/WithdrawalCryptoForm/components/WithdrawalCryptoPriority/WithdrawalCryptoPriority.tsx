@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useFormikContext } from 'formik';
 import { useHover } from 'usehooks-ts';
+import { useTranslations } from '@deriv-com/translations';
 import { Tooltip, WalletCheckbox, WalletsPriorityCryptoWithdrawLoader } from '../../../../../../../../components';
 import InfoIcon from '../../../../../../../../public/images/ic-info-outline.svg';
 import { useWithdrawalCryptoContext } from '../../../../provider';
@@ -8,6 +9,8 @@ import { WithdrawalCryptoPriorityFeeInfo } from '../WithdrawalCryptoPriorityFeeI
 import './WithdrawalCryptoPriority.scss';
 
 const WithdrawalCryptoPriority = () => {
+    const { localize } = useTranslations();
+
     const { handleChange, values } = useFormikContext<{
         cryptoAmount: string;
         priorityWithdrawal: boolean;
@@ -45,7 +48,7 @@ const WithdrawalCryptoPriority = () => {
             <div className='wallets-crypto-form-checkbox'>
                 <WalletCheckbox
                     checked={values.priorityWithdrawal}
-                    label={'Priority withdrawal'}
+                    label={localize('Priority withdrawal')}
                     labelFontSize='md'
                     name='priorityWithdrawal'
                     onChange={e => {
@@ -63,7 +66,9 @@ const WithdrawalCryptoPriority = () => {
                 <Tooltip
                     alignment='top'
                     isVisible={isHovered}
-                    message='Pay a small fee to prioritise your withdrawal, this fee will be deducted from the withdrawal amount.'
+                    message={localize(
+                        'Pay a small fee to prioritise your withdrawal, this fee will be deducted from the withdrawal amount.'
+                    )}
                 >
                     <div ref={hoverRef}>
                         <InfoIcon />

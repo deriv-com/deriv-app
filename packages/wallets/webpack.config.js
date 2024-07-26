@@ -197,11 +197,14 @@ module.exports = function (env) {
                 'react-router-dom': true,
                 moment: true,
                 '@deriv-com/analytics': '@deriv-com/analytics',
+                '@deriv-com/translations': '@deriv-com/translations',
             },
         ],
         plugins: [
             new DefinePlugin({
+                'process.env.CROWDIN_URL': JSON.stringify('https://translations.deriv.com'),
                 'process.env.REMOTE_CONFIG_URL': JSON.stringify(process.env.REMOTE_CONFIG_URL),
+                'process.env.WALLETS_TRANSLATION_PATH': JSON.stringify('deriv-app-wallets/staging'),
             }),
         ],
     };

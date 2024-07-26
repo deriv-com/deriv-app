@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field, FieldProps, Formik } from 'formik';
 import { useGrowthbookIsOn } from '@deriv/api-v2';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { WalletButton, WalletTextField } from '../../../../../../components';
 import { useWithdrawalCryptoContext } from '../../provider';
 import { validateCryptoAddress } from '../../utils';
@@ -12,6 +13,7 @@ import './WithdrawalCryptoForm.scss';
 const WithdrawalCryptoForm: React.FC = () => {
     const { activeWallet, cryptoEstimationsFeeUniqueId, fractionalDigits, requestCryptoWithdrawal } =
         useWithdrawalCryptoContext();
+    const { localize } = useTranslations();
 
     const [isPriorityCryptoWithdrawalEnabled] = useGrowthbookIsOn({
         featureFlag: 'priority_crypto_withdrawal',
@@ -44,7 +46,9 @@ const WithdrawalCryptoForm: React.FC = () => {
                                         data-testid='dt_withdrawal_crypto_address_input'
                                         errorMessage={meta.touched && errors.cryptoAddress}
                                         isInvalid={meta.touched && Boolean(errors?.cryptoAddress)}
-                                        label={`Your ${activeWallet?.currency_config?.name} cryptocurrency wallet address`}
+                                        label={localize('Your {{currencyName}} cryptocurrency wallet address', {
+                                            currencyName: activeWallet?.currency_config?.name,
+                                        })}
                                         onChange={event => {
                                             setFieldValue(field.name, event.target.value, true);
                                             setFieldTouched(field.name, true);
@@ -65,7 +69,7 @@ const WithdrawalCryptoForm: React.FC = () => {
                                 size='lg'
                                 type='submit'
                             >
-                                Withdraw
+                                <Localize i18n_default_text='Withdraw' />
                             </WalletButton>
                         </div>
                     </form>

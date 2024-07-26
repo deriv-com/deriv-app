@@ -1566,7 +1566,7 @@
     &-footer {
         @include mobile-or-tablet-screen {
             position: absolute;
-            bottom: 3.6rem;
+            bottom: 1rem;
             width: 100%;
 
             .dc-btn {

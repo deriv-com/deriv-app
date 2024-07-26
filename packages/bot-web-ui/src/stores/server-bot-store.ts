@@ -92,8 +92,13 @@ export default class ServerBotStore {
         });
     };
 
-    getBotList = async () => {
+    getBotList = async (should_subscribe = true) => {
         try {
+            // eslint-disable-next-line no-console
+            console.log('BEFORE ------ Authorize', performance.now());
+            await api_base.api.expectResponse('authorize');
+            // eslint-disable-next-line no-console
+            console.log('AFTER ------ Authorize', performance.now());
             const {
                 bot_list: { bot_list },
                 error,
@@ -106,7 +111,7 @@ export default class ServerBotStore {
             }
 
             if (bot_list?.length) {
-                api_base.api?.onMessage()?.subscribe(this.handleMessage);
+                if (should_subscribe) api_base.api?.onMessage()?.subscribe(this.handleMessage);
                 bot_list.forEach(bot => {
                     if (bot.status === 'running') this.setRunning(bot.bot_id);
                 });

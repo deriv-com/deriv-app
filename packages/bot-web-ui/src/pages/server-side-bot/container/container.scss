@@ -1,0 +1,22 @@
+.ssb-container {
+    --server-bot-height: 100vh - 164px;
+    --server-bot-height-mobile: 100vh - 116px;
+
+    width: 100%;
+    height: calc(var(--server-bot-height));
+    @include mobile {
+        height: calc(var(--server-bot-height-mobile));
+    }
+    background-color: var(--general-main-1);
+    padding: 16px 8px;
+    &__unsigned {
+        height: calc(100vh - 146px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        &__action {
+            margin-top: 24px;
+        }
+    }
+}

@@ -5,10 +5,9 @@ import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { Dialog, Tabs } from '@deriv/components';
+import { useFeatureFlags } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { useFeatureFlags } from '@deriv/hooks';
-import ServerBot from '../server-bot';
 import TradingViewModal from 'Components/trading-view-chart/trading-view-modal';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -17,8 +16,10 @@ import Chart from '../chart';
 import ChartModal from '../chart/chart-modal';
 import Dashboard from '../dashboard';
 import RunStrategy from '../dashboard/run-strategy';
+import ServerBot from '../server-bot';
 import Tutorial from '../tutorials';
 import { tour_list } from '../tutorials/dbot-tours/utils';
+import ServerSideBot from '../server-side-bot';
 
 const AppWrapper = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useDBotStore();
@@ -186,7 +187,8 @@ const AppWrapper = observer(() => {
                         </div>
                         {is_next_server_bot_enabled ? (
                             <div icon='IcDashboardComponentTab' label={localize('Server Side Bot')} id='id-server-bot'>
-                                <ServerBot />
+                                {/* <ServerBot /> */}
+                                <ServerSideBot />
                             </div>
                         ) : null}
                     </Tabs>
@@ -195,14 +197,18 @@ const AppWrapper = observer(() => {
             {is_desktop ? (
                 <>
                     <div className='main__run-strategy-wrapper'>
-                        <RunStrategy />
-                        <RunPanel />
+                        {active_tab !== 4 && (
+                            <>
+                                <RunStrategy />
+                                <RunPanel />
+                            </>
+                        )}
                     </div>
                     <ChartModal />
                     <TradingViewModal />
                 </>
             ) : (
-                !is_open && <RunPanel />
+                !is_open && active_tab !== 4 && <RunPanel />
             )}
             <Dialog
                 cancel_button_text={cancel_button_text || localize('Cancel')}

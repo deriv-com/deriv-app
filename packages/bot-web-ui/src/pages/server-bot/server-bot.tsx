@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
-import { Button, Text } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -17,10 +17,13 @@ const ServerBot = observer(() => {
     const { is_mobile } = ui;
     const { is_virtual, is_logged_in } = client;
 
+    const [has_refresh, setHasRefresh] = useState(false);
+
     React.useEffect(() => {
         if (is_logged_in) {
-            setTimeout(() => {
-                getBotList();
+            setTimeout(async () => {
+                await getBotList();
+                setHasRefresh(true);
             }, 1000);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -32,11 +35,18 @@ const ServerBot = observer(() => {
                 <div className='server-bot__list'>
                     <div className='server-bot__list__actions'>
                         <Text size={is_mobile ? 'xs' : 's'} weight='bold'>
-                            <Localize i18n_default_text='Your bots:' />
+                            <Localize i18n_default_text='Your bots' />
                         </Text>
-                        <Button onClick={() => setAddBtnActive(true)} green>
-                            {localize('+ Create Bot')}
-                        </Button>
+                        <div className='server-bot__list__actions__right'>
+                            {has_refresh && (
+                                <span onClick={() => getBotList(false)} className='btn-refresh'>
+                                    <Icon icon='IcReset' />
+                                </span>
+                            )}
+                            <Button onClick={() => setAddBtnActive(true)} green>
+                                {localize('+ Create Bot')}
+                            </Button>
+                        </div>
                     </div>
                     <ServerBotList />
                 </div>

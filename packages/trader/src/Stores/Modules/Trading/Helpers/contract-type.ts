@@ -40,6 +40,7 @@ type TConfig = ReturnType<typeof getContractTypesConfig>[string]['config'] & {
     has_spot?: boolean;
     durations?: ReturnType<typeof buildDurationConfig>;
     trade_types?: { [key: string]: string };
+    barrier_category?: string;
     barriers?: ReturnType<typeof buildBarriersConfig>;
     forward_starting_dates?: ReturnType<typeof buildForwardStartingConfig>;
     growth_rate_range?: number[];
@@ -130,6 +131,7 @@ export const ContractType = (() => {
                 config.durations = config.hide_duration ? undefined : buildDurationConfig(contract, config.durations);
                 config.trade_types = buildTradeTypesConfig(contract, config.trade_types);
                 config.barriers = buildBarriersConfig(contract, config.barriers);
+                config.barrier_category = contract.barrier_category as TConfig['barrier_category'];
                 config.barrier_choices = contract.barrier_choices as TConfig['barrier_choices'];
                 config.forward_starting_dates = buildForwardStartingConfig(contract, config.forward_starting_dates);
                 config.growth_rate_range = contract.growth_rate_range as TConfig['growth_rate_range'];
@@ -223,6 +225,7 @@ export const ContractType = (() => {
         const obj_duration_units_list = getDurationUnitsList(contract_type, obj_start_type.contract_start_type);
         const obj_duration_units_min_max = getDurationMinMax(contract_type, obj_start_type.contract_start_type);
         const obj_accumulator_range_list = getAccumulatorRange(contract_type);
+        const obj_barrier_category = getBarrierCategory(contract_type);
         const obj_barrier_choices = getBarrierChoices(contract_type, stored_barriers_data?.barrier_choices);
         const obj_multiplier_range_list = getMultiplierRange(contract_type, multiplier);
         const obj_cancellation = getCancellation(contract_type, cancellation_duration);
@@ -236,6 +239,7 @@ export const ContractType = (() => {
             ...obj_start_dates,
             ...obj_start_type,
             ...obj_barrier,
+            ...obj_barrier_category,
             ...obj_duration_unit,
             ...obj_duration_units_list,
             ...obj_duration_units_min_max,
@@ -639,6 +643,10 @@ export const ContractType = (() => {
         accumulator_range_list:
             (getPropertyValue(available_contract_types, [contract_type, 'config', 'growth_rate_range']) as number[]) ||
             [],
+    });
+
+    const getBarrierCategory = (contract_type: string) => ({
+        barrier_category: getPropertyValue(available_contract_types, [contract_type, 'config', 'barrier_category']),
     });
 
     const getBarrierChoices = (contract_type: string, stored_barrier_choices = [] as string[]) => ({

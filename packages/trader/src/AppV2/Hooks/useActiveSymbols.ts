@@ -1,20 +1,17 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { WS, getContractTypesConfig, pickDefaultSymbol } from '@deriv/shared';
+import { TRADE_TYPES, WS, getContractTypesConfig, pickDefaultSymbol } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { ActiveSymbols } from '@deriv/api-types';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { usePrevious } from '@deriv/components';
 
-type TUseActiveSymbols = {
-    barrier_category?: string[];
-};
-//TODO: barrier_category needs to come from trade-store after calling contracts_for
-const useActiveSymbols = ({ barrier_category = [] }: TUseActiveSymbols) => {
+const useActiveSymbols = () => {
     const [activeSymbols, setActiveSymbols] = useState<ActiveSymbols | []>([]);
     const { client } = useStore();
     const { is_logged_in } = client;
     const {
         active_symbols: symbols_from_store,
+        barrier_category,
         contract_type,
         has_symbols_for_v2,
         onChange,
@@ -30,10 +27,17 @@ const useActiveSymbols = ({ barrier_category = [] }: TUseActiveSymbols) => {
         async (trade_type = '') => {
             let response;
 
+            const trade_types_with_barrier_category = [
+                TRADE_TYPES.RISE_FALL,
+                TRADE_TYPES.RISE_FALL_EQUAL,
+                TRADE_TYPES.HIGH_LOW,
+            ] as string[];
             const request = {
                 active_symbols: 'brief',
                 contract_type: getContractTypesConfig()[trade_type]?.trade_types ?? [],
-                barrier_category,
+                ...(trade_types_with_barrier_category.includes(trade_type)
+                    ? { barrier_category: [barrier_category] }
+                    : {}),
             };
 
             if (is_logged_in) {
@@ -42,7 +46,7 @@ const useActiveSymbols = ({ barrier_category = [] }: TUseActiveSymbols) => {
                 response = await WS.activeSymbols(request);
             }
 
-            const { active_symbols, error } = response;
+            const { active_symbols = [], error } = response;
 
             setActiveSymbolsV2(active_symbols);
 

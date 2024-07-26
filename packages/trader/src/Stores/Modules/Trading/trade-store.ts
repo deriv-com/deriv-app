@@ -224,6 +224,7 @@ export default class TradeStore extends BaseStore {
     // Barrier
     barrier_1 = '';
     barrier_2 = '';
+    barrier_category = '';
     barrier_count = 0;
     main_barrier: ChartBarrierStore | null = null;
     barriers: TBarriers = [];
@@ -366,6 +367,7 @@ export default class TradeStore extends BaseStore {
             amount: observable,
             barrier_1: observable,
             barrier_2: observable,
+            barrier_category: observable,
             barrier_count: observable,
             barrier_choices: observable,
             barriers: observable,

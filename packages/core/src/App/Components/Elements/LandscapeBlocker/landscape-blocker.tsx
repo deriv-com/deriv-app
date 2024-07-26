@@ -19,7 +19,7 @@ const LandscapeBlocker = observer(() => {
     const showBlockerDtraderMobileLandscapeView =
         !isMobile &&
         isMobileOs() &&
-        (pathname.startsWith(routes.trade) || pathname.startsWith(routes.reports || pathname.startsWith('/contract/')));
+        (pathname.startsWith(routes.trade) || pathname.startsWith(routes.reports) || pathname.startsWith('/contract'));
 
     if (
         !has_wallet &&

@@ -139,7 +139,7 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
     }
 
     async verifyGoogleDriveAccessToken() {
-        const expiryTime = localStorage.getItem('google_access_token_expiry');
+        const expiryTime = localStorage?.getItem('google_access_token_expiry');
         if (expiryTime) {
             const currentEpochTime = Math.floor(Date.now() / 1000);
             if (currentEpochTime > Number(expiryTime)) {

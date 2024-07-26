@@ -358,8 +358,8 @@ export default class LoadModalStore implements ILoadModalStore {
 
     onDriveOpen = async () => {
         const { google_drive } = this.root_store;
-        const { checkGoogleDriveAccessToken } = google_drive;
-        await checkGoogleDriveAccessToken();
+        const { verifyGoogleDriveAccessToken } = google_drive;
+        await verifyGoogleDriveAccessToken();
         if (google_drive) {
             google_drive.upload_id = uuidv4();
         }
@@ -489,9 +489,6 @@ export default class LoadModalStore implements ILoadModalStore {
         this.is_load_modal_open = !this.is_load_modal_open;
         if (this.selected_strategy_id) this.previewRecentStrategy(this.selected_strategy_id);
         this.setLoadedLocalFile(null);
-        const { google_drive } = this.root_store;
-        const { setGoogleDriveTokenValid } = google_drive;
-        setGoogleDriveTokenValid(true);
     };
 
     toggleTourLoadModal = (toggle = !this.is_load_modal_open) => {

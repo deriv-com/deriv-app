@@ -1,7 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 import { config, importExternal, observer as globalObserver } from '@deriv/bot-skeleton';
 import { getLanguage, localize } from '@deriv/translations';
-import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
+import { notification_message, NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { button_status } from 'Constants/button-status';
 import {
     rudderStackSendUploadStrategyCompletedEvent,
@@ -9,6 +9,7 @@ import {
 } from '../analytics/rudderstack-common-events';
 import { getStrategyType } from '../analytics/utils';
 import RootStore from './root-store';
+import { botNotification } from 'Components/bot-notification/bot-notification';
 
 export type TErrorWithStatus = Error & { status?: number; result?: { error: { message: string } } };
 
@@ -81,7 +82,7 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
             createLoadFilePicker: action.bound,
             showGoogleDriveFilePicker: action.bound,
             setGoogleDriveTokenValid: action.bound,
-            checkGoogleDriveAccessToken: action.bound,
+            verifyGoogleDriveAccessToken: action.bound,
         });
 
         this.root_store = root_store;
@@ -91,7 +92,6 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
         this.access_token = localStorage.getItem('google_access_token') ?? '';
         importExternal('https://accounts.google.com/gsi/client').then(() => this.initialiseClient());
         importExternal('https://apis.google.com/js/api.js').then(() => this.initialise());
-        if (this.access_token) this.checkGoogleDriveAccessToken();
     }
 
     is_google_drive_token_valid = true;
@@ -114,15 +114,21 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
         gapi.load('client:picker', () => gapi.client.load(this.discovery_docs));
     };
 
+    setGoogleDriveTokenExpiry = (seconds: number) => {
+        const currentEpochTime = Math.floor(Date.now() / 1000);
+        const expiryTime = currentEpochTime + seconds;
+        localStorage.setItem('google_access_token_expiry', expiryTime.toString());
+    };
+
     initialiseClient = () => {
         this.client = google.accounts.oauth2.initTokenClient({
             client_id: this.client_id,
             scope: this.scope,
-            callback: (response: { access_token: string; error?: TErrorWithStatus }) => {
+            callback: (response: { expires_in: number; access_token: string; error?: TErrorWithStatus }) => {
                 if (response?.access_token && !response?.error) {
                     this.access_token = response.access_token;
                     this.updateSigninStatus(true);
-                    localStorage.setItem('google_access_token', response.access_token);
+                    this.setGoogleDriveTokenExpiry(response?.expires_in);
                 }
             },
         });
@@ -132,29 +138,18 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
         this.is_authorised = is_signed_in;
     }
 
-    async checkGoogleDriveAccessToken() {
-        const google_access_token = localStorage.getItem('google_access_token') || this.access_token || '';
-        const GET_TOKEN_INFO_URL = 'https://www.googleapis.com/oauth2/v3/tokeninfo';
-        const REQUEST_URL = `${GET_TOKEN_INFO_URL}?access_token=${google_access_token}`;
-        try {
-            const response = await fetch(REQUEST_URL, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            if (!response.ok) {
-                this.setGoogleDriveTokenValid(response.ok);
-                throw new Error('Failed to fetch access token');
+    async verifyGoogleDriveAccessToken() {
+        const expiryTime = localStorage.getItem('google_access_token_expiry');
+        if (expiryTime) {
+            const currentEpochTime = Math.floor(Date.now() / 1000);
+            if (currentEpochTime > Number(expiryTime)) {
+                this.signOut();
+                this.setGoogleDriveTokenValid(false);
+                localStorage.removeItem('google_access_token_expiry');
+                botNotification(notification_message.google_drive_error, undefined, {
+                    closeButton: false,
+                });
             }
-            this.setGoogleDriveTokenValid(response.ok);
-        } catch (error) {
-            // eslint-disable-next-line no-console
-            console.log(error);
-            this.setGoogleDriveTokenValid(false);
-            // eslint-disable-next-line no-console
-            console.log('Google Drive Error');
-            await this.signOut();
         }
     }
 

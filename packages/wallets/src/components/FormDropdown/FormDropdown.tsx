@@ -12,7 +12,7 @@ export type TFormDropdownProps = DropdownProps & {
     validationSchema?: Yup.AnySchema;
 };
 
-const FormDropdown = ({ disabled, isRequired, name, onSelect, validationSchema, ...rest }: TFormDropdownProps) => {
+const FormDropdown = ({ disabled, name, onSelect, validationSchema, variant, ...rest }: TFormDropdownProps) => {
     const validateField = (value: unknown) => {
         try {
             if (validationSchema) {
@@ -25,7 +25,7 @@ const FormDropdown = ({ disabled, isRequired, name, onSelect, validationSchema, 
     return (
         <Field name={name} validate={validateField}>
             {({ field, form }: FieldProps) => {
-                const isFieldInvalid = Boolean(form.touched[name] && isRequired && form.errors[name]);
+                const isFieldInvalid = Boolean(form.touched[name] && form.errors[name]);
                 return (
                     <div className='wallets-form-dropdown'>
                         <Dropdown
@@ -39,20 +39,23 @@ const FormDropdown = ({ disabled, isRequired, name, onSelect, validationSchema, 
                                 }
                             }}
                             onSearch={value => {
-                                form.setFieldValue(name, value);
-                            }}
-                            onSelect={value => {
-                                if (onSelect) {
-                                    onSelect(value as string);
-                                } else {
+                                if (variant === 'prompt') {
                                     form.setFieldValue(name, value);
                                 }
-                                field.onChange(value);
+                                return field.onChange;
+                            }}
+                            onSelect={value => {
+                                form.setFieldValue(name, value);
                                 if (!form.touched[name]) {
                                     form.setFieldTouched(name);
                                 }
+                                if (onSelect) {
+                                    onSelect(value as string);
+                                }
+                                return field.onChange;
                             }}
                             value={field.value}
+                            variant={variant}
                         />
                     </div>
                 );

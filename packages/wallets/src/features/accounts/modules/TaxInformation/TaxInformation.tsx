@@ -33,7 +33,7 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
 
     return (
         <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={taxInformationValidationSchema}>
-            {({ errors, handleSubmit, isValid, setFieldValue, values }) => {
+            {({ errors, handleSubmit, isValid, values }) => {
                 return (
                     <ModalStepWrapper
                         renderFooter={() => <Footer disableNext={!isValid} onClickNext={handleSubmit} />}
@@ -56,7 +56,6 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                     <div className='wallets-tax-information__form'>
                                         <FormDropdown
                                             isFullWidth
-                                            isRequired
                                             label='Citizenship*'
                                             list={countryList}
                                             listHeight='sm'
@@ -65,16 +64,13 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                         <FormDropdown
                                             disabled={initialValues?.placeOfBirth !== ''}
                                             isFullWidth
-                                            isRequired
                                             label='Place of birth*'
                                             list={countryList}
                                             listHeight='sm'
                                             name='placeOfBirth'
-                                            onSelect={selectedItem => setFieldValue('placeOfBirth', selectedItem)}
                                         />
                                         <FormDropdown
                                             isFullWidth
-                                            isRequired
                                             label='Tax residence*'
                                             list={countryList}
                                             listHeight='sm'
@@ -93,7 +89,6 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                         />
                                         <FormDropdown
                                             isFullWidth
-                                            isRequired
                                             label='Account opening reason*'
                                             list={accountOpeningReasonList}
                                             name='accountOpeningReason'

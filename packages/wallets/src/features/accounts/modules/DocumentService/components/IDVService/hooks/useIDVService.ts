@@ -59,7 +59,6 @@ const useIDVService = () => {
         }
 
         list.push({
-            pattern: 'none',
             text: "I don't have any of these",
             value: 'none',
         });

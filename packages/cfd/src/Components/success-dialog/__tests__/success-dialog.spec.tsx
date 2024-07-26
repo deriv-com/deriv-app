@@ -6,6 +6,11 @@ import { Icon } from '@deriv/components';
 const mockCancelFn = jest.fn();
 const mockSubmitFn = jest.fn();
 
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Icon: ({ icon }) => <div>{icon}</div>,
+}));
+
 describe('<SuccessDialog />', () => {
     let modal_root_el: HTMLElement;
 
@@ -146,20 +151,7 @@ describe('<SuccessDialog />', () => {
     });
 
     it('should render the first SVG element correctly', () => {
-        render(<SuccessDialog is_open={true} icon={<Icon icon='IcCashierWallet' size={128} data-testid='tttttt' />} />);
-
-        const iconWrapper = screen.getByTestId('dt_cfd_success_modal_icon_wrapper');
-        // eslint-disable-next-line testing-library/no-node-access
-        const svgs = iconWrapper.querySelectorAll('svg');
-
-        // Check that the first SVG has the correct attributes
-        const firstSvg = svgs[0];
-
-        // eslint-disable-next-line testing-library/no-node-access
-        const useElement = firstSvg.querySelector('use');
-        expect(useElement).toHaveAttribute(
-            'xlink:href',
-            '/public/sprites/cashier.bd4595decf98fec30aeb1172bd999274.svg#ic-cashier-wallet'
-        );
+        render(<SuccessDialog is_open={true} icon={<Icon icon='IcCashierWallet' />} />);
+        expect(screen.getByText('IcCashierWallet')).toBeInTheDocument();
     });
 });

@@ -123,14 +123,9 @@ const PasswordModalHeader = ({
     const element = !isDesktop ? 'p' : 'span';
     const alignment = 'center';
     const font_size = 's';
-    const style = !isDesktop
-        ? {
-              padding: '2rem',
-          }
-        : {};
 
     return (
-        <Text styles={style} as={element} line_height='m' weight='bold' size={font_size} align={alignment}>
+        <Text as={element} line_height='m' weight='bold' size={font_size} align={alignment}>
             {should_set_trading_password && !is_password_reset_error && platform === CFD_PLATFORMS.MT5 && (
                 <Localize
                     i18n_default_text='Create a {{platform}} password'
@@ -287,11 +282,7 @@ const CreatePassword = ({
                             {platform === CFD_PLATFORMS.MT5 ? (
                                 <>
                                     <Icon icon='IcMt5Password' width='100' height='100' />
-                                    <Text
-                                        size='xs'
-                                        align='center'
-                                        className='cfd-password-modal__create-password-description'
-                                    >
+                                    <Text size='xs' className='cfd-password-modal__create-password-description'>
                                         <Localize
                                             i18n_default_text='Note: You can use this password for all your {{platform}} accounts.'
                                             values={{

@@ -70,18 +70,11 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
         <Formik initialValues={{ ...initialIDVValues, ...initialPersonalDetailsValues }} onSubmit={submit}>
             {({ handleSubmit, isValid, values }) => {
                 const document = availableDocumentOptions[values.documentType];
-                const documentNumberExample =
-                    values.documentType &&
-                    documentExamples &&
-                    documentExamples[values.documentType] &&
-                    clientHasDocuments
-                        ? documentExamples?.[values.documentType].exampleFormat
-                        : '';
+                const example =
+                    values.documentType && documentExamples ? documentExamples[values.documentType] : undefined;
+                const documentNumberExample = example?.exampleFormat;
 
-                const additionalDocumentNumberExample =
-                    values.documentType && clientHasDocuments && documentExamples && document.additional
-                        ? documentExamples?.[values.documentType].additionalDocumentExampleFormat
-                        : '';
+                const additionalDocumentNumberExample = example?.additionalDocumentExampleFormat;
 
                 const disableSubmission = (!isValid && clientHasDocuments) || isSubmitting || !values.documentType;
 

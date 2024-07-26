@@ -11,7 +11,7 @@ type TMarketCountDownTimer = {
     };
 };
 
-const MarketCountDownTimer = ({ time_left }: TMarketCountDownTimer) => {
+const MarketCountdownTimer = ({ time_left }: TMarketCountDownTimer) => {
     let timer_components = '';
 
     if (Object.keys(time_left).length) {
@@ -31,4 +31,4 @@ const MarketCountDownTimer = ({ time_left }: TMarketCountDownTimer) => {
     );
 };
 
-export default MarketCountDownTimer;
+export default MarketCountdownTimer;

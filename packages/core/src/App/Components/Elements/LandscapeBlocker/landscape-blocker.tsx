@@ -15,16 +15,16 @@ const LandscapeBlocker = observer(() => {
     const location = useLocation();
     const pathname = location?.pathname;
     const is_hidden_landscape_blocker = isDisabledLandscapeBlockerRoute(pathname);
-    const shouldShowDtraderTabletView = pathname === routes.trade && isTabletOs;
-    const showBlockerDtraderMobileLandscapeView =
+    const should_show_dtrader_tablet_view = pathname === routes.trade && isTabletOs;
+    const show_blocker_dtrader_mobile_landscape_view =
         !isMobile &&
         isMobileOs() &&
         (pathname.startsWith(routes.trade) || pathname.startsWith(routes.reports) || pathname.startsWith('/contract'));
 
     if (
         !has_wallet &&
-        !showBlockerDtraderMobileLandscapeView &&
-        (is_hidden_landscape_blocker || shouldShowDtraderTabletView)
+        !show_blocker_dtrader_mobile_landscape_view &&
+        (is_hidden_landscape_blocker || should_show_dtrader_tablet_view)
     )
         return null;
 

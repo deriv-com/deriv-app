@@ -3,7 +3,8 @@ import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { LegacyFilter1pxIcon } from '@deriv/quill-icons';
-import { ToggleSwitch, WalletDropdown, WalletText } from '../../../../components';
+import { Dropdown } from '@deriv-com/ui';
+import { ToggleSwitch, WalletText } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
 import { TransactionsCompleted, TransactionsCompletedDemoResetBalance, TransactionsPending } from './components';
 import './Transactions.scss';
@@ -86,14 +87,23 @@ const Transactions = () => {
                         <ToggleSwitch onChange={() => setIsPendingActive(!isPendingActive)} value={isPendingActive} />
                     </div>
                 )}
-                <WalletDropdown
-                    icon={<LegacyFilter1pxIcon iconSize='xs' />}
-                    label='Filter'
-                    list={filterOptionsList}
-                    name='wallets-transactions__dropdown'
-                    onSelect={value => setFilterValue(value)}
-                    value={filterValue}
-                />
+                <div className='wallets-transactions__dropdown'>
+                    <Dropdown
+                        data-testid='dt_wallets_transactions_dropdown'
+                        icon={<LegacyFilter1pxIcon iconSize='xs' />}
+                        isFullWidth
+                        label='Filter'
+                        list={filterOptionsList}
+                        name='wallets-transactions__dropdown'
+                        onSelect={value => {
+                            if (typeof value === 'string') {
+                                setFilterValue(value);
+                            }
+                        }}
+                        value={filterValue}
+                        variant='comboBox'
+                    />
+                </div>
             </div>
             {isPendingActive && (
                 <TransactionsPending filter={filtersMapper.pending[filterValue] as TTransactionsPendingFilter} />

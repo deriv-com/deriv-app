@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../utils';
 
 Blockly.Blocks.math_trig = {
     init() {
@@ -35,6 +36,9 @@ Blockly.Blocks.math_trig = {
             category: Blockly.Categories.Mathematical,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     meta() {
         return {
             display_name: localize('Trigonometric functions'),
@@ -48,4 +52,4 @@ Blockly.Blocks.math_trig = {
     },
 };
 
-Blockly.JavaScript.math_trig = Blockly.JavaScript.math_single;
+Blockly.JavaScript.javascriptGenerator.forBlock.math_trig = Blockly.JavaScript.javascriptGenerator.forBlock.math_single;

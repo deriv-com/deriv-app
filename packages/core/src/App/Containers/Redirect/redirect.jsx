@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, useHistory } from 'react-router-dom';
 import { loginUrl, routes, redirectToLogin, SessionStore } from '@deriv/shared';
@@ -17,7 +18,6 @@ const Redirect = observer(() => {
         openRealAccountSignup,
         setCFDPasswordResetModal,
         setResetTradingPasswordModalOpen,
-        setRedirectFromEmail,
         toggleAccountSignupModal,
         toggleResetPasswordModal,
         toggleResetEmailModal,
@@ -130,12 +130,6 @@ const Redirect = observer(() => {
             }
 
             setResetTradingPasswordModalOpen(true);
-            break;
-        }
-        case 'phone_number_verification': {
-            setRedirectFromEmail(true);
-            history.push(routes.phone_verification);
-            redirected_to_route = true;
             break;
         }
         case 'payment_deposit': {
@@ -252,13 +246,14 @@ const Redirect = observer(() => {
         default:
             break;
     }
-
-    if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
-        history.push({
-            pathname: routes.traders_hub,
-            search: url_query_string,
-        });
-    }
+    useEffect(() => {
+        if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
+            history.push({
+                pathname: routes.traders_hub,
+                search: url_query_string,
+            });
+        }
+    }, [redirected_to_route, url_query_string, history]);
 
     return null;
 });

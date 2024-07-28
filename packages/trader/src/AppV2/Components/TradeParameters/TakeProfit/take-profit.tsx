@@ -12,11 +12,12 @@ type TTakeProfitProps = {
     is_minimized?: boolean;
 };
 
-//TODO: increase clickable zone on carousel btn
 //TODO: validation, max and min allow values
-//TODO: disabling for ACC
+//TODO: block "-" icon when value is 0
+
 const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
-    const { currency, has_open_accu_contract, has_take_profit, take_profit } = useTraderStore();
+    const { currency, has_open_accu_contract, has_take_profit, take_profit, onChangeMultiple, onChange } =
+        useTraderStore();
 
     const [is_open, setIsOpen] = React.useState(false);
     const [is_take_profit_enabled, setIsTakeProfitEnabled] = React.useState(has_take_profit);
@@ -33,23 +34,43 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
 
         if (is_enabled) {
             clearTimeout(focus_timeout.current);
-            focus_timeout.current = setTimeout(() => input_ref.current?.focus(), 0);
+            focus_timeout.current = setTimeout(() => {
+                input_ref.current?.focus();
+                input_ref.current?.setSelectionRange(0, 9999);
+            }, 150);
         } else {
             input_ref.current?.blur();
         }
     };
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target;
+        let { value } = e.target;
+        if (Number(value) <= 0) value = '0';
         setUpdatedTakeProfitValue(value);
     };
 
     const onInputClick = () => {
-        console.log('hi');
+        //TODO
     };
 
     const onSave = () => {
-        //TODO
+        onChangeMultiple({
+            has_take_profit: is_take_profit_enabled,
+            ...(is_take_profit_enabled ? { has_cancellation: false } : {}),
+        });
+        onChange({
+            target: {
+                name: 'take_profit',
+                value: updated_take_profit_value,
+            },
+        });
+        onActionSheetClose();
+    };
+
+    const onActionSheetClose = () => {
+        setIsOpen(false);
+        setIsTakeProfitEnabled(has_take_profit);
+        setUpdatedTakeProfitValue(take_profit);
     };
 
     const action_sheet_content = [
@@ -125,7 +146,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                 disabled={has_open_accu_contract}
                 onClick={() => setIsOpen(true)}
             />
-            <ActionSheet.Root isOpen={is_open} onClose={() => setIsOpen(false)} position='left' expandable={false}>
+            <ActionSheet.Root isOpen={is_open} onClose={onActionSheetClose} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel header={TakeProfitHeader} pages={action_sheet_content} />
                 </ActionSheet.Portal>

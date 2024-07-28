@@ -11,10 +11,6 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
             height: calc(400px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
             padding-block-start: 0;
         }
-
-        // .quill-input__container{
-        //     :before
-        // }
     }
 
     &__content {
@@ -22,5 +18,11 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
         justify-content: space-between;
         align-items: center;
         padding-block: var(--core-spacing-400);
+    }
+}
+
+.carousel-controls {
+    .quill-action-sheet--title--icon {
+        z-index: 2;
     }
 }

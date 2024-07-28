@@ -11,6 +11,7 @@ type TAllowEqualsProps = {
 
 const TakeProfitHeader = ({ current_index, onNextClick, onPrevClick }: TAllowEqualsProps) => (
     <ActionSheet.Header
+        className='carousel-controls'
         title={<Localize i18n_default_text='Take profit' />}
         icon={
             current_index ? (

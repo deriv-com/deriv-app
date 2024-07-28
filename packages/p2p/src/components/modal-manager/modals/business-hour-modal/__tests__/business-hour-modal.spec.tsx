@@ -5,9 +5,11 @@ import BusinessHourModal from '../business-hour-modal';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import userEvent from '@testing-library/user-event';
 
+const mockFn = jest.fn();
 const mock_modal_manager: Partial<ReturnType<typeof useModalManagerContext>> = {
     hideModal: jest.fn(),
     is_modal_open: true,
+    useSavedState: jest.fn(() => [false, mockFn]),
 };
 
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
@@ -61,30 +63,21 @@ describe('<BusinessHourModal />', () => {
 
         userEvent.click(edit_button);
 
-        expect(screen.getByText('Edit business hour')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
+        expect(mockFn).toHaveBeenCalledWith(true);
     });
 
     it('should hide the edit screen if the user clicks on Cancel button', () => {
+        mock_modal_manager.useSavedState = jest.fn(() => [true, mockFn]);
         render(<BusinessHourModal />, { wrapper });
-
-        const edit_button = screen.getByRole('button', { name: 'Edit business hours' });
-
-        userEvent.click(edit_button);
 
         const cancel_button = screen.getByRole('button', { name: 'Cancel' });
 
         userEvent.click(cancel_button);
-
-        expect(screen.getByText('Set your business hours')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Edit business hours' })).toBeInTheDocument();
-
-        expect(screen.queryByText('Edit business hour')).not.toBeInTheDocument();
-        expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
+        expect(mockFn).toHaveBeenCalledWith(false);
     });
 
     it('should show the mobile view when is_mobile is true for the main screen', () => {
+        mock_modal_manager.useSavedState = jest.fn(() => [false, mockFn]);
         mock_store = {
             ui: {
                 is_mobile: true,
@@ -125,27 +118,17 @@ describe('<BusinessHourModal />', () => {
 
         userEvent.click(edit_button);
 
-        expect(screen.getByText('Edit business hour')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
-        expect(screen.getByTestId('dt_mobile_full_page_return_icon')).toBeInTheDocument();
+        expect(mockFn).toHaveBeenCalledWith(true);
     });
 
     it('should hide the edit screen if user clicks on back button from edit screen', () => {
+        mock_modal_manager.useSavedState = jest.fn(() => [true, mockFn]);
         render(<BusinessHourModal />, { wrapper });
-
-        const edit_button = screen.getByRole('button', { name: 'Edit business hours' });
-
-        userEvent.click(edit_button);
 
         const back_button = screen.getByTestId('dt_mobile_full_page_return_icon');
 
         userEvent.click(back_button);
 
-        expect(screen.getByText('Set your business hours')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Edit business hours' })).toBeInTheDocument();
-
-        expect(screen.queryByText('Edit business hour')).not.toBeInTheDocument();
-        expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
+        expect(mockFn).toHaveBeenCalledWith(false);
     });
 });

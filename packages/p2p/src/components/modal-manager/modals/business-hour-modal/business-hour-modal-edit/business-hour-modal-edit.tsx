@@ -17,9 +17,8 @@ type TData = {
 
 type TBusinessHourModalEditProps = {
     data: TData[];
+    saved_details: TData[];
 };
-
-type TDataItem = TBusinessHourModalEditProps['data'][number];
 
 type TEvent = { target: { name: string; value: string } };
 type TTimeDropdownProps = {
@@ -31,6 +30,8 @@ type TTimeDropdownProps = {
     day: string;
 };
 
+const FULL_DAY = '12:00 am';
+
 const TimeDropdown = ({ idx, today, onSelectTime, start_time, end_time, day }: TTimeDropdownProps) => {
     const time_list = getHoursList();
     return (
@@ -41,7 +42,7 @@ const TimeDropdown = ({ idx, today, onSelectTime, start_time, end_time, day }: T
         >
             <Dropdown
                 is_align_text_left
-                list={getDropdownList(time_list, 'start', end_time)}
+                list={getDropdownList(time_list, 'start', end_time, end_time !== FULL_DAY)}
                 onChange={(e: TEvent) => onSelectTime(e, day)}
                 should_animate_suffix_icon
                 suffix_icon='IcArrowDropDown'
@@ -53,7 +54,7 @@ const TimeDropdown = ({ idx, today, onSelectTime, start_time, end_time, day }: T
             <Dropdown
                 className='business-hour-modal-edit__selector-item__dropdown-group__end-time'
                 is_align_text_left
-                list={getDropdownList(time_list, 'end', start_time)}
+                list={getDropdownList(time_list, 'end', start_time, start_time !== FULL_DAY)}
                 onChange={(e: TEvent) => onSelectTime(e, day, false)}
                 should_animate_suffix_icon
                 suffix_icon='IcArrowDropDown'
@@ -67,7 +68,7 @@ type TDayState = {
     [key: string]: boolean;
 };
 
-const initialDayStates: TDayState = {
+const initial_day_states: TDayState = {
     sunday: false,
     monday: false,
     tuesday: false,
@@ -77,23 +78,21 @@ const initialDayStates: TDayState = {
     saturday: false,
 };
 
-const FULL_DAY = '12:00 am';
-
 const getDropdownOpenStates = (data: TBusinessHourModalEditProps['data']): TDayState => {
-    const dayStates = { ...initialDayStates };
+    const day_states = { ...initial_day_states };
 
     data.forEach(item => {
         // Check if the item contains a valid day and has non-null start_time or end_time
-        if (item.day in dayStates && (item.start_time !== null || item.end_time !== null)) {
-            dayStates[item.day] = true;
+        if (item.day in day_states && (item.start_time !== null || item.end_time !== null)) {
+            day_states[item.day] = true;
         }
     });
 
-    return dayStates;
+    return day_states;
 };
 
-const BusinessHourModalEdit = React.forwardRef(({ data }: TBusinessHourModalEditProps, ref) => {
-    const [edited_data, setEditedData] = React.useState<TData[]>(data);
+const BusinessHourModalEdit = React.forwardRef(({ data, saved_details }: TBusinessHourModalEditProps, ref) => {
+    const [edited_data, setEditedData] = React.useState<TData[]>(saved_details.length ? saved_details : data);
     const [selected_days, setSelectedDays] = React.useState<string[]>([]);
     const [dropdownOpenStates, setDropdownOpenStates] = React.useState<TDayState>(getDropdownOpenStates(data));
     const today = new Date().getDay();
@@ -113,11 +112,6 @@ const BusinessHourModalEdit = React.forwardRef(({ data }: TBusinessHourModalEdit
 
         setSelectedDays(filtered_days);
     }, []);
-
-    const dataLookup: Record<string, TDataItem> = data.reduce((acc, day) => {
-        acc[day.value] = day;
-        return acc;
-    }, {} as Record<string, TDataItem>);
 
     const onSelectTime = (event: TEvent, value: string, start_time = true) => {
         const new_edited_data = edited_data.map(day => {
@@ -162,30 +156,14 @@ const BusinessHourModalEdit = React.forwardRef(({ data }: TBusinessHourModalEdit
     };
 
     const onReset = (value: string) => {
-        const new_edited_data = data.map(day => {
+        const new_edited_data = edited_data.map(day => {
             if (day.value === value) {
-                const initialDay = dataLookup[value];
-
-                if (initialDay) {
-                    // If the initial day is a full day(ie. 24hrs => 1440minutes) or if the day was closed previously, toggle the dropdown
-                    if (
-                        (initialDay.end_time === FULL_DAY && initialDay.start_time === FULL_DAY) ||
-                        (initialDay.start_time === null && initialDay.end_time === null)
-                    ) {
-                        toggleDropdown(value);
-                        return {
-                            ...day,
-                            start_time: FULL_DAY,
-                            end_time: FULL_DAY,
-                        };
-                    }
-                    // Return a new object with original start_time and end_time
-                    return {
-                        ...day,
-                        start_time: initialDay.start_time,
-                        end_time: initialDay.end_time,
-                    };
-                }
+                toggleDropdown(value);
+                return {
+                    ...day,
+                    start_time: FULL_DAY,
+                    end_time: FULL_DAY,
+                };
             }
             return day;
         });

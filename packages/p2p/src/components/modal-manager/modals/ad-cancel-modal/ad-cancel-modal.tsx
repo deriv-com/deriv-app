@@ -8,10 +8,20 @@ type TAdCancelModalProps = {
     confirm_label: string;
     message: string;
     onConfirm?: () => void;
+    should_hide_all_modals?: boolean;
+    should_restore_state?: boolean;
     title: string;
 };
 
-const AdCancelModal = ({ cancel_text, confirm_label, message, onConfirm, title }: TAdCancelModalProps) => {
+const AdCancelModal = ({
+    cancel_text,
+    confirm_label,
+    message,
+    onConfirm,
+    should_hide_all_modals = true,
+    should_restore_state = false,
+    title,
+}: TAdCancelModalProps) => {
     const { hideModal, is_modal_open } = useModalManagerContext();
 
     return (
@@ -26,13 +36,19 @@ const AdCancelModal = ({ cancel_text, confirm_label, message, onConfirm, title }
                     has_effect
                     text={cancel_text ?? localize('Cancel')}
                     onClick={() => {
-                        hideModal({ should_hide_all_modals: true });
+                        hideModal({ should_hide_all_modals });
                         onConfirm?.();
                     }}
                     secondary
                     large
                 />
-                <Button has_effect text={confirm_label} onClick={hideModal} primary large />
+                <Button
+                    has_effect
+                    text={confirm_label}
+                    onClick={() => hideModal({ should_restore_local_state: should_restore_state })}
+                    primary
+                    large
+                />
             </Modal.Footer>
         </Modal>
     );

@@ -42,11 +42,11 @@ const HeaderRenderer = ({ show_edit }: { show_edit: boolean }) => (
 );
 
 const BusinessHourModal = () => {
-    const [show_edit, setShowEdit] = React.useState(false);
-    const { hideModal, is_modal_open, showModal } = useModalManagerContext();
+    const { hideModal, is_modal_open, showModal, useSavedState } = useModalManagerContext();
     const { my_profile_store } = useStores();
-    const { business_hours } = my_profile_store;
+    const { business_hours, setEditedBusinessHours, edited_business_hours } = my_profile_store;
 
+    const [show_edit, setShowEdit] = useSavedState('show_edit', false);
     const ref = React.useRef<{ getEditedData: () => void } | null>(null);
 
     const formatBusinessDays = (intervals: TTimeRange[]): TBusinessDay[] => {
@@ -97,7 +97,9 @@ const BusinessHourModal = () => {
             ({ start_min, end_min }) => start_min !== null && end_min !== null
         );
         const offset = new Date().getTimezoneOffset();
-        const converted_result = convertToGMTWithOverflow(result, offset);
+        const converted_result = convertToGMTWithOverflow(result, offset).filter(
+            ({ start_min, end_min }) => !(start_min === 0 && end_min === 0)
+        );
 
         my_profile_store.handleBusinessHoursSubmit(converted_result);
     };
@@ -110,20 +112,28 @@ const BusinessHourModal = () => {
     const business_hours_input = formatBusinessDays(splitTimeRange(business_hours, getTimezoneOffset()));
 
     const onClickCancel = () => {
-        const edited_data = ref.current?.getEditedData();
+        const edited_data = ref.current?.getEditedData() ?? [];
         const is_edited = isTimeEdited(business_hours_input, edited_data);
-        if (is_edited) {
+        setEditedBusinessHours(edited_data);
+        if (is_edited && show_edit) {
             showModal({
                 key: 'AdCancelModal',
                 props: {
                     cancel_text: localize('Discard'),
                     confirm_label: localize('Keep editing'),
                     message: localize('All unsaved changes to your business hours will be lost.'),
+                    onConfirm: () => {
+                        setEditedBusinessHours([]);
+                    },
+                    should_hide_all_modals: false,
+                    should_restore_state: true,
                     title: localize('Discard changes?'),
                 },
             });
-        } else {
+        } else if (show_edit) {
             setShowEdit(false);
+        } else {
+            hideModal();
         }
     };
 
@@ -144,7 +154,11 @@ const BusinessHourModal = () => {
                 pageHeaderReturnFn={() => (show_edit ? setShowEdit(false) : hideModal())}
             >
                 {show_edit ? (
-                    <BusinessHourModalEdit data={business_hours_input} ref={ref} />
+                    <BusinessHourModalEdit
+                        data={business_hours_input}
+                        ref={ref}
+                        saved_details={edited_business_hours}
+                    />
                 ) : (
                     <BusinessHourModalMain business_days={business_hours_input} />
                 )}
@@ -158,12 +172,16 @@ const BusinessHourModal = () => {
             is_open={is_modal_open}
             should_close_on_click_outside={false}
             title={<HeaderRenderer show_edit={show_edit} />}
-            toggleModal={hideModal}
+            toggleModal={onClickCancel}
             width='44rem'
         >
             <Modal.Body className='business-hour-modal__body'>
                 {show_edit ? (
-                    <BusinessHourModalEdit data={business_hours_input} ref={ref} />
+                    <BusinessHourModalEdit
+                        data={business_hours_input}
+                        ref={ref}
+                        saved_details={edited_business_hours}
+                    />
                 ) : (
                     <BusinessHourModalMain business_days={business_hours_input} />
                 )}

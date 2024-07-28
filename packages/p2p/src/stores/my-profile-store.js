@@ -13,6 +13,7 @@ export default class MyProfileStore extends BaseStore {
     advertiser_payment_methods_error = '';
     available_payment_methods = {};
     business_hours = [];
+    edited_business_hours = [];
     error_message = '';
     form_error = '';
     full_name = '';
@@ -55,6 +56,7 @@ export default class MyProfileStore extends BaseStore {
             advertiser_payment_methods_error: observable,
             available_payment_methods: observable,
             business_hours: observable,
+            edited_business_hours: observable,
             error_message: observable,
             form_error: observable,
             full_name: observable,
@@ -114,6 +116,7 @@ export default class MyProfileStore extends BaseStore {
             setAdvertiserPaymentMethodsError: action.bound,
             setAvailablePaymentMethods: action.bound,
             setBusinessHours: action.bound,
+            setEditedBusinessHours: action.bound,
             setErrorMessage: action.bound,
             setFormError: action.bound,
             setFullName: action.bound,
@@ -414,6 +417,7 @@ export default class MyProfileStore extends BaseStore {
 
     handleBusinessHoursSubmit(values) {
         const { general_store } = this.root_store;
+        this.setEditedBusinessHours([]);
         requestWS({
             p2p_advertiser_update: 1,
             schedule: values,
@@ -631,6 +635,10 @@ export default class MyProfileStore extends BaseStore {
 
     setBusinessHours(business_hours) {
         this.business_hours = business_hours;
+    }
+
+    setEditedBusinessHours(edited_business_hours) {
+        this.edited_business_hours = edited_business_hours;
     }
 
     setErrorMessage(error_message) {

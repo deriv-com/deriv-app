@@ -76,46 +76,147 @@ export const getDaysOfWeek = (): TDaysOfWeek => {
     };
 };
 
-// This function sorts the time ranges by start time
-const getSortedTimeRanges = (timeRanges: TTimeRange[]): TTimeRange[] =>
-    timeRanges.slice().sort((a, b) => (a.start_min ?? 0) - (b.start_min ?? 0));
+/**
+ * The below function adjusts the overflow and carry forward to the previous day or next day
+ * @param timeRanges
+ * @returns
+ */
+const adjustOverflow = (timeRanges: TTimeRange[]) => {
+    const adjustedRanges = [...timeRanges];
+    const dayMinutes = 1440;
 
-// This function handles null time ranges by filling in the missing days with null values
-const handleNullTimeRanges = (intervals: TTimeRange[]): TTimeRange[] => {
-    const finalIntervals: TTimeRange[] = [];
-    for (let day = 0; day < 7; day++) {
-        const dayStart = day * MINUTES_IN_DAY;
-        const dayEnd = (day + 1) * MINUTES_IN_DAY;
+    for (let i = 0; i < adjustedRanges.length; i++) {
+        // Handle positive values, ie offset < 0 => ahead GMT where time overflow to the next day
+        const maxEndMin = (i + 1) * dayMinutes;
+        if (adjustedRanges[i].end_min && (adjustedRanges[i].end_min as number) > maxEndMin) {
+            const overflow = (adjustedRanges[i].end_min as number) - maxEndMin;
+            adjustedRanges[i].end_min = maxEndMin;
 
-        const foundInterval = intervals.find(
-            interval =>
-                interval.start_min !== null &&
-                interval.end_min !== null &&
-                interval.start_min >= dayStart &&
-                interval.end_min <= dayEnd
-        );
+            const nextIndex = (i + 1) % 7;
+            if (adjustedRanges[nextIndex].start_min !== null) {
+                adjustedRanges[nextIndex].start_min -= overflow;
+            }
 
-        if (foundInterval) {
-            finalIntervals.push(foundInterval);
-        } else {
-            finalIntervals.push({ start_min: null, end_min: null });
+            if (nextIndex === 0 && (adjustedRanges[0].start_min as number) < 0) {
+                (adjustedRanges[0].start_min as number) += 10080;
+            }
+        }
+
+        // Handle for negative values, ie offset > 0 => behind GMT where start will be negative
+        if (adjustedRanges[i]?.start_min !== null && (adjustedRanges[i]?.start_min as number) < i * dayMinutes) {
+            const underflow = i * dayMinutes - (adjustedRanges[i].start_min as number);
+            adjustedRanges[i].start_min = i * dayMinutes;
+            const prevIndex = (i - 1 + 7) % 7;
+            if (adjustedRanges[prevIndex].end_min !== null) {
+                adjustedRanges[prevIndex].end_min += underflow;
+            }
         }
     }
 
-    // Preserve any remaining intervals (overflow) and append null values as needed
-    finalIntervals.forEach((interval, index) => {
-        if (interval.start_min !== null && interval.end_min !== null) {
-            finalIntervals[index] = interval;
+    return adjustedRanges;
+};
+
+/**
+ * The below function adjusts the time by adding or subtracting the offset based on the timezone
+ * @param timeRanges
+ * @param offset
+ * @returns
+ */
+const adjustTimeRangesWithOffset = (timeRanges: TTimeRange[], offset: number) => {
+    // Separate null and non-null ranges
+    let nonNullRanges: TRange[] = [];
+    const nullRanges: TTimeRange[] = [];
+
+    timeRanges.forEach(range => {
+        if (range.start_min !== null && range.end_min !== null) {
+            nonNullRanges.push(range as TRange);
+        } else {
+            nullRanges.push(range);
         }
     });
 
-    return finalIntervals;
+    // Adjust the non-null ranges
+    nonNullRanges = nonNullRanges.map(range => {
+        let adjustedStart = range.start_min;
+        let adjustedEnd = range.end_min;
+
+        if (adjustedStart !== null) {
+            adjustedStart -= offset;
+        }
+
+        if (adjustedEnd !== null) {
+            adjustedEnd -= offset;
+        }
+
+        return { start_min: adjustedStart, end_min: adjustedEnd };
+    });
+
+    // Sort the adjusted non-null ranges
+    nonNullRanges.sort((a, b) => a.start_min - b.start_min);
+
+    // Merge back the null values into their original positions
+    let result: TTimeRange[] = [];
+    let nonNullIndex = 0;
+    timeRanges.forEach(range => {
+        if (range.start_min !== null && range.end_min !== null) {
+            result.push(nonNullRanges[nonNullIndex++]);
+        } else {
+            result.push(range);
+        }
+    });
+
+    if (result.length > 7) {
+        if (offset < 0) {
+            result[0].start_min =
+                (result[0].start_min ?? 0) - ((result[7]?.end_min ?? 0) - (result[7]?.start_min ?? 0));
+            result = result.splice(0, 7);
+        } else if (offset > 0) {
+            result[7].end_min = (result[7].end_min ?? 0) + ((result[0]?.end_min ?? 0) - (result[0]?.start_min ?? 0));
+            result = result.splice(1, 8);
+        }
+    }
+
+    return adjustOverflow(result);
+};
+
+/**
+ * The below function adds null objects for gaps greater than or equal to 1440 minutes
+ * @param splitRanges
+ * @returns
+ */
+const addNullObjectsForGaps = (splitRanges: TTimeRange[]) => {
+    const finalRanges = [];
+    const MINUTES_IN_DAY = 1440;
+
+    for (let i = 0; i < splitRanges.length; i++) {
+        finalRanges.push(splitRanges[i]);
+        if (i < splitRanges.length - 1) {
+            const currentEnd = splitRanges[i].end_min ?? 0;
+            const nextStart = splitRanges[i + 1].start_min ?? 0;
+            const gap = nextStart - currentEnd;
+
+            // Calculate the number of null objects needed
+            if (gap >= MINUTES_IN_DAY) {
+                const nullObjectsCount = Math.floor(gap / MINUTES_IN_DAY);
+                for (let j = 0; j < nullObjectsCount; j++) {
+                    finalRanges.push({ start_min: null, end_min: null });
+                }
+            }
+        }
+    }
+
+    return finalRanges;
+};
+
+type TRange = {
+    start_min: number;
+    end_min: number;
 };
 
 /**
  * 
     This function splits the time ranges into intervals for each day of the week
-    It also handles overflow and adjusts the time ranges based on the timezone offset
+    Then also handles overflow and adjusts the time ranges based on the timezone offset
     eg. If the timezone offset is -10, the time ranges will be adjusted 10 hours back
     eg. If the timezone offset is +10, the time ranges will be adjusted 10 hours forward
     eg. If the input is [
@@ -138,77 +239,47 @@ const handleNullTimeRanges = (intervals: TTimeRange[]): TTimeRange[] => {
  * @returns 
  */
 
-export const splitTimeRange = (timeRanges: TTimeRange[] = [], timezoneOffset: number): TTimeRange[] => {
-    const intervals: TTimeRange[] = []; // Total minutes in a day
-
-    // Handle the case where timeRanges is empty
-    if (timeRanges.length === 0) {
+export const splitTimeRange = (timeRanges: TRange[] = [], offset = 0): TTimeRange[] => {
+    // Handle the case when timeRanges is undefined or an empty array
+    if (!timeRanges || timeRanges.length === 0) {
+        const fullWeek = [];
         for (let day = 0; day < 7; day++) {
-            intervals.push({
+            fullWeek.push({
                 start_min: day * MINUTES_IN_DAY,
                 end_min: (day + 1) * MINUTES_IN_DAY,
             });
         }
-        return intervals;
+        return fullWeek;
     }
 
-    const sortedTimeRanges = getSortedTimeRanges(timeRanges);
-    for (let day = 0; day < 7; day++) {
-        const dayStart = day * MINUTES_IN_DAY; // Start of the day in minutes
-        const dayEnd = (day + 1) * MINUTES_IN_DAY; // End of the day in minutes
-        const overlappingRanges = sortedTimeRanges.filter(
-            timeRange =>
-                timeRange.start_min !== null &&
-                timeRange.end_min !== null &&
-                timeRange.start_min <= dayEnd &&
-                timeRange.end_min > dayStart
-        );
+    const splitRanges: TRange[] = [];
 
-        overlappingRanges.forEach(overlappingRange => {
-            let startMin = (overlappingRange.start_min as number) - timezoneOffset;
-            const endMin = (overlappingRange.end_min as number) - timezoneOffset;
+    // Split the ranges if they exceed 1440 minutes
+    timeRanges.forEach(range => {
+        let start = range.start_min;
+        const end = range.end_min;
 
-            // Handle overflow by splitting the range into multiple segments if necessary
-            while (startMin < endMin) {
-                const segmentStart = Math.max(dayStart, startMin);
-                const segmentEnd = Math.min(dayEnd, endMin);
-
-                if (segmentStart < segmentEnd) {
-                    intervals.push({
-                        start_min: segmentStart,
-                        end_min: segmentEnd,
-                    });
-                }
-
-                startMin = segmentEnd;
-
-                // Break if the segment end is beyond the current day
-                if (segmentEnd >= dayEnd) {
-                    break;
-                }
-            }
-        });
-
-        // Add null values for days with no overlapping ranges
-        if (overlappingRanges.length === 0) {
-            intervals.push({
-                start_min: null,
-                end_min: null,
+        while (end - start > MINUTES_IN_DAY) {
+            splitRanges.push({
+                start_min: start,
+                end_min: start + MINUTES_IN_DAY,
             });
+            start += MINUTES_IN_DAY;
         }
-    }
 
-    if (intervals.length < sortedTimeRanges.length) {
-        if (timezoneOffset < 0 && intervals[0].start_min !== null) {
-            intervals[0].start_min -= (sortedTimeRanges[7]?.end_min ?? 0) - (sortedTimeRanges[7]?.start_min ?? 0);
-        } else if (timezoneOffset > 0 && intervals[6].end_min !== null) {
-            intervals[6].end_min += (sortedTimeRanges[7]?.end_min ?? 0) - (sortedTimeRanges[7]?.start_min ?? 0);
-        }
-    }
+        splitRanges.push({
+            start_min: start,
+            end_min: end,
+        });
+    });
 
-    const result = handleNullTimeRanges(intervals);
+    // Sort the split ranges
+    splitRanges.sort((a, b) => a.start_min - b.start_min);
 
-    return result;
+    const resultWithGaps = addNullObjectsForGaps(splitRanges);
+
+    const resultWithOffset = adjustTimeRangesWithOffset(resultWithGaps, offset);
+    return resultWithOffset;
 };
 
 /**
@@ -386,6 +457,12 @@ export const convertToGMTWithOverflow = (times: TTimeRange[], offsetMinutes: num
     return convertedTimes;
 };
 
+/**
+ * Function to check if the time is edited by the user
+ * @param data
+ * @param edited_data
+ * @returns
+ */
 export const isTimeEdited = (data: TBusinessDay[], edited_data: TBusinessDay[]): boolean => {
     if (data.length !== edited_data.length) {
         return true;
@@ -409,14 +486,15 @@ export const isTimeEdited = (data: TBusinessDay[], edited_data: TBusinessDay[]):
  * @param value
  * @returns {Array}
  */
-export const getDropdownList = (hoursList: TTimeOption[], type: string, value: string) => {
+export const getDropdownList = (hoursList: TTimeOption[], type: string, value: string, should_disable = true) => {
     const referenceIndex = hoursList.findIndex(hour => hour.value === value);
 
     return hoursList.map((hour, index) => {
         let disabled = false;
-        if (type === 'start' && index > referenceIndex) {
-            disabled = true;
-        } else if (type === 'end' && index < referenceIndex) {
+        if (
+            should_disable &&
+            ((type === 'start' && index > referenceIndex) || (type === 'end' && index < referenceIndex))
+        ) {
             disabled = true;
         }
 

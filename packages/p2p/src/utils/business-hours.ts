@@ -96,10 +96,6 @@ const adjustOverflow = (timeRanges: TTimeRange[]) => {
             if (adjustedRanges[nextIndex].start_min !== null) {
                 adjustedRanges[nextIndex].start_min -= overflow;
             }
-
-            if (nextIndex === 0 && (adjustedRanges[0].start_min as number) < 0) {
-                (adjustedRanges[0].start_min as number) += 10080;
-            }
         }
 
         // Handle for negative values, ie offset > 0 => behind GMT where start will be negative
@@ -125,13 +121,10 @@ const adjustOverflow = (timeRanges: TTimeRange[]) => {
 const adjustTimeRangesWithOffset = (timeRanges: TTimeRange[], offset: number) => {
     // Separate null and non-null ranges
     let nonNullRanges: TRange[] = [];
-    const nullRanges: TTimeRange[] = [];
 
     timeRanges.forEach(range => {
         if (range.start_min !== null && range.end_min !== null) {
             nonNullRanges.push(range as TRange);
-        } else {
-            nullRanges.push(range);
         }
     });
 

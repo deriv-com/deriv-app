@@ -16,10 +16,10 @@ import Chart from '../chart';
 import ChartModal from '../chart/chart-modal';
 import Dashboard from '../dashboard';
 import RunStrategy from '../dashboard/run-strategy';
-import ServerBot from '../server-bot';
+// import ServerBot from '../server-bot';
+import ServerSideBot from '../server-side-bot';
 import Tutorial from '../tutorials';
 import { tour_list } from '../tutorials/dbot-tours/utils';
-import ServerSideBot from '../server-side-bot';
 
 const AppWrapper = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useDBotStore();

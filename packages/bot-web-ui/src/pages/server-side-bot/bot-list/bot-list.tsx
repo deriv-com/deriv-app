@@ -1,11 +1,17 @@
 import React, { useEffect } from 'react';
-import { Button, Text, useOnClickOutside } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { Button, Icon, Text, useOnClickOutside } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import BotListItem from './bot-list-item';
 import BotListMenu from './bot-list-menu';
 
-const BotList: React.FC = observer(() => {
+type TBotList = {
+    setFormVisibility: (is_open: boolean) => void;
+};
+
+const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const has_list = true;
     const [menu_open, setMenuOpen] = React.useState({ visible: false, y: 0, id: '' });
     const menu_ref = React.useRef(null);
@@ -56,9 +62,12 @@ const BotList: React.FC = observer(() => {
             <BotListMenu is_open={menu_open.visible} y_position={menu_open.y} onOpen={onOpen} onDelete={onDelete} />
 
             <div className='ssb-list__header'>
-                <Text size='xxs' weight='bold'>
+                <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
                     <Localize i18n_default_text='Bot list' />
                 </Text>
+                <span className='ssb-list__header__add' onClick={() => setFormVisibility(true)}>
+                    <Icon icon='IcAddBold' />
+                </span>
             </div>
             <div id='ssb-bot-list' className='ssb-list__content'>
                 {has_list ? (
@@ -90,7 +99,9 @@ const BotList: React.FC = observer(() => {
                             />
                         </Text>
                         <div className='ssb-list__content__no-list__action'>
-                            <Button primary> + Create bot</Button>
+                            <Button primary>
+                                <Localize i18n_default_text='+ Create bot' />
+                            </Button>
                         </div>
                     </div>
                 )}

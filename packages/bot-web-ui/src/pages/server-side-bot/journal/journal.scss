@@ -1,0 +1,43 @@
+%center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ssb-journal {
+    &__content {
+        padding: 16px;
+        height: calc(100vh - 280px);
+        &__empty {
+            background-color: var(--general-section-1);
+            border-radius: 4px;
+            @extend %center;
+            height: 100%;
+            font-size: 1.5rem;
+        }
+        &__item {
+            padding: 8px;
+            &--purchase {
+                color: var(--text-status-info-blue);
+            }
+            &--win {
+                color: var(--text-profit-success);
+            }
+            &--loss {
+                color: var(--text-loss-danger);
+            }
+            &.item-bg {
+                background-color: var(--general-section-1);
+            }
+        }
+    }
+    &__footer {
+        padding: 16px;
+        border-top: 1px solid var(--border-normal);
+        @extend %center;
+        justify-content: space-between;
+        .dc-btn {
+            width: 49%;
+        }
+    }
+}

@@ -3,12 +3,13 @@
     --server-bot-height-mobile: 100vh - 116px;
 
     width: 100%;
+    background-color: var(--general-main-1);
     height: calc(var(--server-bot-height));
     @include mobile {
         height: calc(var(--server-bot-height-mobile));
+        padding: 16px 8px;
     }
-    background-color: var(--general-main-1);
-    padding: 16px 8px;
+
     &__unsigned {
         height: calc(100vh - 146px);
         display: flex;

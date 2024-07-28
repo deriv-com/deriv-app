@@ -12,6 +12,9 @@ type TBotListMenu = {
 
 const BotListMenu: React.FC<TBotListMenu> = ({ is_open, y_position, onOpen, onDelete }) => {
     if (!is_open) return null;
+    const el_portal = document.getElementById('ssb-bot-list-menu');
+    if (!el_portal) return null;
+
     return ReactDom.createPortal(
         <div
             className='ssb-list__menu'
@@ -32,7 +35,7 @@ const BotListMenu: React.FC<TBotListMenu> = ({ is_open, y_position, onOpen, onDe
                 </Text>
             </div>
         </div>,
-        document.getElementById('ssb-bot-list-menu')
+        el_portal
     );
 };
 

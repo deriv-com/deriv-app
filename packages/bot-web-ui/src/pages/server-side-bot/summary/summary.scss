@@ -1,0 +1,99 @@
+%center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ssb-summary {
+    --summary-content-height: 388px;
+    --bg-won: rgba(0, 136, 50, 0.08);
+    --bg-lost: rgba(230, 25, 14, 0.08);
+    --bg-progress: rgba(0, 0, 0, 0.04);
+    --color-stats: #9498a2;
+
+    &__content {
+        padding: 16px;
+        height: calc(100vh - (var(--summary-content-height) - 32px));
+        overflow-y: auto;
+        &__empty {
+            background-color: var(--general-section-1);
+            padding: 32px;
+            @extend %center;
+            border-radius: 4px;
+            height: calc(100vh - var(--summary-content-height));
+        }
+    }
+    &__footer {
+        &__performance {
+            padding: 16px;
+            background-color: var(--general-section-1);
+            box-shadow: 0px -24px 18px -32px rgba(0, 0, 0, 0.2);
+            ul {
+                display: flex;
+                justify-content: space-around;
+                align-items: flex-start;
+                li {
+                    text-align: center;
+                    div {
+                        &:last-child {
+                            margin-top: 8px;
+                        }
+                    }
+                }
+            }
+        }
+        &__actions {
+            padding: 16px;
+            text-align: center;
+            .dc-btn {
+                background: var(--general-main);
+                border: 1px solid var(--text-general);
+                width: 100%;
+            }
+        }
+    }
+    &__item {
+        padding: 8px;
+        background-color: var(--general-section-1);
+        border-radius: 4px;
+        margin-bottom: 16px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &__header {
+            @extend %center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            &__result {
+                display: flex;
+                align-items: center;
+                padding: 4px 8px;
+                border-radius: 4px;
+                &--won {
+                    background-color: var(--bg-won);
+                }
+                &--lost {
+                    background-color: var(--bg-lost);
+                }
+                &--progress {
+                    background-color: var(--bg-progress);
+                }
+
+                .dc-icon {
+                    margin-right: 8px;
+                }
+            }
+        }
+
+        &__content {
+            @extend %center;
+            justify-content: space-between;
+            margin-top: 4px;
+            .dc-text {
+                color: var(--color-stats);
+            }
+        }
+    }
+}

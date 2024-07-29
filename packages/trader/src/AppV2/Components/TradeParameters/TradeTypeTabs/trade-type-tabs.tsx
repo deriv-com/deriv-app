@@ -31,7 +31,7 @@ const TradeTypeTabs = observer(({ is_minimized }: TTradeTypeTabsProps) => {
         setTabIndex(initial_tab_index);
         setTradeTypeTab(tab_list[initial_tab_index].contract_type);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [contract_type, initial_tab_index]);
+    }, [tab_list, initial_tab_index]);
 
     if (!tab_list.length) return null;
     return (

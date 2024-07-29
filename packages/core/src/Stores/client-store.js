@@ -2486,8 +2486,9 @@ export default class ClientStore extends BaseStore {
         }
     }
 
-    setMT5TradingPlatformAvailableAccounts() {
-        WS.tradingPlatformAvailableAccounts({
+    async setMT5TradingPlatformAvailableAccounts() {
+        console.log('==>', 'setMT5TradingPlatformAvailableAccounts');
+        await WS.tradingPlatformAvailableAccounts({
             country_code: this.clients_country,
             platform: CFD_PLATFORMS.MT5,
         }).then(this.responseTradingPlatformAvailableAccounts);

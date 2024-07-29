@@ -5,6 +5,7 @@ import { ActionSheet, SectionMessage, TextField, Text, ToggleSwitch, TextFieldWi
 import { Localize, localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
+import { focusAndOpenKeyboard } from 'AppV2/Utils/trade-types-utils';
 import Carousel from 'AppV2/Components/Carousel';
 import TakeProfitHeader from './take-profit-header';
 
@@ -66,30 +67,6 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
         return false;
     };
 
-    function focusAndOpenKeyboard(el: HTMLInputElement | null) {
-        if (el) {
-            // Align temp input element approximately where the input element is
-            // so the cursor doesn't jump around
-            const tempEl = document.createElement('input');
-            tempEl.style.position = 'absolute';
-            tempEl.style.top = `${el.offsetTop + 7}px`;
-            tempEl.style.left = `${el.offsetLeft}px`;
-            tempEl.style.height = '0px';
-            tempEl.style.opacity = '0px';
-            // Put this temp element as a child of the page <body> and focus on it
-            document.body.appendChild(tempEl);
-            tempEl.focus();
-
-            // The keyboard is open. Now do a delayed focus on the target element
-            setTimeout(function () {
-                el.focus();
-                el.click();
-                // Remove the temp element
-                document.body.removeChild(tempEl);
-            }, 300);
-        }
-    }
-
     const onToggleSwitch = (is_enabled: boolean) => {
         setIsTakeProfitEnabled(is_enabled);
 
@@ -99,11 +76,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
             }
 
             clearTimeout(focus_timeout.current);
-            // focus_timeout.current = setTimeout(() => {
-            // input_ref.current?.click();
-            // input_ref.current?.focus();
-            focusAndOpenKeyboard(input_ref.current);
-            // }, 150);
+            focus_timeout.current = focusAndOpenKeyboard(input_ref.current);
         } else {
             input_ref.current?.blur();
             setErrorMessage('');
@@ -171,7 +144,11 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                             value={updated_take_profit_value}
                         />
                         {!is_take_profit_enabled && (
-                            <button className='take-profit__overlay' onClick={() => onToggleSwitch(true)} />
+                            <button
+                                className='take-profit__overlay'
+                                onClick={() => onToggleSwitch(true)}
+                                data-testid='dt_take_profit_overlay'
+                            />
                         )}
                     </ActionSheet.Content>
                     <ActionSheet.Footer

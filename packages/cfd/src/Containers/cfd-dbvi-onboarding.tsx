@@ -30,10 +30,15 @@ const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) =>
 
 const CFDDbviOnboarding = observer(() => {
     const { isDesktop } = useDevice();
-    const { client, ui } = useStore();
+    const {
+        client,
+        ui,
+        modules: { cfd },
+    } = useStore();
 
     const { account_status, fetchAccountSettings, is_virtual, updateAccountStatus, updateMT5Status } = client;
     const { disableApp, enableApp } = ui;
+    const { setProduct } = cfd;
 
     const {
         has_created_account_for_selected_jurisdiction,
@@ -46,6 +51,11 @@ const CFDDbviOnboarding = observer(() => {
 
     const [showSubmittedModal, setShowSubmittedModal] = React.useState(true);
     const [is_loading, setIsLoading] = React.useState(false);
+
+    const closeModal = () => {
+        toggleCFDVerificationModal();
+        setProduct();
+    };
 
     const getAccountStatusFromAPI = () => {
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
@@ -89,11 +99,11 @@ const CFDDbviOnboarding = observer(() => {
         if (is_loading) {
             return <Loading is_fullscreen={false} />;
         } else if (is_virtual) {
-            return <SwitchToRealAccountMessage onClickOk={toggleCFDVerificationModal} />;
+            return <SwitchToRealAccountMessage onClickOk={closeModal} />;
         }
         return showSubmittedModal ? (
             <PoiPoaDocsSubmitted
-                onClickOK={toggleCFDVerificationModal}
+                onClickOK={closeModal}
                 updateAccountStatus={updateAccountStatus}
                 account_status={account_status}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
@@ -107,7 +117,7 @@ const CFDDbviOnboarding = observer(() => {
                     if (has_created_account_for_selected_jurisdiction) {
                         setShowSubmittedModal(true);
                     } else {
-                        toggleCFDVerificationModal();
+                        closeModal();
                         enableCFDPasswordModal();
                     }
                 }}
@@ -129,7 +139,7 @@ const CFDDbviOnboarding = observer(() => {
                     enableApp={enableApp}
                     is_open={is_cfd_verification_modal_visible}
                     title={getModalTitle()}
-                    toggleModal={toggleCFDVerificationModal}
+                    toggleModal={closeModal}
                     height='700px'
                     width='996px'
                     onMount={() => getAccountStatusFromAPI()}
@@ -143,7 +153,7 @@ const CFDDbviOnboarding = observer(() => {
                     title={getModalTitle()}
                     wrapper_classname='cfd-financial-stp-modal'
                     visible={is_cfd_verification_modal_visible}
-                    onClose={toggleCFDVerificationModal}
+                    onClose={closeModal}
                 >
                     {getModalContent()}
                 </MobileDialog>

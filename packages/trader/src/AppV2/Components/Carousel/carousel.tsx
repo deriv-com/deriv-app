@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 type THeaderProps = {
     current_index: number;
@@ -8,26 +8,32 @@ type THeaderProps = {
 type TCarousel = {
     header: ({ current_index, onNextClick, onPrevClick }: THeaderProps) => JSX.Element;
     pages: { id: number; component: JSX.Element }[];
+    current_index?: number;
+    setCurrentIndex?: (index: number) => void;
 };
 
-const Carousel = ({ header, pages }: TCarousel) => {
-    const [current_index, setCurrentIndex] = React.useState(0);
+const Carousel = ({ header, pages, current_index, setCurrentIndex }: TCarousel) => {
+    const [internalIndex, setInternalIndex] = useState(0);
 
-    const HeaderComponent = header;
+    const isControlled = current_index !== undefined && setCurrentIndex !== undefined;
+    const index = isControlled ? current_index : internalIndex;
 
-    const onNextClick = () => setCurrentIndex((current_index + 1) % pages.length);
-    const onPrevClick = () => setCurrentIndex((current_index - 1 + pages.length) % pages.length);
+    const handleNextClick = () => {
+        const newIndex = (index + 1) % pages.length;
+        isControlled ? setCurrentIndex?.(newIndex) : setInternalIndex(newIndex);
+    };
+
+    const handlePrevClick = () => {
+        const newIndex = (index - 1 + pages.length) % pages.length;
+        isControlled ? setCurrentIndex?.(newIndex) : setInternalIndex(newIndex);
+    };
 
     return (
         <React.Fragment>
-            <HeaderComponent current_index={current_index} onNextClick={onNextClick} onPrevClick={onPrevClick} />
+            {header({ current_index: index, onNextClick: handleNextClick, onPrevClick: handlePrevClick })}
             <ul className='carousel'>
                 {pages.map(({ component, id }) => (
-                    <li
-                        className='carousel__item'
-                        style={{ transform: `translateX(-${current_index * 100}%)` }}
-                        key={id}
-                    >
+                    <li className='carousel__item' style={{ transform: `translateX(-${index * 100}%)` }} key={id}>
                         {component}
                     </li>
                 ))}

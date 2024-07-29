@@ -115,6 +115,12 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
                 <Localize i18n_default_text='For exit spot, the latest asset price when the trade closure is processed by our servers.' />
             ),
         },
+        {
+            type: 'paragraph',
+            text: (
+                <Localize i18n_default_text='Note: Deal cancellation is only available for Volatility Indices on Multipliers.' />
+            ),
+        },
     ];
 
     return <React.Fragment>{getContractDescription(content)}</React.Fragment>;

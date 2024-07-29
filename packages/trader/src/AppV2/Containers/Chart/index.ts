@@ -1,4 +1,4 @@
-import ChartPlaceholder from './chart-placeholder';
 import './chart.scss';
 
-export default ChartPlaceholder;
+export { default as ChartPlaceholder } from './chart-placeholder';
+export { default as TradeChart } from './trade-chart';

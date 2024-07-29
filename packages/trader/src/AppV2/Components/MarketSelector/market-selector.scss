@@ -4,7 +4,7 @@
     gap: var(--core-spacing-400);
 
     &__container {
-        padding: var(--core-spacing-400) var(--core-spacing-800);
+        padding: 0 var(--core-spacing-800);
     }
     &-info {
         display: flex;
@@ -13,6 +13,9 @@
         &__label {
             display: flex;
             gap: var(--core-spacing-400);
+        }
+        &__price {
+            color: var(--core-color-opacity-black-600);
         }
     }
 }

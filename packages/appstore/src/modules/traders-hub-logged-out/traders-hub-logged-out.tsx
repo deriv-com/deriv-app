@@ -5,6 +5,7 @@ import { observer, useStore } from '@deriv/stores';
 import { Div100vhContainer, Loading, Text } from '@deriv/components';
 import { isEuCountry } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import Disclaimer from 'Components/disclaimer';
 import OrderedPlatformSections from 'Components/ordered-platform-sections';
 import GetStartedTradingBanner from 'Components/get-started-trading-banner';
 import TabsOrTitle from 'Components/tabs-or-title';
@@ -30,26 +31,30 @@ const TradersHubLoggedOut = observer(() => {
     if (!clients_country) return <Loading is_fullscreen />;
 
     return (
-        <Div100vhContainer className='traders-hub-logged-out__mobile' height_offset='50px' is_disabled={isDesktop}>
-            <div
-                className={classNames('traders-hub-logged-out', {
-                    'traders-hub-logged-out__eu-user': is_eu_user,
-                })}
-            >
-                <GetStartedTradingBanner />
-                <Text size={isDesktop ? 'm' : 'xsm'} weight='bold' color='prominent'>
-                    <Localize i18n_default_text="Trader's Hub" />
-                </Text>
-                {isDesktop ? (
-                    <OrderedPlatformSections isDesktop />
-                ) : (
-                    <React.Fragment>
-                        <TabsOrTitle />
-                        <OrderedPlatformSections />
-                    </React.Fragment>
-                )}
-            </div>
-        </Div100vhContainer>
+        <React.Fragment>
+            <Div100vhContainer className='traders-hub-logged-out__mobile' height_offset='50px' is_disabled={isDesktop}>
+                <div
+                    className={classNames('traders-hub-logged-out', {
+                        'traders-hub-logged-out__eu-user': is_eu_user,
+                    })}
+                >
+                    <GetStartedTradingBanner />
+                    <Text size={isDesktop ? 'm' : 'xsm'} weight='bold' color='prominent'>
+                        <Localize i18n_default_text="Trader's Hub" />
+                    </Text>
+                    {isDesktop ? (
+                        <OrderedPlatformSections isDesktop />
+                    ) : (
+                        <React.Fragment>
+                            <TabsOrTitle />
+                            <OrderedPlatformSections />
+                        </React.Fragment>
+                    )}
+                </div>
+            </Div100vhContainer>
+
+            {is_eu_user && <Disclaimer />}
+        </React.Fragment>
     );
 });
 

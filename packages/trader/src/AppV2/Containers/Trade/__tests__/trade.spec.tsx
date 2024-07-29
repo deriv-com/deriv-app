@@ -6,6 +6,7 @@ import TraderProviders from '../../../../trader-providers';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import Trade from '../trade';
 import { TRADE_TYPES } from '@deriv/shared';
+import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
 
 jest.mock('AppV2/Components/BottomNav', () =>
     jest.fn(({ children, onScroll }) => (
@@ -14,6 +15,7 @@ jest.mock('AppV2/Components/BottomNav', () =>
         </div>
     ))
 );
+jest.mock('AppV2/Components/ClosedMarketMessage', () => jest.fn(() => <div>ClosedMarketMessage</div>));
 jest.mock('AppV2/Components/CurrentSpot', () => jest.fn(() => <div>Current Spot</div>));
 jest.mock('AppV2/Components/PurchaseButton', () => jest.fn(() => <div>Purchase Button</div>));
 jest.mock('../trade-types', () => jest.fn(() => <div>Trade Types Selection</div>));

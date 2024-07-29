@@ -478,9 +478,9 @@ export default class TradersHubStore extends BaseStore {
         //     return;
         // }
 
-        console.log('===>', this.root_store.client.trading_platform_available_accounts);
-
         this.root_store.client.setMT5TradingPlatformAvailableAccounts();
+
+        console.log('==>', this.dynamic_available_platforms, Object.keys(this.dynamic_available_platforms));
 
         if (Object.keys(this.dynamic_available_platforms).length > 0) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account => {

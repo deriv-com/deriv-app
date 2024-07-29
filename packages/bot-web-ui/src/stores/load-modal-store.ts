@@ -125,7 +125,7 @@ export default class LoadModalStore implements ILoadModalStore {
             setDashboardStrategies: action.bound,
             updateListStrategies: action.bound,
             onToggleDeleteDialog: action,
-            loadStrategyModalRecentPreview: action,
+            loadStrategyOnModalRecentPreview: action,
             loadStrategyOnBotBuilder: action,
         });
 
@@ -249,7 +249,7 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     onEntered = (): void => {
-        this.loadStrategyModalRecentPreview(this.selected_strategy_id);
+        this.loadStrategyOnModalRecentPreview(this.selected_strategy_id);
     };
 
     onLoadModalClose = (): void => {
@@ -424,7 +424,7 @@ export default class LoadModalStore implements ILoadModalStore {
 
     onActiveIndexChange = (): void => {
         if (this.tab_name === tabs_title.TAB_RECENT) {
-            this.loadStrategyModalRecentPreview(this.selected_strategy_id);
+            this.loadStrategyOnModalRecentPreview(this.selected_strategy_id);
         } else if (this.recent_workspace) {
             setTimeout(() => {
                 // Dispose of recent workspace when switching away from Recent tab.
@@ -509,7 +509,7 @@ export default class LoadModalStore implements ILoadModalStore {
             const upload_type = getStrategyType(load_options?.block_string ?? '');
 
             const result = await load(load_options);
-            this.loadStrategyModalLocalPreview(load_options);
+            this.loadStrategyOnModalLocalPreview(load_options);
             if (!is_preview && !result?.error) {
                 rudderStackSendUploadStrategyCompletedEvent({
                     upload_provider: 'my_computer',
@@ -581,7 +581,7 @@ export default class LoadModalStore implements ILoadModalStore {
         if (recent_files?.length > 0) this.setSelectedStrategyId(recent_files[0]?.id);
     };
 
-    loadStrategyModalRecentPreview = async workspace_id => {
+    loadStrategyOnModalRecentPreview = async workspace_id => {
         const { blockly_store } = this.root_store;
         const { setLoading } = blockly_store;
         setLoading(true);
@@ -605,7 +605,7 @@ export default class LoadModalStore implements ILoadModalStore {
         this.loadStrategyOnModalWorkspace();
     };
 
-    loadStrategyModalLocalPreview = async load_options => {
+    loadStrategyOnModalLocalPreview = async load_options => {
         const injectWorkspace = { ...this.injectWorkspace, theme: window?.Blockly?.Themes?.zelos_renderer };
         const ref = document?.getElementById('load-strategy__blockly-container');
         this.local_workspace = window.Blockly.inject(ref, injectWorkspace);

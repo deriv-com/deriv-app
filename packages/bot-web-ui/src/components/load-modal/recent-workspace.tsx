@@ -12,7 +12,7 @@ type TRecentWorkspaceProps = {
 
 const RecentWorkspace = observer(({ workspace }: TRecentWorkspaceProps) => {
     const { load_modal } = useDBotStore();
-    const { getRecentFileIcon, getSaveType, loadStrategyModalRecentPreview, selected_strategy_id } = load_modal;
+    const { getRecentFileIcon, getSaveType, loadStrategyOnModalRecentPreview, selected_strategy_id } = load_modal;
 
     return (
         <div
@@ -21,7 +21,7 @@ const RecentWorkspace = observer(({ workspace }: TRecentWorkspaceProps) => {
             })}
             key={workspace.id}
             onClick={
-                selected_strategy_id === workspace.id ? undefined : () => loadStrategyModalRecentPreview(workspace.id)
+                selected_strategy_id === workspace.id ? undefined : () => loadStrategyOnModalRecentPreview(workspace.id)
             }
             data-testid='dt_recent_workspace_item'
         >

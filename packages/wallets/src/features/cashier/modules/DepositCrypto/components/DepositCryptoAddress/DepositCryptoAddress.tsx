@@ -9,7 +9,7 @@ type TProps = {
 };
 
 const DepositCryptoAddress: React.FC<TProps> = ({ depositCryptoAddress }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     return (
         <div className='wallets-deposit-crypto-address'>
@@ -21,9 +21,9 @@ const DepositCryptoAddress: React.FC<TProps> = ({ depositCryptoAddress }) => {
                     </WalletText>
                 </div>
                 <div className='wallets-deposit-crypto-address__hash-clipboard'>
-                    {/* TODO: Replace this with deriv-com/ui */}
                     <WalletClipboard
-                        popoverAlignment={isMobile ? 'left' : 'bottom'}
+                        className='wallets-deposit-crypto-address__clipboard'
+                        popoverAlignment={isDesktop ? 'bottom' : 'left'}
                         textCopy={depositCryptoAddress || ''}
                     />
                 </div>

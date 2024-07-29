@@ -4,11 +4,12 @@ import { LegacyCopy1pxIcon, LegacyWonIcon } from '@deriv/quill-icons';
 import { Tooltip, useDevice } from '@deriv-com/ui';
 
 type TProps = {
+    className?: ComponentProps<typeof Tooltip>['className'];
     popoverAlignment?: ComponentProps<typeof Tooltip>['tooltipPosition'];
     textCopy: string;
 };
 
-const WalletClipboard = ({ popoverAlignment = 'right', textCopy }: TProps) => {
+const WalletClipboard = ({ className, popoverAlignment = 'right', textCopy }: TProps) => {
     const [, copy] = useCopyToClipboard();
     const { isDesktop } = useDevice();
     const [isCopied, setIsCopied] = useState(false);
@@ -30,6 +31,7 @@ const WalletClipboard = ({ popoverAlignment = 'right', textCopy }: TProps) => {
     return (
         <Tooltip
             as='button'
+            className={className}
             hideTooltip={!isDesktop}
             onClick={onClick}
             tooltipContent={isCopied ? 'Copied!' : 'Copy'}

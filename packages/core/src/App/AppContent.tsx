@@ -23,7 +23,7 @@ import { useTranslations } from '@deriv-com/translations';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
-    const { has_wallet } = store.client;
+    const { has_wallet, setIsPhoneNumberVerificationEnabled } = store.client;
     const { current_language } = store.common;
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
@@ -34,6 +34,9 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const [isServicePasskeysFFEnabled] = useGrowthbookIsOn({
         featureFlag: 'service_passkeys',
     });
+    const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookIsOn({
+        featureFlag: 'phone_number_verification',
+    });
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());
     const { tracking_datadog } = data;
@@ -42,6 +45,12 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     React.useEffect(() => {
         switchLanguage(current_language);
     }, [current_language, switchLanguage]);
+
+    React.useEffect(() => {
+        if (isPhoneNumberVerificationGBLoaded) {
+            setIsPhoneNumberVerificationEnabled(isPhoneNumberVerificationEnabled);
+        }
+    }, [isPhoneNumberVerificationEnabled, setIsPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded]);
 
     React.useEffect(() => {
         if (isGBLoaded && isWebPasskeysFFEnabled && isServicePasskeysFFEnabled) {

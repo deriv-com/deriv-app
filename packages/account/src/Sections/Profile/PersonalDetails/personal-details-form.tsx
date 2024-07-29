@@ -29,8 +29,9 @@ import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
+import { VerifyButton } from './verify-button';
 import { useInvalidateQuery } from '@deriv/api';
-import { useStatesList, useResidenceList } from '@deriv/hooks';
+import { useStatesList, useResidenceList, useGrowthbookIsOn } from '@deriv/hooks';
 
 type TRestState = {
     show_form: boolean;
@@ -44,6 +45,9 @@ const PersonalDetailsForm = observer(() => {
     const [is_submit_success, setIsSubmitSuccess] = useState(false);
     const invalidate = useInvalidateQuery();
     const history = useHistory();
+    const [isPhoneNumberVerificationEnabled] = useGrowthbookIsOn({
+        featureFlag: 'phone_number_verification',
+    });
 
     const {
         client,
@@ -360,6 +364,10 @@ const PersonalDetailsForm = observer(() => {
                                             name='phone'
                                             id={'phone'}
                                             label={localize('Phone number*')}
+                                            className={clsx({
+                                                'account-form__fieldset--phone':
+                                                    account_settings?.phone_number_verification?.verified,
+                                            })}
                                             //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
                                             value={values.phone}
                                             onChange={handleChange}
@@ -369,6 +377,8 @@ const PersonalDetailsForm = observer(() => {
                                             disabled={isFieldDisabled('phone')}
                                             data-testid='dt_phone'
                                         />
+                                        {isPhoneNumberVerificationEnabled &&
+                                            account_settings.phone === values.phone && <VerifyButton />}
                                     </fieldset>
                                 )}
                                 <Fragment>

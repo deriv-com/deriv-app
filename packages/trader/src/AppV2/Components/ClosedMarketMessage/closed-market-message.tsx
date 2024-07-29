@@ -3,12 +3,13 @@ import { useIsMounted, WS, isMarketClosed, toMoment } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { TradingTimesRequest, TradingTimesResponse } from '@deriv/api-types';
+import { TradingTimesRequest } from '@deriv/api-types';
 import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 import MarketOpeningTimeBanner from '../MarketOpeningTimeBanner';
 import MarketCountdownTimer from '../MarketCountdownTimer';
 import { CaptionText } from '@deriv-com/quill-ui';
 import clsx from 'clsx';
+import { calculateTimeLeft, getSymbol } from 'AppV2/Utils/closed-market-message-utils';
 
 type TWhenMarketOpens = {
     days_offset: number;
@@ -24,36 +25,6 @@ const getTradingTimes = async (target_time: TradingTimesRequest['trading_times']
         return { api_initial_load_error: data.error.message };
     }
     return data;
-};
-
-const getSymbol = (
-    target_symbol: string,
-    trading_times: NonNullable<DeepRequired<TradingTimesResponse['trading_times']>>
-) => {
-    let symbol;
-    const { markets } = trading_times;
-    for (let i = 0; i < markets.length; i++) {
-        const { submarkets } = markets[i];
-        if (submarkets) {
-            for (let j = 0; j < submarkets.length; j++) {
-                const { symbols } = submarkets[j];
-                symbol = symbols?.find(item => item.symbol === target_symbol);
-                if (symbol !== undefined) return symbol;
-            }
-        }
-    }
-};
-
-const calculateTimeLeft = (remaining_time_to_open: number) => {
-    const difference = remaining_time_to_open - Date.now();
-    return difference > 0
-        ? {
-              days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-              hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-              minutes: Math.floor((difference / 1000 / 60) % 60),
-              seconds: Math.floor((difference / 1000) % 60),
-          }
-        : {};
 };
 
 const ClosedMarketMessage = observer(() => {

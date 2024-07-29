@@ -6,7 +6,7 @@ import './ManualUploadErrorMessage.scss';
 
 type TManualUploadErrorMessageProps = {
     errorCode: string;
-    onRetry?: () => void;
+    onRetry: VoidFunction;
 };
 
 const errorCodeToDescriptionMapper: Record<string, string> = {

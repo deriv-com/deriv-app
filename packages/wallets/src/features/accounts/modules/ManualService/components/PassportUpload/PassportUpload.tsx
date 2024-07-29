@@ -46,9 +46,7 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                     resetError();
                     resetForm();
                     setShowSelfieUpload(false);
-                    if (onClickBack) {
-                        onClickBack();
-                    }
+                    onClickBack?.();
                 };
 
                 if (error) {

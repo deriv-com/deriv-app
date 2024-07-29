@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { FormikValues } from 'formik';
 import { useSettings } from '@deriv/api-v2';
 import { getFormattedDateString } from '../../../../../../../utils/utils';
@@ -9,15 +9,12 @@ const useVerifyPersonalDetails = () => {
     const [isSubmissionInitiated, setIsSubmissionInitiated] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
-    const initialValues = useMemo(
-        () => ({
-            arePersonalDetailsVerified: false,
-            dateOfBirth: getFormattedDateString(new Date((settings.date_of_birth ?? 0) * 1000)),
-            firstName: settings.first_name,
-            lastName: settings.last_name,
-        }),
-        [settings.date_of_birth, settings.first_name, settings.last_name]
-    );
+    const initialValues = {
+        arePersonalDetailsVerified: false,
+        dateOfBirth: getFormattedDateString(new Date((settings.date_of_birth ?? 0) * 1000)),
+        firstName: settings.first_name,
+        lastName: settings.last_name,
+    };
 
     const submit = (values: FormikValues | TVerifyPersonalDetailsValues) => {
         const isDirty =

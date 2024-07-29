@@ -42,9 +42,7 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                     resetError();
                     resetForm();
                     setShowSelfieUpload(false);
-                    if (onClickBack) {
-                        onClickBack();
-                    }
+                    onClickBack?.();
                 };
 
                 const handleOnClickNext = () => {

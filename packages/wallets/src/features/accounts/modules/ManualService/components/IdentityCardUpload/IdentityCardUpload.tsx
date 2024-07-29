@@ -48,9 +48,7 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
                     resetError();
                     resetForm();
                     setShowSelfieUpload(false);
-                    if (onClickBack) {
-                        onClickBack();
-                    }
+                    onClickBack?.();
                 };
 
                 if (error) {

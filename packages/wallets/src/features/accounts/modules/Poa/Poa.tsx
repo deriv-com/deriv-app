@@ -19,6 +19,7 @@ const Poa: React.FC<TPoaProps> = ({ onCompletion }) => {
         initialValues,
         isLoading,
         isSuccess: isSubmissionSuccess,
+        resetError,
         upload,
     } = usePoa();
 
@@ -38,9 +39,16 @@ const Poa: React.FC<TPoaProps> = ({ onCompletion }) => {
             onSubmit={submit}
             validationSchema={poaValidationSchema}
         >
-            {({ handleSubmit, isValid }) => {
+            {({ handleSubmit, isValid, resetForm }) => {
+                const onErrorRetry = () => {
+                    resetForm();
+                    resetError();
+                };
+
                 if (errorPoaUpload?.documentUpload) {
-                    return <PoaUploadErrorMessage errorCode={errorPoaUpload.documentUpload.code} />;
+                    return (
+                        <PoaUploadErrorMessage errorCode={errorPoaUpload.documentUpload.code} onRetry={onErrorRetry} />
+                    );
                 }
 
                 return (

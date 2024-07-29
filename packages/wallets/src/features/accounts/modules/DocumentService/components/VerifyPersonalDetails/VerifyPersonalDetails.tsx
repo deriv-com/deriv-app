@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { Field, useFormikContext } from 'formik';
 import moment from 'moment';
@@ -25,10 +25,7 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
 
     const dateDisplayFormat = 'DD-MM-YYYY';
 
-    const isValid = useMemo(
-        () => !errors.dateOfBirth && !errors.firstName && !errors.lastName,
-        [errors.dateOfBirth, errors.firstName, errors.lastName]
-    );
+    const isValid = !errors.dateOfBirth && !errors.firstName && !errors.lastName;
 
     useEffect(() => {
         if (values.arePersonalDetailsVerified && onVerification) {

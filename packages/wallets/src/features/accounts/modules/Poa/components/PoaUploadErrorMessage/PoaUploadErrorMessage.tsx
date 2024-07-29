@@ -6,7 +6,7 @@ import './PoaUploadErrorMessage.scss';
 
 type TPoaUploadErrorMessage = {
     errorCode: string;
-    onRetry?: VoidFunction;
+    onRetry: VoidFunction;
 };
 
 const errorCodeToDescriptionMapper: Record<string, string> = {

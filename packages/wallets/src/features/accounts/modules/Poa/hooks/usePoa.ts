@@ -19,36 +19,24 @@ const usePoa = () => {
         error: errorDocumentUpload,
         isLoading: isDocumentUploading,
         isSuccess: isDocumentUploadSuccess,
+        reset,
         upload: _upload,
     } = useDocumentUpload();
     const [isSubmissionInitiated, setIsSubmissionInitiated] = useState(false);
 
     const isLoading = isDocumentUploading || isSettingsLoading || isStatesListLoading;
 
-    const initialValues = useMemo(
-        () =>
-            ({
-                firstLine: settings.address_line_1,
-                secondLine: settings.address_line_2,
-                stateProvinceLine: settings.address_state,
-                townCityLine: settings.address_city,
-                zipCodeLine: settings.address_postcode,
-            } as TPoaValues),
-        [
-            settings.address_city,
-            settings.address_line_1,
-            settings.address_line_2,
-            settings.address_postcode,
-            settings.address_state,
-        ]
-    );
+    const initialValues = {
+        firstLine: settings.address_line_1,
+        secondLine: settings.address_line_2,
+        stateProvinceLine: settings.address_state,
+        townCityLine: settings.address_city,
+        zipCodeLine: settings.address_postcode,
+    } as TPoaValues;
 
-    const initialStatus = useMemo(
-        () => ({
-            statesList,
-        }),
-        [statesList]
-    );
+    const initialStatus = {
+        statesList,
+    };
 
     // since we call get_settings initially, isSubmissionSuccess helps us to distinguish
     // between the initial call and the upload call using the isSubmissionInitiated flag state
@@ -121,6 +109,9 @@ const usePoa = () => {
 
         /** `true` if the address details and document upload is successful */
         isSuccess: isSubmissionSuccess,
+
+        /** reset error for API response */
+        resetError: reset,
 
         /** Function to initiate upload of address details and document */
         upload,

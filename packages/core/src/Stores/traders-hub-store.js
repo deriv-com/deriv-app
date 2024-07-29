@@ -864,7 +864,6 @@ export default class TradersHubStore extends BaseStore {
     }
 
     get dynamic_available_platforms() {
-        this.root_store.client.setMT5TradingPlatformAvailableAccounts();
         const available_accounts = {};
         this.root_store.client.trading_platform_available_accounts.forEach(account => {
             if (account.product === 'synthetic') {

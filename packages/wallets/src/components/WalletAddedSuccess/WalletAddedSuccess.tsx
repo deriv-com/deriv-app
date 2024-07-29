@@ -22,7 +22,7 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
     const { isMobile } = useDevice();
     const { localize } = useTranslations();
     const description = localize('Make a deposit into your new Wallet.');
-    const title = useMemo(() => `Your ${currency} wallet is ready`, [currency]);
+    const title = useMemo(() => localize('Your {{currency}} wallet is ready', { currency }), [currency, localize]);
     const renderFooter = useCallback(
         () => (
             <div className='wallets-add-more__success-footer'>
@@ -30,7 +30,7 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
                     <WalletButton onClick={onSecondaryButtonClick} variant='outlined'>
                         {localize('Maybe later')}
                     </WalletButton>
-                    <WalletButton onClick={onPrimaryButtonClick}>Deposit</WalletButton>
+                    <WalletButton onClick={onPrimaryButtonClick}>{localize('Deposit')}</WalletButton>
                 </WalletButtonGroup>
             </div>
         ),

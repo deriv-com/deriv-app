@@ -12,9 +12,6 @@ type TTakeProfitProps = {
     is_minimized?: boolean;
 };
 
-//TODO: enabling on click
-//TODO: block "-" icon when value is 0
-
 const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     const {
         currency,
@@ -73,6 +70,10 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
         setIsTakeProfitEnabled(is_enabled);
 
         if (is_enabled) {
+            if (updated_take_profit_value !== '' && updated_take_profit_value !== undefined) {
+                isTakeProfitOutOfRange();
+            }
+
             clearTimeout(focus_timeout.current);
             focus_timeout.current = setTimeout(() => {
                 input_ref.current?.click();
@@ -80,11 +81,12 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
             }, 150);
         } else {
             input_ref.current?.blur();
+            setErrorMessage('');
         }
     };
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        //TODO: check if we will need all this logic when latest Quill update
+        //TODO: check if we will need all this logic when latest Quill update and block "-" icon when value is < 1
         let value: string | number = e.target.value;
         value = String(value).trim().replace(',', '.');
 
@@ -92,10 +94,6 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
         // value = parseFloat(Number(value).toFixed(decimals));
         setUpdatedTakeProfitValue(value);
         isTakeProfitOutOfRange(value);
-    };
-
-    const onInputClick = () => {
-        //TODO
     };
 
     const onSave = () => {
@@ -135,10 +133,10 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                         <TextFieldWithSteppers
                             allowDecimals
                             disabled={!is_take_profit_enabled}
+                            decimals={decimals}
                             message={getInputMessage()}
                             name='take_profit'
                             onChange={onInputChange}
-                            onClick={onInputClick}
                             placeholder={localize('Amount')}
                             ref={input_ref}
                             status={error_message ? 'error' : 'neutral'}
@@ -146,8 +144,10 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                             unitLeft={currency}
                             variant='fill'
                             value={updated_take_profit_value}
-                            decimals={decimals}
                         />
+                        {!is_take_profit_enabled && (
+                            <button className='take-profit__overlay' onClick={() => onToggleSwitch(true)} />
+                        )}
                     </ActionSheet.Content>
                     <ActionSheet.Footer
                         alignment='vertical'

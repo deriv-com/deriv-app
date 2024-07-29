@@ -1,8 +1,8 @@
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { getStaticUrl } from '../../../../../helpers/urls';
-import useDevice from '../../../../../hooks/useDevice';
 import { THooks } from '../../../../../types';
 import { companyNamesAndUrls } from '../../../constants';
 import { JurisdictionFootNoteTitle } from '../JurisdictionFootNoteTitle';
@@ -19,7 +19,7 @@ const JurisdictionTncSection: React.FC<TProps> = ({
     selectedJurisdiction,
     setIsCheckBoxChecked,
 }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { getModalState } = useModal();
     const marketType = getModalState('marketType') || 'all';
     const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
@@ -41,7 +41,7 @@ const JurisdictionTncSection: React.FC<TProps> = ({
                         type='checkbox'
                     />
                     <label className='wallets-jurisdiction-tnc-checkbox-label' htmlFor='tnc-checkbox'>
-                        <WalletText size={isMobile ? 'sm' : 'md'}>
+                        <WalletText size={isDesktop ? 'md' : 'sm'}>
                             I confirm and accept {selectedCompany.name}&lsquo;s{' '}
                             <a
                                 className='wallets-jurisdiction-tnc-checkbox__link'

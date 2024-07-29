@@ -24,7 +24,6 @@ const LocalFooter = observer(() => {
                 text={localize('Open')}
                 onClick={() => {
                     loadStrategyOnBotBuilder();
-                    //loadFileFromLocal();
                     toggleLoadModal();
                     setPreviewOnPopup(false);
                     setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);

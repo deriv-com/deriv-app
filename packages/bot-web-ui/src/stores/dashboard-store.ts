@@ -194,7 +194,6 @@ export default class DashboardStore implements IDashboardStore {
                     refreshBotBuilderTheme();
                 } else {
                     refreshBotBuilderTheme();
-                    //previewRecentStrategy(current_workspace_id);
                 }
             }
         );

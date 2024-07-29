@@ -6,7 +6,6 @@ import TraderProviders from '../../../../trader-providers';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import Trade from '../trade';
 import { TRADE_TYPES } from '@deriv/shared';
-import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
 
 jest.mock('AppV2/Components/BottomNav', () =>
     jest.fn(({ children, onScroll }) => (

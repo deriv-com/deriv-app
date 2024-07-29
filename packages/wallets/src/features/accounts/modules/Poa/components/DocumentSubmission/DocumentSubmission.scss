@@ -79,8 +79,11 @@
                 align-self: stretch;
                 height: 16rem;
                 border-radius: 0.8rem;
-                border: 0.1rem dashed var(--system-light-5-active-background, #d6dadb);
                 cursor: pointer;
+            }
+
+            & .wallets-dropzone__error {
+                min-height: 0;
             }
 
             & .wallets-dropzone__placeholder {

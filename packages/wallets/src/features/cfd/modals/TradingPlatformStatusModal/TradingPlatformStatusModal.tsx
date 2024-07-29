@@ -3,10 +3,10 @@ import { ModalWrapper } from '../../../../components/Base';
 import { TradingPlatformStatus } from '../../screens';
 
 type TradingPlatformStatusModalProps = {
-    isServerMaintenance: boolean;
+    isServerMaintenance?: boolean;
 };
 
-const TradingPlatformStatusModal: React.FC<TradingPlatformStatusModalProps> = ({ isServerMaintenance }) => (
+const TradingPlatformStatusModal: React.FC<TradingPlatformStatusModalProps> = ({ isServerMaintenance = false }) => (
     <ModalWrapper>
         <TradingPlatformStatus isServerMaintenance={isServerMaintenance} />
     </ModalWrapper>

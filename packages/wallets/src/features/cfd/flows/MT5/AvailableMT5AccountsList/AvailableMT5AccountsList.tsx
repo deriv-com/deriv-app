@@ -29,7 +29,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
             case TRADING_PLATFORM_STATUS.MAINTENANCE:
                 return show(<TradingPlatformStatusModal isServerMaintenance />);
             case TRADING_PLATFORM_STATUS.UNAVAILABLE:
-                return show(<TradingPlatformStatusModal isServerMaintenance={false} />);
+                return show(<TradingPlatformStatusModal />);
             case TRADING_PLATFORM_STATUS.ACTIVE:
             default:
                 activeWallet?.is_virtual

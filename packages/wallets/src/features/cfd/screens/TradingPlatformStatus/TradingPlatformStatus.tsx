@@ -12,33 +12,20 @@ const TradingPlatformStatus: React.FC<TradingPlatformStatusModalProps> = ({ isSe
     const { hide } = useModal();
     const { isMobile } = useDevice();
 
-    return isServerMaintenance ? (
+    const title = isServerMaintenance ? 'Server Maintenance' : 'Account Unavailable';
+    const content = isServerMaintenance
+        ? 'We’re currently performing server maintenance. Service maybe affected.'
+        : 'The server is temporarily unavailable for this account. We’re working to resolve this.';
+
+    return (
         <div className='wallets-server-maintenance'>
             <WalletText size='md' weight='bold'>
-                Server Maintenance
+                {title}
             </WalletText>
-            <div>
-                <WalletText size='sm'>
-                    We’re currently performing server maintenance. Service maybe affected.
-                </WalletText>
+            <div className='wallets-server-maintenance__content'>
+                <WalletText size='sm'>{content}</WalletText>
             </div>
             <div className='wallets-server-maintenance__footer'>
-                <WalletButton onClick={() => hide()} size={isMobile ? 'md' : 'lg'} variant='outlined'>
-                    OK
-                </WalletButton>
-            </div>
-        </div>
-    ) : (
-        <div className='wallets-account-unavailable'>
-            <WalletText size='md' weight='bold'>
-                Account Unavailable
-            </WalletText>
-            <div className='wallets-account-unavailable__content'>
-                <WalletText size='sm'>
-                    The server is temporarily unavailable for this account. We’re working to resolve this.
-                </WalletText>
-            </div>
-            <div className='wallets-account-unavailable__footer'>
                 <WalletButton onClick={() => hide()} size={isMobile ? 'md' : 'lg'} variant='outlined'>
                     OK
                 </WalletButton>

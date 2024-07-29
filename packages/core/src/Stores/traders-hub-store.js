@@ -866,7 +866,7 @@ export default class TradersHubStore extends BaseStore {
 
     async setMT5TradingPlatformAvailableAccounts() {
         await WS.tradingPlatformAvailableAccounts({
-            country_code: this.clients_country,
+            country_code: this.root_store.client.clients_country,
             platform: CFD_PLATFORMS.MT5,
         }).then(this.root_store.client.responseTradingPlatformAvailableAccounts);
     }

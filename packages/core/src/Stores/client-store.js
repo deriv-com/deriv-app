@@ -439,15 +439,6 @@ export default class ClientStore extends BaseStore {
         );
 
         reaction(
-            () => [this.clients_country],
-            () => {
-                if (!this.is_logged_in && this.clients_country) {
-                    this.setMT5TradingPlatformAvailableAccounts();
-                }
-            }
-        );
-
-        reaction(
             () => [this.account_settings],
             async () => {
                 const language = getRedirectionLanguage(this.account_settings?.preferred_language, this.is_new_session);

@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import BusinessHourModal from '../business-hour-modal';
-import { StoreProvider, mockStore } from '@deriv/stores';
 import userEvent from '@testing-library/user-event';
+import { useDevice } from '@deriv-com/ui';
 
 const mockFn = jest.fn();
 const mock_modal_manager: Partial<ReturnType<typeof useModalManagerContext>> = {
@@ -17,17 +17,14 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
     useModalManagerContext: jest.fn(() => mock_modal_manager),
 }));
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn().mockReturnValue({ isDesktop: true }),
+}));
+
+const mockUseDevice = useDevice as jest.Mock;
+
 const el_modal = document.createElement('div');
-
-let mock_store = {
-    ui: {
-        is_mobile: false,
-    },
-};
-
-const wrapper = ({ children }: { children: JSX.Element }) => (
-    <StoreProvider store={mockStore(mock_store)}>{children}</StoreProvider>
-);
 
 describe('<BusinessHourModal />', () => {
     beforeAll(() => {
@@ -40,7 +37,7 @@ describe('<BusinessHourModal />', () => {
     });
 
     it('it should render the Main screen for business hour modal', () => {
-        render(<BusinessHourModal />, { wrapper });
+        render(<BusinessHourModal />);
 
         expect(screen.getByText('Set your business hours')).toBeInTheDocument();
         expect(
@@ -57,7 +54,7 @@ describe('<BusinessHourModal />', () => {
     });
 
     it('should show the edit screen when user clicks on Edit button', () => {
-        render(<BusinessHourModal />, { wrapper });
+        render(<BusinessHourModal />);
 
         const edit_button = screen.getByRole('button', { name: 'Edit business hours' });
 
@@ -68,7 +65,7 @@ describe('<BusinessHourModal />', () => {
 
     it('should hide the edit screen if the user clicks on Cancel button', () => {
         mock_modal_manager.useSavedState = jest.fn(() => [true, mockFn]);
-        render(<BusinessHourModal />, { wrapper });
+        render(<BusinessHourModal />);
 
         const cancel_button = screen.getByRole('button', { name: 'Cancel' });
 
@@ -76,15 +73,11 @@ describe('<BusinessHourModal />', () => {
         expect(mockFn).toHaveBeenCalledWith(false);
     });
 
-    it('should show the mobile view when is_mobile is true for the main screen', () => {
+    it('should show the mobile view when isMobile is true for the main screen', () => {
+        mockUseDevice.mockReturnValueOnce({ isMobile: true });
         mock_modal_manager.useSavedState = jest.fn(() => [false, mockFn]);
-        mock_store = {
-            ui: {
-                is_mobile: true,
-            },
-        };
 
-        render(<BusinessHourModal />, { wrapper });
+        render(<BusinessHourModal />);
 
         expect(screen.getByText('Set your business hours')).toBeInTheDocument();
         expect(
@@ -102,7 +95,8 @@ describe('<BusinessHourModal />', () => {
     });
 
     it('should call hideModal when the user clicks on the back button', () => {
-        render(<BusinessHourModal />, { wrapper });
+        mockUseDevice.mockReturnValueOnce({ isMobile: true });
+        render(<BusinessHourModal />);
 
         const back_button = screen.getByTestId('dt_mobile_full_page_return_icon');
 
@@ -112,7 +106,8 @@ describe('<BusinessHourModal />', () => {
     });
 
     it('should show edit page on mobile if the user clicks on Edit button', () => {
-        render(<BusinessHourModal />, { wrapper });
+        mockUseDevice.mockReturnValueOnce({ isMobile: true });
+        render(<BusinessHourModal />);
 
         const edit_button = screen.getByRole('button', { name: 'Edit business hours' });
 
@@ -122,8 +117,9 @@ describe('<BusinessHourModal />', () => {
     });
 
     it('should hide the edit screen if user clicks on back button from edit screen', () => {
+        mockUseDevice.mockReturnValueOnce({ isMobile: true });
         mock_modal_manager.useSavedState = jest.fn(() => [true, mockFn]);
-        render(<BusinessHourModal />, { wrapper });
+        render(<BusinessHourModal />);
 
         const back_button = screen.getByTestId('dt_mobile_full_page_return_icon');
 

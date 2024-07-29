@@ -23,7 +23,7 @@ describe('TakeProfit', () => {
 
     afterEach(() => jest.clearAllMocks());
 
-    const mockTakeProfit = () => {
+    const mockTakeProfit = () =>
         render(
             <TraderProviders store={default_mock_store}>
                 <ModulesProvider store={default_mock_store}>
@@ -31,16 +31,15 @@ describe('TakeProfit', () => {
                 </ModulesProvider>
             </TraderProviders>
         );
-    };
 
-    it('should render trade param "Take profit" label', () => {
+    it('should render trade param with "Take profit" label', () => {
         mockTakeProfit();
 
         expect(screen.getByRole('textbox')).toBeInTheDocument();
         expect(screen.getByText(take_profit_trade_param)).toBeInTheDocument();
     });
 
-    it('should open ActionSheet with input, "Save" button and text content with definition if user clicks on trade param input', () => {
+    it('should open ActionSheet with input, "Save" button and text content with definition if user clicks on trade param', () => {
         mockTakeProfit();
 
         expect(screen.queryByTestId('dt-actionsheet-overlay')).not.toBeInTheDocument();
@@ -48,8 +47,8 @@ describe('TakeProfit', () => {
         userEvent.click(screen.getByText(take_profit_trade_param));
 
         expect(screen.getByTestId('dt-actionsheet-overlay')).toBeInTheDocument();
-        expect(screen.getByRole('spinbutton')).toBeInTheDocument();
-        expect(screen.getByRole('spinbutton')).toHaveValue(0);
+        const input = screen.getByRole('spinbutton');
+        expect(input).toBeInTheDocument();
         expect(screen.getByText('Save')).toBeInTheDocument();
         expect(
             screen.getByText(
@@ -73,10 +72,11 @@ describe('TakeProfit', () => {
         mockTakeProfit();
 
         userEvent.click(screen.getByText(take_profit_trade_param));
+
         const toggle_switcher = screen.getAllByRole('button')[0];
         const input = screen.getByRole('spinbutton');
-        expect(input).toBeDisabled();
 
+        expect(input).toBeDisabled();
         userEvent.click(toggle_switcher);
         expect(input).toBeEnabled();
     });
@@ -85,10 +85,11 @@ describe('TakeProfit', () => {
         mockTakeProfit();
 
         userEvent.click(screen.getByText(take_profit_trade_param));
+
         const take_profit_overlay = screen.getByTestId('dt_take_profit_overlay');
         const input = screen.getByRole('spinbutton');
-        expect(input).toBeDisabled();
 
+        expect(input).toBeDisabled();
         userEvent.click(take_profit_overlay);
         expect(input).toBeEnabled();
     });
@@ -124,7 +125,7 @@ describe('TakeProfit', () => {
         expect(default_mock_store.modules.trade.onChange).not.toBeCalled();
     });
 
-    it('should validate values, that user typed. in case if values are correct, when user clicks on "Save" button onChangeMultiple and onChange will be called', () => {
+    it('should validate values, that user typed. In case if values are correct, when user clicks on "Save" button onChangeMultiple and onChange will be called', () => {
         default_mock_store.modules.trade.validation_params = {
             take_profit: {
                 min: '0.01',

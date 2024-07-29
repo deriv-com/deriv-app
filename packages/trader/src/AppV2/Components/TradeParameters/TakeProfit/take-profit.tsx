@@ -76,13 +76,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
             }
 
             clearTimeout(focus_timeout.current);
-            focus_timeout.current = setTimeout(() => {
-                if (input_ref.current) {
-                    input_ref.current.focus();
-                    input_ref.current.click();
-                }
-            }, 300);
-            // focus_timeout.current = focusAndOpenKeyboard(input_ref.current);
+            focus_timeout.current = focusAndOpenKeyboard(input_ref.current);
         } else {
             input_ref.current?.blur();
             setErrorMessage('');
@@ -90,7 +84,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     };
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        //TODO: check if we will need all this logic when latest Quill update and block "-" icon when value is < 1
+        //TODO: check if we will need all this logic with latest Quill update. Add disabling "-" icon when value is < 1
         let value: string | number = e.target.value;
         value = String(value).trim().replace(',', '.');
 

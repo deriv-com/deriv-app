@@ -225,7 +225,6 @@ export const ContractType = (() => {
         const obj_duration_units_list = getDurationUnitsList(contract_type, obj_start_type.contract_start_type);
         const obj_duration_units_min_max = getDurationMinMax(contract_type, obj_start_type.contract_start_type);
         const obj_accumulator_range_list = getAccumulatorRange(contract_type);
-        const obj_barrier_category = getBarrierCategory(contract_type);
         const obj_barrier_choices = getBarrierChoices(contract_type, stored_barriers_data?.barrier_choices);
         const obj_multiplier_range_list = getMultiplierRange(contract_type, multiplier);
         const obj_cancellation = getCancellation(contract_type, cancellation_duration);
@@ -239,7 +238,6 @@ export const ContractType = (() => {
             ...obj_start_dates,
             ...obj_start_type,
             ...obj_barrier,
-            ...obj_barrier_category,
             ...obj_duration_unit,
             ...obj_duration_units_list,
             ...obj_duration_units_min_max,
@@ -704,6 +702,7 @@ export const ContractType = (() => {
 
     return {
         buildContractTypesConfig,
+        getBarrierCategory,
         getBarriers,
         getContractType,
         getContractValues,

@@ -1,17 +1,19 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { TRADE_TYPES, WS, getContractTypesConfig, pickDefaultSymbol } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import { ActiveSymbols } from '@deriv/api-types';
-import { useTraderStore } from 'Stores/useTraderStores';
 import { usePrevious } from '@deriv/components';
+import { useTraderStore } from 'Stores/useTraderStores';
+import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 
 const useActiveSymbols = () => {
     const [activeSymbols, setActiveSymbols] = useState<ActiveSymbols | []>([]);
-    const { client } = useStore();
+    const { client, common } = useStore();
     const { is_logged_in } = client;
+    const { showError } = common;
     const {
         active_symbols: symbols_from_store,
-        barrier_category,
         contract_type,
         has_symbols_for_v2,
         onChange,
@@ -32,10 +34,12 @@ const useActiveSymbols = () => {
                 TRADE_TYPES.RISE_FALL_EQUAL,
                 TRADE_TYPES.HIGH_LOW,
             ] as string[];
+            const barrier_category = ContractType.getBarrierCategory(trade_type).barrier_category;
+
             const request = {
                 active_symbols: 'brief',
                 contract_type: getContractTypesConfig()[trade_type]?.trade_types ?? [],
-                ...(trade_types_with_barrier_category.includes(trade_type)
+                ...(trade_types_with_barrier_category.includes(trade_type) && barrier_category
                     ? { barrier_category: [barrier_category] }
                     : {}),
             };
@@ -47,19 +51,19 @@ const useActiveSymbols = () => {
             }
 
             const { active_symbols = [], error } = response;
-
-            setActiveSymbolsV2(active_symbols);
-
-            if (!active_symbols?.length || error) {
+            if (error) {
+                showError({ message: localize('Trading is unavailable at this time.') });
+            } else if (!active_symbols?.length) {
                 setActiveSymbols([]);
             } else {
                 setActiveSymbols(active_symbols);
+                setActiveSymbolsV2(active_symbols);
                 default_symbol_ref.current = symbol || (await pickDefaultSymbol(active_symbols)) || '1HZ100V';
                 onChange({ target: { name: 'symbol', value: default_symbol_ref.current } });
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [barrier_category, is_logged_in, symbol]
+        [is_logged_in, symbol]
     );
     useEffect(() => {
         const is_logged_in_changed = previous_logged_in !== undefined && previous_logged_in !== is_logged_in;

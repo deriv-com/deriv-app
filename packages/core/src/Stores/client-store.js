@@ -416,7 +416,6 @@ export default class ClientStore extends BaseStore {
             unsubscribeFromExchangeRate: action.bound,
             unsubscribeFromAllExchangeRates: action.bound,
             setExchangeRates: action.bound,
-            setMT5TradingPlatformAvailableAccounts: action.bound,
         });
 
         reaction(
@@ -434,18 +433,6 @@ export default class ClientStore extends BaseStore {
                 this.setCookieAccount();
                 if (!this.is_logged_in) {
                     this.root_store.traders_hub.cleanup();
-                }
-                if (!this.is_logged_in && this.clients_country) {
-                    this.setMT5TradingPlatformAvailableAccounts();
-                }
-            }
-        );
-
-        reaction(
-            () => [this.is_logged_in, this.clients_country],
-            () => {
-                if (!this.is_logged_in && this.clients_country) {
-                    this.setMT5TradingPlatformAvailableAccounts();
                 }
             }
         );
@@ -2487,13 +2474,6 @@ export default class ClientStore extends BaseStore {
         if (!response.error) {
             this.ctrader_trading_platform_available_accounts = response.trading_platform_available_accounts;
         }
-    }
-
-    setMT5TradingPlatformAvailableAccounts() {
-        WS.tradingPlatformAvailableAccounts({
-            country_code: this.clients_country,
-            platform: CFD_PLATFORMS.MT5,
-        }).then(this.responseTradingPlatformAvailableAccounts);
     }
 
     responseTradingPlatformAccountsList(response) {

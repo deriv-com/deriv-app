@@ -49,7 +49,7 @@ const WithdrawalCrypto: React.FC<Pick<TWithdrawalCryptoProps, 'setResendEmail' |
                 <WithdrawalCryptoDisclaimer />
                 <WithdrawalCryptoForm />
             </div>
-            <div className='wallets-withdrawal-crypto__side-pane'>
+            <div className='wallets-withdrawal-crypto__side-panel'>
                 <TransactionStatus transactionType='withdrawal' />
             </div>
         </div>

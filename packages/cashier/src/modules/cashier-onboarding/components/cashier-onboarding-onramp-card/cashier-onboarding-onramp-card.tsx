@@ -34,6 +34,7 @@ const CashierOnboardingOnrampCard: React.FC = observer(() => {
                     : localize('Buy cryptocurrencies via fiat onramp')
             }
             description={localize('Choose any of these exchanges to buy cryptocurrencies:')}
+            depositCategory='fiat_onramp'
             onClick={onClick}
         >
             <CashierOnboardingIconMarquee icons={icons.map(icon => `${icon}${is_dark_mode_on ? 'Dark' : 'Light'}`)} />

@@ -306,6 +306,9 @@ const mock = (): TStores & { is_mock: boolean } => {
             subscribeToExchangeRate: jest.fn(),
             unsubscribeFromExchangeRate: jest.fn(),
             unsubscribeFromAllExchangeRates: jest.fn(),
+            virtual_account_loginid: '',
+            is_cr_account: false,
+            is_mf_account: false,
         },
         common: {
             error: common_store_error,
@@ -479,6 +482,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             setAccountSwitcherDisabledMessage: jest.fn(),
             toggleUrlUnavailableModal: jest.fn(),
             is_set_currency_modal_visible: false,
+            should_show_deposit_now_or_later_modal: false,
+            setShouldShowDepositNowOrLaterModal: jest.fn(),
+            should_show_crypto_transaction_processing_modal: false,
+            setShouldShowCryptoTransactionProcessingModal: jest.fn(),
         },
         traders_hub: {
             getAccount: jest.fn(),

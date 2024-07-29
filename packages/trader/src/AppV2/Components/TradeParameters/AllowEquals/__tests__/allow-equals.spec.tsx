@@ -76,17 +76,14 @@ describe('AllowEquals', () => {
         expect(screen.getByRole('dialog')).toHaveAttribute('data-state', 'open');
     });
 
-    it('should call onChange function if user opens ActionSheet, changes ToggleSwitch and clicks on "Save" button', () => {
+    it('should call onChange function if user opens ActionSheet and clicks on ToggleSwitch', () => {
         render(mockAllowEquals());
 
         userEvent.click(screen.getByRole('textbox'));
 
-        const [toggle_switch_button, save_button] = screen.getAllByRole('button');
-        expect(toggle_switch_button).toHaveAttribute('aria-pressed', 'false');
+        const toggle_switch_button = screen.getByRole('button');
         userEvent.click(toggle_switch_button);
-        expect(toggle_switch_button).toHaveAttribute('aria-pressed', 'true');
 
-        userEvent.click(save_button);
         expect(default_mock_store.modules.trade.onChange).toBeCalled();
     });
 });

@@ -49,10 +49,12 @@
             border-top: 2px solid var(--general-disabled);
             max-height: 70px;
             width: 100%;
+            justify-content: center;
 
             .dc-btn {
                 height: 40px;
                 width: 100%;
+                max-width: 30rem;
             }
         }
     }

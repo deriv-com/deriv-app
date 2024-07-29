@@ -27,6 +27,7 @@ export type TButtonCommonProps = {
     tertiary: boolean;
     text: string;
     transparent: boolean;
+    wide: boolean;
 };
 export type TButtonProps = React.PropsWithChildren<React.ButtonHTMLAttributes<HTMLButtonElement>> &
     TButtonCommonProps & {
@@ -77,6 +78,7 @@ const Button = ({
     transparent,
     small,
     tertiary,
+    wide,
     renderText,
     ...props
 }: Partial<TButtonProps>) => {
@@ -99,6 +101,7 @@ const Button = ({
             'dc-btn__medium': medium,
             'dc-btn__small': small,
             'dc-btn__toggle': is_button_toggle,
+            'dc-btn__wide': wide,
             'dc-btn--plus': is_plus,
             'dc-btn--circle': is_circle,
             'dc-btn--circular': is_circular,

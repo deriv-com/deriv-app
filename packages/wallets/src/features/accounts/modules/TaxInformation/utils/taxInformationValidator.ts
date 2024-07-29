@@ -16,8 +16,7 @@ export const getTaxResidenceValidator = (countryList: TCountryList) => {
         .test({
             name: 'test-tax-residence',
             test: (value, context) => {
-                const countryFound =
-                    value && countryList.find(country => country.text.toLowerCase() === value.toLowerCase());
+                const countryFound = value && countryList.find(country => country.value.toLowerCase() === value);
                 if (!countryFound) {
                     return context.createError({ message: 'Please enter a valid country.' });
                 }

@@ -12,7 +12,15 @@ export type TFormDropdownProps = DropdownProps & {
     validationSchema?: Yup.AnySchema;
 };
 
-const FormDropdown = ({ disabled, name, onSelect, validationSchema, variant, ...rest }: TFormDropdownProps) => {
+const FormDropdown = ({
+    disabled,
+    name,
+    onSearch,
+    onSelect,
+    validationSchema,
+    variant,
+    ...rest
+}: TFormDropdownProps) => {
     const validateField = (value: unknown) => {
         try {
             if (validationSchema) {
@@ -25,12 +33,13 @@ const FormDropdown = ({ disabled, name, onSelect, validationSchema, variant, ...
     return (
         <Field name={name} validate={validateField}>
             {({ field, form }: FieldProps) => {
-                const isFieldInvalid = Boolean(form.touched[name] && form.errors[name]);
+                const isFieldInvalid = Boolean((form.touched[name] || field.value) && form.errors[name]);
                 return (
                     <div className='wallets-form-dropdown'>
                         <Dropdown
                             {...rest}
                             disabled={disabled}
+                            emptyResultMessage='No results found'
                             errorMessage={isFieldInvalid ? (form.errors[name] as string) : ''}
                             name={name}
                             onBlur={() => {
@@ -39,16 +48,14 @@ const FormDropdown = ({ disabled, name, onSelect, validationSchema, variant, ...
                                 }
                             }}
                             onSearch={value => {
-                                if (variant === 'prompt') {
-                                    form.setFieldValue(name, value);
+                                form.setFieldValue(name, value);
+                                if (onSearch) {
+                                    onSearch(value);
                                 }
                                 return field.onChange;
                             }}
                             onSelect={value => {
                                 form.setFieldValue(name, value);
-                                if (!form.touched[name]) {
-                                    form.setFieldTouched(name);
-                                }
                                 if (onSelect) {
                                     onSelect(value as string);
                                 }

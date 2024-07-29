@@ -32,7 +32,12 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
     }
 
     return (
-        <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={taxInformationValidationSchema}>
+        <Formik
+            initialValues={initialValues}
+            onSubmit={onSubmit}
+            validateOnMount
+            validationSchema={taxInformationValidationSchema}
+        >
             {({ errors, handleSubmit, isValid, values }) => {
                 return (
                     <ModalStepWrapper
@@ -81,11 +86,9 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                             disabled={Boolean(!values.taxResidence || errors.taxResidence)}
                                             label='Tax identification number*'
                                             name='taxIdentificationNumber'
-                                            validationSchema={
-                                                values.taxResidence
-                                                    ? getTinValidator(countryCodeToPatternMapper[values.taxResidence])
-                                                    : undefined
-                                            }
+                                            validationSchema={getTinValidator(
+                                                countryCodeToPatternMapper[values.taxResidence ?? '']
+                                            )}
                                         />
                                         <FormDropdown
                                             isFullWidth

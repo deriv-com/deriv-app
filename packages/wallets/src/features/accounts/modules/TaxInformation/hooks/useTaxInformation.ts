@@ -41,23 +41,13 @@ const useTaxInformation = () => {
         })) as TCountryList;
     }, [residenceList]);
 
-    const initialValues = useMemo(
-        () =>
-            ({
-                accountOpeningReason: accountSettings.account_opening_reason,
-                citizenship: accountSettings.citizen,
-                placeOfBirth: accountSettings.place_of_birth,
-                taxIdentificationNumber: accountSettings.tax_identification_number ?? undefined,
-                taxResidence: accountSettings.tax_residence ?? undefined,
-            } as TTaxInformationValues),
-        [
-            accountSettings.account_opening_reason,
-            accountSettings.citizen,
-            accountSettings.place_of_birth,
-            accountSettings.tax_identification_number,
-            accountSettings.tax_residence,
-        ]
-    );
+    const initialValues = {
+        accountOpeningReason: accountSettings.account_opening_reason,
+        citizenship: accountSettings.citizen,
+        placeOfBirth: accountSettings.place_of_birth,
+        taxIdentificationNumber: accountSettings.tax_identification_number ?? undefined,
+        taxResidence: accountSettings.tax_residence ?? undefined,
+    } as TTaxInformationValues;
 
     const onSubmit = (values: FormikValues | TTaxInformationValues) => {
         if (

@@ -51,15 +51,10 @@ const SideNotes = ({ class_name, side_notes }: TSideNotes) => {
 };
 
 const ContentWrapper = ({ children, has_side_note }: React.PropsWithChildren<TContentWrapper>) => {
-    return (
-        <div
-            className={classNames({
-                'dc-vertical-tab__content-inner': has_side_note,
-            })}
-        >
-            {children}
-        </div>
-    );
+    if (has_side_note) {
+        return <div className='dc-vertical-tab__content-inner'>{children}</div>;
+    }
+    return children as JSX.Element;
 };
 
 const Content = memo(({ is_routed, items, selected }: TContent) => {

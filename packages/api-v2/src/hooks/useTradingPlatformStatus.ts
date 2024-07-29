@@ -1,4 +1,4 @@
-import { CFD_PLATFORMS, TRADING_PLATFORM_STATUS } from '@deriv/shared';
+import { CFD_PLATFORMS } from '@deriv/shared';
 import useAuthorizedQuery from '../useAuthorizedQuery';
 import useQuery from '../useQuery';
 
@@ -28,7 +28,7 @@ const useTradingPlatformStatus = () => {
         const platformStatus =
             platform === CFD_PLATFORMS.MT5 || platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER
                 ? tradingPlatformStatusData?.find((status: TPlatformStatus) => status.platform === platform)?.status
-                : TRADING_PLATFORM_STATUS.ACTIVE; // fallback status as cashier may return non-cfd platform (i.e. doughflow, p2p, paymentagent, etc)
+                : undefined; // cashier may pass non-cfd platform (i.e. doughflow, p2p, paymentagent, etc) which doesn't have status property
 
         return platformStatus;
     };

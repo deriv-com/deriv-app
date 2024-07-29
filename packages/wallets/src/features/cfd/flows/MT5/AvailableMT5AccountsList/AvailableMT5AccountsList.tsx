@@ -5,7 +5,7 @@ import { TradingAccountCard, WalletText } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
 import { MARKET_TYPE, MarketTypeDetails, TRADING_PLATFORM_STATUS } from '../../../constants';
-import { AccountUnavailableModal, JurisdictionModal, MT5PasswordModal, ServerMaintenanceModal } from '../../../modals';
+import { JurisdictionModal, MT5PasswordModal, TradingPlatformStatusModal } from '../../../modals';
 import './AvailableMT5AccountsList.scss';
 
 type TProps = {
@@ -23,13 +23,13 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const hasUnavailableAccount = mt5Accounts?.some(account => account.status === 'unavailable');
 
     const onButtonClick = useCallback(() => {
-        if (hasUnavailableAccount) return show(<AccountUnavailableModal />);
+        if (hasUnavailableAccount) return show(<TradingPlatformStatusModal isServerMaintenance={false} />);
 
         switch (platformStatus) {
             case TRADING_PLATFORM_STATUS.MAINTENANCE:
-                return show(<ServerMaintenanceModal platform={account.platform} />);
+                return show(<TradingPlatformStatusModal isServerMaintenance />);
             case TRADING_PLATFORM_STATUS.UNAVAILABLE:
-                return show(<AccountUnavailableModal />);
+                return show(<TradingPlatformStatusModal />);
             case TRADING_PLATFORM_STATUS.ACTIVE:
             default:
                 activeWallet?.is_virtual

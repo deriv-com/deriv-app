@@ -2,13 +2,13 @@ import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { useAuthorize, useJurisdictionStatus, useTradingPlatformStatus } from '@deriv/api-v2';
-import { LabelPairedChevronRightCaptionRegularIcon, LegacyWarningIcon } from '@deriv/quill-icons';
-import { Badge } from '@deriv-com/ui';
+import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { InlineMessage, WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import useDevice from '../../../../../hooks/useDevice';
 import { THooks } from '../../../../../types';
+import { PlatformStatusBadge } from '../../../components/PlatformStatusBadge';
 import {
     JURISDICTION,
     MARKET_TYPE,
@@ -16,12 +16,7 @@ import {
     PlatformDetails,
     TRADING_PLATFORM_STATUS,
 } from '../../../constants';
-import {
-    AccountUnavailableModal,
-    MT5TradeModal,
-    ServerMaintenanceModal,
-    VerificationFailedModal,
-} from '../../../modals';
+import { MT5TradeModal, TradingPlatformStatusModal, VerificationFailedModal } from '../../../modals';
 import './AddedMT5AccountsList.scss';
 
 type TProps = {
@@ -47,11 +42,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE ||
         platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
 
-    const getBadgeText = () => {
-        if (account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE) return 'Unavailable';
-        if (platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE) return 'Server maintenance';
-        return '';
-    };
+    const isServerMaintenance = platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
 
     return (
         <TradingAccountCard
@@ -62,9 +53,8 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 </div>
             }
             onClick={() => {
-                if (platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE)
-                    return show(<ServerMaintenanceModal platform={account.platform} />);
-                if (account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE) return show(<AccountUnavailableModal />);
+                if (hasPlatformStatus)
+                    return show(<TradingPlatformStatusModal isServerMaintenance={isServerMaintenance} />);
                 if (platformStatus === TRADING_PLATFORM_STATUS.ACTIVE) {
                     return jurisdictionStatus.is_failed
                         ? show(<VerificationFailedModal selectedJurisdiction={account.landing_company_short} />, {
@@ -86,20 +76,11 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     })}
                 >
                     {hasPlatformStatus ? (
-                        <Badge
+                        <PlatformStatusBadge
                             badgeSize='md'
                             className='wallets-added-mt5__icon--badge'
-                            color='warning'
-                            isBold
-                            leftIcon={<LegacyWarningIcon iconSize='xs' />}
-                            padding='loose'
-                            rounded='sm'
-                            variant='bordered'
-                        >
-                            <WalletText color='warning' lineHeight='2xl' size='2xs' weight='bold'>
-                                {getBadgeText()}
-                            </WalletText>
-                        </Badge>
+                            mt5Account={account}
+                        />
                     ) : (
                         <div className='wallets-available-mt5__icon'>
                             <LabelPairedChevronRightCaptionRegularIcon width={16} />

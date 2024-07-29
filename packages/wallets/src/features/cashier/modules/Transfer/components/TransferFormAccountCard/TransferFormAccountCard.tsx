@@ -1,8 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import { useTradingPlatformStatus } from '@deriv/api-v2';
-import { LegacyWarningIcon } from '@deriv/quill-icons';
-import { Badge } from '@deriv-com/ui';
 import {
     WalletCurrencyCard,
     WalletListCardBadge,
@@ -11,6 +8,7 @@ import {
 } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../../../types';
+import { PlatformStatusBadge } from '../../../../../cfd/components/PlatformStatusBadge';
 import { TRADING_PLATFORM_STATUS } from '../../../../../cfd/constants';
 import type { TAccount } from '../../types';
 import './TransferFormAccountCard.scss';
@@ -22,21 +20,12 @@ type TProps = {
 
 const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) => {
     const { isMobile } = useDevice();
-    const { getPlatformStatus } = useTradingPlatformStatus();
 
     const isInput = type === 'input';
     const isModal = type === 'modal';
 
-    const platformStatus = getPlatformStatus(account?.account_type ?? '');
-
     const hasPlatformStatus =
         account?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE || TRADING_PLATFORM_STATUS.MAINTENANCE;
-
-    const getBadgeText = () => {
-        if (account?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE) return 'Unavailable';
-        if (platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE) return 'Server maintenance';
-        return '';
-    };
 
     return (
         <div
@@ -74,20 +63,11 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) 
             </div>
 
             {account?.status && hasPlatformStatus && (
-                <Badge
+                <PlatformStatusBadge
                     badgeSize='sm'
+                    cashierAccount={account}
                     className='wallets-transfer-form-account-card--badge'
-                    color='warning'
-                    isBold
-                    leftIcon={<LegacyWarningIcon iconSize='xs' />}
-                    padding='loose'
-                    rounded='sm'
-                    variant='bordered'
-                >
-                    <WalletText color='warning' lineHeight='2xl' size='2xs' weight='bold'>
-                        {getBadgeText()}
-                    </WalletText>
-                </Badge>
+                />
             )}
 
             {isModal && !!account?.demo_account && (

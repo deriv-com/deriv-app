@@ -47,9 +47,7 @@ const useTransferMessages = ({
         getPlatformStatus(fromAccount?.account_type ?? '') || getPlatformStatus(toAccount?.account_type ?? '');
 
     const isServerMaintenance = platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
-    const isAccountUnavailable =
-        fromAccount?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE ||
-        toAccount?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE;
+    const isAccountUnavailable = [fromAccount?.status, toAccount?.status].includes(TRADING_PLATFORM_STATUS.UNAVAILABLE);
     const hasTradingPlatformStatus = isServerMaintenance || isAccountUnavailable;
 
     const isTransferBetweenWallets =

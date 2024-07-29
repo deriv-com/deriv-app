@@ -2252,7 +2252,12 @@ type TradingPlatformStatusRequest = {
 
 type TradingPlatformStatusResponse = {
     trading_platform_status: {
-        platform: 'mt5' | 'ctrader' | 'dxtrade';
+        platform: Exclude<
+            NonNullable<
+                TSocketEndpoints['trading_platform_accounts']['response']['trading_platform_accounts']
+            >[0]['platform'],
+            undefined
+        >;
         status: 'active' | 'maintenance' | 'unavailable';
     }[];
 };

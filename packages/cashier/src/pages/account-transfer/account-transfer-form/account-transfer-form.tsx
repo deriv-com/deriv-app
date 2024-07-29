@@ -205,12 +205,12 @@ const AccountTransferForm = observer(
         const is_mf_status_verification_failed = mf_account_status === 'failed';
         const is_mf_status_pending_or_needs_verification =
             is_mf_status_pending || is_mf_status_need_verification || is_mf_status_verification_failed;
-        const is_unavailable_status_present =
-            selected_from.status === MT5_ACCOUNT_STATUS.UNAVAILABLE ||
-            selected_to.status === MT5_ACCOUNT_STATUS.UNAVAILABLE;
-        const is_maintenance_status_present =
-            selected_from.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE ||
-            selected_to.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
+        const is_unavailable_status_present = [selected_from.status, selected_to.status].includes(
+            MT5_ACCOUNT_STATUS.UNAVAILABLE
+        );
+        const is_maintenance_status_present = [selected_from.status, selected_to.status].includes(
+            MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE
+        );
 
         const platform_name_dxtrade = getPlatformSettings(CFD_PLATFORMS.DXTRADE).name;
 

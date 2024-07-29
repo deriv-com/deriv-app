@@ -190,11 +190,7 @@ export default class DashboardStore implements IDashboardStore {
             () => {
                 if (Blockly) setCurrentXML();
                 setColors(this.is_dark_mode);
-                if (this.active_tab === 1) {
-                    refreshBotBuilderTheme();
-                } else {
-                    refreshBotBuilderTheme();
-                }
+                refreshBotBuilderTheme();
             }
         );
         reaction(

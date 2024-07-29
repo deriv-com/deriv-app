@@ -76,7 +76,13 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
             }
 
             clearTimeout(focus_timeout.current);
-            focus_timeout.current = focusAndOpenKeyboard(input_ref.current);
+            focus_timeout.current = setTimeout(() => {
+                if (input_ref.current) {
+                    input_ref.current.focus();
+                    input_ref.current.click();
+                }
+            }, 300);
+            // focus_timeout.current = focusAndOpenKeyboard(input_ref.current);
         } else {
             input_ref.current?.blur();
             setErrorMessage('');
@@ -89,13 +95,13 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
         value = String(value).trim().replace(',', '.');
 
         if (value !== '' && Number(value) <= 0) value = '0';
-        // value = parseFloat(Number(value).toFixed(decimals));
+
         setUpdatedTakeProfitValue(value);
         isTakeProfitOutOfRange(value);
     };
 
     const onSave = () => {
-        if (isTakeProfitOutOfRange()) return;
+        if (isTakeProfitOutOfRange() && is_take_profit_enabled) return;
 
         onChangeMultiple({
             has_take_profit: is_take_profit_enabled,
@@ -114,6 +120,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
         setIsOpen(false);
         setIsTakeProfitEnabled(has_take_profit);
         setUpdatedTakeProfitValue(take_profit);
+        setErrorMessage('');
     };
 
     const action_sheet_content = [

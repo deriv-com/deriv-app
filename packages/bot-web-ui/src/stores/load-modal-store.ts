@@ -1,11 +1,19 @@
 import React from 'react';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { v4 as uuidv4 } from 'uuid';
-import { config, getSavedWorkspaces, load, removeExistingWorkspace, save_types, setColors } from '@deriv/bot-skeleton';
+import {
+    config,
+    getSavedWorkspaces,
+    load,
+    removeExistingWorkspace,
+    save_types,
+    saveWorkspaceToRecent,
+    setColors,
+} from '@deriv/bot-skeleton';
 import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
-import { clearInjectionDiv, tabs_title } from 'Constants/load-modal';
+import { tabs_title } from 'Constants/load-modal';
 import { TStrategy } from 'Types';
 import { rudderStackSendSwitchLoadStrategyTabEvent } from '../analytics/rudderstack-bot-builder';
 import {
@@ -15,6 +23,7 @@ import {
 } from '../analytics/rudderstack-common-events';
 import { getStrategyType, LOAD_MODAL_TABS } from '../analytics/utils';
 import RootStore from './root-store';
+import DBotStore from '@deriv/bot-skeleton/src/scratch/dbot-store';
 
 interface ILoadModalStore {
     active_index: number;
@@ -104,7 +113,6 @@ export default class LoadModalStore implements ILoadModalStore {
             onEntered: action.bound,
             onLoadModalClose: action.bound,
             onZoomInOutClick: action.bound,
-            previewRecentStrategy: action.bound,
             setActiveTabIndex: action.bound,
             setLoadedLocalFile: action.bound,
             setRecentStrategies: action.bound,
@@ -117,6 +125,8 @@ export default class LoadModalStore implements ILoadModalStore {
             setDashboardStrategies: action.bound,
             updateListStrategies: action.bound,
             onToggleDeleteDialog: action,
+            loadStrategyModalRecentPreview: action,
+            loadStrategyOnBotBuilder: action,
         });
 
         this.root_store = root_store;
@@ -130,7 +140,11 @@ export default class LoadModalStore implements ILoadModalStore {
             () => this.is_load_modal_open,
             async is_load_modal_open => {
                 if (is_load_modal_open) {
-                    this.setRecentStrategies((await getSavedWorkspaces()) || []);
+                    const saved_workspaces = await getSavedWorkspaces();
+                    this.setRecentStrategies(saved_workspaces || []);
+                    if (!this.selected_strategy_id) {
+                        this.setSelectedStrategyId(saved_workspaces[0]?.id);
+                    }
                 } else {
                     this.onLoadModalClose();
                 }
@@ -200,35 +214,134 @@ export default class LoadModalStore implements ILoadModalStore {
         this.dashboard_strategies = recent_strategies;
     };
 
-    handleFileChange = (
-        event: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent,
-        is_body = true
-    ): boolean => {
-        this.imported_strategy_type = 'pending';
-        this.upload_id = uuidv4();
-        let files;
-        if (event.type === 'drop') {
-            event.stopPropagation();
-            event.preventDefault();
+    onDriveConnect = (): void => {
+        const { google_drive } = this.root_store;
 
-            ({ files } = event.dataTransfer);
+        if (google_drive.is_authorised) {
+            google_drive.signOut();
         } else {
-            ({ files } = event.target);
+            google_drive.signIn();
         }
+    };
 
-        const [file] = files;
-
-        if (!is_body) {
-            if (file.name.includes('xml')) {
-                this.setLoadedLocalFile(file);
-                this.getDashboardStrategies();
-            } else {
-                return false;
-            }
+    onDriveOpen = async () => {
+        const { google_drive } = this.root_store;
+        if (google_drive) {
+            google_drive.upload_id = uuidv4();
         }
-        this.readFile(!is_body, event, file);
-        event.target.value = '';
-        return true;
+        rudderStackSendUploadStrategyStartEvent({ upload_provider: 'google_drive', upload_id: google_drive.upload_id });
+        const { loadFile } = this.root_store.google_drive;
+        const { xml_doc, file_name } = await loadFile();
+        await load({
+            block_string: xml_doc,
+            file_name,
+            workspace: window.Blockly.derivWorkspace,
+            from: save_types.GOOGLE_DRIVE,
+            drop_event: null,
+            strategy_id: null,
+            showIncompatibleStrategyDialog: null,
+        });
+
+        const { active_tab } = this.root_store.dashboard;
+        if (active_tab === 1) this.toggleLoadModal();
+
+        this.root_store.dashboard.is_dialog_open = false;
+    };
+
+    onEntered = (): void => {
+        this.loadStrategyModalRecentPreview(this.selected_strategy_id);
+    };
+
+    onLoadModalClose = (): void => {
+        if (this.local_workspace) {
+            this.local_workspace = null;
+        }
+        this.setActiveTabIndex(0, true); // Reset to first tab.
+        this.setLoadedLocalFile(null);
+    };
+
+    onZoomInOutClick = (is_zoom_in: string): void => {
+        if (this.preview_workspace) {
+            this.preview_workspace.zoomCenter(is_zoom_in ? 1 : -1);
+        }
+    };
+
+    setActiveTabIndex = (index: number, is_default: boolean): void => {
+        this.active_index = index;
+        if (!is_default) {
+            const { ui } = this.core;
+            const { is_mobile } = ui;
+            rudderStackSendSwitchLoadStrategyTabEvent({
+                load_strategy_tab: LOAD_MODAL_TABS[index + (is_mobile ? 1 : 0)],
+            });
+        }
+    };
+
+    setLoadedLocalFile = (loaded_local_file: File | null): void => {
+        this.loaded_local_file = loaded_local_file;
+    };
+
+    setRecentStrategies = (recent_strategies: TStrategy[]): void => {
+        this.recent_strategies = recent_strategies;
+    };
+
+    refreshStrategies = (): void => {
+        this.setRecentStrategies(this.recent_strategies);
+    };
+
+    setSelectedStrategyId = (selected_strategy_id: string): void => {
+        this.selected_strategy_id = selected_strategy_id;
+    };
+
+    toggleExplanationExpand = (): void => {
+        this.is_explanation_expand = !this.is_explanation_expand;
+    };
+
+    toggleLoadModal = (): void => {
+        this.is_load_modal_open = !this.is_load_modal_open;
+        this.recent_workspace?.dispose();
+        this.recent_workspace = null;
+        this.setLoadedLocalFile(null);
+    };
+
+    toggleTourLoadModal = (toggle = !this.is_load_modal_open) => {
+        this.is_load_modal_open = toggle;
+    };
+
+    updateListStrategies = (workspaces: Array<TStrategy>): void => {
+        if (workspaces) {
+            (this.dashboard_strategies as Array<TStrategy>) = workspaces;
+        }
+    };
+
+    getRecentFileIcon = (save_type: { [key: string]: string } | string): string => {
+        switch (save_type) {
+            case save_types.UNSAVED:
+                return 'IcReports';
+            case save_types.LOCAL:
+                return 'IcMyComputer';
+            case save_types.GOOGLE_DRIVE:
+                return 'IcGoogleDrive';
+            default:
+                return 'IcReports';
+        }
+    };
+
+    getSaveType = (save_type: { [key: string]: string } | string): string => {
+        switch (save_type) {
+            case save_types.UNSAVED:
+                return localize('Unsaved');
+            case save_types.LOCAL:
+                return localize('Local');
+            case save_types.GOOGLE_DRIVE:
+                return localize('Google Drive');
+            default:
+                return localize('Unsaved');
+        }
+    };
+
+    onToggleDeleteDialog = (is_delete_modal_open: boolean): void => {
+        this.is_delete_modal_open = is_delete_modal_open;
     };
 
     resetBotBuilderStrategy = () => {
@@ -311,7 +424,7 @@ export default class LoadModalStore implements ILoadModalStore {
 
     onActiveIndexChange = (): void => {
         if (this.tab_name === tabs_title.TAB_RECENT) {
-            this.previewRecentStrategy(this.selected_strategy_id);
+            this.loadStrategyModalRecentPreview(this.selected_strategy_id);
         } else if (this.recent_workspace) {
             setTimeout(() => {
                 // Dispose of recent workspace when switching away from Recent tab.
@@ -346,192 +459,42 @@ export default class LoadModalStore implements ILoadModalStore {
         }
     };
 
-    onDriveConnect = (): void => {
-        const { google_drive } = this.root_store;
-
-        if (google_drive.is_authorised) {
-            google_drive.signOut();
+    handleFileChange = (
+        event: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent,
+        is_body = true
+    ): boolean => {
+        this.imported_strategy_type = 'pending';
+        this.upload_id = uuidv4();
+        let files;
+        if (event.type === 'drop') {
+            event.stopPropagation();
+            event.preventDefault();
+            ({ files } = event.dataTransfer as DragEvent);
         } else {
-            google_drive.signIn();
-        }
-    };
-
-    onDriveOpen = async () => {
-        const { google_drive } = this.root_store;
-        if (google_drive) {
-            google_drive.upload_id = uuidv4();
-        }
-        rudderStackSendUploadStrategyStartEvent({ upload_provider: 'google_drive', upload_id: google_drive.upload_id });
-        const { loadFile } = this.root_store.google_drive;
-        const { xml_doc, file_name } = await loadFile();
-        await load({
-            block_string: xml_doc,
-            file_name,
-            workspace: window.Blockly.derivWorkspace,
-            from: save_types.GOOGLE_DRIVE,
-            drop_event: null,
-            strategy_id: null,
-            showIncompatibleStrategyDialog: null,
-        });
-
-        const { active_tab } = this.root_store.dashboard;
-        if (active_tab === 1) this.toggleLoadModal();
-
-        this.root_store.dashboard.is_dialog_open = false;
-    };
-
-    onEntered = (): void => {
-        this.previewRecentStrategy(this.selected_strategy_id);
-    };
-
-    onLoadModalClose = (): void => {
-        if (this.recent_workspace) {
-            this.recent_workspace = null;
-        }
-        if (this.local_workspace) {
-            this.local_workspace = null;
+            ({ files } = event.target);
         }
 
-        this.setActiveTabIndex(0, true); // Reset to first tab.
-        this.setLoadedLocalFile(null);
-    };
+        const [file] = files;
 
-    onZoomInOutClick = (is_zoom_in: string): void => {
-        if (this.preview_workspace) {
-            this.preview_workspace.zoomCenter(is_zoom_in ? 1 : -1);
+        if (!is_body) {
+            if (file.name.includes('xml')) {
+                this.setLoadedLocalFile(file);
+                this.getDashboardStrategies();
+            } else {
+                return false;
+            }
         }
-    };
-
-    previewRecentStrategy = (workspace_id: string): void => {
-        if (!workspace_id) this.setSelectedStrategyId(this.current_workspace_id);
-        else this.setSelectedStrategyId(workspace_id);
-        if (!this.selected_strategy) {
-            return;
-        }
-        const {
-            dashboard: { active_tab },
-        } = this.root_store;
-        //removed the dispose here so on switch of tab it does not
-        //throw xml error
-        if (active_tab === 1 && !this.is_load_modal_open) {
-            this.recent_workspace = null;
-            this.setLoadedLocalFile(null);
-        }
-
-        const dark_mode = document.body.classList.contains('theme--dark');
-        setColors(dark_mode);
-
-        //to load the bot on first load
-        const ref = document.getElementById('load-strategy__blockly-container');
-        if (!ref) {
-            // eslint-disable-next-line no-console
-            console.warn('Could not find preview workspace element.');
-            return;
-        }
-        if (this.tab_name !== tabs_title.TAB_LOCAL && this.recent_workspace) {
-            clearInjectionDiv(ref);
-            this.recent_workspace.dispose();
-            this.recent_workspace = null;
-        }
-        if (!this.recent_workspace?.rendered) {
-            this.recent_workspace = window.Blockly.inject(ref, {
-                media: `${__webpack_public_path__}media/`,
-                zoom: {
-                    wheel: true,
-                    startScale: config.workspaces.previewWorkspaceStartScale,
-                },
-                readOnly: true,
-                scrollbars: true,
-                renderer: 'zelos',
-                theme: window?.Blockly?.Themes?.zelos_renderer,
-            });
-        }
-        this.refreshStrategiesTheme();
-    };
-
-    setActiveTabIndex = (index: number, is_default: boolean): void => {
-        this.active_index = index;
-        if (!is_default) {
-            const { ui } = this.core;
-            const { is_mobile } = ui;
-            rudderStackSendSwitchLoadStrategyTabEvent({
-                load_strategy_tab: LOAD_MODAL_TABS[index + (is_mobile ? 1 : 0)],
-            });
-        }
-    };
-
-    setLoadedLocalFile = (loaded_local_file: File | null): void => {
-        this.loaded_local_file = loaded_local_file;
-    };
-
-    setRecentStrategies = (recent_strategies: TStrategy[]): void => {
-        this.recent_strategies = recent_strategies;
-    };
-
-    refreshStrategies = (): void => {
-        this.setRecentStrategies(this.recent_strategies);
-    };
-
-    setSelectedStrategyId = (selected_strategy_id: string): void => {
-        this.selected_strategy_id = selected_strategy_id;
-    };
-
-    toggleExplanationExpand = (): void => {
-        this.is_explanation_expand = !this.is_explanation_expand;
-    };
-
-    toggleLoadModal = (): void => {
-        this.is_load_modal_open = !this.is_load_modal_open;
-        if (this.selected_strategy_id) this.previewRecentStrategy(this.selected_strategy_id);
-        this.setLoadedLocalFile(null);
-    };
-
-    toggleTourLoadModal = (toggle = !this.is_load_modal_open) => {
-        this.is_load_modal_open = toggle;
-    };
-
-    updateListStrategies = (workspaces: Array<TStrategy>): void => {
-        if (workspaces) {
-            (this.dashboard_strategies as Array<TStrategy>) = workspaces;
-        }
-    };
-
-    getRecentFileIcon = (save_type: { [key: string]: string } | string): string => {
-        switch (save_type) {
-            case save_types.UNSAVED:
-                return 'IcReports';
-            case save_types.LOCAL:
-                return 'IcMyComputer';
-            case save_types.GOOGLE_DRIVE:
-                return 'IcGoogleDrive';
-            default:
-                return 'IcReports';
-        }
-    };
-
-    getSaveType = (save_type: { [key: string]: string } | string): string => {
-        switch (save_type) {
-            case save_types.UNSAVED:
-                return localize('Unsaved');
-            case save_types.LOCAL:
-                return localize('Local');
-            case save_types.GOOGLE_DRIVE:
-                return localize('Google Drive');
-            default:
-                return localize('Unsaved');
-        }
-    };
-
-    onToggleDeleteDialog = (is_delete_modal_open: boolean): void => {
-        this.is_delete_modal_open = is_delete_modal_open;
+        this.readFile(!is_body, event as DragEvent, file);
+        (event.target as HTMLInputElement).value = '';
+        return true;
     };
 
     readFile = (is_preview: boolean, drop_event: DragEvent, file: File): void => {
         if (this.upload_id && is_preview) {
             rudderStackSendUploadStrategyStartEvent({ upload_provider: 'my_computer', upload_id: this.upload_id });
         }
-        const file_name = file?.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
+        const file_name = file?.name.replace(/\.[^/.]+$/, '');
 
         reader.onload = action(async e => {
             const load_options = {
@@ -539,35 +502,14 @@ export default class LoadModalStore implements ILoadModalStore {
                 drop_event,
                 from: save_types.LOCAL,
                 workspace: null as Blockly.WorkspaceSvg | null,
-                file_name: '',
+                file_name,
                 strategy_id: '',
                 showIncompatibleStrategyDialog: false,
             };
-            const ref = document?.getElementById('load-strategy__blockly-container');
             const upload_type = getStrategyType(load_options?.block_string ?? '');
-            if (is_preview && ref) {
-                this.local_workspace = Blockly.inject(ref, {
-                    media: `${__webpack_public_path__}media/`, // eslint-disable-line
-                    zoom: {
-                        wheel: false,
-                        startScale: config.workspaces.previewWorkspaceStartScale,
-                    },
-                    readOnly: true,
-                    scrollbars: true,
-                    renderer: 'zelos',
-                    theme: window?.Blockly?.Themes?.zelos_renderer,
-                });
-                load_options.workspace = this.local_workspace;
-                if (load_options.workspace) {
-                    (load_options.workspace as any).RTL = isDbotRTL();
-                }
-                this.imported_strategy_type = upload_type;
-            } else {
-                load_options.workspace = window.Blockly.derivWorkspace;
-                load_options.file_name = file_name;
-            }
 
             const result = await load(load_options);
+            this.loadStrategyModalLocalPreview(load_options);
             if (!is_preview && !result?.error) {
                 rudderStackSendUploadStrategyCompletedEvent({
                     upload_provider: 'my_computer',
@@ -586,5 +528,91 @@ export default class LoadModalStore implements ILoadModalStore {
         });
 
         reader.readAsText(file);
+    };
+
+    injectWorkspace = {
+        media: `${__webpack_public_path__}media/`,
+        zoom: {
+            wheel: true,
+            startScale: config.workspaces.previewWorkspaceStartScale,
+        },
+        readOnly: true,
+        scrollbars: true,
+        renderer: 'zelos',
+    };
+
+    workspaceOptions = {
+        block_string: this.selected_strategy?.xml,
+        drop_event: {},
+        workspace: this.recent_workspace,
+        file_name: this.selected_strategy?.name,
+        strategy_id: this.selected_strategy?.id,
+        from: this.selected_strategy?.save_type,
+        showIncompatibleStrategyDialog: false,
+    };
+
+    loadStrategyOnModalWorkspace = async () => {
+        const { blockly_store } = this.root_store;
+        const { setLoading } = blockly_store;
+        const convertedDom = window.Blockly.utils.xml.textToDom(this.selected_strategy?.xml);
+        const mainWorkspace = window.Blockly.getMainWorkspace();
+
+        window.Blockly.Xml.clearWorkspaceAndLoadFromXml(convertedDom, mainWorkspace);
+        setLoading(false);
+    };
+
+    loadStrategyOnBotBuilder = async () => {
+        const { strategy_id, xml, file_name, from } = window.Blockly.readFileXml;
+
+        const convertedDom = window.Blockly.utils.xml.textToDom(xml);
+        const derivWorkspace = window.Blockly.derivWorkspace;
+
+        window.Blockly.Xml.clearWorkspaceAndLoadFromXml(convertedDom, derivWorkspace);
+        derivWorkspace.cleanUp();
+        derivWorkspace.clearUndo();
+        derivWorkspace.current_strategy_id = strategy_id || Blockly.utils.idGenerator.genUid();
+
+        DBotStore?.instance?.save_modal?.updateBotName(file_name);
+
+        const xml_dom = window.Blockly.utils.xml.textToDom(xml);
+        await saveWorkspaceToRecent(xml_dom, from);
+
+        const recent_files = await getSavedWorkspaces();
+        if (recent_files?.length > 0) this.setSelectedStrategyId(recent_files[0]?.id);
+    };
+
+    loadStrategyModalRecentPreview = async workspace_id => {
+        const { blockly_store } = this.root_store;
+        const { setLoading } = blockly_store;
+        setLoading(true);
+        const injectWorkspace = { ...this.injectWorkspace, theme: window?.Blockly?.Themes?.zelos_renderer };
+        this.setLoadedLocalFile(null);
+        this.setSelectedStrategyId(workspace_id);
+        let ref_preview;
+        while (!ref_preview) {
+            ref_preview = document.getElementById('load-strategy__blockly-container');
+            // eslint-disable-next-line no-await-in-loop
+            await new Promise(resolve => setImmediate(resolve));
+        }
+        if (!ref_preview) {
+            // eslint-disable-next-line no-console
+            console.warn('Could not find preview workspace element.');
+            return;
+        }
+        if (!this.recent_workspace) this.recent_workspace = window.Blockly.inject(ref_preview, injectWorkspace);
+        (this.recent_workspace as any).RTL = isDbotRTL();
+        await load(this.workspaceOptions);
+        this.loadStrategyOnModalWorkspace();
+    };
+
+    loadStrategyModalLocalPreview = async load_options => {
+        const injectWorkspace = { ...this.injectWorkspace, theme: window?.Blockly?.Themes?.zelos_renderer };
+        const ref = document?.getElementById('load-strategy__blockly-container');
+        this.local_workspace = window.Blockly.inject(ref, injectWorkspace);
+        load_options.workspace = this.local_workspace;
+        if (load_options.workspace) {
+            (load_options.workspace as any).RTL = isDbotRTL();
+        }
+        await load(load_options);
     };
 }

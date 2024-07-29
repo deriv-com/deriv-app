@@ -44,6 +44,7 @@ export default class TradersHubStore extends BaseStore {
     is_financial_restricted_country = false;
     is_setup_real_account_or_go_to_demo_modal_visible = false;
     available_mt5_platforms = [];
+    mt5_available_products = [];
 
     constructor(root_store) {
         const local_storage_properties = [
@@ -128,7 +129,7 @@ export default class TradersHubStore extends BaseStore {
             setWalletsMigrationFailedPopup: action.bound,
             cleanup: action.bound,
             setIsSetupRealAccountOrGoToDemoModalVisible: action.bound,
-            // setMT5TradingPlatformAvailableAccounts: action.bound,
+            setMT5TradingPlatformAvailableAccounts: action.bound,
             // responseTradingPlatformAvailableAccounts: action.bound,
             dynamic_available_platforms: computed,
         });
@@ -473,19 +474,23 @@ export default class TradersHubStore extends BaseStore {
         return is_restricted;
     }
 
-    async getAvailableMt5Accounts() {
-        // this.setMT5TradingPlatformAvailableAccounts();
+    async setMT5TradingPlatformAvailableAccounts() {
+        const response = await WS.tradingPlatformAvailableAccounts({
+            platform: CFD_PLATFORMS.MT5,
+        });
+        if (!response.error) {
+            this.mt5_available_products = response.trading_platform_available_accounts;
+        }
+    }
+
+    getAvailableMt5Accounts() {
+        this.setMT5TradingPlatformAvailableAccounts();
         // if (this.is_eu_user && !this.is_demo_low_risk) {
         //     this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
         //         ['EU', 'All'].some(region => region === account.availability)
         //     );
         //     return;
         // }
-
-        await WS.tradingPlatformAvailableAccounts({
-            country_code: this.root_store.client.clients_country,
-            platform: CFD_PLATFORMS.MT5,
-        }).then(this.root_store.client.responseTradingPlatformAvailableAccounts);
 
         if (Object.keys(this.dynamic_available_platforms).length > 0) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account => {
@@ -871,12 +876,15 @@ export default class TradersHubStore extends BaseStore {
     }
 
     get dynamic_available_platforms() {
+        const available_products = this.root_store.client.is_logged_in
+            ? this.root_store.client.trading_platform_available_accounts
+            : this.mt5_available_products;
+
         // eslint-disable-next-line no-console
-        console.log('==>', {
-            trading_platform_available_accounts: this.root_store.client.trading_platform_available_accounts,
-        });
+        console.log('==>', available_products);
+
         const available_accounts = {};
-        this.root_store.client.trading_platform_available_accounts.forEach(account => {
+        available_products.forEach(account => {
             if (account.product === 'synthetic') {
                 // `trading_platform_available_accounts` does not have an entry for 'standard' accounts,
                 // so adding 'standard' sub-account type to the available accounts for synthetic products.

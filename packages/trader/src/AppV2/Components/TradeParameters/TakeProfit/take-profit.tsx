@@ -5,7 +5,7 @@ import { ActionSheet, SectionMessage, TextField, Text, ToggleSwitch, TextFieldWi
 import { Localize, localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
-import { focusAndOpenKeyboard } from 'AppV2/Utils/trade-types-utils';
+import { focusAndOpenKeyboard } from 'AppV2/Utils/trade-params-utils';
 import Carousel from 'AppV2/Components/Carousel';
 import TakeProfitHeader from './take-profit-header';
 

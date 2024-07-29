@@ -1,5 +1,8 @@
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
-import { getTradeParams, isDigitContractWinning } from '../trade-params-utils';
+import { getTradeParams, isDigitContractWinning, focusAndOpenKeyboard } from '../trade-params-utils';
 
 describe('getTradeParams', () => {
     it('should return correct array with keys for Rise/Fall', () => {
@@ -73,5 +76,33 @@ describe('isDigitContractWinning', () => {
         expect(isDigitContractWinning(CONTRACT_TYPES.EVEN_ODD.EVEN, null, 0)).toBeTruthy();
         expect(isDigitContractWinning(CONTRACT_TYPES.EVEN_ODD.EVEN, null, null)).toBeFalsy();
         expect(isDigitContractWinning(CONTRACT_TYPES.EVEN_ODD.EVEN, null, 1)).toBeFalsy();
+    });
+});
+
+describe('focusAndOpenKeyboard', () => {
+    it('should apply focus to the passed ReactElement', () => {
+        jest.useFakeTimers();
+
+        const MockComponent = () => {
+            const input_ref = React.useRef<HTMLInputElement>(null);
+
+            return (
+                <React.Fragment>
+                    <input type='number' ref={input_ref} />
+                    <button onClick={() => focusAndOpenKeyboard(input_ref.current)}>Focus</button>
+                </React.Fragment>
+            );
+        };
+
+        render(<MockComponent />);
+
+        const input = screen.getByRole('spinbutton');
+        expect(input).not.toHaveFocus();
+
+        userEvent.click(screen.getByText('Focus'));
+
+        jest.runAllTimers();
+
+        expect(input).toHaveFocus();
     });
 });

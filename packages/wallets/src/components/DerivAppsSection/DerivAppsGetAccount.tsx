@@ -94,7 +94,7 @@ const DerivAppsGetAccount: React.FC = () => {
             );
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [addTradingAccountToLocalStorage, isAccountCreationSuccess, localize]);
+    }, [addTradingAccountToLocalStorage, isAccountCreationSuccess]);
 
     return (
         <div className='wallets-deriv-apps-section wallets-deriv-apps-section__get-account'>

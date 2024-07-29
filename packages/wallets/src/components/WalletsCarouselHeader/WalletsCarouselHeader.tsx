@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
+import { useTranslations } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { IconButton } from '../Base';
 import { WalletCurrencyCard } from '../WalletCurrencyCard';
@@ -17,6 +18,7 @@ type TProps = {
 
 const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, isBalanceLoading, isDemo }) => {
     const history = useHistory();
+    const { localize } = useTranslations();
 
     return (
         <div className={classNames('wallets-carousel-header', { 'wallets-carousel-header--hidden': hidden })}>
@@ -39,7 +41,7 @@ const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, is
                 </div>
             </div>
             <IconButton
-                aria-label='Transfer'
+                aria-label={localize('Transfer')}
                 className='wallets-carousel-header__button'
                 color='white'
                 data-testid='dt_wallets_carousel_header_button'

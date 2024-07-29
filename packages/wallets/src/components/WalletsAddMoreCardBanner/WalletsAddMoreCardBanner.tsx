@@ -52,15 +52,7 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [
-            data?.currency,
-            data?.display_balance,
-            data?.landing_company_shortcode,
-            error?.error.message,
-            isMobile,
-            status,
-            localize,
-        ]
+        [data?.currency, data?.display_balance, data?.landing_company_shortcode, error?.error.message, isMobile, status]
     );
 
     return (

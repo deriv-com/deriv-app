@@ -1,4 +1,11 @@
-import { splitTimeRange } from 'Utils/business-hours';
+import React from 'react';
+import {
+    splitTimeRange,
+    formatTime,
+    convertToMinutesRange,
+    convertToGMTWithOverflow,
+    isTimeEdited,
+} from 'Utils/business-hours';
 
 describe('splitTimeRange', () => {
     it('should split time range correctly', () => {
@@ -13,6 +20,7 @@ describe('splitTimeRange', () => {
             { start_min: 8640, end_min: 10080 },
         ]);
 
+        //gmt + 0 , 24 * 7
         time_range = [
             { start_min: 0, end_min: 1440 },
             { start_min: 2880, end_min: 10080 },
@@ -28,7 +36,7 @@ describe('splitTimeRange', () => {
             { start_min: 8640, end_min: 10080 },
         ]);
 
-        //offset gmt + 10
+        //offset gmt + 10, 9 - 5
         time_range = [
             { start_min: 10020, end_min: 10080 },
             { start_min: 0, end_min: 420 },
@@ -70,7 +78,7 @@ describe('splitTimeRange', () => {
             },
         ]);
 
-        //gmt + 5.30
+        //gmt + 5.30, 9 - 5
         time_range = [
             { start_min: 210, end_min: 690 },
             { start_min: 1650, end_min: 2130 },
@@ -90,7 +98,7 @@ describe('splitTimeRange', () => {
             { start_min: 9180, end_min: 9660 },
         ]);
 
-        //gmt - 11
+        //gmt - 11, 9 - 5
         time_range = [
             { start_min: 1200, end_min: 1680 },
             { start_min: 2640, end_min: 3120 },
@@ -110,5 +118,97 @@ describe('splitTimeRange', () => {
             { start_min: 7740, end_min: 8220 },
             { start_min: 9180, end_min: 9660 },
         ]);
+    });
+});
+
+describe('formatTime', () => {
+    it('should format time correctly', () => {
+        expect(formatTime(1440)).toEqual('12:00 am');
+        expect(formatTime(0)).toEqual('12:00 am');
+        expect(formatTime(60)).toEqual('1:00 am');
+    });
+});
+
+describe('convertToMinutesRange', () => {
+    it('should convert time range to minutes correctly', () => {
+        const time_range = [
+            {
+                start_time: '12:00 am',
+                end_time: '12:10 am',
+                day: '',
+                short_day: 'S',
+                value: 'sunday' as const,
+                time: <span>12:00 am - 12:10 am</span>,
+            },
+            {
+                start_time: '12:00 am',
+                end_time: '1:00 am',
+                day: '',
+                short_day: 'M',
+                value: 'monday' as const,
+                time: <span>12:00 am - 1:00 am</span>,
+            },
+        ];
+        expect(convertToMinutesRange(time_range)).toEqual([
+            { start_min: 0, end_min: 10 },
+            { start_min: 1440, end_min: 1500 },
+        ]);
+    });
+});
+
+describe('convertToGMTWithOverflow', () => {
+    it('should convert time range to GMT correctly', () => {
+        const time_range = [
+            {
+                start_min: 0,
+                end_min: 10,
+            },
+            {
+                start_min: 1440,
+                end_min: 1500,
+            },
+        ];
+        expect(convertToGMTWithOverflow(time_range, 0)).toEqual([
+            { start_min: 0, end_min: 10 },
+            { start_min: 1440, end_min: 1500 },
+        ]);
+    });
+});
+
+describe('isTimeEdited', () => {
+    it('should return true if time is edited', () => {
+        const time_range = [
+            {
+                start_time: '12:00 am',
+                end_time: '12:10 am',
+                day: '',
+                short_day: 'S',
+                value: 'sunday' as const,
+                time: <span>12:00 am - 12:10 am</span>,
+            },
+        ];
+        let edited_time_range = [
+            {
+                start_time: '12:00 am',
+                end_time: '12:10 am',
+                day: '',
+                short_day: 'S',
+                value: 'sunday' as const,
+                time: <span>12:00 am - 12:10 am</span>,
+            },
+        ];
+        expect(isTimeEdited(time_range, edited_time_range)).toBeFalsy();
+
+        edited_time_range = [
+            {
+                start_time: '12:00 am',
+                end_time: '12:20 am',
+                day: '',
+                short_day: 'S',
+                value: 'sunday' as const,
+                time: <span>12:00 am - 12:20 am</span>,
+            },
+        ];
+        expect(isTimeEdited(time_range, edited_time_range)).toBeTruthy();
     });
 });

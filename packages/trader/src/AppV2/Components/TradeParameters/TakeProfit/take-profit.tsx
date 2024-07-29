@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
-import { ActionSheet, TextField, Text, ToggleSwitch, TextFieldWithSteppers } from '@deriv-com/quill-ui';
+import { ActionSheet, SectionMessage, TextField, Text, ToggleSwitch, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
@@ -14,13 +14,13 @@ type TTakeProfitProps = {
 
 //TODO: enabling on click
 //TODO: block "-" icon when value is 0
-//TODO: add content for ACC
 
 const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     const {
         currency,
         has_open_accu_contract,
         has_take_profit,
+        is_accumulator,
         take_profit,
         onChangeMultiple,
         onChange,
@@ -39,7 +39,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
 
     const min_take_profit = validation_params?.take_profit?.min;
     const max_take_profit = validation_params?.take_profit?.max;
-    const decimal = getDecimalPlaces(currency);
+    const decimals = getDecimalPlaces(currency);
 
     const getInputMessage = () =>
         is_take_profit_enabled
@@ -84,9 +84,12 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     };
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let { value } = e.target;
-        value = value.trim().replace(',', '.');
+        //TODO: check if we will need all this logic when latest Quill update
+        let value: string | number = e.target.value;
+        value = String(value).trim().replace(',', '.');
+
         if (value !== '' && Number(value) <= 0) value = '0';
+        // value = parseFloat(Number(value).toFixed(decimals));
         setUpdatedTakeProfitValue(value);
         isTakeProfitOutOfRange(value);
     };
@@ -143,7 +146,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                             unitLeft={currency}
                             variant='fill'
                             value={updated_take_profit_value}
-                            decimals={decimal}
+                            decimals={decimals}
                         />
                     </ActionSheet.Content>
                     <ActionSheet.Footer
@@ -161,11 +164,19 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
             id: 2,
             component: (
                 <ActionSheet.Content className='take-profit__wrapper--definition'>
-                    <div className='take-profit__content'>
-                        <Text>
-                            <Localize i18n_default_text='When your profit reaches or exceeds the set amount, your trade will be closed automatically.' />
-                        </Text>
-                    </div>
+                    <Text>
+                        <Localize i18n_default_text='When your profit reaches or exceeds the set amount, your trade will be closed automatically.' />
+                    </Text>
+                    {is_accumulator && (
+                        <SectionMessage
+                            className='take-profit__warning'
+                            message={
+                                <Localize i18n_default_text="Take profit can't be adjusted for ongoing accumulator contracts." />
+                            }
+                            size='sm'
+                            status='info'
+                        />
+                    )}
                 </ActionSheet.Content>
             ),
         },

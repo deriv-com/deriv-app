@@ -78,7 +78,7 @@ export const getProposalInfo = (
     response: PriceProposalResponse & TError,
     obj_prev_contract_basis: TObjContractBasis
 ) => {
-    const proposal = (response.proposal as NewProposal) || ({} as NewProposal);
+    const proposal: NewProposal = response.proposal || ({} as NewProposal);
     const profit = (proposal.payout || 0) - (proposal.ask_price || 0);
     const returns = (profit * 100) / (proposal.ask_price || 1);
     const stake = proposal.display_value;

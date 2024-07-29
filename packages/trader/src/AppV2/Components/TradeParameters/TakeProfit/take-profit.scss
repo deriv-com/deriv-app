@@ -13,6 +13,10 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
         }
     }
 
+    &__warning {
+        margin-block-start: var(--core-spacing-800);
+    }
+
     &__content {
         display: flex;
         justify-content: space-between;

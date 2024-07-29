@@ -1,8 +1,8 @@
 import React from 'react';
 import { useCancelCryptoTransaction } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../../../../../../components/ModalProvider';
-import useDevice from '../../../../../../../hooks/useDevice';
 import TransactionsPendingRow from '../TransactionsPendingRow';
 
 jest.mock('@deriv/api-v2', () => ({
@@ -30,7 +30,10 @@ jest.mock('react-router-dom', () => ({
     }),
 }));
 
-jest.mock('../../../../../../../hooks/useDevice', () => jest.fn());
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 
 const mockWithdrawal = {
     address_hash: '',
@@ -70,11 +73,16 @@ describe('TransactionsPendingRow', () => {
         $modalContainer.id = 'wallets_modal_root';
         document.body.appendChild($root);
         document.body.appendChild($modalContainer);
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
     });
 
     afterEach(() => {
         document.body.removeChild($root);
         document.body.removeChild($modalContainer);
+    });
+
+    afterAll(() => {
+        jest.clearAllMocks();
     });
 
     it('should render component with correct contents for withdrawal on desktop', () => {

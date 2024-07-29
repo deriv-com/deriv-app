@@ -1,8 +1,8 @@
 import React, { ComponentProps } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDevice } from '@deriv-com/ui';
 import { WalletButton, WalletButtonGroup } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
-import useDevice from '../../../../hooks/useDevice';
 
 type TProps = {
     disabled: ComponentProps<typeof WalletButton>['disabled'];
@@ -15,17 +15,19 @@ type TProps = {
 export const SuccessModalFooter = ({ isDemo }: Pick<TProps, 'isDemo'>) => {
     const history = useHistory();
     const { hide } = useModal();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     const handleOnClickReal = () => {
         hide();
         history.push('/wallet/account-transfer');
     };
 
+    const walletButtonSize = isDesktop ? 'md' : 'lg';
+
     if (isDemo) {
         return (
             <div className='wallets-success-btn'>
-                <WalletButton isFullWidth onClick={hide} size={isMobile ? 'lg' : 'md'}>
+                <WalletButton isFullWidth onClick={hide} size={walletButtonSize}>
                     OK
                 </WalletButton>
             </div>
@@ -34,10 +36,10 @@ export const SuccessModalFooter = ({ isDemo }: Pick<TProps, 'isDemo'>) => {
 
     return (
         <WalletButtonGroup isFlex isFullWidth>
-            <WalletButton onClick={hide} size={isMobile ? 'lg' : 'md'} variant='outlined'>
+            <WalletButton onClick={hide} size={walletButtonSize} variant='outlined'>
                 Maybe later
             </WalletButton>
-            <WalletButton onClick={() => handleOnClickReal()} size={isMobile ? 'lg' : 'md'}>
+            <WalletButton onClick={() => handleOnClickReal()} size={walletButtonSize}>
                 Transfer funds
             </WalletButton>
         </WalletButtonGroup>
@@ -50,11 +52,12 @@ export const MT5PasswordModalFooter = ({
     onPrimaryClick,
     onSecondaryClick,
 }: Exclude<TProps, 'isDemo'>) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
+    const walletButtonSize = isDesktop ? 'md' : 'lg';
 
     return (
         <WalletButtonGroup isFullWidth>
-            <WalletButton isFullWidth onClick={onSecondaryClick} size={isMobile ? 'lg' : 'md'} variant='outlined'>
+            <WalletButton isFullWidth onClick={onSecondaryClick} size={walletButtonSize} variant='outlined'>
                 Forgot password?
             </WalletButton>
             <WalletButton
@@ -62,7 +65,7 @@ export const MT5PasswordModalFooter = ({
                 isFullWidth
                 isLoading={isLoading}
                 onClick={onPrimaryClick}
-                size={isMobile ? 'lg' : 'md'}
+                size={walletButtonSize}
             >
                 Add account
             </WalletButton>

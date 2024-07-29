@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDevice } from '@deriv-com/ui';
 import { WalletButton, WalletButtonGroup } from '../../../../../components';
-import useDevice from '../../../../../hooks/useDevice';
 import { THooks } from '../../../../../types';
 
 type TCTraderSuccessModalButtons = {
@@ -12,12 +12,14 @@ type TCTraderSuccessModalButtons = {
 
 const CTraderSuccessModalButtons = ({ createdAccount, hide, isDemo }: TCTraderSuccessModalButtons) => {
     const history = useHistory();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
+
+    const walletButtonSizes = isDesktop ? 'md' : 'lg';
 
     if (isDemo) {
         return (
             <div className='wallets-success-btn'>
-                <WalletButton isFullWidth onClick={hide} size={isMobile ? 'lg' : 'md'}>
+                <WalletButton isFullWidth onClick={hide} size={walletButtonSizes}>
                     OK
                 </WalletButton>
             </div>
@@ -26,7 +28,7 @@ const CTraderSuccessModalButtons = ({ createdAccount, hide, isDemo }: TCTraderSu
 
     return (
         <WalletButtonGroup isFlex isFullWidth>
-            <WalletButton onClick={hide} size={isMobile ? 'lg' : 'md'} variant='outlined'>
+            <WalletButton onClick={hide} size={walletButtonSizes} variant='outlined'>
                 Maybe later
             </WalletButton>
             <WalletButton
@@ -34,7 +36,7 @@ const CTraderSuccessModalButtons = ({ createdAccount, hide, isDemo }: TCTraderSu
                     hide();
                     history.push('/wallet/account-transfer', { toAccountLoginId: createdAccount?.account_id });
                 }}
-                size={isMobile ? 'lg' : 'md'}
+                size={walletButtonSizes}
             >
                 Transfer funds
             </WalletButton>

@@ -7,11 +7,10 @@ import {
     usePOI,
     useSettings,
 } from '@deriv/api-v2';
-import { Loader } from '@deriv-com/ui';
+import { Loader, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
 import { useModal } from '../../../../components/ModalProvider';
-import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
 import { ErrorCode } from '../../../accounts/constants';
 import {
@@ -100,7 +99,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { data: settings, update: updateSettings } = useSettings();
     const { submitIDVDocuments } = useIdentityDocumentVerificationAdd();
     const { getModalState, hide, show } = useModal();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     const selectedMarketType = getModalState('marketType') ?? 'all';
     const platform = getModalState('platform') ?? PlatformDetails.mt5.platform;
@@ -349,7 +348,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     : () => (
                           <WalletButton
                               disabled={isNextDisabled(context)}
-                              isFullWidth={isMobile}
+                              isFullWidth={!isDesktop}
                               isLoading={isNextLoading(context)}
                               onClick={() => nextFlowHandler(context)}
                               size='lg'

@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { LegacyArrowLeft2pxIcon } from '@deriv/quill-icons';
+import { useDevice } from '@deriv-com/ui';
 import { WalletText } from '../../../../components';
-import useDevice from '../../../../hooks/useDevice';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
 import './DynamicLeverageTitle.scss';
 
 export const DynamicLeverageTitle: FC = () => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
 
@@ -18,7 +18,7 @@ export const DynamicLeverageTitle: FC = () => {
                 iconSize='xs'
                 onClick={toggleDynamicLeverage}
             />
-            <WalletText color='prominent' size={isMobile ? 'sm' : 'md'} weight='bold'>
+            <WalletText color='prominent' size={isDesktop ? 'md' : 'sm'} weight='bold'>
                 Get more out of Deriv MT5 Financial
             </WalletText>
         </div>

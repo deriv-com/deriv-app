@@ -3,11 +3,10 @@ import classNames from 'classnames';
 import moment from 'moment';
 import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api-v2';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
-import { Button, Divider, Tooltip } from '@deriv-com/ui';
+import { Button, Divider, Tooltip, useDevice } from '@deriv-com/ui';
 import { WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
-import useDevice from '../../../../../../hooks/useDevice';
 import { THooks } from '../../../../../../types';
 import { WalletActionModal } from '../../../../components/WalletActionModal';
 import { TransactionsPendingRowField } from './components/TransactionsPendingRowField';
@@ -19,7 +18,7 @@ type TProps = {
 
 const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
     const { data } = useActiveWalletAccount();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const displayCode = useMemo(() => data?.currency_config?.display_code || 'USD', [data]);
     const modal = useModal();
 
@@ -53,7 +52,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
     }, [cancelTransaction, modal]);
 
     const onMobileStatusClick = useCallback(() => {
-        if (isMobile) {
+        if (!isDesktop) {
             modal.show(
                 <WalletActionModal
                     actionButtonsOptions={[
@@ -70,7 +69,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                 { defaultRootId: 'wallets_modal_root' }
             );
         }
-    }, [isMobile, modal, transaction.description]);
+    }, [isDesktop, modal, transaction.description]);
 
     return (
         <React.Fragment>
@@ -90,7 +89,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                 </div>
                 <div className='wallets-transactions-pending-row__fields-container'>
                     <TransactionsPendingRowField
-                        className={{ 'wallets-transactions-pending-row__transaction-hash': !isMobile }}
+                        className={{ 'wallets-transactions-pending-row__transaction-hash': isDesktop }}
                         hint={
                             transaction.transaction_url
                                 ? {
@@ -104,7 +103,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                         value={transaction.formatted_transaction_hash}
                     />
                     <TransactionsPendingRowField
-                        className={{ 'wallets-transactions-pending-row__transaction-address': !isMobile }}
+                        className={{ 'wallets-transactions-pending-row__transaction-address': isDesktop }}
                         hint={{
                             link: transaction.address_url,
                             text: 'View address on Blockchain',
@@ -114,11 +113,11 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                         value={transaction.formatted_address_hash}
                     />
                     <TransactionsPendingRowField
-                        className={{ 'wallets-transactions-pending-row__transaction-confirmations': !isMobile }}
+                        className={{ 'wallets-transactions-pending-row__transaction-confirmations': isDesktop }}
                         name='Confirmations'
                         value={transaction.formatted_confirmations.toString()}
                     />
-                    {isMobile && (
+                    {!isDesktop && (
                         <React.Fragment>
                             <TransactionsPendingRowField
                                 name='Amount'
@@ -137,19 +136,19 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                         </React.Fragment>
                     )}
                     <TransactionsPendingRowField
-                        className={{ 'wallets-transactions-pending-row__transaction-time': !isMobile }}
+                        className={{ 'wallets-transactions-pending-row__transaction-time': isDesktop }}
                         name='Time'
                         value={moment
                             .unix(transaction.submit_date)
                             .utc()
-                            .format(isMobile ? 'HH:mm:ss [GMT]' : 'DD MMM YYYY HH:mm:ss [GMT]')}
+                            .format(isDesktop ? 'DD MMM YYYY HH:mm:ss [GMT]' : 'HH:mm:ss [GMT]')}
                         valueTextProps={{
                             color: 'general',
-                            size: isMobile ? 'xs' : '2xs',
-                            weight: isMobile ? 'bold' : 'regular',
+                            size: isDesktop ? '2xs' : 'xs',
+                            weight: isDesktop ? 'regular' : 'bold',
                         }}
                     />
-                    {!isMobile && (
+                    {isDesktop && (
                         <div className='wallets-transactions-pending-row__transaction-amount'>
                             <WalletText
                                 align='right'
@@ -168,7 +167,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                         as='button'
                         className='wallets-transactions-pending-row__transaction-status-button'
                         data-testid='dt_transaction_status_button'
-                        hideTooltip={isMobile}
+                        hideTooltip={!isDesktop}
                         onClick={onMobileStatusClick}
                         tooltipContent={transaction.description}
                         tooltipPosition='left'
@@ -185,7 +184,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                             {transaction.status_name}
                         </WalletText>
                     </Tooltip>
-                    {!isMobile && !!transaction.is_valid_to_cancel && (
+                    {isDesktop && !!transaction.is_valid_to_cancel && (
                         <button
                             className='wallets-transactions-pending-row__transaction-cancel-button'
                             onClick={onCancelButtonClick}
@@ -195,7 +194,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                     )}
                 </div>
 
-                {isMobile && !!transaction.is_valid_to_cancel && (
+                {!isDesktop && !!transaction.is_valid_to_cancel && (
                     <Button
                         borderWidth='sm'
                         color='black'

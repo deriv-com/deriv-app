@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { TSocketError } from '@deriv/api-v2/types';
+import { useDevice } from '@deriv-com/ui';
 import {
     WalletButton,
     WalletButtonGroup,
@@ -10,7 +11,6 @@ import {
 } from '../../../../components';
 import PasswordViewerIcon from '../../../../components/Base/WalletPasswordField/PasswordViewerIcon';
 import { passwordRequirements } from '../../../../constants/password';
-import useDevice from '../../../../hooks/useDevice';
 import { validPasswordMT5 } from '../../../../utils/password-validation';
 import { PlatformDetails } from '../../constants';
 import { TPlatformPasswordChange } from '../../modals/MT5PasswordModal/MT5PasswordModal';
@@ -35,9 +35,10 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
     sendEmailVerification,
 }) => {
     const { title } = PlatformDetails.mt5;
-    const { isDesktop, isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);
 
+    const walletButtonSizes = isDesktop ? 'md' : 'lg';
     const initialValues: TFormInitialValues = { currentPassword: '', newPassword: '' };
     const formikRef = useRef<FormikProps<TFormInitialValues> | null>(null);
 
@@ -125,10 +126,10 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
                             </div>
                         </div>
                         <div className='wallets-mt5-reset__footer'>
-                            <WalletButtonGroup isFlex isFullWidth={isMobile}>
+                            <WalletButtonGroup isFlex isFullWidth={!isDesktop}>
                                 <WalletButton
                                     onClick={sendEmailVerification}
-                                    size={isMobile ? 'lg' : 'md'}
+                                    size={walletButtonSizes}
                                     variant='outlined'
                                 >
                                     Forgot password?
@@ -136,7 +137,7 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
                                 <WalletButton
                                     disabled={!!errors.currentPassword || !validPasswordMT5(values.newPassword)}
                                     isLoading={isLoading}
-                                    size={isMobile ? 'lg' : 'md'}
+                                    size={walletButtonSizes}
                                     type='submit'
                                 >
                                     Change my password

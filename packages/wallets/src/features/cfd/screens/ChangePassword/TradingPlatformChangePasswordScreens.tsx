@@ -2,9 +2,9 @@ import React, { FC, useState } from 'react';
 import classNames from 'classnames';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { DerivLightDmt5PasswordIcon, DerivLightIcDxtradePasswordIcon } from '@deriv/quill-icons';
+import { useDevice } from '@deriv-com/ui';
 import { SentEmailContent, WalletButton, WalletsActionScreen, WalletText } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
-import useDevice from '../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../types';
 import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
 import { PlatformDetails } from '../../constants';
@@ -23,8 +23,8 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
     const { data } = useSettings();
     const { mutate } = useVerifyEmail();
     const { data: activeWallet } = useActiveWalletAccount();
-    const { isMobile } = useDevice();
-    const buttonTextSize = isMobile ? 'md' : 'sm';
+    const { isDesktop } = useDevice();
+    const buttonTextSize = isDesktop ? 'sm' : 'md';
 
     const { title } = PlatformDetails[platform];
 

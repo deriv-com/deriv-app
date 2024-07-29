@@ -3,10 +3,9 @@ import classNames from 'classnames';
 import moment from 'moment';
 import { useCancelCryptoTransaction } from '@deriv/api-v2';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
-import { Button } from '@deriv-com/ui';
+import { Button, useDevice } from '@deriv-com/ui';
 import { WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
-import useDevice from '../../../../../../hooks/useDevice';
 import { THooks } from '../../../../../../types';
 import { WalletActionModal } from '../../../../components/WalletActionModal';
 import './CryptoTransaction.scss';
@@ -25,7 +24,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
     transaction,
 }) => {
     const { hide, show } = useModal();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     const { mutate } = useCancelCryptoTransaction();
 
@@ -76,7 +75,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                     <WalletText lineHeight='2xs' size='2xs'>
                         {transaction.status_name}
                     </WalletText>
-                    {!!transaction.is_valid_to_cancel && !isMobile && (
+                    {!!transaction.is_valid_to_cancel && isDesktop && (
                         <button
                             className='wallets-crypto-transaction__cancel-button'
                             data-testid='dt-wallets-crypto-transactions-cancel-button'
@@ -132,7 +131,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                     </WalletText>
                 </div>
             )}
-            {!!transaction.is_valid_to_cancel && isMobile && (
+            {!!transaction.is_valid_to_cancel && !isDesktop && (
                 <div className='wallets-crypto-transaction__cancel-button-container'>
                     <Button
                         borderWidth='sm'

@@ -1,5 +1,5 @@
-import { Text } from '@deriv-com/quill-ui';
 import React from 'react';
+import { Text } from '@deriv-com/quill-ui';
 
 const ChartPlaceholder = () => {
     return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { WalletButton } from '../../../../components';
+import { Button } from '@deriv-com/ui';
 import { THooks } from '../../../../types';
 
 type TGetMessageProps = {
@@ -28,9 +28,9 @@ const getMessage = ({
 
         return {
             actionButton: () => (
-                <WalletButton onClick={() => history.push('/')} size='lg'>
+                <Button borderWidth='sm' onClick={() => history.push('/')} size='lg' textSize='md'>
                     Back to Trader&apos;s hub
-                </WalletButton>
+                </Button>
             ),
             description,
             title,
@@ -49,9 +49,9 @@ const getMessage = ({
 
         return {
             actionButton: () => (
-                <WalletButton onClick={() => history.push(locationPathName)} size='lg'>
+                <Button borderWidth='sm' onClick={() => history.push(locationPathName)} size='lg' textSize='md'>
                     {buttonText}
-                </WalletButton>
+                </Button>
             ),
             description,
             title,

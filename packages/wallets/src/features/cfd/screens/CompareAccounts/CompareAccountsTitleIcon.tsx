@@ -1,8 +1,6 @@
-import React, { useRef } from 'react';
-import { useHover } from 'usehooks-ts';
-import { Divider } from '@deriv-com/ui';
-import { Tooltip, WalletText } from '../../../../components';
-import useDevice from '../../../../hooks/useDevice';
+import React from 'react';
+import { Divider, Tooltip } from '@deriv-com/ui';
+import { WalletText } from '../../../../components';
 import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS } from '../../constants';
@@ -58,10 +56,6 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
     const marketTypeShortCode: TMarketWithShortCode = `${marketType}_${shortCode}`;
     const jurisdictionCardIcon = getAccountIcon(platform, marketType);
 
-    const hoverRef = useRef(null);
-    const isHovered = useHover(hoverRef);
-    const { isDesktop } = useDevice();
-
     const jurisdictionCardTitle =
         platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER
             ? getAccountCardTitle(platform, isDemo)
@@ -71,23 +65,20 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
 
     return (
         <React.Fragment>
-            <div className='wallets-compare-accounts-title-icon'>
+            <div className='wallets-compare-accounts-title'>
                 {jurisdictionCardIcon}
-                <div className='wallets-compare-accounts-title-icon__separator'>
+                <div className='wallets-compare-accounts-title__separator'>
                     <WalletText align='center' as='h1' size='sm' weight='bold'>
                         {jurisdictionCardTitle}
                     </WalletText>
                     {marketTypeShortCode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN && (
                         <Tooltip
-                            alignment='bottom'
-                            className='wallets-compare-accounts-title-icon__tooltip'
-                            isVisible={isHovered && isDesktop}
-                            message={labuanJurisdictionMessage}
+                            as='div'
+                            tooltipContainerClassName='wallets-compare-accounts-title__tooltip'
+                            tooltipContent={labuanJurisdictionMessage}
+                            tooltipPosition='bottom-start'
                         >
-                            <div ref={hoverRef}>
-                                {/* TODO: Replace with quill icons */}
-                                <InfoIcon />
-                            </div>
+                            <InfoIcon />
                         </Tooltip>
                     )}
                 </div>

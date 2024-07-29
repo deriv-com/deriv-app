@@ -435,14 +435,11 @@ export default class ClientStore extends BaseStore {
                 if (!this.is_logged_in) {
                     this.root_store.traders_hub.cleanup();
                 }
-                if (!this.is_logged_in && this.clients_country) {
-                    this.setMT5TradingPlatformAvailableAccounts();
-                }
             }
         );
 
         reaction(
-            () => [this.is_logged_in, this.clients_country],
+            () => [this.clients_country],
             () => {
                 if (!this.is_logged_in && this.clients_country) {
                     this.setMT5TradingPlatformAvailableAccounts();

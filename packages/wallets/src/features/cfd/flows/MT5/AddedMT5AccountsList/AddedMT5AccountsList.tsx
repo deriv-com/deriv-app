@@ -2,13 +2,13 @@ import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { useAuthorize, useJurisdictionStatus, useTradingPlatformStatus } from '@deriv/api-v2';
-import { LabelPairedChevronRightCaptionRegularIcon, LegacyWarningIcon } from '@deriv/quill-icons';
-import { Badge } from '@deriv-com/ui';
+import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { InlineMessage, WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import useDevice from '../../../../../hooks/useDevice';
 import { THooks } from '../../../../../types';
+import { PlatformStatusBadge } from '../../../components/PlatformStatusBadge';
 import {
     JURISDICTION,
     MARKET_TYPE,
@@ -44,12 +44,6 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
 
     const isServerMaintenance = platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
 
-    const getBadgeText = () => {
-        if (account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE) return 'Unavailable';
-        if (platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE) return 'Server maintenance';
-        return '';
-    };
-
     return (
         <TradingAccountCard
             disabled={jurisdictionStatus.is_pending}
@@ -82,20 +76,11 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     })}
                 >
                     {hasPlatformStatus ? (
-                        <Badge
+                        <PlatformStatusBadge
                             badgeSize='md'
                             className='wallets-added-mt5__icon--badge'
-                            color='warning'
-                            isBold
-                            leftIcon={<LegacyWarningIcon iconSize='xs' />}
-                            padding='loose'
-                            rounded='sm'
-                            variant='bordered'
-                        >
-                            <WalletText color='warning' lineHeight='2xl' size='2xs' weight='bold'>
-                                <span style={{ color: 'var(--status-warning, #ffad3a)' }}>{getBadgeText()}</span>
-                            </WalletText>
-                        </Badge>
+                            mt5Account={account}
+                        />
                     ) : (
                         <div className='wallets-available-mt5__icon'>
                             <LabelPairedChevronRightCaptionRegularIcon width={16} />

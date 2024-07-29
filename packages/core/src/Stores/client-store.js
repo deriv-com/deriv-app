@@ -416,9 +416,6 @@ export default class ClientStore extends BaseStore {
             unsubscribeFromExchangeRate: action.bound,
             unsubscribeFromAllExchangeRates: action.bound,
             setExchangeRates: action.bound,
-            setMT5TradingPlatformAvailableAccounts: action.bound,
-            is_cr_account: computed,
-            is_mf_account: computed,
         });
 
         reaction(
@@ -437,13 +434,7 @@ export default class ClientStore extends BaseStore {
                 if (!this.is_logged_in) {
                     this.root_store.traders_hub.cleanup();
                 }
-            }
-        );
-
-        reaction(
-            () => [this.clients_country],
-            () => {
-                if (this.clients_country) {
+                if (!this.is_logged_in && this.clients_country) {
                     this.setMT5TradingPlatformAvailableAccounts();
                 }
             }
@@ -1768,7 +1759,6 @@ export default class ClientStore extends BaseStore {
             Analytics.setAttributes({
                 user_id: this.user_id,
                 account_type: broker === 'null' ? 'unlogged' : broker,
-                residence_country: this.residence,
                 app_id: String(getAppId()),
                 device_type: isMobile() ? 'mobile' : 'desktop',
                 language: getLanguage(),
@@ -1790,14 +1780,6 @@ export default class ClientStore extends BaseStore {
             icon: account_type.toLowerCase(), // TODO: display the icon
             title: account_type.toLowerCase() === 'virtual' ? localize('DEMO') : account_type,
         };
-    }
-
-    setMT5TradingPlatformAvailableAccounts() {
-        console.log('==>', this.clients_country);
-        WS.tradingPlatformAvailableAccounts({
-            country_code: this.clients_country,
-            platform: CFD_PLATFORMS.MT5,
-        }).then(this.responseTradingPlatformAvailableAccounts);
     }
 
     setIsLoggingIn(bool) {
@@ -2485,7 +2467,6 @@ export default class ClientStore extends BaseStore {
     }
 
     responseTradingPlatformAvailableAccounts(response) {
-        console.log('==>', response);
         if (!response.error) {
             this.trading_platform_available_accounts = response.trading_platform_available_accounts;
         }
@@ -2892,12 +2873,4 @@ export default class ClientStore extends BaseStore {
         });
         this.setExchangeRates({});
     };
-
-    get is_cr_account() {
-        return this.loginid?.startsWith('CR');
-    }
-
-    get is_mf_account() {
-        return this.loginid?.startsWith('MF');
-    }
 }

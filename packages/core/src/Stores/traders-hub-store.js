@@ -1,5 +1,5 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-// import { WS } from 'Services';
+import { WS } from 'Services';
 import {
     CFD_PLATFORMS,
     ContentFlag,
@@ -473,7 +473,7 @@ export default class TradersHubStore extends BaseStore {
         return is_restricted;
     }
 
-    getAvailableMt5Accounts() {
+    async getAvailableMt5Accounts() {
         // this.setMT5TradingPlatformAvailableAccounts();
         // if (this.is_eu_user && !this.is_demo_low_risk) {
         //     this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
@@ -481,6 +481,11 @@ export default class TradersHubStore extends BaseStore {
         //     );
         //     return;
         // }
+
+        await WS.tradingPlatformAvailableAccounts({
+            country_code: this.root_store.client.clients_country,
+            platform: CFD_PLATFORMS.MT5,
+        }).then(this.root_store.client.responseTradingPlatformAvailableAccounts);
 
         if (Object.keys(this.dynamic_available_platforms).length > 0) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account => {

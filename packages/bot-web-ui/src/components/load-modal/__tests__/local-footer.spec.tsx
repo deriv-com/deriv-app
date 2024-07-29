@@ -33,9 +33,9 @@ describe('LocalFooter', () => {
             } as DashboardStore,
             load_modal: {
                 ...mock_DBot_store.load_modal,
-                loadFileFromLocal: jest.fn(),
                 toggleLoadModal: jest.fn(),
                 setLoadedLocalFile: jest.fn(),
+                loadStrategyOnBotBuilder: jest.fn(),
                 preview_workspace: jest.fn() as unknown,
                 selected_strategy: jest.fn() as unknown,
                 tab_name: 'google_tab',
@@ -78,7 +78,7 @@ describe('LocalFooter', () => {
 
         userEvent.click(open_button);
 
-        expect(mock_DBot_store?.load_modal.loadFileFromLocal).toHaveBeenCalled();
+        expect(mock_DBot_store?.load_modal.loadStrategyOnBotBuilder).toHaveBeenCalled();
         expect(mock_DBot_store?.load_modal.toggleLoadModal).toHaveBeenCalled();
         expect(mock_DBot_store?.dashboard.setPreviewOnPopup).toHaveBeenCalledWith(false);
         expect(mock_DBot_store?.dashboard.setOpenSettings).toHaveBeenCalledWith(NOTIFICATION_TYPE.BOT_IMPORT);

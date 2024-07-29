@@ -590,7 +590,7 @@ export default class LoadModalStore implements ILoadModalStore {
         this.setSelectedStrategyId(workspace_id);
         let ref_preview;
         while (!ref_preview) {
-            ref_preview = document.getElementById('load-strategy__blockly-container');
+            ref_preview = document?.getElementById('load-strategy__blockly-container');
             // eslint-disable-next-line no-await-in-loop
             await new Promise(resolve => setImmediate(resolve));
         }

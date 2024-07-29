@@ -1,9 +1,8 @@
 import React, { FC, lazy, Suspense } from 'react';
 import { usePOA, usePOI } from '@deriv/api-v2';
-import { Loader } from '@deriv-com/ui';
+import { Loader, useDevice } from '@deriv-com/ui';
 import { WalletButton, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
-import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
 import './VerificationFailed.scss';
 
@@ -25,7 +24,9 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
     const { hide, show } = useModal();
     const { data: poiStatus } = usePOI();
     const { data: poaStatus } = usePOA();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
+
+    const walletButton = isDesktop ? 'lg' : 'md';
 
     const isPOIFailed = poiStatus?.is_rejected || poiStatus?.is_expired || poiStatus?.is_suspected;
     const isPOAFailed = poaStatus?.is_rejected || poaStatus?.is_expired || poaStatus?.is_suspected;
@@ -56,7 +57,7 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
                 </WalletText>
             </div>
             <div className='wallets-verification-failed__footer'>
-                <WalletButton onClick={() => hide()} size={isMobile ? 'md' : 'lg'} variant='outlined'>
+                <WalletButton onClick={() => hide()} size={walletButton} variant='outlined'>
                     Maybe later
                 </WalletButton>
                 <WalletButton
@@ -67,7 +68,7 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
                             </Suspense>
                         )
                     }
-                    size={isMobile ? 'md' : 'lg'}
+                    size={walletButton}
                 >
                     Resubmit documents
                 </WalletButton>

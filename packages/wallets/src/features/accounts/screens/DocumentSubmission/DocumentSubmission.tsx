@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDevice } from '@deriv-com/ui';
 import { Dropzone, useFlow, WalletText } from '../../../../components';
-import useDevice from '../../../../hooks/useDevice';
 import Upload from '../../../../public/images/accounts/upload.svg';
 import i18n from '../../../../translations/i18n';
 import { getExampleImagesConfig } from '../../constants';
@@ -15,9 +15,11 @@ const listItems = [
 ];
 
 const DocumentSubmission: React.FC = () => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { setFormValues } = useFlow();
     const { t } = useTranslation();
+
+    const textSize = isDesktop ? 'sm' : 'xs';
 
     return (
         <div className='wallets-poa__document'>
@@ -75,10 +77,10 @@ const DocumentSubmission: React.FC = () => {
                         titleType='bold'
                     />
                     <div className='wallets-poa__document__container__upload__requirements'>
-                        <WalletText size={isMobile ? 'xs' : 'sm'}>
+                        <WalletText size={textSize}>
                             {t('Supported formats : JPEG, JPG, PNG, PDF, and GIF only')}
                         </WalletText>
-                        <WalletText size={isMobile ? 'xs' : 'sm'}>{t('Maximum size : 8MB')}</WalletText>
+                        <WalletText size={textSize}>{t('Maximum size : 8MB')}</WalletText>
                     </div>
                 </div>
             </div>

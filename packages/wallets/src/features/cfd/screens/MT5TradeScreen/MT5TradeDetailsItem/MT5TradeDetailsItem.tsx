@@ -16,6 +16,8 @@ type TMT5TradeDetailsItemProps = {
 const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, variant = 'clipboard' }) => {
     const { isDesktop } = useDevice();
     const { show } = useModal();
+
+    const textSize = isDesktop ? 'xs' : 'sm';
     return (
         <div
             className={classNames('wallets-mt5-trade-details-item', {
@@ -24,11 +26,11 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, vari
         >
             {variant !== 'info' && (
                 <React.Fragment>
-                    <WalletText color='less-prominent' size={isDesktop ? 'xs' : 'sm'}>
+                    <WalletText color='less-prominent' size={textSize}>
                         {label}
                     </WalletText>
                     <div className='wallets-mt5-trade-details-item__values'>
-                        <WalletText size={isDesktop ? 'xs' : 'sm'} weight='bold'>
+                        <WalletText size={textSize} weight='bold'>
                             {value}
                         </WalletText>
                         {variant === 'clipboard' && <WalletClipboard popoverAlignment='left' textCopy={value} />}
@@ -46,7 +48,7 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, vari
                 </React.Fragment>
             )}
             {variant === 'info' && (
-                <WalletText color='less-prominent' size={isDesktop ? 'xs' : 'sm'}>
+                <WalletText color='less-prominent' size={textSize}>
                     {value}
                 </WalletText>
             )}

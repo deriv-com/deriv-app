@@ -1,6 +1,6 @@
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { Dropzone, useFlow, WalletText } from '../../../../components';
-import useDevice from '../../../../hooks/useDevice';
 import SelfieIcon from '../../../../public/images/accounts/selfie-icon.svg';
 import './SelfieDocumentUpload.scss';
 

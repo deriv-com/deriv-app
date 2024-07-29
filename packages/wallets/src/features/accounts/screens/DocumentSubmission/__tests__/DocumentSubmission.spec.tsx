@@ -1,16 +1,13 @@
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FlowProvider } from '../../../../../components';
-import useDevice from '../../../../../hooks/useDevice';
 import DocumentSubmission from '../DocumentSubmission';
 
-jest.mock('../../../../../hooks/useDevice', () => ({
-    __esModule: true,
-    default: jest.fn(() => ({
-        ...jest.requireActual('../../../../../hooks/useDevice').default(),
-        isMobile: false,
-    })),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
 }));
 
 const mockSetFormValues = jest.fn();
@@ -98,9 +95,8 @@ describe('DocumentSubmission', () => {
     });
 
     it('should show particular texts with the correct size in mobile view', () => {
-        (useDevice as jest.Mock).mockImplementation(() => ({
-            isMobile: true,
-        }));
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
+
         render(
             <FlowProvider
                 initialValues={{

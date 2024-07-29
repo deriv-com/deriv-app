@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
 import * as Yup from 'yup';
 import { usePOI, useResidenceList, useSettings } from '@deriv/api-v2';
-import { Dropdown } from '@deriv-com/ui';
+import { Dropdown, useDevice } from '@deriv-com/ui';
 import { FlowTextField, useFlow, WalletText } from '../../../../components';
 import { InlineMessage } from '../../../../components/Base';
-import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
 import { statusCodes } from '../../constants';
 import { requiredValidator } from '../../validations';
@@ -31,12 +30,12 @@ type TDocumentTypeItem = {
 };
 
 const ErrorMessage: React.FC<{ status: TErrorMessageProps }> = ({ status }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     return (
         <div className='wallets-idv-document-upload__error'>
             <WalletText weight='bold'>Your identity verification failed because:</WalletText>
-            <InlineMessage message={statusMessage[status]} size={isMobile ? 'md' : 'sm'} type='error' />
+            <InlineMessage message={statusMessage[status]} size={isDesktop ? 'sm' : 'md'} type='error' />
             <WalletText size='sm'>
                 Let&apos;s try again. Choose another document and enter the corresponding details.
             </WalletText>

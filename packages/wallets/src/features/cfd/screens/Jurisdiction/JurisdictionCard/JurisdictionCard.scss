@@ -97,7 +97,7 @@
         &__label {
             text-align: center;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin-top: 2.5rem;
             }
         }

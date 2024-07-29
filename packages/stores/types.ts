@@ -603,6 +603,7 @@ type TClientStore = {
     is_wallet_migration_request_is_in_progress: boolean;
     is_passkey_supported: boolean;
     setIsPasskeySupported: (value: boolean) => void;
+    setPasskeysStatusToCookie: (status: 'available' | 'not_available') => void;
     should_show_effortless_login_modal: boolean;
     setShouldShowEffortlessLoginModal: (value: boolean) => void;
     fetchShouldShowEffortlessLoginModal: () => void;
@@ -931,6 +932,7 @@ type TContractTradeStore = {
     }>;
     onUnmount: () => void;
     prev_chart_type: string;
+    prev_contract: TContractStore | Record<string, never>;
     prev_granularity: number | null;
     removeContract: (data: { contract_id: string }) => void;
     savePreviousChartMode: (chart_type: string, granularity: number | null) => void;

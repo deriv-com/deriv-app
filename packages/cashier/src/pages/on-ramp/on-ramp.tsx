@@ -8,6 +8,7 @@ import CashierLocked from '../../components/cashier-locked';
 import SideNote from '../../components/side-note';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
+import { DepositSubPageAnalyticsEventTracker } from '../../components/deposit-sub-page-event-tracker';
 import { useCashierStore } from '../../stores/useCashierStores';
 import './on-ramp.scss';
 
@@ -112,56 +113,55 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
     }
 
     return (
-        <React.Fragment>
-            <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>
-                {isMobile() && (
-                    <React.Fragment>
-                        <SelectNative
-                            data_testid='dt_on_ramp_select_native'
-                            className='on-ramp__selector'
-                            label={''}
-                            list_items={getActivePaths()}
-                            value={selected_cashier_path}
-                            should_show_empty_option={false}
-                            hide_top_placeholder={false}
-                            onChange={e => {
-                                if (e.currentTarget.value !== selected_cashier_path) {
-                                    setSelectedCashierPath(e.currentTarget.value);
-                                }
-                            }}
-                        />
-                        <OnRampInfo />
-                    </React.Fragment>
-                )}
-                <Text
-                    color={isMobile() ? 'less-prominent' : 'general'}
-                    weight={isMobile() ? 'normal' : 'bold'}
-                    align='center'
-                    line_height='m'
-                    className='on-ramp__page-header'
-                    as='p'
-                >
-                    <Localize i18n_default_text='Select payment channel' />
-                </Text>
-                {filtered_onramp_providers.map(provider => (
-                    <OnRampProviderCard key={provider.name} provider={provider} />
-                ))}
-                <Modal
-                    className='on-ramp__modal'
-                    has_close_icon
-                    is_open={is_onramp_modal_open}
-                    small={should_show_dialog}
-                    title={onramp_popup_modal_title}
-                    toggleModal={() => setIsOnRampModalOpen(!is_onramp_modal_open)}
-                    onUnmount={resetPopup}
-                    width={should_show_dialog ? '44rem' : '62.8rem'}
-                >
-                    <Modal.Body>
-                        <OnRampProviderPopup />
-                    </Modal.Body>
-                </Modal>
-            </div>
-        </React.Fragment>
+        <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>
+            <DepositSubPageAnalyticsEventTracker deposit_category='fiat_onramp' />
+            {isMobile() && (
+                <React.Fragment>
+                    <SelectNative
+                        data_testid='dt_on_ramp_select_native'
+                        className='on-ramp__selector'
+                        label={''}
+                        list_items={getActivePaths()}
+                        value={selected_cashier_path}
+                        should_show_empty_option={false}
+                        hide_top_placeholder={false}
+                        onChange={e => {
+                            if (e.currentTarget.value !== selected_cashier_path) {
+                                setSelectedCashierPath(e.currentTarget.value);
+                            }
+                        }}
+                    />
+                    <OnRampInfo />
+                </React.Fragment>
+            )}
+            <Text
+                color={isMobile() ? 'less-prominent' : 'general'}
+                weight={isMobile() ? 'normal' : 'bold'}
+                align='center'
+                line_height='m'
+                className='on-ramp__page-header'
+                as='p'
+            >
+                <Localize i18n_default_text='Select payment channel' />
+            </Text>
+            {filtered_onramp_providers.map(provider => (
+                <OnRampProviderCard key={provider.name} provider={provider} />
+            ))}
+            <Modal
+                className='on-ramp__modal'
+                has_close_icon
+                is_open={is_onramp_modal_open}
+                small={should_show_dialog}
+                title={onramp_popup_modal_title}
+                toggleModal={() => setIsOnRampModalOpen(!is_onramp_modal_open)}
+                onUnmount={resetPopup}
+                width={should_show_dialog ? '44rem' : '62.8rem'}
+            >
+                <Modal.Body>
+                    <OnRampProviderPopup />
+                </Modal.Body>
+            </Modal>
+        </div>
     );
 });
 

@@ -1,14 +1,12 @@
-import React, { useRef } from 'react';
-import { useHover } from 'usehooks-ts';
-import { Tooltip, WalletText } from '../../../../../../../../components';
+import React from 'react';
+import { Tooltip } from '@deriv-com/ui';
+import { WalletText } from '../../../../../../../../components';
 import { useWithdrawalCryptoContext } from '../../../../provider';
 import './WithdrawalCryptoPriorityFeeInfo.scss';
 
 const WithdrawalCryptoPriorityFeeInfo = ({ cryptoAmount }: { cryptoAmount: string }) => {
     const { activeWallet, countDownEstimationFee, cryptoEstimationsFee, fractionalDigits, serverTime } =
         useWithdrawalCryptoContext();
-    const hoverRef = useRef(null);
-    const isHovered = useHover(hoverRef);
 
     return (
         <div className='wallets-withdrawal-crypto-form__priority-withdrawal-info'>
@@ -28,8 +26,8 @@ const WithdrawalCryptoPriorityFeeInfo = ({ cryptoAmount }: { cryptoAmount: strin
                     </WalletText>
                     :
                 </WalletText>
-                <Tooltip alignment='top' isVisible={isHovered} message={`Fee calculated at ${serverTime} GMT`}>
-                    <span className='wallets-withdrawal-crypto-form-underline' ref={hoverRef}>
+                <Tooltip as='div' tooltipContent={`Fee calculated at ${serverTime} GMT`} tooltipPosition='top'>
+                    <span className='wallets-withdrawal-crypto-form-underline'>
                         <WalletText as='div' size='sm'>
                             {cryptoEstimationsFee.toFixed(fractionalDigits.crypto as number)} {activeWallet?.currency}
                         </WalletText>

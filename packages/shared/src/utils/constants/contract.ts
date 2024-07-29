@@ -10,7 +10,9 @@ import { LocalStore } from '../storage';
 export const getLocalizedBasis = () =>
     ({
         accumulator: localize('Accumulators'),
+        current_stake: localize('Current stake'),
         multiplier: localize('Multiplier'),
+        max_payout: localize('Max payout'),
         payout_per_pip: localize('Payout per pip'),
         payout_per_point: localize('Payout per point'),
         payout: localize('Payout'),
@@ -426,7 +428,9 @@ export const getMarketNamesMap = () =>
         CRASH1000: localize('Crash 1000 Index'),
         RDBEAR: localize('Bear Market Index'),
         RDBULL: localize('Bull Market Index'),
-        STPRNG: localize('Step Index'),
+        STPRNG: localize('Step 100 Index'),
+        STPRNG2: localize('Step 200 Index'),
+        STPRNG5: localize('Step 500 Index'),
         WLDAUD: localize('AUD Basket'),
         WLDEUR: localize('EUR Basket'),
         WLDGBP: localize('GBP Basket'),

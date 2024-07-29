@@ -812,6 +812,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             (values as TCFDPasswordFormValues & { platform: string }).platform = platform;
             submitCFDPassword(values, actions);
         }
+        closeModal();
     };
 
     const should_show_password =

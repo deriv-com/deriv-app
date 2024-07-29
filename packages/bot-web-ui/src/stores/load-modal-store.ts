@@ -359,7 +359,9 @@ export default class LoadModalStore implements ILoadModalStore {
     onDriveOpen = async () => {
         const { google_drive } = this.root_store;
         const { verifyGoogleDriveAccessToken } = google_drive;
-        await verifyGoogleDriveAccessToken();
+        const result = await verifyGoogleDriveAccessToken();
+        if (result === 'not_verified') return;
+
         if (google_drive) {
             google_drive.upload_id = uuidv4();
         }

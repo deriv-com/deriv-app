@@ -154,9 +154,11 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
                     botNotification(notification_message.google_drive_error, undefined, {
                         closeButton: false,
                     });
+                    return 'not_verified';
                 }
             }
         }
+        return 'verified';
     };
 
     async signIn() {

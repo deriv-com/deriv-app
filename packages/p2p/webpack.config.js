@@ -174,7 +174,6 @@ module.exports = function (env) {
                 'react-router': 'react-router',
                 'react-router-dom': 'react-router-dom',
                 'prop-types': 'prop-types',
-                '@deriv-com/analytics': '@deriv-com/analytics',
                 ...(is_publishing ? {} : { 'lodash.debounce': 'lodash.debounce', formik: 'formik' }),
                 ...publisher_utils.getLocalDerivPackageExternals(__dirname, is_publishing),
             },

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useCopyToClipboard } from 'usehooks-ts';
+import { useDevice } from '@deriv-com/ui';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import WalletClipboard from '../WalletClipboard';
@@ -10,7 +11,7 @@ jest.mock('usehooks-ts', () => ({
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
-    useDevice: () => ({ isDesktop: true }),
+    useDevice: jest.fn(() => ({})),
 }));
 
 describe('WalletClipboard', () => {
@@ -19,6 +20,7 @@ describe('WalletClipboard', () => {
     const renderComponent = () => render(<WalletClipboard textCopy='Sample text to copy' />);
 
     beforeEach(() => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
         mockCopy = jest.fn();
         mockUseCopyToClipboard.mockReturnValue([null, mockCopy]);
     });

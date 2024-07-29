@@ -1,9 +1,12 @@
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
-import useDevice from '../../../../../../../hooks/useDevice';
 import TransferFormAccountCard from '../TransferFormAccountCard';
 
-jest.mock('../../../../../../../hooks/useDevice', () => jest.fn());
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 
 describe('TransferFormAccountCard', () => {
     const mockAccount = {
@@ -15,7 +18,7 @@ describe('TransferFormAccountCard', () => {
     };
 
     beforeEach(() => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
     });
 
     afterEach(() => {

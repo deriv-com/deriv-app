@@ -35,8 +35,16 @@ const wrapper = ({ children }: PropsWithChildren) => (
 );
 
 describe('AccountsList', () => {
+    beforeEach(() => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+    });
+
+    afterAll(() => {
+        jest.clearAllMocks();
+    });
+
     it('should render account list in mobile view', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false, isMobile: true });
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         render(<AccountsList accountsActiveTabIndex={0} onTabClickHandler={jest.fn()} />, {
             wrapper,
         });
@@ -66,7 +74,7 @@ describe('AccountsList', () => {
 
     it('should trigger `onTabClickHandler` with proper tab index when the user switches the tab', () => {
         const onTabClickHandler = jest.fn();
-        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false, isMobile: true });
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
         render(<AccountsList accountsActiveTabIndex={0} onTabClickHandler={onTabClickHandler} />, {
             wrapper,

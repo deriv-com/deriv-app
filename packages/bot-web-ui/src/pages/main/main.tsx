@@ -5,7 +5,7 @@ import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { Dialog, Tabs } from '@deriv/components';
-import { useFeatureFlags } from '@deriv/hooks';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import TradingViewModal from 'Components/trading-view-chart/trading-view-modal';
@@ -44,7 +44,10 @@ const AppWrapper = observer(() => {
     const { ui } = useStore();
 
     const { url_hashed_values, is_desktop } = ui;
-    const { is_next_server_bot_enabled } = useFeatureFlags();
+    const [serverSideBot, isGBLoaded] = useGrowthbookGetFeatureValue({
+        featureFlag: 'server_side_bot',
+        defaultValue: false,
+    });
     const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial', 'server_bot'];
 
     let tab_value: number | string = active_tab;
@@ -185,8 +188,17 @@ const AppWrapper = observer(() => {
                                 <Tutorial handleTabChange={handleTabChange} />
                             </div>
                         </div>
-                        {is_next_server_bot_enabled ? (
-                            <div icon='IcDashboardComponentTab' label={localize('Server Side Bot')} id='id-server-bot'>
+                        {isGBLoaded && serverSideBot ? (
+                            <div
+                                icon='IcDashboardComponentTab'
+                                label={
+                                    <Localize
+                                        i18n_default_text='Server Bot <0>Beta</0'
+                                        components={[<span key={0} className='beta-server-bot' />]}
+                                    />
+                                }
+                                id='id-server-bot'
+                            >
                                 {/* <ServerBot /> */}
                                 <ServerSideBot />
                             </div>

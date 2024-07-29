@@ -137,23 +137,18 @@ const SIZE: TConfigItem = {
     ],
 };
 
-// const CHECKBOX_MAX_STAKE: TConfigItem = {
-//     type: 'checkbox',
-//     name: 'boolean_max_stake',
-//     label: localize('Max stake'),
-//     description: localize('The stake for your next trade will reset to the initial stake if it exceeds this value.'),
-//     attached: true,
-// };
+const LABEL_NMAE: TConfigItem = {
+    type: 'label',
+    label: localize('Name'),
+    description: localize('Name of your bot'),
+};
 
-// const MAX_STAKE: TConfigItem = {
-//     type: 'number',
-//     name: 'max_stake',
-//     validation: ['number', 'required', 'ceil', 'min'],
-//     should_have: [{ key: 'boolean_max_stake', value: true }],
-//     hide_without_should_have: true,
-//     attached: true,
-//     has_currency_unit: true,
-// };
+const NAME: TConfigItem = {
+    type: 'text',
+    name: 'name',
+    validation: ['required'],
+    has_currency_unit: true,
+};
 
 const LABEL_LAST_DIGIT_PREDICTION: TConfigItem = {
     type: 'label',
@@ -179,6 +174,7 @@ export const STRATEGIES: TStrategies = {
         rs_strategy_name: 'martingale',
         description: MARTINGALE,
         fields: [
+            [LABEL_NMAE, NAME],
             [
                 LABEL_SYMBOL,
                 SYMBOL,

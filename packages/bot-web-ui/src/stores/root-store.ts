@@ -15,11 +15,11 @@ import RoutePromptDialogStore from './route-prompt-dialog-store';
 import RunPanelStore from './run-panel-store';
 import SaveModalStore from './save-modal-store';
 import SelfExclusionStore from './self-exclusion-store';
+import ServerBotStore from './server-side-bot-store';
 import SummaryCardStore from './summary-card-store';
 import ToolbarStore from './toolbar-store';
 import ToolboxStore from './toolbox-store';
 import TransactionsStore from './transactions-store';
-import ServerBotStore from './server-bot-store';
 
 // TODO: need to write types for the individual classes and convert them to ts
 export default class RootStore {

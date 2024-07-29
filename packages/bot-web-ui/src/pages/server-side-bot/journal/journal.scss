@@ -32,6 +32,8 @@
         }
     }
     &__footer {
+        position: relative;
+        background-color: var(--general-main-1);
         padding: 16px;
         border-top: 1px solid var(--border-normal);
         @extend %center;

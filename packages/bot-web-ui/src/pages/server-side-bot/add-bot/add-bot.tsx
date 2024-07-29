@@ -39,7 +39,7 @@ const getErrorMessage = (dir: 'MIN' | 'MAX', value: number, type = 'DEFAULT') =>
 };
 
 export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children, setFormVisibility }) => {
-    const { quick_strategy, dashboard } = useDBotStore();
+    const { quick_strategy, dashboard, server_bot } = useDBotStore();
     const { selected_strategy, form_data, current_duration_min_max, initializeLossThresholdWarningData, setValue } =
         quick_strategy;
     const { active_tab } = dashboard;
@@ -47,6 +47,7 @@ export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children, set
     const [dynamic_schema, setDynamicSchema] = useState(Yup.object().shape({}));
     const { SERVER_BOT } = DBOT_TABS;
     const is_mounted = useRef(true);
+    const { createBot } = server_bot;
 
     let initial_value: TFormData | null = null;
 
@@ -69,6 +70,7 @@ export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children, set
     const getInitialValue = () => {
         const data = getSavedValues();
         initial_value = {
+            name: data?.name ?? 'Martingale',
             symbol: data?.symbol ?? qs_config.QUICK_STRATEGY.DEFAULT.symbol,
             tradetype: data?.tradetype ?? '',
             type: data?.type ?? '',
@@ -78,10 +80,6 @@ export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children, set
             loss: data?.loss ?? '',
             profit: data?.profit ?? '',
             size: data?.size ?? String(qs_config.QUICK_STRATEGY.DEFAULT.size),
-            action: data?.action ?? 'RUN',
-            max_stake: data?.max_stake ?? 10,
-            boolean_max_stake: data?.boolean_max_stake || false,
-            last_digit_prediction: data?.last_digit_prediction ?? 1,
         };
         return initial_value;
     };
@@ -182,9 +180,8 @@ export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children, set
     };
 
     const handleSubmit = (form_data: TFormData) => {
-        // eslint-disable-next-line no-console
-        console.log(form_data, 'form_data form_data form_data');
         setFormVisibility(false);
+        createBot(form_data);
     };
 
     return (

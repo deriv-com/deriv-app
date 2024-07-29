@@ -2,17 +2,44 @@ import React from 'react';
 import { Button, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { useDBotStore } from 'Stores/useDBotStore';
 
 const Journal: React.FC = observer(() => {
+    const { server_bot } = useDBotStore();
+    const { journal } = server_bot;
     const { ui } = useStore();
     const { is_mobile } = ui;
-    const has_journal = true;
+    const has_journal = !!journal.length;
     const font_size = is_mobile ? 'xxs' : 'xs';
     return (
         <div className='ssb-journal'>
             <div className='ssb-journal__content'>
                 {has_journal ? (
                     <>
+                        {journal.map(jn => {
+                            switch (jn.type) {
+                                case 'BUY':
+                                    return (
+                                        <div className='ssb-journal__content__item item-bg'>
+                                            <Text size={font_size}>
+                                                <Localize
+                                                    i18n_default_text='<0>Bought</0>: '
+                                                    components={[
+                                                        <span
+                                                            className='ssb-journal__content__item--purchase'
+                                                            key={0}
+                                                        />,
+                                                    ]}
+                                                />
+                                                {jn.msg}
+                                            </Text>
+                                        </div>
+                                    );
+
+                                default:
+                                    return null;
+                            }
+                        })}
                         <div className='ssb-journal__content__item item-bg'>
                             <Text size={font_size}>
                                 <Localize

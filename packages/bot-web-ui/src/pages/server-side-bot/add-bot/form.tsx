@@ -80,6 +80,17 @@ const QuickStrategyForm = observer(() => {
 
                         switch (field.type) {
                             // Generic or common fields
+                            case 'text': {
+                                return (
+                                    <QSInput
+                                        {...field}
+                                        key={key}
+                                        onChange={onChange}
+                                        name={field.name as string}
+                                        has_currency_unit={false}
+                                    />
+                                );
+                            }
                             case 'number': {
                                 if (!field.name) return null;
                                 const {

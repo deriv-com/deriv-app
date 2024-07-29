@@ -1,20 +1,31 @@
 import React, { useEffect } from 'react';
 import { Button, Icon, Text, useOnClickOutside } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
+import { useDBotStore } from 'Stores/useDBotStore';
 import BotListItem from './bot-list-item';
 import BotListMenu from './bot-list-menu';
+import DeleteServerBot from './delete-server-bot';
+import { botNotification } from 'Components/bot-notification/bot-notification';
 
 type TBotList = {
     setFormVisibility: (is_open: boolean) => void;
 };
 
 const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
+    const [is_delete_dialog_visible, setDeleteDialogVisibility] = React.useState(false);
+    const [temp_bot_id, setTempBotId] = React.useState('');
+
     const { ui } = useStore();
+    const { server_bot } = useDBotStore();
+    const { getBotList, bot_list = [], is_loading_bot_list, startBot, stopBot, deleteBot, active_bot } = server_bot;
     const { is_mobile } = ui;
-    const has_list = true;
-    const [menu_open, setMenuOpen] = React.useState({ visible: false, y: 0, id: '' });
+    const [menu_open, setMenuOpen] = React.useState({ visible: false, y: 0, bot_id: '' });
     const menu_ref = React.useRef(null);
+
+    useEffect(() => {
+        getBotList(true);
+    }, []);
 
     useEffect(() => {
         const el_ssb_bot_list = document.getElementById('ssb-bot-list');
@@ -31,82 +42,127 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
         }
     }, [menu_open.visible]);
 
-    const handleMenuClick = (e: React.MouseEvent<HTMLDivElement>, id: string) => {
+    const handleMenuClick = (e: React.MouseEvent<HTMLDivElement>, bot_id: string) => {
         setMenuOpen(open => ({
-            visible: open.id === id ? !menu_open.visible : true,
+            visible: open.bot_id === bot_id ? !menu_open.visible : true,
             y: e.clientY,
-            id,
+            bot_id,
         }));
     };
 
-    const onOpen = () => {
-        // TODO: open functionality to be integrated
-        closeMenu();
+    const botAction = (action: string, bot_id: string) => {
+        switch (action) {
+            case 'RUN':
+                if (active_bot?.status === 'running') {
+                    botNotification(localize('You can only run one bot at a time.'));
+                    break;
+                }
+                startBot(bot_id);
+                break;
+            case 'STOP':
+                stopBot(bot_id);
+                break;
+            case 'OPEN':
+                // eslint-disable-next-line no-console
+                console.log('OPEN');
+                closeMenu();
+                break;
+            case 'DELETE':
+                if (active_bot?.status === 'running' && active_bot.bot_id === bot_id) {
+                    botNotification(localize('You cannot delete a running bot.'));
+                    closeMenu();
+                    break;
+                }
+                setTempBotId(bot_id);
+                setDeleteDialogVisibility(true);
+                closeMenu();
+                break;
+            default:
+                break;
+        }
     };
 
-    const onDelete = () => {
-        // TODO: delete functionality to be integrated
-        closeMenu();
+    const onDeleteConfirm = () => {
+        deleteBot(temp_bot_id);
+        setDeleteDialogVisibility(false);
     };
 
     const closeMenu = () => {
-        setMenuOpen({ visible: false, y: 0, id: '' });
+        setMenuOpen({ visible: false, y: 0, bot_id: '' });
     };
 
     useOnClickOutside(menu_ref, closeMenu, event => menu_open.visible && !menu_ref?.current.contains(event.target));
+    const has_list = !!bot_list?.length;
 
     return (
-        <div className='ssb-list'>
-            {/* PORTAL -- DON'T REMOVE */}
-            <div id='ssb-bot-list-menu' ref={menu_ref} />
-            <BotListMenu is_open={menu_open.visible} y_position={menu_open.y} onOpen={onOpen} onDelete={onDelete} />
+        <>
+            <div className='ssb-list'>
+                {/* PORTAL -- DON'T REMOVE */}
+                <div id='ssb-bot-list-menu' ref={menu_ref} />
+                <BotListMenu
+                    is_open={menu_open.visible}
+                    y_position={menu_open.y}
+                    bot_id={menu_open.bot_id}
+                    botAction={botAction}
+                />
 
-            <div className='ssb-list__header'>
-                <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
-                    <Localize i18n_default_text='Bot list' />
-                </Text>
-                <span className='ssb-list__header__add' onClick={() => setFormVisibility(true)}>
-                    <Icon icon='IcAddBold' />
-                </span>
-            </div>
-            <div id='ssb-bot-list' className='ssb-list__content'>
-                {has_list ? (
-                    <>
-                        <BotListItem id='1' handleMenuClick={handleMenuClick} />
-                        <BotListItem id='2' handleMenuClick={handleMenuClick} />
-                        <BotListItem id='3' handleMenuClick={handleMenuClick} />
-                        <BotListItem id='4' handleMenuClick={handleMenuClick} />
-                        <BotListItem id='5' handleMenuClick={handleMenuClick} />
-                        <BotListItem id='6' handleMenuClick={handleMenuClick} />
-                        <BotListItem id='7' handleMenuClick={handleMenuClick} />
-                        <BotListItem id='12' handleMenuClick={handleMenuClick} />
-                        <BotListItem id='13' handleMenuClick={handleMenuClick} />
-                        <BotListItem id='14' handleMenuClick={handleMenuClick} />
-                        <BotListItem id='15' handleMenuClick={handleMenuClick} />
-                        <BotListItem id='16' handleMenuClick={handleMenuClick} />
-                        <BotListItem id='17' handleMenuClick={handleMenuClick} />
-                        <BotListItem id='8' handleMenuClick={handleMenuClick} />
-                    </>
-                ) : (
-                    <div className='ssb-list__content__no-list'>
-                        <Text size='xs'>
-                            <Localize i18n_default_text='This is Beta version of server bot.' />
-                        </Text>
-                        <Text size='xs'>
-                            <Localize
-                                i18n_default_text='To get started, tap <0>+ Create Bbot</0>'
-                                components={[<strong key={0} />]}
-                            />
-                        </Text>
-                        <div className='ssb-list__content__no-list__action'>
-                            <Button primary>
-                                <Localize i18n_default_text='+ Create bot' />
-                            </Button>
+                <div className='ssb-list__header'>
+                    <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
+                        <Localize i18n_default_text='Bot list' />
+                    </Text>
+                    <span className='ssb-list__header__add' onClick={() => setFormVisibility(true)}>
+                        <Icon icon='IcAddBold' />
+                    </span>
+                </div>
+                <div id='ssb-bot-list' className='ssb-list__content'>
+                    {has_list ? (
+                        <>
+                            {bot_list.map(item => {
+                                return (
+                                    <BotListItem
+                                        botAction={botAction}
+                                        key={item.bot_id}
+                                        item={item}
+                                        handleMenuClick={handleMenuClick}
+                                        active_bot={active_bot}
+                                    />
+                                );
+                            })}
+                        </>
+                    ) : (
+                        <div className='ssb-list__content__no-list'>
+                            {is_loading_bot_list ? (
+                                <Text>Loading...</Text>
+                            ) : (
+                                <>
+                                    <Text size='xs'>
+                                        <Localize i18n_default_text='This is Beta version of server bot.' />
+                                    </Text>
+                                    <Text size='xs'>
+                                        <Localize
+                                            i18n_default_text='To get started, tap <0>+ Create Bbot</0>'
+                                            components={[<strong key={0} />]}
+                                        />
+                                    </Text>
+                                    {!has_list && (
+                                        <div className='ssb-list__content__no-list__action'>
+                                            <Button primary>
+                                                <Localize i18n_default_text='+ Create bot' />
+                                            </Button>
+                                        </div>
+                                    )}
+                                </>
+                            )}
                         </div>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
-        </div>
+            <DeleteServerBot
+                onDelete={onDeleteConfirm}
+                is_open={is_delete_dialog_visible}
+                setVisibility={setDeleteDialogVisibility}
+            />
+        </>
     );
 });
 

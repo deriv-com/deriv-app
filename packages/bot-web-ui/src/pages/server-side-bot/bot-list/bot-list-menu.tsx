@@ -6,11 +6,11 @@ import { Localize } from '@deriv/translations';
 type TBotListMenu = {
     y_position: number;
     is_open: boolean;
-    onOpen: () => void;
-    onDelete: () => void;
+    bot_id: string;
+    botAction: (action: string, bot_id: string) => void;
 };
 
-const BotListMenu: React.FC<TBotListMenu> = ({ is_open, y_position, onOpen, onDelete }) => {
+const BotListMenu: React.FC<TBotListMenu> = ({ is_open, y_position, botAction, bot_id }) => {
     if (!is_open) return null;
     const el_portal = document.getElementById('ssb-bot-list-menu');
     if (!el_portal) return null;
@@ -22,13 +22,13 @@ const BotListMenu: React.FC<TBotListMenu> = ({ is_open, y_position, onOpen, onDe
                 top: `${y_position}px`,
             }}
         >
-            <div className='ssb-list__menu__item' onClick={onOpen}>
+            <div className='ssb-list__menu__item' onClick={() => botAction('OPEN', bot_id)}>
                 <Icon icon='IcOpen' />
                 <Text size='xxs' weight='bold'>
                     <Localize i18n_default_text='Open' />
                 </Text>
             </div>
-            <div className='ssb-list__menu__item' onClick={onDelete}>
+            <div className='ssb-list__menu__item' onClick={() => botAction('DELETE', bot_id)}>
                 <Icon icon='IcDelete' />
                 <Text size='xxs' weight='bold'>
                     <Localize i18n_default_text='Delete' />

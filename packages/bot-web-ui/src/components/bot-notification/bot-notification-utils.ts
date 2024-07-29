@@ -42,7 +42,7 @@ export const notification_message = {
     [NOTIFICATION_TYPE.BOT_IMPORT]: localize('You’ve successfully imported a bot.'),
     [NOTIFICATION_TYPE.BOT_DELETE]: localize('You’ve successfully deleted a bot.'),
     strategy_conversion: localize('Save this strategy as an XML file from Deriv Bot for faster re-imports.'),
-    google_drive_error: localize('Google drive error token invalid'),
+    google_drive_error: localize('Your session has expired. Please sign in again.'),
 };
 
 export const notification_style = {

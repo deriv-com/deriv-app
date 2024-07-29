@@ -128,6 +128,7 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
                 if (response?.access_token && !response?.error) {
                     this.access_token = response.access_token;
                     this.updateSigninStatus(true);
+                    localStorage.setItem('google_access_token', response.access_token);
                     this.setGoogleDriveTokenExpiry(response?.expires_in);
                 }
             },
@@ -138,20 +139,25 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
         this.is_authorised = is_signed_in;
     }
 
-    async verifyGoogleDriveAccessToken() {
+    verifyGoogleDriveAccessToken = async () => {
         const expiry_time = localStorage?.getItem('google_access_token_expiry');
         if (expiry_time) {
             const current_epoch_time = Math.floor(Date.now() / 1000);
             if (current_epoch_time > Number(expiry_time)) {
-                this.signOut();
-                this.setGoogleDriveTokenValid(false);
-                localStorage.removeItem('google_access_token_expiry');
-                botNotification(notification_message.google_drive_error, undefined, {
-                    closeButton: false,
-                });
+                try {
+                    //request new access token if invalid
+                    await this.client.requestAccessToken({ prompt: '' });
+                } catch (error) {
+                    this.signOut();
+                    this.setGoogleDriveTokenValid(false);
+                    localStorage.removeItem('google_access_token_expiry');
+                    botNotification(notification_message.google_drive_error, undefined, {
+                        closeButton: false,
+                    });
+                }
             }
         }
-    }
+    };
 
     async signIn() {
         if (!this.is_authorised) {

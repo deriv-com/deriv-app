@@ -6,6 +6,7 @@ import { mockCryptoWithdraw } from './mocks/mockCryptoWithdraw';
 import { mockGetAccountTypes } from './mocks/mockGetAccountTypes';
 import { mockProposalOpenContract } from './mocks/mockProposalOpenContract';
 import mockWalletsAuthorize, { DEFAULT_WALLET_ACCOUNTS } from './mocks/mockWalletsAuthorize';
+import { mockAccountList } from './mocks/mockAccountList';
 
 test.describe('Wallets - Crypto withdrawal', () => {
     test.beforeEach(async ({ baseURL, page }) => {
@@ -20,6 +21,7 @@ test.describe('Wallets - Crypto withdrawal', () => {
                 mockCryptoConfig,
                 mockProposalOpenContract,
                 mockBalance,
+                mockAccountList,
             ],
             page,
             state: {
@@ -52,8 +54,8 @@ test.describe('Wallets - Crypto withdrawal', () => {
         // #fiatAmount
         await expect(page.locator('#fiatAmount')).toBeVisible();
 
-        // button of type "submit" with text "Withdraw" and with class .wallets-button
-        const submitButton = await page.locator('button.wallets-button[type="submit"]');
+        // button of type "submit" with text "Withdraw" and with class .deriv-button
+        const submitButton = await page.locator('button.deriv-button[type="submit"]');
         await expect(submitButton).toBeVisible();
         await expect(submitButton).toHaveText('Withdraw');
     });

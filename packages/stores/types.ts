@@ -613,6 +613,8 @@ type TClientStore = {
     unsubscribeFromExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
     unsubscribeFromAllExchangeRates: () => void;
     virtual_account_loginid?: string;
+    is_cr_account: boolean;
+    is_mf_account: boolean;
 };
 
 type TCommonStoreError = {
@@ -817,6 +819,10 @@ type TUiStore = {
     toggleKycInformationSubmittedModal: () => void;
     setAccountSwitcherDisabledMessage: (message?: string) => void;
     is_set_currency_modal_visible: boolean;
+    should_show_deposit_now_or_later_modal: boolean;
+    setShouldShowDepositNowOrLaterModal: (value: boolean) => void;
+    should_show_crypto_transaction_processing_modal: boolean;
+    setShouldShowCryptoTransactionProcessingModal: (value: boolean) => void;
 };
 
 type TPortfolioStore = {
@@ -932,6 +938,7 @@ type TContractTradeStore = {
     }>;
     onUnmount: () => void;
     prev_chart_type: string;
+    prev_contract: TContractStore | Record<string, never>;
     prev_granularity: number | null;
     removeContract: (data: { contract_id: string }) => void;
     savePreviousChartMode: (chart_type: string, granularity: number | null) => void;

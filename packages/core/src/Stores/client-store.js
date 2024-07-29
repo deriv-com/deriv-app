@@ -417,6 +417,8 @@ export default class ClientStore extends BaseStore {
             unsubscribeFromAllExchangeRates: action.bound,
             setExchangeRates: action.bound,
             setMT5TradingPlatformAvailableAccounts: action.bound,
+            is_cr_account: computed,
+            is_mf_account: computed,
         });
 
         reaction(
@@ -1766,6 +1768,7 @@ export default class ClientStore extends BaseStore {
             Analytics.setAttributes({
                 user_id: this.user_id,
                 account_type: broker === 'null' ? 'unlogged' : broker,
+                residence_country: this.residence,
                 app_id: String(getAppId()),
                 device_type: isMobile() ? 'mobile' : 'desktop',
                 language: getLanguage(),
@@ -2889,4 +2892,12 @@ export default class ClientStore extends BaseStore {
         });
         this.setExchangeRates({});
     };
+
+    get is_cr_account() {
+        return this.loginid?.startsWith('CR');
+    }
+
+    get is_mf_account() {
+        return this.loginid?.startsWith('MF');
+    }
 }

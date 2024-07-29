@@ -1,10 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ValidationError } from 'yup';
-import { useTranslations } from '@deriv-com/translations';
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
 import { dictionary } from '@zxcvbn-ts/language-common';
 import { getPasswordErrorMessage, getWarningMessages } from '../../../constants/password';
-import { TLocalize } from '../../../types';
 import {
     calculateScoreCFD,
     calculateScoreMT5,
@@ -87,8 +85,8 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
 
     useEffect(() => {
         setShowErrorMessage(!!passwordError);
-        setErrorMessage(passwordError ? getPasswordErrorMessage(localize).PasswordError : validationErrorMessage);
-    }, [localize, passwordError, validationErrorMessage]);
+        setErrorMessage(passwordError ? getPasswordErrorMessage().PasswordError : validationErrorMessage);
+    }, [passwordError, validationErrorMessage]);
 
     return (
         <div className='wallets-password'>

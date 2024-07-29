@@ -1,4 +1,5 @@
 import React from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { WalletButton, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
@@ -11,6 +12,7 @@ type TradingPlatformStatusModalProps = {
 const TradingPlatformStatus: React.FC<TradingPlatformStatusModalProps> = ({ isServerMaintenance }) => {
     const { hide } = useModal();
     const { isMobile } = useDevice();
+    const { t } = useTranslation();
 
     const title = isServerMaintenance ? 'Server Maintenance' : 'Account Unavailable';
     const content = isServerMaintenance
@@ -20,14 +22,16 @@ const TradingPlatformStatus: React.FC<TradingPlatformStatusModalProps> = ({ isSe
     return (
         <div className='wallets-server-maintenance'>
             <WalletText size='md' weight='bold'>
-                {title}
+                <Trans defaults={title} />
             </WalletText>
             <div className='wallets-server-maintenance__content'>
-                <WalletText size='sm'>{content}</WalletText>
+                <WalletText size='sm'>
+                    <Trans defaults={content} />
+                </WalletText>
             </div>
             <div className='wallets-server-maintenance__footer'>
                 <WalletButton onClick={() => hide()} size={isMobile ? 'md' : 'lg'} variant='outlined'>
-                    OK
+                    {t('OK')}
                 </WalletButton>
             </div>
         </div>

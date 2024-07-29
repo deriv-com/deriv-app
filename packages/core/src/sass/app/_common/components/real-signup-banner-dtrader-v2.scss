@@ -9,6 +9,8 @@
     gap: var(--core-spacing-800);
 
     &__container {
+        background-color: unset;
+        border: none;
         width: 100%;
         height: var(--core-size-4000);
         padding: var(--core-spacing-400);

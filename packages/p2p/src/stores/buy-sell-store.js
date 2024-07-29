@@ -224,6 +224,42 @@ export default class BuySellStore extends BaseStore {
                         text_size: 'xs',
                     },
                 });
+            } else if (code === api_error_codes.ADVERTISER_SCHEDULE_AVAILABILITY) {
+                general_store.showModal({
+                    key: 'ErrorModal',
+                    props: {
+                        error_message: message,
+                        error_modal_button_text: localize('OK'),
+                        error_modal_title: (
+                            <Text weight='bold'>
+                                <Localize i18n_default_text='Ad not available' />
+                            </Text>
+                        ),
+                        has_close_icon: false,
+                        onClose: () => {
+                            general_store.hideModal();
+                        },
+                        text_size: 'xs',
+                    },
+                });
+            } else if (code === api_error_codes.CLIENT_SCHEDULE_AVAILABILITY) {
+                general_store.showModal({
+                    key: 'ErrorModal',
+                    props: {
+                        error_message: message,
+                        error_modal_button_text: localize('OK'),
+                        error_modal_title: (
+                            <Text weight='bold'>
+                                <Localize i18n_default_text='Outside business hours' />
+                            </Text>
+                        ),
+                        has_close_icon: false,
+                        onClose: () => {
+                            general_store.hideModal();
+                        },
+                        text_size: 'xs',
+                    },
+                });
             } else {
                 general_store.showModal({ key: 'BuySellModal', props: {} });
                 this.form_props.setErrorMessage(message);

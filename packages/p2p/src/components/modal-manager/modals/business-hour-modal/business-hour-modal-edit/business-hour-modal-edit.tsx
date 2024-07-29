@@ -94,7 +94,7 @@ const getDropdownOpenStates = (data: TBusinessHourModalEditProps['data']): TDayS
 const BusinessHourModalEdit = React.forwardRef(({ data, saved_details }: TBusinessHourModalEditProps, ref) => {
     const [edited_data, setEditedData] = React.useState<TData[]>(saved_details.length ? saved_details : data);
     const [selected_days, setSelectedDays] = React.useState<string[]>([]);
-    const [dropdownOpenStates, setDropdownOpenStates] = React.useState<TDayState>(getDropdownOpenStates(data));
+    const [dropdown_open_states, setDropdownOpenStates] = React.useState<TDayState>(getDropdownOpenStates(data));
     const today = new Date().getDay();
 
     React.useImperativeHandle(
@@ -150,7 +150,7 @@ const BusinessHourModalEdit = React.forwardRef(({ data, saved_details }: TBusine
             return day;
         });
 
-        if (dropdownOpenStates[value]) toggleDropdown(value);
+        if (dropdown_open_states[value]) toggleDropdown(value);
         setSelectedDays(new_selected_days);
         setEditedData(new_edited_data);
     };
@@ -173,8 +173,8 @@ const BusinessHourModalEdit = React.forwardRef(({ data, saved_details }: TBusine
 
     const toggleDropdown = (value: string) => {
         setDropdownOpenStates({
-            ...dropdownOpenStates,
-            [value]: !dropdownOpenStates[value],
+            ...dropdown_open_states,
+            [value]: !dropdown_open_states[value],
         });
     };
 
@@ -222,7 +222,8 @@ const BusinessHourModalEdit = React.forwardRef(({ data, saved_details }: TBusine
                                     'business-hour-modal-edit__selector-item__dropdown--single': !includes_day,
                                 })}
                             >
-                                {(includes_day && !are_times_null && !is_full_day) || dropdownOpenStates[day.value] ? (
+                                {(includes_day && !are_times_null && !is_full_day) ||
+                                dropdown_open_states[day.value] ? (
                                     <TimeDropdown
                                         today={today}
                                         idx={idx}

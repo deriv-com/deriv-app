@@ -1,5 +1,5 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-import { WS } from 'Services';
+// import { WS } from 'Services';
 import {
     CFD_PLATFORMS,
     ContentFlag,
@@ -128,7 +128,8 @@ export default class TradersHubStore extends BaseStore {
             setWalletsMigrationFailedPopup: action.bound,
             cleanup: action.bound,
             setIsSetupRealAccountOrGoToDemoModalVisible: action.bound,
-            setMT5TradingPlatformAvailableAccounts: action.bound,
+            // setMT5TradingPlatformAvailableAccounts: action.bound,
+            // responseTradingPlatformAvailableAccounts: action.bound,
             dynamic_available_platforms: computed,
         });
 
@@ -473,7 +474,7 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableMt5Accounts() {
-        this.setMT5TradingPlatformAvailableAccounts();
+        // this.setMT5TradingPlatformAvailableAccounts();
         // if (this.is_eu_user && !this.is_demo_low_risk) {
         //     this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
         //         ['EU', 'All'].some(region => region === account.availability)
@@ -864,14 +865,10 @@ export default class TradersHubStore extends BaseStore {
         this.is_setup_real_account_or_go_to_demo_modal_visible = value;
     }
 
-    async setMT5TradingPlatformAvailableAccounts() {
-        await WS.tradingPlatformAvailableAccounts({
-            country_code: this.root_store.client.clients_country,
-            platform: CFD_PLATFORMS.MT5,
-        }).then(this.root_store.client.responseTradingPlatformAvailableAccounts);
-    }
-
     get dynamic_available_platforms() {
+        console.log('==>', {
+            trading_platform_available_accounts: this.root_store.client.trading_platform_available_accounts,
+        });
         const available_accounts = {};
         this.root_store.client.trading_platform_available_accounts.forEach(account => {
             if (account.product === 'synthetic') {

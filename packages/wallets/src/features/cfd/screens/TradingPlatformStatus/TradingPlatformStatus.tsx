@@ -2,13 +2,33 @@ import React from 'react';
 import { WalletButton, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
-import './AccountUnavailable.scss';
+import './TradingPlatformStatus.scss';
 
-const AccountUnavailable: React.FC = () => {
+type TradingPlatformStatusModalProps = {
+    isServerMaintenance: boolean;
+};
+
+const TradingPlatformStatus: React.FC<TradingPlatformStatusModalProps> = ({ isServerMaintenance }) => {
     const { hide } = useModal();
     const { isMobile } = useDevice();
 
-    return (
+    return isServerMaintenance ? (
+        <div className='wallets-server-maintenance'>
+            <WalletText size='md' weight='bold'>
+                Server Maintenance
+            </WalletText>
+            <div>
+                <WalletText size='sm'>
+                    We’re currently performing server maintenance. Service maybe affected.
+                </WalletText>
+            </div>
+            <div className='wallets-server-maintenance__footer'>
+                <WalletButton onClick={() => hide()} size={isMobile ? 'md' : 'lg'} variant='outlined'>
+                    OK
+                </WalletButton>
+            </div>
+        </div>
+    ) : (
         <div className='wallets-account-unavailable'>
             <WalletText size='md' weight='bold'>
                 Account Unavailable
@@ -27,4 +47,4 @@ const AccountUnavailable: React.FC = () => {
     );
 };
 
-export default AccountUnavailable;
+export default TradingPlatformStatus;

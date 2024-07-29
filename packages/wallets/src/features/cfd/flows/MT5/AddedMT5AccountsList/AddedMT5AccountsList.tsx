@@ -16,12 +16,7 @@ import {
     PlatformDetails,
     TRADING_PLATFORM_STATUS,
 } from '../../../constants';
-import {
-    AccountUnavailableModal,
-    MT5TradeModal,
-    ServerMaintenanceModal,
-    VerificationFailedModal,
-} from '../../../modals';
+import { MT5TradeModal, TradingPlatformStatusModal, VerificationFailedModal } from '../../../modals';
 import './AddedMT5AccountsList.scss';
 
 type TProps = {
@@ -47,6 +42,8 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE ||
         platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
 
+    const isServerMaintenance = platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
+
     const getBadgeText = () => {
         if (account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE) return 'Unavailable';
         if (platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE) return 'Server maintenance';
@@ -62,8 +59,8 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 </div>
             }
             onClick={() => {
-                if (platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE) return show(<ServerMaintenanceModal />);
-                if (account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE) return show(<AccountUnavailableModal />);
+                if (hasPlatformStatus)
+                    return show(<TradingPlatformStatusModal isServerMaintenance={isServerMaintenance} />);
                 if (platformStatus === TRADING_PLATFORM_STATUS.ACTIVE) {
                     return jurisdictionStatus.is_failed
                         ? show(<VerificationFailedModal selectedJurisdiction={account.landing_company_short} />, {

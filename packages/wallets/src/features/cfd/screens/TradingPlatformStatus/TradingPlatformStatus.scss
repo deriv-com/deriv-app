@@ -1,3 +1,25 @@
+.wallets-server-maintenance {
+    display: flex;
+    flex-direction: column;
+    padding: 2.4rem;
+    gap: 2.4rem;
+    border-radius: 0.8rem;
+    background-color: var(--system-light-8-primary-background, #fff);
+    width: 44rem;
+
+    @include mobile {
+        width: 32rem;
+        padding: 1.6rem;
+        gap: 1.6rem;
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.8rem;
+    }
+}
+
 .wallets-account-unavailable {
     display: flex;
     flex-direction: column;

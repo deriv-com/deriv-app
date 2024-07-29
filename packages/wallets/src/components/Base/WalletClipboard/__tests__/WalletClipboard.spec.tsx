@@ -2,28 +2,25 @@ import React from 'react';
 import { useCopyToClipboard } from 'usehooks-ts';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import useDevice from '../../../../hooks/useDevice';
 import WalletClipboard from '../WalletClipboard';
 
 jest.mock('usehooks-ts', () => ({
     useCopyToClipboard: jest.fn(),
 }));
 
-jest.mock('../../../../hooks/useDevice', () => ({
-    __esModule: true,
-    default: jest.fn(),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: () => ({ isDesktop: true }),
 }));
 
 describe('WalletClipboard', () => {
     let mockCopy: jest.Mock;
-    const mockUseDevice = useDevice as jest.Mock;
     const mockUseCopyToClipboard = useCopyToClipboard as jest.Mock;
     const renderComponent = () => render(<WalletClipboard textCopy='Sample text to copy' />);
 
     beforeEach(() => {
         mockCopy = jest.fn();
         mockUseCopyToClipboard.mockReturnValue([null, mockCopy]);
-        mockUseDevice.mockReturnValue({ isMobile: false });
     });
 
     afterEach(() => {

@@ -54,12 +54,31 @@ export const getProposalErrorField = (response: PriceProposalResponse) => {
     return el_error && isVisible(el_error) ? error_id : null;
 };
 
+type TValidationParams =
+    | {
+          validation_params?: {
+              max_payout?: string;
+              max_ticks?: number;
+              stake?: {
+                  max: string;
+                  min: string;
+              };
+              take_profit: {
+                  max: string;
+                  min: string;
+              };
+          };
+      }
+    | undefined;
+
+type NewProposal = Proposal & TValidationParams;
+
 export const getProposalInfo = (
     store: TTradeStore,
     response: PriceProposalResponse & TError,
     obj_prev_contract_basis: TObjContractBasis
 ) => {
-    const proposal = response.proposal || ({} as Proposal);
+    const proposal = (response.proposal as NewProposal) || ({} as NewProposal);
     const profit = (proposal.payout || 0) - (proposal.ask_price || 0);
     const returns = (profit * 100) / (proposal.ask_price || 1);
     const stake = proposal.display_value;
@@ -72,7 +91,7 @@ export const getProposalInfo = (
 
     const is_stake = contract_basis?.value === 'stake';
 
-    const price = is_stake ? stake : (proposal[contract_basis?.value as keyof Proposal] as string | number);
+    const price = is_stake ? stake : (proposal[contract_basis?.value as keyof NewProposal] as string | number);
 
     const obj_contract_basis = {
         text: contract_basis?.text || '',
@@ -103,6 +122,7 @@ export const getProposalInfo = (
         returns: `${returns.toFixed(2)}%`,
         stake,
         spot: proposal.spot,
+        validation_params: proposal?.validation_params,
         ...accumulators_details,
     };
 };

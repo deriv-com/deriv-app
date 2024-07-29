@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { ActionSheet, TextField, Text, ToggleSwitch, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { getCurrencyDisplayCode } from '@deriv/shared';
+import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import Carousel from 'AppV2/Components/Carousel';
 import TakeProfitHeader from './take-profit-header';
 
@@ -12,22 +12,62 @@ type TTakeProfitProps = {
     is_minimized?: boolean;
 };
 
-//TODO: validation, max and min allow values
+//TODO: enabling on click
 //TODO: block "-" icon when value is 0
+//TODO: add content for ACC
 
 const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
-    const { currency, has_open_accu_contract, has_take_profit, take_profit, onChangeMultiple, onChange } =
-        useTraderStore();
+    const {
+        currency,
+        has_open_accu_contract,
+        has_take_profit,
+        take_profit,
+        onChangeMultiple,
+        onChange,
+        validation_params,
+    } = useTraderStore();
 
     const [is_open, setIsOpen] = React.useState(false);
     const [is_take_profit_enabled, setIsTakeProfitEnabled] = React.useState(has_take_profit);
     const [updated_take_profit_value, setUpdatedTakeProfitValue] = React.useState<string | number | undefined>(
         take_profit
     );
-    const [error_message, setErrorMessage] = React.useState('');
+    const [error_message, setErrorMessage] = React.useState<React.ReactNode>();
 
     const input_ref = React.useRef<HTMLInputElement>(null);
     const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
+
+    const min_take_profit = validation_params?.take_profit?.min;
+    const max_take_profit = validation_params?.take_profit?.max;
+    const decimal = getDecimalPlaces(currency);
+
+    const getInputMessage = () =>
+        is_take_profit_enabled
+            ? error_message || (
+                  <Localize
+                      i18n_default_text='Acceptable range: {{min_take_profit}} to {{max_take_profit}} {{currency}}'
+                      values={{ currency, min_take_profit, max_take_profit }}
+                  />
+              )
+            : '';
+
+    const isTakeProfitOutOfRange = (value = updated_take_profit_value) => {
+        if (!value) {
+            setErrorMessage(<Localize i18n_default_text='Please enter a take profit amount.' />);
+            return true;
+        }
+        if (Number(value) < Number(min_take_profit) || Number(value) > Number(max_take_profit)) {
+            setErrorMessage(
+                <Localize
+                    i18n_default_text='Acceptable range: {{min_take_profit}} to {{max_take_profit}} {{currency}}'
+                    values={{ currency, min_take_profit, max_take_profit }}
+                />
+            );
+            return true;
+        }
+        setErrorMessage('');
+        return false;
+    };
 
     const onToggleSwitch = (is_enabled: boolean) => {
         setIsTakeProfitEnabled(is_enabled);
@@ -35,8 +75,8 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
         if (is_enabled) {
             clearTimeout(focus_timeout.current);
             focus_timeout.current = setTimeout(() => {
+                input_ref.current?.click();
                 input_ref.current?.focus();
-                input_ref.current?.setSelectionRange(0, 9999);
             }, 150);
         } else {
             input_ref.current?.blur();
@@ -45,8 +85,10 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let { value } = e.target;
-        if (Number(value) <= 0) value = '0';
+        value = value.trim().replace(',', '.');
+        if (value !== '' && Number(value) <= 0) value = '0';
         setUpdatedTakeProfitValue(value);
+        isTakeProfitOutOfRange(value);
     };
 
     const onInputClick = () => {
@@ -54,6 +96,8 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     };
 
     const onSave = () => {
+        if (isTakeProfitOutOfRange()) return;
+
         onChangeMultiple({
             has_take_profit: is_take_profit_enabled,
             ...(is_take_profit_enabled ? { has_cancellation: false } : {}),
@@ -88,7 +132,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                         <TextFieldWithSteppers
                             allowDecimals
                             disabled={!is_take_profit_enabled}
-                            message={error_message}
+                            message={getInputMessage()}
                             name='take_profit'
                             onChange={onInputChange}
                             onClick={onInputClick}
@@ -99,7 +143,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                             unitLeft={currency}
                             variant='fill'
                             value={updated_take_profit_value}
-                            // decimals={0}
+                            decimals={decimal}
                         />
                     </ActionSheet.Content>
                     <ActionSheet.Footer
@@ -108,6 +152,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                             content: <Localize i18n_default_text='Save' />,
                             onAction: onSave,
                         }}
+                        shouldCloseOnPrimaryButtonClick={false}
                     />
                 </React.Fragment>
             ),
@@ -141,7 +186,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                 label={
                     <Localize i18n_default_text='Take profit' key={`take-profit${is_minimized ? '-minimized' : ''}`} />
                 }
-                value={take_profit ? `${take_profit} ${getCurrencyDisplayCode(currency)}` : '-'}
+                value={has_take_profit && take_profit ? `${take_profit} ${getCurrencyDisplayCode(currency)}` : '-'}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 disabled={has_open_accu_contract}
                 onClick={() => setIsOpen(true)}

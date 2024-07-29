@@ -25,9 +25,9 @@ import ErrorDialog from '../../../components/error-dialog';
 import PercentageSelector from '../../../components/percentage-selector';
 import SideNote from '../../../components/side-note';
 import { useCashierStore } from '../../../stores/useCashierStores';
-import { TAccount, TAccountsList, TError, TReactChangeEvent } from '../../../types';
+import { TAccount, TAccountsList, TError, TReactChangeEvent, TradingPlatformStatusResponse } from '../../../types';
 import AccountTransferReceipt from '../account-transfer-receipt/account-transfer-receipt';
-import { useMFAccountStatus, useExchangeRate, useTradingPlatformStatus, TPlatformStatus } from '@deriv/hooks';
+import { useMFAccountStatus, useExchangeRate } from '@deriv/hooks';
 
 import AccountTransferNote from './account-transfer-form-side-note';
 
@@ -39,6 +39,7 @@ type TAccountTransferFormProps = {
     onClickNotes?: () => void;
     onClose: () => void;
     setSideNotes?: (notes: React.ReactNode[]) => void;
+    tradingPlatformStatus?: TradingPlatformStatusResponse['trading_platform_status'];
 };
 
 const AccountOption = ({
@@ -136,7 +137,14 @@ let remaining_transfers: number | undefined;
 let has_reached_maximum_daily_transfers = false;
 
 const AccountTransferForm = observer(
-    ({ error, onClickDeposit, onClickNotes, setSideNotes, onClose }: TAccountTransferFormProps) => {
+    ({
+        error,
+        onClickDeposit,
+        onClickNotes,
+        setSideNotes,
+        onClose,
+        tradingPlatformStatus,
+    }: TAccountTransferFormProps) => {
         const [arrow_icon_direction, setArrowIconDirection] = React.useState<'right' | 'left'>('right');
         const {
             ui,
@@ -147,6 +155,7 @@ const AccountTransferForm = observer(
 
         const { is_mobile } = ui;
         const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
+
         const mf_account_status = useMFAccountStatus();
         const { account_transfer, crypto_fiat_converter, general_store } = useCashierStore();
         const { handleSubscription } = useExchangeRate();
@@ -211,7 +220,6 @@ const AccountTransferForm = observer(
         const is_maintenance_status_present = [selected_from.status, selected_to.status].includes(
             MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE
         );
-
         const platform_name_dxtrade = getPlatformSettings(CFD_PLATFORMS.DXTRADE).name;
 
         const history = useHistory();
@@ -277,8 +285,6 @@ const AccountTransferForm = observer(
             return [];
         };
 
-        const { getPlatformStatus } = useTradingPlatformStatus();
-
         React.useEffect(() => {
             if (selected_from?.currency && selected_to?.currency) {
                 const is_arrow_right = arrow_icon_direction === 'right';
@@ -301,7 +307,6 @@ const AccountTransferForm = observer(
             mt_accounts_to = [];
             ctrader_accounts_to = [];
             dxtrade_accounts_to = [];
-
             accounts_list.forEach((account, idx) => {
                 const is_selected_from = account.value === selected_from.value;
                 let platform;
@@ -312,7 +317,9 @@ const AccountTransferForm = observer(
                 } else {
                     platform = CFD_PLATFORMS.DXTRADE;
                 }
-                const is_server_maintenance = getPlatformStatus(platform as TPlatformStatus['platform']);
+
+                const getPlatformStatus = tradingPlatformStatus?.find(status => status.platform === platform)?.status;
+
                 const is_account_unavailable = account.status === MT5_ACCOUNT_STATUS.UNAVAILABLE;
 
                 const text = (
@@ -324,7 +331,7 @@ const AccountTransferForm = observer(
                         is_account_unavailable={is_account_unavailable}
                         is_verification_failed={is_mf_status_verification_failed}
                         is_verification_needed={is_mf_status_need_verification}
-                        is_server_maintenance={is_server_maintenance}
+                        is_server_maintenance={getPlatformStatus}
                     />
                 );
 

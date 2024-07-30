@@ -16,12 +16,11 @@ import {
     useOnrampVisible,
     useAccountTransferVisible,
     useIsP2PEnabled,
-    usePaymentAgentList,
     usePaymentAgentTransferVisible,
     useP2PNotificationCount,
     useP2PSettings,
 } from '@deriv/hooks';
-import { getSelectedRoute, getStaticUrl, routes, setPerformanceValue, WS, matchRoute } from '@deriv/shared';
+import { getSelectedRoute, getStaticUrl, routes, setPerformanceValue, WS } from '@deriv/shared';
 import ErrorDialog from '../../components/error-dialog';
 import { TRoute } from '../../types';
 import { localize } from '@deriv/translations';
@@ -53,7 +52,7 @@ type TCashierOptions = {
 
 const Cashier = observer(({ history, location, routes: routes_config }: TCashierProps) => {
     const { common, ui, client } = useStore();
-    const { withdraw, general_store } = useCashierStore();
+    const { withdraw, general_store, payment_agent } = useCashierStore();
     const { error } = withdraw;
     const {
         is_cashier_onboarding,
@@ -66,18 +65,13 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     } = general_store;
     const {
         data: is_payment_agent_transfer_visible,
-        isLoading: is_payment_agent_transfer_checking,
+        isLoading: is_payment_agent_checking,
         isSuccess: is_payment_agent_transfer_visible_is_success,
     } = usePaymentAgentTransferVisible();
+    const { is_payment_agent_visible } = payment_agent;
     const { is_from_derivgo } = common;
     const { is_cashier_visible: is_visible, is_mobile, toggleCashier, toggleReadyToDepositModal } = ui;
     const { currency, is_account_setting_loaded, is_logged_in, is_logging_in, is_svg, is_virtual } = client;
-    const {
-        data: paymentAgentList,
-        isLoading: is_payment_agent_list_loading,
-        isSuccess: is_payment_agent_list_success,
-    } = usePaymentAgentList(currency);
-    const is_payment_agent_visible = paymentAgentList && paymentAgentList.length > 0;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
     const p2p_notification_count = useP2PNotificationCount();
@@ -246,25 +240,14 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         toggleReadyToDepositModal,
     ]);
 
-    const is_p2p_loading = is_p2p_enabled_loading && !is_p2p_enabled_success;
-    const is_payment_agent_loading = is_payment_agent_list_loading && !is_payment_agent_list_success;
-    const is_cashier_loading =
+    if (
         ((!is_logged_in || is_mobile) && is_logging_in) ||
         !is_account_setting_loaded ||
-        is_payment_agent_transfer_checking ||
-        is_p2p_loading ||
-        is_payment_agent_loading;
-
-    if (is_cashier_loading) {
+        is_payment_agent_checking ||
+        (is_p2p_enabled_loading && !is_p2p_enabled_success)
+    ) {
         return <Loading is_fullscreen />;
     }
-
-    // Calculation of `initial_tab_index` must be performed after cashier loading
-    // Because at this stage `getMenuOptions` list has all available routes
-    const initial_tab_index = Math.max(
-        getMenuOptions.findIndex(item => matchRoute(item, location.pathname)),
-        0
-    );
 
     // measure performance metrics (load cashier time)
     setPerformanceValue('load_cashier_time');
@@ -277,7 +260,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                     <DesktopWrapper>
                         <VerticalTab
                             current_path={location.pathname}
-                            initial_vertical_tab_index={initial_tab_index}
                             is_floating
                             setVerticalTabIndex={setTabIndex}
                             vertical_tab_index={is_default_route ? 0 : tab_index}

@@ -11,14 +11,17 @@ const FocusedInput = ({ focused_ref, is_visible, setIsFocused }: TFocusedInputPr
     const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
 
     React.useEffect(() => {
-        if (is_visible && input_ref.current && focused_ref?.current) {
+        const current_input_ref = input_ref.current;
+        if (is_visible && current_input_ref && focused_ref?.current) {
             // Align temporary input element approximately where the real input element is
             // so the cursor doesn't jump around
-            input_ref.current.style.top = `${focused_ref.current.offsetTop + 7}px`;
-            input_ref.current.style.left = `${focused_ref.current.offsetLeft}px`;
+            current_input_ref.style.top = `${focused_ref.current.offsetTop + 7}px`;
+            current_input_ref.style.left = `${focused_ref.current.offsetLeft}px`;
+            current_input_ref.style.height = '0px';
+            current_input_ref.style.opacity = '0px';
 
             // Put this temporary input element as a child of the page <body> and focus on it
-            input_ref.current.focus();
+            current_input_ref.focus();
 
             clearTimeout(focus_timeout.current);
             // The keyboard is open, so now adding a delayed focus on the target element and remove temporary input element

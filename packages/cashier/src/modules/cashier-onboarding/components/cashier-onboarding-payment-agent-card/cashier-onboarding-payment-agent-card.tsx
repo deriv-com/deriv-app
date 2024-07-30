@@ -28,7 +28,6 @@ const CashierOnboardingPaymentAgentCard: React.FC = observer(() => {
             description={localize(
                 'Deposit in your local currency via an authorised, independent payment agent in your country.'
             )}
-            depositCategory='payment_agent'
             onClick={onClick}
         />
     );

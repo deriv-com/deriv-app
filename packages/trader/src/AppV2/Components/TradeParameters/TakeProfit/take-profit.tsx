@@ -5,6 +5,7 @@ import { ActionSheet, TextField } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
+import { focusAndOpenKeyboard } from 'AppV2/Utils/trade-params-utils';
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TakeProfitDescription from './take-profit-description';
@@ -28,9 +29,11 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
 
     const [is_open, setIsOpen] = React.useState(false);
     const [is_enabled, setIsEnabled] = React.useState(has_take_profit);
-    const [is_focused, setIsFocused] = React.useState(false);
     const [take_profit_value, setTakeProfitValue] = React.useState<string | number | undefined>(take_profit);
     const [error_message, setErrorMessage] = React.useState<React.ReactNode>();
+
+    const input_ref = React.useRef<HTMLInputElement>(null);
+    const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
 
     const min_take_profit = validation_params?.take_profit?.min;
     const max_take_profit = validation_params?.take_profit?.max;
@@ -71,9 +74,11 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
             if (take_profit_value !== '' && take_profit_value !== undefined) {
                 isTakeProfitOutOfRange();
             }
-            setIsFocused(true);
+
+            clearTimeout(focus_timeout.current);
+            focus_timeout.current = focusAndOpenKeyboard(input_ref.current);
         } else {
-            setIsFocused(false);
+            input_ref.current?.blur();
             setErrorMessage('');
         }
     };
@@ -121,12 +126,11 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                     decimals={decimals}
                     error_message={error_message}
                     is_enabled={is_enabled}
-                    is_focused={is_focused}
                     message={getInputMessage()}
                     onToggleSwitch={onToggleSwitch}
                     onInputChange={onInputChange}
                     onSave={onSave}
-                    setIsFocused={setIsFocused}
+                    ref={input_ref}
                     take_profit_value={take_profit_value}
                 />
             ),
@@ -140,6 +144,8 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     React.useEffect(() => {
         setIsEnabled(has_take_profit);
         setTakeProfitValue(take_profit);
+
+        return () => clearTimeout(focus_timeout.current);
     }, [has_take_profit, take_profit]);
 
     return (

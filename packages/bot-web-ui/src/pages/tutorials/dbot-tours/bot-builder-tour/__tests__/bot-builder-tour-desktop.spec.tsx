@@ -1,7 +1,6 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';

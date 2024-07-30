@@ -46,4 +46,30 @@ describe('BotBuilder Tour Mobile', () => {
 
         expect(screen.getByTestId('botbuilder-tour-mobile')).toBeInTheDocument();
     });
+
+    it('should render BotBuilderTourMobile steps with Next and Previous buttons', () => {
+        render(<BotBuilderTourMobile />, {
+            wrapper,
+        });
+
+        const next_button = screen.getByRole('button', { name: 'Next' });
+        userEvent.click(next_button);
+        expect(screen.getByRole('button', { name: 'Previous' })).toBeInTheDocument();
+
+        const previous_button = screen.getByRole('button', { name: 'Previous' });
+        userEvent.click(previous_button);
+        expect(screen.getByRole('button', { name: 'Next' })).toBeInTheDocument();
+    });
+
+    it('should render BotBuilderTourMobile steps with Next and Previous buttons', () => {
+        render(<BotBuilderTourMobile />, {
+            wrapper,
+        });
+
+        const next_button = screen.getByRole('button', { name: 'Next' });
+        userEvent.click(next_button);
+        userEvent.click(next_button);
+
+        expect(screen.getByRole('button', { name: 'Finish' })).toBeInTheDocument();
+    });
 });

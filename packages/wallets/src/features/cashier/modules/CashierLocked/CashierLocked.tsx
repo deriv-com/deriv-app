@@ -1,6 +1,6 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
 import { useAccountStatus, useActiveWalletAccount, useAuthentication, useCashierValidation } from '@deriv/api-v2';
+import { Localize } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import { WalletsActionScreen } from '../../../../components';
 import getCashierLockedDesc, { getSystemMaintenanceContent } from './CashierLockedContent';
@@ -86,7 +86,12 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
             <div className='wallets-cashier-locked'>
                 <WalletsActionScreen
                     description={cashierLockedDescription}
-                    title={<Trans defaults='Your {{currency}} Wallet is temporarily locked.' values={{ currency }} />}
+                    title={
+                        <Localize
+                            i18n_default_text='Your {{currency}} Wallet is temporarily locked.'
+                            values={{ currency }}
+                        />
+                    }
                 />
             </div>
         );

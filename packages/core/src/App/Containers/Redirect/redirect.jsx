@@ -70,12 +70,14 @@ const Redirect = observer(() => {
                 }
                 redirectToLogin(is_logged_in, getLanguage(), true);
                 redirected_to_route = true;
-            } else if (!verification_code[action_param]) {
-                const request_email_code = sessionStorage.getItem('request_email_code');
-                setVerificationCode(request_email_code, action_param);
-                sessionStorage.removeItem('request_email_code');
+            } else {
+                if (!verification_code[action_param]) {
+                    const request_email_code = sessionStorage.getItem('request_email_code');
+                    setVerificationCode(request_email_code, action_param);
+                    sessionStorage.removeItem('request_email_code');
+                }
+                toggleResetEmailModal(true);
             }
-            toggleResetEmailModal(true);
             break;
         }
         case 'social_email_change': {

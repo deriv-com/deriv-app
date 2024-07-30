@@ -1,4 +1,5 @@
 import { useStore } from '@deriv/stores';
+import { useServerTime } from '@deriv/api';
 import dayjs from 'dayjs';
 import React from 'react';
 
@@ -25,7 +26,7 @@ const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = f
     const { phone_number_verification } = account_settings;
     const [timer, setTimer] = React.useState<number | undefined>();
     const [next_otp_request, setNextOtpRequest] = React.useState('');
-    const current_time = dayjs();
+    const { data: serverTime } = useServerTime();
 
     const setTitle = React.useCallback(
         (timer: number) => {
@@ -50,16 +51,27 @@ const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = f
 
     React.useEffect(() => {
         if (
+            serverTime?.time &&
             !should_show_phone_number_otp &&
             !is_from_request_phone_number_otp &&
             phone_number_verification?.next_email_attempt
         ) {
-            otpRequestCountdown(phone_number_verification.next_email_attempt, setTitle, setTimer, current_time);
-        } else if (phone_number_verification?.next_attempt) {
-            otpRequestCountdown(phone_number_verification.next_attempt, setTitle, setTimer, current_time);
+            otpRequestCountdown(
+                phone_number_verification.next_email_attempt,
+                setTitle,
+                setTimer,
+                dayjs(serverTime?.time * 1000)
+            );
+        } else if (serverTime?.time && phone_number_verification?.next_attempt) {
+            otpRequestCountdown(
+                phone_number_verification.next_attempt,
+                setTitle,
+                setTimer,
+                dayjs(serverTime?.time * 1000)
+            );
         }
     }, [
-        current_time,
+        serverTime,
         phone_number_verification?.next_email_attempt,
         phone_number_verification?.next_attempt,
         is_from_request_phone_number_otp,

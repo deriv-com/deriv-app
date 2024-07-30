@@ -20,7 +20,6 @@ export * from './WalletCurrencyCard';
 export * from './WalletCurrencyIcon';
 export * from './WalletError';
 export * from './WalletGradientBackground';
-export * from './WalletLanguageSidePanel';
 export * from './WalletListCard';
 export * from './WalletListCardActions';
 export * from './WalletListCardBadge';

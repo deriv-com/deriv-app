@@ -60,6 +60,6 @@ jobs:
         VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
         VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         VERCEL_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
-        ENVIRONMENT: Production
+        ENVIRONMENT: Preview
         VERCEL_SCOPE: deriv
         ALIAS_DOMAIN_URL: 'staging-app-dr.binary.sx'

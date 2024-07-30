@@ -434,9 +434,6 @@ export default class ClientStore extends BaseStore {
                 if (!this.is_logged_in) {
                     this.root_store.traders_hub.cleanup();
                 }
-                if (!this.is_logged_in && this.clients_country) {
-                    this.setMT5TradingPlatformAvailableAccounts();
-                }
             }
         );
 
@@ -496,16 +493,10 @@ export default class ClientStore extends BaseStore {
             async () => {
                 if (!this.is_logged_in && this.clients_country) {
                     await this.setMT5TradingPlatformAvailableAccounts();
+                    await this.setCTraderTradingPlatformAvailableAccounts();
                 }
             }
         );
-    }
-
-    async setMT5TradingPlatformAvailableAccounts() {
-        await WS.tradingPlatformAvailableAccounts({
-            country_code: this.clients_country,
-            platform: CFD_PLATFORMS.MT5,
-        }).then(this.responseTradingPlatformAvailableAccounts);
     }
 
     get balance() {
@@ -2889,4 +2880,18 @@ export default class ClientStore extends BaseStore {
         });
         this.setExchangeRates({});
     };
+
+    async setMT5TradingPlatformAvailableAccounts() {
+        await WS.tradingPlatformAvailableAccounts({
+            country_code: this.clients_country,
+            platform: CFD_PLATFORMS.MT5,
+        }).then(this.responseTradingPlatformAvailableAccounts);
+    }
+
+    async setCTraderTradingPlatformAvailableAccounts() {
+        await WS.tradingPlatformAvailableAccounts({
+            country_code: this.clients_country,
+            platform: CFD_PLATFORMS.CTRADER,
+        }).then(this.responseCTraderTradingPlatformAvailableAccounts);
+    }
 }

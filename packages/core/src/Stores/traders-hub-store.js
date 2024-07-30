@@ -128,8 +128,6 @@ export default class TradersHubStore extends BaseStore {
             setWalletsMigrationFailedPopup: action.bound,
             cleanup: action.bound,
             setIsSetupRealAccountOrGoToDemoModalVisible: action.bound,
-            // setMT5TradingPlatformAvailableAccounts: action.bound,
-            // responseTradingPlatformAvailableAccounts: action.bound,
             dynamic_available_platforms: computed,
         });
 
@@ -474,9 +472,7 @@ export default class TradersHubStore extends BaseStore {
         return is_restricted;
     }
 
-    async getAvailableMt5Accounts() {
-        // await this.setMT5TradingPlatformAvailableAccounts();
-
+    getAvailableMt5Accounts() {
         if (Object.keys(this.dynamic_available_platforms).length > 0) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account => {
                 return account.platform === CFD_PLATFORMS.MT5 && this.dynamic_available_platforms[account.product];
@@ -861,12 +857,8 @@ export default class TradersHubStore extends BaseStore {
     }
 
     get dynamic_available_platforms() {
-        // eslint-disable-next-line no-console
-        console.log('==>', this.root_store.client.trading_platform_available_accounts);
-        const available_products = this.root_store.client.trading_platform_available_accounts;
-
         const available_accounts = {};
-        available_products.forEach(account => {
+        this.root_store.client.trading_platform_available_accounts.forEach(account => {
             if (account.product === 'synthetic') {
                 // `trading_platform_available_accounts` does not have an entry for 'standard' accounts,
                 // so adding 'standard' sub-account type to the available accounts for synthetic products.

@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useCtraderServiceToken } from '@deriv/api-v2';
 import { Divider } from '@deriv-com/ui';
 import { WalletButton, WalletText } from '../../../../../components/Base';
@@ -17,7 +16,6 @@ type TMT5TradeLinkProps = {
 
 const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, platform }) => {
     const { mutateAsync: requestToken } = useCtraderServiceToken();
-    const { t } = useTranslation();
     const { icon, link, text, title } = AppToContentMapper[app];
 
     const getCtraderToken = () => {
@@ -65,11 +63,9 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
                     )}
                     {platform !== CFD_PLATFORMS.MT5 && app !== CFD_PLATFORMS.CTRADER && (
                         <WalletText size='sm'>
-                            {t('Run {{platform}} on your browser', {
-                                platform:
-                                    PlatformDetails[(platform as keyof typeof PlatformDetails) ?? CFD_PLATFORMS.DXTRADE]
-                                        .title,
-                            })}
+                            Run{' '}
+                            {PlatformDetails[(platform as keyof typeof PlatformDetails) ?? CFD_PLATFORMS.DXTRADE].title}{' '}
+                            on your browser
                         </WalletText>
                     )}
                 </div>
@@ -86,7 +82,7 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
                             ]
                         }
                         <WalletText color='white' size='xs' weight='bold'>
-                            {t('Web terminal')}
+                            Web terminal
                         </WalletText>
                     </button>
                 )}

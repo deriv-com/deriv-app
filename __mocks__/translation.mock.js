@@ -35,15 +35,17 @@ const Localize = ({ i18n_default_text, components = [], values = {} }) => {
     );
 };
 
+const mockFn = jest.fn((text, args) => {
+    return text.replace(/{{(.*?)}}/g, (_, match) => args[match.trim()]);
+});
+
 // Mock for useTranslations hook
 const useTranslations = () => ({
-    localize: jest.fn((text, args) => {
-        return text.replace(/{{(.*?)}}/g, (_, match) => args[match.trim()]);
-    }),
+    localize: mockFn,
     currentLang: 'EN',
 });
 
-const localize = jest.fn(text => text);
+const localize = mockFn;
 
 const getAllowedLanguages = jest.fn(() => ({ EN: 'English', VI: 'Tiếng Việt' }));
 

@@ -476,13 +476,10 @@ export default class TradersHubStore extends BaseStore {
     }
 
     async setMT5TradingPlatformAvailableAccounts() {
-        const response = await WS.tradingPlatformAvailableAccounts({
+        await WS.tradingPlatformAvailableAccounts({
             country_code: this.root_store.client.clients_country,
             platform: CFD_PLATFORMS.MT5,
-        });
-        if (!response.error) {
-            this.mt5_available_products = response.trading_platform_available_accounts;
-        }
+        }).then(this.root_store.client.responseTradingPlatformAvailableAccounts);
     }
 
     async getAvailableMt5Accounts() {
@@ -872,9 +869,8 @@ export default class TradersHubStore extends BaseStore {
     }
 
     get dynamic_available_platforms() {
-        const available_products = this.root_store.client.is_logged_in
-            ? this.root_store.client.trading_platform_available_accounts
-            : this.mt5_available_products;
+        console.log('==>', this.root_store.client.trading_platform_available_accounts);
+        const available_products = this.root_store.client.trading_platform_available_accounts;
 
         const available_accounts = {};
         available_products.forEach(account => {

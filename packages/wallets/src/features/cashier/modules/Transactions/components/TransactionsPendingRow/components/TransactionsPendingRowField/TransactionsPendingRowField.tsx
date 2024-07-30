@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import classNames from 'classnames';
-import { Tooltip } from '@deriv-com/ui';
-import { WalletText } from '../../../../../../../../components/Base';
+import { useHover } from 'usehooks-ts';
+import { Tooltip, WalletText } from '../../../../../../../../components/Base';
 import { useModal } from '../../../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../../../hooks/useDevice';
 import { WalletActionModal } from '../../../../../../components/WalletActionModal';
@@ -12,7 +12,7 @@ type TProps = {
     hint?: {
         link?: string;
         text: string;
-        tooltipAlignment?: React.ComponentProps<typeof Tooltip>['tooltipPosition'];
+        tooltipAlignment?: React.ComponentProps<typeof Tooltip>['alignment'];
     };
     name: string;
     value: string;
@@ -22,6 +22,8 @@ type TProps = {
 const TransactionsPendingRowField: React.FC<TProps> = ({ className, hint, name, value, valueTextProps }) => {
     const { isMobile } = useDevice();
     const { show } = useModal();
+    const fieldRef = useRef(null);
+    const isFieldHovered = useHover(fieldRef);
 
     const onValueClick = useCallback(() => {
         show(
@@ -50,21 +52,21 @@ const TransactionsPendingRowField: React.FC<TProps> = ({ className, hint, name, 
                 {name}
             </WalletText>
             {hint ? (
-                <Tooltip
-                    as='div'
-                    hideTooltip={isMobile}
-                    tooltipContent={hint.text}
-                    tooltipPosition={hint.tooltipAlignment}
-                >
+                <Tooltip alignment={hint.tooltipAlignment} isVisible={!isMobile && isFieldHovered} message={hint.text}>
                     <WalletText {...{ color: 'red', size: 'xs', weight: 'bold', ...valueTextProps }}>
                         {isMobile ? (
-                            <button className='wallets-transactions-pending-row-field__button' onClick={onValueClick}>
+                            <button
+                                className='wallets-transactions-pending-row-field__button'
+                                onClick={onValueClick}
+                                ref={fieldRef}
+                            >
                                 {value}
                             </button>
                         ) : (
                             <a
                                 className='wallets-transactions-pending-row-field__link'
                                 href={hint.link}
+                                ref={fieldRef}
                                 rel='noopener noreferrer'
                                 target='_blank'
                             >

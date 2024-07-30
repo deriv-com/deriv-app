@@ -22,7 +22,9 @@ const DepositCryptoAddress: React.FC<TProps> = ({ depositCryptoAddress }) => {
                 </div>
                 <div className='wallets-deposit-crypto-address__hash-clipboard'>
                     <WalletClipboard
+                        infoMessage={isMobile ? undefined : 'copy'}
                         popoverAlignment={isMobile ? 'left' : 'bottom'}
+                        successMessage='copied'
                         textCopy={depositCryptoAddress || ''}
                     />
                 </div>

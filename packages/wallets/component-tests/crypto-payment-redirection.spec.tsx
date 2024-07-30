@@ -54,8 +54,8 @@ test.describe('Wallets - Crypto withdrawal', () => {
         // #fiatAmount
         await expect(page.locator('#fiatAmount')).toBeVisible();
 
-        // button of type "submit" with text "Withdraw" and with class .deriv-button
-        const submitButton = await page.locator('button.deriv-button[type="submit"]');
+        // button of type "submit" with text "Withdraw" and with class .wallets-button
+        const submitButton = await page.locator('button.wallets-button[type="submit"]');
         await expect(submitButton).toBeVisible();
         await expect(submitButton).toHaveText('Withdraw');
     });

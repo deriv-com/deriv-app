@@ -1,10 +1,11 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
+import { useHover } from 'usehooks-ts';
 import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api-v2';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
-import { Button, Divider, Tooltip } from '@deriv-com/ui';
-import { WalletText } from '../../../../../../components/Base';
+import { Divider } from '@deriv-com/ui';
+import { Tooltip, WalletButton, WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
 import useDevice from '../../../../../../hooks/useDevice';
@@ -17,11 +18,14 @@ type TProps = {
     transaction: THooks.CryptoTransactions;
 };
 
-const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
+const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
     const { data } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const displayCode = useMemo(() => data?.currency_config?.display_code || 'USD', [data]);
     const modal = useModal();
+
+    const statusRef = useRef(null);
+    const isStatusHovered = useHover(statusRef);
 
     const { mutate } = useCancelCryptoTransaction();
 
@@ -164,27 +168,30 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                     )}
                 </div>
                 <div className='wallets-transactions-pending-row__transaction-status'>
-                    <Tooltip
-                        as='button'
+                    <button
                         className='wallets-transactions-pending-row__transaction-status-button'
                         data-testid='dt_transaction_status_button'
-                        hideTooltip={isMobile}
                         onClick={onMobileStatusClick}
-                        tooltipContent={transaction.description}
-                        tooltipPosition='left'
+                        ref={statusRef}
                     >
-                        <div
-                            className={classNames(
-                                'wallets-transactions-pending-row__transaction-status-dot',
-                                `wallets-transactions-pending-row__transaction-status-dot--${transaction.status_code
-                                    .toLowerCase()
-                                    .replace('_', '-')}`
-                            )}
-                        />
+                        <Tooltip
+                            alignment='left'
+                            isVisible={!isMobile && isStatusHovered}
+                            message={transaction.description}
+                        >
+                            <div
+                                className={classNames(
+                                    'wallets-transactions-pending-row__transaction-status-dot',
+                                    `wallets-transactions-pending-row__transaction-status-dot--${transaction.status_code
+                                        .toLowerCase()
+                                        .replace('_', '-')}`
+                                )}
+                            />
+                        </Tooltip>
                         <WalletText color='general' size='sm'>
                             {transaction.status_name}
                         </WalletText>
-                    </Tooltip>
+                    </button>
                     {!isMobile && !!transaction.is_valid_to_cancel && (
                         <button
                             className='wallets-transactions-pending-row__transaction-cancel-button'
@@ -196,20 +203,13 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                 </div>
 
                 {isMobile && !!transaction.is_valid_to_cancel && (
-                    <Button
-                        borderWidth='sm'
-                        color='black'
-                        isFullWidth
-                        onClick={onCancelButtonClick}
-                        size='sm'
-                        variant='outlined'
-                    >
+                    <WalletButton isFullWidth onClick={onCancelButtonClick} size='sm' variant='outlined'>
                         Cancel transaction
-                    </Button>
+                    </WalletButton>
                 )}
             </div>
         </React.Fragment>
     );
 };
 
-export default TransactionsPendingRow;
+export default TransactionsCryptoRow;

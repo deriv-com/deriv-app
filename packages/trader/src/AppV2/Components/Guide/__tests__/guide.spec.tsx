@@ -33,24 +33,18 @@ describe('Guide', () => {
         jest.clearAllMocks();
     });
 
-    it('should render component with label and if user clicks on it, should show available contract information', () => {
+    it('should render component', () => {
         renderGuide();
 
         expect(screen.getByText('Guide')).toBeInTheDocument();
-
-        userEvent.click(screen.getByRole('button'));
-
         expect(screen.getByText('Trade types')).toBeInTheDocument();
         AVAILABLE_CONTRACTS.forEach(({ id }) => expect(screen.getByText(id)).toBeInTheDocument());
     });
 
-    it('should render component without label if has_label === false and if user clicks on it, should show available contract information', () => {
+    it('should render component without label if has_label === false', () => {
         renderGuide({ has_label: false });
 
         expect(screen.queryByText('Guide')).not.toBeInTheDocument();
-
-        userEvent.click(screen.getByRole('button'));
-
         expect(screen.getByText('Trade types')).toBeInTheDocument();
         AVAILABLE_CONTRACTS.forEach(({ id }) => expect(screen.getByText(id)).toBeInTheDocument());
     });
@@ -58,11 +52,13 @@ describe('Guide', () => {
     it('should set correct contract type if user clicked on chip', () => {
         const mockSelectedContractType = jest.fn();
         jest.spyOn(React, 'useState')
-            .mockImplementationOnce(() => [true, jest.fn()])
+            .mockImplementationOnce(() => [false, jest.fn()])
             .mockImplementationOnce(() => [CONTRACT_LIST.RISE_FALL, mockSelectedContractType])
             .mockImplementationOnce(() => ['', jest.fn()]);
 
         renderGuide();
+
+        userEvent.click(screen.getByText('Guide'));
 
         userEvent.click(screen.getByText(CONTRACT_LIST.ACCUMULATORS));
         expect(mockSelectedContractType).toHaveBeenCalledWith(CONTRACT_LIST.ACCUMULATORS);

@@ -20,13 +20,13 @@ export type TModifiedTransaction = Omit<TTransaction, 'status_code' | 'transacti
     );
 
 /** A custom hook that returns the list of pending crypto transactions for the current user. */
-const useCryptoTransactions = (allowToMakeSubscription = true) => {
+const useCryptoTransactions = () => {
     const { subscribe, data, ...rest } = useSubscription('cashier_payments');
     const [transactions, setTransactions] = useState<TModifiedTransaction[]>();
 
     useEffect(() => {
-        allowToMakeSubscription && subscribe();
-    }, [subscribe, allowToMakeSubscription]);
+        subscribe();
+    }, [subscribe]);
 
     useEffect(() => {
         setTransactions(old_transactions => {

@@ -1,0 +1,77 @@
+.wallets-tooltip {
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+
+    &__content {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        z-index: 1;
+
+        &--right {
+            top: 50%;
+            left: 100%;
+            transform: translateY(-50%);
+        }
+
+        &--top {
+            flex-direction: column-reverse;
+            transform: translate(-50%, -100%);
+            top: 0;
+            left: 50%;
+        }
+
+        &--bottom {
+            flex-direction: column;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        &--left {
+            flex-direction: row-reverse;
+            top: 50%;
+            transform: translate(-100%, -50%);
+        }
+    }
+
+    &__arrow {
+        background: var(--system-light-5-active-background, #d6dadb);
+
+        &--right {
+            width: 0.4rem;
+            height: 0.8rem;
+            clip-path: polygon(0 50%, 100% 100%, 100% 0);
+        }
+
+        &--top {
+            width: 0.8rem;
+            height: 0.4rem;
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+        }
+
+        &--bottom {
+            width: 0.8rem;
+            height: 0.4rem;
+            clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+        }
+
+        &--left {
+            width: 0.4rem;
+            height: 0.8rem;
+            clip-path: polygon(100% 50%, 0 0, 0 100%);
+        }
+    }
+
+    &__message {
+        width: max-content;
+        max-width: 22rem;
+        padding: 0.8rem;
+        border-radius: 4px;
+        font-size: 1.2rem;
+        line-height: 1.8rem;
+        white-space: pre-wrap;
+
+        background: var(--system-light-5-active-background, #d6dadb);
+    }
+}

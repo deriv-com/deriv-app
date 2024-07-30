@@ -28,7 +28,6 @@ describe('<ActiveSymbolsList />', () => {
         modules: {
             trade: {
                 symbol: '',
-                setTickData: jest.fn(),
             },
         },
     };

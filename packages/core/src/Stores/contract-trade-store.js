@@ -70,7 +70,6 @@ export default class ContractTradeStore extends BaseStore {
             last_contract: computed,
             clearError: action.bound,
             getContractById: action.bound,
-            prev_contract: computed,
             savePreviousChartMode: action.bound,
             setNewAccumulatorBarriersData: action.bound,
         });
@@ -427,12 +426,6 @@ export default class ContractTradeStore extends BaseStore {
         const applicable_contracts = this.applicable_contracts();
         const length = this.contracts[0]?.contract_info.current_spot_time ? applicable_contracts.length : -1;
         return length > 0 ? applicable_contracts[length - 1] : {};
-    }
-
-    get prev_contract() {
-        const applicable_contracts = this.applicable_contracts();
-        const length = this.contracts[0]?.contract_info.current_spot_time ? applicable_contracts.length : -1;
-        return applicable_contracts[length - 2];
     }
 
     clearError() {

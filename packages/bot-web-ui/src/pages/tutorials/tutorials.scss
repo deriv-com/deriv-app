@@ -31,7 +31,7 @@
             &--end {
                 position: absolute;
                 top: 0;
-                padding: 0.8rem;
+                inset-inline-end: 1rem;
                 z-index: 90;
             }
         }
@@ -125,7 +125,8 @@
 
         &__button-group {
             @include flex-center;
-            padding: 1.6rem 3.2rem;
+            width: 20rem;
+            height: 7rem;
             border-radius: 1rem;
             cursor: pointer;
             background-color: rgba(0, 0, 0, 0.5);
@@ -133,7 +134,8 @@
                 filter: invert(1);
             }
             @include mobile-or-tablet-screen {
-                padding: 0.8rem 1.6rem;
+                height: 6rem;
+                width: 8rem;
             }
         }
         &--disabled {

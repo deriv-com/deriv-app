@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Divider } from '@deriv-com/ui';
-import { WalletText } from '../../../../../../components/Base';
+import { Divider } from '@deriv-com/ui';
+import { WalletButton, WalletText } from '../../../../../../components/Base';
 import { THooks } from '../../../../../../types';
 import { CryptoTransaction } from '../CryptoTransaction';
 
@@ -41,9 +41,7 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({ transac
                         </React.Fragment>
                     ))}
                     {filteredTransactions.length > 3 && (
-                        <Button
-                            borderWidth='sm'
-                            color='black'
+                        <WalletButton
                             isFullWidth
                             onClick={() => {
                                 // should navigate to transactions page with "Pending transactions" toggle on and filter set to `transactionType`
@@ -56,7 +54,7 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({ transac
                             variant='outlined'
                         >
                             View more
-                        </Button>
+                        </WalletButton>
                     )}
                 </React.Fragment>
             ) : (

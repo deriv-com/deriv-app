@@ -191,7 +191,6 @@ export default class TradeStore extends BaseStore {
     is_market_closed = false;
     previous_symbol = '';
     active_symbols: ActiveSymbols = [];
-    has_symbols_for_v2 = false;
 
     form_components: string[] = [];
 
@@ -247,10 +246,8 @@ export default class TradeStore extends BaseStore {
     market_close_times: string[] = [];
 
     // Last Digit
-    digit_stats: number[] = [];
     last_digit = 5;
     is_mobile_digit_view_selected = false;
-    tick_data: TickSpotData | null = null;
 
     // Purchase
     proposal_info: TProposalInfo = {};
@@ -381,7 +378,6 @@ export default class TradeStore extends BaseStore {
             contract_type: observable,
             contract_types_list: observable,
             currency: observable,
-            digit_stats: observable,
             duration_min_max: observable,
             duration_unit: observable,
             duration_units_list: observable,
@@ -397,7 +393,6 @@ export default class TradeStore extends BaseStore {
             has_equals_only: observable,
             has_open_accu_contract: computed,
             has_stop_loss: observable,
-            has_symbols_for_v2: observable,
             has_take_profit: observable,
             hovered_barrier: observable,
             hovered_contract_type: observable,
@@ -430,8 +425,6 @@ export default class TradeStore extends BaseStore {
             setHoveredBarrier: action.bound,
             sessions: observable,
             setDefaultGrowthRate: action.bound,
-            setDigitStats: action.bound,
-            setTickData: action.bound,
             short_barriers: observable,
             should_show_active_symbols_loading: observable,
             should_skip_prepost_lifecycle: observable,
@@ -444,7 +437,6 @@ export default class TradeStore extends BaseStore {
             stop_out: observable,
             symbol: observable,
             take_profit: observable,
-            tick_data: observable,
             tick_size_barrier_percentage: observable,
             ticks_history_stats: observable,
             trade_types: observable,
@@ -492,7 +484,6 @@ export default class TradeStore extends BaseStore {
             resetPreviousSymbol: action.bound,
             sendTradeParamsAnalytics: action.bound,
             setActiveSymbols: action.bound,
-            setActiveSymbolsV2: action.bound,
             setBarrierChoices: action.bound,
             setChartModeFromURL: action.bound,
             setChartStatus: action.bound,
@@ -1260,14 +1251,6 @@ export default class TradeStore extends BaseStore {
         return isDigitTradeType(this.contract_type);
     }
 
-    setDigitStats(digit_stats: number[]) {
-        this.digit_stats = digit_stats;
-    }
-
-    setTickData(tick: TickSpotData | null) {
-        this.tick_data = tick;
-    }
-
     setMobileDigitView(bool: boolean) {
         this.is_mobile_digit_view_selected = bool;
     }
@@ -1837,11 +1820,6 @@ export default class TradeStore extends BaseStore {
 
     setStakeBoundary(type: string, min_stake?: number, max_stake?: number) {
         if (min_stake && max_stake) this.stake_boundary[type] = { min_stake, max_stake };
-    }
-
-    setActiveSymbolsV2(active_symbols: ActiveSymbols) {
-        this.active_symbols = active_symbols;
-        this.has_symbols_for_v2 = !!active_symbols.length;
     }
 
     setBarrierChoices(barrier_choices: string[]) {

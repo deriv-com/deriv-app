@@ -1,4 +1,4 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@deriv/translations';
 
 export const getIncomeSourceList = () => [
     {

@@ -88,7 +88,6 @@ const JurisdictionModalFootNote = (props: TJurisdictionModalFootNoteProps) => {
                         size={isMobile() ? 'xxs' : 'xs'}
                         weight='bold'
                         line_height='xs'
-                        className={`${props.card_classname}__footnote--text`}
                     >
                         <FooterNote {...props} />
                     </Text>

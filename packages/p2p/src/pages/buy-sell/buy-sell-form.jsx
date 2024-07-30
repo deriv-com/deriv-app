@@ -95,7 +95,6 @@ const BuySellForm = props => {
 
             if (!my_profile_store.advertiser_has_payment_methods) {
                 my_profile_store.getPaymentMethodsList();
-                my_profile_store.getAdvertiserPaymentMethods();
             }
 
             advertiser_page_store.setFormErrorMessage('');

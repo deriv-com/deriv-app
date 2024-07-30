@@ -22,6 +22,15 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn().mockReturnValue({ isDesktop: true }),
 }));
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useP2PSettings: jest.fn().mockReturnValue({
+        p2p_settings: {
+            business_hours_minutes_interval: 15,
+        },
+    }),
+}));
+
 const mockUseDevice = useDevice as jest.Mock;
 
 const el_modal = document.createElement('div');

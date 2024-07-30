@@ -5,6 +5,7 @@ import { Localize, localize } from 'Components/i18next';
 import { getDropdownList, getHoursList } from 'Utils/business-hours';
 import SeparatorContainerLine from 'Components/separator-container-line';
 import './business-hour-modal-edit.scss';
+import { useP2PSettings } from '@deriv/hooks';
 
 type TData = {
     day: string;
@@ -22,6 +23,7 @@ type TBusinessHourModalEditProps = {
 
 type TEvent = { target: { name: string; value: string } };
 type TTimeDropdownProps = {
+    business_hours_minutes_interval: number;
     idx: number;
     today: number;
     onSelectTime: (e: TEvent, value: string, start_time?: boolean) => void;
@@ -32,8 +34,16 @@ type TTimeDropdownProps = {
 
 const FULL_DAY = '12:00 am';
 
-const TimeDropdown = ({ idx, today, onSelectTime, start_time, end_time, day }: TTimeDropdownProps) => {
-    const time_list = getHoursList();
+const TimeDropdown = ({
+    business_hours_minutes_interval,
+    idx,
+    today,
+    onSelectTime,
+    start_time,
+    end_time,
+    day,
+}: TTimeDropdownProps) => {
+    const time_list = getHoursList(business_hours_minutes_interval);
     return (
         <div
             className={classNames('business-hour-modal-edit__selector-item__dropdown-group', {
@@ -92,6 +102,8 @@ const getDropdownOpenStates = (data: TBusinessHourModalEditProps['data']): TDayS
 };
 
 const BusinessHourModalEdit = React.forwardRef(({ data, saved_details }: TBusinessHourModalEditProps, ref) => {
+    const { p2p_settings } = useP2PSettings();
+    const { business_hours_minutes_interval } = p2p_settings ?? {};
     const [edited_data, setEditedData] = React.useState<TData[]>(saved_details.length ? saved_details : data);
     const [selected_days, setSelectedDays] = React.useState<string[]>([]);
     const [dropdown_open_states, setDropdownOpenStates] = React.useState<TDayState>(getDropdownOpenStates(data));
@@ -225,6 +237,7 @@ const BusinessHourModalEdit = React.forwardRef(({ data, saved_details }: TBusine
                                 {(includes_day && !are_times_null && !is_full_day) ||
                                 dropdown_open_states[day.value] ? (
                                     <TimeDropdown
+                                        business_hours_minutes_interval={business_hours_minutes_interval}
                                         today={today}
                                         idx={idx}
                                         start_time={day.start_time ?? ''}

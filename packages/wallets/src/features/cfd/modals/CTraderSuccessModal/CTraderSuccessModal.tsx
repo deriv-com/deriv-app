@@ -61,7 +61,6 @@ const CTraderSuccessModal = ({ createdAccount, isDemo, walletCurrencyType }: TCT
                 )}
                 title={`Your ${PlatformDetails.ctrader.title} ${isDemo ? 'demo' : ''} account is ready`}
             />
-            ;
         </ModalStepWrapper>
     );
 };

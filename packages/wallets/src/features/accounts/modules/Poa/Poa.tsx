@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, FormikValues } from 'formik';
 import { InlineMessage, Loader, Text } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../../../../components';
+import { THooks } from '../../../../types';
 import { Footer } from '../components';
 import { AddressSection, DocumentSubmission, PoaUploadErrorMessage } from './components';
 import { usePoa } from './hooks';
@@ -14,29 +15,35 @@ type TPoaProps = {
 
 const Poa: React.FC<TPoaProps> = ({ onCompletion }) => {
     const {
-        error: errorPoaUpload,
+        errorSettings,
         initialStatus,
         initialValues,
         isLoading,
         isSuccess: isSubmissionSuccess,
         resetError,
-        upload,
+        upload: upload_,
     } = usePoa();
+    const [errorDocumentUpload, setErrorDocumentUpload] = useState<THooks.DocumentUpload['error']>();
 
     if (isLoading) return <Loader />;
 
     if (isSubmissionSuccess && onCompletion) {
         onCompletion();
     }
-    const submit = (values: FormikValues) => {
-        upload(values);
+
+    const upload = async (values: FormikValues) => {
+        try {
+            await upload_(values);
+        } catch (error) {
+            setErrorDocumentUpload((error as THooks.DocumentUpload).error);
+        }
     };
 
     return (
         <Formik
             initialStatus={initialStatus}
             initialValues={initialValues}
-            onSubmit={submit}
+            onSubmit={upload}
             validationSchema={poaValidationSchema}
         >
             {({ handleSubmit, isValid, resetForm }) => {
@@ -45,10 +52,8 @@ const Poa: React.FC<TPoaProps> = ({ onCompletion }) => {
                     resetError();
                 };
 
-                if (errorPoaUpload?.documentUpload) {
-                    return (
-                        <PoaUploadErrorMessage errorCode={errorPoaUpload.documentUpload.code} onRetry={onErrorRetry} />
-                    );
+                if (errorDocumentUpload) {
+                    return <PoaUploadErrorMessage errorCode={errorDocumentUpload.code} onRetry={onErrorRetry} />;
                 }
 
                 return (
@@ -57,9 +62,9 @@ const Poa: React.FC<TPoaProps> = ({ onCompletion }) => {
                         title='Add a real MT5 account'
                     >
                         <div className='wallets-poa'>
-                            {errorPoaUpload && errorPoaUpload?.addressDetails && (
+                            {errorSettings && errorSettings && (
                                 <InlineMessage variant='error'>
-                                    <Text>{errorPoaUpload.addressDetails.message}</Text>
+                                    <Text>{errorSettings.message}</Text>
                                 </InlineMessage>
                             )}
                             <AddressSection />

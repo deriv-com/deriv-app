@@ -65,6 +65,7 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                             list={countryList}
                                             listHeight='sm'
                                             name='citizenship'
+                                            variant='prompt'
                                         />
                                         <FormDropdown
                                             disabled={initialValues?.placeOfBirth !== ''}
@@ -73,6 +74,7 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                             list={countryList}
                                             listHeight='sm'
                                             name='placeOfBirth'
+                                            variant='prompt'
                                         />
                                         <FormDropdown
                                             isFullWidth
@@ -81,6 +83,7 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                             listHeight='sm'
                                             name='taxResidence'
                                             validationSchema={getTaxResidenceValidator(countryList)}
+                                            variant='prompt'
                                         />
                                         <FormField
                                             disabled={Boolean(!values.taxResidence || errors.taxResidence)}

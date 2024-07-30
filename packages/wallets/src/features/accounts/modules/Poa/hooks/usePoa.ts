@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { FormikValues } from 'formik';
 import { useDocumentUpload, useSettings, useStatesList } from '@deriv/api-v2';
 import { TAddressDetails, TDocumentSubmission } from '../types';
@@ -16,14 +16,14 @@ const usePoa = () => {
     const country = settings?.country_code ?? '';
     const { data: statesList, isLoading: isStatesListLoading } = useStatesList(country);
     const {
-        error: errorDocumentUpload,
-        isLoading: isDocumentUploading,
-        isSuccess: isDocumentUploadSuccess,
-        reset,
-        upload: _upload,
+        resetStatus: resetDocumentUploadStatus,
+        status: documentUploadStatus,
+        upload: uploadDocument,
     } = useDocumentUpload();
     const [isSubmissionInitiated, setIsSubmissionInitiated] = useState(false);
 
+    const isDocumentUploading = documentUploadStatus === 'loading';
+    const isDocumentUploadSuccess = documentUploadStatus === 'success';
     const isLoading = isDocumentUploading || isSettingsLoading || isStatesListLoading;
 
     const initialValues = {
@@ -38,24 +38,17 @@ const usePoa = () => {
         statesList,
     };
 
+    const resetError = () => {
+        resetDocumentUploadStatus('idle');
+    };
+
     // since we call get_settings initially, isSubmissionSuccess helps us to distinguish
     // between the initial call and the upload call using the isSubmissionInitiated flag state
     // which is set only when user initiates submission
     const isSubmissionSuccess = isSubmissionInitiated && isDocumentUploadSuccess && isSettingsUpdateSuccess;
 
-    const error = useMemo(
-        () =>
-            isSubmissionInitiated
-                ? {
-                      addressDetails: errorSettings?.error,
-                      documentUpload: errorDocumentUpload?.error,
-                  }
-                : undefined,
-        [errorDocumentUpload?.error, errorSettings?.error, isSubmissionInitiated]
-    );
-
     const upload = useCallback(
-        (values: FormikValues | TPoaValues) => {
+        async (values: FormikValues | TPoaValues) => {
             const isAddressDetailsFormDirty =
                 values.firstLine !== settings.address_line_1 ||
                 values.secondLine !== settings.address_line_2 ||
@@ -74,16 +67,21 @@ const usePoa = () => {
                 });
             }
 
-            // upload POA document using document_upload
-            _upload({
-                document_issuing_country: settings?.country_code ?? undefined,
-                document_type: 'proofaddress',
-                file: values.poaFile,
-            });
-            setIsSubmissionInitiated(true);
+            try {
+                // upload POA document using document_upload
+                await uploadDocument({
+                    document_issuing_country: settings?.country_code ?? undefined,
+                    document_type: 'proofaddress',
+                    file: values.poaFile,
+                });
+
+                setIsSubmissionInitiated(true);
+                return Promise.resolve();
+            } catch (error) {
+                return Promise.reject(error);
+            }
         },
         [
-            _upload,
             settings.address_city,
             settings.address_line_1,
             settings.address_line_2,
@@ -91,12 +89,13 @@ const usePoa = () => {
             settings.address_state,
             settings?.country_code,
             updateSettings,
+            uploadDocument,
         ]
     );
 
     return {
         /** Error returned from API calls for address details update and POA document upload */
-        error,
+        errorSettings,
 
         /** Contains the shared countryList data which is shared between the AddressSection and DocumentSubmission components through the status object from Formik context*/
         initialStatus,
@@ -111,7 +110,7 @@ const usePoa = () => {
         isSuccess: isSubmissionSuccess,
 
         /** reset error for API response */
-        resetError: reset,
+        resetError,
 
         /** Function to initiate upload of address details and document */
         upload,

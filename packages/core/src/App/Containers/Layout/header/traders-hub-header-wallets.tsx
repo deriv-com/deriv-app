@@ -2,7 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { Icon, Popover, StaticUrl } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
-import { routes, platforms, isTabletOs } from '@deriv/shared';
+import { routes, platforms } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { MenuLinks } from 'App/Components/Layout/Header';
@@ -88,19 +88,15 @@ const TradersHubHeaderWallets = observer(() => {
                             <div className='traders-hub-header__menu-right--items--notifications'>
                                 <ShowNotifications />
                             </div>
-                            {isTabletOs ? (
-                                accountSettings
-                            ) : (
-                                <Popover
-                                    classNameBubble='account-settings-toggle__tooltip'
-                                    alignment='bottom'
-                                    message={<Localize i18n_default_text='Manage account settings' />}
-                                    should_disable_pointer_events
-                                    zIndex='9999'
-                                >
-                                    {accountSettings}
-                                </Popover>
-                            )}
+                            <Popover
+                                classNameBubble='account-settings-toggle__tooltip'
+                                alignment='bottom'
+                                message={<Localize i18n_default_text='Manage account settings' />}
+                                should_disable_pointer_events
+                                zIndex='9999'
+                            >
+                                {accountSettings}
+                            </Popover>
                         </div>
                     </div>
                     <RealAccountSignup />

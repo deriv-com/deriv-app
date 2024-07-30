@@ -1,5 +1,4 @@
 import React from 'react';
-import { Analytics } from '@deriv-com/analytics';
 import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import './cashier-onboarding-card.scss';
@@ -7,26 +6,13 @@ import './cashier-onboarding-card.scss';
 type TProps = {
     title: string;
     description: string;
-    depositCategory: 'crypto' | 'fiat' | 'fiat_onramp' | 'payment_agent' | 'p2p';
     onClick?: VoidFunction;
 };
 
 const CashierOnboardingCard: React.FC<React.PropsWithChildren<TProps>> = observer(
-    ({ title, description, depositCategory, onClick, children }) => {
-        const { client, ui } = useStore();
-        const { currency, loginid } = client;
+    ({ title, description, onClick, children }) => {
+        const { ui } = useStore();
         const { is_dark_mode_on, is_mobile } = ui;
-
-        const onClickHandler = () => {
-            onClick?.();
-            Analytics.trackEvent('ce_cashier_deposit_onboarding_form', {
-                action: 'click_deposit_card',
-                form_name: 'ce_cashier_deposit_onboarding_form',
-                deposit_category: depositCategory,
-                currency,
-                login_id: loginid,
-            });
-        };
 
         return (
             <div>
@@ -36,7 +22,7 @@ const CashierOnboardingCard: React.FC<React.PropsWithChildren<TProps>> = observe
                 <div
                     className='cashier-onboarding-card__container'
                     data-testid='dt_cashier_onboarding_card'
-                    onClick={onClickHandler}
+                    onClick={onClick}
                 >
                     <div className='cashier-onboarding-card__content'>
                         <Text size={is_mobile ? 'xxs' : 'xs'} className='cashier-onboarding-card__description'>

@@ -42,17 +42,12 @@ const CashierOnboardingFiatCard: React.FC = observer(() => {
     };
 
     return (
-        <React.Fragment>
-            <CashierOnboardingCard
-                title={localize('Deposit via bank wire, credit card, and e-wallet')}
-                description={localize('Deposit via the following payment methods:')}
-                depositCategory='fiat'
-                onClick={is_dialog_visible ? undefined : onClick}
-            >
-                <CashierOnboardingIconMarquee
-                    icons={icons.map(icon => `${icon}${is_dark_mode_on ? 'Dark' : 'Light'}`)}
-                />
-            </CashierOnboardingCard>
+        <CashierOnboardingCard
+            title={localize('Deposit via bank wire, credit card, and e-wallet')}
+            description={localize('Deposit via the following payment methods:')}
+            onClick={is_dialog_visible ? undefined : onClick}
+        >
+            <CashierOnboardingIconMarquee icons={icons.map(icon => `${icon}${is_dark_mode_on ? 'Dark' : 'Light'}`)} />
             {can_switch_to_fiat_account && (
                 <SwitchToFiatAccountDialog
                     is_visible={is_dialog_visible}
@@ -60,7 +55,7 @@ const CashierOnboardingFiatCard: React.FC = observer(() => {
                     onSwitchDone={onSwitchDone}
                 />
             )}
-        </React.Fragment>
+        </CashierOnboardingCard>
     );
 });
 

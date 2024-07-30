@@ -98,7 +98,9 @@ export default class ServerBotStore {
     is_loading_bot_list = true;
     active_bot_id = '';
     bot_list: TServerBotItem[] = [];
-    active_bot: Partial<TServerBotItem> = {};
+    active_bot: Partial<TServerBotItem> = {
+        status: 'stopped',
+    };
 
     transactions: TBotTransactions = {};
     journal: TJournalItem[] = [];

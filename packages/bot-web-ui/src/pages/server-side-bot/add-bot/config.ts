@@ -147,7 +147,6 @@ const NAME: TConfigItem = {
     type: 'text',
     name: 'name',
     validation: ['required'],
-    has_currency_unit: true,
 };
 
 const LABEL_LAST_DIGIT_PREDICTION: TConfigItem = {

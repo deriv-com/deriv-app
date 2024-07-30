@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { Button, Icon, Text, useOnClickOutside } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { localize, Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
+import { botNotification } from 'Components/bot-notification/bot-notification';
 import { useDBotStore } from 'Stores/useDBotStore';
+import LoginModal from './common/login-modal';
 import BotListItem from './bot-list-item';
 import BotListMenu from './bot-list-menu';
 import DeleteServerBot from './delete-server-bot';
-import { botNotification } from 'Components/bot-notification/bot-notification';
-import LoginModal from './common/login-modal';
 
 type TBotList = {
     setFormVisibility: (is_open: boolean) => void;
@@ -58,7 +58,7 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
     const botAction = (action: string, bot_id: string) => {
         switch (action) {
             case 'RUN':
-                if (active_bot?.status === 'running') {
+                if (active_bot?.status !== 'stopped') {
                     botNotification(localize('You can only run one bot at a time.'));
                     break;
                 }

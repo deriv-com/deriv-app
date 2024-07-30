@@ -148,6 +148,7 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.client.landing_companies,
                 this.root_store.common.current_language,
                 this.financial_restricted_countries,
+                this.root_store.client.clients_country,
             ],
             () => {
                 this.getAvailablePlatforms();
@@ -484,14 +485,8 @@ export default class TradersHubStore extends BaseStore {
         }
     }
 
-    getAvailableMt5Accounts() {
-        this.setMT5TradingPlatformAvailableAccounts();
-        // if (this.is_eu_user && !this.is_demo_low_risk) {
-        //     this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
-        //         ['EU', 'All'].some(region => region === account.availability)
-        //     );
-        //     return;
-        // }
+    async getAvailableMt5Accounts() {
+        await this.setMT5TradingPlatformAvailableAccounts();
 
         if (Object.keys(this.dynamic_available_platforms).length > 0) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account => {
@@ -880,9 +875,6 @@ export default class TradersHubStore extends BaseStore {
         const available_products = this.root_store.client.is_logged_in
             ? this.root_store.client.trading_platform_available_accounts
             : this.mt5_available_products;
-
-        // eslint-disable-next-line no-console
-        console.log('==>', available_products);
 
         const available_accounts = {};
         available_products.forEach(account => {

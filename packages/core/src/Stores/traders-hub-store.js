@@ -722,8 +722,6 @@ export default class TradersHubStore extends BaseStore {
     }
     setCombinedCFDMT5Accounts() {
         this.combined_cfd_mt5_accounts = [];
-        // eslint-disable-next-line no-console
-        console.log('==>', this.available_mt5_accounts);
         this.available_mt5_accounts?.forEach(account => {
             const existing_accounts = this.getExistingAccounts(account.platform, account.market_type, account.product);
             const has_existing_accounts = existing_accounts.length > 0;

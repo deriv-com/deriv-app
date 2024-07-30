@@ -15,7 +15,7 @@ describe('FocusedInput', () => {
                 <React.Fragment>
                     <input type='number' ref={input_ref} />
                     <button onClick={() => setIsFocused(true)}>Focus</button>
-                    <FocusedInput focused_ref={input_ref} is_visible={is_focused} setIsFocused={setIsFocused} />
+                    {is_focused && <FocusedInput focused_ref={input_ref} setIsFocused={setIsFocused} />}
                 </React.Fragment>
             );
         };

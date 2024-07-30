@@ -49,9 +49,6 @@ const ACCOUNTS = [
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
-    useBalance: jest.fn(() => ({
-        isLoading: false,
-    })),
     useTransferBetweenAccounts: jest.fn(() => ({
         data: { accounts: ACCOUNTS },
     })),
@@ -101,6 +98,13 @@ jest.mock('../../../provider', () => ({
         resetTransfer: mockResetTransfer,
     })),
 }));
+
+jest.mock('../../../../../../../hooks/useAllBalanceSubscription', () =>
+    jest.fn(() => ({
+        data: undefined,
+        isLoading: false,
+    }))
+);
 
 const wrapper = ({ children }: PropsWithChildren<unknown>) => {
     return (

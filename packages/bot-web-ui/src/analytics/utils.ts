@@ -54,14 +54,15 @@ export const getTradeParameterData = ({ form_values }: TFormStrategy) => {
     };
 };
 
-export const getStrategyType = (block_string: string) => {
+export const getStrategyType = (block_string: string | ArrayBuffer) => {
     try {
-        const xmlDoc = new DOMParser().parseFromString(block_string, 'application/xml');
+        const xmlDoc = new DOMParser().parseFromString(block_string.toString(), 'application/xml');
         if (xmlDoc.getElementsByTagName('xml').length) {
             const root = xmlDoc.documentElement;
             const isDbotValue = root.getAttribute('is_dbot');
             return isDbotValue === 'true' ? 'new' : 'old';
         }
+        return 'old';
     } catch (e) {
         return 'old';
     }

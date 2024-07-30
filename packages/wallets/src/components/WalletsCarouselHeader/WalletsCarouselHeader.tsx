@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
-import { LegacyTransferIcon } from '@deriv/quill-icons';
+import { LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
 import { IconButton, WalletText } from '../Base';
 import { WalletCurrencyCard } from '../WalletCurrencyCard';
 import './WalletsCarouselHeader.scss';
@@ -10,11 +10,11 @@ type TProps = {
     balance?: string;
     currency: string;
     hidden?: boolean;
+    isBalanceLoading?: boolean;
     isDemo?: boolean;
-    isLoading?: boolean;
 };
 
-const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, isDemo, isLoading }) => {
+const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, isBalanceLoading, isDemo }) => {
     const history = useHistory();
 
     return (
@@ -25,7 +25,7 @@ const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, is
                     <WalletText color='general' size='sm'>
                         {currency} Wallet
                     </WalletText>
-                    {isLoading ? (
+                    {isBalanceLoading ? (
                         <div
                             className='wallets-skeleton wallets-carousel-header__balance-loader'
                             data-testid='dt_wallets_carousel_header_balance_loader'
@@ -38,14 +38,13 @@ const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, is
                 </div>
             </div>
             <IconButton
-                color='transparent'
+                aria-label='Transfer'
+                className='wallets-carousel-header__button'
+                color='white'
                 data-testid='dt_wallets_carousel_header_button'
-                icon={<LegacyTransferIcon iconSize='xs' />}
-                iconSize='lg'
-                onClick={() => {
-                    history.push('/wallet/account-transfer');
-                }}
-                size='lg'
+                icon={<LabelPairedArrowUpArrowDownSmBoldIcon />}
+                onClick={() => history.push('/wallet/account-transfer')}
+                size='md'
             />
         </div>
     );

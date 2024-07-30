@@ -6,7 +6,6 @@ import FiatOnRampDisclaimer from '../FiatOnRampDisclaimer';
 jest.mock('@deriv/api-v2', () => ({
     useMutation: jest.fn(),
 }));
-
 const mockUseMutation = useMutation as jest.Mock;
 
 describe('FiatOnRampDisclaimer', () => {
@@ -43,7 +42,7 @@ describe('FiatOnRampDisclaimer', () => {
         const handleDisclaimer = jest.fn();
 
         render(<FiatOnRampDisclaimer handleDisclaimer={handleDisclaimer} />);
-        expect(screen.getByTestId('dt_wallets_loader')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_derivs-loader')).toBeInTheDocument();
     });
 
     it('should call handleDisclaimer function on "Back" button click', () => {

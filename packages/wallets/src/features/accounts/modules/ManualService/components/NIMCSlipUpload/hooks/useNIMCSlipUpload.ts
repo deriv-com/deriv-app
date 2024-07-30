@@ -11,24 +11,33 @@ type TNIMCSlipUploadValues = TSelfieUploadValues & {
 };
 
 const useNIMCSlipUpload = (documentIssuingCountryCode: THooks.AccountSettings['country_code']) => {
+    const { resetStatus: resetNIMCUploadStatus, status: nimcUploadStatus, upload: uploadNIMC } = useDocumentUpload();
     const {
-        error: errorNIMCUpload,
-        isLoading: isNIMCUploading,
-        isSuccess: isNIMCUploadSuccess,
-        reset: resetErrorNIMCUpload,
-        upload: _upload,
-    } = useDocumentUpload();
-    const {
-        error: errorSelfieUpload,
-        isLoading: isSelfieUploading,
-        isSuccess: isSelfieUploadSuccess,
-        resetError: resetErrorSelfieUpload,
+        initialValues: initialValuesSelfieUpload,
+        resetStatus: resetSelfieUploadStatus,
+        status: selfieUploadStatus,
         upload: uploadSelfie,
     } = useSelfieUpload(documentIssuingCountryCode);
 
+    const isError = nimcUploadStatus === 'error' || selfieUploadStatus === 'error';
+    const isLoading =
+        ((nimcUploadStatus === 'loading' && selfieUploadStatus === 'idle') || selfieUploadStatus === 'loading') &&
+        !isError;
+    const isSuccess = !isError && !isLoading && nimcUploadStatus === 'success' && selfieUploadStatus === 'success';
+
+    const initialValues = {
+        ...initialValuesSelfieUpload,
+        nimcNumber: '',
+    } as TNIMCSlipUploadValues;
+
+    const resetUploadStatus = () => {
+        resetNIMCUploadStatus('idle');
+        resetSelfieUploadStatus('idle');
+    };
+
     const uploadFront = useCallback(
         (values: FormikValues) => {
-            return _upload({
+            return uploadNIMC({
                 document_id: values.identityCardNumber,
                 document_issuing_country: documentIssuingCountryCode ?? undefined,
                 document_type: 'national_identity_card',
@@ -37,12 +46,12 @@ const useNIMCSlipUpload = (documentIssuingCountryCode: THooks.AccountSettings['c
                 page_type: 'front',
             });
         },
-        [_upload, documentIssuingCountryCode]
+        [documentIssuingCountryCode, uploadNIMC]
     );
 
     const uploadBack = useCallback(
         (values: FormikValues) => {
-            return _upload({
+            return uploadNIMC({
                 document_id: values.identityCardNumber,
                 document_issuing_country: documentIssuingCountryCode ?? undefined,
                 document_type: 'national_identity_card',
@@ -51,46 +60,41 @@ const useNIMCSlipUpload = (documentIssuingCountryCode: THooks.AccountSettings['c
                 page_type: 'back',
             });
         },
-        [_upload, documentIssuingCountryCode]
+        [documentIssuingCountryCode, uploadNIMC]
     );
 
     const upload = useCallback(
         async (values: FormikValues | TNIMCSlipUploadValues) => {
-            await uploadFront(values);
-            await uploadBack(values);
-            await uploadSelfie(values, values.nimcNumber);
+            try {
+                await uploadFront(values);
+                await uploadBack(values);
+                await uploadSelfie(values, values.nimcNumber);
+
+                return Promise.resolve();
+            } catch (error) {
+                return Promise.reject(error);
+            }
         },
         [uploadBack, uploadFront, uploadSelfie]
     );
 
-    const resetError = useCallback(() => {
-        if (errorNIMCUpload?.error || errorSelfieUpload) {
-            resetErrorNIMCUpload();
-            resetErrorSelfieUpload();
-        }
-    }, [errorNIMCUpload?.error, errorSelfieUpload, resetErrorNIMCUpload, resetErrorSelfieUpload]);
-
-    const initialValues = {
-        nimcNumber: '',
-    } as TNIMCSlipUploadValues;
-
     return {
-        /** contains error data if any error encountered during driving-license/selfie upload */
-        error: errorNIMCUpload?.error ?? errorSelfieUpload,
-
-        /** initial values for the driving-license and selfie forms */
+        /** initial values for the nimc-slip and selfie forms */
         initialValues,
 
-        /** `true` if successfully uploaded driving-license front/back and selfie files */
-        isSuccess: isNIMCUploadSuccess && isSelfieUploadSuccess,
+        /** `true` when nimc-slip/selfie upload encounter error */
+        isError,
 
-        /** `true` if driving-license and selfie upload is in progress */
-        isUploading: isNIMCUploading || isSelfieUploading,
+        /** `true` when nimc-slip/selfie are uploading */
+        isLoading,
 
-        /** reset all API errors */
-        resetError,
+        /** `true` when nimc-slip/selfie are uploaded successfully */
+        isSuccess,
 
-        /** upload driving-license front/back and selfie files synchronously */
+        /** Reset upload statuses for nimc-slip and selfie */
+        resetUploadStatus,
+
+        /** upload nimc-slip and selfie files synchronously */
         upload,
     };
 };

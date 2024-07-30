@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Formik } from 'formik';
+import { Formik, FormikValues } from 'formik';
 import { Divider, Loader } from '@deriv-com/ui';
 import { Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
 import NIMCSlipFront from '../../../../../../public/images/accounts/nimc-slip-front.svg';
 import ProofOfAgeIcon from '../../../../../../public/images/accounts/proof-of-age.svg';
+import { THooks } from '../../../../../../types';
 import { Footer } from '../../../components';
 import { NIMCDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
@@ -14,16 +15,25 @@ import { nimcSlipUploadValidator } from './utils';
 import './NIMCSlipUpload.scss';
 
 const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onClickBack, onCompletion }) => {
-    const { error, initialValues, isSuccess, isUploading, resetError, upload } =
-        useNIMCSlipUpload(documentIssuingCountryCode);
+    const {
+        initialValues,
+        isLoading,
+        resetUploadStatus,
+        upload: upload_,
+    } = useNIMCSlipUpload(documentIssuingCountryCode);
     const [showSelfieUpload, setShowSelfieUpload] = useState(false);
+    const [error, setError] = useState<THooks.DocumentUpload['error']>();
 
-    if (!error && isSuccess && onCompletion) {
-        onCompletion();
-        return null;
-    }
+    const upload = async (values: FormikValues) => {
+        try {
+            await upload_(values);
+            onCompletion?.();
+        } catch (error) {
+            setError((error as THooks.DocumentUpload).error);
+        }
+    };
 
-    if (isUploading) {
+    if (isLoading) {
         return <Loader />;
     }
 
@@ -37,7 +47,7 @@ const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                 };
 
                 const onErrorRetry = () => {
-                    resetError();
+                    resetUploadStatus();
                     resetForm();
                     setShowSelfieUpload(false);
                     onClickBack?.();
@@ -62,8 +72,8 @@ const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                         disableAnimation
                         renderFooter={() => (
                             <Footer
-                                disableBack={isUploading}
-                                disableNext={!isNIMCFormValid || isUploading}
+                                disableBack={isLoading}
+                                disableNext={!isNIMCFormValid || isLoading}
                                 onClickBack={onClickBack}
                                 onClickNext={handleOnClickNext}
                             />

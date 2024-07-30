@@ -95,7 +95,6 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                                 </div>
                                 <FormDropdown
                                     isFullWidth
-                                    isRequired
                                     label='Choose the document type'
                                     list={displayedDocumentsList}
                                     listHeight='lg'

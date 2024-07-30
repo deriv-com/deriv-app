@@ -35,7 +35,7 @@ const FocusedInput = ({ focused_ref, is_visible, setIsFocused }: TFocusedInputPr
         }
         return () => clearTimeout(focus_timeout.current);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_visible, input_ref, focused_ref]);
+    }, [is_visible]);
 
     return is_visible ? <input className='input--focused' ref={input_ref} /> : null;
 };

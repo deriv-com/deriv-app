@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.controls_repeat = {
     init() {
@@ -24,6 +25,8 @@ Blockly.Blocks.controls_repeat = {
                     name: 'DO',
                 },
             ],
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            inputsInline: true,
             colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary: Blockly.Colours.Base.colourTertiary,
@@ -41,6 +44,10 @@ Blockly.Blocks.controls_repeat = {
             ),
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-Blockly.JavaScript.controls_repeat = Blockly.JavaScript.controls_repeat_ext;
+Blockly.JavaScript.javascriptGenerator.forBlock.controls_repeat =
+    Blockly.JavaScript.javascriptGenerator.forBlock.controls_repeat_ext;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
+import classNames from 'classnames';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Jurisdiction, routes } from '@deriv/shared';
@@ -129,7 +130,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
             currency={accounts[item?.loginid ?? '']?.currency}
             has_balance={'balance' in accounts[item?.loginid ?? '']}
             has_reset_balance={is_demo && isAbleToResetBalance(accounts[account_loginid ?? ''])}
-            is_disabled={item.is_disabled}
+            is_disabled={!!item.is_disabled}
             is_virtual={item.is_virtual}
             loginid={item.loginid}
             redirectAccount={item.is_disabled ? undefined : () => handleSwitchAccount(item.loginid)}
@@ -189,7 +190,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
                             .map(account => getAddAccountButton(account))}
                 </AccountGroupWrapper>
             )}
-            {(!is_high_risk || is_eu) && has_maltainvest_account && (
+            {((!is_high_risk && has_maltainvest_account) || is_eu) && (
                 <AccountGroupWrapper
                     separator_text={
                         is_low_risk && localize(`EU Deriv ${hasMoreAccounts(BROKER_CODE.MF) ? 'accounts' : 'account'}`)
@@ -213,7 +214,13 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
         <div className='acc-switcher-dtrader__wrapper'>
             {is_landing_company_loaded ? (
                 <React.Fragment>
-                    <div className='acc-switcher-dtrader__accounts-list'>
+                    <div
+                        className={classNames('acc-switcher-dtrader__accounts-list', {
+                            'acc-switcher-dtrader__accounts-list--with-button': show_button,
+                            'acc-switcher-dtrader__accounts-list--with-cfd-banner': is_mt5_allowed,
+                            'acc-switcher-dtrader__accounts-list--with-both': show_button && is_mt5_allowed,
+                        })}
+                    >
                         {real_accounts}
                         {demo_account}
                     </div>

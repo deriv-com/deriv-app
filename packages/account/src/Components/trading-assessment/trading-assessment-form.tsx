@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { observer, useStore } from '@deriv/stores';
 import { Formik, Form, FormikErrors, FormikHelpers } from 'formik';
 import { Button, Modal, Text } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { useTranslations, Localize } from '@deriv-com/translations';
 import TradingAssessmentRadioButton from './trading-assessment-radio-buttons';
 import TradingAssessmentDropdown from './trading-assessment-dropdown';
 import { getTradingAssessmentQuestions } from '../../Constants/trading-assessment-questions';
@@ -41,6 +41,7 @@ const TradingAssessmentForm = observer(
         is_responsive,
     }: TradingAssessmentFormProps) => {
         const { traders_hub } = useStore();
+        const { localize } = useTranslations();
         const { is_eu_user } = traders_hub;
         const assessment_questions = getTradingAssessmentQuestions();
         const stored_items = parseInt(localStorage.getItem('current_question_index') ?? '0');

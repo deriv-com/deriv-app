@@ -2,6 +2,7 @@ import ServerTime from '_common/base/server_time';
 import { ContractType } from '../contract-type';
 import moment from 'moment';
 import { mockStore } from '@deriv/stores';
+import { TRADE_TYPES } from '@deriv/shared';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -59,6 +60,43 @@ jest.mock('@deriv/shared', () => ({
                             max_contract_duration: '365d',
                             min_contract_duration: '1d',
                             sentiment: 'high_vol',
+                            start_type: 'spot',
+                            submarket: 'major_pairs',
+                            underlying_symbol: 'frxAUDJPY',
+                        },
+                        {
+                            barrier_category: 'euro_atm',
+                            barriers: 0,
+                            contract_category: 'callputequal',
+                            contract_category_display: 'Rise/Fall Equal',
+                            contract_display: 'Higher',
+                            contract_type: 'CALLE',
+                            default_stake: 10,
+                            exchange_name: 'FOREX',
+                            expiry_type: 'daily',
+                            market: 'forex',
+                            max_contract_duration: '365d',
+                            min_contract_duration: '1d',
+                            sentiment: 'up',
+                            start_type: 'spot',
+                            submarket: 'major_pairs',
+                            underlying_symbol: 'frxAUDJPY',
+                        },
+                        {
+                            barrier: '101.389',
+                            barrier_category: 'euro_non_atm',
+                            barriers: 1,
+                            contract_category: 'callput',
+                            contract_category_display: 'Up/Down',
+                            contract_display: 'Higher',
+                            contract_type: 'CALL',
+                            default_stake: 10,
+                            exchange_name: 'FOREX',
+                            expiry_type: 'daily',
+                            market: 'forex',
+                            max_contract_duration: '365d',
+                            min_contract_duration: '1d',
+                            sentiment: 'up',
                             start_type: 'spot',
                             submarket: 'major_pairs',
                             underlying_symbol: 'frxAUDJPY',
@@ -563,5 +601,19 @@ describe('ContractType.getContractCategories', () => {
         expect(result.contract_types_list).not.toEqual({});
         expect(result.has_only_forward_starting_contracts).toBeFalsy();
         expect(result.non_available_contract_types_list).not.toEqual({});
+    });
+});
+describe('ContractType.getBarrierCategory', () => {
+    it('should return a correct barrier_category for Rise/Fall', () => {
+        const { barrier_category } = ContractType.getBarrierCategory(TRADE_TYPES.RISE_FALL);
+        expect(barrier_category).toEqual('euro_atm');
+    });
+    it('should return a correct barrier_category for Rise/Fall Equal', () => {
+        const { barrier_category } = ContractType.getBarrierCategory(TRADE_TYPES.RISE_FALL);
+        expect(barrier_category).toEqual('euro_atm');
+    });
+    it('should return a correct barrier_category for Higher/Lower', () => {
+        const { barrier_category } = ContractType.getBarrierCategory(TRADE_TYPES.HIGH_LOW);
+        expect(barrier_category).toEqual('euro_non_atm');
     });
 });

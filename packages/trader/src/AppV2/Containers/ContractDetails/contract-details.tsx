@@ -2,7 +2,7 @@ import React from 'react';
 import EntryExitDetails from 'AppV2/Components/EntryExitDetails';
 import TakeProfitHistory from 'AppV2/Components/TakeProfitHistory';
 import PayoutInfo from 'AppV2/Components/PayoutInfo';
-import ChartPlaceholder from '../Chart';
+import { ChartPlaceholder } from '../Chart';
 import CardWrapper from 'AppV2/Components/CardWrapper';
 import { observer, useStore } from '@deriv/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
@@ -22,6 +22,7 @@ import {
     hasContractEntered,
     isAccumulatorContract,
 } from '@deriv/shared';
+import { Loading } from '@deriv/components';
 import classNames from 'classnames';
 import ContractDetailsFooter from 'AppV2/Components/ContractDetailsFooter';
 import { ContractCard } from 'AppV2/Components/ContractCard';
@@ -55,7 +56,7 @@ const ContractDetails = observer(() => {
         requestUpdatedHistory(contract_id);
     }, [contract_id, take_profit?.order_amount, stop_loss?.order_amount, requestUpdatedHistory]);
 
-    if (is_loading) return <></>;
+    if (is_loading) return <Loading.DTraderV2 is_contract_details />;
 
     const isMultiplier = isMultiplierContract(contract_info.contract_type);
 

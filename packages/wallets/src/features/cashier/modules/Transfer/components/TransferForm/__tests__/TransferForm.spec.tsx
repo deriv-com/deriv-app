@@ -17,16 +17,6 @@ jest.mock('../../../provider', () => ({
     useTransfer: jest.fn(),
 })); // const mockUseFormikContext = jest.spyOn(formik, 'useFormikContext') as jest.Mock;
 
-jest.mock('../../TransferFormAmountInput', () => ({
-    ...jest.requireActual('../../TransferFormAmountInput'),
-    TransferFormAmountInput: jest.fn(({ fieldName }) => <input placeholder={fieldName} type='input' />),
-}));
-
-jest.mock('../../TransferFormDropdown', () => ({
-    ...jest.requireActual('../../TransferFormDropdown'),
-    TransferFormDropdown: jest.fn(({ fieldName }) => <div>{fieldName}</div>),
-}));
-
 const mockTransferMessages = jest.fn(() => {
     const { setValues } = useFormikContext();
     useEffect(() => {
@@ -36,8 +26,15 @@ const mockTransferMessages = jest.fn(() => {
     return <div>TransferMessages</div>;
 });
 
+jest.mock('../../TransferFormAmountInput', () => ({
+    TransferFormAmountInput: jest.fn(({ fieldName }) => <input placeholder={fieldName} type='input' />),
+}));
+
+jest.mock('../../TransferFormDropdown', () => ({
+    TransferFormDropdown: jest.fn(({ fieldName }) => <div>{fieldName}</div>),
+}));
+
 jest.mock('../../TransferMessages', () => ({
-    ...jest.requireActual('../../TransferMessages'),
     TransferMessages: jest.fn(() => mockTransferMessages()),
 }));
 
@@ -57,7 +54,7 @@ describe('<TransferForm />', () => {
 
         render(<TransferForm />, { wrapper });
 
-        expect(screen.getByTestId('dt_wallets_loader')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_derivs-loader')).toBeInTheDocument();
     });
 
     it('should test that transfer button is disabled when fromAmount is 0', async () => {

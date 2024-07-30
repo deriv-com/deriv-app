@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.controls_flow_statements = {
     init() {
@@ -17,6 +18,7 @@ Blockly.Blocks.controls_flow_statements = {
                     ],
                 },
             ],
+            inputsInline: true,
             colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary: Blockly.Colours.Base.colourTertiary,
@@ -36,9 +38,12 @@ Blockly.Blocks.controls_flow_statements = {
             ),
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-Blockly.JavaScript.controls_flow_statements = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.controls_flow_statements = block => {
     const keyword = block.getFieldValue('FLOW') === 'BREAK' ? 'break' : 'continue';
     return `${keyword};\n`;
 };

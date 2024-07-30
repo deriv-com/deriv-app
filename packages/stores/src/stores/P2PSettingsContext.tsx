@@ -4,7 +4,6 @@ import { TSocketAcceptableProps, TSocketResponseData } from '@deriv/api/types';
 
 export type TP2PSettings =
     | (TSocketResponseData<'p2p_settings'>['p2p_settings'] & {
-          business_hours_minutes_interval: number;
           is_cross_border_ads_enabled: boolean;
           is_disabled: boolean;
           is_payment_methods_enabled: boolean;

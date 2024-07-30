@@ -52,14 +52,14 @@ type TServiceTokenResponse = {
     };
 };
 
-export interface TradingPlatformStatus {
+export type TradingPlatformStatus = {
     platform: string;
     status: 'active' | 'maintenance' | 'unavailable';
-}
+};
 
-export interface TradingPlatformStatusResponse {
+export type TradingPlatformStatusResponse = {
     trading_platform_status: TradingPlatformStatus[];
-}
+};
 
 export type TPaymentAgentTransferRequest = Omit<
     PaymentAgentTransferRequest,

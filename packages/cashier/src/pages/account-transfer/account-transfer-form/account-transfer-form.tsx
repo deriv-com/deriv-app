@@ -478,14 +478,9 @@ const AccountTransferForm = observer(
                     <Localize i18n_default_text='The server is temporarily unavailable for this account. We’re working to resolve this.' />
                 );
             } else if (is_maintenance_status_present) {
-                const getMaintenanceTime = () => {
-                    if (selected_to.is_dxtrade) return '08:00 GMT';
-                    if (selected_to.is_ctrader) return '10:00 GMT';
-                    return '03:00 GMT';
-                };
                 hint_text = (
                     <Localize
-                        i18n_default_text={`We’re currently performing server maintenance, which may continue until <0>${getMaintenanceTime()}</0>. Please expect some disruptions during this time.`}
+                        i18n_default_text={`We’re currently performing server maintenance. Service maybe affected.`}
                         components={[<strong key={0} />]}
                     />
                 );

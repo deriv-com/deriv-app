@@ -31,7 +31,6 @@ const LastDigitPrediction = observer(({ is_minimized, is_stats_mode }: TLastDigi
     };
     const onActionSheetClose = () => {
         setIsOpen(false);
-        //TODO: check if we need these 2 resets below after latest Quill Action sheet changes will be in our branch
         setSelectedDigit(last_digit);
     };
 
@@ -47,7 +46,7 @@ const LastDigitPrediction = observer(({ is_minimized, is_stats_mode }: TLastDigi
                             key={`last-digit-prediction${is_minimized ? '-minimized' : ''}`}
                         />
                     }
-                    value={last_digit.toString()} // TODO: remove toString after TextField supports a numeric 0 value in quill-ui
+                    value={last_digit}
                     className={clsx('trade-params__option', 'trade-params__option--minimized')}
                     onClick={() => setIsOpen(true)}
                 />

@@ -3,7 +3,6 @@ import { observer } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import { Divider } from '../../components/divider';
 import { PageContainer } from '../../components/page-container';
-import { DepositSubPageAnalyticsEventTracker } from '../../components/deposit-sub-page-event-tracker';
 import { useCashierStore } from '../../stores/useCashierStores';
 import { DepositCryptoCurrencyDetails, DepositCryptoSideNotes, DepositCryptoWalletAddress } from './components';
 import DepositCryptoSideNoteTryFiatOnRamp from './components/deposit-crypto-side-notes/deposit-crypto-side-note-try-fiat-onramp';
@@ -28,7 +27,6 @@ const DepositCrypto: React.FC = observer(() => {
             // side notes for consistency and then we can remove unnecessary components from the children.
             right={isMobile ? undefined : <DepositCryptoSideNotes />}
         >
-            <DepositSubPageAnalyticsEventTracker deposit_category='crypto' />
             <DepositCryptoCurrencyDetails />
             <DepositCryptoWalletAddress />
             <Divider />

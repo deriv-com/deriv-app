@@ -43,8 +43,7 @@ const PaymentMethodCard = ({
     small = false,
     style,
 }: TPaymentMethodCardProps) => {
-    const { general_store, my_ads_store, my_profile_store } = useStores();
-    const { active_index } = general_store;
+    const { my_ads_store, my_profile_store } = useStores();
     const { payment_method_ids } = my_ads_store;
 
     const { showModal } = useModalManagerContext();
@@ -116,7 +115,7 @@ const PaymentMethodCard = ({
                         size={medium || small ? 16 : 24}
                     />
                 )}
-                {is_vertical_ellipsis_visible && (
+                {is_vertical_ellipsis_visible ? (
                     <Dropdown
                         is_align_text_left
                         list={[
@@ -132,8 +131,7 @@ const PaymentMethodCard = ({
                         onChange={handleEditDeletePaymentMethod}
                         suffix_icon='IcCashierVerticalEllipsis'
                     />
-                )}
-                {(active_index === 2 || active_index === 0) && (
+                ) : (
                     <Checkbox
                         className='payment-method-card__checkbox'
                         disabled={payment_method_ids.length === 3 && !payment_method_ids.includes(id)}

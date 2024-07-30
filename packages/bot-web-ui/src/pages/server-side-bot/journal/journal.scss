@@ -8,6 +8,7 @@
     &__content {
         padding: 16px;
         height: calc(100vh - 280px);
+        overflow-y: auto;
         &__empty {
             background-color: var(--general-section-1);
             border-radius: 4px;

@@ -130,7 +130,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
             currency={accounts[item?.loginid ?? '']?.currency}
             has_balance={'balance' in accounts[item?.loginid ?? '']}
             has_reset_balance={is_demo && isAbleToResetBalance(accounts[account_loginid ?? ''])}
-            is_disabled={item.is_disabled}
+            is_disabled={!!item.is_disabled}
             is_virtual={item.is_virtual}
             loginid={item.loginid}
             redirectAccount={item.is_disabled ? undefined : () => handleSwitchAccount(item.loginid)}
@@ -190,7 +190,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
                             .map(account => getAddAccountButton(account))}
                 </AccountGroupWrapper>
             )}
-            {(!is_high_risk || is_eu) && has_maltainvest_account && (
+            {((!is_high_risk && has_maltainvest_account) || is_eu) && (
                 <AccountGroupWrapper
                     separator_text={
                         is_low_risk && localize(`EU Deriv ${hasMoreAccounts(BROKER_CODE.MF) ? 'accounts' : 'account'}`)

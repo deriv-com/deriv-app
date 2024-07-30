@@ -1,9 +1,10 @@
 import { action, makeObservable, observable } from 'mobx';
-import { TBotListItem } from 'src/pages/server-bot/request_schema';
-import { api_base } from '@deriv/bot-skeleton';
-import RootStore from './root-store';
+import moment from 'moment';
 import { ProposalOpenContract } from '@deriv/api-types';
+import { api_base } from '@deriv/bot-skeleton';
+import { localize } from '@deriv/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';
+import RootStore from './root-store';
 
 export type TFormData = {
     [key: string]: string | number | boolean;
@@ -51,6 +52,22 @@ const getAPI = async () => {
 //     },
 // };
 
+export const JOURNAL_TYPE = Object.freeze({
+    BUY: 'BUY',
+    LOSS: 'LOSS',
+    WON: 'WON',
+    INFO: 'INFO',
+    ERROR: 'ERROR',
+});
+
+export type TJournalOptions = {
+    msg?: string;
+    amount?: string;
+    bot_id?: string;
+    contract_id?: string;
+    time?: string;
+};
+
 export type TBotTransactions = {
     [key: string]: {
         [key: string]: ProposalOpenContract;
@@ -58,9 +75,22 @@ export type TBotTransactions = {
 };
 
 export type TJournalItem = {
-    type: string; // BUY | PROFIT | LOSS | INFO
+    type: typeof JOURNAL_TYPE[keyof typeof JOURNAL_TYPE];
     msg?: string;
     amount?: string;
+    bot_id?: string;
+    time?: string;
+};
+
+export const getDate = (epoch: number) => {
+    const DATE_TIME_FORMAT_WITH_OFFSET = 'YYYY-MM-DD HH:mm:ss Z';
+    return moment.unix(epoch).utc().local().format(DATE_TIME_FORMAT_WITH_OFFSET);
+};
+
+type TPerformance = {
+    total_stake: number;
+    total_payout: number;
+    total_profit: number;
 };
 
 export default class ServerBotStore {
@@ -75,6 +105,12 @@ export default class ServerBotStore {
 
     pocs: { [key: string]: ProposalOpenContract } = {};
 
+    performance: TPerformance = {
+        total_stake: 0,
+        total_payout: 0,
+        total_profit: 0,
+    };
+
     constructor(root_store: RootStore) {
         this.root_store = root_store;
         makeObservable(this, {
@@ -85,6 +121,7 @@ export default class ServerBotStore {
             active_bot: observable,
             pocs: observable,
             journal: observable,
+            performance: observable,
 
             setListLoading: action,
             getBotList: action,
@@ -97,11 +134,14 @@ export default class ServerBotStore {
             resetTransactions: action,
             handleProposalOpenContract: action,
             resetJournal: action,
-            setJournalItem: action,
+            onJournalMessage: action,
+            setJournal: action,
+            setBotList: action,
         });
     }
 
     handleProposalOpenContract = (poc: ProposalOpenContract) => {
+        if (poc.contract_id) return;
         this.pocs = {
             ...this.pocs,
             [String(poc.contract_id)]: poc,
@@ -114,34 +154,61 @@ export default class ServerBotStore {
         if (data?.error) {
             // eslint-disable-next-line no-console
             console.dir(data.error);
-            return;
+            this.onJournalMessage(JOURNAL_TYPE.ERROR, {
+                msg: data.error.message,
+            });
         }
         try {
-            if (msg_type === 'proposal_open_contract') {
+            if (msg_type === 'proposal_open_contract' && !data.error) {
+                // eslint-disable-next-line no-console
+                // console.log(data.proposal_open_contract, 'proposal_open_contract');
                 this.handleProposalOpenContract(data.proposal_open_contract);
             }
 
             if (msg_type === 'bot_notification') {
-                const { message } = data.bot_notification;
+                const { message, error } = data.bot_notification;
+
+                if (error) {
+                    // eslint-disable-next-line no-console
+                    console.log(error, 'BOT SERVER ERROR');
+                    return;
+                }
                 const { bot_id } = echo_req;
 
                 if (isValidJSON(message)) {
                     const { msg, msg_type } = JSON.parse(message);
 
+                    // eslint-disable-next-line no-console
+                    console.log(msg);
+
                     if (msg_type === 'poc') {
+                        this.onJournalMessage(JOURNAL_TYPE.BUY, {
+                            msg: msg.longcode,
+                            bot_id,
+                            // time: getDate();
+                        });
+
+                        const transactions = this.transactions[bot_id];
+                        if (transactions && !(msg?.contract_id in transactions)) {
+                            this.onJournalMessage(JOURNAL_TYPE.BUY, {
+                                msg: msg.longcode,
+                                bot_id,
+                                // time: getDate();
+                            });
+                        }
+
                         this.setTransaction(msg, bot_id);
                     }
 
                     if (msg_type === 'transaction' && msg?.action === 'buy') {
-                        this.setJournalItem('BUY', msg, bot_id);
-                    }
-
-                    if (msg_type === 'transaction' && msg?.action === 'sell') {
-                        this.setJournalItem('SELL', msg, bot_id);
+                        this.onJournalMessage(JOURNAL_TYPE.BUY, { msg: msg.contract_id, bot_id });
                     }
 
                     if (msg_type === 'stop') {
-                        this.setJournalItem('STOP', msg, bot_id);
+                        const { reason } = msg;
+                        // eslint-disable-next-line no-console
+                        console.log(msg, 'STOP');
+                        this.onJournalMessage(JOURNAL_TYPE.INFO, { msg: reason?.message, bot_id });
                     }
                 }
             }
@@ -152,26 +219,46 @@ export default class ServerBotStore {
         }
     };
 
-    setJournalItem = (type: string, journal: any, bot_id: string) => {
-        // eslint-disable-next-line no-console
-        if (type === 'BUY') {
-            const contract_id = journal.contract_id;
-            // eslint-disable-next-line no-console
-            console.log(this.pocs, 'pocs');
-            const poc = this.pocs[String(contract_id)];
-            // eslint-disable-next-line no-console
-            console.log(poc, 'poc');
-            if (poc) {
+    onJournalMessage = (type: string, options: TJournalOptions) => {
+        const { msg = '', bot_id = '', amount = '', time = '' } = options;
+        switch (type) {
+            case JOURNAL_TYPE.INFO:
+                this.setJournal({ type: JOURNAL_TYPE.INFO, msg });
+                break;
+            case JOURNAL_TYPE.ERROR:
+                this.setJournal({ type: JOURNAL_TYPE.ERROR, msg });
+                break;
+            case JOURNAL_TYPE.BUY: {
                 const journal_item = {
-                    type: 'BUY',
-                    msg: poc?.longcode,
+                    type: JOURNAL_TYPE.BUY,
+                    msg,
+                    time,
                 };
-                this.journal = [...this.journal, journal_item];
+                this.setJournal(journal_item);
+                break;
             }
-        } else {
-            // eslint-disable-next-line no-console
-            console.log(journal, bot_id, 'setJournalItem');
+
+            case JOURNAL_TYPE.WON: {
+                if (amount) {
+                    this.setJournal({ type: JOURNAL_TYPE.WON, amount });
+                }
+                break;
+            }
+            case JOURNAL_TYPE.LOSS: {
+                if (amount) {
+                    this.setJournal({ type: JOURNAL_TYPE.LOSS, amount });
+                }
+                break;
+            }
+
+            default:
+                // eslint-disable-next-line no-console
+                console.log(options, bot_id, 'onJournalMessage');
         }
+    };
+
+    setJournal = (journal: TJournalItem) => {
+        this.journal = [...this.journal, journal];
     };
 
     resetJournal = () => {
@@ -235,11 +322,19 @@ export default class ServerBotStore {
                 console.dir(error);
                 return;
             }
-            this.bot_list = bot_list.bot_list;
-            const running_bot = this.bot_list.find(bot => bot.status === 'running');
+            const list = [...bot_list.bot_list];
+            this.setBotList(list);
+            const running_bot = list.find(bot => bot.status === 'running');
+
             if (running_bot?.bot_id) {
                 this.active_bot = running_bot;
                 this.subscribeToBotNotification(running_bot?.bot_id);
+            }
+
+            if (should_subscribe) {
+                this.onJournalMessage(JOURNAL_TYPE.INFO, {
+                    msg: localize('Bots loaded successfully.'),
+                });
             }
         } catch (e) {
             // eslint-disable-next-line no-console
@@ -247,6 +342,10 @@ export default class ServerBotStore {
         } finally {
             this.setListLoading(false);
         }
+    };
+
+    setBotList = (bot_list: TServerBotItem[]) => {
+        this.bot_list = [...bot_list];
     };
 
     setListLoading = (is_loading_bot_list: boolean) => {
@@ -296,6 +395,10 @@ export default class ServerBotStore {
             }
             // eslint-disable-next-line no-console
             console.log('BOT_CREATE', bot_create);
+            this.onJournalMessage(JOURNAL_TYPE.INFO, {
+                bot_id: bot_create.bot_id,
+                msg: bot_create.message,
+            });
             this.getBotList(false);
         } catch (e) {
             // eslint-disable-next-line no-console
@@ -317,6 +420,10 @@ export default class ServerBotStore {
 
             this.getBotList(false);
             botNotification(bot_remove.message);
+            this.onJournalMessage(JOURNAL_TYPE.INFO, {
+                msg: bot_remove.message || localize('Bot deleted successfully.'),
+                bot_id,
+            });
         } catch (e) {
             // eslint-disable-next-line no-console
             console.dir(e);
@@ -342,11 +449,13 @@ export default class ServerBotStore {
             const bot_list = [...this.bot_list];
             const index = bot_list.findIndex(bot => bot.bot_id === bot_id);
             bot_list[index].status = 'running';
-            this.bot_list = bot_list;
+            this.setBotList(bot_list);
             this.active_bot = bot_list[index];
 
-            // eslint-disable-next-line no-console
-            console.log('bot_start', bot_start);
+            this.onJournalMessage(JOURNAL_TYPE.INFO, {
+                msg: bot_start?.message || localize('Bot started successfully.'),
+                bot_id,
+            });
         } catch (e) {
             // eslint-disable-next-line no-console
             console.dir(e);
@@ -373,13 +482,16 @@ export default class ServerBotStore {
             const bot_list = [...this.bot_list];
             const index = bot_list.findIndex(bot => bot.bot_id === bot_id);
             bot_list[index].status = 'stopped';
-            this.bot_list = bot_list;
+            this.setBotList(bot_list);
             this.active_bot = {
                 ...this.active_bot,
                 status: 'stopped',
             };
-            // eslint-disable-next-line no-console
-            console.log('bot_stop', bot_stop);
+
+            this.onJournalMessage(JOURNAL_TYPE.INFO, {
+                msg: bot_stop?.message || localize('Bot stopped successfully.'),
+                bot_id,
+            });
         } catch (e) {
             // eslint-disable-next-line no-console
             console.dir(e);

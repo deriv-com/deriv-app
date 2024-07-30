@@ -297,7 +297,7 @@ const BinarySocketBase = (() => {
             verification_code,
         });
 
-    const cryptoWithdraw = ({ address, amount, verification_code, dry_run = 0 }) =>
+    const cryptoWithdraw = ({ address, amount, verification_code, estimated_fee_unique_id, dry_run = 0 }) =>
         deriv_api.send({
             cashier: 'withdraw',
             provider: 'crypto',
@@ -305,6 +305,7 @@ const BinarySocketBase = (() => {
             address,
             amount,
             verification_code,
+            estimated_fee_unique_id,
             dry_run,
         });
 

@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { observer, useStore } from '@deriv/stores';
 import { Formik, Form, FormikErrors, FormikHelpers } from 'formik';
 import { Button, Modal, Text } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { useTranslations, Localize } from '@deriv-com/translations';
 import TradingAssessmentRadioButton from './trading-assessment-radio-buttons';
 import TradingAssessmentDropdown from './trading-assessment-dropdown';
 import { getTradingAssessmentQuestions } from '../../Constants/trading-assessment-questions';
@@ -23,7 +23,7 @@ type TradingAssessmentFormProps = {
     should_move_to_next: boolean;
     setSubSectionIndex: (index: number) => void;
     is_independent_section: boolean;
-    is_mobile?: boolean;
+    is_responsive?: boolean;
 };
 
 const TradingAssessmentForm = observer(
@@ -38,9 +38,10 @@ const TradingAssessmentForm = observer(
         should_move_to_next,
         setSubSectionIndex,
         is_independent_section,
-        is_mobile,
+        is_responsive,
     }: TradingAssessmentFormProps) => {
         const { traders_hub } = useStore();
+        const { localize } = useTranslations();
         const { is_eu_user } = traders_hub;
         const assessment_questions = getTradingAssessmentQuestions();
         const stored_items = parseInt(localStorage.getItem('current_question_index') ?? '0');
@@ -271,7 +272,7 @@ const TradingAssessmentForm = observer(
                                         </div>
                                         <Modal.Footer
                                             has_separator
-                                            is_bypassed={is_mobile}
+                                            is_bypassed={is_responsive}
                                             className='trading-assessment__existing_btn '
                                         >
                                             <Button.Group className='trading-assessment__btn-group'>

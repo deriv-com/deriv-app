@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ToolbarWidgets from '../toolbar-widgets';
-import { isDesktop } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 
 jest.mock('Modules/SmartChart', () => ({
     ...jest.requireActual('Modules/SmartChart'),
@@ -13,22 +13,21 @@ jest.mock('Modules/SmartChart', () => ({
     ToolbarWidget: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isDesktop: jest.fn(() => false),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isMobile: true, isDesktop: false })),
 }));
 
 describe('<ToolBarWidgets />', () => {
     let mocked_props: React.ComponentProps<typeof ToolbarWidgets>;
     beforeEach(() => {
         mocked_props = {
-            is_mobile: true,
             position: 'top',
             updateChartType: jest.fn(),
             updateGranularity: jest.fn(),
         };
     });
-    it('Should render only mocked chart mode when isDestop is false', () => {
+    it('Should render only mocked chart mode when isMobile is true', () => {
         render(<ToolbarWidgets {...mocked_props} />);
         expect(screen.getByText(/mockedchartmode/i)).toBeInTheDocument();
         expect(screen.queryByText(/mockeddrawtools/i)).not.toBeInTheDocument();
@@ -36,8 +35,8 @@ describe('<ToolBarWidgets />', () => {
         expect(screen.queryByText(/mockedstudylegend/i)).not.toBeInTheDocument();
         expect(screen.queryByText(/mockedviews/i)).not.toBeInTheDocument();
     });
-    it('Should render all mocked widgets when isDestop is true', () => {
-        (isDesktop as jest.Mock).mockReturnValue(true);
+    it('Should render all mocked widgets when isDesktop is true', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: true, isMobile: false });
         render(<ToolbarWidgets {...mocked_props} />);
         expect(screen.getByText(/mockedchartmode/i)).toBeInTheDocument();
         expect(screen.getByText(/mockeddrawtools/i)).toBeInTheDocument();

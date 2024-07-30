@@ -6,14 +6,18 @@
     margin: auto;
     padding: 4rem;
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
+        max-width: 60rem;
         padding: 2rem;
         width: 100%;
     }
 
     &__eu-user {
-        @include mobile {
+        padding-bottom: 7rem;
+
+        @include mobile-or-tablet-screen {
             min-height: 650px;
+            padding-bottom: 11rem;
         }
     }
 

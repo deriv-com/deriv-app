@@ -1,11 +1,11 @@
-import InstrumentsIcons from '../../../../public/images/tradingInstruments';
+import getInstrumentsIcons from '../../../../public/images/tradingInstruments';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS, MARKET_TYPE } from '../../constants';
 import { JURISDICTION, MARKET_TYPE_SHORTCODE } from './constants';
 
 type THighlightedIconLabel = {
     highlighted: boolean;
-    icon: keyof typeof InstrumentsIcons;
+    icon: keyof ReturnType<typeof getInstrumentsIcons>;
     isAsterisk?: boolean;
     text: string;
 };
@@ -41,11 +41,11 @@ const getHighlightedIconLabel = (
         case MARKET_TYPE.SYNTHETIC:
             return [
                 { highlighted: true, icon: 'Forex', text: forexLabel },
-                { highlighted: false, icon: 'Stocks', text: 'Stocks' },
+                { highlighted: true, icon: 'Stocks', text: 'Stocks' },
                 { highlighted: true, icon: 'StockIndices', text: 'Stock indices' },
                 { highlighted: true, icon: 'Commodities', text: 'Commodities' },
                 { highlighted: true, icon: 'Cryptocurrencies', text: 'Cryptocurrencies' },
-                { highlighted: false, icon: 'ETF', text: 'ETFs' },
+                { highlighted: true, icon: 'ETF', text: 'ETFs' },
                 { highlighted: true, icon: 'Synthetics', text: 'Synthetic indices' },
                 { highlighted: true, icon: 'Baskets', text: 'Basket indices' },
                 { highlighted: true, icon: 'DerivedFX', text: 'Derived FX' },

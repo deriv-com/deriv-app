@@ -73,11 +73,28 @@
     }
 
     // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
-    &__button {
+    &__run-button {
         width: fit-content;
         height: 100% !important;
         border-start-end-radius: 0 !important;
         border-end-end-radius: 0 !important;
+        background-color: var(--purchase-main-1);
+
+        &:hover {
+            background-color: var(--purchase-main-1) !important;
+        }
+    }
+
+    &__stop-button {
+        width: fit-content;
+        height: 100% !important;
+        border-start-end-radius: 0 !important;
+        border-end-end-radius: 0 !important;
+        background-color: var(--button-primary-default);
+
+        &:hover {
+            background-color: var(--button-primary-default) !important;
+        }
     }
 
     &__container {
@@ -208,7 +225,7 @@
 }
 
 .dc-modal__container_animation__modal {
-    @include mobile {
+    @include mobile-or-tablet-screen {
         width: 31.2rem !important;
     }
 }

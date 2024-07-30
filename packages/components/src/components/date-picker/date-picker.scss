@@ -26,7 +26,7 @@
             border-color: var(--general-disabled);
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             input[type='date']::-webkit-calendar-picker-indicator {
                 background: transparent;
                 bottom: 0;
@@ -148,7 +148,7 @@
             }
         }
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         &--hint {
             margin-bottom: 5rem;
         }

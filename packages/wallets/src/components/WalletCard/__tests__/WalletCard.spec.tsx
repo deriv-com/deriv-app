@@ -1,23 +1,26 @@
 import React, { ComponentProps } from 'react';
-import { APIProvider, useBalance } from '@deriv/api-v2';
+import { APIProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../AuthProvider';
+import useAllBalanceSubscription from '../../../hooks/useAllBalanceSubscription';
 import WalletCard from '../WalletCard';
 
-jest.mock('@deriv/api-v2', () => ({
-    ...jest.requireActual('@deriv/api-v2'),
-    useBalance: jest.fn(() => ({
-        ...jest.requireActual('@deriv/api-v2').useBalance(),
+jest.mock('../../../hooks/useAllBalanceSubscription', () =>
+    jest.fn(() => ({
+        data: undefined,
         isLoading: false,
-    })),
-}));
+    }))
+);
+
+const mockUseAllBalanceSubscription = useAllBalanceSubscription as jest.MockedFunction<
+    typeof useAllBalanceSubscription
+>;
 
 describe('WalletCard', () => {
     let mockProps: ComponentProps<typeof WalletCard> = {
         balance: '100 USD',
         currency: 'USD',
         iconSize: 'lg',
-        landingCompanyName: 'SVG',
     };
     beforeEach(() => {
         jest.clearAllMocks();
@@ -25,7 +28,6 @@ describe('WalletCard', () => {
             balance: '100 USD',
             currency: 'USD',
             iconSize: 'lg',
-            landingCompanyName: 'SVG',
         };
     });
 
@@ -50,7 +52,6 @@ describe('WalletCard', () => {
         mockProps = {
             balance: '100 BTC',
             currency: 'BTC',
-            landingCompanyName: 'Deriv',
         };
         render(
             <APIProvider>
@@ -69,7 +70,6 @@ describe('WalletCard', () => {
             balance: '100 BTC',
             currency: 'BTC',
             isCarouselContent: true,
-            landingCompanyName: 'Deriv',
         };
         render(
             <APIProvider>
@@ -90,7 +90,6 @@ describe('WalletCard', () => {
             balance: '100 USD',
             currency: 'USD',
             isDemo: true,
-            landingCompanyName: 'Deriv',
         };
         render(
             <APIProvider>
@@ -105,10 +104,9 @@ describe('WalletCard', () => {
     });
 
     it('should show balance loader when balance is loading', () => {
-        (useBalance as jest.Mock).mockImplementation(() => ({
-            ...jest.requireActual('@deriv/api-v2').useBalance(),
+        (mockUseAllBalanceSubscription as jest.Mock).mockReturnValue({
             isLoading: true,
-        }));
+        });
         render(
             <APIProvider>
                 <WalletsAuthProvider>
@@ -121,8 +119,7 @@ describe('WalletCard', () => {
     });
 
     it('should show balance when balance is loaded', () => {
-        (useBalance as jest.Mock).mockImplementation(() => ({
-            ...jest.requireActual('@deriv/api-v2').useBalance(),
+        (mockUseAllBalanceSubscription as jest.Mock).mockReturnValue(() => ({
             isLoading: false,
         }));
         render(
@@ -133,17 +130,6 @@ describe('WalletCard', () => {
             </APIProvider>
         );
         expect(screen.getByText('100 USD')).toBeInTheDocument();
-    });
-
-    it('should show the landing company name when provided', () => {
-        render(
-            <APIProvider>
-                <WalletsAuthProvider>
-                    <WalletCard {...mockProps} />
-                </WalletsAuthProvider>
-            </APIProvider>
-        );
-        expect(screen.getByText('SVG')).toBeInTheDocument();
     });
 
     it('should show the icon with the correct size', () => {

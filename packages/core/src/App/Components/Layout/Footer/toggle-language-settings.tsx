@@ -2,14 +2,15 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import { Icon, Modal, Popover, Text } from '@deriv/components';
-import { useTranslations, Localize } from '@deriv-com/translations';
+import { useTranslations } from '@deriv-com/translations';
+import { Localize, localize } from '@deriv/translations'; // [TODO]: Remove this import after integrating Deriv app with new translation lib
 import 'Sass/app/modules/settings.scss';
 import LanguageSettings from '../../../Containers/SettingsModal/settings-language';
 import { TranslationFlag } from '@deriv/shared';
 
-const ToggleLanguageSettings = observer(() => {
+const ToggleLanguageSettings = observer(({ showPopover }: { showPopover?: boolean }) => {
     const { common, ui } = useStore();
-    const { localize, currentLang } = useTranslations();
+    const { currentLang } = useTranslations();
     const { is_language_settings_modal_on, toggleLanguageSettingsModal } = ui;
     const { is_language_changing } = common;
 
@@ -17,6 +18,22 @@ const ToggleLanguageSettings = observer(() => {
         'ic-settings--active': is_language_settings_modal_on,
         'ic-settings--disabled': is_language_changing,
     });
+
+    const content = (
+        <React.Fragment>
+            {TranslationFlag[currentLang] ? (
+                TranslationFlag[currentLang](18, 12)
+            ) : (
+                //TODOs: remove this when Korean flag is included in quill-icons
+                <Icon icon={`IcFlag${currentLang}`} data_testid='dt_icon' size={18} />
+            )}
+
+            <Text weight='bold' size='xxs' className='ic-settings-language__text'>
+                <Localize i18n_default_text={currentLang} />
+            </Text>
+        </React.Fragment>
+    );
+
     return (
         <React.Fragment>
             <a
@@ -25,23 +42,18 @@ const ToggleLanguageSettings = observer(() => {
                 onClick={toggleLanguageSettingsModal}
                 className={toggle_settings_class}
             >
-                <Popover alignment='top' message={localize('Language')} zIndex='9999'>
-                    {TranslationFlag[currentLang] ? (
-                        TranslationFlag[currentLang](18, 12)
-                    ) : (
-                        //TODOs: remove this when Korean flag is included in quill-icons
-                        <Icon icon={`IcFlag${currentLang}`} data_testid='dt_icon' size={18} />
-                    )}
-
-                    <Text weight='bold' size='xxs' className='ic-settings-language__text'>
-                        <Localize i18n_default_text={currentLang} />
-                    </Text>
-                </Popover>
+                {showPopover ? (
+                    <Popover alignment='top' message={localize('Language')} zIndex='9999'>
+                        {content}
+                    </Popover>
+                ) : (
+                    content
+                )}
             </a>
             <Modal
                 id='dt_settings_modal'
                 is_open={is_language_settings_modal_on}
-                title={localize('Select Language')}
+                title={localize('Select language')}
                 toggleModal={toggleLanguageSettingsModal}
                 width='616px'
                 should_header_stick_body={false}

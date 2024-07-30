@@ -1,8 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
+import { useDevice } from '@deriv-com/ui';
 import Text from '../text';
-import DesktopWrapper from '../desktop-wrapper';
-import MobileWrapper from '../mobile-wrapper';
 
 type TStep = { header: { active_title: string; title: string }; sub_step_count: number };
 
@@ -13,6 +12,8 @@ type TFormProgress = {
 };
 
 const FormProgress = ({ steps = [], current_step, sub_section_index }: TFormProgress) => {
+    const { isDesktop } = useDevice();
+
     React.useEffect(() => {
         animateCompleteBar();
     });
@@ -39,7 +40,7 @@ const FormProgress = ({ steps = [], current_step, sub_section_index }: TFormProg
 
     return (
         <React.Fragment>
-            <DesktopWrapper>
+            {isDesktop ? (
                 <div className='dc-form-progress'>
                     <div className='dc-form-progress__header'>
                         <Text as='h2' color='prominent' weight='bold' line_height='unset'>
@@ -83,13 +84,12 @@ const FormProgress = ({ steps = [], current_step, sub_section_index }: TFormProg
                         </div>
                     </div>
                 </div>
-            </DesktopWrapper>
-            <MobileWrapper>
+            ) : (
                 <div>
                     <div ref={el_completed_bar} className='dc-form-progress__steps--after' />
                     <div className='dc-form-progress--initial' />
                 </div>
-            </MobileWrapper>
+            )}
         </React.Fragment>
     );
 };

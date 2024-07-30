@@ -10,11 +10,16 @@
     &__label {
         display: flex;
         position: absolute;
-        margin-left: 3rem;
+        margin-left: 2rem;
         margin-top: 1rem;
-        gap: 2.4rem;
         z-index: 1;
         pointer-events: none;
+
+        &-item {
+            width: 5.6rem;
+            display: flex;
+            justify-content: center;
+        }
     }
 
     &__switcher {
@@ -27,9 +32,7 @@
         border-radius: 0.8rem;
 
         &-input {
-            width: 0;
-            height: 0;
-            opacity: 0;
+            visibility: hidden;
         }
 
         &:hover {

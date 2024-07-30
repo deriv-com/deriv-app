@@ -10,7 +10,7 @@ $header-height: 3.6em;
     $MARGIN_BOTTOM: #{$POSITIONS_DRAWER_MARGIN * 2};
 
     width: 240px;
-    height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$MARGIN_TOP} - #{$MARGIN_BOTTOM});
+    height: calc(100svh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$MARGIN_TOP} - #{$MARGIN_BOTTOM});
     margin-top: #{$MARGIN_TOP};
     position: fixed;
     z-index: 2;

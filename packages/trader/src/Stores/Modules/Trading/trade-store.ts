@@ -14,10 +14,8 @@ import {
     isBarrierSupported,
     isAccumulatorContract,
     isCryptocurrency,
-    isDesktop,
     isEmptyObject,
     isMarketClosed,
-    isMobile,
     isMultiplierContract,
     isTurbosContract,
     isVanillaFxContract,
@@ -193,6 +191,7 @@ export default class TradeStore extends BaseStore {
     is_market_closed = false;
     previous_symbol = '';
     active_symbols: ActiveSymbols = [];
+    has_symbols_for_v2 = false;
 
     form_components: string[] = [];
 
@@ -248,8 +247,10 @@ export default class TradeStore extends BaseStore {
     market_close_times: string[] = [];
 
     // Last Digit
+    digit_stats: number[] = [];
     last_digit = 5;
     is_mobile_digit_view_selected = false;
+    tick_data: TickSpotData | null = null;
 
     // Purchase
     proposal_info: TProposalInfo = {};
@@ -308,7 +309,9 @@ export default class TradeStore extends BaseStore {
         Analytics.trackEvent('ce_contracts_set_up_form', payload);
     }, 2000);
     debouncedSetChartStatus = debounce((status: boolean) => {
-        this.is_chart_loading = status;
+        runInAction(() => {
+            this.is_chart_loading = status;
+        });
     }); // no time is needed here, the only goal is to put the call into macrotasks queue
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests: Record<string, Partial<PriceProposalRequest>> = {};
@@ -378,6 +381,7 @@ export default class TradeStore extends BaseStore {
             contract_type: observable,
             contract_types_list: observable,
             currency: observable,
+            digit_stats: observable,
             duration_min_max: observable,
             duration_unit: observable,
             duration_units_list: observable,
@@ -393,6 +397,7 @@ export default class TradeStore extends BaseStore {
             has_equals_only: observable,
             has_open_accu_contract: computed,
             has_stop_loss: observable,
+            has_symbols_for_v2: observable,
             has_take_profit: observable,
             hovered_barrier: observable,
             hovered_contract_type: observable,
@@ -425,6 +430,8 @@ export default class TradeStore extends BaseStore {
             setHoveredBarrier: action.bound,
             sessions: observable,
             setDefaultGrowthRate: action.bound,
+            setDigitStats: action.bound,
+            setTickData: action.bound,
             short_barriers: observable,
             should_show_active_symbols_loading: observable,
             should_skip_prepost_lifecycle: observable,
@@ -437,6 +444,7 @@ export default class TradeStore extends BaseStore {
             stop_out: observable,
             symbol: observable,
             take_profit: observable,
+            tick_data: observable,
             tick_size_barrier_percentage: observable,
             ticks_history_stats: observable,
             trade_types: observable,
@@ -484,6 +492,7 @@ export default class TradeStore extends BaseStore {
             resetPreviousSymbol: action.bound,
             sendTradeParamsAnalytics: action.bound,
             setActiveSymbols: action.bound,
+            setActiveSymbolsV2: action.bound,
             setBarrierChoices: action.bound,
             setChartModeFromURL: action.bound,
             setChartStatus: action.bound,
@@ -910,11 +919,13 @@ export default class TradeStore extends BaseStore {
 
     onPurchase = debounce(this.processPurchase, 300);
 
-    processPurchase(proposal_id: string, price: string | number, type: string) {
+    processPurchase(proposal_id: string, price: string | number, type: string, isMobile: boolean) {
         if (!this.is_purchase_enabled) return;
         if (proposal_id) {
-            this.is_purchase_enabled = false;
-            this.is_purchasing_contract = true;
+            runInAction(() => {
+                this.is_purchase_enabled = false;
+                this.is_purchasing_contract = true;
+            });
             const is_tick_contract = this.duration_unit === 't';
             processPurchase(proposal_id, price).then(
                 action((response: TResponse<Buy, BuyContractResponse, 'buy'>) => {
@@ -936,7 +947,7 @@ export default class TradeStore extends BaseStore {
                             });
 
                             // Clear purchase info on mobile after toast box error disappears (mobile_toast_timeout = 3500)
-                            if (isMobile() && this.root_store.common?.services_error?.type === 'buy') {
+                            if (isMobile && this.root_store.common?.services_error?.type === 'buy') {
                                 setTimeout(() => {
                                     this.clearPurchaseInfo();
                                     this.requestProposal();
@@ -996,7 +1007,7 @@ export default class TradeStore extends BaseStore {
                             // and then set the chart view to the start_time
                             // draw the start time line and show longcode then mount contract
                             // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
-                            if (isDesktop()) {
+                            if (!isMobile) {
                                 this.root_store.ui.openPositionsDrawer();
                             }
                             this.proposal_info = {};
@@ -1249,6 +1260,14 @@ export default class TradeStore extends BaseStore {
         return isDigitTradeType(this.contract_type);
     }
 
+    setDigitStats(digit_stats: number[]) {
+        this.digit_stats = digit_stats;
+    }
+
+    setTickData(tick: TickSpotData | null) {
+        this.tick_data = tick;
+    }
+
     setMobileDigitView(bool: boolean) {
         this.is_mobile_digit_view_selected = bool;
     }
@@ -1295,16 +1314,20 @@ export default class TradeStore extends BaseStore {
     requestProposal() {
         const requests = createProposalRequests(this);
         if (Object.values(this.validation_errors).some(e => e.length)) {
-            this.proposal_info = {};
-            this.purchase_info = {};
+            runInAction(() => {
+                this.proposal_info = {};
+                this.purchase_info = {};
+            });
             this.forgetAllProposal();
             if (this.is_accumulator) this.resetAccumulatorData();
             return;
         }
 
         if (!isEmptyObject(requests)) {
-            this.proposal_requests = requests as Record<string, Partial<PriceProposalRequest>>;
-            this.purchase_info = {};
+            runInAction(() => {
+                this.proposal_requests = requests as Record<string, Partial<PriceProposalRequest>>;
+                this.purchase_info = {};
+            });
             Object.keys(this.proposal_requests).forEach(type => {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
             });
@@ -1814,6 +1837,11 @@ export default class TradeStore extends BaseStore {
 
     setStakeBoundary(type: string, min_stake?: number, max_stake?: number) {
         if (min_stake && max_stake) this.stake_boundary[type] = { min_stake, max_stake };
+    }
+
+    setActiveSymbolsV2(active_symbols: ActiveSymbols) {
+        this.active_symbols = active_symbols;
+        this.has_symbols_for_v2 = !!active_symbols.length;
     }
 
     setBarrierChoices(barrier_choices: string[]) {

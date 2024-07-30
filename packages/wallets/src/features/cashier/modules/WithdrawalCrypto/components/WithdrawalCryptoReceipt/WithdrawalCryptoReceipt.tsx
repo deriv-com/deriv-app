@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { LegacyArrowDown2pxIcon } from '@deriv/quill-icons';
-import { WalletButton, WalletCard, WalletText } from '../../../../../../components';
-import { LandingCompanyDetails } from '../../../../constants';
+import { Button } from '@deriv-com/ui';
+import { WalletCard, WalletText } from '../../../../../../components';
 import { TWithdrawalReceipt } from '../../types';
 import { WithdrawalCryptoDestinationAddress } from './components';
 import './WithdrawalCryptoReceipt.scss';
@@ -14,41 +14,48 @@ type TProps = {
 
 const WithdrawalCryptoReceipt: React.FC<TProps> = ({ onClose, withdrawalReceipt }) => {
     const history = useHistory();
-    const { address, amount, currency } = withdrawalReceipt;
+    const { address, amount, amountReceived, currency, transactionFee } = withdrawalReceipt;
 
     return (
         <div className='wallets-withdrawal-crypto-receipt'>
             <div className='wallets-withdrawal-crypto-receipt__accounts-info'>
-                <WalletCard
-                    balance={`-${amount} ${currency}`}
-                    currency={currency ?? ''}
-                    iconSize='md'
-                    landingCompanyName={LandingCompanyDetails.svg.shortcode}
-                />
+                <WalletCard balance={`-${amount} ${currency}`} currency={currency ?? ''} iconSize='md' />
                 <LegacyArrowDown2pxIcon iconSize='xs' />
                 <WithdrawalCryptoDestinationAddress address={address} />
             </div>
             <div className='wallets-withdrawal-crypto-receipt__withdrawal-info'>
-                <WalletText align='center' size='xl' weight='bold'>
-                    {amount} {currency}
-                </WalletText>
+                <div className='wallets-withdrawal-crypto-receipt__amount-received-info'>
+                    <WalletText align='center' as='p' size='sm'>
+                        Amount received
+                    </WalletText>
+                    <WalletText align='center' size='xl' weight='bold'>
+                        {transactionFee ? amountReceived : amount} {currency}
+                    </WalletText>
+                    {transactionFee && (
+                        <WalletText align='center' as='p' size='sm'>
+                            (Transaction fee: {transactionFee} {currency})
+                        </WalletText>
+                    )}
+                </div>
+
                 <WalletText align='center' as='p'>
                     Your withdrawal is currently in review. It will be processed within 24 hours. We&rsquo;ll send you
                     an email once your transaction has been processed.
                 </WalletText>
             </div>
             <div className='wallets-withdrawal-crypto-receipt__actions'>
-                <WalletButton
-                    color='white'
+                <Button
+                    color='black'
                     onClick={() => history.push('/wallet/transactions')}
                     size='lg'
+                    textSize='md'
                     variant='outlined'
                 >
                     View transactions
-                </WalletButton>
-                <WalletButton onClick={onClose} size='lg'>
+                </Button>
+                <Button borderWidth='sm' onClick={onClose} size='lg' textSize='md'>
                     Close
-                </WalletButton>
+                </Button>
             </div>
         </div>
     );

@@ -159,11 +159,14 @@ export type TPortfolioPosition = {
         Portfolio1 & {
             contract_update?: ContractUpdate;
         };
+    current_tick?: number;
     details?: string;
     display_name: string;
     entry_spot?: number;
+    high_barrier?: number;
     id?: number;
     indicative: number;
+    low_barrier?: number;
     payout?: number;
     purchase?: number;
     reference: number;
@@ -220,6 +223,7 @@ type TAccountsList = {
     idx?: string | number;
     is_dark_mode_on?: boolean;
     is_virtual?: boolean | number;
+    is_disabled?: boolean | number;
     loginid?: string;
     trader_accounts_list?: DetailsOfEachMT5Loginid[];
     mt5_login_list?: DetailsOfEachMT5Loginid[];
@@ -227,7 +231,7 @@ type TAccountsList = {
 }[];
 
 // balance is missing in @deriv/api-types
-type TActiveAccount = TAccount & {
+export type TActiveAccount = TAccount & {
     balance?: string | number;
     landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest';
     is_virtual: number;
@@ -468,6 +472,7 @@ type TClientStore = {
     is_proof_of_ownership_enabled: boolean;
     is_poa_expired: boolean;
     is_populating_dxtrade_account_list: boolean;
+    is_populating_ctrader_account_list: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
     is_high_risk: boolean;
@@ -541,7 +546,7 @@ type TClientStore = {
     updateMT5Status: () => Promise<void>;
     fetchAccountSettings: () => Promise<void>;
     setAccountSettings: (get_settings_response: GetSettings) => void;
-    upgradeable_landing_companies: unknown[];
+    upgradeable_landing_companies: string[];
     is_populating_mt5_account_list: boolean;
     landing_companies: LandingCompany;
     getChangeableFields: () => string[];
@@ -598,6 +603,7 @@ type TClientStore = {
     is_wallet_migration_request_is_in_progress: boolean;
     is_passkey_supported: boolean;
     setIsPasskeySupported: (value: boolean) => void;
+    setPasskeysStatusToCookie: (status: 'available' | 'not_available') => void;
     should_show_effortless_login_modal: boolean;
     setShouldShowEffortlessLoginModal: (value: boolean) => void;
     fetchShouldShowEffortlessLoginModal: () => void;
@@ -606,6 +612,9 @@ type TClientStore = {
     subscribeToExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
     unsubscribeFromExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
     unsubscribeFromAllExchangeRates: () => void;
+    virtual_account_loginid?: string;
+    is_cr_account: boolean;
+    is_mf_account: boolean;
 };
 
 type TCommonStoreError = {
@@ -617,6 +626,7 @@ type TCommonStoreError = {
     should_clear_error_on_click?: boolean;
     should_redirect?: boolean;
     should_show_refresh?: boolean;
+    setError?: (has_error: boolean, error: React.ReactNode | null) => void;
     type?: string;
 };
 
@@ -683,6 +693,7 @@ type TUiStore = {
     is_dark_mode_on: boolean;
     is_loading: boolean;
     is_reports_visible: boolean;
+    is_reset_password_modal_visible: boolean;
     is_route_modal_on: boolean;
     is_language_settings_modal_on: boolean;
     is_verification_modal_visible: boolean;
@@ -703,7 +714,12 @@ type TUiStore = {
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
-    notification_messages_ui: React.ElementType;
+    notification_messages_ui: (props?: {
+        is_notification_loaded?: boolean;
+        is_mt5?: boolean;
+        stopNotificationLoading?: () => void;
+        show_trade_notifications?: boolean;
+    }) => JSX.Element;
     setChartCountdown: (value: boolean) => void;
     populateFooterExtensions: (
         footer_extensions:
@@ -740,6 +756,7 @@ type TUiStore = {
     ) => void;
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: Omit<string, TRoutes> | TRoutes) => void;
+    should_show_real_accounts_list?: boolean;
     toggleAccountsDialog: (value?: boolean) => void;
     toggleAccountSettings: (props?: boolean) => void;
     toggleCashier: () => void;
@@ -749,6 +766,7 @@ type TUiStore = {
     togglePositionsDrawer: () => void;
     toggleReadyToDepositModal: () => void;
     toggleResetEmailModal: (state_change: boolean) => void;
+    toggleResetPasswordModal: (state_change: boolean) => void;
     toggleServicesErrorModal: (is_visible: boolean) => void;
     toggleSetCurrencyModal: () => void;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
@@ -801,6 +819,10 @@ type TUiStore = {
     toggleKycInformationSubmittedModal: () => void;
     setAccountSwitcherDisabledMessage: (message?: string) => void;
     is_set_currency_modal_visible: boolean;
+    should_show_deposit_now_or_later_modal: boolean;
+    setShouldShowDepositNowOrLaterModal: (value: boolean) => void;
+    should_show_crypto_transaction_processing_modal: boolean;
+    setShouldShowCryptoTransactionProcessingModal: (value: boolean) => void;
 };
 
 type TPortfolioStore = {
@@ -916,6 +938,7 @@ type TContractTradeStore = {
     }>;
     onUnmount: () => void;
     prev_chart_type: string;
+    prev_contract: TContractStore | Record<string, never>;
     prev_granularity: number | null;
     removeContract: (data: { contract_id: string }) => void;
     savePreviousChartMode: (chart_type: string, granularity: number | null) => void;
@@ -1078,12 +1101,13 @@ type TTradersHubStore = {
     available_dxtrade_accounts: TAvailableCFDAccounts[];
     available_ctrader_accounts: TAvailableCFDAccounts[];
     is_demo_low_risk: boolean;
-    is_mt5_notification_modal_visible: boolean;
-    setMT5NotificationModal: (value: boolean) => void;
     has_any_real_account: boolean;
     startTrade: (platform?: TPlatform, existing_account?: DetailsOfEachMT5Loginid) => void;
     getAccount: () => void;
     showTopUpModal: (existing_account?: DetailsOfEachMT5Loginid) => void;
+    is_regulators_compare_modal_visible: boolean;
+    is_setup_real_account_or_go_to_demo_modal_visible: boolean;
+    setIsSetupRealAccountOrGoToDemoModalVisible: (value: boolean) => void;
 };
 
 type TContractReplay = {

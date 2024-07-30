@@ -1,6 +1,13 @@
 import { TPortfolioPosition } from '@deriv/stores/types';
-import { CONTRACT_TYPES } from '@deriv/shared';
-import { getFilteredContractTypes, filterPositions, getProfit, getTotalPositionsProfit } from '../positions-utils';
+import { CONTRACT_TYPES, routes } from '@deriv/shared';
+import {
+    filterPositions,
+    getFilteredContractTypes,
+    getProfit,
+    getTotalPositionsProfit,
+    setPositionURLParams,
+    TAB_NAME,
+} from '../positions-utils';
 
 const mockedActivePositions = [
     {
@@ -287,8 +294,9 @@ const mockedActivePositions = [
 ] as TPortfolioPosition[];
 
 describe('getFilteredContractTypes', () => {
-    it('should return empty array if filters are empty', () => {
+    it('should return empty array if filters are empty or undefined', () => {
         expect(getFilteredContractTypes([])).toEqual([]);
+        expect(getFilteredContractTypes()).toEqual([]);
     });
 
     it('should return empty array if contract type filter does not exist in config', () => {
@@ -300,18 +308,29 @@ describe('getFilteredContractTypes', () => {
             CONTRACT_TYPES.VANILLA.CALL,
             CONTRACT_TYPES.VANILLA.PUT,
         ]);
-        expect(getFilteredContractTypes(['Rise/Fall'])).toEqual([CONTRACT_TYPES.CALL, CONTRACT_TYPES.PUT]);
+        expect(getFilteredContractTypes(['Rise/Fall'])).toEqual([
+            CONTRACT_TYPES.CALL,
+            CONTRACT_TYPES.PUT,
+            CONTRACT_TYPES.CALLE,
+            CONTRACT_TYPES.PUTE,
+        ]);
     });
 
     it('should return array with contract type filters without duplicates', () => {
         expect(getFilteredContractTypes(['Rise/Fall', 'Higher/Lower'])).toEqual([
             CONTRACT_TYPES.CALL,
             CONTRACT_TYPES.PUT,
+            CONTRACT_TYPES.CALLE,
+            CONTRACT_TYPES.PUTE,
         ]);
     });
 });
 
 describe('filterPositions', () => {
+    it('should return positions if filter array was empty', () => {
+        expect(filterPositions(mockedActivePositions, [])).toEqual(mockedActivePositions);
+    });
+
     it('should filter positions based on passed filter array', () => {
         expect(filterPositions(mockedActivePositions, ['Multipliers'])).toEqual([mockedActivePositions[1]]);
 
@@ -337,5 +356,49 @@ describe('getProfit', () => {
 describe('getTotalPositionsProfit', () => {
     it('should return correct total profit, based on all positions', () => {
         expect(getTotalPositionsProfit(mockedActivePositions)).toEqual(-12.27);
+    });
+});
+
+describe('setPositionURLParams', () => {
+    const originalWindowLocation = window.location;
+
+    beforeEach(() => {
+        Object.defineProperty(window, 'location', {
+            value: {
+                hostname: 'https://localhost:8443/',
+                pathname: routes.trader_positions,
+            },
+        });
+    });
+
+    afterEach(() => {
+        Object.defineProperty(window, 'location', {
+            value: originalWindowLocation,
+        });
+        location.search = '';
+    });
+
+    const spyHistoryReplaceState = jest.spyOn(window.history, 'replaceState');
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it('should set tab_name query param into URL based on the received value', () => {
+        setPositionURLParams(TAB_NAME.OPEN);
+        expect(spyHistoryReplaceState).toBeCalledWith(
+            {},
+            document.title,
+            `${routes.trader_positions}?tab_name=${TAB_NAME.OPEN}`
+        );
+    });
+
+    it('should set tab_name query param into URL based on the received value', () => {
+        setPositionURLParams(TAB_NAME.CLOSED);
+        expect(spyHistoryReplaceState).toBeCalledWith(
+            {},
+            document.title,
+            `${routes.trader_positions}?tab_name=${TAB_NAME.CLOSED}`
+        );
     });
 });

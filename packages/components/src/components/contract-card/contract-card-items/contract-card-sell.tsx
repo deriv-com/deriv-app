@@ -16,7 +16,7 @@ const ContractCardSell = ({ contract_info, getCardLabels, is_sell_requested, onC
     const is_valid_to_sell = isValidToSell(contract_info);
     const should_show_sell =
         (hasContractEntered(contract_info) ||
-            isForwardStarting(contract_info?.shortcode ?? '', contract_info.purchase_time)) &&
+            isForwardStarting(contract_info?.shortcode ?? '', contract_info?.purchase_time)) &&
         isOpen(contract_info);
 
     const onClick = (ev: React.MouseEvent<HTMLButtonElement>) => {

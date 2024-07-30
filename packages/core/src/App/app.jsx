@@ -7,9 +7,13 @@ import { BreakpointProvider } from '@deriv/quill-design';
 import { APIProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
+import { Loading } from '@deriv/components';
 import {
     POIProvider,
+    getPositionsV2TabIndexFromURL,
     initFormErrorMessages,
+    isDTraderV2,
+    routes,
     setSharedCFDText,
     setUrlLanguage,
     setWebsocket,
@@ -28,7 +32,6 @@ import 'Sass/app.scss';
 const AppWithoutTranslation = ({ root_store }) => {
     const i18nInstance = initializeI18n({
         cdnUrl: `${process.env.CROWDIN_URL}/${process.env.ACC_TRANSLATION_PATH}`, // https://translations.deriv.com/deriv-app-accounts/staging/translations
-        useSuspense: false,
     });
     const l = window.location;
     const base = l.pathname.split('/')[1];
@@ -42,7 +45,8 @@ const AppWithoutTranslation = ({ root_store }) => {
     const initCFDStore = () => {
         root_store.modules.attachModule('cfd', new CFDStore({ root_store, WS }));
     };
-    const language = getInitialLanguage();
+    const { preferred_language } = root_store.client;
+    const language = preferred_language ?? getInitialLanguage();
 
     React.useEffect(() => {
         const dir = i18n.dir(i18n.language.toLowerCase());
@@ -104,6 +108,18 @@ const AppWithoutTranslation = ({ root_store }) => {
         }
     }, [root_store.client.email]);
 
+    const getLoader = () =>
+        isDTraderV2() ? (
+            <Loading.DTraderV2
+                initial_app_loading
+                is_contract_details={location.pathname.startsWith('/contract/')}
+                is_positions={location.pathname === routes.trader_positions}
+                is_closed_tab={getPositionsV2TabIndexFromURL() === 1}
+            />
+        ) : (
+            <Loading />
+        );
+
     return (
         <>
             {is_translation_loaded ? (
@@ -114,7 +130,10 @@ const AppWithoutTranslation = ({ root_store }) => {
                                 <POIProvider>
                                     <P2PSettingsProvider>
                                         <TranslationProvider defaultLang={language} i18nInstance={i18nInstance}>
-                                            <AppContent passthrough={platform_passthrough} />
+                                            {/* This is required as translation provider uses suspense to reload language */}
+                                            <React.Suspense fallback={getLoader()}>
+                                                <AppContent passthrough={platform_passthrough} />
+                                            </React.Suspense>
                                         </TranslationProvider>
                                     </P2PSettingsProvider>
                                 </POIProvider>

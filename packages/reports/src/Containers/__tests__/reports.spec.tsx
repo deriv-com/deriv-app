@@ -7,6 +7,7 @@ import { Analytics } from '@deriv-com/analytics';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';
 import userEvent from '@testing-library/user-event';
+import ui from '@deriv-com/ui';
 
 jest.mock('@deriv-com/analytics', () => ({
     Analytics: {
@@ -45,9 +46,17 @@ jest.mock('@deriv/components', () => ({
             {children}
         </div>
     )),
-    VerticalTab: (props: any) => {
+    VerticalTab: (props: { list: { label: string }[] }) => {
         mockVerticalTab(props);
-        return <div>Vertical Tab</div>;
+
+        return (
+            <>
+                <div>Vertical Tab </div>
+                {props.list.map(item => (
+                    <div key={item.label}>{item.label}</div>
+                ))}
+            </>
+        );
     },
     SelectNative: (props: { onChange: React.ChangeEventHandler<HTMLSelectElement> | undefined; list_items: any[] }) => {
         mockSelectNative(props);
@@ -151,10 +160,18 @@ describe('Reports', () => {
     });
 
     test('navigates to a different route on select change', () => {
+        const spy = jest.spyOn(ui, 'useDevice').mockImplementation(() => ({
+            isDesktop: false,
+            isMobile: true,
+            isTablet: false,
+            isTabletPortrait: false,
+        }));
         const history = createMemoryHistory();
         renderReports(store, history);
         userEvent.selectOptions(screen.getByRole('combobox'), route2);
         expect(history.location.pathname).toBe(route2);
+
+        spy.mockRestore();
     });
 
     test('calls routeBackInApp on close button click', () => {

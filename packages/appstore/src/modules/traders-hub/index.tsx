@@ -1,13 +1,16 @@
 import React, { lazy, Suspense } from 'react';
-import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
-import { isDesktop, routes, checkServerMaintenance, startPerformanceEventTimer } from '@deriv/shared';
+import { ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
+import { routes, checkServerMaintenance, startPerformanceEventTimer } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import CFDsListing from 'Components/cfds-listing';
 import ModalManager from 'Components/modals/modal-manager';
 import MainTitleBar from 'Components/main-title-bar';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
+import AfterSignupFlow from 'Components/after-signup-flow';
+import Disclaimer from 'Components/disclaimer';
 import { useContentFlag, useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import classNames from 'classnames';
 import './traders-hub.scss';
@@ -40,14 +43,9 @@ const OrderedPlatformSections = observer(
 );
 
 const TradersHub = observer(() => {
+    const { isDesktop } = useDevice();
     const { traders_hub, client, ui } = useStore();
-    const {
-        notification_messages_ui: Notifications,
-        openRealAccountSignup,
-        is_from_signup_account,
-        is_mobile,
-        setIsFromSignupAccount,
-    } = ui;
+    const { notification_messages_ui: Notifications } = ui;
     const {
         is_landing_company_loaded,
         is_logged_in,
@@ -55,13 +53,12 @@ const TradersHub = observer(() => {
         is_logging_in,
         is_account_setting_loaded,
         is_mt5_allowed,
-        has_active_real_account,
         website_status,
         has_any_real_account,
         is_eu,
     } = client;
 
-    const { is_cr_demo, is_eu_demo, is_eu_real } = useContentFlag();
+    const { is_eu_demo, is_eu_real } = useContentFlag();
     const { selected_platform_type, setTogglePlatformType, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef<HTMLDivElement>(null);
 
@@ -69,36 +66,11 @@ const TradersHub = observer(() => {
         (!is_switching && !is_logging_in && is_account_setting_loaded && is_landing_company_loaded) ||
         checkServerMaintenance(website_status);
 
-    const [direct_to_real_account_creation] = useGrowthbookGetFeatureValue({
-        featureFlag: 'direct-real-account-creation-flow',
-        defaultValue: false,
-    });
-
     React.useEffect(() => {
         if (is_eu_user) {
             setTogglePlatformType('cfd');
         }
-        if (!has_active_real_account && is_from_signup_account && is_logged_in) {
-            if (direct_to_real_account_creation && is_cr_demo) {
-                openRealAccountSignup('svg');
-                setIsFromSignupAccount(false);
-            } else if (is_eu_demo) {
-                openRealAccountSignup('maltainvest');
-                setIsFromSignupAccount(false);
-            }
-        }
-    }, [
-        is_cr_demo,
-        is_eu_demo,
-        has_active_real_account,
-        is_eu_user,
-        is_from_signup_account,
-        is_logged_in,
-        direct_to_real_account_creation,
-        openRealAccountSignup,
-        setIsFromSignupAccount,
-        setTogglePlatformType,
-    ]);
+    }, [is_eu_user, setTogglePlatformType]);
 
     React.useEffect(() => {
         if (is_eu_user) setTogglePlatformType('cfd');
@@ -143,9 +115,44 @@ const TradersHub = observer(() => {
         return <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />;
     };
 
+    const desktopContent = !is_landing_company_loaded ? (
+        <OrderedPlatformSections />
+    ) : (
+        <OrderedPlatformSections is_cfd_visible={is_mt5_allowed} />
+    );
+
+    const mobileTabletContent = (
+        <React.Fragment>
+            {is_landing_company_loaded ? (
+                is_mt5_allowed && (
+                    <ButtonToggle
+                        buttons_arr={is_eu_user ? platform_toggle_options_eu : platform_toggle_options}
+                        className='traders-hub__button-toggle'
+                        has_rounded_button
+                        is_traders_hub={window.location.pathname === routes.traders_hub}
+                        name='platform_type'
+                        onChange={platformTypeChange}
+                        value={selected_platform_type}
+                    />
+                )
+            ) : (
+                <ButtonToggleLoader />
+            )}
+            {is_landing_company_loaded && !is_mt5_allowed && (
+                <div className='traders-hub--mt5-not-allowed'>
+                    <Text size='s' weight='bold' color='prominent'>
+                        <Localize i18n_default_text='Multipliers' />
+                    </Text>
+                </div>
+            )}
+            {getOrderedPlatformSections()}
+        </React.Fragment>
+    );
+
     return (
         <React.Fragment>
-            <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop()}>
+            <AfterSignupFlow />
+            <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop}>
                 {can_show_notify && <Notifications />}
                 <div
                     id='traders-hub'
@@ -162,49 +169,11 @@ const TradersHub = observer(() => {
                     )}
 
                     <MainTitleBar />
-                    <DesktopWrapper>
-                        {!is_landing_company_loaded ? (
-                            <OrderedPlatformSections />
-                        ) : (
-                            <OrderedPlatformSections is_cfd_visible={is_mt5_allowed} />
-                        )}
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        {is_landing_company_loaded ? (
-                            is_mt5_allowed && (
-                                <ButtonToggle
-                                    buttons_arr={is_eu_user ? platform_toggle_options_eu : platform_toggle_options}
-                                    className='traders-hub__button-toggle'
-                                    has_rounded_button
-                                    is_traders_hub={window.location.pathname === routes.traders_hub}
-                                    name='platform_type'
-                                    onChange={platformTypeChange}
-                                    value={selected_platform_type}
-                                />
-                            )
-                        ) : (
-                            <ButtonToggleLoader />
-                        )}
-                        {is_landing_company_loaded && !is_mt5_allowed && (
-                            <div className='traders-hub--mt5-not-allowed'>
-                                <Text size='s' weight='bold' color='prominent'>
-                                    <Localize i18n_default_text='Multipliers' />
-                                </Text>
-                            </div>
-                        )}
-                        {getOrderedPlatformSections()}
-                    </MobileWrapper>
+                    {isDesktop ? desktopContent : mobileTabletContent}
                     <ModalManager />
                 </div>
             </Div100vhContainer>
-            {is_eu_user && (
-                <div data-testid='dt_traders_hub_disclaimer' className='disclaimer'>
-                    <Text align='left' className='disclaimer-text' size={is_mobile ? 'xxxs' : 'xs'}>
-                        <Localize i18n_default_text='The products offered on our website are complex derivative products that carry a significant risk of potential loss. CFDs are complex instruments with a high risk of losing money rapidly due to leverage. 67.28% of retail investor accounts lose money when trading CFDs with this provider. You should consider whether you understand how these products work and whether you can afford to take the high risk of losing your money.' />
-                    </Text>
-                    <div className='disclaimer__bottom-plug' />
-                </div>
-            )}
+            {is_eu_user && <Disclaimer />}
         </React.Fragment>
     );
 });

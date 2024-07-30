@@ -2,7 +2,7 @@
 import React, { ComponentProps } from 'react';
 import * as Formik from 'formik';
 import { APIProvider } from '@deriv/api-v2';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import WalletsAuthProvider from '../../../../../../../AuthProvider';
 import { TransferProvider } from '../../../provider';
@@ -248,16 +248,21 @@ describe('TransferFormAmountInput', () => {
         userEvent.tab();
         expect(field).toHaveValue('0.00000123');
     });
-    it('refetches exchangeRatesAndLimits when the countdown is complete', () => {
+
+    it('refetches exchangeRatesAndLimits when the countdown is complete', async () => {
         const config = {
             fromAccount: ACCOUNTS[1], // BTC account
             fromAmount: 100,
             toAmount: 0.00000001,
         };
-        renderField('toAmount', 'USD', config);
+
+        await act(async () => {
+            renderField('toAmount', 'USD', config);
+        });
         expect(mockRefetchAccountLimits).toHaveBeenCalled();
         expect(mockRefetchExchangeRates).toHaveBeenCalled();
     });
+
     it('renders the component when the currency of the fromAccount is not provided', () => {
         const config = {
             fromAmount: 100,
@@ -266,6 +271,7 @@ describe('TransferFormAmountInput', () => {
         renderField('toAmount', 'USD', config);
         expect(screen.getByText('Estimated amount')).toBeInTheDocument();
     });
+
     it('calls setValues with the same amount for the fromAmount and toAmount when the currency is the same for both accounts', () => {
         const mockSetValues = jest.fn((callback: unknown) => {
             if (typeof callback === 'function') {
@@ -296,7 +302,8 @@ describe('TransferFormAmountInput', () => {
         expect(returnedFromAmount).toEqual(1.1);
         expect(returnedToAmount).toEqual(1.1);
     });
-    it('sets the toAmount when isFromAmountField is true', () => {
+
+    it('sets the toAmount when isFromAmountField is true', async () => {
         const toAccount = ACCOUNTS[1]; // BTC account
         const mockSetFieldValue = jest.fn();
         const useFormikContextSpy = jest.spyOn(Formik, 'useFormikContext');
@@ -320,7 +327,10 @@ describe('TransferFormAmountInput', () => {
             fromAmount: 1000,
             toAccount,
         };
-        renderField('fromAmount', 'USD', config);
+        await act(async () => {
+            renderField('fromAmount', 'USD', config);
+        });
+
         expect(mockSetFieldValue).toHaveBeenCalledWith('toAmount', 0.015);
     });
 });

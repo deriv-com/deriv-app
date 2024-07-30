@@ -1,4 +1,5 @@
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const DefinePlugin = require('webpack').DefinePlugin;
 const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
 
@@ -18,13 +19,13 @@ const svg_loaders = [
         options: {
             jsx: true,
             svgo: {
+                floatPrecision: 3,
                 plugins: [
                     { removeTitle: false },
                     { removeUselessStrokeAndFill: false },
                     { removeUnknownsAndDefaults: false },
                     { removeViewBox: false },
                 ],
-                floatPrecision: 3,
             },
         },
     },
@@ -34,35 +35,35 @@ module.exports = function (env) {
     const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
 
     return {
+        devtool: is_release ? 'source-map' : 'eval-cheap-module-source-map',
         entry: {
             index: path.resolve(__dirname, './src', 'index.tsx'),
         },
+        externals: [
+            {
+                '@deriv-com/analytics': '@deriv-com/analytics',
+                '@deriv-com/translations': '@deriv-com/translations',
+                classnames: true,
+                moment: true,
+                react: true,
+                'react-dom': true,
+                'react-router-dom': true,
+            },
+        ],
         mode: is_release ? 'production' : 'development',
-        output: {
-            path: path.resolve(__dirname, './dist'),
-            publicPath: base,
-            filename: 'wallets/js/[name].js',
-            libraryExport: 'default',
-            library: '@deriv/wallets',
-            libraryTarget: 'umd',
-            chunkFilename: 'wallets/js/wallets.[name].[contenthash].js',
-        },
-        resolve: {
-            extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        },
         module: {
             rules: [
                 {
                     // https://github.com/webpack/webpack/issues/11467
-                    test: /\.m?js/,
                     include: /node_modules/,
                     resolve: {
                         fullySpecified: false,
                     },
+                    test: /\.m?js/,
                 },
                 {
-                    test: /\.(js|jsx|ts|tsx)$/,
                     exclude: /node_modules/,
+                    test: /\.(js|jsx|ts|tsx)$/,
                     use: [
                         {
                             loader: 'babel-loader',
@@ -79,8 +80,8 @@ module.exports = function (env) {
                 //TODO: Uncomment this line when type script migrations on all packages done
                 // plugins: [new CleanWebpackPlugin(), new ForkTsCheckerWebpackPlugin()],
                 {
-                    test: input => is_release && /\.js$/.test(input),
                     loader: 'source-map-loader',
+                    test: input => is_release && /\.js$/.test(input),
                 },
                 {
                     test: /\.(sc|sa|c)ss$/,
@@ -103,8 +104,8 @@ module.exports = function (env) {
                         {
                             loader: 'resolve-url-loader',
                             options: {
-                                sourceMap: true,
                                 keepQuery: true,
+                                sourceMap: true,
                             },
                         },
                         'sass-loader',
@@ -123,20 +124,20 @@ module.exports = function (env) {
                     ],
                 },
                 {
-                    test: /\.svg$/,
-                    issuer: /\/packages\/wallets\/.*(\/)?.*.scss/,
                     exclude: /node_modules/,
-                    include: /public\//,
-                    type: 'asset/resource',
                     generator: {
                         filename: 'wallets/public/[name].[contenthash][ext]',
                     },
+                    include: /public\//,
+                    issuer: /\/packages\/wallets\/.*(\/)?.*.scss/,
+                    test: /\.svg$/,
+                    type: 'asset/resource',
                 },
                 {
-                    test: /\.svg$/,
-                    issuer: /\/packages\/wallets\/.*(\/)?.*.tsx/,
                     exclude: /node_modules/,
                     include: /public\//,
+                    issuer: /\/packages\/wallets\/.*(\/)?.*.tsx/,
+                    test: /\.svg$/,
                     use: svg_loaders,
                 },
             ],
@@ -146,56 +147,65 @@ module.exports = function (env) {
             minimizer: is_release
                 ? [
                       new TerserPlugin({
-                          test: /\.js$/,
                           parallel: 2,
+                          test: /\.js$/,
                       }),
                       new CssMinimizerPlugin(),
                   ]
                 : [],
             splitChunks: {
-                chunks: 'all',
-                minSize: 102400,
-                minSizeReduction: 102400,
-                minChunks: 1,
-                maxAsyncRequests: 30,
-                maxInitialRequests: 3,
                 automaticNameDelimiter: '~',
-                enforceSizeThreshold: 500000,
                 cacheGroups: {
+                    components: {
+                        name: 'components',
+                        test: module => {
+                            return module.resource && module.resource.includes('src/components/Base');
+                        },
+                    },
                     default: {
                         minChunks: 2,
                         minSize: 102400,
                         priority: -20,
                         reuseExistingChunk: true,
                     },
-                    components: {
-                        test: module => {
-                            return module.resource && module.resource.includes('src/components/Base');
-                        },
-                        name: 'components',
-                    },
                     defaultVendors: {
                         idHint: 'vendors',
-                        test: /[\\/]node_modules[\\/]/,
                         priority: -10,
+                        test: /[\\/]node_modules[\\/]/,
                     },
                     shared: {
-                        test: /[\\/]shared[\\/]/,
-                        name: 'shared',
                         chunks: 'all',
+                        name: 'shared',
+                        test: /[\\/]shared[\\/]/,
                     },
                 },
+                chunks: 'all',
+                enforceSizeThreshold: 500000,
+                maxAsyncRequests: 30,
+                maxInitialRequests: 3,
+                minChunks: 1,
+                minSize: 102400,
+                minSizeReduction: 102400,
             },
         },
-        devtool: is_release ? 'source-map' : 'eval-cheap-module-source-map',
-        externals: [
-            {
-                react: true,
-                'react-dom': true,
-                classnames: true,
-                'react-router-dom': true,
-                moment: true,
-            },
+        output: {
+            chunkFilename: 'wallets/js/wallets.[name].[contenthash].js',
+            filename: 'wallets/js/[name].js',
+            library: '@deriv/wallets',
+            libraryExport: 'default',
+            libraryTarget: 'umd',
+            path: path.resolve(__dirname, './dist'),
+            publicPath: base,
+        },
+        plugins: [
+            new DefinePlugin({
+                'process.env.CROWDIN_URL': JSON.stringify('https://translations.deriv.com'),
+                'process.env.REMOTE_CONFIG_URL': JSON.stringify(process.env.REMOTE_CONFIG_URL),
+                'process.env.WALLETS_TRANSLATION_PATH': JSON.stringify('deriv-app-wallets/staging'),
+            }),
         ],
+        resolve: {
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        },
     };
 };

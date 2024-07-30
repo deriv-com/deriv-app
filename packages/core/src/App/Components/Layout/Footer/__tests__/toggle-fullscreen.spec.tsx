@@ -11,7 +11,7 @@ describe('ToggleFullScreen Component', () => {
     });
 
     it('should have "Full screen" text when "is_full_screen" is "false"', () => {
-        render(<ToggleFullScreen />);
+        render(<ToggleFullScreen showPopover />);
         const popover_wrapper = screen.getByTestId('dt_popover_wrapper');
         userEvent.hover(popover_wrapper);
         const message = screen.getByText(/full screen/i);

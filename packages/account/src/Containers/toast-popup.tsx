@@ -1,13 +1,9 @@
 import clsx from 'clsx';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { MobileWrapper, Toast } from '@deriv/components';
+import { Toast } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-
-type TToastPopUp = {
-    portal_id?: string;
-    className: string;
-} & React.ComponentProps<typeof Toast>;
+import { useDevice } from '@deriv-com/ui';
 
 type TNetworkStatusToastError = {
     status: string;
@@ -15,27 +11,12 @@ type TNetworkStatusToastError = {
     message: string;
 };
 
-export const ToastPopup = ({
-    portal_id = 'popup_root',
-    children,
-    className,
-    ...props
-}: React.PropsWithChildren<TToastPopUp>) => {
-    const new_portal_id = document.getElementById(portal_id);
-    if (!new_portal_id) return null;
-    return ReactDOM.createPortal(
-        <Toast className={clsx('dc-toast-popup', className)} {...props}>
-            {children}
-        </Toast>,
-        new_portal_id
-    );
-};
-
 /**
  * Network status Toast components
  */
 const NetworkStatusToastError = ({ status, portal_id, message }: TNetworkStatusToastError) => {
     const [is_open, setIsOpen] = React.useState(false);
+    const { isDesktop } = useDevice();
     const new_portal_id = document.getElementById(portal_id);
 
     if (!new_portal_id || !message) return null;
@@ -49,7 +30,7 @@ const NetworkStatusToastError = ({ status, portal_id, message }: TNetworkStatusT
     }
 
     return ReactDOM.createPortal(
-        <MobileWrapper>
+        !isDesktop && (
             <Toast
                 className={clsx({
                     'dc-toast--blinker': status === 'blinker',
@@ -60,7 +41,7 @@ const NetworkStatusToastError = ({ status, portal_id, message }: TNetworkStatusT
             >
                 {message}
             </Toast>
-        </MobileWrapper>,
+        ),
         new_portal_id
     );
 };

@@ -17,55 +17,57 @@ jest.mock('@deriv/bot-skeleton/src/scratch/xml/main.xml', () => '<xml>sample</xm
 
 window.Blockly = {
     derivWorkspace: { options: { readonly: jest.fn() }, getToolboxCategoryCallback: jest.fn(() => jest.fn(() => [])) },
-    Xml: {
-        textToDom: () => ({
-            getElementsByTagName: () => ({ length: 0 }),
-            childNodes: [
-                {
-                    tagName: 'CATEGORY',
-                    id: 'Trade parameters',
-                    getAttribute: () => 'Trade parameters',
-                    childNodes: [],
-                    children: [],
-                },
-                {
-                    tagName: 'CATEGORY',
-                    id: 'Utility',
-                    getAttribute: () => 'Utility',
-                    childNodes: [
-                        {
-                            tagName: 'CATEGORY',
-                            id: 'Math',
-                            getAttribute: () => 'Math',
-                            childNodes: [],
-                            children: [],
-                        },
-                    ],
-                    children: [
-                        {
-                            tagName: 'CATEGORY',
-                            id: 'Math',
-                            getAttribute: () => 'Math',
-                            childNodes: [],
-                            children: [],
-                        },
-                    ],
-                },
-                {
-                    tagName: 'NOCATEGORY',
-                    id: 'Trade parameters',
-                    getAttribute: () => 'Trade parameters',
-                    childNodes: [],
-                    children: [],
-                },
-            ],
-        }),
+    utils: {
+        xml: {
+            textToDom: () => ({
+                getElementsByTagName: () => ({ length: 0 }),
+                childNodes: [
+                    {
+                        tagName: 'CATEGORY',
+                        id: 'Trade parameters',
+                        getAttribute: () => 'Trade parameters',
+                        childNodes: [],
+                        children: [],
+                    },
+                    {
+                        tagName: 'CATEGORY',
+                        id: 'Utility',
+                        getAttribute: () => 'Utility',
+                        childNodes: [
+                            {
+                                tagName: 'CATEGORY',
+                                id: 'Math',
+                                getAttribute: () => 'Math',
+                                childNodes: [],
+                                children: [],
+                            },
+                        ],
+                        children: [
+                            {
+                                tagName: 'CATEGORY',
+                                id: 'Math',
+                                getAttribute: () => 'Math',
+                                childNodes: [],
+                                children: [],
+                            },
+                        ],
+                    },
+                    {
+                        tagName: 'NOCATEGORY',
+                        id: 'Trade parameters',
+                        getAttribute: () => 'Trade parameters',
+                        childNodes: [],
+                        children: [],
+                    },
+                ],
+            }),
+        },
     },
 };
 
 describe('Toolbox', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
-    const mock_store = mockStore({});
+    const mock_store = mockStore({ ui: { is_desktop: true } });
 
     beforeEach(() => {
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
@@ -129,7 +131,7 @@ describe('Toolbox', () => {
     });
 
     it('should render without toolbox component on responsive device', () => {
-        mock_store.ui.is_mobile = true;
+        mock_store.ui.is_desktop = false;
         render(<Toolbox />, { wrapper });
 
         expect(screen.queryByTestId('db-toolbox__title')).not.toBeInTheDocument();

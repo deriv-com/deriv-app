@@ -1,17 +1,8 @@
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { PoiPoaDocsSubmitted } from '@deriv/account';
 import { AccountStatusResponse } from '@deriv/api-types';
-import {
-    Button,
-    DesktopWrapper,
-    Icon,
-    Loading,
-    MobileDialog,
-    MobileWrapper,
-    Modal,
-    Text,
-    UILoader,
-} from '@deriv/components';
+import { Button, Icon, Loading, MobileDialog, Modal, Text, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getAuthenticationStatusInfo, isMobile, WS, isPOARequiredForMT5 } from '@deriv/shared';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
@@ -38,6 +29,7 @@ const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) =>
 );
 
 const CFDDbviOnboarding = observer(() => {
+    const { isDesktop } = useDevice();
     const { client, ui } = useStore();
 
     const { account_status, fetchAccountSettings, is_virtual, updateAccountStatus, updateMT5Status } = client;
@@ -130,7 +122,7 @@ const CFDDbviOnboarding = observer(() => {
 
     return (
         <React.Suspense fallback={<UILoader />}>
-            <DesktopWrapper>
+            {isDesktop ? (
                 <Modal
                     className='cfd-financial-stp-modal'
                     disableApp={disableApp}
@@ -145,8 +137,7 @@ const CFDDbviOnboarding = observer(() => {
                 >
                     {getModalContent()}
                 </Modal>
-            </DesktopWrapper>
-            <MobileWrapper>
+            ) : (
                 <MobileDialog
                     portal_element_id='deriv_app'
                     title={getModalTitle()}
@@ -156,7 +147,7 @@ const CFDDbviOnboarding = observer(() => {
                 >
                     {getModalContent()}
                 </MobileDialog>
-            </MobileWrapper>
+            )}
         </React.Suspense>
     );
 });

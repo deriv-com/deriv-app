@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { emptyTextValidator } from '../../utils';
+import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
 Blockly.Blocks.text_isEmpty = {
     init() {
@@ -24,6 +24,9 @@ Blockly.Blocks.text_isEmpty = {
             category: Blockly.Categories.Text,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     meta() {
         return {
             display_name: localize('Text Is empty'),
@@ -37,10 +40,15 @@ Blockly.Blocks.text_isEmpty = {
     },
 };
 
-Blockly.JavaScript.text_isEmpty = block => {
-    const text = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_MEMBER) || "''";
+Blockly.JavaScript.javascriptGenerator.forBlock.text_isEmpty = block => {
+    const text =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'VALUE',
+            Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+        ) || "''";
     const isVariable = block.workspace.getAllVariables().findIndex(variable => variable.name === text) !== -1;
 
     const code = isVariable ? `!${text} || !${text}.length` : `!${text}.length`;
-    return [code, Blockly.JavaScript.ORDER_LOGICAL_NOT];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_NOT];
 };

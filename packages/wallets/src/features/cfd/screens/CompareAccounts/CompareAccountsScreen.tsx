@@ -20,17 +20,20 @@ const CompareAccountsScreen = () => {
             <CompareAccountsHeader isDemo={isDemo} isEuRegion={isEuRegion} />
             <div className='wallets-compare-accounts__card-list'>
                 <CompareAccountsCarousel>
-                    {mt5Accounts?.map(item => (
-                        <CompareAccountsCard
-                            isDemo={isDemo}
-                            isEuRegion={isEuRegion}
-                            isEuUser={isEuUser}
-                            key={`${item?.market_type} ${item?.shortcode}`}
-                            marketType={item?.market_type}
-                            platform={item?.platform}
-                            shortCode={item?.shortcode}
-                        />
-                    ))}
+                    {mt5Accounts?.map(
+                        item =>
+                            item.product !== 'zero_spread' && (
+                                <CompareAccountsCard
+                                    isDemo={isDemo}
+                                    isEuRegion={isEuRegion}
+                                    isEuUser={isEuUser}
+                                    key={`${item?.market_type} ${item?.shortcode}`}
+                                    marketType={item?.market_type}
+                                    platform={item?.platform}
+                                    shortCode={item?.shortcode}
+                                />
+                            )
+                    )}
                     {/* Renders cTrader data */}
                     {mt5Accounts?.length && hasCTraderAccountAvailable && ctraderAccount && (
                         <CompareAccountsCard

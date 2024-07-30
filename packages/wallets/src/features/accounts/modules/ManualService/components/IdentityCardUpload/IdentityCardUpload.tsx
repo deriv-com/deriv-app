@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Formik } from 'formik';
+import { Formik, FormikValues } from 'formik';
 import moment from 'moment';
 import { Divider, Loader } from '@deriv-com/ui';
 import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
 import IdentityCardBack from '../../../../../../public/images/accounts/document-back.svg';
 import IdentityCardFront from '../../../../../../public/images/accounts/identity-card-front.svg';
+import { THooks } from '../../../../../../types';
 import { Footer } from '../../../components';
 import { GeneralDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
@@ -15,16 +16,25 @@ import { identityCardUploadValidator } from './utils';
 import './IdentityCardUpload.scss';
 
 const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onClickBack, onCompletion }) => {
-    const { error, initialValues, isSuccess, isUploading, resetError, upload } =
-        useIdentityCardUpload(documentIssuingCountryCode);
+    const {
+        initialValues,
+        isLoading,
+        resetUploadStatus,
+        upload: upload_,
+    } = useIdentityCardUpload(documentIssuingCountryCode);
     const [showSelfieUpload, setShowSelfieUpload] = useState(false);
+    const [error, setError] = useState<THooks.DocumentUpload['error']>();
 
-    if (!error && isSuccess && onCompletion) {
-        onCompletion();
-        return null;
-    }
+    const upload = async (values: FormikValues) => {
+        try {
+            await upload_(values);
+            onCompletion?.();
+        } catch (error) {
+            setError((error as THooks.DocumentUpload).error);
+        }
+    };
 
-    if (isUploading) {
+    if (isLoading) {
         return <Loader />;
     }
 
@@ -45,7 +55,7 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
                 };
 
                 const onErrorRetry = () => {
-                    resetError();
+                    resetUploadStatus();
                     resetForm();
                     setShowSelfieUpload(false);
                     onClickBack?.();
@@ -71,8 +81,8 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
                         disableAnimation
                         renderFooter={() => (
                             <Footer
-                                disableBack={isUploading}
-                                disableNext={!isIdentityCardFormValid || isUploading}
+                                disableBack={isLoading}
+                                disableNext={!isIdentityCardFormValid || isLoading}
                                 onClickBack={onClickBack}
                                 onClickNext={handleOnClickNext}
                             />

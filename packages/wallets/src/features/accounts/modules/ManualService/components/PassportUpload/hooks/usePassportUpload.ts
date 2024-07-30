@@ -25,7 +25,8 @@ const usePassportUpload = (documentIssuingCountryCode: THooks.AccountSettings['c
 
     const isError = passportUploadStatus === 'error' || selfieUploadStatus === 'error';
     const isLoading =
-        (passportUploadStatus === 'loading' && selfieUploadStatus === 'idle') || selfieUploadStatus === 'loading';
+        ((passportUploadStatus === 'loading' && selfieUploadStatus === 'idle') || selfieUploadStatus === 'loading') &&
+        !isError;
     const isSuccess = !isError && !isLoading && passportUploadStatus === 'success' && selfieUploadStatus === 'success';
 
     const initialValues = {

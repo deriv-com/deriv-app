@@ -13,28 +13,39 @@ type TIdentityCardUploadValues = TSelfieUploadValues & {
 
 const useIdentityCardUpload = (documentIssuingCountryCode: THooks.AccountSettings['country_code']) => {
     const {
-        error: errorIdentityCardUpload,
-        isLoading: isIdentityCardUploading,
-        isSuccess: isIdentityCardUploadSuccess,
-        reset: resetErrorIdentityCardUpload,
-        upload: _upload,
+        resetStatus: resetIdentityCardUploadStatus,
+        status: identityCardUploadStatus,
+        upload: uploadIdentityCard,
     } = useDocumentUpload();
     const {
-        error: errorSelfieUpload,
-        isLoading: isSelfieUploading,
-        isSuccess: isSelfieUploadSuccess,
-        resetError: resetErrorSelfieUpload,
+        initialValues: initialValuesSelfieUpload,
+        resetStatus: resetSelfieUploadStatus,
+        status: selfieUploadStatus,
         upload: uploadSelfie,
     } = useSelfieUpload(documentIssuingCountryCode);
 
+    const isError = identityCardUploadStatus === 'error' || selfieUploadStatus === 'error';
+    const isLoading =
+        ((identityCardUploadStatus === 'loading' && selfieUploadStatus === 'idle') ||
+            selfieUploadStatus === 'loading') &&
+        !isError;
+    const isSuccess =
+        !isError && !isLoading && identityCardUploadStatus === 'success' && selfieUploadStatus === 'success';
+
     const initialValues = {
+        ...initialValuesSelfieUpload,
         identityCardExpiryDate: '',
         identityCardNumber: '',
     } as TIdentityCardUploadValues;
 
+    const resetUploadStatus = () => {
+        resetIdentityCardUploadStatus('idle');
+        resetSelfieUploadStatus('idle');
+    };
+
     const uploadFront = useCallback(
         (values: FormikValues) => {
-            return _upload({
+            return uploadIdentityCard({
                 document_id: values.identityCardNumber,
                 document_issuing_country: documentIssuingCountryCode ?? undefined,
                 document_type: 'national_identity_card',
@@ -43,12 +54,12 @@ const useIdentityCardUpload = (documentIssuingCountryCode: THooks.AccountSetting
                 page_type: 'front',
             });
         },
-        [documentIssuingCountryCode, _upload]
+        [uploadIdentityCard, documentIssuingCountryCode]
     );
 
     const uploadBack = useCallback(
         (values: FormikValues) => {
-            return _upload({
+            return uploadIdentityCard({
                 document_id: values.identityCardNumber,
                 document_issuing_country: documentIssuingCountryCode ?? undefined,
                 document_type: 'national_identity_card',
@@ -57,42 +68,41 @@ const useIdentityCardUpload = (documentIssuingCountryCode: THooks.AccountSetting
                 page_type: 'back',
             });
         },
-        [documentIssuingCountryCode, _upload]
+        [uploadIdentityCard, documentIssuingCountryCode]
     );
 
     const upload = useCallback(
         async (values: FormikValues | TIdentityCardUploadValues) => {
-            await uploadFront(values);
-            await uploadBack(values);
-            await uploadSelfie(values, values.identityCardNumber);
+            try {
+                await uploadFront(values);
+                await uploadBack(values);
+                await uploadSelfie(values, values.identityCardNumber);
+
+                return Promise.resolve();
+            } catch (error) {
+                return Promise.reject(error);
+            }
         },
         [uploadBack, uploadFront, uploadSelfie]
     );
 
-    const resetError = useCallback(() => {
-        if (errorIdentityCardUpload?.error || errorSelfieUpload) {
-            resetErrorIdentityCardUpload();
-            resetErrorSelfieUpload();
-        }
-    }, [errorIdentityCardUpload?.error, errorSelfieUpload, resetErrorIdentityCardUpload, resetErrorSelfieUpload]);
-
     return {
-        /** contains error data if any error encountered during identity-card/selfie upload */
-        error: errorIdentityCardUpload?.error ?? errorSelfieUpload,
-
         /** initial values for the identity-card and selfie forms */
         initialValues,
 
-        /** `true` if successfully uploaded identity-card front/back and selfie files */
-        isSuccess: isIdentityCardUploadSuccess && isSelfieUploadSuccess,
+        /** `true` when identity-card/selfie upload encounter error */
+        isError,
 
-        /** `true` if identity-card and selfie upload is in progress */
-        isUploading: isIdentityCardUploading || isSelfieUploading,
+        /** `true` when identity-card/selfie are uploading */
+        isLoading,
 
-        /** reset all API errors */
-        resetError,
+        /** `true` when identity-card/selfie are uploaded successfully */
+        isSuccess,
 
-        /** upload identity-card front/back and selfie files synchronously */
+        /** Reset upload statuses for identity-card and selfie */
+        resetUploadStatus,
+
+        /** upload identity-card and selfie files synchronously */
         upload,
     };
 };

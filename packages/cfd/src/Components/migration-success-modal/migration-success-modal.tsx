@@ -1,11 +1,14 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Modal, PageOverlay } from '@deriv/components';
-import { Jurisdiction, MT5_ACCOUNT_STATUS, routes } from '@deriv/shared';
+import { Jurisdiction, MT5_ACCOUNT_STATUS, routes, getFormattedJurisdictionMarketTypes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getFormattedJurisdictionCode } from '../../Stores/Modules/CFD/Helpers/cfd-config';
+// import { getFormattedJurisdictionMarketTypes } from '../../Stores/Modules/CFD/Helpers/cfd-config';
+
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import MigrationSuccessModalContent from './migration-success-modal-content';
+import { TMarketType } from 'Types/market-type.types';
 
 type TMigrationSuccessModal = {
     is_open: boolean;
@@ -23,6 +26,10 @@ const MigrationSuccessModal = observer(({ is_open, closeModal }: TMigrationSucce
     const eligible_account_to_migrate = getFormattedJurisdictionCode(
         migrated_mt5_accounts.map(account => Object.values(account?.to_account ?? {})?.[0])?.[0]
     );
+    const jurisdiction_market_name = getFormattedJurisdictionMarketTypes(
+        migrated_mt5_accounts.map(account => Object.keys(account?.to_account ?? {})?.[0] as TMarketType)?.[0]
+    );
+
     const has_open_positions = React.useMemo(
         () =>
             mt5_login_list.some(account =>
@@ -78,7 +85,7 @@ const MigrationSuccessModal = observer(({ is_open, closeModal }: TMigrationSucce
             directToCashier={directToCashier}
             icon={getMigrationIcon()}
             eligible_account_to_migrate={eligible_account_to_migrate}
-            has_open_positions={has_open_positions}
+            jurisdiction_market_name={jurisdiction_market_name}
         />
     );
 

@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import DBotStore from '../../../dbot-store';
-import { runGroupedEvents, runIrreversibleEvents } from '../../../utils';
+import { modifyContextMenu, runGroupedEvents, runIrreversibleEvents } from '../../../utils';
 import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
 
@@ -98,7 +98,7 @@ Blockly.Blocks.trade_definition_accumulator = {
         }
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
@@ -156,7 +156,7 @@ Blockly.Blocks.trade_definition_accumulator = {
             return;
         }
 
-        if (event.type === Blockly.Events.END_DRAG) {
+        if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
             this.setCurrency();
             this.validateBlocksInStatement();
             if (event.blockId === this.id) {
@@ -171,6 +171,7 @@ Blockly.Blocks.trade_definition_accumulator = {
             }
         }
     },
+    updateAmountLimits: Blockly.Blocks.trade_definition_tradeoptions.updateAmountLimits,
     updateAccumulatorInput(should_use_default_value) {
         const { contracts_for } = ApiHelpers.instance;
 
@@ -232,6 +233,9 @@ Blockly.Blocks.trade_definition_accumulator = {
             });
         }
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     setCurrency: Blockly.Blocks.trade_definition_tradeoptions.setCurrency,
     restricted_parents: ['trade_definition'],
     getRequiredValueInputs() {
@@ -259,8 +263,13 @@ Blockly.Blocks.trade_definition_accumulator = {
     },
 };
 
-Blockly.JavaScript.trade_definition_accumulator = block => {
-    const amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_accumulator = block => {
+    const amount =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'AMOUNT',
+            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+        ) || '0';
     const { currency } = DBotStore.instance.client;
     const { setContractUpdateConfig } = DBotStore.instance;
     const growth_rate = block.getFieldValue('GROWTHRATE_LIST') || '1';

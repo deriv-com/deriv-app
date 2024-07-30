@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { runIrreversibleEvents } from '../../../../utils';
+import { runIrreversibleEvents, modifyContextMenu } from '../../../../utils';
 
 Blockly.Blocks.input_list = {
     init() {
@@ -23,7 +23,7 @@ Blockly.Blocks.input_list = {
         this.setDeletable(false);
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
@@ -36,7 +36,7 @@ Blockly.Blocks.input_list = {
 
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             setParentId();
-        } else if (event.type === Blockly.Events.END_DRAG) {
+        } else if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
             setParentId();
 
             const surround_parent = this.getSurroundParent();
@@ -77,6 +77,9 @@ Blockly.Blocks.input_list = {
             INPUT_LIST: null,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-Blockly.JavaScript.input_list = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.input_list = () => {};

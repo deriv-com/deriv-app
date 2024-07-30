@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useFormikContext } from 'formik';
-import { Tooltip } from '@deriv-com/ui';
-import { WalletCheckbox, WalletsPriorityCryptoWithdrawLoader } from '../../../../../../../../components';
+import { useHover } from 'usehooks-ts';
+import { Tooltip, WalletCheckbox, WalletsPriorityCryptoWithdrawLoader } from '../../../../../../../../components';
 import InfoIcon from '../../../../../../../../public/images/ic-info-outline.svg';
 import { useWithdrawalCryptoContext } from '../../../../provider';
 import { WithdrawalCryptoPriorityFeeInfo } from '../WithdrawalCryptoPriorityFeeInfo';
@@ -22,6 +22,9 @@ const WithdrawalCryptoPriority = () => {
         setError,
         unsubscribeCryptoEstimations,
     } = useWithdrawalCryptoContext();
+
+    const hoverRef = useRef(null);
+    const isHovered = useHover(hoverRef);
 
     useEffect(() => {
         if (cryptoEstimationsError) {
@@ -58,11 +61,13 @@ const WithdrawalCryptoPriority = () => {
                     }}
                 />
                 <Tooltip
-                    as='div'
-                    tooltipContent='Pay a small fee to prioritise your withdrawal, this fee will be deducted from the withdrawal amount.'
-                    tooltipPosition='top'
+                    alignment='top'
+                    isVisible={isHovered}
+                    message='Pay a small fee to prioritise your withdrawal, this fee will be deducted from the withdrawal amount.'
                 >
-                    <InfoIcon />
+                    <div ref={hoverRef}>
+                        <InfoIcon />
+                    </div>
                 </Tooltip>
             </div>
             {isLoadingCryptoEstimationFee && <WalletsPriorityCryptoWithdrawLoader />}

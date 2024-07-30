@@ -5,7 +5,7 @@ import sortSymbols from 'AppV2/Utils/sort-symbols-utils';
 import { useModulesStore } from 'Stores/useModulesStores';
 
 export const useGetFavoriteSymbols = () => {
-    const { activeSymbols } = useActiveSymbols();
+    const { activeSymbols } = useActiveSymbols({});
     const { markets } = useModulesStore();
     const { favoriteSymbols } = markets;
 

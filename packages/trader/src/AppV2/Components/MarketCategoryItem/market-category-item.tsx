@@ -89,7 +89,7 @@ const MarketCategoryItem = forwardRef(
                 </Text>
                 {!item.exchange_is_open && (
                     <Tag
-                        label={<Localize key='exchange-closed' i18n_default_text='CLOSED' />}
+                        label={<Localize i18n_default_text='CLOSED' />}
                         color='error'
                         variant={selectedSymbol === item.symbol ? 'outline' : 'fill'}
                         showIcon={false}

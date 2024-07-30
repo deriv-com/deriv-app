@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Button } from '@deriv-com/ui';
-import { WalletsActionScreen } from '../../../../../components';
+import { WalletButton, WalletsActionScreen } from '../../../../../components';
 import EmailSent from '../../../../../public/images/email-sent.svg';
 import './WithdrawalVerificationSent.scss';
 
@@ -27,19 +26,16 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
                 renderButtons={
                     !showResend
                         ? () => (
-                              <Button
-                                  borderWidth='sm'
-                                  color='primary-transparent'
+                              <WalletButton
                                   onClick={() => {
                                       sendEmail();
                                       setShowResend(!showResend);
                                   }}
                                   size='lg'
-                                  textSize='md'
                                   variant='ghost'
                               >
                                   Didn&apos;t receive the email?
-                              </Button>
+                              </WalletButton>
                           )
                         : undefined
                 }
@@ -50,9 +46,9 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
                     <WalletsActionScreen
                         description="Check your spam or junk folder. If it's not there, try resending the email."
                         renderButtons={() => (
-                            <Button borderWidth='sm' disabled={!!counter} onClick={sendEmail} size='lg' textSize='md'>
+                            <WalletButton disabled={!!counter} onClick={sendEmail} size='lg'>
                                 {`Resend email${counter ? ` in ${counter}s` : ''}`}
-                            </Button>
+                            </WalletButton>
                         )}
                         title="Didn't receive the email?"
                     />

@@ -1,8 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { DerivLightCashierNoBalanceIcon } from '@deriv/quill-icons';
-import { Button } from '@deriv-com/ui';
-import { WalletsActionScreen } from '../../../../components';
+import { WalletButton, WalletsActionScreen } from '../../../../components';
 import { THooks } from '../../../../types';
 
 type TWithdrawalNoBalanceProps = {
@@ -18,9 +17,9 @@ const WithdrawalNoBalance: React.FC<TWithdrawalNoBalanceProps> = ({ activeWallet
             descriptionSize='md'
             icon={<DerivLightCashierNoBalanceIcon height='128px' width='128px' />}
             renderButtons={() => (
-                <Button borderWidth='sm' onClick={() => history.push('/wallet/deposit')} size='lg' textSize='md'>
+                <WalletButton onClick={() => history.push('/wallet/deposit')} size='lg'>
                     Add funds
-                </Button>
+                </WalletButton>
             )}
             title={`No funds in ${activeWallet.currency} Wallet`}
         />

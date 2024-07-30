@@ -18,7 +18,6 @@ import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
 import WalletsUpgradeLogoutModal from './wallets-upgrade-logout-modal';
 import WalletsUpgradeCompletedModal from './wallets-upgrade-completed-modal';
-import CryptoTransactionProcessingModal from './crypto-transaction-processing-modal';
 
 const TradingAssessmentExistingUser = React.lazy(() =>
     moduleLoader(() =>
@@ -108,7 +107,6 @@ const AppModals = observer(() => {
         isUrlUnavailableModalVisible,
         should_show_one_time_deposit_modal,
         should_show_account_success_modal,
-        should_show_crypto_transaction_processing_modal,
     } = ui;
     const temp_session_signup_params = SessionStore.get('signup_query_param');
     const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
@@ -216,10 +214,6 @@ const AppModals = observer(() => {
 
         if (should_show_one_time_deposit_modal) {
             ComponentToLoad = <OneTimeDepositModal />;
-        }
-
-        if (should_show_crypto_transaction_processing_modal) {
-            ComponentToLoad = <CryptoTransactionProcessingModal />;
         }
 
         if (should_show_account_success_modal) {

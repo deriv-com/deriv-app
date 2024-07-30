@@ -969,7 +969,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             onUnmount={() => getAccountStatus(platform)}
             onExited={() => setPasswordModalExited(true)}
             onEntered={() => setPasswordModalExited(false)}
-            width='auto'
+            width={!isDesktop ? '32.8rem' : 'auto'}
         >
             {cfd_password_form}
         </Modal>
@@ -1076,7 +1076,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         : account_type.category === CATEGORY.REAL
                 }
                 has_close_icon={false}
-                width='auto'
+                width={!isDesktop ? '32.8rem' : 'auto'}
                 is_medium_button={!isDesktop}
             />
             <MigrationSuccessModal is_open={should_show_migration_success} closeModal={closeModal} />

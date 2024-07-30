@@ -16,7 +16,6 @@ import FinishedSetCurrency from './finished-set-currency.jsx';
 import SetCurrency from './set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
-import NewStatusDialogContainer from './new-status-dialog-container.jsx';
 import { Analytics } from '@deriv-com/analytics';
 import 'Sass/account-wizard.scss';
 
@@ -29,7 +28,6 @@ const modal_pages_indices = {
     add_or_manage_account: 1,
     finished_set_currency: 2,
     status_dialog: 3,
-    new_status_dialog: 11,
     set_currency: 4,
     signup_error: 5,
     choose_crypto_currency: 6,
@@ -107,7 +105,6 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                     <AccountWizard
                         setIsRiskWarningVisible={setIsRiskWarningVisible}
                         onFinishSuccess={showStatusDialog}
-                        onNewFinishSuccess={showNewStatusDialog}
                         onOpenDepositModal={closeModalthenOpenDepositModal}
                         onOpenWelcomeModal={closeModalthenOpenWelcomeModal}
                         is_loading={local_props.is_loading}
@@ -264,14 +261,6 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                 />
             ),
         },
-        {
-            body: local_props => (
-                <NewStatusDialogContainer
-                    currency={local_props.state_value.currency}
-                    closeModal={closeSetCurrencySuccessModal}
-                />
-            ),
-        },
     ]);
 
     const [assessment_decline, setAssessmentDecline] = React.useState(false);
@@ -298,8 +287,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
 
     const getModalHeight = () => {
         if (is_from_restricted_country) return '304px';
-        else if ([invalid_input_error, status_dialog, new_status_dialog, signup_error].includes(getActiveModalIndex()))
-            return 'auto';
+        else if ([invalid_input_error, status_dialog, signup_error].includes(getActiveModalIndex())) return 'auto';
         if (!currency || getActiveModalIndex() === modal_pages_indices.set_currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
             if (show_eu_related_content && getActiveModalIndex() === modal_pages_indices.add_or_manage_account) {
@@ -336,14 +324,6 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
             currency: curr,
         });
     };
-
-    const showNewStatusDialog = curr => {
-        setParams({
-            active_modal_index: modal_pages_indices.new_status_dialog,
-            currency: curr,
-        });
-    };
-
     const closeModalthenOpenWelcomeModal = curr => {
         closeRealAccountSignup();
         setParams({
@@ -436,10 +416,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         ) {
             return;
         }
-        if (
-            getActiveModalIndex() !== modal_pages_indices.status_dialog ||
-            getActiveModalIndex() !== modal_pages_indices.new_status_dialog
-        ) {
+        if (getActiveModalIndex() !== modal_pages_indices.status_dialog) {
             sessionStorage.removeItem('post_real_account_signup');
             localStorage.removeItem('real_account_signup_wizard');
         }
@@ -456,10 +433,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         ) {
             return;
         }
-        if (
-            getActiveModalIndex() !== modal_pages_indices.status_dialog ||
-            getActiveModalIndex() !== modal_pages_indices.new_status_dialog
-        ) {
+        if (getActiveModalIndex() !== modal_pages_indices.status_dialog) {
             sessionStorage.removeItem('post_real_account_signup');
             localStorage.removeItem('real_account_signup_wizard');
         }
@@ -519,7 +493,6 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         add_or_manage_account,
         finished_set_currency,
         status_dialog,
-        new_status_dialog,
         set_currency,
         signup_error,
         restricted_country_signup_error,
@@ -544,7 +517,6 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                     closeModalthenOpenDepositModal();
                 } else {
                     showStatusDialog(response?.new_account_maltainvest?.currency.toLowerCase());
-                    showNewStatusDialog(response?.new_account_maltainvest?.currency.toLowerCase());
                 }
             });
         } catch (sign_up_error) {

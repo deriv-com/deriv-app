@@ -25,10 +25,6 @@ describe('MarketSelector', () => {
         modules: {
             trade: {
                 symbol: 'EURUSD',
-                tick_data: {
-                    quote: 1234.23,
-                    pip_size: 2,
-                },
             },
         },
     };
@@ -44,14 +40,14 @@ describe('MarketSelector', () => {
         render(MockedMarketSelector(mockStore(mock_store)));
 
         expect(screen.getByText('EUR/USD')).toBeInTheDocument();
-        expect(screen.getByText(mock_store.modules.trade.tick_data.quote)).toBeInTheDocument();
+        expect(screen.getByText('1234')).toBeInTheDocument();
     });
     it('should render CLOSED when current symbol exchange_is_open is 0', () => {
         mock_store.modules.trade.symbol = 'GBPUSD';
         render(MockedMarketSelector(mockStore(mock_store)));
 
         expect(screen.getByText('GBP/USD')).toBeInTheDocument();
-        expect(screen.getByText(mock_store.modules.trade.tick_data.quote)).toBeInTheDocument();
+        expect(screen.getByText('1234')).toBeInTheDocument();
         expect(screen.getByText('CLOSED')).toBeInTheDocument();
     });
     it('should render default symbol when storesSymbol is not set', () => {
@@ -59,7 +55,7 @@ describe('MarketSelector', () => {
         render(MockedMarketSelector(mockStore(mock_store)));
 
         expect(screen.getByText('CAD/AUD')).toBeInTheDocument();
-        expect(screen.getByText(mock_store.modules.trade.tick_data.quote)).toBeInTheDocument();
+        expect(screen.getByText('1234')).toBeInTheDocument();
         expect(screen.getByText('CLOSED')).toBeInTheDocument();
     });
 });

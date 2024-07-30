@@ -1,7 +1,6 @@
 import React from 'react';
 import { DerivLightEmailVerificationIcon } from '@deriv/quill-icons';
-import { Button } from '@deriv-com/ui';
-import { WalletsActionScreen, WalletText } from '../../../../../components';
+import { WalletButton, WalletsActionScreen, WalletText } from '../../../../../components';
 import './WithdrawalVerificationRequest.scss';
 
 type TProps = {
@@ -31,9 +30,9 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
                     </div>
                 }
                 renderButtons={() => (
-                    <Button borderWidth='sm' onClick={sendEmail} size='lg' textSize='md'>
+                    <WalletButton onClick={sendEmail} size='lg'>
                         Send email
-                    </Button>
+                    </WalletButton>
                 )}
                 title='Confirm your identity to make a withdrawal.'
             />

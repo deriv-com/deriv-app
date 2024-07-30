@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text } from '@deriv-com/quill-ui';
+import { Button } from '@deriv-com/quill-ui';
 import { LabelPairedPresentationScreenSmRegularIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
@@ -23,16 +23,11 @@ const Guide = ({ has_label = false }: TGuide) => {
         <React.Fragment>
             <Button
                 color='black'
-                icon={<LabelPairedPresentationScreenSmRegularIcon key='guide-button-icon' />}
+                icon={<LabelPairedPresentationScreenSmRegularIcon />}
+                label={has_label ? <Localize i18n_default_text='Guide' /> : ''}
                 onClick={() => setIsDescriptionOpened(true)}
                 variant={has_label ? 'secondary' : 'tertiary'}
-            >
-                {has_label && (
-                    <Text size='sm' bold color='quill-typography__color--prominent'>
-                        <Localize i18n_default_text='Guide' />
-                    </Text>
-                )}
-            </Button>
+            />
             <GuideDescriptionModal
                 is_open={is_description_opened}
                 onClose={() => setIsDescriptionOpened(false)}

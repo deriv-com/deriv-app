@@ -29,15 +29,6 @@ const mock_props = {
     },
 };
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useP2PSettings: jest.fn(() => ({
-        p2p_settings: {
-            order_expiry_options: [30, 60, 90, 120],
-        },
-    })),
-}));
-
 describe('<OrderTimeSelection/>', () => {
     beforeEach(() => {
         mockUseFormikContext.mockReturnValue({

@@ -29,6 +29,9 @@ const payment_method_card_props = {
 };
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
+    general_store: {
+        active_index: 0,
+    },
     my_ads_store: {
         payment_method_ids: [1],
     },

@@ -9,6 +9,10 @@ import TransferForm from '../TransferForm';
 const mockAccounts = ['CR1', 'CR2'];
 let mockFormikValues: unknown;
 
+jest.mock('@deriv-com/ui', () => ({
+    Loader: jest.fn(() => <div>Loading...</div>),
+}));
+
 jest.mock('../../../../../../../hooks/useDevice', () => jest.fn());
 
 jest.mock('../../../provider', () => ({
@@ -16,6 +20,16 @@ jest.mock('../../../provider', () => ({
     TransferProvider: jest.fn(({ children }) => <div>{children}</div>),
     useTransfer: jest.fn(),
 })); // const mockUseFormikContext = jest.spyOn(formik, 'useFormikContext') as jest.Mock;
+
+jest.mock('../../TransferFormAmountInput', () => ({
+    ...jest.requireActual('../../TransferFormAmountInput'),
+    TransferFormAmountInput: jest.fn(({ fieldName }) => <input placeholder={fieldName} type='input' />),
+}));
+
+jest.mock('../../TransferFormDropdown', () => ({
+    ...jest.requireActual('../../TransferFormDropdown'),
+    TransferFormDropdown: jest.fn(({ fieldName }) => <div>{fieldName}</div>),
+}));
 
 const mockTransferMessages = jest.fn(() => {
     const { setValues } = useFormikContext();
@@ -26,15 +40,8 @@ const mockTransferMessages = jest.fn(() => {
     return <div>TransferMessages</div>;
 });
 
-jest.mock('../../TransferFormAmountInput', () => ({
-    TransferFormAmountInput: jest.fn(({ fieldName }) => <input placeholder={fieldName} type='input' />),
-}));
-
-jest.mock('../../TransferFormDropdown', () => ({
-    TransferFormDropdown: jest.fn(({ fieldName }) => <div>{fieldName}</div>),
-}));
-
 jest.mock('../../TransferMessages', () => ({
+    ...jest.requireActual('../../TransferMessages'),
     TransferMessages: jest.fn(() => mockTransferMessages()),
 }));
 
@@ -54,7 +61,7 @@ describe('<TransferForm />', () => {
 
         render(<TransferForm />, { wrapper });
 
-        expect(screen.getByTestId('dt_derivs-loader')).toBeInTheDocument();
+        expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
     it('should test that transfer button is disabled when fromAmount is 0', async () => {

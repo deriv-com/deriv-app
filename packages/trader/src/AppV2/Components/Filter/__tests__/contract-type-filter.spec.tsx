@@ -33,7 +33,7 @@ describe('ContractTypeFilter', () => {
         render(<ContractTypeFilter {...mockProps} contractTypeFilter={mockContractTypeFilter} />);
 
         expect(screen.queryByText(defaultFilterName)).not.toBeInTheDocument();
-        expect(screen.getByText(mockContractTypeFilter[0])).toBeInTheDocument();
+        expect(screen.getAllByText(mockContractTypeFilter[0])).toHaveLength(2);
     });
 
     it('should render correct chip name is contractTypeFilter is with multiple items', () => {
@@ -44,10 +44,10 @@ describe('ContractTypeFilter', () => {
         expect(screen.getByText(`${mockContractTypeFilter.length} trade types`)).toBeInTheDocument();
     });
 
-    it('should call onApplyContractTypeFilter and setter (spied on) with array with chosen option after user clicks on contract type and clicks on "Apply" button', () => {
+    it('should call onApplyContractTypeFilter and setter (spied on) with array with chosen option after user clicks on contract type and clicks on "Apply" button', async () => {
         const mockSetChangedOptions = jest.fn();
         jest.spyOn(React, 'useState')
-            .mockImplementationOnce(() => [true, jest.fn()])
+            .mockImplementationOnce(() => [false, jest.fn()])
             .mockImplementationOnce(() => [[], mockSetChangedOptions]);
 
         render(<ContractTypeFilter {...mockProps} />);
@@ -59,11 +59,11 @@ describe('ContractTypeFilter', () => {
         expect(mockProps.onApplyContractTypeFilter).toBeCalled();
     });
 
-    it('should call setter (spied on) with array without chosen option if user clicks on it, but it was already in contractTypeFilter', () => {
+    it('should call setter (spied on) with array without chosen option if user clicks on it, but it was already in contractTypeFilter', async () => {
         const mockContractTypeFilter = ['Rise/Fall', 'Higher/Lower'];
         const mockSetChangedOptions = jest.fn();
         jest.spyOn(React, 'useState')
-            .mockImplementationOnce(() => [true, jest.fn()])
+            .mockImplementationOnce(() => [false, jest.fn()])
             .mockImplementationOnce(() => [mockContractTypeFilter, mockSetChangedOptions]);
 
         render(<ContractTypeFilter {...mockProps} contractTypeFilter={mockContractTypeFilter} />);
@@ -73,11 +73,11 @@ describe('ContractTypeFilter', () => {
         expect(mockSetChangedOptions).toHaveBeenCalledWith(['Higher/Lower']);
     });
 
-    it('should call setter (spied on) with empty array if user clicks on "Clear All" button', () => {
+    it('should call setter (spied on) with empty array if user clicks on "Clear All" button', async () => {
         const mockContractTypeFilter = ['Touch/No Touch'];
         const mockSetChangedOptions = jest.fn();
         jest.spyOn(React, 'useState')
-            .mockImplementationOnce(() => [true, jest.fn()])
+            .mockImplementationOnce(() => [false, jest.fn()])
             .mockImplementationOnce(() => [mockContractTypeFilter, mockSetChangedOptions]);
 
         render(<ContractTypeFilter {...mockProps} contractTypeFilter={mockContractTypeFilter} />);

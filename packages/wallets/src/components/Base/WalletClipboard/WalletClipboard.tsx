@@ -1,18 +1,27 @@
-import React, { ComponentProps, useEffect, useState } from 'react';
-import { useCopyToClipboard } from 'usehooks-ts';
+import React, { useEffect, useRef, useState } from 'react';
+import { useCopyToClipboard, useHover } from 'usehooks-ts';
 import { LegacyCopy1pxIcon, LegacyWonIcon } from '@deriv/quill-icons';
-import { Tooltip } from '@deriv-com/ui';
 import useDevice from '../../../hooks/useDevice';
+import { Tooltip } from '../Tooltip';
+import './WalletClipboard.scss';
 
 type TProps = {
-    popoverAlignment?: ComponentProps<typeof Tooltip>['tooltipPosition'];
+    infoMessage?: string;
+    popoverAlignment?: 'bottom' | 'left' | 'right' | 'top';
+    successMessage?: string;
     textCopy: string;
 };
 
-const WalletClipboard = ({ popoverAlignment = 'right', textCopy }: TProps) => {
+const WalletClipboard = ({
+    // info_message, success_message,
+    popoverAlignment = 'right',
+    textCopy,
+}: TProps) => {
     const [, copy] = useCopyToClipboard();
     const { isMobile } = useDevice();
     const [isCopied, setIsCopied] = useState(false);
+    const hoverRef = useRef(null);
+    const isHovered = useHover(hoverRef);
     let timeoutClipboard: ReturnType<typeof setTimeout>;
 
     const onClick = (event: { stopPropagation: () => void }) => {
@@ -30,17 +39,17 @@ const WalletClipboard = ({ popoverAlignment = 'right', textCopy }: TProps) => {
 
     return (
         <Tooltip
-            as='button'
-            hideTooltip={isMobile}
-            onClick={onClick}
-            tooltipContent={isCopied ? 'Copied!' : 'Copy'}
-            tooltipPosition={popoverAlignment}
+            alignment={popoverAlignment}
+            isVisible={isHovered && !isMobile}
+            message={isCopied ? 'Copied!' : 'Copy'}
         >
-            {isCopied ? (
-                <LegacyWonIcon data-testid='dt_legacy_won_icon' fill='#4BB4B3' iconSize='xs' />
-            ) : (
-                <LegacyCopy1pxIcon data-testid='dt_legacy_copy_icon' iconSize='xs' />
-            )}
+            <button className='wallets-clipboard' onClick={onClick} ref={hoverRef}>
+                {isCopied ? (
+                    <LegacyWonIcon data-testid='dt_legacy_won_icon' fill='#4BB4B3' iconSize='xs' />
+                ) : (
+                    <LegacyCopy1pxIcon data-testid='dt_legacy_copy_icon' iconSize='xs' />
+                )}
+            </button>
         </Tooltip>
     );
 };

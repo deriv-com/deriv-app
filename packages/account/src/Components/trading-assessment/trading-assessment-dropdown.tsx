@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { Field } from 'formik';
 import { Dropdown, Text, SelectNative } from '@deriv/components';
-import { useTranslations } from '@deriv-com/translations';
+import { localize } from '@deriv/translations';
 import { TTradingAssessmentForm, TQuestion } from 'Types';
 import { MAX_QUESTION_TEXT_LENGTH } from '../../Constants/trading-assessment';
 import { useDevice } from '@deriv-com/ui';
@@ -45,7 +45,6 @@ const TradingAssessmentDropdown = ({
     }, [values]);
 
     const { isDesktop } = useDevice();
-    const { localize } = useTranslations();
 
     const checkIfAllFieldsFilled = () => {
         if (values) {

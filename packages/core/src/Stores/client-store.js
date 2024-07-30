@@ -416,8 +416,6 @@ export default class ClientStore extends BaseStore {
             unsubscribeFromExchangeRate: action.bound,
             unsubscribeFromAllExchangeRates: action.bound,
             setExchangeRates: action.bound,
-            is_cr_account: computed,
-            is_mf_account: computed,
         });
 
         reaction(
@@ -2859,12 +2857,4 @@ export default class ClientStore extends BaseStore {
         });
         this.setExchangeRates({});
     };
-
-    get is_cr_account() {
-        return this.loginid?.startsWith('CR');
-    }
-
-    get is_mf_account() {
-        return this.loginid?.startsWith('MF');
-    }
 }

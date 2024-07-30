@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Divider } from '@deriv-com/ui';
-import { WalletText } from '../../../../../../components/Base';
+import { Divider } from '@deriv-com/ui';
+import { WalletButton, WalletText } from '../../../../../../components/Base';
 
 type TTransactionStatusError = {
     refresh: VoidFunction;
@@ -12,9 +12,9 @@ const TransactionStatusError: React.FC<TTransactionStatusError> = ({ refresh }) 
             Unfortunately, we cannot retrieve the information at this time.
         </WalletText>
         <Divider color='var(--general-active)' />
-        <Button borderWidth='sm' color='black' isFullWidth={true} onClick={refresh} size='sm' variant='outlined'>
+        <WalletButton isFullWidth={true} onClick={refresh} size='sm' variant='outlined'>
             Refresh
-        </Button>
+        </WalletButton>
     </React.Fragment>
 );
 

@@ -1,8 +1,7 @@
 import React from 'react';
 import { Field, FieldProps, Formik } from 'formik';
 import { useGrowthbookIsOn } from '@deriv/api-v2';
-import { Button } from '@deriv-com/ui';
-import { WalletTextField } from '../../../../../../components';
+import { WalletButton, WalletTextField } from '../../../../../../components';
 import { useWithdrawalCryptoContext } from '../../provider';
 import { validateCryptoAddress } from '../../utils';
 import { WithdrawalCryptoAmountConverter } from './components/WithdrawalCryptoAmountConverter';
@@ -60,16 +59,14 @@ const WithdrawalCryptoForm: React.FC = () => {
                         <WithdrawalCryptoAmountConverter />
                         {Boolean(isPriorityCryptoWithdrawalEnabled) && <WithdrawalCryptoPriority />}
                         <div className='wallets-withdrawal-crypto-form__submit'>
-                            <Button
-                                borderWidth='sm'
+                            <WalletButton
                                 disabled={Object.keys(errors).length !== 0 || !values.cryptoAmount || isSubmitting}
                                 isLoading={isSubmitting}
                                 size='lg'
-                                textSize='md'
                                 type='submit'
                             >
                                 Withdraw
-                            </Button>
+                            </WalletButton>
                         </div>
                     </form>
                 );

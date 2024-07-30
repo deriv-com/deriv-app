@@ -2,8 +2,7 @@ import React, { ComponentProps } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { TSocketError } from '@deriv/api-v2/types';
-import { Button } from '@deriv-com/ui';
-import { WalletsErrorScreen } from '../../../../components';
+import { WalletButton, WalletsErrorScreen } from '../../../../components';
 import { CryptoWithdrawalErrorCodes } from '../../../../constants/errorCodes';
 
 type TProps = {
@@ -14,7 +13,7 @@ type TProps = {
 
 type TErrorContent = {
     buttonText?: string;
-    buttonVariant?: ComponentProps<typeof Button>['variant'];
+    buttonVariant?: ComponentProps<typeof WalletButton>['variant'];
     message?: string;
     onClick?: () => void;
     title?: string;

@@ -17,13 +17,12 @@ import { useHistory, useLocation } from 'react-router';
 type BottomNavProps = {
     children: React.ReactNode;
     className?: string;
-    onScroll?: (e: React.UIEvent<HTMLDivElement>) => void;
 };
 
-const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) => {
+const BottomNav = observer(({ children, className }: BottomNavProps) => {
     const history = useHistory();
     const location = useLocation();
-    const { active_positions_count, onMount, onUnmount } = useStore().portfolio;
+    const { active_positions_count } = useStore().portfolio;
 
     const bottomNavItems = [
         {
@@ -86,16 +85,10 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
         setSelectedIndex(index);
         history.push(bottomNavItems[index].path);
     };
-    React.useEffect(() => {
-        onMount();
-        return onUnmount;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+
     return (
         <div className={classNames('bottom-nav', className)}>
-            <div className='bottom-nav-selection' onScroll={onScroll}>
-                {children}
-            </div>
+            <div className='bottom-nav-selection'>{children}</div>
             <div className='bottom-nav-container'>
                 {bottomNavItems.map((item, index) => (
                     <BottomNavItem

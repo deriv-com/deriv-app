@@ -70,26 +70,16 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
 
     const button_props = React.useMemo(() => {
         if (is_stop_button_visible) {
-            return {
-                id: 'db-animation__stop-button',
-                class: 'animation__stop-button',
-                text: localize('Stop'),
-                icon: 'IcBotStop',
-            };
+            return { id: 'db-animation__stop-button', text: localize('Stop'), icon: 'IcBotStop' };
         }
-        return {
-            id: 'db-animation__run-button',
-            class: 'animation__run-button',
-            text: localize('Run'),
-            icon: 'IcPlay',
-        };
+        return { id: 'db-animation__run-button', text: localize('Run'), icon: 'IcPlay' };
     }, [is_stop_button_visible]);
     const show_overlay = should_show_overlay && is_contract_completed;
     return (
         <div className={classNames('animation__wrapper', className)}>
             <Button
                 is_disabled={is_disabled && !is_unavailable_for_payment_agent}
-                className={button_props.class}
+                className='animation__button'
                 id={button_props.id}
                 text={button_props.text}
                 icon={<Icon icon={button_props.icon} color='active' />}

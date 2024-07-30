@@ -15,7 +15,6 @@ const FocusedInput = ({ focused_ref, setIsFocused }: TFocusedInputProps) => {
             // Put this temporary input element as a child of the page <body> and focus on it
             current_input_ref.focus({ preventScroll: true });
 
-            clearTimeout(focus_timeout.current);
             // The keyboard is open, so now adding a delayed focus on the target element and remove temporary input element
             focus_timeout.current = setTimeout(() => {
                 if (focused_ref?.current) {

@@ -14,12 +14,11 @@ const FocusedInput = ({ focused_ref, is_visible, setIsFocused }: TFocusedInputPr
         if (is_visible && input_ref.current && focused_ref?.current) {
             // Align temporary input element approximately where the real input element is
             // so the cursor doesn't jump around
-            const placeholder_element = input_ref.current;
-            placeholder_element.style.top = `${focused_ref.current.offsetTop + 7}px`;
-            placeholder_element.style.left = `${focused_ref.current.offsetLeft}px`;
+            input_ref.current.style.top = `${focused_ref.current.offsetTop + 7}px`;
+            input_ref.current.style.left = `${focused_ref.current.offsetLeft}px`;
 
             // Put this temporary input element as a child of the page <body> and focus on it
-            placeholder_element.focus();
+            input_ref.current.focus();
 
             clearTimeout(focus_timeout.current);
             // The keyboard is open, so now adding a delayed focus on the target element and remove temporary input element
@@ -33,7 +32,7 @@ const FocusedInput = ({ focused_ref, is_visible, setIsFocused }: TFocusedInputPr
         }
         return () => clearTimeout(focus_timeout.current);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_visible]);
+    }, [is_visible, input_ref, focused_ref]);
 
     return is_visible ? <input className='input--focused' ref={input_ref} /> : null;
 };

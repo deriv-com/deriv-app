@@ -9,7 +9,7 @@ import { poaValidationSchema } from './utils';
 import './Poa.scss';
 
 type TPoaProps = {
-    onCompletion?: () => void;
+    onCompletion?: VoidFunction;
 };
 
 const Poa: React.FC<TPoaProps> = ({ onCompletion }) => {

@@ -1,9 +1,9 @@
 import React from 'react';
 import { InlineMessage, WalletText } from '../../../../../../components';
 
-const onClickLiveChat = () => window.LC_API.open_chat_window();
-
 const NeedHelpMessage = () => {
+    const onClickLiveChat = () => window.LC_API.open_chat_window();
+
     return (
         <div className='wallets-tax-information__message'>
             <InlineMessage type='information' variant='contained'>

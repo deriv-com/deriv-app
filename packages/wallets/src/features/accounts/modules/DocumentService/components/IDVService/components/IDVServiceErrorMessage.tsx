@@ -7,7 +7,7 @@ const IDVServiceErrorMessage = ({ message }: { message: string }) => {
     const { isMobile } = useDevice();
 
     return (
-        <div className='wallets-idv-error-message'>
+        <div className='wallets-idv-service-error-message'>
             <WalletText weight='bold'>Your identity verification failed because:</WalletText>
             <InlineMessage message={message} size={isMobile ? 'md' : 'sm'} type='error' />
             <WalletText size='sm'>

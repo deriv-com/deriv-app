@@ -8,7 +8,7 @@ import { useVerifyPersonalDetails, VerifyPersonalDetails } from '../VerifyPerson
 import './Onfido.scss';
 
 type TOnfidoProps = {
-    onCompletion?: () => void;
+    onCompletion?: VoidFunction;
 };
 
 const Onfido: React.FC<TOnfidoProps> = ({ onCompletion }) => {

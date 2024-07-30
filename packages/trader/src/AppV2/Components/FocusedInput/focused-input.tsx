@@ -27,6 +27,7 @@ const FocusedInput = ({ focused_ref, is_visible, setIsFocused }: TFocusedInputPr
             // The keyboard is open, so now adding a delayed focus on the target element and remove temporary input element
             focus_timeout.current = setTimeout(() => {
                 if (focused_ref?.current) {
+                    focused_ref.current.blur();
                     focused_ref.current.focus();
                     focused_ref.current.click();
                     setIsFocused(false);

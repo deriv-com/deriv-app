@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useFormikContext } from 'formik';
 import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import QSInput from './inputs/qs-input';
 import QSInputLabel from './inputs/qs-input-label';
+import QsTextInput from './inputs/qs-text-input';
 import QSCheckbox from './inputs/qs-toggle-switch';
 import ContractTypeSelect from './selects/contract-type';
 import DurationTypeSelect from './selects/duration-type';
@@ -81,6 +82,7 @@ const QuickStrategyForm = observer(() => {
                         switch (field.type) {
                             // Generic or common fields
                             case 'text': {
+                                if (field.name === 'name') return <QsTextInput field={field} name={field.name} />;
                                 return (
                                     <QSInput
                                         {...field}

@@ -68,7 +68,7 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
     const botAction = (action: string, bot_id: string) => {
         switch (action) {
             case 'RUN':
-                if (active_bot?.status === 'running') {
+                if (active_bot?.status !== 'stopped') {
                     botNotification(localize('You can only run one bot at a time.'));
                     break;
                 }

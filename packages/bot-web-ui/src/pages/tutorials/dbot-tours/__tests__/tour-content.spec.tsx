@@ -6,12 +6,7 @@ import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import OnboardingTourMobile from '../onboarding-tour/onboarding-tour-mobile';
 import { DBOT_ONBOARDING_MOBILE } from '../tour-content';
 
-jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
-jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
-jest.mock('@deriv/deriv-charts', () => ({
-    setSmartChartsPublicPath: jest.fn(),
-}));
 
 describe('Tour Content', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element;

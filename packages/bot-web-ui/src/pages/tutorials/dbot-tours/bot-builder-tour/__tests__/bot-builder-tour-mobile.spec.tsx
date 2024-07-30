@@ -7,12 +7,7 @@ import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import BotBuilderTourMobile from '../bot-builder-tour-mobile';
 
-jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
-jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
-jest.mock('@deriv/deriv-charts', () => ({
-    setSmartChartsPublicPath: jest.fn(),
-}));
 
 describe('BotBuilder Tour Mobile', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element;

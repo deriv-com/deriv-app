@@ -7,12 +7,8 @@ import { getSetting } from 'Utils/settings';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import OnboardingTourDesktop from '../onboarding-tour-desktop';
 
-jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
-jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
-jest.mock('@deriv/deriv-charts', () => ({
-    setSmartChartsPublicPath: jest.fn(),
-}));
+
 jest.mock('Utils/settings', () => ({
     getSetting: jest.fn(),
 }));

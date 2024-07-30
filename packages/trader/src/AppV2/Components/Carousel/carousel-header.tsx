@@ -1,18 +1,18 @@
 import React from 'react';
 import { ActionSheet } from '@deriv-com/quill-ui';
 import { LabelPairedArrowLeftMdRegularIcon, LabelPairedCircleInfoMdRegularIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv/translations';
 
-type TAllowEqualsProps = {
+type TCarouselHeaderProps = {
     current_index: number;
     onNextClick: () => void;
     onPrevClick: () => void;
+    title?: React.ReactNode;
 };
 
-const TakeProfitHeader = ({ current_index, onNextClick, onPrevClick }: TAllowEqualsProps) => (
+const CarouselHeader = ({ current_index, onNextClick, onPrevClick, title }: TCarouselHeaderProps) => (
     <ActionSheet.Header
         className='carousel-controls'
-        title={<Localize i18n_default_text='Take profit' />}
+        title={title}
         icon={
             current_index ? (
                 <LabelPairedArrowLeftMdRegularIcon onClick={onPrevClick} />
@@ -24,4 +24,4 @@ const TakeProfitHeader = ({ current_index, onNextClick, onPrevClick }: TAllowEqu
     />
 );
 
-export default TakeProfitHeader;
+export default CarouselHeader;

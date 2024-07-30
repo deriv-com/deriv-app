@@ -7,7 +7,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import { focusAndOpenKeyboard } from 'AppV2/Utils/trade-params-utils';
 import Carousel from 'AppV2/Components/Carousel';
-import TakeProfitHeader from './take-profit-header';
+import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 
 type TTakeProfitProps = {
     is_minimized?: boolean;
@@ -26,10 +26,8 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     } = useTraderStore();
 
     const [is_open, setIsOpen] = React.useState(false);
-    const [is_take_profit_enabled, setIsTakeProfitEnabled] = React.useState(has_take_profit);
-    const [updated_take_profit_value, setUpdatedTakeProfitValue] = React.useState<string | number | undefined>(
-        take_profit
-    );
+    const [is_enabled, setIsEnabled] = React.useState(has_take_profit);
+    const [take_profit_value, setTakeProfitValue] = React.useState<string | number | undefined>(take_profit);
     const [error_message, setErrorMessage] = React.useState<React.ReactNode>();
 
     const input_ref = React.useRef<HTMLInputElement>(null);
@@ -40,7 +38,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     const decimals = getDecimalPlaces(currency);
 
     const getInputMessage = () =>
-        is_take_profit_enabled
+        is_enabled
             ? error_message || (
                   <Localize
                       i18n_default_text='Acceptable range: {{min_take_profit}} to {{max_take_profit}} {{currency}}'
@@ -49,7 +47,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
               )
             : '';
 
-    const isTakeProfitOutOfRange = (value = updated_take_profit_value) => {
+    const isTakeProfitOutOfRange = (value = take_profit_value) => {
         if (!value) {
             setErrorMessage(<Localize i18n_default_text='Please enter a take profit amount.' />);
             return true;
@@ -67,11 +65,11 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
         return false;
     };
 
-    const onToggleSwitch = (is_enabled: boolean) => {
-        setIsTakeProfitEnabled(is_enabled);
+    const onToggleSwitch = (new_value: boolean) => {
+        setIsEnabled(new_value);
 
-        if (is_enabled) {
-            if (updated_take_profit_value !== '' && updated_take_profit_value !== undefined) {
+        if (new_value) {
+            if (take_profit_value !== '' && take_profit_value !== undefined) {
                 isTakeProfitOutOfRange();
             }
 
@@ -90,21 +88,21 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
 
         if (value !== '' && Number(value) <= 0) value = '0';
 
-        setUpdatedTakeProfitValue(value);
+        setTakeProfitValue(value);
         isTakeProfitOutOfRange(value);
     };
 
     const onSave = () => {
-        if (isTakeProfitOutOfRange() && is_take_profit_enabled) return;
+        if (isTakeProfitOutOfRange() && is_enabled) return;
 
         onChangeMultiple({
-            has_take_profit: is_take_profit_enabled,
-            ...(is_take_profit_enabled ? { has_cancellation: false } : {}),
+            has_take_profit: is_enabled,
+            ...(is_enabled ? { has_cancellation: false } : {}),
         });
         onChange({
             target: {
                 name: 'take_profit',
-                value: updated_take_profit_value,
+                value: take_profit_value,
             },
         });
         onActionSheetClose();
@@ -112,8 +110,8 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
 
     const onActionSheetClose = () => {
         setIsOpen(false);
-        setIsTakeProfitEnabled(has_take_profit);
-        setUpdatedTakeProfitValue(take_profit);
+        setIsEnabled(has_take_profit);
+        setTakeProfitValue(take_profit);
         setErrorMessage('');
     };
 
@@ -127,11 +125,11 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                             <Text>
                                 <Localize i18n_default_text='Take profit' />
                             </Text>
-                            <ToggleSwitch checked={is_take_profit_enabled} onChange={onToggleSwitch} />
+                            <ToggleSwitch checked={is_enabled} onChange={onToggleSwitch} />
                         </div>
                         <TextFieldWithSteppers
                             allowDecimals
-                            disabled={!is_take_profit_enabled}
+                            disabled={!is_enabled}
                             decimals={decimals}
                             message={getInputMessage()}
                             name='take_profit'
@@ -142,9 +140,9 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                             textAlignment='center'
                             unitLeft={currency}
                             variant='fill'
-                            value={updated_take_profit_value}
+                            value={take_profit_value}
                         />
-                        {!is_take_profit_enabled && (
+                        {!is_enabled && (
                             <button
                                 className='take-profit__overlay'
                                 onClick={() => onToggleSwitch(true)}
@@ -186,8 +184,8 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     ];
 
     React.useEffect(() => {
-        setIsTakeProfitEnabled(has_take_profit);
-        setUpdatedTakeProfitValue(take_profit);
+        setIsEnabled(has_take_profit);
+        setTakeProfitValue(take_profit);
 
         return () => clearTimeout(focus_timeout.current);
     }, [has_take_profit, take_profit]);
@@ -207,7 +205,11 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
             />
             <ActionSheet.Root isOpen={is_open} onClose={onActionSheetClose} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>
-                    <Carousel header={TakeProfitHeader} pages={action_sheet_content} />
+                    <Carousel
+                        header={CarouselHeader}
+                        pages={action_sheet_content}
+                        title={<Localize i18n_default_text='Take profit' />}
+                    />
                 </ActionSheet.Portal>
             </ActionSheet.Root>
         </React.Fragment>

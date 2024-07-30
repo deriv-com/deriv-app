@@ -9,3 +9,9 @@
         transition: transform 0.24s ease-in-out;
     }
 }
+
+.carousel-controls {
+    .quill-action-sheet--title--icon {
+        z-index: 2;
+    }
+}

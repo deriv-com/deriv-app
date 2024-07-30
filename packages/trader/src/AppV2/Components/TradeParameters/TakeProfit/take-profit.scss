@@ -28,15 +28,9 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
     &__overlay {
         all: unset;
         height: var(--core-size-2800);
-        width: calc(100vw - (2 * var(--core-spacing-800)));
+        width: calc(100vw - var(--core-spacing-1600));
         position: absolute;
         top: var(--core-spacing-2200);
         left: var(--core-spacing-800);
-    }
-}
-
-.carousel-controls {
-    .quill-action-sheet--title--icon {
-        z-index: 2;
     }
 }

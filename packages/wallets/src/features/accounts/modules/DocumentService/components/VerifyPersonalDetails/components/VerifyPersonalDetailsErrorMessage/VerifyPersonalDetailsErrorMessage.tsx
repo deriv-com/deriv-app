@@ -18,9 +18,9 @@ const VerifyPersonalDetailsErrorMessage: React.FC<TErrorMessageProps> = ({ error
                 <WalletText as='span'>
                     An account with these details already exists. Please make sure the details you entered are correct
                     as only one real account is allowed per client. If this is a mistake, contact us via{' '}
-                    <a className='wallets-verify-personal-details__error-link' onClick={handleOnClickLink}>
+                    <button className='wallets-link wallets-link__variant--bold' onClick={handleOnClickLink}>
                         live chat
-                    </a>
+                    </button>
                     .
                 </WalletText>
             </InlineMessage>

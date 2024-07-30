@@ -29,6 +29,7 @@ import type {
     useTransferBetweenAccounts,
     useWalletAccountsList,
 } from '@deriv/api-v2';
+import { TSocketError, TSocketResponse } from '@deriv/api-v2/types';
 import { IconTypes } from '@deriv/quill-icons';
 
 // eslint-disable-next-line  @typescript-eslint/no-namespace
@@ -65,6 +66,7 @@ export namespace THooks {
         NonNullable<ReturnType<typeof useTransferBetweenAccounts>['data']>['accounts']
     >[number];
     export type AccountSettings = NonNullable<ReturnType<typeof useSettings>['data']>;
+    export type DocumentUpload = TSocketError<'document_upload'> & TSocketResponse<'document_upload'>;
 }
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace TPlatforms {

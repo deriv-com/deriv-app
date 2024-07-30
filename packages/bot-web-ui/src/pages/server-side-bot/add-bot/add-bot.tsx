@@ -170,6 +170,9 @@ export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children, set
                             });
                         }
                         sub_schema[field.name] = schema;
+                    } else if (field.validation.includes('required') && field?.type === 'text') {
+                        const schema = Yup.string().required(localize('Field cannot be empty'));
+                        sub_schema[field.name] = schema;
                     }
                 }
             });

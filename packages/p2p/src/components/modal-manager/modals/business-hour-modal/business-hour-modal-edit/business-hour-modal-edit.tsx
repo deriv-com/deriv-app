@@ -242,6 +242,12 @@ const BusinessHourModalEdit = React.forwardRef(({ data, saved_details }: TBusine
                                             }
                                         )}
                                         onClick={() => toggleDropdown(day.value)}
+                                        onKeyDown={e => {
+                                            if (e.key === 'Enter') {
+                                                toggleDropdown(day.value);
+                                            }
+                                        }}
+                                        role='button'
                                     >
                                         <Text color={includes_day ? 'general' : 'less-prominent'} size='xxs'>
                                             <Localize i18n_default_text='Open 24 hours' />

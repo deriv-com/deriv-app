@@ -81,7 +81,7 @@ const AppContent = ({ order_id }) => {
             </div>
             <div data-count={notification_count} label={localize('Orders')} />
             <div label={localize('My ads')}>
-                <TemporarilyBarredHint is_my_ads_page />
+                <TemporarilyBarredHint />
             </div>
             <div label={localize('My profile')} />
         </Tabs>

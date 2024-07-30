@@ -1,0 +1,7 @@
+.input {
+    &--focused {
+        position: absolute;
+        height: 0;
+        opacity: 0;
+    }
+}

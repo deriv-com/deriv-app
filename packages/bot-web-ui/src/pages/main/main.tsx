@@ -188,7 +188,7 @@ const AppWrapper = observer(() => {
                         </div>
                         {is_next_server_bot_enabled ? (
                             <div
-                                icon='IcDashboardComponentTab'
+                                icon='IcServerBot'
                                 label={
                                     <Localize
                                         i18n_default_text='Server Bot <0>Beta</0'

@@ -62,7 +62,7 @@ const Poa: React.FC<TPoaProps> = ({ onCompletion }) => {
                         title='Add a real MT5 account'
                     >
                         <div className='wallets-poa'>
-                            {errorSettings && errorSettings && (
+                            {errorSettings && (
                                 <InlineMessage variant='error'>
                                     <Text>{errorSettings.message}</Text>
                                 </InlineMessage>

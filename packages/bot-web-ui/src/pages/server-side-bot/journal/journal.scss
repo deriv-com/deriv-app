@@ -9,7 +9,7 @@
         padding: 16px;
         height: calc(100vh - 280px);
         @include mobile {
-            height: calc(100vh - 186px);
+            height: calc(100vh - 196px);
         }
         overflow-y: auto;
         &__empty {

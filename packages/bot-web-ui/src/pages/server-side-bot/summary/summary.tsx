@@ -22,32 +22,50 @@ const Summary: React.FC = observer(() => {
                 {has_summary ? (
                     <>
                         {[...txns]?.reverse()?.map(txn => {
+                            const has_profit = txn.profit > 0;
                             return (
                                 <div className='ssb-summary__item' key={txn.contract_id}>
                                     <div className='ssb-summary__item__header'>
                                         <Text size='xs' weight='bold'>
                                             {txn.display_name}
                                         </Text>
-                                        <span className='ssb-summary__item__header__result ssb-summary__item__header__result--won'>
-                                            <Icon icon='IcServerBotProfit' color='green' size={20} />
+                                        <span
+                                            className={classNames('ssb-summary__item__header__result', {
+                                                'ssb-summary__item__header__result--won': has_profit,
+                                                'ssb-summary__item__header__result--lost': !has_profit,
+                                            })}
+                                        >
+                                            <Icon
+                                                icon={has_profit ? 'IcServerBotProfit' : 'IcServerBotLoss'}
+                                                color={has_profit ? 'green' : 'red'}
+                                                size={20}
+                                            />
                                             <Text size='xxs'>
-                                                <Localize i18n_default_text='Won' />
+                                                {has_profit ? (
+                                                    <Localize i18n_default_text='Won' />
+                                                ) : (
+                                                    <Localize i18n_default_text='Lost' />
+                                                )}
                                             </Text>
                                         </span>
                                     </div>
                                     <div className='ssb-summary__item__content'>
                                         <Text size='xxs'>
-                                            Buy Price:{' '}
+                                            <Localize i18n_default_text='Buy Price' />:{' '}
                                             <Money amount={txn.buy_price} currency={currency} show_currency />
                                         </Text>
                                         <Text size='xxs'>
-                                            Profit:
-                                            <Money amount={txn.profit} currency={currency} show_currency />
+                                            <Localize i18n_default_text='Profit' />:{' '}
+                                            <Money amount={txn.profit} currency={currency} show_currency has_sign />
                                         </Text>
                                     </div>
                                     <div className='ssb-summary__item__content'>
-                                        <Text size='xxs'>Entry spot: {txn.entry_spot}</Text>
-                                        <Text size='xxs'>Exit spot: {txn?.exit_spot || '...........'}</Text>
+                                        <Text size='xxs'>
+                                            <Localize i18n_default_text='Entry spot' />: {txn.entry_spot}
+                                        </Text>
+                                        <Text size='xxs'>
+                                            <Localize i18n_default_text='Exit spot' />: {txn.exit_spot || '......'}
+                                        </Text>
                                     </div>
                                 </div>
                             );

@@ -11,7 +11,7 @@
     --bg-progress: rgba(0, 0, 0, 0.04);
     --color-stats: #9498a2;
     @include mobile {
-        --summary-content-height: 296px;
+        --summary-content-height: 306px;
     }
 
     &__content {
@@ -24,6 +24,9 @@
             @extend %center;
             border-radius: 4px;
             height: calc(100vh - var(--summary-content-height));
+            .dc-text {
+                --text-align: var(--text-align-center) !important;
+            }
         }
     }
     &__footer {
@@ -84,16 +87,22 @@
                 border-radius: 4px;
                 &--won {
                     background-color: var(--bg-won);
+                    .dc-text {
+                        color: var(--purchase-main-1);
+                    }
                 }
                 &--lost {
                     background-color: var(--bg-lost);
+                    .dc-text {
+                        color: var(--purchase-main-2);
+                    }
                 }
                 &--progress {
                     background-color: var(--bg-progress);
                 }
 
                 .dc-icon {
-                    margin-right: 8px;
+                    margin-right: 4px;
                 }
             }
         }

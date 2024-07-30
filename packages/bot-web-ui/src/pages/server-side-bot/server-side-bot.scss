@@ -37,7 +37,10 @@
         &__active-line {
             background: var(--brand-red-coral) !important;
         }
-        &__list-border-bottom {
+        &__active-line-top {
+            bottom: 0;
+        }
+        &__list--border-bottom {
             height: 50px !important;
         }
     }

@@ -1,13 +1,15 @@
 import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
-import { ActionSheet, SectionMessage, TextField, Text, ToggleSwitch, TextFieldWithSteppers } from '@deriv-com/quill-ui';
-import { Localize, localize } from '@deriv/translations';
+import { ActionSheet, TextField } from '@deriv-com/quill-ui';
+import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import { focusAndOpenKeyboard } from 'AppV2/Utils/trade-params-utils';
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
+import TakeProfitDescription from './take-profit-description';
+import TakeProfitInput from './take-profit-input';
 
 type TTakeProfitProps = {
     is_minimized?: boolean;
@@ -119,67 +121,23 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
         {
             id: 1,
             component: (
-                <React.Fragment>
-                    <ActionSheet.Content className='take-profit__wrapper'>
-                        <div className='take-profit__content'>
-                            <Text>
-                                <Localize i18n_default_text='Take profit' />
-                            </Text>
-                            <ToggleSwitch checked={is_enabled} onChange={onToggleSwitch} />
-                        </div>
-                        <TextFieldWithSteppers
-                            allowDecimals
-                            disabled={!is_enabled}
-                            decimals={decimals}
-                            message={getInputMessage()}
-                            name='take_profit'
-                            onChange={onInputChange}
-                            placeholder={localize('Amount')}
-                            ref={input_ref}
-                            status={error_message ? 'error' : 'neutral'}
-                            textAlignment='center'
-                            unitLeft={currency}
-                            variant='fill'
-                            value={take_profit_value}
-                        />
-                        {!is_enabled && (
-                            <button
-                                className='take-profit__overlay'
-                                onClick={() => onToggleSwitch(true)}
-                                data-testid='dt_take_profit_overlay'
-                            />
-                        )}
-                    </ActionSheet.Content>
-                    <ActionSheet.Footer
-                        alignment='vertical'
-                        primaryAction={{
-                            content: <Localize i18n_default_text='Save' />,
-                            onAction: onSave,
-                        }}
-                        shouldCloseOnPrimaryButtonClick={false}
-                    />
-                </React.Fragment>
+                <TakeProfitInput
+                    currency={currency}
+                    decimals={decimals}
+                    error_message={error_message}
+                    is_enabled={is_enabled}
+                    message={getInputMessage()}
+                    onToggleSwitch={onToggleSwitch}
+                    onInputChange={onInputChange}
+                    onSave={onSave}
+                    ref={input_ref}
+                    take_profit_value={take_profit_value}
+                />
             ),
         },
         {
             id: 2,
-            component: (
-                <ActionSheet.Content className='take-profit__wrapper--definition'>
-                    <Text>
-                        <Localize i18n_default_text='When your profit reaches or exceeds the set amount, your trade will be closed automatically.' />
-                    </Text>
-                    {is_accumulator && (
-                        <SectionMessage
-                            className='take-profit__warning'
-                            message={
-                                <Localize i18n_default_text="Take profit can't be adjusted for ongoing accumulator contracts." />
-                            }
-                            size='sm'
-                            status='info'
-                        />
-                    )}
-                </ActionSheet.Content>
-            ),
+            component: <TakeProfitDescription is_accumulator={is_accumulator} />,
         },
     ];
 

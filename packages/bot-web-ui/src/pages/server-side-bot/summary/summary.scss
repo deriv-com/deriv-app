@@ -10,6 +10,9 @@
     --bg-lost: rgba(230, 25, 14, 0.08);
     --bg-progress: rgba(0, 0, 0, 0.04);
     --color-stats: #9498a2;
+    @include mobile {
+        --summary-content-height: 296px;
+    }
 
     &__content {
         padding: 16px;
@@ -40,6 +43,14 @@
                         }
                     }
                 }
+            }
+            &--profit {
+                --text-weight: var(--text-weight-bold) !important;
+                --text-color: var(--purchase-main-1) !important;
+            }
+            &--loss {
+                --text-weight: var(--text-weight-bold) !important;
+                --text-color: var(--purchase-main-2) !important;
             }
         }
         &__actions {

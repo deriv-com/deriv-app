@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Button, Text } from '@deriv/components';
+import Money from '@deriv/components/src/components/money/money';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { JOURNAL_TYPE } from 'Stores/server-side-bot-store';
@@ -11,12 +12,13 @@ type TJournal = {
 };
 
 const Journal: React.FC<TJournal> = observer(({ setActiveTabIndex }) => {
+    const {
+        client: { currency },
+    } = useStore();
     const { server_bot } = useDBotStore();
     const { journal } = server_bot;
-    const { ui } = useStore();
-    const { is_mobile } = ui;
     const has_journal = !!journal.length;
-    const font_size = is_mobile ? 'xxs' : 'xs';
+    const font_size = 'xxs';
     const uid = 'journal';
 
     React.useEffect(() => {
@@ -32,9 +34,9 @@ const Journal: React.FC<TJournal> = observer(({ setActiveTabIndex }) => {
             <div className='ssb-journal__content'>
                 {has_journal ? (
                     <>
-                        {journal.map((jn, index) => {
-                            const { type, msg = '', bot_id = '', amount = '' } = jn;
-                            const should_have_bg = index % 2 !== 0;
+                        {[...journal]?.reverse()?.map((jn, index) => {
+                            const { type, msg = '', amount = '', order = 2 } = jn;
+                            const should_have_bg = order % 2 !== 0;
                             switch (type) {
                                 case JOURNAL_TYPE.BUY:
                                     return (
@@ -68,7 +70,9 @@ const Journal: React.FC<TJournal> = observer(({ setActiveTabIndex }) => {
                                         >
                                             <Text size={font_size}>
                                                 <Localize i18n_default_text='Win amount: ' />
-                                                <span className='ssb-journal__content__item--win'>{amount}</span>
+                                                <span className='ssb-journal__content__item--win'>
+                                                    <Money amount={amount} currency={currency} show_currency has_sign />
+                                                </span>
                                             </Text>
                                         </div>
                                     );
@@ -83,7 +87,9 @@ const Journal: React.FC<TJournal> = observer(({ setActiveTabIndex }) => {
                                         >
                                             <Text size={font_size}>
                                                 <Localize i18n_default_text='Loss amount: ' />
-                                                <span className='ssb-journal__content__item--loss'>{amount}</span>
+                                                <span className='ssb-journal__content__item--loss'>
+                                                    <Money amount={amount} currency={currency} show_currency has_sign />
+                                                </span>
                                             </Text>
                                         </div>
                                     );
@@ -106,12 +112,7 @@ const Journal: React.FC<TJournal> = observer(({ setActiveTabIndex }) => {
                                 case JOURNAL_TYPE.ERROR: {
                                     return (
                                         <div
-                                            className={classNames(
-                                                'ssb-journal__content__item ssb-journal__content__item--error',
-                                                {
-                                                    'item-bg': should_have_bg,
-                                                }
-                                            )}
+                                            className='ssb-journal__content__item ssb-journal__content__item--error'
                                             key={uid + index}
                                         >
                                             <Text size={font_size}>
@@ -126,15 +127,6 @@ const Journal: React.FC<TJournal> = observer(({ setActiveTabIndex }) => {
                                     return null;
                             }
                         })}
-
-                        {/* <div className='ssb-journal__content__item item-bg'>
-                            <Text size={font_size}>
-                                <Localize
-                                    i18n_default_text='<0>Bought</0>: Win payout if Volatility 100 (1s) Index after 1 tick is strictly lower than entry spot. (ID: 356880252948)'
-                                    components={[<span className='ssb-journal__content__item--purchase' key={0} />]}
-                                />
-                            </Text>
-                        </div> */}
                     </>
                 ) : (
                     <>

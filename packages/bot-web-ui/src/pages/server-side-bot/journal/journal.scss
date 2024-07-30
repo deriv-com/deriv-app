@@ -8,6 +8,9 @@
     &__content {
         padding: 16px;
         height: calc(100vh - 280px);
+        @include mobile {
+            height: calc(100vh - 186px);
+        }
         overflow-y: auto;
         &__empty {
             background-color: var(--general-section-1);
@@ -29,6 +32,9 @@
             }
             &.item-bg {
                 background-color: var(--general-section-1);
+            }
+            &--error {
+                background-color: var(--button-primary-light-default);
             }
         }
     }

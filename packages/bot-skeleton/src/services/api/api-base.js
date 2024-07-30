@@ -25,7 +25,6 @@ class APIBase {
             this.time_interval = null;
             this.getTime();
         }
-        window.api = this;
     }
 
     getConnectionStatus() {

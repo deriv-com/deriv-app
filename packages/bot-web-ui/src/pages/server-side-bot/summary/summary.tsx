@@ -1,11 +1,14 @@
 import React from 'react';
-import { Button, Icon, Text } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import classNames from 'classnames';
+import { Button, Icon, Money, Text } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const Summary: React.FC = observer(() => {
     const { server_bot } = useDBotStore();
+    const { client } = useStore();
+    const { currency } = client;
     const { transactions, active_bot, performance } = server_bot;
     const { bot_id } = active_bot;
     const bot_transactions = bot_id ? transactions[bot_id] : {};
@@ -18,7 +21,7 @@ const Summary: React.FC = observer(() => {
             <div className='ssb-summary__content'>
                 {has_summary ? (
                     <>
-                        {txns.map(txn => {
+                        {[...txns]?.reverse()?.map(txn => {
                             return (
                                 <div className='ssb-summary__item' key={txn.contract_id}>
                                     <div className='ssb-summary__item__header'>
@@ -26,15 +29,21 @@ const Summary: React.FC = observer(() => {
                                             {txn.display_name}
                                         </Text>
                                         <span className='ssb-summary__item__header__result ssb-summary__item__header__result--won'>
-                                            <Icon icon='IcServerBotProfit' color='green' />
+                                            <Icon icon='IcServerBotProfit' color='green' size={20} />
                                             <Text size='xxs'>
                                                 <Localize i18n_default_text='Won' />
                                             </Text>
                                         </span>
                                     </div>
                                     <div className='ssb-summary__item__content'>
-                                        <Text size='xxs'>Buy Price: {txn.buy_price}</Text>
-                                        <Text size='xxs'>Profit: {txn.profit}</Text>
+                                        <Text size='xxs'>
+                                            Buy Price:{' '}
+                                            <Money amount={txn.buy_price} currency={currency} show_currency />
+                                        </Text>
+                                        <Text size='xxs'>
+                                            Profit:
+                                            <Money amount={txn.profit} currency={currency} show_currency />
+                                        </Text>
                                     </div>
                                     <div className='ssb-summary__item__content'>
                                         <Text size='xxs'>Entry spot: {txn.entry_spot}</Text>
@@ -50,7 +59,7 @@ const Summary: React.FC = observer(() => {
                                     Volatility 100 (1s) Index
                                 </Text>
                                 <span className='ssb-summary__item__header__result ssb-summary__item__header__result--lost'>
-                                    <Icon icon='IcServerBotLoss' color='red' />
+                                    <Icon icon='IcServerBotLoss' color='red' size={20} />
                                     <Text size='xxs'>
                                         <Localize i18n_default_text='Lost' />
                                     </Text>
@@ -106,7 +115,9 @@ const Summary: React.FC = observer(() => {
                                 </Text>
                             </div>
                             <div>
-                                <Text size='xs'>{performance.total_stake}</Text>
+                                <Text size='xs'>
+                                    <Money amount={performance.total_stake} currency={currency} />
+                                </Text>
                             </div>
                         </li>
                         <li>
@@ -116,7 +127,9 @@ const Summary: React.FC = observer(() => {
                                 </Text>
                             </div>
                             <div>
-                                <Text size='xs'>{performance.total_payout}</Text>
+                                <Text size='xs'>
+                                    <Money amount={performance.total_payout} currency={currency} />
+                                </Text>
                             </div>
                         </li>
                         <li>
@@ -126,7 +139,21 @@ const Summary: React.FC = observer(() => {
                                 </Text>
                             </div>
                             <div>
-                                <Text size='xs'>{performance.total_profit}</Text>
+                                <Text
+                                    size='xs'
+                                    className={classNames({
+                                        'ssb-summary__footer__performance--profit': performance?.total_profit > 0,
+                                        'ssb-summary__footer__performance--loss':
+                                            performance?.total_profit !== 0 && !(performance?.total_profit > 0),
+                                    })}
+                                >
+                                    <Money
+                                        amount={performance.total_profit}
+                                        currency={currency}
+                                        has_sign
+                                        show_currency
+                                    />
+                                </Text>
                             </div>
                         </li>
                     </ul>

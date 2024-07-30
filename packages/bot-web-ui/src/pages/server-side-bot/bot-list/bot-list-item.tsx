@@ -8,9 +8,10 @@ type TBotListItem = {
     item: TServerBotItem;
     botAction: (action: string, bot_id: string) => void;
     active_bot: Partial<TServerBotItem>;
+    setActiveBotId?: (bot_id: string) => void;
 };
 
-const BotListItem: React.FC<TBotListItem> = ({ handleMenuClick, item, botAction, active_bot }) => {
+const BotListItem: React.FC<TBotListItem> = ({ handleMenuClick, item, botAction, active_bot, setActiveBotId }) => {
     const is_running = item.status === 'running';
     let is_stopping = false;
     let is_starting = false;
@@ -21,21 +22,47 @@ const BotListItem: React.FC<TBotListItem> = ({ handleMenuClick, item, botAction,
     }
 
     return (
-        <div className='ssb-list__item' id={item.bot_id}>
+        <div
+            className='ssb-list__item'
+            id={item.bot_id}
+            onClick={() => {
+                setActiveBotId?.(item.bot_id);
+            }}
+        >
             <div className='ssb-list__item__title'>
-                <Icon icon='IcMenuDots' onClick={e => handleMenuClick(e, item.bot_id)} />
+                <Icon
+                    icon='IcMenuDots'
+                    onClick={e => {
+                        e.stopPropagation();
+                        handleMenuClick(e, item.bot_id);
+                    }}
+                />
                 <Text size='xs' weight='bold'>
                     {item.name}
                 </Text>
             </div>
             <div className='ssb-list__item__action'>
                 {!is_running && (
-                    <Button green onClick={() => botAction('RUN', item.bot_id)} disabled={is_starting}>
+                    <Button
+                        green
+                        onClick={e => {
+                            e.stopPropagation();
+                            botAction('RUN', item.bot_id);
+                        }}
+                        disabled={is_starting}
+                    >
                         {is_starting ? <Localize i18n_default_text='Starting' /> : <Localize i18n_default_text='Run' />}
                     </Button>
                 )}
                 {is_running && (
-                    <Button primary onClick={() => botAction('STOP', item.bot_id)} disabled={is_stopping}>
+                    <Button
+                        primary
+                        onClick={e => {
+                            e.stopPropagation();
+                            botAction('STOP', item.bot_id);
+                        }}
+                        disabled={is_stopping}
+                    >
                         {is_stopping ? (
                             <Localize i18n_default_text='Stopping' />
                         ) : (

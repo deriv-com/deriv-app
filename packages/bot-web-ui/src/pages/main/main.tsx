@@ -16,7 +16,6 @@ import Chart from '../chart';
 import ChartModal from '../chart/chart-modal';
 import Dashboard from '../dashboard';
 import RunStrategy from '../dashboard/run-strategy';
-// import ServerBot from '../server-bot';
 import ServerSideBot from '../server-side-bot';
 import Tutorial from '../tutorials';
 import { tour_list } from '../tutorials/dbot-tours/utils';
@@ -43,10 +42,10 @@ const AppWrapper = observer(() => {
     const init_render = React.useRef(true);
     const { ui } = useStore();
     const { is_next_server_bot_enabled } = useFeatureFlags();
-
     const { url_hashed_values, is_desktop } = ui;
 
-    const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial', 'server_bot'];
+    const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial'];
+    if (is_next_server_bot_enabled) hash.push('server_bot');
 
     let tab_value: number | string = active_tab;
     const GetHashedValue = (tab: number) => {

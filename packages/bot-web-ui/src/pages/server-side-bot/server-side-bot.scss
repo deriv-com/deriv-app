@@ -23,3 +23,22 @@
         }
     }
 }
+
+.ssb-mobile-wrapper {
+    width: 100%;
+    .dc-tabs {
+        &__item {
+            // TODO: This is a temporary fix for the tabs in the performance panel
+            // To fix this, we need to refactor the Dashboard tabs component
+            width: 50% !important;
+            border-radius: 0 !important;
+            background: var(--general-main-1) !important;
+        }
+        &__active-line {
+            background: var(--brand-red-coral) !important;
+        }
+        &__list-border-bottom {
+            height: 50px !important;
+        }
+    }
+}

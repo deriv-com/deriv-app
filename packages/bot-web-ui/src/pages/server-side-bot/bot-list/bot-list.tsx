@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { Button, Icon, Text, useOnClickOutside } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { localize, Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
+import { botNotification } from 'Components/bot-notification/bot-notification';
 import { useDBotStore } from 'Stores/useDBotStore';
+import LoginModal from './common/login-modal';
 import BotListItem from './bot-list-item';
 import BotListMenu from './bot-list-menu';
 import DeleteServerBot from './delete-server-bot';
-import { botNotification } from 'Components/bot-notification/bot-notification';
-import LoginModal from './common/login-modal';
 
 type TBotList = {
     setFormVisibility: (is_open: boolean) => void;
@@ -20,7 +20,16 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
 
     const { ui } = useStore();
     const { server_bot } = useDBotStore();
-    const { getBotList, bot_list = [], is_loading_bot_list, startBot, stopBot, deleteBot, active_bot } = server_bot;
+    const {
+        getBotList,
+        bot_list = [],
+        is_loading_bot_list,
+        startBot,
+        stopBot,
+        deleteBot,
+        active_bot,
+        setActiveBotId,
+    } = server_bot;
     const { is_mobile } = ui;
     const [menu_open, setMenuOpen] = React.useState({ visible: false, y: 0, bot_id: '' });
     const menu_ref = React.useRef(null);
@@ -30,6 +39,7 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
 
     useEffect(() => {
         getBotList(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -115,14 +125,16 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
                     <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
                         <Localize i18n_default_text='Bot list' />
                     </Text>
-                    <span
-                        className='ssb-list__header__add'
-                        onClick={() => {
-                            !is_logged_in ? setLoginModalVisble(true) : setFormVisibility(true);
-                        }}
-                    >
-                        <Icon icon='IcAddBold' />
-                    </span>
+                    {has_list && (
+                        <span
+                            className='ssb-list__header__add'
+                            onClick={() => {
+                                setFormVisibility(true);
+                            }}
+                        >
+                            <Icon icon='IcAddBold' />
+                        </span>
+                    )}
                 </div>
                 <div id='ssb-bot-list' className='ssb-list__content'>
                     {has_list ? (
@@ -135,6 +147,7 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
                                         item={item}
                                         handleMenuClick={handleMenuClick}
                                         active_bot={active_bot}
+                                        setActiveBotId={setActiveBotId}
                                     />
                                 );
                             })}
@@ -161,6 +174,8 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
                                                 onClick={() => {
                                                     if (!is_logged_in) {
                                                         setLoginModalVisble(true);
+                                                    } else {
+                                                        setFormVisibility(true);
                                                     }
                                                 }}
                                             >

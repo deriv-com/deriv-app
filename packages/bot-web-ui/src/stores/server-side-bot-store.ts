@@ -1,7 +1,8 @@
-import { action, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import moment from 'moment';
 import { ProposalOpenContract } from '@deriv/api-types';
 import { api_base } from '@deriv/bot-skeleton';
+import { isEnded } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import RootStore from './root-store';
@@ -76,6 +77,7 @@ export type TBotTransactions = {
 
 export type TJournalItem = {
     type: typeof JOURNAL_TYPE[keyof typeof JOURNAL_TYPE];
+    order?: number;
     msg?: string;
     amount?: string;
     bot_id?: string;
@@ -87,29 +89,20 @@ export const getDate = (epoch: number) => {
     return moment.unix(epoch).utc().local().format(DATE_TIME_FORMAT_WITH_OFFSET);
 };
 
-type TPerformance = {
-    total_stake: number;
-    total_payout: number;
-    total_profit: number;
-};
-
 export default class ServerBotStore {
     root_store: RootStore;
     is_loading_bot_list = true;
     active_bot_id = '';
     bot_list: TServerBotItem[] = [];
-    active_bot: Partial<TServerBotItem> = {};
+    active_bot: Partial<TServerBotItem> = {
+        status: 'stopped',
+    };
 
     transactions: TBotTransactions = {};
     journal: TJournalItem[] = [];
+    order = 0;
 
     pocs: { [key: string]: ProposalOpenContract } = {};
-
-    performance: TPerformance = {
-        total_stake: 0,
-        total_payout: 0,
-        total_profit: 0,
-    };
 
     constructor(root_store: RootStore) {
         this.root_store = root_store;
@@ -121,7 +114,8 @@ export default class ServerBotStore {
             active_bot: observable,
             pocs: observable,
             journal: observable,
-            performance: observable,
+
+            performance: computed,
 
             setListLoading: action,
             getBotList: action,
@@ -137,8 +131,54 @@ export default class ServerBotStore {
             onJournalMessage: action,
             setJournal: action,
             setBotList: action,
+            setActiveBotId: action,
         });
     }
+
+    get performance() {
+        let total_runs = 0;
+        const active_bot_id = this.active_bot.bot_id;
+        if (!active_bot_id) return { total_stake: 0, total_payout: 0, total_profit: 0 };
+        const transactions = this.transactions[active_bot_id as string] || {};
+        const txns = Object.values(transactions);
+        if (!txns.length) return { total_stake: 0, total_payout: 0, total_profit: 0 };
+
+        const statistics = [...txns].reduce(
+            (stats, data) => {
+                const is_completed = isEnded(data);
+                const profit = Number(data.profit);
+                const payout = Number(data.payout);
+                const buy_price = Number(data.buy_price);
+
+                if (is_completed) {
+                    if (profit > 0) {
+                        stats.won_contracts += 1;
+                        stats.total_payout += payout;
+                    } else {
+                        stats.lost_contracts += 1;
+                    }
+                    stats.total_profit += profit;
+                    stats.total_stake += buy_price;
+                    total_runs += 1;
+                }
+                return stats;
+            },
+            {
+                lost_contracts: 0,
+                number_of_runs: 0,
+                total_profit: 0,
+                total_payout: 0,
+                total_stake: 0,
+                won_contracts: 0,
+            }
+        );
+        statistics.number_of_runs = total_runs;
+        return statistics;
+    }
+
+    setActiveBotId = (bot_id: string) => {
+        this.active_bot_id = bot_id;
+    };
 
     handleProposalOpenContract = (poc: ProposalOpenContract) => {
         if (poc.contract_id) return;
@@ -188,44 +228,55 @@ export default class ServerBotStore {
                         //     // time: getDate();
                         // });
 
-                        const transactions = this.transactions[bot_id];
-                        if (transactions && !(msg?.contract_id in transactions)) {
-                            this.onJournalMessage(JOURNAL_TYPE.BUY, {
-                                msg: msg.longcode,
-                                bot_id,
-                                // time: getDate();
-                            });
-                        }
+                        // const transactions = this.transactions[bot_id];
+                        // if (transactions && !(msg?.contract_id in transactions)) {
+                        //     this.onJournalMessage(JOURNAL_TYPE.BUY, {
+                        //         msg: msg.longcode,
+                        //         bot_id,
+                        //         // time: getDate();
+                        //     });
+                        // }
 
                         this.setTransaction(msg, bot_id);
                     }
 
                     if (msg_type === 'transaction' && msg?.action === 'buy') {
                         // eslint-disable-next-line no-console
-                        console.log(msg, 'buy');
-                        this.onJournalMessage(JOURNAL_TYPE.BUY, { msg: msg.contract_id, bot_id });
-                        // this.performance = {
-                        //     ...this.performance,
-                        //     total_stake: this.performance.total_stake + Number(msg.price),
-                        // };
+                        this.onJournalMessage(JOURNAL_TYPE.BUY, {
+                            msg: localize('Contract purchased({{contract_id}})', { contract_id: msg.contract_id }),
+                            bot_id,
+                        });
                     }
 
                     if (msg_type === 'transaction' && msg?.action === 'sell') {
-                        // eslint-disable-next-line no-console
-                        console.log(msg, 'sell');
-                        this.onJournalMessage(JOURNAL_TYPE.BUY, { msg: msg.contract_id, bot_id });
-
-                        // this.performance = {
-                        //     ...this.performance,
-                        //     total_payout: this.performance.total_payout + Number(msg.payout),
-                        // };
+                        const is_profit = msg.profit > 0;
+                        const type = is_profit ? JOURNAL_TYPE.WON : JOURNAL_TYPE.LOSS;
+                        this.onJournalMessage(type, { amount: msg.profit, bot_id });
                     }
 
                     if (msg_type === 'stop') {
                         const { reason } = msg;
-                        // eslint-disable-next-line no-console
-                        console.log(msg, 'STOP');
-                        this.onJournalMessage(JOURNAL_TYPE.INFO, { msg: reason?.message, bot_id });
+                        if (reason.message) {
+                            this.onJournalMessage(JOURNAL_TYPE.INFO, { msg: reason.message, bot_id });
+                        }
+                        if (reason?.be?.message) {
+                            const msg = `${reason?.be?.message || localize('Something went wrong')} (code: ${
+                                reason?.be?.code || localize('Unknown')
+                            })`;
+                            this.onJournalMessage(JOURNAL_TYPE.ERROR, { msg, bot_id });
+                            const bot_list = [...this.bot_list];
+                            const index = bot_list.findIndex(bot => bot.bot_id === bot_id);
+                            bot_list[index].status = 'stopped';
+                            this.setBotList(bot_list);
+                            this.active_bot = {
+                                bot_id,
+                                status: 'stopped',
+                            };
+                        }
+                        // this.active_bot = {
+                        //     bot_id,
+                        //     status: 'stopped',
+                        // };
                     }
                 }
             }
@@ -275,7 +326,8 @@ export default class ServerBotStore {
     };
 
     setJournal = (journal: TJournalItem) => {
-        this.journal = [...this.journal, journal];
+        this.journal = [...this.journal, { ...journal, order: this.order }];
+        this.order += 1;
     };
 
     resetJournal = () => {
@@ -348,7 +400,7 @@ export default class ServerBotStore {
                 this.subscribeToBotNotification(running_bot?.bot_id);
             }
 
-            if (should_subscribe) {
+            if (should_subscribe && !!list.length) {
                 this.onJournalMessage(JOURNAL_TYPE.INFO, {
                     msg: localize('Bots loaded successfully.'),
                 });
@@ -496,10 +548,12 @@ export default class ServerBotStore {
                 console.dir(error);
                 return;
             }
+
             const bot_list = [...this.bot_list];
             const index = bot_list.findIndex(bot => bot.bot_id === bot_id);
             bot_list[index].status = 'stopped';
             this.setBotList(bot_list);
+
             this.active_bot = {
                 ...this.active_bot,
                 status: 'stopped',

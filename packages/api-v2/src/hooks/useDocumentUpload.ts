@@ -55,7 +55,15 @@ const useDocumentUpload = () => {
             },
         };
 
-        return wsClient.request('document_upload', updatedPayload) as Promise<TDocumentUploadResponse>;
+        try {
+            const response = (await wsClient.request(
+                'document_upload',
+                updatedPayload
+            )) as Promise<TDocumentUploadResponse>;
+            return response;
+        } catch (error) {
+            return error as TDocumentUploadResponse;
+        }
     };
 
     /** asynchronously sends file data over WS */
@@ -83,7 +91,7 @@ const useDocumentUpload = () => {
         return new Promise((resolve, reject) => {
             timeout = setTimeout(() => {
                 wsClient.ws?.removeEventListener('message', handleUploadStatus);
-                Promise.reject(new Error(`Request timeout for document_upload`));
+                reject(new Error(`Request timeout for document_upload`));
             }, REQ_TIMEOUT);
 
             const handleUploadStatus = (messageEvent: MessageEvent) => {
@@ -92,7 +100,6 @@ const useDocumentUpload = () => {
                 if (data.req_id !== reqId && data.document_upload?.upload_id !== uploadId) {
                     return;
                 }
-
                 if (data.error) {
                     clearTimeout(timeout);
                     setStatus('error');
@@ -131,7 +138,8 @@ const useDocumentUpload = () => {
         const fileInfo = await getFileInfo(payload);
         const handshakeResponse = await handshake(fileInfo, payload);
         if (handshakeResponse.error) {
-            return Promise.reject(handshakeResponse.error);
+            setStatus('error');
+            return Promise.reject(handshakeResponse);
         }
         const uploadResponse = await fileUploader(fileInfo.fileBuffer, handshakeResponse);
         return Promise.resolve(uploadResponse);

@@ -74,8 +74,8 @@ const Redirect = observer(() => {
                 const request_email_code = sessionStorage.getItem('request_email_code');
                 setVerificationCode(request_email_code, action_param);
                 sessionStorage.removeItem('request_email_code');
-                toggleResetEmailModal(true);
             }
+            toggleResetEmailModal(true);
             break;
         }
         case 'social_email_change': {

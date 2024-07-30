@@ -13,7 +13,7 @@ type TExtendedMoment = typeof moment & {
 
 // Localize moment instance with specific object
 export const initMoment = (lang: string) => {
-    const hasEnMomentLocale = ['EN', 'AR', 'BN', 'SI']; // 'AR', 'BN' & 'SI' langs have non-numeric dates ('২০২৪-০৫-০৭'), our current usage of moment requires us to make all dates numeric
+    const hasEnMomentLocale = ['EN', 'AR', 'BN', 'SI', 'KM']; // 'AR', 'BN' & 'SI' langs have non-numeric dates ('২০২৪-০৫-০৭'), our current usage of moment requires us to make all dates numeric
     if (!lang) return moment;
     let locale = lang.toLowerCase().replace('_', '-');
     if (hasEnMomentLocale.includes(lang)) locale = 'en-gb';

@@ -16,4 +16,3 @@ import './Binary/Trade Definition';
 import './Logic';
 import './Math';
 import './Text';
-

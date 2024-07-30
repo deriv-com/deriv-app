@@ -1,0 +1,128 @@
+.trade__current-spot {
+    position: relative;
+    border-radius: var(--core-borderRadius-400);
+    background-color: var(--core-color-solid-slate-50);
+    height: var(--core-size-2400);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .current-spot {
+        position: relative;
+        display: flex;
+        gap: var(--core-spacing-100);
+
+        p {
+            color: var(--core-color-opacity-black-800);
+        }
+        &__wrapper {
+            position: absolute;
+            bottom: 0;
+            inset-inline-start: 0;
+            inset-inline-end: 0;
+
+            &--enter-from-top {
+                animation: enter-from-top var(--motion-duration-snappy) ease-out;
+            }
+        }
+        &__display {
+            padding: var(--core-spacing-400) var(--core-spacing-800);
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            width: 100%;
+            height: 100%;
+        }
+        &__last-digit {
+            width: var(--core-size-800);
+            height: var(--core-size-1400);
+
+            &-container {
+                overflow: hidden;
+                width: var(--core-size-800);
+                height: var(--core-size-1400);
+                position: relative;
+            }
+            &-wrapper {
+                position: absolute;
+                bottom: 0;
+                inset-inline-start: 0;
+                inset-inline-end: 0;
+
+                &--enter-from-top {
+                    animation: enter-from-top var(--animation-time) ease-out infinite;
+                }
+                &--enter-from-bottom {
+                    bottom: unset;
+                    top: 0;
+                    animation: enter-from-bottom var(--animation-time) ease-out infinite;
+
+                    @keyframes enter-from-bottom {
+                        to {
+                            transform: translateY(-50%);
+                        }
+                    }
+                }
+            }
+        }
+        @keyframes enter-from-top {
+            to {
+                transform: translateY(50%);
+            }
+        }
+    }
+    &--winning,
+    &--won {
+        border: var(--core-borderWidth-75) solid var(--core-color-solid-green-700);
+
+        .current-spot__last-digit {
+            color: var(--core-color-solid-green-700);
+        }
+    }
+    &--losing,
+    &--lost {
+        border: var(--core-borderWidth-75) solid var(--core-color-solid-red-700);
+
+        .current-spot__last-digit {
+            color: var(--core-color-solid-red-700);
+        }
+    }
+    &--won {
+        background-color: var(--core-color-solid-green-100);
+    }
+    &--lost {
+        background-color: var(--core-color-solid-red-100);
+    }
+    &--has-contract {
+        .current-spot {
+            &__display {
+                justify-content: space-between;
+            }
+        }
+    }
+    &--enter-from-left {
+        .current-spot {
+            animation: enter-from-left var(--motion-duration-snappy) ease-out;
+
+            @keyframes enter-from-left {
+                from {
+                    transform: translateX(50%);
+                    margin-inline-end: 50%;
+                }
+            }
+        }
+    }
+    &--enter-from-right {
+        .current-spot {
+            animation: enter-from-right var(--motion-duration-snappy) ease-out;
+
+            @keyframes enter-from-right {
+                from {
+                    transform: translateX(-50%);
+                    margin-inline-start: 100%;
+                }
+            }
+        }
+    }
+}

@@ -4,6 +4,8 @@
     }
 
     &__menu {
+        position: relative;
+        width: calc(100vw - var(--component-actionSheet-spacing-padding-lg));
         padding-inline-end: var(--component-actionSheet-spacing-padding-lg);
         margin-block-end: var(--component-actionSheet-spacing-padding-md);
         display: flex;
@@ -14,6 +16,10 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
 
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
         button {
             background-color: transparent;
         }
@@ -22,12 +28,19 @@
     &__wrapper {
         &--content {
             padding: var(--component-actionSheet-spacing-padding-lg) var(--component-actionSheet-spacing-padding-lg) 0;
+            overflow-x: hidden;
         }
     }
 
     &__contract-description {
         overflow-y: auto;
-        height: calc(90vh - 23rem);
+        height: calc(90dvh - 23rem);
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
 
     &__button {
@@ -109,6 +122,7 @@
 
     &__content {
         &--definition {
+            all: unset;
             color: var(--core-color-solid-coral-700);
         }
         &--bold {
@@ -143,10 +157,18 @@
         margin-block-end: var(--component-actionSheet-spacing-padding-md);
         width: 24.8rem;
         height: 16.1rem;
+        position: relative;
         margin-inline: auto;
 
         &--accumulator {
             margin-block-end: var(--component-actionSheet-spacing-padding-sm);
+        }
+
+        .skeleton-video-loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
     }
 }

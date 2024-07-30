@@ -1,5 +1,5 @@
 import React from 'react';
-import { localize, Localize } from '@deriv/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
 import { RiskToleranceWarningModal, TestWarningModal } from 'Components/trading-assessment';
@@ -28,6 +28,7 @@ const populateData = form_data => {
 };
 const TradingAssessment = observer(() => {
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
     const { client } = useStore();
     const { is_virtual, setFinancialAndTradingAssessment } = client;
     const history = useHistory();

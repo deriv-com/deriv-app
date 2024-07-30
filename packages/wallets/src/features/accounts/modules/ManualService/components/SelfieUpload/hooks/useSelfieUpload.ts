@@ -1,35 +1,40 @@
+import { useCallback } from 'react';
 import { FormikValues } from 'formik';
 import { useDocumentUpload } from '@deriv/api-v2';
 import { THooks } from '../../../../../../../types';
 import { TSelfieUploadValues } from '../types';
 
 const useSelfieUpload = (documentIssuingCountryCode: THooks.AccountSettings['country_code']) => {
-    const { error, isLoading, isSuccess, reset, upload: _upload } = useDocumentUpload();
+    const { resetStatus, status, upload: _upload } = useDocumentUpload();
 
-    const upload = (values: FormikValues, documentNumber: string) => {
-        return _upload({
-            document_id: documentNumber,
-            document_issuing_country: documentIssuingCountryCode ?? undefined,
-            document_type: 'selfie_with_id',
-            file: values.selfieFile,
-        });
-    };
+    const upload = useCallback(
+        async (values: FormikValues, documentNumber: string) => {
+            try {
+                const response = await _upload({
+                    document_id: documentNumber,
+                    document_issuing_country: documentIssuingCountryCode ?? undefined,
+                    document_type: 'selfie_with_id',
+                    file: values.selfieFile,
+                });
+                return Promise.resolve(response);
+            } catch (error) {
+                return Promise.reject(error);
+            }
+        },
+        [_upload, documentIssuingCountryCode]
+    );
 
     const initialValues = {} as TSelfieUploadValues;
 
     return {
-        /** contains error data if any error encountered during selfie upload */
-        error: error?.error,
-
         /** initial values for the selfie forms */
         initialValues,
-        isLoading,
 
-        /** `true` if successfully uploaded selfie files */
-        isSuccess,
+        /** Function to reset selfie upload status */
+        resetStatus,
 
-        /** reset selfie upload API errors */
-        resetError: reset,
+        /** Selfie upload status */
+        status,
 
         /**
          * A function to upload selfie file for a particular document

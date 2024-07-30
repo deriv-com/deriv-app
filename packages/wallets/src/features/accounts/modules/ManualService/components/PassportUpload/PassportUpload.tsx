@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Formik } from 'formik';
+import { Formik, FormikValues } from 'formik';
 import moment from 'moment';
 import { Divider, Loader } from '@deriv-com/ui';
 import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
 import PassportPlaceholder from '../../../../../../public/images/accounts/passport-placeholder.svg';
+import { THooks } from '../../../../../../types';
 import { Footer } from '../../../components';
 import { GeneralDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
@@ -14,16 +15,25 @@ import { passportUploadValidator } from './utils';
 import './PassportUpload.scss';
 
 const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onClickBack, onCompletion }) => {
-    const { error, initialValues, isSuccess, isUploading, resetError, upload } =
-        usePassportUpload(documentIssuingCountryCode);
+    const {
+        initialValues,
+        isLoading,
+        resetUploadStatus,
+        upload: upload_,
+    } = usePassportUpload(documentIssuingCountryCode);
     const [showSelfieUpload, setShowSelfieUpload] = useState(false);
+    const [error, setError] = useState<THooks.DocumentUpload['error']>();
 
-    if (!error && isSuccess && onCompletion) {
-        onCompletion();
-        return null;
-    }
+    const upload = async (values: FormikValues) => {
+        try {
+            await upload_(values);
+            onCompletion?.();
+        } catch (error) {
+            setError((error as THooks.DocumentUpload).error);
+        }
+    };
 
-    if (isUploading) {
+    if (isLoading) {
         return <Loader />;
     }
 
@@ -43,7 +53,7 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                 };
 
                 const onErrorRetry = () => {
-                    resetError();
+                    resetUploadStatus();
                     resetForm();
                     setShowSelfieUpload(false);
                     onClickBack?.();
@@ -69,8 +79,8 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                         disableAnimation
                         renderFooter={() => (
                             <Footer
-                                disableBack={isUploading}
-                                disableNext={!isPassportFormValid || isUploading}
+                                disableBack={isLoading}
+                                disableNext={!isPassportFormValid || isLoading}
                                 onClickBack={onClickBack}
                                 onClickNext={handleOnClickNext}
                             />

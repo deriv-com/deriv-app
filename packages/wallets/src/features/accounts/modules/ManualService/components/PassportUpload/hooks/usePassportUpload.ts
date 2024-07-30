@@ -12,20 +12,21 @@ type TPassportUploadValues = TSelfieUploadValues & {
 
 const usePassportUpload = (documentIssuingCountryCode: THooks.AccountSettings['country_code']) => {
     const {
-        error: errorPassportUpload,
-        isLoading: isPassportUploading,
-        isSuccess: isPassportUploadSuccess,
-        reset: resetErrorPassportUpload,
+        resetStatus: resetPassportUploadStatus,
+        status: passportUploadStatus,
         upload: uploadPassport,
     } = useDocumentUpload();
     const {
-        error: errorSelfieUpload,
         initialValues: initialValuesSelfieUpload,
-        isLoading: isSelfieUploading,
-        isSuccess: isSelfieUploadSuccess,
-        resetError: resetErrorSelfieUpload,
+        resetStatus: resetSelfieUploadStatus,
+        status: selfieUploadStatus,
         upload: uploadSelfie,
     } = useSelfieUpload(documentIssuingCountryCode);
+
+    const isError = passportUploadStatus === 'error' || selfieUploadStatus === 'error';
+    const isLoading =
+        (passportUploadStatus === 'loading' && selfieUploadStatus === 'idle') || selfieUploadStatus === 'loading';
+    const isSuccess = !isError && !isLoading && passportUploadStatus === 'success' && selfieUploadStatus === 'success';
 
     const initialValues = {
         ...initialValuesSelfieUpload,
@@ -33,46 +34,46 @@ const usePassportUpload = (documentIssuingCountryCode: THooks.AccountSettings['c
         passportNumber: '',
     } as TPassportUploadValues;
 
+    const resetUploadStatus = () => {
+        resetPassportUploadStatus('idle');
+        resetSelfieUploadStatus('idle');
+    };
+
     const upload = useCallback(
         async (values: FormikValues | TPassportUploadValues) => {
-            // wait on passport upload and set uploadError if any
-            await uploadPassport({
-                document_id: values.passportNumber,
-                document_issuing_country: documentIssuingCountryCode ?? undefined,
-                document_type: 'passport',
-                expiration_date: values.passportExpiryDate,
-                file: values.passportFile,
-            });
+            try {
+                await uploadPassport({
+                    document_id: values.passportNumber,
+                    document_issuing_country: documentIssuingCountryCode ?? undefined,
+                    document_type: 'passport',
+                    expiration_date: values.passportExpiryDate,
+                    file: values.passportFile,
+                });
+                await uploadSelfie(values, values.passportNumber);
 
-            // wait on selfie upload and set uploadError if any
-            await uploadSelfie(values, values.passportNumber);
+                return Promise.resolve();
+            } catch (error) {
+                return Promise.reject(error);
+            }
         },
         [documentIssuingCountryCode, uploadPassport, uploadSelfie]
     );
 
-    const resetError = useCallback(() => {
-        if (errorPassportUpload?.error || errorSelfieUpload) {
-            resetErrorPassportUpload();
-            resetErrorSelfieUpload();
-        }
-    }, [errorPassportUpload?.error, errorSelfieUpload, resetErrorPassportUpload, resetErrorSelfieUpload]);
-
     return {
-        /** contains error data if any error encountered during passport/selfie upload */
-        error: errorPassportUpload?.error ?? errorSelfieUpload,
-
         /** initial values for the passport and selfie forms */
         initialValues,
 
-        /** `true` if successfully uploaded passport and selfie files */
-        isSuccess:
-            isPassportUploadSuccess && isSelfieUploadSuccess && !(errorPassportUpload?.error || errorSelfieUpload),
+        /** `true` when passport/selfie upload encounter error */
+        isError,
 
-        /** `true` if passport and selfie upload is in progress */
-        isUploading: isPassportUploading || isSelfieUploading,
+        /** `true` when passport/selfie are uploading */
+        isLoading,
 
-        /** reset all API errors */
-        resetError,
+        /** `true` when passport/selfie are uploaded successfully */
+        isSuccess,
+
+        /** Reset upload statuses for passport and selfie */
+        resetUploadStatus,
 
         /** upload passport and selfie files synchronously */
         upload,

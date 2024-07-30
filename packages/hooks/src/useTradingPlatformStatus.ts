@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { TPlatform, WS } from '@deriv/shared';
+import { WS } from '@deriv/shared';
 
 type TradingPlatformStatus = {
-    platform: TPlatform;
+    platform: 'mt5' | 'dxtrade' | 'ctrader';
     status: 'active' | 'maintenance' | 'unavailable';
 };
 

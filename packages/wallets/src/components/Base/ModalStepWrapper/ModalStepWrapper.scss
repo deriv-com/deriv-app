@@ -73,10 +73,14 @@
         height: 100%;
         width: 100%;
         overflow-y: scroll;
+    }
 
-        @include tablet-screen {
-            margin-inline: auto;
+    &__content {
+        width: 100%;
+
+        @include mobile-or-tablet-screen {
             max-width: 60rem;
+            margin-inline: auto;
         }
     }
 

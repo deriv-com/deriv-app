@@ -26,48 +26,50 @@ const JurisdictionTncSection: React.FC<TProps> = ({
 
     return (
         <div className='wallets-jurisdiction-tnc'>
-            {selectedJurisdiction && (
-                <JurisdictionFootNoteTitle marketType={marketType} selectedJurisdiction={selectedJurisdiction} />
-            )}
-            {selectedJurisdiction && selectedJurisdiction !== 'svg' && (
-                <div className='wallets-jurisdiction-tnc-checkbox'>
-                    <input
-                        checked={isCheckBoxChecked}
-                        className='wallets-jurisdiction-tnc-checkbox-input'
-                        id='tnc-checkbox'
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                            setIsCheckBoxChecked(event.target.checked)
-                        }
-                        type='checkbox'
-                    />
-                    <label className='wallets-jurisdiction-tnc-checkbox-label' htmlFor='tnc-checkbox'>
-                        <WalletText size={isDesktop ? 'md' : 'sm'}>
-                            I confirm and accept {selectedCompany.name}&lsquo;s{' '}
-                            <a
-                                className='wallets-jurisdiction-tnc-checkbox__link'
-                                onClick={() => {
-                                    window.open(getStaticUrl(selectedCompany.tncUrl), '_blank');
-                                }}
-                                // Reason: To fix sonarcloud issue
-                                onKeyDown={(event: React.KeyboardEvent<HTMLAnchorElement>) => {
-                                    if (event.key === 'Enter') {
-                                        window.open(
-                                            getStaticUrl(
-                                                companyNamesAndUrls[
-                                                    selectedJurisdiction as keyof typeof companyNamesAndUrls
-                                                ].tncUrl
-                                            ),
-                                            '_blank'
-                                        );
-                                    }
-                                }}
-                            >
-                                Terms and Conditions
-                            </a>
-                        </WalletText>
-                    </label>
-                </div>
-            )}
+            <div className='wallets-jurisdiction-tnc__container'>
+                {selectedJurisdiction && (
+                    <JurisdictionFootNoteTitle marketType={marketType} selectedJurisdiction={selectedJurisdiction} />
+                )}
+                {selectedJurisdiction && selectedJurisdiction !== 'svg' && (
+                    <div className='wallets-jurisdiction-tnc__checkbox'>
+                        <input
+                            checked={isCheckBoxChecked}
+                            className='wallets-jurisdiction-tnc__checkbox--input'
+                            id='tnc-checkbox'
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                                setIsCheckBoxChecked(event.target.checked)
+                            }
+                            type='checkbox'
+                        />
+                        <label className='wallets-jurisdiction-tnc__checkbox--label' htmlFor='tnc-checkbox'>
+                            <WalletText size={isDesktop ? 'md' : 'sm'}>
+                                I confirm and accept {selectedCompany.name}&lsquo;s{' '}
+                                <a
+                                    className='wallets-jurisdiction-tnc__checkbox--link'
+                                    onClick={() => {
+                                        window.open(getStaticUrl(selectedCompany.tncUrl), '_blank');
+                                    }}
+                                    // Reason: To fix sonarcloud issue
+                                    onKeyDown={(event: React.KeyboardEvent<HTMLAnchorElement>) => {
+                                        if (event.key === 'Enter') {
+                                            window.open(
+                                                getStaticUrl(
+                                                    companyNamesAndUrls[
+                                                        selectedJurisdiction as keyof typeof companyNamesAndUrls
+                                                    ].tncUrl
+                                                ),
+                                                '_blank'
+                                            );
+                                        }
+                                    }}
+                                >
+                                    Terms and Conditions
+                                </a>
+                            </WalletText>
+                        </label>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

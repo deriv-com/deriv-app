@@ -76,7 +76,7 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
                 </div>
             )}
             <div className='wallets-modal-step-wrapper__body' data-testid='dt_modal_step_wrapper_body'>
-                {children}
+                <div className='wallets-modal-step-wrapper__content'>{children}</div>
                 {!shouldFixedFooter && <Footer />}
             </div>
             {shouldFixedFooter && <Footer />}

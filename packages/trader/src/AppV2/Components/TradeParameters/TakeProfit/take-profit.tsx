@@ -7,7 +7,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
-import { focusAndOpenKeyboard, FocusedInput } from 'AppV2/Components/FocusedInput/focused-input';
+import { focusAndOpenKeyboard } from 'AppV2/Components/FocusedInput/focused-input';
 import TakeProfitDescription from './take-profit-description';
 import TakeProfitInput from './take-profit-input';
 
@@ -33,7 +33,6 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     const [error_message, setErrorMessage] = React.useState<React.ReactNode>();
 
     const input_ref = React.useRef<HTMLInputElement>(null);
-    const focused_ref = React.useRef<HTMLInputElement>(null);
     const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
 
     const min_take_profit = validation_params?.take_profit?.min;
@@ -76,7 +75,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                 isTakeProfitOutOfRange();
             }
             clearTimeout(focus_timeout.current);
-            focus_timeout.current = focusAndOpenKeyboard(input_ref, focused_ref);
+            focus_timeout.current = focusAndOpenKeyboard(input_ref.current);
         } else {
             input_ref.current?.blur();
             setErrorMessage('');
@@ -134,7 +133,6 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                         onSave={onSave}
                         take_profit_value={take_profit_value}
                     />
-                    <FocusedInput focused_ref={focused_ref} />
                 </React.Fragment>
             ),
         },

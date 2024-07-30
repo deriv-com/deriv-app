@@ -1,29 +1,25 @@
 import React from 'react';
 import './focused-input.scss';
 
-type TFocusedInputProps = {
-    focused_ref?: React.RefObject<HTMLInputElement>;
-};
+export const focusAndOpenKeyboard = (element: HTMLInputElement | null) => {
+    if (element) {
+        // Align temporary input element approximately where the real input element is
+        // so the cursor doesn't jump around
+        const placeholder_element = document.createElement('input');
+        // placeholder_element.style.position = 'absolute';
+        // placeholder_element.style.top = `${element.offsetTop + 7}px`;
+        // placeholder_element.style.left = `${element.offsetLeft}px`;
+        placeholder_element.style.height = '0px';
+        placeholder_element.style.opacity = '0px';
+        // Put this temporary input element as a child of the page <body> and focus on it
+        document.body.appendChild(placeholder_element);
+        placeholder_element.focus({ preventScroll: true });
 
-export const focusAndOpenKeyboard = (
-    target_element_ref?: React.RefObject<HTMLInputElement>,
-    temporary_input_ref?: React.RefObject<HTMLInputElement>
-) => {
-    const current_target_element_ref = target_element_ref?.current;
-    const current_temporary_input_ref = temporary_input_ref?.current;
-
-    if (current_target_element_ref && current_temporary_input_ref) {
-        current_temporary_input_ref.style.display = 'block';
-        current_temporary_input_ref.focus({ preventScroll: true });
-        current_temporary_input_ref.style.display = 'none';
-
+        // The keyboard is open, so now adding a delayed focus on the target element and remove temporary input element
         return setTimeout(() => {
-            current_target_element_ref.focus();
-            current_target_element_ref.click();
+            element.focus();
+            element.click();
+            document.body.removeChild(placeholder_element);
         }, 300);
     }
 };
-
-export const FocusedInput = ({ focused_ref }: TFocusedInputProps) => (
-    <input className='input--focused' ref={focused_ref} />
-);

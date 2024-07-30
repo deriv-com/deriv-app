@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { FocusedInput, focusAndOpenKeyboard } from '../focused-input';
+import { focusAndOpenKeyboard } from '../focused-input';
 
 describe('FocusedInput', () => {
     it('should apply focus to the passed ReactElement', () => {
@@ -9,13 +9,11 @@ describe('FocusedInput', () => {
 
         const MockComponent = () => {
             const input_ref = React.useRef<HTMLInputElement>(null);
-            const focused_ref = React.useRef<HTMLInputElement>(null);
 
             return (
                 <React.Fragment>
                     <input type='number' ref={input_ref} />
-                    <button onClick={() => focusAndOpenKeyboard(input_ref, focused_ref)}>Focus</button>
-                    <FocusedInput focused_ref={focused_ref} />
+                    <button onClick={() => focusAndOpenKeyboard(input_ref.current)}>Focus</button>
                 </React.Fragment>
             );
         };

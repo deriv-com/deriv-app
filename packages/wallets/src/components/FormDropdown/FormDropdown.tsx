@@ -14,6 +14,7 @@ export type TFormDropdownProps = DropdownProps & {
 
 const FormDropdown = ({
     disabled,
+    list,
     name,
     onSearch,
     onSelect,
@@ -41,6 +42,7 @@ const FormDropdown = ({
                             disabled={disabled}
                             emptyResultMessage='No results found'
                             errorMessage={isFieldInvalid ? (form.errors[name] as string) : ''}
+                            list={list}
                             name={name}
                             onBlur={() => {
                                 if (!form.touched[name]) {
@@ -48,13 +50,23 @@ const FormDropdown = ({
                                 }
                             }}
                             onSearch={value => {
-                                form.setFieldValue(name, value);
+                                if (variant === 'prompt') {
+                                    const search = list.find(
+                                        item => item.text?.toString().toLowerCase() === value.toLowerCase()
+                                    );
+                                    if (search) {
+                                        form.setFieldValue(name, search.value);
+                                    } else {
+                                        form.setFieldValue(name, undefined);
+                                    }
+                                }
                                 if (onSearch) {
                                     onSearch(value);
                                 }
                                 return field.onChange;
                             }}
                             onSelect={value => {
+                                // console.log('onSelect value', value);
                                 form.setFieldValue(name, value);
                                 if (onSelect) {
                                     onSelect(value as string);

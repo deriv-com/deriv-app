@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { WS } from '@deriv/shared';
 
-type TradingPlatformStatus = {
+export type TradingPlatformStatus = {
     platform: 'mt5' | 'dxtrade' | 'ctrader';
     status: 'active' | 'maintenance' | 'unavailable';
 };

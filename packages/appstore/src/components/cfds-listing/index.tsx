@@ -21,7 +21,7 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 import CompareAccount from 'Components/compare-account';
 import CFDsDescription from 'Components/elements/cfds-description';
 import { getHasDivider } from 'Constants/utils';
-import { useMT5SVGEligibleToMigrate, useTradingPlatformStatus, TPlatformStatus } from '@deriv/hooks';
+import { useMT5SVGEligibleToMigrate, useTradingPlatformStatus, TradingPlatformStatus } from '@deriv/hooks';
 
 import './cfds-listing.scss';
 
@@ -102,7 +102,7 @@ const CFDsListing = observer(() => {
 
     const { getPlatformStatus } = useTradingPlatformStatus();
 
-    const getTradingPlatformStatus = (platform: TPlatformStatus['platform']) => {
+    const getTradingPlatformStatus = (platform: TradingPlatformStatus['platform']) => {
         const status = getPlatformStatus(platform);
 
         switch (status) {
@@ -214,7 +214,7 @@ const CFDsListing = observer(() => {
             setPerformanceValue('switch_from_demo_to_real_time');
             setPerformanceValue('switch_from_real_to_demo_time');
         }
-    }, [is_populating_mt5_account_list]);
+    }, [is_landing_company_loaded, is_populating_mt5_account_list]);
 
     return (
         <ListingContainer

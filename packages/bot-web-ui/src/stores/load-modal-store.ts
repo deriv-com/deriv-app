@@ -235,7 +235,7 @@ export default class LoadModalStore implements ILoadModalStore {
         const workspace = window.Blockly.derivWorkspace;
         if (workspace) {
             window.Blockly.derivWorkspace.asyncClear();
-            window.Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.cached_xml.main), workspace);
+            window.Blockly.Xml.domToWorkspace(window.Blockly.utils.xml.textToDom(workspace.cached_xml.main), workspace);
             window.Blockly.derivWorkspace.strategy_to_load = workspace.cached_xml.main;
         }
     };
@@ -275,7 +275,7 @@ export default class LoadModalStore implements ILoadModalStore {
         if (!this.selected_strategy) {
             window.Blockly.derivWorkspace.asyncClear();
             window.Blockly.Xml.domToWorkspace(
-                window.Blockly.Xml.textToDom(window.Blockly.derivWorkspace.strategy_to_load),
+                window.Blockly.utils.xml.textToDom(window.Blockly.derivWorkspace.strategy_to_load),
                 window.Blockly.derivWorkspace
             );
             this.is_open_button_loading = false;
@@ -358,12 +358,19 @@ export default class LoadModalStore implements ILoadModalStore {
 
     onDriveOpen = async () => {
         const { google_drive } = this.root_store;
+        const { verifyGoogleDriveAccessToken } = google_drive;
+        const result = await verifyGoogleDriveAccessToken();
+        if (result === 'not_verified') return;
+
         if (google_drive) {
             google_drive.upload_id = uuidv4();
         }
         rudderStackSendUploadStrategyStartEvent({ upload_provider: 'google_drive', upload_id: google_drive.upload_id });
         const { loadFile } = this.root_store.google_drive;
-        const { xml_doc, file_name } = await loadFile();
+        const load_file = await loadFile();
+        if (!load_file) return;
+        const xml_doc = load_file?.xml;
+        const file_name = load_file?.name;
         await load({
             block_string: xml_doc,
             file_name,
@@ -442,6 +449,8 @@ export default class LoadModalStore implements ILoadModalStore {
                 },
                 readOnly: true,
                 scrollbars: true,
+                renderer: 'zelos',
+                theme: window?.Blockly?.Themes?.zelos_renderer,
             });
         }
         this.refreshStrategiesTheme();
@@ -552,6 +561,8 @@ export default class LoadModalStore implements ILoadModalStore {
                     },
                     readOnly: true,
                     scrollbars: true,
+                    renderer: 'zelos',
+                    theme: window?.Blockly?.Themes?.zelos_renderer,
                 });
                 load_options.workspace = this.local_workspace;
                 if (load_options.workspace) {

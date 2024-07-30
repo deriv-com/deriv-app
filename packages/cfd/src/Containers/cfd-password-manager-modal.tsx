@@ -4,17 +4,16 @@ import {
     Modal,
     Tabs,
     Button,
-    DesktopWrapper,
     Div100vhContainer,
-    MobileWrapper,
     MultiStep,
     PageOverlay,
     ThemedScrollbars,
     UILoader,
     Text,
 } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
 import { localize, Localize } from '@deriv/translations';
-import { isMobile, getCFDPlatformLabel } from '@deriv/shared';
+import { getCFDPlatformLabel } from '@deriv/shared';
 import { FormikErrors } from 'formik';
 import CFDStore from '../Stores/Modules/CFD/cfd-store';
 import TradingPasswordManager from './trading-password-manager';
@@ -153,6 +152,7 @@ const CFDPasswordManagerTabContent = ({
     onChangeActiveTabIndex,
     account_group,
 }: TCFDPasswordManagerTabContent) => {
+    const { isDesktop } = useDevice();
     const [active_tab_index, setActiveTabIndex] = React.useState<number>(0);
     const [error_message_investor, setErrorMessageInvestor] = React.useState<string>('');
     const [is_submit_success_investor, setSubmitSuccessInvestor] = React.useState<boolean>(false);
@@ -207,8 +207,8 @@ const CFDPasswordManagerTabContent = ({
 
     const trading_password_manager = (
         <React.Fragment>
-            <DesktopWrapper>
-                <ThemedScrollbars height={container_height} is_bypassed={isMobile()} autohide={false}>
+            {isDesktop ? (
+                <ThemedScrollbars height={container_height} is_bypassed={!isDesktop} autohide={false}>
                     <TradingPasswordManager
                         toggleModal={toggleModal}
                         platform={platform}
@@ -216,8 +216,7 @@ const CFDPasswordManagerTabContent = ({
                         account_group={account_group}
                     />
                 </ThemedScrollbars>
-            </DesktopWrapper>
-            <MobileWrapper>
+            ) : (
                 <Div100vhContainer className='cfd-password-manager__scroll-wrapper' height_offset='120px'>
                     <TradingPasswordManager
                         toggleModal={toggleModal}
@@ -226,7 +225,7 @@ const CFDPasswordManagerTabContent = ({
                         account_group={account_group}
                     />
                 </Div100vhContainer>
-            </MobileWrapper>
+            )}
         </React.Fragment>
     );
 
@@ -242,7 +241,7 @@ const CFDPasswordManagerTabContent = ({
                 {trading_password_manager}
             </div>
             <div label={localize('Investor password')}>
-                <DesktopWrapper>
+                {isDesktop ? (
                     <ThemedScrollbars height={container_height}>
                         <InvestorPasswordManager
                             is_submit_success_investor={is_submit_success_investor}
@@ -254,8 +253,7 @@ const CFDPasswordManagerTabContent = ({
                             multi_step_ref={multi_step_ref}
                         />
                     </ThemedScrollbars>
-                </DesktopWrapper>
-                <MobileWrapper>
+                ) : (
                     <Div100vhContainer className='cfd-password-manager__scroll-wrapper' height_offset='120px'>
                         <InvestorPasswordManager
                             is_submit_success_investor={is_submit_success_investor}
@@ -267,7 +265,7 @@ const CFDPasswordManagerTabContent = ({
                             multi_step_ref={multi_step_ref}
                         />
                     </Div100vhContainer>
-                </MobileWrapper>
+                )}
             </div>
         </Tabs>
     );
@@ -284,6 +282,7 @@ const CFDPasswordManagerModal = observer(
         selected_server,
     }: TCFDPasswordManagerModal) => {
         const { client, ui } = useStore();
+        const { isDesktop } = useDevice();
 
         const { email } = client;
         const { enableApp, disableApp } = ui;
@@ -346,7 +345,7 @@ const CFDPasswordManagerModal = observer(
 
         return (
             <React.Suspense fallback={<UILoader />}>
-                <DesktopWrapper>
+                {isDesktop ? (
                     <Modal
                         className='cfd-password-manager__modal'
                         disableApp={disableApp}
@@ -355,13 +354,12 @@ const CFDPasswordManagerModal = observer(
                         title={getTitle()}
                         toggleModal={toggleModal}
                         height='688px'
-                        width='904px'
+                        width='90.4rem'
                         should_header_stick_body={false}
                     >
                         <CFDPasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
                     </Modal>
-                </DesktopWrapper>
-                <MobileWrapper>
+                ) : (
                     <PageOverlay
                         is_open={is_visible}
                         portal_id='deriv_app'
@@ -370,7 +368,7 @@ const CFDPasswordManagerModal = observer(
                     >
                         <CFDPasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
                     </PageOverlay>
-                </MobileWrapper>
+                )}
             </React.Suspense>
         );
     }

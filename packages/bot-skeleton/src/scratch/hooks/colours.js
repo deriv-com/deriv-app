@@ -28,6 +28,11 @@ const darkMode = () => {
         colourSecondary: '#0e0e0e',
         colourTertiary: '#D27954',
     };
+    workspace.Colours.Special4 = {
+        colour: '#000',
+        colourSecondary: '#ffffff',
+        colourTertiary: '#0e0e0e',
+    };
 };
 
 const lightMode = () => {
@@ -60,6 +65,12 @@ const lightMode = () => {
         colour: '#e5e5e5',
         colourSecondary: '#ffffff',
         colourTertiary: '#6d7278',
+    };
+
+    workspace.Colours.Special4 = {
+        colour: '#e5e5e5',
+        colourSecondary: '#000000',
+        colourTertiary: '#0e0e0e',
     };
 };
 export const setColors = is_dark_mode => (is_dark_mode ? darkMode() : lightMode());

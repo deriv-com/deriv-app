@@ -5,7 +5,7 @@ import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { Dialog, Tabs } from '@deriv/components';
-import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
+import { useFeatureFlags } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import TradingViewModal from 'Components/trading-view-chart/trading-view-modal';
@@ -42,12 +42,10 @@ const AppWrapper = observer(() => {
     const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
     const init_render = React.useRef(true);
     const { ui } = useStore();
+    const { is_next_server_bot_enabled } = useFeatureFlags();
 
     const { url_hashed_values, is_desktop } = ui;
-    const [serverSideBot, isGBLoaded] = useGrowthbookGetFeatureValue({
-        featureFlag: 'server_side_bot',
-        defaultValue: false,
-    });
+
     const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial', 'server_bot'];
 
     let tab_value: number | string = active_tab;
@@ -188,7 +186,7 @@ const AppWrapper = observer(() => {
                                 <Tutorial handleTabChange={handleTabChange} />
                             </div>
                         </div>
-                        {isGBLoaded && serverSideBot ? (
+                        {is_next_server_bot_enabled ? (
                             <div
                                 icon='IcDashboardComponentTab'
                                 label={

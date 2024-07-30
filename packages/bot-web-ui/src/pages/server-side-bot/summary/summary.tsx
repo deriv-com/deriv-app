@@ -6,7 +6,7 @@ import { useDBotStore } from 'Stores/useDBotStore';
 
 const Summary: React.FC = observer(() => {
     const { server_bot } = useDBotStore();
-    const { transactions, active_bot } = server_bot;
+    const { transactions, active_bot, performance } = server_bot;
     const { bot_id } = active_bot;
     const bot_transactions = bot_id ? transactions[bot_id] : {};
 
@@ -106,7 +106,7 @@ const Summary: React.FC = observer(() => {
                                 </Text>
                             </div>
                             <div>
-                                <Text size='xs'>0.00 USD</Text>
+                                <Text size='xs'>{performance.total_stake}</Text>
                             </div>
                         </li>
                         <li>
@@ -116,7 +116,7 @@ const Summary: React.FC = observer(() => {
                                 </Text>
                             </div>
                             <div>
-                                <Text size='xs'>0.00 USD</Text>
+                                <Text size='xs'>{performance.total_payout}</Text>
                             </div>
                         </li>
                         <li>
@@ -126,7 +126,7 @@ const Summary: React.FC = observer(() => {
                                 </Text>
                             </div>
                             <div>
-                                <Text size='xs'>0</Text>
+                                <Text size='xs'>{performance.total_profit}</Text>
                             </div>
                         </li>
                     </ul>

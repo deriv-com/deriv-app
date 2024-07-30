@@ -153,7 +153,7 @@ export default class ServerBotStore {
 
         if (data?.error) {
             // eslint-disable-next-line no-console
-            console.dir(data.error);
+            console.info(data.error);
             this.onJournalMessage(JOURNAL_TYPE.ERROR, {
                 msg: data.error.message,
             });
@@ -170,7 +170,7 @@ export default class ServerBotStore {
 
                 if (error) {
                     // eslint-disable-next-line no-console
-                    console.log(error, 'BOT SERVER ERROR');
+                    console.info(error, 'BOT SERVER ERROR');
                     return;
                 }
                 const { bot_id } = echo_req;
@@ -178,15 +178,15 @@ export default class ServerBotStore {
                 if (isValidJSON(message)) {
                     const { msg, msg_type } = JSON.parse(message);
 
-                    // eslint-disable-next-line no-console
-                    console.log(msg);
+                    // // eslint-disable-next-line no-console
+                    // console.log(msg);
 
                     if (msg_type === 'poc') {
-                        this.onJournalMessage(JOURNAL_TYPE.BUY, {
-                            msg: msg.longcode,
-                            bot_id,
-                            // time: getDate();
-                        });
+                        // this.onJournalMessage(JOURNAL_TYPE.BUY, {
+                        //     msg: msg.longcode,
+                        //     bot_id,
+                        //     // time: getDate();
+                        // });
 
                         const transactions = this.transactions[bot_id];
                         if (transactions && !(msg?.contract_id in transactions)) {
@@ -201,7 +201,24 @@ export default class ServerBotStore {
                     }
 
                     if (msg_type === 'transaction' && msg?.action === 'buy') {
+                        // eslint-disable-next-line no-console
+                        console.log(msg, 'buy');
                         this.onJournalMessage(JOURNAL_TYPE.BUY, { msg: msg.contract_id, bot_id });
+                        // this.performance = {
+                        //     ...this.performance,
+                        //     total_stake: this.performance.total_stake + Number(msg.price),
+                        // };
+                    }
+
+                    if (msg_type === 'transaction' && msg?.action === 'sell') {
+                        // eslint-disable-next-line no-console
+                        console.log(msg, 'sell');
+                        this.onJournalMessage(JOURNAL_TYPE.BUY, { msg: msg.contract_id, bot_id });
+
+                        // this.performance = {
+                        //     ...this.performance,
+                        //     total_payout: this.performance.total_payout + Number(msg.payout),
+                        // };
                     }
 
                     if (msg_type === 'stop') {

@@ -14,7 +14,7 @@ type TMarketCategories = {
 
 const MarketCategories = forwardRef(
     ({ selectedSymbol, setSelectedSymbol, setIsOpen, isOpen }: TMarketCategories, ref: Ref<HTMLDivElement>) => {
-        const { activeSymbols } = useActiveSymbols({});
+        const { activeSymbols } = useActiveSymbols();
         const categorizedSymbols = categorizeSymbols(activeSymbols);
         return (
             <React.Fragment>

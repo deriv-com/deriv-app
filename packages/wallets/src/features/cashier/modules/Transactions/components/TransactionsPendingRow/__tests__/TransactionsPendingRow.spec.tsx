@@ -3,7 +3,7 @@ import { useCancelCryptoTransaction } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../../hooks/useDevice';
-import TransactionsCryptoRow from '../TransactionsPendingRow';
+import TransactionsPendingRow from '../TransactionsPendingRow';
 
 jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(() => ({
@@ -81,7 +81,7 @@ describe('TransactionsPendingRow', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
         render(
             <ModalProvider>
-                <TransactionsCryptoRow transaction={mockWithdrawal} />
+                <TransactionsPendingRow transaction={mockWithdrawal} />
             </ModalProvider>
         );
 
@@ -95,7 +95,7 @@ describe('TransactionsPendingRow', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
         render(
             <ModalProvider>
-                <TransactionsCryptoRow transaction={mockDeposit} />
+                <TransactionsPendingRow transaction={mockDeposit} />
             </ModalProvider>
         );
 
@@ -109,7 +109,7 @@ describe('TransactionsPendingRow', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         render(
             <ModalProvider>
-                <TransactionsCryptoRow transaction={mockWithdrawal} />
+                <TransactionsPendingRow transaction={mockWithdrawal} />
             </ModalProvider>
         );
 
@@ -124,7 +124,7 @@ describe('TransactionsPendingRow', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         render(
             <ModalProvider>
-                <TransactionsCryptoRow transaction={mockDeposit} />
+                <TransactionsPendingRow transaction={mockDeposit} />
             </ModalProvider>
         );
 
@@ -139,7 +139,7 @@ describe('TransactionsPendingRow', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         render(
             <ModalProvider>
-                <TransactionsCryptoRow transaction={mockWithdrawal} />
+                <TransactionsPendingRow transaction={mockWithdrawal} />
             </ModalProvider>,
             { container: $root }
         );
@@ -157,7 +157,7 @@ describe('TransactionsPendingRow', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         render(
             <ModalProvider>
-                <TransactionsCryptoRow transaction={mockWithdrawal} />
+                <TransactionsPendingRow transaction={mockWithdrawal} />
             </ModalProvider>,
             { container: $root }
         );
@@ -179,7 +179,7 @@ describe('TransactionsPendingRow', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         render(
             <ModalProvider>
-                <TransactionsCryptoRow transaction={mockWithdrawal} />
+                <TransactionsPendingRow transaction={mockWithdrawal} />
             </ModalProvider>,
             { container: $root }
         );
@@ -197,7 +197,7 @@ describe('TransactionsPendingRow', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         render(
             <ModalProvider>
-                <TransactionsCryptoRow transaction={mockWithdrawal} />
+                <TransactionsPendingRow transaction={mockWithdrawal} />
             </ModalProvider>,
             { container: $root }
         );
@@ -211,7 +211,7 @@ describe('TransactionsPendingRow', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         render(
             <ModalProvider>
-                <TransactionsCryptoRow transaction={mockWithdrawal} />
+                <TransactionsPendingRow transaction={mockWithdrawal} />
             </ModalProvider>,
             { container: $root }
         );
@@ -228,7 +228,7 @@ describe('TransactionsPendingRow', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
         render(
             <ModalProvider>
-                <TransactionsCryptoRow transaction={mockWithdrawal} />
+                <TransactionsPendingRow transaction={mockWithdrawal} />
             </ModalProvider>
         );
 

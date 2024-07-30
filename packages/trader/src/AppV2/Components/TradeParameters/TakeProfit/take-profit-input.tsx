@@ -56,7 +56,7 @@ const TakeProfitInput = ({
                     variant='fill'
                     value={take_profit_value}
                 />
-                <FocusedInput focused_ref={ref} is_visible={is_focused} setIsFocused={setIsFocused} />
+                {is_focused && <FocusedInput focused_ref={ref} setIsFocused={setIsFocused} />}
                 {!is_enabled && (
                     <button
                         className='take-profit__overlay'

@@ -6,6 +6,7 @@ import { Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import BalanceText from 'Components/elements/text/balance-text';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 import { IsIconCurrency } from 'Assets/svgs/currency';
 
@@ -30,6 +31,11 @@ const RealAccountCard = observer(() => {
     const uppercase_currency = currency?.toUpperCase();
     const get_currency = IsIconCurrency(uppercase_currency) ? uppercase_currency : 'Unknown';
 
+    const [tradrshub_dashboard_form] = useGrowthbookGetFeatureValue({
+        featureFlag: 'ce_tradershub_dashboard_tracking',
+        defaultValue: false,
+    });
+
     return (
         <CurrencySwitcherContainer
             className='demo-account-card'
@@ -51,11 +57,14 @@ const RealAccountCard = observer(() => {
                 currency && (
                     <Button
                         onClick={(e: MouseEvent) => {
-                            Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                action: 'deposit_balance',
-                                form_name: 'traders_hub_default',
-                                account_mode: selected_account_type,
-                            });
+                            if (tradrshub_dashboard_form) {
+                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                    action: 'deposit_balance',
+                                    form_name: 'traders_hub_default',
+                                    account_mode: selected_account_type,
+                                });
+                            }
+
                             if (isCryptocurrency(currency))
                                 startPerformanceEventTimer('load_crypto_deposit_cashier_time');
                             else startPerformanceEventTimer('load_fiat_deposit_cashier_time');

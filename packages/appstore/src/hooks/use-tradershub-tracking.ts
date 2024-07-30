@@ -1,4 +1,5 @@
 import { Analytics } from '@deriv-com/analytics';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 import { useCallback, useMemo } from 'react';
 
@@ -26,6 +27,11 @@ export const useTradersHubTracking = () => {
         },
         [form_source]
     );
+
+    const [tradrshub_dashboard_form] = useGrowthbookGetFeatureValue({
+        featureFlag: 'ce_tradershub_dashboard_tracking',
+        defaultValue: false,
+    });
 
     const trackLastStep = useCallback(() => {
         Analytics.trackEvent(event_name, {
@@ -98,5 +104,6 @@ export const useTradersHubTracking = () => {
         trackOnboardingClose,
         trackOnboardingOpen,
         trackOnboardingRestart,
+        tradrshub_dashboard_form,
     };
 };

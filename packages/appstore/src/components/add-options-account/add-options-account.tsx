@@ -2,6 +2,7 @@ import React from 'react';
 import { DesktopWrapper, MobileWrapper, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import './add-options-account.scss';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 import { isMobile, ContentFlag } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
@@ -17,6 +18,11 @@ const AddOptions = observer(() => {
 
     const eu_user = content_flag === ContentFlag.LOW_RISK_CR_EU || content_flag === ContentFlag.EU_REAL;
 
+    const [tradrshub_dashboard_form] = useGrowthbookGetFeatureValue({
+        featureFlag: 'ce_tradershub_dashboard_tracking',
+        defaultValue: false,
+    });
+
     return (
         <React.Fragment>
             <div className='add-options-account__title'>
@@ -30,12 +36,15 @@ const AddOptions = observer(() => {
                     type='submit'
                     has_effect
                     onClick={() => {
-                        Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                            action: 'account_get',
-                            form_name: 'traders_hub_default',
-                            account_mode: selected_account_type,
-                            account_name: 'cfd_banner',
-                        });
+                        if (tradrshub_dashboard_form) {
+                            Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                action: 'account_get',
+                                form_name: 'traders_hub_default',
+                                account_mode: selected_account_type,
+                                account_name: 'cfd_banner',
+                            });
+                        }
+
                         if (is_real && eu_user) {
                             if (real_account_creation_unlock_date) {
                                 setShouldShowCooldownModal(true);

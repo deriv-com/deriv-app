@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { routes } from '@deriv/shared';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Analytics } from '@deriv-com/analytics';
 import Routes from 'Components/routes/routes';
@@ -12,15 +13,22 @@ const AppContent: React.FC = observer(() => {
     const { is_dark_mode_on } = ui;
     const { selected_account_type } = traders_hub;
 
-    useEffect(() => {
-        if (selected_account_type) {
-            Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                action: 'open',
-                form_name: 'traders_hub_default',
-                account_mode: selected_account_type,
-            });
-        }
-    }, [selected_account_type]);
+    const [tradrshub_dashboard_form] = useGrowthbookGetFeatureValue({
+        featureFlag: 'ce_tradershub_dashboard_tracking',
+        defaultValue: false,
+    });
+
+    if (tradrshub_dashboard_form) {
+        useEffect(() => {
+            if (selected_account_type) {
+                Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                    action: 'open',
+                    form_name: 'traders_hub_default',
+                    account_mode: selected_account_type,
+                });
+            }
+        }, [selected_account_type]);
+    }
 
     return (
         <main

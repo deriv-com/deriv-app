@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Text, StaticUrl } from '@deriv/components';
 import { ContentFlag, setPerformanceValue } from '@deriv/shared';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
@@ -37,6 +38,11 @@ const OptionsAndMultipliersListing = observer(() => {
     const high_risk_cr = content_flag === ContentFlag.HIGH_RISK_CR;
 
     const cr_demo = content_flag === ContentFlag.CR_DEMO;
+
+    const [tradrshub_dashboard_form] = useGrowthbookGetFeatureValue({
+        featureFlag: 'ce_tradershub_dashboard_tracking',
+        defaultValue: false,
+    });
 
     const OptionsTitle = () => {
         if (!isDesktop) return null;
@@ -109,12 +115,14 @@ const OptionsAndMultipliersListing = observer(() => {
                     }
                     is_deriv_platform
                     onAction={() => {
-                        Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                            action: 'account_open',
-                            form_name: 'traders_hub_default',
-                            account_mode: selected_account_type,
-                            account_name: is_demo ? `${available_platform.name} Demo` : available_platform.name,
-                        });
+                        if (tradrshub_dashboard_form) {
+                            Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                action: 'account_open',
+                                form_name: 'traders_hub_default',
+                                account_mode: selected_account_type,
+                                account_name: is_demo ? `${available_platform.name} Demo` : available_platform.name,
+                            });
+                        }
                     }}
                     has_divider={(!is_eu_user || is_demo) && getHasDivider(index, available_platforms.length, 3)}
                 />

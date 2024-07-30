@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Dropdown } from '@deriv/components';
 import { Analytics } from '@deriv-com/analytics';
 import { getAccountTypes } from 'Constants/platform-config';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 import { startPerformanceEventTimer } from '@deriv/shared';
 import { TAccountCategory } from 'Types';
@@ -13,6 +14,11 @@ const AccountTypeDropdown = observer(() => {
     const { selected_account_type, selectAccountType } = traders_hub;
     const { setPrevAccountType } = client;
     const { current_language } = common;
+
+    const [tradrshub_dashboard_form] = useGrowthbookGetFeatureValue({
+        featureFlag: 'ce_tradershub_dashboard_tracking',
+        defaultValue: false,
+    });
 
     return (
         <div className={classNames('account-type-dropdown--parent')}>
@@ -32,11 +38,13 @@ const AccountTypeDropdown = observer(() => {
                         startPerformanceEventTimer('switch_from_demo_to_real_time');
                     await selectAccountType(e.target.value);
                     await setPrevAccountType(e.target.value);
-                    Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                        action: 'switch_account_mode',
-                        form_name: 'traders_hub_default',
-                        account_mode: selected_account_type,
-                    });
+                    if (tradrshub_dashboard_form) {
+                        Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                            action: 'switch_account_mode',
+                            form_name: 'traders_hub_default',
+                            account_mode: selected_account_type,
+                        });
+                    }
                 }}
             />
         </div>

@@ -45,6 +45,7 @@ const TakeProfitInput = ({
                     allowDecimals
                     disabled={!is_enabled}
                     decimals={decimals}
+                    inputMode='decimal'
                     message={message}
                     name='take_profit'
                     onChange={onInputChange}
@@ -52,6 +53,7 @@ const TakeProfitInput = ({
                     ref={ref}
                     status={error_message ? 'error' : 'neutral'}
                     textAlignment='center'
+                    type='number'
                     unitLeft={currency}
                     variant='fill'
                     value={take_profit_value}

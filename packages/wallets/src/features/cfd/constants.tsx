@@ -12,25 +12,24 @@ import {
     PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon,
     PartnersProductDerivMt5BrandLightLogoHorizontalIcon,
 } from '@deriv/quill-icons';
-import i18n from '../../translations/i18n';
 import { TPlatforms } from '../../types';
 import { ctraderLinks, whiteLabelLinks } from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 
 export const MarketTypeDetails = {
     all: {
-        description: i18n.t('Swap-free CFDs on selected financial and derived instruments'),
+        description: 'Swap-free CFDs on selected financial and derived instruments',
         icon: <AccountsDmt5SwfIcon height={48} width={48} />,
-        title: i18n.t('Swap-Free'),
+        title: 'Swap-Free',
     },
     financial: {
-        description: i18n.t('CFDs on financial instruments'),
+        description: 'CFDs on financial instruments',
         icon: <AccountsDmt5FinancialIcon height={48} width={48} />,
-        title: i18n.t('Financial'),
+        title: 'Financial',
     },
     synthetic: {
-        description: i18n.t('CFDs on derived and financial instruments'),
+        description: 'CFDs on derived and financial instruments',
         icon: <AccountsDmt5StandardIcon height={48} width={48} />,
-        title: i18n.t('Standard'),
+        title: 'Standard',
     },
 } as const;
 
@@ -38,71 +37,71 @@ export const PlatformDetails = {
     ctrader: {
         icon: <AccountsDerivCtraderIcon height={48} width={48} />,
         link: 'https://onelink.to/5jgj8z',
-        platform: i18n.t('ctrader') as TPlatforms.OtherAccounts,
-        title: i18n.t('Deriv cTrader'),
+        platform: 'ctrader' as TPlatforms.OtherAccounts,
+        title: 'Deriv cTrader',
     },
     dxtrade: {
         icon: <AccountsDerivXIcon height={48} width={48} />,
         link: 'https://onelink.to/grmtyx',
-        platform: i18n.t('dxtrade') as TPlatforms.OtherAccounts,
-        title: i18n.t('Deriv X'),
+        platform: 'dxtrade' as TPlatforms.OtherAccounts,
+        title: 'Deriv X',
     },
     mt5: {
         icon: <AccountsDmt5StandardIcon height={48} width={48} />,
         link: 'https://onelink.to/xf26jx',
-        platform: i18n.t('mt5') as TPlatforms.MT5,
-        title: i18n.t('Deriv MT5'),
+        platform: 'mt5' as TPlatforms.MT5,
+        title: 'Deriv MT5',
     },
     mt5Investor: {
         icon: <AccountsDmt5StandardIcon height={48} width={48} />,
         link: 'https://onelink.to/xf26jx',
-        platform: i18n.t('mt5') as TPlatforms.MT5,
-        title: i18n.t('Deriv MT5 investor'),
+        platform: 'mt5' as TPlatforms.MT5,
+        title: 'Deriv MT5 investor',
     },
 } as const;
 
 export const companyNamesAndUrls = {
-    bvi: { name: i18n.t('Deriv (BVI) Ltd'), shortcode: 'BVI', tncUrl: 'tnc/deriv-(bvi)-ltd.pdf' },
-    labuan: { name: i18n.t('Deriv (FX) Ltd'), shortcode: 'Labuan', tncUrl: 'tnc/deriv-(fx)-ltd.pdf' },
+    bvi: { name: 'Deriv (BVI) Ltd', shortcode: 'BVI', tncUrl: 'tnc/deriv-(bvi)-ltd.pdf' },
+    labuan: { name: 'Deriv (FX) Ltd', shortcode: 'Labuan', tncUrl: 'tnc/deriv-(fx)-ltd.pdf' },
     maltainvest: {
-        name: i18n.t('Deriv Investments (Europe) Limited'),
+        name: 'Deriv Investments (Europe) Limited',
         shortcode: 'Maltainvest',
         tncUrl: 'tnc/deriv-investments-(europe)-limited.pdf',
     },
-    svg: { name: i18n.t('Deriv (SVG) LLC'), shortcode: 'SVG', tncUrl: 'tnc/deriv-(svg)-llc.pdf' },
-    vanuatu: { name: i18n.t('Deriv (V) Ltd'), shortcode: 'Vanuatu', tncUrl: 'tnc/general-terms.pdf' },
+    svg: { name: 'Deriv (SVG) LLC', shortcode: 'SVG', tncUrl: 'tnc/deriv-(svg)-llc.pdf' },
+    vanuatu: { name: 'Deriv (V) Ltd', shortcode: 'Vanuatu', tncUrl: 'tnc/general-terms.pdf' },
 } as const;
 
 export const AppToContentMapper = {
     ctrader: {
         icon: <LabelPairedWindowsXlIcon />,
         link: ctraderLinks.windows,
-        text: i18n.t('Download'),
-        title: i18n.t('CTrader Windows App'),
+        text: 'Download',
+        title: 'CTrader Windows App',
     },
     linux: {
         icon: <LabelPairedLinuxXlIcon />,
         link: whiteLabelLinks.linux,
-        text: i18n.t('Learn more'),
-        title: i18n.t('MetaTrader 5 Linux app'),
+        text: 'Learn more',
+        title: 'MetaTrader 5 Linux app',
     },
     macos: {
         icon: <LabelPairedMacosXlIcon />,
         link: whiteLabelLinks.macos,
-        text: i18n.t('Download'),
-        title: i18n.t('MetaTrader 5 MacOS app'),
+        text: 'Download',
+        title: 'MetaTrader 5 MacOS app',
     },
     web: {
         icon: <PartnersProductDerivMt5BrandLightLogoHorizontalIcon height={32} width={32} />,
         link: whiteLabelLinks.webtrader_url,
-        text: i18n.t('Open'),
-        title: i18n.t('MetaTrader 5 web'),
+        text: 'Open',
+        title: 'MetaTrader 5 web',
     },
     windows: {
         icon: <LabelPairedWindowsXlIcon />,
         link: whiteLabelLinks.windows,
-        text: i18n.t('Download'),
-        title: i18n.t('MetaTrader 5 Windows app'),
+        text: 'Download',
+        title: 'MetaTrader 5 Windows app',
     },
 } as const;
 

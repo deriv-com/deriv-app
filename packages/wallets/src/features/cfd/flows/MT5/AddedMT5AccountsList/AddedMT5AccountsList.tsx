@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 import { useAuthorize, useJurisdictionStatus, useTradingPlatformStatus } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { InlineMessage, WalletText } from '../../../../../components/Base';
@@ -33,7 +32,6 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { title } = MarketTypeDetails[account.market_type ?? MARKET_TYPE.ALL];
     const { isMobile } = useDevice();
     const { show } = useModal();
-    const { t } = useTranslation();
 
     const { getPlatformStatus } = useTradingPlatformStatus();
     const platformStatus = getPlatformStatus(account.platform);
@@ -113,7 +111,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     <div className='wallets-added-mt5__details-badge'>
                         <InlineMessage size='xs' type='warning' variant='outlined'>
                             <WalletText color='warning' size='2xs' weight='bold'>
-                                {t('Pending verification')}
+                                Pending verification
                             </WalletText>
                         </InlineMessage>
                     </div>
@@ -123,7 +121,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     <div className='wallets-added-mt5__details-badge'>
                         <InlineMessage size='xs' type='error' variant='outlined'>
                             <WalletText color='error' size='2xs' weight='bold'>
-                                {t('Verification failed.')}
+                                Verification failed.{' '}
                                 <a
                                     onClick={() =>
                                         show(
@@ -136,7 +134,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                                         )
                                     }
                                 >
-                                    {t('Why?')}
+                                    Why?
                                 </a>
                             </WalletText>
                         </InlineMessage>

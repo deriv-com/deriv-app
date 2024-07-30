@@ -1,34 +1,27 @@
 import React from 'react';
+import './focused-input.scss';
 
 type TFocusedInputProps = {
     focused_ref?: React.RefObject<HTMLInputElement>;
-    setIsFocused: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const FocusedInput = ({ focused_ref, setIsFocused }: TFocusedInputProps) => {
-    const input_ref = React.useRef<HTMLInputElement>(null);
-    const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
+export const focusAndOpenKeyboard = (
+    target_element_ref?: React.RefObject<HTMLInputElement>,
+    temporary_input_ref?: React.RefObject<HTMLInputElement>
+) => {
+    const current_target_element_ref = target_element_ref?.current;
+    const current_temporary_input_ref = temporary_input_ref?.current;
 
-    React.useEffect(() => {
-        const current_input_ref = input_ref.current;
-        if (current_input_ref && focused_ref?.current) {
-            // Put this temporary input element as a child of the page <body> and focus on it
-            current_input_ref.focus({ preventScroll: true });
+    if (current_target_element_ref && current_temporary_input_ref) {
+        current_temporary_input_ref.focus({ preventScroll: true });
 
-            // The keyboard is open, so now adding a delayed focus on the target element and remove temporary input element
-            focus_timeout.current = setTimeout(() => {
-                if (focused_ref?.current) {
-                    focused_ref.current.focus();
-                    focused_ref.current.click();
-                    setIsFocused(false);
-                }
-            }, 300);
-        }
-        return () => clearTimeout(focus_timeout.current);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    return <input className='input--focused' ref={input_ref} />;
+        return setTimeout(() => {
+            current_target_element_ref.focus();
+            current_target_element_ref.click();
+        }, 300);
+    }
 };
 
-export default FocusedInput;
+export const FocusedInput = ({ focused_ref }: TFocusedInputProps) => (
+    <input className='input--focused' ref={focused_ref} />
+);

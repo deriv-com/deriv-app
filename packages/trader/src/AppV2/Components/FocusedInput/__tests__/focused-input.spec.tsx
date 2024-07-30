@@ -1,21 +1,21 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import FocusedInput from '../focused-input';
+import { FocusedInput, focusAndOpenKeyboard } from '../focused-input';
 
 describe('FocusedInput', () => {
     it('should apply focus to the passed ReactElement', () => {
         jest.useFakeTimers();
 
         const MockComponent = () => {
-            const [is_focused, setIsFocused] = React.useState(false);
             const input_ref = React.useRef<HTMLInputElement>(null);
+            const focused_ref = React.useRef<HTMLInputElement>(null);
 
             return (
                 <React.Fragment>
                     <input type='number' ref={input_ref} />
-                    <button onClick={() => setIsFocused(true)}>Focus</button>
-                    {is_focused && <FocusedInput focused_ref={input_ref} setIsFocused={setIsFocused} />}
+                    <button onClick={() => focusAndOpenKeyboard(input_ref, focused_ref)}>Focus</button>
+                    <FocusedInput focused_ref={focused_ref} />
                 </React.Fragment>
             );
         };

@@ -39,11 +39,10 @@ import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translatio
 
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
-import { tradrshub_dashboard_form } from '@deriv/appstore/src/hooks/use-tradershub-tracking';
+
 import { getAccountTitle, getAvailableAccount, getClientAccountType } from './Helpers/client';
 import { setDeviceDataCookie } from './Helpers/device';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
-
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
@@ -417,8 +416,6 @@ export default class ClientStore extends BaseStore {
             unsubscribeFromExchangeRate: action.bound,
             unsubscribeFromAllExchangeRates: action.bound,
             setExchangeRates: action.bound,
-            is_cr_account: computed,
-            is_mf_account: computed,
         });
 
         reaction(
@@ -1434,14 +1431,11 @@ export default class ClientStore extends BaseStore {
     }
 
     async resetVirtualBalance() {
-        if (tradrshub_dashboard_form) {
-            Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                action: 'reset_balance',
-                form_name: 'traders_hub_default',
-                account_mode: 'demo',
-            });
-        }
-
+        Analytics.trackEvent('ce_tradershub_dashboard_form', {
+            action: 'reset_balance',
+            form_name: 'traders_hub_default',
+            account_mode: 'demo',
+        });
         this.root_store.notifications.removeNotificationByKey({ key: 'reset_virtual_balance' });
         this.root_store.notifications.removeNotificationMessage({
             key: 'reset_virtual_balance',
@@ -2875,12 +2869,4 @@ export default class ClientStore extends BaseStore {
         });
         this.setExchangeRates({});
     };
-
-    get is_cr_account() {
-        return this.loginid?.startsWith('CR');
-    }
-
-    get is_mf_account() {
-        return this.loginid?.startsWith('MF');
-    }
 }

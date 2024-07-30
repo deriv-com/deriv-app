@@ -7,7 +7,7 @@ import OTPVerification from './otp-verification';
 import CancelPhoneVerificationModal from './cancel-phone-verification-modal';
 import VerificationLinkExpiredModal from './verification-link-expired-modal';
 import { observer, useStore } from '@deriv/stores';
-import { useGrowthbookIsOn, useSendOTPVerificationCode } from '@deriv/hooks';
+import { useGrowthbookGetFeatureValue, useSendOTPVerificationCode } from '@deriv/hooks';
 import { Loading } from '@deriv/components';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -26,7 +26,7 @@ const PhoneVerificationPage = observer(() => {
         setShouldShowCancelVerificationModal(true);
     };
     const { sendEmailOTPVerification, email_otp_error, is_email_verified } = useSendOTPVerificationCode();
-    const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookIsOn({
+    const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
 

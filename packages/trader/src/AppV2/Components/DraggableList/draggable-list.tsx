@@ -94,7 +94,7 @@ const DraggableList: React.FC<TDraggableListProps> = ({ categories, onRightIconC
                         )}
                     </div>
                     <Droppable droppableId={category.id}>
-                        {provided => (
+                        {(provided: any) => (
                             <div
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
@@ -102,7 +102,7 @@ const DraggableList: React.FC<TDraggableListProps> = ({ categories, onRightIconC
                             >
                                 {category.items.map((item, index) => (
                                     <Draggable key={item.id} draggableId={item.id} index={index}>
-                                        {provided => (
+                                        {(provided: any) => (
                                             <div
                                                 ref={provided.innerRef}
                                                 {...provided.draggableProps}

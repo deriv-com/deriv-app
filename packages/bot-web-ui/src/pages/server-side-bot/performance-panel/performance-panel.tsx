@@ -12,7 +12,7 @@ const PerformancePanel: React.FC = () => {
                 <Summary />
             </div>
             <div id='db-run-panel-tab__journal' label={localize('Journal')}>
-                <Journal />
+                <Journal setActiveTabIndex={setActiveTabIndex} />
             </div>
         </Tabs>
     );

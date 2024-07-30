@@ -12,10 +12,10 @@ type TTradeTypeTabsProps = {
 const TradeTypeTabs = observer(({ is_minimized }: TTradeTypeTabsProps) => {
     const { contract_type, onChange, trade_type_tab, setTradeTypeTab } = useTraderStore();
     const tab_list = getTradeTypeTabsList(contract_type);
-    const index = tab_list.findIndex(tab =>
+    const initial_index = tab_list.findIndex(tab =>
         trade_type_tab ? tab.contract_type === trade_type_tab : tab.value === contract_type
     );
-    const initial_tab_index = index < 0 ? 0 : index;
+    const initial_tab_index = initial_index < 0 ? 0 : initial_index;
     const [tab_index, setTabIndex] = React.useState(initial_tab_index);
 
     const handleTabChange = (selected_item_index: number) => {
@@ -29,7 +29,7 @@ const TradeTypeTabs = observer(({ is_minimized }: TTradeTypeTabsProps) => {
 
     React.useEffect(() => {
         setTabIndex(initial_tab_index);
-        setTradeTypeTab(tab_list[initial_tab_index].contract_type);
+        setTradeTypeTab(tab_list[initial_tab_index]?.contract_type);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tab_list, initial_tab_index]);
 

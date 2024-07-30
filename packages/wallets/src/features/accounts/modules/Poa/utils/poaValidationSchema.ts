@@ -21,7 +21,7 @@ export const poaValidationSchema = Yup.object().shape({
     townCityLine: Yup.string()
         .required('Town/City is required.')
         .max(70, 'Should be less than 70.')
-        .matches(/^[a-zA-Z\s\-.'']+$/, 'Only letters, space, hyphen, period, and apostrophe are allowed.'),
+        .matches(/^[a-zA-Z\s\-.']+$/, 'Only letters, space, hyphen, period, and apostrophe are allowed.'),
     zipCodeLine: Yup.string()
         .max(20, 'Please enter a Postal/ZIP code under 20 characters.')
         .matches(/^[A-Za-z0-9][A-Za-z0-9\s-]*$/, 'Only letters, numbers, space, and hyphen are allowed.'),

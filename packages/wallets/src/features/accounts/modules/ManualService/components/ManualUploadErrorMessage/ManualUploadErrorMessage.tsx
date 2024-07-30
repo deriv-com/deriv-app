@@ -14,13 +14,11 @@ const errorCodeToDescriptionMapper: Record<string, string> = {
 } as const;
 
 const ManualUploadErrorMessage: React.FC<TManualUploadErrorMessageProps> = ({ errorCode, onRetry }) => {
-    const ActionButton = () => <Button onClick={onRetry}>Try again</Button>;
-
     return (
         <ModalStepWrapper title='Submit your proof of identity'>
             <div className='wallets-manual-upload-error-message'>
                 <ActionScreen
-                    actionButtons={<ActionButton />}
+                    actionButtons={<Button onClick={onRetry}>Try again</Button>}
                     description={errorCodeToDescriptionMapper[errorCode]}
                     icon={<DerivLightDeclinedPoiIcon height={120} width={120} />}
                     title='Proof of identity documents upload failed'

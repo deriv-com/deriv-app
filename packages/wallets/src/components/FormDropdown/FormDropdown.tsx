@@ -66,7 +66,6 @@ const FormDropdown = ({
                                 return field.onChange;
                             }}
                             onSelect={value => {
-                                // console.log('onSelect value', value);
                                 form.setFieldValue(name, value);
                                 if (onSelect) {
                                     onSelect(value as string);

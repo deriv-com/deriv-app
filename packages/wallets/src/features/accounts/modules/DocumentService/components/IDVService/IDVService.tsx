@@ -117,7 +117,7 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                                                     : undefined
                                             }
                                         />
-                                        {document && document.additional && (
+                                        {document?.additional && (
                                             <FormField
                                                 disabled={!values.documentType}
                                                 label={`Enter your ${document.additional?.value ?? ''} number`}

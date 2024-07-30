@@ -14,13 +14,11 @@ const errorCodeToDescriptionMapper: Record<string, string> = {
 } as const;
 
 const PoaUploadErrorMessage: React.FC<TPoaUploadErrorMessage> = ({ errorCode, onRetry }) => {
-    const ActionButtons = () => <Button onClick={onRetry}>Try again</Button>;
-
     return (
         <ModalStepWrapper title='Submit your proof of address'>
             <div className='wallets-poa-upload-error-message'>
                 <ActionScreen
-                    actionButtons={<ActionButtons />}
+                    actionButtons={<Button onClick={onRetry}>Try again</Button>}
                     description={errorCodeToDescriptionMapper[errorCode]}
                     icon={<DerivLightDeclinedPoaIcon height={120} width={120} />}
                     title='Proof of address documents upload failed'

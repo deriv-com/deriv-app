@@ -10,15 +10,11 @@ type TResubmissionSuccessMessageProps = {
 };
 
 const ResubmissionSuccessMessage: React.FC<TResubmissionSuccessMessageProps> = ({ message, onCompletion }) => {
-    const ActionButton = () => {
-        return <Button onClick={onCompletion}>Ok</Button>;
-    };
-
     return (
         <ModalStepWrapper title='Add a real MT5 account'>
             <div className='wallets-resubmission-message'>
                 <ActionScreen
-                    actionButtons={<ActionButton />}
+                    actionButtons={<Button onClick={onCompletion}>Ok</Button>}
                     description={message}
                     icon={<DerivLightWaitingPoiIcon height={128} width={128} />}
                     title='Your documents were submitted successfully'

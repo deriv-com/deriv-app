@@ -477,12 +477,7 @@ export default class TradersHubStore extends BaseStore {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account => {
                 return account.platform === CFD_PLATFORMS.MT5 && this.dynamic_available_platforms[account.product];
             });
-            return;
         }
-
-        this.available_mt5_accounts = this.available_cfd_accounts.filter(
-            account => account.platform === CFD_PLATFORMS.MT5
-        );
     }
 
     getAvailableDxtradeAccounts() {
@@ -505,23 +500,11 @@ export default class TradersHubStore extends BaseStore {
         );
     }
     getAvailableCTraderAccounts() {
-        if (this.is_eu_user && !this.is_demo_low_risk) {
-            this.available_ctrader_accounts = this.available_cfd_accounts.filter(
-                account =>
-                    ['EU', 'All'].some(region => region === account.availability) &&
-                    account.platform === CFD_PLATFORMS.CTRADER
-            );
-            return;
-        }
         if (Object.keys(this.dynamic_available_platforms).length > 0) {
             this.available_ctrader_accounts = this.available_cfd_accounts.filter(account => {
                 return account.platform === CFD_PLATFORMS.CTRADER && this.dynamic_available_platforms[account.product];
             });
-            return;
         }
-        this.available_ctrader_accounts = this.available_cfd_accounts.filter(
-            account => account.platform === CFD_PLATFORMS.CTRADER
-        );
     }
 
     getExistingAccounts(platform, market_type, product) {

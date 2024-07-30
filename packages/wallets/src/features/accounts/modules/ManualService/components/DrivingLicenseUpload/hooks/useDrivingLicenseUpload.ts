@@ -13,28 +13,39 @@ type TDrivingLicenseUploadValues = TSelfieUploadValues & {
 
 const useDrivingLicenseUpload = (documentIssuingCountryCode: THooks.AccountSettings['country_code']) => {
     const {
-        error: errorDrivingLicenseUpload,
-        isLoading: isDrivingLicenseUploading,
-        isSuccess: isDrivingLicenseUploadSuccess,
-        reset: resetErrorDrivingLicenseUpload,
-        upload: _upload,
+        resetStatus: resetDrivingLicenseUploadStatus,
+        status: drivingLicenseUploadStatus,
+        upload: uploadDrivingLicense,
     } = useDocumentUpload();
     const {
-        error: errorSelfieUpload,
-        isLoading: isSelfieUploading,
-        isSuccess: isSelfieUploadSuccess,
-        resetError: resetErrorSelfieUpload,
+        initialValues: initialValuesSelfieUpload,
+        resetStatus: resetSelfieUploadStatus,
+        status: selfieUploadStatus,
         upload: uploadSelfie,
     } = useSelfieUpload(documentIssuingCountryCode);
 
+    const isError = drivingLicenseUploadStatus === 'error' || selfieUploadStatus === 'error';
+    const isLoading =
+        ((drivingLicenseUploadStatus === 'loading' && selfieUploadStatus === 'idle') ||
+            selfieUploadStatus === 'loading') &&
+        !isError;
+    const isSuccess =
+        !isError && !isLoading && drivingLicenseUploadStatus === 'success' && selfieUploadStatus === 'success';
+
     const initialValues = {
+        ...initialValuesSelfieUpload,
         drivingLicenseExpiryDate: '',
         drivingLicenseNumber: '',
     } as TDrivingLicenseUploadValues;
 
+    const resetUploadStatus = () => {
+        resetDrivingLicenseUploadStatus('idle');
+        resetSelfieUploadStatus('idle');
+    };
+
     const uploadFront = useCallback(
         (values: FormikValues | TDrivingLicenseUploadValues) => {
-            return _upload({
+            return uploadDrivingLicense({
                 document_id: values.drivingLicenseNumber,
                 document_issuing_country: documentIssuingCountryCode ?? undefined,
                 document_type: 'driving_licence',
@@ -43,12 +54,12 @@ const useDrivingLicenseUpload = (documentIssuingCountryCode: THooks.AccountSetti
                 page_type: 'front',
             });
         },
-        [_upload, documentIssuingCountryCode]
+        [documentIssuingCountryCode, uploadDrivingLicense]
     );
 
     const uploadBack = useCallback(
         (values: FormikValues | TDrivingLicenseUploadValues) => {
-            return _upload({
+            return uploadDrivingLicense({
                 document_id: values.drivingLicenseNumber,
                 document_issuing_country: documentIssuingCountryCode ?? undefined,
                 document_type: 'driving_licence',
@@ -57,42 +68,41 @@ const useDrivingLicenseUpload = (documentIssuingCountryCode: THooks.AccountSetti
                 page_type: 'back',
             });
         },
-        [_upload, documentIssuingCountryCode]
+        [documentIssuingCountryCode, uploadDrivingLicense]
     );
 
     const upload = useCallback(
         async (values: FormikValues | TDrivingLicenseUploadValues) => {
-            await uploadFront(values);
-            await uploadBack(values);
-            await uploadSelfie(values, values.drivingLicenseNumber);
+            try {
+                await uploadFront(values);
+                await uploadBack(values);
+                await uploadSelfie(values, values.drivingLicenseNumber);
+
+                return Promise.resolve();
+            } catch (error) {
+                return Promise.reject(error);
+            }
         },
         [uploadBack, uploadFront, uploadSelfie]
     );
 
-    const resetError = useCallback(() => {
-        if (errorDrivingLicenseUpload?.error || errorSelfieUpload) {
-            resetErrorDrivingLicenseUpload();
-            resetErrorSelfieUpload();
-        }
-    }, [errorDrivingLicenseUpload?.error, errorSelfieUpload, resetErrorDrivingLicenseUpload, resetErrorSelfieUpload]);
-
     return {
-        /** contains error data if any error encountered during driving-license/selfie upload */
-        error: errorDrivingLicenseUpload?.error ?? errorSelfieUpload,
-
         /** initial values for the driving-license and selfie forms */
         initialValues,
 
-        /** `true` if successfully uploaded driving-license front/back and selfie files */
-        isSuccess: isDrivingLicenseUploadSuccess && isSelfieUploadSuccess,
+        /** `true` when driving-license/selfie upload encounter error */
+        isError,
 
-        /** `true` if driving-license and selfie upload is in progress */
-        isUploading: isDrivingLicenseUploading || isSelfieUploading,
+        /** `true` when driving-license/selfie are uploading */
+        isLoading,
 
-        /** reset all API errors */
-        resetError,
+        /** `true` when driving-license/selfie are uploaded successfully */
+        isSuccess,
 
-        /** upload driving-license front/back and selfie files synchronously */
+        /** Reset upload statuses for driving-license and selfie */
+        resetUploadStatus,
+
+        /** upload driving-license and selfie files synchronously */
         upload,
     };
 };

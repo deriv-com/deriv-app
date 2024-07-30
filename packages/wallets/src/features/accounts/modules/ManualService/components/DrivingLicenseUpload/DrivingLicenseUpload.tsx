@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Formik } from 'formik';
+import { Formik, FormikValues } from 'formik';
 import moment from 'moment';
 import { Divider, Loader } from '@deriv-com/ui';
 import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
 import DrivingLicenseCardBack from '../../../../../../public/images/accounts/document-back.svg';
 import DrivingLicenseCardFront from '../../../../../../public/images/accounts/driving-license-front.svg';
+import { THooks } from '../../../../../../types';
 import { Footer } from '../../../components';
 import { GeneralDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
@@ -15,16 +16,25 @@ import { drivingLicenseUploadValidator } from './utils';
 import './DrivingLicenseUpload.scss';
 
 const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onClickBack, onCompletion }) => {
-    const { error, initialValues, isSuccess, isUploading, resetError, upload } =
-        useDrivingLicenseUpload(documentIssuingCountryCode);
+    const {
+        initialValues,
+        isLoading,
+        resetUploadStatus,
+        upload: upload_,
+    } = useDrivingLicenseUpload(documentIssuingCountryCode);
     const [showSelfieUpload, setShowSelfieUpload] = useState(false);
+    const [error, setError] = useState<THooks.DocumentUpload['error']>();
 
-    if (!error && isSuccess && onCompletion) {
-        onCompletion();
-        return null;
-    }
+    const upload = async (values: FormikValues) => {
+        try {
+            await upload_(values);
+            onCompletion?.();
+        } catch (error) {
+            setError((error as THooks.DocumentUpload).error);
+        }
+    };
 
-    if (isUploading) {
+    if (isLoading) {
         return <Loader />;
     }
 
@@ -39,7 +49,7 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                     !errors.drivingLicenseCardFront;
 
                 const onErrorRetry = () => {
-                    resetError();
+                    resetUploadStatus();
                     resetForm();
                     setShowSelfieUpload(false);
                     onClickBack?.();
@@ -69,8 +79,8 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                         disableAnimation
                         renderFooter={() => (
                             <Footer
-                                disableBack={isUploading}
-                                disableNext={!isDrivingLicenseFormValid || isUploading}
+                                disableBack={isLoading}
+                                disableNext={!isDrivingLicenseFormValid || isLoading}
                                 onClickBack={onClickBack}
                                 onClickNext={handleOnClickNext}
                             />

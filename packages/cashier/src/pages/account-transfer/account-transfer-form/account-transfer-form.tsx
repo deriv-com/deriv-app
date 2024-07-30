@@ -39,7 +39,7 @@ type TAccountTransferFormProps = {
     onClickNotes?: () => void;
     onClose: () => void;
     setSideNotes?: (notes: React.ReactNode[]) => void;
-    tradingPlatformStatus?: TradingPlatformStatusResponse['trading_platform_status'];
+    TradingPlatformStatusData?: TradingPlatformStatusResponse['trading_platform_status'];
 };
 
 const AccountOption = ({
@@ -143,7 +143,7 @@ const AccountTransferForm = observer(
         onClickNotes,
         setSideNotes,
         onClose,
-        tradingPlatformStatus,
+        TradingPlatformStatusData,
     }: TAccountTransferFormProps) => {
         const [arrow_icon_direction, setArrowIconDirection] = React.useState<'right' | 'left'>('right');
         const {
@@ -309,7 +309,7 @@ const AccountTransferForm = observer(
             dxtrade_accounts_to = [];
             accounts_list.forEach((account, idx) => {
                 const is_selected_from = account.value === selected_from.value;
-                let platform;
+                let platform = '';
                 if (account.is_mt) {
                     platform = CFD_PLATFORMS.MT5;
                 } else if (account.is_ctrader) {
@@ -318,7 +318,9 @@ const AccountTransferForm = observer(
                     platform = CFD_PLATFORMS.DXTRADE;
                 }
 
-                const getPlatformStatus = tradingPlatformStatus?.find(status => status.platform === platform)?.status;
+                const is_server_maintenance = TradingPlatformStatusData?.find(
+                    status => status?.platform === platform
+                )?.status;
 
                 const is_account_unavailable = account.status === MT5_ACCOUNT_STATUS.UNAVAILABLE;
 
@@ -331,7 +333,7 @@ const AccountTransferForm = observer(
                         is_account_unavailable={is_account_unavailable}
                         is_verification_failed={is_mf_status_verification_failed}
                         is_verification_needed={is_mf_status_need_verification}
-                        is_server_maintenance={getPlatformStatus}
+                        is_server_maintenance={is_server_maintenance}
                     />
                 );
 

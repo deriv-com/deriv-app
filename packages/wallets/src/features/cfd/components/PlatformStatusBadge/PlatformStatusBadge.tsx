@@ -12,7 +12,6 @@ type TProps = {
     cashierAccount?: TAccount;
     className?: ComponentProps<typeof Badge>['className'];
     mt5Account?: THooks.MT5AccountsList;
-    type?: 'input' | 'modal';
 };
 
 const PlatformStatusBadge: React.FC<TProps> = ({ badgeSize, cashierAccount, className, mt5Account }) => {

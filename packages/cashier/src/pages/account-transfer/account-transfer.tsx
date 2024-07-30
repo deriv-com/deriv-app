@@ -11,7 +11,6 @@ import AccountTransferForm from './account-transfer-form';
 import AccountTransferNoAccount from './account-transfer-no-account';
 import AccountTransferLocked from './account-transfer-locked';
 import { useCashierStore } from '../../stores/useCashierStores';
-import { TradingPlatformStatusResponse } from '../../types/websocket.types';
 
 type TAccountTransferProps = {
     onClickDeposit?: VoidFunction;
@@ -37,23 +36,13 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
     } = account_transfer;
     const { is_loading } = general_store;
     const is_cashier_locked = useCashierLocked();
+    const { data: TradingPlatformStatusData } = useTradingPlatformStatus();
 
     const { is_switching, is_virtual } = client;
     const [is_loading_status, setIsLoadingStatus] = React.useState(true);
-    const [tradingPlatformStatus, setTradingPlatformStatus] = React.useState<TradingPlatformStatusResponse | null>(
-        null
-    );
 
     React.useEffect(() => {
-        const fetchTradingPlatformStatus = async () => {
-            // eslint-disable-next-line react-hooks/rules-of-hooks
-            const response = await useTradingPlatformStatus();
-            setTradingPlatformStatus(response.tradingPlatformStatus);
-        };
-
-        fetchTradingPlatformStatus();
         onMount();
-
         WS.wait('authorize', 'website_status', 'get_settings', 'paymentagent_list').then(() => {
             setIsLoadingStatus(false);
         });
@@ -75,7 +64,7 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
     if (is_virtual) {
         return <Virtual />;
     }
-    if (is_loading || is_switching || is_loading_status) {
+    if (is_loading || is_switching || is_loading_status || !TradingPlatformStatusData) {
         return <Loading className='cashier__loader' is_fullscreen={false} />;
     }
 
@@ -108,7 +97,7 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
             setSideNotes={setSideNotes}
             onClickDeposit={onClickDeposit}
             onClickNotes={onClickNotes}
-            tradingPlatformStatus={tradingPlatformStatus?.trading_platform_status}
+            TradingPlatformStatusData={TradingPlatformStatusData}
         />
     );
 });

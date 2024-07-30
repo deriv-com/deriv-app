@@ -44,7 +44,7 @@ export const getMT5Title = (account_type: string) => {
 };
 
 type TProduct = 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx';
-type TPlatform = 'dxtrade' | 'mt5' | 'ctrader';
+export type TPlatform = 'dxtrade' | 'mt5' | 'ctrader';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
 type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'malta' | 'maltainvest';
 type TGetAccount = {

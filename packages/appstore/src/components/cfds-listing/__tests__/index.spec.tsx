@@ -1,6 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { useTradingPlatformStatus } from '@deriv/hooks';
+
 import CFDsListing from '../index';
 
 jest.mock('Components/containers/listing-container', () =>
@@ -13,8 +15,20 @@ jest.mock('@deriv-com/ui', () => ({
         isTablet: false,
     })),
 }));
+jest.mock('@deriv/hooks');
+const mockUseTradingPlatformStatus = useTradingPlatformStatus as jest.MockedFunction<typeof useTradingPlatformStatus>;
 
 describe('CFDsListing', () => {
+    mockUseTradingPlatformStatus.mockReturnValue({
+        data: [
+            {
+                platform: 'mt5',
+                status: 'active',
+            },
+        ],
+        getPlatformStatus: jest.fn(),
+    });
+
     const mock = mockStore({
         traders_hub: {
             selected_region: 'Non-EU',

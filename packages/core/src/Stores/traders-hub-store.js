@@ -869,6 +869,7 @@ export default class TradersHubStore extends BaseStore {
     }
 
     get dynamic_available_platforms() {
+        // eslint-disable-next-line no-console
         console.log('==>', this.root_store.client.trading_platform_available_accounts);
         const available_products = this.root_store.client.trading_platform_available_accounts;
 

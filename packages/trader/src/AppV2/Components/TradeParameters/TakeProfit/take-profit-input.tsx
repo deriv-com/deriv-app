@@ -17,68 +17,64 @@ type TTakeProfitInputProps = {
     take_profit_value?: string | number;
 };
 
-const TakeProfitInput = React.forwardRef(
-    ({
-        currency,
-        decimals,
-        error_message,
-        is_enabled,
-        is_focused,
-        message,
-        onToggleSwitch,
-        onInputChange,
-        onSave,
-        setIsFocused,
-        take_profit_value,
-    }: TTakeProfitInputProps) => {
-        const ref = React.useRef<HTMLInputElement>(null);
+const TakeProfitInput = ({
+    currency,
+    decimals,
+    error_message,
+    is_enabled,
+    is_focused,
+    message,
+    onToggleSwitch,
+    onInputChange,
+    onSave,
+    setIsFocused,
+    take_profit_value,
+}: TTakeProfitInputProps) => {
+    const ref = React.useRef<HTMLInputElement>(null);
 
-        return (
-            <React.Fragment>
-                <ActionSheet.Content className='take-profit__wrapper'>
-                    <div className='take-profit__content'>
-                        <Text>
-                            <Localize i18n_default_text='Take profit' />
-                        </Text>
-                        <ToggleSwitch checked={is_enabled} onChange={onToggleSwitch} />
-                    </div>
-                    <TextFieldWithSteppers
-                        allowDecimals
-                        disabled={!is_enabled}
-                        decimals={decimals}
-                        message={message}
-                        name='take_profit'
-                        onChange={onInputChange}
-                        placeholder={localize('Amount')}
-                        ref={ref}
-                        status={error_message ? 'error' : 'neutral'}
-                        textAlignment='center'
-                        unitLeft={currency}
-                        variant='fill'
-                        value={take_profit_value}
-                    />
-                    <FocusedInput focused_ref={ref} is_visible={is_focused} setIsFocused={setIsFocused} />
-                    {!is_enabled && (
-                        <button
-                            className='take-profit__overlay'
-                            onClick={() => onToggleSwitch(true)}
-                            data-testid='dt_take_profit_overlay'
-                        />
-                    )}
-                </ActionSheet.Content>
-                <ActionSheet.Footer
-                    alignment='vertical'
-                    primaryAction={{
-                        content: <Localize i18n_default_text='Save' />,
-                        onAction: onSave,
-                    }}
-                    shouldCloseOnPrimaryButtonClick={false}
+    return (
+        <React.Fragment>
+            <ActionSheet.Content className='take-profit__wrapper'>
+                <div className='take-profit__content'>
+                    <Text>
+                        <Localize i18n_default_text='Take profit' />
+                    </Text>
+                    <ToggleSwitch checked={is_enabled} onChange={onToggleSwitch} />
+                </div>
+                <TextFieldWithSteppers
+                    allowDecimals
+                    disabled={!is_enabled}
+                    decimals={decimals}
+                    message={message}
+                    name='take_profit'
+                    onChange={onInputChange}
+                    placeholder={localize('Amount')}
+                    ref={ref}
+                    status={error_message ? 'error' : 'neutral'}
+                    textAlignment='center'
+                    unitLeft={currency}
+                    variant='fill'
+                    value={take_profit_value}
                 />
-            </React.Fragment>
-        );
-    }
-);
-
-TakeProfitInput.displayName = 'TakeProfitInput';
+                <FocusedInput focused_ref={ref} is_visible={is_focused} setIsFocused={setIsFocused} />
+                {!is_enabled && (
+                    <button
+                        className='take-profit__overlay'
+                        onClick={() => onToggleSwitch(true)}
+                        data-testid='dt_take_profit_overlay'
+                    />
+                )}
+            </ActionSheet.Content>
+            <ActionSheet.Footer
+                alignment='vertical'
+                primaryAction={{
+                    content: <Localize i18n_default_text='Save' />,
+                    onAction: onSave,
+                }}
+                shouldCloseOnPrimaryButtonClick={false}
+            />
+        </React.Fragment>
+    );
+};
 
 export default TakeProfitInput;

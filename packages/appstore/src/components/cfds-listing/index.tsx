@@ -200,11 +200,13 @@ const CFDsListing = observer(() => {
         >
             {!isDesktop && <CompareAccount accounts_sub_text={accounts_sub_text} />}
             <AddDerivAccount />
-            <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
-                <Text line_height='m' weight='bold' color='prominent'>
-                    {localize('Deriv MT5')}
-                </Text>
-            </div>
+            {combined_cfd_mt5_accounts.length > 0 && (
+                <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
+                    <Text line_height='m' weight='bold' color='prominent'>
+                        {localize('Deriv MT5')}
+                    </Text>
+                </div>
+            )}
             {has_svg_accounts_to_migrate && is_landing_company_loaded && <MigrationBanner />}
             {is_landing_company_loaded && !is_populating_mt5_account_list ? (
                 <React.Fragment>
@@ -311,12 +313,16 @@ const CFDsListing = observer(() => {
             )}
             {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                 <Fragment>
-                    <div className='cfd-full-row'>
-                        <hr className='divider' />
-                    </div>
-                    <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
-                        <Text weight='bold'>{localize('Deriv cTrader')}</Text>
-                    </div>
+                    {available_ctrader_accounts.length > 0 && (
+                        <Fragment>
+                            <div className='cfd-full-row'>
+                                <hr className='divider' />
+                            </div>
+                            <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
+                                <Text weight='bold'>{localize('Deriv cTrader')}</Text>
+                            </div>
+                        </Fragment>
+                    )}
                     {is_landing_company_loaded ? (
                         available_ctrader_accounts.map(account => {
                             const existing_accounts = getExistingAccounts(account.platform, account.market_type);

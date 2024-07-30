@@ -13,7 +13,7 @@ type TActiveSymbolsList = {
 };
 
 const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) => {
-    const { default_symbol } = useActiveSymbols({});
+    const { default_symbol } = useActiveSymbols();
 
     const [isSearching, setIsSearching] = useState(false);
     const [selectedSymbol, setSelectedSymbol] = useState(default_symbol);

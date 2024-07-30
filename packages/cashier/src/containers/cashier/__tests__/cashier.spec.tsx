@@ -140,6 +140,7 @@ describe('<Cashier />', () => {
         mockRootStore.client.is_logging_in = false;
         mockRootStore.client.is_crypto = jest.fn(() => true);
         mockRootStore.modules.cashier.general_store.is_cashier_onboarding = true;
+        mockRootStore.modules.cashier.payment_agent.is_payment_agent_visible = true;
 
         renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mockRootStore);
 
@@ -161,7 +162,7 @@ describe('<Cashier />', () => {
         expect(history.location.pathname).toBe(routes.traders_hub);
     });
 
-    it('goes to selected route page in Desktop mode', () => {
+    it('goes to Withdrawal page in Desktop mode when clicking on Withdrawal in the Vertical tab menu', () => {
         renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mockRootStore);
 
         const withdrawal_link = screen.getByRole('link', { name: 'Withdrawal' });

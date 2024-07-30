@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { TradingAccountCard, WalletError } from '../../../../../components';
@@ -20,7 +19,6 @@ const AvailableCTraderAccountsList: React.FC = () => {
         status,
     } = useCreateOtherCFDAccount();
     const { data: activeWallet } = useActiveWalletAccount();
-    const { t } = useTranslation();
 
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
 
@@ -69,7 +67,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
         >
             <div className='wallets-available-ctrader__details'>
                 <WalletText size='sm'>{PlatformDetails.ctrader.title}</WalletText>
-                <WalletText size='xs'>{t('CFDs on financial and derived instruments with copy trading.')}</WalletText>
+                <WalletText size='xs'>CFDs on financial and derived instruments with copy trading.</WalletText>
             </div>
         </TradingAccountCard>
     );

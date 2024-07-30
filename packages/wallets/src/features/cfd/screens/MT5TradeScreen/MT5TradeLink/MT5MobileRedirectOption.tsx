@@ -1,12 +1,11 @@
 import React, { FC } from 'react';
-import { Trans } from 'react-i18next';
-import { THooks } from 'src/types';
 import {
     LabelPairedChevronRightLgFillIcon,
     LegacyMonitorIcon,
     StandaloneMobileNotchRegularIcon,
 } from '@deriv/quill-icons';
 import { WalletText } from '../../../../../components/Base';
+import { THooks } from '../../../../../types';
 import { getDeeplinkUrl, getMobileAppInstallerUrl, getWebtraderUrl } from './constants';
 import './MT5MobileRedirectOption.scss';
 
@@ -49,7 +48,7 @@ const MT5MobileRedirectOption: FC<TMT5MobileRedirectOptionProps> = ({ mt5TradeAc
                 <LegacyMonitorIcon iconSize='sm' />
                 <div className='wallets-mobile-redirect-option__button__content'>
                     <WalletText align='left' size='xs' weight='bold'>
-                        <Trans defaults={`MetaTrader5 web terminal`} />
+                        MetaTrader5 web terminal
                     </WalletText>
                 </div>
                 <LabelPairedChevronRightLgFillIcon />
@@ -61,16 +60,14 @@ const MT5MobileRedirectOption: FC<TMT5MobileRedirectOptionProps> = ({ mt5TradeAc
                 <StandaloneMobileNotchRegularIcon fill='#FFF' />
                 <div className='wallets-mobile-redirect-option__button__content'>
                     <WalletText align='left' color='white' size='xs' weight='bold'>
-                        <Trans defaults={`Trade with MT5 mobile app`} />
+                        Trade with MT5 mobile app
                     </WalletText>
                 </div>
                 <LabelPairedChevronRightLgFillIcon fill='#FFF' />
             </button>
             <WalletText as='p' size='xs'>
-                <Trans
-                    components={{ bold: <strong /> }}
-                    defaults={`Note: Don't have the MT5 app? Tap the <bold>Trade with MT5 mobile app</bold> WalletButton to download. Once you have installed the app, return to this screen and hit the same button to log in.`}
-                />
+                Note: Don&apos;t have the MT5 app? Tap the <strong>Trade with MT5 mobile app</strong> WalletButton to
+                download. Once you have installed the app, return to this screen and hit the same button to log in.
             </WalletText>
         </div>
     );

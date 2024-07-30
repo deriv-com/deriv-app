@@ -7,6 +7,7 @@ import BotListItem from './bot-list-item';
 import BotListMenu from './bot-list-menu';
 import DeleteServerBot from './delete-server-bot';
 import { botNotification } from 'Components/bot-notification/bot-notification';
+import LoginModal from './common/login-modal';
 
 type TBotList = {
     setFormVisibility: (is_open: boolean) => void;
@@ -14,6 +15,7 @@ type TBotList = {
 
 const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
     const [is_delete_dialog_visible, setDeleteDialogVisibility] = React.useState(false);
+    const [is_login_modal_visible, setLoginModalVisble] = React.useState(false);
     const [temp_bot_id, setTempBotId] = React.useState('');
 
     const { ui } = useStore();
@@ -22,6 +24,9 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
     const { is_mobile } = ui;
     const [menu_open, setMenuOpen] = React.useState({ visible: false, y: 0, bot_id: '' });
     const menu_ref = React.useRef(null);
+
+    const { client } = useStore();
+    const { is_logged_in } = client;
 
     useEffect(() => {
         getBotList(true);
@@ -110,7 +115,12 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
                     <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
                         <Localize i18n_default_text='Bot list' />
                     </Text>
-                    <span className='ssb-list__header__add' onClick={() => setFormVisibility(true)}>
+                    <span
+                        className='ssb-list__header__add'
+                        onClick={() => {
+                            !is_logged_in ? setLoginModalVisble(true) : setFormVisibility(true);
+                        }}
+                    >
                         <Icon icon='IcAddBold' />
                     </span>
                 </div>
@@ -131,7 +141,7 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
                         </>
                     ) : (
                         <div className='ssb-list__content__no-list'>
-                            {is_loading_bot_list ? (
+                            {is_logged_in && is_loading_bot_list ? (
                                 <Text>Loading...</Text>
                             ) : (
                                 <>
@@ -146,7 +156,14 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
                                     </Text>
                                     {!has_list && (
                                         <div className='ssb-list__content__no-list__action'>
-                                            <Button primary>
+                                            <Button
+                                                primary
+                                                onClick={() => {
+                                                    if (!is_logged_in) {
+                                                        setLoginModalVisble(true);
+                                                    }
+                                                }}
+                                            >
                                                 <Localize i18n_default_text='+ Create bot' />
                                             </Button>
                                         </div>
@@ -162,6 +179,7 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
                 is_open={is_delete_dialog_visible}
                 setVisibility={setDeleteDialogVisibility}
             />
+            <LoginModal is_login_modal_visible={is_login_modal_visible} setLoginModalVisble={setLoginModalVisble} />
         </>
     );
 });

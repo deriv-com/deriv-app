@@ -26,7 +26,7 @@ const Summary: React.FC = observer(() => {
                                             {txn.display_name}
                                         </Text>
                                         <span className='ssb-summary__item__header__result ssb-summary__item__header__result--won'>
-                                            <Icon icon='IcCheckmarkCircle' color='green' />
+                                            <Icon icon='IcServerBotProfit' color='green' />
                                             <Text size='xxs'>
                                                 <Localize i18n_default_text='Won' />
                                             </Text>
@@ -50,7 +50,7 @@ const Summary: React.FC = observer(() => {
                                     Volatility 100 (1s) Index
                                 </Text>
                                 <span className='ssb-summary__item__header__result ssb-summary__item__header__result--lost'>
-                                    <Icon icon='IcCrossCircle' color='red' />
+                                    <Icon icon='IcServerBotLoss' color='red' />
                                     <Text size='xxs'>
                                         <Localize i18n_default_text='Lost' />
                                     </Text>

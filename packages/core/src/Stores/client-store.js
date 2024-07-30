@@ -490,6 +490,22 @@ export default class ClientStore extends BaseStore {
                 }
             }
         );
+
+        reaction(
+            () => [this.clients_country],
+            async () => {
+                if (!this.is_logged_in && this.clients_country) {
+                    await this.setMT5TradingPlatformAvailableAccounts();
+                }
+            }
+        );
+    }
+
+    async setMT5TradingPlatformAvailableAccounts() {
+        await WS.tradingPlatformAvailableAccounts({
+            country_code: this.clients_country,
+            platform: CFD_PLATFORMS.MT5,
+        }).then(this.responseTradingPlatformAvailableAccounts);
     }
 
     get balance() {

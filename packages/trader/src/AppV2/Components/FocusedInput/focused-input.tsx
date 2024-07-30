@@ -13,7 +13,9 @@ export const focusAndOpenKeyboard = (
     const current_temporary_input_ref = temporary_input_ref?.current;
 
     if (current_target_element_ref && current_temporary_input_ref) {
+        current_temporary_input_ref.style.display = 'block';
         current_temporary_input_ref.focus({ preventScroll: true });
+        current_temporary_input_ref.style.display = 'none';
 
         return setTimeout(() => {
             current_target_element_ref.focus();

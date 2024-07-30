@@ -51,11 +51,9 @@ const EnterPassword: React.FC<TProps> = ({
     return (
         <div className='wallets-enter-password'>
             <div className='wallets-enter-password__container'>
-                {isDesktop && (
-                    <WalletText lineHeight='xl' weight='bold'>
-                        {modalTitle}
-                    </WalletText>
-                )}
+                <WalletText lineHeight='xl' weight='bold'>
+                    {modalTitle}
+                </WalletText>
                 <div className='wallets-enter-password__content'>
                     <WalletText size='sm'>
                         Enter your {title} password to add a{' '}

@@ -48,7 +48,7 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     const Footer = () =>
         hasRenderFooter ? (
             <div className='wallets-modal-step-wrapper__footer' data-testid='dt_modal_step_wrapper_footer'>
-                {renderFooter()}
+                <div className='wallets-modal-step-wrapper__footer--content'>{renderFooter()}</div>
             </div>
         ) : null;
 

@@ -71,7 +71,13 @@
 
     &__body {
         height: 100%;
+        width: 100%;
         overflow-y: scroll;
+
+        @include tablet-screen {
+            margin-inline: auto;
+            max-width: 60rem;
+        }
     }
 
     &__footer {
@@ -80,15 +86,27 @@
         width: 100%;
         bottom: 0;
         border-top: 0.2rem solid #f2f3f4;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
 
         @include mobile-or-tablet-screen {
             background: var(--general-main-2, #ffffff);
             position: relative;
             z-index: 99;
             height: auto;
+        }
+
+        &--content {
+            width: 100%;
+
+            @include desktop-screen {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+            }
+
+            @include mobile-or-tablet-screen {
+                max-width: 60rem;
+                margin-inline: auto;
+            }
         }
     }
 }

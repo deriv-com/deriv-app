@@ -62,7 +62,7 @@ describe('useActiveSymbols', () => {
     it('should fetch active symbols when not logged in', async () => {
         // Need the opposite return value (true) of usePrevious(is_logged_in) for fetchActiveSymbols to trigger:
         (usePrevious as jest.Mock).mockReturnValueOnce(true).mockReturnValueOnce(TRADE_TYPES.RISE_FALL);
-        const { result } = renderHook(() => useActiveSymbols({ barrier_category: [] }), {
+        const { result } = renderHook(() => useActiveSymbols(), {
             wrapper,
         });
         await waitFor(() => {
@@ -74,7 +74,7 @@ describe('useActiveSymbols', () => {
         mocked_store.client.is_logged_in = true;
         mocked_store.modules.trade.active_symbols = logged_in_active_symbols;
         mocked_store.modules.trade.has_symbols_for_v2 = true;
-        const { result } = renderHook(() => useActiveSymbols({ barrier_category: [] }), {
+        const { result } = renderHook(() => useActiveSymbols(), {
             wrapper,
         });
         await waitFor(() => {
@@ -83,7 +83,7 @@ describe('useActiveSymbols', () => {
     });
     it('should set correct default_symbol and call correct onChange when store symbol is not set', async () => {
         (usePrevious as jest.Mock).mockReturnValueOnce(true).mockReturnValueOnce(TRADE_TYPES.RISE_FALL);
-        const { result } = renderHook(() => useActiveSymbols({ barrier_category: [] }), {
+        const { result } = renderHook(() => useActiveSymbols(), {
             wrapper,
         });
 
@@ -97,7 +97,7 @@ describe('useActiveSymbols', () => {
     it('should set correct default_symbol and call correct onChange when store symbol is set', async () => {
         (usePrevious as jest.Mock).mockReturnValueOnce(true).mockReturnValueOnce(TRADE_TYPES.RISE_FALL);
         mocked_store.modules.trade.symbol = 'test';
-        const { result } = renderHook(() => useActiveSymbols({ barrier_category: [] }), {
+        const { result } = renderHook(() => useActiveSymbols(), {
             wrapper,
         });
 
@@ -112,7 +112,7 @@ describe('useActiveSymbols', () => {
         (usePrevious as jest.Mock).mockReturnValueOnce(false).mockReturnValueOnce(TRADE_TYPES.RISE_FALL);
         mocked_store.modules.trade.active_symbols = [{ symbol: 'fromStore' }];
         mocked_store.modules.trade.has_symbols_for_v2 = true;
-        const { result } = renderHook(() => useActiveSymbols({ barrier_category: [] }), {
+        const { result } = renderHook(() => useActiveSymbols(), {
             wrapper,
         });
 

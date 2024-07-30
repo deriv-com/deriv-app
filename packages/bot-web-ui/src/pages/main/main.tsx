@@ -190,7 +190,7 @@ const AppWrapper = observer(() => {
                         </div>
                         {isGBLoaded && serverSideBot ? (
                             <div
-                                icon='IcDashboardComponentTab'
+                                icon='IcServerBot'
                                 label={
                                     <Localize
                                         i18n_default_text='Server Bot <0>Beta</0'

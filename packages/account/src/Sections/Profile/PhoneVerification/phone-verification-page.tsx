@@ -46,6 +46,7 @@ const PhoneVerificationPage = observer(() => {
 
     useEffect(() => {
         if (is_redirected_from_email) {
+            setIsLoading(true);
             if (email_otp_error) {
                 setIsLoading(false);
                 setShouldShowVerificationLinkExpiredModal(true);
@@ -58,11 +59,10 @@ const PhoneVerificationPage = observer(() => {
                 });
                 setRedirectFromEmail(false);
             } else if (phone_number_verification_code && is_authorize) {
-                setIsLoading(true);
                 sendEmailOTPVerification(phone_number_verification_code);
             }
         }
-    }, [email_otp_error, is_email_verified, phone_number_verification_code, is_authorize]);
+    }, [email_otp_error, is_email_verified, phone_number_verification_code, is_authorize, is_redirected_from_email]);
 
     if (is_loading || !isPhoneNumberVerificationGBLoaded) {
         return <Loading is_fullscreen={false} />;

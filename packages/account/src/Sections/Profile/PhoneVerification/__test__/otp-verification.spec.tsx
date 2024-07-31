@@ -12,6 +12,7 @@ jest.mock('@deriv/hooks', () => ({
 }));
 
 jest.mock('../phone-number-verified-modal', () => jest.fn(() => <div>Phone Number Verified Modal</div>));
+jest.mock('../resend-code-timer', () => jest.fn(() => <div>Resend Code Timer</div>));
 
 describe('OTPVerification', () => {
     const store = mockStore({
@@ -58,7 +59,7 @@ describe('OTPVerification', () => {
             screen.getByText(/Enter the code or click the link in the email to verify that the account belongs to you./)
         ).toBeInTheDocument();
         expect(screen.getByRole('textbox', { name: /OTP code/ })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /Resend code/ })).toBeInTheDocument();
+        expect(screen.getByText(/Resend Code Timer/)).toBeInTheDocument();
     });
 
     it('should render Verify your number in OTP Verification', () => {

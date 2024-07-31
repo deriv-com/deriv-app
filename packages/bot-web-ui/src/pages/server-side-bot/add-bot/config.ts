@@ -71,7 +71,7 @@ const STAKE: TConfigItem = {
 
 const LABEL_DURATION: TConfigItem = {
     type: 'label',
-    label: localize('Duration'),
+    label: localize('Contract Duration'),
     description: localize('How long each trade takes to expire.'),
 };
 

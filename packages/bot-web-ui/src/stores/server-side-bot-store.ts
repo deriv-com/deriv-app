@@ -350,9 +350,6 @@ export default class ServerBotStore {
     };
 
     setTransaction = (poc: ProposalOpenContract, bot_id: string) => {
-        // eslint-disable-next-line no-console
-        console.log(poc, 'test test', performance.now());
-
         if (poc.contract_id) {
             this.transactions = {
                 ...this.transactions,

@@ -18,7 +18,9 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
     const [is_login_modal_visible, setLoginModalVisble] = React.useState(false);
     const [temp_bot_id, setTempBotId] = React.useState('');
 
-    const { ui } = useStore();
+    const {
+        ui: { is_mobile },
+    } = useStore();
     const { server_bot } = useDBotStore();
     const {
         getBotList,
@@ -30,7 +32,7 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
         active_bot,
         setActiveBotId,
     } = server_bot;
-    const { is_mobile } = ui;
+
     const [menu_open, setMenuOpen] = React.useState({ visible: false, y: 0, bot_id: '' });
     const menu_ref = React.useRef(null);
 
@@ -119,6 +121,7 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
                     y_position={menu_open.y}
                     bot_id={menu_open.bot_id}
                     botAction={botAction}
+                    is_mobile={is_mobile}
                 />
 
                 <div className='ssb-list__header'>

@@ -40,12 +40,16 @@ const AppWrapper = observer(() => {
     const { clear } = summary_card;
     const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
     const init_render = React.useRef(true);
-    const { ui } = useStore();
+    const { ui, client } = useStore();
     const { is_next_server_bot_enabled } = useFeatureFlags();
     const { url_hashed_values, is_desktop } = ui;
+    const { account_settings } = client;
 
     const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial'];
-    if (is_next_server_bot_enabled) hash.push('server_bot');
+
+    // SERVER BOT VISIBILITY SET HERE //
+    const should_show_server_bot = is_next_server_bot_enabled && account_settings?.country_code?.toLowerCase() === 'aq';
+    if (should_show_server_bot) hash.push('server_bot');
 
     let tab_value: number | string = active_tab;
     const GetHashedValue = (tab: number) => {
@@ -185,7 +189,7 @@ const AppWrapper = observer(() => {
                                 <Tutorial handleTabChange={handleTabChange} />
                             </div>
                         </div>
-                        {is_next_server_bot_enabled ? (
+                        {should_show_server_bot ? (
                             <div
                                 icon='IcServerBot'
                                 label={

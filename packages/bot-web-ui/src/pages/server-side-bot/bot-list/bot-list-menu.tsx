@@ -8,9 +8,10 @@ type TBotListMenu = {
     is_open: boolean;
     bot_id: string;
     botAction: (action: string, bot_id: string) => void;
+    is_mobile?: boolean;
 };
 
-const BotListMenu: React.FC<TBotListMenu> = ({ is_open, y_position, botAction, bot_id }) => {
+const BotListMenu: React.FC<TBotListMenu> = ({ is_open, y_position, botAction, bot_id, is_mobile = false }) => {
     if (!is_open) return null;
     const el_portal = document.getElementById('ssb-bot-list-menu');
     if (!el_portal) return null;
@@ -22,21 +23,23 @@ const BotListMenu: React.FC<TBotListMenu> = ({ is_open, y_position, botAction, b
                 top: `${y_position}px`,
             }}
         >
-            <div
-                className='ssb-list__menu__item'
-                onClick={() => botAction('OPEN', bot_id)}
-                tabIndex={0}
-                onKeyDown={(e: React.KeyboardEvent) => {
-                    if (e.key === 'Enter') {
-                        botAction('OPEN', bot_id);
-                    }
-                }}
-            >
-                <Icon icon='IcOpen' />
-                <Text size='xxs' weight='bold'>
-                    <Localize i18n_default_text='Open' />
-                </Text>
-            </div>
+            {is_mobile && (
+                <div
+                    className='ssb-list__menu__item'
+                    onClick={() => botAction('OPEN', bot_id)}
+                    tabIndex={0}
+                    onKeyDown={(e: React.KeyboardEvent) => {
+                        if (e.key === 'Enter') {
+                            botAction('OPEN', bot_id);
+                        }
+                    }}
+                >
+                    <Icon icon='IcOpen' />
+                    <Text size='xxs' weight='bold'>
+                        <Localize i18n_default_text='Open' />
+                    </Text>
+                </div>
+            )}
             <div
                 className='ssb-list__menu__item'
                 onClick={() => botAction('DELETE', bot_id)}

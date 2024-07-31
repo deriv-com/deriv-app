@@ -322,9 +322,6 @@ export default class ServerBotStore {
             });
             const content = items.map(e => e.join(',')).join('\n');
             downloadFile(localize('Journal'), content);
-
-            // eslint-disable-next-line no-console
-            console.log('DOWNLOAD_BOT_REPORTS');
         } catch (error) {
             // eslint-disable-next-line no-console
             console.dir(error);
@@ -459,8 +456,7 @@ export default class ServerBotStore {
                 console.dir(error);
                 return;
             }
-            // eslint-disable-next-line no-console
-            console.log('BOT_CREATE', bot_create);
+
             this.onJournalMessage(JOURNAL_TYPE.INFO, {
                 bot_id: bot_create.bot_id,
                 msg: bot_create.message,

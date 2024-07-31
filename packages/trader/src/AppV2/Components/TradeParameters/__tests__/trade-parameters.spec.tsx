@@ -124,20 +124,22 @@ describe('TradeParameters', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.HIGH_LOW;
         render(mockTradeParameters());
 
+        expect(screen.getByText(TRADE_PARAMS.TRADE_TYPE_TABS)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.DURATION)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.BARRIER)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.STAKE)).toBeInTheDocument();
-        expect(screen.getAllByTestId(data_test)).toHaveLength(3);
+        expect(screen.getAllByTestId(data_test)).toHaveLength(4);
     });
 
     it('should render correct trade params for Touch/No Touch', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.TOUCH;
         render(mockTradeParameters());
 
+        expect(screen.getByText(TRADE_PARAMS.TRADE_TYPE_TABS)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.DURATION)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.BARRIER)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.STAKE)).toBeInTheDocument();
-        expect(screen.getAllByTestId(data_test)).toHaveLength(3);
+        expect(screen.getAllByTestId(data_test)).toHaveLength(4);
     });
 
     it('should render correct trade params for Matches/Differs', () => {

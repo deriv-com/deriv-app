@@ -183,13 +183,6 @@ export default class TradersHubStore extends BaseStore {
                 this.selected_region = default_region();
             }
         );
-
-        // reaction(
-        //     () => [this.available_mt5_accounts, this.available_dxtrade_accounts, this.available_ctrader_accounts],
-        //     () => {
-        //         this.has_available_cfd_account
-        //     }
-        // )
     }
 
     async setSwitchEU() {
@@ -421,7 +414,6 @@ export default class TradersHubStore extends BaseStore {
                 market_type: 'financial',
                 product: 'financial',
                 icon: !this.is_eu_user || this.is_demo_low_risk ? 'Financial' : 'CFDs',
-                availability: 'All',
             },
             {
                 name: 'Swap-Free',
@@ -430,7 +422,6 @@ export default class TradersHubStore extends BaseStore {
                 market_type: 'all',
                 product: 'swap_free',
                 icon: 'SwapFree',
-                availability: 'Non-EU',
             },
             {
                 name: localize('Zero Spread'),
@@ -439,7 +430,6 @@ export default class TradersHubStore extends BaseStore {
                 market_type: 'all',
                 product: 'zero_spread',
                 icon: 'ZeroSpread',
-                availability: 'Non-EU',
             },
         ];
         this.available_cfd_accounts = all_available_accounts.map(account => {

@@ -22,7 +22,6 @@ export const getCFDAvailableAccount = () => [
         market_type: 'synthetic',
         product: 'standard',
         icon: 'Standard',
-        availability: 'Non-EU',
     },
     {
         name: 'Deriv X',
@@ -40,6 +39,5 @@ export const getCFDAvailableAccount = () => [
         market_type: 'all',
         product: 'ctrader',
         icon: 'CTrader',
-        availability: 'Non-EU',
     },
 ];

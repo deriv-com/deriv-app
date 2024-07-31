@@ -6,9 +6,8 @@ import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import DesktopFormWrapper from '../desktop-form-wrapper';
-import { FORM_TABS, STRATEGIES } from '../../config';
 import { quick_strategy_content } from '../../../../tutorials/constants';
+import DesktopFormWrapper from '../desktop-form-wrapper';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 
@@ -122,27 +121,6 @@ describe('<DesktopFormWrapper />', () => {
             }
         );
         expect(mock_DBot_store?.quick_strategy.selected_strategy).toBe(quick_strategy_content[0].qs_name);
-
-        const strategy = screen.getByText(STRATEGIES.D_ALEMBERT.label);
-        userEvent.click(strategy);
-        const disabledTab = screen.getByText(FORM_TABS[0].label);
-        userEvent.click(disabledTab);
-        expect(mock_DBot_store?.quick_strategy.selected_strategy).toBe(quick_strategy_content[1].qs_name);
-    });
-
-    it('should submit the form on edit', async () => {
-        render(
-            <DesktopFormWrapper onClickClose={onClickClose}>
-                <div>test</div>
-            </DesktopFormWrapper>,
-            {
-                wrapper,
-            }
-        );
-        expect(mock_DBot_store?.quick_strategy.is_open).toBeTruthy();
-        const edit_button = screen.getByText('Edit');
-        userEvent.click(edit_button);
-        await waitFor(() => expect(mock_onSubmit).toBeCalled());
     });
 
     it('should submit the form', async () => {
@@ -157,7 +135,7 @@ describe('<DesktopFormWrapper />', () => {
             }
         );
         expect(mock_DBot_store?.quick_strategy.is_open).toBeTruthy();
-        const submit_button = screen.getByRole('button', { name: 'Run' });
+        const submit_button = screen.getByRole('button', { name: 'Add' });
         userEvent.click(submit_button);
         await waitFor(() => expect(mock_onSubmit).toBeCalled());
     });

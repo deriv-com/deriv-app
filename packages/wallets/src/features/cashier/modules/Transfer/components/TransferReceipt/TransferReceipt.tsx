@@ -14,7 +14,7 @@ type TReceiptCardProps = {
 };
 
 const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balance }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const isTradingApp = account?.account_category === 'trading';
     const isWallet = account?.account_category === 'wallet';
 
@@ -25,7 +25,7 @@ const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balan
                 appName={account?.accountName}
                 balance={balance}
                 cardSize='md'
-                device={isMobile ? 'mobile' : 'desktop'}
+                device={isDesktop ? 'desktop' : 'mobile'}
                 isDemoWallet={Boolean(activeWallet?.demo_account)}
                 marketType={account?.market_type}
                 platform={account?.account_type as TPlatforms.All}

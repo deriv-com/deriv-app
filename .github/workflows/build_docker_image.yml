@@ -32,7 +32,7 @@ jobs:
         run: npm run bootstrap
 
       - name: Run Build:prod
-        run: npm run build:prod
+        uses: "./.github/actions/build"
         with:
           NODE_ENV: staging
           CROWDIN_WALLETS_API_KEY: ${{ secrets.CROWDIN_WALLETS_API_KEY }}

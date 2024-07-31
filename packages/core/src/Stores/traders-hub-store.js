@@ -42,7 +42,6 @@ export default class TradersHubStore extends BaseStore {
     is_cfd_restricted_country = false;
     is_financial_restricted_country = false;
     is_setup_real_account_or_go_to_demo_modal_visible = false;
-    available_mt5_platforms = [];
 
     constructor(root_store) {
         const local_storage_properties = [

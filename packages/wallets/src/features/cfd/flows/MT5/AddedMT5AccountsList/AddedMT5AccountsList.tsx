@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 import { useAuthorize, useJurisdictionStatus } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { useDevice } from '@deriv-com/ui';
@@ -26,7 +25,6 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { title } = MarketTypeDetails[account.market_type ?? 'all'];
     const { isDesktop } = useDevice();
     const { show } = useModal();
-    const { t } = useTranslation();
 
     return (
         <TradingAccountCard
@@ -81,7 +79,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     <div className='wallets-added-mt5__details-badge'>
                         <InlineMessage size='xs' type='warning' variant='outlined'>
                             <WalletText color='warning' size='2xs' weight='bold'>
-                                {t('Pending verification')}
+                                Pending verification
                             </WalletText>
                         </InlineMessage>
                     </div>
@@ -91,7 +89,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     <div className='wallets-added-mt5__details-badge'>
                         <InlineMessage size='xs' type='error' variant='outlined'>
                             <WalletText color='error' size='2xs' weight='bold'>
-                                {t('Verification failed.')}{' '}
+                                Verification failed.{' '}
                                 <a
                                     onClick={() =>
                                         show(
@@ -104,7 +102,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                                         )
                                     }
                                 >
-                                    {t('Why?')}
+                                    Why?
                                 </a>
                             </WalletText>
                         </InlineMessage>

@@ -1,5 +1,4 @@
 import React, { FC, useCallback } from 'react';
-import { Trans } from 'react-i18next';
 import { DerivLightIcMt5PasswordUpdatedIcon, DerivLightMt5SuccessPasswordResetIcon } from '@deriv/quill-icons';
 import { useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper, WalletButton } from '../Base';
@@ -21,7 +20,7 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
     const renderButtons = useCallback(() => {
         return (
             <WalletButton isFullWidth={isMobile} onClick={onClick} size='lg'>
-                {isInvestorPassword ? <Trans defaults='Ok' /> : <Trans defaults='Done' />}
+                {isInvestorPassword ? 'Ok' : 'Done'}
             </WalletButton>
         );
     }, [isInvestorPassword, isMobile, onClick]);

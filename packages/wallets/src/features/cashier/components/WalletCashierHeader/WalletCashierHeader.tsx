@@ -15,7 +15,6 @@ import { useDevice } from '@deriv-com/ui';
 import { WalletCurrencyIcon, WalletGradientBackground, WalletText } from '../../../../components';
 import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
 import useAllBalanceSubscription from '../../../../hooks/useAllBalanceSubscription';
-import i18n from '../../../../translations/i18n';
 import './WalletCashierHeader.scss';
 
 type TProps = {
@@ -26,22 +25,22 @@ const realAccountTabs = [
     {
         icon: <LabelPairedPlusMdRegularIcon />,
         path: 'deposit',
-        text: i18n.t('Deposit'),
+        text: 'Deposit',
     },
     {
         icon: <LabelPairedMinusMdRegularIcon />,
         path: 'withdrawal',
-        text: i18n.t('Withdraw'),
+        text: 'Withdraw',
     },
     {
         icon: <LabelPairedArrowUpArrowDownMdRegularIcon />,
         path: 'account-transfer',
-        text: i18n.t('Transfer'),
+        text: 'Transfer',
     },
     {
         icon: <LabelPairedSquareListMdRegularIcon />,
         path: 'transactions',
-        text: i18n.t('Transactions'),
+        text: 'Transactions',
     },
 ] as const;
 
@@ -49,17 +48,17 @@ const virtualAccountTabs = [
     {
         icon: <LabelPairedArrowUpArrowDownMdRegularIcon />,
         path: 'account-transfer',
-        text: i18n.t('Transfer'),
+        text: 'Transfer',
     },
     {
         icon: <LabelPairedSquareListMdRegularIcon />,
         path: 'transactions',
-        text: i18n.t('Transactions'),
+        text: 'Transactions',
     },
     {
         icon: <LabelPairedArrowsRotateMdRegularIcon />,
         path: 'reset-balance',
-        text: i18n.t('Reset Balance'),
+        text: 'Reset Balance',
     },
 ] as const;
 

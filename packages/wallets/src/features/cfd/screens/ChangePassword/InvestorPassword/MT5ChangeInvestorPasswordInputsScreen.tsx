@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Field, FieldProps, Form, Formik } from 'formik';
-import { useTranslation } from 'react-i18next';
 import { useTradingPlatformInvestorPasswordChange } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { WalletButton, WalletsActionScreen, WalletText } from '../../../../../components';
@@ -25,7 +24,6 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
     const mt5AccountId = getModalState('accountId') ?? '';
     const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);
     const [hasCurrentPasswordFieldTouched, setHasCurrentPasswordFieldTouched] = useState(false);
-    const { t } = useTranslation();
     const { isDesktop } = useDevice();
     const buttonTextSize = isDesktop ? 'sm' : 'md';
 
@@ -108,9 +106,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                 <WalletPasswordFieldLazy
                                     autoComplete='new-password'
                                     label='New investor password'
-                                    message={t(
-                                        'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
-                                    )}
+                                    message='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
                                     mt5Policy
                                     name='newPassword'
                                     onChange={handleChange}

@@ -7,22 +7,23 @@ import {
     LabelPairedMinusMdBoldIcon,
     LabelPairedPlusMdBoldIcon,
 } from '@deriv/quill-icons';
-import { useDevice } from '@deriv-com/ui';
-import { IconButton, WalletButton, WalletText } from '../Base';
+import { useTranslations } from '@deriv-com/translations';
+import { Text, useDevice } from '@deriv-com/ui';
+import { IconButton, WalletButton } from '../Base';
 import './WalletListCardActions.scss';
 
 type TProps = {
     accountsActiveTabIndex?: number;
 };
 
-const getWalletHeaderButtons = (isDemo?: boolean) => {
+const getWalletHeaderButtons = (localize: ReturnType<typeof useTranslations>['localize'], isDemo?: boolean) => {
     const buttons = [
         {
             className: isDemo ? 'wallets-mobile-actions-content-icon' : 'wallets-mobile-actions-content-icon--primary',
             color: isDemo ? 'white' : 'primary',
             icon: isDemo ? <LabelPairedArrowsRotateMdBoldIcon /> : <LabelPairedPlusMdBoldIcon fill='#FFF' />,
             name: isDemo ? 'reset-balance' : 'deposit',
-            text: isDemo ? 'Reset balance' : 'Deposit',
+            text: isDemo ? localize('Reset balance') : localize('Deposit'),
             variant: isDemo ? 'outlined' : 'contained',
         },
         {
@@ -30,7 +31,7 @@ const getWalletHeaderButtons = (isDemo?: boolean) => {
             color: 'white',
             icon: <LabelPairedMinusMdBoldIcon />,
             name: 'withdrawal',
-            text: 'Withdraw',
+            text: localize('Withdraw'),
             variant: 'outlined',
         },
         {
@@ -38,7 +39,7 @@ const getWalletHeaderButtons = (isDemo?: boolean) => {
             color: 'white',
             icon: <LabelPairedArrowUpArrowDownMdBoldIcon />,
             name: 'account-transfer',
-            text: 'Transfer',
+            text: localize('Transfer'),
             variant: 'outlined',
         },
     ] as const;
@@ -53,6 +54,7 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
     const { data: activeWallet } = useActiveWalletAccount();
     const { isDesktop } = useDevice();
     const history = useHistory();
+    const { localize } = useTranslations();
 
     const isActive = activeWallet?.is_active;
     const isDemo = activeWallet?.is_virtual;
@@ -60,7 +62,7 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
     if (isDesktop)
         return (
             <div className='wallets-header__actions'>
-                {getWalletHeaderButtons(isDemo).map(button => (
+                {getWalletHeaderButtons(localize, isDemo).map(button => (
                     <WalletButton
                         ariaLabel={button.name}
                         icon={button.icon}
@@ -80,7 +82,7 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
     return (
         <div className='wallets-mobile-actions__container'>
             <div className='wallets-mobile-actions'>
-                {getWalletHeaderButtons(isDemo).map(button => (
+                {getWalletHeaderButtons(localize, isDemo).map(button => (
                     <div className='wallets-mobile-actions-content' key={button.name}>
                         <IconButton
                             aria-label={button.name}
@@ -92,9 +94,9 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
                             }}
                             size='lg'
                         />
-                        <WalletText size='sm' weight={button.text === 'Deposit' ? 'bold' : 'normal'}>
+                        <Text size='sm' weight={button.text === localize('Deposit') ? 'bold' : 'normal'}>
                             {button.text}
-                        </WalletText>
+                        </Text>
                     </div>
                 ))}
             </div>

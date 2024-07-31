@@ -1,38 +1,34 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { useDevice } from '@deriv-com/ui';
 import { Dropzone, useFlow, WalletText } from '../../../../components';
 import Upload from '../../../../public/images/accounts/upload.svg';
-import i18n from '../../../../translations/i18n';
 import { getExampleImagesConfig } from '../../constants';
 import { CommonMistakesExamples } from '../CommonMistakesExamples';
 import './DocumentSubmission.scss';
 
 const listItems = [
-    i18n.t('Utility bill: electricity, water, gas, or landline phone bill.'),
-    i18n.t('Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.'),
-    i18n.t('Home rental agreement: valid and current agreement.'),
+    'Utility bill: electricity, water, gas, or landline phone bill.',
+    'Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.',
+    'Home rental agreement: valid and current agreement.',
 ];
 
 const DocumentSubmission: React.FC = () => {
     const { isDesktop } = useDevice();
     const { setFormValues } = useFlow();
-    const { t } = useTranslation();
 
     const textSize = isDesktop ? 'sm' : 'xs';
 
     return (
         <div className='wallets-poa__document'>
             <div className='wallets-poa__document__title'>
-                <WalletText weight='bold'>{t('Document submission')}</WalletText>
+                <WalletText weight='bold'>Document submission</WalletText>
                 <div className='wallets-poa__document__title__divider' />
             </div>
             <div className='wallets-poa__document__container'>
                 <div className='wallets-poa__document__container__disclaimer'>
                     <WalletText size='sm' weight='bold'>
-                        {t(
-                            'We accept only these types of documents as proof of address. The document must be recent (issued within last 12 months) and include your name and address:'
-                        )}
+                        We accept only these types of documents as proof of address. The document must be recent (issued
+                        within last 12 months) and include your name and address:
                     </WalletText>
 
                     <ul className='wallets-poa__document__container__disclaimer__list'>
@@ -45,7 +41,7 @@ const DocumentSubmission: React.FC = () => {
                 </div>
                 <div className='wallets-poa__document__container__common-mistakes'>
                     <WalletText size='sm' weight='bold'>
-                        {t('Common mistakes')}
+                        Common mistakes
                     </WalletText>
 
                     <div className='wallets-common-mistakes__content'>
@@ -60,12 +56,10 @@ const DocumentSubmission: React.FC = () => {
                 </div>
                 <div className='wallets-poa__document__container__upload'>
                     <WalletText size='sm' weight='bold'>
-                        {t('Upload file')}
+                        Upload file
                     </WalletText>
                     <Dropzone
-                        description={t(
-                            'Remember, selfies, pictures of houses, or non-related images will be rejected.'
-                        )}
+                        description='Remember, selfies, pictures of houses, or non-related images will be rejected.'
                         descriptionColor='primary'
                         descriptionSize='sm'
                         fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
@@ -73,14 +67,12 @@ const DocumentSubmission: React.FC = () => {
                         icon={<Upload />}
                         maxSize={8388608}
                         onFileChange={(file?: File) => setFormValues('poaDocument', file)}
-                        title={t('Drag and drop a file or click to browse your files.')}
+                        title='Drag and drop a file or click to browse your files.'
                         titleType='bold'
                     />
                     <div className='wallets-poa__document__container__upload__requirements'>
-                        <WalletText size={textSize}>
-                            {t('Supported formats : JPEG, JPG, PNG, PDF, and GIF only')}
-                        </WalletText>
-                        <WalletText size={textSize}>{t('Maximum size : 8MB')}</WalletText>
+                        <WalletText size={textSize}>Supported formats : JPEG, JPG, PNG, PDF, and GIF only</WalletText>
+                        <WalletText size={textSize}>Maximum size : 8MB</WalletText>
                     </div>
                 </div>
             </div>

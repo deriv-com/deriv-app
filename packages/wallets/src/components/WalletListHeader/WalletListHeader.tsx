@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Trans } from 'react-i18next';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
-import { useDevice } from '@deriv-com/ui';
+import { Localize } from '@deriv-com/translations';
+import { Text, useDevice } from '@deriv-com/ui';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
-import { WalletText } from '../Base';
 import './WalletListHeader.scss';
 
 const WalletListHeader: React.FC = () => {
@@ -35,18 +34,22 @@ const WalletListHeader: React.FC = () => {
 
     return (
         <div className='wallets-list-header'>
-            <WalletText size='xl' weight='bold'>
-                Trader&apos;s Hub
-            </WalletText>
+            <Text size='xl' weight='bold'>
+                <Localize i18n_default_text="Trader's Hub" />
+            </Text>
             {shouldShowSwitcher && (
                 <div>
                     <div className='wallets-list-header__label'>
-                        <WalletText size='sm'>
-                            <Trans defaults='Demo' />
-                        </WalletText>
-                        <WalletText size='sm'>
-                            <Trans defaults='Real' />
-                        </WalletText>
+                        <div className='wallets-list-header__label-item'>
+                            <Text size='sm'>
+                                <Localize i18n_default_text='Demo' />
+                            </Text>
+                        </div>
+                        <div className='wallets-list-header__label-item'>
+                            <Text size='sm'>
+                                <Localize i18n_default_text='Real' />
+                            </Text>
+                        </div>
                     </div>
                     <label className='wallets-list-header__switcher' htmlFor='wallets-list-header__switcher'>
                         <input

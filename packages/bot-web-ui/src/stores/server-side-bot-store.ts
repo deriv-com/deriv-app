@@ -6,6 +6,7 @@ import { isEnded } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import RootStore from './root-store';
+import { downloadFile } from 'Utils/download';
 
 export type TFormData = {
     [key: string]: string | number | boolean;
@@ -310,23 +311,21 @@ export default class ServerBotStore {
     };
 
     resetJournal = () => {
-        // eslint-disable-next-line no-console
-        console.log('resetJournal');
+        this.journal = [];
     };
 
-    downloadJournal = async (bot_id: string) => {
+    downloadJournal = async () => {
         try {
-            const { download_bot_reports, error } = await api_base.api.send({
-                download_bot_reports: 1,
-                bot_id,
+            const items = [[localize('Journal')]];
+            [...this.journal].map(item => {
+                const arr = [item.msg];
+                items.push(arr);
             });
-            if (error) {
-                // eslint-disable-next-line no-console
-                console.dir(error);
-                return;
-            }
+            const content = items.map(e => e.join(',')).join('\n');
+            downloadFile(localize('Journal'), content);
+
             // eslint-disable-next-line no-console
-            console.log('DOWNLOAD_BOT_REPORTS', download_bot_reports);
+            console.log('DOWNLOAD_BOT_REPORTS');
         } catch (error) {
             // eslint-disable-next-line no-console
             console.dir(error);
@@ -334,7 +333,16 @@ export default class ServerBotStore {
     };
 
     handleProposalOpenContract = (poc: ProposalOpenContract) => {
-        if (poc.contract_id) return;
+        if (poc && !poc?.contract_id && this.active_bot?.bot_id) return;
+
+        const { contract_id } = poc;
+        const { bot_id = '' } = this.active_bot;
+        const transactions = this.transactions[bot_id as string] || {};
+        let contract = transactions[contract_id as unknown as string];
+        if (!contract) return;
+        contract = poc;
+        this.setTransaction(contract, bot_id);
+
         this.pocs = {
             ...this.pocs,
             [String(poc.contract_id)]: poc,
@@ -342,6 +350,9 @@ export default class ServerBotStore {
     };
 
     setTransaction = (poc: ProposalOpenContract, bot_id: string) => {
+        // eslint-disable-next-line no-console
+        console.log(poc, 'test test', performance.now());
+
         if (poc.contract_id) {
             this.transactions = {
                 ...this.transactions,

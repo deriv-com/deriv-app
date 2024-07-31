@@ -16,7 +16,7 @@ const Journal: React.FC<TJournal> = observer(({ setActiveTabIndex }) => {
         client: { currency },
     } = useStore();
     const { server_bot } = useDBotStore();
-    const { journal } = server_bot;
+    const { journal, resetJournal, downloadJournal } = server_bot;
     const has_journal = !!journal.length;
     const font_size = 'xxs';
     const uid = 'journal';
@@ -137,10 +137,10 @@ const Journal: React.FC<TJournal> = observer(({ setActiveTabIndex }) => {
                 )}
             </div>
             <div className='ssb-journal__footer'>
-                <Button secondary disabled={!has_journal}>
+                <Button secondary disabled={!has_journal} onClick={() => resetJournal()}>
                     <Localize i18n_default_text='Reset' />
                 </Button>
-                <Button secondary disabled={!has_journal}>
+                <Button secondary disabled={!has_journal} onClick={() => downloadJournal()}>
                     <Localize i18n_default_text='Download' />
                 </Button>
             </div>

@@ -203,6 +203,7 @@ export default class TradeStore extends BaseStore {
     prev_contract_type = '';
     contract_types_list: TContractTypesList = {};
     non_available_contract_types_list: TContractTypesList = {};
+    trade_type_tab = '';
     trade_types: { [key: string]: string } = {};
 
     // Amount
@@ -450,6 +451,7 @@ export default class TradeStore extends BaseStore {
             tick_data: observable,
             tick_size_barrier_percentage: observable,
             ticks_history_stats: observable,
+            trade_type_tab: observable,
             trade_types: observable,
             accountSwitcherListener: action.bound,
             barrier_pipsize: computed,
@@ -508,6 +510,7 @@ export default class TradeStore extends BaseStore {
             setPreviousSymbol: action.bound,
             setSkipPrePostLifecycle: action.bound,
             setStakeBoundary: action.bound,
+            setTradeTypeTab: action.bound,
             setTradeStatus: action.bound,
             show_digits_stats: computed,
             updateStore: action.bound,
@@ -1876,5 +1879,9 @@ export default class TradeStore extends BaseStore {
 
     setIsDigitsWidgetActive(is_active: boolean) {
         this.is_digits_widget_active = is_active;
+    }
+
+    setTradeTypeTab(label = '') {
+        this.trade_type_tab = label;
     }
 }

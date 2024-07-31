@@ -2,7 +2,12 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
-import { getTradeParams, isDigitContractWinning, focusAndOpenKeyboard } from '../trade-params-utils';
+import {
+    getTradeParams,
+    getTradeTypeTabsList,
+    isDigitContractWinning,
+    focusAndOpenKeyboard,
+} from '../trade-params-utils';
 
 describe('getTradeParams', () => {
     it('should return correct array with keys for Rise/Fall', () => {
@@ -104,5 +109,75 @@ describe('focusAndOpenKeyboard', () => {
         jest.runAllTimers();
 
         expect(input).toHaveFocus();
+    });
+});
+
+describe('getTradeTypeTabsList', () => {
+    it('should return correct tabs list for Turbos', () => {
+        expect(getTradeTypeTabsList(TRADE_TYPES.TURBOS.SHORT)).toEqual([
+            {
+                label: 'Up',
+                value: TRADE_TYPES.TURBOS.LONG,
+                contract_type: CONTRACT_TYPES.TURBOS.LONG,
+                is_displayed: true,
+            },
+            {
+                label: 'Down',
+                value: TRADE_TYPES.TURBOS.SHORT,
+                contract_type: CONTRACT_TYPES.TURBOS.SHORT,
+                is_displayed: true,
+            },
+        ]);
+    });
+
+    it('should return correct tabs list for Vanillas', () => {
+        expect(getTradeTypeTabsList(TRADE_TYPES.VANILLA.CALL)).toEqual([
+            {
+                label: 'Call',
+                value: TRADE_TYPES.VANILLA.CALL,
+                contract_type: CONTRACT_TYPES.VANILLA.CALL,
+                is_displayed: true,
+            },
+            {
+                label: 'Put',
+                value: TRADE_TYPES.VANILLA.PUT,
+                contract_type: CONTRACT_TYPES.VANILLA.PUT,
+                is_displayed: true,
+            },
+        ]);
+    });
+
+    it('should return correct tabs list for Higher/Lower', () => {
+        expect(getTradeTypeTabsList(TRADE_TYPES.HIGH_LOW)).toEqual([
+            {
+                label: 'Higher',
+                value: TRADE_TYPES.HIGH_LOW,
+                contract_type: CONTRACT_TYPES.CALL,
+                is_displayed: true,
+            },
+            {
+                label: 'Lower',
+                value: TRADE_TYPES.HIGH_LOW,
+                contract_type: CONTRACT_TYPES.PUT,
+                is_displayed: true,
+            },
+        ]);
+    });
+
+    it('should return correct tabs list for Touch/No Touch', () => {
+        expect(getTradeTypeTabsList(TRADE_TYPES.TOUCH)).toEqual([
+            {
+                label: 'Touch',
+                value: TRADE_TYPES.TOUCH,
+                contract_type: CONTRACT_TYPES.TOUCH.ONE_TOUCH,
+                is_displayed: true,
+            },
+            {
+                label: 'No Touch',
+                value: TRADE_TYPES.TOUCH,
+                contract_type: CONTRACT_TYPES.TOUCH.NO_TOUCH,
+                is_displayed: true,
+            },
+        ]);
     });
 });

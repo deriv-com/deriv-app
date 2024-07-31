@@ -1,6 +1,5 @@
 import React, { FC, Fragment, useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { Trans } from 'react-i18next';
 import { useCountdown } from 'usehooks-ts';
 import {
     DerivLightIcEmailSentIcon,
@@ -31,26 +30,23 @@ type SentEmailContentProps = {
 // NOTE: key field is not from BE or requirements, its only used for key prop
 const emailReasons = [
     {
-        content: <Trans defaults='The email is in your spam folder (Sometimes things get lost there).' />,
+        content: 'The email is in your spam folder (Sometimes things get lost there).',
         icon: <DerivLightIcSpamEmailPasskeyIcon height='36px' width='36px' />,
         key: 'EmailInSpamFolder',
     },
     {
-        content: (
-            <Trans defaults='You accidentally gave us another email address (Usually a work or a personal one instead of the one you meant).' />
-        ),
+        content:
+            'You accidentally gave us another email address (Usually a work or a personal one instead of the one you meant).',
         icon: <DerivLightIcWrongEmailPasskeyIcon height='36px' width='36px' />,
         key: 'AnotherEmailAddress',
     },
     {
-        content: <Trans defaults='The email address you entered had a mistake or typo (happens to the best of us).' />,
+        content: 'The email address you entered had a mistake or typo (happens to the best of us).',
         icon: <DerivLightIcTypoEmailPasskeyIcon height='36px' width='36px' />,
         key: 'TypoEmailAddress',
     },
     {
-        content: (
-            <Trans defaults='We can’t deliver the email to this address (Usually because of firewalls or filtering).' />
-        ),
+        content: 'We can’t deliver the email to this address (Usually because of firewalls or filtering).',
         icon: <DerivLightIcFirewallEmailPasskeyIcon height='36px' width='36px' />,
         key: 'UnableToDeliverEmailAddress',
     },
@@ -123,7 +119,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
                         variant='ghost'
                     >
                         <WalletText color='error' size={emailButtonTextSize} weight='bold'>
-                            <Trans defaults="Didn't receive the email?" />
+                            Didn&apos;t receive the email?
                         </WalletText>
                     </WalletButton>
                 )}

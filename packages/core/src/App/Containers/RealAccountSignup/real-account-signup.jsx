@@ -537,6 +537,15 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
             WS.authorized.getAccountStatus().then(status => {
                 const { get_account_status } = status;
                 setShouldShowAppropriatenessWarningModal(false);
+
+                // show error here
+                const is_duplicate_dob_phone = get_account_status?.status?.includes('duplicate_dob_phone');
+                if (is_duplicate_dob_phone) {
+                    // show something
+
+                    return;
+                }
+
                 if (
                     real_account_signup_target === 'maltainvest' &&
                     !get_account_status?.status?.includes('cashier_locked')

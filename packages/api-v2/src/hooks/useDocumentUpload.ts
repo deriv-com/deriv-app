@@ -21,10 +21,6 @@ const useDocumentUpload = () => {
     const { wsClient, connection } = useAPIContext();
     const [status, setStatus] = useState<TDocumentUploadStatus>('idle');
 
-    const resetStatus = (newStatus: TDocumentUploadStatus) => {
-        setStatus(newStatus);
-    };
-
     const getFileInfo = async (payload: TDocumentUploadRequestPayload): Promise<TFileInfo> => {
         if (!payload.file) return Promise.reject(new Error('No file selected'));
 
@@ -82,11 +78,11 @@ const useDocumentUpload = () => {
     /** Initiates file upload and handles the 2nd response received  */
     const fileUploader = async (fileBuffer: TFileInfo['fileBuffer'], response: TDocumentUploadResponse) => {
         /** Request id of the initial document_upload call */
-        let reqId: number,
-            /** Upload id received from BE for the particular file which is appended to every chunk uploaded */
-            uploadId: number,
-            /** Timeout reference for removing WS eventListener */
-            timeout: NodeJS.Timeout;
+        const reqId = response.req_id;
+        /** Upload id received from BE for the particular file which is appended to every chunk uploaded */
+        const uploadId = response.document_upload?.upload_id;
+        /** Timeout reference for removing WS eventListener */
+        let timeout: NodeJS.Timeout;
 
         return new Promise((resolve, reject) => {
             timeout = setTimeout(() => {
@@ -124,11 +120,6 @@ const useDocumentUpload = () => {
 
             wsClient.ws?.addEventListener('message', handleUploadStatus);
 
-            if (response.req_id && response.document_upload?.upload_id) {
-                reqId = response.req_id;
-                uploadId = response.document_upload?.upload_id;
-            }
-
             sendFile(fileBuffer, response);
         }) as Promise<TDocumentUploadResponse>;
     };
@@ -139,16 +130,16 @@ const useDocumentUpload = () => {
         const handshakeResponse = await handshake(fileInfo, payload);
         if (handshakeResponse.error) {
             setStatus('error');
-            return Promise.reject(handshakeResponse);
+            return handshakeResponse;
         }
         const uploadResponse = await fileUploader(fileInfo.fileBuffer, handshakeResponse);
-        return Promise.resolve(uploadResponse);
+        return uploadResponse;
     };
 
     return {
         upload,
         status,
-        resetStatus,
+        resetStatus: setStatus,
     };
 };
 

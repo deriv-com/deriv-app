@@ -26,7 +26,7 @@ export const getDocumentNumberValidator = (document: TDocumentTypeItem, example:
 
                     if (pattern && value && !value.match(pattern)) {
                         return context.createError({
-                            message: `Please enter the correct format. Exmaple: ${example}`,
+                            message: `Please enter the correct format. Example: ${example}`,
                         });
                     }
                 }

@@ -9,7 +9,7 @@ import './app.scss';
 import './temporary-overrides.scss';
 
 const AppContent: React.FC = observer(() => {
-    const { ui, traders_hub } = useStore();
+    const { ui, traders_hub, client } = useStore();
     const { is_dark_mode_on } = ui;
     const { selected_account_type } = traders_hub;
 
@@ -18,17 +18,21 @@ const AppContent: React.FC = observer(() => {
         defaultValue: false,
     });
 
-    if (tradrshub_dashboard_form) {
-        useEffect(() => {
-            if (selected_account_type) {
+    useEffect(() => {
+        client.setTradersHubTracking(!!tradrshub_dashboard_form);
+    }, [tradrshub_dashboard_form]);
+
+    useEffect(() => {
+        if (selected_account_type) {
+            if (tradrshub_dashboard_form) {
                 Analytics.trackEvent('ce_tradershub_dashboard_form', {
                     action: 'open',
                     form_name: 'traders_hub_default',
                     account_mode: selected_account_type,
                 });
             }
-        }, [selected_account_type]);
-    }
+        }
+    }, [selected_account_type]);
 
     return (
         <main

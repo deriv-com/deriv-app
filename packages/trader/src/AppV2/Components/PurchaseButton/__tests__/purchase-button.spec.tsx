@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockContractInfo } from '@deriv/shared';
+import { CONTRACT_TYPES, mockContractInfo, TRADE_TYPES } from '@deriv/shared';
 import { mockStore } from '@deriv/stores';
 import { ReportsStoreProvider } from '../../../../../../reports/src/Stores/useReportsStores';
 import TraderProviders from '../../../../trader-providers';
@@ -202,10 +202,25 @@ describe('PositionsContent', () => {
         expect(default_mock_store.modules.trade.onPurchase).not.toBeCalled();
     });
 
-    it('should render only one button if trade_types have only one field', () => {
+    it('should render only one button if trade_types have only one field and there are no trade type tabs', () => {
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.ACCUMULATOR;
         default_mock_store.modules.trade.trade_types = {
-            CALL: 'Rise',
+            [CONTRACT_TYPES.ACCUMULATOR]: 'Accumulator Up',
         };
+        mockPurchaseButton();
+
+        const purchase_button = screen.getByRole('button');
+        expect(purchase_button).toBeInTheDocument();
+        expect(purchase_button).toHaveClass('purchase-button--single');
+    });
+
+    it('should render only one button if trade_types have 2 fields but there are 2 trade type tabs and trade_type_tab value is set', () => {
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.HIGH_LOW;
+        default_mock_store.modules.trade.trade_types = {
+            [CONTRACT_TYPES.CALL]: 'Higher',
+            [CONTRACT_TYPES.PUT]: 'Lower',
+        };
+        default_mock_store.modules.trade.trade_type_tab = CONTRACT_TYPES.CALL;
         mockPurchaseButton();
 
         const purchase_button = screen.getByRole('button');

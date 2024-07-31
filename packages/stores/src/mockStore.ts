@@ -554,6 +554,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_regulators_compare_modal_visible: false,
             is_setup_real_account_or_go_to_demo_modal_visible: false,
             setIsSetupRealAccountOrGoToDemoModalVisible: jest.fn(),
+            has_available_cfd_account: true,
         },
         notifications: {
             addNotificationMessage: jest.fn(),

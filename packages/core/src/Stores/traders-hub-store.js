@@ -1,5 +1,4 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-// import { WS } from 'Services';
 import {
     CFD_PLATFORMS,
     ContentFlag,

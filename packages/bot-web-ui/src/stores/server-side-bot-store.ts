@@ -117,9 +117,7 @@ export default class ServerBotStore {
             active_bot: observable,
             pocs: observable,
             journal: observable,
-
             performance: computed,
-
             setListLoading: action,
             getBotList: action,
             subscribeToBotNotification: action,
@@ -288,7 +286,6 @@ export default class ServerBotStore {
                 this.setJournal(journal_item);
                 break;
             }
-
             case JOURNAL_TYPE.WON: {
                 if (amount) {
                     this.setJournal({ type: JOURNAL_TYPE.WON, amount });

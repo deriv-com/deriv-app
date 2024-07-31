@@ -34,19 +34,19 @@ window.Blockly = {
 };
 
 describe('<MobileFormWrapper />', () => {
-    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
-    const mock_onSubmit = jest.fn();
+    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_dbot_store: RootStore | undefined;
+    const mockOnSubmit = jest.fn();
 
     beforeEach(() => {
         const mock_store = mockStore({});
-        mock_DBot_store = mockDBotStore(mock_store, mock_ws);
+        mock_dbot_store = mockDBotStore(mock_store, mock_ws);
         const initial_value = {};
-        mock_DBot_store?.quick_strategy.setFormVisibility(true);
+        mock_dbot_store?.quick_strategy.setFormVisibility(true);
 
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
-                <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
-                    <Formik initialValues={initial_value} onSubmit={mock_onSubmit}>
+                <DBotStoreProvider ws={mock_ws} mock={mock_dbot_store}>
+                    <Formik initialValues={initial_value} onSubmit={mockOnSubmit}>
                         {children}
                     </Formik>
                 </DBotStoreProvider>
@@ -68,7 +68,7 @@ describe('<MobileFormWrapper />', () => {
     });
 
     it('should change the selected strategy', () => {
-        mock_DBot_store?.quick_strategy.setSelectedStrategy('MARTINGALE');
+        mock_dbot_store?.quick_strategy.setSelectedStrategy('MARTINGALE');
         render(
             <MobileFromWrapper>
                 <div>test</div>
@@ -77,7 +77,7 @@ describe('<MobileFormWrapper />', () => {
                 wrapper,
             }
         );
-        expect(mock_DBot_store?.quick_strategy.selected_strategy).toBe('MARTINGALE');
+        expect(mock_dbot_store?.quick_strategy.selected_strategy).toBe('MARTINGALE');
     });
 
     it('should submit the form', async () => {
@@ -91,9 +91,9 @@ describe('<MobileFormWrapper />', () => {
                 wrapper,
             }
         );
-        expect(mock_DBot_store?.quick_strategy.is_open).toBeTruthy();
+        expect(mock_dbot_store?.quick_strategy.is_open).toBeTruthy();
         const submit_button = screen.getByRole('button', { name: /Add/i });
         userEvent.click(submit_button);
-        await waitFor(() => expect(mock_onSubmit).toBeCalled());
+        await waitFor(() => expect(mockOnSubmit).toBeCalled());
     });
 });

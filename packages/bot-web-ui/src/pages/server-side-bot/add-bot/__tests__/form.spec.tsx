@@ -1,7 +1,8 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
@@ -187,7 +188,7 @@ jest.mock('../config', () => ({
 }));
 
 describe('<QuickStrategyForm />', () => {
-    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_dbot_store: RootStore | undefined;
     const mock_store = mockStore({
         ui: {
             is_mobile: false,
@@ -195,17 +196,17 @@ describe('<QuickStrategyForm />', () => {
     });
 
     beforeEach(() => {
-        mock_DBot_store = mockDBotStore(mock_store, mock_ws);
-        mock_DBot_store?.quick_strategy?.setSelectedStrategy('RSI');
-        const mock_onSubmit = jest.fn();
+        mock_dbot_store = mockDBotStore(mock_store, mock_ws);
+        mock_dbot_store?.quick_strategy?.setSelectedStrategy('RSI');
+        const mockOnSubmit = jest.fn();
         const initial_value = {
             tradetype: 'callput',
         };
 
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
-                <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
-                    <Formik initialValues={initial_value} onSubmit={mock_onSubmit}>
+                <DBotStoreProvider ws={mock_ws} mock={mock_dbot_store}>
+                    <Formik initialValues={initial_value} onSubmit={mockOnSubmit}>
                         {children}
                     </Formik>
                 </DBotStoreProvider>
@@ -228,8 +229,7 @@ describe('<QuickStrategyForm />', () => {
             wrapper,
         });
         const input = screen.getByTestId('dt_qs_tradetype');
-        fireEvent.keyDown(input, { key: 'Enter', code: 'Enter', keyCode: 13 });
-        fireEvent.keyDown(input, { keyCode: 13 });
+        userEvent.type(input, '{enter}');
 
         expect(mockEventListener).toHaveBeenCalledWith(
             expect.objectContaining({ key: 'Enter', code: 'Enter', keyCode: 13 })
@@ -237,8 +237,8 @@ describe('<QuickStrategyForm />', () => {
     });
 
     it('should render the form with existing duration values and possitive last digit prediction', () => {
-        mock_DBot_store?.quick_strategy?.setCurrentDurationMinMax(1, 2);
-        mock_DBot_store?.quick_strategy?.setValue('last_digit_prediction', 5);
+        mock_dbot_store?.quick_strategy?.setCurrentDurationMinMax(1, 2);
+        mock_dbot_store?.quick_strategy?.setValue('last_digit_prediction', 5);
         const { container } = render(<QuickStrategyForm />, {
             wrapper,
         });

@@ -188,15 +188,15 @@ describe('<QuickStrategy />', () => {
             is_mobile: true,
         },
     });
-    const mock_DBot_store = mockDBotStore(mock_store, mock_ws);
+    const mock_dbot_store = mockDBotStore(mock_store, mock_ws);
 
     beforeEach(() => {
-        mock_DBot_store?.quick_strategy?.setValue('durationtype', 't');
-        mock_DBot_store?.quick_strategy?.setSelectedStrategy('MARTINGALE');
-        mock_DBot_store?.quick_strategy?.setFormVisibility(true);
+        mock_dbot_store?.quick_strategy?.setValue('durationtype', 't');
+        mock_dbot_store?.quick_strategy?.setSelectedStrategy('MARTINGALE');
+        mock_dbot_store?.quick_strategy?.setFormVisibility(true);
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
-                <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
+                <DBotStoreProvider ws={mock_ws} mock={mock_dbot_store}>
                     {children}
                 </DBotStoreProvider>
             </StoreProvider>

@@ -64,27 +64,27 @@ jest.mock('@deriv/bot-skeleton', () => ({
 jest.mock('../../../../../xml/martingale_max-stake.xml', () => '');
 
 describe('useQsSubmitHandler hook', () => {
-    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_dbot_store: RootStore | undefined;
     const mock_store = mockStore({});
 
     beforeEach(() => {
-        mock_DBot_store = mockDBotStore(mock_store, mock_ws);
-        mock_DBot_store = {
-            ...mock_DBot_store,
+        mock_dbot_store = mockDBotStore(mock_store, mock_ws);
+        mock_dbot_store = {
+            ...mock_dbot_store,
             quick_strategy: {
-                ...mock_DBot_store.quick_strategy,
+                ...mock_dbot_store.quick_strategy,
                 setLossThresholdWarningData: jest.fn(),
                 onSubmit: jest.fn(),
                 toggleStopBotDialog: jest.fn(),
             },
         };
-        const mock_onSubmit = jest.fn();
+        const mockOnSubmit = jest.fn();
         const initial_value = {};
 
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
-                <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
-                    <Formik initialValues={initial_value} onSubmit={mock_onSubmit}>
+                <DBotStoreProvider ws={mock_ws} mock={mock_dbot_store}>
+                    <Formik initialValues={initial_value} onSubmit={mockOnSubmit}>
                         {children}
                     </Formik>
                 </DBotStoreProvider>
@@ -108,17 +108,17 @@ describe('useQsSubmitHandler hook', () => {
         const { result } = renderHook(() => useQsSubmitHandler(), { wrapper });
         result.current.handleSubmit();
 
-        expect(mock_DBot_store?.quick_strategy.setLossThresholdWarningData).not.toHaveBeenCalled();
+        expect(mock_dbot_store?.quick_strategy.setLossThresholdWarningData).not.toHaveBeenCalled();
     });
 
     it('useQsSubmitHandler hook should not call setLossThresholdWarningData() when bot is running handle toggleStopBotDialog() and make it false', () => {
-        mock_DBot_store?.run_panel?.setIsRunning(true);
+        mock_dbot_store?.run_panel?.setIsRunning(true);
         mock_store.client.is_logged_in = false;
         const { result } = renderHook(() => useQsSubmitHandler(), { wrapper });
         result.current.handleSubmit();
 
-        expect(mock_DBot_store?.quick_strategy.is_open).toBeFalsy();
-        expect(mock_DBot_store?.quick_strategy.setLossThresholdWarningData).not.toHaveBeenCalled();
+        expect(mock_dbot_store?.quick_strategy.is_open).toBeFalsy();
+        expect(mock_dbot_store?.quick_strategy.setLossThresholdWarningData).not.toHaveBeenCalled();
     });
 
     it('useQsSubmitHandler hook should not call setLossThresholdWarningData() when the balance not less than loss and loss not bigger than profit', () => {
@@ -127,7 +127,7 @@ describe('useQsSubmitHandler hook', () => {
         const { result } = renderHook(() => useQsSubmitHandler(), { wrapper });
         result.current.handleSubmit();
 
-        expect(mock_DBot_store?.quick_strategy.setLossThresholdWarningData).not.toHaveBeenCalled();
+        expect(mock_dbot_store?.quick_strategy.setLossThresholdWarningData).not.toHaveBeenCalled();
     });
 
     it('useQsSubmitHandler hook should not call setLossThresholdWarningData() when the balance more than loss and loss not bigger than profit', () => {
@@ -136,7 +136,7 @@ describe('useQsSubmitHandler hook', () => {
         const { result } = renderHook(() => useQsSubmitHandler(), { wrapper });
         result.current.handleSubmit();
 
-        expect(mock_DBot_store?.quick_strategy.setLossThresholdWarningData).not.toHaveBeenCalled();
+        expect(mock_dbot_store?.quick_strategy.setLossThresholdWarningData).not.toHaveBeenCalled();
     });
 
     it('useQsSubmitHandler hook should call setLossThresholdWarningData() when is_logged_in equals true and balance is less than loss', () => {
@@ -146,6 +146,6 @@ describe('useQsSubmitHandler hook', () => {
         const { result } = renderHook(() => useQsSubmitHandler(), { wrapper });
         result.current.handleSubmit();
 
-        expect(mock_DBot_store?.quick_strategy.setLossThresholdWarningData).toHaveBeenCalled();
+        expect(mock_dbot_store?.quick_strategy.setLossThresholdWarningData).toHaveBeenCalled();
     });
 });

@@ -10,7 +10,7 @@ import QSInputLabel from '../qs-input-label';
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 
 describe('<QSInputLabel />', () => {
-    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_dbot_store: RootStore | undefined;
 
     beforeEach(() => {
         const mock_store = mockStore({
@@ -18,11 +18,11 @@ describe('<QSInputLabel />', () => {
                 is_mobile: true,
             },
         });
-        mock_DBot_store = mockDBotStore(mock_store, mock_ws);
+        mock_dbot_store = mockDBotStore(mock_store, mock_ws);
 
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
-                <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
+                <DBotStoreProvider ws={mock_ws} mock={mock_dbot_store}>
                     {children}
                 </DBotStoreProvider>
             </StoreProvider>

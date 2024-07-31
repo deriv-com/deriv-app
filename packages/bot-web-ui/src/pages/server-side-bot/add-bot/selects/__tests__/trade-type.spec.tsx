@@ -49,7 +49,7 @@ window.Blockly = {
 };
 
 describe('<TradeType />', () => {
-    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_dbot_store: RootStore | undefined;
 
     beforeEach(() => {
         const mock_store = mockStore({
@@ -57,8 +57,8 @@ describe('<TradeType />', () => {
                 is_mobile: true,
             },
         });
-        mock_DBot_store = mockDBotStore(mock_store, mock_ws);
-        const mock_onSubmit = jest.fn();
+        mock_dbot_store = mockDBotStore(mock_store, mock_ws);
+        const mockOnSubmit = jest.fn();
         const initial_value = {
             durationtype: 1,
             symbol: 'R_100',
@@ -67,8 +67,8 @@ describe('<TradeType />', () => {
 
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
-                <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
-                    <Formik initialValues={initial_value} onSubmit={mock_onSubmit}>
+                <DBotStoreProvider ws={mock_ws} mock={mock_dbot_store}>
+                    <Formik initialValues={initial_value} onSubmit={mockOnSubmit}>
                         {children}
                     </Formik>
                 </DBotStoreProvider>

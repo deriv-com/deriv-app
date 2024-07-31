@@ -20,7 +20,7 @@ window.Blockly = {
 };
 
 describe('LossThresholdWarningDialog', () => {
-    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_dbot_store: RootStore | undefined;
 
     beforeEach(() => {
         const mock_store = mockStore({
@@ -28,8 +28,8 @@ describe('LossThresholdWarningDialog', () => {
                 is_mobile: true,
             },
         });
-        mock_DBot_store = mockDBotStore(mock_store, mock_ws);
-        const mock_onSubmit = jest.fn();
+        mock_dbot_store = mockDBotStore(mock_store, mock_ws);
+        const mockOnSubmit = jest.fn();
         const initial_value = {
             durationtype: 1,
             symbol: 'R_100',
@@ -38,8 +38,8 @@ describe('LossThresholdWarningDialog', () => {
 
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
-                <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
-                    <Formik initialValues={initial_value} onSubmit={mock_onSubmit}>
+                <DBotStoreProvider ws={mock_ws} mock={mock_dbot_store}>
+                    <Formik initialValues={initial_value} onSubmit={mockOnSubmit}>
                         {children}
                     </Formik>
                 </DBotStoreProvider>
@@ -54,7 +54,7 @@ describe('LossThresholdWarningDialog', () => {
     });
 
     it('should handle edit the amount button click', () => {
-        mock_DBot_store?.quick_strategy.setLossThresholdWarningData({
+        mock_dbot_store?.quick_strategy.setLossThresholdWarningData({
             show: true,
         });
         render(<LossThresholdWarningDialog />, {
@@ -62,11 +62,11 @@ describe('LossThresholdWarningDialog', () => {
         });
         const edit_amount_btn = screen.getByRole('button', { name: /Edit the amount/i });
         userEvent.click(edit_amount_btn);
-        expect(mock_DBot_store?.quick_strategy.loss_threshold_warning_data.show).toBeFalsy();
+        expect(mock_dbot_store?.quick_strategy.loss_threshold_warning_data.show).toBeFalsy();
     });
 
     it('should handle continue button click', async () => {
-        mock_DBot_store?.quick_strategy.setLossThresholdWarningData({
+        mock_dbot_store?.quick_strategy.setLossThresholdWarningData({
             show: true,
         });
         render(<LossThresholdWarningDialog />, {
@@ -75,12 +75,12 @@ describe('LossThresholdWarningDialog', () => {
         const continue_btn = screen.getByRole('button', { name: /Yes, continue/i });
         userEvent.click(continue_btn);
         await waitFor(() => {
-            expect(mock_DBot_store?.quick_strategy.loss_threshold_warning_data.show).toBeFalsy();
+            expect(mock_dbot_store?.quick_strategy.loss_threshold_warning_data.show).toBeFalsy();
         });
     });
 
     it('should handle dont show again checkbox click', () => {
-        mock_DBot_store?.quick_strategy.setLossThresholdWarningData({
+        mock_dbot_store?.quick_strategy.setLossThresholdWarningData({
             show: true,
         });
         render(<LossThresholdWarningDialog />, {

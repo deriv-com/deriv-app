@@ -19,7 +19,7 @@ jest.mock('formik', () => ({
 }));
 
 describe('<QSCheckbox />', () => {
-    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_dbot_store: RootStore | undefined;
     const mockSetIsEnabledToggleSwitch = jest.fn();
 
     const mocked_props = {
@@ -35,8 +35,8 @@ describe('<QSCheckbox />', () => {
                 is_mobile: false,
             },
         });
-        mock_DBot_store = mockDBotStore(mock_store, mock_ws);
-        const mock_onSubmit = jest.fn();
+        mock_dbot_store = mockDBotStore(mock_store, mock_ws);
+        const mockOnSubmit = jest.fn();
         const initial_value = {
             symbol: 'R_100',
             max_stake: 10,
@@ -46,13 +46,13 @@ describe('<QSCheckbox />', () => {
 
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
-                <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
+                <DBotStoreProvider ws={mock_ws} mock={mock_dbot_store}>
                     <Formik
                         initialValues={initial_value}
                         validationSchema={Yup.object().shape({
                             duration_value: Yup.number().min(1, 'Minimum value should be more than 0'),
                         })}
-                        onSubmit={mock_onSubmit}
+                        onSubmit={mockOnSubmit}
                     >
                         {children}
                     </Formik>

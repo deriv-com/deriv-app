@@ -21,7 +21,7 @@ const ResendCodeTimer = ({
 }: TResendCodeTimer) => {
     // @ts-expect-error this for now
     const { sendPhoneNumberVerifyEmail, WS, error } = useVerifyEmail('phone_number_verification');
-    const { next_otp_request } = usePhoneNumberVerificationSetTimer();
+    const { next_otp_request, is_request_button_diabled } = usePhoneNumberVerificationSetTimer();
 
     React.useEffect(() => {
         if (WS.isSuccess || error) reInitializeGetSettings();
@@ -41,7 +41,7 @@ const ResendCodeTimer = ({
         <Button
             variant='tertiary'
             onClick={resendCode}
-            disabled={!!next_otp_request || is_button_disabled}
+            disabled={!!next_otp_request || is_button_disabled || is_request_button_diabled}
             color='black'
         >
             <CaptionText bold underlined>

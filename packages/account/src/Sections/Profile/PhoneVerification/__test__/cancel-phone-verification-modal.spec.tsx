@@ -3,12 +3,13 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import CancelPhoneVerificationModal from '../cancel-phone-verification-modal';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { routes } from '@deriv/shared';
 
-const mock_back_router = jest.fn();
+const mock_push = jest.fn();
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
     useHistory: () => ({
-        goBack: mock_back_router,
+        push: mock_push,
     }),
 }));
 
@@ -55,7 +56,7 @@ describe('CancelPhoneVerificationModal', () => {
         const cancelButton = screen.getByRole('button', { name: buttons[0] });
         userEvent.click(cancelButton);
         expect(mockSetShowCancelModal).toBeCalled();
-        expect(mock_back_router).not.toBeCalled();
+        expect(mock_push).not.toBeCalled();
     });
 
     it('it should render mockSetShowCancelModal and mock_back_router when Yes, cancel is clicked', () => {
@@ -63,6 +64,6 @@ describe('CancelPhoneVerificationModal', () => {
         const cancelButton = screen.getByRole('button', { name: buttons[1] });
         userEvent.click(cancelButton);
         expect(mockSetShowCancelModal).toBeCalled();
-        expect(mock_back_router).toBeCalled();
+        expect(mock_push).toBeCalledWith(routes.personal_details);
     });
 });

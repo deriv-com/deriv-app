@@ -22,7 +22,7 @@ export const VerifyButton = observer(() => {
     //@ts-expect-error remove this comment when types are added in GetSettings api types
     const { sendPhoneNumberVerifyEmail, WS } = useVerifyEmail('phone_number_verification');
     const { isDesktop } = useDevice();
-    const { next_otp_request } = usePhoneNumberVerificationSetTimer();
+    const { next_otp_request, is_request_button_diabled } = usePhoneNumberVerificationSetTimer();
 
     useEffect(() => {
         if (WS.isSuccess) {
@@ -31,7 +31,7 @@ export const VerifyButton = observer(() => {
     }, [WS.isSuccess, history]);
 
     const redirectToPhoneVerification = () => {
-        if (next_otp_request) return;
+        if (next_otp_request || is_request_button_diabled) return;
         setVerificationCode('', 'phone_number_verification');
         setShouldShowPhoneNumberOTP(false);
         sendPhoneNumberVerifyEmail();
@@ -70,7 +70,8 @@ export const VerifyButton = observer(() => {
                     weight='bold'
                     color='red'
                     className={clsx('phone-verification-btn--not-verified', {
-                        'phone-verification-btn--not-verified--disabled': !!next_otp_request,
+                        'phone-verification-btn--not-verified--disabled':
+                            !!next_otp_request || is_request_button_diabled,
                     })}
                     disabled={true}
                     onClick={redirectToPhoneVerification}

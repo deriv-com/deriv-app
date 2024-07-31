@@ -5,6 +5,7 @@ import { useHistory } from 'react-router';
 import { observer, useStore } from '@deriv/stores';
 import { LabelPairedCircleXmarkLgRegularIcon } from '@deriv/quill-icons';
 import { useDevice } from '@deriv-com/ui';
+import { routes } from '@deriv/shared';
 
 type TCancelPhoneVerificationModal = {
     should_show_cancel_verification_modal: boolean;
@@ -21,7 +22,7 @@ const CancelPhoneVerificationModal = observer(
             setVerificationCode('', 'phone_number_verification');
             setShouldShowPhoneNumberOTP(false);
             setShouldShowCancelVerificationModal(false);
-            history.goBack();
+            history.push(routes.personal_details);
         };
         const { ui, client } = useStore();
         const { setShouldShowPhoneNumberOTP } = ui;

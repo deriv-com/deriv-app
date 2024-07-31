@@ -11,7 +11,7 @@ import { Skeleton } from '@deriv/components';
 
 const MarketSelector = observer(() => {
     const [isOpen, setIsOpen] = useState(false);
-    const { default_symbol, activeSymbols } = useActiveSymbols({});
+    const { default_symbol, activeSymbols } = useActiveSymbols();
     const { symbol: storeSymbol, tick_data } = useTraderStore();
     const currentSymbol = activeSymbols.find(
         symbol => symbol.symbol === storeSymbol || symbol.symbol === default_symbol

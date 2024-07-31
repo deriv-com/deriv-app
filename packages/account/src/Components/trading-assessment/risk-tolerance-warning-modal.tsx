@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Modal, Text, MobileDialog } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 
 type RiskToleranceWarningModalProps = {
@@ -21,6 +21,8 @@ const RiskToleranceWarningModal = ({
     has_sub_header = false,
 }: RiskToleranceWarningModalProps) => {
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
+
     return (
         <React.Fragment>
             {isDesktop ? (

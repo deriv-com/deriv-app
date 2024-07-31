@@ -155,7 +155,7 @@ export default class SaveModalStore implements ISaveModalStore {
         } else {
             await saveFile({
                 name: bot_name,
-                content: Blockly?.Xml?.domToPrettyText(xml),
+                content: window.Blockly?.Xml?.domToPrettyText(xml),
                 mimeType: 'application/xml',
             });
             this.setButtonStatus(button_status.COMPLETED);

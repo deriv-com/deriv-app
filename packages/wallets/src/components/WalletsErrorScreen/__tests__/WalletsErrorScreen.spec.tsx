@@ -1,15 +1,18 @@
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
-import useDevice from '../../../hooks/useDevice';
 import WalletsErrorScreen from '../WalletsErrorScreen';
 
-jest.mock('../../../hooks/useDevice', () =>
-    jest.fn(() => ({
-        isMobile: false,
-    }))
-);
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 
 describe('WalletsErrorScreen', () => {
+    beforeEach(() => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+    });
+
     afterAll(() => {
         jest.clearAllMocks();
     });

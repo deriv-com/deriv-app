@@ -1,8 +1,8 @@
 import React, { PropsWithChildren } from 'react';
 import { APIProvider } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../AuthProvider';
-import useDevice from '../../../hooks/useDevice';
 import { ModalProvider } from '../../ModalProvider';
 import WalletAddedSuccess from '../WalletAddedSuccess';
 
@@ -22,12 +22,21 @@ const wrapper = ({ children }: PropsWithChildren) => (
     </APIProvider>
 );
 
-jest.mock('../../../hooks/useDevice', () => jest.fn());
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 
 describe('<WalletAddedSuccess />', () => {
-    it('should render success modal', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
+    beforeEach(() => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+    });
 
+    afterAll(() => {
+        jest.clearAllMocks();
+    });
+
+    it('should render success modal', () => {
         render(<WalletAddedSuccess {...props} />, { wrapper });
         expect(screen.getByText('Make a deposit into your new Wallet.')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Deposit' })).toBeInTheDocument();
@@ -35,8 +44,6 @@ describe('<WalletAddedSuccess />', () => {
     });
 
     it('should render WalletCard', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
-
         render(<WalletAddedSuccess {...props} />, { wrapper });
         expect(screen.getByTestId('dt_wallets_wallet_card')).toBeInTheDocument();
         expect(screen.getByTestId('dt_wallet_card_details')).toBeInTheDocument();
@@ -44,8 +51,6 @@ describe('<WalletAddedSuccess />', () => {
     });
 
     it('should run function on button click', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
-
         render(<WalletAddedSuccess {...props} />, { wrapper });
         const depositButton = screen.getByRole('button', { name: 'Deposit' });
         const maybeLaterButton = screen.getByRole('button', { name: 'Maybe later' });

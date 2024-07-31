@@ -2,7 +2,27 @@ import React from 'react';
 import classNames from 'classnames';
 import { Button, Icon, Modal, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { TSuccessDialogProps } from 'Components/props.types';
+
+type TSuccessDialogProps = {
+    is_open: boolean;
+    toggleModal: () => void;
+    onCancel?: () => void;
+    onSubmit?: () => void;
+    classNameMessage?: string;
+    message: string | React.ReactElement;
+    icon: React.ReactElement;
+    icon_size?: string;
+    text_submit?: string;
+    text_cancel?: string;
+    heading?: string | React.ReactElement;
+    title?: string;
+    icon_type?: string;
+    is_medium_button?: boolean;
+    has_close_icon: boolean;
+    width?: string;
+    has_cancel?: boolean;
+    has_submit?: boolean;
+};
 
 const SuccessDialog = ({
     classNameMessage = '',

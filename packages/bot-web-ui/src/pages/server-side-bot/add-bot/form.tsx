@@ -29,7 +29,7 @@ const QuickStrategyForm = observer(() => {
         window.addEventListener('keydown', handleEnter);
         let data: TFormData | null = null;
         try {
-            data = JSON.parse(localStorage.getItem('qs-fields') ?? '{}');
+            data = JSON.parse(localStorage.getItem('server-form-fields') ?? '{}');
         } catch {
             data = null;
         }

@@ -5,8 +5,8 @@ import { api_base } from '@deriv/bot-skeleton';
 import { isEnded } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';
-import RootStore from './root-store';
 import { downloadFile } from 'Utils/download';
+import RootStore from './root-store';
 
 export type TFormData = {
     [key: string]: string | number | boolean;
@@ -189,9 +189,12 @@ export default class ServerBotStore {
         if (data?.error) {
             // eslint-disable-next-line no-console
             console.info(data.error);
-            this.onJournalMessage(JOURNAL_TYPE.ERROR, {
-                msg: data.error.message,
-            });
+            if (data.error.message) {
+                this.onJournalMessage(JOURNAL_TYPE.ERROR, {
+                    msg: data.error.message,
+                });
+                botNotification(data.error.message);
+            }
         }
         try {
             if (msg_type === 'proposal_open_contract' && !data.error) {
@@ -397,7 +400,7 @@ export default class ServerBotStore {
 
             if (should_subscribe && !!list.length) {
                 this.onJournalMessage(JOURNAL_TYPE.INFO, {
-                    msg: localize('Bots loaded successfully.'),
+                    msg: localize('Bots loaded successfully'),
                 });
             }
         } catch (error) {
@@ -488,7 +491,7 @@ export default class ServerBotStore {
             this.getBotList(false);
             botNotification(bot_remove.message);
             this.onJournalMessage(JOURNAL_TYPE.INFO, {
-                msg: bot_remove.message || localize('Bot deleted successfully.'),
+                msg: bot_remove.message || localize('Bot deleted successfully'),
                 bot_id,
             });
         } catch (error) {
@@ -520,7 +523,7 @@ export default class ServerBotStore {
             this.setBotList(bot_list);
             this.active_bot = bot_list[index];
 
-            const msg = bot_start?.message || localize('Bot started successfully.');
+            const msg = bot_start?.message || localize('Bot started successfully');
             botNotification(msg);
             this.onJournalMessage(JOURNAL_TYPE.INFO, {
                 msg,
@@ -561,7 +564,7 @@ export default class ServerBotStore {
             };
 
             this.onJournalMessage(JOURNAL_TYPE.INFO, {
-                msg: bot_stop?.message || localize('Bot stopped successfully.'),
+                msg: bot_stop?.message || localize('Bot stopped successfully'),
                 bot_id,
             });
         } catch (error) {

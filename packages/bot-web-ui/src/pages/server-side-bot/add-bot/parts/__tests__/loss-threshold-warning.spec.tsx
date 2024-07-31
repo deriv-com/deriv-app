@@ -88,6 +88,6 @@ describe('LossThresholdWarningDialog', () => {
         });
         const checkbox = screen.getByRole('checkbox', { name: /Do not show this message again./i });
         userEvent.click(checkbox);
-        expect(localStorage.getItem('qs-dont-show-loss-threshold-warning')).toEqual('true');
+        expect(localStorage.getItem('ssb-dont-show-loss-threshold-warning')).toEqual('true');
     });
 });

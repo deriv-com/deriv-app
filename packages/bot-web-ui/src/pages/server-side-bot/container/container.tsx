@@ -15,7 +15,7 @@ const Container: React.FC<TContainer> = observer(({ children }) => {
             <div className='ssb-container'>
                 <div className='ssb-container__virtual-check'>
                     <Text size='s' color='prominent' weight='bold'>
-                        <Localize i18n_default_text='To use Beta Server bot switch to Demo account.' />
+                        <Localize i18n_default_text='This feature is unavailable for Real account.' />
                     </Text>
                 </div>
             </div>

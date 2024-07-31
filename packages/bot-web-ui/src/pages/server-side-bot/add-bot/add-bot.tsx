@@ -5,7 +5,6 @@ import { config as qs_config } from '@deriv/bot-skeleton';
 import { MobileFullPageModal, Modal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
 import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
@@ -39,13 +38,11 @@ const getErrorMessage = (dir: 'MIN' | 'MAX', value: number, type = 'DEFAULT') =>
 };
 
 export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children, setFormVisibility }) => {
-    const { quick_strategy, dashboard, server_bot } = useDBotStore();
+    const { quick_strategy, server_bot } = useDBotStore();
     const { selected_strategy, form_data, current_duration_min_max, initializeLossThresholdWarningData, setValue } =
         quick_strategy;
-    const { active_tab } = dashboard;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const [dynamic_schema, setDynamicSchema] = useState(Yup.object().shape({}));
-    const { SERVER_BOT } = DBOT_TABS;
     const is_mounted = useRef(true);
     const { createBot } = server_bot;
 
@@ -54,9 +51,7 @@ export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children, set
     const getSavedValues = () => {
         let data: TFormData | null = null;
         try {
-            const data = JSON.parse(
-                localStorage.getItem(active_tab === SERVER_BOT ? 'server-form-fields' : 'qs-fields') || '{}'
-            );
+            const data = JSON.parse(localStorage.getItem('server-form-fields') || '{}');
             Object.keys(data).forEach(key => {
                 initial_value[key as keyof TFormData] = data[key];
                 setValue(key, data[key]);

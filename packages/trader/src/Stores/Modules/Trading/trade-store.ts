@@ -39,6 +39,7 @@ import {
     formatMoney,
     getMarketName,
     getTradeTypeName,
+    getContractPath,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -1033,6 +1034,7 @@ export default class TradeStore extends BaseStore {
                             if (this.root_store.ui.is_mobile) {
                                 const shortcode = response.buy.shortcode;
                                 const extracted_info_from_shortcode = extractInfoFromShortcode(shortcode);
+                                const contract_id = response.buy.contract_id;
                                 const currency = getCurrencyDisplayCode(this.root_store.client.currency);
                                 const formatted_stake = `${getCardLabelsV2().STAKE}: ${formatMoney(
                                     currency,
@@ -1053,14 +1055,14 @@ export default class TradeStore extends BaseStore {
 
                                 callback?.({
                                     message: `${contract_type_with_subtype} - ${symbol}`,
-                                    redirectTo: 'https://www.example.com',
+                                    redirectTo: getContractPath(contract_id),
                                     timestamp: response.buy.purchase_time,
                                     title: formatted_stake,
                                 });
 
                                 this.root_store.notifications.addTradeNotification({
                                     buy_price: is_multiplier ? this.amount : response.buy.buy_price,
-                                    contract_id: response.buy.contract_id,
+                                    contract_id,
                                     contract_type: trade_type,
                                     currency,
                                     purchase_time: response.buy.purchase_time,

@@ -16,6 +16,7 @@ jest.mock('@deriv/components', () => ({
 
 jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     WS: {
+        send: jest.fn().mockResolvedValue({ time: 1620000000 }),
         wait: (...payload: []) => Promise.resolve([...payload]),
     },
     useWS: () => undefined,

@@ -15,7 +15,6 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     default: 'mockedDefaultExport',
     WS: {
         verifyEmail: jest.fn(() => Promise.resolve()),
-        //abcdf
     },
 }));
 

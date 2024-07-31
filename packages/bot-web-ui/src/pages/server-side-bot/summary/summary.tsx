@@ -2,26 +2,26 @@ import React from 'react';
 import classNames from 'classnames';
 import { Button, Icon, Money, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const STATUS = Object.freeze({
     open: {
-        text: localize('Running'),
+        text: <Localize i18n_default_text='Running' />,
         icon: 'IcClockOutline',
         icon_size: 14,
         class_name: 'ssb-summary__item__header__result--progress',
         color: '',
     },
     won: {
-        text: localize('Won'),
+        text: <Localize i18n_default_text='Won' />,
         icon: 'IcServerBotProfit',
         icon_size: 20,
         class_name: 'ssb-summary__item__header__result--won',
         color: 'green',
     },
     lost: {
-        text: localize('Lost'),
+        text: <Localize i18n_default_text='Lost' />,
         icon: 'IcServerBotLoss',
         icon_size: 20,
         class_name: 'ssb-summary__item__header__result--lost',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 
 type TDeleteServerBot = {
     is_open: boolean;
@@ -23,13 +23,13 @@ const DeleteServerBot: React.FC<TDeleteServerBot> = ({ is_open, setVisibility, o
         >
             <div>
                 <Text color='prominent' line_height='s' size='xs'>
-                    {localize('Your bot will be permanently deleted when you hit ')}
-                    <strong>{localize('Yes, delete.')}</strong>
+                    <Localize i18n_default_text='Your bot will be permanently deleted when you hit ' />
+                    <strong><Localize i18n_default_text='Yes, delete.' /></strong>
                 </Text>
             </div>
             <div>
                 <Text color='prominent' line_height='xl' size='xs'>
-                    {localize('Are you sure you want to delete it?')}
+                    <Localize i18n_default_text='Are you sure you want to delete it?' />
                 </Text>
             </div>
         </Dialog>

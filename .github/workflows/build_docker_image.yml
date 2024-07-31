@@ -1,0 +1,43 @@
+name: Build Docker image and push to dockerhub
+on:
+  workflow_dispatch:
+    inputs:
+        docker_image_tag_name:
+          type: string
+          description: Docker image tag name
+          required: true
+jobs:
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    env: 
+      tag_name: ${{ github.event.inputs.docker_image_tag_name }}
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ secrets.WEB_ACCESS_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.WEB_ACCESS_DOCKERHUB_PASSWORD }}
+      
+      - name: Run Bootstrap
+        run: npm run bootstrap
+
+      - name: Run Build:prod
+        run: npm run build:prod
+
+      - name: Run Build Docker
+        run: docker build -t ${{ secrets.WEB_ACCESS_DOCKERHUB_USERNAME }}/$tag_name . --platform=linux/amd64
+      
+      - name: Run Tag Docker
+        run: docker tag ${{ secrets.WEB_ACCESS_DOCKERHUB_USERNAME }}/$tag_name ${{ secrets.WEB_ACCESS_DOCKERHUB_USERNAME }}/$tag_name
+
+      - name: Run Push Docker
+        run: docker push ${{ secrets.WEB_ACCESS_DOCKERHUB_USERNAME }}/$tag_name

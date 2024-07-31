@@ -298,7 +298,6 @@ export default class ServerBotStore {
                 }
                 break;
             }
-
             default:
                 // eslint-disable-next-line no-console
                 console.log(options, bot_id, 'onJournalMessage');

@@ -7,6 +7,7 @@ import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
 import { MarketTypeDetails } from '../../constants';
+import { JurisdictionCard } from './JurisdictionCard';
 import { JurisdictionTncSection } from './JurisdictionTncSection';
 import './JurisdictionScreen.scss';
 

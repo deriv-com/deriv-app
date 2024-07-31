@@ -2880,16 +2880,18 @@ export default class ClientStore extends BaseStore {
     }
 
     async setMT5TradingPlatformAvailableAccounts() {
-        await WS.tradingPlatformAvailableAccounts({
+        const response = await WS.tradingPlatformAvailableAccounts({
             country_code: this.clients_country,
             platform: CFD_PLATFORMS.MT5,
-        }).then(this.responseTradingPlatformAvailableAccounts);
+        });
+        this.responseTradingPlatformAvailableAccounts(response);
     }
 
     async setCTraderTradingPlatformAvailableAccounts() {
-        await WS.tradingPlatformAvailableAccounts({
+        const response = await WS.tradingPlatformAvailableAccounts({
             country_code: this.clients_country,
             platform: CFD_PLATFORMS.CTRADER,
-        }).then(this.responseCTraderTradingPlatformAvailableAccounts);
+        });
+        this.responseCTraderTradingPlatformAvailableAccounts(response);
     }
 }

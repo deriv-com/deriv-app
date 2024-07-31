@@ -1,0 +1,14 @@
+.trade-notification {
+    .details {
+        p.title {
+            color: var(--component-textIcon-normal-prominent);
+        }
+        p:not(.title) {
+            color: var(--component-textIcon-normal-default);
+        }
+    }
+
+    &--purchase {
+        fill: var(--component-textIcon-statusNormal-information);
+    }
+}

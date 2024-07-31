@@ -1,12 +1,12 @@
-import { useNotifications, NotificationBanners } from '@deriv-com/quill-ui';
 import React from 'react';
+import { useNotifications, NotificationBanners } from '@deriv-com/quill-ui';
 
 const Notifications = () => {
     const { banners, removeBanner } = useNotifications();
 
     return (
         <>
-            <NotificationBanners banners={banners} onClose={removeBanner} />
+            <NotificationBanners banners={banners} isMobile onClose={removeBanner} className='trade-notification' />
         </>
     );
 };

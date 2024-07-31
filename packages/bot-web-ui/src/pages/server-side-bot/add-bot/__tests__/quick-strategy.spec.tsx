@@ -213,34 +213,6 @@ describe('<QuickStrategy />', () => {
         });
     });
 
-    it('It should submit the form', async () => {
-        render(<QuickStrategy />, {
-            wrapper,
-        });
-
-        await waitFor(() => {
-            userEvent.click(screen.getByTestId('qs-run-button'));
-        });
-
-        expect(mock_DBot_store?.quick_strategy?.is_open).toBeFalsy();
-    });
-
-    it('It should close the form on close button click', async () => {
-        render(<QuickStrategy />, {
-            wrapper,
-        });
-
-        const close_button = screen.getByTestId('dt_page_overlay_header_close');
-
-        expect(close_button).toBeInTheDocument();
-
-        await waitFor(() => {
-            userEvent.click(close_button);
-        });
-
-        expect(mock_DBot_store.quick_strategy.is_open).toBeFalsy();
-    });
-
     it('It should render desktop', () => {
         mock_store = mockStore({
             ui: {

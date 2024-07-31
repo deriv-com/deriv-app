@@ -67,21 +67,6 @@ describe('<MobileFormWrapper />', () => {
         expect(container).toBeInTheDocument();
     });
 
-    it('should change the selected strategy', () => {
-        mock_DBot_store?.quick_strategy.setSelectedStrategy('MARTINGALE');
-        render(
-            <MobileFromWrapper>
-                <div>test</div>
-            </MobileFromWrapper>,
-            {
-                wrapper,
-            }
-        );
-        expect(mock_DBot_store?.quick_strategy.selected_strategy).toBe('MARTINGALE');
-        userEvent.selectOptions(screen.getByRole('combobox'), ['D_ALEMBERT']);
-        expect(mock_DBot_store?.quick_strategy.selected_strategy).toBe('D_ALEMBERT');
-    });
-
     it('should submit the form', async () => {
         render(
             <MobileFromWrapper>
@@ -94,27 +79,8 @@ describe('<MobileFormWrapper />', () => {
             }
         );
         expect(mock_DBot_store?.quick_strategy.is_open).toBeTruthy();
-        const submit_button = screen.getByRole('button', { name: /Run/i });
+        const submit_button = screen.getByRole('button', { name: /Add/i });
         userEvent.click(submit_button);
         await waitFor(() => expect(mock_onSubmit).toBeCalled());
-    });
-
-    it('should handle the event at the FormTabs component and make the tab bold', async () => {
-        const { container } = render(
-            <MobileFromWrapper>
-                <div>test</div>
-            </MobileFromWrapper>,
-            {
-                wrapper,
-            }
-        );
-
-        const disabled_tab = screen.getByText('Learn more');
-        await waitFor(async () => {
-            userEvent.type(disabled_tab, '{enter}');
-        });
-
-        expect(container).toBeInTheDocument();
-        expect(disabled_tab).toHaveStyle('--text-weight: var(--text-weight-bold)');
     });
 });

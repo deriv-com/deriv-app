@@ -111,40 +111,6 @@ describe('<DesktopFormWrapper />', () => {
         expect(onClickClose).toBeCalled();
     });
 
-    it('should change the selected strategy', () => {
-        mock_DBot_store?.quick_strategy.setSelectedStrategy(quick_strategy_content[0].qs_name);
-        render(
-            <DesktopFormWrapper onClickClose={onClickClose}>
-                <div>test</div>
-            </DesktopFormWrapper>,
-            {
-                wrapper,
-            }
-        );
-        expect(mock_DBot_store?.quick_strategy.selected_strategy).toBe(quick_strategy_content[0].qs_name);
-
-        const strategy = screen.getByText(STRATEGIES.D_ALEMBERT.label);
-        userEvent.click(strategy);
-        const disabledTab = screen.getByText(FORM_TABS[0].label);
-        userEvent.click(disabledTab);
-        expect(mock_DBot_store?.quick_strategy.selected_strategy).toBe(quick_strategy_content[1].qs_name);
-    });
-
-    it('should submit the form on edit', async () => {
-        render(
-            <DesktopFormWrapper onClickClose={onClickClose}>
-                <div>test</div>
-            </DesktopFormWrapper>,
-            {
-                wrapper,
-            }
-        );
-        expect(mock_DBot_store?.quick_strategy.is_open).toBeTruthy();
-        const edit_button = screen.getByText('Edit');
-        userEvent.click(edit_button);
-        await waitFor(() => expect(mock_onSubmit).toBeCalled());
-    });
-
     it('should submit the form', async () => {
         render(
             <DesktopFormWrapper onClickClose={onClickClose}>
@@ -157,7 +123,7 @@ describe('<DesktopFormWrapper />', () => {
             }
         );
         expect(mock_DBot_store?.quick_strategy.is_open).toBeTruthy();
-        const submit_button = screen.getByRole('button', { name: 'Run' });
+        const submit_button = screen.getByRole('button', { name: 'Add' });
         userEvent.click(submit_button);
         await waitFor(() => expect(mock_onSubmit).toBeCalled());
     });

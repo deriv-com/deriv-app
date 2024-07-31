@@ -97,13 +97,11 @@ const Journal: React.FC<TJournal> = observer(({ setActiveTabIndex }) => {
                                 case JOURNAL_TYPE.INFO: {
                                     return (
                                         <div
-                                            className={classNames('ssb-journal__content__item', {
-                                                'item-bg': should_have_bg,
-                                            })}
+                                            className='ssb-journal__content__item ssb-journal__content__item--info'
                                             key={uid + index}
                                         >
                                             <Text size={font_size}>
-                                                <Localize i18n_default_text='INFO: ' />
+                                                <Localize i18n_default_text='Info: ' />
                                                 {msg}
                                             </Text>
                                         </div>
@@ -116,7 +114,7 @@ const Journal: React.FC<TJournal> = observer(({ setActiveTabIndex }) => {
                                             key={uid + index}
                                         >
                                             <Text size={font_size}>
-                                                <Localize i18n_default_text='ERROR: ' />
+                                                <Localize i18n_default_text='Error: ' />
                                                 {msg}
                                             </Text>
                                         </div>

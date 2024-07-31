@@ -21,6 +21,9 @@
         }
         &__item {
             padding: 8px;
+            &--info {
+                background-color: var(--text-info-blue-background);
+            }
             &--purchase {
                 color: var(--text-status-info-blue);
             }

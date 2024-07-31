@@ -102,6 +102,8 @@ export default class ServerBotStore {
     journal: TJournalItem[] = [];
     order = 0;
 
+    subscriptions: { [key: string]: any } = {};
+
     pocs: { [key: string]: ProposalOpenContract } = {};
 
     constructor(root_store: RootStore) {
@@ -180,14 +182,6 @@ export default class ServerBotStore {
         this.active_bot_id = bot_id;
     };
 
-    handleProposalOpenContract = (poc: ProposalOpenContract) => {
-        if (poc.contract_id) return;
-        this.pocs = {
-            ...this.pocs,
-            [String(poc.contract_id)]: poc,
-        };
-    };
-
     onMessage = ({ data }) => {
         const { msg_type, echo_req } = data;
 
@@ -200,8 +194,6 @@ export default class ServerBotStore {
         }
         try {
             if (msg_type === 'proposal_open_contract' && !data.error) {
-                // eslint-disable-next-line no-console
-                // console.log(data.proposal_open_contract, 'proposal_open_contract');
                 this.handleProposalOpenContract(data.proposal_open_contract);
             }
 
@@ -218,32 +210,14 @@ export default class ServerBotStore {
                 if (isValidJSON(message)) {
                     const { msg, msg_type } = JSON.parse(message);
 
-                    // // eslint-disable-next-line no-console
-                    // console.log(msg);
-
                     if (msg_type === 'poc') {
-                        // this.onJournalMessage(JOURNAL_TYPE.BUY, {
-                        //     msg: msg.longcode,
-                        //     bot_id,
-                        //     // time: getDate();
-                        // });
-
-                        // const transactions = this.transactions[bot_id];
-                        // if (transactions && !(msg?.contract_id in transactions)) {
-                        //     this.onJournalMessage(JOURNAL_TYPE.BUY, {
-                        //         msg: msg.longcode,
-                        //         bot_id,
-                        //         // time: getDate();
-                        //     });
-                        // }
-
                         this.setTransaction(msg, bot_id);
                     }
 
                     if (msg_type === 'transaction' && msg?.action === 'buy') {
                         // eslint-disable-next-line no-console
                         this.onJournalMessage(JOURNAL_TYPE.BUY, {
-                            msg: localize('Contract purchased({{contract_id}})', { contract_id: msg.contract_id }),
+                            msg: localize('Contract purchased ({{contract_id}})', { contract_id: msg.contract_id }),
                             bot_id,
                         });
                     }
@@ -258,11 +232,13 @@ export default class ServerBotStore {
                         const { reason } = msg;
                         if (reason.message) {
                             this.onJournalMessage(JOURNAL_TYPE.INFO, { msg: reason.message, bot_id });
+                            botNotification(reason.message);
                         }
                         if (reason?.be?.message) {
                             const msg = `${reason?.be?.message || localize('Something went wrong')} (code: ${
                                 reason?.be?.code || localize('Unknown')
                             })`;
+                            botNotification(msg);
                             this.onJournalMessage(JOURNAL_TYPE.ERROR, { msg, bot_id });
                             const bot_list = [...this.bot_list];
                             const index = bot_list.findIndex(bot => bot.bot_id === bot_id);
@@ -273,17 +249,20 @@ export default class ServerBotStore {
                                 status: 'stopped',
                             };
                         }
-                        // this.active_bot = {
-                        //     bot_id,
-                        //     status: 'stopped',
-                        // };
+                        const bot_list = [...this.bot_list];
+                        const index = bot_list.findIndex(bot => bot.bot_id === bot_id);
+                        bot_list[index].status = 'stopped';
+                        this.setBotList(bot_list);
+                        this.active_bot = {
+                            bot_id,
+                            status: 'stopped',
+                        };
                     }
                 }
             }
-            // test
-        } catch (e) {
+        } catch (error) {
             // eslint-disable-next-line no-console
-            console.dir(e);
+            console.dir(error);
         }
     };
 
@@ -348,12 +327,18 @@ export default class ServerBotStore {
             }
             // eslint-disable-next-line no-console
             console.log('DOWNLOAD_BOT_REPORTS', download_bot_reports);
-        } catch (e) {
+        } catch (error) {
             // eslint-disable-next-line no-console
-            console.dir(e);
-        } finally {
-            // test
+            console.dir(error);
         }
+    };
+
+    handleProposalOpenContract = (poc: ProposalOpenContract) => {
+        if (poc.contract_id) return;
+        this.pocs = {
+            ...this.pocs,
+            [String(poc.contract_id)]: poc,
+        };
     };
 
     setTransaction = (poc: ProposalOpenContract, bot_id: string) => {
@@ -377,12 +362,11 @@ export default class ServerBotStore {
             this.setListLoading(true);
             await getAPI();
             // eslint-disable-next-line no-console
-            console.log('CONNECTION ESTABLISHED');
+            console.info('%cCONNECTION ESTABLISHED', 'color:green;');
             await api_base.api.expectResponse('authorize');
             // eslint-disable-next-line no-console
-            console.log('AUTHORIZATION SUCCESSFUL');
+            console.info('%cAUTHORIZATION SUCCESSFUL', 'color:green;');
 
-            // SUBSCRIBE: to bot notification
             if (should_subscribe) api_base.api?.onMessage()?.subscribe(this.onMessage);
 
             const { bot_list, error } = await api_base.api.send({ bot_list: 1 });
@@ -391,10 +375,13 @@ export default class ServerBotStore {
                 console.dir(error);
                 return;
             }
+
+            // Updated the bot_list after running the bot
             const list = [...bot_list.bot_list];
             this.setBotList(list);
             const running_bot = list.find(bot => bot.status === 'running');
 
+            // Setting the active_bot object with the running bot details
             if (running_bot?.bot_id) {
                 this.active_bot = running_bot;
                 this.subscribeToBotNotification(running_bot?.bot_id);
@@ -405,9 +392,9 @@ export default class ServerBotStore {
                     msg: localize('Bots loaded successfully.'),
                 });
             }
-        } catch (e) {
+        } catch (error) {
             // eslint-disable-next-line no-console
-            console.dir(e);
+            console.dir(error);
         } finally {
             this.setListLoading(false);
         }
@@ -423,12 +410,15 @@ export default class ServerBotStore {
 
     subscribeToBotNotification = async (bot_id: string) => {
         try {
-            await api_base.api.send({ bot_notification: 1, bot_id, subscribe: 1 });
+            const { subscription } = await api_base.api.send({ bot_notification: 1, bot_id, subscribe: 1 });
+
+            this.subscriptions = {
+                ...this.subscriptions,
+                [bot_id]: subscription.id,
+            };
+        } catch (error) {
             // eslint-disable-next-line no-console
-            console.log('SUBSCRIBED : ', bot_id);
-        } catch (e) {
-            // eslint-disable-next-line no-console
-            console.dir(e);
+            console.dir(error);
         }
     };
 
@@ -469,9 +459,9 @@ export default class ServerBotStore {
                 msg: bot_create.message,
             });
             this.getBotList(false);
-        } catch (e) {
+        } catch (error) {
             // eslint-disable-next-line no-console
-            console.dir(e);
+            console.dir(error);
         }
     };
 
@@ -493,9 +483,9 @@ export default class ServerBotStore {
                 msg: bot_remove.message || localize('Bot deleted successfully.'),
                 bot_id,
             });
-        } catch (e) {
+        } catch (error) {
             // eslint-disable-next-line no-console
-            console.dir(e);
+            console.dir(error);
         }
     };
 
@@ -505,7 +495,8 @@ export default class ServerBotStore {
                 bot_id,
                 status: 'starting',
             };
-            this.subscribeToBotNotification(bot_id);
+            if (!this.subscriptions[bot_id]) this.subscribeToBotNotification(bot_id);
+
             const { bot_start, error } = await api_base.api.send({
                 bot_start: 1,
                 bot_id,
@@ -521,13 +512,15 @@ export default class ServerBotStore {
             this.setBotList(bot_list);
             this.active_bot = bot_list[index];
 
+            const msg = bot_start?.message || localize('Bot started successfully.');
+            botNotification(msg);
             this.onJournalMessage(JOURNAL_TYPE.INFO, {
-                msg: bot_start?.message || localize('Bot started successfully.'),
+                msg,
                 bot_id,
             });
-        } catch (e) {
+        } catch (error) {
             // eslint-disable-next-line no-console
-            console.dir(e);
+            console.dir(error);
         }
     };
 
@@ -563,9 +556,9 @@ export default class ServerBotStore {
                 msg: bot_stop?.message || localize('Bot stopped successfully.'),
                 bot_id,
             });
-        } catch (e) {
+        } catch (error) {
             // eslint-disable-next-line no-console
-            console.dir(e);
+            console.dir(error);
         }
     };
 }

@@ -4,13 +4,12 @@ import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 type TErrorComponentProps = {
-    header: string;
-    is_dialog: boolean;
-    message: React.ReactNode;
-    redirect_label: string;
-    redirectOnClick: () => void;
-    should_show_refresh: boolean;
-    type: string;
+    header?: string;
+    is_dialog?: boolean;
+    message?: React.ReactNode;
+    redirect_label?: string;
+    redirectOnClick?: () => void;
+    should_show_refresh?: boolean;
 };
 
 const ErrorComponent = ({

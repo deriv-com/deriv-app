@@ -13,13 +13,18 @@ type TFileInfo = {
     fileType: File['type'];
 };
 
-type TDocumentUploadStatus = 'error' | 'loading' | 'idle' | 'success';
+export enum DocumentUploadStatus {
+    LOADING = 'loading',
+    IDLE = 'idle',
+    ERROR = 'error',
+    SUCCESS = 'success',
+}
 
 const REQ_TIMEOUT = 20000;
 
 const useDocumentUpload = () => {
     const { wsClient, connection } = useAPIContext();
-    const [status, setStatus] = useState<TDocumentUploadStatus>('idle');
+    const [status, setStatus] = useState<DocumentUploadStatus>(DocumentUploadStatus.IDLE);
 
     const getFileInfo = async (payload: TDocumentUploadRequestPayload): Promise<TFileInfo> => {
         if (!payload.file) return Promise.reject(new Error('No file selected'));
@@ -97,15 +102,18 @@ const useDocumentUpload = () => {
                     return;
                 }
                 if (data.error) {
+                    wsClient.ws?.removeEventListener('message', handleUploadStatus);
                     clearTimeout(timeout);
-                    setStatus('error');
+                    setStatus(DocumentUploadStatus.ERROR);
                     reject(data);
                     return;
                 }
 
                 if (data.document_upload && data.document_upload?.status === 'failure') {
+                    wsClient.ws?.removeEventListener('message', handleUploadStatus);
+
                     clearTimeout(timeout);
-                    setStatus('error');
+                    setStatus(DocumentUploadStatus.ERROR);
                     reject(data);
                     return;
                 }
@@ -113,7 +121,7 @@ const useDocumentUpload = () => {
                 if (data.document_upload && data.document_upload?.status === 'success') {
                     wsClient.ws?.removeEventListener('message', handleUploadStatus);
                     clearTimeout(timeout);
-                    setStatus('success');
+                    setStatus(DocumentUploadStatus.SUCCESS);
                     resolve(data);
                 }
             };
@@ -125,11 +133,11 @@ const useDocumentUpload = () => {
     };
 
     const upload = async (payload: TDocumentUploadRequestPayload) => {
-        setStatus('loading');
+        setStatus(DocumentUploadStatus.LOADING);
         const fileInfo = await getFileInfo(payload);
         const handshakeResponse = await handshake(fileInfo, payload);
         if (handshakeResponse.error) {
-            setStatus('error');
+            setStatus(DocumentUploadStatus.ERROR);
             return handshakeResponse;
         }
         const uploadResponse = await fileUploader(fileInfo.fileBuffer, handshakeResponse);

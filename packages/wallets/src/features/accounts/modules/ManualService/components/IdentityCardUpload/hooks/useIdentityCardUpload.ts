@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { FormikValues } from 'formik';
-import { useDocumentUpload } from '@deriv/api-v2';
+import { DocumentUploadStatus, useDocumentUpload } from '@deriv/api-v2';
 import { THooks } from '../../../../../../../types';
 import { TSelfieUploadValues, useSelfieUpload } from '../../SelfieUpload';
 
@@ -24,13 +24,18 @@ const useIdentityCardUpload = (documentIssuingCountryCode: THooks.AccountSetting
         upload: uploadSelfie,
     } = useSelfieUpload(documentIssuingCountryCode);
 
-    const isError = identityCardUploadStatus === 'error' || selfieUploadStatus === 'error';
+    const isError =
+        identityCardUploadStatus === DocumentUploadStatus.ERROR || selfieUploadStatus === DocumentUploadStatus.ERROR;
     const isLoading =
-        ((identityCardUploadStatus === 'loading' && selfieUploadStatus === 'idle') ||
-            selfieUploadStatus === 'loading') &&
+        ((identityCardUploadStatus === DocumentUploadStatus.LOADING &&
+            selfieUploadStatus === DocumentUploadStatus.IDLE) ||
+            selfieUploadStatus === DocumentUploadStatus.LOADING) &&
         !isError;
     const isSuccess =
-        !isError && !isLoading && identityCardUploadStatus === 'success' && selfieUploadStatus === 'success';
+        !isError &&
+        !isLoading &&
+        identityCardUploadStatus === DocumentUploadStatus.SUCCESS &&
+        selfieUploadStatus === DocumentUploadStatus.SUCCESS;
 
     const initialValues = {
         ...initialValuesSelfieUpload,
@@ -39,8 +44,8 @@ const useIdentityCardUpload = (documentIssuingCountryCode: THooks.AccountSetting
     } as TIdentityCardUploadValues;
 
     const resetUploadStatus = () => {
-        resetIdentityCardUploadStatus('idle');
-        resetSelfieUploadStatus('idle');
+        resetIdentityCardUploadStatus(DocumentUploadStatus.IDLE);
+        resetSelfieUploadStatus(DocumentUploadStatus.IDLE);
     };
 
     const uploadFront = useCallback(

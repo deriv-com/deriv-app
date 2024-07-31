@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { FormikValues } from 'formik';
-import { useDocumentUpload } from '@deriv/api-v2';
+import { DocumentUploadStatus, useDocumentUpload } from '@deriv/api-v2';
 import { THooks } from '../../../../../../../types';
 import { TSelfieUploadValues, useSelfieUpload } from '../../SelfieUpload';
 
@@ -24,13 +24,18 @@ const useDrivingLicenseUpload = (documentIssuingCountryCode: THooks.AccountSetti
         upload: uploadSelfie,
     } = useSelfieUpload(documentIssuingCountryCode);
 
-    const isError = drivingLicenseUploadStatus === 'error' || selfieUploadStatus === 'error';
+    const isError =
+        drivingLicenseUploadStatus === DocumentUploadStatus.ERROR || selfieUploadStatus === DocumentUploadStatus.ERROR;
     const isLoading =
-        ((drivingLicenseUploadStatus === 'loading' && selfieUploadStatus === 'idle') ||
-            selfieUploadStatus === 'loading') &&
+        ((drivingLicenseUploadStatus === DocumentUploadStatus.LOADING &&
+            selfieUploadStatus === DocumentUploadStatus.IDLE) ||
+            selfieUploadStatus === DocumentUploadStatus.LOADING) &&
         !isError;
     const isSuccess =
-        !isError && !isLoading && drivingLicenseUploadStatus === 'success' && selfieUploadStatus === 'success';
+        !isError &&
+        !isLoading &&
+        drivingLicenseUploadStatus === DocumentUploadStatus.SUCCESS &&
+        selfieUploadStatus === DocumentUploadStatus.SUCCESS;
 
     const initialValues = {
         ...initialValuesSelfieUpload,
@@ -39,8 +44,8 @@ const useDrivingLicenseUpload = (documentIssuingCountryCode: THooks.AccountSetti
     } as TDrivingLicenseUploadValues;
 
     const resetUploadStatus = () => {
-        resetDrivingLicenseUploadStatus('idle');
-        resetSelfieUploadStatus('idle');
+        resetDrivingLicenseUploadStatus(DocumentUploadStatus.IDLE);
+        resetSelfieUploadStatus(DocumentUploadStatus.IDLE);
     };
 
     const uploadFront = useCallback(

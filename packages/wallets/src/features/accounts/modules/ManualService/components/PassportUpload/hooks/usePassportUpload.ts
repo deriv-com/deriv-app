@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { FormikValues } from 'formik';
-import { useDocumentUpload } from '@deriv/api-v2';
+import { DocumentUploadStatus, useDocumentUpload } from '@deriv/api-v2';
 import { THooks } from '../../../../../../../types';
 import { TSelfieUploadValues, useSelfieUpload } from '../../SelfieUpload';
 
@@ -23,11 +23,17 @@ const usePassportUpload = (documentIssuingCountryCode: THooks.AccountSettings['c
         upload: uploadSelfie,
     } = useSelfieUpload(documentIssuingCountryCode);
 
-    const isError = passportUploadStatus === 'error' || selfieUploadStatus === 'error';
+    const isError =
+        passportUploadStatus === DocumentUploadStatus.ERROR || selfieUploadStatus === DocumentUploadStatus.ERROR;
     const isLoading =
-        ((passportUploadStatus === 'loading' && selfieUploadStatus === 'idle') || selfieUploadStatus === 'loading') &&
+        ((passportUploadStatus === DocumentUploadStatus.LOADING && selfieUploadStatus === DocumentUploadStatus.IDLE) ||
+            selfieUploadStatus === DocumentUploadStatus.LOADING) &&
         !isError;
-    const isSuccess = !isError && !isLoading && passportUploadStatus === 'success' && selfieUploadStatus === 'success';
+    const isSuccess =
+        !isError &&
+        !isLoading &&
+        passportUploadStatus === DocumentUploadStatus.SUCCESS &&
+        selfieUploadStatus === DocumentUploadStatus.SUCCESS;
 
     const initialValues = {
         ...initialValuesSelfieUpload,
@@ -36,8 +42,8 @@ const usePassportUpload = (documentIssuingCountryCode: THooks.AccountSettings['c
     } as TPassportUploadValues;
 
     const resetUploadStatus = () => {
-        resetPassportUploadStatus('idle');
-        resetSelfieUploadStatus('idle');
+        resetPassportUploadStatus(DocumentUploadStatus.IDLE);
+        resetSelfieUploadStatus(DocumentUploadStatus.IDLE);
     };
 
     const upload = useCallback(

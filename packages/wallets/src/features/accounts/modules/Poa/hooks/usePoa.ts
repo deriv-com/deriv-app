@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { FormikValues } from 'formik';
-import { useDocumentUpload, useSettings, useStatesList } from '@deriv/api-v2';
+import { DocumentUploadStatus, useDocumentUpload, useSettings, useStatesList } from '@deriv/api-v2';
 import { TAddressDetails, TDocumentSubmission } from '../types';
 
 type TPoaValues = TAddressDetails & TDocumentSubmission;
@@ -39,7 +39,7 @@ const usePoa = () => {
     };
 
     const resetError = () => {
-        resetDocumentUploadStatus('idle');
+        resetDocumentUploadStatus(DocumentUploadStatus.IDLE);
     };
 
     // since we call get_settings initially, isSubmissionSuccess helps us to distinguish

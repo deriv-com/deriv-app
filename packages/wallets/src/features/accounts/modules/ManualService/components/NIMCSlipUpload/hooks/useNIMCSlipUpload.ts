@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { FormikValues } from 'formik';
-import { useDocumentUpload } from '@deriv/api-v2';
+import { DocumentUploadStatus, useDocumentUpload } from '@deriv/api-v2';
 import { THooks } from '../../../../../../../types';
 import { TSelfieUploadValues, useSelfieUpload } from '../../SelfieUpload';
 
@@ -19,11 +19,17 @@ const useNIMCSlipUpload = (documentIssuingCountryCode: THooks.AccountSettings['c
         upload: uploadSelfie,
     } = useSelfieUpload(documentIssuingCountryCode);
 
-    const isError = nimcUploadStatus === 'error' || selfieUploadStatus === 'error';
+    const isError =
+        nimcUploadStatus === DocumentUploadStatus.ERROR || selfieUploadStatus === DocumentUploadStatus.ERROR;
     const isLoading =
-        ((nimcUploadStatus === 'loading' && selfieUploadStatus === 'idle') || selfieUploadStatus === 'loading') &&
+        ((nimcUploadStatus === DocumentUploadStatus.LOADING && selfieUploadStatus === DocumentUploadStatus.IDLE) ||
+            selfieUploadStatus === DocumentUploadStatus.LOADING) &&
         !isError;
-    const isSuccess = !isError && !isLoading && nimcUploadStatus === 'success' && selfieUploadStatus === 'success';
+    const isSuccess =
+        !isError &&
+        !isLoading &&
+        nimcUploadStatus === DocumentUploadStatus.SUCCESS &&
+        selfieUploadStatus === DocumentUploadStatus.SUCCESS;
 
     const initialValues = {
         ...initialValuesSelfieUpload,
@@ -31,8 +37,8 @@ const useNIMCSlipUpload = (documentIssuingCountryCode: THooks.AccountSettings['c
     } as TNIMCSlipUploadValues;
 
     const resetUploadStatus = () => {
-        resetNIMCUploadStatus('idle');
-        resetSelfieUploadStatus('idle');
+        resetNIMCUploadStatus(DocumentUploadStatus.IDLE);
+        resetSelfieUploadStatus(DocumentUploadStatus.IDLE);
     };
 
     const uploadFront = useCallback(

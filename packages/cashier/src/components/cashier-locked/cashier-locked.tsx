@@ -2,7 +2,13 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import { useStore, observer } from '@deriv/stores';
 import { EmptyState } from '@deriv/components';
-import { useCashierLocked, useDepositLocked, useIsSystemMaintenance, useMFAccountStatus } from '@deriv/hooks';
+import {
+    useCashierLocked,
+    useDepositLocked,
+    useDuplicateDOBPhone,
+    useIsSystemMaintenance,
+    useMFAccountStatus,
+} from '@deriv/hooks';
 import getMessage from './cashier-locked-provider';
 import './cashier-locked.scss';
 import { MT5_ACCOUNT_STATUS } from '@deriv/shared';
@@ -25,6 +31,7 @@ const CashierLocked = observer(() => {
     const is_cashier_locked = useCashierLocked();
     const is_system_maintenance = useIsSystemMaintenance();
     const is_deposit_locked = useDepositLocked();
+    const is_duplicate_dob_phone = useDuplicateDOBPhone();
     const history = useHistory();
 
     const state = getMessage({
@@ -40,6 +47,7 @@ const CashierLocked = observer(() => {
         is_withdrawal_locked,
         is_identity_verification_needed,
         is_pending_verification: mf_account_status === MT5_ACCOUNT_STATUS.PENDING,
+        is_duplicate_dob_phone,
     });
 
     return (

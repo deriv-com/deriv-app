@@ -448,6 +448,7 @@ type TClientStore = {
     initialized_broadcast: boolean;
     is_account_setting_loaded: boolean;
     is_deposit_lock: boolean;
+    is_duplicate_dob_phone: boolean;
     is_dxtrade_allowed: boolean;
     is_eu_country: boolean;
     is_eu: boolean;

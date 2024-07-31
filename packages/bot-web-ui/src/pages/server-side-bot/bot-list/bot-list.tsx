@@ -131,6 +131,12 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
                             onClick={() => {
                                 setFormVisibility(true);
                             }}
+                            tabIndex={0}
+                            onKeyDown={(e: React.KeyboardEvent) => {
+                                if (e.key === 'Enter') {
+                                    setFormVisibility(true);
+                                }
+                            }}
                         >
                             <Icon icon='IcAddBold' />
                         </span>

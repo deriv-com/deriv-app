@@ -38,7 +38,7 @@ const QSInput: React.FC<TQSInput> = observer(
         const [has_focus, setFocus] = React.useState(false);
         const { setFieldValue, setFieldTouched } = useFormikContext();
         const is_number = type === 'number';
-        const max_value = 999999999999;
+        const max_value = Number.MAX_SAFE_INTEGER;
 
         const handleButtonInputChange = (e: MouseEvent<HTMLButtonElement>, value: string) => {
             e?.preventDefault();

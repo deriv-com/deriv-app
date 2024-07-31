@@ -28,6 +28,12 @@ const BotListItem: React.FC<TBotListItem> = ({ handleMenuClick, item, botAction,
             onClick={() => {
                 setActiveBotId?.(item.bot_id);
             }}
+            tabIndex={0}
+            onKeyDown={(e: React.KeyboardEvent) => {
+                if (e.key === 'Enter') {
+                    setActiveBotId?.(item.bot_id);
+                }
+            }}
         >
             <div className='ssb-list__item__title'>
                 <Icon

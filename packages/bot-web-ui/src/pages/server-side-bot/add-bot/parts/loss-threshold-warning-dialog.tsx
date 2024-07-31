@@ -29,7 +29,7 @@ const LossThresholdWarningDialog = observer(() => {
     const handleDontShowAgain = () => {
         const stored_dont_show_warning_value = localStorage?.getItem('qs-dont-show-loss-threshold-warning');
         const dont_show_warning = JSON.parse(stored_dont_show_warning_value ?? 'false');
-        localStorage?.setItem('qs-dont-show-loss-threshold-warning', `${!dont_show_warning}`);
+        localStorage.setItem('qs-dont-show-loss-threshold-warning', `${!dont_show_warning}`);
     };
 
     return (

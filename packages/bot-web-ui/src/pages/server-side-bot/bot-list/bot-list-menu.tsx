@@ -22,13 +22,31 @@ const BotListMenu: React.FC<TBotListMenu> = ({ is_open, y_position, botAction, b
                 top: `${y_position}px`,
             }}
         >
-            <div className='ssb-list__menu__item' onClick={() => botAction('OPEN', bot_id)}>
+            <div
+                className='ssb-list__menu__item'
+                onClick={() => botAction('OPEN', bot_id)}
+                tabIndex={0}
+                onKeyDown={(e: React.KeyboardEvent) => {
+                    if (e.key === 'Enter') {
+                        botAction('OPEN', bot_id);
+                    }
+                }}
+            >
                 <Icon icon='IcOpen' />
                 <Text size='xxs' weight='bold'>
                     <Localize i18n_default_text='Open' />
                 </Text>
             </div>
-            <div className='ssb-list__menu__item' onClick={() => botAction('DELETE', bot_id)}>
+            <div
+                className='ssb-list__menu__item'
+                onClick={() => botAction('DELETE', bot_id)}
+                tabIndex={0}
+                onKeyDown={(e: React.KeyboardEvent) => {
+                    if (e.key === 'Enter') {
+                        botAction('DELETE', bot_id);
+                    }
+                }}
+            >
                 <Icon icon='IcDelete' />
                 <Text size='xxs' weight='bold'>
                     <Localize i18n_default_text='Delete' />

@@ -66,6 +66,12 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
                                             onClick={() => {
                                                 handleChange(item?.value);
                                             }}
+                                            tabIndex={0}
+                                            onKeyDown={(e: React.KeyboardEvent) => {
+                                                if (e.key === 'Enter') {
+                                                    handleChange(item?.value);
+                                                }
+                                            }}
                                         >
                                             <Text size='xs' color='prominent' weight={is_active ? 'bold ' : 'normal'}>
                                                 {item?.text}

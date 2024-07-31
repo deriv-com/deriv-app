@@ -107,11 +107,11 @@ export const getProposalInfo = (
     };
 };
 
-export const createProposalRequests = (store: TTradeStore) => {
+export const createProposalRequests = (store: TTradeStore, is_buy_without_proposal = false) => {
     const requests = {} as Record<string, ReturnType<typeof createProposalRequestForContract>>;
 
     Object.keys(store.trade_types).forEach(type => {
-        const new_req = createProposalRequestForContract(store, type);
+        const new_req = createProposalRequestForContract(store, type, is_buy_without_proposal);
         requests[type] = new_req;
     });
 
@@ -143,7 +143,11 @@ const setProposalAccumulator = (store: TTradeStore, obj_accumulator: TObjAccum) 
     }
 };
 
-const createProposalRequestForContract = (store: TTradeStore, type_of_contract: string) => {
+const createProposalRequestForContract = (
+    store: TTradeStore,
+    type_of_contract: string,
+    is_buy_without_proposal = false
+) => {
     const obj_accumulator: TObjAccum = {};
     const obj_expiry: TObjExpiry = {};
     const obj_multiplier: TObjMultiplier = {};
@@ -167,8 +171,7 @@ const createProposalRequestForContract = (store: TTradeStore, type_of_contract: 
     }
 
     return {
-        proposal: 1,
-        subscribe: 1,
+        ...(is_buy_without_proposal ? {} : { proposal: 1, subscribe: 1 }),
         amount: parseFloat(store.amount.toString()) || 0,
         basis: store.basis,
         contract_type: type_of_contract,

@@ -917,17 +917,40 @@ export default class TradeStore extends BaseStore {
         }
     };
 
+    purchaseContract = (proposal_id: string, price: string | number, is_buy_without_proposal = false) => {
+        if (is_buy_without_proposal) {
+            const requests = createProposalRequests(this, true);
+
+            const deriv_api = WS.get();
+
+            const trade_types_array = Object.keys(this.trade_types);
+
+            return deriv_api.send({
+                buy: 1,
+                price: this.amount,
+                parameters: requests[trade_types_array[0]],
+            });
+        }
+        return processPurchase(proposal_id, price);
+    };
+
     onPurchase = debounce(this.processPurchase, 300);
 
-    processPurchase(proposal_id: string, price: string | number, type: string, isMobile: boolean) {
-        if (!this.is_purchase_enabled) return;
-        if (proposal_id) {
+    processPurchase(
+        proposal_id: string,
+        price: string | number,
+        type: string,
+        isMobile: boolean,
+        is_buy_without_proposal = false
+    ) {
+        if (!this.is_purchase_enabled && !is_buy_without_proposal) return;
+        if (proposal_id || is_buy_without_proposal) {
             runInAction(() => {
                 this.is_purchase_enabled = false;
                 this.is_purchasing_contract = true;
             });
             const is_tick_contract = this.duration_unit === 't';
-            processPurchase(proposal_id, price).then(
+            this.purchaseContract(proposal_id, price, is_buy_without_proposal).then(
                 action((response: TResponse<Buy, BuyContractResponse, 'buy'>) => {
                     if (!this.is_trade_component_mounted) {
                         this.enablePurchase();
@@ -955,7 +978,11 @@ export default class TradeStore extends BaseStore {
                             }
                         }
                     } else if (response.buy) {
-                        if (this.proposal_info[type] && this.proposal_info[type].id !== proposal_id) {
+                        if (
+                            this.proposal_info[type] &&
+                            this.proposal_info[type].id !== proposal_id &&
+                            !is_buy_without_proposal
+                        ) {
                             throw new Error('Proposal ID does not match.');
                         }
                         const contract_data: TContractDataForGTM = {
@@ -1010,12 +1037,15 @@ export default class TradeStore extends BaseStore {
                             if (!isMobile) {
                                 this.root_store.ui.openPositionsDrawer();
                             }
-                            this.proposal_info = {};
-                            this.forgetAllProposal();
-                            this.purchase_info = response;
-                            this.proposal_requests = {};
-                            this.debouncedProposal();
-                            this.clearLimitOrderBarriers();
+
+                            if (!is_buy_without_proposal) {
+                                this.proposal_info = {};
+                                this.forgetAllProposal();
+                                this.purchase_info = response;
+                                this.proposal_requests = {};
+                                this.debouncedProposal();
+                                this.clearLimitOrderBarriers();
+                            }
                             this.pushPurchaseDataToGtm(contract_data);
                             if (this.root_store.ui.is_mobile) {
                                 const shortcode = response.buy.shortcode;
@@ -1052,7 +1082,9 @@ export default class TradeStore extends BaseStore {
                             return;
                         }
                     }
-                    this.forgetAllProposal();
+                    if (!is_buy_without_proposal) {
+                        this.forgetAllProposal();
+                    }
                     this.purchase_info = response;
                     this.enablePurchase();
                     this.is_purchasing_contract = false;

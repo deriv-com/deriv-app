@@ -129,6 +129,7 @@ export default class TradersHubStore extends BaseStore {
             cleanup: action.bound,
             setIsSetupRealAccountOrGoToDemoModalVisible: action.bound,
             dynamic_available_platforms: computed,
+            has_available_cfd_account: computed,
         });
 
         reaction(
@@ -182,6 +183,13 @@ export default class TradersHubStore extends BaseStore {
                 this.selected_region = default_region();
             }
         );
+
+        // reaction(
+        //     () => [this.available_mt5_accounts, this.available_dxtrade_accounts, this.available_ctrader_accounts],
+        //     () => {
+        //         this.has_available_cfd_account
+        //     }
+        // )
     }
 
     async setSwitchEU() {
@@ -858,5 +866,13 @@ export default class TradersHubStore extends BaseStore {
             available_accounts.ctrader = true;
         }
         return available_accounts;
+    }
+
+    get has_available_cfd_account() {
+        return (
+            this.combined_cfd_mt5_accounts.length > 0 ||
+            this.available_ctrader_accounts.length > 0 ||
+            this.available_dxtrade_accounts.length > 0
+        );
     }
 }

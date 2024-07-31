@@ -200,7 +200,6 @@ const AppWrapper = observer(() => {
                                 }
                                 id='id-server-bot'
                             >
-                                {/* <ServerBot /> */}
                                 <ServerSideBot />
                             </div>
                         ) : null}

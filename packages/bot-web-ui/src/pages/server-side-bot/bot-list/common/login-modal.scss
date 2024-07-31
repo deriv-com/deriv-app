@@ -2,6 +2,8 @@
     position: absolute;
     top: 0;
     right: 0;
-    cursor: pointer;
-    padding: 2.4rem;
+    padding: 24px;
+    &:hover {
+        cursor: pointer;
+    }
 }

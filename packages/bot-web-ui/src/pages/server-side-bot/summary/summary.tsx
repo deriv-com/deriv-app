@@ -141,7 +141,7 @@ const Summary: React.FC = observer(() => {
                     </ul>
                 </div>
                 <div className='ssb-summary__footer__actions'>
-                    <Button disabled={!has_summary} onClick={() => resetTransactions()}>
+                    <Button secondary disabled={!has_summary} onClick={() => resetTransactions()}>
                         <Localize i18n_default_text='Reset' />
                     </Button>
                 </div>

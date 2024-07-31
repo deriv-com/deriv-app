@@ -1,10 +1,9 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, waitFor } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import QuickStrategy from '../add-bot';
+import AddBot from '../add-bot';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
@@ -204,7 +203,9 @@ describe('<QuickStrategy />', () => {
     });
 
     it('should render QuickStrategy', async () => {
-        const { container } = render(<QuickStrategy />, {
+        const mock_setVisibility = jest.fn();
+        const is_open = false;
+        const { container } = render(<AddBot setFormVisibility={mock_setVisibility} is_open={is_open} />, {
             wrapper,
         });
 
@@ -219,7 +220,9 @@ describe('<QuickStrategy />', () => {
                 is_mobile: false,
             },
         });
-        render(<QuickStrategy />, {
+        const mock_setVisibility = jest.fn();
+        const is_open = false;
+        render(<AddBot setFormVisibility={mock_setVisibility} is_open={is_open} />, {
             wrapper,
         });
     });

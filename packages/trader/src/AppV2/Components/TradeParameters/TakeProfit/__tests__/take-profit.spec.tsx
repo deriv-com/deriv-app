@@ -63,9 +63,7 @@ describe('TakeProfit', () => {
 
         userEvent.click(screen.getByText(take_profit_trade_param));
 
-        expect(
-            screen.getByText("Take profit can't be adjusted for ongoing accumulator contracts.")
-        ).toBeInTheDocument();
+        expect(screen.getByText('Note: Cannot be adjusted for ongoing accumulator contracts.')).toBeInTheDocument();
     });
 
     it('should enable input, when user clicks on ToggleSwitch', () => {

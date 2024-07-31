@@ -33,6 +33,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     const [error_message, setErrorMessage] = React.useState<React.ReactNode>();
 
     const input_ref = React.useRef<HTMLInputElement>(null);
+    const focused_input_ref = React.useRef<HTMLInputElement>(null);
     const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
 
     const min_take_profit = validation_params?.take_profit?.min;
@@ -76,7 +77,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
             }
 
             clearTimeout(focus_timeout.current);
-            focus_timeout.current = focusAndOpenKeyboard(input_ref.current);
+            focus_timeout.current = focusAndOpenKeyboard(focused_input_ref.current, input_ref.current);
         } else {
             input_ref.current?.blur();
             setErrorMessage('');
@@ -126,6 +127,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                     decimals={decimals}
                     error_message={error_message}
                     is_enabled={is_enabled}
+                    is_accumulator={is_accumulator}
                     message={getInputMessage()}
                     onToggleSwitch={onToggleSwitch}
                     onInputChange={onInputChange}
@@ -137,7 +139,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
         },
         {
             id: 2,
-            component: <TakeProfitDescription is_accumulator={is_accumulator} />,
+            component: <TakeProfitDescription />,
         },
     ];
 
@@ -168,6 +170,8 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                         pages={action_sheet_content}
                         title={<Localize i18n_default_text='Take profit' />}
                     />
+                    {/* this input with inline styles is needed to fix a focus issue in Safari */}
+                    <input ref={focused_input_ref} style={{ height: 0, opacity: 0, display: 'none' }} />
                 </ActionSheet.Portal>
             </ActionSheet.Root>
         </React.Fragment>

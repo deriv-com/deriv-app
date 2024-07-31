@@ -50,21 +50,17 @@ export const isDigitContractWinning = (
     return win_conditions[contract_type];
 };
 
-export const focusAndOpenKeyboard = (element?: HTMLInputElement | null) => {
-    if (element) {
-        // Align temporary input element approximately and prevent scroll so the cursor doesn't jump around
-        const placeholder_element = document.createElement('input');
-        placeholder_element.style.height = '0px';
-        placeholder_element.style.opacity = '0px';
-        // Put this temporary input element as a child of the page <body> and focus on it
-        document.body.appendChild(placeholder_element);
-        placeholder_element.focus({ preventScroll: true });
+export const focusAndOpenKeyboard = (focused_input?: HTMLInputElement | null, main_input?: HTMLInputElement | null) => {
+    if (main_input && focused_input) {
+        // Reveal a temporary input element and put focus on it
+        focused_input.style.display = 'block';
+        focused_input.focus({ preventScroll: true });
 
-        // The keyboard is open, so now adding a delayed focus on the target element and remove temporary input element
+        // The keyboard is open, so now adding a delayed focus on the target element and hide the temporary input element
         return setTimeout(() => {
-            element.focus();
-            element.click();
-            document.body.removeChild(placeholder_element);
+            main_input.focus();
+            main_input.click();
+            focused_input.style.display = 'none';
         }, 300);
     }
 };

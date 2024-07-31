@@ -90,11 +90,15 @@ describe('focusAndOpenKeyboard', () => {
 
         const MockComponent = () => {
             const input_ref = React.useRef<HTMLInputElement>(null);
+            const focused_input_ref = React.useRef<HTMLInputElement>(null);
 
             return (
                 <React.Fragment>
                     <input type='number' ref={input_ref} />
-                    <button onClick={() => focusAndOpenKeyboard(input_ref.current)}>Focus</button>
+                    <button onClick={() => focusAndOpenKeyboard(focused_input_ref.current, input_ref.current)}>
+                        Focus
+                    </button>
+                    <input ref={focused_input_ref} style={{ height: 0, opacity: 0, display: 'none' }} />
                 </React.Fragment>
             );
         };

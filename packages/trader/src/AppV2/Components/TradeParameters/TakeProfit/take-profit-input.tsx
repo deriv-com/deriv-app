@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActionSheet, Text, ToggleSwitch, TextFieldWithSteppers } from '@deriv-com/quill-ui';
+import { ActionSheet, CaptionText, Text, ToggleSwitch, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 
 type TTakeProfitInputProps = {
@@ -7,6 +7,7 @@ type TTakeProfitInputProps = {
     decimals?: number;
     error_message?: React.ReactNode;
     is_enabled?: boolean;
+    is_accumulator?: boolean;
     message?: React.ReactNode;
     onToggleSwitch: (new_value: boolean) => void;
     onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -21,6 +22,7 @@ const TakeProfitInput = React.forwardRef(
             decimals,
             error_message,
             is_enabled,
+            is_accumulator,
             message,
             onToggleSwitch,
             onInputChange,
@@ -59,6 +61,11 @@ const TakeProfitInput = React.forwardRef(
                             onClick={() => onToggleSwitch(true)}
                             data-testid='dt_take_profit_overlay'
                         />
+                    )}
+                    {is_accumulator && (
+                        <CaptionText color='quill-typography__color--subtle' className='take-profit__accu-information'>
+                            <Localize i18n_default_text='Note: Cannot be adjusted for ongoing accumulator contracts.' />
+                        </CaptionText>
                     )}
                 </ActionSheet.Content>
                 <ActionSheet.Footer

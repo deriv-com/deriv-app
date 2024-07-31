@@ -6,12 +6,18 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
     &__wrapper {
         position: relative;
         height: calc(400px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $FOOTER_BUTTON_HEIGHT);
-        padding-block-start: 0;
+        padding-block: 0;
 
         &--definition {
             height: calc(400px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
             padding-block-start: 0;
         }
+    }
+
+    &__accu-information {
+        position: absolute;
+        bottom: 0;
+        inset-inline-start: var(--component-actionSheet-spacing-padding-md);
     }
 
     &__warning {

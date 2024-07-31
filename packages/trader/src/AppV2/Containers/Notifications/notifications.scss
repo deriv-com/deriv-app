@@ -11,4 +11,12 @@
     &--purchase {
         fill: var(--component-textIcon-statusNormal-information);
     }
+
+    &--won {
+        fill: var(--core-color-solid-green-900);
+    }
+
+    &--lost {
+        fill: var(--core-color-solid-red-900);
+    }
 }

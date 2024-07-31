@@ -3,22 +3,29 @@ import { action, computed, observable, reaction, makeObservable, override } from
 import { computedFn } from 'mobx-utils';
 import {
     ChartBarrierStore,
+    contractCancelled,
+    contractSold,
+    extractInfoFromShortcode,
+    filterDisabledPositions,
+    formatMoney,
+    formatPortfolioPosition,
+    getContractPath,
+    getCurrentTick,
+    getTotalProfit,
+    getTradeTypeName,
+    getDisplayStatus,
+    getDurationPeriod,
+    getDurationTime,
+    getDurationUnitText,
+    getEndTime,
+    getMarketName,
     isAccumulatorContract,
     isEmptyObject,
     isEnded,
     isValidToSell,
     isMultiplierContract,
-    getCurrentTick,
-    getDisplayStatus,
+    isHighLow,
     WS,
-    filterDisabledPositions,
-    formatPortfolioPosition,
-    contractCancelled,
-    contractSold,
-    getDurationPeriod,
-    getDurationTime,
-    getDurationUnitText,
-    getEndTime,
     TRADE_TYPES,
     removeBarrier,
     routes,
@@ -26,7 +33,7 @@ import {
 } from '@deriv/shared';
 import { Money } from '@deriv/components';
 import { Analytics } from '@deriv-com/analytics';
-
+import { localize } from '@deriv/translations';
 import BaseStore from './base-store';
 
 export default class PortfolioStore extends BaseStore {
@@ -35,6 +42,7 @@ export default class PortfolioStore extends BaseStore {
     positions_map = {};
     is_loading = true;
     error = '';
+    addNotificationBannerCallback;
 
     //accumulators
     open_accu_contract = null;
@@ -85,6 +93,7 @@ export default class PortfolioStore extends BaseStore {
             onUnmount: override,
             totals: computed,
             setActivePositions: action.bound,
+            setAddNotificationBannerCallback: action.bound,
             is_active_empty: computed,
             active_positions_count: computed,
             is_empty: computed,
@@ -121,6 +130,10 @@ export default class PortfolioStore extends BaseStore {
             WS.forgetAll('proposal_open_contract', 'transaction');
         }
         this.has_subscribed_to_poc_and_transaction = false;
+    }
+
+    setAddNotificationBannerCallback(callback) {
+        this.addNotificationBannerCallback = callback;
     }
 
     portfolioHandler(response) {
@@ -413,7 +426,52 @@ export default class PortfolioStore extends BaseStore {
             getEndTime(contract_response) &&
             window.location.pathname === routes.trade
         ) {
-            this.root_store.notifications.addTradeNotification(this.positions[i].contract_info);
+            const contract_info = this.positions[i].contract_info;
+            const {
+                contract_id,
+                contract_type: trade_type,
+                currency,
+                profit,
+                shortcode,
+                status,
+                underlying,
+            } = contract_info;
+
+            const new_notification_id = `${contract_id}_${status}`;
+            if (
+                this.root_store.notifications.trade_notifications.some(
+                    ({ id: notification_id }) => notification_id === new_notification_id
+                )
+            )
+                return;
+
+            const is_won = status === 'won';
+            const extracted_info_from_shortcode = extractInfoFromShortcode(shortcode);
+            const symbol = getMarketName(underlying ?? extracted_info_from_shortcode.underlying);
+            const contract_type = getTradeTypeName(trade_type, {
+                isHighLow: isHighLow({ shortcode }),
+                showMainTitle: true,
+            });
+            const contract_type_with_subtype = `${contract_type} ${getTradeTypeName(trade_type, {
+                isHighLow: isHighLow({ shortcode }),
+            })}`.trim();
+            const calculated_profit =
+                isMultiplierContract(trade_type) && !isNaN(profit) ? getTotalProfit(contract_info) : profit;
+            const formatted_profit = `${is_won ? localize('Profit') : localize('Loss')}: ${
+                is_won ? '+' : ''
+            }${formatMoney(currency, calculated_profit, true, 0, 0)} ${currency}`;
+
+            this.addNotificationBannerCallback?.(
+                {
+                    message: `${contract_type_with_subtype} - ${symbol}`,
+                    redirectTo: getContractPath(contract_id),
+                    title: formatted_profit,
+                    type: is_won ? 'success' : 'error',
+                },
+                status
+            );
+
+            this.root_store.notifications.addTradeNotification(contract_info);
         }
     };
 

@@ -932,7 +932,7 @@ export default class TradeStore extends BaseStore {
         price: string | number,
         type: string,
         isMobile: boolean,
-        callback?: (params: { message: string; redirectTo: string; timestamp: number; title: string }) => void
+        callback?: (params: { message: string; redirectTo: string; title: string }) => void
     ) {
         if (!this.is_purchase_enabled) return;
         if (proposal_id) {
@@ -1056,7 +1056,6 @@ export default class TradeStore extends BaseStore {
                                 callback?.({
                                     message: `${contract_type_with_subtype} - ${symbol}`,
                                     redirectTo: getContractPath(contract_id),
-                                    timestamp: response.buy.purchase_time,
                                     title: formatted_stake,
                                 });
 

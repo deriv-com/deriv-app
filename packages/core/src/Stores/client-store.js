@@ -489,7 +489,7 @@ export default class ClientStore extends BaseStore {
         );
 
         reaction(
-            () => [this.clients_country],
+            () => [this.is_logged_in, this.clients_country],
             async () => {
                 if (!this.is_logged_in && this.clients_country) {
                     await this.setMT5TradingPlatformAvailableAccounts();

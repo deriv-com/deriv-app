@@ -147,6 +147,7 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.common.current_language,
                 this.financial_restricted_countries,
                 this.root_store.client.trading_platform_available_accounts,
+                this.root_store.client.ctrader_trading_platform_available_accounts,
             ],
             () => {
                 this.getAvailablePlatforms();

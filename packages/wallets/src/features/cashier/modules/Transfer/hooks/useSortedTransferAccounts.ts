@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { MT5MarketTypeDetails, PlatformDetails } from '../../../constants';
+import { MT5MarketTypeDetails, PlatformDetails } from '../../../constants/constants';
 import { getMarketType } from '../../../helpers';
 import { TAccount, TAccountsList } from '../types';
 
@@ -17,11 +17,12 @@ export default useSortedTransferAccounts;
 
 /** A custom hook that sort trading and wallet accounts to display on the screen. */
 const sortWalletsAccounts = (a: TAccount, b: TAccount) => {
-    if (!a?.accountName || !b?.accountName) return 0;
+    if (!a?.currency || !b?.currency) return 0;
+
     if (a.account_type === 'doughflow' && b.account_type === 'doughflow') {
-        return a.accountName.localeCompare(b.accountName);
+        return a.currency.localeCompare(b.currency);
     } else if (a.account_type === 'crypto' && b.account_type === 'crypto') {
-        return a.accountName.localeCompare(b.accountName);
+        return a.currency.localeCompare(b.currency);
     } else if (a.account_type === 'doughflow') {
         // 'doughflow' comes first
         return -1;

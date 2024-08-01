@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { THooks, TWalletLandingCompanyName } from '../../../../../types';
-import { PlatformDetails } from '../../../constants';
+import { PlatformDetails } from '../../../constants/constants';
 import { getAccountName, getLandingCompanyNameOfMT5Account, getMarketType } from '../../../helpers';
 
 /** A custom hook that enhances the transfer accounts response by adding additional properties for convenient UI rendering. */

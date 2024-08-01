@@ -1,3 +1,5 @@
+import React from 'react';
+import { Localize } from '@deriv-com/translations';
 import { TMessageFnProps } from '../../../types';
 
 const transferFeesBetweenWalletsMessageFn = ({
@@ -37,18 +39,29 @@ const transferFeesBetweenWalletsMessageFn = ({
         sourceAccount.currencyConfig.fractional_digits
     );
 
-    const text =
-        'Fee: {{feeMessageText}} ({{feePercentage}}% transfer fee or {{minimumFeeText}}, whichever is higher, applies for fund transfers between your {{fiatAccountName}}{{conjunction}} cryptocurrency Wallets)';
-    const values = {
-        conjunction: isTransferBetweenCryptoWallets ? '' : ' Wallet and ',
-        feeMessageText,
-        feePercentage,
-        fiatAccountName: isTransferBetweenCryptoWallets ? '' : fiatAccount?.wallet_currency_type,
-        minimumFeeText,
-    };
+    const message = isTransferBetweenCryptoWallets ? (
+        <Localize
+            i18n_default_text='Fee: {{feeMessageText}} ({{feePercentage}}% transfer fee or {{minimumFeeText}}, whichever is higher, applies for fund transfers between your cryptocurrency Wallets)'
+            values={{
+                feeMessageText,
+                feePercentage,
+                minimumFeeText,
+            }}
+        />
+    ) : (
+        <Localize
+            i18n_default_text='Fee: {{feeMessageText}} ({{feePercentage}}% transfer fee or {{minimumFeeText}}, whichever is higher, applies for fund transfers between your {{currencyType}} Wallet and cryptocurrency Wallets)'
+            values={{
+                currencyType: fiatAccount?.wallet_currency_type,
+                feeMessageText,
+                feePercentage,
+                minimumFeeText,
+            }}
+        />
+    );
 
     return {
-        message: { text, values },
+        message,
         type: 'info' as const,
     };
 };

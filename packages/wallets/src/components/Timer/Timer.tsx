@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useCountdown } from 'usehooks-ts';
-import { WalletText } from '../Base';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 
 type TTimerProps = {
     countStart?: number;
@@ -25,9 +26,9 @@ const Timer = ({ countStart = 60, intervalMs = 1000, onComplete }: TTimerProps) 
     }, [count, onComplete, resetCountdown, startCountdown]);
 
     return (
-        <WalletText as='p' color='less-prominent' size='sm'>
-            {`${count}s`}
-        </WalletText>
+        <Text as='p' color='less-prominent' size='sm'>
+            <Localize i18n_default_text='{{counts}}s' values={{ count }} />
+        </Text>
     );
 };
 

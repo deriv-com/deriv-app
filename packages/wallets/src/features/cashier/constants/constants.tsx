@@ -1,3 +1,5 @@
+import React from 'react';
+import { Localize } from '@deriv-com/translations';
 import { TMarketTypes, TMT5LandingCompanyName, TWalletLandingCompanyName } from '../../../types';
 
 type TDefinedMT5LandingCompanyName = Exclude<TMT5LandingCompanyName, 'malta' | 'seychelles' | undefined>;
@@ -10,12 +12,12 @@ interface TDefinedMT5LandingCompanyDetails {
 interface TMT5MarketTypeDetails {
     landingCompany?: Record<TWalletLandingCompanyName, TWalletLandingCompanyDetails>;
     name: TMarketTypes.All;
-    title: string;
+    title: JSX.Element | string;
 }
 
 interface TWalletLandingCompanyDetails {
     name: TWalletLandingCompanyName;
-    title: string;
+    title: JSX.Element | string;
 }
 
 export const LandingCompanyDetails: Record<TDefinedMT5LandingCompanyName, TDefinedMT5LandingCompanyDetails> = {
@@ -44,56 +46,56 @@ export const LandingCompanyDetails: Record<TDefinedMT5LandingCompanyName, TDefin
 export const MT5MarketTypeDetails: Record<TMarketTypes.All, TMT5MarketTypeDetails> = {
     all: {
         name: 'all',
-        title: 'MT5 Swap-Free',
+        title: <Localize i18n_default_text='MT5 Swap-Free' />,
     },
     financial: {
         landingCompany: {
             malta: {
                 name: 'malta',
-                title: 'MT5 CFDs',
+                title: <Localize i18n_default_text='MT5 CFDs' />,
             },
             svg: {
                 name: 'svg',
-                title: 'MT5 Financial',
+                title: <Localize i18n_default_text='MT5 Financial' />,
             },
             virtual: {
                 name: 'virtual',
-                title: 'MT5 CFDs',
+                title: <Localize i18n_default_text='MT5 CFDs' />,
             },
         },
         name: 'financial',
-        title: 'MT5 Financial',
+        title: <Localize i18n_default_text='MT5 Financial' />,
     },
     synthetic: {
         name: 'synthetic',
-        title: 'MT5 Standard',
+        title: <Localize i18n_default_text='MT5 Standard' />,
     },
 } as const;
 
 export const PlatformDetails = {
     binary: {
         name: 'binary',
-        title: 'BinaryBot',
+        title: <Localize i18n_default_text='BinaryBot' />,
     },
     ctrader: {
         name: 'ctrader',
-        title: 'Deriv cTrader',
+        title: <Localize i18n_default_text='Deriv cTrader' />,
     },
     derivez: {
         name: 'derivez',
-        title: 'DerivEZ',
+        title: <Localize i18n_default_text='DerivEZ' />,
     },
     dxtrade: {
         name: 'dxtrade',
-        title: 'Deriv X',
+        title: <Localize i18n_default_text='Deriv X' />,
     },
     mt5: {
         marketType: { ...MT5MarketTypeDetails },
         name: 'mt5',
-        title: 'Deriv MT5',
+        title: <Localize i18n_default_text='Deriv MT5' />,
     },
     standard: {
         name: 'standard',
-        title: 'Options',
+        title: <Localize i18n_default_text='Options' />,
     },
 } as const;

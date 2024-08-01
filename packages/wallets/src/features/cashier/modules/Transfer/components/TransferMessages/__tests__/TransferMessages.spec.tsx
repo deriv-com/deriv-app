@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormikContext } from 'formik';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
-import { useTransferMessages } from '../../../hooks';
+import useTransferMessages from '../../../hooks/useTransferMessages';
 import { useTransfer } from '../../../provider';
 import TransferMessages from '../TransferMessages';
 
@@ -10,9 +10,7 @@ jest.mock('formik', () => ({
     useFormikContext: jest.fn(),
 }));
 
-jest.mock('../../../hooks', () => ({
-    useTransferMessages: jest.fn(),
-}));
+jest.mock('../../../hooks/useTransferMessages', () => jest.fn());
 
 jest.mock('../../../provider', () => ({
     useTransfer: jest.fn(),
@@ -40,12 +38,12 @@ describe('TransferMessages', () => {
         (useTransferMessages as jest.Mock).mockReturnValue([
             {
                 action: { buttonLabel: 'Action', navigateTo: '/action', shouldOpenInNewTab: true },
-                message: { text: 'Error message', values: {} },
+                message: 'Error message',
                 type: 'error',
             },
             {
                 action: null,
-                message: { text: 'Info message', values: {} },
+                message: 'Info message',
                 type: 'info',
             },
         ]);

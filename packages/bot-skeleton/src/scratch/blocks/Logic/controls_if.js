@@ -246,7 +246,6 @@ Blockly.Blocks.controls_if = {
         }
     },
     reconnectChildBlocks(opt_value_conns, opt_statement_conns, opt_else_statement_conns) {
-        ``;
         const value_connections = opt_value_conns ?? this.value_connections;
         const statement_connections = opt_statement_conns ?? this.statement_connections;
         const else_statement_connection = opt_else_statement_conns ?? this.else_statement_connection;

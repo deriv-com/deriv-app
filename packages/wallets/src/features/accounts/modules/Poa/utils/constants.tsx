@@ -6,6 +6,7 @@ import {
     DerivLightIcEnvelopeIcon,
     DerivLightIcOldIssuedDocumentMoreThan12Icon,
 } from '@deriv/quill-icons';
+import { localize } from '@deriv-com/translations';
 
 type TExampleImageConfig = {
     description: React.ReactNode;
@@ -14,27 +15,27 @@ type TExampleImageConfig = {
 
 export const getExampleImagesConfig = (): TExampleImageConfig[] => [
     {
-        description: 'Name in document doesn’t match your Deriv profile.',
+        description: localize('Name in document doesn’t match your Deriv profile.'),
         image: DerivLightIcDocumentNameMismatchIcon,
     },
     {
-        description: 'Address in document doesn’t match address you entered above.',
+        description: localize('Address in document doesn’t match address you entered above.'),
         image: DerivLightIcDocumentAddressMismatchIcon,
     },
     {
-        description: 'Document issued more than 12-months ago.',
+        description: localize('Document issued more than 12-months ago.'),
         image: DerivLightIcOldIssuedDocumentMoreThan12Icon,
     },
     {
-        description: 'Blurry document. All information must be clear and visible.',
+        description: localize('Blurry document. All information must be clear and visible.'),
         image: DerivLightIcBlurryDocumentIcon,
     },
     {
-        description: 'Cropped document. All information must be clear and visible.',
+        description: localize('Cropped document. All information must be clear and visible.'),
         image: DerivLightIcCroppedDocumentIcon,
     },
     {
-        description: 'An envelope with your name and address.',
+        description: localize('An envelope with your name and address.'),
         image: DerivLightIcEnvelopeIcon,
     },
 ];

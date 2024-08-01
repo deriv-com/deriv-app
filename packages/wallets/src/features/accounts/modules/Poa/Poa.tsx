@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Formik, FormikValues } from 'formik';
+import { useTranslations } from '@deriv-com/translations';
 import { InlineMessage, Loader, Text } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../../../../components';
 import { THooks } from '../../../../types';
@@ -14,6 +15,7 @@ type TPoaProps = {
 };
 
 const Poa: React.FC<TPoaProps> = ({ onCompletion }) => {
+    const { localize } = useTranslations();
     const {
         errorSettings,
         initialStatus,
@@ -59,12 +61,12 @@ const Poa: React.FC<TPoaProps> = ({ onCompletion }) => {
                 return (
                     <ModalStepWrapper
                         renderFooter={() => <Footer disableNext={!isValid} onClickNext={handleSubmit} />}
-                        title='Add a real MT5 account'
+                        title={localize('Add a real MT5 account')}
                     >
                         <div className='wallets-poa'>
-                            {errorSettings && (
+                            {errorSettings?.message && (
                                 <InlineMessage variant='error'>
-                                    <Text>{errorSettings.message}</Text>
+                                    <Text>{localize(errorSettings.message)}</Text>
                                 </InlineMessage>
                             )}
                             <AddressSection />

@@ -22,8 +22,8 @@ const usePoa = () => {
     } = useDocumentUpload();
     const [isSubmissionInitiated, setIsSubmissionInitiated] = useState(false);
 
-    const isDocumentUploading = documentUploadStatus === 'loading';
-    const isDocumentUploadSuccess = documentUploadStatus === 'success';
+    const isDocumentUploading = documentUploadStatus === DocumentUploadStatus.LOADING;
+    const isDocumentUploadSuccess = documentUploadStatus === DocumentUploadStatus.SUCCESS;
     const isLoading = isDocumentUploading || isSettingsLoading || isStatesListLoading;
 
     const initialValues = {

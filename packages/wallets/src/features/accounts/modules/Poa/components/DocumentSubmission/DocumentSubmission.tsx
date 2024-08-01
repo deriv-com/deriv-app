@@ -2,6 +2,7 @@ import React from 'react';
 import { useFormikContext } from 'formik';
 import { useIsEuRegion } from '@deriv/api-v2';
 import { LabelPairedArrowUpFromBracketXlFillIcon } from '@deriv/quill-icons';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Dropzone, WalletText } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
 import { TDocumentSubmission } from '../../types';
@@ -9,29 +10,36 @@ import { getExampleImagesConfig } from '../../utils';
 import { CommonMistakesExamples } from '../CommonMistakesExamples';
 import './DocumentSubmission.scss';
 
-const listItems = [
-    'Utility bill: electricity, water, gas, or landline phone bill.',
-    'Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.',
-    'Home rental agreement: valid and current agreement.',
-];
-
 const DocumentSubmission: React.FC = () => {
+    const { localize } = useTranslations();
     const { isDesktop } = useDevice();
     const { data: isEuRegion } = useIsEuRegion();
     const { setFieldValue, values } = useFormikContext<TDocumentSubmission>();
 
+    const listItems = [
+        localize('Utility bill: electricity, water, gas, or landline phone bill.'),
+        localize(
+            'Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.'
+        ),
+        localize('Home rental agreement: valid and current agreement.'),
+    ];
+
     return (
         <div className='wallets-poa__document'>
             <div className='wallets-poa__document__title'>
-                <WalletText weight='bold'>{'Document submission'}</WalletText>
+                <WalletText weight='bold'>
+                    <Localize i18n_default_text='Document submission' />
+                </WalletText>
                 <div className='wallets-poa__document__title__divider' />
             </div>
             <div className='wallets-poa__document__container'>
                 <div className='wallets-poa__document__container__disclaimer'>
                     <WalletText size='sm' weight='bold'>
-                        {`We accept only these types of documents as proof of address. The document must be recent (issued within last ${
-                            isEuRegion ? '6' : '12'
-                        } months) and include your name and address:`}
+                        {localize(
+                            `We accept only these types of documents as proof of address. The document must be recent (issued within last ${
+                                isEuRegion ? '6' : '12'
+                            } months) and include your name and address:`
+                        )}
                     </WalletText>
 
                     <ul className='wallets-poa__document__container__disclaimer__list'>
@@ -44,7 +52,7 @@ const DocumentSubmission: React.FC = () => {
                 </div>
                 <div className='wallets-poa__document__container__common-mistakes'>
                     <WalletText size='sm' weight='bold'>
-                        {'Common mistakes'}
+                        <Localize i18n_default_text='Common mistakes' />
                     </WalletText>
 
                     <div className='wallets-common-mistakes__content'>
@@ -59,26 +67,30 @@ const DocumentSubmission: React.FC = () => {
                 </div>
                 <div className='wallets-poa__document__container__upload'>
                     <WalletText size='sm' weight='bold'>
-                        {'Upload file'}
+                        <Localize i18n_default_text='Upload file' />
                     </WalletText>
                     <Dropzone
                         defaultFile={values.poaFile}
-                        description={'Remember, selfies, pictures of houses, or non-related images will be rejected.'}
+                        description={localize(
+                            'Remember, selfies, pictures of houses, or non-related images will be rejected.'
+                        )}
                         descriptionColor='primary'
                         descriptionSize='sm'
                         fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
-                        hoverMessage='Upload your file here'
+                        hoverMessage={localize('Upload your file here')}
                         icon={<LabelPairedArrowUpFromBracketXlFillIcon fill='#C7E5E5' height='32' width='30' />}
                         maxSize={8388608}
                         onFileChange={(file?: File) => setFieldValue('poaFile', file)}
-                        title={'Drag and drop a file or click to browse your files.'}
+                        title={localize('Drag and drop a file or click to browse your files.')}
                         titleType='bold'
                     />
                     <div className='wallets-poa__document__container__upload__requirements'>
                         <WalletText size={!isDesktop ? 'xs' : 'sm'}>
-                            {'Supported formats : JPEG, JPG, PNG, PDF, and GIF only'}
+                            <Localize i18n_default_text='Supported formats : JPEG, JPG, PNG, PDF, and GIF only' />
                         </WalletText>
-                        <WalletText size={!isDesktop ? 'xs' : 'sm'}>{'Maximum size : 8MB'}</WalletText>
+                        <WalletText size={!isDesktop ? 'xs' : 'sm'}>
+                            <Localize i18n_default_text='Maximum size : 8MB' />
+                        </WalletText>
                     </div>
                 </div>
             </div>

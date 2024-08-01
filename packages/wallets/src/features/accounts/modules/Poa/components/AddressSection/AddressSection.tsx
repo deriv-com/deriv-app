@@ -1,38 +1,44 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { FormDropdown, FormField, InlineMessage, WalletText } from '../../../../../../components';
 import { TAddressDetails } from '../../types';
 import './AddressSection.scss';
 
 const AddressSection: React.FC = () => {
+    const { localize } = useTranslations();
     const { status } = useFormikContext<TAddressDetails>();
 
     return (
         <div className='wallets-address-section'>
             <div className='wallets-address-section__title'>
-                <WalletText weight='bold'>Address</WalletText>
+                <WalletText weight='bold'>
+                    <Localize i18n_default_text='Address' />
+                </WalletText>
                 <div className='wallets-address-section__title__divider' />
             </div>
             <div className='wallets-address-section__inline'>
                 <InlineMessage size='md' type='warning' variant='contained'>
                     <div className='wallets-address-section__inline-message'>
-                        For faster verification, input the same address here as in your proof of address document (see
-                        section below)
+                        <Localize
+                            i18n_default_text='For faster verification, input the same address here as in your proof of address document (see
+                        section below)'
+                        />
                     </div>
                 </InlineMessage>
             </div>
             <div className='wallets-address-section__input'>
-                <FormField label='First line of address*' name='firstLine' />
-                <FormField label='Second line of address (optional)' name='secondLine' />
-                <FormField label='Town/City*' name='townCityLine' />
+                <FormField label={localize('First line of address*')} name='firstLine' />
+                <FormField label={localize('Second line of address (optional)')} name='secondLine' />
+                <FormField label={localize('Town/City*')} name='townCityLine' />
                 <FormDropdown
                     isFullWidth
-                    label='State/Province'
+                    label={localize('State/Province')}
                     list={status.statesList}
                     listHeight='sm'
                     name='stateProvinceLine'
                 />
-                <FormField label='Postal/ZIP code' name='zipCodeLine' />
+                <FormField label={localize('Postal/ZIP code')} name='zipCodeLine' />
             </div>
         </div>
     );

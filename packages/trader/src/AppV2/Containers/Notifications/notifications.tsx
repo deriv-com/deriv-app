@@ -33,7 +33,15 @@ const Notifications = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return <NotificationBanners banners={banners} isMobile onClose={removeBanner} className='trade-notification' />;
+    return (
+        <NotificationBanners
+            autohideTimeout={4000}
+            banners={banners}
+            className='trade-notification'
+            isMobile
+            onClose={removeBanner}
+        />
+    );
 });
 
 export default Notifications;

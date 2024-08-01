@@ -49,9 +49,24 @@ describe('ErrorComponent', () => {
     });
 
     it('should render as a dialog with provided data', () => {
-        mockErrorData.header = '';
-        mockErrorData.redirect_label = '';
         render(<ErrorComponent is_dialog={true} {...mockErrorData} />);
+        expect(
+            screen.getByRole('heading', {
+                level: 1,
+                name: mockErrorData.header,
+            })
+        ).toBeInTheDocument();
+        expect(screen.getByText(mockErrorData.message)).toBeInTheDocument();
+        const buttonEl = screen.getByRole('button', {
+            name: mockErrorData.redirect_label,
+        });
+        expect(buttonEl).toBeInTheDocument();
+        fireEvent.click(buttonEl);
+        expect(mockErrorData.redirectOnClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('should render as a dialog with default data if props not porvided', () => {
+        render(<ErrorComponent is_dialog={true} />);
         expect(
             screen.getByRole('heading', {
                 level: 1,
@@ -62,7 +77,7 @@ describe('ErrorComponent', () => {
             name: /ok/i,
         });
         expect(buttonEl).toBeInTheDocument();
-        fireEvent.click(buttonEl);
-        expect(mockErrorData.redirectOnClick).toHaveBeenCalledTimes(1);
+        // fireEvent.click(buttonEl);
+        // expect(mockErrorData.redirectOnClick).toHaveBeenCalledTimes(1);
     });
 });

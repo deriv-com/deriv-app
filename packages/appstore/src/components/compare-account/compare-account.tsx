@@ -16,7 +16,6 @@ const CompareAccount = observer(({ accounts_sub_text, is_desktop }: TCompareAcco
     const history = useHistory();
     const { traders_hub } = useStore();
     const { selected_account_type } = traders_hub;
-
     const [is_traders_dashboard_tracking_enabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'ce_tradershub_dashboard_tracking',
         defaultValue: false,

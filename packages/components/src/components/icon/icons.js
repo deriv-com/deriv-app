@@ -1,5 +1,6 @@
 // auto-generated file. DO NOT MODIFY.
 
+import './appstore/ic-appstore-account.svg';
 import './appstore/ic-appstore-add-rounded.svg';
 import './appstore/ic-appstore-add-square.svg';
 import './appstore/ic-appstore-add.svg';
@@ -601,6 +602,9 @@ import './common/ic-selfie-verification-verified.svg';
 import './common/ic-selfie-verification.svg';
 import './common/ic-selfie.svg';
 import './common/ic-send-message.svg';
+import './common/ic-server-bot-loss.svg';
+import './common/ic-server-bot-profit.svg';
+import './common/ic-server-bot.svg';
 import './common/ic-share-link.svg';
 import './common/ic-share.svg';
 import './common/ic-skrill-dark.svg';
@@ -724,7 +728,6 @@ import './dxtrade/ic-dxtrade-financial-platform.svg';
 import './dxtrade/ic-dxtrade-financial.svg';
 import './dxtrade/ic-dxtrade-one-password.svg';
 import './dxtrade/ic-dxtrade-synthetic-platform.svg';
-import './flag/ic-flag-ko.svg';
 import './mt5/ic-mt5-bvi-derived.svg';
 import './mt5/ic-mt5-bvi-financial.svg';
 import './mt5/ic-mt5-bvi-standard.svg';
@@ -1045,6 +1048,8 @@ import './underlying/ic-underlying-RB_200.svg';
 import './underlying/ic-underlying-RDBEAR.svg';
 import './underlying/ic-underlying-RDBULL.svg';
 import './underlying/ic-underlying-STPRNG.svg';
+import './underlying/ic-underlying-STPRNG2.svg';
+import './underlying/ic-underlying-STPRNG5.svg';
 import './underlying/ic-underlying-WLDAUD.svg';
 import './underlying/ic-underlying-WLDEUR.svg';
 import './underlying/ic-underlying-WLDGBP.svg';

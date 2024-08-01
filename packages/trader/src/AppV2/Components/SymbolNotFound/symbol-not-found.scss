@@ -1,0 +1,16 @@
+.symbol-not-found {
+    &__container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0 var(--core-spacing-2400);
+        margin-block: auto;
+    }
+    &__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--core-spacing-200);
+    }
+}

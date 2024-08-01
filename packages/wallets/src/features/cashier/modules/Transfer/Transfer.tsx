@@ -1,8 +1,8 @@
 import React from 'react';
 import type { THooks } from '../../../../types';
+import { TransferErrorScreen } from '../../screens/TransferErrorScreen';
 import { TransferForm, TransferReceipt } from './components';
 import { TransferProvider, useTransfer } from './provider';
-import { TransferErrorScreen } from '../../screens/TransferErrorScreen';
 
 type TProps = {
     accounts: THooks.TransferAccount[];

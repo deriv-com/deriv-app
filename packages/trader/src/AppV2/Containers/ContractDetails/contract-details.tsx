@@ -2,7 +2,7 @@ import React from 'react';
 import EntryExitDetails from 'AppV2/Components/EntryExitDetails';
 import TakeProfitHistory from 'AppV2/Components/TakeProfitHistory';
 import PayoutInfo from 'AppV2/Components/PayoutInfo';
-import ChartPlaceholder from '../Chart';
+import { ChartPlaceholder } from '../Chart';
 import CardWrapper from 'AppV2/Components/CardWrapper';
 import { observer, useStore } from '@deriv/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';

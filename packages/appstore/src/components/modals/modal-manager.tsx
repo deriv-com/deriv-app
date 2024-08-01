@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useWalletMigration } from '@deriv/hooks';
 import { makeLazyLoader, moduleLoader } from '@deriv/shared';
@@ -167,6 +168,17 @@ const CTraderTransferModal = makeLazyLoader(
     () => <Loading />
 )();
 
+const SetupRealAccountOrGoToDemoModal = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "modal_setup-real-account-or-go-to-demo" */ './setup-real-account-or-go-to-demo-modal'
+                )
+        ),
+    () => <Loading />
+)();
+
 type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
 };
@@ -175,14 +187,7 @@ const ModalManager = () => {
     const { is_eligible, is_in_progress } = useWalletMigration();
     const store = useStores();
     const { common, client, modules, traders_hub, ui } = store;
-    const {
-        is_logged_in,
-        is_eu,
-        is_eu_country,
-        is_populating_mt5_account_list,
-        verification_code,
-        should_show_effortless_login_modal,
-    } = client;
+    const { is_logged_in, is_eu, is_eu_country, is_populating_mt5_account_list, verification_code } = client;
     const { platform } = common;
     const {
         current_list,
@@ -220,6 +225,7 @@ const ModalManager = () => {
         is_failed_verification_modal_visible,
         is_regulators_compare_modal_visible,
         is_wallet_migration_failed,
+        is_setup_real_account_or_go_to_demo_modal_visible,
     } = traders_hub;
 
     const [password_manager, setPasswordManager] = React.useState<{
@@ -338,12 +344,11 @@ const ModalManager = () => {
                 />
             )}
             {is_failed_verification_modal_visible && <FailedVerificationModal />}
-            {!should_show_effortless_login_modal && (
-                <React.Fragment>
-                    {is_wallet_migration_failed && <WalletsMigrationFailed />}
-                    {(is_eligible || is_real_wallets_upgrade_on || is_in_progress) && <WalletsUpgradeModal />}
-                </React.Fragment>
-            )}
+            <React.Fragment>
+                {is_wallet_migration_failed && <WalletsMigrationFailed />}
+                {(is_eligible || is_real_wallets_upgrade_on || is_in_progress) && <WalletsUpgradeModal />}
+            </React.Fragment>
+            {is_setup_real_account_or_go_to_demo_modal_visible && <SetupRealAccountOrGoToDemoModal />}
         </React.Fragment>
     );
 };

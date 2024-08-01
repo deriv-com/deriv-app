@@ -1,20 +1,20 @@
-export type TCountryList = [{ text: string; value: string }];
+import { localize } from '@deriv-com/translations';
 
 export const accountOpeningReasonList = [
     {
-        text: 'Hedging',
+        text: localize('Hedging'),
         value: 'Hedging',
     },
     {
-        text: 'Income Earning',
+        text: localize('Income Earning'),
         value: 'Income Earning',
     },
     {
-        text: 'Speculative',
+        text: localize('Speculative'),
         value: 'Speculative',
     },
     {
-        text: 'Peer-to-peer exchange',
+        text: localize('Peer-to-peer exchange'),
         value: 'Peer-to-peer exchange',
     },
 ];

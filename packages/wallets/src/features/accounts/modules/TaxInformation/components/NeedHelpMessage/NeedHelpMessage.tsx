@@ -1,4 +1,5 @@
 import React from 'react';
+import { Localize } from '@deriv-com/translations';
 import { InlineMessage, WalletText } from '../../../../../../components';
 
 const NeedHelpMessage = () => {
@@ -8,11 +9,16 @@ const NeedHelpMessage = () => {
         <div className='wallets-tax-information__message'>
             <InlineMessage type='information' variant='contained'>
                 <WalletText size='xs'>
-                    Need help with tax info? Let us know via{' '}
-                    <button className='wallets-link wallets-link__variant--bold' onClick={onClickLiveChat}>
-                        live chat
-                    </button>
-                    .
+                    <Localize
+                        components={[
+                            <button
+                                className='wallets-link wallets-link__variant--bold'
+                                key={0}
+                                onClick={onClickLiveChat}
+                            />,
+                        ]}
+                        i18n_default_text='Need help with tax info? Let us know via <0>live chat</0>.'
+                    />
                 </WalletText>
             </InlineMessage>
         </div>

@@ -1,11 +1,8 @@
 import { useMemo, useState } from 'react';
 import { FormikValues } from 'formik';
 import { useResidenceList, useSettings } from '@deriv/api-v2';
+import { useTranslations } from '@deriv-com/translations';
 import { THooks } from '../../../../../types';
-import { TCountryList } from '../utils';
-
-type TCountryName = TCountryList[number]['text'];
-type TCountryCode = TCountryList[number]['value'];
 
 type TTaxInformationValues = {
     accountOpeningReason: THooks.AccountSettings['account_opening_reason'];
@@ -16,17 +13,18 @@ type TTaxInformationValues = {
 };
 
 const useTaxInformation = () => {
+    const { localize } = useTranslations();
     const { data: residenceList, isLoading, isSuccess: isResidenceListSuccess } = useResidenceList();
     const { data: accountSettings, error, isSuccess: isAccountSettingsSuccess, update } = useSettings();
     const [isSubmissionInitiated, setIsSubmissionInitiated] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const countryCodeToPatternMapper = useMemo(() => {
-        const countryCodeToPatternMapping: Record<TCountryCode, string> = {};
+        const countryCodeToPatternMapping: Record<string, string> = {};
 
         if (isResidenceListSuccess) {
             residenceList.forEach(residence => {
-                if (residence.value && !((residence.value as TCountryCode) in countryCodeToPatternMapping)) {
+                if (residence.value && !(residence.value in countryCodeToPatternMapping)) {
                     countryCodeToPatternMapping[residence.value] = residence?.tin_format?.[0] ?? '';
                 }
             });
@@ -36,17 +34,21 @@ const useTaxInformation = () => {
 
     const countryList = useMemo(() => {
         return residenceList.map(residence => ({
-            text: residence.text as TCountryName,
-            value: residence.value as TCountryCode,
-        })) as TCountryList;
-    }, [residenceList]);
+            text: residence.text ? localize(residence.text) : '',
+            value: residence.value as string,
+        }));
+    }, [localize, residenceList]);
 
     const initialValues = {
-        accountOpeningReason: accountSettings.account_opening_reason,
-        citizenship: accountSettings.citizen,
-        placeOfBirth: accountSettings.place_of_birth,
-        taxIdentificationNumber: accountSettings.tax_identification_number ?? undefined,
-        taxResidence: accountSettings.tax_residence ?? undefined,
+        accountOpeningReason: accountSettings.account_opening_reason
+            ? localize(accountSettings.account_opening_reason)
+            : undefined,
+        citizenship: accountSettings.citizen ? localize(accountSettings.citizen) : undefined,
+        placeOfBirth: accountSettings.place_of_birth ? localize(accountSettings.place_of_birth) : undefined,
+        taxIdentificationNumber: accountSettings.tax_identification_number
+            ? localize(accountSettings.tax_identification_number)
+            : undefined,
+        taxResidence: accountSettings.tax_residence ? localize(accountSettings.tax_residence) : undefined,
     } as TTaxInformationValues;
 
     const onSubmit = (values: FormikValues | TTaxInformationValues) => {

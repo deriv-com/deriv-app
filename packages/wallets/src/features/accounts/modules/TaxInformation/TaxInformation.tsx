@@ -1,5 +1,6 @@
 import React from 'react';
 import { Formik } from 'formik';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import { FormDropdown, FormField, ModalStepWrapper, WalletText } from '../../../../components';
 import { Footer } from '../components';
@@ -18,6 +19,7 @@ type TTaxInformationProps = {
 };
 
 const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
+    const { localize } = useTranslations();
     const {
         countryCodeToPatternMapper,
         countryList,
@@ -42,7 +44,7 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                 return (
                     <ModalStepWrapper
                         renderFooter={() => <Footer disableNext={!isValid} onClickNext={handleSubmit} />}
-                        title='Add a real MT5 account'
+                        title={localize('Add a real MT5 account')}
                     >
                         <div className='wallets-tax-information'>
                             {isLoading && <Loader />}
@@ -50,18 +52,20 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                 <>
                                     <div className='wallets-tax-information__header'>
                                         <WalletText align='center' as='h2' color='prominent' weight='bold'>
-                                            Complete your personal details
+                                            <Localize i18n_default_text='Complete your personal details' />
                                         </WalletText>
                                         <WalletText align='center' size='xs'>
-                                            Any information you provide is confidential and will be used for
-                                            verification purposes only.
+                                            <Localize
+                                                i18n_default_text='Any information you provide is confidential and will be used for
+                                            verification purposes only.'
+                                            />
                                         </WalletText>
                                     </div>
                                     <NeedHelpMessage />
                                     <div className='wallets-tax-information__form'>
                                         <FormDropdown
                                             isFullWidth
-                                            label='Citizenship*'
+                                            label={localize('Citizenship*')}
                                             list={countryList}
                                             listHeight='sm'
                                             name='citizenship'
@@ -70,7 +74,7 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                         <FormDropdown
                                             disabled={initialValues?.placeOfBirth !== ''}
                                             isFullWidth
-                                            label='Place of birth*'
+                                            label={localize('Place of birth*')}
                                             list={countryList}
                                             listHeight='sm'
                                             name='placeOfBirth'
@@ -78,7 +82,7 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                         />
                                         <FormDropdown
                                             isFullWidth
-                                            label='Tax residence*'
+                                            label={localize('Tax residence*')}
                                             list={countryList}
                                             listHeight='sm'
                                             name='taxResidence'
@@ -87,7 +91,7 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                         />
                                         <FormField
                                             disabled={Boolean(!values.taxResidence || errors.taxResidence)}
-                                            label='Tax identification number*'
+                                            label={localize('Tax identification number*')}
                                             name='taxIdentificationNumber'
                                             validationSchema={getTinValidator(
                                                 countryCodeToPatternMapper[values.taxResidence ?? '']
@@ -95,7 +99,7 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                         />
                                         <FormDropdown
                                             isFullWidth
-                                            label='Account opening reason*'
+                                            label={localize('Account opening reason*')}
                                             list={accountOpeningReasonList}
                                             name='accountOpeningReason'
                                             variant='comboBox'

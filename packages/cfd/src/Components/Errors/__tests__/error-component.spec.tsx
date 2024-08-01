@@ -13,6 +13,12 @@ const mockErrorData = {
 };
 
 describe('ErrorComponent', () => {
+    beforeEach(() => {
+        jest.spyOn(global, 'location', 'get').mockReturnValue({
+            ...window.location,
+            reload: jest.fn(),
+        });
+    });
     afterEach(() => {
         cleanup();
         jest.clearAllMocks();
@@ -73,11 +79,12 @@ describe('ErrorComponent', () => {
                 name: /there was an error/i,
             })
         ).toBeInTheDocument();
+        expect(screen.getByText(/Sorry, an error occured while processing your request./i)).toBeInTheDocument();
         const buttonEl = screen.getByRole('button', {
             name: /ok/i,
         });
         expect(buttonEl).toBeInTheDocument();
-        // fireEvent.click(buttonEl);
-        // expect(mockErrorData.redirectOnClick).toHaveBeenCalledTimes(1);
+        fireEvent.click(buttonEl);
+        expect(global.location.reload).toHaveBeenCalledTimes(1);
     });
 });

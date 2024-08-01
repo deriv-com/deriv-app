@@ -1,4 +1,5 @@
 import { useStore } from '@deriv/stores';
+import { useServerTime } from '@deriv/api';
 import dayjs from 'dayjs';
 import React from 'react';
 import { WS } from '@deriv/shared';

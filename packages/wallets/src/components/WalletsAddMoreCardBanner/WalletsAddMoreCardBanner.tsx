@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useCreateWallet } from '@deriv/api-v2';
 import { LabelPairedCheckMdFillIcon, LabelPairedPlusMdFillIcon } from '@deriv/quill-icons';
-import { useTranslations } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
@@ -90,7 +90,7 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
                 }}
                 size={isMobile ? 'sm' : 'lg'}
             >
-                {isAdded ? localize('Added') : localize('Add')}
+                {isAdded ? <Localize i18n_default_text='Added' /> : <Localize i18n_default_text='Add' />}
             </WalletButton>
         </div>
     );

@@ -8,7 +8,7 @@ import {
 } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { toMoment } from '@deriv/utils';
-import { useTranslations } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
 import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
@@ -104,16 +104,18 @@ const DerivAppsGetAccount: React.FC = () => {
             <div className='wallets-deriv-apps-section__get-content'>
                 <div className='wallets-deriv-apps-section__details'>
                     <Text size='sm' weight='bold'>
-                        {localize('Options')}
+                        <Localize i18n_default_text='Options' />
                     </Text>
-                    <Text size={isDesktop ? '2xs' : 'xs'}>{localize('One options account for all platforms.')}</Text>
+                    <Text size={isDesktop ? '2xs' : 'xs'}>
+                        <Localize i18n_default_text='One options account for all platforms.' />
+                    </Text>
                 </div>
                 <WalletButton
                     color='primary-light'
                     disabled={isAccountCreationLoading || isActiveLinkedToTradingAccountLoading}
                     onClick={createTradingAccount}
                 >
-                    {localize('Get')}
+                    <Localize i18n_default_text='Get' />
                 </WalletButton>
             </div>
         </div>

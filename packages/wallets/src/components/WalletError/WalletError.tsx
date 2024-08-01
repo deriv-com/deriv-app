@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react';
 import { LegacyWarningIcon } from '@deriv/quill-icons';
-import { useTranslations } from '@deriv-com/translations';
+import { Localize } from '@deriv-com/translations';
 import useDevice from '../../hooks/useDevice';
 import { ModalStepWrapper } from '../Base';
 import WalletButton from '../Base/WalletButton/WalletButton';
@@ -17,7 +17,6 @@ type TProps = {
 
 const WalletError: React.FC<TProps> = ({ buttonText, buttonVariant = 'contained', errorMessage, onClick, title }) => {
     const { isDesktop, isMobile } = useDevice();
-    const { localize } = useTranslations();
 
     return (
         <ModalStepWrapper shouldHideHeader={isDesktop}>
@@ -27,7 +26,7 @@ const WalletError: React.FC<TProps> = ({ buttonText, buttonVariant = 'contained'
                     icon={<LegacyWarningIcon fill='#FF444F' iconSize='2xl' />}
                     renderButtons={() => (
                         <WalletButton isFullWidth={isMobile} onClick={onClick} size='lg' variant={buttonVariant}>
-                            {buttonText ?? localize('Try again')}
+                            {buttonText ?? <Localize i18n_default_text='Try again' />}
                         </WalletButton>
                     )}
                     title={title}

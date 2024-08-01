@@ -3,7 +3,7 @@ import useEmblaCarousel, { EmblaCarouselType, EmblaEventType } from 'embla-carou
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
-import { useTranslations } from '@deriv-com/translations';
+import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
@@ -47,7 +47,6 @@ const WalletsCarouselContent: React.FC<TProps> = ({ accountsActiveTabIndex }) =>
     const walletsAccountsListRef = useRef(walletAccountsList);
     const transitionNodes = useRef<HTMLElement[]>([]);
     const transitionFactor = useRef(0);
-    const { localize } = useTranslations();
 
     const getBalance = (
         loginid: string,
@@ -242,7 +241,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ accountsActiveTabIndex }) =>
             <div className='wallets-carousel-content__wrapper'>
                 <div className='wallets-carousel-content__title'>
                     <Text size='xl' weight='bold'>
-                        {localize('Trader’s Hub')}
+                        <Localize i18n_default_text='Trader’s Hub' />
                     </Text>
                 </div>
                 <div className='wallets-carousel-content__carousel' ref={walletsCarouselEmblaRef}>

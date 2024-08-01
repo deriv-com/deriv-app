@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useAuthorize } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
-import { useTranslations } from '@deriv-com/translations';
+import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useDevice from '../../hooks/useDevice';
@@ -13,7 +13,6 @@ import { WalletMarketIcon } from '../WalletMarketIcon';
 const DerivAppsTradingAccount = () => {
     const { isMobile } = useDevice();
     const history = useHistory();
-    const { localize } = useTranslations();
     const { data: authorizeData } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
@@ -27,7 +26,9 @@ const DerivAppsTradingAccount = () => {
             </div>
             <div className='wallets-deriv-apps-section__details'>
                 <div className='wallets-deriv-apps-section__title-and-badge'>
-                    <Text size='sm'>{localize('Options')}</Text>
+                    <Text size='sm'>
+                        <Localize i18n_default_text='Options' />
+                    </Text>
                     {activeWallet?.is_virtual && <WalletListCardBadge />}
                 </div>
                 {isBalanceLoading ? (

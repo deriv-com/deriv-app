@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { localize } from '@deriv-com/translations';
+import { useTranslations } from '@deriv-com/translations';
 import { WalletText } from '../../../../../components/Base';
 import { THooks } from '../../../../../types';
 import { getMarketTypeDetails } from '../../../constants';
@@ -10,6 +10,7 @@ type TJurisdictionFootNoteTitle = {
 };
 
 const JurisdictionFootNoteTitle: FC<TJurisdictionFootNoteTitle> = ({ marketType, selectedJurisdiction }) => {
+    const { localize } = useTranslations();
     let footnoteText: string | undefined;
 
     switch (selectedJurisdiction) {

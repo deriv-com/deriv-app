@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { useTranslations } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import useDevice from '../../hooks/useDevice';
 import { THooks } from '../../types';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../Base';
@@ -28,13 +28,15 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
             <div className='wallets-add-more__success-footer'>
                 <WalletButtonGroup isFlex isFullWidth>
                     <WalletButton onClick={onSecondaryButtonClick} variant='outlined'>
-                        {localize('Maybe later')}
+                        <Localize i18n_default_text='Maybe later' />
                     </WalletButton>
-                    <WalletButton onClick={onPrimaryButtonClick}>{localize('Deposit')}</WalletButton>
+                    <WalletButton onClick={onPrimaryButtonClick}>
+                        <Localize i18n_default_text='Deposit' />
+                    </WalletButton>
                 </WalletButtonGroup>
             </div>
         ),
-        [localize, onPrimaryButtonClick, onSecondaryButtonClick]
+        [onPrimaryButtonClick, onSecondaryButtonClick]
     );
     const renderIcon = useCallback(
         () => (

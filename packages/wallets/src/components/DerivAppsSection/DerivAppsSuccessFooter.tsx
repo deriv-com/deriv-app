@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useTranslations } from '@deriv-com/translations';
+import { Localize } from '@deriv-com/translations';
 import useDevice from '../../hooks/useDevice';
 import { WalletButton } from '../Base';
 import { useModal } from '../ModalProvider';
@@ -10,12 +10,11 @@ const DerivAppsSuccessFooter = () => {
     const { hide } = useModal();
     const { isDesktop } = useDevice();
     const history = useHistory();
-    const { localize } = useTranslations();
 
     return (
         <div className='wallets-deriv-apps-success-footer'>
             <WalletButton isFullWidth={!isDesktop} onClick={hide} size='lg' variant='outlined'>
-                {localize('Maybe later')}
+                <Localize i18n_default_text='Maybe later' />
             </WalletButton>
             <WalletButton
                 isFullWidth={!isDesktop}
@@ -25,7 +24,7 @@ const DerivAppsSuccessFooter = () => {
                 }}
                 size='lg'
             >
-                {localize('Transfer funds')}
+                <Localize i18n_default_text='Transfer funds' />
             </WalletButton>
         </div>
     );

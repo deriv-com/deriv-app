@@ -2,6 +2,7 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { routes } from '@deriv/shared';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import ErrorComponent from '../error-component';
 
 const mockErrorData = {
@@ -12,7 +13,21 @@ const mockErrorData = {
     redirectOnClick: jest.fn(),
 };
 
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <StoreProvider store={mockStore({})}>{children}</StoreProvider>
+);
+
 describe('ErrorComponent', () => {
+    let modal_root_el: HTMLElement;
+    beforeAll(() => {
+        modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
+        document.body.appendChild(modal_root_el);
+    });
+
+    afterAll(() => {
+        document.body.removeChild(modal_root_el);
+    });
     beforeEach(() => {
         jest.spyOn(global, 'location', 'get').mockReturnValue({
             ...window.location,
@@ -23,12 +38,13 @@ describe('ErrorComponent', () => {
         cleanup();
         jest.clearAllMocks();
     });
+
     it('should render as a dialog when is_dialog is true', () => {
         render(<ErrorComponent is_dialog={true} />);
         expect(screen.getByRole('dialog')).toBeInTheDocument();
     });
 
-    it('should render as a standard message when is_dialog is false', () => {
+    it('should not render as a dialog when is_dialog is false', () => {
         render(<ErrorComponent is_dialog={false} />);
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
@@ -52,6 +68,16 @@ describe('ErrorComponent', () => {
         expect(linkEl).toHaveAttribute('href', routes.trade);
         fireEvent.click(linkEl);
         expect(mockErrorData.redirectOnClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('should render ErrorModal when only message props passed', () => {
+        render(
+            <MemoryRouter>
+                <ErrorComponent message='An unexpected error has occurred.' />
+            </MemoryRouter>,
+            { wrapper }
+        );
+        expect(screen.getByText(/An unexpected error has occurred./i)).toBeInTheDocument();
     });
 
     it('should render as a dialog with provided data', () => {

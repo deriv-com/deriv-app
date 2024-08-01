@@ -26,7 +26,7 @@
     "author": "Deriv",
     "license": "Apache-2.0",
     "dependencies": {
-        "@deriv-com/analytics": "1.10.0",
+        "@deriv-com/analytics": "1.11.0",
         "@deriv-com/translations": "1.3.4",
         "@deriv-com/ui": "1.29.10",
         "@deriv/account": "^1.0.0",

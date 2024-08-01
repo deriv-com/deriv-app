@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { Text } from '@deriv/components';
-import { redirectToLogin, CFD_PLATFORMS, getCFDPlatformLabel } from '@deriv/shared';
+import { redirectToLogin } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import { getHasDivider } from 'Constants/utils';
 import ListingContainer from 'Components/containers/listing-container';
@@ -25,7 +25,7 @@ const CFDsListingLoggedOut = observer(() => {
             {combined_cfd_mt5_accounts.length > 0 && (
                 <div className='cfds-listing-logged-out__cfd-full-row'>
                     <Text line_height='m' weight='bold' color='prominent'>
-                        {getCFDPlatformLabel(CFD_PLATFORMS.MT5)}
+                        {localize('Deriv MT5')}
                     </Text>
                 </div>
             )}
@@ -56,7 +56,7 @@ const CFDsListingLoggedOut = observer(() => {
                         <hr className='cfds-listing-logged-out__divider' />
                     </div>
                     <div className='cfds-listing-logged-out__cfd-full-row'>
-                        <Text weight='bold'>{getCFDPlatformLabel(CFD_PLATFORMS.CTRADER)}</Text>
+                        <Text weight='bold'>{localize('Deriv cTrader')}</Text>
                     </div>
                 </React.Fragment>
             )}
@@ -83,7 +83,7 @@ const CFDsListingLoggedOut = observer(() => {
 
                     <div className='cfds-listing-logged-out__cfd-full-row'>
                         <Text line_height='m' weight='bold' color='prominent'>
-                            {getCFDPlatformLabel(CFD_PLATFORMS.DXTRADE)}
+                            {localize('Deriv X')}
                         </Text>
                     </div>
                 </React.Fragment>

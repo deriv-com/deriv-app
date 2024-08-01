@@ -32,6 +32,7 @@ const PurchaseButton = observer(() => {
         is_accumulator,
         is_multiplier,
         is_purchase_enabled,
+        is_trade_enabled,
         is_turbos,
         is_vanilla_fx,
         is_vanilla,
@@ -87,14 +88,8 @@ const PurchaseButton = observer(() => {
     };
 
     React.useEffect(() => {
-        if (is_purchase_enabled) {
-            if (is_accumulator) {
-                setTimeout(() => setLoadingButtonIndex(null), 1000);
-            } else {
-                setLoadingButtonIndex(null);
-            }
-        }
-    }, [is_purchase_enabled, is_accumulator]);
+        if (is_purchase_enabled) setLoadingButtonIndex(null);
+    }, [is_purchase_enabled]);
 
     if (is_accumulator && has_open_accu_contract) {
         const info = proposal_info?.[trade_types_array[0]] || {};
@@ -126,7 +121,7 @@ const PurchaseButton = observer(() => {
                 const info = proposal_info?.[trade_type] || {};
                 const is_single_button = trade_types_array.length === 1;
                 const is_loading = loading_button_index === index;
-                const is_disabled = false;
+                const is_disabled = !is_trade_enabled || is_proposal_empty || !info.id || !is_purchase_enabled;
 
                 return (
                     <Button
@@ -144,7 +139,7 @@ const PurchaseButton = observer(() => {
                         disabled={is_disabled && !is_loading}
                         onClick={() => {
                             setLoadingButtonIndex(index);
-                            onPurchase(info.id, info.stake, trade_type, isMobile, !info.id);
+                            onPurchase(info.id, info.stake, trade_type, isMobile);
                         }}
                     >
                         {!is_loading && (

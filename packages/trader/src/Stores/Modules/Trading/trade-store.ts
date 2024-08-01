@@ -173,6 +173,7 @@ type TStakeBoundary = Record<
 >;
 type TTicksHistoryResponse = TicksHistoryResponse | TicksStreamResponse;
 type TBarriersData = Record<string, never> | { barrier: string; barrier_choices: string[] };
+type TValidationParams = ReturnType<typeof getProposalInfo>['validation_params'];
 
 const store_name = 'trade_store';
 const g_subscribers_map: Partial<Record<string, ReturnType<typeof WS.subscribeTicksHistory>>> = {}; // blame amin.m
@@ -246,6 +247,7 @@ export default class TradeStore extends BaseStore {
      *
      */
     market_close_times: string[] = [];
+    validation_params?: TValidationParams | Record<string, never> = {};
 
     // Last Digit
     digit_stats: number[] = [];
@@ -421,6 +423,7 @@ export default class TradeStore extends BaseStore {
             market_open_times: observable,
             maximum_payout: observable,
             maximum_ticks: observable,
+            validation_params: observable,
             multiplier_range_list: observable,
             multiplier: observable,
             non_available_contract_types_list: observable,
@@ -1376,6 +1379,16 @@ export default class TradeStore extends BaseStore {
             }
             this.stop_out = limit_order?.stop_out?.order_amount;
         }
+
+        if (this.is_turbos && (this.proposal_info?.TURBOSSHORT || this.proposal_info?.TURBOSLONG)) {
+            if (this.proposal_info?.TURBOSSHORT) {
+                this.validation_params = this.proposal_info.TURBOSSHORT.validation_params;
+            }
+            if (this.proposal_info?.TURBOSLONG) {
+                this.validation_params = this.proposal_info.TURBOSLONG.validation_params;
+            }
+        }
+
         if (this.is_accumulator && this.proposal_info?.ACCU) {
             const {
                 barrier_spot_distance,
@@ -1387,12 +1400,14 @@ export default class TradeStore extends BaseStore {
                 high_barrier,
                 low_barrier,
                 spot_time,
+                validation_params,
             } = this.proposal_info.ACCU;
             this.ticks_history_stats = getUpdatedTicksHistoryStats({
                 previous_ticks_history_stats: this.ticks_history_stats,
                 new_ticks_history_stats: ticks_stayed_in,
                 last_tick_epoch,
             });
+            this.validation_params = validation_params;
             this.maximum_ticks = maximum_ticks;
             this.maximum_payout = maximum_payout;
             this.tick_size_barrier_percentage = tick_size_barrier_percentage;

@@ -26,6 +26,7 @@ const mock_proposal_info: TProposalTypeInfo = {
     returns: '',
     stake: '',
     spot: 0,
+    validation_params: undefined,
 };
 
 const default_mock_store = {

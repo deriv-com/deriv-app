@@ -1,6 +1,6 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { routes } from '@deriv/shared';
 import ErrorComponent from '../error-component';
 
@@ -9,6 +9,7 @@ const mockErrorData = {
     message: 'An unexpected error has occurred.',
     redirect_label: 'Go to Home',
     should_show_refresh: true,
+    redirectOnClick: jest.fn(),
 };
 
 describe('ErrorComponent', () => {
@@ -34,5 +35,7 @@ describe('ErrorComponent', () => {
         const linkEl = screen.getByRole('link', { name: mockErrorData.redirect_label });
         expect(linkEl).toBeInTheDocument();
         expect(linkEl).toHaveAttribute('href', routes.trade);
+        fireEvent.click(linkEl);
+        expect(mockErrorData.redirectOnClick).toHaveBeenCalledTimes(1);
     });
 });

@@ -11,6 +11,7 @@ import AccountTransferForm from './account-transfer-form';
 import AccountTransferNoAccount from './account-transfer-no-account';
 import AccountTransferLocked from './account-transfer-locked';
 import { useCashierStore } from '../../stores/useCashierStores';
+import { PageContainer } from '../../components/page-container';
 
 type TAccountTransferProps = {
     onClickDeposit?: VoidFunction;
@@ -61,42 +62,68 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
     }, [setSideNotes, has_no_accounts_balance]);
 
     if (is_virtual) {
-        return <Virtual />;
+        return (
+            <PageContainer hide_breadcrumb>
+                <Virtual />
+            </PageContainer>
+        );
     }
     if (is_loading || is_switching || is_loading_status) {
-        return <Loading className='cashier__loader' is_fullscreen={false} />;
+        return (
+            <PageContainer hide_breadcrumb>
+                <Loading className='cashier__loader' is_fullscreen={false} />
+            </PageContainer>
+        );
     }
 
     if (is_cashier_locked) {
         return (
-            <div className='cashier-locked-padding'>
+            <PageContainer hide_breadcrumb>
                 <CashierLocked />
-            </div>
+            </PageContainer>
         );
     }
     if (is_transfer_locked) {
-        return <AccountTransferLocked />;
+        return (
+            <PageContainer hide_breadcrumb>
+                <AccountTransferLocked />
+            </PageContainer>
+        );
     }
     if (error.is_show_full_page || (error.message && !accounts_list.length)) {
         // for errors with CTA hide the form and show the error,
         // for others show them at the bottom of the form next to submit button
-        return <Error error={error} />;
+        return (
+            <PageContainer hide_breadcrumb>
+                <Error error={error} />
+            </PageContainer>
+        );
     }
     if (has_no_account) {
-        return <AccountTransferNoAccount />;
+        return (
+            <PageContainer hide_breadcrumb>
+                <AccountTransferNoAccount />
+            </PageContainer>
+        );
     }
     if (has_no_accounts_balance) {
-        return <NoBalance onClickDeposit={onClickDeposit} />;
+        return (
+            <PageContainer hide_breadcrumb>
+                <NoBalance onClickDeposit={onClickDeposit} />
+            </PageContainer>
+        );
     }
 
     return (
-        <AccountTransferForm
-            onClose={onClose}
-            error={error}
-            setSideNotes={setSideNotes}
-            onClickDeposit={onClickDeposit}
-            onClickNotes={onClickNotes}
-        />
+        <PageContainer hide_breadcrumb>
+            <AccountTransferForm
+                onClose={onClose}
+                error={error}
+                setSideNotes={setSideNotes}
+                onClickDeposit={onClickDeposit}
+                onClickNotes={onClickNotes}
+            />
+        </PageContainer>
     );
 });
 

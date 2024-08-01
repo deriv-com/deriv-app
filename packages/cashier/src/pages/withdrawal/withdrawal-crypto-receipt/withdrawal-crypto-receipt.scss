@@ -78,7 +78,11 @@
             &-text {
                 margin: 0 0.4rem;
                 word-break: break-word;
-                max-width: 30rem;
+                max-width: 32rem;
+
+                @include tablet-screen {
+                    max-width: 40rem;
+                }
             }
         }
         &-address {

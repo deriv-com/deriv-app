@@ -130,7 +130,12 @@ const Withdrawal = observer(() => {
             </PageContainer>
         );
 
-    if (is_transactions_crypto_visible) return <TransactionsCryptoHistory />;
+    if (is_transactions_crypto_visible)
+        return (
+            <PageContainer hide_breadcrumb>
+                <TransactionsCryptoHistory />
+            </PageContainer>
+        );
 
     return <WithdrawalPageContent />;
 });

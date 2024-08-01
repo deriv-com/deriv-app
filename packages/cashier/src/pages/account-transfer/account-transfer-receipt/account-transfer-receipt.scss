@@ -5,10 +5,6 @@
         align-items: center;
         width: 100%;
 
-        &-padding {
-            padding-top: 2.4rem;
-        }
-
         &--details {
             display: flex;
 
@@ -52,7 +48,7 @@
             margin: 1.8rem 0;
         }
         &--form-submit {
-            @include mobile-or-tablet-screen {
+            @include mobile-screen {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;

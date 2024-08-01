@@ -6,6 +6,7 @@ import CashierLocked from 'Components/cashier-locked';
 import { Virtual } from 'Components/cashier-container';
 import PaymentAgentList from './payment-agent-list';
 import { useCashierStore } from '../../stores/useCashierStores';
+import { PageContainer } from '../../components/page-container';
 
 type TPaymentAgent = {
     setSideNotes?: (notes: React.ReactNode[]) => void;
@@ -38,22 +39,34 @@ const PaymentAgent = observer(({ setSideNotes }: TPaymentAgent) => {
     }, []);
 
     if (is_switching) {
-        return <Loading />;
+        return (
+            <PageContainer hide_breadcrumb>
+                <Loading />
+            </PageContainer>
+        );
     }
 
     if (is_virtual) {
-        return <Virtual />;
+        return (
+            <PageContainer hide_breadcrumb>
+                <Virtual />
+            </PageContainer>
+        );
     }
 
     if (is_cashier_locked) {
         return (
-            <div className='cashier-locked-padding'>
+            <PageContainer hide_breadcrumb>
                 <CashierLocked />
-            </div>
+            </PageContainer>
         );
     }
 
-    return <PaymentAgentList setSideNotes={setSideNotes} />;
+    return (
+        <PageContainer hide_breadcrumb>
+            <PaymentAgentList setSideNotes={setSideNotes} />
+        </PageContainer>
+    );
 });
 
 export default PaymentAgent;

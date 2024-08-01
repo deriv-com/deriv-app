@@ -28,31 +28,47 @@ jest.mock('@deriv/hooks');
 const mockUseDepositLocked = useDepositLocked as jest.MockedFunction<typeof useDepositLocked>;
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
-const cashier_mock = {
-    general_store: {
-        setActiveTab: jest.fn(),
-    },
-    account_transfer: {
-        error: {},
-        setAccountTransferAmount: jest.fn(),
-        setIsTransferConfirm: jest.fn(),
-        onMountAccountTransfer: jest.fn(),
-        accounts_list: [],
-        has_no_account: false,
-        has_no_accounts_balance: false,
-        is_transfer_confirm: false,
-        is_transfer_locked: false,
-    },
-    crypto_fiat_converter: {},
-    transaction_history: {
-        is_transactions_crypto_visible: false,
-    },
-};
-
 describe('<AccountTransfer />', () => {
+    let mockRootStore: ReturnType<typeof mockStore>;
+
     beforeEach(() => {
         mockUseDepositLocked.mockReturnValue(false);
         mockUseCashierLocked.mockReturnValue(false);
+        mockRootStore = mockStore({
+            client: {
+                is_authorize: true,
+                is_switching: false,
+                is_virtual: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        setActiveTab: jest.fn(),
+                    },
+                    account_transfer: {
+                        error: {},
+                        setAccountTransferAmount: jest.fn(),
+                        setIsTransferConfirm: jest.fn(),
+                        onMountAccountTransfer: jest.fn(),
+                        accounts_list: [],
+                        has_no_account: false,
+                        has_no_accounts_balance: false,
+                        is_transfer_confirm: false,
+                        is_transfer_locked: false,
+                    },
+                    crypto_fiat_converter: {},
+                    transaction_history: {
+                        is_transactions_crypto_visible: false,
+                    },
+                },
+            },
+        });
     });
 
     const props = {
@@ -60,213 +76,71 @@ describe('<AccountTransfer />', () => {
         onClose: jest.fn(),
     };
 
-    const renderAccountTransfer = (store: ReturnType<typeof mockStore>) => {
+    const renderAccountTransfer = () => {
         render(<AccountTransfer {...props} />, {
-            wrapper: ({ children }) => <CashierProviders store={store}>{children}</CashierProviders>,
+            wrapper: ({ children }) => (
+                <Router history={createBrowserHistory()}>
+                    <CashierProviders store={mockRootStore}>{children}</CashierProviders>
+                </Router>
+            ),
         });
     };
 
-    it('should render the account transfer form', async () => {
-        const mock_root_store = mockStore({
-            client: {
-                mt5_login_list: [
-                    {
-                        account_type: 'demo',
-                        sub_account_type: 'financial_stp',
-                    },
-                ],
-            },
-            modules: {
-                cashier: cashier_mock,
-            },
-        });
-        renderAccountTransfer(mock_root_store);
+    it('renders the account transfer form', async () => {
+        renderAccountTransfer();
 
         expect(await screen.findByText('mockedAccountTransferForm')).toBeInTheDocument();
     });
 
-    it('should not show the side notes when switching', async () => {
-        const mock_root_store = mockStore({
-            client: {
-                is_switching: true,
-                mt5_login_list: [
-                    {
-                        account_type: 'demo',
-                        sub_account_type: 'financial_stp',
-                    },
-                ],
-            },
-            modules: {
-                cashier: cashier_mock,
-            },
-        });
-
-        renderAccountTransfer(mock_root_store);
+    it('does not show the side notes when switching', async () => {
+        mockRootStore.client.is_switching = true;
+        renderAccountTransfer();
 
         await waitFor(() => {
             expect(props.setSideNotes).toHaveBeenCalledWith([]);
         });
     });
 
-    it('should render the virtual component if client is using a demo account', async () => {
-        const history = createBrowserHistory();
-        const mock_root_store = mockStore({
-            client: {
-                is_virtual: true,
-                mt5_login_list: [
-                    {
-                        account_type: 'demo',
-                        sub_account_type: 'financial_stp',
-                    },
-                ],
-            },
-            modules: {
-                cashier: cashier_mock,
-            },
-        });
-
-        render(<AccountTransfer {...props} />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store}>
-                    <Router history={history}>{children}</Router>
-                </CashierProviders>
-            ),
-        });
+    it('renders the virtual component if client is using a demo account', async () => {
+        mockRootStore.client.is_virtual = true;
+        renderAccountTransfer();
 
         expect(
             await screen.findByText(/You need to switch to a real money account to use this feature./i)
         ).toBeInTheDocument();
     });
 
-    it('should render the cashier locked component if cashier is locked', async () => {
+    it('renders the cashier locked component if cashier is locked', async () => {
         mockUseCashierLocked.mockReturnValue(true);
-        const mock_root_store = mockStore({
-            client: {
-                mt5_login_list: [
-                    {
-                        account_type: 'demo',
-                        sub_account_type: 'financial_stp',
-                    },
-                ],
-            },
-            modules: {
-                cashier: cashier_mock,
-            },
-        });
-
-        renderAccountTransfer(mock_root_store);
+        renderAccountTransfer();
 
         expect(await screen.findByText('mockedCashierLocked')).toBeInTheDocument();
     });
 
-    it('should render the transfer lock component if only transfer is locked', async () => {
-        const mock_root_store = mockStore({
-            client: {
-                mt5_login_list: [
-                    {
-                        account_type: 'demo',
-                        sub_account_type: 'financial_stp',
-                    },
-                ],
-            },
-            modules: {
-                cashier: {
-                    ...cashier_mock,
-                    account_transfer: {
-                        ...cashier_mock.account_transfer,
-                        is_transfer_locked: true,
-                    },
-                },
-            },
-        });
-
-        renderAccountTransfer(mock_root_store);
+    it('renders the transfer lock component if only transfer is locked', async () => {
+        mockRootStore.modules.cashier.account_transfer.is_transfer_locked = true;
+        renderAccountTransfer();
 
         expect(await screen.findByText('Transfers are locked')).toBeInTheDocument();
     });
 
-    it('should render the error component if there are errors when transferring between accounts', async () => {
-        const mock_root_store = mockStore({
-            client: {
-                mt5_login_list: [
-                    {
-                        account_type: 'demo',
-                        sub_account_type: 'financial_stp',
-                    },
-                ],
-            },
-            modules: {
-                cashier: {
-                    ...cashier_mock,
-                    account_transfer: {
-                        ...cashier_mock.account_transfer,
-                        error: { message: 'error' },
-                    },
-                },
-            },
-        });
-
-        renderAccountTransfer(mock_root_store);
+    it('renders the error component if there are errors when transferring between accounts', async () => {
+        mockRootStore.modules.cashier.account_transfer.error.message = 'error';
+        renderAccountTransfer();
 
         expect(await screen.findByText('mockedError')).toBeInTheDocument();
     });
 
-    it('should render the no account component if the client has only one account', async () => {
-        const mock_root_store = mockStore({
-            client: {
-                mt5_login_list: [
-                    {
-                        account_type: 'demo',
-                        sub_account_type: 'financial_stp',
-                    },
-                ],
-            },
-            modules: {
-                cashier: {
-                    ...cashier_mock,
-                    account_transfer: {
-                        ...cashier_mock.account_transfer,
-                        has_no_account: true,
-                    },
-                },
-            },
-        });
-
-        renderAccountTransfer(mock_root_store);
+    it('renders the no account component if the client has only one account', async () => {
+        mockRootStore.modules.cashier.account_transfer.has_no_account = true;
+        renderAccountTransfer();
 
         expect(await screen.findByText('mockedAccountTransferNoAccount')).toBeInTheDocument();
     });
 
-    it('should render the no balance component if the account has no balance', async () => {
-        const mock_root_store = mockStore({
-            client: {
-                mt5_login_list: [
-                    {
-                        account_type: 'demo',
-                        sub_account_type: 'financial_stp',
-                    },
-                ],
-            },
-            modules: {
-                cashier: {
-                    ...cashier_mock,
-                    account_transfer: {
-                        ...cashier_mock.account_transfer,
-                        has_no_accounts_balance: true,
-                    },
-                },
-            },
-        });
-
-        const history = createBrowserHistory();
-
-        render(<AccountTransfer {...props} />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store}>
-                    <Router history={history}>{children}</Router>
-                </CashierProviders>
-            ),
-        });
+    it('renders the no balance component if the account has no balance', async () => {
+        mockRootStore.modules.cashier.account_transfer.has_no_accounts_balance = true;
+        renderAccountTransfer();
 
         expect(await screen.findByText(/You have no funds/i)).toBeInTheDocument();
     });

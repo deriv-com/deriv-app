@@ -44,15 +44,14 @@
         display: flex;
         flex: 1;
         flex-direction: column;
-        padding: 0 2.4rem 2.4rem;
         gap: 2.4rem;
 
-        @include mobile {
-            padding: 1.6rem 0;
+        @include mobile-screen {
+            padding: 1.6rem;
         }
 
         @include tablet-screen {
-            padding: 2.4rem 0;
+            padding: 2.4rem;
         }
     }
 }

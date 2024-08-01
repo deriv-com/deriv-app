@@ -10,6 +10,7 @@ import PaymentAgentTransferConfirm from './payment-agent-transfer-confirm';
 import PaymentAgentTransferForm from './payment-agent-transfer-form';
 import PaymentAgentTransferReceipt from './payment-agent-transfer-receipt';
 import { useCashierStore } from '../../stores/useCashierStores';
+import { PageContainer } from '../../components/page-container';
 
 const PaymentAgentTransfer = observer(() => {
     const { client } = useStore();
@@ -38,33 +39,61 @@ const PaymentAgentTransfer = observer(() => {
     }, [onUnMount]);
 
     if (is_virtual) {
-        return <Virtual />;
+        return (
+            <PageContainer hide_breadcrumb>
+                <Virtual />
+            </PageContainer>
+        );
     }
     if (is_loading) {
-        return <Loading className='cashier__loader' />;
+        return (
+            <PageContainer hide_breadcrumb>
+                <Loading className='cashier__loader' />
+            </PageContainer>
+        );
     }
     if (is_cashier_locked) {
         return (
-            <div className='cashier-locked-padding'>
+            <PageContainer hide_breadcrumb>
                 <CashierLocked />
-            </div>
+            </PageContainer>
         );
     }
     if (error.is_show_full_page) {
         // for errors with CTA hide the form and show the error,
         // for others show them at the bottom of the form next to submit button
-        return <Error error={error} />;
+        return (
+            <PageContainer hide_breadcrumb>
+                <Error error={error} />
+            </PageContainer>
+        );
     }
     if (!Number(balance)) {
-        return <NoBalance />;
+        return (
+            <PageContainer hide_breadcrumb>
+                <NoBalance />
+            </PageContainer>
+        );
     }
     if (is_try_transfer_successful) {
-        return <PaymentAgentTransferConfirm />;
+        return (
+            <PageContainer hide_breadcrumb>
+                <PaymentAgentTransferConfirm />
+            </PageContainer>
+        );
     }
     if (is_transfer_successful) {
-        return <PaymentAgentTransferReceipt />;
+        return (
+            <PageContainer hide_breadcrumb>
+                <PaymentAgentTransferReceipt />
+            </PageContainer>
+        );
     }
-    return <PaymentAgentTransferForm error={error} />;
+    return (
+        <PageContainer hide_breadcrumb>
+            <PaymentAgentTransferForm error={error} />
+        </PageContainer>
+    );
 });
 
 export default PaymentAgentTransfer;

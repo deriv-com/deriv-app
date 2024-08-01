@@ -7,6 +7,13 @@
         max-width: unset;
     }
 
+    &__header {
+        padding: 0 0 3.2rem;
+        @include mobile-or-tablet-screen {
+            padding: 0 0 1.6rem;
+        }
+    }
+
     &__hint {
         color: var(--text-general);
         margin-top: 0.5rem;
@@ -132,8 +139,6 @@
     }
 
     &__wrapper {
-        padding: 2.4rem 0 0;
-
         .cashier__form-submit {
             margin-block: 2.4rem;
 

@@ -1,6 +1,6 @@
 .on-ramp {
-    @include tablet-screen {
-        max-width: 60rem;
+    @include desktop-screen {
+        padding: 0 0.8rem;
     }
 
     &__page-header {
@@ -61,8 +61,8 @@
         }
         &-description {
             grid-area: description;
-            width: 390px;
-            min-height: 60px;
+            width: 37.4rem;
+            min-height: 6rem;
 
             @include mobile-or-tablet-screen {
                 width: auto;
@@ -80,8 +80,8 @@
             &-shadow {
                 right: 0;
                 top: 0;
-                height: 40px;
-                width: 40px;
+                height: 4rem;
+                width: 4rem;
                 z-index: 1;
                 position: absolute;
                 background-image: var(--gradient-right-edge);
@@ -156,7 +156,7 @@
             }
         }
         &-divider {
-            height: 2px;
+            height: 0.2rem;
             width: 100%;
             background-color: var(--general-section-2);
             margin: 2.4rem 0;
@@ -215,7 +215,7 @@
         }
     }
     &__selector {
-        padding: 1.6rem 0;
+        padding: 0 0 1.6rem;
     }
 }
 .dc-modal__container {

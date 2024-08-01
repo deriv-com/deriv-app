@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import { FormDropdown, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
 import { Footer } from '../../../components';
@@ -20,6 +21,7 @@ type TIDVServiceProps = {
 };
 
 const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCompletion, onDocumentNotAvailable }) => {
+    const { localize } = useTranslations();
     const {
         availableDocumentOptions,
         displayedDocumentsList,
@@ -85,17 +87,21 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                 return (
                     <ModalStepWrapper
                         renderFooter={() => <Footer disableNext={disableSubmission} onClickNext={handleSubmit} />}
-                        title='Add a real MT5 account'
+                        title={localize('Add a real MT5 account')}
                     >
                         <div className='wallets-idv-service'>
                             <div className='wallets-idv-service__body'>
-                                {!!errorMessage?.message && <IDVServiceErrorMessage message={errorMessage.message} />}
+                                {!!errorMessage?.message && (
+                                    <IDVServiceErrorMessage message={localize(errorMessage.message)} />
+                                )}
                                 <div className='wallets-idv-service__title'>
-                                    <WalletText weight='bold'>Identity verification</WalletText>
+                                    <WalletText weight='bold'>
+                                        <Localize i18n_default_text='Identity verification' />
+                                    </WalletText>
                                 </div>
                                 <FormDropdown
                                     isFullWidth
-                                    label='Choose the document type'
+                                    label={localize('Choose the document type')}
                                     list={displayedDocumentsList}
                                     listHeight='lg'
                                     name='documentType'
@@ -107,8 +113,12 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                                     <>
                                         <FormField
                                             disabled={!values.documentType}
-                                            label='Enter your document number'
-                                            message={documentNumberExample ? `Example: ${documentNumberExample}` : ''}
+                                            label={localize('Enter your document number')}
+                                            message={
+                                                documentNumberExample
+                                                    ? localize(`Example: ${documentNumberExample}`)
+                                                    : ''
+                                            }
                                             name='documentNumber'
                                             showMessage={!!values.documentType}
                                             validationSchema={
@@ -120,10 +130,12 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                                         {document?.additional && (
                                             <FormField
                                                 disabled={!values.documentType}
-                                                label={`Enter your ${document.additional?.value ?? ''} number`}
+                                                label={localize(
+                                                    `Enter your ${document.additional?.value ?? ''} number`
+                                                )}
                                                 message={
                                                     additionalDocumentNumberExample
-                                                        ? `Example: ${additionalDocumentNumberExample}`
+                                                        ? localize(`Example: ${additionalDocumentNumberExample}`)
                                                         : ''
                                                 }
                                                 name='additionalDocumentNumber'
@@ -141,7 +153,9 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                                             />
                                         )}
                                         <div className='wallets-idv-service__title'>
-                                            <WalletText weight='bold'>Details</WalletText>
+                                            <WalletText weight='bold'>
+                                                <Localize i18n_default_text='Details' />
+                                            </WalletText>
                                         </div>
                                     </>
                                 )}

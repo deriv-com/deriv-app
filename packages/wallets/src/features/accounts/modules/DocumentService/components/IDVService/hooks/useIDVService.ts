@@ -1,15 +1,12 @@
 import { useMemo } from 'react';
 import { FormikValues } from 'formik';
 import { useIdentityDocumentVerificationAdd, usePOI, useResidenceList, useSettings } from '@deriv/api-v2';
+import { useTranslations } from '@deriv-com/translations';
 import { TDocumentTypeItem, TErrorMessageProps, TIDVServiceValues } from '../types';
 import { documentNumberExamples, statusCodes } from '../utils';
 
-const statusMessage: Partial<Record<TErrorMessageProps, string>> = {
-    expired: 'Your identity document has expired.',
-    rejected: 'We were unable to verify the identity document with the details provided.',
-};
-
 const useIDVService = () => {
+    const { localize } = useTranslations();
     const { data: poiStatus, isLoading: isPOIStatusLoading } = usePOI();
     const {
         data: residenceList,
@@ -26,6 +23,11 @@ const useIDVService = () => {
 
     const isLoading = isPOIStatusLoading || isResidenceListLoading || isSettingsLoading;
 
+    const statusMessage: Partial<Record<TErrorMessageProps, string>> = {
+        expired: localize('Your identity document has expired.'),
+        rejected: localize('We were unable to verify the identity document with the details provided.'),
+    } as const;
+
     const [displayedDocumentsList, availableDocumentOptions] = useMemo(() => {
         const documents: Record<string, TDocumentTypeItem> = {};
         const list: TDocumentTypeItem[] = [];
@@ -35,7 +37,9 @@ const useIDVService = () => {
                 const supportedDocuments = residence.identity?.services?.idv?.documents_supported || {};
                 Object.keys(supportedDocuments).forEach(document => {
                     const pattern = supportedDocuments[document].format;
-                    const text = supportedDocuments[document].display_name || '';
+                    const text = supportedDocuments[document].display_name
+                        ? localize(supportedDocuments[document].display_name)
+                        : '';
                     const value = document;
                     documents[document] = {
                         pattern,
@@ -46,7 +50,7 @@ const useIDVService = () => {
                         const additional = supportedDocuments[document].additional;
                         documents[document].additional = {
                             pattern: additional?.format,
-                            text: additional?.display_name || '',
+                            text: additional?.display_name ? localize(additional?.display_name) : '',
                             value: supportedDocuments[document]?.display_name || 'additional document',
                         };
                     }
@@ -59,11 +63,11 @@ const useIDVService = () => {
         }
 
         list.push({
-            text: "I don't have any of these",
+            text: localize("I don't have any of these"),
             value: 'none',
         });
         return [list, documents];
-    }, [isResidenceListSuccess, residenceList, settings.citizen]);
+    }, [isResidenceListSuccess, localize, residenceList, settings.citizen]);
 
     const status = poiStatus?.current.status ?? 'none';
 

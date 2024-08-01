@@ -1,11 +1,12 @@
 import * as Yup from 'yup';
+import { localize } from '@deriv-com/translations';
 import type { TDocumentTypeItem } from '../types';
 
-export const documentTypeValidator = Yup.string().required('Please select a document type.');
+export const documentTypeValidator = Yup.string().required(localize('Please select a document type.'));
 
 export const getDocumentNumberValidator = (document: TDocumentTypeItem, example: string) => {
     return Yup.string()
-        .required(`Please enter your ${document.text} number.`)
+        .required(localize(`Please enter your ${document.text} number.`))
         .test({
             name: 'test-document-number',
             test: (value, context) => {
@@ -26,7 +27,7 @@ export const getDocumentNumberValidator = (document: TDocumentTypeItem, example:
 
                     if (pattern && value && !value.match(pattern)) {
                         return context.createError({
-                            message: `Please enter the correct format. Example: ${example}`,
+                            message: localize(`Please enter the correct format. Example: ${example}`),
                         });
                     }
                 }

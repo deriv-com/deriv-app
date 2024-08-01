@@ -88,7 +88,7 @@ const CFDsListing = observer(() => {
         is_idv_revoked,
     } = getAuthenticationStatusInfo(account_status);
 
-    const [tradrshub_dashboard_form] = useGrowthbookGetFeatureValue({
+    const [is_traders_dashboard_tracking_enabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'ce_tradershub_dashboard_tracking',
         defaultValue: false,
     });
@@ -241,7 +241,7 @@ const CFDsListing = observer(() => {
                                 has_divider={(!is_eu_user || is_demo) && getHasDivider(index, list_size, 3)}
                                 onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                     if (existing_account.action_type === 'get') {
-                                        if (tradrshub_dashboard_form) {
+                                        if (is_traders_dashboard_tracking_enabled) {
                                             Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                                 action: 'account_get',
                                                 form_name: 'traders_hub_default',
@@ -267,7 +267,7 @@ const CFDsListing = observer(() => {
                                         const button_name = e?.currentTarget?.name;
                                         setProduct(existing_account.product);
                                         if (button_name === 'transfer-btn') {
-                                            if (tradrshub_dashboard_form) {
+                                            if (is_traders_dashboard_tracking_enabled) {
                                                 Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                                     action: 'account_transfer',
                                                     form_name: 'traders_hub_default',
@@ -279,7 +279,7 @@ const CFDsListing = observer(() => {
                                             toggleAccountTransferModal();
                                             setSelectedAccount(existing_account);
                                         } else if (button_name === 'topup-btn') {
-                                            if (tradrshub_dashboard_form) {
+                                            if (is_traders_dashboard_tracking_enabled) {
                                                 Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                                     action: 'account_topup',
                                                     form_name: 'traders_hub_default',
@@ -291,7 +291,7 @@ const CFDsListing = observer(() => {
                                             showTopUpModal(existing_account);
                                             setAppstorePlatform(existing_account.platform);
                                         } else {
-                                            if (tradrshub_dashboard_form) {
+                                            if (is_traders_dashboard_tracking_enabled) {
                                                 Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                                     action: 'account_open',
                                                     form_name: 'traders_hub_default',
@@ -358,7 +358,7 @@ const CFDsListing = observer(() => {
                                         onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                             const button_name = e?.currentTarget?.name;
                                             if (button_name === 'transfer-btn') {
-                                                if (tradrshub_dashboard_form) {
+                                                if (is_traders_dashboard_tracking_enabled) {
                                                     Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                                         action: 'account_transfer',
                                                         form_name: 'traders_hub_default',
@@ -369,7 +369,7 @@ const CFDsListing = observer(() => {
 
                                                 toggleCTraderTransferModal();
                                             } else if (button_name === 'topup-btn') {
-                                                if (tradrshub_dashboard_form) {
+                                                if (is_traders_dashboard_tracking_enabled) {
                                                     Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                                         action: 'account_topup',
                                                         form_name: 'traders_hub_default',
@@ -381,7 +381,7 @@ const CFDsListing = observer(() => {
                                                 showTopUpModal(existing_account);
                                                 setAppstorePlatform(account.platform);
                                             } else {
-                                                if (tradrshub_dashboard_form) {
+                                                if (is_traders_dashboard_tracking_enabled) {
                                                     Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                                         action: 'account_open',
                                                         form_name: 'traders_hub_default',
@@ -405,7 +405,7 @@ const CFDsListing = observer(() => {
                                     platform={account.platform}
                                     description={account.description}
                                     onAction={() => {
-                                        if (tradrshub_dashboard_form) {
+                                        if (is_traders_dashboard_tracking_enabled) {
                                             Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                                 action: 'account_get',
                                                 form_name: 'traders_hub_default',
@@ -470,7 +470,7 @@ const CFDsListing = observer(() => {
                                             const button_name = e?.currentTarget?.name;
 
                                             if (button_name === 'transfer-btn') {
-                                                if (tradrshub_dashboard_form) {
+                                                if (is_traders_dashboard_tracking_enabled) {
                                                     Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                                         action: 'account_transfer',
                                                         form_name: 'traders_hub_default',
@@ -482,7 +482,7 @@ const CFDsListing = observer(() => {
                                                 toggleAccountTransferModal();
                                                 setSelectedAccount(existing_account);
                                             } else if (button_name === 'topup-btn') {
-                                                if (tradrshub_dashboard_form) {
+                                                if (is_traders_dashboard_tracking_enabled) {
                                                     Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                                         action: 'account_topup',
                                                         form_name: 'traders_hub_default',
@@ -494,7 +494,7 @@ const CFDsListing = observer(() => {
                                                 showTopUpModal(existing_account);
                                                 setAppstorePlatform(account.platform);
                                             } else {
-                                                if (tradrshub_dashboard_form) {
+                                                if (is_traders_dashboard_tracking_enabled) {
                                                     Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                                         action: 'account_open',
                                                         form_name: 'traders_hub_default',
@@ -518,7 +518,7 @@ const CFDsListing = observer(() => {
                                     platform={account.platform}
                                     description={account.description}
                                     onAction={() => {
-                                        if (tradrshub_dashboard_form) {
+                                        if (is_traders_dashboard_tracking_enabled) {
                                             Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                                 action: 'account_get',
                                                 form_name: 'traders_hub_default',

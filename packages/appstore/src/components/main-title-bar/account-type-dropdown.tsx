@@ -15,7 +15,7 @@ const AccountTypeDropdown = observer(() => {
     const { setPrevAccountType } = client;
     const { current_language } = common;
 
-    const [tradrshub_dashboard_form] = useGrowthbookGetFeatureValue({
+    const [is_traders_dashboard_tracking_enabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'ce_tradershub_dashboard_tracking',
         defaultValue: false,
     });
@@ -38,7 +38,7 @@ const AccountTypeDropdown = observer(() => {
                         startPerformanceEventTimer('switch_from_demo_to_real_time');
                     await selectAccountType(e.target.value);
                     await setPrevAccountType(e.target.value);
-                    if (tradrshub_dashboard_form) {
+                    if (is_traders_dashboard_tracking_enabled) {
                         Analytics.trackEvent('ce_tradershub_dashboard_form', {
                             action: 'switch_account_mode',
                             form_name: 'traders_hub_default',

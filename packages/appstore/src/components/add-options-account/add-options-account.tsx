@@ -18,7 +18,7 @@ const AddOptions = observer(() => {
 
     const eu_user = content_flag === ContentFlag.LOW_RISK_CR_EU || content_flag === ContentFlag.EU_REAL;
 
-    const [tradrshub_dashboard_form] = useGrowthbookGetFeatureValue({
+    const [is_traders_dashboard_tracking_enabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'ce_tradershub_dashboard_tracking',
         defaultValue: false,
     });
@@ -36,7 +36,7 @@ const AddOptions = observer(() => {
                     type='submit'
                     has_effect
                     onClick={() => {
-                        if (tradrshub_dashboard_form) {
+                        if (is_traders_dashboard_tracking_enabled) {
                             Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                 action: 'account_get',
                                 form_name: 'traders_hub_default',

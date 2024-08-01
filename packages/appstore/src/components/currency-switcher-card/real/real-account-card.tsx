@@ -31,7 +31,7 @@ const RealAccountCard = observer(() => {
     const uppercase_currency = currency?.toUpperCase();
     const get_currency = IsIconCurrency(uppercase_currency) ? uppercase_currency : 'Unknown';
 
-    const [tradrshub_dashboard_form] = useGrowthbookGetFeatureValue({
+    const [is_traders_dashboard_tracking_enabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'ce_tradershub_dashboard_tracking',
         defaultValue: false,
     });
@@ -57,7 +57,7 @@ const RealAccountCard = observer(() => {
                 currency && (
                     <Button
                         onClick={(e: MouseEvent) => {
-                            if (tradrshub_dashboard_form) {
+                            if (is_traders_dashboard_tracking_enabled) {
                                 Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                     action: 'deposit_balance',
                                     form_name: 'traders_hub_default',

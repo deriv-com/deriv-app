@@ -17,7 +17,7 @@ const CompareAccount = observer(({ accounts_sub_text, is_desktop }: TCompareAcco
     const { traders_hub } = useStore();
     const { selected_account_type } = traders_hub;
 
-    const [tradrshub_dashboard_form] = useGrowthbookGetFeatureValue({
+    const [is_traders_dashboard_tracking_enabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'ce_tradershub_dashboard_tracking',
         defaultValue: false,
     });
@@ -27,7 +27,7 @@ const CompareAccount = observer(({ accounts_sub_text, is_desktop }: TCompareAcco
             className='cfd-accounts__compare-table-title'
             onClick={() => {
                 history.push(routes.compare_cfds);
-                if (tradrshub_dashboard_form) {
+                if (is_traders_dashboard_tracking_enabled) {
                     Analytics.trackEvent('ce_tradershub_dashboard_form', {
                         action: 'compare_accounts_push',
                         form_name: 'traders_hub_default',

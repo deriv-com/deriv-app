@@ -59,7 +59,7 @@ const TradingAppCard = ({
     const { is_account_being_created } = cfd;
     const { account_status: { authentication } = {} } = client;
 
-    const [tradrshub_dashboard_form] = useGrowthbookGetFeatureValue({
+    const [is_traders_dashboard_tracking_enabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'ce_tradershub_dashboard_tracking',
         defaultValue: false,
     });
@@ -95,7 +95,7 @@ const TradingAppCard = ({
     };
 
     const openStaticPage = () => {
-        if (tradrshub_dashboard_form) {
+        if (is_traders_dashboard_tracking_enabled) {
             Analytics.trackEvent('ce_tradershub_dashboard_form', {
                 action: 'account_logo_push',
                 form_name: 'traders_hub_default',

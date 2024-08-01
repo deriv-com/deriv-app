@@ -39,7 +39,7 @@ const OptionsAndMultipliersListing = observer(() => {
 
     const cr_demo = content_flag === ContentFlag.CR_DEMO;
 
-    const [tradrshub_dashboard_form] = useGrowthbookGetFeatureValue({
+    const [is_traders_dashboard_tracking_enabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'ce_tradershub_dashboard_tracking',
         defaultValue: false,
     });
@@ -115,7 +115,7 @@ const OptionsAndMultipliersListing = observer(() => {
                     }
                     is_deriv_platform
                     onAction={() => {
-                        if (tradrshub_dashboard_form) {
+                        if (is_traders_dashboard_tracking_enabled) {
                             Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                 action: 'account_open',
                                 form_name: 'traders_hub_default',

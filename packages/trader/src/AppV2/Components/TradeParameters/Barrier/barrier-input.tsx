@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ActionSheet, Chip, Text, TextField, TextFieldAddon } from '@deriv-com/quill-ui';
 
 import { localize, Localize } from '@deriv/translations';
@@ -16,35 +16,50 @@ const chips_options = [
         name: <Localize i18n_default_text='Fixed price' />,
     },
 ];
-const BarrierInput = observer(() => {
-    const {
-        barrier_1,
-        barrier_2,
-        barrier_count,
-        barrier_pipsize,
-        duration_unit,
-        onChange,
-        validation_errors,
-        proposal_info,
-        trade_types,
-    } = useTraderStore();
-
+const BarrierInput = observer(({ setInitialBarrierValue }: { setInitialBarrierValue: (val: string) => void }) => {
+    const { barrier_1, onChange, validation_errors, proposal_info } = useTraderStore();
     const [option, setOption] = useState(0);
-    const handleOption = (index: number) => {
-        setOption(index);
-    };
-    const handleOnChange = (e: { target: { name: string; value: unknown } }) => {
-        if (option == 0) {
-            e.target.value = `+${e.target.value};`;
+
+    const proposal = Object.values(proposal_info);
+    const spotPrice = proposal.length > 0 ? proposal[0].spot : '';
+
+    useEffect(() => {
+        setInitialBarrierValue(barrier_1);
+        if (barrier_1.includes('-')) {
+            setOption(1);
+        } else if (barrier_1.includes('+')) {
+            setOption(0);
+        } else {
+            setOption(2);
         }
-        onChange(e);
+    }, [setInitialBarrierValue]);
+
+    const handleChipSelect = (index: number) => {
+        setOption(index);
+        let newValue = barrier_1;
+        if (index === 0 && barrier_1.startsWith('-')) {
+            newValue = `+${barrier_1.slice(1)}`;
+        } else if (index === 1 && barrier_1.startsWith('+')) {
+            newValue = `-${barrier_1.slice(1)}`;
+        } else if (index === 2) {
+            newValue = barrier_1.replace(/[+-]/, '');
+        }
+        onChange({ target: { name: 'barrier_1', value: newValue } });
     };
+
+    const handleOnChange = e => {
+        let value = e.target.value;
+        if (option === 0) value = `+${value}`;
+        if (option === 1) value = `-${value}`;
+        onChange({ target: { name: 'barrier_1', value } });
+    };
+
     return (
         <ActionSheet.Content>
             <div className='barrier-params'>
                 <div className='barrier-params__chips'>
                     {chips_options.map((item, index) => (
-                        <Chip.Selectable key={index} onClick={() => handleOption(index)} selected={index == option}>
+                        <Chip.Selectable key={index} onClick={() => handleChipSelect(index)} selected={index == option}>
                             <Text size='sm'>{item.name}</Text>
                         </Chip.Selectable>
                     ))}
@@ -52,24 +67,34 @@ const BarrierInput = observer(() => {
                 {option !== 2 ? (
                     <TextFieldAddon
                         fillAddonBorderColor='var(--semantic-color-slate-solid-surface-frame-mid)'
-                        type='text'
+                        type='number'
                         name='barrier_1'
                         addonLabel={option == 0 ? '+' : '-'}
+                        value={barrier_1.replace(/[+-]/g, '')}
+                        allowDecimals
                         status={validation_errors?.barrier_1.length > 0 ? 'error' : 'neutral'}
-                        value={barrier_1.replace('+', '')}
                         onChange={handleOnChange}
                         placeholder={localize('Distance to spot')}
                         variant='fill'
                         message={validation_errors?.barrier_1[0]}
                     />
                 ) : (
-                    <TextField name='barrier_1' type='text' placeholder={localize('Distance to spot')} variant='fill' />
+                    <TextField
+                        type='text'
+                        name='barrier_1'
+                        status={validation_errors?.barrier_1.length > 0 ? 'error' : 'neutral'}
+                        value={barrier_1}
+                        onChange={handleOnChange}
+                        placeholder={localize('Distance to spot')}
+                        variant='fill'
+                        message={validation_errors?.barrier_1[0]}
+                    />
                 )}
                 <div className='barrier-params__current-spot-wrapper'>
                     <Text size='sm'>
                         <Localize i18n_default_text='Current spot' />
                     </Text>
-                    <Text size='sm'> 554.55</Text>
+                    <Text size='sm'> {spotPrice}</Text>
                 </div>
             </div>
         </ActionSheet.Content>

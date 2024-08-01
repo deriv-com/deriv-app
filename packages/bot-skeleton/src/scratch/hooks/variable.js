@@ -1,3 +1,8 @@
+/* This overrides the createVariable method of Blockly.VariableMap.prototype.createVariable.
+This was done to allow for the creation of variables with the same name but different sentence case (ex: ema, EMA).
+This was done because with the update of new blockly. It does not support variables with same names irrespective of the sentence case.
+In Order to fix this issue we are avoid throwing error if the name is same but the sentence case is different and we are appending a _ in the duplicated variable. */
+
 Blockly.VariableMap.prototype.createVariable = function (name, opt_type, opt_id) {
     let variable = this.getVariable(name, opt_type);
     if (variable && variable?.name === name) {

@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import classNames from 'classnames';
-import { Tooltip } from '@deriv-com/ui';
-import { WalletClipboard, WalletText } from '../../../../../components/Base';
+import { useTranslations } from '@deriv-com/translations';
+import { Text, Tooltip } from '@deriv-com/ui';
+import { WalletClipboard } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import useDevice from '../../../../../hooks/useDevice';
 import EditIcon from '../../../../../public/images/ic-edit.svg';
@@ -17,6 +18,8 @@ type TMT5TradeDetailsItemProps = {
 const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, variant = 'clipboard' }) => {
     const { isDesktop } = useDevice();
     const { show } = useModal();
+    const { localize } = useTranslations();
+
     return (
         <div
             className={classNames('wallets-mt5-trade-details-item', {
@@ -25,19 +28,19 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, vari
         >
             {variant !== 'info' && (
                 <React.Fragment>
-                    <WalletText color='less-prominent' size={isDesktop ? 'xs' : 'sm'}>
+                    <Text color='less-prominent' size={isDesktop ? 'xs' : 'sm'}>
                         {label}
-                    </WalletText>
+                    </Text>
                     <div className='wallets-mt5-trade-details-item__values'>
-                        <WalletText size={isDesktop ? 'xs' : 'sm'} weight='bold'>
+                        <Text size={isDesktop ? 'xs' : 'sm'} weight='bold'>
                             {value}
-                        </WalletText>
+                        </Text>
                         {variant === 'clipboard' && <WalletClipboard popoverAlignment='left' textCopy={value} />}
                         {variant === 'password' && (
                             <Tooltip
                                 as='button'
                                 onClick={() => show(<ChangePassword />)}
-                                tooltipContent='Change password'
+                                tooltipContent={localize('Change password')}
                                 tooltipPosition='left'
                             >
                                 <EditIcon className='wallets-mt5-trade-details-item__edit' />
@@ -47,9 +50,9 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, vari
                 </React.Fragment>
             )}
             {variant === 'info' && (
-                <WalletText color='less-prominent' size={isDesktop ? 'xs' : 'sm'}>
+                <Text color='less-prominent' size={isDesktop ? 'xs' : 'sm'}>
                     {value}
-                </WalletText>
+                </Text>
             )}
         </div>
     );

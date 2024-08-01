@@ -5,7 +5,13 @@ const Localize = ({ i18n_default_text, components = [], values = {} }) => {
     const parts = i18n_default_text.split(/(<\d+>.*?<\/\d+>|{{\w+}})/g);
 
     const replaceValues = text => {
-        return text.replace(/{{(\w+)}}/g, (match, key) => values[key] || match);
+        return text.replace(/{{(\w+)}}/g, (match, key) => {
+            // If the value is an empty string, return an empty fragment to render nothing
+            if (values[key] === '') {
+                return '';
+            }
+            return values[key] || match;
+        });
     };
 
     return (
@@ -13,10 +19,8 @@ const Localize = ({ i18n_default_text, components = [], values = {} }) => {
             {parts.map((part, index) => {
                 // Replace component placeholders with actual components
                 const componentMatch = part.match(/<(\d+)>(.*?)<\/\1>/);
-
                 if (componentMatch) {
                     const componentIndex = parseInt(componentMatch[1]);
-
                     // Replace values wrapped in components with actual values
                     const content = replaceValues(componentMatch[2]);
                     const Component = components[componentIndex];
@@ -24,12 +28,7 @@ const Localize = ({ i18n_default_text, components = [], values = {} }) => {
                 }
 
                 // Replace value placeholders with actual values
-                const valueMatch = part.match(/{{(\w+)}}/);
-                if (valueMatch) {
-                    const valueKey = valueMatch[1];
-                    return values[valueKey] || part;
-                }
-                return part;
+                return replaceValues(part);
             })}
         </>
     );

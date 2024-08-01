@@ -40,6 +40,7 @@ import {
     getMarketName,
     getTradeTypeName,
     getContractPath,
+    routes,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -1053,11 +1054,12 @@ export default class TradeStore extends BaseStore {
                                     isHighLow: isHighLow({ shortcode }),
                                 })}`.trim();
 
-                                callback?.({
-                                    message: `${contract_type_with_subtype} - ${symbol}`,
-                                    redirectTo: getContractPath(contract_id),
-                                    title: formatted_stake,
-                                });
+                                if (window.location.pathname === routes.trade)
+                                    callback?.({
+                                        message: `${contract_type_with_subtype} - ${symbol}`,
+                                        redirectTo: getContractPath(contract_id),
+                                        title: formatted_stake,
+                                    });
 
                                 this.root_store.notifications.addTradeNotification({
                                     buy_price: is_multiplier ? this.amount : response.buy.buy_price,

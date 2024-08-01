@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSettings } from '@deriv/api-v2';
+import { Localize } from '@deriv-com/translations';
 import { WalletText } from '../../../../../../components/Base';
 import { manualDocumentsMapper } from '../../utils';
 import { DocumentSelectionCard } from './components';
@@ -15,7 +16,9 @@ const DocumentSelection: React.FC<TProps> = ({ onSelectDocument }) => {
     return (
         <div className='wallets-document-selection'>
             <div className='wallets-document-selection__content'>
-                <WalletText>Please upload one of the following documents:</WalletText>
+                <WalletText>
+                    <Localize i18n_default_text='Please upload one of the following documents:' />
+                </WalletText>
                 {Object.keys(manualDocumentsMapper).map(document => {
                     const { countries, description, icon, title } = manualDocumentsMapper[document];
                     if (countries && !countries.includes(data?.country_code ?? '')) {

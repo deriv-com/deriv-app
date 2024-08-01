@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Formik, FormikValues } from 'formik';
 import moment from 'moment';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Divider, Loader } from '@deriv-com/ui';
 import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
 import DrivingLicenseCardBack from '../../../../../../public/images/accounts/document-back.svg';
@@ -16,6 +17,7 @@ import { drivingLicenseUploadValidator } from './utils';
 import './DrivingLicenseUpload.scss';
 
 const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onClickBack, onCompletion }) => {
+    const { localize } = useTranslations();
     const {
         initialValues,
         isLoading,
@@ -85,23 +87,23 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                                 onClickNext={handleOnClickNext}
                             />
                         )}
-                        title='Add a real MT5 account'
+                        title={localize('Add a real MT5 account')}
                     >
                         <div className='wallets-driving-license-upload' data-testid='dt_driving-license-upload'>
                             <div className='wallets-driving-license-upload__wrapper'>
-                                <WalletText>First, enter your Driving licence number and the expiry date.</WalletText>
+                                <WalletText>
+                                    <Localize i18n_default_text='First, enter your Driving licence number and the expiry date.' />
+                                </WalletText>
                                 <div className='wallets-driving-license-upload__input-group'>
                                     <FormField
                                         defaultValue={values.drivingLicenseNumber ?? ''}
-                                        label='Driving licence number*'
+                                        label={localize('Driving licence number*')}
                                         name='drivingLicenseNumber'
                                     />
                                     <DatePicker
-                                        defaultValue={values.drivingLicenseExpiryDate ?? ''}
-                                        label='Expiry date*'
+                                        label={localize('Expiry date*')}
                                         minDate={moment().add(2, 'days').toDate()}
                                         name='drivingLicenseExpiryDate'
-                                        placeholder='DD/MM/YYYY'
                                     />
                                 </div>
                                 <Divider
@@ -110,12 +112,14 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                                     height={2}
                                 />
                                 <div className='wallets-driving-license-upload__document-upload'>
-                                    <WalletText>Next, upload the front and back of your driving licence.</WalletText>
+                                    <WalletText>
+                                        <Localize i18n_default_text='Next, upload the front and back of your driving licence.' />
+                                    </WalletText>
                                     <div className='wallets-driving-license-upload__dropzone'>
                                         <Dropzone
-                                            buttonText='Drop file or click here to upload'
+                                            buttonText={localize('Drop file or click here to upload')}
                                             defaultFile={values.drivingLicenseCardFront}
-                                            description='Upload the front of your driving licence.'
+                                            description={localize('Upload the front of your driving licence.')}
                                             fileFormats={[
                                                 'image/jpeg',
                                                 'image/jpg',
@@ -131,9 +135,9 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                                             }
                                         />
                                         <Dropzone
-                                            buttonText='Drop file or click here to upload'
+                                            buttonText={localize('Drop file or click here to upload')}
                                             defaultFile={values.drivingLicenseCardBack}
-                                            description='Upload the back of your driving licence.'
+                                            description={localize('Upload the back of your driving licence.')}
                                             fileFormats={[
                                                 'image/jpeg',
                                                 'image/jpg',

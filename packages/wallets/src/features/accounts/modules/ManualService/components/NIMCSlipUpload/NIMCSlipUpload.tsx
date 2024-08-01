@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Formik, FormikValues } from 'formik';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Divider, Loader } from '@deriv-com/ui';
 import { Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
 import NIMCSlipFront from '../../../../../../public/images/accounts/nimc-slip-front.svg';
@@ -15,6 +16,7 @@ import { nimcSlipUploadValidator } from './utils';
 import './NIMCSlipUpload.scss';
 
 const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onClickBack, onCompletion }) => {
+    const { localize } = useTranslations();
     const {
         initialValues,
         isLoading,
@@ -78,25 +80,29 @@ const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                                 onClickNext={handleOnClickNext}
                             />
                         )}
-                        title='Add a real MT5 account'
+                        title={localize('Add a real MT5 account')}
                     >
                         <div className='wallets-nimc-slip-upload' data-testid='dt_nimc-upload'>
                             <div className='wallets-nimc-slip-upload__wrapper'>
-                                <WalletText>First, enter your NIMC slip number.</WalletText>
-                                <FormField label='NIMC slip number*' name='nimcNumber' />
+                                <WalletText>
+                                    <Localize i18n_default_text='First, enter your NIMC slip number.' />
+                                </WalletText>
+                                <FormField label={localize('NIMC slip number*')} name='nimcNumber' />
                                 <Divider
                                     className='wallets-nimc-slip-upload__divider'
                                     color='var(--border-divider)'
                                     height={2}
                                 />
                                 <div className='wallets-nimc-slip-upload__document-section'>
-                                    <WalletText>Next, upload both of the following documents.</WalletText>
+                                    <WalletText>
+                                        <Localize i18n_default_text='Next, upload both of the following documents.' />
+                                    </WalletText>
                                     <div className='wallets-nimc-slip-upload__dropzones'>
                                         <div className='wallets-nimc-slip-upload__dropzones--left'>
                                             <Dropzone
-                                                buttonText='Drop file or click here to upload'
+                                                buttonText={localize('Drop file or click here to upload')}
                                                 defaultFile={values.nimcCardFront}
-                                                description='Upload your NIMC slip.'
+                                                description={localize('Upload your NIMC slip.')}
                                                 fileFormats={[
                                                     'image/jpeg',
                                                     'image/jpg',
@@ -112,9 +118,11 @@ const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                                         </div>
                                         <div className='wallets-nimc-slip-upload__dropzones--right'>
                                             <Dropzone
-                                                buttonText='Drop file or click here to upload'
+                                                buttonText={localize('Drop file or click here to upload')}
                                                 defaultFile={values.nimcCardBack}
-                                                description='Upload your proof of age: birth certificate or age declaration document.'
+                                                description={localize(
+                                                    'Upload your proof of age: birth certificate or age declaration document.'
+                                                )}
                                                 fileFormats={[
                                                     'image/jpeg',
                                                     'image/jpg',

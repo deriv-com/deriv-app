@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { localize } from '@deriv-com/translations';
 import { selfieUploadValidator } from '../../SelfieUpload/utils';
 import { expiryDateValidator, fileValidator } from '../../utils';
 
@@ -6,6 +7,6 @@ export const identityCardUploadValidator = Yup.object().shape({
     identityCardBack: fileValidator,
     identityCardExpiryDate: expiryDateValidator,
     identityCardFront: fileValidator,
-    identityCardNumber: Yup.string().required('Identity card number is required.'),
+    identityCardNumber: Yup.string().required(localize('Identity card number is required.')),
     selfieFile: selfieUploadValidator,
 });

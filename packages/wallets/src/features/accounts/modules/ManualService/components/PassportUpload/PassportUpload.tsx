@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Formik, FormikValues } from 'formik';
 import moment from 'moment';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Divider, Loader } from '@deriv-com/ui';
 import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
 import PassportPlaceholder from '../../../../../../public/images/accounts/passport-placeholder.svg';
@@ -15,6 +16,7 @@ import { passportUploadValidator } from './utils';
 import './PassportUpload.scss';
 
 const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onClickBack, onCompletion }) => {
+    const { localize } = useTranslations();
     const {
         initialValues,
         isLoading,
@@ -85,15 +87,17 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                                 onClickNext={handleOnClickNext}
                             />
                         )}
-                        title='Add a real MT5 account'
+                        title={localize('Add a real MT5 account')}
                     >
                         <div className='wallets-passport-upload' data-testid='dt_passport-document-upload'>
                             <div className='wallets-passport-upload__wrapper'>
-                                <WalletText>First, enter your Passport number and the expiry date.</WalletText>
+                                <WalletText>
+                                    <Localize i18n_default_text='First, enter your Passport number and the expiry date.' />
+                                </WalletText>
                                 <div className='wallets-passport-upload__input-group'>
-                                    <FormField label='Passport number*' name='passportNumber' />
+                                    <FormField label={localize('Passport number*')} name='passportNumber' />
                                     <DatePicker
-                                        label='Expiry date*'
+                                        label={localize('Expiry date*')}
                                         minDate={moment().add(2, 'days').toDate()}
                                         name='passportExpiryDate'
                                     />
@@ -105,12 +109,14 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                                 />
                                 <div className='wallets-passport-upload__document-upload'>
                                     <WalletText>
-                                        Next, upload the page of your passport that contains your photo.
+                                        <Localize i18n_default_text='Next, upload the page of your passport that contains your photo.' />
                                     </WalletText>
                                     <Dropzone
-                                        buttonText='Drop file or click here to upload'
+                                        buttonText={localize('Drop file or click here to upload')}
                                         defaultFile={values.passportFile}
-                                        description='Upload the page of your passport that contains your photo.'
+                                        description={localize(
+                                            'Upload the page of your passport that contains your photo.'
+                                        )}
                                         fileFormats={[
                                             'image/jpeg',
                                             'image/jpg',

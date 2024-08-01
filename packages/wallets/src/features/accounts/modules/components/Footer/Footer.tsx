@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslations } from '@deriv-com/translations';
 import { Button, useDevice } from '@deriv-com/ui';
 import './Footer.scss';
 
@@ -12,14 +13,15 @@ type TFooterProps = {
 };
 
 const Footer: React.FC<TFooterProps> = ({
-    backText = 'Back',
+    backText,
     disableBack = false,
     disableNext = false,
-    nextText = 'Next',
+    nextText,
     onClickBack,
     onClickNext,
 }) => {
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
 
     return (
         <div className='wallets-accounts-module-footer'>
@@ -31,12 +33,12 @@ const Footer: React.FC<TFooterProps> = ({
                     onClick={onClickBack}
                     variant='outlined'
                 >
-                    {backText}
+                    {backText ?? localize('Back')}
                 </Button>
             )}
             {onClickNext && (
                 <Button disabled={disableNext} isFullWidth={!isDesktop} onClick={onClickNext}>
-                    {nextText}
+                    {nextText ?? localize('Next')}
                 </Button>
             )}
         </div>

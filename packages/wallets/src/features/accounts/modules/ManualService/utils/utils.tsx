@@ -1,4 +1,5 @@
 import React from 'react';
+import { localize } from '@deriv-com/translations';
 import ClearPhoto from '../../../../../public/images/accounts/clear-photo.svg';
 import ClockIcon from '../../../../../public/images/accounts/clock-icon.svg';
 import DrivingLicenseIcon from '../../../../../public/images/accounts/driving-license.svg';
@@ -44,43 +45,43 @@ export type TDocumentRule = {
 export const manualDocumentsMapper: TManualDocumentType = {
     passport: {
         component: PassportUpload,
-        description: 'Upload the page that contains your photo.',
+        description: localize('Upload the page that contains your photo.'),
         icon: PassportIcon,
-        title: 'Passport',
+        title: localize('Passport'),
     },
     // eslint-disable-next-line sort-keys
     'driving-license': {
         component: DrivingLicenseUpload,
-        description: 'Upload the front and back of your driving licence.',
+        description: localize('Upload the front and back of your driving licence.'),
         icon: DrivingLicenseIcon,
-        title: 'Driving licence',
+        title: localize('Driving licence'),
     },
     'identity-card': {
         component: IdentityCardUpload,
-        description: 'Upload the front and back of your identity card.',
+        description: localize('Upload the front and back of your identity card.'),
         icon: IdentityCardIcon,
-        title: 'Identity card',
+        title: localize('Identity card'),
     },
     'nimc-slip': {
         component: NIMCSlipUpload,
         countries: ['ng'],
-        description: 'Upload the front and back of your identity card.',
+        description: localize('Upload the front and back of your identity card.'),
         icon: NIMCSlipIcon,
-        title: 'NIMC slip and proof of age',
+        title: localize('NIMC slip and proof of age'),
     },
 };
 
 const DocumentRules: TDocumentRule[] = [
     {
-        description: 'A clear colour photo or scanned image',
+        description: localize('A clear colour photo or scanned image'),
         icon: <ClearPhoto />,
     },
     {
-        description: 'JPEG, JPG, PNG, PDF, or GIF',
+        description: localize('JPEG, JPG, PNG, PDF, or GIF'),
         icon: <ImageIcon />,
     },
     {
-        description: 'Less than 8MB',
+        description: localize('Less than 8MB'),
         icon: <LessThanEightIcon />,
     },
 ];
@@ -92,7 +93,7 @@ export const NIMCDocumentRules: TDocumentRule[] = DocumentRules;
 export const GeneralDocumentRules: TDocumentRule[] = [
     ...DocumentRules,
     {
-        description: 'Must be valid for at least 6 months',
+        description: localize('Must be valid for at least 6 months'),
         icon: <ClockIcon />,
     },
 ];

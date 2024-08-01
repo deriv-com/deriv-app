@@ -16,7 +16,7 @@ const listItems = [
 ];
 
 const DocumentSubmission: React.FC = () => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { data: isEuRegion } = useIsEuRegion();
     const { setFieldValue, values } = useFormikContext<TDocumentSubmission>();
 
@@ -75,10 +75,10 @@ const DocumentSubmission: React.FC = () => {
                         titleType='bold'
                     />
                     <div className='wallets-poa__document__container__upload__requirements'>
-                        <WalletText size={isMobile ? 'xs' : 'sm'}>
+                        <WalletText size={!isDesktop ? 'xs' : 'sm'}>
                             {'Supported formats : JPEG, JPG, PNG, PDF, and GIF only'}
                         </WalletText>
-                        <WalletText size={isMobile ? 'xs' : 'sm'}>{'Maximum size : 8MB'}</WalletText>
+                        <WalletText size={!isDesktop ? 'xs' : 'sm'}>{'Maximum size : 8MB'}</WalletText>
                     </div>
                 </div>
             </div>

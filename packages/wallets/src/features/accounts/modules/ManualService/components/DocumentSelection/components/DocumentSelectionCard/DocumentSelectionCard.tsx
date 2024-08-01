@@ -17,16 +17,16 @@ const DocumentSelectionCard: React.FC<TDocumentSelectionCardProps> = ({
     title,
     value,
 }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     return (
         <button className='wallets-document-selection-card' data-testid={`dt_${value}`} onClick={() => onClick(value)}>
             <div className='wallets-document-selection-card__content'>
                 <Icon />
                 <div className='wallets-document-selection-card__text-content'>
-                    <WalletText size={isMobile ? 'xs' : 'sm'} weight='bold'>
+                    <WalletText size={!isDesktop ? 'xs' : 'sm'} weight='bold'>
                         {title}
                     </WalletText>
-                    <WalletText size={isMobile ? '2xs' : 'xs'}>{description}</WalletText>
+                    <WalletText size={!isDesktop ? '2xs' : 'xs'}>{description}</WalletText>
                 </div>
             </div>
             <RightArrow />

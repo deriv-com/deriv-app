@@ -19,7 +19,7 @@ const Footer: React.FC<TFooterProps> = ({
     onClickBack,
     onClickNext,
 }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     return (
         <div className='wallets-accounts-module-footer'>
@@ -27,7 +27,7 @@ const Footer: React.FC<TFooterProps> = ({
                 <Button
                     color='black'
                     disabled={disableBack}
-                    isFullWidth={isMobile}
+                    isFullWidth={!isDesktop}
                     onClick={onClickBack}
                     variant='outlined'
                 >
@@ -35,7 +35,7 @@ const Footer: React.FC<TFooterProps> = ({
                 </Button>
             )}
             {onClickNext && (
-                <Button disabled={disableNext} isFullWidth={isMobile} onClick={onClickNext}>
+                <Button disabled={disableNext} isFullWidth={!isDesktop} onClick={onClickNext}>
                     {nextText}
                 </Button>
             )}

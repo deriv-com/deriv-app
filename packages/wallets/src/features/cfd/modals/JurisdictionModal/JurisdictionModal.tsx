@@ -25,7 +25,7 @@ const JurisdictionModal = () => {
 
     const { getModalState, setModalState, show } = useModal();
     const { isLoading } = useAvailableMT5Accounts();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     const marketType = getModalState('marketType') ?? 'all';
     const platform = getModalState('platform') ?? PlatformDetails.mt5.platform;
@@ -57,7 +57,7 @@ const JurisdictionModal = () => {
         : () => (
               <WalletButton
                   disabled={!selectedJurisdiction || (selectedJurisdiction !== 'svg' && !isCheckBoxChecked)}
-                  isFullWidth={isMobile}
+                  isFullWidth={!isDesktop}
                   onClick={() => show(<JurisdictionFlow />)}
               >
                   Next

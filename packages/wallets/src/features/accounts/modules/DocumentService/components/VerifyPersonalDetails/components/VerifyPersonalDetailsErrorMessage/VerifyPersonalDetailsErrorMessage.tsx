@@ -8,13 +8,13 @@ type TErrorMessageProps = {
 };
 
 const VerifyPersonalDetailsErrorMessage: React.FC<TErrorMessageProps> = ({ error }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     const handleOnClickLink = () => window.LC_API.open_chat_window();
 
     if (error === 'DuplicateAccount') {
         return (
-            <InlineMessage size={isMobile ? 'md' : 'sm'} type='error'>
+            <InlineMessage size={!isDesktop ? 'md' : 'sm'} type='error'>
                 <WalletText as='span'>
                     An account with these details already exists. Please make sure the details you entered are correct
                     as only one real account is allowed per client. If this is a mistake, contact us via{' '}

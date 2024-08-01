@@ -2,6 +2,7 @@ import { useStore } from '@deriv/stores';
 import { useServerTime } from '@deriv/api';
 import dayjs from 'dayjs';
 import React from 'react';
+import { WS } from '@deriv/shared';
 
 const otpRequestCountdown = (
     nextAttemptTimestamp: number,
@@ -26,7 +27,8 @@ const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = f
     const { phone_number_verification } = account_settings;
     const [timer, setTimer] = React.useState<number | undefined>();
     const [next_otp_request, setNextOtpRequest] = React.useState('');
-    const { data: serverTime } = useServerTime();
+    const [is_request_button_diabled, setIsRequestButtonDisabled] = React.useState(false);
+    // const { data: serverTime, refetch: refetchServerTime } = useServerTime();
 
     const setTitle = React.useCallback(
         (timer: number) => {
@@ -50,28 +52,33 @@ const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = f
     );
 
     React.useEffect(() => {
-        if (
-            serverTime?.time &&
-            !should_show_phone_number_otp &&
-            !is_from_request_phone_number_otp &&
-            phone_number_verification?.next_email_attempt
-        ) {
-            otpRequestCountdown(
-                phone_number_verification.next_email_attempt,
-                setTitle,
-                setTimer,
-                dayjs(serverTime?.time * 1000)
-            );
-        } else if (serverTime?.time && phone_number_verification?.next_attempt) {
-            otpRequestCountdown(
-                phone_number_verification.next_attempt,
-                setTitle,
-                setTimer,
-                dayjs(serverTime?.time * 1000)
-            );
-        }
+        setIsRequestButtonDisabled(true);
+        WS.send({ time: 1 }).then((response: { error?: Error; time: number }) => {
+            setIsRequestButtonDisabled(false);
+            if (response.error) return;
+
+            if (
+                response.time &&
+                !should_show_phone_number_otp &&
+                !is_from_request_phone_number_otp &&
+                phone_number_verification?.next_email_attempt
+            ) {
+                otpRequestCountdown(
+                    phone_number_verification.next_email_attempt,
+                    setTitle,
+                    setTimer,
+                    dayjs(response.time * 1000)
+                );
+            } else if (response.time && phone_number_verification?.next_attempt) {
+                otpRequestCountdown(
+                    phone_number_verification.next_attempt,
+                    setTitle,
+                    setTimer,
+                    dayjs(response.time * 1000)
+                );
+            }
+        });
     }, [
-        serverTime,
         phone_number_verification?.next_email_attempt,
         phone_number_verification?.next_attempt,
         is_from_request_phone_number_otp,
@@ -82,9 +89,9 @@ const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = f
     React.useEffect(() => {
         let countdown: ReturnType<typeof setInterval>;
         if (timer && timer > 0) {
+            setTitle(timer);
             countdown = setInterval(() => {
                 setTimer(timer - 1);
-                setTitle(timer);
             }, 1000);
         } else {
             setNextOtpRequest('');
@@ -95,6 +102,7 @@ const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = f
 
     return {
         next_otp_request,
+        is_request_button_diabled,
     };
 };
 

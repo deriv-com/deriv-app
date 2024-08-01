@@ -9,6 +9,13 @@ jest.mock('@deriv/api', () => ({
     useServerTime: jest.fn(),
 }));
 
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    WS: {
+        send: jest.fn().mockResolvedValue({ time: 1620000000 }),
+    },
+}));
+
 const mock_store = mockStore({
     client: {
         account_settings: {
@@ -42,30 +49,33 @@ describe('usePhoneNumberVerificationSetTimer', () => {
         mock_store.ui.should_show_phone_number_otp = false;
     });
 
-    it('should set the correct timer and title when next_attempt is provided and should_show_phone_number_otp is true', () => {
+    it('should set the correct timer and title when next_attempt is provided and should_show_phone_number_otp is true', async () => {
         if (mock_store.client.account_settings.phone_number_verification)
             mock_store.client.account_settings.phone_number_verification.next_attempt = 1620000061;
         mock_store.ui.should_show_phone_number_otp = true;
 
-        const { result } = renderHook(() => usePhoneNumberVerificationSetTimer(), { wrapper });
+        const { result, waitFor } = renderHook(() => usePhoneNumberVerificationSetTimer(), { wrapper });
 
-        act(() => {
-            jest.advanceTimersByTime(1000);
-        });
+        expect(result.current.is_request_button_diabled).toBe(true);
+
+        await waitFor(() => result.current.is_request_button_diabled === false);
 
         expect(result.current.next_otp_request).toMatch(/\(1m\)/);
 
         act(() => {
             jest.advanceTimersByTime(2000);
         });
+
         expect(result.current.next_otp_request).toMatch(/\(59s\)/);
     });
 
-    it('should set the correct timer and title when next_email_attempt is provided', () => {
+    it('should set the correct timer and title when next_email_attempt is provided', async () => {
         if (mock_store.client.account_settings.phone_number_verification)
             mock_store.client.account_settings.phone_number_verification.next_email_attempt = 1620000120;
 
-        const { result } = renderHook(() => usePhoneNumberVerificationSetTimer(), { wrapper });
+        const { result, waitFor } = renderHook(() => usePhoneNumberVerificationSetTimer(), { wrapper });
+
+        await waitFor(() => result.current.is_request_button_diabled === false);
 
         act(() => {
             jest.advanceTimersByTime(1000);
@@ -76,19 +86,17 @@ describe('usePhoneNumberVerificationSetTimer', () => {
 
     it('should set the correct timer and title when is_from_request_phone_otp is true', async () => {
         if (mock_store.client.account_settings.phone_number_verification)
-            mock_store.client.account_settings.phone_number_verification.next_email_attempt = 1620000061;
-        const { result } = renderHook(() => usePhoneNumberVerificationSetTimer(true), { wrapper });
+            mock_store.client.account_settings.phone_number_verification.next_email_attempt = 1620000066;
+        const { result, waitFor } = renderHook(() => usePhoneNumberVerificationSetTimer(true), { wrapper });
 
-        act(() => {
-            jest.advanceTimersByTime(1000);
-        });
+        await waitFor(() => result.current.is_request_button_diabled === false);
 
         expect(result.current.next_otp_request).toMatch(/ 1 minutes/);
 
         act(() => {
-            jest.advanceTimersByTime(1000);
+            jest.advanceTimersByTime(3000);
         });
 
-        expect(result.current.next_otp_request).toMatch(/ 60 seconds/);
+        expect(result.current.next_otp_request).toMatch(/ 58 seconds/);
     });
 });

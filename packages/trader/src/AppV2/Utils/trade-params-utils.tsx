@@ -50,6 +50,21 @@ export const isDigitContractWinning = (
     return win_conditions[contract_type];
 };
 
+export const focusAndOpenKeyboard = (focused_input?: HTMLInputElement | null, main_input?: HTMLInputElement | null) => {
+    if (main_input && focused_input) {
+        // Reveal a temporary input element and put focus on it
+        focused_input.style.display = 'block';
+        focused_input.focus({ preventScroll: true });
+
+        // The keyboard is open, so now adding a delayed focus on the target element and hide the temporary input element
+        return setTimeout(() => {
+            main_input.focus();
+            main_input.click();
+            focused_input.style.display = 'none';
+        }, 300);
+    }
+};
+
 export const getTradeTypeTabsList = (contract_type = '') => {
     const is_turbos = isTurbosContract(contract_type);
     const is_vanilla = isVanillaContract(contract_type);

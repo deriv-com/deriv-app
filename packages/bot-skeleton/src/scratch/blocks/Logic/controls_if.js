@@ -246,25 +246,34 @@ Blockly.Blocks.controls_if = {
         }
     },
     reconnectChildBlocks(opt_value_conns, opt_statement_conns, opt_else_statement_conns) {
+        // Use provided connections or default to stored connections
         const value_connections = opt_value_conns ?? this.value_connections;
         const statement_connections = opt_statement_conns ?? this.statement_connections;
         const else_statement_connection = opt_else_statement_conns ?? this.else_statement_connection;
 
+        // Loop through each 'if' block
         for (let i = 1; i <= this.else_if_count; i++) {
             const input_names = this.getIfInputNames(i);
             const value_connection = value_connections[i];
             const statement_connection = statement_connections[i];
 
-            if (value_connection && this.getInput(input_names.IF)) {
-                Blockly.Mutator.reconnect(value_connection, this, input_names.IF);
+            const ifInput = this.getInput(input_names.IF);
+            if (value_connection && ifInput) {
+                ifInput.connection.disconnect();
+                ifInput.connection.connect(value_connection);
             }
-            if (statement_connection && this.getInput(input_names.DO)) {
-                Blockly.Mutator.reconnect(statement_connection, this, input_names.DO);
+
+            const doInput = this.getInput(input_names.DO);
+            if (statement_connection && doInput) {
+                doInput.connection.disconnect();
+                doInput.connection.connect(statement_connection);
             }
         }
 
-        if (else_statement_connection && this.getInput('ELSE')) {
-            Blockly.Mutator.reconnect(else_statement_connection, this, 'ELSE');
+        const elseInput = this.getInput('ELSE');
+        if (else_statement_connection && elseInput) {
+            elseInput.connection.disconnect();
+            elseInput.connection.connect(else_statement_connection);
         }
     },
     modifyElse(is_add) {

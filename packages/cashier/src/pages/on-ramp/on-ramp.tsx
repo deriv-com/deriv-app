@@ -104,7 +104,12 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
             value: menu_option.path,
         }));
 
-    if (is_switching || is_loading) return <Loading className='cashier-onboarding__loader' is_fullscreen />;
+    if (is_switching || is_loading)
+        return (
+            <PageContainer hide_breadcrumb>
+                <Loading className='cashier-onboarding__loader' is_fullscreen />
+            </PageContainer>
+        );
 
     if (is_deposit_locked || is_cashier_locked) {
         return (

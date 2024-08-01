@@ -38,7 +38,7 @@ const useIDVService = () => {
                 Object.keys(supportedDocuments).forEach(document => {
                     const pattern = supportedDocuments[document].format;
                     const text = supportedDocuments[document].display_name
-                        ? localize(supportedDocuments[document].display_name)
+                        ? localize(supportedDocuments[document].display_name as string)
                         : '';
                     const value = document;
                     documents[document] = {

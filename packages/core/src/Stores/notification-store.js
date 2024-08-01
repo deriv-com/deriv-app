@@ -353,6 +353,7 @@ export default class NotificationStore extends BaseStore {
         );
         const show_phone_number_verification_notification =
             !account_settings?.phone_number_verification?.verified &&
+            account_settings?.phone &&
             !is_next_email_attempt_timer_running &&
             !is_virtual &&
             is_phone_number_verification_enabled;

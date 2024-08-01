@@ -246,12 +246,10 @@ Blockly.Blocks.controls_if = {
         }
     },
     reconnectChildBlocks(opt_value_conns, opt_statement_conns, opt_else_statement_conns) {
-        // Use provided connections or default to stored connections
         const value_connections = opt_value_conns ?? this.value_connections;
         const statement_connections = opt_statement_conns ?? this.statement_connections;
         const else_statement_connection = opt_else_statement_conns ?? this.else_statement_connection;
 
-        // Loop through each 'if' block
         for (let i = 1; i <= this.else_if_count; i++) {
             const input_names = this.getIfInputNames(i);
             const value_connection = value_connections[i];

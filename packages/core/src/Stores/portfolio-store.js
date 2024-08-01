@@ -5,26 +5,23 @@ import {
     ChartBarrierStore,
     contractCancelled,
     contractSold,
-    extractInfoFromShortcode,
     filterDisabledPositions,
     formatMoney,
     formatPortfolioPosition,
     getContractPath,
     getCurrentTick,
     getTotalProfit,
-    getTradeTypeName,
     getDisplayStatus,
     getDurationPeriod,
     getDurationTime,
     getDurationUnitText,
     getEndTime,
-    getMarketName,
+    getTradeNotificationMessage,
     isAccumulatorContract,
     isEmptyObject,
     isEnded,
     isValidToSell,
     isMultiplierContract,
-    isHighLow,
     WS,
     TRADE_TYPES,
     removeBarrier,
@@ -429,30 +426,13 @@ export default class PortfolioStore extends BaseStore {
             if (window.location.pathname === routes.trade)
                 this.root_store.notifications.addTradeNotification(contract_info);
 
-            const {
-                contract_id,
-                contract_type: trade_type,
-                currency,
-                profit,
-                shortcode,
-                status,
-                underlying,
-            } = contract_info;
+            const { contract_id, contract_type: trade_type, currency, profit, shortcode, status } = contract_info;
 
             const new_notification_id = `${contract_id}_${status}`;
             if (this.sell_notifications.some(({ id }) => id === new_notification_id)) return;
 
             this.sell_notifications.push({ id: new_notification_id });
 
-            const extracted_info_from_shortcode = extractInfoFromShortcode(shortcode);
-            const symbol = getMarketName(underlying ?? extracted_info_from_shortcode.underlying);
-            const contract_type = getTradeTypeName(trade_type, {
-                isHighLow: isHighLow({ shortcode }),
-                showMainTitle: true,
-            });
-            const contract_type_with_subtype = `${contract_type} ${getTradeTypeName(trade_type, {
-                isHighLow: isHighLow({ shortcode }),
-            })}`.trim();
             const calculated_profit =
                 isMultiplierContract(trade_type) && !isNaN(profit) ? getTotalProfit(contract_info) : profit;
             const is_won = status === 'won' || calculated_profit >= 0;
@@ -462,7 +442,7 @@ export default class PortfolioStore extends BaseStore {
 
             this.addNotificationBannerCallback?.(
                 {
-                    message: `${contract_type_with_subtype} - ${symbol}`,
+                    message: getTradeNotificationMessage(shortcode),
                     redirectTo: getContractPath(contract_id),
                     title: formatted_profit,
                     type: is_won ? 'success' : 'error',

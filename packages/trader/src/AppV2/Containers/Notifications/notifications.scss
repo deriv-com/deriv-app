@@ -2,7 +2,7 @@
     .details {
         p {
             color: var(--component-textIcon-normal-default);
-            &title {
+            &.title {
                 color: var(--component-textIcon-normal-prominent);
             }
         }

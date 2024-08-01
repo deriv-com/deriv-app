@@ -11,6 +11,7 @@ import {
     getPlatformSettings,
     getPropertyValue,
     getContractSubtype,
+    getTradeNotificationMessage,
     isBarrierSupported,
     isAccumulatorContract,
     isCryptocurrency,
@@ -37,8 +38,6 @@ import {
     getTradeURLParams,
     getCardLabelsV2,
     formatMoney,
-    getMarketName,
-    getTradeTypeName,
     getContractPath,
     routes,
 } from '@deriv/shared';
@@ -1047,19 +1046,11 @@ export default class TradeStore extends BaseStore {
                                     0,
                                     0
                                 )} ${currency}`;
-                                const symbol = getMarketName(extracted_info_from_shortcode.underlying);
                                 const trade_type = extracted_info_from_shortcode.category;
-                                const contract_type = getTradeTypeName(trade_type, {
-                                    isHighLow: isHighLow({ shortcode }),
-                                    showMainTitle: true,
-                                });
-                                const contract_type_with_subtype = `${contract_type} ${getTradeTypeName(trade_type, {
-                                    isHighLow: isHighLow({ shortcode }),
-                                })}`.trim();
 
                                 if (window.location.pathname === routes.trade)
                                     callback?.({
-                                        message: `${contract_type_with_subtype} - ${symbol}`,
+                                        message: getTradeNotificationMessage(shortcode),
                                         redirectTo: getContractPath(contract_id),
                                         title: formatted_stake,
                                     });

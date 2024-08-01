@@ -1,6 +1,7 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { routes } from '@deriv/shared';
 import ErrorComponent from '../error-component';
 
@@ -16,6 +17,24 @@ describe('ErrorComponent', () => {
     it('should render as a dialog when is_dialog is true', () => {
         render(<ErrorComponent is_dialog={true} />);
         expect(screen.getByRole('dialog')).toBeInTheDocument();
+    });
+
+    it('should render as a dialog with provided data', async () => {
+        mockErrorData.header = '';
+        mockErrorData.redirect_label = '';
+        render(<ErrorComponent is_dialog={true} {...mockErrorData} />);
+        expect(
+            screen.getByRole('heading', {
+                level: 1,
+                name: /there was an error/i,
+            })
+        ).toBeInTheDocument();
+        const buttonEl = screen.getByRole('button', {
+            name: /ok/i,
+        });
+        expect(buttonEl).toBeInTheDocument();
+        userEvent.click(buttonEl);
+        expect(mockErrorData.redirectOnClick).toHaveBeenCalledTimes(1);
     });
 
     it('should render as a standard message when is_dialog is false', () => {

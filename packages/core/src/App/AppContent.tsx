@@ -18,7 +18,7 @@ import Devtools from './Devtools';
 import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 import initDatadog from '../Utils/Datadog';
 import { ThemeProvider } from '@deriv-com/quill-ui';
-import { useGrowthbookIsOn } from '@deriv/hooks';
+import { useGrowthbookGetFeatureValue, useGrowthbookIsOn } from '@deriv/hooks';
 import { useTranslations } from '@deriv-com/translations';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
@@ -34,7 +34,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const [isServicePasskeysFFEnabled] = useGrowthbookIsOn({
         featureFlag: 'service_passkeys',
     });
-    const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookIsOn({
+    const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
     const isMounted = useIsMounted();
@@ -48,7 +48,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
 
     React.useEffect(() => {
         if (isPhoneNumberVerificationGBLoaded) {
-            setIsPhoneNumberVerificationEnabled(isPhoneNumberVerificationEnabled);
+            setIsPhoneNumberVerificationEnabled(!!isPhoneNumberVerificationEnabled);
         }
     }, [isPhoneNumberVerificationEnabled, setIsPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded]);
 

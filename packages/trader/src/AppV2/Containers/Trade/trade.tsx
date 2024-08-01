@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { Loading } from '@deriv/components';
+import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
 import { TRADE_TYPES } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 import BottomNav from 'AppV2/Components/BottomNav';
@@ -90,6 +91,7 @@ const Trade = observer(() => {
             ) : (
                 <Loading.DTraderV2 />
             )}
+            <ClosedMarketMessage />
         </BottomNav>
     );
 });

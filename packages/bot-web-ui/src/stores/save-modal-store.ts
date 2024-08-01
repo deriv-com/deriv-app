@@ -30,9 +30,6 @@ interface ISaveModalStore {
     updateBotName: (bot_name: string) => void;
     setButtonStatus: (status: { [key: string]: string } | string | number) => void;
 }
-
-const Blockly = window.Blockly;
-
 export default class SaveModalStore implements ISaveModalStore {
     root_store: RootStore;
 
@@ -94,7 +91,7 @@ export default class SaveModalStore implements ISaveModalStore {
 
             const workspace_structure = {
                 id: workspace_id,
-                xml: Blockly.Xml.domToText(xml),
+                xml: window.Blockly.Xml.domToText(xml),
                 name: bot_name,
                 timestamp: Date.now(),
                 save_type,
@@ -155,7 +152,7 @@ export default class SaveModalStore implements ISaveModalStore {
         } else {
             await saveFile({
                 name: bot_name,
-                content: Blockly?.Xml?.domToPrettyText(xml),
+                content: window.Blockly?.Xml?.domToPrettyText(xml),
                 mimeType: 'application/xml',
             });
             this.setButtonStatus(button_status.COMPLETED);
@@ -164,7 +161,7 @@ export default class SaveModalStore implements ISaveModalStore {
         this.updateBotName(bot_name);
 
         if (active_tab === 0) {
-            const workspace_id = selected_strategy.id ?? Blockly?.utils?.genUid();
+            const workspace_id = selected_strategy.id ?? window.Blockly?.utils?.genUid();
             await this.addStrategyToWorkspace(workspace_id, is_local, save_as_collection, bot_name, xml);
             if (main_strategy) await loadStrategyToBuilder(main_strategy);
         } else {

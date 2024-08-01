@@ -1,10 +1,10 @@
 .trade-notification {
     .details {
-        p.title {
-            color: var(--component-textIcon-normal-prominent);
-        }
-        p:not(.title) {
+        p {
             color: var(--component-textIcon-normal-default);
+            &title {
+                color: var(--component-textIcon-normal-prominent);
+            }
         }
     }
 

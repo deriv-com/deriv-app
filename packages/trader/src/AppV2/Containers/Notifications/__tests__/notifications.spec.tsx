@@ -23,15 +23,12 @@ jest.mock('@deriv-com/quill-ui', () => ({
         ],
         removeBanner: jest.fn(),
     })),
-    NotificationBanners: jest.fn(
-        ({ banners }) =>
-            banners && (
-                <div>
-                    <p>{notification_banners}</p>
-                    <p>{banners[0].message}</p>
-                </div>
-            )
-    ),
+    NotificationBanners: jest.fn(({ banners }) => (
+        <div>
+            <p>{notification_banners}</p>
+            <p>{banners[0].message}</p>
+        </div>
+    )),
 }));
 
 describe('Notifications', () => {

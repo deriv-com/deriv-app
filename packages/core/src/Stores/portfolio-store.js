@@ -43,6 +43,7 @@ export default class PortfolioStore extends BaseStore {
     is_loading = true;
     error = '';
     addNotificationBannerCallback;
+    sell_notifications = [];
 
     //accumulators
     open_accu_contract = null;
@@ -94,6 +95,7 @@ export default class PortfolioStore extends BaseStore {
             totals: computed,
             setActivePositions: action.bound,
             setAddNotificationBannerCallback: action.bound,
+            sell_notifications: observable,
             is_active_empty: computed,
             active_positions_count: computed,
             is_empty: computed,
@@ -421,12 +423,12 @@ export default class PortfolioStore extends BaseStore {
 
         this.positions[i].is_loading = false;
 
-        if (
-            this.root_store.ui.is_mobile &&
-            getEndTime(contract_response) &&
-            window.location.pathname === routes.trade
-        ) {
+        if (this.root_store.ui.is_mobile && getEndTime(contract_response)) {
             const contract_info = this.positions[i].contract_info;
+
+            if (window.location.pathname === routes.trade)
+                this.root_store.notifications.addTradeNotification(contract_info);
+
             const {
                 contract_id,
                 contract_type: trade_type,
@@ -438,14 +440,10 @@ export default class PortfolioStore extends BaseStore {
             } = contract_info;
 
             const new_notification_id = `${contract_id}_${status}`;
-            if (
-                this.root_store.notifications.trade_notifications.some(
-                    ({ id: notification_id }) => notification_id === new_notification_id
-                )
-            )
-                return;
+            if (this.sell_notifications.some(({ id }) => id === new_notification_id)) return;
 
-            const is_won = status === 'won';
+            this.sell_notifications.push({ id: new_notification_id });
+
             const extracted_info_from_shortcode = extractInfoFromShortcode(shortcode);
             const symbol = getMarketName(underlying ?? extracted_info_from_shortcode.underlying);
             const contract_type = getTradeTypeName(trade_type, {
@@ -457,6 +455,7 @@ export default class PortfolioStore extends BaseStore {
             })}`.trim();
             const calculated_profit =
                 isMultiplierContract(trade_type) && !isNaN(profit) ? getTotalProfit(contract_info) : profit;
+            const is_won = status === 'won' || calculated_profit >= 0;
             const formatted_profit = `${is_won ? localize('Profit') : localize('Loss')}: ${
                 is_won ? '+' : ''
             }${formatMoney(currency, calculated_profit, true, 0, 0)} ${currency}`;
@@ -468,10 +467,8 @@ export default class PortfolioStore extends BaseStore {
                     title: formatted_profit,
                     type: is_won ? 'success' : 'error',
                 },
-                status
+                is_won ? 'success' : 'error'
             );
-
-            this.root_store.notifications.addTradeNotification(contract_info);
         }
     };
 

@@ -9,10 +9,9 @@ const Notifications = observer(() => {
     const { setAddNotificationBannerCallback } = portfolio;
 
     React.useEffect(() => {
-        const addNotificationBannerCallback = (params: Parameters<typeof addBanner>[0], status: string) =>
+        const addNotificationBannerCallback = (params: Parameters<typeof addBanner>[0], result: string) =>
             addBanner({
-                icon: <StandaloneFlagCheckeredFillIcon iconSize='sm' className={`trade-notification--${status}`} />,
-                type: 'success',
+                icon: <StandaloneFlagCheckeredFillIcon iconSize='sm' className={`trade-notification--${result}`} />,
                 ...params,
             });
 

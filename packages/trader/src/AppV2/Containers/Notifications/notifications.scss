@@ -12,11 +12,11 @@
         fill: var(--component-textIcon-statusNormal-information);
     }
 
-    &--won {
+    &--success {
         fill: var(--core-color-solid-green-900);
     }
 
-    &--lost {
+    &--error {
         fill: var(--core-color-solid-red-900);
     }
 }

@@ -11,7 +11,7 @@ import {
     LabelPairedSquareListMdRegularIcon,
     LegacyClose2pxIcon,
 } from '@deriv/quill-icons';
-import { useTranslations } from '@deriv-com/translations';
+import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { WalletCurrencyIcon, WalletGradientBackground } from '../../../../components';
 import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
@@ -23,49 +23,49 @@ type TProps = {
     hideWalletDetails: boolean;
 };
 
-const getRealAccountTabs = (localize: ReturnType<typeof useTranslations>['localize']) => {
+const getRealAccountTabs = () => {
     const realAccountTabs = [
         {
             icon: <LabelPairedPlusMdRegularIcon />,
             path: 'deposit',
-            text: localize('Deposit'),
+            text: <Localize i18n_default_text='Deposit' />,
         },
         {
             icon: <LabelPairedMinusMdRegularIcon />,
             path: 'withdrawal',
-            text: localize('Withdraw'),
+            text: <Localize i18n_default_text='Withdraw' />,
         },
         {
             icon: <LabelPairedArrowUpArrowDownMdRegularIcon />,
             path: 'account-transfer',
-            text: localize('Transfer'),
+            text: <Localize i18n_default_text='Transfer' />,
         },
         {
             icon: <LabelPairedSquareListMdRegularIcon />,
             path: 'transactions',
-            text: localize('Transactions'),
+            text: <Localize i18n_default_text='Transactions' />,
         },
     ] as const;
 
     return realAccountTabs;
 };
 
-const getVirtualAccountTabs = (localize: ReturnType<typeof useTranslations>['localize']) => {
+const getVirtualAccountTabs = () => {
     const virtualAccountTabs = [
         {
             icon: <LabelPairedArrowUpArrowDownMdRegularIcon />,
             path: 'account-transfer',
-            text: localize('Transfer'),
+            text: <Localize i18n_default_text='Transfer' />,
         },
         {
             icon: <LabelPairedSquareListMdRegularIcon />,
             path: 'transactions',
-            text: localize('Transactions'),
+            text: <Localize i18n_default_text='Transactions' />,
         },
         {
             icon: <LabelPairedArrowsRotateMdRegularIcon />,
             path: 'reset-balance',
-            text: localize('Reset Balance'),
+            text: <Localize i18n_default_text='Reset Balance' />,
         },
     ] as const;
 
@@ -76,13 +76,12 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
     const { isMobile } = useDevice();
-    const { localize } = useTranslations();
     const activeTabRef = useRef<HTMLButtonElement>(null);
     const history = useHistory();
     const location = useLocation();
     const accountsActiveTabIndexRef = useRef<number>(location.state?.accountsActiveTabIndex ?? 0);
 
-    const tabs = activeWallet?.is_virtual ? getVirtualAccountTabs(localize) : getRealAccountTabs(localize);
+    const tabs = activeWallet?.is_virtual ? getVirtualAccountTabs() : getRealAccountTabs();
     const isDemo = activeWallet?.is_virtual;
 
     useEffect(() => {

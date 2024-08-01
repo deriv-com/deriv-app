@@ -32,13 +32,7 @@ const Header = ({ currency }: THeaderProps) => {
 
     return (
         <>
-            <Text
-                as='h2'
-                color='prominent'
-                weight='bold'
-                align='center'
-                className='cashier__header cashier__content-header'
-            >
+            <Text as='h2' color='prominent' weight='bold' align='center' className='cashier__header'>
                 <Localize
                     i18n_default_text='Withdraw {{currency}} ({{currency_symbol}}) to your wallet'
                     values={{

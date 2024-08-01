@@ -104,13 +104,7 @@ const PaymentAgentTransferForm = observer(() => {
             data-testid='dt_payment_agent_transfer_form_container'
         >
             {isDesktop && (
-                <Text
-                    as='h2'
-                    color='prominent'
-                    weight='bold'
-                    align='center'
-                    className='cashier__header cashier__content-header'
-                >
+                <Text as='h2' color='prominent' weight='bold' align='center' className='cashier__header'>
                     <Localize i18n_default_text='Transfer to client' />
                 </Text>
             )}

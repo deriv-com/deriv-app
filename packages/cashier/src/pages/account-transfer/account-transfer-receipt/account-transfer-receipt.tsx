@@ -74,12 +74,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
     };
 
     return (
-        <div
-            className={classNames(
-                'account-transfer-receipt__crypto',
-                !is_from_outside_cashier && 'account-transfer-receipt__crypto-padding'
-            )}
-        >
+        <div className='account-transfer-receipt__crypto'>
             <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>
                 <Localize i18n_default_text='Your funds have been transferred' />
             </Text>

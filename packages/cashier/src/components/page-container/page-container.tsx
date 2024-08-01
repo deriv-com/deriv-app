@@ -34,7 +34,7 @@ const PageContainer: React.FC<React.PropsWithChildren<TProps>> = observer(
                             {children}
                             {!isDesktop && right && <div className='page-container__sidebar--right'>{right}</div>}
                         </ThemedScrollbars>
-                        {isDesktop && <div className='page-container__sidebar--right'>{right}</div>}
+                        {isDesktop && right && <div className='page-container__sidebar--right'>{right}</div>}
                     </div>
                 )}
             </div>

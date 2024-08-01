@@ -125,7 +125,7 @@ const WalletInformation = ({ account, blockchain_address, is_mobile }: TWalletIn
 };
 
 const WithdrawalCryptoReceipt = observer(() => {
-    const { client, ui } = useStore();
+    const { client } = useStore();
     const { currency, is_switching } = client;
     const { isMobile } = useDevice();
     const { account_transfer, general_store, transaction_history, withdraw } = useCashierStore();
@@ -149,13 +149,7 @@ const WithdrawalCryptoReceipt = observer(() => {
 
     return (
         <div className='cashier__wrapper'>
-            <Text
-                as='h2'
-                color='prominent'
-                weight='bold'
-                align='center'
-                className='cashier__header cashier__content-header'
-            >
+            <Text as='h2' color='prominent' weight='bold' align='center' className='cashier__header'>
                 <Localize i18n_default_text='Your withdrawal will be processed within 24 hours' />
             </Text>
             <div className='withdrawal-crypto-receipt__detail'>

@@ -10,6 +10,7 @@ import SideNote from '../../components/side-note';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
 import { useCashierStore } from '../../stores/useCashierStores';
+import { PageContainer } from '../../components/page-container';
 import './on-ramp.scss';
 
 type TMenuOption = {
@@ -107,14 +108,14 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
 
     if (is_deposit_locked || is_cashier_locked) {
         return (
-            <div className='cashier-locked-padding'>
+            <PageContainer hide_breadcrumb>
                 <CashierLocked />
-            </div>
+            </PageContainer>
         );
     }
 
     return (
-        <React.Fragment>
+        <PageContainer hide_breadcrumb>
             <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>
                 {!isDesktop && (
                     <React.Fragment>
@@ -163,7 +164,7 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
                     </Modal.Body>
                 </Modal>
             </div>
-        </React.Fragment>
+        </PageContainer>
     );
 });
 

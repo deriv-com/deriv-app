@@ -487,7 +487,7 @@ const AccountTransferForm = observer(
                         color='prominent'
                         weight='bold'
                         align='center'
-                        className='cashier__header cashier__content-header'
+                        className='cashier__header account-transfer-form__header'
                     >
                         {localize('Transfer between your accounts in Deriv')}
                     </Text>

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { Formik, FormikValues } from 'formik';
 import { useOnfido } from '@deriv/api-v2';
+import { useTranslations } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import { InlineMessage, ModalStepWrapper } from '../../../../../../components';
 import { useVerifyPersonalDetails, VerifyPersonalDetails } from '../VerifyPersonalDetails';
@@ -12,6 +13,7 @@ type TOnfidoProps = {
 };
 
 const Onfido: React.FC<TOnfidoProps> = ({ onCompletion }) => {
+    const { localize } = useTranslations();
     const { data: onfidoData, isLoading: isOnfidoLoading } = useOnfido();
     const { hasSubmitted: isOnfidoSubmissionSuccessful, onfidoContainerId } = onfidoData;
     const {
@@ -37,7 +39,7 @@ const Onfido: React.FC<TOnfidoProps> = ({ onCompletion }) => {
     if (isLoading) return <Loader />;
 
     return (
-        <ModalStepWrapper title='Add a real MT5 account'>
+        <ModalStepWrapper title={localize('Add a real MT5 account')}>
             <div className='wallets-onfido'>
                 {!isPersonalDetailsSubmitted && (
                     <Formik initialValues={initialPersonalDetailsValues} onSubmit={onSubmit}>
@@ -55,14 +57,14 @@ const Onfido: React.FC<TOnfidoProps> = ({ onCompletion }) => {
                     {!isPersonalDetailsSubmitted ? (
                         <div className='wallets-onfido__wrapper-overlay'>
                             <InlineMessage
-                                message='Hit the checkbox above to choose your document.'
+                                message={localize('Hit the checkbox above to choose your document.')}
                                 size='sm'
                                 type='information'
                             />
                         </div>
                     ) : (
                         <InlineMessage
-                            message='Your personal details have been saved successfully.'
+                            message={localize('Your personal details have been saved successfully.')}
                             size='sm'
                             type='announcement'
                         />

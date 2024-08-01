@@ -74,10 +74,9 @@ const NotificationsList = observer(() => {
                                             const buttonSettings = getButtonSettings(item);
                                             if (buttonSettings?.onClick) {
                                                 buttonSettings.onClick();
-                                            } else {
-                                                toggleNotificationsModal();
-                                                onActionTrackEvent(item.key);
                                             }
+                                            toggleNotificationsModal();
+                                            onActionTrackEvent(item.key);
                                         }}
                                         active_class='notifications-item'
                                         className={classNames(

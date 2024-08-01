@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, Fragment } from 'react';
+import { useEffect, useState, useCallback, Fragment, ChangeEvent } from 'react';
 import PhoneVerificationCard from './phone-verification-card';
 import { Text, InputGroupButton } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
@@ -137,6 +137,12 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                     buttonLabel={localize('Verify')}
                     label={localize('OTP code')}
                     buttonCallback={handleVerifyOTP}
+                    onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                        if (e.key === 'Enter') {
+                            handleVerifyOTP();
+                        }
+                    }}
+                    inputMode='numeric'
                     onChange={handleGetOtpValue}
                     message={phone_otp_error_message}
                     value={otp}

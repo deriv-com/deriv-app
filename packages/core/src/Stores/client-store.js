@@ -442,7 +442,11 @@ export default class ClientStore extends BaseStore {
         reaction(
             () => [this.account_settings],
             async () => {
-                const language = getRedirectionLanguage(this.account_settings?.preferred_language, this.is_new_session);
+                const language = getRedirectionLanguage(
+                    this.account_settings?.preferred_language,
+                    this.is_new_session,
+                    this.has_wallet
+                );
                 const should_update_preferred_language =
                     language !== this.account_settings?.preferred_language &&
                     this.preferred_language !== this.account_settings?.preferred_language;
@@ -1561,7 +1565,8 @@ export default class ClientStore extends BaseStore {
             });
             const language = getRedirectionLanguage(
                 authorize_response.authorize.preferred_language,
-                this.is_new_session
+                this.is_new_session,
+                this.has_wallet
             );
             const stored_language = LocalStore.get(LANGUAGE_KEY);
             if (stored_language && language !== stored_language) {

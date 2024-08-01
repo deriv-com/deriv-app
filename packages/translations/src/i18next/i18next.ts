@@ -85,9 +85,10 @@ const isLanguageAvailable = (lang: string) => {
     return Object.keys(getAllowedLanguages()).includes(selected_language);
 };
 
-export const getRedirectionLanguage = (preferred_language: string, is_new_session = false) => {
+export const getRedirectionLanguage = (preferred_language: string, is_new_session = false, has_wallet = false) => {
     const language_query = new URLSearchParams(window.location.search).get('lang');
     const is_language_query_valid = language_query && isLanguageAvailable(language_query);
+    if (has_wallet && is_language_query_valid) return DEFAULT_LANGUAGE;
     return (is_language_query_valid && !is_new_session ? language_query : preferred_language) ?? DEFAULT_LANGUAGE;
 };
 

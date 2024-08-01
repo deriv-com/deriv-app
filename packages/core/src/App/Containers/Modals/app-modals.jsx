@@ -21,6 +21,10 @@ import WalletsUpgradeCompletedModal from './wallets-upgrade-completed-modal';
 import EffortlessLoginModal from '../EffortlessLoginModal';
 import CryptoTransactionProcessingModal from './crypto-transaction-processing-modal';
 
+const SameDOBPhoneModal = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "same-dob-phone-modal" */ './same-dob-phone-modal'))
+);
+
 const TradingAssessmentExistingUser = React.lazy(() =>
     moduleLoader(() =>
         import(/* webpackChunkName: "trading-assessment-existing-user-modal" */ './trading-assessment-existing-user')
@@ -116,6 +120,7 @@ const AppModals = observer(() => {
         is_real_acc_signup_on,
         is_from_signup_account,
         should_show_crypto_transaction_processing_modal,
+        should_show_same_dob_phone_modal,
     } = ui;
     const temp_session_signup_params = SessionStore.get('signup_query_param');
     const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
@@ -252,6 +257,10 @@ const AppModals = observer(() => {
 
         if (is_kyc_information_submitted_modal_open) {
             ComponentToLoad = <InformationSubmittedModal />;
+        }
+
+        if (should_show_same_dob_phone_modal) {
+            ComponentToLoad = <SameDOBPhoneModal />;
         }
     }
 

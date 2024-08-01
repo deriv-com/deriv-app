@@ -88,6 +88,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         setShouldShowOneTimeDepositModal,
         real_account_signup: state_value,
         is_trading_assessment_for_new_user_enabled,
+        setShouldShowSameDOBPhoneModal,
     } = ui;
     const { show_eu_related_content } = traders_hub;
     const deposit_target = modules.cashier.general_store.deposit_target;
@@ -538,11 +539,9 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                 const { get_account_status } = status;
                 setShouldShowAppropriatenessWarningModal(false);
 
-                // show error here
-                const is_duplicate_dob_phone = get_account_status?.status?.includes('duplicate_dob_phone');
-                if (is_duplicate_dob_phone) {
-                    // show something
-
+                // check DOB and phone number
+                if (get_account_status?.status?.includes('duplicate_dob_phone')) {
+                    setShouldShowSameDOBPhoneModal(true);
                     return;
                 }
 

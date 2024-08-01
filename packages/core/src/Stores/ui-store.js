@@ -152,6 +152,7 @@ export default class UIStore extends BaseStore {
     // add crypto accounts
     should_show_cancel = false;
 
+    should_show_same_dob_phone_modal = false;
     should_show_deposit_now_or_later_modal = false;
     should_show_crypto_transaction_processing_modal = false;
     should_show_risk_warning_modal = false;
@@ -298,6 +299,7 @@ export default class UIStore extends BaseStore {
             real_account_signup: observable,
             reports_route_tab_index: observable,
             settings_extension: observable,
+            should_show_same_dob_phone_modal: observable,
             should_show_deposit_now_or_later_modal: observable,
             should_show_crypto_transaction_processing_modal: observable,
             should_show_appropriateness_warning_modal: observable,
@@ -424,6 +426,7 @@ export default class UIStore extends BaseStore {
             toggleUrlUnavailableModal: action.bound,
             setShouldShowDepositNowOrLaterModal: action.bound,
             setShouldShowCryptoTransactionProcessingModal: action.bound,
+            setShouldShowSameDOBPhoneModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -982,5 +985,9 @@ export default class UIStore extends BaseStore {
 
     setShouldShowCryptoTransactionProcessingModal(value) {
         this.should_show_crypto_transaction_processing_modal = value;
+    }
+
+    setShouldShowSameDOBPhoneModal(value) {
+        this.should_show_same_dob_phone_modal = value;
     }
 }

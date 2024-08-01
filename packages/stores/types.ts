@@ -824,6 +824,8 @@ type TUiStore = {
     setShouldShowDepositNowOrLaterModal: (value: boolean) => void;
     should_show_crypto_transaction_processing_modal: boolean;
     setShouldShowCryptoTransactionProcessingModal: (value: boolean) => void;
+    should_show_same_dob_phone_modal: boolean;
+    setShouldShowSameDOBPhoneModal: (value: boolean) => void;
 };
 
 type TPortfolioStore = {

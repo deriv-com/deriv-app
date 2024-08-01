@@ -4,7 +4,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import useDuplicateDOBPhone from '../useDuplicateDOBPhone';
 
 describe('useDuplicateDOBPhone', () => {
-    test('should return true if `is_duplicate_dob_phone` is true', () => {
+    it('should return true if `is_duplicate_dob_phone` is true', () => {
         const mock = mockStore({
             client: {
                 is_duplicate_dob_phone: true,
@@ -19,7 +19,7 @@ describe('useDuplicateDOBPhone', () => {
         expect(result.current).toBe(true);
     });
 
-    test('should return false', () => {
+    it('should return false', () => {
         const mock = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (

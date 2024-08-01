@@ -480,6 +480,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             setShouldShowDepositNowOrLaterModal: jest.fn(),
             should_show_crypto_transaction_processing_modal: false,
             setShouldShowCryptoTransactionProcessingModal: jest.fn(),
+            should_show_same_dob_phone_modal: false,
+            setShouldShowSameDOBPhoneModal: jest.fn(),
         },
         traders_hub: {
             getAccount: jest.fn(),

@@ -44,9 +44,6 @@ describe('<PersonalDetailsForm />', () => {
                 place_of_birth: 'Thailand',
                 citizen: 'Thailand',
                 email_consent: 1,
-                phone_number_verification: {
-                    verified: 0,
-                },
             },
         },
     });

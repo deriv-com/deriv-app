@@ -2,13 +2,19 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import { getPositionsV2TabIndexFromURL } from '@deriv/shared';
 import { Tab } from '@deriv-com/quill-ui';
+import { observer } from 'mobx-react';
+import { useModulesStore } from 'Stores/useModulesStores';
 import { setPositionURLParams, TAB_NAME } from 'AppV2/Utils/positions-utils';
 import BottomNav from 'AppV2/Components/BottomNav';
 import PositionsContent from './positions-content';
 
-const Positions = () => {
+const Positions = observer(() => {
     const [hasButtonsDemo, setHasButtonsDemo] = React.useState(true);
     const [activeTab, setActiveTab] = React.useState(getPositionsV2TabIndexFromURL());
+
+    const {
+        positions: { onUnmount },
+    } = useModulesStore();
 
     const tabs = [
         {
@@ -30,6 +36,7 @@ const Positions = () => {
 
     React.useEffect(() => {
         setPositionURLParams(tabs[activeTab].id);
+        return () => onUnmount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -57,6 +64,6 @@ const Positions = () => {
             </div>
         </BottomNav>
     );
-};
+});
 
 export default Positions;

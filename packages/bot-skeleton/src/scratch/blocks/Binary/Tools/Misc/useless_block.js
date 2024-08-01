@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../../utils';
 
 Blockly.Blocks.useless_block = {
     init() {
@@ -20,6 +21,9 @@ Blockly.Blocks.useless_block = {
             previousStatement: null,
         });
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-Blockly.JavaScript.useless_block = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.useless_block = () => {};

@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
 import { Trans } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { FadedAnimatedList, WalletAlertMessage, WalletButton } from '../../../../../../components';
+import { Button } from '@deriv-com/ui';
+import { FadedAnimatedList, WalletAlertMessage } from '../../../../../../components';
 import { useTransferMessages } from '../../hooks';
 import { useTransfer } from '../../provider';
 import { TInitialTransferFormValues } from '../../types';
@@ -36,7 +37,7 @@ const TransferMessages: React.FC = () => {
                     <WalletAlertMessage key={text} message={message} type={type}>
                         {action?.buttonLabel && action?.navigateTo && (
                             <div className='wallets-transfer-messages__action-button'>
-                                <WalletButton size='sm' type='button' variant='contained'>
+                                <Button borderWidth='sm' size='sm' type='button' variant='contained'>
                                     <Link
                                         className='wallets-transfer-messages__link'
                                         to={action.navigateTo}
@@ -47,7 +48,7 @@ const TransferMessages: React.FC = () => {
                                     >
                                         <Trans defaults={action.buttonLabel} />
                                     </Link>
-                                </WalletButton>
+                                </Button>
                             </div>
                         )}
                     </WalletAlertMessage>

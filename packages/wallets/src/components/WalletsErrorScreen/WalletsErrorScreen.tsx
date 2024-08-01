@@ -1,11 +1,11 @@
 import React, { ComponentProps } from 'react';
-import { WalletButton } from '../Base';
+import { Button } from '@deriv-com/ui';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 import './WalletsErrorScreen.scss';
 
 type TProps = {
     buttonText?: string;
-    buttonVariant?: ComponentProps<typeof WalletButton>['variant'];
+    buttonVariant?: ComponentProps<typeof Button>['variant'];
     message?: string;
     onClick?: () => void;
     title?: string;
@@ -24,9 +24,9 @@ const WalletsErrorScreen: React.FC<TProps> = ({
                 description={message}
                 renderButtons={() =>
                     buttonText ? (
-                        <WalletButton onClick={onClick} size='lg' variant={buttonVariant}>
+                        <Button borderWidth='sm' onClick={onClick} size='lg' textSize='md' variant={buttonVariant}>
                             {buttonText}
-                        </WalletButton>
+                        </Button>
                     ) : null
                 }
                 title={title}

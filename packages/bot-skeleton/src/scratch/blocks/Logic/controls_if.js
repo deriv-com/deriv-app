@@ -246,6 +246,7 @@ Blockly.Blocks.controls_if = {
         }
     },
     reconnectChildBlocks(opt_value_conns, opt_statement_conns, opt_else_statement_conns) {
+        ``;
         const value_connections = opt_value_conns ?? this.value_connections;
         const statement_connections = opt_statement_conns ?? this.statement_connections;
         const else_statement_connection = opt_else_statement_conns ?? this.else_statement_connection;
@@ -255,23 +256,23 @@ Blockly.Blocks.controls_if = {
             const value_connection = value_connections[i];
             const statement_connection = statement_connections[i];
 
-            const ifInput = this.getInput(input_names.IF);
-            if (value_connection && ifInput) {
-                ifInput.connection.disconnect();
-                ifInput.connection.connect(value_connection);
+            const if_input = this.getInput(input_names.IF);
+            if (value_connection && if_input) {
+                if_input.connection.disconnect();
+                if_input.connection.connect(value_connection);
             }
 
-            const doInput = this.getInput(input_names.DO);
-            if (statement_connection && doInput) {
-                doInput.connection.disconnect();
-                doInput.connection.connect(statement_connection);
+            const do_input = this.getInput(input_names.DO);
+            if (statement_connection && do_input) {
+                do_input.connection.disconnect();
+                do_input.connection.connect(statement_connection);
             }
         }
 
-        const elseInput = this.getInput('ELSE');
-        if (else_statement_connection && elseInput) {
-            elseInput.connection.disconnect();
-            elseInput.connection.connect(else_statement_connection);
+        const else_input = this.getInput('ELSE');
+        if (else_statement_connection && else_input) {
+            else_input.connection.disconnect();
+            else_input.connection.connect(else_statement_connection);
         }
     },
     modifyElse(is_add) {

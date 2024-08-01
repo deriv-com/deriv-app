@@ -31,7 +31,7 @@ const ClosedMarketMessage = observer(() => {
     const { common } = useStore();
     const { current_language } = common;
     const { symbol, prepareTradeStore } = useTraderStore();
-    const { activeSymbols } = useActiveSymbols({});
+    const { activeSymbols } = useActiveSymbols();
 
     const isMounted = useIsMounted();
     const [when_market_opens, setWhenMarketOpens] = React.useState<TWhenMarketOpens>({} as TWhenMarketOpens);

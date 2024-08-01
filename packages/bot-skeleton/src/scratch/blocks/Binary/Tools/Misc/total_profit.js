@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../../utils';
 
 Blockly.Blocks.total_profit = {
     init() {
@@ -25,12 +26,12 @@ Blockly.Blocks.total_profit = {
         };
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
         if (
-            event.type === Blockly.Events.END_DRAG ||
+            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) ||
             (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id))
         ) {
             const input_statement = this.getRootInputTargetBlock();
@@ -39,6 +40,9 @@ Blockly.Blocks.total_profit = {
                 this.unplug(true);
             }
         }
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 
@@ -67,5 +71,11 @@ Blockly.Blocks.total_profit_string = {
     onchange: Blockly.Blocks.total_profit.onchange,
 };
 
-Blockly.JavaScript.total_profit = () => ['Bot.getTotalProfit(false)', Blockly.JavaScript.ORDER_ATOMIC];
-Blockly.JavaScript.total_profit_string = () => ['Bot.getTotalProfit(true)', Blockly.JavaScript.ORDER_ATOMIC];
+Blockly.JavaScript.javascriptGenerator.forBlock.total_profit = () => [
+    'Bot.getTotalProfit(false)',
+    Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+];
+Blockly.JavaScript.javascriptGenerator.forBlock.total_profit_string = () => [
+    'Bot.getTotalProfit(true)',
+    Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+];

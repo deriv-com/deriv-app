@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../../utils';
 
 Blockly.Blocks.period = {
     init() {
@@ -22,6 +23,9 @@ Blockly.Blocks.period = {
         this.setDeletable(false);
     },
     onchange: Blockly.Blocks.input_list.onchange,
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     allowed_parents: [
         'bb_statement',
         'bba_statement',
@@ -40,4 +44,4 @@ Blockly.Blocks.period = {
     },
 };
 
-Blockly.JavaScript.period = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.period = () => {};

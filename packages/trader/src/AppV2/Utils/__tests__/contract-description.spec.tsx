@@ -10,6 +10,10 @@ import {
 import { CONTRACT_LIST } from '../trade-types-utils';
 import { Localize } from '@deriv/translations';
 
+jest.mock('@lottiefiles/dotlottie-react', () => ({
+    DotLottieReact: jest.fn(() => <div>DotLottieReact</div>),
+}));
+
 describe('getTermDefinition', () => {
     it('should return correct definition for passed term and contract type', () => {
         render(<div>{getTermDefinition({ contract_type: CONTRACT_LIST.ACCUMULATORS, term: TERM.GROWTH_RATE })}</div>);

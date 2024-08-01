@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
-import { useBalance } from '@deriv/api-v2';
+import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import { WalletText } from '../Base';
 import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
@@ -23,7 +23,7 @@ const WalletCard: React.FC<TProps> = ({
     isDemo,
     onClick,
 }) => {
-    const { isLoading } = useBalance();
+    const { isLoading: isBalanceLoading } = useAllBalanceSubscription();
 
     return (
         <button
@@ -57,7 +57,7 @@ const WalletCard: React.FC<TProps> = ({
                             <WalletText color={isDemo ? 'white' : 'general'} size={isCarouselContent ? 'md' : '2xs'}>
                                 {currency} {isDemo && isCarouselContent ? 'Demo' : ''} Wallet
                             </WalletText>
-                            {isLoading ? (
+                            {isBalanceLoading ? (
                                 <div
                                     className='wallets-skeleton wallets-card__balance-loader'
                                     data-testid='dt_wallet_card_balance_loader'

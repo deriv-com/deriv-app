@@ -35,7 +35,6 @@ export default class ProfitTableStore extends BaseStore {
             is_loading: observable,
             filtered_date_range: observable,
             client_loginid: observable,
-            total_profit: computed,
             is_empty: computed,
             has_selected_date: computed,
             fetchNextBatch: action.bound,
@@ -50,15 +49,6 @@ export default class ProfitTableStore extends BaseStore {
             clearDateFilter: action.bound,
             handleDateChange: action.bound,
         });
-    }
-
-    get total_profit() {
-        return this.data.reduce((previous, current) => {
-            const buy_price = Number(parseFloat(current.buy_price));
-            const sell_price = Number(parseFloat(current.sell_price));
-            const pl = sell_price - buy_price;
-            return previous + pl;
-        }, 0);
     }
 
     get is_empty() {

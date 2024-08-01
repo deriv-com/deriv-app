@@ -1,7 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import { Formik } from 'formik';
-import { Loader } from '@deriv-com/ui';
-import { WalletButton } from '../../../../../../components';
+import { Button, Loader } from '@deriv-com/ui';
 import useDevice from '../../../../../../hooks/useDevice';
 import { useTransfer } from '../../provider';
 import type { TInitialTransferFormValues } from '../../types';
@@ -54,13 +53,15 @@ const TransferForm = () => {
                             </div>
                         </div>
                         <div className='wallets-transfer__submit-button' data-testid='dt_transfer_form_submit_btn'>
-                            <WalletButton
+                            <Button
+                                borderWidth='sm'
                                 disabled={!values.fromAmount || !values.toAmount || values.isError}
                                 size={isMobile ? 'md' : 'lg'}
+                                textSize={isMobile ? 'sm' : 'md'}
                                 type='submit'
                             >
                                 Transfer
-                            </WalletButton>
+                            </Button>
                         </div>
                     </form>
                 )}

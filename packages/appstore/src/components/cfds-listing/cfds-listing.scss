@@ -36,6 +36,8 @@
         }
     }
     &__footer-button {
+        width: 100%;
+        display: flex;
         background-color: var(--general-main-1);
         button {
             height: 4rem;
@@ -2021,15 +2023,6 @@
     .cfd-password-reset {
         @include mobile-or-tablet-screen {
             flex: 1;
-        }
-    }
-    & .dc-password-meter__container {
-        flex-grow: 1;
-        margin: auto;
-
-        @include mobile-or-tablet-screen {
-            width: calc(100vw - 4.8rem);
-            max-width: 30rem;
         }
     }
     & .mt5-password-field {

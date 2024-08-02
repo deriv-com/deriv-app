@@ -66,8 +66,7 @@
         margin: auto;
 
         @include mobile-or-tablet-screen {
-            width: calc(100vw - 4.8rem);
-            max-width: 30rem;
+            max-width: 100%;
         }
     }
     & .mt5-password-field {

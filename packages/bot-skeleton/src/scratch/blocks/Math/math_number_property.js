@@ -65,17 +65,16 @@ Blockly.Blocks.math_number_property = {
         return container;
     },
     updateShape(hasDivisorInput) {
-        const inputExists = this.getInput('DIVISOR');
-
         if (hasDivisorInput) {
-            if (!inputExists) {
+            const inputExists = this.getInput('DIVISOR');
+            if (inputExists) {
+                this.removeInput('DIVISOR');
+            } else {
                 this.appendValueInput('DIVISOR').setCheck('Number');
                 this.initSvg();
                 this.renderEfficiently();
             }
-        } else if (inputExists) {
-                this.removeInput('DIVISOR');
-            }
+        }
     },
     customContextMenu(menu) {
         modifyContextMenu(menu);

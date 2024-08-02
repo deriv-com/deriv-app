@@ -31,7 +31,7 @@ const MarketCategoryItem = forwardRef(
         }, [favoriteSymbols, item.symbol]);
 
         const handleSelect = async (e: React.MouseEvent<HTMLSpanElement>) => {
-            const symbol = (e.target as HTMLSpanElement).getAttribute('data-symbol');
+            const symbol = (e.currentTarget as HTMLSpanElement).getAttribute('data-symbol');
             setSelectedSymbol(symbol ?? '');
             await onSymbolChange({ target: { name: 'symbol', value: symbol } });
             setIsOpen(false);
@@ -76,25 +76,25 @@ const MarketCategoryItem = forwardRef(
                 })}
                 ref={ref}
             >
-                <SymbolIconsMapper symbol={item.symbol} />
-                <Text
-                    size='sm'
-                    className={clsx('market-category-item-symbol', {
-                        'market-category-item-symbol--selected': selectedSymbol === item.symbol,
-                    })}
-                >
-                    <span onClick={handleSelect} data-symbol={item.symbol}>
-                        {item.display_name}
-                    </span>
-                </Text>
-                {!item.exchange_is_open && (
-                    <Tag
-                        label={<Localize key='exchange-closed' i18n_default_text='CLOSED' />}
-                        color='error'
-                        variant={selectedSymbol === item.symbol ? 'outline' : 'fill'}
-                        showIcon={false}
-                    />
-                )}
+                <span className='market-category-item-left' data-symbol={item.symbol} onClick={handleSelect}>
+                    <SymbolIconsMapper symbol={item.symbol} />
+                    <Text
+                        size='sm'
+                        className={clsx('market-category-item-symbol', {
+                            'market-category-item-symbol--selected': selectedSymbol === item.symbol,
+                        })}
+                    >
+                        <span>{item.display_name}</span>
+                    </Text>
+                    {!item.exchange_is_open && (
+                        <Tag
+                            label={<Localize key='exchange-closed' i18n_default_text='CLOSED' />}
+                            color='error'
+                            variant={selectedSymbol === item.symbol ? 'outline' : 'fill'}
+                            showIcon={false}
+                        />
+                    )}
+                </span>
                 <span onClick={toggleFavorites} data-symbol={item.symbol}>
                     {isFavorite ? (
                         <StandaloneStarFillIcon fill='var(--core-color-solid-mustard-700)' iconSize='sm' />

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, Fragment } from 'react';
+import { useState, useRef, useEffect, Fragment, ChangeEvent } from 'react';
 import clsx from 'clsx';
 import { Formik, Form, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router';
@@ -217,6 +217,7 @@ const PersonalDetailsForm = observer(() => {
             {({
                 values,
                 errors,
+                setStatus,
                 status,
                 touched,
                 handleChange,
@@ -370,7 +371,10 @@ const PersonalDetailsForm = observer(() => {
                                             })}
                                             //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
                                             value={values.phone}
-                                            onChange={handleChange}
+                                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                                                handleChange(e);
+                                                setStatus('');
+                                            }}
                                             onBlur={handleBlur}
                                             required
                                             error={errors.phone}
@@ -378,6 +382,7 @@ const PersonalDetailsForm = observer(() => {
                                             data-testid='dt_phone'
                                         />
                                         {isPhoneNumberVerificationEnabled &&
+                                            account_settings.phone &&
                                             account_settings.phone === values.phone && <VerifyButton />}
                                     </fieldset>
                                 )}

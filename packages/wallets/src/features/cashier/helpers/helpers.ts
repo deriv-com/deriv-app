@@ -1,5 +1,5 @@
 import { THooks, TMarketTypes, TWalletLandingCompanyName } from '../../../types';
-import { LandingCompanyDetails, MT5MarketTypeDetails, PlatformDetails } from '../constants/constants';
+import { LandingCompanyDetails, MT5MarketTypeDetails, PlatformDetails } from '../constants';
 
 type TGetAccountNameProps = {
     accountCategory: THooks.TransferAccount['account_category'];

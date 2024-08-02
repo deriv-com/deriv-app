@@ -4,7 +4,7 @@ import moment from 'moment';
 import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api-v2';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { getTruncatedString } from '@deriv/utils';
-import { Localize } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Divider, Text, Tooltip } from '@deriv-com/ui';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
@@ -16,7 +16,7 @@ import {
     getStatusDescription,
     getStatusName,
 } from '../../../../helpers/transaction-helpers';
-import { useTransactionTranslations } from '../../hooks';
+import { getTransactionLabels } from '../../constants';
 import { TransactionsPendingRowField } from './components/TransactionsPendingRowField';
 import './TransactionsPendingRow.scss';
 
@@ -27,7 +27,7 @@ type TProps = {
 const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
     const { data } = useActiveWalletAccount();
     const { isMobile } = useDevice();
-    const { localize, translations } = useTransactionTranslations();
+    const { localize } = useTranslations();
     const displayCode = useMemo(() => data?.currency_config?.display_code || 'USD', [data]);
     const modal = useModal();
     const formattedTransactionHash = transaction.transaction_hash
@@ -96,7 +96,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                     <WalletCurrencyCard currency={data?.currency || 'USD'} isDemo={data?.is_virtual} size='md' />
                     <div className='wallets-transactions-pending-row__column'>
                         <Text color='primary' size='xs'>
-                            {translations[transaction.transaction_type]}
+                            {getTransactionLabels()[transaction.transaction_type]}
                         </Text>
                         <Text color='general' size='xs' weight='bold'>
                             {displayCode} Wallet

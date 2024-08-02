@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { MT5MarketTypeDetails, PlatformDetails } from '../../../constants/constants';
+import { MT5MarketTypeDetails, PlatformDetails } from '../../../constants';
 import { getMarketType } from '../../../helpers';
 import { TAccount, TAccountsList } from '../types';
 

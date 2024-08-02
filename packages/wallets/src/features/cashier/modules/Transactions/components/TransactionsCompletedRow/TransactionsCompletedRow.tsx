@@ -1,8 +1,8 @@
 import React from 'react';
-import { Localize } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Divider, Text } from '@deriv-com/ui';
 import { THooks } from '../../../../../../types';
-import { useTransactionTranslations } from '../../hooks';
+import { getTransactionLabels } from '../../constants';
 import { TransactionsCompletedRowAccountDetails, TransactionsCompletedRowTransferAccountDetails } from './components';
 import './TransactionsCompletedRow.scss';
 
@@ -13,7 +13,7 @@ type TProps = {
 };
 
 const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wallet }) => {
-    const { localize, translations } = useTransactionTranslations();
+    const { localize } = useTranslations();
 
     if (!transaction.action_type || !transaction.amount) return null;
 
@@ -21,9 +21,9 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
     const displayWalletName = `${displayCurrency} Wallet`;
     const displayNonTransferActionType =
         wallet.is_virtual && ['deposit', 'withdrawal'].includes(transaction.action_type)
-            ? translations.reset_balance
+            ? getTransactionLabels().reset_balance
             : //@ts-expect-error we only need partial action types
-              translations[transaction.action_type];
+              getTransactionLabels()[transaction.action_type];
     const displayTransferActionType =
         transaction.from?.loginid === wallet?.loginid ? localize('Transfer to') : localize('Transfer from');
 

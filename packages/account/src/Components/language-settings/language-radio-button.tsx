@@ -1,5 +1,5 @@
 import { ChangeEventHandler } from 'react';
-import { Text, Icon } from '@deriv/components';
+import { Text } from '@deriv/components';
 import clsx from 'clsx';
 import { TranslationFlag } from '@deriv/shared';
 
@@ -29,13 +29,7 @@ const LanguageRadioButton = ({ is_current_language, id, language_text, name, onC
                 className='settings-language__language--radio-button'
             />
             <label htmlFor={id} className='settings-language__language--center-label'>
-                <div>
-                    {TranslationFlag[id] ? (
-                        TranslationFlag[id](36, 24)
-                    ) : (
-                        <Icon icon={`IcFlag${id}`} className='settings-language__language-flag' />
-                    )}
-                </div>
+                <div>{TranslationFlag[id](36, 24)}</div>
                 <div>
                     <Text
                         size='xs'

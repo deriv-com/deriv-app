@@ -1,0 +1,17 @@
+.carousel {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: hidden;
+
+    &__item {
+        width: 100vw;
+        min-width: 100vw;
+        transition: transform 0.24s ease-in-out;
+    }
+}
+
+.carousel-controls {
+    .quill-action-sheet--title--icon {
+        z-index: 2;
+    }
+}

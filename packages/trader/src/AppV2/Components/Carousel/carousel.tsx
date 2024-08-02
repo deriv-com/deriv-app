@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 type THeaderProps = {
     current_index: number;
-    onNextClick: () => void;
     onPrevClick: () => void;
 };
 type TCarousel = {
-    header: ({ current_index, onNextClick, onPrevClick }: THeaderProps) => JSX.Element;
+    header: ({ current_index, onPrevClick }: THeaderProps) => JSX.Element;
     pages: { id: number; component: JSX.Element }[];
     current_index?: number;
     setCurrentIndex?: (index: number) => void;
@@ -30,7 +29,7 @@ const Carousel = ({ header, pages, current_index, setCurrentIndex }: TCarousel) 
 
     return (
         <React.Fragment>
-            {header({ current_index: index, onNextClick: handleNextClick, onPrevClick: handlePrevClick })}
+            {header({ current_index: index, onPrevClick: handlePrevClick })}
             <ul className='carousel'>
                 {pages.map(({ component, id }) => (
                     <li className='carousel__item' style={{ transform: `translateX(-${index * 100}%)` }} key={id}>

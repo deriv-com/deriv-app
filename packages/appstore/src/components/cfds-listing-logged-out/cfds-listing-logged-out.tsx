@@ -77,9 +77,12 @@ const CFDsListingLoggedOut = observer(() => {
             ))}
             {!is_eu_user && (
                 <React.Fragment>
-                    <div className='cfds-listing-logged-out__cfd-full-row'>
-                        <hr className='cfds-listing-logged-out__divider' />
-                    </div>
+                    {available_ctrader_accounts.length > 0 ||
+                        (combined_cfd_mt5_accounts.length > 0 && (
+                            <div className='cfds-listing-logged-out__cfd-full-row'>
+                                <hr className='cfds-listing-logged-out__divider' />
+                            </div>
+                        ))}
 
                     <div className='cfds-listing-logged-out__cfd-full-row'>
                         <Text line_height='m' weight='bold' color='prominent'>

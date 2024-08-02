@@ -31,7 +31,7 @@ const Notifications = observer(() => {
 
         setAddNotificationBannerCallback(addNotificationBannerCallback);
 
-        return () => setAddNotificationBannerCallback(undefined);
+        return () => setAddNotificationBannerCallback();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

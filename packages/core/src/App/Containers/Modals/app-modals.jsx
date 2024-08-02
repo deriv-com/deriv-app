@@ -18,7 +18,6 @@ import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
 import WalletsUpgradeLogoutModal from './wallets-upgrade-logout-modal';
 import WalletsUpgradeCompletedModal from './wallets-upgrade-completed-modal';
-import EffortlessLoginModal from '../EffortlessLoginModal';
 import CryptoTransactionProcessingModal from './crypto-transaction-processing-modal';
 
 const SameDOBPhoneModal = React.lazy(() =>
@@ -83,7 +82,7 @@ const InformationSubmittedModal = React.lazy(() =>
 );
 
 const AppModals = observer(() => {
-    const { client, ui, traders_hub, common } = useStore();
+    const { client, ui, traders_hub } = useStore();
     const {
         has_wallet,
         is_authorize,
@@ -92,10 +91,8 @@ const AppModals = observer(() => {
         setCFDScore,
         landing_company_shortcode: active_account_landing_company,
         is_trading_experience_incomplete,
-        should_show_effortless_login_modal,
     } = client;
-    const { content_flag, is_setup_real_account_or_go_to_demo_modal_visible } = traders_hub;
-    const { is_from_derivgo } = common;
+    const { content_flag } = traders_hub;
     const {
         is_account_needed_modal_on,
         is_closing_create_real_account_modal,
@@ -115,10 +112,6 @@ const AppModals = observer(() => {
         isUrlUnavailableModalVisible,
         should_show_one_time_deposit_modal,
         should_show_account_success_modal,
-        should_show_appropriateness_warning_modal,
-        should_show_risk_warning_modal,
-        is_real_acc_signup_on,
-        is_from_signup_account,
         should_show_crypto_transaction_processing_modal,
         should_show_same_dob_phone_modal,
     } = ui;
@@ -141,16 +134,6 @@ const AppModals = observer(() => {
     }, [is_logged_in, is_authorize]);
 
     const is_onboarding = window.location.href.includes(routes.onboarding);
-
-    const should_show_passkeys_info_modal =
-        should_show_effortless_login_modal &&
-        !is_from_derivgo &&
-        !is_onboarding &&
-        !should_show_appropriateness_warning_modal &&
-        !should_show_risk_warning_modal &&
-        !is_from_signup_account &&
-        !is_real_acc_signup_on &&
-        !is_setup_real_account_or_go_to_demo_modal_visible;
 
     const should_show_trading_assessment_existing_user_form =
         is_logged_in &&
@@ -218,10 +201,6 @@ const AppModals = observer(() => {
 
         if (!has_wallet && is_migrated && is_logged_in) {
             ComponentToLoad = <WalletsUpgradeLogoutModal />;
-        }
-
-        if (should_show_passkeys_info_modal) {
-            ComponentToLoad = <EffortlessLoginModal />;
         }
 
         if (is_ready_to_deposit_modal_visible) {

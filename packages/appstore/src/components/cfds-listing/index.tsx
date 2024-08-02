@@ -205,7 +205,7 @@ const CFDsListing = observer(() => {
                     {localize('Deriv MT5')}
                 </Text>
             </div>
-            {has_svg_accounts_to_migrate && <MigrationBanner />}
+            {has_svg_accounts_to_migrate && is_landing_company_loaded && <MigrationBanner />}
             {is_landing_company_loaded && !is_populating_mt5_account_list ? (
                 <React.Fragment>
                     {combined_cfd_mt5_accounts.map((existing_account, index: number) => {

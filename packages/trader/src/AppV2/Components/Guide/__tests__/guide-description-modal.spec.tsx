@@ -52,7 +52,7 @@ describe('DescriptionModal', () => {
     });
 
     it('should render component with description for only for selected trade type if show_guide_for_selected_contract === true', () => {
-        render(<GuideDescriptionModal {...mockProps} show_guide_for_selected_contract={true} />);
+        render(<GuideDescriptionModal {...mockProps} show_guide_for_selected_contract />);
 
         AVAILABLE_CONTRACTS.forEach(({ id }) =>
             id === CONTRACT_LIST.ACCUMULATORS

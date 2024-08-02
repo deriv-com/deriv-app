@@ -23,7 +23,7 @@ const PersonalDetails = () => {
         return countryCodeToPatternMapping;
     }, [isResidenceListSuccess, residenceList]);
 
-    const tinValidator = useMemo(() => {
+    const tinValidator = () => {
         const patternStr = countryCodeToPatternMapper[formValues?.taxResidence];
         try {
             if (patternStr) {
@@ -39,15 +39,15 @@ const PersonalDetails = () => {
         } catch (err) {
             return (err as Yup.ValidationError).message;
         }
-    }, [countryCodeToPatternMapper, formValues?.taxIdentificationNumber, formValues?.taxResidence]);
+    };
 
-    const taxResidenceValidator = useMemo(() => {
+    const taxResidenceValidator = () => {
         try {
             Yup.string().nullable().required('Tax residence is required').validateSync(formValues?.taxResidence);
         } catch (error) {
             if (error instanceof Yup.ValidationError) return error.message;
         }
-    }, [formValues?.taxResidence]);
+    };
 
     useEffect(() => {
         if (getSettings && isResidenceListSuccess) {
@@ -122,7 +122,7 @@ const PersonalDetails = () => {
                             <Dropdown
                                 data-testid='dt_wallets_personal_details_dropdown_residence'
                                 errorMessage={
-                                    touched?.taxResidence && !formValues.taxResidence ? taxResidenceValidator : ''
+                                    touched?.taxResidence && !formValues.taxResidence ? taxResidenceValidator() : ''
                                 }
                                 isFullWidth
                                 isRequired
@@ -155,9 +155,11 @@ const PersonalDetails = () => {
                         </div>
                         <FlowTextField
                             defaultValue={getSettings?.tax_identification_number ?? formValues?.taxIdentificationNumber}
-                            errorMessage={!formValues?.taxResidence ? 'Please fill in tax residence' : tinValidator}
+                            errorMessage={!formValues?.taxResidence ? 'Please fill in tax residence' : tinValidator()}
                             isInvalid={
-                                !formValues.taxResidence || !formValues.taxIdentificationNumber || Boolean(tinValidator)
+                                !formValues.taxResidence ||
+                                !formValues.taxIdentificationNumber ||
+                                Boolean(tinValidator())
                             }
                             label='Tax identification number*'
                             name='taxIdentificationNumber'

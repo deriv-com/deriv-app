@@ -4,7 +4,7 @@ import { Field, Form, Formik, FieldProps } from 'formik';
 import { PasswordInput, PasswordMeter, Text, Button, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getErrorMessages } from '@deriv/shared';
-import { TCFDPasswordSuccessMessage, TInvestorPasswordManager, TPasswordManagerModalFormValues } from './props.types';
+import { TCFDPasswordSuccessMessage, TInvestorPasswordManager, TPasswordManagerModalFormValues } from '../props.types';
 
 const CFDPasswordSuccessMessage = ({ toggleModal, is_investor }: TCFDPasswordSuccessMessage) => (
     <div className='cfd-password-manager__success'>

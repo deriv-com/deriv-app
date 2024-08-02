@@ -54,12 +54,10 @@ describe('DescriptionModal', () => {
     it('should render component with description for only for selected trade type if show_guide_for_selected_contract === true', () => {
         render(<GuideDescriptionModal {...mockProps} show_guide_for_selected_contract={true} />);
 
-        AVAILABLE_CONTRACTS.forEach(({ id }) => {
-            if (id === CONTRACT_LIST.ACCUMULATORS) {
-                expect(screen.getByText(id)).toBeInTheDocument();
-                return;
-            }
-            expect(screen.queryByText(id)).not.toBeInTheDocument();
-        });
+        AVAILABLE_CONTRACTS.forEach(({ id }) =>
+            id === CONTRACT_LIST.ACCUMULATORS
+                ? expect(screen.getByText(id)).toBeInTheDocument()
+                : expect(screen.queryByText(id)).not.toBeInTheDocument()
+        );
     });
 });

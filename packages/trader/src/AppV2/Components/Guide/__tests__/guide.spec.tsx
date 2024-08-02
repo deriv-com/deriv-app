@@ -77,13 +77,11 @@ describe('Guide', () => {
         expect(screen.queryByText(trade_types)).not.toBeInTheDocument();
         expect(screen.getByText(CONTRACT_LIST.RISE_FALL)).toBeInTheDocument();
 
-        AVAILABLE_CONTRACTS.forEach(({ id }) => {
-            if (id === CONTRACT_LIST.RISE_FALL) {
-                expect(screen.getByText(id)).toBeInTheDocument();
-                return;
-            }
-            expect(screen.queryByText(id)).not.toBeInTheDocument();
-        });
+        AVAILABLE_CONTRACTS.forEach(({ id }) =>
+            id === CONTRACT_LIST.RISE_FALL
+                ? expect(screen.getByText(id)).toBeInTheDocument()
+                : expect(screen.queryByText(id)).not.toBeInTheDocument()
+        );
     });
 
     it('should render component with correct title description for Vanillas if show_guide_for_selected_contract === true and is_vanilla === true', () => {
@@ -97,13 +95,11 @@ describe('Guide', () => {
         expect(screen.queryByText(trade_types)).not.toBeInTheDocument();
         expect(screen.getByText(CONTRACT_LIST.VANILLAS)).toBeInTheDocument();
 
-        AVAILABLE_CONTRACTS.forEach(({ id }) => {
-            if (id === CONTRACT_LIST.VANILLAS) {
-                expect(screen.getByText(id)).toBeInTheDocument();
-                return;
-            }
-            expect(screen.queryByText(id)).not.toBeInTheDocument();
-        });
+        AVAILABLE_CONTRACTS.forEach(({ id }) =>
+            id === CONTRACT_LIST.VANILLAS
+                ? expect(screen.getByText(id)).toBeInTheDocument()
+                : expect(screen.queryByText(id)).not.toBeInTheDocument()
+        );
     });
 
     it('should render term definition if user clicked on it', () => {

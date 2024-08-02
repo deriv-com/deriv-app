@@ -861,7 +861,7 @@ export default class TradersHubStore extends BaseStore {
                 available_accounts[account.product] = true;
             }
         });
-        if (this.root_store.client.ctrader_trading_platform_available_accounts.length > 0) {
+        if (this.root_store.client.ctrader_trading_platform_available_accounts?.length > 0) {
             available_accounts.ctrader = true;
         }
         return available_accounts;

@@ -1605,7 +1605,7 @@ export default class ClientStore extends BaseStore {
             });
             this.responseTradingPlatformAvailableAccounts(mt5_response);
 
-            const ctrader_response = WS.tradingPlatformAvailableAccounts({ platform: CFD_PLATFORMS.CTRADER });
+            const ctrader_response = await WS.tradingPlatformAvailableAccounts({ platform: CFD_PLATFORMS.CTRADER });
             this.responseCTraderTradingPlatformAvailableAccounts(ctrader_response);
 
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);

@@ -9,7 +9,7 @@ import {
     DerivLightIcTypoEmailPasskeyIcon,
     DerivLightIcWrongEmailPasskeyIcon,
 } from '@deriv/quill-icons';
-import { Localize, useTranslations } from '@deriv-com/translations';
+import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
@@ -71,7 +71,6 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
     const [hasCountdownStarted, setHasCountdownStarted] = useState(false);
     const { error: resetPasswordError, sendEmail } = useSendPasswordResetEmail();
     const { isMobile } = useDevice();
-    const { localize } = useTranslations();
 
     const mt5Platform = PlatformDetails.mt5.platform;
     const { title } = PlatformDetails[platform ?? mt5Platform];
@@ -164,9 +163,11 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
                         textSize={emailButtonTextSize}
                         variant='contained'
                     >
-                        {hasCountdownStarted
-                            ? localize('Resend email in {{count}} seconds', { count })
-                            : localize('Resend email')}
+                        {hasCountdownStarted ? (
+                            <Localize i18n_default_text='Resend email in {{count}} seconds' values={{ count }} />
+                        ) : (
+                            <Localize i18n_default_text='Resend email' />
+                        )}
                     </WalletButton>
                 </Fragment>
             )}

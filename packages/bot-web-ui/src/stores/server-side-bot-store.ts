@@ -370,7 +370,6 @@ export default class ServerBotStore {
 
     getBotList = async () => {
         try {
-            this.setShouldSubscribe(false);
             this.setListLoading(true);
             await getAPI();
             // eslint-disable-next-line no-console
@@ -404,6 +403,8 @@ export default class ServerBotStore {
                     msg: localize('Bots loaded successfully'),
                 });
             }
+
+            this.setShouldSubscribe(false);
         } catch (error) {
             // eslint-disable-next-line no-console
             console.dir(error);

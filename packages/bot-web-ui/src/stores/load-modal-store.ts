@@ -7,12 +7,13 @@ import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
 import { clearInjectionDiv, tabs_title } from 'Constants/load-modal';
 import { TStrategy } from 'Types';
+import { rudderStackSendSwitchLoadStrategyTabEvent } from '../analytics/rudderstack-bot-builder';
 import {
     rudderStackSendUploadStrategyCompletedEvent,
     rudderStackSendUploadStrategyFailedEvent,
     rudderStackSendUploadStrategyStartEvent,
 } from '../analytics/rudderstack-common-events';
-import { getStrategyType } from '../analytics/utils';
+import { getStrategyType, LOAD_MODAL_TABS } from '../analytics/utils';
 import RootStore from './root-store';
 
 interface ILoadModalStore {
@@ -49,7 +50,7 @@ interface ILoadModalStore {
     onToggleDeleteDialog: (is_delete_modal_open: boolean) => void;
     onZoomInOutClick: (is_zoom_in: string) => void;
     previewRecentStrategy: (workspace_id: string) => void;
-    setActiveTabIndex: (index: number) => void;
+    setActiveTabIndex: (index: number, is_default: boolean) => void;
     setLoadedLocalFile: (loaded_local_file: File | null) => void;
     setDashboardStrategies: (strategies: Array<TStrategy>) => void;
     setRecentStrategies: (recent_strategies: TStrategy[]) => void;
@@ -455,8 +456,15 @@ export default class LoadModalStore implements ILoadModalStore {
         this.refreshStrategiesTheme();
     };
 
-    setActiveTabIndex = (index: number): void => {
+    setActiveTabIndex = (index: number, is_default: boolean): void => {
         this.active_index = index;
+        if (!is_default) {
+            const { ui } = this.core;
+            const { is_mobile } = ui;
+            rudderStackSendSwitchLoadStrategyTabEvent({
+                load_strategy_tab: LOAD_MODAL_TABS[index + (is_mobile ? 1 : 0)],
+            });
+        }
     };
 
     setLoadedLocalFile = (loaded_local_file: File | null): void => {

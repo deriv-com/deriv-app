@@ -78,17 +78,7 @@ const LoadModal = observer(() => {
             elements_to_ignore={[document.querySelector('.injectionDiv')]}
         >
             <Modal.Body>
-                <Tabs
-                    active_index={active_index}
-                    onTabItemClick={() => {
-                        setActiveTabIndex(active_index);
-                        rudderStackSendSwitchLoadStrategyTabEvent({
-                            load_strategy_tab: LOAD_MODAL_TABS[active_index],
-                        });
-                    }}
-                    top
-                    header_fit_content
-                >
+                <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top header_fit_content>
                     <div label={localize('Recent')}>
                         <Recent />
                     </div>

@@ -62,12 +62,29 @@ describe('ErrorComponent', () => {
             })
         ).toBeInTheDocument();
         expect(screen.getByText(mockErrorData.message)).toBeInTheDocument();
-        expect(screen.getByText(/refresh/i)).toBeInTheDocument();
+        expect(screen.getByText(/Please refresh this page to continue./i)).toBeInTheDocument();
         const linkEl = screen.getByRole('link', { name: mockErrorData.redirect_label });
         expect(linkEl).toBeInTheDocument();
         expect(linkEl).toHaveAttribute('href', routes.trade);
         fireEvent.click(linkEl);
         expect(mockErrorData.redirectOnClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('should render correctly with defulat data when on bare minimum data passed', () => {
+        const mockMinimumErrorData = {
+            header: 'Error Occurred',
+            message: 'An unexpected error has occurred.',
+            should_show_refresh: false,
+        };
+        render(
+            <MemoryRouter>
+                <ErrorComponent {...mockMinimumErrorData} />
+            </MemoryRouter>
+        );
+        expect(screen.queryByText(/Please refresh this page to continue./i)).not.toBeInTheDocument();
+        const linkEl = screen.getByRole('link', { name: 'Refresh' });
+        fireEvent.click(linkEl);
+        expect(global.location.reload).toHaveBeenCalledTimes(1);
     });
 
     it('should render ErrorModal when only message props passed', () => {

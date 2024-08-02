@@ -12,7 +12,6 @@ import {
     getMarketName,
     getPathname,
     getPlatformSettings,
-    shouldShowPhoneVerificationNotification,
     getStaticUrl,
     getTotalProfit,
     getTradeTypeName,
@@ -42,7 +41,7 @@ import {
     poi_notifications,
 } from './Helpers/client-notifications';
 import BaseStore from './base-store';
-import dayjs from 'dayjs';
+import { Analytics } from '@deriv-com/analytics';
 
 export default class NotificationStore extends BaseStore {
     is_notifications_visible = false;
@@ -52,6 +51,7 @@ export default class NotificationStore extends BaseStore {
     push_notifications = [];
     client_notifications = {};
     should_show_popups = true;
+    should_show_passkey_notification = false;
     trade_notifications = [];
     p2p_advertiser_info = {};
     p2p_order_props = {};
@@ -93,6 +93,7 @@ export default class NotificationStore extends BaseStore {
             setP2POrderProps: action.bound,
             setP2PRedirectTo: action.bound,
             setShouldShowPopups: action.bound,
+            should_show_passkey_notification: observable,
             should_show_popups: observable,
             showCompletedOrderNotification: action.bound,
             toggleNotificationsModal: action.bound,
@@ -118,6 +119,7 @@ export default class NotificationStore extends BaseStore {
                 root_store.client.is_eu,
                 root_store.client.has_enabled_two_fa,
                 root_store.client.has_changed_two_fa,
+                root_store.client.should_show_passkey_notification,
                 this.p2p_order_props.order_id,
             ],
             () => {
@@ -304,7 +306,6 @@ export default class NotificationStore extends BaseStore {
     }
 
     async handleClientNotifications() {
-        const current_time = dayjs();
         const {
             account_settings,
             account_status,
@@ -341,12 +342,7 @@ export default class NotificationStore extends BaseStore {
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.trustpilot?.key
         );
-        const is_next_email_attempt_timer_running = shouldShowPhoneVerificationNotification(
-            account_settings?.phone_number_verification?.next_email_attempt,
-            current_time
-        );
-        const show_phone_number_verification_notification =
-            !account_settings?.phone_number_verification?.verified && !is_next_email_attempt_timer_running;
+
         let has_missing_required_field;
 
         const is_server_down = checkServerMaintenance(website_status);
@@ -386,9 +382,6 @@ export default class NotificationStore extends BaseStore {
                 this.removeNotificationByKey({ key: this.client_notifications.two_f_a?.key });
             }
 
-            if (show_phone_number_verification_notification) {
-                this.addNotificationMessage(this.client_notifications.phone_number_verification);
-            }
             if (malta_account && is_financial_information_incomplete) {
                 this.addNotificationMessage(this.client_notifications.need_fa);
             } else {
@@ -415,6 +408,12 @@ export default class NotificationStore extends BaseStore {
 
             if (has_changed_two_fa) {
                 this.addNotificationMessage(this.client_notifications.has_changed_two_fa);
+            }
+
+            if (this.root_store.client.should_show_passkey_notification) {
+                this.addNotificationMessage(this.client_notifications.enable_passkey);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.enable_passkey });
             }
 
             const client = accounts[loginid];
@@ -753,7 +752,7 @@ export default class NotificationStore extends BaseStore {
 
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
-        const { has_enabled_two_fa, setTwoFAChangedStatus, logout, email } = this.root_store.client;
+        const { has_enabled_two_fa, setTwoFAChangedStatus, logout } = this.root_store.client;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
 
         const platform_name_trader = getPlatformSettings('trader').name;
@@ -928,6 +927,17 @@ export default class NotificationStore extends BaseStore {
                 img_alt: 'Deriv P2P',
                 type: 'news',
             },
+            enable_passkey: {
+                action: {
+                    route: routes.passkeys,
+                    text: localize('Enable passkey'),
+                },
+                key: 'enable_passkey',
+                header: localize('Level up your security'),
+                message: localize('Strengthen your account’s security today with the latest passkeys feature.'),
+                type: 'announce',
+                should_show_again: true,
+            },
             identity: {
                 key: 'identity',
                 header: localize('Let’s verify your ID'),
@@ -1063,19 +1073,6 @@ export default class NotificationStore extends BaseStore {
                 header: localize('Password updated.'),
                 message: <Localize i18n_default_text='Please log in with your updated password.' />,
                 type: 'info',
-            },
-            phone_number_verification: {
-                key: 'phone_number_verification',
-                header: localize('Verify your phone number'),
-                message: <Localize i18n_default_text='Keep your account safe. Verify your phone number now.' />,
-                type: 'warning',
-                action: {
-                    onClick: () => {
-                        WS.verifyEmail(email, 'phone_number_verification');
-                    },
-                    route: routes.phone_verification,
-                    text: localize('Get started'),
-                },
             },
             poa_rejected_for_mt5: {
                 action: {
@@ -1575,6 +1572,12 @@ export default class NotificationStore extends BaseStore {
     }
 
     toggleNotificationsModal() {
+        Analytics.trackEvent('ce_notification_form', {
+            action: this.is_notifications_visible ? 'close' : 'open',
+            form_name: 'ce_notification_form',
+            notification_num: this.notifications.length,
+        });
+
         this.is_notifications_visible = !this.is_notifications_visible;
     }
 

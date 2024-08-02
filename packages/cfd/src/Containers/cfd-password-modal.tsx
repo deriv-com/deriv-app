@@ -25,6 +25,8 @@ import {
     validLength,
     validPassword,
     validMT5Password,
+    makeLazyLoader,
+    moduleLoader,
     WS,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -39,12 +41,23 @@ import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { CFD_PLATFORMS, JURISDICTION, CATEGORY, PRODUCT } from '../Helpers/cfd-config';
 import { getDxCompanies, getMtCompanies, TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 
-import CFDPasswordChange from './cfd-password-change';
-import CFDPasswordChangeContent from './cfd-password-change-content';
-import ChangePasswordConfirmation from './cfd-change-password-confirmation';
-
 import '../sass/cfd.scss';
 import CfdPasswordModalTnc from './cfd-password-modal-tnc';
+
+const CFDPasswordChange = makeLazyLoader(
+    () => moduleLoader(() => import('./cfd-password-change')),
+    () => <div />
+)();
+
+const CFDPasswordChangeContent = makeLazyLoader(
+    () => moduleLoader(() => import('./cfd-password-change-content')),
+    () => <div />
+)();
+
+const ChangePasswordConfirmation = makeLazyLoader(
+    () => moduleLoader(() => import('./cfd-change-password-confirmation')),
+    () => <div />
+)();
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -956,7 +969,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             onUnmount={() => getAccountStatus(platform)}
             onExited={() => setPasswordModalExited(true)}
             onEntered={() => setPasswordModalExited(false)}
-            width={!isDesktop ? '32.8rem' : 'auto'}
+            width='auto'
         >
             {cfd_password_form}
         </Modal>
@@ -1063,7 +1076,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         : account_type.category === CATEGORY.REAL
                 }
                 has_close_icon={false}
-                width={!isDesktop ? '32.8rem' : 'auto'}
+                width='auto'
                 is_medium_button={!isDesktop}
             />
             <MigrationSuccessModal is_open={should_show_migration_success} closeModal={closeModal} />

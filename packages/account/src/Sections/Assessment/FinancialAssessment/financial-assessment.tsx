@@ -8,7 +8,7 @@ import { useHistory, withRouter } from 'react-router';
 import { FormSubmitErrorMessage, Loading, Button, Dropdown, Modal, Icon, SelectNative, Text } from '@deriv/components';
 import { routes, platforms, WS, shouldHideOccupationField } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { localize, Localize } from '@deriv/translations';
+import { useTranslations, Localize } from '@deriv-com/translations';
 import LeaveConfirm from 'Components/leave-confirm';
 import IconMessageContent from 'Components/icon-message-content';
 import DemoMessage from 'Components/demo-message';
@@ -71,34 +71,37 @@ const ConfirmationContent = ({ className }: { className?: string }) => {
     );
 };
 
-const ConfirmationModal = ({ is_visible, toggleModal, onSubmit }: TConfirmationModal) => (
-    <Modal
-        className='financial-assessment-confirmation'
-        is_open={is_visible}
-        small
-        toggleModal={() => toggleModal(false)}
-        title={localize('Appropriateness Test, WARNING:')}
-    >
-        <Modal.Body>
-            <ConfirmationContent />
-        </Modal.Body>
-        <Modal.Footer>
-            <Button large onClick={() => toggleModal(false)} secondary>
-                <Localize i18n_default_text='Decline' />
-            </Button>
-            <Button
-                large
-                onClick={() => {
-                    onSubmit();
-                    toggleModal(false);
-                }}
-                primary
-            >
-                <Localize i18n_default_text='Accept' />
-            </Button>
-        </Modal.Footer>
-    </Modal>
-);
+const ConfirmationModal = ({ is_visible, toggleModal, onSubmit }: TConfirmationModal) => {
+    const { localize } = useTranslations();
+    return (
+        <Modal
+            className='financial-assessment-confirmation'
+            is_open={is_visible}
+            small
+            toggleModal={() => toggleModal(false)}
+            title={localize('Appropriateness Test, WARNING:')}
+        >
+            <Modal.Body>
+                <ConfirmationContent />
+            </Modal.Body>
+            <Modal.Footer>
+                <Button large onClick={() => toggleModal(false)} secondary>
+                    <Localize i18n_default_text='Decline' />
+                </Button>
+                <Button
+                    large
+                    onClick={() => {
+                        onSubmit();
+                        toggleModal(false);
+                    }}
+                    primary
+                >
+                    <Localize i18n_default_text='Accept' />
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    );
+};
 
 const ConfirmationPage = ({ toggleModal, onSubmit }: TConfirmationPage) => (
     <div className='account__confirmation-page'>
@@ -128,9 +131,10 @@ const ConfirmationPage = ({ toggleModal, onSubmit }: TConfirmationPage) => (
         </div>
     </div>
 );
+
 const SubmittedPage = ({ platform, routeBackInApp }: TSubmittedPage) => {
     const history = useHistory();
-
+    const { localize } = useTranslations();
     const onClickButton = () => {
         if (platforms[platform].is_hard_redirect) {
             window.location.href = platforms[platform].url;
@@ -197,6 +201,7 @@ const FinancialAssessment = observer(() => {
     const is_mf = landing_company_shortcode === 'maltainvest';
 
     const history = useHistory();
+    const { localize } = useTranslations();
 
     const [is_loading, setIsLoading] = React.useState(true);
     const [is_confirmation_visible, setIsConfirmationVisible] = React.useState(false);

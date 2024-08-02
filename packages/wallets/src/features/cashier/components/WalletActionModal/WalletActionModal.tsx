@@ -1,5 +1,6 @@
 import React from 'react';
-import { ModalWrapper, WalletButton, WalletText } from '../../../../components/Base';
+import { Button } from '@deriv-com/ui';
+import { ModalWrapper, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import './WalletActionModal.scss';
 
@@ -34,14 +35,17 @@ const WalletActionModal: React.FC<TWalletActionModal> = ({
                 {!!actionButtonsOptions.length && (
                     <div className='wallets-action-modal__buttons-container'>
                         {actionButtonsOptions.map(action => (
-                            <WalletButton
+                            <Button
+                                borderWidth='sm'
+                                color={action.isPrimary ? 'primary' : 'black'}
                                 key={action.text}
                                 onClick={action.onClick}
                                 size='lg'
+                                textSize='md'
                                 variant={action.isPrimary ? 'contained' : 'outlined'}
                             >
                                 {action.text}
-                            </WalletButton>
+                            </Button>
                         ))}
                     </div>
                 )}

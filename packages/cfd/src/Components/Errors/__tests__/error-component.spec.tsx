@@ -39,12 +39,12 @@ describe('ErrorComponent', () => {
         jest.clearAllMocks();
     });
 
-    it('should render as a dialog when is_dialog is true', () => {
+    it('should render as a dialog when `is_dialog` is true', () => {
         render(<ErrorComponent is_dialog={true} />);
         expect(screen.getByRole('dialog')).toBeInTheDocument();
     });
 
-    it('should not render as a dialog when is_dialog is false', () => {
+    it('should not render as a dialog when `is_dialog` is false', () => {
         render(<ErrorComponent is_dialog={false} />);
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
@@ -70,7 +70,7 @@ describe('ErrorComponent', () => {
         expect(mockErrorData.redirectOnClick).toHaveBeenCalledTimes(1);
     });
 
-    it('should render correctly with defulat data when on bare minimum data passed', () => {
+    it('should render correctly with default data when only minimum props are provided', () => {
         const mockMinimumErrorData = {
             header: 'Error Occurred',
             message: 'An unexpected error has occurred.',
@@ -87,7 +87,7 @@ describe('ErrorComponent', () => {
         expect(global.location.reload).toHaveBeenCalledTimes(1);
     });
 
-    it('should render ErrorModal when only message props passed', () => {
+    it('should render ErrorModal with only `message` prop', () => {
         render(
             <MemoryRouter>
                 <ErrorComponent message='An unexpected error has occurred.' />
@@ -114,7 +114,7 @@ describe('ErrorComponent', () => {
         expect(mockErrorData.redirectOnClick).toHaveBeenCalledTimes(1);
     });
 
-    it('should render as a dialog with default data if props not porvided', () => {
+    it('should render as a dialog with default data when only is_dialog is set to true', () => {
         render(<ErrorComponent is_dialog={true} />);
         expect(
             screen.getByRole('heading', {

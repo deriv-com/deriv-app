@@ -47,7 +47,7 @@ const BarrierInput = observer(({ setInitialBarrierValue }: { setInitialBarrierVa
         onChange({ target: { name: 'barrier_1', value: newValue } });
     };
 
-    const handleOnChange = e => {
+    const handleOnChange = (e: { target: { name: string; value: unknown } }) => {
         let value = e.target.value;
         if (option === 0) value = `+${value}`;
         if (option === 1) value = `-${value}`;
@@ -72,6 +72,7 @@ const BarrierInput = observer(({ setInitialBarrierValue }: { setInitialBarrierVa
                         addonLabel={option == 0 ? '+' : '-'}
                         value={barrier_1.replace(/[+-]/g, '')}
                         allowDecimals
+                        allowSign={false}
                         status={validation_errors?.barrier_1.length > 0 ? 'error' : 'neutral'}
                         onChange={handleOnChange}
                         placeholder={localize('Distance to spot')}
@@ -84,6 +85,7 @@ const BarrierInput = observer(({ setInitialBarrierValue }: { setInitialBarrierVa
                         name='barrier_1'
                         status={validation_errors?.barrier_1.length > 0 ? 'error' : 'neutral'}
                         value={barrier_1}
+                        allowSign={false}
                         onChange={handleOnChange}
                         placeholder={localize('Distance to spot')}
                         variant='fill'

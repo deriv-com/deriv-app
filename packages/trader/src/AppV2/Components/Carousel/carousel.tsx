@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 type THeaderProps = {
     current_index: number;
     onPrevClick: () => void;
+    onNextClick: () => void;
 };
 type TCarousel = {
     header: ({ current_index, onPrevClick }: THeaderProps) => JSX.Element;
@@ -29,7 +30,7 @@ const Carousel = ({ header, pages, current_index, setCurrentIndex }: TCarousel) 
 
     return (
         <React.Fragment>
-            {header({ current_index: index, onPrevClick: handlePrevClick })}
+            {header({ current_index: index, onNextClick: handleNextClick, onPrevClick: handlePrevClick })}
             <ul className='carousel'>
                 {pages.map(({ component, id }) => (
                     <li className='carousel__item' style={{ transform: `translateX(-${index * 100}%)` }} key={id}>

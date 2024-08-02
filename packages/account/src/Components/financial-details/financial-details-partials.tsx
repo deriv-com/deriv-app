@@ -2,7 +2,7 @@ import React from 'react';
 import { Field, FormikValues, useFormikContext } from 'formik';
 import { Dropdown, SelectNative } from '@deriv/components';
 import { EMPLOYMENT_VALUES, TEmploymentStatus, shouldHideOccupationField } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import {
     getAccountTurnoverList,
@@ -40,13 +40,14 @@ type TFinancialInformationProps = {
 const FinancialDetailsDropdownField = ({
     dropdown_list,
     field_key,
-    placeholder = localize('Please select'),
+    placeholder,
     label,
 }: TFinancialDetailsDropdownFieldProps) => {
     const { values, handleChange, handleBlur, touched, errors, setFieldValue } = useFormikContext<{
         [key: string]: string;
     }>();
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
     return (
         <Field name={field_key}>
             {({ field }: FormikValues) => (
@@ -67,7 +68,7 @@ const FinancialDetailsDropdownField = ({
                         />
                     ) : (
                         <SelectNative
-                            placeholder={placeholder}
+                            placeholder={placeholder ?? localize('Please select')}
                             name={field.name}
                             label={label}
                             list_items={dropdown_list}
@@ -90,7 +91,7 @@ const FinancialDetailsDropdownField = ({
 const FinancialDetailsOccupationDropdownField = ({
     dropdown_list,
     field_key,
-    placeholder = localize('Please select'),
+    placeholder,
     label,
     employment_status,
 }: TFinancialDetailsDropdownFieldProps) => {
@@ -98,6 +99,7 @@ const FinancialDetailsOccupationDropdownField = ({
         [key: string]: string;
     }>();
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
 
     const getFormattedOccupationValues = () =>
         employment_status === EMPLOYMENT_VALUES.EMPLOYED && values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED
@@ -128,7 +130,7 @@ const FinancialDetailsOccupationDropdownField = ({
                     ) : (
                         <SelectNative
                             {...field}
-                            placeholder={placeholder}
+                            placeholder={placeholder ?? localize('Please select')}
                             name={field.name}
                             label={label}
                             list_items={dropdown_list}
@@ -152,6 +154,8 @@ const FinancialDetailsOccupationDropdownField = ({
  * @returns {JSX.Element}
  */
 const FinancialInformation = ({ employment_status }: TFinancialInformationProps) => {
+    const { localize } = useTranslations();
+
     return (
         <React.Fragment>
             <FinancialDetailsDropdownField

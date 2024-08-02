@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useSettings } from '@deriv/api-v2';
+import { useTranslations } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../../../../components';
 import { DocumentSelection } from './components';
-import { manualDocumentsMapper, TManualDocumentComponent, TManualDocumentType } from './utils';
+import { getManualDocumentsMapper, TManualDocumentComponent, TManualDocumentType } from './utils';
 
 type TManualServiceProps = {
     onCompletion?: VoidFunction;
@@ -12,6 +13,7 @@ type TManualServiceProps = {
 type TSelectedManualDocument = keyof TManualDocumentType | undefined;
 
 const ManualService: React.FC<TManualServiceProps> = ({ onCompletion }) => {
+    const { localize } = useTranslations();
     const { data: accountSettings, isLoading: isAccountSettingsLoading } = useSettings();
     const [selectedManualDocument, setSelectedManualDocument] = useState<TSelectedManualDocument>();
     let SelectedDocument: TManualDocumentComponent;
@@ -25,7 +27,7 @@ const ManualService: React.FC<TManualServiceProps> = ({ onCompletion }) => {
     }
 
     if (selectedManualDocument) {
-        SelectedDocument = manualDocumentsMapper[selectedManualDocument].component;
+        SelectedDocument = getManualDocumentsMapper(localize)[selectedManualDocument].component;
         return (
             <SelectedDocument
                 documentIssuingCountryCode={accountSettings.country_code}

@@ -7,7 +7,7 @@ import { Footer } from '../components';
 import { NeedHelpMessage } from './components';
 import { useTaxInformation } from './hooks';
 import {
-    accountOpeningReasonList,
+    getAccountOpeningReasonList,
     getTaxResidenceValidator,
     getTinValidator,
     taxInformationValidationSchema,
@@ -100,7 +100,7 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                         <FormDropdown
                                             isFullWidth
                                             label={localize('Account opening reason*')}
-                                            list={accountOpeningReasonList}
+                                            list={getAccountOpeningReasonList(localize)}
                                             name='accountOpeningReason'
                                             variant='comboBox'
                                         />

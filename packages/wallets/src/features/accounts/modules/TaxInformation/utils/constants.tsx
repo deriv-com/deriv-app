@@ -1,6 +1,6 @@
-import { localize } from '@deriv-com/translations';
+import { TTranslations } from '../../../../../types';
 
-export const accountOpeningReasonList = [
+export const getAccountOpeningReasonList = (localize: TTranslations['localize']) => [
     {
         text: localize('Hedging'),
         value: 'Hedging',

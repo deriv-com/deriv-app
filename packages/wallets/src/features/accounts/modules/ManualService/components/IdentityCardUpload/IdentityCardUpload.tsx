@@ -8,7 +8,7 @@ import IdentityCardBack from '../../../../../../public/images/accounts/document-
 import IdentityCardFront from '../../../../../../public/images/accounts/identity-card-front.svg';
 import { THooks } from '../../../../../../types';
 import { Footer } from '../../../components';
-import { GeneralDocumentRules, TManualDocumentComponent } from '../../utils';
+import { getGeneralDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
 import { ManualUploadErrorMessage } from '../ManualUploadErrorMessage';
 import { SelfieUpload } from '../SelfieUpload';
@@ -151,7 +151,7 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
                                             onFileChange={(file?: File) => setFieldValue('identityCardBack', file)}
                                         />
                                     </div>
-                                    <DocumentRules hints={GeneralDocumentRules} />
+                                    <DocumentRules hints={getGeneralDocumentRules(localize)} />
                                 </div>
                             </div>
                         </div>

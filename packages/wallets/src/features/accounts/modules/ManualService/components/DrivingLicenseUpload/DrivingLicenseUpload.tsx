@@ -8,7 +8,7 @@ import DrivingLicenseCardBack from '../../../../../../public/images/accounts/doc
 import DrivingLicenseCardFront from '../../../../../../public/images/accounts/driving-license-front.svg';
 import { THooks } from '../../../../../../types';
 import { Footer } from '../../../components';
-import { GeneralDocumentRules, TManualDocumentComponent } from '../../utils';
+import { getGeneralDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
 import { ManualUploadErrorMessage } from '../ManualUploadErrorMessage';
 import { SelfieUpload } from '../SelfieUpload';
@@ -153,7 +153,7 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                                             }
                                         />
                                     </div>
-                                    <DocumentRules hints={GeneralDocumentRules} />
+                                    <DocumentRules hints={getGeneralDocumentRules(localize)} />
                                 </div>
                             </div>
                         </div>

@@ -7,7 +7,7 @@ import NIMCSlipFront from '../../../../../../public/images/accounts/nimc-slip-fr
 import ProofOfAgeIcon from '../../../../../../public/images/accounts/proof-of-age.svg';
 import { THooks } from '../../../../../../types';
 import { Footer } from '../../../components';
-import { NIMCDocumentRules, TManualDocumentComponent } from '../../utils';
+import { getNIMCDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
 import { ManualUploadErrorMessage } from '../ManualUploadErrorMessage';
 import { SelfieUpload } from '../SelfieUpload';
@@ -137,7 +137,7 @@ const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                                             />
                                         </div>
                                     </div>
-                                    <DocumentRules hints={NIMCDocumentRules} />
+                                    <DocumentRules hints={getNIMCDocumentRules(localize)} />
                                 </div>
                             </div>
                         </div>

@@ -7,7 +7,7 @@ import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '.
 import PassportPlaceholder from '../../../../../../public/images/accounts/passport-placeholder.svg';
 import { THooks } from '../../../../../../types';
 import { Footer } from '../../../components';
-import { GeneralDocumentRules, TManualDocumentComponent } from '../../utils';
+import { getGeneralDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
 import { ManualUploadErrorMessage } from '../ManualUploadErrorMessage';
 import { SelfieUpload } from '../SelfieUpload';
@@ -129,7 +129,7 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                                         noClick
                                         onFileChange={handleFileChange}
                                     />
-                                    <DocumentRules hints={GeneralDocumentRules} />
+                                    <DocumentRules hints={getGeneralDocumentRules(localize)} />
                                 </div>
                             </div>
                         </div>

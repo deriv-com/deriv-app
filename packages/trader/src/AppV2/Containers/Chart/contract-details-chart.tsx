@@ -3,6 +3,7 @@ import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import { observer } from 'mobx-react';
 import ReplayChart from 'Modules/Contract/Containers/replay-chart';
 import React from 'react';
+import './contract-details-chart.scss';
 
 const ContractDetailsChart = observer(() => {
     const { contract_info } = useContractDetails();

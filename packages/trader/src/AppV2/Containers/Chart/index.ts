@@ -1,4 +1,1 @@
-import ContractDetailsChart from './contract-details-chart';
-import './contract-details-chart.scss';
-
-export default ContractDetailsChart;
+export { default as TradeChart } from './trade-chart';

@@ -33,7 +33,7 @@ const JurisdictionCheckBox = observer(
         const getCheckboxLabel = () => (
             <Text as='p' align='center' size={is_mobile ? 'xxs' : 'xs'} line_height='xs'>
                 <Localize
-                    i18n_default_text="I confirm and accept {{company}} 's <0>Terms and Conditions</0>"
+                    i18n_default_text="I confirm and accept {{company}}'s <0>Terms and Conditions</0>"
                     values={{ company: DBVI_COMPANY_NAMES[jurisdiction_selected_shortcode].name }}
                     components={[
                         <StaticUrl

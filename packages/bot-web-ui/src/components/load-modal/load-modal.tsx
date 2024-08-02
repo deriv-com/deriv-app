@@ -81,7 +81,7 @@ const LoadModal = observer(() => {
                 <Tabs
                     active_index={active_index}
                     onTabItemClick={() => {
-                        setActiveTabIndex;
+                        setActiveTabIndex(active_index);
                         rudderStackSendSwitchLoadStrategyTabEvent({
                             load_strategy_tab: LOAD_MODAL_TABS[active_index],
                         });

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FormikValues } from 'formik';
 import { useResidenceList, useSettings } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
@@ -70,10 +70,12 @@ const useTaxInformation = () => {
         }
     };
 
-    if (isSubmissionInitiated && isAccountSettingsSuccess) {
-        setIsSubmissionInitiated(false);
-        setIsSubmitted(true);
-    }
+    useEffect(() => {
+        if (isSubmissionInitiated && isAccountSettingsSuccess) {
+            setIsSubmissionInitiated(false);
+            setIsSubmitted(true);
+        }
+    }, [isAccountSettingsSuccess, isSubmissionInitiated]);
 
     return {
         countryCodeToPatternMapper,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Formik } from 'formik';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
@@ -29,9 +29,11 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
         onSubmit,
     } = useTaxInformation();
 
-    if (isTaxInformationSubmitted && onCompletion) {
-        onCompletion();
-    }
+    useEffect(() => {
+        if (isTaxInformationSubmitted && onCompletion) {
+            onCompletion();
+        }
+    }, [isTaxInformationSubmitted, onCompletion]);
 
     return (
         <Formik

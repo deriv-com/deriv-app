@@ -1,9 +1,9 @@
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { TFormStrategy } from '../constants';
 import {
-    getTradeParameterData,
     getRsDropdownTextFromLocalStorage,
     getSubpageName,
+    getTradeParameterData,
     rudderstack_text_error,
 } from '../utils';
 

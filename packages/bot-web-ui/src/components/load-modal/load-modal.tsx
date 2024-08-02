@@ -4,7 +4,9 @@ import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { tabs_title } from 'Constants/load-modal';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderStackSendSwitchLoadStrategyTabEvent } from '../../analytics/rudderstack-bot-builder';
 import { rudderStackSendCloseEvent } from '../../analytics/rudderstack-common-events';
+import { LOAD_MODAL_TABS } from '../../analytics/utils';
 import GoogleDrive from '../../pages/dashboard/load-bot-preview/google-drive';
 import Local from './local';
 import LocalFooter from './local-footer';
@@ -37,7 +39,11 @@ const LoadModal = observer(() => {
                 onClickClose={() => {
                     setPreviewOnPopup(false);
                     toggleLoadModal();
-                    rudderStackSendCloseEvent({ subform_source: 'bot_builder', subform_name: 'load_strategy' });
+                    rudderStackSendCloseEvent({
+                        subpage_name: 'bot_builder',
+                        subform_name: 'load_strategy',
+                        load_strategy_tab: LOAD_MODAL_TABS[active_index],
+                    });
                 }}
                 height_offset='80px'
                 page_overlay
@@ -66,13 +72,23 @@ const LoadModal = observer(() => {
             is_open={is_load_modal_open}
             toggleModal={() => {
                 toggleLoadModal();
-                rudderStackSendCloseEvent({ subform_source: 'bot_builder', subform_name: 'load_strategy' });
+                rudderStackSendCloseEvent({ subform_name: 'load_strategy' });
             }}
             onEntered={onEntered}
             elements_to_ignore={[document.querySelector('.injectionDiv')]}
         >
             <Modal.Body>
-                <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top header_fit_content>
+                <Tabs
+                    active_index={active_index}
+                    onTabItemClick={() => {
+                        setActiveTabIndex;
+                        rudderStackSendSwitchLoadStrategyTabEvent({
+                            load_strategy_tab: LOAD_MODAL_TABS[active_index],
+                        });
+                    }}
+                    top
+                    header_fit_content
+                >
                     <div label={localize('Recent')}>
                         <Recent />
                     </div>

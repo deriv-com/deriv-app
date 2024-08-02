@@ -19,7 +19,7 @@ const AppContent: React.FC = observer(() => {
     });
 
     useEffect(() => {
-        client.setTradersHubTracking(!!is_traders_dashboard_tracking_enabled);
+        client.setTradersHubTracking(is_traders_dashboard_tracking_enabled);
     }, [is_traders_dashboard_tracking_enabled]);
 
     useEffect(() => {

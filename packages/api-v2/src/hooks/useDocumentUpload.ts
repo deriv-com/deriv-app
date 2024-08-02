@@ -138,10 +138,10 @@ const useDocumentUpload = () => {
         const handshakeResponse = await handshake(fileInfo, payload);
         if (handshakeResponse.error) {
             setStatus(DocumentUploadStatus.ERROR);
-            return handshakeResponse;
+            return Promise.reject(handshakeResponse);
         }
         const uploadResponse = await fileUploader(fileInfo.fileBuffer, handshakeResponse);
-        return uploadResponse;
+        return Promise.resolve(uploadResponse);
     };
 
     return {

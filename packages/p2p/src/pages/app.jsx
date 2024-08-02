@@ -17,7 +17,7 @@ import Routes from 'Components/routes';
 import './app.scss';
 
 const App = () => {
-    const [is_p2p_v2_enabled, isGBLoaded] = useGrowthbookGetFeatureValue({
+    const [is_p2p_standalone_enabled, isGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'p2p_standalone_enabled',
         defaultValue: false,
     });
@@ -277,11 +277,11 @@ const App = () => {
     // TODO: This will redirect the internal users to the standalone application temporarily. Remove this once the standalone application is ready.
     React.useEffect(() => {
         if (isGBLoaded) {
-            if (is_p2p_v2_enabled) {
+            if (is_p2p_standalone_enabled) {
                 window.location.href = URLConstants.derivP2pProduction;
             }
         }
-    }, [isGBLoaded, is_p2p_v2_enabled]);
+    }, [isGBLoaded, is_p2p_standalone_enabled]);
     if (is_logging_in || general_store.is_loading) {
         return <Loading className='p2p__loading' />;
     }

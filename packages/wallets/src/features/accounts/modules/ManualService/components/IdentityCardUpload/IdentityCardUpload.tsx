@@ -13,7 +13,7 @@ import { DocumentRules } from '../DocumentRules';
 import { ManualUploadErrorMessage } from '../ManualUploadErrorMessage';
 import { SelfieUpload } from '../SelfieUpload';
 import { useIdentityCardUpload } from './hooks';
-import { identityCardUploadValidator } from './utils';
+import { getIdentityCardUploadValidator } from './utils';
 import './IdentityCardUpload.scss';
 
 const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onClickBack, onCompletion }) => {
@@ -41,7 +41,11 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
     }
 
     return (
-        <Formik initialValues={initialValues} onSubmit={upload} validationSchema={identityCardUploadValidator}>
+        <Formik
+            initialValues={initialValues}
+            onSubmit={upload}
+            validationSchema={getIdentityCardUploadValidator(localize)}
+        >
             {({ dirty, errors, handleSubmit, resetForm, setFieldValue, values }) => {
                 const isIdentityCardFormValid =
                     dirty &&

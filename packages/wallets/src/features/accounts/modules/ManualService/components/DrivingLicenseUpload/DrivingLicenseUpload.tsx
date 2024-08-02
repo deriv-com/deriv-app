@@ -13,7 +13,7 @@ import { DocumentRules } from '../DocumentRules';
 import { ManualUploadErrorMessage } from '../ManualUploadErrorMessage';
 import { SelfieUpload } from '../SelfieUpload';
 import { useDrivingLicenseUpload } from './hooks';
-import { drivingLicenseUploadValidator } from './utils';
+import { getDrivingLicenseUploadValidator } from './utils';
 import './DrivingLicenseUpload.scss';
 
 const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onClickBack, onCompletion }) => {
@@ -41,7 +41,11 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
     }
 
     return (
-        <Formik initialValues={initialValues} onSubmit={upload} validationSchema={drivingLicenseUploadValidator}>
+        <Formik
+            initialValues={initialValues}
+            onSubmit={upload}
+            validationSchema={getDrivingLicenseUploadValidator(localize)}
+        >
             {({ dirty, errors, handleSubmit, resetForm, setFieldValue, values }) => {
                 const isDrivingLicenseFormValid =
                     dirty &&

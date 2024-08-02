@@ -8,9 +8,9 @@ import { NeedHelpMessage } from './components';
 import { useTaxInformation } from './hooks';
 import {
     getAccountOpeningReasonList,
+    getTaxInformationValidationSchema,
     getTaxResidenceValidator,
     getTinValidator,
-    taxInformationValidationSchema,
 } from './utils';
 import './TaxInformation.scss';
 
@@ -38,7 +38,7 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
             initialValues={initialValues}
             onSubmit={onSubmit}
             validateOnMount
-            validationSchema={taxInformationValidationSchema}
+            validationSchema={getTaxInformationValidationSchema(localize)}
         >
             {({ errors, handleSubmit, isValid, values }) => {
                 return (
@@ -86,7 +86,7 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                             list={countryList}
                                             listHeight='sm'
                                             name='taxResidence'
-                                            validationSchema={getTaxResidenceValidator(countryList)}
+                                            validationSchema={getTaxResidenceValidator(countryList, localize)}
                                             variant='prompt'
                                         />
                                         <FormField
@@ -94,7 +94,8 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                             label={localize('Tax identification number*')}
                                             name='taxIdentificationNumber'
                                             validationSchema={getTinValidator(
-                                                countryCodeToPatternMapper[values.taxResidence ?? '']
+                                                countryCodeToPatternMapper[values.taxResidence ?? ''],
+                                                localize
                                             )}
                                         />
                                         <FormDropdown

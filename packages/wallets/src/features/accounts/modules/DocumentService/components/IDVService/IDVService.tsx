@@ -12,7 +12,7 @@ import {
 import { IDVServiceErrorMessage } from './components';
 import { useIDVService } from './hooks';
 import { TIDVServiceValues } from './types';
-import { documentTypeValidator, getDocumentNumberValidator } from './utils';
+import { getDocumentNumberValidator, getDocumentTypeValidator } from './utils';
 import './IDVService.scss';
 
 type TIDVServiceProps = {
@@ -106,7 +106,7 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                                     listHeight='lg'
                                     name='documentType'
                                     onSelect={handleSelectDocument}
-                                    validationSchema={documentTypeValidator}
+                                    validationSchema={getDocumentTypeValidator(localize)}
                                     variant='comboBox'
                                 />
                                 {clientHasDocuments && (
@@ -123,7 +123,11 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                                             showMessage={!!values.documentType}
                                             validationSchema={
                                                 clientHasDocuments && document && documentNumberExample
-                                                    ? getDocumentNumberValidator(document, documentNumberExample)
+                                                    ? getDocumentNumberValidator(
+                                                          document,
+                                                          documentNumberExample,
+                                                          localize
+                                                      )
                                                     : undefined
                                             }
                                         />
@@ -146,7 +150,8 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                                                     additionalDocumentNumberExample
                                                         ? getDocumentNumberValidator(
                                                               document.additional,
-                                                              additionalDocumentNumberExample
+                                                              additionalDocumentNumberExample,
+                                                              localize
                                                           )
                                                         : undefined
                                                 }

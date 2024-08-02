@@ -9,10 +9,10 @@ import { DatePicker, FormField, InlineMessage, WalletText } from '../../../../..
 import { VerifyPersonalDetailsErrorMessage } from './components';
 import { TVerifyPersonalDetailsValues } from './types';
 import {
-    dateOfBirthValidator,
-    firstNameValidator,
-    lastNameValidator,
-    validateArePersonalDetailsVerified,
+    getDateOfBirthValidator,
+    getFirstNameValidator,
+    getLastNameValidator,
+    getValidateArePersonalDetailsVerified,
 } from './utils';
 import './VerifyPersonalDetails.scss';
 
@@ -57,7 +57,7 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
                         message={localize('Your first name as in your identity document')}
                         name='firstName'
                         showMessage
-                        validationSchema={firstNameValidator}
+                        validationSchema={getFirstNameValidator(localize)}
                         width='100%'
                     />
                     <FormField
@@ -66,7 +66,7 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
                         message={localize('Your last name as in your identity document')}
                         name='lastName'
                         showMessage
-                        validationSchema={lastNameValidator}
+                        validationSchema={getLastNameValidator(localize)}
                         width='100%'
                     />
                     <DatePicker
@@ -79,7 +79,7 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
                         mobileAlignment='above'
                         name='dateOfBirth'
                         showMessage
-                        validationSchema={dateOfBirthValidator}
+                        validationSchema={getDateOfBirthValidator(localize)}
                     />
                 </div>
                 <div className='wallets-verify-personal-details__sidenote'>
@@ -100,7 +100,7 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
                     name='arePersonalDetailsVerified'
                     onClick={handleTNCChecked}
                     type='checkbox'
-                    validate={validateArePersonalDetailsVerified}
+                    validate={(values: boolean) => getValidateArePersonalDetailsVerified(values, localize)}
                 />
                 <label htmlFor='idv-checkbox'>
                     <WalletText lineHeight='2xs' size='sm'>

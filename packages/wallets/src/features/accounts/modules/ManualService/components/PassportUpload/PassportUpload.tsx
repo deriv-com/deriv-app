@@ -12,7 +12,7 @@ import { DocumentRules } from '../DocumentRules';
 import { ManualUploadErrorMessage } from '../ManualUploadErrorMessage';
 import { SelfieUpload } from '../SelfieUpload';
 import { usePassportUpload } from './hooks';
-import { passportUploadValidator } from './utils';
+import { getPassportUploadValidator } from './utils';
 import './PassportUpload.scss';
 
 const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onClickBack, onCompletion }) => {
@@ -40,7 +40,7 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
     }
 
     return (
-        <Formik initialValues={initialValues} onSubmit={upload} validationSchema={passportUploadValidator}>
+        <Formik initialValues={initialValues} onSubmit={upload} validationSchema={getPassportUploadValidator(localize)}>
             {({ dirty, errors, handleSubmit, resetForm, setFieldValue, values }) => {
                 const handleFileChange = (file?: File) => {
                     setFieldValue('passportFile', file);

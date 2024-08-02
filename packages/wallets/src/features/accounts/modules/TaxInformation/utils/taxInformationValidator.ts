@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
-import { localize } from '@deriv-com/translations';
+import { TTranslations } from '../../../../../types';
 
-export const getTinValidator = (pattern: string) => {
+export const getTinValidator = (pattern: string, localize: TTranslations['localize']) => {
     if (pattern && pattern.length > 0) {
         return Yup.string()
             .required(localize('Please fill in Tax identification number.'))
@@ -10,7 +10,10 @@ export const getTinValidator = (pattern: string) => {
     return Yup.string().required(localize('Please fill in Tax identification number.'));
 };
 
-export const getTaxResidenceValidator = (countryList: Record<string, string>[]) => {
+export const getTaxResidenceValidator = (
+    countryList: Record<string, string>[],
+    localize: TTranslations['localize']
+) => {
     return Yup.string()
         .required(localize('Tax residence is required.'))
         .test({
@@ -25,8 +28,9 @@ export const getTaxResidenceValidator = (countryList: Record<string, string>[]) 
         });
 };
 
-export const taxInformationValidationSchema = Yup.object().shape({
-    accountOpeningReason: Yup.string().required(localize('Account opening reason is required.')),
-    citizenship: Yup.string().required(localize('Citizenship is required.')),
-    placeOfBirth: Yup.string().required(localize('Place of birth is required.')),
-});
+export const getTaxInformationValidationSchema = (localize: TTranslations['localize']) =>
+    Yup.object().shape({
+        accountOpeningReason: Yup.string().required(localize('Account opening reason is required.')),
+        citizenship: Yup.string().required(localize('Citizenship is required.')),
+        placeOfBirth: Yup.string().required(localize('Place of birth is required.')),
+    });

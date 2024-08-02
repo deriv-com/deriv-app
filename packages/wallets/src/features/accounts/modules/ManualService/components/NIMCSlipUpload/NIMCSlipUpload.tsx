@@ -12,7 +12,7 @@ import { DocumentRules } from '../DocumentRules';
 import { ManualUploadErrorMessage } from '../ManualUploadErrorMessage';
 import { SelfieUpload } from '../SelfieUpload';
 import { useNIMCSlipUpload } from './hooks';
-import { nimcSlipUploadValidator } from './utils';
+import { getNimcSlipUploadValidator } from './utils';
 import './NIMCSlipUpload.scss';
 
 const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, onClickBack, onCompletion }) => {
@@ -40,7 +40,7 @@ const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
     }
 
     return (
-        <Formik initialValues={initialValues} onSubmit={upload} validationSchema={nimcSlipUploadValidator}>
+        <Formik initialValues={initialValues} onSubmit={upload} validationSchema={getNimcSlipUploadValidator(localize)}>
             {({ dirty, errors, handleSubmit, resetForm, setFieldValue, values }) => {
                 const isNIMCFormValid = dirty && !errors.nimcNumber && !errors.nimcCardFront && !errors.nimcCardBack;
 

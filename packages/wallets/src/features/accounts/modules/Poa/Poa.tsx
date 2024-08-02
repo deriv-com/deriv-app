@@ -7,7 +7,7 @@ import { THooks } from '../../../../types';
 import { Footer } from '../components';
 import { AddressSection, DocumentSubmission, PoaUploadErrorMessage } from './components';
 import { usePoa } from './hooks';
-import { poaValidationSchema } from './utils';
+import { getPoaValidationSchema } from './utils';
 import './Poa.scss';
 
 type TPoaProps = {
@@ -46,7 +46,7 @@ const Poa: React.FC<TPoaProps> = ({ onCompletion }) => {
             initialStatus={initialStatus}
             initialValues={initialValues}
             onSubmit={upload}
-            validationSchema={poaValidationSchema}
+            validationSchema={getPoaValidationSchema(localize)}
         >
             {({ handleSubmit, isValid, resetForm }) => {
                 const onErrorRetry = () => {

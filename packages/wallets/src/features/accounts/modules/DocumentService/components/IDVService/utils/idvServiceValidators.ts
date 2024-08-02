@@ -1,10 +1,15 @@
 import * as Yup from 'yup';
-import { localize } from '@deriv-com/translations';
+import { TTranslations } from '../../../../../../../types';
 import type { TDocumentTypeItem } from '../types';
 
-export const documentTypeValidator = Yup.string().required(localize('Please select a document type.'));
+export const getDocumentTypeValidator = (localize: TTranslations['localize']) =>
+    Yup.string().required(localize('Please select a document type.'));
 
-export const getDocumentNumberValidator = (document: TDocumentTypeItem, example: string) => {
+export const getDocumentNumberValidator = (
+    document: TDocumentTypeItem,
+    example: string,
+    localize: TTranslations['localize']
+) => {
     return Yup.string()
         .required(localize(`Please enter your ${document.text} number.`))
         .test({

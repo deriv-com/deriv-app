@@ -11,6 +11,7 @@ import OptionsAndMultipliersListing from 'Components/options-multipliers-listing
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import AfterSignupFlow from 'Components/after-signup-flow';
 import Disclaimer from 'Components/disclaimer';
+import SenegalBusinessClosureBanner from 'Components/banners/senegal-business-closure-banner';
 import { useContentFlag, useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import classNames from 'classnames';
 import './traders-hub.scss';
@@ -151,6 +152,7 @@ const TradersHub = observer(() => {
 
     return (
         <React.Fragment>
+            <SenegalBusinessClosureBanner />
             <AfterSignupFlow />
             <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop}>
                 {can_show_notify && <Notifications />}

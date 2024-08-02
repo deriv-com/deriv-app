@@ -120,7 +120,7 @@ describe('<InvestorPasswordManager> ', () => {
                     /strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers/i
                 )[0]
             ).toBeInTheDocument();
-            expect(change_investor_password_btn).not.toBeDisabled();
+            expect(change_investor_password_btn).toBeEnabled();
             fireEvent.click(change_investor_password_btn);
             expect(screen.getByTestId('dt_error_message_investor')).toBeInTheDocument();
             expect(mockOnClick).toHaveBeenCalled();

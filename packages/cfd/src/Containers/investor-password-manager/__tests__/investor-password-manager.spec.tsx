@@ -107,7 +107,7 @@ describe('<InvestorPasswordManager> ', () => {
 
     it('should fill the password fields and trigger the appropriate message and enable the change password button', async () => {
         const mockOnSubmit = jest.fn();
-        render(<InvestorPasswordManager {...mock_props} onSubmit={mockOnSubmit()} />);
+        render(<InvestorPasswordManager {...mock_props} onSubmit={mockOnSubmit} />);
         expect(await screen.findByText(/new investor password/i)).toBeInTheDocument();
         const current_investor = screen.getByLabelText(/current investor password/i);
         const new_investor = screen.getByLabelText(/new investor password/i);

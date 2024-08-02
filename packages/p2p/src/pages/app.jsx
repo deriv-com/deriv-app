@@ -18,7 +18,7 @@ import './app.scss';
 
 const App = () => {
     const [is_p2p_v2_enabled, isGBLoaded] = useGrowthbookGetFeatureValue({
-        featureFlag: 'p2p_v2_enabled',
+        featureFlag: 'p2p_standalone_enabled',
         defaultValue: false,
     });
     const { notifications, client, ui, common, modules } = useStore();

@@ -1,28 +1,50 @@
 import React, { FC } from 'react';
+import { useTranslations } from '@deriv-com/translations';
 import { WalletText } from '../../../../../components/Base';
 import { THooks } from '../../../../../types';
-import { MarketTypeDetails } from '../../../constants';
+import { getMarketTypeDetails } from '../../../constants';
 
 type TJurisdictionFootNoteTitle = {
-    marketType: keyof typeof MarketTypeDetails;
+    marketType: keyof ReturnType<typeof getMarketTypeDetails>;
     selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];
 };
 
 const JurisdictionFootNoteTitle: FC<TJurisdictionFootNoteTitle> = ({ marketType, selectedJurisdiction }) => {
+    const { localize } = useTranslations();
     let footnoteText: string | undefined;
 
     switch (selectedJurisdiction) {
         case 'svg':
-            footnoteText = `Add your Deriv MT5 ${MarketTypeDetails[marketType].title} account under Deriv (SVG) LLC (company no. 273 LLC 2020).`;
+            footnoteText = localize(
+                'Add your Deriv MT5 {{marketTitle}} account under Deriv (SVG) LLC (company no. 273 LLC 2020).',
+                {
+                    marketTitle: getMarketTypeDetails()[marketType].title,
+                }
+            );
             break;
         case 'bvi':
-            footnoteText = `Add your Deriv MT5 ${MarketTypeDetails[marketType].title} account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114).`;
+            footnoteText = localize(
+                'Add your Deriv MT5 {{marketTitle}} account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114).',
+                {
+                    marketTitle: getMarketTypeDetails()[marketType].title,
+                }
+            );
             break;
         case 'labuan':
-            footnoteText = `Add your Deriv MT5 ${MarketTypeDetails[marketType].title} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (License no. MB/18/0024).`;
+            footnoteText = localize(
+                'Add your Deriv MT5 {{marketTitle}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (License no. MB/18/0024).',
+                {
+                    marketTitle: getMarketTypeDetails()[marketType].title,
+                }
+            );
             break;
         case 'vanuatu':
-            footnoteText = `Add your Deriv MT5 ${MarketTypeDetails[marketType].title} account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.`;
+            footnoteText = localize(
+                'Add your Deriv MT5 {{marketTitle}} account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.',
+                {
+                    marketTitle: getMarketTypeDetails()[marketType].title,
+                }
+            );
             break;
         default:
             footnoteText = undefined;

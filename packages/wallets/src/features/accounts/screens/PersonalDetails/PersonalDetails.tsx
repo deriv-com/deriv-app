@@ -133,7 +133,7 @@ const PersonalDetails = () => {
                                 }))}
                                 listHeight='sm'
                                 name='wallets-personal-details__dropdown-tax-residence'
-                                onBlur={() => {
+                                onFocus={() => {
                                     setTouched({ ...touched, taxResidence: true });
                                 }}
                                 onSearch={inputValue => {

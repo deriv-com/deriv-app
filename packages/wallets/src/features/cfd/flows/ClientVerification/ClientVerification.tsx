@@ -107,7 +107,7 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({ onFirstTimeCom
             <ResubmissionSuccessMessage
                 message={resubmissionMessage}
                 onCompletion={() => {
-                    // invalidate mt5_login_list for updating the status badge in TradingAccountCard on Trader's Hub
+                    // invalidate get_account_status for updating the status badge in TradingAccountCard on Trader's Hub
                     invalidate('get_account_status');
                     hide();
                 }}

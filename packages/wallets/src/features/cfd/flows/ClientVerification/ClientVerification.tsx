@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { useInvalidateQuery, useMT5AccountsList, usePOA, usePOI, useSettings } from '@deriv/api-v2';
+import { useTranslations } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
@@ -22,6 +23,7 @@ const isSubmissionRequired: Record<TStatusCodes, boolean> = {
 };
 
 const ClientVerification: React.FC<TClientVerificationProps> = ({ onFirstTimeCompletion, selectedJurisdiction }) => {
+    const { localize } = useTranslations();
     const { data: poiData, isLoading: isPoiDataLoading } = usePOI();
     const { data: poaData, isLoading: isPoaDataLoading } = usePOA();
     const { data: accountSettings, isLoading: isAccountSettingsLoading } = useSettings();
@@ -98,8 +100,8 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({ onFirstTimeCom
     if (hasResubmittedDocuments) {
         const resubmissionMessage =
             poiData?.current.service === 'manual'
-                ? "We'll review your documents and notify you of its status within 1 - 3 working days."
-                : "We'll review your documents and notify you of its status within 5 minutes.";
+                ? localize("We'll review your documents and notify you of its status within 1 - 3 working days.")
+                : localize("We'll review your documents and notify you of its status within 5 minutes.");
 
         return (
             <ResubmissionSuccessMessage

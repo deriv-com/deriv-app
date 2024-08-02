@@ -9,7 +9,7 @@ type TDraggableListItemProps = {
     onLeftIconClick?: () => void;
     onRightIconClick?: () => void;
     rightIcon?: React.ReactNode;
-    title: string;
+    title: React.ReactNode;
 };
 
 const DraggableListItem: React.FC<TDraggableListItemProps> = ({

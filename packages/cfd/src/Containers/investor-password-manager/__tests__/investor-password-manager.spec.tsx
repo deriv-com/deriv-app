@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, render, waitFor, fireEvent, act } from '@testing-library/react';
+import { screen, render, waitFor, fireEvent } from '@testing-library/react';
 import InvestorPasswordManager from '../investor-password-manager';
 import { localize } from '@deriv/translations';
 
@@ -34,7 +34,7 @@ describe('<InvestorPasswordManager> ', () => {
     const mock_props = {
         error_message_investor: 'Forgot your password? Please reset your password.',
         is_submit_success_investor: false,
-        multi_step_ref: { current: { nextStep: jest.fn() } },
+        multi_step_ref: { current: { goNextStep: jest.fn(), goPrevStep: jest.fn() } },
         onSubmit: jest.fn(),
         setPasswordType: jest.fn(() => 'investor'),
         toggleModal: jest.fn(),
@@ -106,8 +106,8 @@ describe('<InvestorPasswordManager> ', () => {
     });
 
     it('should fill the password fields and trigger the appropriate message and enable the change password button', async () => {
-        const mockOnClick = jest.fn();
-        render(<InvestorPasswordManager {...mock_props} onClick={mockOnClick()} />);
+        const mockOnSubmit = jest.fn();
+        render(<InvestorPasswordManager {...mock_props} onSubmit={mockOnSubmit()} />);
         expect(await screen.findByText(/new investor password/i)).toBeInTheDocument();
         const current_investor = screen.getByLabelText(/current investor password/i);
         const new_investor = screen.getByLabelText(/new investor password/i);
@@ -123,7 +123,7 @@ describe('<InvestorPasswordManager> ', () => {
             expect(change_investor_password_btn).toBeEnabled();
             fireEvent.click(change_investor_password_btn);
             expect(screen.getByTestId('dt_error_message_investor')).toBeInTheDocument();
-            expect(mockOnClick).toHaveBeenCalled();
+            expect(mockOnSubmit).toHaveBeenCalled();
         });
     });
 

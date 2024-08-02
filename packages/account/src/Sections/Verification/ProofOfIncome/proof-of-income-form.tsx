@@ -35,7 +35,6 @@ type TInitialValues = {
 const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
     const [document_file, setDocumentFile] = React.useState<File[]>([]);
     const [file_selection_error, setFileSelectionError] = React.useState<string | null>(null);
-    const [uploadResponses, setUploadResponses] = React.useState(0);
 
     const poinc_documents_list = React.useMemo(() => getPoincDocumentsList(), []);
     const poinc_uploader_files_descriptions = React.useMemo(() => getFileUploaderDescriptions('poinc'), []);
@@ -44,12 +43,11 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
     const { addNotificationMessageByKey, removeNotificationMessage, removeNotificationByKey } = notifications;
     const { isMobile, isDesktop } = useDevice();
 
-    const { upload, data } = useDocumentUpload();
+    const { upload, data, documentUploadStatus } = useDocumentUpload();
 
     React.useEffect(() => {
         const fetchAccountStatus = async () => {
-            if (uploadResponses === 1) {
-                await new Promise(resolve => setTimeout(resolve, 3000)); // Wait for 3s so that second response from doc uploader is received
+            if (documentUploadStatus === 'success') {
                 const get_account_status_response: DeepRequired<AccountStatusResponse> =
                     await WS.authorized.getAccountStatus();
                 const { income, needs_verification } =
@@ -68,7 +66,7 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
             }
         };
         fetchAccountStatus();
-    }, [uploadResponses]);
+    }, [documentUploadStatus]);
 
     const initial_form_values: TInitialValues = {
         document_type: '',
@@ -96,7 +94,6 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
             setSubmitting(true);
             try {
                 await upload({ file: document_file[0], document_type: uploading_value });
-                setUploadResponses(prev => prev + 1);
 
                 if ('warning' in data) {
                     setStatus({ msg: data.status });

@@ -20,6 +20,7 @@ const useDocumentUpload = () => {
         ...rest
     } = useMutation('document_upload');
     const [isDocumentUploaded, setIsDocumentUploaded] = useState(false);
+    const [documentUploadStatus, setDocumentUploadStatus] = useState('');
     const { derivAPI } = useAPIContext();
 
     const isLoading = _isLoading || (!isDocumentUploaded && status === 'success');
@@ -58,6 +59,37 @@ const useDocumentUpload = () => {
                     const payload = new Uint8Array([...type, ...id, ...size, ...chunk]);
                     derivAPI.connection.send(payload);
                 });
+
+                const timeout = setTimeout(() => {
+                    derivAPI.connection?.removeEventListener('message', handleUploadStatus);
+                }, 20000);
+
+                const handleUploadStatus = (messageEvent: MessageEvent) => {
+                    const data = JSON.parse(messageEvent.data);
+
+                    if (data.error) {
+                        derivAPI.connection?.removeEventListener('message', handleUploadStatus);
+                        setDocumentUploadStatus('error');
+                        clearTimeout(timeout);
+                        return;
+                    }
+
+                    if (data.document_upload && data.document_upload?.status === 'failure') {
+                        derivAPI.connection?.removeEventListener('message', handleUploadStatus);
+                        setDocumentUploadStatus('failure');
+                        clearTimeout(timeout);
+                        return;
+                    }
+
+                    if (data.document_upload && data.document_upload?.status === 'success') {
+                        derivAPI.connection?.removeEventListener('message', handleUploadStatus);
+                        setDocumentUploadStatus('success');
+                        clearTimeout(timeout);
+                    }
+                };
+
+                derivAPI.connection?.addEventListener('message', handleUploadStatus);
+
                 setIsDocumentUploaded(true);
             });
         },
@@ -77,6 +109,7 @@ const useDocumentUpload = () => {
         isLoading,
         /** Whether the mutation is successful */
         isSuccess,
+        documentUploadStatus,
         ...rest,
     };
 };

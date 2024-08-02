@@ -71,13 +71,11 @@ Blockly.Blocks.math_number_property = {
             if (!inputExists) {
                 this.appendValueInput('DIVISOR').setCheck('Number');
                 this.initSvg();
-                //commented this line breaks the backward compatibility
-                //this.render(false);
+                this.renderEfficiently();
             }
-        } else {
-            //commented this line breaks the backward compatibiliy
-            //this.removeInput('DIVISOR');
-        }
+        } else if (inputExists) {
+                this.removeInput('DIVISOR');
+            }
     },
     customContextMenu(menu) {
         modifyContextMenu(menu);

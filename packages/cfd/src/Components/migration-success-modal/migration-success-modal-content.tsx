@@ -9,7 +9,7 @@ type TMigrationSuccessModalContent = {
     icon?: string;
     eligible_account_to_migrate: string;
     directToCashier: () => void;
-    jurisdiction_market_name: string;
+    jurisdiction_market_name: Array<string>;
 };
 
 const MigrationSuccessModalContent = observer(
@@ -25,7 +25,15 @@ const MigrationSuccessModalContent = observer(
         const platform = getCFDPlatformNames(CFD_PLATFORMS.MT5);
         const text_size = is_mobile ? 'xxs' : 'xs';
         const information_text_size = is_mobile ? 'xxxs' : 'xxs';
-
+        const getFormattedAccounts = () =>
+            jurisdiction_market_name.length > 1
+                ? {
+                      type_1: jurisdiction_market_name[0],
+                      type_2: jurisdiction_market_name[1],
+                  }
+                : {
+                      type_1: jurisdiction_market_name[0],
+                  };
         return (
             <div className='cfd-success-dialog-migration__modal-content'>
                 <Modal.Body className={classNames('cfd-success-dialog-migration__body')}>
@@ -38,15 +46,27 @@ const MigrationSuccessModalContent = observer(
                         </Text>
                         <div className='cfd-success-dialog-migration__content-wrapper'>
                             <Text size={text_size} as='p' align='center'>
-                                <Localize
-                                    i18n_default_text='Start trading with your new <0>{{platform}} {{jurisdiction_market_name}} {{eligible_account_to_migrate}}</0> accounts.'
-                                    values={{
-                                        platform,
-                                        eligible_account_to_migrate,
-                                        jurisdiction_market_name,
-                                    }}
-                                    components={[<strong key={0} />]}
-                                />
+                                {jurisdiction_market_name.length > 1 ? (
+                                    <Localize
+                                        i18n_default_text='Start trading with your new <0>{{platform}} {{type_1}}</0> and <0>{{type_2}} {{eligible_account_to_migrate}}</0> accounts.'
+                                        values={{
+                                            platform,
+                                            eligible_account_to_migrate,
+                                            ...getFormattedAccounts(),
+                                        }}
+                                        components={[<strong key={0} />]}
+                                    />
+                                ) : (
+                                    <Localize
+                                        i18n_default_text='Start trading with your new <0>{{platform}} {{type_1}} {{eligible_account_to_migrate}}</0> account.'
+                                        values={{
+                                            platform,
+                                            eligible_account_to_migrate,
+                                            ...getFormattedAccounts(),
+                                        }}
+                                        components={[<strong key={0} />]}
+                                    />
+                                )}
                             </Text>
                             <div className='cfd-success-dialog-migration__inline-msg'>
                                 <InlineMessage

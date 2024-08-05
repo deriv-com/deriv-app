@@ -19,6 +19,7 @@ type TAccumulatorAnnouncementDialog = {
 const AnnouncementDialog = observer(
     ({ announcement, handleTabChange, isAnnounceDialogOpen, setAnnounceDialogOpen }: TAccumulatorAnnouncementDialog) => {
         const { dashboard, quick_strategy } = useDBotStore();
+        const { onSubmit } = quick_strategy;
         const { setActiveTabTutorial } = dashboard;
         const { main_title, confirm_button_text, cancel_button_text, base_classname, title, subtitle, content } = announcement;
 
@@ -28,7 +29,9 @@ const AnnouncementDialog = observer(
         };
 
         const handleOnConfirm = () => {
-            //
+            handleTabChange(DBOT_TABS.BOT_BUILDER);
+            setActiveTabTutorial(1);
+            onSubmit({ 'tradetype': 'accumulator' })
         };
 
         return (

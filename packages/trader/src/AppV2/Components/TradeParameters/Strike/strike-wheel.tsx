@@ -2,7 +2,6 @@ import React from 'react';
 import clsx from 'clsx';
 import { ActionSheet, Text, WheelPicker } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
-import { sortObjectByKeys } from 'AppV2/Utils/trade-params-utils';
 
 type TStrikeWheelProps = {
     current_strike: string;
@@ -62,8 +61,4 @@ const StrikeWheel = ({
     );
 };
 
-export default React.memo(StrikeWheel, (prev_props, new_props) => {
-    const prev_props_string = JSON.stringify(sortObjectByKeys(prev_props));
-    const new_props_string = JSON.stringify(sortObjectByKeys(new_props));
-    return prev_props_string === new_props_string;
-});
+export default StrikeWheel;

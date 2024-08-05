@@ -416,6 +416,14 @@ export default class NotificationStore extends BaseStore {
                 this.removeNotificationByKey({ key: this.client_notifications.enable_passkey });
             }
 
+            if (this.root_store.client.is_account_to_be_closed_by_residence) {
+                this.addNotificationMessage(this.client_notifications.notify_account_is_to_be_closed_by_residence);
+            } else {
+                this.removeNotificationByKey({
+                    key: this.client_notifications.notify_account_is_to_be_closed_by_residence,
+                });
+            }
+
             const client = accounts[loginid];
             if (client && !client.is_virtual) {
                 if (isEmptyObject(account_status)) return;
@@ -1552,6 +1560,24 @@ export default class NotificationStore extends BaseStore {
                         this.markNotificationMessage({ key: 'additional_kyc_info' });
                     },
                 },
+                type: 'warning',
+            },
+            notify_account_is_to_be_closed_by_residence: {
+                action: {
+                    route: routes.cashier_withdrawal,
+                    text: localize('Withdraw funds'),
+                },
+                header: localize('Deposits and trading disabled'),
+                key: 'notify_account_is_to_be_closed_by_residence',
+                message: (
+                    <Localize
+                        i18n_default_text='Due to business changes, client accounts in Senegal are to be closed. Withdraw your funds by {{date}}.'
+                        values={{
+                            date: formatDate(this.root_store.client.account_time_of_closure, 'DD MMM YYYY'),
+                        }}
+                    />
+                ),
+                should_show_again: true,
                 type: 'warning',
             },
         };

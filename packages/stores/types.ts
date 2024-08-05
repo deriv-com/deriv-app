@@ -615,6 +615,8 @@ type TClientStore = {
     virtual_account_loginid?: string;
     is_cr_account: boolean;
     is_mf_account: boolean;
+    account_time_of_closure?: number;
+    is_account_to_be_closed_by_residence: boolean;
 };
 
 type TCommonStoreError = {

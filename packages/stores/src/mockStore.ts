@@ -306,6 +306,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             virtual_account_loginid: '',
             is_cr_account: false,
             is_mf_account: false,
+            account_time_of_closure: undefined,
+            is_account_to_be_closed_by_residence: false,
         },
         common: {
             error: common_store_error,

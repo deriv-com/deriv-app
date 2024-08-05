@@ -49,7 +49,6 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
         onMount: onClosedTabMount,
         onUnmount: onClosedTabUnmount,
     } = useReportsStore().profit_table;
-    // console.log('data', data);
     const closedPositions = React.useMemo(() => data.map(d => ({ contract_info: d })), [data]);
     const positions = React.useMemo(
         () => (isClosedTab ? closedPositions : active_positions),

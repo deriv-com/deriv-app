@@ -65,7 +65,7 @@ Blockly.WorkspaceSvg.prototype.centerOnBlock = function (id, hideChaff = true) {
         Blockly.hideChaff();
     }
 
-    this.scrollbar.set(scrollToCenterX, scrollToCenterY);
+    this?.scrollbar?.set(scrollToCenterX, scrollToCenterY);
 };
 
 /**

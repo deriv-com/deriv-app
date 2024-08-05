@@ -8,7 +8,6 @@ import {
     removeExistingWorkspace,
     save_types,
     saveWorkspaceToRecent,
-    setColors,
 } from '@deriv/bot-skeleton';
 import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { TStores } from '@deriv/stores/types';
@@ -23,7 +22,6 @@ import {
 } from '../analytics/rudderstack-common-events';
 import { getStrategyType, LOAD_MODAL_TABS } from '../analytics/utils';
 import RootStore from './root-store';
-import DBotStore from '@deriv/bot-skeleton/src/scratch/dbot-store';
 
 interface ILoadModalStore {
     active_index: number;
@@ -563,18 +561,10 @@ export default class LoadModalStore implements ILoadModalStore {
         showIncompatibleStrategyDialog: false,
     };
 
-    loadStrategyOnModalWorkspace = async () => {
-        const { blockly_store } = this.root_store;
-        const { setLoading } = blockly_store;
-        const convertedDom = window.Blockly.utils.xml.textToDom(this.selected_strategy?.xml);
-        const mainWorkspace = window.Blockly.getMainWorkspace();
-
-        window.Blockly.Xml.clearWorkspaceAndLoadFromXml(convertedDom, mainWorkspace);
-        setLoading(false);
-    };
-
     loadStrategyOnBotBuilder = async () => {
         const { strategy_id, xml, file_name, from } = window.Blockly.readFileXml;
+        const { save_modal } = this.root_store;
+        const { updateBotName } = save_modal;
 
         const convertedDom = window.Blockly.utils.xml.textToDom(xml);
         const derivWorkspace = window.Blockly.derivWorkspace;
@@ -584,7 +574,7 @@ export default class LoadModalStore implements ILoadModalStore {
         derivWorkspace.clearUndo();
         derivWorkspace.current_strategy_id = strategy_id || Blockly.utils.idGenerator.genUid();
 
-        DBotStore?.instance?.save_modal?.updateBotName(file_name);
+        updateBotName(file_name);
 
         const xml_dom = window.Blockly.utils.xml.textToDom(xml);
         await saveWorkspaceToRecent(xml_dom, from);
@@ -609,12 +599,18 @@ export default class LoadModalStore implements ILoadModalStore {
         if (!ref_preview) {
             // eslint-disable-next-line no-console
             console.warn('Could not find preview workspace element.');
+            setLoading(false);
             return;
         }
         if (!this.recent_workspace) this.recent_workspace = window.Blockly.inject(ref_preview, injectWorkspace);
         (this.recent_workspace as any).RTL = isDbotRTL();
         await load(this.workspaceOptions);
-        this.loadStrategyOnModalWorkspace();
+
+        const convertedDom = window.Blockly?.utils?.xml?.textToDom(this.selected_strategy?.xml);
+        const mainWorkspace = window.Blockly?.getMainWorkspace();
+
+        window.Blockly?.Xml?.clearWorkspaceAndLoadFromXml(convertedDom, mainWorkspace);
+        setLoading(false);
     };
 
     loadStrategyOnModalLocalPreview = async load_options => {

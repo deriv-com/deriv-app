@@ -76,7 +76,12 @@ const MarketCategoryItem = forwardRef(
                 })}
                 ref={ref}
             >
-                <span className='market-category-item-left' data-symbol={item.symbol} onClick={handleSelect}>
+                <span
+                    role='button'
+                    className='market-category-item-left'
+                    data-symbol={item.symbol}
+                    onClick={handleSelect}
+                >
                     <SymbolIconsMapper symbol={item.symbol} />
                     <Text
                         size='sm'

@@ -33,7 +33,6 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
             <ActionSheet.Root isOpen={isOpen} onClose={() => setIsOpen(false)}>
                 <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen>
                     <SymbolsSearchField
-                        marketCategoriesRef={marketCategoriesRef}
                         searchValue={searchValue}
                         setSearchValue={setSearchValue}
                         isSearching={isSearching}

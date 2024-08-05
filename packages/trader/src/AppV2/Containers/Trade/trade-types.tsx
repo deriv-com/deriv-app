@@ -185,9 +185,9 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                         <Text size='sm'>{title}</Text>
                     </Chip.Selectable>
                 ))}
-            <button key={'all'} onClick={() => setIsOpen(true)}>
-                <Text size='sm'>{<Localize i18n_default_text='View all' />}</Text>
-            </button>
+            <a key={'all'} onClick={() => setIsOpen(true)} className='trade__trade-types-header'>
+                <Text size='sm' bold underlined>{<Localize i18n_default_text='View all' />}</Text>
+            </a>
             <ActionSheet.Root isOpen={is_open} expandable={false} onClose={handleCloseTradeTypes}>
                 <ActionSheet.Portal>
                     <ActionSheet.Header title={<Localize i18n_default_text='Trade types' />} />

@@ -130,13 +130,13 @@ describe('BarrierInput', () => {
     });
 
     it('handles chip selection correctly for Fixed price', () => {
-        default_trade_store.modules.trade.barrier_1 = '+30';
+        default_trade_store.modules.trade.barrier_1 = '+.6';
         mockBarrierInput(mockStore(default_trade_store));
 
         const fixedPriceChip = screen.getByText('Fixed price');
         userEvent.click(fixedPriceChip);
 
-        expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '30' } });
+        expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '0.6' } });
     });
 
     it('handles chip selection correctly for Above spot when initial barrier is fixed price', () => {

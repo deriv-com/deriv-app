@@ -10,10 +10,27 @@ import {
     isResetContract,
     getCardLabelsV2,
     formatMoney,
+    isUserCancelled,
 } from '@deriv/shared';
 import { getBarrierValue } from 'App/Components/Elements/PositionsDrawer/helpers';
+import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
 
 const CARD_LABELS = getCardLabelsV2();
+
+const getDealCancelFee = (data: TContractInfo) => {
+    if (!data.cancellation?.ask_price || !data.currency) return undefined;
+
+    let status;
+    if (isUserCancelled(data)) {
+        status = CARD_LABELS.EXECUTED;
+    } else if (isCancellationExpired(data)) {
+        status = CARD_LABELS.EXPIRED;
+    } else {
+        status = CARD_LABELS.ACTIVE;
+    }
+
+    return [`${formatMoney(data.currency, data.cancellation.ask_price, true)} ${data.currency}`, `(${status})`];
+};
 
 // Contains all key values that are used more than once in different transform objects
 const getCommonFields = (data: TContractInfo) => {
@@ -42,16 +59,14 @@ const getCommonFields = (data: TContractInfo) => {
 // For Multiplier
 const transformMultiplierData = (data: TContractInfo) => {
     const commonFields = getCommonFields(data);
+    const dealCancelFee = getDealCancelFee(data);
+
     return {
         [CARD_LABELS.REFERENCE_ID]: commonFields[CARD_LABELS.REFERENCE_ID],
         [CARD_LABELS.MULTIPLIER]: data.multiplier ? `x${data.multiplier}` : '',
         [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
         [CARD_LABELS.COMMISSION]: data.commission ? `${data.commission} ${data.currency}` : '',
-        ...{
-            ...(data.cancellation?.ask_price && {
-                [CARD_LABELS.DEAL_CANCEL_FEE]: [data.cancellation?.ask_price, `(${CARD_LABELS.ACTIVE})`],
-            }),
-        },
+        ...(dealCancelFee && { [CARD_LABELS.DEAL_CANCEL_FEE]: dealCancelFee }),
         [CARD_LABELS.TAKE_PROFIT]:
             data.limit_order?.take_profit?.order_amount && data.currency
                 ? `${formatMoney(data.currency, data.limit_order.take_profit.order_amount, true)} ${data.currency}`

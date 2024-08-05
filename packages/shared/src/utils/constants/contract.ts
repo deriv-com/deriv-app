@@ -343,6 +343,8 @@ export const getCardLabelsV2 = () =>
         NOT_SET: localize('Not set'),
         PAYOUT: localize('Sell price'),
         ACTIVE: localize('active'),
+        EXECUTED: localize('executed'),
+        EXPIRED: localize('expired'),
         PAYOUT_PER_POINT: localize('Payout per point'),
         POTENTIAL_PAYOUT: localize('Potential payout'),
         POTENTIAL_PROFIT_LOSS: localize('Potential profit/loss'),

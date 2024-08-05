@@ -6,7 +6,7 @@ type TCarousel = {
     pages: { id: number; component: JSX.Element }[];
     title?: React.ReactNode;
     current_index?: number;
-    setCurrentIndex: (arg: number) => void;
+    setCurrentIndex?: (arg: number) => void;
 };
 
 const Carousel = ({ header, pages, current_index, setCurrentIndex, title }: TCarousel) => {

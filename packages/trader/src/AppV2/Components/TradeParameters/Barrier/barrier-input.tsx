@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { ActionSheet, Chip, Text, TextField, TextFieldAddon } from '@deriv-com/quill-ui';
 
 import { localize, Localize } from '@deriv/translations';
@@ -18,12 +18,12 @@ const chips_options = [
 ];
 const BarrierInput = observer(({ setInitialBarrierValue }: { setInitialBarrierValue: (val: string) => void }) => {
     const { barrier_1, onChange, validation_errors, proposal_info } = useTraderStore();
-    const [option, setOption] = useState(0);
+    const [option, setOption] = React.useState(0);
 
     const proposal = Object.values(proposal_info);
     const spotPrice = proposal.length > 0 ? proposal[0].spot : '';
 
-    useEffect(() => {
+    React.useEffect(() => {
         setInitialBarrierValue(barrier_1);
         if (barrier_1.includes('-')) {
             setOption(1);
@@ -36,14 +36,20 @@ const BarrierInput = observer(({ setInitialBarrierValue }: { setInitialBarrierVa
 
     const handleChipSelect = (index: number) => {
         setOption(index);
-        let newValue = barrier_1;
-        if (index === 0 && barrier_1.startsWith('-')) {
-            newValue = `+${barrier_1.slice(1)}`;
-        } else if (index === 1 && barrier_1.startsWith('+')) {
-            newValue = `-${barrier_1.slice(1)}`;
-        } else if (index === 2) {
-            newValue = barrier_1.replace(/[+-]/, '');
+        let newValue = barrier_1.replace(/^[+-]/, '');
+
+        if (index === 0) {
+            newValue = `+${newValue}`;
+        } else if (index === 1) {
+            newValue = `-${newValue}`;
         }
+
+        if ((newValue.startsWith('+') || newValue.startsWith('-')) && newValue.charAt(1) === '.') {
+            newValue = `${newValue.charAt(0)}0${newValue.slice(1)}`;
+        } else if (newValue.startsWith('.')) {
+            newValue = `0${newValue}`;
+        }
+
         onChange({ target: { name: 'barrier_1', value: newValue } });
     };
 
@@ -81,10 +87,11 @@ const BarrierInput = observer(({ setInitialBarrierValue }: { setInitialBarrierVa
                     />
                 ) : (
                     <TextField
-                        type='text'
+                        type='number'
                         name='barrier_1'
                         status={validation_errors?.barrier_1.length > 0 ? 'error' : 'neutral'}
                         value={barrier_1}
+                        allowDecimals
                         allowSign={false}
                         onChange={handleOnChange}
                         placeholder={localize('Distance to spot')}

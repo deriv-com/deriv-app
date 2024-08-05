@@ -5,19 +5,19 @@ import { Divider, Text } from '@deriv-com/ui';
 import { WalletButton } from '../../../../../components/Base';
 import { getPlatformFromUrl } from '../../../../../helpers/urls';
 import { THooks, TPlatforms } from '../../../../../types';
-import { AppToContentMapper, CFD_PLATFORMS, PlatformDetails, PlatformToLabelIconMapper } from '../../../constants';
+import { CFD_PLATFORMS, getAppToContentMapper, PlatformDetails, PlatformToLabelIconMapper } from '../../../constants';
 import { ctraderLinks, dxtradeLinks } from './urlConfig';
 import './MT5TradeLink.scss';
 
 type TMT5TradeLinkProps = {
-    app?: keyof typeof AppToContentMapper;
+    app?: keyof ReturnType<typeof getAppToContentMapper>;
     isDemo?: THooks.ActiveWalletAccount['is_virtual'];
     platform?: TPlatforms.All;
 };
 
 const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, platform }) => {
     const { mutateAsync: requestToken } = useCtraderServiceToken();
-    const { icon, link, text, title } = AppToContentMapper[app];
+    const { icon, link, text, title } = getAppToContentMapper()[app];
 
     const getCtraderToken = () => {
         const cTraderTokenResponse = requestToken({

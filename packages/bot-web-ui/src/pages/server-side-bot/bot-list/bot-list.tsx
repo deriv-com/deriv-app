@@ -172,7 +172,7 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
                                     </Text>
                                     <Text size='xs'>
                                         <Localize
-                                            i18n_default_text='To get started, tap <0>+ Create Bbot</0>'
+                                            i18n_default_text='To get started, tap <0>+ Create bot</0>'
                                             components={[<strong key={0} />]}
                                         />
                                     </Text>

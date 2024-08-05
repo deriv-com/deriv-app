@@ -6,7 +6,7 @@ import { WalletButton, WalletPasswordFieldLazy } from '../../../../components/Ba
 import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password-validation';
-import { CFD_PLATFORMS, MarketTypeDetails, PlatformDetails } from '../../constants';
+import { CFD_PLATFORMS, getMarketTypeDetails, PlatformDetails } from '../../constants';
 import './EnterPassword.scss';
 
 type TProps = {
@@ -43,7 +43,7 @@ const EnterPassword: React.FC<TProps> = ({
     const accountType = data?.is_virtual ? localize('Demo') : localize('Real');
     const title = PlatformDetails[platform].title;
     const marketTypeTitle =
-        platform === PlatformDetails.dxtrade.platform ? accountType : MarketTypeDetails[marketType].title;
+        platform === PlatformDetails.dxtrade.platform ? accountType : getMarketTypeDetails()[marketType].title;
     const passwordErrorHints = localize(
         'Hint: You may have entered your Deriv password, which is different from your {{title}} password.',
         { title }

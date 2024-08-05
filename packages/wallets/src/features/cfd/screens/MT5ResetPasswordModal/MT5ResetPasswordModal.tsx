@@ -5,7 +5,7 @@ import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { WalletButton, WalletButtonGroup, WalletPasswordFieldLazy, WalletTextField } from '../../../../components';
 import PasswordViewerIcon from '../../../../components/Base/WalletPasswordField/PasswordViewerIcon';
-import { passwordRequirements } from '../../../../constants/password';
+import { getPasswordRequirements } from '../../../../constants/password';
 import useDevice from '../../../../hooks/useDevice';
 import { validPasswordMT5 } from '../../../../utils/password-validation';
 import { PlatformDetails } from '../../constants';
@@ -114,7 +114,7 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
                                     />
                                 </div>
                                 <ul className='wallets-mt5-reset__requirements'>
-                                    {passwordRequirements.map(requirement => (
+                                    {getPasswordRequirements().map(requirement => (
                                         <li key={requirement}>
                                             <Text size='sm'>{requirement}</Text>
                                         </li>

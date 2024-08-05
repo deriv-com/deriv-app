@@ -1,3 +1,4 @@
+import { localize } from '@deriv-com/translations';
 import { ValidationConstants } from '@deriv-com/utils';
 import { passwordKeys } from '../utils/password-validation';
 
@@ -30,38 +31,46 @@ export const passwordValues = {
     minLength: 8,
 };
 
-export const passwordErrorMessage = {
-    invalidLength: `You should enter ${passwordValues.minLength}-${passwordValues.maxLength} characters.`,
-    invalidLengthMT5: `You should enter ${passwordValues.minLength}-${passwordValues.maxLengthMT5} characters.`,
-    missingCharacter: 'Password should have lower and uppercase English letters with numbers.',
-    missingCharacterMT5: 'Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.',
-    PasswordError: 'That password is incorrect. Please try again.',
-};
+export const getPasswordErrorMessage = () => ({
+    invalidLength: localize('You should enter{{minLength}}-{{maxLength}} characters.', {
+        maxLength: passwordValues.maxLength,
+        minLength: passwordValues.minLength,
+    }),
+    invalidLengthMT5: localize('You should enter {{minLength}}-{{maxLengthMT5}} characters.', {
+        maxLength: passwordValues.maxLengthMT5,
+        minLength: passwordValues.minLength,
+    }),
+    missingCharacter: localize('Password should have lower and uppercase English letters with numbers.'),
+    missingCharacterMT5: localize(
+        'Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.'
+    ),
+    PasswordError: localize('That password is incorrect. Please try again.'),
+});
 
-export const warningMessages: Record<passwordKeys, string> = {
-    common: 'This is a very common password.',
-    commonNames: 'Common names and surnames are easy to guess.',
-    dates: 'Dates are easy to guess.',
-    extendedRepeat: 'Repeated character patterns like "abcabcabc" are easy to guess.',
-    keyPattern: 'Short keyboard patterns are easy to guess.',
-    namesByThemselves: 'Single names or surnames are easy to guess.',
-    pwned: 'Your password was exposed by a data breach on the Internet.',
-    recentYears: 'Recent years are easy to guess.',
-    sequences: 'Common character sequences like "abc" are easy to guess.',
-    similarToCommon: 'This is similar to a commonly used password.',
-    simpleRepeat: 'Repeated characters like "aaa" are easy to guess.',
-    straightRow: 'Straight rows of keys on your keyboard are easy to guess.',
-    topHundred: 'This is a frequently used password.',
-    topTen: 'This is a heavily used password.',
-    userInputs: 'There should not be any personal or page related data.',
-    wordByItself: 'Single words are easy to guess.',
-};
+export const getWarningMessages = (): Record<passwordKeys, string> => ({
+    common: localize('This is a very common password.'),
+    commonNames: localize('Common names and surnames are easy to guess.'),
+    dates: localize('Dates are easy to guess.'),
+    extendedRepeat: localize('Repeated character patterns like "abcabcabc" are easy to guess.'),
+    keyPattern: localize('Short keyboard patterns are easy to guess.'),
+    namesByThemselves: localize('Single names or surnames are easy to guess.'),
+    pwned: localize('Your password was exposed by a data breach on the Internet.'),
+    recentYears: localize('Recent years are easy to guess.'),
+    sequences: localize('Common character sequences like "abc" are easy to guess.'),
+    similarToCommon: localize('This is similar to a commonly used password.'),
+    simpleRepeat: localize('Repeated characters like "aaa" are easy to guess.'),
+    straightRow: localize('Straight rows of keys on your keyboard are easy to guess.'),
+    topHundred: localize('This is a frequently used password.'),
+    topTen: localize('This is a heavily used password.'),
+    userInputs: localize('There should not be any personal or page related data.'),
+    wordByItself: localize('Single words are easy to guess.'),
+});
 
 // Display on MT5 Password Reset Modal for new password requirements
-export const passwordRequirements = [
-    '8 to 16 characters',
-    'A special character such as ( _ @ ? ! / # )',
-    'An uppercase letter',
-    'A lowercase letter',
-    'A number',
+export const getPasswordRequirements = () => [
+    localize('8 to 16 characters'),
+    localize('A special character such as ( _ @ ? ! / # )'),
+    localize('An uppercase letter'),
+    localize('A lowercase letter'),
+    localize('A number'),
 ];

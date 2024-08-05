@@ -22,7 +22,7 @@ const BarrierInput = observer(
         const [option, setOption] = React.useState(0);
 
         const proposal = Object.values(proposal_info);
-        const spotPrice = proposal.length > 0 ? proposal[0].spot : '';
+        const spotPrice = proposal[0]?.spot ?? '';
 
         React.useEffect(() => {
             setInitialBarrierValue(barrier_1);
@@ -33,7 +33,7 @@ const BarrierInput = observer(
             } else {
                 setOption(2);
             }
-        }, [setInitialBarrierValue]);
+        }, []);
 
         const handleChipSelect = (index: number) => {
             setOption(index);
@@ -77,7 +77,20 @@ const BarrierInput = observer(
                             ))}
                         </div>
                     )}
-                    {option !== 2 && !isDays ? (
+                    {option === 2 || isDays ? (
+                        <TextField
+                            type='number'
+                            name='barrier_1'
+                            status={validation_errors?.barrier_1.length > 0 ? 'error' : 'neutral'}
+                            value={barrier_1}
+                            allowDecimals
+                            allowSign={false}
+                            onChange={handleOnChange}
+                            placeholder={localize('Distance to spot')}
+                            variant='fill'
+                            message={validation_errors?.barrier_1[0]}
+                        />
+                    ) : (
                         <TextFieldAddon
                             fillAddonBorderColor='var(--semantic-color-slate-solid-surface-frame-mid)'
                             type='number'
@@ -87,19 +100,6 @@ const BarrierInput = observer(
                             allowDecimals
                             allowSign={false}
                             status={validation_errors?.barrier_1.length > 0 ? 'error' : 'neutral'}
-                            onChange={handleOnChange}
-                            placeholder={localize('Distance to spot')}
-                            variant='fill'
-                            message={validation_errors?.barrier_1[0]}
-                        />
-                    ) : (
-                        <TextField
-                            type='number'
-                            name='barrier_1'
-                            status={validation_errors?.barrier_1.length > 0 ? 'error' : 'neutral'}
-                            value={barrier_1}
-                            allowDecimals
-                            allowSign={false}
                             onChange={handleOnChange}
                             placeholder={localize('Distance to spot')}
                             variant='fill'

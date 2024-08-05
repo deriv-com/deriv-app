@@ -14,7 +14,7 @@ const BarrierHeader = ({ current_index, onPrevClick, title }: TBarrierHeader) =>
         className={current_index ? 'barrier-params__description-header' : ''}
         title={title}
         icon={!current_index && <LabelPairedCircleInfoMdRegularIcon data-testid='info-icon' onClick={onPrevClick} />}
-        iconPosition={'right'}
+        iconPosition='right'
     />
 );
 

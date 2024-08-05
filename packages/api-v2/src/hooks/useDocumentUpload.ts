@@ -26,11 +26,8 @@ const useDocumentUpload = () => {
     const { wsClient, connection } = useAPIContext();
     const [status, setStatus] = useState<DocumentUploadStatus>(DocumentUploadStatus.IDLE);
 
-    const getFileInfo = async (payload: TDocumentUploadRequestPayload): Promise<TFileInfo> => {
-        if (!payload.file) return Promise.reject(new Error('No file selected'));
-
-        const file = payload.file;
-        delete payload.file;
+    const getFileInfo = async (file: TDocumentUploadRequestPayload['file']): Promise<TFileInfo> => {
+        if (!file) return Promise.reject(new Error('No file selected'));
 
         const fileType = file.type;
         const fileBlob = await compressImageFile(file);
@@ -134,8 +131,9 @@ const useDocumentUpload = () => {
 
     const upload = async (payload: TDocumentUploadRequestPayload) => {
         setStatus(DocumentUploadStatus.LOADING);
-        const fileInfo = await getFileInfo(payload);
-        const handshakeResponse = await handshake(fileInfo, payload);
+        const { file, ...rest } = payload;
+        const fileInfo = await getFileInfo(file);
+        const handshakeResponse = await handshake(fileInfo, rest);
         if (handshakeResponse.error) {
             setStatus(DocumentUploadStatus.ERROR);
             return Promise.reject(handshakeResponse);

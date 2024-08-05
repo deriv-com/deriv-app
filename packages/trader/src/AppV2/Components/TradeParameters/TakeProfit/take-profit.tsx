@@ -148,15 +148,15 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     return (
         <React.Fragment>
             <TextField
-                variant='fill'
-                readOnly
+                className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
+                disabled={has_open_accu_contract}
                 label={
                     <Localize i18n_default_text='Take profit' key={`take-profit${is_minimized ? '-minimized' : ''}`} />
                 }
-                value={has_take_profit && take_profit ? `${take_profit} ${getCurrencyDisplayCode(currency)}` : '-'}
-                className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
-                disabled={has_open_accu_contract}
                 onClick={() => setIsOpen(true)}
+                readOnly
+                variant='fill'
+                value={has_take_profit && take_profit ? `${take_profit} ${getCurrencyDisplayCode(currency)}` : '-'}
             />
             <ActionSheet.Root isOpen={is_open} onClose={onActionSheetClose} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>

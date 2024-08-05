@@ -1,0 +1,23 @@
+$HANDLEBAR_HEIGHT: var(--core-size-1000);
+$HEADER_TITLE_HEIGHT: var(--core-size-3200);
+$FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
+
+.strike {
+    &__wrapper {
+        height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $FOOTER_BUTTON_HEIGHT);
+        padding-block: 0;
+
+        &--small-screen {
+            height: calc(90dvh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $FOOTER_BUTTON_HEIGHT);
+        }
+
+        &--definition {
+            height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
+            padding-block-start: 0;
+
+            &--small-screen {
+                height: calc(90dvh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
+            }
+        }
+    }
+}

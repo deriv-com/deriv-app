@@ -1,24 +1,58 @@
 import React from 'react';
-import { observer } from 'mobx-react';
-import { TextField } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv/translations';
 import clsx from 'clsx';
+import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { ActionSheet, TextField } from '@deriv-com/quill-ui';
+import { Localize } from '@deriv/translations';
+import Carousel from 'AppV2/Components/Carousel';
+import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
+import StrikeDescription from './strike-description';
+import StrikeWheel from './strike-wheel';
 
 type TStrikeProps = {
     is_minimized?: boolean;
 };
 
 const Strike = observer(({ is_minimized }: TStrikeProps) => {
+    const [is_open, setIsOpen] = React.useState(false);
     const { barrier_1 } = useTraderStore();
+
+    const onSave = () => {
+        null;
+    };
+
+    const is_small_screen_device = window.innerHeight <= 640;
+    const action_sheet_content = [
+        {
+            id: 1,
+            component: <StrikeWheel onSave={onSave} is_small_screen_device={is_small_screen_device} />,
+        },
+        {
+            id: 2,
+            component: <StrikeDescription is_small_screen_device={is_small_screen_device} />,
+        },
+    ];
+
     return (
-        <TextField
-            variant='fill'
-            readOnly
-            label={<Localize i18n_default_text='Strike price' key={`strike${is_minimized ? '-minimized' : ''}`} />}
-            value={barrier_1}
-            className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
-        />
+        <React.Fragment>
+            <TextField
+                className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
+                label={<Localize i18n_default_text='Strike price' key={`strike${is_minimized ? '-minimized' : ''}`} />}
+                onClick={() => setIsOpen(true)}
+                readOnly
+                variant='fill'
+                value={barrier_1}
+            />
+            <ActionSheet.Root isOpen={is_open} onClose={() => setIsOpen(false)} position='left' expandable={false}>
+                <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen={is_small_screen_device}>
+                    <Carousel
+                        header={CarouselHeader}
+                        pages={action_sheet_content}
+                        title={<Localize i18n_default_text='Strike price' />}
+                    />
+                </ActionSheet.Portal>
+            </ActionSheet.Root>
+        </React.Fragment>
     );
 });
 

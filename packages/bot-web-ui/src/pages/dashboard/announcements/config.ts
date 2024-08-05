@@ -1,28 +1,26 @@
 import { Localize, localize } from '@deriv/translations';
 
-export const ANNOUNCEMENTS: any = {
+export type Announcement = {
+    main_title: string;
+    confirm_button_text: string;
+    cancel_button_text: string;
+    base_classname: string;
+    title: string;
+    subtitle: string;
+    content: string[];
+};
+
+export const ANNOUNCEMENTS: Record<string, Readonly<Announcement>> = {
     ACCUMULATOR_ANNOUNCE: {
-        title: localize('Accumulators is now on Deriv Bot'),
+        main_title: localize('Accumulators is now on Deriv Bot'),
         confirm_button_text: localize('Try now'),
         cancel_button_text: localize('Learn more'),
         base_classname: 'announcement-dialog',
-        details: [
-            {
-                type: 'title',
-                content: [localize('Accumulator Options')],
-            },
-            {
-                type: 'subtitle',
-                content: [localize('Boost your trading strategy with Accumulators')],
-            },
-            {
-                type: 'text',
-                content: [
-                    localize('Leverage Accumulators to enhance potential profits with a structured approach.'),
-                    localize('Customize your investment period and price levels to fit your trading goals.'),
-                    localize('Manage risks while capitalizing on market opportunities.'),
-                ],
-            },
+        title: localize('Accumulator Options'),
+        subtitle: localize('Boost your trading strategy with Accumulators'),
+        content: [localize('Leverage Accumulators to enhance potential profits with a structured approach.'),
+        localize('Customize your investment period and price levels to fit your trading goals.'),
+        localize('Manage risks while capitalizing on market opportunities.'),
         ],
     },
 };

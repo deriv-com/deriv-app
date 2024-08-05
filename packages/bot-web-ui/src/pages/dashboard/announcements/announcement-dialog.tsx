@@ -6,21 +6,21 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import { LabelPairedCheckCaptionFillIcon } from '@deriv/quill-icons';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import './announcement-dialog.scss';
-import { ANNOUNCEMENTS } from './config';
+import { Announcement } from './config';
 // import useQsSubmitHandler from '../form-wrappers/useQsSubmitHandler';
 
 type TAccumulatorAnnouncementDialog = {
+    announcement: Announcement;
     handleTabChange: (item: number) => void;
     isAnnounceDialogOpen: boolean;
     setAnnounceDialogOpen: (isAnnounceDialogOpen: boolean) => void;
 };
 
 const AnnouncementDialog = observer(
-    ({ handleTabChange, isAnnounceDialogOpen, setAnnounceDialogOpen }: TAccumulatorAnnouncementDialog) => {
+    ({ announcement, handleTabChange, isAnnounceDialogOpen, setAnnounceDialogOpen }: TAccumulatorAnnouncementDialog) => {
         const { dashboard, quick_strategy } = useDBotStore();
         const { setActiveTabTutorial } = dashboard;
-        const accumulator_announcement = ANNOUNCEMENTS['ACCUMULATOR_ANNOUNCE'];
-        const { title, confirm_button_text, cancel_button_text, base_classname, details } = accumulator_announcement;
+        const { main_title, confirm_button_text, cancel_button_text, base_classname, title, subtitle, content } = announcement;
 
         const handleOnCancel = () => {
             handleTabChange(DBOT_TABS.TUTORIAL);
@@ -34,7 +34,7 @@ const AnnouncementDialog = observer(
         return (
             <Dialog
                 portal_element_id='modal_root_absolute'
-                title={title}
+                title={main_title}
                 is_visible={isAnnounceDialogOpen}
                 confirm_button_text={confirm_button_text}
                 onConfirm={handleOnConfirm}
@@ -57,55 +57,27 @@ const AnnouncementDialog = observer(
                         align='center'
                         className={`${base_classname}__title`}
                     >
-                        <Localize i18n_default_text='Accumulator Options' />
+                        <Localize i18n_default_text={title} />
                     </Text>
                     <div>
                         <Text as='p' line_height='xl' size='xs' align='center' className={`${base_classname}__title`}>
-                            <Localize i18n_default_text='Boost your trading strategy with Accumulators' />
+                            <Localize i18n_default_text={subtitle} />
                         </Text>
-                        <div className={`${base_classname}__body-item`}>
-                            <div>
-                                <LabelPairedCheckCaptionFillIcon />
-                            </div>
-                            <Text as='p' line_height='xl' size='xs'>
-                                <Localize
-                                    i18n_default_text={
-                                        'Leverage Accumulators to enhance potential profits with a structured approach.'
-                                    }
-                                />
-                            </Text>
-                        </div>
-                        <div className={`${base_classname}__body-item`}>
-                            <div>
-                                <LabelPairedCheckCaptionFillIcon />
-                            </div>
-                            <Text as='p' line_height='xl' size='xs'>
-                                <Localize
-                                    i18n_default_text={
-                                        'Customize your investment period and price levels to fit your trading goals.'
-                                    }
-                                />
-                            </Text>
-                        </div>
-                        <div className={`${base_classname}__body-item`}>
-                            <div>
-                                <LabelPairedCheckCaptionFillIcon />
-                            </div>
-                            <Text as='p' line_height='xl' size='xs'>
-                                <Localize
-                                    i18n_default_text={'Manage risks while capitalizing on market opportunities.'}
-                                />
-                            </Text>
-                        </div>
+                        {
+                            content.map((text: string) => {
+                                return (
+                                    <div className={`${base_classname}__body-item`}>
+                                        <div>
+                                            <LabelPairedCheckCaptionFillIcon />
+                                        </div>
+                                        <Text as='p' line_height='xl' size='xs'>
+                                            <Localize i18n_default_text={text} />
+                                        </Text>
+                                    </div>
+                                );
+                            })
+                        }
                     </div>
-
-                    {/* <Text as='p' line_height='s' size='xs' styles={{ paddingBottom: '2rem', paddingTop: '1rem' }}>
-                    <Localize i18n_default_text='Close your contract now or keep it running. If you decide to keep it running, you can check and close it later on the ' />
-                    <Text weight='bold' as='span' line_height='s' size='xs'>
-                        <Localize i18n_default_text='Reports' />
-                    </Text>
-                    <Localize i18n_default_text='page.' />
-                </Text> */}
                 </div>
             </Dialog>
         );

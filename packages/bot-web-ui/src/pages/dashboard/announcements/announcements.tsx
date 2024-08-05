@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { localize } from '@deriv/translations';
 import AnnouncementDialog from './announcement-dialog';
 import { StandaloneBullhornRegularIcon } from '@deriv/quill-icons';
+import { ANNOUNCEMENTS } from './config';
 import './announcements.scss';
 
 type TAnnouncements = {
@@ -16,6 +17,7 @@ type TAnnouncements = {
 const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
     const [isAnnounceDialogOpen, setAnnounceDialogOpen] = useState(false);
     const [isOpenAnnounceList, setIsOpenAnnounceList] = useState(false);
+    const accumulator_announcement = ANNOUNCEMENTS['ACCUMULATOR_ANNOUNCE'];
 
     const announcements = [
         {
@@ -95,6 +97,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                 />
             </div>
             <AnnouncementDialog
+                announcement={accumulator_announcement}
                 handleTabChange={handleTabChange}
                 isAnnounceDialogOpen={isAnnounceDialogOpen}
                 setAnnounceDialogOpen={setAnnounceDialogOpen}

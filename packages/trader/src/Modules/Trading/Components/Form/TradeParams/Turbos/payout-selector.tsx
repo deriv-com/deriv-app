@@ -23,22 +23,22 @@ const PayoutSelector = observer(() => {
 
     const header_tooltip_text = (
         <div className='trade-container__barriers-tooltip'>
-            <Localize i18n_default_text='You receive a payout at expiry if the spot price never touches or breaches the barrier throughout the contract duration. Otherwise, your contract will be terminated early.' />
+            <Localize i18n_default_text='You will receive a payout at expiry if the spot price never touches or breaches the barrier throughout the contract duration. Otherwise, your contract will be terminated early.' />
         </div>
     );
     if (isMobile) {
         return (
             <button role='button' className='mobile-widget payout-selector' onClick={toggleBarriersTable}>
                 <Text size='xs' color='prominent' align='center' className='payout-field'>
-                    {payout_per_point}
-                    {Number(payout_per_point) < 0 ? (
+                    {barrier_1}
+                    {Number(barrier_1) < 0 ? (
                         <LabelPairedChevronsDownCaptionRegularIcon className='indicator-icon' />
                     ) : (
                         <LabelPairedChevronsUpCaptionRegularIcon className='indicator-icon' />
                     )}
                 </Text>
-                <Text size='xs' color='prominent' align='center' weight='bold'>
-                    {barrier_1} {currency}
+                <Text size='xs' className='payout-value' color='prominent' align='center' weight='bold'>
+                    {payout_per_point} {currency}
                 </Text>
                 <Text size='xs' color='less-prominent' align='center'>
                     <Localize i18n_default_text='Payout per point' />

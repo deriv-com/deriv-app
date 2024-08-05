@@ -3,8 +3,9 @@ import { useSettings } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../../../../components';
+import { THooks } from '../../../../types';
 import { DocumentSelection } from './components';
-import { getManualDocumentsMapper, TManualDocumentComponent, TManualDocumentType } from './utils';
+import { getManualDocumentsMapper, TManualDocumentType } from './utils';
 
 type TManualServiceProps = {
     onCompletion?: VoidFunction;
@@ -12,27 +13,48 @@ type TManualServiceProps = {
 
 type TSelectedManualDocument = keyof TManualDocumentType | undefined;
 
-const ManualService: React.FC<TManualServiceProps> = ({ onCompletion }) => {
-    const { localize } = useTranslations();
-    const { data: accountSettings, isLoading: isAccountSettingsLoading } = useSettings();
-    const [selectedManualDocument, setSelectedManualDocument] = useState<TSelectedManualDocument>();
-    let SelectedDocument: TManualDocumentComponent;
+type TSelectedManualDocumentProps = {
+    countryCode: THooks.AccountSettings['country_code'];
+    onCompletion: TManualServiceProps['onCompletion'];
+    resetSelectedDocument: VoidFunction;
+    selection: NonNullable<TSelectedManualDocument>;
+};
 
-    const resetSelectedDocument = () => {
-        setSelectedManualDocument(undefined);
-    };
+const SelectedManualDocument: React.FC<TSelectedManualDocumentProps> = ({
+    countryCode,
+    onCompletion,
+    resetSelectedDocument,
+    selection,
+}) => {
+    const { localize } = useTranslations();
+    const SelectedDocument = getManualDocumentsMapper(localize)[selection].component;
+
+    return (
+        <SelectedDocument
+            documentIssuingCountryCode={countryCode}
+            onClickBack={resetSelectedDocument}
+            onCompletion={onCompletion}
+        />
+    );
+};
+
+const ManualService: React.FC<TManualServiceProps> = ({ onCompletion }) => {
+    const { data: accountSettings, isLoading: isAccountSettingsLoading } = useSettings();
+    const [selection, setSelection] = useState<TSelectedManualDocument>();
 
     if (isAccountSettingsLoading) {
         return <Loader />;
     }
 
-    if (selectedManualDocument) {
-        SelectedDocument = getManualDocumentsMapper(localize)[selectedManualDocument].component;
+    if (selection) {
         return (
-            <SelectedDocument
-                documentIssuingCountryCode={accountSettings.country_code}
-                onClickBack={resetSelectedDocument}
+            <SelectedManualDocument
+                countryCode={accountSettings.country_code}
                 onCompletion={onCompletion}
+                resetSelectedDocument={() => {
+                    setSelection(undefined);
+                }}
+                selection={selection}
             />
         );
     }
@@ -41,7 +63,7 @@ const ManualService: React.FC<TManualServiceProps> = ({ onCompletion }) => {
         <ModalStepWrapper title='Add a real MT5 account'>
             <DocumentSelection
                 onSelectDocument={document => {
-                    setSelectedManualDocument(document);
+                    setSelection(document);
                 }}
             />
         </ModalStepWrapper>

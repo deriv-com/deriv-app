@@ -85,12 +85,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     };
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        //TODO: check if we will need all this logic with latest Quill update. Add disabling "-" icon when value is < 1
-        let value: string | number = e.target.value;
-        value = String(value).trim().replace(',', '.');
-
-        if (value !== '' && Number(value) <= 0) value = '0';
-
+        const value: string | number = e.target.value;
         setTakeProfitValue(value);
         isTakeProfitOutOfRange(value);
     };

@@ -14,7 +14,7 @@ type TDurationProps = {
 };
 
 const Barrier = observer(({ is_minimized }: TDurationProps) => {
-    const { barrier_1, onChange } = useTraderStore();
+    const { barrier_1, onChange, validation_errors } = useTraderStore();
     const [is_open, setIsOpen] = React.useState(false);
     const [currentPage, setCurrentPage] = React.useState(0);
     const [initialBarrierValue, setInitialBarrierValue] = React.useState('');
@@ -65,7 +65,11 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
                             currentPage == 0
                                 ? {
                                       content: <Localize i18n_default_text='Save' />,
-                                      onAction: () => onClose(true),
+                                      onAction: () => {
+                                          if (validation_errors.barrier_1.length === 0) {
+                                              onClose(true);
+                                          }
+                                      },
                                   }
                                 : {
                                       content: <Localize i18n_default_text='Got it' />,

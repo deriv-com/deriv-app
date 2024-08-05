@@ -120,13 +120,13 @@ describe('BarrierInput', () => {
     });
 
     it('handles chip selection correctly for Below spot when initial barrier is positive', () => {
-        default_trade_store.modules.trade.barrier_1 = '+20';
+        default_trade_store.modules.trade.barrier_1 = '+.6';
         mockBarrierInput(mockStore(default_trade_store));
 
         const belowSpotChip = screen.getByText('Below spot');
         userEvent.click(belowSpotChip);
 
-        expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '-20' } });
+        expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '-0.6' } });
     });
 
     it('handles chip selection correctly for Fixed price', () => {
@@ -140,12 +140,12 @@ describe('BarrierInput', () => {
     });
 
     it('handles chip selection correctly for Above spot when initial barrier is fixed price', () => {
-        default_trade_store.modules.trade.barrier_1 = '40';
+        default_trade_store.modules.trade.barrier_1 = '.6';
         mockBarrierInput(mockStore(default_trade_store));
 
         const aboveSpotChip = screen.getByText('Above spot');
         userEvent.click(aboveSpotChip);
 
-        expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '40' } });
+        expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '+0.6' } });
     });
 });

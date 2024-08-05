@@ -15,7 +15,14 @@ describe('Barrier Component', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
-        default_mock_store = mockStore({});
+        default_mock_store = mockStore({
+            modules: {
+                trade: {
+                    onChange: jest.fn(),
+                    validation_errors: { barrier_1: [] },
+                },
+            },
+        });
     });
     const mockBarriers = () => {
         render(

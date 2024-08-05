@@ -1,20 +1,41 @@
 import React from 'react';
 import clsx from 'clsx';
-import { ActionSheet } from '@deriv-com/quill-ui';
+import { ActionSheet, WheelPicker } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
+import { sortObjectByKeys } from 'AppV2/Utils/trade-params-utils';
 
 type TStrikeWheelProps = {
+    current_strike: string;
     is_small_screen_device?: boolean;
-    onSave: () => void;
+    strike_price_list: {
+        value: string;
+    }[];
 };
 
-const StrikeWheel = ({ is_small_screen_device, onSave }: TStrikeWheelProps) => {
+const StrikeWheel = ({ current_strike, is_small_screen_device, strike_price_list }: TStrikeWheelProps) => {
+    const [selected_value, setSelectedValue] = React.useState<string | number>(current_strike);
+
+    const onSave = () => {
+        // console.log('Save');
+    };
+
+    React.useEffect(() => {
+        setSelectedValue(current_strike);
+    }, [current_strike]);
+
     return (
         <React.Fragment>
             <ActionSheet.Content
                 className={clsx('strike__wrapper', is_small_screen_device && 'strike__wrapper--small-screen')}
             >
-                <div>Content</div>
+                <div className='strike__wheel-picker'>
+                    <WheelPicker
+                        data={strike_price_list}
+                        selectedValue={selected_value}
+                        setSelectedValue={setSelectedValue}
+                    />
+                </div>
+                <div className='strike__payout'>Payout per point</div>
             </ActionSheet.Content>
             <ActionSheet.Footer
                 alignment='vertical'
@@ -27,4 +48,8 @@ const StrikeWheel = ({ is_small_screen_device, onSave }: TStrikeWheelProps) => {
     );
 };
 
-export default StrikeWheel;
+export default React.memo(StrikeWheel, (prev_props, new_props) => {
+    const prev_props_string = JSON.stringify(sortObjectByKeys(prev_props));
+    const new_props_string = JSON.stringify(sortObjectByKeys(new_props));
+    return prev_props_string === new_props_string;
+});

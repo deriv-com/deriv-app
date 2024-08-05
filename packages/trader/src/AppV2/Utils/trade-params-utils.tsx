@@ -112,3 +112,12 @@ export const getTradeTypeTabsList = (contract_type = '') => {
     ];
     return tab_list.filter(({ is_displayed }) => is_displayed);
 };
+
+export const sortObjectByKeys = <T extends Record<string, any>>(object: T) => {
+    return Object.keys(object)
+        .sort()
+        .reduce((result, key) => {
+            result[key as keyof T] = object[key];
+            return result;
+        }, {} as T);
+};

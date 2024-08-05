@@ -6,6 +6,8 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
     &__wrapper {
         height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $FOOTER_BUTTON_HEIGHT);
         padding-block: 0;
+        display: flex;
+        flex-direction: column;
 
         &--small-screen {
             height: calc(90dvh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $FOOTER_BUTTON_HEIGHT);
@@ -19,5 +21,14 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
                 height: calc(90dvh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
             }
         }
+    }
+
+    &__wheel-picker {
+        flex-grow: 1;
+        min-height: 0;
+    }
+
+    &__payout {
+        min-height: var(--core-size-2200);
     }
 }

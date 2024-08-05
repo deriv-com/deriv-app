@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 type THeaderProps = {
     current_index: number;
@@ -6,7 +6,7 @@ type THeaderProps = {
     onNextClick: () => void;
 };
 type TCarousel = {
-    header: ({ current_index, onPrevClick }: THeaderProps) => JSX.Element;
+    header: ({ current_index, onPrevClick, onNextClick }: THeaderProps) => JSX.Element;
     pages: { id: number; component: JSX.Element }[];
     current_index?: number;
     setCurrentIndex?: (index: number) => void;

@@ -12,7 +12,7 @@ const BarrierHeader = ({ current_index, onPrevClick }: TBarrierHeader) => (
     <ActionSheet.Header
         className={current_index ? 'barrier-params__description-header' : ''}
         title={<Localize i18n_default_text='Barrier' />}
-        icon={!current_index && <LabelPairedCircleInfoMdRegularIcon onClick={onPrevClick} />}
+        icon={!current_index && <LabelPairedCircleInfoMdRegularIcon data-testid='info-icon' onClick={onPrevClick} />}
         iconPosition={'right'}
     />
 );

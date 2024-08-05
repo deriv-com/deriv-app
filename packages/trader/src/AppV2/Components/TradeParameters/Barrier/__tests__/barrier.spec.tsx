@@ -1,16 +1,14 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Barrier from '../barrier';
 import TraderProviders from '../../../../../trader-providers';
-import ModulesProvider from 'Stores/Providers/modules-providers';
 import { mockStore } from '@deriv/stores';
 
 jest.mock('AppV2/Components/TradeParameters/Barrier/barrier-input', () => jest.fn(() => <div>Barrier Input</div>));
 
 jest.mock('@deriv/quill-icons', () => ({
     ...jest.requireActual('@deriv/quill-icons'),
-    LabelPairedCircleInfoMdRegularIcon: () => <div>LabelPairedCircleInfoMdRegularIcon</div>,
 }));
 
 describe('Barrier Component', () => {
@@ -36,13 +34,12 @@ describe('Barrier Component', () => {
         mockBarriers();
         userEvent.click(screen.getByRole('textbox'));
         expect(screen.getByText('Barrier Input')).toBeInTheDocument();
-        expect(screen.getByText('LabelPairedCircleInfoMdRegularIcon')).toBeInTheDocument();
     });
 
     it('displays BarrierDescription on the second carousel page', async () => {
         mockBarriers();
         userEvent.click(screen.getByRole('textbox'));
-        await userEvent.click(screen.getByText('LabelPairedCircleInfoMdRegularIcon'));
+        await userEvent.click(screen.getByTestId('info-icon'));
         expect(screen.getByText('Above spot:')).toBeInTheDocument();
     });
 
@@ -53,6 +50,24 @@ describe('Barrier Component', () => {
         userEvent.click(screen.getByText(/Save/));
         await waitFor(() => expect(screen.queryByText('Barrier Input')).not.toBeInTheDocument());
     });
+
+    it('shows got it button on going to the description page', async () => {
+        mockBarriers();
+        userEvent.click(screen.getByRole('textbox'));
+        await userEvent.click(screen.getByTestId('info-icon'));
+        expect(screen.queryByText('Save')).not.toBeInTheDocument();
+        expect(screen.queryByText('Got it')).toBeInTheDocument();
+    });
+
+    it('should come back to main page on clicking got it button', async () => {
+        mockBarriers();
+        userEvent.click(screen.getByRole('textbox'));
+        await userEvent.click(screen.getByTestId('info-icon'));
+        expect(screen.queryByText('Got it')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Got it'));
+        expect(screen.queryByText('Save')).toBeInTheDocument();
+    });
+
     it('detects clicking outside the ActionSheet and closes it', async () => {
         mockBarriers();
         userEvent.click(screen.getByRole('textbox'));

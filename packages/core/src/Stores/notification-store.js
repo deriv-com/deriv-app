@@ -357,6 +357,16 @@ export default class NotificationStore extends BaseStore {
             !is_next_email_attempt_timer_running &&
             !is_virtual &&
             is_phone_number_verification_enabled;
+
+        console.log(
+            !account_settings?.phone_number_verification?.verified,
+            account_settings?.phone,
+            !is_next_email_attempt_timer_running,
+            !is_virtual,
+            is_phone_number_verification_enabled,
+            'show_phone_number_verification_notification:',
+            show_phone_number_verification_notification
+        );
         let has_missing_required_field;
 
         const is_server_down = checkServerMaintenance(website_status);
@@ -398,6 +408,8 @@ export default class NotificationStore extends BaseStore {
 
             if (show_phone_number_verification_notification) {
                 this.addNotificationMessage(this.client_notifications.phone_number_verification);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.phone_number_verification });
             }
             if (malta_account && is_financial_information_incomplete) {
                 this.addNotificationMessage(this.client_notifications.need_fa);

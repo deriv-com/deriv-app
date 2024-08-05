@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import { localize } from '@deriv-com/translations';
 
 export const documentRequiredValidator = (documentType: string) =>
-    Yup.string().required(localize(`${documentType} is required`));
+    Yup.string().required(localize('{{type}} is required', { type: documentType }));
 
 export const expiryDateValidator = Yup.string()
     .nullable()

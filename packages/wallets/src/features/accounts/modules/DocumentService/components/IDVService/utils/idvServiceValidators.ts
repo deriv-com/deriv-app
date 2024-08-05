@@ -11,7 +11,7 @@ export const getDocumentNumberValidator = (
     localize: TTranslations['localize']
 ) => {
     return Yup.string()
-        .required(localize(`Please enter your ${document.text} number.`))
+        .required(localize('Please enter your {{documentName}} number.', { documentName: document.text }))
         .test({
             name: 'test-document-number',
             test: (value, context) => {
@@ -32,7 +32,9 @@ export const getDocumentNumberValidator = (
 
                     if (pattern && value && !value.match(pattern)) {
                         return context.createError({
-                            message: localize(`Please enter the correct format. Example: ${example}`),
+                            message: localize('Please enter the correct format. Example: {{example}}', {
+                                example,
+                            }),
                         });
                     }
                 }

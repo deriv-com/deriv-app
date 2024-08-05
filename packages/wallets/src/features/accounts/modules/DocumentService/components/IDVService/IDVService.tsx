@@ -116,7 +116,9 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                                             label={localize('Enter your document number')}
                                             message={
                                                 documentNumberExample
-                                                    ? localize(`Example: ${documentNumberExample}`)
+                                                    ? localize('Example: {{example}}', {
+                                                          example: documentNumberExample,
+                                                      })
                                                     : ''
                                             }
                                             name='documentNumber'
@@ -139,7 +141,9 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                                                 )}
                                                 message={
                                                     additionalDocumentNumberExample
-                                                        ? localize(`Example: ${additionalDocumentNumberExample}`)
+                                                        ? localize('Example: {{example}}', {
+                                                              example: additionalDocumentNumberExample,
+                                                          })
                                                         : ''
                                                 }
                                                 name='additionalDocumentNumber'

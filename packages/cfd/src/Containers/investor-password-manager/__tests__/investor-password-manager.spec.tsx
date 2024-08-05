@@ -3,6 +3,11 @@ import { screen, render, waitFor, fireEvent } from '@testing-library/react';
 import InvestorPasswordManager from '../investor-password-manager';
 import { localize } from '@deriv/translations';
 
+type TValidLengthOptions = {
+    min?: number;
+    max?: number;
+};
+
 jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
@@ -11,7 +16,7 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     },
 }));
 
-const validLengthMock = (value = '', options) =>
+const validLengthMock = (value = '', options: TValidLengthOptions) =>
     (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
 
 const mock_errors = {
@@ -25,9 +30,7 @@ jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.ts', 
     getErrorMessages: jest.fn(() => ({
         password_warnings: mock_errors,
     })),
-    validLength: jest.fn(() => {
-        validLengthMock;
-    }),
+    validLength: jest.fn((value, options) => validLengthMock(value, options)),
 }));
 
 describe('<InvestorPasswordManager> ', () => {

@@ -13,9 +13,10 @@ const MarketSelector = observer(() => {
     const [isOpen, setIsOpen] = useState(false);
     const { default_symbol, activeSymbols } = useActiveSymbols();
     const { symbol: storeSymbol, tick_data } = useTraderStore();
-    const currentSymbol = activeSymbols.find(
-        symbol => symbol.symbol === storeSymbol || symbol.symbol === default_symbol
-    );
+    const currentSymbol =
+        activeSymbols.find(({ symbol }) => symbol === storeSymbol) ??
+        activeSymbols.find(({ symbol }) => symbol === default_symbol);
+
     const { pip_size, quote } = tick_data ?? {};
     const current_spot = quote?.toFixed(pip_size);
 

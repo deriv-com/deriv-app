@@ -14,19 +14,20 @@ type TDurationProps = {
 };
 
 const Barrier = observer(({ is_minimized }: TDurationProps) => {
-    const { barrier_1, onChange, validation_errors } = useTraderStore();
+    const { barrier_1, onChange, validation_errors, duration } = useTraderStore();
     const [is_open, setIsOpen] = React.useState(false);
     const [currentPage, setCurrentPage] = React.useState(0);
     const [initialBarrierValue, setInitialBarrierValue] = React.useState('');
+    const isDays = duration > 1440;
 
     const barrier_carousel_pages = [
         {
             id: 1,
-            component: <BarrierInput setInitialBarrierValue={setInitialBarrierValue} />,
+            component: <BarrierInput isDays={isDays} setInitialBarrierValue={setInitialBarrierValue} />,
         },
         {
             id: 2,
-            component: <BarrierDescription />,
+            component: <BarrierDescription isDays={isDays} />,
         },
     ];
 
@@ -35,6 +36,7 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
             if (!is_saved) {
                 onChange({ target: { name: 'barrier_1', value: initialBarrierValue } });
             }
+            setCurrentPage(0);
             setIsOpen(false);
         }
     };

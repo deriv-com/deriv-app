@@ -17,6 +17,7 @@ describe('BarrierInput', () => {
                 barrier_1: '+10',
                 onChange,
                 validation_errors: { barrier_1: [] },
+                duration: 10,
                 proposal_info: { CALL: { id: '123', message: 'test_message', has_error: true, spot: 12345 } },
             },
         },
@@ -26,7 +27,7 @@ describe('BarrierInput', () => {
         render(
             <TraderProviders store={mocked_store}>
                 <ModulesProvider store={mocked_store}>
-                    <BarrierInput setInitialBarrierValue={setInitialBarrierValue} />
+                    <BarrierInput isDays={false} setInitialBarrierValue={setInitialBarrierValue} />
                 </ModulesProvider>
             </TraderProviders>
         );

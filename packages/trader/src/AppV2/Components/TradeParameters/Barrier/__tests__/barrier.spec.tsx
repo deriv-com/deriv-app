@@ -20,6 +20,7 @@ describe('Barrier Component', () => {
                 trade: {
                     onChange: jest.fn(),
                     validation_errors: { barrier_1: [] },
+                    duration: 10,
                 },
             },
         });

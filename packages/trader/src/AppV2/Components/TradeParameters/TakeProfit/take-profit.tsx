@@ -119,7 +119,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
             id: 1,
             component: (
                 <TakeProfitInput
-                    currency={currency}
+                    currency={getCurrencyDisplayCode(currency)}
                     decimals={decimals}
                     error_message={error_message}
                     is_enabled={is_enabled}

@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ActionSheet, TextField } from '@deriv-com/quill-ui';
+import { getCurrencyDisplayCode, isEmptyObject } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
@@ -15,21 +16,31 @@ type TStrikeProps = {
 
 const Strike = observer(({ is_minimized }: TStrikeProps) => {
     const [is_open, setIsOpen] = React.useState(false);
-    const { barrier_1, barrier_choices: strike_price_choices, onChange } = useTraderStore();
+    const {
+        barrier_1,
+        barrier_choices: strike_price_choices,
+        contract_type,
+        currency,
+        onChange,
+        proposal_info,
+    } = useTraderStore();
 
     const is_small_screen_device = window.innerHeight <= 640;
-    const strike_price_list = strike_price_choices.map((strike_price: string) => ({
-        value: strike_price,
-    }));
-    const onStrikePriceSelect = React.useCallback((e: Parameters<typeof onChange>[0]) => onChange(e), [onChange]);
+    const strike_price_list = strike_price_choices.map((strike_price: string) => ({ value: strike_price }));
+    const payout_per_point: string | number = isEmptyObject(proposal_info)
+        ? ''
+        : proposal_info[contract_type.toUpperCase()]?.obj_contract_basis?.value;
+
     const action_sheet_content = [
         {
             id: 1,
             component: (
                 <StrikeWheel
                     current_strike={barrier_1}
+                    currency={getCurrencyDisplayCode(currency)}
                     is_small_screen_device={is_small_screen_device}
-                    onStrikePriceSelect={onStrikePriceSelect}
+                    onStrikePriceSelect={onChange}
+                    payout_per_point={payout_per_point}
                     strike_price_list={strike_price_list}
                 />
             ),

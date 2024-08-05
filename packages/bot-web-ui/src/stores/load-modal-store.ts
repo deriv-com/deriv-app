@@ -584,7 +584,7 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     loadStrategyOnModalRecentPreview = async workspace_id => {
-        if (this.recent_strategies.length === 0) return;
+        if (this.recent_strategies.length === 0 || this.tab_name !== tabs_title.TAB_RECENT) return;
         const { blockly_store } = this.root_store;
         const { setLoading } = blockly_store;
         setLoading(true);

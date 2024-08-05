@@ -15,12 +15,13 @@ type TStrikeProps = {
 
 const Strike = observer(({ is_minimized }: TStrikeProps) => {
     const [is_open, setIsOpen] = React.useState(false);
-    const { barrier_1, barrier_choices: strike_price_choices } = useTraderStore();
+    const { barrier_1, barrier_choices: strike_price_choices, onChange } = useTraderStore();
 
     const is_small_screen_device = window.innerHeight <= 640;
     const strike_price_list = strike_price_choices.map((strike_price: string) => ({
         value: strike_price,
     }));
+    const onStrikePriceSelect = React.useCallback((e: Parameters<typeof onChange>[0]) => onChange(e), [onChange]);
     const action_sheet_content = [
         {
             id: 1,
@@ -28,6 +29,7 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
                 <StrikeWheel
                     current_strike={barrier_1}
                     is_small_screen_device={is_small_screen_device}
+                    onStrikePriceSelect={onStrikePriceSelect}
                     strike_price_list={strike_price_list}
                 />
             ),

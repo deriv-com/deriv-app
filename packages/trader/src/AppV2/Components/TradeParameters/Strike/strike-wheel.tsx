@@ -7,21 +7,24 @@ import { sortObjectByKeys } from 'AppV2/Utils/trade-params-utils';
 type TStrikeWheelProps = {
     current_strike: string;
     is_small_screen_device?: boolean;
+    onStrikePriceSelect: (e: {
+        target: {
+            name: string;
+            value: unknown;
+        };
+    }) => void;
     strike_price_list: {
         value: string;
     }[];
 };
 
-const StrikeWheel = ({ current_strike, is_small_screen_device, strike_price_list }: TStrikeWheelProps) => {
+const StrikeWheel = ({
+    current_strike,
+    is_small_screen_device,
+    onStrikePriceSelect,
+    strike_price_list,
+}: TStrikeWheelProps) => {
     const [selected_value, setSelectedValue] = React.useState<string | number>(current_strike);
-
-    const onSave = () => {
-        // console.log('Save');
-    };
-
-    React.useEffect(() => {
-        setSelectedValue(current_strike);
-    }, [current_strike]);
 
     return (
         <React.Fragment>
@@ -41,7 +44,7 @@ const StrikeWheel = ({ current_strike, is_small_screen_device, strike_price_list
                 alignment='vertical'
                 primaryAction={{
                     content: <Localize i18n_default_text='Save' />,
-                    onAction: onSave,
+                    onAction: () => onStrikePriceSelect({ target: { name: 'barrier_1', value: selected_value } }),
                 }}
             />
         </React.Fragment>

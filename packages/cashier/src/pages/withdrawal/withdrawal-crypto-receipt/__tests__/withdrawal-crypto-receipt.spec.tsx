@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import WithdrawalCryptoReceipt from '../withdrawal-crypto-receipt';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
+import { APIProvider } from '@deriv/api';
 
 let mock_last_transaction = {
     address_hash: 'test_hash',
@@ -73,9 +74,11 @@ describe('<WithdrawalCryptoReceipt />', () => {
 
     const renderWithdrawalCryptoReceipt = () => {
         return render(
-            <CashierProviders store={mockRootStore}>
-                <WithdrawalCryptoReceipt />
-            </CashierProviders>
+            <APIProvider>
+                <CashierProviders store={mockRootStore}>
+                    <WithdrawalCryptoReceipt />
+                </CashierProviders>
+            </APIProvider>
         );
     };
 

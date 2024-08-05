@@ -2,8 +2,14 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import WalletsBannerUpgrade from '../wallets-banner-upgrade';
 import WalletsBannerUpgrading from '../wallets-banner-upgrading';
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
 describe('<WalletsBanner />', () => {
     const mockRootStore = mockStore({
@@ -25,7 +31,6 @@ describe('<WalletsBanner />', () => {
         });
 
         it('Should render image properly for desktop', () => {
-            mockRootStore.ui.is_mobile = false;
             render(<WalletsBannerUpgrade is_upgrading={false} />, {
                 wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             });
@@ -37,7 +42,7 @@ describe('<WalletsBanner />', () => {
         });
 
         it('Should render image properly for mobile', () => {
-            mockRootStore.ui.is_mobile = true;
+            (useDevice as jest.Mock).mockReturnValueOnce({ isMobile: true });
             render(<WalletsBannerUpgrade is_upgrading={false} />, {
                 wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             });
@@ -81,7 +86,6 @@ describe('<WalletsBanner />', () => {
         });
 
         it('Should render image properly for desktop', () => {
-            mockRootStore.ui.is_mobile = false;
             render(<WalletsBannerUpgrading />, {
                 wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             });
@@ -93,7 +97,7 @@ describe('<WalletsBanner />', () => {
         });
 
         it('Should render image properly for mobile', () => {
-            mockRootStore.ui.is_mobile = true;
+            (useDevice as jest.Mock).mockReturnValueOnce({ isMobile: true });
             render(<WalletsBannerUpgrading />, {
                 wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             });

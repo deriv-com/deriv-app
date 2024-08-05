@@ -107,7 +107,12 @@ const Withdrawal = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [willMountWithdraw]);
 
-    if (is_switching || is_10k_withdrawal_limit_reached === undefined) return <Loading is_fullscreen={false} />;
+    if (is_switching || is_10k_withdrawal_limit_reached === undefined)
+        return (
+            <PageContainer hide_breadcrumb>
+                <Loading is_fullscreen={false} />
+            </PageContainer>
+        );
 
     if (is_withdrawal_locked || is_10k_withdrawal_limit_reached)
         return (

@@ -6,7 +6,6 @@ import TradeTypes from '../trade-types';
 import TraderProviders from '../../../../trader-providers';
 import { getTradeTypesList } from 'AppV2/Utils/trade-types-utils';
 
-
 jest.mock('AppV2/Utils/trade-types-utils');
 
 const mockGetTradeTypesList = getTradeTypesList as jest.MockedFunction<typeof getTradeTypesList>;
@@ -45,7 +44,7 @@ const mockTradeTypes = (mocked_store = mockStore(default_mock_store)) => {
             <TradeTypes
                 onTradeTypeSelect={jest.fn()}
                 trade_types={mockGetTradeTypesList(default_mock_store.modules.trade.contract_types_list)}
-                contract_type="rise_fall"
+                contract_type='rise_fall'
             />
         </TraderProviders>
     );

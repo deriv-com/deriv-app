@@ -29,13 +29,21 @@ const TradeTypeListItem: React.FC<TTradeTypeListItemProps> = ({
             onClick={onTradeTypeClick}
         >
             {leftIcon && (
-                <button className='trade-type-list-item__left-icon' data-testid='dt_trade_type_list_item_left_icon' onClick={onLeftIconClick}>
+                <button
+                    className='trade-type-list-item__left-icon'
+                    data-testid='dt_trade_type_list_item_left_icon'
+                    onClick={onLeftIconClick}
+                >
                     {leftIcon}
                 </button>
             )}
             <div className='trade-type-list-item__title'>{title}</div>
             {onRightIconClick && (
-                <button className='trade-type-list-item__icon' data-testid='dt_trade_type_list_item_right_icon' onClick={onRightIconClick}>
+                <button
+                    className='trade-type-list-item__icon'
+                    data-testid='dt_trade_type_list_item_right_icon'
+                    onClick={onRightIconClick}
+                >
                     {rightIcon || default_icon}
                 </button>
             )}

@@ -34,7 +34,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     const createArrayFromCategories = (data: any): TItem[] => {
         const result: TItem[] = [];
 
-        data.forEach((category: { value: string; text: string; }) => {
+        data.forEach((category: { value: string; text: string }) => {
             result.push({
                 id: category.value,
                 title: category.text,
@@ -57,7 +57,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     const handleCloseTradeTypes = () => {
         setIsOpen(false);
         setIsEditing(false);
-    }
+    };
 
     const handleAddPinnedClick = (item: TItem) => {
         setOtherTradeTypes(prev_categories =>
@@ -127,7 +127,9 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                 id: 'other',
                 items: formatted_items
                     .filter(item => !pinned_trade_types[0]?.items.some(pinned_item => pinned_item.id === item.id))
-                    .filter(item => !default_pinned_trade_types[0]?.items.some(pinned_item => pinned_item.id === item.id))
+                    .filter(
+                        item => !default_pinned_trade_types[0]?.items.some(pinned_item => pinned_item.id === item.id)
+                    )
                     .sort((a, b) => a.title?.localeCompare(b.title)),
             },
         ];
@@ -177,19 +179,16 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         contract_type === value;
     return (
         <div className='trade__trade-types'>
-            {saved_pinned_trade_types && (JSON.parse(saved_pinned_trade_types)[0].items.map(({ title, id }: TItem) => (
-                <Chip.Selectable key={id} onChipSelect={onTradeTypeSelect} selected={isTradeTypeSelected(id)}>
-                    <Text size='sm'>{title}</Text>
-                </Chip.Selectable>
-            )))}
+            {saved_pinned_trade_types &&
+                JSON.parse(saved_pinned_trade_types)[0].items.map(({ title, id }: TItem) => (
+                    <Chip.Selectable key={id} onChipSelect={onTradeTypeSelect} selected={isTradeTypeSelected(id)}>
+                        <Text size='sm'>{title}</Text>
+                    </Chip.Selectable>
+                ))}
             <button key={'all'} onClick={() => setIsOpen(true)}>
                 <Text size='sm'>{<Localize i18n_default_text='View all' />}</Text>
             </button>
-            <ActionSheet.Root
-                isOpen={is_open}
-                expandable={false}
-                onClose={handleCloseTradeTypes}
-            >
+            <ActionSheet.Root isOpen={is_open} expandable={false} onClose={handleCloseTradeTypes}>
                 <ActionSheet.Portal>
                     <ActionSheet.Header title={<Localize i18n_default_text='Trade types' />} />
                     <ActionSheet.Content className='mock-action-sheet--content'>
@@ -211,7 +210,11 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                             />
                         )}
                         <TradeTypeList
-                            categories={is_editing ? other_trade_types : saved_other_trade_types && JSON.parse(saved_other_trade_types)}
+                            categories={
+                                is_editing
+                                    ? other_trade_types
+                                    : saved_other_trade_types && JSON.parse(saved_other_trade_types)
+                            }
                             onRightIconClick={is_editing ? handleAddPinnedClick : undefined}
                             onTradeTypeClick={!is_editing ? onTradeTypeSelect : undefined}
                             selected={contract_type}

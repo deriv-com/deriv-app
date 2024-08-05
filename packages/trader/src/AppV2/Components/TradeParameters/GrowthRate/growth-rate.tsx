@@ -8,15 +8,21 @@ import { getGrowthRatePercentage } from '@deriv/shared';
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
-import GrowthRateSelector from './growth-rate-selector';
+import GrowthRatePicker from './growth-rate-picker';
 
 type TGrowthRateProps = {
     is_minimized?: boolean;
 };
 
 const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
-    const { accumulator_range_list, growth_rate, has_open_accu_contract, onChange, tick_size_barrier_percentage } =
-        useTraderStore();
+    const {
+        accumulator_range_list,
+        growth_rate,
+        has_open_accu_contract,
+        maximum_ticks,
+        onChange,
+        tick_size_barrier_percentage,
+    } = useTraderStore();
 
     const [is_open, setIsOpen] = React.useState(false);
     const [selected_growth_rate, setSelectedGrowthRate] = React.useState(growth_rate);
@@ -40,10 +46,13 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
         {
             id: 1,
             component: (
-                <GrowthRateSelector
+                <GrowthRatePicker
                     accumulator_range_list={accumulator_range_list}
+                    maximum_ticks={maximum_ticks}
                     onSave={onSaveButtonClick}
                     growth_rate={selected_growth_rate}
+                    setGrowthRate={setSelectedGrowthRate}
+                    tick_size_barrier_percentage={tick_size_barrier_percentage}
                 />
             ),
         },
@@ -79,8 +88,9 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
                 onClick={() => setIsOpen(true)}
             />
             <ActionSheet.Root isOpen={is_open} onClose={onActionSheetClose} position='left' expandable={false}>
-                <ActionSheet.Portal shouldCloseOnDrag>
+                <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen={window.innerHeight <= 640}>
                     <Carousel
+                        classname='growth-rate__carousel'
                         header={CarouselHeader}
                         pages={action_sheet_content}
                         title={<Localize i18n_default_text='Growth rate' />}

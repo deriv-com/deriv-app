@@ -1,0 +1,28 @@
+$FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
+
+.growth-rate {
+    &__carousel > .carousel__item {
+        height: 100%;
+    }
+    &__content {
+        height: calc(100% - $FOOTER_BUTTON_HEIGHT);
+        gap: var(--core-spacing-400);
+    }
+    &__content,
+    &__details-item {
+        display: flex;
+        flex-direction: column;
+    }
+    &__picker {
+        flex: 1;
+    }
+    &__details {
+        display: flex;
+        justify-content: space-around;
+        height: var(--core-size-2200);
+
+        &-item {
+            align-items: center;
+        }
+    }
+}

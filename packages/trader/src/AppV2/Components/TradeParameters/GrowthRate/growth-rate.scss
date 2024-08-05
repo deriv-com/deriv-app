@@ -14,7 +14,7 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
         flex-direction: column;
     }
     &__picker {
-        flex: 1;
+        height: calc(100% - var(--core-size-2200));
     }
     &__details {
         display: flex;

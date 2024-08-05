@@ -36,6 +36,7 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
     };
     const onSaveButtonClick = () => {
         if (growth_rate !== selected_growth_rate) handleGrowthRateChange(selected_growth_rate);
+        onActionSheetClose();
     };
     const onActionSheetClose = () => {
         setIsOpen(false);

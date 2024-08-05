@@ -8,6 +8,7 @@ import {
     extractInfoFromShortcode,
     formatDate,
     formatMoney,
+    getDateFromTimestamp,
     getEndTime,
     getMarketName,
     getPathname,
@@ -100,6 +101,7 @@ export default class NotificationStore extends BaseStore {
             trade_notifications: observable,
             unmarkNotificationMessage: action.bound,
             updateNotifications: action.bound,
+            handleAUDCurrencyRemovalNotification: action.bound,
         });
 
         reaction(
@@ -359,6 +361,7 @@ export default class NotificationStore extends BaseStore {
                 authentication: { document, identity, income, needs_verification, ownership } = {},
                 status,
                 cashier_validation,
+                account_closure = [],
             } = account_status;
 
             const {
@@ -372,6 +375,12 @@ export default class NotificationStore extends BaseStore {
             } = getStatusValidations(status || []);
 
             this.handlePOAAddressMismatchNotifications();
+
+            const aud_account_closure_status = account_closure.find(closure_type => closure_type.type === 'currency');
+
+            if (aud_account_closure_status) {
+                this.handleAUDCurrencyRemovalNotification(aud_account_closure_status);
+            }
 
             if (status?.includes('mt5_additional_kyc_required'))
                 this.addNotificationMessage(this.client_notifications.additional_kyc_info);
@@ -1638,6 +1647,52 @@ export default class NotificationStore extends BaseStore {
             type: 'danger',
             should_show_again: true,
             platform: 'Account',
+        });
+    };
+
+    handleAUDCurrencyRemovalNotification = aud_account_closure_status => {
+        const is_funded_account = aud_account_closure_status.status_codes.includes('funded_account');
+        const is_non_funded_account = aud_account_closure_status.status_codes.includes('non_funded_account');
+
+        if (!is_funded_account && !is_non_funded_account) return;
+
+        const notification_header = is_funded_account
+            ? localize('Withdraw your funds')
+            : localize('Change your currency');
+
+        const time_of_closure = getDateFromTimestamp(aud_account_closure_status.time_of_closure);
+
+        const notification_message = is_funded_account ? (
+            <Localize
+                i18n_default_text="AUD accounts won't be available after {{time_of_closure}}."
+                values={{ time_of_closure }}
+            />
+        ) : (
+            <Localize
+                i18n_default_text="AUD accounts won't be available after {{time_of_closure}}. Choose a new account currency."
+                values={{ time_of_closure }}
+            />
+        );
+
+        const notification_button_action = is_funded_account
+            ? {
+                  route: routes.cashier_withdrawal,
+                  text: localize('Withdraw AUD'),
+              }
+            : {
+                  text: localize('Contact live chat'),
+                  onClick: () => {
+                      window.LC_API.open_chat_window();
+                  },
+              };
+
+        this.addNotificationMessage({
+            key: 'aud_account_closure',
+            header: notification_header,
+            message: notification_message,
+            action: notification_button_action,
+            type: 'warning',
+            should_show_again: true,
         });
     };
 }

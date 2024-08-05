@@ -14,7 +14,7 @@ type TAccountListDTraderV2 = {
     currency?: string;
     has_balance?: boolean;
     has_reset_balance?: boolean;
-    is_disabled?: boolean | number;
+    is_disabled?: boolean;
     is_virtual?: boolean | number;
     loginid?: string;
     onClickResetVirtualBalance?: () => Promise<void>;
@@ -53,7 +53,7 @@ const AccountListDTraderV2 = ({
         </div>
         {has_reset_balance ? (
             <Button
-                disabled={!!is_disabled}
+                disabled={is_disabled}
                 color='white'
                 label={<Localize i18n_default_text='Reset balance' />}
                 onClick={e => {

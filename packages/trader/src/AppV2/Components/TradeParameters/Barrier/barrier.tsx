@@ -55,6 +55,7 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
                         current_index={currentPage}
                         setCurrentIndex={setCurrentPage}
                         header={BarrierHeader}
+                        title={<Localize i18n_default_text='Barrier' />}
                         pages={barrier_carousel_pages}
                     />
                     <ActionSheet.Footer

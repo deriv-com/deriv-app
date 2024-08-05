@@ -1,22 +1,31 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { WS, getContractTypesConfig, pickDefaultSymbol } from '@deriv/shared';
+import {
+    CONTRACT_TYPES,
+    TRADE_TYPES,
+    WS,
+    getContractTypesConfig,
+    isTurbosContract,
+    isVanillaContract,
+    pickDefaultSymbol,
+} from '@deriv/shared';
 import { useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import { ActiveSymbols } from '@deriv/api-types';
-import { useTraderStore } from 'Stores/useTraderStores';
 import { usePrevious } from '@deriv/components';
+import { useTraderStore } from 'Stores/useTraderStores';
+import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 
-type TUseActiveSymbols = {
-    barrier_category?: string[];
-};
-//TODO: barrier_category needs to come from trade-store after calling contracts_for
-const useActiveSymbols = ({ barrier_category = [] }: TUseActiveSymbols) => {
+const useActiveSymbols = () => {
     const [activeSymbols, setActiveSymbols] = useState<ActiveSymbols | []>([]);
-    const { client } = useStore();
+    const { client, common } = useStore();
     const { is_logged_in } = client;
+    const { showError } = common;
     const {
         active_symbols: symbols_from_store,
         contract_type,
         has_symbols_for_v2,
+        is_vanilla,
+        is_turbos,
         onChange,
         setActiveSymbolsV2,
         symbol,
@@ -26,43 +35,64 @@ const useActiveSymbols = ({ barrier_category = [] }: TUseActiveSymbols) => {
     const previous_logged_in = usePrevious(is_logged_in);
     const previous_contract_type = usePrevious(contract_type);
 
+    const getContractTypesList = () => {
+        if (is_turbos) return [CONTRACT_TYPES.TURBOS.LONG, CONTRACT_TYPES.TURBOS.SHORT];
+        if (is_vanilla) return [CONTRACT_TYPES.VANILLA.CALL, CONTRACT_TYPES.VANILLA.PUT];
+        return getContractTypesConfig()[contract_type]?.trade_types ?? [];
+    };
+
     const fetchActiveSymbols = useCallback(
-        async (trade_type = '') => {
+        async () => {
             let response;
+
+            const trade_types_with_barrier_category = [
+                TRADE_TYPES.RISE_FALL,
+                TRADE_TYPES.RISE_FALL_EQUAL,
+                TRADE_TYPES.HIGH_LOW,
+            ] as string[];
+            const barrier_category = ContractType.getBarrierCategory(contract_type).barrier_category;
 
             const request = {
                 active_symbols: 'brief',
-                contract_type: getContractTypesConfig()[trade_type]?.trade_types ?? [],
-                barrier_category,
+                contract_type: getContractTypesList(),
+                ...(trade_types_with_barrier_category.includes(contract_type) && barrier_category
+                    ? { barrier_category: [barrier_category] }
+                    : {}),
             };
 
+            if (
+                (isVanillaContract(previous_contract_type) && is_vanilla) ||
+                (isTurbosContract(previous_contract_type) && is_turbos)
+            ) {
+                return;
+            }
             if (is_logged_in) {
                 response = await WS.authorized.activeSymbols(request);
             } else {
                 response = await WS.activeSymbols(request);
             }
 
-            const { active_symbols, error } = response;
-
-            setActiveSymbolsV2(active_symbols);
-
-            if (!active_symbols?.length || error) {
+            const { active_symbols = [], error } = response;
+            if (error) {
+                showError({ message: localize('Trading is unavailable at this time.') });
+            } else if (!active_symbols?.length) {
                 setActiveSymbols([]);
             } else {
                 setActiveSymbols(active_symbols);
+                setActiveSymbolsV2(active_symbols);
                 default_symbol_ref.current = symbol || (await pickDefaultSymbol(active_symbols)) || '1HZ100V';
                 onChange({ target: { name: 'symbol', value: default_symbol_ref.current } });
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [barrier_category, is_logged_in, symbol]
+        [contract_type, is_logged_in, is_turbos, is_vanilla, previous_contract_type, symbol]
     );
     useEffect(() => {
         const is_logged_in_changed = previous_logged_in !== undefined && previous_logged_in !== is_logged_in;
         const has_contract_type_changed =
             previous_contract_type && contract_type && previous_contract_type !== contract_type;
         if (!symbols_from_store.length || !has_symbols_for_v2 || is_logged_in_changed || has_contract_type_changed) {
-            fetchActiveSymbols(contract_type);
+            fetchActiveSymbols();
         } else {
             setActiveSymbols(symbols_from_store);
         }

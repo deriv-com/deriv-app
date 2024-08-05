@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
+import CarouselHeader from './carousel-header';
 
-type THeaderProps = {
-    current_index: number;
-    onPrevClick: () => void;
-    onNextClick: () => void;
-};
 type TCarousel = {
-    header: ({ current_index, onPrevClick, onNextClick }: THeaderProps) => JSX.Element;
+    header: typeof CarouselHeader;
     pages: { id: number; component: JSX.Element }[];
+    title?: React.ReactNode;
     current_index?: number;
-    setCurrentIndex?: (index: number) => void;
+    setCurrentIndex: (arg: number) => void;
 };
 
-const Carousel = ({ header, pages, current_index, setCurrentIndex }: TCarousel) => {
+const Carousel = ({ header, pages, current_index, setCurrentIndex, title }: TCarousel) => {
     const [internalIndex, setInternalIndex] = useState(0);
+
+    const HeaderComponent = header;
 
     const isControlled = current_index !== undefined && setCurrentIndex !== undefined;
     const index = isControlled ? current_index : internalIndex;
@@ -30,7 +29,12 @@ const Carousel = ({ header, pages, current_index, setCurrentIndex }: TCarousel) 
 
     return (
         <React.Fragment>
-            {header({ current_index: index, onNextClick: handleNextClick, onPrevClick: handlePrevClick })}
+            <HeaderComponent
+                current_index={index}
+                onNextClick={handleNextClick}
+                onPrevClick={handlePrevClick}
+                title={title}
+            />
             <ul className='carousel'>
                 {pages.map(({ component, id }) => (
                     <li className='carousel__item' style={{ transform: `translateX(-${index * 100}%)` }} key={id}>

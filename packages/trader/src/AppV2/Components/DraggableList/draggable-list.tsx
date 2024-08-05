@@ -79,7 +79,7 @@ const DraggableList: React.FC<TDraggableListProps> = ({ categories, onRightIconC
                 <div key={category.id} className='draggable-list-category'>
                     <div className='draggable-list-category-header'>
                         <Text size='sm' bold className='draggable-list-category-header-title'>
-                            {category.title}
+                            {category?.title}
                         </Text>
                         {onAction && (
                             <Text

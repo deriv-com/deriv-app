@@ -85,7 +85,8 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     };
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value: string | number = e.target.value;
+        const value: string | number = e.target.value.replace(',', '.');
+
         setTakeProfitValue(value);
         isTakeProfitOutOfRange(value);
     };

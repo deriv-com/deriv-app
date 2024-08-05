@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslations } from '@deriv-com/translations';
+import { localize, useTranslations } from '@deriv-com/translations';
 import { Divider, Text, Tooltip } from '@deriv-com/ui';
 import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TPlatforms } from '../../../../types';
@@ -25,11 +25,7 @@ const getAccountIcon = (platform: TPlatforms.All, marketType: TMarketType) => {
 
 type TMarketWithShortCode = `${TMarketType}_${string}`;
 
-const getAccountCardTitle = (
-    shortCode: TMarketWithShortCode | TPlatforms.OtherAccounts,
-    localize: ReturnType<typeof useTranslations>['localize'],
-    isDemo?: boolean
-) => {
+const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms.OtherAccounts, isDemo?: boolean) => {
     switch (shortCode) {
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_SVG:
             return isDemo ? localize('Standard Demo') : localize('Standard - SVG');
@@ -64,8 +60,8 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
 
     const jurisdictionCardTitle =
         platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER
-            ? getAccountCardTitle(platform, localize, isDemo)
-            : getAccountCardTitle(marketTypeShortCode, localize, isDemo);
+            ? getAccountCardTitle(platform, isDemo)
+            : getAccountCardTitle(marketTypeShortCode, isDemo);
     const labuanJurisdictionMessage = localize(
         'Choosing this jurisdiction will give you a Financial STP account. Your trades will go directly to the market and have tighter spreads.'
     );

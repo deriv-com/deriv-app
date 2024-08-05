@@ -1,6 +1,6 @@
 import React, { FC, lazy, Suspense } from 'react';
 import { usePOA, usePOI } from '@deriv/api-v2';
-import { Localize, useTranslations } from '@deriv-com/translations';
+import { Localize, localize } from '@deriv-com/translations';
 import { Loader, Text } from '@deriv-com/ui';
 import { WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
@@ -12,11 +12,7 @@ const LazyVerification = lazy(
     () => import(/* webpackChunkName: "wallets-verification-flow" */ '../../flows/Verification/Verification')
 );
 
-const getDocumentTitle = (
-    localize: ReturnType<typeof useTranslations>['localize'],
-    isPOIFailed?: boolean,
-    isPOAFailed?: boolean
-) => {
+const getDocumentTitle = (isPOIFailed?: boolean, isPOAFailed?: boolean) => {
     if (isPOIFailed && isPOAFailed) return localize('proof of identity and proof of address documents');
     if (isPOIFailed) return localize('proof of identity document');
     return localize('proof of address document');
@@ -31,7 +27,6 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
     const { data: poiStatus } = usePOI();
     const { data: poaStatus } = usePOA();
     const { isMobile } = useDevice();
-    const { localize } = useTranslations();
 
     const isPOIFailed = poiStatus?.is_rejected || poiStatus?.is_expired || poiStatus?.is_suspected;
     const isPOAFailed = poaStatus?.is_rejected || poaStatus?.is_expired || poaStatus?.is_suspected;
@@ -45,7 +40,7 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
                 <Text size='sm'>
                     <Localize
                         i18n_default_text='Your {{documentTitle}} did not pass our verification checks. This could be due to reasons such as:'
-                        values={{ documentTitle: getDocumentTitle(localize, isPOIFailed, isPOAFailed) }}
+                        values={{ documentTitle: getDocumentTitle(isPOIFailed, isPOAFailed) }}
                     />
                 </Text>
                 <ul>

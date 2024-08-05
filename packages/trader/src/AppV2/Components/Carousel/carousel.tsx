@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import CarouselHeader from './carousel-header';
 
 type TCarousel = {
@@ -10,7 +10,7 @@ type TCarousel = {
 };
 
 const Carousel = ({ header, pages, current_index, setCurrentIndex, title }: TCarousel) => {
-    const [internalIndex, setInternalIndex] = useState(0);
+    const [internalIndex, setInternalIndex] = React.useState(0);
 
     const HeaderComponent = header;
 

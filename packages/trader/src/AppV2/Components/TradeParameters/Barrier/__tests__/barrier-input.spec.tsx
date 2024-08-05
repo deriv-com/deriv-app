@@ -109,7 +109,6 @@ describe('BarrierInput', () => {
         expect(screen.getByText('Something went wrong')).toBeInTheDocument();
     });
 
-    // Additional test cases for handleChipSelect
     it('handles chip selection correctly for Above spot when initial barrier is negative', () => {
         default_trade_store.modules.trade.barrier_1 = '-10';
         mockBarrierInput(mockStore(default_trade_store));

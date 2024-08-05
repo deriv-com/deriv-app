@@ -1,6 +1,6 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { CFDStoreProvider } from '../../../Stores/Modules/CFD/Helpers/useCfdStores';
 import MigrationSuccessModalContent from '../migration-success-modal-content';
@@ -17,7 +17,7 @@ describe('<MigrationSuccessModal />', () => {
         icon: 'icon',
         eligible_account_to_migrate: 'BVI',
         directToCashier: jest.fn(),
-        jurisdiction_market_name: 'Financial',
+        jurisdiction_market_name: ['Financial'],
     };
     it('component should be rendered', () => {
         render(<MigrationSuccessModalContent {...props} />, { wrapper });
@@ -28,7 +28,11 @@ describe('<MigrationSuccessModal />', () => {
             })
         ).toBeInTheDocument();
 
-        expect(screen.getByText(/Start trading with your new accounts./i)).toBeInTheDocument();
+        const account_text = screen.getByText(/Start trading with your new/i);
+        const strong_text = within(account_text).getByText(/MT5 Financial BVI/i);
+
+        expect(account_text).toBeInTheDocument();
+        expect(strong_text.tagName).toBe('STRONG');
 
         expect(screen.getByText(/Important: Your account./i)).toBeInTheDocument();
 

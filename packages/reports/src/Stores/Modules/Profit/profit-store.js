@@ -67,8 +67,14 @@ export default class ProfitTableStore extends BaseStore {
         if (!this.shouldFetchNextBatch(isMounting)) return;
         this.is_loading = true;
         const dateParams = getDateBoundaries(this.date_from, this.date_to, 0, false);
+        const dateParamsDTraderV2 = getDateBoundaries(
+            this.root_store.modules.positions.dateFrom,
+            this.root_store.modules.positions.dateTo,
+            0,
+            false
+        );
         const params = shouldFilterContractTypes
-            ? { ...dateParams, contract_type: this.root_store.modules.positions.filteredContractTypes }
+            ? { ...dateParamsDTraderV2, contract_type: this.root_store.modules.positions.filteredContractTypes }
             : dateParams;
 
         const response = await WS.profitTable(batch_size, this.data.length, params);
@@ -176,6 +182,9 @@ export default class ProfitTableStore extends BaseStore {
         }
 
         if (to) this.date_to = toMoment(to).unix();
+
+        this.root_store.modules.positions.setDateFrom(this.date_from);
+        this.root_store.modules.positions.setDateTo(this.date_to);
 
         this.clearTable();
         this.fetchNextBatch(shouldFilterContractTypes);

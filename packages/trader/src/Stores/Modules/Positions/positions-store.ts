@@ -9,6 +9,8 @@ export default class PositionsStore extends BaseStore {
     filteredContractTypes: string[] | [] = [];
     timeFilter = '';
     customTimeRangeFilter = '';
+    dateFrom: number | null = null;
+    dateTo: number | null = null;
 
     constructor({ root_store }: { root_store: TRootStore }) {
         super({ root_store });
@@ -18,10 +20,14 @@ export default class PositionsStore extends BaseStore {
             closedContractTypeFilter: observable,
             timeFilter: observable,
             customTimeRangeFilter: observable,
+            dateFrom: observable,
+            dateTo: observable,
             setClosedContractTypeFilter: action.bound,
             setOpenContractTypeFilter: action.bound,
             setTimeFilter: action.bound,
             setCustomTimeRangeFilter: action.bound,
+            setDateFrom: action.bound,
+            setDateTo: action.bound,
             onUnmount: override,
         });
     }
@@ -43,10 +49,20 @@ export default class PositionsStore extends BaseStore {
         this.customTimeRangeFilter = newCustomTimeFilter || '';
     }
 
+    setDateFrom(newDateFrom: number | null) {
+        this.dateFrom = newDateFrom;
+    }
+
+    setDateTo(newDateTo: number | null) {
+        this.dateTo = newDateTo;
+    }
+
     onUnmount() {
         this.setClosedContractTypeFilter([]);
         this.setOpenContractTypeFilter([]);
         this.setTimeFilter('');
         this.setCustomTimeRangeFilter('');
+        this.setDateFrom(null);
+        this.setDateTo(null);
     }
 }

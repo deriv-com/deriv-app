@@ -3,10 +3,12 @@ import useEmblaCarousel, { EmblaCarouselType, EmblaEventType } from 'embla-carou
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { THooks } from '../../types';
-import { ProgressBar, WalletText } from '../Base';
+import { ProgressBar } from '../Base';
 import { WalletsCarouselLoader } from '../SkeletonLoader';
 import { WalletCard } from '../WalletCard';
 import { WalletListCardActions } from '../WalletListCardActions';
@@ -238,9 +240,9 @@ const WalletsCarouselContent: React.FC<TProps> = ({ accountsActiveTabIndex }) =>
         <div className='wallets-carousel-content'>
             <div className='wallets-carousel-content__wrapper'>
                 <div className='wallets-carousel-content__title'>
-                    <WalletText size='xl' weight='bold'>
-                        Trader&apos;s Hub
-                    </WalletText>
+                    <Text size='xl' weight='bold'>
+                        <Localize i18n_default_text='Trader’s Hub' />
+                    </Text>
                 </div>
                 <div className='wallets-carousel-content__carousel' ref={walletsCarouselEmblaRef}>
                     <div className='wallets-carousel-content__cards'>

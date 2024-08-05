@@ -47,6 +47,7 @@
             }
         }
         @include mobile-or-tablet-screen {
+            padding: 1rem;
             bottom: 0;
             position: sticky;
             justify-content: center;
@@ -2457,6 +2458,11 @@
         &__container {
             padding: 0 1.3rem;
             border-bottom: 1px solid var(--general-hover);
+        }
+    }
+    @include mobile-or-tablet-screen {
+        &__footer-button {
+            padding: 1rem;
         }
     }
 }

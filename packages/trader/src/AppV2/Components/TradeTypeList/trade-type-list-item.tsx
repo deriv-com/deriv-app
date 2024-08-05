@@ -3,7 +3,7 @@ import { StandaloneCirclePlusFillIcon } from '@deriv/quill-icons';
 import clsx from 'clsx';
 
 type TTradeTypeListItemProps = {
-    title: React.ReactNode;
+    title: string;
     selected: boolean;
     leftIcon?: React.ReactNode;
     rightIcon?: React.ReactNode;

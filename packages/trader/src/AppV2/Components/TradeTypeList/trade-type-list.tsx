@@ -6,14 +6,14 @@ import { Localize } from '@deriv/translations';
 
 type TTradeTypeItem = {
     id: string;
-    title: React.ReactNode;
+    title: string;
     icon?: React.ReactNode;
 };
 
 type TTradeTypeCategory = {
     id: string;
-    title?: React.ReactNode;
-    button_title?: React.ReactNode;
+    title?: string;
+    button_title?: string;
     items: TTradeTypeItem[];
 };
 

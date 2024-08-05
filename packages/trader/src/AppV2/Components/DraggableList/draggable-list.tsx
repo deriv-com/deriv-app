@@ -6,14 +6,14 @@ import { Localize } from '@deriv/translations';
 
 export type TDraggableListItem = {
     id: string;
-    title: React.ReactNode;
+    title: string;
     icon?: React.ReactNode;
 };
 
 export type TDraggableListCategory = {
     id: string;
-    title?: React.ReactNode;
-    button_title?: React.ReactNode;
+    title?: string;
+    button_title?: string;
     items: TDraggableListItem[];
 };
 

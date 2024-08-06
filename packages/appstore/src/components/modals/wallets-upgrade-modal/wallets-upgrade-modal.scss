@@ -5,18 +5,27 @@
         flex-direction: column;
         align-items: center;
         gap: 3.2rem;
-        max-width: 63.8rem;
-        margin: 0 auto;
-        padding-top: calc(
+        min-width: 61.6rem;
+        padding-inline: 8rem;
+        padding-block-start: calc(
             5.4rem + 3.2rem
         ); // 5.4rem is the height of the header, 3.2rem is the padding-top of the content
-        padding-bottom: 3.2rem;
+        padding-block-end: 3.2rem;
 
-        @include mobile-or-tablet-screen {
+        @include mobile-screen {
             gap: 1.6rem;
-            max-width: 28rem;
-            padding-top: 4.8rem;
-            padding-bottom: 1.6rem;
+            min-width: 28.8rem;
+            padding-block-start: 4.8rem;
+            padding-block-end: 1.6rem;
+            padding-inline: 2rem;
+        }
+
+        @include tablet-screen {
+            gap: 1.6rem;
+            min-width: 40rem;
+            padding-block-start: 4.8rem;
+            padding-block-end: 1.6rem;
+            padding-inline: 2rem;
         }
     }
 
@@ -26,9 +35,14 @@
         min-height: 32rem;
         filter: drop-shadow(0px 4px 6px rgba(14, 14, 14, 0.03)) drop-shadow(0px 12px 16px rgba(14, 14, 14, 0.08));
 
-        @include mobile-or-tablet-screen {
-            width: 28rem;
-            min-height: 15.7rem;
+        @include mobile-screen {
+            width: 27.9rem;
+            min-height: 16.1rem;
+        }
+
+        @include tablet-screen {
+            width: 38.6rem;
+            min-height: 22.2rem;
         }
     }
 
@@ -74,6 +88,7 @@
 
     & .dc-modal-body {
         padding: 0;
+        overflow: scroll;
     }
 }
 

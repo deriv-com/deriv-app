@@ -81,6 +81,12 @@ jest.mock('AppV2/Components/OrderDetails', () => {
     return OrderDetails;
 });
 
+jest.mock('AppV2/Containers/Chart/contract-details-chart.tsx', () => {
+    const ContractDetailsChart = () => <div>Chart Placeholder</div>;
+    ContractDetailsChart.displayName = 'ContractDetailsChart';
+    return ContractDetailsChart;
+});
+
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isValidToSell: jest.fn(),
@@ -178,9 +184,9 @@ describe('ContractDetails', () => {
         expect(screen.getByText('ContractCard')).toBeInTheDocument();
     });
 
-    it('should render the ChartPlaceholder component', async () => {
+    it('should render the Chart component', async () => {
         await waitFor(() => renderContractDetails());
-        expect(screen.getByText('Placeholder Chart')).toBeInTheDocument();
+        expect(screen.getByText('Chart Placeholder')).toBeInTheDocument();
     });
 
     it('should render the DealCancellation component', async () => {

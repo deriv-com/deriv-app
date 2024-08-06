@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ValidationError } from 'yup';
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
 import { dictionary } from '@zxcvbn-ts/language-common';
-import { passwordErrorMessage, warningMessages } from '../../../constants/password';
+import { getPasswordErrorMessage, getWarningMessages } from '../../../constants/password';
 import {
     calculateScoreCFD,
     calculateScoreMT5,
@@ -33,7 +33,7 @@ export const validatePassword = (password: string, mt5Policy: boolean) => {
         } else {
             cfdSchema.validateSync(password);
         }
-        validationErrorMessage = warningMessages[feedback.warning as passwordKeys] ?? '';
+        validationErrorMessage = getWarningMessages()[feedback.warning as passwordKeys] ?? '';
     } catch (err) {
         if (err instanceof ValidationError) {
             validationErrorMessage = err?.message;
@@ -85,7 +85,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
 
     useEffect(() => {
         setShowErrorMessage(!!passwordError);
-        setErrorMessage(passwordError ? passwordErrorMessage.PasswordError : validationErrorMessage);
+        setErrorMessage(passwordError ? getPasswordErrorMessage().PasswordError : validationErrorMessage);
     }, [passwordError, validationErrorMessage]);
 
     return (

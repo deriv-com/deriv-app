@@ -21,6 +21,7 @@ import { DateOfBirthField, FormInputField } from './form-fields';
 import FormSubHeader from '../form-sub-header';
 import InlineNoteWithIcon from '../inline-note-with-icon';
 import { useDevice } from '@deriv-com/ui';
+import { OECD_TIN_FORMAT_URL } from '../../Constants/external-urls';
 
 const PersonalDetailsForm = props => {
     const { isDesktop } = useDevice();
@@ -792,7 +793,7 @@ const TaxIdentificationNumberField = ({
                                     className='link link--red'
                                     rel='noopener noreferrer'
                                     target='_blank'
-                                    href='https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
+                                    href={OECD_TIN_FORMAT_URL}
                                 />,
                             ]}
                         />

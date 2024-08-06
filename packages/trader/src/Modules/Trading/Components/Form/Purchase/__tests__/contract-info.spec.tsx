@@ -37,6 +37,7 @@ const default_mock_props: React.ComponentProps<typeof ContractInfo> = {
         profit: '',
         returns: '',
         spot: 0,
+        validation_params: undefined,
     },
     type: 'test_contract_type',
 };

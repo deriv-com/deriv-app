@@ -33,6 +33,8 @@ import {
     getUrlP2P,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
+import { URLConstants } from '@deriv-com/utils';
+
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
 
 import { requestLogout, WS } from 'Services';
@@ -160,7 +162,7 @@ export default class ClientStore extends BaseStore {
     is_wallet_migration_request_is_in_progress = false;
 
     is_passkey_supported = false;
-    should_show_effortless_login_modal = false;
+    should_show_passkey_notification = false;
 
     subscriptions = {};
     exchange_rates = {};
@@ -238,7 +240,7 @@ export default class ClientStore extends BaseStore {
             wallet_migration_state: observable,
             is_wallet_migration_request_is_in_progress: observable,
             is_passkey_supported: observable,
-            should_show_effortless_login_modal: observable,
+            should_show_passkey_notification: observable,
             balance: computed,
             account_open_date: computed,
             is_svg: computed,
@@ -406,13 +408,17 @@ export default class ClientStore extends BaseStore {
             startWalletMigration: action.bound,
             resetWalletMigration: action.bound,
             setIsPasskeySupported: action.bound,
-            setShouldShowEffortlessLoginModal: action.bound,
-            fetchShouldShowEffortlessLoginModal: action.bound,
+            setPasskeysStatusToCookie: action.bound,
+            fetchShouldShowPasskeyNotification: action.bound,
+            setShouldShowPasskeyNotification: action.bound,
             getExchangeRate: action.bound,
             subscribeToExchangeRate: action.bound,
             unsubscribeFromExchangeRate: action.bound,
             unsubscribeFromAllExchangeRates: action.bound,
             setExchangeRates: action.bound,
+            setIsLandingCompanyLoaded: action.bound,
+            is_cr_account: computed,
+            is_mf_account: computed,
         });
 
         reaction(
@@ -456,13 +462,8 @@ export default class ClientStore extends BaseStore {
         reaction(
             () => [this.is_logged_in, this.is_authorize, this.is_passkey_supported, this.root_store.ui?.is_mobile],
             () => {
-                if (
-                    this.is_logged_in &&
-                    this.is_authorize &&
-                    this.is_passkey_supported &&
-                    this.root_store.ui?.is_mobile
-                ) {
-                    this.fetchShouldShowEffortlessLoginModal();
+                if (this.is_logged_in && this.is_authorize && this.is_passkey_supported) {
+                    this.fetchShouldShowPasskeyNotification();
                 }
             }
         );
@@ -1661,6 +1662,10 @@ export default class ClientStore extends BaseStore {
         this.setStandpoint(this.landing_companies);
     }
 
+    setIsLandingCompanyLoaded(state) {
+        this.is_landing_company_loaded = state;
+    }
+
     setStandpoint(landing_companies) {
         if (!landing_companies) return;
         const { gaming_company, financial_company } = landing_companies;
@@ -1751,6 +1756,7 @@ export default class ClientStore extends BaseStore {
             Analytics.setAttributes({
                 user_id: this.user_id,
                 account_type: broker === 'null' ? 'unlogged' : broker,
+                residence_country: this.residence,
                 app_id: String(getAppId()),
                 device_type: isMobile() ? 'mobile' : 'desktop',
                 language: getLanguage(),
@@ -1994,7 +2000,6 @@ export default class ClientStore extends BaseStore {
         this.dxtrade_accounts_list = [];
         this.ctrader_accounts_list = [];
         this.landing_companies = {};
-        localStorage.removeItem('show_effortless_login_modal');
         LocalStore.set('marked_notifications', JSON.stringify([]));
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('active_user_id', this.user_id);
@@ -2688,7 +2693,7 @@ export default class ClientStore extends BaseStore {
         this.setIsWalletMigrationRequestIsInProgress(true);
         try {
             await WS.authorized.startWalletMigration();
-            this.getWalletMigrationState();
+            await this.getWalletMigrationState();
         } catch (error) {
             // eslint-disable-next-line no-console
             console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
@@ -2714,29 +2719,46 @@ export default class ClientStore extends BaseStore {
         this.is_passkey_supported = is_passkey_supported;
     }
 
-    setShouldShowEffortlessLoginModal(should_show_effortless_login_modal = true) {
-        this.should_show_effortless_login_modal = should_show_effortless_login_modal;
+    setShouldShowPasskeyNotification(should_show_passkey_notification = true) {
+        this.should_show_passkey_notification = should_show_passkey_notification;
     }
 
-    async fetchShouldShowEffortlessLoginModal() {
-        try {
-            const stored_value = localStorage.getItem('show_effortless_login_modal');
-            const show_effortless_login_modal = stored_value === null || JSON.parse(stored_value) === true;
+    setPasskeysStatusToCookie(status) {
+        let domain = /deriv.com/.test(window.location.hostname) ? URLConstants.derivHost : window.location.hostname;
 
-            if (show_effortless_login_modal) {
-                localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
+        if (/deriv.dev/.test(window.location.hostname)) {
+            //set domain for dev environment (FE deployment and login page on qa-box)
+            domain = 'deriv.dev';
+        }
 
+        const expirationDate = new Date();
+        expirationDate.setFullYear(expirationDate.getFullYear() + 1); // Set to expire in 1 year
+
+        const is_available = status === 'available';
+
+        Cookies.set('passkeys_available', String(is_available), {
+            expires: expirationDate,
+            path: '/',
+            domain,
+            secure: true,
+            sameSite: 'None',
+        });
+    }
+
+    async fetchShouldShowPasskeyNotification() {
+        if (this.root_store.ui?.is_mobile) {
+            try {
                 const data = await WS.authorized.send({ passkeys_list: 1 });
-
-                if (data?.passkeys_list?.length === 0) {
-                    this.setShouldShowEffortlessLoginModal(true);
-                } else {
-                    this.setShouldShowEffortlessLoginModal(false);
-                    localStorage.setItem('show_effortless_login_modal', JSON.stringify(false));
+                const is_passkeys_empty = data?.passkeys_list?.length === 0;
+                if (!is_passkeys_empty) {
+                    this.setPasskeysStatusToCookie('available');
                 }
+                this.setShouldShowPasskeyNotification(is_passkeys_empty);
+            } catch (e) {
+                //error handling needed
             }
-        } catch (e) {
-            //error handling needed
+        } else {
+            this.setShouldShowPasskeyNotification(false);
         }
     }
 
@@ -2842,4 +2864,12 @@ export default class ClientStore extends BaseStore {
         });
         this.setExchangeRates({});
     };
+
+    get is_cr_account() {
+        return this.loginid?.startsWith('CR');
+    }
+
+    get is_mf_account() {
+        return this.loginid?.startsWith('MF');
+    }
 }

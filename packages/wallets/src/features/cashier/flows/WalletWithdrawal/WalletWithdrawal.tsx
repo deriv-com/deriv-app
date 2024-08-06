@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useActiveWalletAccount, useAuthorize, useBalance } from '@deriv/api-v2';
+import { useActiveWalletAccount, useAuthorize } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
+import useAllBalanceSubscription from '../../../../hooks/useAllBalanceSubscription';
 import { WithdrawalCryptoModule, WithdrawalFiatModule, WithdrawalVerificationModule } from '../../modules';
 import { WithdrawalNoBalance } from '../../screens';
 
 const WalletWithdrawal = () => {
     const { switchAccount } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
-    const { data: balanceData, isLoading, isRefetching, refetch } = useBalance();
+    const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
     const [verificationCode, setVerificationCode] = useState('');
     const [resendEmail, setResendEmail] = useState(false);
-
-    const isBalanceLoading = isLoading && !isRefetching;
-
-    useEffect(() => {
-        refetch();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
@@ -53,11 +47,7 @@ const WalletWithdrawal = () => {
         return <Loader />;
     }
 
-    if (
-        balanceData.accounts &&
-        !isBalanceLoading &&
-        balanceData.accounts[activeWallet?.loginid ?? 'USD'].balance <= 0
-    ) {
+    if (balanceData && !isBalanceLoading && balanceData[activeWallet?.loginid ?? 'USD'].balance <= 0) {
         return <WithdrawalNoBalance activeWallet={activeWallet} />;
     }
 

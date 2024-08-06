@@ -16,6 +16,8 @@ type TProps = {
     is_withdrawal_locked: boolean;
     is_identity_verification_needed: boolean;
     is_pending_verification: boolean;
+    is_account_to_be_closed_by_residence: boolean;
+    account_time_of_closure?: number;
 };
 
 const getMessage = ({
@@ -31,6 +33,8 @@ const getMessage = ({
     is_withdrawal_locked,
     is_identity_verification_needed,
     is_pending_verification,
+    is_account_to_be_closed_by_residence,
+    account_time_of_closure,
 }: TProps) => {
     const no_residence = cashier_validation?.includes('no_residence');
     const unwelcome_status = cashier_validation?.includes('unwelcome_status');
@@ -52,6 +56,21 @@ const getMessage = ({
     const ask_uk_funds_protection = cashier_validation?.includes('ASK_UK_FUNDS_PROTECTION');
     const pa_commision_withdrawal_limit = cashier_validation?.includes('PACommisionWithdrawalLimit');
     const pathname = history.location.pathname;
+
+    if (is_account_to_be_closed_by_residence) {
+        return {
+            icon: 'IcCashierNoBalance',
+            title: localize('Deposits disabled'),
+            description: (
+                <Localize
+                    i18n_default_text='Due to business changes, client accounts in Senegal are to be closed. Withdraw any remaining funds by {{date}}.'
+                    values={{
+                        date: formatDate(account_time_of_closure, 'DD MMM YYYY'),
+                    }}
+                />
+            ),
+        };
+    }
 
     if (is_system_maintenance) {
         if (is_crypto && is_withdrawal_locked)

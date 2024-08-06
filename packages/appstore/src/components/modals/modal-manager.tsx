@@ -187,14 +187,7 @@ const ModalManager = () => {
     const { is_eligible, is_in_progress } = useWalletMigration();
     const store = useStores();
     const { common, client, modules, traders_hub, ui } = store;
-    const {
-        is_logged_in,
-        is_eu,
-        is_eu_country,
-        is_populating_mt5_account_list,
-        verification_code,
-        should_show_effortless_login_modal,
-    } = client;
+    const { is_logged_in, is_eu, is_eu_country, is_populating_mt5_account_list, verification_code } = client;
     const { platform } = common;
     const {
         current_list,
@@ -223,6 +216,7 @@ const ModalManager = () => {
         is_top_up_virtual_open,
         is_top_up_virtual_success,
         is_mt5_migration_modal_open,
+        is_cfd_reset_password_modal_enabled,
     } = ui;
     const {
         is_demo,
@@ -280,7 +274,7 @@ const ModalManager = () => {
         const acc = current_list_keys.some(
             key => key.startsWith(`${platform}.real.${acc_type}`) && should_be_enabled(current_list[key])
         )
-            ? Object.keys(current_list)
+            ? current_list_keys
                   .filter(key => key.startsWith(`${platform}.real.${acc_type}`))
                   .reduce((_acc, cur) => {
                       _acc.push(current_list[cur]);
@@ -302,12 +296,16 @@ const ModalManager = () => {
         is_mt5_password_invalid_format_modal_visible ||
         is_sent_email_modal_enabled;
 
+    const is_invalid_investor_token =
+        Object.keys(current_list).length === 0 && localStorage.getItem('cfd_reset_password_code');
+    const should_show_cfd_reset_password_modal = is_cfd_reset_password_modal_enabled && !is_invalid_investor_token;
+
     return (
         <React.Fragment>
             {is_jurisdiction_modal_visible && <JurisdictionModal openPasswordModal={openRealPasswordModal} />}
             {should_show_cfd_password_modal && <CFDPasswordModal platform={platform} />}
             {is_cfd_verification_modal_visible && <CFDDbviOnBoarding />}
-            <CFDResetPasswordModal platform={platform} /> {/* a new condition for this hotfix needs to be found */}
+            {should_show_cfd_reset_password_modal && <CFDResetPasswordModal platform={platform} />}
             {is_ctrader_transfer_modal_visible && <CTraderTransferModal />}
             {has_cfd_error && <CFDServerErrorDialog />}
             {(is_top_up_virtual_open || is_top_up_virtual_success) && <CFDTopUpDemoModal platform={platform} />}
@@ -351,12 +349,10 @@ const ModalManager = () => {
                 />
             )}
             {is_failed_verification_modal_visible && <FailedVerificationModal />}
-            {!should_show_effortless_login_modal && (
-                <React.Fragment>
-                    {is_wallet_migration_failed && <WalletsMigrationFailed />}
-                    {(is_eligible || is_real_wallets_upgrade_on || is_in_progress) && <WalletsUpgradeModal />}
-                </React.Fragment>
-            )}
+            <React.Fragment>
+                {is_wallet_migration_failed && <WalletsMigrationFailed />}
+                {(is_eligible || is_real_wallets_upgrade_on || is_in_progress) && <WalletsUpgradeModal />}
+            </React.Fragment>
             {is_setup_real_account_or_go_to_demo_modal_visible && <SetupRealAccountOrGoToDemoModal />}
         </React.Fragment>
     );

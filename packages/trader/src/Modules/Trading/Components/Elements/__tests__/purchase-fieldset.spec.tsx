@@ -29,6 +29,7 @@ const default_mocked_props: React.ComponentProps<typeof PurchaseFieldset> = {
         profit: '',
         returns: '',
         spot: 0,
+        validation_params: undefined,
     },
     is_accumulator: false,
     is_disabled: false,

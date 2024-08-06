@@ -16,25 +16,6 @@ type TMarketCategories = {
 const MarketCategories = observer(({ selectedSymbol, setSelectedSymbol, setIsOpen, isOpen }: TMarketCategories) => {
     const { activeSymbols } = useActiveSymbols();
     const categorizedSymbols = categorizeSymbols(activeSymbols);
-    const { removeSnackbar } = useSnackbar();
-    const scrollRef = useRef<HTMLDivElement>(null);
-    const timerRef = useRef<ReturnType<typeof setTimeout>>();
-
-    const onScroll = () => {
-        if (timerRef.current) clearTimeout(timerRef.current);
-
-        timerRef.current = setTimeout(() => {
-            removeSnackbar('');
-        }, 0);
-    };
-
-    useEffect(() => {
-        scrollRef.current?.addEventListener('scroll', onScroll);
-        return () => {
-            clearTimeout(timerRef.current);
-            scrollRef.current?.removeEventListener('scroll', onScroll);
-        };
-    }, []);
 
     return (
         <React.Fragment>

@@ -30,15 +30,15 @@ const MarketCategoryItem = forwardRef(
             setIsFavorite(favoriteSymbols.includes(item.symbol));
         }, [favoriteSymbols, item.symbol]);
 
-        const handleSelect = async (e: React.MouseEvent<HTMLButtonElement>) => {
-            const symbol = (e.currentTarget as HTMLButtonElement).getAttribute('data-symbol');
+        const handleSelect = async (e: React.MouseEvent<HTMLSpanElement>) => {
+            const symbol = (e.currentTarget as HTMLSpanElement).getAttribute('data-symbol');
             setSelectedSymbol(symbol ?? '');
             await onSymbolChange({ target: { name: 'symbol', value: symbol } });
             setIsOpen(false);
         };
 
-        const toggleFavorites = (e: React.MouseEvent<HTMLButtonElement>) => {
-            const symbol = (e.currentTarget as HTMLButtonElement).getAttribute('data-symbol');
+        const toggleFavorites = (e: React.MouseEvent<HTMLSpanElement>) => {
+            const symbol = (e.currentTarget as HTMLSpanElement).getAttribute('data-symbol');
             if (!symbol) return;
             const symbolIndex = favoriteSymbols.indexOf(symbol);
 
@@ -76,7 +76,13 @@ const MarketCategoryItem = forwardRef(
                 })}
                 ref={ref}
             >
-                <button className='market-category-item-left' data-symbol={item.symbol} onClick={handleSelect}>
+                <span
+                    role='button'
+                    className='market-category-item-left'
+                    data-symbol={item.symbol}
+                    onClick={handleSelect}
+                    tabIndex={0}
+                >
                     <SymbolIconsMapper symbol={item.symbol} />
                     <Text
                         size='sm'
@@ -94,8 +100,8 @@ const MarketCategoryItem = forwardRef(
                             showIcon={false}
                         />
                     )}
-                </button>
-                <button onClick={toggleFavorites} data-symbol={item.symbol}>
+                </span>
+                <span role='button' onClick={toggleFavorites} data-symbol={item.symbol} tabIndex={0}>
                     {isFavorite ? (
                         <StandaloneStarFillIcon fill='var(--core-color-solid-mustard-700)' iconSize='sm' />
                     ) : (
@@ -108,7 +114,7 @@ const MarketCategoryItem = forwardRef(
                             iconSize='sm'
                         />
                     )}
-                </button>
+                </span>
             </div>
         );
     }

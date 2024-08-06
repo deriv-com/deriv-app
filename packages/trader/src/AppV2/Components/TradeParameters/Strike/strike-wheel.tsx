@@ -33,6 +33,7 @@ const StrikeWheel = ({
         <React.Fragment>
             <ActionSheet.Content
                 className={clsx('strike__wrapper', is_small_screen_device && 'strike__wrapper--small-screen')}
+                data-testid='dt_strike_wrapper'
             >
                 <div className='strike__wheel-picker'>
                     <WheelPicker
@@ -54,7 +55,10 @@ const StrikeWheel = ({
                 alignment='vertical'
                 primaryAction={{
                     content: <Localize i18n_default_text='Save' />,
-                    onAction: () => onStrikePriceSelect({ target: { name: 'barrier_1', value: selected_value } }),
+                    onAction: () => {
+                        if (selected_value !== current_strike)
+                            onStrikePriceSelect({ target: { name: 'barrier_1', value: selected_value } });
+                    },
                 }}
             />
         </React.Fragment>

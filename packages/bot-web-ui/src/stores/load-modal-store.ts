@@ -581,6 +581,7 @@ export default class LoadModalStore implements ILoadModalStore {
 
         const recent_files = await getSavedWorkspaces();
         if (recent_files?.length > 0) this.setSelectedStrategyId(recent_files[0]?.id);
+        this.setLoadedLocalFile(null);
     };
 
     loadStrategyOnModalRecentPreview = async workspace_id => {

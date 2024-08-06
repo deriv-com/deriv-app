@@ -6,6 +6,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { Button } from '@deriv-com/quill-ui';
 import { useDevice } from '@deriv-com/ui';
 import {
+    getCardLabelsV2,
     getContractTypeDisplay,
     getIndicativePrice,
     hasContractEntered,
@@ -14,7 +15,6 @@ import {
     isOpen,
     isValidToSell,
 } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
 import PurchaseButtonContent from './purchase-button-content';
 import { getTradeTypeTabsList } from 'AppV2/Utils/trade-params-utils';
 
@@ -75,6 +75,7 @@ const PurchaseButton = observer(() => {
         : false;
     const current_stake =
         (is_valid_to_sell && active_accu_contract && getIndicativePrice(active_accu_contract.contract_info)) || null;
+    const cardLabels = getCardLabelsV2();
 
     const getButtonType = (index: number, trade_type: string) => {
         const tab_index = getTradeTypeTabsList(contract_type).findIndex(tab => tab.contract_type === trade_type);
@@ -87,25 +88,25 @@ const PurchaseButton = observer(() => {
     }, [is_purchase_enabled]);
 
     if (is_accumulator && has_open_accu_contract) {
-        const info = proposal_info?.[trade_types_array[0]] || {};
+        const is_accu_sell_disabled = !is_valid_to_sell || active_accu_contract?.is_sell_requested;
         return (
             <div className='purchase-button__wrapper'>
                 <Button
                     color='black'
-                    variant='secondary'
                     size='lg'
-                    label={<Localize i18n_default_text='Sell' />}
+                    label={
+                        is_accu_sell_disabled
+                            ? `${cardLabels.CLOSE}`
+                            : `${cardLabels.CLOSE} ${current_stake} ${currency}`
+                    }
                     fullWidth
-                    className='purchase-button purchase-button--single'
-                    disabled={!is_valid_to_sell || active_accu_contract?.is_sell_requested}
+                    className={clsx(
+                        'purchase-button purchase-button--single',
+                        is_accu_sell_disabled && 'purchase-button__close-disabled'
+                    )}
+                    disabled={is_accu_sell_disabled}
                     onClick={() => onClickSell(active_accu_contract?.contract_info.contract_id)}
-                >
-                    <PurchaseButtonContent
-                        {...purchase_button_content_props}
-                        info={info}
-                        current_stake={current_stake}
-                    />
-                </Button>
+                />
             </div>
         );
     }
@@ -137,7 +138,7 @@ const PurchaseButton = observer(() => {
                             onPurchase(info.id, info.stake, trade_type, isMobile);
                         }}
                     >
-                        {!is_loading && (
+                        {!is_loading && !is_accumulator && (
                             <PurchaseButtonContent
                                 {...purchase_button_content_props}
                                 info={info}

@@ -54,4 +54,9 @@
         z-index: 2; // chart has z-index: 1, it should not push purchase buttons down
         bottom: 0;
     }
+    &__close-disabled {
+        // TODO: remove all !important's below after Button's diabled state is fixed in quill-ui + no token exists for #c2c2c2 yet:
+        background-color: #c2c2c2 !important;
+        opacity: 1 !important;
+    }
 }

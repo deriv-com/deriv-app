@@ -36,8 +36,8 @@
         filter: drop-shadow(0px 4px 6px rgba(14, 14, 14, 0.03)) drop-shadow(0px 12px 16px rgba(14, 14, 14, 0.08));
 
         @include mobile-screen {
-            width: 27.9rem;
-            min-height: 16.1rem;
+            width: 28rem;
+            min-height: 16rem;
         }
 
         @include tablet-screen {

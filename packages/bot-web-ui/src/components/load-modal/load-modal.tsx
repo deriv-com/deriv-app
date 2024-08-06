@@ -30,6 +30,13 @@ const LoadModal = observer(() => {
     const { is_desktop } = ui;
     const header_text = localize('Load strategy');
 
+    const handleTabItemClick = (active_index: number) => {
+        setActiveTabIndex(active_index);
+        rudderStackSendSwitchLoadStrategyTabEvent({
+            load_strategy_tab: LOAD_MODAL_TABS[active_index + (!is_desktop ? 1 : 0)],
+        });
+    };
+
     if (!is_desktop) {
         return (
             <MobileFullPageModal
@@ -40,15 +47,14 @@ const LoadModal = observer(() => {
                     setPreviewOnPopup(false);
                     toggleLoadModal();
                     rudderStackSendCloseEvent({
-                        subpage_name: 'bot_builder',
                         subform_name: 'load_strategy',
-                        load_strategy_tab: LOAD_MODAL_TABS[active_index],
+                        load_strategy_tab: LOAD_MODAL_TABS[active_index + (!is_desktop ? 1 : 0)],
                     });
                 }}
                 height_offset='80px'
                 page_overlay
             >
-                <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
+                <Tabs active_index={active_index} onTabItemClick={handleTabItemClick} top>
                     <div label={localize('Local')}>
                         <Local />
                     </div>
@@ -72,13 +78,16 @@ const LoadModal = observer(() => {
             is_open={is_load_modal_open}
             toggleModal={() => {
                 toggleLoadModal();
-                rudderStackSendCloseEvent({ subform_name: 'load_strategy' });
+                rudderStackSendCloseEvent({
+                    subform_name: 'load_strategy',
+                    load_strategy_tab: LOAD_MODAL_TABS[active_index + (!is_desktop ? 1 : 0)],
+                });
             }}
             onEntered={onEntered}
             elements_to_ignore={[document.querySelector('.injectionDiv')]}
         >
             <Modal.Body>
-                <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top header_fit_content>
+                <Tabs active_index={active_index} onTabItemClick={handleTabItemClick} top header_fit_content>
                     <div label={localize('Recent')}>
                         <Recent />
                     </div>

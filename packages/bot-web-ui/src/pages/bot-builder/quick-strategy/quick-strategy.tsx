@@ -206,7 +206,6 @@ const QuickStrategy = observer(() => {
                 ? 'learn more'
                 : 'trade parameters';
         rudderStackSendCloseEvent({
-            subpage_name: 'bot_builder',
             subform_name: 'quick_strategy',
             quick_strategy_tab: active_tab,
             selected_strategy,

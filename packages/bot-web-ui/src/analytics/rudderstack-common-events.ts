@@ -19,7 +19,6 @@ export const rudderStackSendOpenEvent = ({
 };
 
 export const rudderStackSendCloseEvent = ({
-    subpage_name,
     subform_name,
     quick_strategy_tab,
     selected_strategy,
@@ -28,7 +27,6 @@ export const rudderStackSendCloseEvent = ({
     Analytics.trackEvent('ce_bot_form', {
         action: ACTION.CLOSE,
         form_name,
-        subpage_name,
         subform_name,
         quick_strategy_tab,
         strategy_name: getRsStrategyType(selected_strategy),

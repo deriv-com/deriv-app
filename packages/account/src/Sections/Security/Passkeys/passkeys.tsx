@@ -31,9 +31,10 @@ export type TCurrentManagedPasskey = {
 };
 
 const Passkeys = observer(() => {
-    const { client, common } = useStore();
+    const { client, common, notifications } = useStore();
+    const { is_passkey_supported, setShouldShowPasskeyNotification, setPasskeysStatusToCookie } = client;
     const { isMobile } = useDevice();
-    const { is_passkey_supported } = client;
+    const { removeNotificationByKey } = notifications;
     const is_network_on = common.network_status.class === 'online';
 
     const error_modal_timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -77,6 +78,8 @@ const Passkeys = observer(() => {
         if (is_passkey_renamed) {
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
             setIsSnackbarOpen(true);
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             passkeysMenuActionEventTrack('passkey_rename_success');
             clearTimeOut(snackbar_timeout);
             snackbar_timeout.current = setTimeout(() => {
@@ -90,10 +93,13 @@ const Passkeys = observer(() => {
 
     useEffect(() => {
         if (is_passkey_registered) {
+            setShouldShowPasskeyNotification(false);
+            removeNotificationByKey({ key: 'enable_passkey' });
             passkeysMenuActionEventTrack('create_passkey_finished');
             setPasskeyStatus(PASSKEY_STATUS_CODES.CREATED);
+            setPasskeysStatusToCookie('available');
         }
-    }, [is_passkey_registered]);
+    }, [is_passkey_registered, setPasskeysStatusToCookie]);
 
     useEffect(() => {
         if (error) {
@@ -173,6 +179,8 @@ const Passkeys = observer(() => {
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
         }
         if (passkey_status === PASSKEY_STATUS_CODES.RENAMING) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             passkeysMenuActionEventTrack('passkey_rename_back');
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
         }

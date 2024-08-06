@@ -25,9 +25,9 @@ const guideContent = [
     {
         id: 1,
         type: 'DBotVideo',
-        content: 'Deriv Bot - your automated trading partner',
-        url: 'https://www.youtube.com/embed/QdI5zCkO4Gk',
-        src: 'video_dbot.webp',
+        content: 'An introduction to Deriv Bot',
+        url: 'https://www.youtube.com/embed/lthEgaIY1uw',
+        src: 'intro_to_deriv_bot.png',
     },
 ];
 

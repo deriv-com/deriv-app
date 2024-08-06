@@ -5,7 +5,7 @@ import TradeTypeListItem from '../trade-type-list-item';
 
 describe('TradeTypeListItem', () => {
     it('renders with default right icon', () => {
-        render(<TradeTypeListItem title='Test Title' selected={false} />);
+        render(<TradeTypeListItem title='Test Title' />);
 
         expect(screen.getByText('Test Title')).toBeInTheDocument();
         expect(screen.getByRole('img')).toBeInTheDocument();
@@ -15,14 +15,7 @@ describe('TradeTypeListItem', () => {
         const custom_left_icon = <span>Custom Left Icon</span>;
         const custom_right_icon = <span>Custom Right Icon</span>;
 
-        render(
-            <TradeTypeListItem
-                title='Test Title'
-                leftIcon={custom_left_icon}
-                rightIcon={custom_right_icon}
-                selected={false}
-            />
-        );
+        render(<TradeTypeListItem title='Test Title' leftIcon={custom_left_icon} rightIcon={custom_right_icon} />);
 
         expect(screen.getByText('Custom Left Icon')).toBeInTheDocument();
         expect(screen.getByText('Custom Right Icon')).toBeInTheDocument();
@@ -36,7 +29,6 @@ describe('TradeTypeListItem', () => {
                 title='Test Title'
                 leftIcon={<span>Left Icon</span>}
                 onLeftIconClick={handle_left_icon_click}
-                selected={false}
             />
         );
 
@@ -49,7 +41,7 @@ describe('TradeTypeListItem', () => {
     it('calls onRightIconClick when right icon is clicked', async () => {
         const handle_right_icon_click = jest.fn();
 
-        render(<TradeTypeListItem title='Test Title' onRightIconClick={handle_right_icon_click} selected={false} />);
+        render(<TradeTypeListItem title='Test Title' onRightIconClick={handle_right_icon_click} />);
 
         const right_icon = screen.getByRole('img');
         await userEvent.click(right_icon);

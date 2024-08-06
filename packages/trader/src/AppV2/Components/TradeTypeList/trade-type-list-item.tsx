@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 type TTradeTypeListItemProps = {
     title: string;
-    selected: boolean;
+    selected?: boolean;
     leftIcon?: React.ReactNode;
     rightIcon?: React.ReactNode;
     onLeftIconClick?: () => void;

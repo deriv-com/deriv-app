@@ -11,25 +11,25 @@ type TTradeTypesProps = {
     trade_types: ReturnType<typeof getTradeTypesList>;
 } & Pick<ReturnType<typeof useTraderStore>, 'contract_type'>;
 
+type TItem = {
+    id: string;
+    title: string;
+    icon?: React.ReactNode;
+};
+
+type TResultItem = {
+    id: string;
+    title?: string;
+    button_title?: string;
+    onButtonClick?: () => void;
+    items: TItem[];
+};
+
 const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTypesProps) => {
     const [is_open, setIsOpen] = React.useState<boolean>(false);
     const [is_editing, setIsEditing] = React.useState<boolean>(false);
 
     const { onMount, onUnmount } = useTraderStore();
-
-    type TItem = {
-        id: string;
-        title: string;
-        icon?: React.ReactNode;
-    };
-
-    type TResultItem = {
-        id: string;
-        title?: string;
-        button_title?: string;
-        onButtonClick?: () => void;
-        items: TItem[];
-    };
 
     const createArrayFromCategories = (data: any): TItem[] => {
         const result: TItem[] = [];
@@ -44,15 +44,11 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         return result;
     };
 
-    const saved_other_trade_types = localStorage.getItem('other_trade_types');
-    const saved_pinned_trade_types = localStorage.getItem('pinned_trade_types');
+    const saved_other_trade_types = JSON.parse(localStorage.getItem('other_trade_types') ?? '[]');
+    const saved_pinned_trade_types = JSON.parse(localStorage.getItem('pinned_trade_types') ?? '[]');
 
-    const [other_trade_types, setOtherTradeTypes] = React.useState<TResultItem[]>(
-        saved_other_trade_types ? JSON.parse(saved_other_trade_types) : []
-    );
-    const [pinned_trade_types, setPinnedTradeTypes] = React.useState<TResultItem[]>(
-        saved_pinned_trade_types ? JSON.parse(saved_pinned_trade_types) : []
-    );
+    const [other_trade_types, setOtherTradeTypes] = React.useState<TResultItem[]>(saved_other_trade_types);
+    const [pinned_trade_types, setPinnedTradeTypes] = React.useState<TResultItem[]>(saved_pinned_trade_types);
 
     const handleCloseTradeTypes = () => {
         setIsOpen(false);
@@ -134,7 +130,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
             },
         ];
 
-        if (!saved_pinned_trade_types) {
+        if (saved_pinned_trade_types.length < 1) {
             setPinnedTradeTypes(default_pinned_trade_types);
             localStorage.setItem('pinned_trade_types', JSON.stringify(default_pinned_trade_types));
         }
@@ -144,17 +140,14 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     }, [trade_types]);
 
     React.useEffect(() => {
-        const saved_other_trade_types = localStorage.getItem('other_trade_types');
-        const saved_pinned_trade_types = localStorage.getItem('pinned_trade_types');
-
         onMount();
 
-        if (saved_pinned_trade_types) {
-            setPinnedTradeTypes(JSON.parse(saved_pinned_trade_types));
+        if (saved_pinned_trade_types.length > 0) {
+            setPinnedTradeTypes(saved_pinned_trade_types);
         }
 
-        if (saved_other_trade_types) {
-            setOtherTradeTypes(JSON.parse(saved_other_trade_types));
+        if (saved_other_trade_types.length > 0) {
+            setOtherTradeTypes(saved_other_trade_types);
         }
 
         return () => {
@@ -179,14 +172,16 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         contract_type === value;
     return (
         <div className='trade__trade-types'>
-            {saved_pinned_trade_types &&
-                JSON.parse(saved_pinned_trade_types)[0].items.map(({ title, id }: TItem) => (
+            {saved_pinned_trade_types.length > 0 &&
+                saved_pinned_trade_types[0].items.map(({ title, id }: TItem) => (
                     <Chip.Selectable key={id} onChipSelect={onTradeTypeSelect} selected={isTradeTypeSelected(id)}>
                         <Text size='sm'>{title}</Text>
                     </Chip.Selectable>
                 ))}
-            <a key={'all'} onClick={() => setIsOpen(true)} className='trade__trade-types-header'>
-                <Text size='sm' bold underlined>{<Localize i18n_default_text='View all' />}</Text>
+            <a key='trade-types-all' onClick={() => setIsOpen(true)} className='trade__trade-types-header'>
+                <Text size='sm' bold underlined>
+                    {<Localize i18n_default_text='View all' />}
+                </Text>
             </a>
             <ActionSheet.Root isOpen={is_open} expandable={false} onClose={handleCloseTradeTypes}>
                 <ActionSheet.Portal>
@@ -201,23 +196,19 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                             />
                         ) : (
                             <TradeTypeList
-                                categories={saved_pinned_trade_types && JSON.parse(saved_pinned_trade_types)}
+                                categories={saved_pinned_trade_types}
                                 onAction={() => setIsEditing(true)}
                                 onTradeTypeClick={onTradeTypeSelect}
-                                selected={contract_type}
+                                selected_item={contract_type}
                                 should_show_title={false}
                                 selectable
                             />
                         )}
                         <TradeTypeList
-                            categories={
-                                is_editing
-                                    ? other_trade_types
-                                    : saved_other_trade_types && JSON.parse(saved_other_trade_types)
-                            }
+                            categories={is_editing ? other_trade_types : saved_other_trade_types}
                             onRightIconClick={is_editing ? handleAddPinnedClick : undefined}
                             onTradeTypeClick={!is_editing ? onTradeTypeSelect : undefined}
-                            selected={contract_type}
+                            selected_item={contract_type}
                             selectable={!is_editing}
                         />
                     </ActionSheet.Content>

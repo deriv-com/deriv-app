@@ -2,10 +2,6 @@ import { localize } from '@deriv/translations';
 import { getContractTypeOptions } from '../../../shared';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Workspace.prototype.getTradeDefinitionBlock = function () {
-    return this.getAllBlocks(true).find(b => b.type === 'trade_definition');
-};
-
 Blockly.Blocks.purchase = {
     init() {
         this.jsonInit(this.definition());

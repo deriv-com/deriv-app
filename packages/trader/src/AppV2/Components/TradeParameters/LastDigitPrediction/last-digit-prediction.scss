@@ -1,0 +1,63 @@
+.last-digit-prediction {
+    display: flex;
+    flex-direction: column;
+    gap: var(--core-spacing-400);
+    padding: var(--core-spacing-400) var(--core-spacing-800);
+    border-radius: var(--core-spacing-400);
+    background: var(--core-color-opacity-black-75);
+    width: 100%;
+
+    &__title {
+        color: var(--core-color-opacity-black-600);
+    }
+    &__selector {
+        display: flex;
+        flex-direction: column;
+        gap: var(--core-spacing-400);
+        width: 100%;
+
+        &-row {
+            display: flex;
+            gap: var(--core-spacing-400);
+            width: 100%;
+        }
+        .digit {
+            height: var(--core-size-3300);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+
+            button {
+                display: flex;
+                height: var(--core-size-2400);
+                width: 100%;
+                justify-content: center;
+                align-items: center;
+                border-radius: var(--core-borderRadius-800);
+                border: var(--core-borderWidth-75) solid var(--core-color-opacity-black-100);
+                background-color: var(--core-color-solid-slate-50);
+            }
+            button.active {
+                background-color: var(--core-color-solid-slate-1400);
+
+                p {
+                    color: var(--core-color-solid-slate-50);
+                }
+            }
+            .percentage {
+                color: var(--core-color-opacity-black-500);
+
+                &--max {
+                    color: var(--core-color-solid-green-800);
+                }
+                &--min {
+                    color: var(--core-color-solid-red-700);
+                }
+            }
+        }
+        &:is(.action-sheet--content *) {
+            margin: var(--core-spacing-1600) 0;
+        }
+    }
+}

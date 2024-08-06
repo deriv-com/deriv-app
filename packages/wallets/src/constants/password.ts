@@ -32,11 +32,11 @@ export const passwordValues = {
 };
 
 export const getPasswordErrorMessage = () => ({
-    invalidLength: localize('You should enter{{minLength}}-{{maxLength}} characters.', {
+    invalidLength: localize('You should enter {{minLength}}-{{maxLength}} characters.', {
         maxLength: passwordValues.maxLength,
         minLength: passwordValues.minLength,
     }),
-    invalidLengthMT5: localize('You should enter {{minLength}}-{{maxLengthMT5}} characters.', {
+    invalidLengthMT5: localize('You should enter {{minLength}}-{{maxLength}} characters.', {
         maxLength: passwordValues.maxLengthMT5,
         minLength: passwordValues.minLength,
     }),

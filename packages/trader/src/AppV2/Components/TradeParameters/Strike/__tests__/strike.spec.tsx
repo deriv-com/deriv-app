@@ -24,8 +24,8 @@ jest.mock('@deriv-com/quill-ui', () => ({
             <p>WheelPicker</p>
             <ul>
                 {data.map(({ value }: { value: string }) => (
-                    <li key={value} onClick={() => setSelectedValue(value)}>
-                        {value}
+                    <li key={value}>
+                        <button onClick={() => setSelectedValue(value)}>{value}</button>
                     </li>
                 ))}
             </ul>
@@ -65,14 +65,11 @@ describe('Strike', () => {
             </TraderProviders>
         );
 
-    it('should render trade param with "Strike" label and passed current strike value (barrier_1)', () => {
+    it('should render trade param with "Strike price" label and input with value equal to current strike value (barrier_1)', () => {
         mockStrike();
 
-        const strike_trade_param = screen.getByRole('textbox');
-
-        expect(strike_trade_param).toBeInTheDocument();
-        expect(strike_trade_param).toHaveValue('+1.80');
         expect(screen.getByText(strike_trade_param_label)).toBeInTheDocument();
+        expect(screen.getByRole('textbox')).toHaveValue('+1.80');
     });
 
     it('should open ActionSheet with WheelPicker component, Payout per point information, "Save" button and text content with definition if user clicks on trade param', () => {
@@ -111,7 +108,7 @@ describe('Strike', () => {
         window.innerHeight = original_height;
     });
 
-    it('should not call onChange function if user clicks on save button, but new selected value is equal to current one', () => {
+    it('should not call onChange function if user clicks on "Save" button, but new selected value is equal to current one', () => {
         mockStrike();
 
         userEvent.click(screen.getByText(strike_trade_param_label));
@@ -120,7 +117,7 @@ describe('Strike', () => {
         expect(default_mock_store.modules.trade.onChange).not.toBeCalled();
     });
 
-    it('should call onChange function if user clicks on save button and new selected value is not equal to current one', () => {
+    it('should call onChange function if user clicks on "Save" button and new selected value is not equal to current one', () => {
         mockStrike();
 
         const new_selected_value = default_mock_store.modules.trade.barrier_choices[1];

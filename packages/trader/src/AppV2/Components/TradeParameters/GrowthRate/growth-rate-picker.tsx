@@ -1,6 +1,6 @@
 import React from 'react';
 import debounce from 'lodash.debounce';
-import { ActionSheet, Text, WheelPickerContainer } from '@deriv-com/quill-ui';
+import { ActionSheet, Text, WheelPicker } from '@deriv-com/quill-ui';
 import { localize, Localize } from '@deriv/translations';
 import { getGrowthRatePercentage } from '@deriv/shared';
 import { Skeleton } from '@deriv/components';
@@ -9,7 +9,6 @@ type TGrowthRatePickerProps = {
     accumulator_range_list?: number[];
     growth_rate: number;
     maximum_ticks: number;
-    onSave: () => void;
     setGrowthRate: (growth_rate: number) => void;
     should_show_details?: boolean;
     tick_size_barrier_percentage: string;
@@ -23,7 +22,6 @@ const GrowthRatePicker = ({
     accumulator_range_list = [],
     growth_rate,
     maximum_ticks,
-    onSave,
     setGrowthRate,
     should_show_details,
     tick_size_barrier_percentage,
@@ -47,35 +45,38 @@ const GrowthRatePicker = ({
             initial_growth_rate.current = growth_rate;
         }
         return () => {
-            debouncedSetGrowthRate.cancel();
             if (initial_growth_rate.current && initial_growth_rate.current !== selected_growth_rate.current) {
                 setGrowthRate(initial_growth_rate.current);
             }
+            debouncedSetGrowthRate.cancel();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleSave = () => {
         initial_growth_rate.current = selected_growth_rate.current;
-        onSave();
     };
 
-    const handlePickerValuesChange = (_idx: number, value: string | number) => {
+    const handlePickerValuesChange = (value: string | number) => {
         const new_value = Number((value as string).slice(0, -1)) / 100;
         if (new_value === selected_growth_rate.current) return;
         debouncedSetGrowthRate(setGrowthRate, new_value);
         selected_growth_rate.current = new_value;
     };
 
-    if (!accumulator_range_list.length) return null;
     return (
         <React.Fragment>
             <ActionSheet.Content className='growth-rate__picker'>
                 <div className='growth-rate__wheel-picker'>
-                    <WheelPickerContainer
-                        data={[data]}
-                        inputValues={[`${getGrowthRatePercentage(growth_rate)}%`]}
-                        setInputValues={handlePickerValuesChange}
-                    />
+                    {accumulator_range_list.length ? (
+                        <WheelPicker
+                            data={data}
+                            selectedValue={`${getGrowthRatePercentage(selected_growth_rate.current)}%`}
+                            setSelectedValue={handlePickerValuesChange}
+                        />
+                    ) : (
+                        <Skeleton />
+                    )}
                 </div>
                 <div className='growth-rate__details'>
                     {details_content.map(({ label, value }) => (
@@ -92,7 +93,6 @@ const GrowthRatePicker = ({
                     content: <Localize i18n_default_text='Save' />,
                     onAction: handleSave,
                 }}
-                shouldCloseOnPrimaryButtonClick={false}
             />
         </React.Fragment>
     );

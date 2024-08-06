@@ -25,7 +25,7 @@ const Carousel = ({ classname, header, pages, title }: TCarousel) => {
                 onPrevClick={onPrevClick}
                 title={title}
             />
-            <ul className={clsx('carousel', classname)}>
+            <ul className={clsx('carousel', classname)} data-testid='dt_carousel'>
                 {pages.map(({ component, id }) => (
                     <li
                         className='carousel__item'

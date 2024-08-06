@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, Fragment, ChangeEvent } from 'react';
+import { useEffect, useState, useCallback, Fragment } from 'react';
 import PhoneVerificationCard from './phone-verification-card';
 import { Text, InputGroupButton } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';

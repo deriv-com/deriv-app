@@ -43,6 +43,7 @@ const PersonalDetailsForm = observer(() => {
     const [is_loading, setIsLoading] = useState(false);
     const [is_btn_loading, setIsBtnLoading] = useState(false);
     const [is_submit_success, setIsSubmitSuccess] = useState(false);
+    const [is_phone_field_disable, setIsPhoneFieldDisable] = useState(false);
     const invalidate = useInvalidateQuery();
     const history = useHistory();
     const [isPhoneNumberVerificationEnabled] = useGrowthbookGetFeatureValue({
@@ -378,12 +379,14 @@ const PersonalDetailsForm = observer(() => {
                                             onBlur={handleBlur}
                                             required
                                             error={errors.phone}
-                                            disabled={isFieldDisabled('phone')}
+                                            disabled={isFieldDisabled('phone') || is_phone_field_disable}
                                             data-testid='dt_phone'
                                         />
                                         {isPhoneNumberVerificationEnabled &&
                                             account_settings.phone &&
-                                            account_settings.phone === values.phone && <VerifyButton />}
+                                            account_settings.phone === values.phone && (
+                                                <VerifyButton setIsPhoneFieldDisable={setIsPhoneFieldDisable} />
+                                            )}
                                     </fieldset>
                                 )}
                                 <Fragment>

@@ -144,6 +144,7 @@ type AvailableAccount = {
     currency?: string;
     display_balance?: string;
     display_login?: string;
+    product?: TProduct;
 };
 
 type BrandConfig = {

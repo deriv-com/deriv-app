@@ -76,12 +76,7 @@ const MarketCategoryItem = forwardRef(
                 })}
                 ref={ref}
             >
-                <span
-                    role='button'
-                    className='market-category-item-left'
-                    data-symbol={item.symbol}
-                    onClick={handleSelect}
-                >
+                <button className='market-category-item-left' data-symbol={item.symbol} onClick={handleSelect}>
                     <SymbolIconsMapper symbol={item.symbol} />
                     <Text
                         size='sm'
@@ -99,7 +94,7 @@ const MarketCategoryItem = forwardRef(
                             showIcon={false}
                         />
                     )}
-                </span>
+                </button>
                 <span onClick={toggleFavorites} data-symbol={item.symbol}>
                     {isFavorite ? (
                         <StandaloneStarFillIcon fill='var(--core-color-solid-mustard-700)' iconSize='sm' />

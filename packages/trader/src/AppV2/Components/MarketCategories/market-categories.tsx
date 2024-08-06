@@ -24,7 +24,7 @@ const MarketCategories = observer(({ selectedSymbol, setSelectedSymbol, setIsOpe
                     <MarketCategoryTab key={category.market} category={category} />
                 ))}
             </Tab.List>
-            <Tab.Content className='market-categories__list' ref={scrollRef}>
+            <Tab.Content className='market-categories__list'>
                 {Object.values(categorizedSymbols).map(category => (
                     <MarketCategory
                         key={category.market}

@@ -40,6 +40,4 @@ const MarketCategories = observer(({ selectedSymbol, setSelectedSymbol, setIsOpe
     );
 });
 
-MarketCategories.displayName = 'MarketCategories';
-
 export default MarketCategories;

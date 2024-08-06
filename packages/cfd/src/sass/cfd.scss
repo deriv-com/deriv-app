@@ -388,54 +388,6 @@
     }
 }
 
-/** @define poi-icon-row; weak */
-.poi-icon-row {
-    display: flex;
-    margin-bottom: 16px;
-
-    &__icon-container {
-        align-items: center;
-        display: flex;
-        flex-direction: column;
-        color: var(--text-less-prominent);
-
-        &:not(:first-child):not(:last-child) {
-            margin: 0 40px;
-        }
-        p {
-            font-size: var(--text-size-xxs);
-        }
-        p:first-of-type {
-            line-height: 1.5;
-            margin-top: 8px;
-            font-weight: bold;
-        }
-        @include mobile-or-tablet-screen {
-            &:not(:first-child):not(:last-child) {
-                margin: 0;
-            }
-            & .dc-icon {
-                width: 8.8rem;
-                height: auto;
-
-                /* iPhone SE screen width fixes due to UI space restrictions */
-                @media only screen and (max-width: 340px) {
-                    width: 7rem;
-                }
-            }
-            p {
-                line-height: 20px;
-            }
-        }
-    }
-    @include mobile-or-tablet-screen {
-        display: grid;
-        grid-gap: 2.4rem;
-        grid-template-columns: 1fr 1fr 1fr;
-        margin-top: 4rem;
-    }
-}
-
 .dc-modal__container_cfd-financial-stp-modal {
     .dc-modal-header {
         border-bottom: 1px solid var(--general-section-1);

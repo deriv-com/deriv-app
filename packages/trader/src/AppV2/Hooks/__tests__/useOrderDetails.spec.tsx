@@ -88,7 +88,7 @@ describe('useOrderDetails', () => {
         const { result } = renderHook(() => useOrderDetails(mockData));
         expect(result.current?.details).toEqual({
             [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
-            [CARD_LABELS.DURATION]: '5 minutes',
+            [CARD_LABELS.DURATION]: '5 ticks',
             [CARD_LABELS.TARGET]: undefined,
             [CARD_LABELS.STAKE]: '100.00 USD',
         });

@@ -25,7 +25,7 @@ const onWheelPickerScrollDebounced = debounce(
     (new_value: string | number, callback: TStrikeWheelProps['onStrikePriceSelect']) => {
         callback({ target: { name: 'barrier_1', value: new_value } });
     },
-    150
+    200
 );
 
 const StrikeWheel = ({
@@ -70,6 +70,7 @@ const StrikeWheel = ({
                         data={strike_price_list}
                         selectedValue={selected_value_ref.current}
                         setSelectedValue={(new_value: string | number) => {
+                            if (new_value === selected_value_ref.current) return;
                             selected_value_ref.current = new_value;
                             onWheelPickerScrollDebounced(new_value, onStrikePriceSelect);
                         }}

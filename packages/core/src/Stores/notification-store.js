@@ -333,6 +333,7 @@ export default class NotificationStore extends BaseStore {
             is_proof_of_ownership_enabled,
             is_p2p_enabled,
             is_poa_expired,
+            currency,
         } = this.root_store.client;
         const { upgradable_daily_limits } = this.p2p_advertiser_info || {};
         const { max_daily_buy, max_daily_sell } = upgradable_daily_limits || {};
@@ -376,10 +377,12 @@ export default class NotificationStore extends BaseStore {
 
             this.handlePOAAddressMismatchNotifications();
 
-            const aud_account_closure_status = account_closure.find(closure_type => closure_type.type === 'currency');
+            const account_currency_closure_status = account_closure.find(
+                closure_type => closure_type.type === 'currency'
+            );
 
-            if (aud_account_closure_status) {
-                this.handleAUDCurrencyRemovalNotification(aud_account_closure_status);
+            if (account_currency_closure_status) {
+                this.handleAUDCurrencyRemovalNotification(account_currency_closure_status, currency);
             }
 
             if (status?.includes('mt5_additional_kyc_required'))
@@ -1650,9 +1653,9 @@ export default class NotificationStore extends BaseStore {
         });
     };
 
-    handleAUDCurrencyRemovalNotification = aud_account_closure_status => {
-        const is_funded_account = aud_account_closure_status.status_codes.includes('funded_account');
-        const is_non_funded_account = aud_account_closure_status.status_codes.includes('non_funded_account');
+    handleAUDCurrencyRemovalNotification = (account_currency_closure_status, currency) => {
+        const is_funded_account = account_currency_closure_status.status_codes.includes('funded_account');
+        const is_non_funded_account = account_currency_closure_status.status_codes.includes('non_funded_account');
 
         if (!is_funded_account && !is_non_funded_account) return;
 
@@ -1660,24 +1663,24 @@ export default class NotificationStore extends BaseStore {
             ? localize('Withdraw your funds')
             : localize('Change your currency');
 
-        const time_of_closure = getDateFromTimestamp(aud_account_closure_status.time_of_closure);
+        const time_of_closure = getDateFromTimestamp(account_currency_closure_status.time_of_closure);
 
         const notification_message = is_funded_account ? (
             <Localize
-                i18n_default_text="AUD accounts won't be available after {{time_of_closure}}."
-                values={{ time_of_closure }}
+                i18n_default_text="{{currency}} accounts won't be available after {{time_of_closure}}."
+                values={{ time_of_closure, currency }}
             />
         ) : (
             <Localize
-                i18n_default_text="AUD accounts won't be available after {{time_of_closure}}. Choose a new account currency."
-                values={{ time_of_closure }}
+                i18n_default_text="{{currency}} accounts won't be available after {{time_of_closure}}. Choose a new account currency."
+                values={{ time_of_closure, currency }}
             />
         );
 
         const notification_button_action = is_funded_account
             ? {
                   route: routes.cashier_withdrawal,
-                  text: localize('Withdraw AUD'),
+                  text: <Localize i18n_default_text='Withdraw {{currency}}' values={{ currency }} />,
               }
             : {
                   text: localize('Contact live chat'),
@@ -1687,7 +1690,7 @@ export default class NotificationStore extends BaseStore {
               };
 
         this.addNotificationMessage({
-            key: 'aud_account_closure',
+            key: 'account_currency_closure',
             header: notification_header,
             message: notification_message,
             action: notification_button_action,

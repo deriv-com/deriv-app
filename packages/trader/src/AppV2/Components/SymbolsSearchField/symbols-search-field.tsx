@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, forwardRef, Ref } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Button, SearchField } from '@deriv-com/quill-ui';
 import clsx from 'clsx';
 import { observer, useStore } from '@deriv/stores';

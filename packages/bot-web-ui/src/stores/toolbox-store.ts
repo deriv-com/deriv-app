@@ -136,7 +136,7 @@ export default class ToolboxStore {
                 const workspace_metrics = workspace.getMetrics();
                 const block_canvas_space =
                     workspace_metrics.scrollWidth + workspace_metrics.viewLeft - workspace_metrics.viewWidth;
-                workspace.scrollbar.set(block_canvas_space, scroll_y);
+                workspace?.scrollbar?.set(block_canvas_space, scroll_y);
             }
         }
     }

@@ -2,6 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import debounce from 'lodash.debounce';
 import { ActionSheet, Text, WheelPicker } from '@deriv-com/quill-ui';
+import { Skeleton } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
 type TStrikeWheelProps = {
@@ -20,6 +21,13 @@ type TStrikeWheelProps = {
     }[];
 };
 
+const onWheelPickerScrollDebounced = debounce(
+    (new_value: string | number, callback: TStrikeWheelProps['onStrikePriceSelect']) => {
+        callback({ target: { name: 'barrier_1', value: new_value } });
+    },
+    150
+);
+
 const StrikeWheel = ({
     current_strike,
     currency,
@@ -30,11 +38,6 @@ const StrikeWheel = ({
 }: TStrikeWheelProps) => {
     const initial_value_ref = React.useRef<string | number>();
     const selected_value_ref = React.useRef<string | number>(current_strike);
-
-    const onWheelPickerScrollDebounced = debounce((new_value: string | number) => {
-        selected_value_ref.current = new_value;
-        onStrikePriceSelect({ target: { name: 'barrier_1', value: new_value } });
-    }, 150);
 
     const onSave = () => {
         if (selected_value_ref.current !== initial_value_ref.current) {
@@ -51,6 +54,7 @@ const StrikeWheel = ({
             if (initial_value_ref.current !== selected_value_ref.current) {
                 onStrikePriceSelect({ target: { name: 'barrier_1', value: initial_value_ref.current } });
             }
+            onWheelPickerScrollDebounced.cancel();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -65,15 +69,24 @@ const StrikeWheel = ({
                     <WheelPicker
                         data={strike_price_list}
                         selectedValue={selected_value_ref.current}
-                        setSelectedValue={onWheelPickerScrollDebounced}
+                        setSelectedValue={(new_value: string | number) => {
+                            selected_value_ref.current = new_value;
+                            onWheelPickerScrollDebounced(new_value, onStrikePriceSelect);
+                        }}
                     />
                 </div>
                 <div className='strike__payout'>
                     <Text color='quill-typography__color--subtle' size='sm'>
                         <Localize i18n_default_text='Payout per point:' />
                     </Text>
-                    <Text size='sm'>
-                        {payout_per_point} {currency}
+                    <Text size='sm' as='div'>
+                        {payout_per_point ? (
+                            <React.Fragment>
+                                {payout_per_point} {currency}
+                            </React.Fragment>
+                        ) : (
+                            <Skeleton width={90} height={22} />
+                        )}
                     </Text>
                 </div>
             </ActionSheet.Content>

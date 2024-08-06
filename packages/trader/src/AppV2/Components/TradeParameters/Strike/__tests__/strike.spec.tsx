@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
 import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
@@ -32,7 +32,11 @@ jest.mock('@deriv-com/quill-ui', () => ({
         </div>
     )),
 }));
-jest.mock('lodash.debounce', () => jest.fn(fn => fn));
+
+jest.mock('lodash/debounce', () => (fn: { cancel: () => void }) => {
+    fn.cancel = jest.fn();
+    return fn;
+});
 
 describe('Strike', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
@@ -65,6 +69,13 @@ describe('Strike', () => {
                 </ModulesProvider>
             </TraderProviders>
         );
+    it('should render Skeleton loader if strike (barrier_1) is falsy', () => {
+        default_mock_store.modules.trade.barrier_1 = '';
+        mockStrike();
+
+        expect(screen.getByTestId('dt_skeleton')).toBeInTheDocument();
+        expect(screen.queryByText(strike_trade_param_label)).not.toBeInTheDocument();
+    });
 
     it('should render trade param with "Strike price" label and input with value equal to current strike value (barrier_1)', () => {
         mockStrike();
@@ -109,13 +120,19 @@ describe('Strike', () => {
         window.innerHeight = original_height;
     });
 
-    it('should call onChange function if user changes selected value', () => {
+    it('should call onChange function if user changes selected value', async () => {
+        jest.useFakeTimers();
         mockStrike();
 
         const new_selected_value = default_mock_store.modules.trade.barrier_choices[1];
         userEvent.click(screen.getByText(strike_trade_param_label));
         userEvent.click(screen.getByText(new_selected_value));
         userEvent.click(screen.getByText('Save'));
+
+        await waitFor(() => {
+            jest.advanceTimersByTime(150);
+        });
+        jest.useRealTimers();
 
         expect(default_mock_store.modules.trade.onChange).toBeCalled();
     });

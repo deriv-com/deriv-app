@@ -9,6 +9,7 @@ import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import StrikeDescription from './strike-description';
 import StrikeWheel from './strike-wheel';
+import { Skeleton } from '@deriv/components';
 
 type TStrikeProps = {
     is_minimized?: boolean;
@@ -30,7 +31,6 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
     const payout_per_point: string | number = isEmptyObject(proposal_info)
         ? ''
         : proposal_info[contract_type.toUpperCase()]?.obj_contract_basis?.value;
-
     const action_sheet_content = [
         {
             id: 1,
@@ -50,11 +50,19 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
             component: <StrikeDescription is_small_screen_device={is_small_screen_device} />,
         },
     ];
+    const classname = clsx('trade-params__option', is_minimized && 'trade-params__option--minimized');
+
+    if (!barrier_1)
+        return (
+            <div className={classname}>
+                <Skeleton />
+            </div>
+        );
 
     return (
         <React.Fragment>
             <TextField
-                className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
+                className={classname}
                 label={<Localize i18n_default_text='Strike price' key={`strike${is_minimized ? '-minimized' : ''}`} />}
                 onClick={() => setIsOpen(true)}
                 readOnly

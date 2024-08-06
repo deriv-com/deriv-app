@@ -17,6 +17,7 @@ import Main from '../pages/main';
 import './app.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import '../components/bot-notification/bot-notification.scss';
+import Accumlators from '../pages/chart/accumlators/accumlator';
 
 const AppContent = observer(() => {
     const [is_loading, setIsLoading] = React.useState(true);
@@ -33,6 +34,9 @@ const AppContent = observer(() => {
     const is_subscribed_to_msg_listener = React.useRef(false);
     const init_api_interval = React.useRef(null);
     const msg_listener = React.useRef(null);
+
+    const accumlators = new Accumlators();
+    accumlators.getAccumlatorStats();
 
     const handleMessage = ({ data }) => {
         if (data?.msg_type === 'proposal_open_contract' && !data?.error) {

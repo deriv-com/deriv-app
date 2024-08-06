@@ -754,6 +754,7 @@ import './mt5/ic-mt5-migration-success.svg';
 import './mt5/ic-mt5-one-password.svg';
 import './mt5/ic-mt5-open-markets.svg';
 import './mt5/ic-mt5-password-updated.svg';
+import './mt5/ic-mt5-password.svg';
 import './mt5/ic-mt5-responsive.svg';
 import './mt5/ic-mt5-standard-financial-bvi.svg';
 import './mt5/ic-mt5-standard-financial-vanuatu.svg';

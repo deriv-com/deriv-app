@@ -3,14 +3,14 @@ import { Text } from '@deriv/components';
 import { Notifications as Announcement } from '@deriv-com/ui';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { observer } from '@deriv/stores';
-import { LabelPairedCircleInfoCaptionBoldIcon } from '@deriv/quill-icons';
+import { StandaloneBullhornRegularIcon } from '@deriv/quill-icons';
 import clsx from 'clsx';
 import { localize } from '@deriv/translations';
 import AnnouncementDialog from './announcement-dialog';
-import { StandaloneBullhornRegularIcon } from '@deriv/quill-icons';
 import { ANNOUNCEMENTS } from './config';
 import './announcements.scss';
 import { DBOT_TABS } from 'Constants/bot-contents';
+import { IconAnnounce, MessageAnnounce, TitleAnnounce } from './announcement-components';
 
 type TAnnouncements = {
     is_mobile?: boolean;
@@ -25,54 +25,48 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
     const [amount_announce, setAmountAnnounce] = useState({});
     const accumulator_announcement = ANNOUNCEMENTS['ACCUMULATOR_ANNOUNCE'];
 
+    const is_active_announce_1 = amount_announce?.announce_1;
+    const is_active_announce_2 = amount_announce?.announce_2;
+    const is_active_announce_3 = amount_announce?.announce_3;
+
     const announcements = [
         {
-            icon: (
-                <>
-                    <LabelPairedCircleInfoCaptionBoldIcon fill='#0777C4' width='24' height='26' />
-                    {amount_announce?.announce_1 === true && <div className='notification__icon--indicator'></div>}
-                </>
-            ),
-            title: (<Text size='xs' line_height='l' weight={amount_announce?.announce_1 ? 'bold' : 'normal'} styles={!amount_announce?.announce_1 ? {
-                color: '#000000B8'
-            } : {}}>
-                {localize('Accumulators is now on Deriv Bot')}
-            </Text>),
-            message: (
-                <>
-                    <Text size='xs' line_height='l' weight={amount_announce?.announce_1 ? 'normal' : 'lighter'} styles={!amount_announce?.announce_1 ? {
-                        color: '#000000B8'
-                    } : {}}>
-                        {localize('Boost your trading strategy with Accumulators.')}
-                    </Text>
-                    <Text size='xxs' styles={{ color: '#0000007A' }}>
-                        20 July 2024 00:00 UTC
-                    </Text>
-                </>
-            ),
+            icon: <IconAnnounce announce={is_active_announce_1} />,
+            title: <TitleAnnounce title={localize('Moving Binary Bot strategies to Deriv Bot')} announce={is_active_announce_1} />,
+            message: <MessageAnnounce
+                        message={localize('Follow these steps for a smooth transition of your strategies.')}
+                        date='6 Aug 2024 00:00 UTC'
+                        announce={is_active_announce_1}
+                    />,
             buttonAction: () => {
-                setAnnounceDialogOpen(true);
-                setIsOpenAnnounceList(!isOpenAnnounceList);
                 setAmountAnnounce({ ...amount_announce, 'announce_1': false });
             },
             actionText: '',
         },
         {
-            icon: (<><LabelPairedCircleInfoCaptionBoldIcon fill='#0777C4' width='24' height='26' />
-                {amount_announce?.announce_2 === true && <div className='notification__icon--indicator'></div>}</>),
-            title: 'title2',
-            message: 'message2',
+            icon: <IconAnnounce announce={is_active_announce_2} />,
+            title: <TitleAnnounce title={localize('Impact of Google Blockly V10 update')} announce={is_active_announce_2} />,
+            message: <MessageAnnounce
+                        message={localize('This update means variable names in XML files are no longer case-sensitive.')}
+                        date='6 Aug 2024 00:00 UTC'
+                        announce={is_active_announce_2}
+                    />,
             buttonAction: () => {
                 setAmountAnnounce({ ...amount_announce, 'announce_2': false });
             },
             actionText: '',
         },
         {
-            icon: (<><LabelPairedCircleInfoCaptionBoldIcon fill='#0777C4' width='24' height='26' />
-                {amount_announce?.announce_3 === true && <div className='notification__icon--indicator'></div>}</>),
-            title: 'title3',
-            message: 'message3',
+            icon: <IconAnnounce announce={is_active_announce_3} />,
+            title: <TitleAnnounce title={localize('Accumulators is now on Deriv Bot')} announce={is_active_announce_3} />,
+            message: <MessageAnnounce
+                        message={localize('Boost your trading strategy with Accumulators.')}
+                        date='20 July 2024 00:00 UTC'
+                        announce={is_active_announce_3}
+                    />,
             buttonAction: () => {
+                setAnnounceDialogOpen(true);
+                setIsOpenAnnounceList(!isOpenAnnounceList);
                 setAmountAnnounce({ ...amount_announce, 'announce_3': false });
             },
             actionText: '',

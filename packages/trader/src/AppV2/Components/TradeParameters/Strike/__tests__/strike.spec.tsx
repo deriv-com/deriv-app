@@ -130,7 +130,7 @@ describe('Strike', () => {
         userEvent.click(screen.getByText('Save'));
 
         await waitFor(() => {
-            jest.advanceTimersByTime(150);
+            jest.advanceTimersByTime(200);
         });
         jest.useRealTimers();
 

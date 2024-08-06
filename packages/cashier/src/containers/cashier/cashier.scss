@@ -239,11 +239,13 @@
             justify-content: flex-start;
             align-items: center;
 
-            &-button {
-                width: calc(100% - 3.2rem);
-            }
             &-icon {
                 margin-top: 3.2rem;
+            }
+        }
+        @include mobile-screen {
+            &-button {
+                width: calc(100% - 3.2rem);
             }
         }
     }

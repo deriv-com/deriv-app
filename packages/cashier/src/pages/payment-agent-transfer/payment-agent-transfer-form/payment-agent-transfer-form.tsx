@@ -115,7 +115,7 @@ const PaymentAgentTransferForm = observer(() => {
                 onSubmit={onTransferPassthrough}
             >
                 {({ errors, isSubmitting, isValid, touched, handleChange }) => (
-                    <Form noValidate>
+                    <Form noValidate className='payment-agent-transfer-form'>
                         <Field name='loginid'>
                             {({ field }: FieldProps) => (
                                 <Input

@@ -1,8 +1,9 @@
 .payment-agent-transfer-form {
-    // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
+    width: 100%;
+
     &__container {
         padding: 0 15.6rem;
-        display: block !important;
+        gap: 2.4rem;
 
         @include mobile-or-tablet-screen {
             width: 100%;

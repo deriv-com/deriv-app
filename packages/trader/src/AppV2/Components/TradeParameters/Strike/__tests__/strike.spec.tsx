@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
 import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
@@ -32,6 +32,7 @@ jest.mock('@deriv-com/quill-ui', () => ({
         </div>
     )),
 }));
+jest.mock('lodash.debounce', () => jest.fn(fn => fn));
 
 describe('Strike', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
@@ -108,16 +109,7 @@ describe('Strike', () => {
         window.innerHeight = original_height;
     });
 
-    it('should not call onChange function if user clicks on "Save" button, but new selected value is equal to current one', () => {
-        mockStrike();
-
-        userEvent.click(screen.getByText(strike_trade_param_label));
-        userEvent.click(screen.getByText('Save'));
-
-        expect(default_mock_store.modules.trade.onChange).not.toBeCalled();
-    });
-
-    it('should call onChange function if user clicks on "Save" button and new selected value is not equal to current one', () => {
+    it('should call onChange function if user changes selected value', () => {
         mockStrike();
 
         const new_selected_value = default_mock_store.modules.trade.barrier_choices[1];

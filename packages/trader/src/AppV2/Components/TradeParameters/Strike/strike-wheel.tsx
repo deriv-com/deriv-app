@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import debounce from 'lodash.debounce';
 import { ActionSheet, Text, WheelPicker } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 
@@ -27,7 +28,32 @@ const StrikeWheel = ({
     payout_per_point,
     strike_price_list,
 }: TStrikeWheelProps) => {
-    const [selected_value, setSelectedValue] = React.useState<string | number>(current_strike);
+    const initial_value_ref = React.useRef<string | number>();
+    const selected_value_ref = React.useRef<string | number>(current_strike);
+
+    const onWheelPickerScrollDebounced = debounce((new_value: string | number) => {
+        selected_value_ref.current = new_value;
+        onStrikePriceSelect({ target: { name: 'barrier_1', value: new_value } });
+    }, 150);
+
+    const onSave = () => {
+        if (selected_value_ref.current !== initial_value_ref.current) {
+            initial_value_ref.current = current_strike;
+        }
+    };
+
+    React.useEffect(() => {
+        if (!initial_value_ref.current && current_strike) {
+            initial_value_ref.current = current_strike;
+        }
+
+        return () => {
+            if (initial_value_ref.current !== selected_value_ref.current) {
+                onStrikePriceSelect({ target: { name: 'barrier_1', value: initial_value_ref.current } });
+            }
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <React.Fragment>
@@ -38,8 +64,8 @@ const StrikeWheel = ({
                 <div className='strike__wheel-picker'>
                     <WheelPicker
                         data={strike_price_list}
-                        selectedValue={selected_value}
-                        setSelectedValue={setSelectedValue}
+                        selectedValue={selected_value_ref.current}
+                        setSelectedValue={onWheelPickerScrollDebounced}
                     />
                 </div>
                 <div className='strike__payout'>
@@ -55,10 +81,7 @@ const StrikeWheel = ({
                 alignment='vertical'
                 primaryAction={{
                     content: <Localize i18n_default_text='Save' />,
-                    onAction: () => {
-                        if (selected_value !== current_strike)
-                            onStrikePriceSelect({ target: { name: 'barrier_1', value: selected_value } });
-                    },
+                    onAction: onSave,
                 }}
             />
         </React.Fragment>

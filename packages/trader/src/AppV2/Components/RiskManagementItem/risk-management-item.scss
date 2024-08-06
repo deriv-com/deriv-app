@@ -13,6 +13,10 @@
     &__title {
         display: flex;
         gap: var(--semantic-spacing-gap-md);
+
+        button {
+            all: unset;
+        }
     }
 
     .deal-cancellation-badge {

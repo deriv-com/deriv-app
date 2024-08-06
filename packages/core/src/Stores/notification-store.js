@@ -41,6 +41,7 @@ import {
     poi_notifications,
 } from './Helpers/client-notifications';
 import BaseStore from './base-store';
+import { Analytics } from '@deriv-com/analytics';
 
 export default class NotificationStore extends BaseStore {
     is_notifications_visible = false;
@@ -50,6 +51,7 @@ export default class NotificationStore extends BaseStore {
     push_notifications = [];
     client_notifications = {};
     should_show_popups = true;
+    should_show_passkey_notification = false;
     trade_notifications = [];
     p2p_advertiser_info = {};
     p2p_order_props = {};
@@ -91,6 +93,7 @@ export default class NotificationStore extends BaseStore {
             setP2POrderProps: action.bound,
             setP2PRedirectTo: action.bound,
             setShouldShowPopups: action.bound,
+            should_show_passkey_notification: observable,
             should_show_popups: observable,
             showCompletedOrderNotification: action.bound,
             toggleNotificationsModal: action.bound,
@@ -116,6 +119,7 @@ export default class NotificationStore extends BaseStore {
                 root_store.client.is_eu,
                 root_store.client.has_enabled_two_fa,
                 root_store.client.has_changed_two_fa,
+                root_store.client.should_show_passkey_notification,
                 this.p2p_order_props.order_id,
             ],
             () => {
@@ -406,6 +410,12 @@ export default class NotificationStore extends BaseStore {
                 this.addNotificationMessage(this.client_notifications.has_changed_two_fa);
             }
 
+            if (this.root_store.client.should_show_passkey_notification) {
+                this.addNotificationMessage(this.client_notifications.enable_passkey);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.enable_passkey });
+            }
+
             const client = accounts[loginid];
             if (client && !client.is_virtual) {
                 if (isEmptyObject(account_status)) return;
@@ -603,13 +613,6 @@ export default class NotificationStore extends BaseStore {
                     this.addNotificationMessage(this.client_notifications.svg_poi_expired);
                 }
             }
-            if (
-                client &&
-                this.root_store.client.mt5_login_list.length > 0 &&
-                (this.root_store.client.mt5_login_list.find(login => login)?.white_label?.notification ?? true)
-            ) {
-                this.addNotificationMessage(this.client_notifications.mt5_notification);
-            }
         }
 
         if (!is_eu && isMultiplierContract(selected_contract_type) && current_language === 'EN' && is_logged_in) {
@@ -750,7 +753,6 @@ export default class NotificationStore extends BaseStore {
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
         const { has_enabled_two_fa, setTwoFAChangedStatus, logout } = this.root_store.client;
-        const { setMT5NotificationModal } = this.root_store.traders_hub;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
 
         const platform_name_trader = getPlatformSettings('trader').name;
@@ -924,6 +926,17 @@ export default class NotificationStore extends BaseStore {
                 img_src: getUrlBase('/public/images/common/dp2p_banner.png'),
                 img_alt: 'Deriv P2P',
                 type: 'news',
+            },
+            enable_passkey: {
+                action: {
+                    route: routes.passkeys,
+                    text: localize('Enable passkey'),
+                },
+                key: 'enable_passkey',
+                header: localize('Level up your security'),
+                message: localize('Strengthen your account’s security today with the latest passkeys feature.'),
+                type: 'announce',
+                should_show_again: true,
             },
             identity: {
                 key: 'identity',
@@ -1525,18 +1538,6 @@ export default class NotificationStore extends BaseStore {
                 },
                 type: 'danger',
             },
-            mt5_notification: {
-                key: 'mt5_notification',
-                header: localize('Changes to your Deriv MT5 login'),
-                message: localize('We are going to update the login process for your Deriv MT5 account.'),
-                action: {
-                    text: localize('Learn more'),
-                    onClick: () => {
-                        setMT5NotificationModal(true);
-                    },
-                },
-                type: 'warning',
-            },
             additional_kyc_info: {
                 key: 'additional_kyc_info',
                 header: <Localize i18n_default_text='Pending action required' />,
@@ -1571,6 +1572,12 @@ export default class NotificationStore extends BaseStore {
     }
 
     toggleNotificationsModal() {
+        Analytics.trackEvent('ce_notification_form', {
+            action: this.is_notifications_visible ? 'close' : 'open',
+            form_name: 'ce_notification_form',
+            notification_num: this.notifications.length,
+        });
+
         this.is_notifications_visible = !this.is_notifications_visible;
     }
 

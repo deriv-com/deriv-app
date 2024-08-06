@@ -22,12 +22,16 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
     const { onSubmit } = quick_strategy;
     const [isAnnounceDialogOpen, setAnnounceDialogOpen] = useState(false);
     const [isOpenAnnounceList, setIsOpenAnnounceList] = useState(false);
-    const [amount_announce, setAmountAnnounce] = useState({});
+    const [amount_announce, setAmountAnnounce] = useState({} as Record<string, boolean>);
     const accumulator_announcement = ANNOUNCEMENTS['ACCUMULATOR_ANNOUNCE'];
-
     const is_active_announce_1 = amount_announce?.announce_1;
     const is_active_announce_2 = amount_announce?.announce_2;
     const is_active_announce_3 = amount_announce?.announce_3;
+
+    const handleAnnounceSubmit = (data: Record<string, boolean>) => {
+        setAmountAnnounce(data);
+        localStorage?.setItem('bot-announcements', JSON.stringify(data));
+    };
 
     const announcements = [
         {
@@ -39,7 +43,7 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
                         announce={is_active_announce_1}
                     />,
             buttonAction: () => {
-                setAmountAnnounce({ ...amount_announce, 'announce_1': false });
+                handleAnnounceSubmit({ ...amount_announce, 'announce_1': false });
             },
             actionText: '',
         },
@@ -52,7 +56,7 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
                         announce={is_active_announce_2}
                     />,
             buttonAction: () => {
-                setAmountAnnounce({ ...amount_announce, 'announce_2': false });
+                handleAnnounceSubmit({ ...amount_announce, 'announce_2': false });
             },
             actionText: '',
         },
@@ -67,17 +71,30 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
             buttonAction: () => {
                 setAnnounceDialogOpen(true);
                 setIsOpenAnnounceList(!isOpenAnnounceList);
-                setAmountAnnounce({ ...amount_announce, 'announce_3': false });
+                handleAnnounceSubmit({ ...amount_announce, 'announce_3': false });
             },
             actionText: '',
         },
     ];
 
     useEffect(() => {
-        const obj_announcements = Object.fromEntries(
-            Array.from({ length: announcements.length }, (_, i) => [`announce_${i + 1}`, true])
-        );
-        setAmountAnnounce(obj_announcements);
+        let data: Record<string, boolean> | null = null;
+        try {
+            data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
+            console.log('data', data, data && Object.keys(data).length !== 0);
+            
+            if (data && Object.keys(data).length !== 0){
+                setAmountAnnounce(data);
+            } else {
+                const obj_announcements = Object.fromEntries(
+                    Array.from({ length: announcements.length }, (_, i) => [`announce_${i + 1}`, true])
+                );
+                setAmountAnnounce(obj_announcements);
+                localStorage?.setItem('bot-announcements', JSON.stringify(obj_announcements));
+            }
+        } catch {
+            data = null;
+        }
     }, [])
 
     const handleOnCancelAccumulator = () => {

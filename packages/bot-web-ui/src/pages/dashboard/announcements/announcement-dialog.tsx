@@ -3,10 +3,10 @@ import { Dialog, Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { LabelPairedCheckCaptionFillIcon } from '@deriv/quill-icons';
 import './announcement-dialog.scss';
-import { Announcement } from './config';
+import { TAnnouncement, TContentItem } from './config';
 
 type TAccumulatorAnnouncementDialog = {
-    announcement: Announcement;
+    announcement: TAnnouncement;
     isAnnounceDialogOpen: boolean;
     setAnnounceDialogOpen: (isAnnounceDialogOpen: boolean) => void;
     handleOnConfirm: () => void;
@@ -49,14 +49,14 @@ const AnnouncementDialog = ({ announcement, handleOnConfirm, handleOnCancel, isA
                         <Localize i18n_default_text={subtitle} />
                     </Text>
                     {
-                        content.map((text: string) => {
+                        content.map((content: TContentItem) => {
                             return (
-                                <div className={`${base_classname}__body-item`}>
+                                <div className={`${base_classname}__body-item`} key={content?.id}>
                                     <div>
                                         <LabelPairedCheckCaptionFillIcon />
                                     </div>
                                     <Text as='p' line_height='xl' size='xs'>
-                                        <Localize i18n_default_text={text} />
+                                        <Localize i18n_default_text={content?.text} />
                                     </Text>
                                 </div>
                             );

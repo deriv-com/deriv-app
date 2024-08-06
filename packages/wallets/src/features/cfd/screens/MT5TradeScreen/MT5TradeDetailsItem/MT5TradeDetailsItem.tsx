@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { FC } from 'react';
 import classNames from 'classnames';
 import { Localize } from '@deriv-com/translations';
 import { Text, useDevice } from '@deriv-com/ui';
@@ -19,12 +19,6 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, vari
 
     const textSize = isDesktop ? 'xs' : 'sm';
 
-    const TradeDetailsHeader = ({ children }: PropsWithChildren) => (
-        <Text color='less-prominent' size={textSize}>
-            {children}
-        </Text>
-    );
-
     return (
         <div
             className={classNames('wallets-mt5-trade-details-item', {
@@ -33,9 +27,15 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, vari
         >
             {variant === 'clipboard' && (
                 <React.Fragment>
-                    <TradeDetailsHeader>{label}</TradeDetailsHeader>
+                    <Text color='less-prominent' size={textSize}>
+                        {label}
+                    </Text>
                     <div className='wallets-mt5-trade-details-item__values'>
-                        <Text className='wallets-mt5-trade-details-item__mono-text' size={textSize} weight='bold'>
+                        <Text
+                            className='wallets-mt5-trade-details-item__values--mono-text'
+                            size={textSize}
+                            weight='bold'
+                        >
                             {value}
                         </Text>
                         <WalletClipboard popoverAlignment='left' textCopy={value} />
@@ -44,11 +44,13 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, vari
             )}
             {variant === 'password' && (
                 <React.Fragment>
-                    <TradeDetailsHeader>{label}</TradeDetailsHeader>
+                    <Text color='less-prominent' size={textSize}>
+                        {label}
+                    </Text>
                     <div className='wallets-mt5-trade-details-item__values'>
                         <Text
                             as='a'
-                            className='wallets-mt5-trade-details-item__forgot-link'
+                            className='wallets-mt5-trade-details-item__values--forgot-link'
                             onClick={() => show(<ChangePassword />)}
                             size={textSize}
                             weight='bold'

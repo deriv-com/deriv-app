@@ -26,18 +26,14 @@
             border: none;
             border-radius: none;
         }
-    }
 
-    &__mono-text {
-        font-family: 'Courier', serif;
-    }
+        &--mono-text {
+            font-family: 'Courier', serif;
+        }
 
-    &__forgot-link {
-        text-decoration: underline;
-        cursor: pointer;
-    }
-
-    &__edit {
-        cursor: pointer;
+        &--forgot-link {
+            text-decoration: underline;
+            cursor: pointer;
+        }
     }
 }

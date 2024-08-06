@@ -6,7 +6,6 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { Button } from '@deriv-com/quill-ui';
 import { useDevice } from '@deriv-com/ui';
 import {
-    CONTRACT_TYPES,
     getContractTypeDisplay,
     getIndicativePrice,
     hasContractEntered,
@@ -16,6 +15,7 @@ import {
 } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import PurchaseButtonContent from './purchase-button-content';
+import { getTradeTypeTabsList } from 'AppV2/Utils/trade-params-utils';
 
 const PurchaseButton = observer(() => {
     const [loading_button_index, setLoadingButtonIndex] = React.useState<number | null>(null);
@@ -39,6 +39,7 @@ const PurchaseButton = observer(() => {
         proposal_info,
         onPurchaseV2,
         symbol,
+        trade_type_tab,
         trade_types,
     } = useTraderStore();
 
@@ -59,7 +60,9 @@ const PurchaseButton = observer(() => {
         is_vanilla_fx,
         is_vanilla,
     };
-    const trade_types_array = Object.keys(trade_types);
+    const trade_types_array = Object.keys(trade_types).filter(
+        type => !getTradeTypeTabsList(contract_type).length || type === trade_type_tab
+    );
     const active_accu_contract = is_accumulator
         ? all_positions.find(
               ({ contract_info, type }) =>
@@ -75,17 +78,9 @@ const PurchaseButton = observer(() => {
         (is_valid_to_sell && active_accu_contract && getIndicativePrice(active_accu_contract.contract_info)) || null;
 
     const getButtonType = (index: number, trade_type: string) => {
-        const purchase_button_trade_types = [
-            CONTRACT_TYPES.VANILLA.CALL,
-            CONTRACT_TYPES.TURBOS.LONG,
-            CONTRACT_TYPES.ACCUMULATOR,
-        ] as string[];
-
-        const sell_button_trade_types = [CONTRACT_TYPES.VANILLA.PUT, CONTRACT_TYPES.TURBOS.SHORT] as string[];
-
-        if (purchase_button_trade_types.includes(trade_type)) return 'purchase';
-        if (sell_button_trade_types.includes(trade_type)) return 'sell';
-        return index ? 'sell' : 'purchase';
+        const tab_index = getTradeTypeTabsList(contract_type).findIndex(tab => tab.contract_type === trade_type);
+        const button_index = tab_index < 0 ? index : tab_index;
+        return button_index ? 'sell' : 'purchase';
     };
 
     React.useEffect(() => {

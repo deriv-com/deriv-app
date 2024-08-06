@@ -17,7 +17,7 @@
             background: var(--icon-grey-background);
             border-radius: $BORDER_RADIUS * 2;
         }
-        @include mobile {
+        @include mobile-screen {
             &.deposit-commission {
                 order: 5;
             }
@@ -27,7 +27,7 @@
             }
         }
     }
-    @include mobile {
+    @include mobile-screen {
         grid-template-columns: 1fr;
         margin-top: 2.4rem;
     }

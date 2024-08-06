@@ -15,7 +15,7 @@
             margin-right: 0.8rem;
         }
         &-wrapper {
-            @include mobile {
+            @include mobile-screen {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;

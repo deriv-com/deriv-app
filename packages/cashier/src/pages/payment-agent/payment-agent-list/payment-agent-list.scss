@@ -84,7 +84,7 @@
                 }
             }
         }
-        @include mobile {
+        @include mobile-screen {
             &-header {
                 position: relative;
                 z-index: 1;
@@ -134,7 +134,7 @@
             &__header--title {
                 font-size: var(--text-size-sm);
             }
-            @include mobile {
+            @include mobile-screen {
                 &__dialog {
                     width: 100%;
                     margin: 0 1.6rem;

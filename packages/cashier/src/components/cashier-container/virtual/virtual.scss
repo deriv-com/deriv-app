@@ -1,5 +1,5 @@
 .virtual {
-    @include mobile {
+    @include mobile-screen {
         padding: 0 1.6rem;
     }
     &__header {
@@ -18,7 +18,7 @@
         background-size: 100%;
         margin: 0 auto 1rem;
 
-        @include mobile {
+        @include mobile-screen {
             width: 100%;
         }
 

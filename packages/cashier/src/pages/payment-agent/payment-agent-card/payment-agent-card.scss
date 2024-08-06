@@ -6,7 +6,7 @@
     border-radius: $BORDER_RADIUS * 2;
     margin-bottom: 1.6rem;
 
-    @include mobile {
+    @include mobile-screen {
         width: auto;
     }
 

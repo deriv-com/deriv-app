@@ -114,7 +114,7 @@
             padding: 1.6rem 0;
         }
 
-        @include desktop {
+        @include desktop-screen {
             margin-top: 0.8rem;
         }
 
@@ -262,12 +262,12 @@
         font-size: var(--text-size-xxs);
         font-weight: bold;
 
-        @include mobile {
+        @include mobile-screen {
             font-size: var(--text-size-xxxs);
         }
     }
 
-    @include desktop {
+    @include desktop-screen {
         &__form-submit {
             min-width: 36rem;
             width: fit-content;

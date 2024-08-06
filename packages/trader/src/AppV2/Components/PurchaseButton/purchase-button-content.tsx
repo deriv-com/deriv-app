@@ -7,27 +7,48 @@ import { Money } from '@deriv/components';
 
 type TPurchaseButtonContent = {
     current_stake?: number | null;
+    info: ReturnType<typeof useTraderStore>['proposal_info'][0] | Record<string, never>;
     is_reverse?: boolean;
-} & Pick<ReturnType<typeof useTraderStore>, 'currency' | 'has_open_accu_contract' | 'is_accumulator'>;
+} & Pick<
+    ReturnType<typeof useTraderStore>,
+    | 'currency'
+    | 'has_open_accu_contract'
+    | 'is_accumulator'
+    | 'is_multiplier'
+    | 'is_vanilla_fx'
+    | 'is_vanilla'
+    | 'is_turbos'
+>;
 
 const PurchaseButtonContent = ({
     currency,
     current_stake,
     has_open_accu_contract,
+    info,
     is_accumulator,
+    is_multiplier,
+    is_turbos,
+    is_vanilla,
+    is_vanilla_fx,
     is_reverse,
 }: TPurchaseButtonContent) => {
-    const { current_stake: localized_current_stake } = getLocalizedBasis();
+    const { current_stake: localized_current_stake, payout, stake } = getLocalizedBasis();
 
     const getAmount = () => {
-        return Number(current_stake);
+        const { stake, obj_contract_basis } = info;
+
+        if (is_multiplier) return stake;
+        if (is_accumulator) return Number(current_stake);
+        return obj_contract_basis?.value;
     };
     const getTextBasis = () => {
-        return localized_current_stake;
+        if (is_multiplier) return stake;
+        if (is_accumulator) return localized_current_stake;
+        return payout;
     };
 
-    if (!is_accumulator) return null;
-    if (!has_open_accu_contract) return null;
+    if (is_vanilla || is_vanilla_fx || is_turbos) return null;
+    if (is_accumulator && !has_open_accu_contract) return null;
 
     const text_basis = getTextBasis();
     const amount = getAmount();
@@ -57,7 +78,12 @@ const PurchaseButtonContent = ({
                         size='sm'
                         className={clsx(!has_open_accu_contract && 'purchase-button__information__item')}
                     >
-                        <Money amount={amount} currency={currency} show_currency />
+                        <Money
+                            amount={amount}
+                            currency={currency}
+                            should_format={!is_turbos && !is_vanilla}
+                            show_currency
+                        />
                     </CaptionText>
                 </React.Fragment>
             )}

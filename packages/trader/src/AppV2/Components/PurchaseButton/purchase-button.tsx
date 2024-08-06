@@ -29,13 +29,8 @@ const PurchaseButton = observer(() => {
         currency,
         has_open_accu_contract,
         is_accumulator,
-        is_multiplier,
         is_purchase_enabled,
         is_trade_enabled_v2,
-        is_turbos,
-        is_vanilla_fx,
-        is_vanilla,
-        proposal_info,
         onPurchaseV2,
         symbol,
         trade_types,
@@ -51,10 +46,6 @@ const PurchaseButton = observer(() => {
         currency,
         has_open_accu_contract,
         is_accumulator,
-        is_multiplier,
-        is_turbos,
-        is_vanilla_fx,
-        is_vanilla,
     };
     const trade_types_array = Object.keys(trade_types);
     const active_accu_contract = is_accumulator
@@ -90,7 +81,6 @@ const PurchaseButton = observer(() => {
     }, [is_purchase_enabled]);
 
     if (is_accumulator && has_open_accu_contract) {
-        const info = proposal_info?.[trade_types_array[0]] || {};
         return (
             <div className='purchase-button__wrapper'>
                 <Button
@@ -103,11 +93,7 @@ const PurchaseButton = observer(() => {
                     disabled={!is_valid_to_sell || active_accu_contract?.is_sell_requested}
                     onClick={() => onClickSell(active_accu_contract?.contract_info.contract_id)}
                 >
-                    <PurchaseButtonContent
-                        {...purchase_button_content_props}
-                        info={info}
-                        current_stake={current_stake}
-                    />
+                    <PurchaseButtonContent {...purchase_button_content_props} current_stake={current_stake} />
                 </Button>
             </div>
         );
@@ -116,7 +102,6 @@ const PurchaseButton = observer(() => {
     return (
         <div className='purchase-button__wrapper'>
             {trade_types_array.map((trade_type, index) => {
-                const info = proposal_info?.[trade_type] || {};
                 const is_single_button = trade_types_array.length === 1;
                 const is_loading = loading_button_index === index;
                 const is_disabled = !is_trade_enabled_v2;
@@ -139,15 +124,7 @@ const PurchaseButton = observer(() => {
                             setLoadingButtonIndex(index);
                             onPurchaseV2(trade_type, isMobile);
                         }}
-                    >
-                        {!is_loading && (
-                            <PurchaseButtonContent
-                                {...purchase_button_content_props}
-                                info={info}
-                                is_reverse={!!index}
-                            />
-                        )}
-                    </Button>
+                    />
                 );
             })}
         </div>

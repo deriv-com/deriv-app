@@ -133,19 +133,25 @@ const PersonalDetails = () => {
                                 }))}
                                 listHeight='sm'
                                 name='wallets-personal-details__dropdown-tax-residence'
+                                onBlur={e => {
+                                    const matchFound = residenceList.find(
+                                        residence =>
+                                            residence.text?.toLocaleLowerCase() === e.target.value.toLocaleLowerCase()
+                                    );
+                                    if (!matchFound) {
+                                        setFormValues('taxResidence', '');
+                                    }
+                                }}
                                 onFocus={() => {
                                     setTouched({ ...touched, taxResidence: true });
                                 }}
                                 onSearch={inputValue => {
-                                    const matchFound = residenceList.some(residence => {
+                                    residenceList.some(residence => {
                                         if (residence.text?.toLowerCase() === inputValue.toLowerCase()) {
                                             setFormValues('taxResidence', residence.value);
                                             return true;
                                         }
                                     });
-                                    if (!matchFound) {
-                                        setFormValues('taxResidence', '');
-                                    }
                                 }}
                                 onSelect={selectedItem => {
                                     setFormValues('taxResidence', selectedItem);

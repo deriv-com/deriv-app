@@ -52,8 +52,8 @@ describe('PayoutSelector Component', () => {
     test('should render mobile widget when isMobile is true', () => {
         mockUseDevice.mockReturnValue({ isMobile: true });
         render(<PayoutSelector />);
-        expect(screen.getByText('20')).toBeInTheDocument();
-        expect(screen.getByText('1.2345 USD')).toBeInTheDocument();
+        expect(screen.getByText('20 USD')).toBeInTheDocument();
+        expect(screen.getByText('1.2345')).toBeInTheDocument();
         expect(screen.getByText('Payout per point')).toBeInTheDocument();
     });
 
@@ -66,7 +66,7 @@ describe('PayoutSelector Component', () => {
     test('should call togglePayoutWheelPicker when mobile widget is clicked', () => {
         mockUseDevice.mockReturnValue({ isMobile: true });
         render(<PayoutSelector />);
-        fireEvent.click(screen.getByText('20'));
+        fireEvent.click(screen.getByText('20 USD'));
         expect(mockTraderStore.togglePayoutWheelPicker).toHaveBeenCalled();
     });
 });

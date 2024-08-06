@@ -139,11 +139,7 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
                         as='h1'
                         className='currency-label'
                         style={{
-                            paddingLeft:
-                                optionWidth / 5 +
-                                (String(Math.max(...options)).length > 3
-                                    ? (String(Math.max(...options)).length - 3) * 20
-                                    : 0),
+                            paddingLeft: String(Math.abs(Math.max(...options))).length * 15 + 40,
                         }}
                     >
                         {currency}

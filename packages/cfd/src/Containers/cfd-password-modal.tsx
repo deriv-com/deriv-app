@@ -361,7 +361,7 @@ const CreatePassword = ({
                                                     setFieldTouched
                                                 );
                                             }}
-                                            data_testId={`dt_${platform}_password`}
+                                            data_testId={`dt_${platform}_${product}_password`}
                                         />
                                     )}
                                 </PasswordMeter>
@@ -825,8 +825,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             (values as TCFDPasswordFormValues & { platform: string }).platform = platform;
             submitCFDPassword(values, actions);
         }
-        if (product === 'zero_spread') {
-            setProduct();
+        if (product === PRODUCT.ZEROSPREAD) {
+            closeModal();
         }
     };
 

@@ -1,5 +1,6 @@
 import React, { FC, PropsWithChildren } from 'react';
 import classNames from 'classnames';
+import { Localize } from '@deriv-com/translations';
 import { Text, useDevice } from '@deriv-com/ui';
 import { WalletClipboard } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
@@ -52,7 +53,7 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, vari
                             size={textSize}
                             weight='bold'
                         >
-                            Forgot Password?
+                            <Localize i18n_default_text=' Forgot Password?' />
                         </Text>
                     </div>
                 </React.Fragment>

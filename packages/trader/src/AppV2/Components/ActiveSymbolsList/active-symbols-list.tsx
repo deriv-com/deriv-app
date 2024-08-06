@@ -61,7 +61,6 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
                                 selectedSymbol={selectedSymbol}
                                 setSelectedSymbol={setSelectedSymbol}
                                 setIsOpen={setIsOpen}
-                                ref={marketCategoriesRef}
                                 isOpen={isOpen}
                             />
                         )}

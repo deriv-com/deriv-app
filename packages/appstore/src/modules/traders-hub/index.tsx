@@ -152,8 +152,8 @@ const TradersHub = observer(() => {
 
     return (
         <React.Fragment>
-            <BusinessClosureBanner />
             <AfterSignupFlow />
+            <BusinessClosureBanner />
             <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop}>
                 {can_show_notify && <Notifications />}
                 <div

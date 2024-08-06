@@ -1,7 +1,6 @@
 .business-closure-banner {
     padding-inline: 1.6rem;
-    // One more solution just change the color and make it without opacity instead of height calc
-    // background-color: #fff4e4;
+    // One more solution just change the color and make it without opacity instead of height calc (background-color: #fff4e4;)
 
     @include desktop-screen {
         position: sticky;

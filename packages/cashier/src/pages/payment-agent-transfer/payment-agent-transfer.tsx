@@ -10,7 +10,10 @@ import PaymentAgentTransferConfirm from './payment-agent-transfer-confirm';
 import PaymentAgentTransferForm from './payment-agent-transfer-form';
 import PaymentAgentTransferReceipt from './payment-agent-transfer-receipt';
 import { useCashierStore } from '../../stores/useCashierStores';
-import { PageContainer } from '../../components/page-container';
+
+const PageContainer = React.lazy(
+    () => import(/* webpackChunkName: "page-container" */ 'Components/page-container/page-container')
+);
 
 const PaymentAgentTransfer = observer(() => {
     const { client } = useStore();

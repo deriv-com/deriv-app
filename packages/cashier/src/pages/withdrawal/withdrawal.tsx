@@ -2,7 +2,6 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { useCurrentCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import { PageContainer } from 'Components/page-container';
 import TransactionsCryptoHistory from '../../components/transactions-crypto-history';
 import Error from '../../components/error';
 import NoBalance from '../../components/no-balance';
@@ -14,6 +13,10 @@ import WithdrawalCryptoReceipt from './withdrawal-crypto-receipt';
 import WithdrawalFiat from './withdrawal-fiat';
 import WithdrawalLocked from './withdrawal-locked';
 import WithdrawalVerificationEmail from './withdrawal-verification-email';
+
+const PageContainer = React.lazy(
+    () => import(/* webpackChunkName: "page-container" */ 'Components/page-container/page-container')
+);
 
 const WithdrawalSideNotes = observer(() => {
     const { client } = useStore();

@@ -361,7 +361,7 @@ const CreatePassword = ({
                                                     setFieldTouched
                                                 );
                                             }}
-                                            data_testId={`dt_${platform}_${product}_password`}
+                                            data_testId={`dt_${platform}_password`}
                                         />
                                     )}
                                 </PasswordMeter>

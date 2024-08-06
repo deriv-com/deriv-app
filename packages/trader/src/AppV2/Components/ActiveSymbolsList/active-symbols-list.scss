@@ -1,0 +1,12 @@
+.active-symbols-list {
+    &__content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+
+        .tab-list--container {
+            justify-content: flex-start;
+        }
+    }
+}

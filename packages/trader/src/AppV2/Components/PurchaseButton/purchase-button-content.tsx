@@ -9,6 +9,7 @@ type TPurchaseButtonContent = {
     current_stake?: number | null;
     info: ReturnType<typeof useTraderStore>['proposal_info'][0] | Record<string, never>;
     is_reverse?: boolean;
+    is_high_low?: boolean;
 } & Pick<
     ReturnType<typeof useTraderStore>,
     | 'currency'
@@ -18,6 +19,7 @@ type TPurchaseButtonContent = {
     | 'is_vanilla_fx'
     | 'is_vanilla'
     | 'is_turbos'
+    | 'is_touch'
 >;
 
 const PurchaseButtonContent = ({
@@ -26,11 +28,13 @@ const PurchaseButtonContent = ({
     has_open_accu_contract,
     info,
     is_accumulator,
+    is_high_low,
     is_multiplier,
     is_turbos,
     is_vanilla,
     is_vanilla_fx,
     is_reverse,
+    is_touch,
 }: TPurchaseButtonContent) => {
     const { current_stake: localized_current_stake, payout, stake } = getLocalizedBasis();
 
@@ -47,7 +51,7 @@ const PurchaseButtonContent = ({
         return payout;
     };
 
-    if (is_vanilla || is_vanilla_fx || is_turbos) return null;
+    if (is_vanilla || is_vanilla_fx || is_turbos || is_high_low || is_touch) return null;
     if (is_accumulator && !has_open_accu_contract) return null;
 
     const text_basis = getTextBasis();

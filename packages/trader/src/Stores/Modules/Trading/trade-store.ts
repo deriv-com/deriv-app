@@ -35,6 +35,7 @@ import {
     getContractTypesConfig,
     setTradeURLParams,
     getTradeURLParams,
+    isTouchContract,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -1838,6 +1839,10 @@ export default class TradeStore extends BaseStore {
 
     get is_vanilla_fx() {
         return isVanillaFxContract(this.contract_type, this.symbol);
+    }
+
+    get is_touch() {
+        return isTouchContract(this.contract_type);
     }
 
     async getFirstOpenMarket(markets_to_search: string[]) {

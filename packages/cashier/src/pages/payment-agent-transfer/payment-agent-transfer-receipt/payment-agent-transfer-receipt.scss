@@ -111,13 +111,8 @@
 
             &__form-submit {
                 display: flex;
-                flex-flow: row;
                 justify-content: center;
                 text-align: center;
-
-                @include mobile {
-                    flex-flow: column;
-                }
 
                 &-button {
                     margin: 0;

@@ -6,7 +6,7 @@
 
         @include mobile-or-tablet-screen {
             width: 100%;
-            padding: 2.4rem 0 0;
+            padding: unset;
 
             & .dc-input__field[type='textarea'] {
                 height: 11.9rem;

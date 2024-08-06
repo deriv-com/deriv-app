@@ -21,16 +21,19 @@
         align-items: center;
         gap: 0.8rem;
         padding-right: 0.8rem;
-        font-family: 'Courier', monospace;
-
-        & .wallets-text {
-            font-family: 'Courier', serif;
-        }
 
         & .wallets-clipboard {
             border: none;
             border-radius: none;
         }
+    }
+
+    &__mono-text {
+        font-family: 'Courier', serif;
+    }
+
+    &__forgot-link {
+        text-decoration: underline;
     }
 
     &__edit {

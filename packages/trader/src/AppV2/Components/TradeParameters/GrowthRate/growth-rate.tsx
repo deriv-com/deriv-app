@@ -26,6 +26,7 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
 
     const [is_open, setIsOpen] = React.useState(false);
     const [selected_growth_rate, setSelectedGrowthRate] = React.useState(growth_rate);
+    const is_small_screen = window.innerHeight <= 640;
 
     React.useEffect(() => {
         setSelectedGrowthRate(growth_rate);
@@ -49,6 +50,7 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
             component: (
                 <GrowthRatePicker
                     accumulator_range_list={accumulator_range_list}
+                    is_small_screen={is_small_screen}
                     maximum_ticks={maximum_ticks}
                     onSave={onSaveButtonClick}
                     growth_rate={selected_growth_rate}
@@ -89,7 +91,7 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
                 onClick={() => setIsOpen(true)}
             />
             <ActionSheet.Root isOpen={is_open} onClose={onActionSheetClose} position='left' expandable={false}>
-                <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen={window.innerHeight <= 640}>
+                <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen={is_small_screen}>
                     <Carousel
                         classname='growth-rate__carousel'
                         header={CarouselHeader}

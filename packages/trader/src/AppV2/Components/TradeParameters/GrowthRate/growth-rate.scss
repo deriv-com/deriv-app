@@ -1,3 +1,5 @@
+$HANDLEBAR_HEIGHT: var(--core-size-1000);
+$HEADER_TITLE_HEIGHT: var(--core-size-3200);
 $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
 
 .growth-rate {
@@ -5,8 +7,13 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
         height: 100%;
     }
     &__content {
-        height: calc(100% - $FOOTER_BUTTON_HEIGHT);
+        height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $FOOTER_BUTTON_HEIGHT);
         gap: var(--core-spacing-400);
+        padding: 0 var(--component-actionSheet-spacing-padding-md);
+
+        &--small {
+            height: calc(90dvh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $FOOTER_BUTTON_HEIGHT);
+        }
     }
     &__content,
     &__details-item {
@@ -14,15 +21,21 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
         flex-direction: column;
     }
     &__picker {
-        height: calc(100% - var(--core-size-2200));
+        flex-grow: 1;
+        min-height: 0;
+        overflow: hidden;
     }
     &__details {
         display: flex;
         justify-content: space-around;
-        height: var(--core-size-2200);
+        min-height: var(--core-size-2200);
 
         &-item {
             align-items: center;
+
+            p:first-child {
+                color: var(--core-color-opacity-black-400);
+            }
         }
     }
 }

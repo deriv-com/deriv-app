@@ -1,5 +1,5 @@
-import React, { forwardRef, Ref, useEffect, useRef } from 'react';
-import { Tab, useSnackbar } from '@deriv-com/quill-ui';
+import React from 'react';
+import { Tab } from '@deriv-com/quill-ui';
 import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 import { categorizeSymbols } from 'AppV2/Utils/symbol-categories-utils';
 import MarketCategory from '../MarketCategory';

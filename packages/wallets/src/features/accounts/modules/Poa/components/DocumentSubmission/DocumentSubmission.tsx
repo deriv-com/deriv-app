@@ -36,9 +36,8 @@ const DocumentSubmission: React.FC = () => {
                 <div className='wallets-poa__document__container__disclaimer'>
                     <WalletText size='sm' weight='bold'>
                         {localize(
-                            `We accept only these types of documents as proof of address. The document must be recent (issued within last ${
-                                isEuRegion ? '6' : '12'
-                            } months) and include your name and address:`
+                            'We accept only these types of documents as proof of address. The document must be recent (issued within last {{timePeriod}} months) and include your name and address:',
+                            { timePeriod: isEuRegion ? '6' : '12' }
                         )}
                     </WalletText>
 

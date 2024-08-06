@@ -136,9 +136,9 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                                         {document?.additional && (
                                             <FormField
                                                 disabled={!values.documentType}
-                                                label={localize(
-                                                    `Enter your ${document.additional?.value ?? ''} number`
-                                                )}
+                                                label={localize('Enter your {{additionalDoumentName}} number', {
+                                                    additionalDoumentName: document.additional?.value ?? '',
+                                                })}
                                                 message={
                                                     additionalDocumentNumberExample
                                                         ? localize('Example: {{example}}', {

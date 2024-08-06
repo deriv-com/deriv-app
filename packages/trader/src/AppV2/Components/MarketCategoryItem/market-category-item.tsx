@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { useModulesStore } from 'Stores/useModulesStores';
+import { clickAndKeyEventHandler } from '@deriv/shared';
 
 type TMarketCategoryItem = {
     item: ActiveSymbols[0];
@@ -30,15 +31,28 @@ const MarketCategoryItem = forwardRef(
             setIsFavorite(favoriteSymbols.includes(item.symbol));
         }, [favoriteSymbols, item.symbol]);
 
-        const handleSelect = async (e: React.MouseEvent<HTMLSpanElement>) => {
-            const symbol = (e.currentTarget as HTMLSpanElement).getAttribute('data-symbol');
-            setSelectedSymbol(symbol ?? '');
+        const clickAndKeyEventHandler = (
+            callback?: (symbol: string) => void,
+            e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>
+        ) => {
+            if (e) {
+                e.preventDefault();
+                const symbol = (e.currentTarget as HTMLElement).getAttribute('data-symbol') || '';
+                if (e.type !== 'keydown' || (e.type === 'keydown' && (e as React.KeyboardEvent).key === 'Enter')) {
+                    callback?.(symbol);
+                }
+            } else {
+                callback?.('');
+            }
+        };
+
+        const handleSelect = async (symbol: string) => {
+            setSelectedSymbol(symbol);
             await onSymbolChange({ target: { name: 'symbol', value: symbol } });
             setIsOpen(false);
         };
 
-        const toggleFavorites = (e: React.MouseEvent<HTMLSpanElement>) => {
-            const symbol = (e.currentTarget as HTMLSpanElement).getAttribute('data-symbol');
+        const toggleFavorites = (symbol: string) => {
             if (!symbol) return;
             const symbolIndex = favoriteSymbols.indexOf(symbol);
 
@@ -69,6 +83,14 @@ const MarketCategoryItem = forwardRef(
             setIsFavorite(favoriteSymbols.includes(symbol));
         };
 
+        const handleSelectDecorator = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+            clickAndKeyEventHandler(handleSelect, e);
+        };
+
+        const toggleFavoritesDecorator = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+            clickAndKeyEventHandler(toggleFavorites, e);
+        };
+
         return (
             <div
                 className={clsx('market-category-item', {
@@ -76,7 +98,12 @@ const MarketCategoryItem = forwardRef(
                 })}
                 ref={ref}
             >
-                <div className='market-category-item-left' data-symbol={item.symbol} onClick={handleSelect}>
+                <span
+                    className='market-category-item-left'
+                    data-symbol={item.symbol}
+                    onClick={handleSelectDecorator}
+                    onKeyDown={handleSelectDecorator}
+                >
                     <SymbolIconsMapper symbol={item.symbol} />
                     <Text
                         size='sm'
@@ -94,8 +121,8 @@ const MarketCategoryItem = forwardRef(
                             showIcon={false}
                         />
                     )}
-                </div>
-                <div onClick={toggleFavorites} data-symbol={item.symbol}>
+                </span>
+                <span onClick={toggleFavoritesDecorator} onKeyDown={toggleFavoritesDecorator} data-symbol={item.symbol}>
                     {isFavorite ? (
                         <StandaloneStarFillIcon fill='var(--core-color-solid-mustard-700)' iconSize='sm' />
                     ) : (
@@ -108,7 +135,7 @@ const MarketCategoryItem = forwardRef(
                             iconSize='sm'
                         />
                     )}
-                </div>
+                </span>
             </div>
         );
     }

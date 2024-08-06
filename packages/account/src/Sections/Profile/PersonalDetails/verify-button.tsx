@@ -11,7 +11,11 @@ import { usePhoneNumberVerificationSetTimer, useVerifyEmail } from '@deriv/hooks
 import { useDevice } from '@deriv-com/ui';
 import './verify-button.scss';
 
-export const VerifyButton = observer(() => {
+type TVerifyButton = {
+    setIsPhoneFieldDisable: (value: boolean) => void;
+};
+
+export const VerifyButton = observer(({ setIsPhoneFieldDisable }: TVerifyButton) => {
     const [open_popover, setOpenPopover] = useState(false);
     const { client, ui } = useStore();
     const { setShouldShowPhoneNumberOTP } = ui;
@@ -29,6 +33,14 @@ export const VerifyButton = observer(() => {
             history.push(routes.phone_verification);
         }
     }, [WS.isSuccess, history]);
+
+    useEffect(() => {
+        if (next_otp_request || is_request_button_diabled) {
+            setIsPhoneFieldDisable(true);
+        } else {
+            setIsPhoneFieldDisable(false);
+        }
+    }, [next_otp_request, is_request_button_diabled]);
 
     const redirectToPhoneVerification = () => {
         if (next_otp_request || is_request_button_diabled) return;

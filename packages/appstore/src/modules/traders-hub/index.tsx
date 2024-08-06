@@ -59,7 +59,7 @@ const TradersHub = observer(() => {
     } = client;
 
     const { is_eu_demo, is_eu_real } = useContentFlag();
-    const { selected_platform_type, setTogglePlatformType, is_eu_user } = traders_hub;
+    const { selected_platform_type, setTogglePlatformType, is_eu_user, is_real } = traders_hub;
     const traders_hub_ref = React.useRef<HTMLDivElement>(null);
 
     const can_show_notify =
@@ -162,6 +162,7 @@ const TradersHub = observer(() => {
                     })}
                     ref={traders_hub_ref}
                 >
+                    {has_any_real_account && is_real && <div className='get-started-trading-banner-ct' />}
                     {should_show_banner && !has_any_real_account && !is_eu && is_landing_company_loaded && (
                         <Suspense fallback={<div />}>
                             <RealAccountCreationBanner />

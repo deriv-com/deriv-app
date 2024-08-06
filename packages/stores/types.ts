@@ -825,6 +825,8 @@ type TUiStore = {
     setShouldShowDepositNowOrLaterModal: (value: boolean) => void;
     should_show_crypto_transaction_processing_modal: boolean;
     setShouldShowCryptoTransactionProcessingModal: (value: boolean) => void;
+    is_trading_disabled_by_residence_modal_visible: boolean;
+    setIsTradingDisabledByResidenceModal: (value: boolean) => void;
 };
 
 type TPortfolioStore = {

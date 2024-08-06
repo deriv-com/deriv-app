@@ -2876,12 +2876,14 @@ export default class ClientStore extends BaseStore {
     }
 
     get account_time_of_closure() {
-        return this.account_status?.account_closure?.find(
-            item => item?.status_codes?.includes('residence_closure') && item?.type === 'residence'
-        )?.time_of_closure;
+        // return this.account_status?.account_closure?.find(
+        //     item => item?.status_codes?.includes('residence_closure') && item?.type === 'residence'
+        // )?.time_of_closure;
+        return 1725051600;
     }
 
     get is_account_to_be_closed_by_residence() {
-        return this.account_time_of_closure && this.residence && this.residence === 'sn';
+        // return this.account_time_of_closure && this.residence && this.residence === 'sn';
+        return true;
     }
 }

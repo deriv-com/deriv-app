@@ -40,7 +40,6 @@ const AccountStatusList = [
     'social_signup',
     'transfers_blocked',
     'trading_experience_not_complete',
-    'ukgc_funds_protection',
     'unwelcome',
     'withdrawal_locked',
 ] as const;

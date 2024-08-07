@@ -108,7 +108,7 @@ describe('TakeProfit', () => {
         userEvent.click(toggle_switcher);
 
         const input = screen.getByTestId(data_testid);
-        userEvent.type(input, ' ');
+        userEvent.type(input, '{space}{backspace}');
         expect(screen.getByText('Please enter a take profit amount.'));
 
         const save_button = screen.getByText('Save');

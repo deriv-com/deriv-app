@@ -6,7 +6,7 @@ import { Loading } from '@deriv/components';
 import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
 
 type TContractDescription = {
-    onTermClick: (params: { text: string; value: string }) => void;
+    onTermClick: (params: { text: React.ReactNode; value: string }) => void;
 };
 
 const AccumulatorsTradeDescription = makeLazyLoader(
@@ -124,7 +124,7 @@ const TradeDescription = ({
     onTermClick,
 }: {
     contract_type: string;
-    onTermClick: (params: { text: string; value: string }) => void;
+    onTermClick: (params: { text: React.ReactNode; value: string }) => void;
 }) => {
     let trade_type_template;
     switch (contract_type) {

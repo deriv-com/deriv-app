@@ -5,7 +5,7 @@ import { getTerm, getContractDescription } from 'AppV2/Utils/contract-descriptio
 const MultipliersTradeDescription = ({
     onTermClick,
 }: {
-    onTermClick: (params: { text: string; value: string }) => void;
+    onTermClick: (params: { text: React.ReactNode; value: string }) => void;
 }) => {
     const { STOP_OUT_LEVEL, TAKE_PROFIT, STOP_LOSS, DEAL_CANCELLATION, SLIPPAGE_RISK } = getTerm();
     const content = [

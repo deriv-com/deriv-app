@@ -6,7 +6,7 @@ import { getTerm, getContractDescription } from 'AppV2/Utils/contract-descriptio
 const AccumulatorsTradeDescription = ({
     onTermClick,
 }: {
-    onTermClick: (params: { text: string; value: string }) => void;
+    onTermClick: (params: { text: React.ReactNode; value: string }) => void;
 }) => {
     const { GROWTH_RATE, RANGE, PREVIOUS_SPOT_PRICE, PAYOUT, TAKE_PROFIT, SLIPPAGE_RISK } = getTerm();
     const content = [

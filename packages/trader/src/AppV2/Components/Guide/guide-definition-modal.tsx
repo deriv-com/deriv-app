@@ -5,7 +5,7 @@ import { getTermDefinition } from 'AppV2/Utils/contract-description-utils';
 
 type TGuideDefinitionModal = {
     contract_type: string;
-    term: { text: string; value: string } | null;
+    term: { text: React.ReactNode; value: string } | null;
     onClose: () => void;
 };
 

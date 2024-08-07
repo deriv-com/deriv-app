@@ -5,7 +5,7 @@ import { getTerm, getContractDescription } from 'AppV2/Utils/contract-descriptio
 const TurbosTradeDescription = ({
     onTermClick,
 }: {
-    onTermClick: (params: { text: string; value: string }) => void;
+    onTermClick: (params: { text: React.ReactNode; value: string }) => void;
 }) => {
     const { PAYOUT, EXPIRY, BARRIER, PAYOUT_PER_POINT, FINAL_PRICE, CONTRACT_VALUE } = getTerm();
     const content = [

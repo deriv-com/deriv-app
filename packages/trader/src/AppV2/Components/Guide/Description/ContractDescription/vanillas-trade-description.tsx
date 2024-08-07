@@ -5,7 +5,7 @@ import { getTerm, getContractDescription } from 'AppV2/Utils/contract-descriptio
 const VanillasTradeDescription = ({
     onTermClick,
 }: {
-    onTermClick: (params: { text: string; value: string }) => void;
+    onTermClick: (params: { text: React.ReactNode; value: string }) => void;
 }) => {
     const { PAYOUT, FINAL_PRICE, STRIKE_PRICE, EXPIRY, PAYOUT_PER_POINT, CONTRACT_VALUE } = getTerm();
     const content = [

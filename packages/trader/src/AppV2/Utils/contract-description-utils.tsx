@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { Text } from '@deriv-com/quill-ui';
 import VideoFragment from 'AppV2/Components/Guide/Description/video-fragment';
 import { DESCRIPTION_VIDEO_ID } from 'Modules/Trading/Helpers/video-config';
@@ -15,23 +15,23 @@ type TVideoVariants = {
 };
 
 export const getTerm = () => ({
-    BARRIER: { value: 'Barrier', text: localize('Barrier') },
-    CONTRACT_VALUE: { value: 'Contract value', text: localize('Contract value') },
-    DEAL_CANCELLATION: { value: 'Deal cancellation', text: localize('Deal cancellation') },
-    ENTRY_SPOT: { value: 'Entry spot', text: localize('Entry spot') },
-    EXIT_SPOT: { value: 'Exit spot', text: localize('Exit spot') },
-    EXPIRY: { value: 'Expiry', text: localize('Expiry') },
-    FINAL_PRICE: { value: 'Final price', text: localize('Final price') },
-    GROWTH_RATE: { value: 'Growth rate', text: localize('Growth rate') },
-    PAYOUT: { value: 'Payout', text: localize('Payout') },
-    PAYOUT_PER_POINT: { value: 'Payout per point', text: localize('Payout per point') },
-    PREVIOUS_SPOT_PRICE: { value: 'Previous spot price', text: localize('Previous spot price') },
-    RANGE: { value: 'Range', text: localize('Range') },
-    SLIPPAGE_RISK: { value: 'Slippage risk', text: localize('Slippage risk') },
-    STOP_OUT_LEVEL: { value: 'Stop out level', text: localize('Stop out level') },
-    STOP_LOSS: { value: 'Stop loss', text: localize('Stop loss') },
-    STRIKE_PRICE: { value: 'Strike price', text: localize('Strike price') },
-    TAKE_PROFIT: { value: 'Take profit', text: localize('Take profit') },
+    BARRIER: { value: 'Barrier', text: <Localize i18n_default_text='Barrier' /> },
+    CONTRACT_VALUE: { value: 'Contract value', text: <Localize i18n_default_text='Contract value' /> },
+    DEAL_CANCELLATION: { value: 'Deal cancellation', text: <Localize i18n_default_text='Deal cancellation' /> },
+    ENTRY_SPOT: { value: 'Entry spot', text: <Localize i18n_default_text='Entry spot' /> },
+    EXIT_SPOT: { value: 'Exit spot', text: <Localize i18n_default_text='Exit spot' /> },
+    EXPIRY: { value: 'Expiry', text: <Localize i18n_default_text='Expiry' /> },
+    FINAL_PRICE: { value: 'Final price', text: <Localize i18n_default_text='Final price' /> },
+    GROWTH_RATE: { value: 'Growth rate', text: <Localize i18n_default_text='Growth rate' /> },
+    PAYOUT: { value: 'Payout', text: <Localize i18n_default_text='Payout' /> },
+    PAYOUT_PER_POINT: { value: 'Payout per point', text: <Localize i18n_default_text='Payout per point' /> },
+    PREVIOUS_SPOT_PRICE: { value: 'Previous spot price', text: <Localize i18n_default_text='Previous spot price' /> },
+    RANGE: { value: 'Range', text: <Localize i18n_default_text='Range' /> },
+    SLIPPAGE_RISK: { value: 'Slippage risk', text: <Localize i18n_default_text='Slippage risk' /> },
+    STOP_OUT_LEVEL: { value: 'Stop out level', text: <Localize i18n_default_text='Stop out level' /> },
+    STOP_LOSS: { value: 'Stop loss', text: <Localize i18n_default_text='Stop loss' /> },
+    STRIKE_PRICE: { value: 'Strike price', text: <Localize i18n_default_text='Strike price' /> },
+    TAKE_PROFIT: { value: 'Take profit', text: <Localize i18n_default_text='Take profit' /> },
 });
 
 const getDefinition = () => {

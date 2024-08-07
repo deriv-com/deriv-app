@@ -8,15 +8,12 @@ import NoBalance from '../../components/no-balance';
 import { SideNoteFAQ } from '../../components/side-notes';
 import { DepositCryptoSideNotes } from '../../modules/deposit-crypto/components';
 import { useCashierStore } from '../../stores/useCashierStores';
+import PageContainer from '../../components/page-container';
 import WithdrawalCryptoForm from './withdrawal-crypto-form';
 import WithdrawalCryptoReceipt from './withdrawal-crypto-receipt';
 import WithdrawalFiat from './withdrawal-fiat';
 import WithdrawalLocked from './withdrawal-locked';
 import WithdrawalVerificationEmail from './withdrawal-verification-email';
-
-const PageContainer = React.lazy(
-    () => import(/* webpackChunkName: "page-container" */ '../../components/page-container')
-);
 
 const WithdrawalSideNotes = observer(() => {
     const { client } = useStore();

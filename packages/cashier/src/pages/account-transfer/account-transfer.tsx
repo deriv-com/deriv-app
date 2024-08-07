@@ -11,10 +11,7 @@ import AccountTransferForm from './account-transfer-form';
 import AccountTransferNoAccount from './account-transfer-no-account';
 import AccountTransferLocked from './account-transfer-locked';
 import { useCashierStore } from '../../stores/useCashierStores';
-
-const PageContainer = React.lazy(
-    () => import(/* webpackChunkName: "page-container" */ '../../components/page-container')
-);
+import PageContainer from '../../components/page-container';
 
 type TAccountTransferProps = {
     onClickDeposit?: VoidFunction;

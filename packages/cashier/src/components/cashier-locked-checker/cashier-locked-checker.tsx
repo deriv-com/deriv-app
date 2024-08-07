@@ -4,8 +4,7 @@ import { observer, useStore } from '@deriv/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
 import { Virtual } from '../cashier-container';
 import CashierLocked from '../cashier-locked';
-
-const PageContainer = React.lazy(() => import(/* webpackChunkName: "page-container" */ '../page-container'));
+import PageContainer from '../page-container';
 
 const CashierLockedChecker: React.FC<React.PropsWithChildren<unknown>> = observer(({ children }) => {
     const { client } = useStore();

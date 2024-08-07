@@ -10,11 +10,8 @@ import SideNote from '../../components/side-note';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
 import { useCashierStore } from '../../stores/useCashierStores';
+import PageContainer from '../../components/page-container';
 import './on-ramp.scss';
-
-const PageContainer = React.lazy(
-    () => import(/* webpackChunkName: "page-container" */ '../../components/page-container')
-);
 
 type TMenuOption = {
     count?: number;

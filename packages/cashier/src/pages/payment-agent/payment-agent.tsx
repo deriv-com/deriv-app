@@ -6,10 +6,7 @@ import CashierLocked from 'Components/cashier-locked';
 import { Virtual } from 'Components/cashier-container';
 import PaymentAgentList from './payment-agent-list';
 import { useCashierStore } from '../../stores/useCashierStores';
-
-const PageContainer = React.lazy(
-    () => import(/* webpackChunkName: "page-container" */ '../../components/page-container')
-);
+import PageContainer from '../../components/page-container';
 
 type TPaymentAgent = {
     setSideNotes?: (notes: React.ReactNode[]) => void;

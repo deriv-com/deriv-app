@@ -4,11 +4,8 @@ import { observer, useStore } from '@deriv/stores';
 import TransactionsCryptoHistory from '../../components/transactions-crypto-history';
 import { CashierOnboardingModule, DepositCryptoModule, DepositFiatModule } from '../../modules';
 import { useCashierStore } from '../../stores/useCashierStores';
+import PageContainer from '../../components/page-container';
 import DepositLocked from './deposit-locked';
-
-const PageContainer = React.lazy(
-    () => import(/* webpackChunkName: "page-container" */ '../../components/page-container')
-);
 
 const Deposit = observer(() => {
     const { traders_hub } = useStore();

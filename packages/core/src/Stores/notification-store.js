@@ -101,7 +101,7 @@ export default class NotificationStore extends BaseStore {
             trade_notifications: observable,
             unmarkNotificationMessage: action.bound,
             updateNotifications: action.bound,
-            handleAUDCurrencyRemovalNotification: action.bound,
+            handleCurrencyRemovalNotification: action.bound,
         });
 
         reaction(
@@ -382,7 +382,7 @@ export default class NotificationStore extends BaseStore {
             );
 
             if (account_currency_closure_status) {
-                this.handleAUDCurrencyRemovalNotification(account_currency_closure_status, currency);
+                this.handleCurrencyRemovalNotification(account_currency_closure_status, currency);
             }
 
             if (status?.includes('mt5_additional_kyc_required'))
@@ -1653,7 +1653,7 @@ export default class NotificationStore extends BaseStore {
         });
     };
 
-    handleAUDCurrencyRemovalNotification = (account_currency_closure_status, currency) => {
+    handleCurrencyRemovalNotification = (account_currency_closure_status, currency) => {
         const is_funded_account = account_currency_closure_status.status_codes.includes('funded_account');
         const is_non_funded_account = account_currency_closure_status.status_codes.includes('non_funded_account');
 

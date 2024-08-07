@@ -56,16 +56,6 @@ describe('LastDigitPrediction', () => {
             expect(button).toBeEnabled();
         });
     });
-    it('should render 10 disabled buttons for each digit in stats mode if digit_stats are available', () => {
-        default_mock_store.modules.trade.digit_stats = digit_stats;
-        render(mockLastDigitPrediction({ is_stats_mode: true }));
-
-        const buttons = screen.getAllByRole('button');
-        expect(buttons).toHaveLength(10);
-        buttons.forEach((button: HTMLElement) => {
-            expect(button).toBeDisabled();
-        });
-    });
     it('should render component with correct last digit value when minimized', () => {
         render(mockLastDigitPrediction({ is_minimized: true }));
 

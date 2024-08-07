@@ -41,6 +41,7 @@ import {
     poi_notifications,
 } from './Helpers/client-notifications';
 import BaseStore from './base-store';
+import { Analytics } from '@deriv-com/analytics';
 
 export default class NotificationStore extends BaseStore {
     is_notifications_visible = false;
@@ -50,6 +51,7 @@ export default class NotificationStore extends BaseStore {
     push_notifications = [];
     client_notifications = {};
     should_show_popups = true;
+    should_show_passkey_notification = false;
     trade_notifications = [];
     p2p_advertiser_info = {};
     p2p_order_props = {};
@@ -91,6 +93,7 @@ export default class NotificationStore extends BaseStore {
             setP2POrderProps: action.bound,
             setP2PRedirectTo: action.bound,
             setShouldShowPopups: action.bound,
+            should_show_passkey_notification: observable,
             should_show_popups: observable,
             showCompletedOrderNotification: action.bound,
             toggleNotificationsModal: action.bound,
@@ -116,6 +119,7 @@ export default class NotificationStore extends BaseStore {
                 root_store.client.is_eu,
                 root_store.client.has_enabled_two_fa,
                 root_store.client.has_changed_two_fa,
+                root_store.client.should_show_passkey_notification,
                 this.p2p_order_props.order_id,
             ],
             () => {
@@ -406,6 +410,12 @@ export default class NotificationStore extends BaseStore {
                 this.addNotificationMessage(this.client_notifications.has_changed_two_fa);
             }
 
+            if (this.root_store.client.should_show_passkey_notification) {
+                this.addNotificationMessage(this.client_notifications.enable_passkey);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.enable_passkey });
+            }
+
             const client = accounts[loginid];
             if (client && !client.is_virtual) {
                 if (isEmptyObject(account_status)) return;
@@ -428,7 +438,6 @@ export default class NotificationStore extends BaseStore {
                     ASK_FIX_DETAILS,
                     ASK_SELF_EXCLUSION_MAX_TURNOVER_SET,
                     ASK_TIN_INFORMATION,
-                    ASK_UK_FUNDS_PROTECTION,
                 } = cashier_validation ? getCashierValidations(cashier_validation) : {};
                 const needs_poa =
                     is_10k_withdrawal_limit_reached &&
@@ -498,8 +507,6 @@ export default class NotificationStore extends BaseStore {
                         this.addNotificationMessage(this.client_notifications.risk);
                     } else if (isAccountOfType('financial') && ASK_TIN_INFORMATION) {
                         this.addNotificationMessage(this.client_notifications.tax);
-                    } else if (ASK_UK_FUNDS_PROTECTION) {
-                        this.addNotificationMessage(this.client_notifications.ask_uk_funds_protection);
                     } else if (ASK_SELF_EXCLUSION_MAX_TURNOVER_SET) {
                         this.addNotificationMessage(this.client_notifications.max_turnover_limit_not_set);
                     } else if (ASK_FIX_DETAILS) {
@@ -759,16 +766,6 @@ export default class NotificationStore extends BaseStore {
                 },
                 type: 'warning',
             },
-            ask_uk_funds_protection: {
-                key: 'ask_uk_funds_protection',
-                header: localize('Your cashier is locked'),
-                message: localize('See how we protect your funds to unlock the cashier.'),
-                action: {
-                    route: routes.cashier_deposit,
-                    text: localize('Find out more'),
-                },
-                type: 'warning',
-            },
             authenticate: {
                 key: 'authenticate',
                 header: localize('Your account has not been verified'),
@@ -916,6 +913,17 @@ export default class NotificationStore extends BaseStore {
                 img_src: getUrlBase('/public/images/common/dp2p_banner.png'),
                 img_alt: 'Deriv P2P',
                 type: 'news',
+            },
+            enable_passkey: {
+                action: {
+                    route: routes.passkeys,
+                    text: localize('Enable passkey'),
+                },
+                key: 'enable_passkey',
+                header: localize('Level up your security'),
+                message: localize('Strengthen your account’s security today with the latest passkeys feature.'),
+                type: 'announce',
+                should_show_again: true,
             },
             identity: {
                 key: 'identity',
@@ -1551,6 +1559,12 @@ export default class NotificationStore extends BaseStore {
     }
 
     toggleNotificationsModal() {
+        Analytics.trackEvent('ce_notification_form', {
+            action: this.is_notifications_visible ? 'close' : 'open',
+            form_name: 'ce_notification_form',
+            notification_num: this.notifications.length,
+        });
+
         this.is_notifications_visible = !this.is_notifications_visible;
     }
 

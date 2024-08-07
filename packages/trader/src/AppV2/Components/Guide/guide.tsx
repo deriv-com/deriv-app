@@ -2,22 +2,40 @@ import React from 'react';
 import { Button, Text } from '@deriv-com/quill-ui';
 import { LabelPairedPresentationScreenSmRegularIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
+import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
 import GuideDefinitionModal from './guide-definition-modal';
 import GuideDescriptionModal from './guide-description-modal';
+import { getContractTypesConfig } from '@deriv/shared';
 
 type TGuide = {
     has_label?: boolean;
+    show_guide_for_selected_contract?: boolean;
 };
 
-const Guide = ({ has_label = false }: TGuide) => {
+const Guide = observer(({ has_label, show_guide_for_selected_contract }: TGuide) => {
+    const {
+        ui: { is_dark_mode_on },
+    } = useStore();
+    const { contract_type, is_vanilla } = useTraderStore();
+    const contract_type_title = is_vanilla ? CONTRACT_LIST.VANILLAS : getContractTypesConfig()[contract_type].title;
+
     const [is_description_opened, setIsDescriptionOpened] = React.useState(false);
-    const [selected_contract_type, setSelectedContractType] = React.useState(CONTRACT_LIST.RISE_FALL);
+    const [selected_contract_type, setSelectedContractType] = React.useState(
+        show_guide_for_selected_contract ? contract_type_title : CONTRACT_LIST.RISE_FALL
+    );
     const [selected_term, setSelectedTerm] = React.useState<string>();
 
-    const onChipSelect = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const onChipSelect = React.useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         setSelectedContractType((e.target as EventTarget & HTMLButtonElement).textContent ?? '');
-    };
+    }, []);
+
+    const onClose = React.useCallback(() => setIsDescriptionOpened(false), []);
+
+    React.useEffect(() => {
+        if (show_guide_for_selected_contract) setSelectedContractType(contract_type_title);
+    }, [show_guide_for_selected_contract, contract_type_title]);
 
     return (
         <React.Fragment>
@@ -35,10 +53,12 @@ const Guide = ({ has_label = false }: TGuide) => {
             </Button>
             <GuideDescriptionModal
                 is_open={is_description_opened}
-                onClose={() => setIsDescriptionOpened(false)}
+                is_dark_mode_on={is_dark_mode_on}
+                onClose={onClose}
                 onChipSelect={onChipSelect}
                 onTermClick={setSelectedTerm}
                 selected_contract_type={selected_contract_type}
+                show_guide_for_selected_contract={show_guide_for_selected_contract}
             />
             <GuideDefinitionModal
                 contract_type={selected_contract_type}
@@ -47,6 +67,6 @@ const Guide = ({ has_label = false }: TGuide) => {
             />
         </React.Fragment>
     );
-};
+});
 
 export default Guide;

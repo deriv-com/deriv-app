@@ -7,7 +7,7 @@ import { InlineMessage, WalletButton, WalletText } from '../../../../components/
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
-import { CFD_PLATFORMS, MarketTypeDetails, PlatformDetails, serviceMaintenanceMessages } from '../../constants';
+import { CFD_PLATFORMS, getMarketTypeDetails, getServiceMaintenanceMessages, PlatformDetails } from '../../constants';
 import MT5DesktopRedirectOption from './MT5TradeLink/MT5DesktopRedirectOption';
 import MT5MobileRedirectOption from './MT5TradeLink/MT5MobileRedirectOption';
 import { MT5TradeDetailsItem } from './MT5TradeDetailsItem';
@@ -30,12 +30,11 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     const dxtradePlatform = CFD_PLATFORMS.DXTRADE;
     const ctraderPlatform = CFD_PLATFORMS.CTRADER;
 
-    const marketType = getModalState('marketType');
+    const marketType: keyof ReturnType<typeof getMarketTypeDetails> | undefined = getModalState('marketType');
     const platform = getModalState('platform') ?? mt5Platform;
 
     const { icon: platformIcon, title: platformTitle } = PlatformDetails[platform as keyof typeof PlatformDetails];
-    const { icon: marketTypeIcon, title: marketTypeTitle } =
-        MarketTypeDetails[(marketType as keyof typeof MarketTypeDetails) ?? 'all'];
+    const { icon: marketTypeIcon, title: marketTypeTitle } = getMarketTypeDetails()[marketType ?? 'all'];
 
     const platformToAccountsListMapper = useMemo(
         () => ({
@@ -189,8 +188,9 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                     <LabelPairedCircleExclamationMdFillIcon fill='#FFAD3A' />
                     <WalletText color='less-prominent' size={isDesktop ? '2xs' : 'xs'}>
                         {
-                            serviceMaintenanceMessages[
-                                (platform as keyof typeof serviceMaintenanceMessages) ?? PlatformDetails.mt5.platform
+                            getServiceMaintenanceMessages()[
+                                (platform as keyof ReturnType<typeof getServiceMaintenanceMessages>) ??
+                                    PlatformDetails.mt5.platform
                             ]
                         }
                     </WalletText>

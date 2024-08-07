@@ -1,7 +1,6 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { Modal, PageOverlay } from '@deriv/components';
-import { Jurisdiction, MT5_ACCOUNT_STATUS, routes, getFormattedJurisdictionMarketTypes } from '@deriv/shared';
+import { Jurisdiction, getFormattedJurisdictionMarketTypes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getFormattedJurisdictionCode } from '../../Stores/Modules/CFD/Helpers/cfd-config';
 
@@ -14,9 +13,7 @@ type TMigrationSuccessModal = {
 };
 
 const MigrationSuccessModal = observer(({ is_open, closeModal }: TMigrationSuccessModal) => {
-    const history = useHistory();
-    const { ui, client } = useStore();
-    const { mt5_login_list } = client;
+    const { ui } = useStore();
     const { is_mobile, setMT5MigrationModalEnabled } = ui;
     const { migrated_mt5_accounts, setIsFromMt5MigrationModal } = useCfdStore();
 
@@ -28,25 +25,6 @@ const MigrationSuccessModal = observer(({ is_open, closeModal }: TMigrationSucce
     const jurisdiction_market_name = migrated_mt5_accounts.map(account =>
         getFormattedJurisdictionMarketTypes(Object.keys(account?.to_account ?? {})?.[0])
     );
-
-    const has_open_positions = React.useMemo(
-        () =>
-            mt5_login_list.some(account =>
-                migrated_mt5_accounts.some(
-                    migrated_acc =>
-                        migrated_acc.login_id === account.login &&
-                        account.status === MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION
-                )
-            ),
-        [mt5_login_list, migrated_mt5_accounts]
-    );
-
-    const directToCashier = () => {
-        closeMigrationModals();
-        if (!has_open_positions) {
-            history.push(routes.cashier_acc_transfer);
-        }
-    };
 
     const closeMigrationModals = () => {
         setIsFromMt5MigrationModal(false);
@@ -81,7 +59,7 @@ const MigrationSuccessModal = observer(({ is_open, closeModal }: TMigrationSucce
 
     const ModalContent = () => (
         <MigrationSuccessModalContent
-            directToCashier={directToCashier}
+            closePopupModal={closeMigrationModals}
             icon={getMigrationIcon()}
             eligible_account_to_migrate={eligible_account_to_migrate}
             jurisdiction_market_name={jurisdiction_market_name}

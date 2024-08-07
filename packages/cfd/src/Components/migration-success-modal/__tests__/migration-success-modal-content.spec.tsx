@@ -16,7 +16,7 @@ describe('<MigrationSuccessModal />', () => {
     const props: React.ComponentProps<typeof MigrationSuccessModalContent> = {
         icon: 'icon',
         eligible_account_to_migrate: 'BVI',
-        directToCashier: jest.fn(),
+        closePopupModal: jest.fn(),
         jurisdiction_market_name: ['Financial'],
     };
     it('component should be rendered', () => {
@@ -47,6 +47,6 @@ describe('<MigrationSuccessModal />', () => {
         });
 
         userEvent.click(button);
-        expect(props.directToCashier).toHaveBeenCalled();
+        expect(props.closePopupModal).toHaveBeenCalled();
     });
 });

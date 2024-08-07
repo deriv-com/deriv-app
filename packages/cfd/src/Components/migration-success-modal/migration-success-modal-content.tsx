@@ -8,7 +8,7 @@ import { Jurisdiction, CFD_PLATFORMS, getCFDPlatformNames, getFormattedJurisdict
 type TMigrationSuccessModalContent = {
     icon?: string;
     eligible_account_to_migrate: string;
-    directToCashier: () => void;
+    closePopupModal: () => void;
     jurisdiction_market_name: Array<string>;
 };
 
@@ -17,7 +17,7 @@ const MigrationSuccessModalContent = observer(
         icon,
         eligible_account_to_migrate,
         jurisdiction_market_name,
-        directToCashier,
+        closePopupModal,
     }: TMigrationSuccessModalContent) => {
         const { ui } = useStore();
         const { is_mobile } = ui;
@@ -102,7 +102,7 @@ const MigrationSuccessModalContent = observer(
                     </div>
                 </Modal.Body>
                 <Modal.Footer has_separator className='cfd-success-dialog-migration-footer'>
-                    <Button has_effect onClick={directToCashier} primary large>
+                    <Button has_effect onClick={closePopupModal} primary large>
                         <Localize i18n_default_text='OK' />
                     </Button>
                 </Modal.Footer>

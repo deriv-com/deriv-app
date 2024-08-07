@@ -42,8 +42,11 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
         &-item {
             align-items: center;
 
-            p:first-child {
-                color: var(--core-color-opacity-black-400);
+            &-value {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-grow: 1;
             }
         }
     }

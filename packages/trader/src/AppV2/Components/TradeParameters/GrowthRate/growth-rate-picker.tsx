@@ -81,8 +81,16 @@ const GrowthRatePicker = ({
                 <div className='growth-rate__details'>
                     {details_content.map(({ label, value }) => (
                         <span key={value} className='growth-rate__details-item'>
-                            <Text size='sm'>{label}</Text>
-                            {should_show_details ? <Text size='sm'>{value}</Text> : <Skeleton height={22} width={75} />}
+                            <Text color='quill-typography__color--subtle' size='sm'>
+                                {label}
+                            </Text>
+                            <div className='growth-rate__details-item-value'>
+                                {should_show_details ? (
+                                    <Text size='sm'>{value}</Text>
+                                ) : (
+                                    <Skeleton height={14} width={75} />
+                                )}
+                            </div>
                         </span>
                     ))}
                 </div>

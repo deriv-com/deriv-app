@@ -28,7 +28,12 @@ jest.mock('@deriv-com/quill-ui', () => ({
     )),
 }));
 jest.mock('AppV2/Components/TradeParamDefinition', () => jest.fn(() => <div>{mocked_definition}</div>));
-jest.mock('lodash.debounce', () => jest.fn(fn => fn));
+jest.mock('lodash.debounce', () =>
+    jest.fn(fn => {
+        fn.cancel = () => null;
+        return fn;
+    })
+);
 
 describe('GrowthRate', () => {
     let default_mock_store: ReturnType<typeof mockStore>;

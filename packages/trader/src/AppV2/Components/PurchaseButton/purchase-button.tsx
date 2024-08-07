@@ -100,13 +100,11 @@ const PurchaseButton = observer(() => {
                             : `${cardLabels.CLOSE} ${current_stake} ${currency}`
                     }
                     fullWidth
-                    className={clsx(
-                        'purchase-button purchase-button--single',
-                        is_accu_sell_disabled && 'purchase-button__close-disabled'
-                    )}
+                    className='purchase-button purchase-button--single'
                     disabled={is_accu_sell_disabled}
                     onClick={() => onClickSell(active_accu_contract?.contract_info.contract_id)}
                 />
+                {is_accu_sell_disabled && <div className='purchase-button purchase-button--disabled-background' />}
             </div>
         );
     }
@@ -120,32 +118,36 @@ const PurchaseButton = observer(() => {
                 const is_disabled = !is_trade_enabled || is_proposal_empty || !info.id || !is_purchase_enabled;
 
                 return (
-                    <Button
-                        key={trade_type}
-                        color={getButtonType(index, trade_type)}
-                        size='lg'
-                        label={getContractTypeDisplay(trade_type, { isHighLow: is_high_low, showButtonName: true })}
-                        fullWidth
-                        className={clsx(
-                            'purchase-button',
-                            is_loading && 'purchase-button--loading',
-                            is_single_button && 'purchase-button--single'
+                    <React.Fragment key={trade_type}>
+                        <Button
+                            color={getButtonType(index, trade_type)}
+                            size='lg'
+                            label={getContractTypeDisplay(trade_type, { isHighLow: is_high_low, showButtonName: true })}
+                            fullWidth
+                            className={clsx(
+                                'purchase-button',
+                                is_loading && 'purchase-button--loading',
+                                is_single_button && 'purchase-button--single'
+                            )}
+                            isLoading={is_loading}
+                            disabled={is_disabled && !is_loading}
+                            onClick={() => {
+                                setLoadingButtonIndex(index);
+                                onPurchase(info.id, info.stake, trade_type, isMobile);
+                            }}
+                        >
+                            {!is_loading && !is_accumulator && (
+                                <PurchaseButtonContent
+                                    {...purchase_button_content_props}
+                                    info={info}
+                                    is_reverse={!!index}
+                                />
+                            )}
+                        </Button>
+                        {is_disabled && !is_loading && (
+                            <div className='purchase-button purchase-button--disabled-background' />
                         )}
-                        isLoading={is_loading}
-                        disabled={is_disabled && !is_loading}
-                        onClick={() => {
-                            setLoadingButtonIndex(index);
-                            onPurchase(info.id, info.stake, trade_type, isMobile);
-                        }}
-                    >
-                        {!is_loading && !is_accumulator && (
-                            <PurchaseButtonContent
-                                {...purchase_button_content_props}
-                                info={info}
-                                is_reverse={!!index}
-                            />
-                        )}
-                    </Button>
+                    </React.Fragment>
                 );
             })}
         </div>

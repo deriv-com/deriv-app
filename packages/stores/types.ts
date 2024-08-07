@@ -111,8 +111,6 @@ type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 type TIconTypes =
     | 'Derived'
     | 'Financial'
-    | 'BinaryBot'
-    | 'BinaryBotBlue'
     | 'DBot'
     | 'Demo'
     | 'DerivGo'

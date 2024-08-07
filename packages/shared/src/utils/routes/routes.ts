@@ -1,4 +1,4 @@
-import { getUrlSmartTrader, getUrlBinaryBot } from '../url/helpers';
+import { getUrlSmartTrader } from '../url/helpers';
 
 export const routes = {
     reset_password: '/',
@@ -18,7 +18,6 @@ export const routes = {
     trader_positions: '/dtrader/positions',
     trader_menu: '/dtrader/menu',
     smarttrader: getUrlSmartTrader(),
-    binarybot: getUrlBinaryBot(),
 
     // account
     account: '/account',

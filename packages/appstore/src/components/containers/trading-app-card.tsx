@@ -19,7 +19,6 @@ import {
     ContentFlag,
     getStaticUrl,
     getUrlSmartTrader,
-    getUrlBinaryBot,
     MT5_ACCOUNT_STATUS,
     CFD_PRODUCTS_TITLE,
 } from '@deriv/shared';
@@ -105,9 +104,6 @@ const TradingAppCard = ({
                     break;
                 case DERIV_PLATFORM_NAMES.SMARTTRADER:
                     window.open(getUrlSmartTrader());
-                    break;
-                case DERIV_PLATFORM_NAMES.BBOT:
-                    window.open(getUrlBinaryBot());
                     break;
                 case DERIV_PLATFORM_NAMES.GO:
                     window.open(getStaticUrl('/deriv-go'));

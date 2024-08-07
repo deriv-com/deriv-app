@@ -3,19 +3,21 @@ import { useHistory } from 'react-router-dom';
 import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useAuthorize } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
+import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useDevice from '../../hooks/useDevice';
-import { TSubscribedBalance } from '../../types';
-import { WalletText } from '../Base';
 import { WalletListCardBadge } from '../WalletListCardBadge';
 import { WalletMarketIcon } from '../WalletMarketIcon';
 
-const DerivAppsTradingAccount: React.FC<TSubscribedBalance> = ({ balance }) => {
+const DerivAppsTradingAccount = () => {
     const { isMobile } = useDevice();
     const history = useHistory();
     const { data: authorizeData } = useAuthorize();
-    const { data: balanceData, isLoading } = balance;
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
+    const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
+    const balance = balanceData?.[activeLinkedToTradingAccount?.loginid ?? '']?.balance;
 
     return (
         <div className='wallets-deriv-apps-section wallets-deriv-apps-section__border'>
@@ -24,26 +26,24 @@ const DerivAppsTradingAccount: React.FC<TSubscribedBalance> = ({ balance }) => {
             </div>
             <div className='wallets-deriv-apps-section__details'>
                 <div className='wallets-deriv-apps-section__title-and-badge'>
-                    <WalletText size='sm'>Options</WalletText>
+                    <Text size='sm'>
+                        <Localize i18n_default_text='Options' />
+                    </Text>
                     {activeWallet?.is_virtual && <WalletListCardBadge />}
                 </div>
-                {isLoading ? (
+                {isBalanceLoading ? (
                     <div className='wallets-skeleton wallets-deriv-apps-balance-loader' />
                 ) : (
-                    <WalletText size='sm' weight='bold'>
-                        {displayMoney(
-                            balanceData?.accounts?.[activeLinkedToTradingAccount?.loginid ?? '']?.balance || 0,
-                            activeLinkedToTradingAccount?.currency_config?.display_code || 'USD',
-                            {
-                                fractional_digits: activeLinkedToTradingAccount?.currency_config?.fractional_digits,
-                                preferred_language: authorizeData?.preferred_language,
-                            }
-                        )}
-                    </WalletText>
+                    <Text size='sm' weight='bold'>
+                        {displayMoney(balance, activeLinkedToTradingAccount?.currency_config?.display_code, {
+                            fractional_digits: activeLinkedToTradingAccount?.currency_config?.fractional_digits,
+                            preferred_language: authorizeData?.preferred_language,
+                        })}
+                    </Text>
                 )}
-                <WalletText color='less-prominent' lineHeight='sm' size='xs' weight='bold'>
+                <Text color='less-prominent' lineHeight='sm' size='xs' weight='bold'>
                     {activeLinkedToTradingAccount?.loginid}
-                </WalletText>
+                </Text>
             </div>
             <button
                 className='wallets-deriv-apps-section__button'

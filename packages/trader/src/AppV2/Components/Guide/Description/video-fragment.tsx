@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Loading } from '@deriv/components';
+import { Skeleton } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
 import { getUrlBase } from '@deriv/shared';
 import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
@@ -41,7 +41,7 @@ const VideoFragment = ({ contract_type }: TVideoFragment) => {
                     contract_type.toLowerCase() === CONTRACT_LIST.ACCUMULATORS.toLowerCase(),
             })}
         >
-            {is_loading && <Loading is_fullscreen={false} />}
+            {is_loading && <Skeleton width={248} height={161} className='skeleton-video-loader' />}
             <DotLottieReact
                 autoplay
                 dotLottieRefCallback={

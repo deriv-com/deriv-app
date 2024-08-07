@@ -398,7 +398,10 @@ export default class NotificationStore extends BaseStore {
 
             if (show_phone_number_verification_notification) {
                 this.addNotificationMessage(this.client_notifications.phone_number_verification);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.phone_number_verification });
             }
+
             if (malta_account && is_financial_information_incomplete) {
                 this.addNotificationMessage(this.client_notifications.need_fa);
             } else {
@@ -1094,7 +1097,6 @@ export default class NotificationStore extends BaseStore {
             phone_number_verification: {
                 key: 'phone_number_verification',
                 header: localize('Verify your phone number'),
-                platform: 'Account',
                 message: <Localize i18n_default_text='Keep your account safe. Verify your phone number now.' />,
                 type: 'warning',
                 action: {

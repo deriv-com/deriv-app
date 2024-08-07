@@ -8,9 +8,9 @@ import {
     LabelPairedPlusMdBoldIcon,
 } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { Button, Text } from '@deriv-com/ui';
 import useDevice from '../../hooks/useDevice';
-import { IconButton, WalletButton } from '../Base';
+import { IconButton } from '../Base';
 import './WalletListCardActions.scss';
 
 type TProps = {
@@ -88,8 +88,10 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
     return (
         <div className='wallets-header__actions'>
             {getWalletHeaderButtons(localize, isDemo).map(button => (
-                <WalletButton
-                    ariaLabel={button.name}
+                <Button
+                    aria-label={button.name}
+                    borderWidth='sm'
+                    color={button.name === 'deposit' ? 'primary' : 'black'}
                     icon={button.icon}
                     key={button.name}
                     onClick={() => {
@@ -99,7 +101,7 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
                     variant={button.variant}
                 >
                     {isActive ? button.text : ''}
-                </WalletButton>
+                </Button>
             ))}
         </div>
     );

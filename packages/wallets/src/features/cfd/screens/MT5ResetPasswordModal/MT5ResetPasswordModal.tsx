@@ -1,13 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { TSocketError } from '@deriv/api-v2/types';
-import {
-    WalletButton,
-    WalletButtonGroup,
-    WalletPasswordFieldLazy,
-    WalletText,
-    WalletTextField,
-} from '../../../../components';
+import { Button } from '@deriv-com/ui';
+import { WalletButtonGroup, WalletPasswordFieldLazy, WalletText, WalletTextField } from '../../../../components';
 import PasswordViewerIcon from '../../../../components/Base/WalletPasswordField/PasswordViewerIcon';
 import { getPasswordRequirements } from '../../../../constants/password';
 import useDevice from '../../../../hooks/useDevice';
@@ -126,21 +121,22 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
                         </div>
                         <div className='wallets-mt5-reset__footer'>
                             <WalletButtonGroup isFlex isFullWidth={isMobile}>
-                                <WalletButton
+                                <Button
+                                    color='black'
                                     onClick={sendEmailVerification}
                                     size={isMobile ? 'lg' : 'md'}
                                     variant='outlined'
                                 >
                                     Forgot password?
-                                </WalletButton>
-                                <WalletButton
+                                </Button>
+                                <Button
                                     disabled={!!errors.currentPassword || !validPasswordMT5(values.newPassword)}
                                     isLoading={isLoading}
                                     size={isMobile ? 'lg' : 'md'}
                                     type='submit'
                                 >
                                     Change my password
-                                </WalletButton>
+                                </Button>
                             </WalletButtonGroup>
                         </div>
                     </Form>

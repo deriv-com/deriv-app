@@ -1,7 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { Button } from '@deriv-com/ui';
 import useDevice from '../../hooks/useDevice';
-import { WalletButton, WalletText } from '../Base';
+import { WalletText } from '../Base';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 import './Page404.scss';
 
@@ -27,7 +28,7 @@ const Page404 = () => {
                 descriptionSize={descriptionSize}
                 icon={errorImage}
                 renderButtons={() => (
-                    <WalletButton
+                    <Button
                         onClick={() => {
                             history.push('/');
                         }}
@@ -36,7 +37,7 @@ const Page404 = () => {
                         <WalletText color='white' size={buttonTextSize} weight='bold'>
                             Return to Trader&apos;s Hub
                         </WalletText>
-                    </WalletButton>
+                    </Button>
                 )}
                 title="We couldn't find that page"
                 titleSize={titleSize}

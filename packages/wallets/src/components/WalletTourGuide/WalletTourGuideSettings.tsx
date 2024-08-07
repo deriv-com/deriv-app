@@ -1,7 +1,8 @@
 import React, { PropsWithChildren } from 'react';
 import { TooltipRenderProps } from 'react-joyride';
 import { LegacyClose2pxIcon } from '@deriv/quill-icons';
-import { WalletButton, WalletText } from '../Base';
+import { Button } from '@deriv-com/ui';
+import { WalletText } from '../Base';
 import './WalletTourGuide.scss';
 
 export const walletsOnboardingLocalStorageKey = 'walletsOnboarding';
@@ -31,12 +32,12 @@ export const TooltipComponent = ({
             {<div className='wallets-tour-guide__content'>{step.content as React.ReactNode}</div>}
             <div className='wallets-tour-guide__footer'>
                 {index > 0 && (
-                    <WalletButton {...backProps} color='white' variant='outlined'>
+                    <Button {...backProps} borderWidth='sm' color='black' variant='outlined'>
                         Back
-                    </WalletButton>
+                    </Button>
                 )}
-                {continuous && <WalletButton {...primaryProps}>{isLastStep ? 'Done' : 'Next'}</WalletButton>}
-                {!continuous && <WalletButton {...closeProps}>Close</WalletButton>}
+                {continuous && <Button {...primaryProps}>{isLastStep ? 'Done' : 'Next'}</Button>}
+                {!continuous && <Button {...closeProps}>Close</Button>}
             </div>
         </div>
     );

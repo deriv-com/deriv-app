@@ -1,5 +1,6 @@
 import React, { ComponentProps, FC } from 'react';
-import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components';
+import { Button } from '@deriv-com/ui';
+import { ModalStepWrapper, ModalWrapper, WalletButtonGroup } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
 import { PlatformDetails } from '../../constants';
 import { EnterPassword } from '../../screens';
@@ -26,7 +27,8 @@ const EnterPasswordModal: FC<ComponentProps<typeof EnterPassword>> = ({
                 renderFooter={() => {
                     return (
                         <WalletButtonGroup isFullWidth>
-                            <WalletButton
+                            <Button
+                                color='black'
                                 isFullWidth
                                 isLoading={isForgotPasswordLoading}
                                 onClick={onSecondaryClick}
@@ -34,8 +36,8 @@ const EnterPasswordModal: FC<ComponentProps<typeof EnterPassword>> = ({
                                 variant='outlined'
                             >
                                 Forgot password?
-                            </WalletButton>
-                            <WalletButton
+                            </Button>
+                            <Button
                                 disabled={!password || isLoading}
                                 isFullWidth
                                 isLoading={isLoading}
@@ -43,7 +45,7 @@ const EnterPasswordModal: FC<ComponentProps<typeof EnterPassword>> = ({
                                 size={isMobile ? 'lg' : 'md'}
                             >
                                 Add account
-                            </WalletButton>
+                            </Button>
                         </WalletButtonGroup>
                     );
                 }}

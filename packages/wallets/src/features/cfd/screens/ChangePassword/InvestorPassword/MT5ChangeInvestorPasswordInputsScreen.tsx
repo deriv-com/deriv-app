@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import { useTradingPlatformInvestorPasswordChange } from '@deriv/api-v2';
-import { WalletButton, WalletsActionScreen, WalletText } from '../../../../../components';
+import { Button } from '@deriv-com/ui';
+import { WalletsActionScreen, WalletText } from '../../../../../components';
 import { WalletPasswordFieldLazy, WalletTextField } from '../../../../../components/Base';
 import PasswordViewerIcon from '../../../../../components/Base/WalletPasswordField/PasswordViewerIcon';
 import { useModal } from '../../../../../components/ModalProvider';
@@ -115,7 +116,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                 />
                             </div>
                             <div className='wallets-change-investor-password-screens__form-buttons'>
-                                <WalletButton
+                                <Button
                                     disabled={!values.currentPassword || !validPasswordMT5(values.newPassword)}
                                     isLoading={changeInvestorPasswordStatus === 'loading'}
                                     size='lg'
@@ -123,10 +124,10 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                     type='submit'
                                 >
                                     Change investor password
-                                </WalletButton>
-                                <WalletButton onClick={sendEmail} size='lg' textSize={buttonTextSize} variant='ghost'>
+                                </Button>
+                                <Button onClick={sendEmail} size='lg' textSize={buttonTextSize} variant='ghost'>
                                     Create or reset investor password
-                                </WalletButton>
+                                </Button>
                             </div>
                         </Form>
                     )}

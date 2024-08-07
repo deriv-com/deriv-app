@@ -9,8 +9,9 @@ import {
     useTradingPlatformPasswordChange,
     useVerifyEmail,
 } from '@deriv/api-v2';
+import { Button } from '@deriv-com/ui';
 import { SentEmailContent, WalletError } from '../../../../components';
-import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components/Base';
+import { ModalStepWrapper, ModalWrapper } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
@@ -178,7 +179,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
 
         if (isMT5PasswordNotSet)
             return (
-                <WalletButton
+                <Button
                     disabled={
                         !password ||
                         createMT5AccountLoading ||
@@ -191,7 +192,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                     size='lg'
                 >
                     Create {mt5Title} password
-                </WalletButton>
+                </Button>
             );
 
         return (

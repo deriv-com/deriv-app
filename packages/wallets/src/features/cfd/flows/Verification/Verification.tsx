@@ -7,8 +7,8 @@ import {
     usePOI,
     useSettings,
 } from '@deriv/api-v2';
-import { Loader } from '@deriv-com/ui';
-import { ModalStepWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
+import { Button, Loader } from '@deriv-com/ui';
+import { ModalStepWrapper, WalletButtonGroup } from '../../../../components/Base';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
@@ -76,12 +76,12 @@ const getManualVerificationFooter = ({
     // eslint-disable-next-line react/display-name
     return () => (
         <WalletButtonGroup isFlex>
-            <WalletButton onClick={onClickBack} size='lg' variant='outlined'>
+            <Button onClick={onClickBack} size='lg' variant='outlined'>
                 Back
-            </WalletButton>
-            <WalletButton disabled={isNextDisabled} isLoading={isNextLoading} onClick={nextFlowHandler} size='lg'>
+            </Button>
+            <Button disabled={isNextDisabled} isLoading={isNextLoading} onClick={nextFlowHandler} size='lg'>
                 Next
-            </WalletButton>
+            </Button>
         </WalletButtonGroup>
     );
 };
@@ -347,7 +347,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                           nextFlowHandler: () => nextFlowHandler(context),
                       })
                     : () => (
-                          <WalletButton
+                          <Button
                               disabled={isNextDisabled(context)}
                               isFullWidth={isMobile}
                               isLoading={isNextLoading(context)}
@@ -355,7 +355,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                               size='lg'
                           >
                               Next
-                          </WalletButton>
+                          </Button>
                       );
 
                 const renderFooter =

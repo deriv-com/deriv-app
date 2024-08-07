@@ -1,5 +1,6 @@
 import React, { ComponentProps, isValidElement, PropsWithChildren, ReactElement, ReactNode } from 'react';
-import { WalletButton, WalletButtonGroup } from '../Base';
+import { Button } from '@deriv-com/ui';
+import { WalletButtonGroup } from '../Base';
 import WalletText from '../Base/WalletText/WalletText';
 import './WalletsActionScreen.scss';
 
@@ -9,7 +10,7 @@ type TProps = {
     icon?: ReactNode;
     renderButtons?: () =>
         | ReactElement<ComponentProps<'div'>>
-        | ReactElement<ComponentProps<typeof WalletButton>>
+        | ReactElement<ComponentProps<typeof Button>>
         | ReactElement<ComponentProps<typeof WalletButtonGroup>>
         | null;
     title?: ReactNode;

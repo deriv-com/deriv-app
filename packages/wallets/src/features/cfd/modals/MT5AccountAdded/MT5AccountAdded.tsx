@@ -1,7 +1,8 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useJurisdictionStatus, useMT5AccountsList, usePOA, usePOI } from '@deriv/api-v2';
-import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components';
+import { Button } from '@deriv-com/ui';
+import { ModalStepWrapper, ModalWrapper, WalletButtonGroup } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
@@ -58,10 +59,10 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
             if (isTransferAllowed) {
                 return (
                     <WalletButtonGroup isFlex isFullWidth>
-                        <WalletButton onClick={hide} size={isMobile ? 'lg' : 'md'} variant='outlined'>
+                        <Button color='black' onClick={hide} size={isMobile ? 'lg' : 'md'} variant='outlined'>
                             Maybe later
-                        </WalletButton>
-                        <WalletButton
+                        </Button>
+                        <Button
                             onClick={() => {
                                 hide();
                                 history.push('/wallet/account-transfer', { toAccountLoginId: addedAccount?.loginid });
@@ -69,15 +70,15 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                             size={isMobile ? 'lg' : 'md'}
                         >
                             Transfer funds
-                        </WalletButton>
+                        </Button>
                     </WalletButtonGroup>
                 );
             }
             return (
                 <div className='wallets-success-btn'>
-                    <WalletButton isFullWidth onClick={hide} size={isMobile ? 'lg' : 'md'}>
+                    <Button isFullWidth onClick={hide} size={isMobile ? 'lg' : 'md'}>
                         OK
-                    </WalletButton>
+                    </Button>
                 </div>
             );
         },

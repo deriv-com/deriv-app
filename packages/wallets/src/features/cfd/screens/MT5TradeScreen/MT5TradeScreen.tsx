@@ -2,8 +2,9 @@ import React, { FC, Fragment, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api-v2';
 import { LabelPairedArrowUpArrowDownMdBoldIcon, LabelPairedCircleExclamationMdFillIcon } from '@deriv/quill-icons';
+import { Button } from '@deriv-com/ui';
 import { WalletListCardBadge } from '../../../../components';
-import { InlineMessage, WalletButton, WalletText } from '../../../../components/Base';
+import { InlineMessage, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
@@ -141,8 +142,8 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                         </div>
                     </div>
                     <div className='wallets-mt5-trade-screen__content-header-btn'>
-                        <WalletButton
-                            ariaLabel='account-transfer'
+                        <Button
+                            aria-label='account-transfer'
                             icon={<LabelPairedArrowUpArrowDownMdBoldIcon fill='#FFF' height={18} width={14} />}
                             key='account-transfer'
                             onClick={() => {
@@ -154,7 +155,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                             textSize={isDesktop ? 'xs' : 'sm'}
                         >
                             Transfer
-                        </WalletButton>
+                        </Button>
                     </div>
                 </div>
 

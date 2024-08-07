@@ -1,10 +1,10 @@
 import React from 'react';
 import { DerivLightDeclinedPoiIcon } from '@deriv/quill-icons';
-import { WalletButton } from '../../../../components/Base';
+import { Button } from '@deriv-com/ui';
+import { useFlow } from '../../../../components/FlowProvider';
 import { WalletsActionScreen } from '../../../../components/WalletsActionScreen';
 import { ErrorCode } from '../../constants';
 import './PoiUploadError.scss';
-import { useFlow } from '../../../../components/FlowProvider';
 
 type PoiUploadErrorProps = {
     errorCode: keyof typeof ErrorCode;
@@ -49,9 +49,9 @@ const PoiUploadError = ({ errorCode }: PoiUploadErrorProps) => {
                 description={errorCodeToDescriptionMapper[errorCode]}
                 icon={<DerivLightDeclinedPoiIcon height={120} width={120} />}
                 renderButtons={() => (
-                    <WalletButton onClick={switchBackToDocumentSelection} size='lg'>
+                    <Button onClick={switchBackToDocumentSelection} size='lg'>
                         Try again
-                    </WalletButton>
+                    </Button>
                 )}
                 title='Proof of identity documents upload failed'
             />

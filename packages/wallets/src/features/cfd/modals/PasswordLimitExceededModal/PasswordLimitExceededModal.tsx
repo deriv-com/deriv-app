@@ -1,11 +1,6 @@
 import React from 'react';
-import {
-    ModalStepWrapper,
-    ModalWrapper,
-    WalletButton,
-    WalletButtonGroup,
-    WalletText,
-} from '../../../../components/Base';
+import { Button } from '@deriv-com/ui';
+import { ModalStepWrapper, ModalWrapper, WalletButtonGroup, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import './PasswordLimitExceededModal.scss';
 
@@ -24,19 +19,12 @@ const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecond
                 renderFooter={() => {
                     return (
                         <WalletButtonGroup isFullWidth>
-                            <WalletButton
-                                borderWidth='md'
-                                isFullWidth
-                                onClick={onSecondaryClick}
-                                size='lg'
-                                textSize='md'
-                                variant='outlined'
-                            >
+                            <Button isFullWidth onClick={onSecondaryClick} size='lg' textSize='md' variant='outlined'>
                                 Forgot password?
-                            </WalletButton>
-                            <WalletButton isFullWidth onClick={onPrimaryClick} size='lg' textSize='md'>
+                            </Button>
+                            <Button isFullWidth onClick={onPrimaryClick} size='lg' textSize='md'>
                                 Try later
-                            </WalletButton>
+                            </Button>
                         </WalletButtonGroup>
                     );
                 }}
@@ -66,7 +54,7 @@ const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecond
                     </WalletText>
                 </div>
                 <div className='wallets-password-limit-exceeded-modal__buttons'>
-                    <WalletButton
+                    <Button
                         borderWidth='md'
                         onClick={onSecondaryClick}
                         size='lg'
@@ -74,10 +62,10 @@ const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecond
                         variant='outlined'
                     >
                         Forgot password?
-                    </WalletButton>
-                    <WalletButton onClick={onPrimaryClick} size='lg' textSize={textSize}>
+                    </Button>
+                    <Button onClick={onPrimaryClick} size='lg' textSize={textSize}>
                         Try later
-                    </WalletButton>
+                    </Button>
                 </div>
             </div>
         </ModalWrapper>

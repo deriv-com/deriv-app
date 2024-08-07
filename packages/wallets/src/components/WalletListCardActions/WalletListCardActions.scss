@@ -19,19 +19,6 @@
         }
     }
 
-    &__button {
-        display: flex;
-        cursor: pointer;
-        height: 3.2rem;
-        padding: 0.6rem 1.6rem;
-        justify-content: center;
-        align-items: center;
-        gap: 0.8rem;
-        border-radius: 6.4rem;
-        border: 0.1rem solid var(--system-light-3-less-prominent-text, #999);
-        background: none;
-    }
-
     @keyframes show-actions-label {
         from {
             transform: translateX(-100%);

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
+import { Button } from '@deriv-com/ui';
+import { WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password-validation';
@@ -76,22 +77,23 @@ const EnterPassword: React.FC<TProps> = ({
             </div>
             {isDesktop && (
                 <div className='wallets-enter-password__buttons'>
-                    <WalletButton
+                    <Button
+                        color='black'
                         isLoading={isForgotPasswordLoading}
                         onClick={onSecondaryClick}
                         size='md'
                         variant='outlined'
                     >
                         Forgot password?
-                    </WalletButton>
-                    <WalletButton
+                    </Button>
+                    <Button
                         disabled={isLoading || !validPassword(password)}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='md'
                     >
                         Add account
-                    </WalletButton>
+                    </Button>
                 </div>
             )}
         </div>

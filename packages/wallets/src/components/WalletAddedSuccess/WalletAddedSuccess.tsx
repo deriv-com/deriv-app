@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo } from 'react';
 import { Localize, useTranslations } from '@deriv-com/translations';
+import { Button } from '@deriv-com/ui';
 import useDevice from '../../hooks/useDevice';
 import { THooks } from '../../types';
-import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../Base';
+import { ModalStepWrapper, ModalWrapper, WalletButtonGroup } from '../Base';
 import { WalletCard } from '../WalletCard';
 import { WalletSuccess } from '../WalletSuccess';
 
@@ -27,12 +28,12 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
         () => (
             <div className='wallets-add-more__success-footer'>
                 <WalletButtonGroup isFlex isFullWidth>
-                    <WalletButton onClick={onSecondaryButtonClick} variant='outlined'>
+                    <Button color='black' onClick={onSecondaryButtonClick} variant='outlined'>
                         <Localize i18n_default_text='Maybe later' />
-                    </WalletButton>
-                    <WalletButton onClick={onPrimaryButtonClick}>
+                    </Button>
+                    <Button onClick={onPrimaryButtonClick}>
                         <Localize i18n_default_text='Deposit' />
-                    </WalletButton>
+                    </Button>
                 </WalletButtonGroup>
             </div>
         ),

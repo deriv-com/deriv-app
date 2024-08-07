@@ -2,7 +2,8 @@ import React, { FC, useState } from 'react';
 import classNames from 'classnames';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { DerivLightDmt5PasswordIcon, DerivLightIcDxtradePasswordIcon } from '@deriv/quill-icons';
-import { SentEmailContent, WalletButton, WalletsActionScreen, WalletText } from '../../../../components';
+import { Button } from '@deriv-com/ui';
+import { SentEmailContent, WalletsActionScreen, WalletText } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../types';
@@ -51,10 +52,10 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
             ),
             button: (
                 <div className='wallets-change-password__btn'>
-                    <WalletButton onClick={() => hide()} size='lg' textSize={buttonTextSize} variant='outlined'>
+                    <Button color='black' onClick={() => hide()} size='lg' textSize={buttonTextSize} variant='outlined'>
                         Cancel
-                    </WalletButton>
-                    <WalletButton
+                    </Button>
+                    <Button
                         onClick={() => {
                             handleSendEmail();
                             handleClick('emailVerification');
@@ -63,7 +64,7 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
                         textSize={buttonTextSize}
                     >
                         Confirm
-                    </WalletButton>
+                    </Button>
                 </div>
             ),
             headingText: `Confirm to change your ${title} password`,
@@ -71,9 +72,9 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
         introScreen: {
             bodyText: `Use this password to log in to your ${title} accounts on the desktop, web, and mobile apps.`,
             button: (
-                <WalletButton onClick={() => handleClick('confirmationScreen')} size='lg' textSize={buttonTextSize}>
+                <Button onClick={() => handleClick('confirmationScreen')} size='lg' textSize={buttonTextSize}>
                     Change password
-                </WalletButton>
+                </Button>
             ),
             headingText: `${title} password`,
         },

@@ -1,6 +1,7 @@
 import React from 'react';
 import { DerivLightDmt5PasswordIcon, DerivLightIcDxtradePasswordIcon } from '@deriv/quill-icons';
-import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
+import { Button } from '@deriv-com/ui';
+import { WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../types';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
@@ -44,14 +45,14 @@ const CreatePassword: React.FC<TProps> = ({ isLoading, onPasswordChange, onPrima
                 password={password}
             />
             {isDesktop && (
-                <WalletButton
+                <Button
                     disabled={!password || isLoading || disableButton}
                     isLoading={isLoading}
                     onClick={onPrimaryClick}
                     size='md'
                 >
                     {`Create ${title} password`}
-                </WalletButton>
+                </Button>
             )}
         </div>
     );

@@ -9,11 +9,12 @@ import {
     DerivLightIcTypoEmailPasskeyIcon,
     DerivLightIcWrongEmailPasskeyIcon,
 } from '@deriv/quill-icons';
+import { Button } from '@deriv-com/ui';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import useSendPasswordResetEmail from '../../hooks/useSendPasswordResetEmail';
 import { TPlatforms } from '../../types';
-import { WalletButton, WalletText } from '../Base';
+import { WalletText } from '../Base';
 import { WalletError } from '../WalletError';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 import './SentEmailContent.scss';
@@ -110,7 +111,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
                 descriptionSize={descriptionSize}
                 icon={<EmailSentIcon width={133} />}
                 renderButtons={() => (
-                    <WalletButton
+                    <Button
                         disabled={shouldShowResendEmailReasons}
                         onClick={() => {
                             setShouldShowResendEmailReasons(true);
@@ -121,7 +122,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
                         <WalletText color='error' size={emailButtonTextSize} weight='bold'>
                             Didn&apos;t receive the email?
                         </WalletText>
-                    </WalletButton>
+                    </Button>
                 )}
                 title='We’ve sent you an email'
                 titleSize={titleSize}
@@ -140,7 +141,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
                             );
                         })}
                     </div>
-                    <WalletButton
+                    <Button
                         color='primary'
                         disabled={hasCountdownStarted}
                         onClick={resendEmail}
@@ -149,7 +150,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
                         variant='contained'
                     >
                         {hasCountdownStarted ? `Resend email in ${count} seconds` : 'Resend email'}
-                    </WalletButton>
+                    </Button>
                 </Fragment>
             )}
         </div>

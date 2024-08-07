@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordReset } from '@deriv/api-v2';
+import { Button } from '@deriv-com/ui';
 import { CFD_PLATFORMS, PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import { TPlatforms } from '../../types';
 import { validPassword, validPasswordMT5 } from '../../utils/password-validation';
-import { ModalStepWrapper, WalletButton, WalletPasswordFieldLazy, WalletText } from '../Base';
+import { ModalStepWrapper, WalletPasswordFieldLazy, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletError } from '../WalletError';
 import WalletsErrorMT5InvestorPassword from './WalletsErrorMT5InvestorPassword';
@@ -100,9 +101,9 @@ const WalletsResetMT5Password = ({
                 <WalletsErrorMT5InvestorPassword
                     errorMessage={changeInvestorPasswordError?.error?.message}
                     renderButtons={() => (
-                        <WalletButton isFullWidth={isMobile} onClick={hide}>
+                        <Button isFullWidth={isMobile} onClick={hide} textSize={isMobile ? 'md' : 'sm'}>
                             Ok
-                        </WalletButton>
+                        </Button>
                     )}
                     title={title}
                 />
@@ -113,19 +114,27 @@ const WalletsResetMT5Password = ({
 
     const renderButtons = () => (
         <div className={'wallets-reset-mt5-password__footer'}>
-            <WalletButton isFullWidth={isMobile} onClick={() => hide()} size='lg' variant='outlined'>
+            <Button
+                color='black'
+                isFullWidth={isMobile}
+                onClick={() => hide()}
+                size='lg'
+                textSize='sm'
+                variant='outlined'
+            >
                 Cancel
-            </WalletButton>
-            <WalletButton
+            </Button>
+            <Button
                 disabled={isMT5 ? !validPasswordMT5(password) : !validPassword(password)}
                 isFullWidth={isMobile}
                 isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
                 onClick={handleSubmit}
                 size='lg'
+                textSize='sm'
                 variant='contained'
             >
                 Create
-            </WalletButton>
+            </Button>
         </div>
     );
 

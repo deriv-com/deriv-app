@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useInvalidateQuery } from '@deriv/api-v2';
 import { DerivLightWaitingPoiIcon } from '@deriv/quill-icons';
-import { useFlow, WalletButton, WalletsActionScreen } from '../../../../components';
+import { Button } from '@deriv-com/ui';
+import { useFlow, WalletsActionScreen } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import './PoiPoaDocsSubmitted.scss';
 
@@ -28,9 +29,9 @@ const PoiPoaDocsSubmitted = () => {
                 }
                 icon={<DerivLightWaitingPoiIcon height={128} width={128} />}
                 renderButtons={() => (
-                    <WalletButton onClick={hide} size='lg'>
+                    <Button onClick={hide} size='lg'>
                         Ok
-                    </WalletButton>
+                    </Button>
                 )}
                 title='Your documents were submitted successfully'
             />

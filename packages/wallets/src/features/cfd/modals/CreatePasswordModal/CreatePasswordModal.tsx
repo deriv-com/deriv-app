@@ -1,5 +1,6 @@
 import React, { ComponentProps, FC } from 'react';
-import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components';
+import { Button } from '@deriv-com/ui';
+import { ModalStepWrapper, ModalWrapper } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
 import { PlatformDetails } from '../../constants';
 import { CreatePassword } from '../../screens';
@@ -17,7 +18,7 @@ const CreatePasswordModal: FC<ComponentProps<typeof CreatePassword>> = ({
             <ModalStepWrapper
                 renderFooter={() => {
                     return (
-                        <WalletButton
+                        <Button
                             disabled={!password || isLoading}
                             isFullWidth
                             isLoading={isLoading}
@@ -25,7 +26,7 @@ const CreatePasswordModal: FC<ComponentProps<typeof CreatePassword>> = ({
                             size={isMobile ? 'lg' : 'md'}
                         >
                             {`Create ${PlatformDetails[platform].title} password`}
-                        </WalletButton>
+                        </Button>
                     );
                 }}
                 title={''}

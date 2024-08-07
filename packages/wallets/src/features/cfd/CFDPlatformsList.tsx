@@ -1,7 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { WalletButton, WalletLink, WalletText } from '../../components/Base';
+import { Button } from '@deriv-com/ui';
+import { WalletLink, WalletText } from '../../components/Base';
 import useDevice from '../../hooks/useDevice';
 import CFDPlatformsListEmptyState from './CFDPlatformsListEmptyState';
 import { CFDPlatformsListAccounts } from './components';
@@ -28,7 +29,7 @@ const CFDPlatformsList: React.FC = () => {
                                 Learn more
                             </a>
                         </WalletText>
-                        <WalletButton
+                        <Button
                             onClick={() => {
                                 history.push('/compare-accounts');
                             }}
@@ -37,7 +38,7 @@ const CFDPlatformsList: React.FC = () => {
                             variant='ghost'
                         >
                             Compare accounts
-                        </WalletButton>
+                        </Button>
                     </div>
                 ) : (
                     <div>
@@ -45,7 +46,7 @@ const CFDPlatformsList: React.FC = () => {
                             <WalletText size='xl' weight='bold'>
                                 CFDs
                             </WalletText>
-                            <WalletButton
+                            <Button
                                 onClick={() => {
                                     history.push('/compare-accounts');
                                 }}
@@ -53,7 +54,7 @@ const CFDPlatformsList: React.FC = () => {
                                 variant='ghost'
                             >
                                 Compare accounts
-                            </WalletButton>
+                            </Button>
                         </div>
                         <WalletText size='md'>
                             Trade bigger positions with less capital on a wide range of global markets.{' '}

@@ -21,7 +21,7 @@ describe('MultipliersTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<MultipliersTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().STOP_OUT_LEVEL.value.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().STOP_OUT_LEVEL.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -30,7 +30,7 @@ describe('MultipliersTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<MultipliersTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().TAKE_PROFIT.value }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().TAKE_PROFIT }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -39,7 +39,7 @@ describe('MultipliersTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<MultipliersTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().STOP_LOSS.value }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().STOP_LOSS }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -48,7 +48,7 @@ describe('MultipliersTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<MultipliersTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().DEAL_CANCELLATION.value }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().DEAL_CANCELLATION }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -57,7 +57,7 @@ describe('MultipliersTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<MultipliersTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().SLIPPAGE_RISK.value.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().SLIPPAGE_RISK.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });

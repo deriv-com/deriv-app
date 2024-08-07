@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { Text } from '@deriv-com/quill-ui';
 import VideoFragment from 'AppV2/Components/Guide/Description/video-fragment';
 import { DESCRIPTION_VIDEO_ID } from 'Modules/Trading/Helpers/video-config';
@@ -15,23 +15,23 @@ type TVideoVariants = {
 };
 
 export const getTerm = () => ({
-    BARRIER: { value: 'Barrier', text: <Localize i18n_default_text='Barrier' /> },
-    CONTRACT_VALUE: { value: 'Contract value', text: <Localize i18n_default_text='Contract value' /> },
-    DEAL_CANCELLATION: { value: 'Deal cancellation', text: <Localize i18n_default_text='Deal cancellation' /> },
-    ENTRY_SPOT: { value: 'Entry spot', text: <Localize i18n_default_text='Entry spot' /> },
-    EXIT_SPOT: { value: 'Exit spot', text: <Localize i18n_default_text='Exit spot' /> },
-    EXPIRY: { value: 'Expiry', text: <Localize i18n_default_text='Expiry' /> },
-    FINAL_PRICE: { value: 'Final price', text: <Localize i18n_default_text='Final price' /> },
-    GROWTH_RATE: { value: 'Growth rate', text: <Localize i18n_default_text='Growth rate' /> },
-    PAYOUT: { value: 'Payout', text: <Localize i18n_default_text='Payout' /> },
-    PAYOUT_PER_POINT: { value: 'Payout per point', text: <Localize i18n_default_text='Payout per point' /> },
-    PREVIOUS_SPOT_PRICE: { value: 'Previous spot price', text: <Localize i18n_default_text='Previous spot price' /> },
-    RANGE: { value: 'Range', text: <Localize i18n_default_text='Range' /> },
-    SLIPPAGE_RISK: { value: 'Slippage risk', text: <Localize i18n_default_text='Slippage risk' /> },
-    STOP_OUT_LEVEL: { value: 'Stop out level', text: <Localize i18n_default_text='Stop out level' /> },
-    STOP_LOSS: { value: 'Stop loss', text: <Localize i18n_default_text='Stop loss' /> },
-    STRIKE_PRICE: { value: 'Strike price', text: <Localize i18n_default_text='Strike price' /> },
-    TAKE_PROFIT: { value: 'Take profit', text: <Localize i18n_default_text='Take profit' /> },
+    BARRIER: localize('Barrier'),
+    CONTRACT_VALUE: localize('Contract value'),
+    DEAL_CANCELLATION: localize('Deal cancellation'),
+    ENTRY_SPOT: localize('Entry spot'),
+    EXIT_SPOT: localize('Exit spot'),
+    EXPIRY: localize('Expiry'),
+    FINAL_PRICE: localize('Final price'),
+    GROWTH_RATE: localize('Growth rate'),
+    PAYOUT: localize('Payout'),
+    PAYOUT_PER_POINT: localize('Payout per point'),
+    PREVIOUS_SPOT_PRICE: localize('Previous spot price'),
+    RANGE: localize('Range'),
+    SLIPPAGE_RISK: localize('Slippage risk'),
+    STOP_OUT_LEVEL: localize('Stop out level'),
+    STOP_LOSS: localize('Stop loss'),
+    STRIKE_PRICE: localize('Strike price'),
+    TAKE_PROFIT: localize('Take profit'),
 });
 
 const getDefinition = () => {
@@ -55,25 +55,25 @@ const getDefinition = () => {
         TAKE_PROFIT,
     } = getTerm();
     return {
-        [BARRIER.value]: (
+        [BARRIER]: (
             <Localize i18n_default_text='This is the corresponding price level based on the payout per point you’ve selected. If this barrier is ever breached, your contract would be terminated.' />
         ),
-        [CONTRACT_VALUE.value]: (contract_type: string) =>
+        [CONTRACT_VALUE]: (contract_type: string) =>
             contract_type === CONTRACT_LIST.VANILLAS ? (
                 <Localize i18n_default_text='We’ll offer to buy your contract at this price should you choose to sell it before its expiry. This is based on several factors, such as the current spot price, duration, etc. However, we won’t offer a contract value if the remaining duration is below 60 seconds.' />
             ) : (
                 <Localize i18n_default_text='This is the resale value of your contract, based on the prevailing market conditions (e.g, the current spot), including additional commissions if any.' />
             ),
-        [DEAL_CANCELLATION.value]: (
+        [DEAL_CANCELLATION]: (
             <Localize i18n_default_text='If you select this feature, you can cancel your trade within a chosen time frame if the asset price moves against your favour. You will get your stake back without profit/loss. We charge a small fee for this. Take profit and stop loss are disabled when deal cancellation is active.' />
         ),
-        [ENTRY_SPOT.value]: (
+        [ENTRY_SPOT]: (
             <Localize i18n_default_text='We use current-tick-execution mechanism, which is the latest asset price when the trade opening is processed by our servers for Volatility Index, Basket Indices, Jump Indices and Crash/Boom Indices.' />
         ),
-        [EXIT_SPOT.value]: (
+        [EXIT_SPOT]: (
             <Localize i18n_default_text='The latest asset price when the trade closure is processed by our servers.' />
         ),
-        [EXPIRY.value]: (
+        [EXPIRY]: (
             <React.Fragment>
                 <Text className='definition__paragraph'>
                     <Localize i18n_default_text='This is when your contract will expire based on the duration or end time you’ve selected. If the duration is more than 24 hours, the cut-off time and expiry date will apply instead.' />
@@ -92,11 +92,11 @@ const getDefinition = () => {
                 </Text>
             </React.Fragment>
         ),
-        [FINAL_PRICE.value]: <Localize i18n_default_text='This is the spot price of the last tick at expiry.' />,
-        [GROWTH_RATE.value]: (
+        [FINAL_PRICE]: <Localize i18n_default_text='This is the spot price of the last tick at expiry.' />,
+        [GROWTH_RATE]: (
             <Localize i18n_default_text='You can choose a growth rate with values of 1%, 2%, 3%, 4%, and 5%.' />
         ),
-        [PAYOUT.value]: (contract_type: string) => {
+        [PAYOUT]: (contract_type: string) => {
             if (contract_type === CONTRACT_LIST.VANILLAS) {
                 return (
                     <Localize i18n_default_text='Your payout is equal to the payout per point multiplied by the difference between the final price and the strike price.' />
@@ -109,29 +109,29 @@ const getDefinition = () => {
             }
             return <Localize i18n_default_text='Payout is the sum of your initial stake and profit.' />;
         },
-        [PAYOUT_PER_POINT.value]: (contract_type: string) =>
+        [PAYOUT_PER_POINT]: (contract_type: string) =>
             contract_type === CONTRACT_LIST.VANILLAS ? (
                 <Localize i18n_default_text='We calculate this based on the strike price and duration you’ve selected.' />
             ) : (
                 <Localize i18n_default_text='The amount you choose to receive at expiry for every point of change between the final price and the barrier. ' />
             ),
-        [PREVIOUS_SPOT_PRICE.value]: <Localize i18n_default_text='Spot price on the previous tick.' />,
-        [RANGE.value]: (
+        [PREVIOUS_SPOT_PRICE]: <Localize i18n_default_text='Spot price on the previous tick.' />,
+        [RANGE]: (
             <Localize i18n_default_text='It is a percentage of the previous spot price. The percentage rate is based on your choice of the index and the growth rate.' />
         ),
-        [SLIPPAGE_RISK.value]: (contract_type: string) =>
+        [SLIPPAGE_RISK]: (contract_type: string) =>
             contract_type === CONTRACT_LIST.ACCUMULATORS ? (
                 <Localize i18n_default_text='The spot price may change by the time your order reaches our servers. When this happens, your payout may be affected.' />
             ) : (
                 <Localize i18n_default_text='Slippage happens when the asset price changes by the time it reaches our servers.' />
             ),
-        [STOP_OUT_LEVEL.value]: (
+        [STOP_OUT_LEVEL]: (
             <Localize i18n_default_text='Your trade will be closed automatically at the nearest available asset price when your loss reaches a certain percentage of your stake, but your loss never exceeds your stake. This percentage depends on the chosen underlying asset and the Multiplier.' />
         ),
-        [STOP_LOSS.value]: (
+        [STOP_LOSS]: (
             <Localize i18n_default_text='If you select this feature, your trade will be closed automatically at the nearest available asset price when your loss reaches or exceeds the stop loss amount. Your loss may be more than the amount you entered depending on the market price at closing.' />
         ),
-        [STRIKE_PRICE.value]: (
+        [STRIKE_PRICE]: (
             <React.Fragment>
                 <Text className='definition__paragraph'>
                     <Localize i18n_default_text='You must select the strike price before entering the contract.' />
@@ -144,7 +144,7 @@ const getDefinition = () => {
                 </Text>
             </React.Fragment>
         ),
-        [TAKE_PROFIT.value]: (
+        [TAKE_PROFIT]: (
             <Localize i18n_default_text='If you select this feature, your trade will be closed automatically at the nearest available asset price when your profit reaches or exceeds the take profit amount. Your profit may be more than the amount you entered depending on the market price at closing.' />
         ),
     };

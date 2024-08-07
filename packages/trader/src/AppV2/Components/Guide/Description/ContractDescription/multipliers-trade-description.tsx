@@ -2,11 +2,7 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import { getTerm, getContractDescription } from 'AppV2/Utils/contract-description-utils';
 
-const MultipliersTradeDescription = ({
-    onTermClick,
-}: {
-    onTermClick: (params: { text: React.ReactNode; value: string }) => void;
-}) => {
+const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
     const { STOP_OUT_LEVEL, TAKE_PROFIT, STOP_LOSS, DEAL_CANCELLATION, SLIPPAGE_RISK } = getTerm();
     const content = [
         {

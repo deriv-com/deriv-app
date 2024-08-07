@@ -3,11 +3,7 @@ import { Localize } from '@deriv/translations';
 import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
 import { getTerm, getContractDescription } from 'AppV2/Utils/contract-description-utils';
 
-const AccumulatorsTradeDescription = ({
-    onTermClick,
-}: {
-    onTermClick: (params: { text: React.ReactNode; value: string }) => void;
-}) => {
+const AccumulatorsTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
     const { GROWTH_RATE, RANGE, PREVIOUS_SPOT_PRICE, PAYOUT, TAKE_PROFIT, SLIPPAGE_RISK } = getTerm();
     const content = [
         {

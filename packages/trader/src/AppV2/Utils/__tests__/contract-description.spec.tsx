@@ -17,15 +17,13 @@ jest.mock('@lottiefiles/dotlottie-react', () => ({
 describe('getTermDefinition', () => {
     it('should return undefined if contract_type or term are undefined', () => {
         expect(getTermDefinition({ contract_type: undefined, term: undefined })).toBeUndefined();
-        expect(getTermDefinition({ contract_type: undefined, term: getTerm().GROWTH_RATE.value })).toBeUndefined();
+        expect(getTermDefinition({ contract_type: undefined, term: getTerm().GROWTH_RATE })).toBeUndefined();
         expect(getTermDefinition({ contract_type: CONTRACT_LIST.ACCUMULATORS, term: undefined })).toBeUndefined();
     });
 
     it('should return correct definition for passed term and contract type', () => {
         render(
-            <div>
-                {getTermDefinition({ contract_type: CONTRACT_LIST.ACCUMULATORS, term: getTerm().GROWTH_RATE.value })}
-            </div>
+            <div>{getTermDefinition({ contract_type: CONTRACT_LIST.ACCUMULATORS, term: getTerm().GROWTH_RATE })}</div>
         );
 
         expect(
@@ -35,49 +33,39 @@ describe('getTermDefinition', () => {
 
     it('should return specific for Vanillas definition for passed term "contract value"', () => {
         render(
-            <div>
-                {getTermDefinition({ contract_type: CONTRACT_LIST.VANILLAS, term: getTerm().CONTRACT_VALUE.value })}
-            </div>
+            <div>{getTermDefinition({ contract_type: CONTRACT_LIST.VANILLAS, term: getTerm().CONTRACT_VALUE })}</div>
         );
 
         expect(screen.getByText(/We’ll offer to buy your contract at this price/i)).toBeInTheDocument();
     });
 
     it('should return default definition for passed term "contract value" if contract type is not Vanillas', () => {
-        render(
-            <div>
-                {getTermDefinition({ contract_type: CONTRACT_LIST.TURBOS, term: getTerm().CONTRACT_VALUE.value })}
-            </div>
-        );
+        render(<div>{getTermDefinition({ contract_type: CONTRACT_LIST.TURBOS, term: getTerm().CONTRACT_VALUE })}</div>);
 
         expect(screen.getByText(/his is the resale value of your contract, based on/i)).toBeInTheDocument();
     });
 
     it('should return specific for Vanillas definition for passed term "payout"', () => {
-        render(<div>{getTermDefinition({ contract_type: CONTRACT_LIST.VANILLAS, term: getTerm().PAYOUT.value })}</div>);
+        render(<div>{getTermDefinition({ contract_type: CONTRACT_LIST.VANILLAS, term: getTerm().PAYOUT })}</div>);
 
         expect(screen.getByText(/Your payout is equal/i)).toBeInTheDocument();
     });
 
     it('should return specific for Turbos definition for passed term "payout"', () => {
-        render(<div>{getTermDefinition({ contract_type: CONTRACT_LIST.TURBOS, term: getTerm().PAYOUT.value })}</div>);
+        render(<div>{getTermDefinition({ contract_type: CONTRACT_LIST.TURBOS, term: getTerm().PAYOUT })}</div>);
 
         expect(screen.getByText(/The payout at expiry is equal to/i)).toBeInTheDocument();
     });
 
     it('should return default definition for passed term "payout" if contract type is not Vanillas or Turbos', () => {
-        render(
-            <div>{getTermDefinition({ contract_type: CONTRACT_LIST.ACCUMULATORS, term: getTerm().PAYOUT.value })}</div>
-        );
+        render(<div>{getTermDefinition({ contract_type: CONTRACT_LIST.ACCUMULATORS, term: getTerm().PAYOUT })}</div>);
 
         expect(screen.getByText(/Payout is the sum of your initial stake and profit/i)).toBeInTheDocument();
     });
 
     it('should return specific for Vanillas definition for passed term "payout per point"', () => {
         render(
-            <div>
-                {getTermDefinition({ contract_type: CONTRACT_LIST.VANILLAS, term: getTerm().PAYOUT_PER_POINT.value })}
-            </div>
+            <div>{getTermDefinition({ contract_type: CONTRACT_LIST.VANILLAS, term: getTerm().PAYOUT_PER_POINT })}</div>
         );
 
         expect(screen.getByText(/We calculate this based on/i)).toBeInTheDocument();
@@ -85,9 +73,7 @@ describe('getTermDefinition', () => {
 
     it('should return default definition for passed term "payout per point" if contract type is not Vanillas', () => {
         render(
-            <div>
-                {getTermDefinition({ contract_type: CONTRACT_LIST.TURBOS, term: getTerm().PAYOUT_PER_POINT.value })}
-            </div>
+            <div>{getTermDefinition({ contract_type: CONTRACT_LIST.TURBOS, term: getTerm().PAYOUT_PER_POINT })}</div>
         );
 
         expect(screen.getByText(/The amount you choose to receive at expiry/i)).toBeInTheDocument();
@@ -95,9 +81,7 @@ describe('getTermDefinition', () => {
 
     it('should return specific for Accumulators definition for passed term "slippage risk"', () => {
         render(
-            <div>
-                {getTermDefinition({ contract_type: CONTRACT_LIST.ACCUMULATORS, term: getTerm().SLIPPAGE_RISK.value })}
-            </div>
+            <div>{getTermDefinition({ contract_type: CONTRACT_LIST.ACCUMULATORS, term: getTerm().SLIPPAGE_RISK })}</div>
         );
 
         expect(
@@ -106,9 +90,7 @@ describe('getTermDefinition', () => {
     });
 
     it('should return default definition for passed term "slippage risk" if contract type is not Accumulators', () => {
-        render(
-            <div>{getTermDefinition({ contract_type: CONTRACT_LIST.TURBOS, term: getTerm().SLIPPAGE_RISK.value })}</div>
-        );
+        render(<div>{getTermDefinition({ contract_type: CONTRACT_LIST.TURBOS, term: getTerm().SLIPPAGE_RISK })}</div>);
 
         expect(screen.getByText(/Slippage happens when the asset price changes by the time/i)).toBeInTheDocument();
     });

@@ -2,11 +2,7 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import { getTerm, getContractDescription } from 'AppV2/Utils/contract-description-utils';
 
-const VanillasTradeDescription = ({
-    onTermClick,
-}: {
-    onTermClick: (params: { text: React.ReactNode; value: string }) => void;
-}) => {
+const VanillasTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
     const { PAYOUT, FINAL_PRICE, STRIKE_PRICE, EXPIRY, PAYOUT_PER_POINT, CONTRACT_VALUE } = getTerm();
     const content = [
         {

@@ -110,7 +110,7 @@ describe('Guide', () => {
 
         userEvent.click(screen.getByText('Guide'));
         userEvent.click(screen.getByText(CONTRACT_LIST.ACCUMULATORS));
-        userEvent.click(screen.getByRole('button', { name: getTerm().GROWTH_RATE.value.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().GROWTH_RATE.toLowerCase() }));
 
         expect(screen.getByText(term_definition)).toBeInTheDocument();
     });

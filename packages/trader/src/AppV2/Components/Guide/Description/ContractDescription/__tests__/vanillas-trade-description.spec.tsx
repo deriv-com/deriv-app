@@ -19,7 +19,7 @@ describe('VanillasTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<VanillasTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().PAYOUT.value.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().PAYOUT.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -28,7 +28,7 @@ describe('VanillasTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<VanillasTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().FINAL_PRICE.value.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().FINAL_PRICE.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -37,7 +37,7 @@ describe('VanillasTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<VanillasTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().STRIKE_PRICE.value.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().STRIKE_PRICE.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -46,7 +46,7 @@ describe('VanillasTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<VanillasTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().EXPIRY.value.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().EXPIRY.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -55,7 +55,7 @@ describe('VanillasTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<VanillasTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().PAYOUT_PER_POINT.value.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().PAYOUT_PER_POINT.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -64,7 +64,7 @@ describe('VanillasTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<VanillasTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().CONTRACT_VALUE.value.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().CONTRACT_VALUE.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });

@@ -25,7 +25,7 @@ const Guide = observer(({ has_label, show_guide_for_selected_contract }: TGuide)
     const [selected_contract_type, setSelectedContractType] = React.useState(
         show_guide_for_selected_contract ? contract_type_title : CONTRACT_LIST.RISE_FALL
     );
-    const [selected_term, setSelectedTerm] = React.useState<{ text: React.ReactNode; value: string } | null>(null);
+    const [selected_term, setSelectedTerm] = React.useState<string>('');
 
     const onChipSelect = React.useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         setSelectedContractType((e.target as EventTarget & HTMLButtonElement).textContent ?? '');
@@ -63,7 +63,7 @@ const Guide = observer(({ has_label, show_guide_for_selected_contract }: TGuide)
             <GuideDefinitionModal
                 contract_type={selected_contract_type}
                 term={selected_term}
-                onClose={() => setSelectedTerm(null)}
+                onClose={() => setSelectedTerm('')}
             />
         </React.Fragment>
     );

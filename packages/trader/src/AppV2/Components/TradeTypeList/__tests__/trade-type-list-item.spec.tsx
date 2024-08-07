@@ -17,7 +17,14 @@ describe('TradeTypeListItem', () => {
         const custom_right_icon = <span>Custom Right Icon</span>;
         const handle_right_icon_click = jest.fn();
 
-        render(<TradeTypeListItem title='Test Title' leftIcon={custom_left_icon} rightIcon={custom_right_icon} onRightIconClick={handle_right_icon_click} />);
+        render(
+            <TradeTypeListItem
+                title='Test Title'
+                leftIcon={custom_left_icon}
+                rightIcon={custom_right_icon}
+                onRightIconClick={handle_right_icon_click}
+            />
+        );
 
         expect(screen.getByText('Custom Left Icon')).toBeInTheDocument();
         expect(screen.getByText('Custom Right Icon')).toBeInTheDocument();

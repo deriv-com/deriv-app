@@ -14,13 +14,6 @@ describe('utils', () => {
         },
     } as TFormStrategy;
 
-    const subpage_name = {
-        [`${DBOT_TABS.DASHBOARD}`]: 'dashboard',
-        [`${DBOT_TABS.BOT_BUILDER}`]: 'bot_builder',
-        [`${DBOT_TABS.CHART}`]: 'charts',
-        [`${DBOT_TABS.TUTORIAL}`]: 'tutorials',
-    };
-
     it('getRsDropdownTextFromLocalStorage() should return empty object when parced json of "qs-analytics" localStorage equals undefined or null', () => {
         const result = getRsDropdownTextFromLocalStorage();
         expect(result).toEqual({});

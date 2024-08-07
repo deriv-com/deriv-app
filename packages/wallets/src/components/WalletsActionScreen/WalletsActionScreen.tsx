@@ -4,7 +4,7 @@ import WalletText from '../Base/WalletText/WalletText';
 import './WalletsActionScreen.scss';
 
 type TProps = {
-    description: ReactNode;
+    description?: ReactNode;
     descriptionSize?: ComponentProps<typeof WalletText>['size'];
     icon?: ReactNode;
     renderButtons?: () =>

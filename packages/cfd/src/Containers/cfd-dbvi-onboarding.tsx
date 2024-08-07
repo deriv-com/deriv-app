@@ -1,17 +1,8 @@
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { PoiPoaDocsSubmitted } from '@deriv/account';
 import { AccountStatusResponse } from '@deriv/api-types';
-import {
-    Button,
-    DesktopWrapper,
-    Icon,
-    Loading,
-    MobileDialog,
-    MobileWrapper,
-    Modal,
-    Text,
-    UILoader,
-} from '@deriv/components';
+import { Button, Icon, Loading, MobileDialog, Modal, Text, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getAuthenticationStatusInfo, isMobile, WS, isPOARequiredForMT5 } from '@deriv/shared';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
@@ -38,10 +29,16 @@ const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) =>
 );
 
 const CFDDbviOnboarding = observer(() => {
-    const { client, ui } = useStore();
+    const { isDesktop } = useDevice();
+    const {
+        client,
+        ui,
+        modules: { cfd },
+    } = useStore();
 
     const { account_status, fetchAccountSettings, is_virtual, updateAccountStatus, updateMT5Status } = client;
     const { disableApp, enableApp } = ui;
+    const { setProduct } = cfd;
 
     const {
         has_created_account_for_selected_jurisdiction,
@@ -82,6 +79,11 @@ const CFDDbviOnboarding = observer(() => {
             setIsLoading(false);
         });
         setIsLoading(false);
+    };
+
+    const clickOncloseButton = () => {
+        toggleCFDVerificationModal();
+        setProduct();
     };
 
     React.useEffect(() => {
@@ -130,14 +132,14 @@ const CFDDbviOnboarding = observer(() => {
 
     return (
         <React.Suspense fallback={<UILoader />}>
-            <DesktopWrapper>
+            {isDesktop ? (
                 <Modal
                     className='cfd-financial-stp-modal'
                     disableApp={disableApp}
                     enableApp={enableApp}
                     is_open={is_cfd_verification_modal_visible}
                     title={getModalTitle()}
-                    toggleModal={toggleCFDVerificationModal}
+                    toggleModal={clickOncloseButton}
                     height='700px'
                     width='996px'
                     onMount={() => getAccountStatusFromAPI()}
@@ -145,18 +147,17 @@ const CFDDbviOnboarding = observer(() => {
                 >
                     {getModalContent()}
                 </Modal>
-            </DesktopWrapper>
-            <MobileWrapper>
+            ) : (
                 <MobileDialog
                     portal_element_id='deriv_app'
                     title={getModalTitle()}
                     wrapper_classname='cfd-financial-stp-modal'
                     visible={is_cfd_verification_modal_visible}
-                    onClose={toggleCFDVerificationModal}
+                    onClose={clickOncloseButton}
                 >
                     {getModalContent()}
                 </MobileDialog>
-            </MobileWrapper>
+            )}
         </React.Suspense>
     );
 });

@@ -15,7 +15,7 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
             },
             {
                 key: 'leverage',
-                title: 'Leverage',
+                title: 'Leverage up to',
                 titleIndicators: {
                     displayText: '1:1000',
                     displayTextSkinColor: 'yellow-light',
@@ -38,7 +38,7 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
         ],
         financial: [
             {
-                description: 'Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies',
+                description: 'Forex (standard/micro), stocks, stock indices, commodities, cryptocurrencies and ETFs',
                 key: 'assets',
                 title: 'Assets',
                 titleIndicators: {
@@ -56,7 +56,7 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
                     },
                 ],
                 key: 'leverage',
-                title: 'Leverage',
+                title: 'Leverage up to',
                 titleIndicators: {
                     displayText: '1:1000',
                     displayTextSkinColor: 'yellow-light',
@@ -88,18 +88,19 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
         ],
         synthetic: [
             {
-                description: 'Synthetics, Baskets and Derived FX',
+                description:
+                    'Forex (standard), stock indices, commodities, cryptocurrencies, synthetic indices, basket indices and derived FX',
                 key: 'assets',
                 title: 'Assets',
                 titleIndicators: {
-                    displayText: '40+',
+                    displayText: '210+',
                     displayTextSkinColor: 'red-darker',
                     type: 'displayText',
                 },
             },
             {
                 key: 'leverage',
-                title: 'Leverage',
+                title: 'Leverage up to',
                 titleIndicators: {
                     displayText: '1:1000',
                     displayTextSkinColor: 'yellow-light',

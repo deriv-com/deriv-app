@@ -1,20 +1,20 @@
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useActiveWalletAccount, useBalanceSubscription } from '@deriv/api-v2';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import {
+    LabelPairedArrowsRotateMdRegularIcon,
+    LabelPairedArrowUpArrowDownMdRegularIcon,
+    LabelPairedMinusMdRegularIcon,
+    LabelPairedPlusMdRegularIcon,
+    LabelPairedSquareListMdRegularIcon,
     LegacyClose2pxIcon,
-    LegacyDepositIcon,
-    LegacyPlus1pxIcon,
-    LegacyStatementIcon,
-    LegacyTransferIcon,
-    LegacyWithdrawalIcon,
 } from '@deriv/quill-icons';
 import { WalletCurrencyIcon, WalletGradientBackground, WalletText } from '../../../../components';
 import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
+import useAllBalanceSubscription from '../../../../hooks/useAllBalanceSubscription';
 import useDevice from '../../../../hooks/useDevice';
-import i18n from '../../../../translations/i18n';
 import './WalletCashierHeader.scss';
 
 type TProps = {
@@ -23,54 +23,56 @@ type TProps = {
 
 const realAccountTabs = [
     {
-        icon: <LegacyDepositIcon iconSize='xs' />,
+        icon: <LabelPairedPlusMdRegularIcon />,
         path: 'deposit',
-        text: i18n.t('Deposit'),
+        text: 'Deposit',
     },
     {
-        icon: <LegacyWithdrawalIcon iconSize='xs' />,
+        icon: <LabelPairedMinusMdRegularIcon />,
         path: 'withdrawal',
-        text: i18n.t('Withdraw'),
+        text: 'Withdraw',
     },
     {
-        icon: <LegacyTransferIcon iconSize='xs' />,
+        icon: <LabelPairedArrowUpArrowDownMdRegularIcon />,
         path: 'account-transfer',
-        text: i18n.t('Transfer'),
+        text: 'Transfer',
     },
     {
-        icon: <LegacyStatementIcon iconSize='xs' />,
+        icon: <LabelPairedSquareListMdRegularIcon />,
         path: 'transactions',
-        text: i18n.t('Transactions'),
+        text: 'Transactions',
     },
 ] as const;
 
 const virtualAccountTabs = [
     {
-        icon: <LegacyPlus1pxIcon iconSize='xs' />,
-        path: 'reset-balance',
-        text: i18n.t('Reset Balance'),
-    },
-    {
-        icon: <LegacyTransferIcon iconSize='xs' />,
+        icon: <LabelPairedArrowUpArrowDownMdRegularIcon />,
         path: 'account-transfer',
-        text: i18n.t('Transfer'),
+        text: 'Transfer',
     },
     {
-        icon: <LegacyStatementIcon iconSize='xs' />,
+        icon: <LabelPairedSquareListMdRegularIcon />,
         path: 'transactions',
-        text: i18n.t('Transactions'),
+        text: 'Transactions',
+    },
+    {
+        icon: <LabelPairedArrowsRotateMdRegularIcon />,
+        path: 'reset-balance',
+        text: 'Reset Balance',
     },
 ] as const;
 
 const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { data: balanceData, subscribe, unsubscribe } = useBalanceSubscription();
+    const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
     const { isMobile } = useDevice();
     const activeTabRef = useRef<HTMLButtonElement>(null);
     const history = useHistory();
     const location = useLocation();
+    const accountsActiveTabIndexRef = useRef<number>(location.state?.accountsActiveTabIndex ?? 0);
 
     const tabs = activeWallet?.is_virtual ? virtualAccountTabs : realAccountTabs;
+    const isDemo = activeWallet?.is_virtual;
 
     useEffect(() => {
         if (isMobile && activeTabRef.current) {
@@ -78,20 +80,11 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
         }
     }, [location.pathname, isMobile]);
 
-    useEffect(() => {
-        subscribe({
-            loginid: activeWallet?.loginid,
-        });
-        return () => {
-            unsubscribe();
-        };
-    }, [activeWallet?.loginid, subscribe, unsubscribe]);
-
     return (
         <WalletGradientBackground
             currency={activeWallet?.currency}
             device={isMobile ? 'mobile' : 'desktop'}
-            isDemo={activeWallet?.is_virtual}
+            isDemo={isDemo}
             theme='light'
             type='header'
         >
@@ -103,24 +96,27 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                                 'wallets-cashier-header__details--hide-details': hideWalletDetails,
                             })}
                         >
-                            <WalletText
-                                color={activeWallet?.is_virtual ? 'system-dark-2-general-text' : 'general'}
-                                size='md'
-                            >
+                            <WalletText color={isDemo ? 'system-dark-2-general-text' : 'general'} size='md'>
                                 {activeWallet?.currency} Wallet
                             </WalletText>
-                            {activeWallet?.landing_company_name && (
-                                <WalletListCardBadge
-                                    isDemo={activeWallet?.is_virtual}
-                                    label={activeWallet?.landing_company_name}
-                                />
-                            )}
+                            {isDemo && <WalletListCardBadge />}
                         </div>
-                        <WalletText color={activeWallet?.is_virtual ? 'white' : 'general'} size='xl' weight='bold'>
-                            {displayMoney?.(balanceData?.balance ?? 0, activeWallet?.currency || '', {
-                                fractional_digits: activeWallet?.currency_config?.fractional_digits,
-                            })}
-                        </WalletText>
+                        {isBalanceLoading ? (
+                            <div
+                                className='wallets-skeleton wallets-cashier-header__loader'
+                                data-testid='dt_wallets_cashier_header_balance_loader'
+                            />
+                        ) : (
+                            <WalletText color={isDemo ? 'white' : 'general'} size='xl' weight='bold'>
+                                {displayMoney(
+                                    balanceData?.[activeWallet?.loginid ?? '']?.balance,
+                                    activeWallet?.currency,
+                                    {
+                                        fractional_digits: activeWallet?.currency_config?.fractional_digits,
+                                    }
+                                )}
+                            </WalletText>
+                        )}
                     </div>
                     <div className='wallets-cashier-header__top-right-info'>
                         {activeWallet?.wallet_currency_type && (
@@ -141,10 +137,13 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                         )}
                         <LegacyClose2pxIcon
                             className={classNames('wallets-cashier-header__close-icon', {
-                                'wallets-cashier-header__close-icon--white': activeWallet?.is_virtual,
+                                'wallets-cashier-header__close-icon--white': isDemo,
                             })}
+                            data-testid='dt_close_btn'
                             iconSize='xs'
-                            onClick={() => history.push('/')}
+                            onClick={() =>
+                                history.push('/', { accountsActiveTabIndex: accountsActiveTabIndexRef?.current })
+                            }
                         />
                     </div>
                 </section>
@@ -164,19 +163,15 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                                 ref={isActiveTab ? activeTabRef : null}
                             >
                                 <div
-                                    className={classNames('wallets-cashier-header__tab-icon', {
+                                    className={classNames({
                                         'wallets-cashier-header__tab-icon--system-dark-2-general-text':
-                                            activeWallet?.is_virtual && !isActiveTab,
+                                            isDemo && !isActiveTab,
                                     })}
                                 >
                                     {tab.icon}
                                 </div>
                                 <WalletText
-                                    color={
-                                        activeWallet?.is_virtual && !isActiveTab
-                                            ? 'system-dark-2-general-text'
-                                            : 'general'
-                                    }
+                                    color={isDemo && !isActiveTab ? 'system-dark-2-general-text' : 'general'}
                                     size='sm'
                                     weight={isActiveTab ? 'bold' : 'normal'}
                                 >

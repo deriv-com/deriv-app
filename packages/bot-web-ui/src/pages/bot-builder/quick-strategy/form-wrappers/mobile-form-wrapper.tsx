@@ -8,8 +8,8 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import {
     rudderStackSendQsRunStrategyEvent,
     rudderStackSendQsSelectedTabEvent,
-} from '../analytics/rudderstack-quick-strategy';
-import { getQsActiveTabString } from '../analytics/utils';
+} from '../../../../analytics/rudderstack-quick-strategy';
+import { getQsActiveTabString } from '../../../../analytics/utils';
 import { STRATEGIES } from '../config';
 import { TFormValues } from '../types';
 import FormTabs from './form-tabs';

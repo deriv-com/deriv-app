@@ -26,7 +26,7 @@
     },
     "scripts": {
         "analyze:stats": "f () { NODE_OPTIONS='-r ts-node/register' webpack --progress --config \"./build/webpack.config.js\" --env base=$1 --profile --json=stats.json;}; f",
-        "analyze:build": "webpack-bundle-analyzer --no-open -m static -r analyzed.html stats.json ./dist && webpack-bundle-analyzer -m json stats.json ./dist",
+        "analyze:build": "webpack-bundle-analyzer --no-open -m static -r treemap.html stats.json ./dist && webpack-bundle-analyzer -m json stats.json ./dist",
         "test": "echo \"No test specified\"",
         "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
         "serve": "echo \"Serving...\" && NODE_OPTIONS='-r ts-node/register' webpack --progress --watch --config \"./build/webpack.config.js\"",

@@ -1,6 +1,7 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, DataList, DataTable, Text, Clipboard, usePrevious } from '@deriv/components';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { useDevice } from '@deriv-com/ui';
+import { DataList, DataTable, Text, Clipboard, usePrevious } from '@deriv/components';
 import {
     capitalizeFirstLetter,
     extractInfoFromShortcode,
@@ -34,7 +35,7 @@ type TAction =
       }
     | string;
 
-type TStatement = {
+type TStatement = RouteComponentProps & {
     component_icon: string;
 };
 
@@ -80,9 +81,7 @@ const DetailsComponent = ({ message = '', action_type = '' }: TDetailsComponent)
     );
 };
 
-type TGetRowAction = TDataList['getRowAction'] | React.ComponentProps<typeof DataTable>['getRowAction'];
-
-const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
+export const getRowAction = (row_obj: TSource | TRow): TAction => {
     let action: TAction = {};
     const { action_type, desc, id, is_sold, longcode, purchase_time, shortcode, transaction_time, withdrawal_details } =
         row_obj;
@@ -156,6 +155,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
     const prev_action_type = usePrevious(action_type);
     const prev_date_from = usePrevious(date_from);
     const prev_date_to = usePrevious(date_to);
+    const { isDesktop } = useDevice();
 
     React.useEffect(() => {
         onMount();
@@ -182,6 +182,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
                 transaction_type_filter: action_type,
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [action_type]);
 
     React.useEffect(() => {
@@ -194,17 +195,17 @@ const Statement = observer(({ component_icon }: TStatement) => {
                 end_date_filter: formatDate(date_to, 'DD/MM/YYYY', false),
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [date_to, date_from]);
 
     if (error) return <p>{error}</p>;
 
-    const columns: TGetStatementTableColumnsTemplate = getStatementTableColumnsTemplate(currency);
+    const columns: TGetStatementTableColumnsTemplate = getStatementTableColumnsTemplate(currency, isDesktop);
     const columns_map = columns.reduce((map, item) => {
         map[item.col_index as TColIndex] = item;
         return map;
     }, {} as Record<TColIndex, typeof columns[number]>);
 
-    // TODO: Export type instead of any from 'DataList' component when it migrates to tsx
     const mobileRowRenderer = ({
         row,
         passthrough,
@@ -243,8 +244,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
             </div>
         </React.Fragment>
     );
-    // TODO: Uncomment and update this when DTrader 2.0 development starts:
-    // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='l'>I am Statement for DTrader 2.0.</Text>;
+
     return (
         <React.Fragment>
             <ReportsMeta className='reports__meta--statement' filter_component={<FilterComponent />} is_statement />
@@ -266,7 +266,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
                         />
                     ) : (
                         <div className='reports__content'>
-                            <DesktopWrapper>
+                            {isDesktop ? (
                                 <DataTable
                                     className='statement'
                                     columns={columns}
@@ -280,8 +280,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
                                 >
                                     <PlaceholderComponent is_loading={is_loading} />
                                 </DataTable>
-                            </DesktopWrapper>
-                            <MobileWrapper>
+                            ) : (
                                 <DataList
                                     className='statement'
                                     data_source={data}
@@ -295,7 +294,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
                                 >
                                     <PlaceholderComponent is_loading={is_loading} />
                                 </DataList>
-                            </MobileWrapper>
+                            )}
                         </div>
                     )}
                 </React.Fragment>

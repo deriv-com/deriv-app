@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import useDevice from '../../hooks/useDevice';
 import { THooks } from '../../types';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../Base';
@@ -8,7 +9,6 @@ import { WalletSuccess } from '../WalletSuccess';
 type TWalletAddedSuccessProps = {
     currency: THooks.CreateWallet['currency'];
     displayBalance: THooks.CreateWallet['display_balance'];
-    landingCompany: THooks.CreateWallet['landing_company_shortcode'];
     onPrimaryButtonClick: () => void;
     onSecondaryButtonClick: () => void;
 };
@@ -16,21 +16,23 @@ type TWalletAddedSuccessProps = {
 const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
     currency,
     displayBalance,
-    landingCompany,
     onPrimaryButtonClick,
     onSecondaryButtonClick,
 }) => {
     const { isMobile } = useDevice();
-    const description = 'Make a deposit into your new Wallet.';
-    const title = useMemo(() => `Your ${currency} wallet is ready`, [currency]);
+    const { localize } = useTranslations();
+    const description = localize('Make a deposit into your new Wallet.');
+    const title = useMemo(() => localize('Your {{currency}} wallet is ready', { currency }), [currency, localize]);
     const renderFooter = useCallback(
         () => (
             <div className='wallets-add-more__success-footer'>
                 <WalletButtonGroup isFlex isFullWidth>
                     <WalletButton onClick={onSecondaryButtonClick} variant='outlined'>
-                        Maybe later
+                        <Localize i18n_default_text='Maybe later' />
                     </WalletButton>
-                    <WalletButton onClick={onPrimaryButtonClick}>Deposit</WalletButton>
+                    <WalletButton onClick={onPrimaryButtonClick}>
+                        <Localize i18n_default_text='Deposit' />
+                    </WalletButton>
                 </WalletButtonGroup>
             </div>
         ),
@@ -39,10 +41,10 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
     const renderIcon = useCallback(
         () => (
             <div className='wallets-add-more__success-card'>
-                <WalletCard balance={displayBalance} currency={currency || 'USD'} landingCompanyName={landingCompany} />
+                <WalletCard balance={displayBalance} currency={currency || 'USD'} />
             </div>
         ),
-        [currency, displayBalance, landingCompany]
+        [currency, displayBalance]
     );
 
     if (isMobile)

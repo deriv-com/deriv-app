@@ -1,20 +1,22 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useEmblaCarousel, { EmblaCarouselType, EmblaEventType } from 'embla-carousel-react';
 import { useHistory } from 'react-router-dom';
-import {
-    useActiveWalletAccount,
-    useBalanceSubscription,
-    useCurrencyConfig,
-    useMobileCarouselWalletsList,
-} from '@deriv/api-v2';
+import { useActiveWalletAccount, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
+import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { THooks } from '../../types';
-import { ProgressBar, WalletText } from '../Base';
+import { ProgressBar } from '../Base';
 import { WalletsCarouselLoader } from '../SkeletonLoader';
 import { WalletCard } from '../WalletCard';
 import { WalletListCardActions } from '../WalletListCardActions';
 import './WalletsCarouselContent.scss';
+
+type TProps = {
+    accountsActiveTabIndex: number;
+};
 
 const numberWithinRange = (number: number, min: number, max: number): number => Math.min(Math.max(number, min), max);
 
@@ -27,19 +29,13 @@ const TRANSITION_FACTOR_SCALE = 1 - 25.6 / 28.8;
  * - Embla is the SINGLE SOURCE OF TRUTH for current active card, so the state flow / data flow is simple
  * - everything else gets in sync with Embla eventually
  */
-const WalletsCarouselContent: React.FC = () => {
+const WalletsCarouselContent: React.FC<TProps> = ({ accountsActiveTabIndex }) => {
     const switchWalletAccount = useWalletAccountSwitcher();
     const history = useHistory();
 
     const { data: walletAccountsList, isLoading: isWalletAccountsListLoading } = useMobileCarouselWalletsList();
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
-    const {
-        data: balanceData,
-        isLoading: isBalanceLoading,
-        isSubscribed,
-        subscribe,
-        unsubscribe,
-    } = useBalanceSubscription();
+    const { data: balanceData } = useAllBalanceSubscription();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
     const [selectedLoginId, setSelectedLoginId] = useState('');
@@ -51,6 +47,16 @@ const WalletsCarouselContent: React.FC = () => {
     const walletsAccountsListRef = useRef(walletAccountsList);
     const transitionNodes = useRef<HTMLElement[]>([]);
     const transitionFactor = useRef(0);
+
+    const getBalance = (
+        loginid: string,
+        currency?: string,
+        wallet?: ReturnType<typeof useActiveWalletAccount>['data']
+    ) => {
+        return displayMoney(balanceData?.[loginid]?.balance, currency, {
+            fractional_digits: wallet?.currency_config?.fractional_digits,
+        });
+    };
 
     // sets the transition nodes to be scaled
     const setTransitionNodes = useCallback((walletsCarouselEmblaApi: EmblaCarouselType) => {
@@ -125,9 +131,11 @@ const WalletsCarouselContent: React.FC = () => {
             walletsCarouselEmblaApi?.scrollTo(index);
             walletAccountsList && setSelectedLoginId(walletAccountsList[index].loginid);
             account.is_active &&
-                (account.is_virtual ? history.push('/wallet/reset-balance') : history.push('/wallet/deposit'));
+                (account.is_virtual
+                    ? history.push('/wallet/reset-balance', { accountsActiveTabIndex })
+                    : history.push('/wallet/deposit', { accountsActiveTabIndex }));
         },
-        [walletsCarouselEmblaApi, walletAccountsList, history]
+        [walletsCarouselEmblaApi, walletAccountsList, history, accountsActiveTabIndex]
     );
 
     useEffect(() => {
@@ -175,17 +183,10 @@ const WalletsCarouselContent: React.FC = () => {
                 if (index !== -1) {
                     walletsCarouselEmblaApi?.scrollTo(index);
                 }
-                if (isSubscribed) unsubscribe();
-                subscribe({ loginid: selectedLoginId });
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedLoginId, walletAccountsList]);
-
-    // unsubscribe to the balance call if the whole component unmounts
-    useEffect(() => {
-        return () => unsubscribe();
-    }, [unsubscribe]);
 
     // initial loading
     useEffect(() => {
@@ -239,33 +240,24 @@ const WalletsCarouselContent: React.FC = () => {
         <div className='wallets-carousel-content'>
             <div className='wallets-carousel-content__wrapper'>
                 <div className='wallets-carousel-content__title'>
-                    <WalletText size='xl' weight='bold'>
-                        Trader&apos;s Hub
-                    </WalletText>
+                    <Text size='xl' weight='bold'>
+                        <Localize i18n_default_text='Trader’s Hub' />
+                    </Text>
                 </div>
                 <div className='wallets-carousel-content__carousel' ref={walletsCarouselEmblaRef}>
                     <div className='wallets-carousel-content__cards'>
                         {walletAccountsList?.map((account, index) => (
                             <WalletCard
                                 balance={
-                                    !isBalanceLoading &&
-                                    account.loginid === activeWallet?.loginid &&
-                                    balanceData.loginid === selectedLoginId
-                                        ? displayMoney(
-                                              balanceData.balance ?? account.balance,
-                                              activeWallet?.currency ?? '',
-                                              {
-                                                  fractional_digits: activeWallet?.currency_config?.fractional_digits,
-                                              }
-                                          )
-                                        : account.display_balance
+                                    account.loginid === activeWallet?.loginid
+                                        ? getBalance(activeWallet?.loginid, activeWallet?.currency, activeWallet)
+                                        : getBalance(account.loginid, account?.currency, account)
                                 }
                                 currency={account.currency || 'USD'}
                                 iconSize='lg'
                                 isCarouselContent
                                 isDemo={account.is_virtual}
                                 key={`wallet-card-${account.loginid}`}
-                                landingCompanyName={account.landing_company_name}
                                 onClick={() => handleCardClick(account, index)}
                             />
                         ))}
@@ -279,7 +271,7 @@ const WalletsCarouselContent: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <WalletListCardActions />
+            <WalletListCardActions accountsActiveTabIndex={accountsActiveTabIndex} />
         </div>
     );
 };

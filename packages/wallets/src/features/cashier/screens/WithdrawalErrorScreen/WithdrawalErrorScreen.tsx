@@ -1,9 +1,9 @@
 import React, { ComponentProps } from 'react';
-import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { TSocketError } from '@deriv/api-v2/types';
-import { WalletButton, WalletsErrorScreen } from '../../../../components';
+import { Button } from '@deriv-com/ui';
+import { WalletsErrorScreen } from '../../../../components';
 import { CryptoWithdrawalErrorCodes } from '../../../../constants/errorCodes';
 
 type TProps = {
@@ -14,10 +14,9 @@ type TProps = {
 
 type TErrorContent = {
     buttonText?: string;
-    buttonVariant?: ComponentProps<typeof WalletButton>['variant'];
+    buttonVariant?: ComponentProps<typeof Button>['variant'];
     message?: string;
     onClick?: () => void;
-    showIcon?: boolean;
     title?: string;
 };
 
@@ -33,7 +32,6 @@ const WithdrawalErrorScreen: React.FC<TProps> = ({ error, resetError, setResendE
         buttonVariant: 'ghost',
         message: error.message,
         onClick: () => window.location.reload(),
-        showIcon: true,
     };
 
     const withdrawalErrorCodeHandlers: TErrorCodeHandlers = {
@@ -67,14 +65,12 @@ const WithdrawalErrorScreen: React.FC<TProps> = ({ error, resetError, setResendE
             ...defaultContent,
             buttonText: undefined,
             message: `Due to system maintenance, withdrawals with your ${currency} Wallet are unavailable at the moment. Please try again later.`,
-            showIcon: false,
             title: `${currency} Wallet withdrawals are temporarily unavailable`,
         },
         [CryptoWithdrawalErrorCodes.SuspendedWithdrawal]: {
             ...defaultContent,
             buttonText: undefined,
             message: `Due to system maintenance, withdrawals with your ${currency} Wallet are unavailable at the moment. Please try again later.`,
-            showIcon: false,
             title: `${currency} Wallet withdrawals are temporarily unavailable`,
         },
         [CryptoWithdrawalErrorCodes.CryptoConnectionError]: {
@@ -86,15 +82,7 @@ const WithdrawalErrorScreen: React.FC<TProps> = ({ error, resetError, setResendE
 
     const content = withdrawalErrorCodeHandlers[error.code] || defaultContent;
 
-    return (
-        <div
-            className={classNames('wallets-withdrawal-error-screen', {
-                'wallets-withdrawal-error-screen__no-icon': !content.showIcon,
-            })}
-        >
-            <WalletsErrorScreen {...content} />
-        </div>
-    );
+    return <WalletsErrorScreen {...content} />;
 };
 
 export default WithdrawalErrorScreen;

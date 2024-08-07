@@ -10,7 +10,7 @@ const Heading = ({ code }) => {
         case 'DuplicateAccount':
             return (
                 <Text as='h1' align='center' weight='bold'>
-                    <Localize i18n_default_text='Already signed up?' />
+                    <Localize i18n_default_text='Account already exists' />
                 </Text>
             );
         case 'InvalidAccount':
@@ -47,10 +47,8 @@ const Message = ({ code, message, details }) => {
         case 'DuplicateAccount':
             return (
                 <p>
-                    <Localize i18n_default_text='An account with your details already exists.' />
-                    <br />
                     <Localize
-                        i18n_default_text="If you're having trouble signing in, let us know via <0>chat</0>"
+                        i18n_default_text='Your details match an existing account. If you need help, contact us via <0>live chat</0>.'
                         components={[
                             <span className='chat-inline' key={0} onClick={() => window.LC_API.open_chat_window()} />,
                         ]}
@@ -90,8 +88,8 @@ const Message = ({ code, message, details }) => {
     }
 };
 
-const TryAgain = ({ text, onConfirm }) => (
-    <Button primary onClick={onConfirm} large>
+const TryAgain = ({ text, onConfirm, ...rest }) => (
+    <Button primary onClick={onConfirm} large {...rest}>
         {text}
     </Button>
 );
@@ -102,7 +100,7 @@ const ErrorCTA = ({ code, onConfirm }) => {
         case 'CurrencyTypeNotAllowed':
             return <TryAgain text={localize('Try a different currency')} onConfirm={onConfirm} />;
         case 'DuplicateAccount':
-            return null;
+            return <TryAgain text={localize('Go to live chat')} onConfirm={() => window.LC_API.open_chat_window()} />;
         case 'InputValidationFailed':
         case 'PoBoxInAddress':
         case 'InvalidPhone':
@@ -141,7 +139,9 @@ const SignupErrorContent = ({ message, code, onConfirm, className, error_field =
             <Icon icon={is_invalid_field_error ? 'IcInvalidError' : 'IcAccountError'} size={getIconSize()} />
             <Heading code={code} />
             <Message code={code} message={message} details={error_field} />
-            <ErrorCTA code={code} onConfirm={onConfirm} />
+            <div className='account-wizard--error__cta'>
+                <ErrorCTA code={code} onConfirm={onConfirm} />
+            </div>
         </div>
     );
 };

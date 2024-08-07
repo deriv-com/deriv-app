@@ -8,10 +8,9 @@ import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import {
     rudderStackSendQsEditStrategyEvent,
-    rudderStackSendQsRunStrategyEvent,
     rudderStackSendQsSelectedTabEvent,
-} from '../analytics/rudderstack-quick-strategy';
-import { getQsActiveTabString } from '../analytics/utils';
+} from '../../../../analytics/rudderstack-quick-strategy';
+import { getQsActiveTabString } from '../../../../analytics/utils';
 import { STRATEGIES } from '../config';
 import { TFormData, TFormValues } from '../types';
 import FormTabs from './form-tabs';
@@ -27,6 +26,7 @@ type TDesktopFormWrapper = {
 
 const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClickClose, active_tab_ref }) => {
     const [activeTab, setActiveTab] = React.useState('TRADE_PARAMETERS');
+    const scroll_ref = React.useRef<HTMLDivElement & SVGSVGElement>(null);
     const { submitForm, isValid, setFieldValue, validateForm, values } = useFormikContext<TFormValues>();
     const { quick_strategy } = useDBotStore();
     const { selected_strategy, setSelectedStrategy, onSubmit, is_stop_bot_dialog_open } = quick_strategy;
@@ -37,9 +37,17 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
         validateForm();
     }, [selected_strategy, validateForm]);
 
+    const scrollToTop = () => {
+        // Gets the reference of the element and scrolls it to the top
+        if (scroll_ref.current) {
+            scroll_ref.current.scrollTop = 0;
+        }
+    };
+
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
         setActiveTab('TRADE_PARAMETERS');
+        scrollToTop();
     };
 
     const handleTabChange = (tab: string) => {
@@ -48,25 +56,21 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
     };
 
     const onEdit = async () => {
-        rudderStackSendQsEditStrategyEvent({
-            form_values: values,
-            selected_strategy,
-            quick_strategy_tab: getQsActiveTabString(activeTab),
-        });
         await setFieldValue('action', 'EDIT');
         validateForm();
         submitForm().then((form_data: TFormData | void) => {
             if (isValid && form_data) {
+                rudderStackSendQsEditStrategyEvent({
+                    form_values: values,
+                    selected_strategy,
+                    quick_strategy_tab: getQsActiveTabString(activeTab),
+                });
                 onSubmit(form_data); // true to load and run the bot
             }
         });
     };
 
     const onRun = () => {
-        rudderStackSendQsRunStrategyEvent({
-            form_values: values,
-            selected_strategy,
-        });
         handleSubmit();
     };
 
@@ -123,6 +127,7 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
                                 'qs__form__container--no-footer': activeTab !== 'TRADE_PARAMETERS',
                             })}
                             autohide={false}
+                            refSetter={scroll_ref}
                         >
                             <div ref={active_tab_ref}>
                                 <FormTabs

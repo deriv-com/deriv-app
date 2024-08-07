@@ -395,18 +395,22 @@ const MyAdsRowRenderer = observer(({ country_list, row: advert, table_ref }) => 
                             <AdStatus is_active={!!is_advert_active && !general_store.is_barred} />
                         </div>
                     )}
-                    <Popover
-                        alignment='top'
-                        arrow_styles={{ bottom: '-0.5rem' }}
-                        classNameBubble='my-ads-table__status-bubble'
-                        classNameTarget='my-ads-table__status-target'
-                        message={localize('Manage ad')}
-                        onClick={() => {
-                            setIsAdvertMenuVisible(true);
-                        }}
-                    >
-                        <Icon icon='IcCashierVerticalEllipsis' />
-                    </Popover>
+                    {general_store.is_barred ? (
+                        <Icon color='disabled' icon='IcCashierVerticalEllipsis' />
+                    ) : (
+                        <Popover
+                            alignment='top'
+                            arrow_styles={{ bottom: '-0.5rem' }}
+                            classNameBubble='my-ads-table__status-bubble'
+                            classNameTarget='my-ads-table__status-target'
+                            message={localize('Manage ad')}
+                            onClick={() => {
+                                setIsAdvertMenuVisible(true);
+                            }}
+                        >
+                            <Icon icon='IcCashierVerticalEllipsis' />
+                        </Popover>
+                    )}
                     {is_advert_menu_visible && (
                         <MyAdsRowDropdown
                             className={classNames({

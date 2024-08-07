@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, useHistory } from 'react-router-dom';
 import { loginUrl, routes, redirectToLogin, SessionStore } from '@deriv/shared';
@@ -15,6 +16,7 @@ const Redirect = observer(() => {
 
     const {
         openRealAccountSignup,
+        setCFDPasswordResetModal,
         setResetTradingPasswordModalOpen,
         toggleAccountSignupModal,
         toggleResetPasswordModal,
@@ -111,6 +113,7 @@ const Redirect = observer(() => {
                         break;
                     case '3':
                         pathname = routes.passwords;
+                        setCFDPasswordResetModal(true);
                         break;
                     default:
                         break;
@@ -243,13 +246,14 @@ const Redirect = observer(() => {
         default:
             break;
     }
-
-    if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
-        history.push({
-            pathname: routes.traders_hub,
-            search: url_query_string,
-        });
-    }
+    useEffect(() => {
+        if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
+            history.push({
+                pathname: routes.traders_hub,
+                search: url_query_string,
+            });
+        }
+    }, [redirected_to_route, url_query_string, history]);
 
     return null;
 });

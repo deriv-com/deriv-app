@@ -4,7 +4,7 @@ export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
     contents: {
         financial: [
             {
-                description: 'Forex and Cryptocurrencies',
+                description: 'Forex (standard/exotic) and cryptocurrencies',
                 key: 'assets',
                 title: 'Assets',
                 titleIndicators: {
@@ -22,7 +22,7 @@ export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
                     },
                 ],
                 key: 'leverage',
-                title: 'Leverage',
+                title: 'Leverage up to',
                 titleIndicators: {
                     displayText: '1:100',
                     displayTextSkinColor: 'yellow-dark',
@@ -69,7 +69,7 @@ export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
             },
             {
                 key: 'leverage',
-                title: 'Leverage',
+                title: 'Leverage up to',
             },
             {
                 key: 'spreads-from',

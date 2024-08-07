@@ -2,10 +2,18 @@ import React from 'react';
 import { useStore } from '@deriv/stores';
 import ProfitStores from './Modules/Profit/profit-store';
 import StatementStores from './Modules/Statement/statement-store';
+import { formatProfitTableTransactions } from './Modules/Profit/Helpers/format-response';
 
-type TOverrideProfitStore = Omit<ProfitStores, 'data' | 'date_from' | 'totals'> & {
+type TOverrideProfitStore = Omit<ProfitStores, 'data' | 'date_from' | 'totals' | 'handleDateChange'> & {
     date_from: number;
-    data: { [key: string]: string }[];
+    data: ReturnType<typeof formatProfitTableTransactions>[];
+    handleDateChange: (
+        values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean },
+        otherParams?: {
+            date_range?: Record<string, string | number>;
+            shouldFilterContractTypes?: boolean;
+        }
+    ) => void;
     totals: { [key: string]: unknown };
 };
 
@@ -39,7 +47,7 @@ type TOverrideStatementStore = Omit<
     suffix_icon: string;
 };
 
-type TReportsStore = {
+export type TReportsStore = {
     profit_table: TOverrideProfitStore;
     statement: TOverrideStatementStore;
 };

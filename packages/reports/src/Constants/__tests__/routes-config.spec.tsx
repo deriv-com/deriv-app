@@ -3,7 +3,7 @@ import { RouteComponentProps, Router } from 'react-router';
 import { createMemoryHistory } from 'history';
 import { mockStore } from '@deriv/stores';
 import { routes } from '@deriv/shared';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import BinaryRoutes from '../../Components/Routes';
 import ReportsProviders from '../../reports-providers';
 import getRoutesConfig from '../routes-config';
@@ -23,9 +23,9 @@ jest.mock('../../Containers', () => ({
     __esModule: true,
     default: {
         ...jest.requireActual('../../Containers').default,
-        OpenPositions: () => <div>{mockedOpenPositions}</div>,
-        ProfitTable: () => <div>{mockedTradeTable}</div>,
-        Statement: () => <div>{mockedStatement}</div>,
+        OpenPositions: () => <div role='main'>{mockedOpenPositions}</div>,
+        ProfitTable: () => <div role='main'>{mockedTradeTable}</div>,
+        Statement: () => <div role='main'>{mockedStatement}</div>,
     },
 }));
 
@@ -53,8 +53,10 @@ describe('Routes Config', () => {
         history.push(routes.positions);
         render(<MockBinaryRoutes history={history} />);
         await waitFor(() => {
+            const mainContent = screen.getByRole('main');
+            expect(mainContent).toBeInTheDocument();
             expect(screen.getByText(reportsPageTitle)).toBeInTheDocument();
-            expect(screen.getByText(mockedOpenPositions)).toBeInTheDocument();
+            expect(within(mainContent).getByText(mockedOpenPositions)).toBeInTheDocument();
         });
     });
     it('should return routes with Reports / Trade table route', async () => {
@@ -65,8 +67,10 @@ describe('Routes Config', () => {
         history.push(routes.profit);
         render(<MockBinaryRoutes history={history} />);
         await waitFor(() => {
+            const mainContent = screen.getByRole('main');
+            expect(mainContent).toBeInTheDocument();
             expect(screen.getByText(reportsPageTitle)).toBeInTheDocument();
-            expect(screen.getByText(mockedTradeTable)).toBeInTheDocument();
+            expect(within(mainContent).getByText(mockedTradeTable)).toBeInTheDocument();
         });
     });
     it('should return routes with Reports / Statement route', async () => {
@@ -77,8 +81,10 @@ describe('Routes Config', () => {
         history.push(routes.statement);
         render(<MockBinaryRoutes history={history} />);
         await waitFor(() => {
+            const mainContent = screen.getByRole('main');
+            expect(mainContent).toBeInTheDocument();
             expect(screen.getByText(reportsPageTitle)).toBeInTheDocument();
-            expect(screen.getByText(mockedStatement)).toBeInTheDocument();
+            expect(within(mainContent).getByText(mockedStatement)).toBeInTheDocument();
         });
     });
     it('should return routes with route for Page 404 which loads when the path does not exist', async () => {

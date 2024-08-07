@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useLocation, withRouter } from 'react-router';
 import { Analytics } from '@deriv-com/analytics';
-import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
-import { CookieStorage, isMobile, TRACKING_STATUS_KEY, platforms, routes, WS } from '@deriv/shared';
+import { ThemedScrollbars } from '@deriv/components';
+import { CookieStorage, TRACKING_STATUS_KEY, platforms, routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
+import { useFeatureFlags } from '@deriv/hooks';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
+import { useDevice } from '@deriv-com/ui';
 
 const tracking_status_cookie = new CookieStorage(TRACKING_STATUS_KEY);
 
@@ -19,8 +21,9 @@ const AppContents = observer(({ children }) => {
         gtm: { pushDataLayer },
         ui,
     } = useStore();
+    const { isDesktop, isMobile } = useDevice();
 
-    const { is_eu_country, is_logged_in, is_logging_in } = client;
+    const { is_eu_country, is_logged_in, is_logging_in, has_any_real_account, is_landing_company_loaded } = client;
     const {
         is_app_disabled,
         is_cashier_visible,
@@ -31,6 +34,12 @@ const AppContents = observer(({ children }) => {
         setAppContentsScrollRef,
         is_dark_mode_on: is_dark_mode,
     } = ui;
+
+    const { is_dtrader_v2_enabled } = useFeatureFlags();
+    const { pathname } = useLocation();
+
+    const isDTraderV2 =
+        is_dtrader_v2_enabled && isMobile && (pathname.startsWith(routes.trade) || pathname.startsWith('/contract/'));
 
     const tracking_status = tracking_status_cookie.get(TRACKING_STATUS_KEY);
 
@@ -104,27 +113,33 @@ const AppContents = observer(({ children }) => {
             className={classNames('app-contents', {
                 'app-contents--show-positions-drawer': is_positions_drawer_on,
                 'app-contents--is-disabled': is_app_disabled,
-                'app-contents--is-mobile': isMobile(),
+                'app-contents--is-mobile': isMobile,
                 'app-contents--is-route-modal': is_route_modal_on,
                 'app-contents--is-scrollable': is_cfd_page || is_cashier_visible,
                 'app-contents--is-hidden': platforms[platform],
                 'app-contents--is-onboarding': window.location.pathname === routes.onboarding,
+                'app-contents--is-dtrader-v2': isDTraderV2,
+                'app-contents--is-dtrader-v2--with-banner':
+                    isDTraderV2 && !has_any_real_account && pathname === routes.trade && is_landing_company_loaded,
             })}
             ref={scroll_ref}
         >
-            <MobileWrapper>{children}</MobileWrapper>
-            <DesktopWrapper>
-                {/* Calculate height of user screen and offset height of header and footer */}
-                {window.location.pathname === routes.onboarding ? (
+            {isMobile && children}
+            {!isMobile &&
+                /* Calculate height of user screen and offset height of header and footer */
+                (window.location.pathname === routes.onboarding ? (
                     <ThemedScrollbars style={{ maxHeight: '', height: '100%' }} refSetter={child_ref}>
                         {children}
                     </ThemedScrollbars>
                 ) : (
-                    <ThemedScrollbars height='calc(100vh - 84px)' has_horizontal refSetter={child_ref}>
+                    <ThemedScrollbars
+                        height={isDesktop ? 'calc(100vh - 84px)' : undefined}
+                        has_horizontal
+                        refSetter={child_ref}
+                    >
                         {children}
                     </ThemedScrollbars>
-                )}
-            </DesktopWrapper>
+                ))}
             {show_cookie_banner && (
                 <CookieBanner
                     onAccept={onAccept}

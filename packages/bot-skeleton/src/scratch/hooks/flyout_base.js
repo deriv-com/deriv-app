@@ -11,7 +11,7 @@ import DBotStore from '../dbot-store';
 Blockly.Flyout.prototype.createBlock = function (event, original_block) {
     Blockly.Events.disable();
 
-    const main_workspace = this.targetWorkspace_;
+    const main_workspace = this.targetWorkspace;
     const variables_before_creation = main_workspace.getAllVariables();
 
     main_workspace.setResizesEnabled(false);
@@ -47,7 +47,7 @@ Blockly.Flyout.prototype.createBlock = function (event, original_block) {
             Blockly.Events.fire(new Blockly.Events.VarCreate(new_variable));
         });
 
-        Blockly.Events.fire(new Blockly.Events.Create(new_block));
+        Blockly.Events.fire(new Blockly.Events.BlockCreate(new_block));
     }
 
     if (this.autoClose) {
@@ -70,8 +70,8 @@ Blockly.Flyout.prototype.createBlock = function (event, original_block) {
  * @return {!Blockly.Block} The new block in the main workspace.
  * @private
  */
-Blockly.Flyout.prototype.placeNewBlock_ = function (event, old_block) {
-    const main_workspace = this.targetWorkspace_;
+Blockly.Flyout.prototype.placeNewBlock_ = function (event, old_block = Blockly.getSelected()) {
+    const main_workspace = this.targetWorkspace;
     const svg_root_old = old_block.getSvgRoot();
 
     if (!svg_root_old) {
@@ -106,7 +106,6 @@ Blockly.Flyout.prototype.placeNewBlock_ = function (event, old_block) {
             event.clientX ? event.clientX - x_offset : 0,
             event.clientY ? event.clientY - y_offset : 0
         );
-
         // The position of the old block in pixels relative to the origin of the main workspace.
         const final_offset_pixels = goog.math.Coordinate.difference(old_block_pos_pixels, main_offset_pixels);
 

@@ -4,12 +4,12 @@
     height: var(--bot-content-height);
     top: 0;
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         width: 100%;
     }
 }
 
-.blocklyTextRootBlockHeader {
+.blocklyText.blocklyTextRootBlockHeader {
     font-size: calc(var(--text-size-sm) * 0.9);
     font-weight: normal;
     font-stretch: normal;

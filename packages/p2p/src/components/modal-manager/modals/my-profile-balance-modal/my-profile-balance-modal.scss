@@ -1,6 +1,6 @@
 .my-profile-balance-modal {
     &__body {
-        padding: 1rem 2.4rem;
+        padding: 0.8rem 2.4rem;
 
         @include mobile {
             padding: 0 1.6rem;
@@ -8,6 +8,20 @@
 
         &-text {
             margin-bottom: 1.6rem;
+        }
+
+        &-list {
+            list-style: disc;
+            margin: 0 0 0.6rem 2rem;
+
+            li {
+                margin-bottom: 1rem;
+            }
+        }
+
+        &-note {
+            font-style: italic;
+            margin-top: 1.6rem;
         }
     }
 }

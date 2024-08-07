@@ -52,7 +52,6 @@ export const getCFDConfig = (
     mt5_trading_servers,
     platform,
     is_eu,
-    trading_platform_available_accounts,
     getIsEligibleForMoreAccounts
 ) => {
     const cfd_config = [];

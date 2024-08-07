@@ -6,8 +6,9 @@ import { WalletListCard } from '../WalletListCard';
 import { WalletsContainer } from '../WalletsContainer';
 import './DesktopWalletsList.scss';
 
-const DesktopWalletsList: React.FC = () => {
+const DesktopWalletsList = () => {
     const { data: activeWallet, isInitializing } = useActiveWalletAccount();
+
     return (
         <div className='wallets-desktop-wallets-list'>
             {isInitializing && <WalletsCardLoader />}

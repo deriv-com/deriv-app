@@ -41,7 +41,7 @@
             padding: 1rem 0.8rem;
         }
     }
-    @include mobile {
+    @include mobile-screen {
         .dc-table {
             height: 100%;
             margin: 1.6rem 1.7rem;

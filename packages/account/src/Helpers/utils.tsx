@@ -135,8 +135,8 @@ export const makeSettingsRequest = (values: FormikValues, changeable_fields: str
 
 export const validateName = (name: string) => {
     if (name) {
-        if (!validLength(name.trim(), { min: 2, max: 50 })) {
-            return localize('You should enter 2-50 characters.');
+        if (!validLength(name.trim(), { min: 1, max: 50 })) {
+            return localize('Enter no more than 50 characters.');
         } else if (!validName(name)) {
             return localize('Letters, spaces, periods, hyphens, apostrophes only.');
         }
@@ -162,9 +162,9 @@ export const isAdditionalDocumentValid = (document_type: FormikValues, additiona
     return undefined;
 };
 
-export const isDocumentNumberValid = (document_number: string, document_type: FormikValues) => {
-    const is_document_number_invalid = document_number === document_type.example_format;
-    if (!document_number && document_type.text) {
+export const isDocumentNumberValid = (document_number?: string, document_type?: FormikValues) => {
+    const is_document_number_invalid = document_number === document_type?.example_format;
+    if (!document_number && document_type?.text) {
         let document_name = '';
         const example_format = getExampleFormat(document_type.example_format);
         switch (document_type.id) {
@@ -185,9 +185,9 @@ export const isDocumentNumberValid = (document_number: string, document_type: Fo
     } else if (is_document_number_invalid) {
         return localize('Please enter a valid ID number.');
     }
-    const format_regex = getRegex(document_type.value);
-    if (!format_regex.test(document_number)) {
-        return localize('Please enter the correct format. ') + getExampleFormat(document_type.example_format);
+    const format_regex = getRegex(document_type?.value);
+    if (document_number && !format_regex.test(document_number)) {
+        return localize('Please enter the correct format. ') + getExampleFormat(document_type?.example_format);
     }
     return undefined;
 };

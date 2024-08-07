@@ -1,0 +1,54 @@
+.filter {
+    &__item {
+        justify-content: space-between;
+        width: 100%;
+        height: var(--core-size-2000);
+        padding-block: var(--core-spacing-400);
+
+        label {
+            flex-grow: 1;
+        }
+
+        &__wrapper {
+            padding-block: var(--core-spacing-800);
+
+            .quill-radio-button {
+                padding-block: var(--core-spacing-400);
+                width: 100%;
+
+                &__label {
+                    font-size: var(--core-fontSize-100);
+                    flex-grow: 1;
+                    margin: 0;
+                }
+            }
+        }
+    }
+
+    &__chip {
+        background-color: var(--core-color-solid-slate-50);
+
+        & > p {
+            font-size: var(--core-fontSize-75);
+        }
+    }
+}
+
+.custom-time-filter {
+    &__wrapper {
+        all: unset;
+        display: flex;
+        gap: var(--core-spacing-400);
+        margin-block: var(--core-spacing-400);
+        width: 100%;
+    }
+
+    &__label {
+        flex-grow: 1;
+    }
+
+    &__icon {
+        width: var(--core-size-1200);
+        height: var(--core-size-1200);
+    }
+}

@@ -1,10 +1,9 @@
 import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
-import { useBalance } from '@deriv/api-v2';
+import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import { WalletText } from '../Base';
 import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
-import { WalletListCardBadge } from '../WalletListCardBadge';
 import './WalletCard.scss';
 
 type TProps = {
@@ -13,7 +12,6 @@ type TProps = {
     iconSize?: ComponentProps<typeof WalletCurrencyIcon>['size'];
     isCarouselContent?: boolean;
     isDemo?: boolean;
-    landingCompanyName?: string;
     onClick?: () => void;
 };
 
@@ -23,10 +21,9 @@ const WalletCard: React.FC<TProps> = ({
     iconSize = 'lg',
     isCarouselContent = false,
     isDemo,
-    landingCompanyName,
     onClick,
 }) => {
-    const { isLoading } = useBalance();
+    const { isLoading: isBalanceLoading } = useAllBalanceSubscription();
 
     return (
         <button
@@ -55,19 +52,12 @@ const WalletCard: React.FC<TProps> = ({
                             })}
                         >
                             <WalletCurrencyIcon currency={isDemo ? 'DEMO' : currency} size={iconSize} />
-                            {!isCarouselContent && (
-                                <div className='wallets-card__details-landing-company'>
-                                    {landingCompanyName && (
-                                        <WalletListCardBadge isDemo={isDemo} label={landingCompanyName} />
-                                    )}
-                                </div>
-                            )}
                         </div>
                         <div className='wallets-card__details-bottom'>
                             <WalletText color={isDemo ? 'white' : 'general'} size={isCarouselContent ? 'md' : '2xs'}>
                                 {currency} {isDemo && isCarouselContent ? 'Demo' : ''} Wallet
                             </WalletText>
-                            {isLoading ? (
+                            {isBalanceLoading ? (
                                 <div
                                     className='wallets-skeleton wallets-card__balance-loader'
                                     data-testid='dt_wallet_card_balance_loader'

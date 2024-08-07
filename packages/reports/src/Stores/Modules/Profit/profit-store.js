@@ -15,7 +15,7 @@ export default class ProfitTableStore extends BaseStore {
     date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     error = '';
     has_loaded_all = false;
-    is_loading = false;
+    is_loading = true;
     filtered_date_range;
 
     // `client_loginid` is only used to detect if this is in sync with the client-store, don't rely on
@@ -35,7 +35,6 @@ export default class ProfitTableStore extends BaseStore {
             is_loading: observable,
             filtered_date_range: observable,
             client_loginid: observable,
-            total_profit: computed,
             is_empty: computed,
             has_selected_date: computed,
             fetchNextBatch: action.bound,
@@ -52,15 +51,6 @@ export default class ProfitTableStore extends BaseStore {
         });
     }
 
-    get total_profit() {
-        return this.data.reduce((previous, current) => {
-            const buy_price = Number(parseFloat(current.buy_price));
-            const sell_price = Number(parseFloat(current.sell_price));
-            const pl = sell_price - buy_price;
-            return previous + pl;
-        }, 0);
-    }
-
     get is_empty() {
         return !this.is_loading && this.data.length === 0;
     }
@@ -69,20 +59,19 @@ export default class ProfitTableStore extends BaseStore {
         return !!(this.date_from || this.date_to);
     }
 
-    shouldFetchNextBatch() {
-        if (this.has_loaded_all || this.is_loading) return false;
-        return true;
+    shouldFetchNextBatch(is_mounting) {
+        return !!is_mounting || (!this.has_loaded_all && !this.is_loading);
     }
 
-    async fetchNextBatch() {
-        if (!this.shouldFetchNextBatch()) return;
+    async fetchNextBatch(shouldFilterContractTypes, isMounting) {
+        if (!this.shouldFetchNextBatch(isMounting)) return;
         this.is_loading = true;
+        const dateParams = getDateBoundaries(this.date_from, this.date_to, 0, false);
+        const params = shouldFilterContractTypes
+            ? { ...dateParams, contract_type: this.root_store.modules.positions.filteredContractTypes }
+            : dateParams;
 
-        const response = await WS.profitTable(
-            batch_size,
-            this.data.length,
-            getDateBoundaries(this.date_from, this.date_to, 0, false)
-        );
+        const response = await WS.profitTable(batch_size, this.data.length, params);
 
         this.profitTableResponseHandler(response);
     }
@@ -108,23 +97,23 @@ export default class ProfitTableStore extends BaseStore {
         this.is_loading = false;
     }
 
-    fetchOnScroll = debounce(left => {
+    fetchOnScroll = debounce((left, shouldFilterContractTypes) => {
         if (left < 1500) {
-            this.fetchNextBatch();
+            this.fetchNextBatch(shouldFilterContractTypes);
         }
     }, delay_on_scroll_time);
 
-    handleScroll(event) {
+    handleScroll(event, shouldFilterContractTypes) {
         const { scrollTop, scrollHeight, clientHeight } = event.target;
         const left_to_scroll = scrollHeight - (scrollTop + clientHeight);
-        this.fetchOnScroll(left_to_scroll);
+        this.fetchOnScroll(left_to_scroll, shouldFilterContractTypes);
     }
 
     networkStatusChangeListener(is_online) {
-        this.is_loading = !is_online;
+        this.is_loading = this.is_loading || !is_online;
     }
 
-    async onMount() {
+    async onMount(shouldFilterContractTypes) {
         this.assertHasValidCache(this.client_loginid, this.clearDateFilter, WS.forgetAll.bind(null, 'proposal'));
         this.client_loginid = this.root_store.client.loginid;
         this.onSwitchAccount(this.accountSwitcherListener);
@@ -135,8 +124,7 @@ export default class ProfitTableStore extends BaseStore {
         If we already have a cache for a period and if we sell a contract that was purchased in that period
         then the sold contract won't be there in profit_table when visited again unless we fetch it again.
         Caching will only work if the date filtering happens based on `sell_time` of a contract in BE. */
-        this.clearTable();
-        this.fetchNextBatch();
+        this.fetchNextBatch(shouldFilterContractTypes, true);
     }
 
     /* DO NOT call clearDateFilter() upon unmounting the component, date filters should stay
@@ -176,7 +164,7 @@ export default class ProfitTableStore extends BaseStore {
         this.date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     }
 
-    handleDateChange(date_values, { date_range } = {}) {
+    handleDateChange(date_values, { date_range, shouldFilterContractTypes } = {}) {
         const { from, to, is_batch } = date_values;
 
         this.filtered_date_range = date_range;
@@ -190,6 +178,6 @@ export default class ProfitTableStore extends BaseStore {
         if (to) this.date_to = toMoment(to).unix();
 
         this.clearTable();
-        this.fetchNextBatch();
+        this.fetchNextBatch(shouldFilterContractTypes);
     }
 }

@@ -167,7 +167,10 @@ const Transaction = ({ contract, active_transaction_id, onClickTransaction }: TT
                 className='transactions__item'
                 onClick={() => onClickTransaction && onClickTransaction(contract?.transaction_ids?.buy || null)}
             >
-                <div className='transactions__cell transactions__trade-type'>
+                <div
+                    className='transactions__cell transactions__trade-type'
+                    data-testid='dt_transactions_item_trade_type'
+                >
                     <div className='transactions__loader-container'>
                         {contract ? (
                             <TransactionIconWithText
@@ -189,30 +192,41 @@ const Transaction = ({ contract, active_transaction_id, onClickTransaction }: TT
                         )}
                     </div>
                 </div>
-                <div className='transactions__cell transactions__entry-spot'>
+                <div
+                    className='transactions__cell transactions__entry-spot'
+                    data-testid='dt_transactions_item_entry_spot'
+                >
                     <TransactionIconWithText
                         icon={<Icon icon='IcContractEntrySpot' />}
                         title={localize('Entry spot')}
                         message={contract?.entry_tick ?? <TransactionFieldLoader />}
                     />
                 </div>
-                <div className='transactions__cell transactions__exit-spot'>
+                <div
+                    className='transactions__cell transactions__exit-spot'
+                    data-testid='dt_transactions_item_exit_spot'
+                >
                     <TransactionIconWithText
                         icon={<Icon icon='IcContractExitSpot' />}
                         title={localize('Exit spot')}
                         message={contract?.exit_tick ?? <TransactionFieldLoader />}
                     />
                 </div>
-                <div className='transactions__cell transactions__stake'>
+                <div className='transactions__cell transactions__stake' data-testid='dt_transactions_item_stake'>
                     {contract ? (
                         <Money amount={contract.buy_price} currency={contract.currency} show_currency />
                     ) : (
                         <TransactionFieldLoader />
                     )}
                 </div>
-                <div className='transactions__cell transactions__profit'>
+                <div className='transactions__cell transactions__profit' data-testid='dt_transactions_item_profit'>
                     {contract?.is_completed ? (
                         <div
+                            data-testid={
+                                contract?.profit && contract?.profit >= 0
+                                    ? 'dt_transactions_profit_win'
+                                    : 'dt_transactions_profit_loss'
+                            }
                             className={classNames({
                                 'transactions__profit--win': contract?.profit && contract?.profit >= 0,
                                 'transactions__profit--loss': contract?.profit && contract?.profit < 0,

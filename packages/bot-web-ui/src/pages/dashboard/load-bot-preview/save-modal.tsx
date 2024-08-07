@@ -211,7 +211,7 @@ const SaveModal = observer(() => {
         </MobileFullPageModal>
     ) : (
         <Modal
-            title={localize('Save Strategy')}
+            title={localize('Save strategy')}
             className='modal--save'
             width='32.8rem'
             height='50rem'

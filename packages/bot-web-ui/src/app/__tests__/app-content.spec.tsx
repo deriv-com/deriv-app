@@ -66,6 +66,8 @@ jest.mock('Components/route-prompt-dialog', () => ({
     default: () => <div>RoutePromptDialog</div>,
 }));
 
+jest.useFakeTimers();
+
 window.Blockly = {
     Colours: { RootBlock: {} },
     utils: {
@@ -154,6 +156,8 @@ describe('AppContent', () => {
         const { container } = render(<AppContent />, {
             wrapper,
         });
+        jest.advanceTimersByTime(3000);
+
         unmountComponentAtNode(container);
         await waitFor(() => {
             expect(mock_unsubscribe).toBeCalled();

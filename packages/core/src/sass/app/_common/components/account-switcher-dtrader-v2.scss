@@ -1,0 +1,84 @@
+.acc-switcher-dtrader {
+    &__wrapper {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: var(--core-spacing-800);
+
+        .quill-button {
+            border-width: var(--core-spacing-75);
+        }
+    }
+
+    &__traders-hub {
+        display: flex;
+        padding: var(--core-spacing-400) var(--core-spacing-800);
+        justify-content: space-between;
+        align-items: center;
+        border-radius: var(--core-borderRadius-300);
+        background-color: var(--core-color-solid-slate-75);
+        gap: var(--core-spacing-400);
+    }
+
+    &__accounts-list {
+        overflow-y: scroll;
+        max-height: calc(90dvh - 52px);
+
+        &--with-button {
+            max-height: calc(90dvh - 116px);
+        }
+
+        &--with-cfd-banner {
+            max-height: calc(90dvh - 106px);
+        }
+
+        &--with-both {
+            max-height: calc(90dvh - 170px);
+        }
+
+        &__group {
+            padding-block: var(--core-spacing-400);
+
+            &--separator {
+                border-bottom: var(--core-borderWidth-100) solid var(--general-section-2);
+            }
+        }
+
+        &__title {
+            padding: 0 var(--core-spacing-800) var(--core-spacing-400) var(--core-spacing-400);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background-color: var(--component-actionSheet-bg);
+        }
+    }
+
+    &__account,
+    &__new-account {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 var(--core-spacing-800);
+        gap: var(--core-spacing-400);
+        border-radius: var(--core-borderRadius-300);
+        height: var(--core-spacing-2800);
+
+        &--selected {
+            background: var(--core-color-solid-slate-1400);
+            p {
+                color: var(--core-color-solid-slate-50);
+            }
+            span {
+                color: var(--core-color-solid-slate-200);
+            }
+        }
+
+        &--disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        &__info {
+            flex-grow: 1;
+        }
+    }
+}

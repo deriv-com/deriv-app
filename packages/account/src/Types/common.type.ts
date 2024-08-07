@@ -111,11 +111,25 @@ export type TPOIStatus = {
     is_manual_upload?: boolean;
 };
 
-export type TPersonalDetailsForm = {
+export type TConfirmPersonalDetailsForm = Pick<
+    TPersonalDetailsBaseForm,
+    'first_name' | 'last_name' | 'date_of_birth'
+> & {
+    confirmation_checkbox?: boolean;
+};
+
+export type TPersonalDetailsBaseForm = {
     first_name: string;
     last_name: string;
     date_of_birth: string;
-    confirmation_checkbox?: boolean;
+    account_opening_reason: string;
+    salutation: string;
+    phone: string;
+    tax_residence: string;
+    tax_identification_number: string;
+    tax_identification_confirm: boolean;
+    place_of_birth: string;
+    citizen: string;
 };
 
 export type TInputFieldValues = Record<string, string>;

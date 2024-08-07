@@ -1,39 +1,10 @@
 /* eslint-disable sort-keys */
 import React, { CSSProperties } from 'react';
-import {
-    AccountsDerivAccountDarkIcon,
-    AccountsDerivAccountLightIcon,
-    AccountsDerivCtraderIcon,
-    AccountsDerivXIcon,
-    AccountsDmt5CfdsIcon,
-    AccountsDmt5DerivedIcon,
-    AccountsDmt5FinancialIcon,
-    AccountsDmt5SwfIcon,
-    PaymentMethodDerivP2pBrandDarkIcon,
-    PaymentMethodDerivP2pBrandIcon,
-} from '@deriv/quill-icons';
+import { AppIcons, CFDPlatformIcons, MT5MarketIcons, PlatformIcons } from '../../constants/icons';
 import { TIconTypes } from '../../types';
 
-const MT5MarketIcons: TIconTypes = {
-    IcWalletMt5All: AccountsDmt5SwfIcon,
-    IcWalletMt5CFDs: AccountsDmt5CfdsIcon,
-    IcWalletMt5Derived: AccountsDmt5DerivedIcon,
-    IcWalletMt5Financial: AccountsDmt5FinancialIcon,
-};
-
-const CFDPlatformIcons: TIconTypes = {
-    IcWalletCTrader: AccountsDerivCtraderIcon,
-    IcWalletDerivX: AccountsDerivXIcon,
-};
-
-const PlatformIcons: TIconTypes = {
-    IcWalletDerivP2P: PaymentMethodDerivP2pBrandIcon,
-    IcWalletDerivP2PDark: PaymentMethodDerivP2pBrandDarkIcon,
-    IcWalletOptionsDark: AccountsDerivAccountDarkIcon,
-    IcWalletOptionsLight: AccountsDerivAccountLightIcon,
-};
-
 const Icons: TIconTypes = {
+    ...AppIcons,
     ...MT5MarketIcons,
     ...CFDPlatformIcons,
     ...PlatformIcons,

@@ -121,8 +121,6 @@ export default class ContractReplayStore extends BaseStore {
     }
 
     populateConfig(response) {
-        if (!this.switch_account_listener) return;
-
         if ('error' in response) {
             const { code, message } = response.error;
             this.has_error = true;

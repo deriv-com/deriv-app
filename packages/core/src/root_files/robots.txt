@@ -5,6 +5,4 @@ Disallow: */p2p/*
 Disallow: */reports/*
 Disallow: */account/*
 Disallow: */cashier-v2/*
-Disallow: */p2p-v2/*
 Disallow: */endpoint*
-Disallow: */tradershub/*

@@ -97,7 +97,7 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:1000')).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
-        expect(screen.getByText('0.5 pips')).toBeInTheDocument();
+        expect(screen.getByText('0.2 pips')).toBeInTheDocument();
         expect(screen.getByText('Verifications')).toBeInTheDocument();
         expect(
             screen.getByText('You will need to submit proof of identity and address once you reach certain thresholds.')
@@ -118,10 +118,10 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:1000')).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
-        expect(screen.getByText('0.5 pips')).toBeInTheDocument();
+        expect(screen.getByText('0.2 pips')).toBeInTheDocument();
         expect(screen.getByText('Verifications')).toBeInTheDocument();
         expect(screen.getByText('Learn more')).toBeInTheDocument();
-        expect(screen.getByText('about verifications needed.')).toBeInTheDocument();
+        expect(screen.getByText('about required verifications.')).toBeInTheDocument();
         expect(screen.getByText('Regulator/EDR')).toBeInTheDocument();
         expect(screen.getByText('Vanuatu Financial Services Commission')).toBeInTheDocument();
     });
@@ -141,7 +141,7 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('0.5 pips')).toBeInTheDocument();
         expect(screen.getByText('Verifications')).toBeInTheDocument();
         expect(screen.getByText('Learn more')).toBeInTheDocument();
-        expect(screen.getByText('about verifications needed.')).toBeInTheDocument();
+        expect(screen.getByText('about required verifications.')).toBeInTheDocument();
         expect(screen.getByText('Regulator/EDR')).toBeInTheDocument();
         expect(
             screen.getByText('Malta Financial Services Authority (MFSA) (licence no. IS/70156)')
@@ -160,10 +160,10 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:1000')).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
-        expect(screen.getByText('0.5 pips')).toBeInTheDocument();
+        expect(screen.getByText('0.2 pips')).toBeInTheDocument();
         expect(screen.getByText('Verifications')).toBeInTheDocument();
         expect(screen.getByText('Learn more')).toBeInTheDocument();
-        expect(screen.getByText('about verifications needed.')).toBeInTheDocument();
+        expect(screen.getByText('about required verifications.')).toBeInTheDocument();
         expect(screen.getByText('Regulator/EDR')).toBeInTheDocument();
         expect(
             screen.getByText('British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114)')
@@ -181,10 +181,10 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:100')).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
-        expect(screen.getByText('1.4 pips')).toBeInTheDocument();
+        expect(screen.getByText('0.6 pips')).toBeInTheDocument();
         expect(screen.getByText('Verifications')).toBeInTheDocument();
         expect(screen.getByText('Learn more')).toBeInTheDocument();
-        expect(screen.getByText('about verifications needed.')).toBeInTheDocument();
+        expect(screen.getByText('about required verifications.')).toBeInTheDocument();
         expect(screen.getByText('Regulator/EDR')).toBeInTheDocument();
         expect(screen.getByText('Labuan Financial Services Authority (licence no. MB/18/0024)')).toBeInTheDocument();
     });
@@ -194,8 +194,12 @@ describe('JurisdictionCard', () => {
         render(<JurisdictionCard {...mock_props} />);
         expect(screen.getByText('St. Vincent & Grenadines')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
-        expect(screen.getByText('40+')).toBeInTheDocument();
-        expect(screen.getByText('Synthetic indices, basket indices, and derived FX')).toBeInTheDocument();
+        expect(screen.getByText('210+')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Forex (standard), stock indices, commodities, cryptocurrencies, stocks, ETFs, synthetic indices, basket indices and derived FX'
+            )
+        ).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:1000')).toBeInTheDocument();
         expect(screen.getByText('Verifications')).toBeInTheDocument();

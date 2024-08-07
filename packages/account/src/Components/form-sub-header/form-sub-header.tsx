@@ -1,5 +1,6 @@
+// [TODO] - To be removed once CFD is configured to use the new form-body component
+import React, { Fragment } from 'react';
 import clsx from 'clsx';
-import React from 'react';
 import { Text } from '@deriv/components';
 
 export type TFormSubHeader = {
@@ -13,7 +14,7 @@ export const FormSubHeader = ({ description, subtitle, title, title_text_size = 
     const title_as_class = title.replace(/\s+/g, '-').toLowerCase();
 
     return (
-        <React.Fragment>
+        <Fragment>
             <div
                 className={clsx('account-form__header', title_as_class, {
                     'account-form__header--has-description': !!description,
@@ -42,6 +43,6 @@ export const FormSubHeader = ({ description, subtitle, title, title_text_size = 
                     {description}
                 </Text>
             )}
-        </React.Fragment>
+        </Fragment>
     );
 };

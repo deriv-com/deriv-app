@@ -8,9 +8,7 @@ import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import MobileFromWrapper from '../mobile-form-wrapper';
 
-jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
-jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
 jest.mock('../../../../../xml/martingale.xml', () => '');
 
@@ -99,5 +97,24 @@ describe('<MobileFormWrapper />', () => {
         const submit_button = screen.getByRole('button', { name: /Run/i });
         userEvent.click(submit_button);
         await waitFor(() => expect(mock_onSubmit).toBeCalled());
+    });
+
+    it('should handle the event at the FormTabs component and make the tab bold', async () => {
+        const { container } = render(
+            <MobileFromWrapper>
+                <div>test</div>
+            </MobileFromWrapper>,
+            {
+                wrapper,
+            }
+        );
+
+        const disabled_tab = screen.getByText('Learn more');
+        await waitFor(async () => {
+            userEvent.type(disabled_tab, '{enter}');
+        });
+
+        expect(container).toBeInTheDocument();
+        expect(disabled_tab).toHaveStyle('--text-weight: var(--text-weight-bold)');
     });
 });

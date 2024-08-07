@@ -6,7 +6,7 @@ type TCalendarIcon = {
 };
 
 const CalendarIcon = ({ onClick }: TCalendarIcon) => (
-    <Icon onClick={onClick} icon='IcCalendarDatefrom' className='inline-icon' />
+    <Icon onClick={onClick} icon='IcCalendarDatefrom' className='inline-icon' data_testid='dt_calendar_icon' />
 );
 
 export default CalendarIcon;

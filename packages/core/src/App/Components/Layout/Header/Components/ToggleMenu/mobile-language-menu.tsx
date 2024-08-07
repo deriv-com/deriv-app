@@ -1,9 +1,11 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import { MobileDrawer } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { getAllowedLanguages, localize } from '@deriv/translations';
+import { getAllowedLanguages } from '@deriv-com/translations';
+import { localize } from '@deriv/translations'; // [TODO:] Remove this once deriv-app is configured to use the new translation lib
 import { LanguageLink } from 'App/Components/Routes';
+import { UNSUPPORTED_LANGUAGES } from '@deriv/shared';
 
 type TMobileLanguageMenu = {
     expandSubMenu: (prop: boolean) => void;
@@ -18,7 +20,7 @@ const MobileLanguageMenu = observer(({ expandSubMenu, toggleDrawer }: TMobileLan
         <MobileDrawer.SubMenu
             is_expanded={is_mobile_language_menu_open}
             has_subheader
-            submenu_title={localize('Language')}
+            submenu_title={localize('Select language')}
             onToggle={is_expanded => {
                 expandSubMenu(is_expanded);
                 setMobileLanguageMenuOpen(false);
@@ -30,10 +32,9 @@ const MobileLanguageMenu = observer(({ expandSubMenu, toggleDrawer }: TMobileLan
                     'settings-language__language-container--disabled': is_language_changing,
                 })}
             >
-                {Object.keys(getAllowedLanguages()).map(lang => (
+                {Object.keys(getAllowedLanguages(UNSUPPORTED_LANGUAGES)).map(lang => (
                     <LanguageLink
                         key={lang}
-                        icon_classname='settings-language__language-flag'
                         is_clickable
                         lang={lang}
                         toggleModal={() => {

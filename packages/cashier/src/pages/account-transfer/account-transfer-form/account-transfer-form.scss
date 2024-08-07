@@ -59,6 +59,10 @@
                 min-height: 4rem !important;
             }
         }
+
+        .dc-dropdown-container {
+            margin-top: unset;
+        }
     }
 
     &__drop-down {

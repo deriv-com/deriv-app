@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import {
-    DesktopWalletsList,
     WalletListHeader,
     WalletsAddMoreCarousel,
-    WalletsCarousel,
+    WalletsCardLoader,
+    WalletsResponsiveLoader,
     WalletTourGuide,
 } from '../../components';
 import ResetMT5PasswordHandler from '../../features/cfd/ResetMT5PasswordHandler';
 import useDevice from '../../hooks/useDevice';
 import './WalletsListingRoute.scss';
+
+const LazyWalletsCarousel = lazy(() => import('../../components/WalletsCarousel/WalletsCarousel'));
+const LazyDesktopWalletsList = lazy(() => import('../../components/DesktopWalletsList/DesktopWalletsList'));
 
 const WalletsListingRoute: React.FC = () => {
     const { isMobile } = useDevice();
@@ -16,7 +19,15 @@ const WalletsListingRoute: React.FC = () => {
     return (
         <div className='wallets-listing-route'>
             <WalletListHeader />
-            {isMobile ? <WalletsCarousel /> : <DesktopWalletsList />}
+            {isMobile ? (
+                <React.Suspense fallback={<WalletsResponsiveLoader />}>
+                    <LazyWalletsCarousel />
+                </React.Suspense>
+            ) : (
+                <React.Suspense fallback={<WalletsCardLoader />}>
+                    <LazyDesktopWalletsList />
+                </React.Suspense>
+            )}
             <WalletsAddMoreCarousel />
             <ResetMT5PasswordHandler />
             <WalletTourGuide />

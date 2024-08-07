@@ -11,14 +11,14 @@ import {
     WS,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import DemoMessage from 'Components/demo-message';
-import 'Components/self-exclusion/self-exclusion.scss';
-import LoadErrorMessage from 'Components/load-error-message';
-import SelfExclusionArticleContent from 'Components/self-exclusion/self-exclusion-article-content';
-import SelfExclusionContext from 'Components/self-exclusion/self-exclusion-context';
-import SelfExclusionModal from 'Components/self-exclusion/self-exclusion-modal';
-import SelfExclusionWrapper from 'Components/self-exclusion/self-exclusion-wrapper';
-import SelfExclusionForm from 'Components/self-exclusion/self-exclusion-form';
+import DemoMessage from '../../../Components/demo-message';
+import '../../../Components/self-exclusion/self-exclusion.scss';
+import LoadErrorMessage from '../../../Components/load-error-message';
+import SelfExclusionArticleContent from '../../../Components/self-exclusion/self-exclusion-article-content';
+import SelfExclusionContext from '../../../Components/self-exclusion/self-exclusion-context';
+import SelfExclusionModal from '../../../Components/self-exclusion/self-exclusion-modal';
+import SelfExclusionWrapper from '../../../Components/self-exclusion/self-exclusion-wrapper';
+import SelfExclusionForm from '../../../Components/self-exclusion/self-exclusion-form';
 import { FormikHelpers, FormikValues } from 'formik';
 import { observer, useStore } from '@deriv/stores';
 
@@ -71,7 +71,16 @@ type TResponse = {
 
 const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShown }: TSelfExclusion) => {
     const { client, ui } = useStore();
-    const { currency, is_virtual, is_switching, standpoint, is_eu, logout, landing_company_shortcode } = client;
+    const {
+        currency,
+        is_virtual,
+        is_switching,
+        standpoint,
+        is_eu,
+        logout,
+        landing_company_shortcode,
+        getLimits: getLimitsFromStore,
+    } = client;
     const { is_tablet } = ui;
     const is_wrapper_bypassed = false;
     const is_mf = landing_company_shortcode === 'maltainvest';
@@ -384,7 +393,7 @@ const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShow
     const getLimits = () => {
         setState({ is_loading: true });
 
-        WS.authorized.getLimits({ get_limits: 1 }).then((limits: FormikValues) => {
+        getLimitsFromStore().then((limits: FormikValues) => {
             exclusion_limits.current = limits;
         });
     };

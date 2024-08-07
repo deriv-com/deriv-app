@@ -11,6 +11,7 @@ const useCreateWallet = () => {
     const {
         data,
         mutate: _mutate,
+        mutateAsync: _mutateAsync,
         ...rest
     } = useMutation('new_account_wallet', {
         onSuccess: () => {
@@ -21,6 +22,10 @@ const useCreateWallet = () => {
 
     const mutate = (params: Parameters<typeof _mutate>[0]['payload']) => {
         return _mutate({ payload: params });
+    };
+
+    const mutateAsync = (params: Parameters<typeof _mutateAsync>[0]['payload']) => {
+        return _mutateAsync({ payload: params });
     };
 
     const modified_data = useMemo(() => {
@@ -40,6 +45,7 @@ const useCreateWallet = () => {
         data: modified_data,
         /** A function to create new wallet */
         mutate,
+        mutateAsync,
         ...rest,
     };
 };

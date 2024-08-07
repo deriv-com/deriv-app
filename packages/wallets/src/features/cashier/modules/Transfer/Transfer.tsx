@@ -1,7 +1,6 @@
 import React from 'react';
-import { WalletsErrorScreen } from '../../../../components';
-import { TransferErrorCodes } from '../../../../constants/errorCodes';
 import type { THooks } from '../../../../types';
+import { TransferErrorScreen } from '../../screens/TransferErrorScreen';
 import { TransferForm, TransferReceipt } from './components';
 import { TransferProvider, useTransfer } from './provider';
 
@@ -18,19 +17,10 @@ const TransferModule: React.FC<TProps> = ({ accounts }) => {
 };
 
 const Transfer: React.FC = () => {
-    const { error: transferError, receipt, resetTransfer } = useTransfer();
-    const errorMessage = transferError?.error.message;
-    const transferBetweenAccountsError = transferError?.error.code === TransferErrorCodes.TransferBetweenAccountsError;
+    const { error, receipt, resetTransfer } = useTransfer();
+    const transferError = error?.error;
 
-    if (errorMessage)
-        return (
-            <WalletsErrorScreen
-                buttonText={transferBetweenAccountsError ? undefined : 'Reset error'}
-                message={errorMessage}
-                onClick={() => resetTransfer()}
-                title='Error'
-            />
-        );
+    if (transferError) return <TransferErrorScreen error={transferError} resetError={resetTransfer} />;
 
     if (receipt) return <TransferReceipt />;
 

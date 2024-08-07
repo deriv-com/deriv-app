@@ -1,6 +1,5 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useBalance } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import WalletsCarouselHeader from '../WalletsCarouselHeader';
 
@@ -12,19 +11,12 @@ jest.mock('react-router-dom', () => ({
     })),
 }));
 
-jest.mock('@deriv/api-v2', () => ({
-    useBalance: jest.fn(),
-}));
-
 describe('WalletsCarouselHeader', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
     it('should render WalletsCarouselHeader with correct content', () => {
-        (useBalance as jest.Mock).mockImplementation(() => ({
-            isLoading: false,
-        }));
         render(<WalletsCarouselHeader balance='100.00' currency='USD' />);
 
         expect(screen.getByText('USD Wallet')).toBeInTheDocument();
@@ -41,11 +33,7 @@ describe('WalletsCarouselHeader', () => {
     });
 
     it('should display loader when balance is loading', () => {
-        (useBalance as jest.Mock).mockImplementation(() => ({
-            isLoading: true,
-        }));
-
-        render(<WalletsCarouselHeader balance='100.00' currency='USD' />);
+        render(<WalletsCarouselHeader currency='USD' isBalanceLoading />);
 
         expect(screen.getByTestId('dt_wallets_carousel_header_balance_loader')).toBeInTheDocument();
     });

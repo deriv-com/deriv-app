@@ -18,7 +18,7 @@ export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
             title_indicators: { type: 'displayIcons' },
             clickable_description: [
                 { type: 'link', text: localize('Learn more') },
-                { type: 'text', text: localize('about verifications needed.') },
+                { type: 'text', text: localize('about required verifications.') },
             ],
         },
         {
@@ -52,7 +52,7 @@ export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
             title: localize('Spreads from'),
             title_indicators: {
                 type: 'displayText',
-                display_text: localize('1.4 pips'),
+                display_text: localize('0.6 pips'),
                 display_text_skin_color: 'violet-dark',
             },
         },
@@ -62,7 +62,7 @@ export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
             title_indicators: { type: 'displayIcons' },
             clickable_description: [
                 { type: 'link', text: localize('Learn more') },
-                { type: 'text', text: localize('about verifications needed.') },
+                { type: 'text', text: localize('about required verifications.') },
             ],
         },
         {

@@ -3,6 +3,7 @@ import { render } from '@testing-library/react';
 import App from '../app';
 import { mockStore } from '@deriv/stores';
 import moment from 'moment';
+import { BrowserRouter } from 'react-router-dom';
 
 const rootStore = mockStore({
     common: {
@@ -48,6 +49,10 @@ const mockWs = {
     wait: jest.fn(),
 };
 
+jest.mock('@lottiefiles/dotlottie-react', () => ({
+    DotLottieReact: jest.fn(() => <div>DotLottieReact</div>),
+}));
+
 jest.mock('AppV2/Components/BottomNav', () => {
     const MockedBottomNav = () => <div data-testid='mocked-bottom-nav' />;
     MockedBottomNav.displayName = 'MockedBottomNav';
@@ -57,12 +62,14 @@ jest.mock('AppV2/Components/BottomNav', () => {
 describe('App', () => {
     it('should render the app component', () => {
         const { container } = render(
-            <App
-                passthrough={{
-                    root_store: rootStore,
-                    WS: mockWs,
-                }}
-            />
+            <BrowserRouter>
+                <App
+                    passthrough={{
+                        root_store: rootStore,
+                        WS: mockWs,
+                    }}
+                />
+            </BrowserRouter>
         );
         expect(container).toBeInTheDocument();
     });
@@ -71,12 +78,14 @@ describe('App', () => {
         const setPromptHandler = jest.fn();
         rootStore.ui.setPromptHandler = setPromptHandler;
         const { unmount } = render(
-            <App
-                passthrough={{
-                    root_store: rootStore,
-                    WS: mockWs,
-                }}
-            />
+            <BrowserRouter>
+                <App
+                    passthrough={{
+                        root_store: rootStore,
+                        WS: mockWs,
+                    }}
+                />
+            </BrowserRouter>
         );
         unmount();
         expect(setPromptHandler).toHaveBeenCalledWith(false);

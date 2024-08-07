@@ -2,11 +2,25 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { useFeatureFlags } from '@deriv/hooks';
 import { useReadLocalStorage } from 'usehooks-ts';
-import { makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
+import { isDTraderV2, makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useDevice } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
+import classNames from 'classnames';
+import DTraderV2HeaderLoader from './dtrader-v2-header-loader';
 
-const HeaderFallback = () => <div className='header' />;
+const HeaderFallback = () => {
+    const location = useLocation();
+    const is_contract_details = location.pathname.startsWith('/contract/');
+    const is_positions = location.pathname === routes.trader_positions;
+
+    return (
+        <div className={classNames('header', { 'header-v2': isDTraderV2() })}>
+            {isDTraderV2() && !is_contract_details && (
+                <DTraderV2HeaderLoader show_notifications_skeleton={!is_positions} />
+            )}
+        </div>
+    );
+};
 
 const DefaultHeader = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "default-header" */ './default-header')),
@@ -44,22 +58,25 @@ const DTraderV2Header = makeLazyLoader(
     () => <HeaderFallback />
 )();
 
+const DTraderV2ContractDetailsHeader = makeLazyLoader(
+    () => moduleLoader(() => import(/* webpackChunkName: "dtrader-v2-header" */ './dtrader-v2-contract-detail-header')),
+    () => <HeaderFallback />
+)();
+
 const Header = observer(() => {
     const { client } = useStore();
     const { accounts, has_wallet, is_logged_in, setAccounts, loginid, switchAccount } = client;
     const { pathname } = useLocation();
-    const { is_mobile } = useDevice();
+    const { isMobile } = useDevice();
 
     const is_wallets_cashier_route = pathname.includes(routes.wallets);
 
     const traders_hub_routes =
         [
             routes.traders_hub,
-            routes.traders_hub_v2,
             routes.account,
             routes.cashier,
             routes.wallets_compare_accounts,
-            routes.compare_accounts,
             routes.compare_cfds,
         ].includes(pathname) ||
         pathname.startsWith(routes.compare_cfds) ||
@@ -86,11 +103,13 @@ const Header = observer(() => {
             case pathname === routes.onboarding:
                 result = null;
                 break;
-            case is_dtrader_v2_enabled &&
-                is_mobile &&
-                (pathname === routes.trade ||
-                    pathname.startsWith('/contract/') === routes.contract.startsWith('/contract/')):
+            case is_dtrader_v2_enabled && isMobile && pathname.startsWith(routes.trade):
                 result = <DTraderV2Header />;
+                break;
+            case is_dtrader_v2_enabled &&
+                isMobile &&
+                pathname.startsWith('/contract/') === routes.contract.startsWith('/contract/'):
+                result = <DTraderV2ContractDetailsHeader />;
                 break;
             case traders_hub_routes:
                 result = has_wallet ? <TradersHubHeaderWallets /> : <TradersHubHeader />;

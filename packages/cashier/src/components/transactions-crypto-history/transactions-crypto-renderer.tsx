@@ -63,6 +63,13 @@ const TransactionsCryptoRenderer = observer(({ row: crypto, onTooltipClick }: TT
 
     const is_third_party_transaction = transaction_url?.includes('CP:');
 
+    const transaction_type_text =
+        transaction_type === 'withdrawal' ? (
+            <Localize i18n_default_text='Withdrawal' />
+        ) : (
+            <Localize i18n_default_text='Deposit' />
+        );
+
     if (status && isMobile()) {
         return (
             <div>
@@ -73,7 +80,7 @@ const TransactionsCryptoRenderer = observer(({ row: crypto, onTooltipClick }: TT
                             size={32}
                         />
                         <Text as='p' size='xs' weight='bold' className='transactions-crypto-history__table-type'>
-                            <Localize i18n_default_text={transaction_type} />
+                            {transaction_type_text}
                         </Text>
                         <div
                             className='transactions-crypto-history__table-status'
@@ -206,7 +213,7 @@ const TransactionsCryptoRenderer = observer(({ row: crypto, onTooltipClick }: TT
                         size={32}
                     />
                     <Text as='p' size='xs' weight='bold'>
-                        <Localize i18n_default_text={transaction_type} />
+                        {transaction_type_text}
                     </Text>
                 </Table.Cell>
                 <Table.Cell className='transactions-crypto-history__table-amount'>

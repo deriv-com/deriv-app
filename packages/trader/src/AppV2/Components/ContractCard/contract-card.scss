@@ -1,0 +1,250 @@
+.contract-card {
+    position: relative;
+    display: flex;
+    width: 100%;
+    cursor: pointer;
+    background-color: var(--component-modal-bg);
+    padding: var(--semantic-spacing-general-md);
+    justify-content: space-between;
+    height: 10.4rem;
+    transform: translateX(0);
+    transition: transform var(--core-motion-duration-200) var(--motion-easing-inandout);
+    text-decoration: none;
+    color: unset;
+
+    .dc-icon {
+        display: flex;
+        flex-shrink: 0;
+        justify-content: center;
+        align-items: center;
+        width: var(--core-size-1600);
+        height: var(--core-size-1600);
+    }
+    &__body {
+        display: flex;
+        flex-direction: column;
+        gap: var(--semantic-spacing-gap-md);
+    }
+    &__body,
+    &__title {
+        min-width: 0;
+        flex-grow: 1;
+    }
+    &__details,
+    .status-and-profit {
+        display: flex;
+        gap: var(--core-spacing-400);
+        align-items: center;
+    }
+    .status,
+    .timer {
+        background-color: var(--core-color-opacity-black-75);
+
+        .dc-remaining-time {
+            font-size: unset;
+        }
+    }
+    .status-and-profit {
+        justify-content: space-between;
+    }
+    &__title {
+        display: flex;
+        flex-direction: column;
+    }
+    .trade-type,
+    .symbol {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        &-icon {
+            padding: var(--core-size-200);
+        }
+    }
+    .symbol,
+    .stake {
+        color: var(--component-textIcon-normal-subtle);
+    }
+    .stake {
+        align-self: flex-end;
+    }
+    .buttons {
+        display: flex;
+        align-self: center;
+        justify-content: flex-end;
+        flex-shrink: 0;
+        width: fit-content;
+        height: 100%;
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline-end: 0;
+        inset-block-end: 0;
+        transform: translateX(100%);
+        opacity: var(--core-opacity-50);
+        transition: opacity var(--core-motion-duration-200) var(--motion-easing-inandout);
+
+        button {
+            all: unset;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: var(--core-size-3600);
+            height: 100%;
+            cursor: pointer;
+
+            .label {
+                color: var(--core-color-solid-slate-50);
+            }
+            &:disabled:not(.loading) {
+                background-color: var(--core-color-opacity-black-200);
+
+                .label {
+                    color: var(--component-textIcon-normal-disabled);
+                }
+            }
+            .circle-loader {
+                width: var(--core-size-600);
+                height: var(--core-size-600);
+                display: grid;
+                border-radius: 50%;
+                mask: radial-gradient(farthest-side, #0000 50%, var(--core-color-solid-slate-1400) 51%);
+                background: linear-gradient(0deg, rgba(255, 255, 255, 0.5) 50%, var(--core-color-solid-slate-50) 0)
+                        center/1px 100%,
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0.75) 0) center/100% 1px;
+                background-repeat: no-repeat;
+                animation: rotate-loader 1s infinite steps(8);
+
+                &:before,
+                &:after {
+                    content: '';
+                    grid-area: 1/1;
+                    border-radius: 50%;
+                    background: inherit;
+                    opacity: 0.915;
+                    transform: rotate(45deg);
+                }
+                &:after {
+                    opacity: 0.83;
+                    transform: rotate(90deg);
+                }
+                @keyframes rotate-loader {
+                    100% {
+                        transform: rotate(360deg);
+                    }
+                }
+            }
+        }
+    }
+    &.lost {
+        .profit {
+            color: var(--core-color-solid-red-600);
+        }
+        button:not(:disabled),
+        button.loading {
+            background-color: var(--core-color-solid-cherry-700);
+        }
+        .status {
+            color: var(--core-color-solid-red-900);
+            background-color: var(--core-color-opacity-red-100);
+        }
+    }
+    &.won {
+        .profit {
+            color: var(--core-color-solid-green-600);
+        }
+        button:not(:disabled),
+        button.loading {
+            background-color: var(--core-color-solid-emerald-700);
+        }
+        .status {
+            color: var(--core-color-solid-green-900);
+            background-color: var(--core-color-opacity-green-100);
+        }
+    }
+    &.show-buttons {
+        transform: translateX(calc(var(--core-size-3600) * -1));
+
+        &.has-cancel-button {
+            transform: translateX(calc(var(--core-size-3600) * -2));
+        }
+    }
+    &-wrapper {
+        position: relative;
+        width: inherit;
+        overflow: hidden;
+        flex-shrink: 0;
+        max-height: 10.4rem; // Update carefully: max-height in exact units is needed for transition below to work
+        box-shadow: var(--core-elevation-shadow-130);
+        border-radius: var(--semantic-borderRadius-md);
+
+        &.deleted {
+            opacity: var(--core-opacity-50);
+            max-height: 0;
+            transition: max-height 0.3s, opacity 0.1s;
+            transition-timing-function: var(--motion-easing-out);
+        }
+    }
+    &-list {
+        display: flex;
+        flex-grow: 1;
+        flex-direction: column;
+        gap: var(--core-spacing-400);
+        width: inherit;
+        padding-inline: var(--core-spacing-400);
+
+        &--has-buttons-demo {
+            .contract-card-wrapper:first-child {
+                .contract-card {
+                    animation: var(--motion-duration-relax) var(--motion-easing-inandout) bounce-one-button;
+
+                    &.has-cancel-button {
+                        animation: var(--motion-duration-relax) var(--motion-easing-inandout) bounce-two-buttons;
+                    }
+                    @keyframes bounce-one-button {
+                        0%,
+                        100% {
+                            transform: translateX(0);
+                        }
+                        30%,
+                        70% {
+                            transform: translateX(calc(var(--core-size-3600) * -1));
+                        }
+                    }
+                    @keyframes bounce-two-buttons {
+                        0%,
+                        100% {
+                            transform: translateX(0);
+                        }
+                        30%,
+                        70% {
+                            transform: translateX(calc(var(--core-size-3600) * -2));
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &.show-buttons,
+    &-list--has-buttons-demo {
+        .buttons {
+            opacity: var(--core-opacity-1300);
+        }
+    }
+}
+
+.contract-cards {
+    &-sections {
+        &--has-bottom-margin {
+            margin-block-end: var(--core-size-1900);
+        }
+    }
+    &-section {
+        &__title {
+            padding: var(--core-spacing-400) var(--core-spacing-800);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background-color: var(--core-color-solid-slate-75);
+        }
+    }
+}

@@ -51,20 +51,20 @@ describe('MigrationBanner', () => {
         };
     });
 
-    it('should render MigrationBanner with both MT5 Derived SVG and MT5 Financial SVG text', () => {
+    it('should render MigrationBanner with both MT5 Standard SVG and MT5 Financial SVG text', () => {
         renderComponent();
 
-        const texts = [/Upgrade your/i, /Derived/i, /and/i, /Financial MT5/i, /account\(s\)/i];
+        const texts = [/Upgrade your/i, /Standard/i, /Financial MT5/i, /account\(s\)/i];
         texts.forEach(text => {
             expect(screen.getByText(text)).toBeInTheDocument();
         });
         expect(screen.getByRole('button', { name: /upgrade/i })).toBeInTheDocument();
     });
 
-    it('should render MigrationBanner with MT5 Derived SVG', () => {
+    it('should render MigrationBanner with MT5 Standard SVG', () => {
         response.has_derived_and_financial_mt5 = false;
         renderComponent();
-        const texts = [/Upgrade your/i, /Derived MT5/i, /account\(s\)/i];
+        const texts = [/Upgrade your/i, /Standard MT5/i, /account\(s\)/i];
         texts.forEach(text => {
             expect(screen.getByText(text)).toBeInTheDocument();
         });

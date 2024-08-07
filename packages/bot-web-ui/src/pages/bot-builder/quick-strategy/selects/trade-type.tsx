@@ -11,22 +11,26 @@ type TTradeTypeOption = {
     trade_type: TTradeType;
 };
 
-const TradeTypeOption: React.FC<TTradeTypeOption> = ({ trade_type }: TTradeTypeOption) => (
-    <div key={trade_type.value} className='qs__select__option'>
-        <IconTradeTypes type={trade_type.icon[0]} className='qs__select__option__icon' />
-        <IconTradeTypes type={trade_type.icon[1]} className='qs__select__option__icon' />
-        <Text className='qs__select__option__text' size='xs' color='prominent'>
-            {trade_type.text}
-        </Text>
-    </div>
-);
+const TradeTypeOption: React.FC<TTradeTypeOption> = ({ trade_type: { value, icon, text } }: TTradeTypeOption) => {
+    return (
+        <div key={value} className='qs__select__option'>
+            {icon?.length
+                ? icon.map((ic, idx) => (
+                      <IconTradeTypes type={ic} className='qs__select__option__icon' key={`${ic}id-${idx}`} />
+                  ))
+                : null}
+            <Text className='qs__select__option__text' size='xs' color='prominent'>
+                {text}
+            </Text>
+        </div>
+    );
+};
 
 const TradeTypeSelect: React.FC = () => {
     const [trade_types, setTradeTypes] = React.useState<TTradeType[]>([]);
     const { setFieldValue, values, validateForm } = useFormikContext<TFormData>();
     const { quick_strategy } = useDBotStore();
     const { setValue } = quick_strategy;
-    const selected = values?.tradetype;
 
     React.useEffect(() => {
         const first_time_user_data = !(JSON.parse(localStorage?.getItem('qs-fields') as string) as TFormData);
@@ -39,7 +43,8 @@ const TradeTypeSelect: React.FC = () => {
     }, []);
 
     React.useEffect(() => {
-        if (values?.symbol && selected !== '') {
+        if (values?.symbol) {
+            const selected = values?.tradetype;
             const { contracts_for } = ApiHelpers.instance as unknown as TApiHelpersInstance;
             const getTradeTypes = async () => {
                 const trade_types = await contracts_for.getTradeTypesForQuickStrategy(values?.symbol);
@@ -55,7 +60,7 @@ const TradeTypeSelect: React.FC = () => {
             }, 100)();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [values?.symbol, selected]);
+    }, [values?.symbol]);
 
     const trade_type_dropdown_options = React.useMemo(
         () =>
@@ -78,7 +83,7 @@ const TradeTypeSelect: React.FC = () => {
                             {...field}
                             readOnly
                             inputMode='none'
-                            data-testid='qs_autocomplete_tradetype'
+                            data-testid='dt_qs_tradetype'
                             autoComplete='off'
                             className='qs__autocomplete'
                             value={selected_trade_type?.text || ''}

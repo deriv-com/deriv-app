@@ -34,7 +34,7 @@
         .positions-toggle__icon {
             margin-bottom: 0;
         }
-        @include desktop {
+        @include desktop-screen {
             &:after {
                 transform: translate3d(0, 4px, 0);
             }
@@ -55,7 +55,7 @@
         background-color: var(--brand-red-coral);
         color: $color-white;
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         padding: 0 1.2rem;
         height: inherit;
 
@@ -111,5 +111,12 @@
             margin: 1.6rem 0.8rem;
             width: calc(100% - 1.6rem);
         }
+    }
+}
+
+@include tablet-screen {
+    .dc-modal__container_toggle-positions {
+        right: 20% !important;
+        left: 20%;
     }
 }

@@ -15,16 +15,22 @@
             align-items: center;
             margin-block: 1.6rem;
 
+            .dc-input--error {
+                margin-bottom: 3.2rem;
+            }
+
             &--expanded {
                 display: block;
 
-                .dc-icon {
-                    display: block;
-                    margin-inline: auto;
-                }
+                .passkey-status {
+                    &__icon {
+                        display: block;
+                        margin-inline: auto;
+                    }
 
-                .passkeys-status__title {
-                    margin-bottom: 0;
+                    &__title {
+                        margin-bottom: 0;
+                    }
                 }
             }
         }
@@ -35,7 +41,10 @@
 
         &__description {
             &-back-button {
-                margin: 2.4rem 0 0 2.4rem;
+                margin-top: 2.4rem;
+                margin-inline-start: 2.4rem;
+                margin-inline-end: 0;
+                margin-bottom: 0;
             }
 
             &-card {
@@ -46,10 +55,10 @@
 
                 ul {
                     list-style: disc;
-                    padding-left: 1.2rem;
+                    padding-inline-start: 1.2rem;
 
                     li {
-                        margin-left: 0.8rem;
+                        margin-inline-start: 0.8rem;
 
                         &::marker {
                             font-size: 1.2rem;
@@ -86,10 +95,10 @@
 
                     ul {
                         list-style: disc;
-                        padding-left: 1.2rem;
+                        padding-inline-start: 1.2rem;
 
                         li {
-                            margin-left: 0.8rem;
+                            margin-inline-start: 0.8rem;
 
                             &::marker {
                                 font-size: 1rem;
@@ -115,30 +124,85 @@
         height: 4rem;
     }
 
-    &-card {
+    &-list {
         &__wrapper {
-            display: flex;
-            gap: 0.8rem;
-            margin-block: 1.6rem;
-            padding-bottom: 1.6rem;
-            border-bottom: 1px solid var(--general-hover);
+            display: block;
+        }
+    }
 
-            & > .dc-icon:first-child {
+    &-card {
+        display: flex;
+        gap: 0.8rem;
+        margin-block: 1.6rem;
+        padding-bottom: 1.6rem;
+        border-bottom: 1px solid var(--general-hover);
+
+        & > .dc-icon:first-child {
+            margin-top: 0.4rem;
+            min-width: fit-content;
+        }
+
+        & > .dc-icon:last-child {
+            margin-inline-start: auto;
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &__passkey {
+            &-type-icon {
                 margin-top: 0.4rem;
             }
 
-            & > .dc-icon:last-child {
-                margin-left: auto;
-            }
-
-            &:last-child {
-                border-bottom: none;
+            &-name {
+                word-break: break-word;
             }
         }
 
-        &__passkey-type-icon {
-            margin-top: 0.4rem;
+        .dc-dropdown-container {
+            min-width: unset;
+            margin-inline-start: auto;
+
+            .dc-dropdown__list {
+                inset-inline-start: -120px;
+
+                .dc-list {
+                    padding-top: 8px;
+                    padding-bottom: 8px;
+
+                    &--has-suffix-icon {
+                        width: 16.8rem;
+                    }
+
+                    &__item {
+                        padding-top: 8px;
+                        height: 4.8rem;
+
+                        &-text {
+                            padding-inline-start: 1.6rem;
+                        }
+
+                        &--disabled {
+                            display: none;
+                        }
+                    }
+                }
+            }
+
+            .dc-dropdown__display {
+                border: unset;
+            }
         }
+    }
+
+    &-snackbar__container {
+        position: absolute;
+        bottom: 8.2rem;
+        margin-inline: 1.6rem;
+        inset-inline-start: 0;
+        inset-inline-end: 0;
+        background: inherit;
     }
 }
 
@@ -161,12 +225,7 @@
 
         ul {
             list-style: disc;
-            padding-left: 0.8rem;
-
-            li {
-                margin-left: 0.8rem;
-                font-size: 1rem;
-            }
+            padding-inline-start: 1.6rem;
         }
     }
 }

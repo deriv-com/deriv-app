@@ -368,19 +368,6 @@ describe('<CashierLocked />', () => {
         expect(screen.getByText(/You have not provided your tax identification number./i)).toBeInTheDocument();
     });
 
-    it('should show the proper message if the client has ask_uk_funds_protection', () => {
-        mock_store.client.account_status.cashier_validation = ['ASK_UK_FUNDS_PROTECTION'];
-        mock_store.client.current_currency_type = 'fiat';
-        mockUseCashierLocked.mockReturnValue(true);
-
-        render(<CashierLocked />, {
-            wrapper: ({ children }) =>
-                wrapWithRouter(<CashierProviders store={mock_store}>{children}</CashierProviders>),
-        });
-
-        expect(screen.getByText(/Your cashier is locked./i)).toBeInTheDocument();
-    });
-
     it('should show the proper message if the client does not set 30-day turnover limit', () => {
         mock_store.client.account_status.cashier_validation = ['ASK_SELF_EXCLUSION_MAX_TURNOVER_SET'];
         mock_store.client.current_currency_type = 'fiat';

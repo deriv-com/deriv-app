@@ -51,6 +51,8 @@ import type {
     CountriesListResponse,
     CryptocurrencyConfigurationsRequest,
     CryptocurrencyConfigurationsResponse,
+    CryptocurrencyEstimationsRequest,
+    CryptocurrencyEstimationsResponse,
     DocumentUploadRequest,
     DocumentUploadResponse,
     EconomicCalendarRequest,
@@ -1623,6 +1625,10 @@ type TPrivateSocketEndpoints = {
                        */
                       name?: string;
                       /**
+                       * This needs to be removed after updating api-types version
+                       */
+                      product?: 'zero_spread' | 'swap_free' | 'standard';
+                      /**
                        * Legal requirements for the Landing Company
                        */
                       requirements?: {
@@ -2219,6 +2225,25 @@ type TPrivateSocketEndpoints = {
     };
 };
 
+// Need this because deriv-api-types is assigning the response of MT5LoginList to another type called DetailsOfEachMT5Loginid which is not updated automatically by BE
+// Need to manualy update the type here after BE updates the response
+type TWhiteLabelLinks = {
+    white_label_links: {
+        android: string;
+        ios: string;
+        webtrader_url: string;
+        windows: string;
+    };
+};
+
+type TExtendedMT5AccounListType = NonNullable<MT5AccountsListResponse['mt5_login_list']>[number] & {
+    white_label_links: TWhiteLabelLinks['white_label_links'];
+};
+
+type MT5AccountListResponse = {
+    mt5_login_list?: TExtendedMT5AccounListType[];
+};
+
 type TAccountList = NonNullable<AccountListResponse['account_list']>[number] & { excluded_until: Date };
 
 interface IExtendedAccountListResponse extends AccountListResponse {
@@ -2326,6 +2351,10 @@ type TSocketEndpoints = {
         request: CryptocurrencyConfigurationsRequest;
         response: CryptocurrencyConfigurationsResponse;
     };
+    crypto_estimations: {
+        request: CryptocurrencyEstimationsRequest;
+        response: CryptocurrencyEstimationsResponse;
+    };
     document_upload: {
         request: DocumentUploadRequest;
         response: DocumentUploadResponse;
@@ -2400,7 +2429,7 @@ type TSocketEndpoints = {
     };
     mt5_login_list: {
         request: MT5AccountsListRequest;
-        response: MT5AccountsListResponse;
+        response: MT5AccountListResponse;
     };
     mt5_new_account: {
         request: MT5NewAccountRequest;

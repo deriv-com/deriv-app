@@ -1,10 +1,11 @@
-import Ic12MonthsIssuedDocument from '../../public/images/accounts/ic-12-months-expiry.svg';
-import IcBlurryDocument from '../../public/images/accounts/ic-blurry-document.svg';
-import IcCroppedDocument from '../../public/images/accounts/ic-cropped-document.svg';
-import IcDocumentAddressMismatch from '../../public/images/accounts/ic-document-address-mismatch.svg';
-import IcDocumentNameMismatch from '../../public/images/accounts/ic-document-name-mismatch.svg';
-import IcEnvelope from '../../public/images/accounts/ic-envelop.svg';
-import i18n from '../../translations/i18n';
+import {
+    DerivLightIcBlurryDocumentIcon,
+    DerivLightIcCroppedDocumentIcon,
+    DerivLightIcDocumentAddressMismatchIcon,
+    DerivLightIcDocumentNameMismatchIcon,
+    DerivLightIcEnvelopeIcon,
+    DerivLightIcOldIssuedDocumentMoreThan12Icon,
+} from '@deriv/quill-icons';
 import { THooks } from '../../types';
 
 type TExampleImageConfig = {
@@ -16,28 +17,28 @@ type TStatusCodes = Exclude<THooks.POA['status'] | THooks.POI['current']['status
 
 export const getExampleImagesConfig = (): TExampleImageConfig[] => [
     {
-        description: i18n.t('Name in document doesn’t match your Deriv profile.'),
-        image: IcDocumentNameMismatch,
+        description: 'Name in document doesn’t match your Deriv profile.',
+        image: DerivLightIcDocumentNameMismatchIcon,
     },
     {
-        description: i18n.t('Address in document doesn’t match address you entered above.'),
-        image: IcDocumentAddressMismatch,
+        description: 'Address in document doesn’t match address you entered above.',
+        image: DerivLightIcDocumentAddressMismatchIcon,
     },
     {
-        description: i18n.t('Document issued more than 12-months ago.'),
-        image: Ic12MonthsIssuedDocument,
+        description: 'Document issued more than 12-months ago.',
+        image: DerivLightIcOldIssuedDocumentMoreThan12Icon,
     },
     {
-        description: i18n.t('Blurry document. All information must be clear and visible.'),
-        image: IcBlurryDocument,
+        description: 'Blurry document. All information must be clear and visible.',
+        image: DerivLightIcBlurryDocumentIcon,
     },
     {
-        description: i18n.t('Cropped document. All information must be clear and visible.'),
-        image: IcCroppedDocument,
+        description: 'Cropped document. All information must be clear and visible.',
+        image: DerivLightIcCroppedDocumentIcon,
     },
     {
-        description: i18n.t('An envelope with your name and address.'),
-        image: IcEnvelope,
+        description: 'An envelope with your name and address.',
+        image: DerivLightIcEnvelopeIcon,
     },
 ];
 

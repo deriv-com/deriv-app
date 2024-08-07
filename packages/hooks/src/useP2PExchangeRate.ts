@@ -9,7 +9,7 @@ const useP2PExchangeRate = (local_currency: string) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [local_currency]);
 
-    const exchange_rate = exchange_rates?.USD?.[local_currency] ?? 1;
+    const exchange_rate = exchange_rates?.USD?.[local_currency];
 
     return exchange_rate;
 };

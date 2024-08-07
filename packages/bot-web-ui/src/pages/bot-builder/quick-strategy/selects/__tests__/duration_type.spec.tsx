@@ -94,7 +94,7 @@ describe('<DurationUnit />', () => {
         render(<DurationUnit />, {
             wrapper,
         });
-        const autocomplete_element = screen.getByTestId('qs_autocomplete_durationtype');
+        const autocomplete_element = screen.getByTestId('dt_qs_durationtype');
         userEvent.click(autocomplete_element);
         await waitFor(() => {
             const option_element = screen.getByText('sample');

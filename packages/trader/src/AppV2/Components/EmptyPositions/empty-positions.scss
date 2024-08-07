@@ -1,0 +1,22 @@
+.empty-positions {
+    &__open,
+    &__closed {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding-inline: var(--core-spacing-2400);
+        flex-grow: 1;
+
+        .message {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--semantic-spacing-gap-sm);
+        }
+
+        .icon {
+            fill: var(--core-color-solid-slate-200);
+        }
+    }
+}

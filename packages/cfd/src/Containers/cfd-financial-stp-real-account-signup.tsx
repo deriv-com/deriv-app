@@ -1,6 +1,7 @@
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { Div100vhContainer } from '@deriv/components';
-import { isDesktop, getAuthenticationStatusInfo, isPOARequiredForMT5 } from '@deriv/shared';
+import { getAuthenticationStatusInfo, isPOARequiredForMT5 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import type { TCoreStores } from '@deriv/stores/types';
 import CFDPOA from '../Components/cfd-poa';
@@ -41,6 +42,7 @@ type TItemsState<T extends TItem> = {
 };
 
 const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialStpRealAccountSignupProps) => {
+    const { isDesktop } = useDevice();
     const { notifications, client } = useStore();
 
     const { refreshNotifications, removeNotificationMessage, removeNotificationByKey, addNotificationMessageByKey } =
@@ -200,7 +202,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
         <Div100vhContainer
             className='cfd-financial-stp-modal'
             id='real_mt5_financial_stp_account_opening'
-            is_disabled={isDesktop()}
+            is_disabled={isDesktop}
             height_offset='40px'
         >
             <div className='cfd-financial-stp-modal__body' data-testid='dt_cfd_financial_stp_modal_body'>

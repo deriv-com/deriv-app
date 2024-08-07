@@ -1,7 +1,6 @@
-import React, { useRef } from 'react';
-import { useHover } from 'usehooks-ts';
-import { Tooltip, WalletText } from '../../../../components';
-import useDevice from '../../../../hooks/useDevice';
+import React from 'react';
+import { Divider, Tooltip } from '@deriv-com/ui';
+import { WalletText } from '../../../../components';
 import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS } from '../../constants';
@@ -29,11 +28,11 @@ type TMarketWithShortCode = `${TMarketType}_${string}`;
 const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms.OtherAccounts, isDemo?: boolean) => {
     switch (shortCode) {
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_SVG:
-            return isDemo ? 'Derived Demo' : 'Derived - SVG';
+            return isDemo ? 'Standard Demo' : 'Standard - SVG';
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_BVI:
-            return 'Derived - BVI';
+            return 'Standard - BVI';
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_VANUATU:
-            return 'Derived - Vanuatu';
+            return 'Standard - Vanuatu';
         case MARKET_TYPE_SHORTCODE.FINANCIAL_SVG:
             return isDemo ? 'Financial Demo' : 'Financial - SVG';
         case MARKET_TYPE_SHORTCODE.FINANCIAL_BVI:
@@ -57,10 +56,6 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
     const marketTypeShortCode: TMarketWithShortCode = `${marketType}_${shortCode}`;
     const jurisdictionCardIcon = getAccountIcon(platform, marketType);
 
-    const hoverRef = useRef(null);
-    const isHovered = useHover(hoverRef);
-    const { isDesktop } = useDevice();
-
     const jurisdictionCardTitle =
         platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER
             ? getAccountCardTitle(platform, isDemo)
@@ -70,27 +65,25 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
 
     return (
         <React.Fragment>
-            <div className='wallets-compare-accounts-title-icon'>
+            <div className='wallets-compare-accounts-title'>
                 {jurisdictionCardIcon}
-                <div className='wallets-compare-accounts-title-icon__separator'>
+                <div className='wallets-compare-accounts-title__separator'>
                     <WalletText align='center' as='h1' size='sm' weight='bold'>
                         {jurisdictionCardTitle}
                     </WalletText>
                     {marketTypeShortCode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN && (
                         <Tooltip
-                            alignment='bottom'
-                            className='wallets-compare-accounts-title-icon__tooltip'
-                            isVisible={isHovered && isDesktop}
-                            message={labuanJurisdictionMessage}
+                            as='div'
+                            tooltipContainerClassName='wallets-compare-accounts-title__tooltip'
+                            tooltipContent={labuanJurisdictionMessage}
+                            tooltipPosition='bottom-start'
                         >
-                            <div ref={hoverRef}>
-                                <InfoIcon />
-                            </div>
+                            <InfoIcon />
                         </Tooltip>
                     )}
                 </div>
             </div>
-            <hr className='wallets-compare-accounts-underline' />
+            <Divider color='var(--general-main-3)' height={0.5} margin='0.4rem 2.8rem' />
         </React.Fragment>
     );
 };

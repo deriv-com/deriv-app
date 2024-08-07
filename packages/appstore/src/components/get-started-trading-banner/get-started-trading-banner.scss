@@ -13,7 +13,7 @@
         background-image: url('./../../public/images/traders-hub-logged-out-banner-bg-desktop.svg');
         background-repeat: no-repeat;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             height: 14.4rem;
             background-image: url('./../../public/images/traders-hub-logged-out-banner-bg-responsive.svg');
             background-repeat: no-repeat;
@@ -32,7 +32,7 @@
             font-weight: 500;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin-inline-start: 1.6rem;
         }
     }
@@ -46,7 +46,7 @@
             font-size: 1.6rem;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             min-width: 6.4rem;
             padding: 0.5rem 1.2rem;
         }
@@ -62,7 +62,7 @@
             transform: scaleX(-1);
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin-inline-end: 0;
             align-self: flex-end;
         }

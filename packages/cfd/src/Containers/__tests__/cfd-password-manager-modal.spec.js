@@ -101,7 +101,7 @@ describe('<CFDPasswordManagerModal />', () => {
         is_visible: true,
         platform: 'mt5',
         selected_login: 'MTD20103241',
-        selected_account: 'Derived',
+        selected_account: 'Standard',
         toggleModal: jest.fn(),
         selected_account_type: 'financial',
         selected_account_group: 'demo',

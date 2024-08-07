@@ -6,7 +6,6 @@ import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
 import RootStore from './root-store';
 
-const Blockly = window.Blockly;
 export default class AppStore {
     root_store: RootStore;
     core: TStores;
@@ -49,15 +48,33 @@ export default class AppStore {
         link: localize('Switch to another account'),
     });
 
-    getErrorForEuClients = (is_logged_in = false) => {
+    getErrorForEuClients = (is_logged_in = false, country: string | undefined = undefined) => {
         return {
             text: ' ',
             title: is_logged_in
-                ? localize('Deriv Bot is not available for EU clients')
-                : localize('Deriv Bot is unavailable in the EU'),
+                ? localize(`Deriv Bot is not available for ${country || 'EU'} clients`)
+                : localize(`Deriv Bot is unavailable in ${country || 'the EU'}`),
             link: is_logged_in ? localize("Back to Trader's Hub") : '',
             route: routes.traders_hub,
         };
+    };
+
+    throwErrorForExceptionCountries = (client_country: string) => {
+        const { client, common } = this.core;
+
+        const not_allowed_clients_country: { [key: string]: string } = {
+            au: 'Australian',
+            sg: 'Singaporean',
+        };
+
+        const country_name = not_allowed_clients_country[client_country];
+
+        if (country_name) {
+            return showDigitalOptionsUnavailableError(
+                common.showError,
+                this.getErrorForEuClients(client.is_logged_in, country_name)
+            );
+        }
     };
 
     handleErrorForEu = (show_default_error = false) => {
@@ -65,6 +82,11 @@ export default class AppStore {
         const toggleAccountsDialog = ui?.toggleAccountsDialog;
 
         if (!client?.is_logged_in && client?.is_eu_country) {
+            if (client?.has_logged_out) {
+                window.location.href = routes.traders_hub;
+            }
+
+            this.throwErrorForExceptionCountries(client?.clients_country);
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
         }
 
@@ -72,7 +94,8 @@ export default class AppStore {
             return false;
         }
 
-        if (window.location.pathname === routes.bot) {
+        if (window.location.pathname.includes(routes.bot)) {
+            this.throwErrorForExceptionCountries(client?.account_settings?.country_code as string);
             if (client.should_show_eu_error) {
                 return showDigitalOptionsUnavailableError(
                     common.showError,
@@ -119,6 +142,7 @@ export default class AppStore {
     onMount = () => {
         const { blockly_store, run_panel } = this.root_store;
         const { client, ui, traders_hub } = this.core;
+        const { is_dark_mode_on } = ui;
         this.showDigitalOptionsMaltainvestError();
 
         let timer_counter = 1;
@@ -136,7 +160,13 @@ export default class AppStore {
         }, 10000);
 
         blockly_store.setLoading(true);
-        DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store, ui.is_mobile).then(() => {
+        DBot.initWorkspace(
+            __webpack_public_path__,
+            this.dbot_store,
+            this.api_helpers_store,
+            ui.is_mobile,
+            is_dark_mode_on
+        ).then(() => {
             blockly_store.setContainerSize();
             blockly_store.setLoading(false);
         });
@@ -165,9 +195,9 @@ export default class AppStore {
     onUnmount = () => {
         DBot.terminateBot();
         DBot.terminateConnection();
-        if (Blockly.derivWorkspace) {
-            clearInterval(Blockly.derivWorkspace.save_workspace_interval);
-            Blockly.derivWorkspace.dispose();
+        if (window.Blockly.derivWorkspace) {
+            clearInterval(window.Blockly.derivWorkspace.save_workspace_interval);
+            window.Blockly.derivWorkspace.dispose();
         }
         if (typeof this.disposeReloadOnLanguageChangeReaction === 'function') {
             this.disposeReloadOnLanguageChangeReaction();
@@ -225,14 +255,15 @@ export default class AppStore {
         this.disposeCurrencyReaction = reaction(
             () => this.core.client.currency,
             currency => {
-                if (!Blockly.derivWorkspace) return;
+                if (!window.Blockly.derivWorkspace) return;
 
-                const trade_options_blocks = Blockly.derivWorkspace
+                const trade_options_blocks = window.Blockly.derivWorkspace
                     .getAllBlocks()
                     .filter(
                         b =>
                             b.type === 'trade_definition_tradeoptions' ||
                             b.type === 'trade_definition_multiplier' ||
+                            b.type === 'trade_definition_accumulator' ||
                             (b.isDescendantOf('trade_definition_multiplier') && b.category_ === 'trade_parameters')
                     );
 
@@ -253,16 +284,16 @@ export default class AppStore {
                 if (ApiHelpers.instance) {
                     const { active_symbols, contracts_for } = ApiHelpers.instance;
 
-                    if (Blockly.derivWorkspace) {
+                    if (window.Blockly.derivWorkspace) {
                         active_symbols.retrieveActiveSymbols(true).then(() => {
                             contracts_for.disposeCache();
-                            Blockly.derivWorkspace
+                            window.Blockly.derivWorkspace
                                 .getAllBlocks()
                                 .filter(block => block.type === 'trade_definition_market')
                                 .forEach(block => {
                                     runIrreversibleEvents(() => {
-                                        const fake_create_event = new Blockly.Events.Create(block);
-                                        Blockly.Events.fire(fake_create_event);
+                                        const fake_create_event = new window.Blockly.Events.BlockCreate(block);
+                                        window.Blockly.Events.fire(fake_create_event);
                                     });
                                 });
                         });
@@ -331,7 +362,7 @@ export default class AppStore {
             );
 
             if (is_click_outside_blockly) {
-                Blockly?.hideChaff(/* allowToolbox */ false);
+                window.Blockly?.hideChaff(/* allowToolbox */ false);
             }
         }
     };

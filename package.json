@@ -58,10 +58,10 @@
     "scripts": {
         "analyze:build": "nx run-many --target=analyze:build",
         "analyze:stats": "nx run-many --target=analyze:stats",
-        "build:all": "nx build @deriv/components --skip-nx-cache && nx build @deriv/account  --skip-nx-cache && nx build @deriv/bot-web-ui --skip-nx-cache && nx run-many --exclude=@deriv/account-v2,@deriv-lib/account-v2-lib --target=build",
+        "build:all": "nx build @deriv/components --skip-nx-cache && nx build @deriv/account  --skip-nx-cache && nx build @deriv/bot-web-ui --skip-nx-cache && nx run-many --target=build",
         "build:one": "f () { nx build @deriv/$1 $2 ;}; f",
         "build:since": "nx affected --target=build",
-        "test:eslint-all": "nx run-many --exclude=@deriv/account-v2,@deriv-lib/account-v2-lib --target=test:eslint",
+        "test:eslint-all": "nx run-many --target=test:eslint",
         "test:eslint-one": "f () { nx test @deriv/$1 --target=test:eslint ;}; f",
         "test:eslint-since": "f () { nx affected --target=eslint ;}; f",
         "bootstrap:ci": "f () { lerna link && lerna bootstrap --ci --hoist --strict && lerna link ;}; f",
@@ -98,7 +98,7 @@
     },
     "dependencies": {
         "@babel/preset-typescript": "^7.16.5",
-        "@deriv-com/analytics": "1.5.8",
+        "@deriv-com/analytics": "1.11.0",
         "@sendbird/chat": "^4.9.7",
         "@types/react-transition-group": "^4.4.4",
         "babel-jest": "^27.3.1",

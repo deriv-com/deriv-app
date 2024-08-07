@@ -5,7 +5,8 @@ import TradeTypeListItem from '../trade-type-list-item';
 
 describe('TradeTypeListItem', () => {
     it('renders with default right icon', () => {
-        render(<TradeTypeListItem title='Test Title' />);
+        const handle_right_icon_click = jest.fn();
+        render(<TradeTypeListItem title='Test Title' onRightIconClick={handle_right_icon_click} />);
 
         expect(screen.getByText('Test Title')).toBeInTheDocument();
         expect(screen.getByRole('img')).toBeInTheDocument();
@@ -14,8 +15,9 @@ describe('TradeTypeListItem', () => {
     it('renders with custom left and right icons', () => {
         const custom_left_icon = <span>Custom Left Icon</span>;
         const custom_right_icon = <span>Custom Right Icon</span>;
+        const handle_right_icon_click = jest.fn();
 
-        render(<TradeTypeListItem title='Test Title' leftIcon={custom_left_icon} rightIcon={custom_right_icon} />);
+        render(<TradeTypeListItem title='Test Title' leftIcon={custom_left_icon} rightIcon={custom_right_icon} onRightIconClick={handle_right_icon_click} />);
 
         expect(screen.getByText('Custom Left Icon')).toBeInTheDocument();
         expect(screen.getByText('Custom Right Icon')).toBeInTheDocument();

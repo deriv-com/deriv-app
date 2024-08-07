@@ -58,6 +58,15 @@ const AccountSignup = ({
     // didMount lifecycle hook
     React.useEffect(() => {
         WS.wait('website_status', 'residence_list').then(() => {
+            Analytics.trackEvent('ce_virtual_signup_form', {
+                action: 'signup_confirmed',
+                form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+            });
+
+            Analytics.trackEvent('ce_virtual_signup_form', {
+                action: 'country_selection_screen_opened',
+                form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+            });
             if (clients_country && residence_list) {
                 setCountry(getLocation(residence_list, clients_country, 'text'));
             }
@@ -80,16 +89,6 @@ const AccountSignup = ({
             return ab_value;
         };
         setABQuestionnaire(fetchQuestionnarieData());
-
-        Analytics.trackEvent('ce_virtual_signup_form', {
-            action: 'signup_confirmed',
-            form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
-        });
-
-        Analytics.trackEvent('ce_virtual_signup_form', {
-            action: 'country_selection_screen_opened',
-            form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
-        });
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const validateSignupPassthrough = values => validateSignupFields(values, residence_list);

@@ -20,11 +20,11 @@ export type TDraggableListCategory = {
 export type TDraggableListProps = {
     categories: TDraggableListCategory[];
     onRightIconClick: (item: TDraggableListItem) => void;
-    onSave?: () => void;
+    onAction?: () => void;
     onDrag?: (categories: TDraggableListCategory[]) => void;
 };
 
-const DraggableList: React.FC<TDraggableListProps> = ({ categories, onRightIconClick, onSave, onDrag }) => {
+const DraggableList: React.FC<TDraggableListProps> = ({ categories, onRightIconClick, onAction, onDrag }) => {
     const [category_list, setCategoryList] = useState(categories);
     const [draggedItemId, setDraggedItemId] = useState<string | null>(null);
 
@@ -79,15 +79,15 @@ const DraggableList: React.FC<TDraggableListProps> = ({ categories, onRightIconC
                 <div key={category.id} className='draggable-list-category'>
                     <div className='draggable-list-category-header'>
                         <Text size='sm' bold className='draggable-list-category-header-title'>
-                            {category.title}
+                            {category?.title}
                         </Text>
-                        {onSave && (
+                        {onAction && (
                             <Text
                                 size='sm'
                                 bold
                                 underlined
                                 className='draggable-list-category-header-button'
-                                onClick={onSave}
+                                onClick={onAction}
                             >
                                 {category.button_title || <Localize i18n_default_text='Done' />}
                             </Text>

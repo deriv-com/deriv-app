@@ -11,7 +11,7 @@ import { TradeParametersContainer, TradeParameters } from 'AppV2/Components/Trad
 import CurrentSpot from 'AppV2/Components/CurrentSpot';
 import { TradeChart } from '../Chart';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
-import TemporaryTradeTypes from './trade-types';
+import TradeTypes from './trade-types';
 import LastDigitPrediction from 'AppV2/Components/TradeParameters/LastDigitPrediction';
 import MarketSelector from 'AppV2/Components/MarketSelector';
 
@@ -67,7 +67,7 @@ const Trade = observer(() => {
             {symbols.length && trade_types.length ? (
                 <React.Fragment>
                     <div className='trade'>
-                        <TemporaryTradeTypes
+                        <TradeTypes
                             contract_type={contract_type}
                             onTradeTypeSelect={onTradeTypeSelect}
                             trade_types={trade_types}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import TradeTypeListItem from './trade-type-list-item';
 import { Text } from '@deriv-com/quill-ui';
 import './trade-type-list.scss';
+import { Localize } from '@deriv/translations';
 
 type TTradeTypeItem = {
     id: string;
@@ -12,15 +13,29 @@ type TTradeTypeItem = {
 type TTradeTypeCategory = {
     id: string;
     title?: string;
+    button_title?: string;
     items: TTradeTypeItem[];
 };
 
 type TTradeTypeListProps = {
-    categories: TTradeTypeCategory[];
-    onRightIconClick: (item: TTradeTypeItem) => void;
+    categories?: TTradeTypeCategory[];
+    selected_item?: string;
+    selectable?: boolean;
+    onRightIconClick?: (item: TTradeTypeItem) => void;
+    onTradeTypeClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+    onAction?: () => void;
+    should_show_title?: boolean;
 };
 
-const TradeTypeList: React.FC<TTradeTypeListProps> = ({ categories, onRightIconClick }) => {
+const TradeTypeList: React.FC<TTradeTypeListProps> = ({
+    categories,
+    selected_item,
+    selectable,
+    onRightIconClick,
+    onTradeTypeClick,
+    onAction,
+    should_show_title = true,
+}) => {
     const [category_list, setCategoryList] = useState(categories);
 
     React.useEffect(() => {
@@ -29,15 +44,33 @@ const TradeTypeList: React.FC<TTradeTypeListProps> = ({ categories, onRightIconC
 
     return (
         <div>
-            {category_list.map(category => (
+            {category_list?.map(category => (
                 <div key={category.id} className='trade-type-list-category'>
-                    <Text size='sm' bold className='draggable-list-category-title'>
-                        {category?.title}
-                    </Text>
-                    <div className='trade-type-list-category__droppable-area'>
-                        {category.items.map(item => (
-                            <div>
-                                <TradeTypeListItem title={item.title} onRightIconClick={() => onRightIconClick(item)} />
+                    <div className='trade-type-list-category-header'>
+                        <Text size='sm' bold className='trade-type-list-category-header-title'>
+                            {should_show_title && category?.title}
+                        </Text>
+                        {onAction && (
+                            <Text
+                                size='sm'
+                                bold
+                                underlined
+                                className='trade-type-list-category-header-button'
+                                onClick={onAction}
+                            >
+                                {category.button_title || <Localize i18n_default_text='Customize' />}
+                            </Text>
+                        )}
+                    </div>
+                    <div className='trade-type-list-category__items'>
+                        {category.items.map((item: TTradeTypeItem) => (
+                            <div key={item.id}>
+                                <TradeTypeListItem
+                                    title={item.title}
+                                    selected={!!selectable && item.id === selected_item}
+                                    onRightIconClick={onRightIconClick && (() => onRightIconClick(item))}
+                                    onTradeTypeClick={onTradeTypeClick}
+                                />
                             </div>
                         ))}
                     </div>

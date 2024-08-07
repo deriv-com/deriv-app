@@ -1,8 +1,13 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { TERM, getContractDescription } from 'AppV2/Utils/contract-description-utils';
+import { getTerm, getContractDescription } from 'AppV2/Utils/contract-description-utils';
 
-const VanillasTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
+const VanillasTradeDescription = ({
+    onTermClick,
+}: {
+    onTermClick: (params: { text: string; value: string }) => void;
+}) => {
+    const { PAYOUT, FINAL_PRICE, STRIKE_PRICE, EXPIRY, PAYOUT_PER_POINT, CONTRACT_VALUE } = getTerm();
     const content = [
         {
             type: 'general',
@@ -24,22 +29,22 @@ const VanillasTradeDescription = ({ onTermClick }: { onTermClick: (term: string)
                         <button
                             className='description__content--definition'
                             key={1}
-                            onClick={() => onTermClick(TERM.PAYOUT)}
+                            onClick={() => onTermClick(PAYOUT)}
                         />,
                         <button
                             className='description__content--definition'
                             key={2}
-                            onClick={() => onTermClick(TERM.FINAL_PRICE)}
+                            onClick={() => onTermClick(FINAL_PRICE)}
                         />,
                         <button
                             className='description__content--definition'
                             key={3}
-                            onClick={() => onTermClick(TERM.STRIKE_PRICE)}
+                            onClick={() => onTermClick(STRIKE_PRICE)}
                         />,
                         <button
                             className='description__content--definition'
                             key={4}
-                            onClick={() => onTermClick(TERM.EXPIRY)}
+                            onClick={() => onTermClick(EXPIRY)}
                         />,
                     ]}
                 />
@@ -79,7 +84,7 @@ const VanillasTradeDescription = ({ onTermClick }: { onTermClick: (term: string)
                         <button
                             className='description__content--definition'
                             key={0}
-                            onClick={() => onTermClick(TERM.PAYOUT_PER_POINT)}
+                            onClick={() => onTermClick(PAYOUT_PER_POINT)}
                         />,
                     ]}
                 />
@@ -94,7 +99,7 @@ const VanillasTradeDescription = ({ onTermClick }: { onTermClick: (term: string)
                         <button
                             className='description__content--definition'
                             key={0}
-                            onClick={() => onTermClick(TERM.CONTRACT_VALUE)}
+                            onClick={() => onTermClick(CONTRACT_VALUE)}
                         />,
                     ]}
                 />

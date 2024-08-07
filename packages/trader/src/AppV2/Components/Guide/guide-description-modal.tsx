@@ -13,7 +13,7 @@ type TGuideDescriptionModal = {
     is_dark_mode_on?: boolean;
     onClose: () => void;
     onChipSelect: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-    onTermClick: (term: string) => void;
+    onTermClick: (params: { text: string; value: string }) => void;
     selected_contract_type: string;
     show_guide_for_selected_contract?: boolean;
 };

@@ -1,9 +1,14 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
-import { TERM, getContractDescription } from 'AppV2/Utils/contract-description-utils';
+import { getTerm, getContractDescription } from 'AppV2/Utils/contract-description-utils';
 
-const AccumulatorsTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
+const AccumulatorsTradeDescription = ({
+    onTermClick,
+}: {
+    onTermClick: (params: { text: string; value: string }) => void;
+}) => {
+    const { GROWTH_RATE, RANGE, PREVIOUS_SPOT_PRICE, PAYOUT, TAKE_PROFIT, SLIPPAGE_RISK } = getTerm();
     const content = [
         {
             type: 'paragraph',
@@ -14,7 +19,7 @@ const AccumulatorsTradeDescription = ({ onTermClick }: { onTermClick: (term: str
                         <button
                             className='description__content--definition'
                             key={0}
-                            onClick={() => onTermClick(TERM.GROWTH_RATE)}
+                            onClick={() => onTermClick(GROWTH_RATE)}
                         />,
                     ]}
                 />
@@ -33,12 +38,12 @@ const AccumulatorsTradeDescription = ({ onTermClick }: { onTermClick: (term: str
                         <button
                             className='description__content--definition'
                             key={0}
-                            onClick={() => onTermClick(TERM.RANGE)}
+                            onClick={() => onTermClick(RANGE)}
                         />,
                         <button
                             className='description__content--definition'
                             key={1}
-                            onClick={() => onTermClick(TERM.PREVIOUS_SPOT_PRICE)}
+                            onClick={() => onTermClick(PREVIOUS_SPOT_PRICE)}
                         />,
                     ]}
                 />
@@ -53,7 +58,7 @@ const AccumulatorsTradeDescription = ({ onTermClick }: { onTermClick: (term: str
                         <button
                             className='description__content--definition'
                             key={0}
-                            onClick={() => onTermClick(TERM.PAYOUT)}
+                            onClick={() => onTermClick(PAYOUT)}
                         />,
                     ]}
                 />
@@ -68,7 +73,7 @@ const AccumulatorsTradeDescription = ({ onTermClick }: { onTermClick: (term: str
                         <button
                             className='description__content--definition'
                             key={0}
-                            onClick={() => onTermClick(TERM.TAKE_PROFIT)}
+                            onClick={() => onTermClick(TAKE_PROFIT)}
                         />,
                     ]}
                 />
@@ -83,7 +88,7 @@ const AccumulatorsTradeDescription = ({ onTermClick }: { onTermClick: (term: str
                         <button
                             className='description__content--definition'
                             key={0}
-                            onClick={() => onTermClick(TERM.SLIPPAGE_RISK)}
+                            onClick={() => onTermClick(SLIPPAGE_RISK)}
                         />,
                     ]}
                 />

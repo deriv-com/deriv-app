@@ -1,8 +1,13 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { TERM, getContractDescription } from 'AppV2/Utils/contract-description-utils';
+import { getTerm, getContractDescription } from 'AppV2/Utils/contract-description-utils';
 
-const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
+const MultipliersTradeDescription = ({
+    onTermClick,
+}: {
+    onTermClick: (params: { text: string; value: string }) => void;
+}) => {
+    const { STOP_OUT_LEVEL, TAKE_PROFIT, STOP_LOSS, DEAL_CANCELLATION, SLIPPAGE_RISK } = getTerm();
     const content = [
         {
             type: 'general',
@@ -57,7 +62,7 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
                         <button
                             className='description__content--definition'
                             key={0}
-                            onClick={() => onTermClick(TERM.STOP_OUT_LEVEL)}
+                            onClick={() => onTermClick(STOP_OUT_LEVEL)}
                         />,
                     ]}
                 />
@@ -72,17 +77,17 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
                         <button
                             className='description__content--definition'
                             key={0}
-                            onClick={() => onTermClick(TERM.TAKE_PROFIT)}
+                            onClick={() => onTermClick(TAKE_PROFIT)}
                         />,
                         <button
                             className='description__content--definition'
                             key={1}
-                            onClick={() => onTermClick(TERM.STOP_LOSS)}
+                            onClick={() => onTermClick(STOP_LOSS)}
                         />,
                         <button
                             className='description__content--definition'
                             key={2}
-                            onClick={() => onTermClick(TERM.DEAL_CANCELLATION)}
+                            onClick={() => onTermClick(DEAL_CANCELLATION)}
                         />,
                     ]}
                 />
@@ -97,7 +102,7 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
                         <button
                             className='description__content--definition'
                             key={0}
-                            onClick={() => onTermClick(TERM.SLIPPAGE_RISK)}
+                            onClick={() => onTermClick(SLIPPAGE_RISK)}
                         />,
                     ]}
                 />

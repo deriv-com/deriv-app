@@ -10,13 +10,6 @@ import Strike from '../strike';
 const strike_trade_param_label = 'Strike price';
 const data_testid_strike = 'dt_strike_wrapper';
 
-const mediaQueryList = {
-    matches: true,
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-};
-window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
-
 jest.mock('@deriv-com/quill-ui', () => ({
     ...jest.requireActual('@deriv-com/quill-ui'),
     WheelPicker: jest.fn(({ data, setSelectedValue }) => (
@@ -33,10 +26,12 @@ jest.mock('@deriv-com/quill-ui', () => ({
     )),
 }));
 
-jest.mock('lodash/debounce', () => (fn: { cancel: () => void }) => {
-    fn.cancel = jest.fn();
-    return fn;
-});
+jest.mock('lodash.debounce', () =>
+    jest.fn(fn => {
+        fn.cancel = () => null;
+        return fn;
+    })
+);
 
 describe('Strike', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
@@ -132,8 +127,8 @@ describe('Strike', () => {
         await waitFor(() => {
             jest.advanceTimersByTime(200);
         });
-        jest.useRealTimers();
 
         expect(default_mock_store.modules.trade.onChange).toBeCalled();
+        jest.useRealTimers();
     });
 });

@@ -34,5 +34,12 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
         display: flex;
         flex-direction: column;
         align-items: center;
+
+        &__content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+        }
     }
 }

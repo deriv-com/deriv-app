@@ -12,17 +12,10 @@ const mockProps = {
     selected_contract_type: CONTRACT_LIST.ACCUMULATORS,
     show_guide_for_selected_contract: false,
 };
-const mediaQueryList = {
-    matches: true,
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-};
 
 jest.mock('@lottiefiles/dotlottie-react', () => ({
     DotLottieReact: jest.fn(() => <div>DotLottieReact</div>),
 }));
-
-window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
 
 describe('DescriptionModal', () => {
     beforeAll(() => {

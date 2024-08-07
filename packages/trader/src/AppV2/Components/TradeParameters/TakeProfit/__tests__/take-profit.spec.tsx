@@ -7,6 +7,7 @@ import TraderProviders from '../../../../../trader-providers';
 import TakeProfit from '../take-profit';
 
 const take_profit_trade_param = 'Take profit';
+const data_testid = 'dt_input_with_steppers';
 
 const mediaQueryList = {
     matches: true,
@@ -47,7 +48,7 @@ describe('TakeProfit', () => {
         userEvent.click(screen.getByText(take_profit_trade_param));
 
         expect(screen.getByTestId('dt-actionsheet-overlay')).toBeInTheDocument();
-        const input = screen.getByRole('spinbutton');
+        const input = screen.getByTestId(data_testid);
         expect(input).toBeInTheDocument();
         expect(screen.getByText('Save')).toBeInTheDocument();
         expect(
@@ -72,7 +73,7 @@ describe('TakeProfit', () => {
         userEvent.click(screen.getByText(take_profit_trade_param));
 
         const toggle_switcher = screen.getAllByRole('button')[0];
-        const input = screen.getByRole('spinbutton');
+        const input = screen.getByTestId(data_testid);
 
         expect(input).toBeDisabled();
         userEvent.click(toggle_switcher);
@@ -85,7 +86,7 @@ describe('TakeProfit', () => {
         userEvent.click(screen.getByText(take_profit_trade_param));
 
         const take_profit_overlay = screen.getByTestId('dt_take_profit_overlay');
-        const input = screen.getByRole('spinbutton');
+        const input = screen.getByTestId(data_testid);
 
         expect(input).toBeDisabled();
         userEvent.click(take_profit_overlay);
@@ -106,7 +107,7 @@ describe('TakeProfit', () => {
         const toggle_switcher = screen.getAllByRole('button')[0];
         userEvent.click(toggle_switcher);
 
-        const input = screen.getByRole('spinbutton');
+        const input = screen.getByTestId(data_testid);
         userEvent.type(input, ' ');
         expect(screen.getByText('Please enter a take profit amount.'));
 
@@ -137,7 +138,7 @@ describe('TakeProfit', () => {
         const toggle_switcher = screen.getAllByRole('button')[0];
         userEvent.click(toggle_switcher);
 
-        const input = screen.getByRole('spinbutton');
+        const input = screen.getByTestId(data_testid);
         userEvent.type(input, '2');
         expect(screen.getByText('Acceptable range: 0.01 to 100'));
 

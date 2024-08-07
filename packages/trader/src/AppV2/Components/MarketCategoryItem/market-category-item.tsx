@@ -31,21 +31,6 @@ const MarketCategoryItem = forwardRef(
             setIsFavorite(favoriteSymbols.includes(item.symbol));
         }, [favoriteSymbols, item.symbol]);
 
-        const clickAndKeyEventHandler = (
-            callback?: (symbol: string) => void,
-            e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>
-        ) => {
-            if (e) {
-                e.preventDefault();
-                const symbol = (e.currentTarget as HTMLElement).getAttribute('data-symbol') || '';
-                if (e.type !== 'keydown' || (e.type === 'keydown' && (e as React.KeyboardEvent).key === 'Enter')) {
-                    callback?.(symbol);
-                }
-            } else {
-                callback?.('');
-            }
-        };
-
         const handleSelect = async (symbol: string) => {
             setSelectedSymbol(symbol);
             await onSymbolChange({ target: { name: 'symbol', value: symbol } });
@@ -84,11 +69,13 @@ const MarketCategoryItem = forwardRef(
         };
 
         const handleSelectDecorator = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
-            clickAndKeyEventHandler(handleSelect, e);
+            const symbol = (e?.currentTarget as HTMLElement).getAttribute('data-symbol') || '';
+            clickAndKeyEventHandler(() => handleSelect(symbol), e);
         };
 
         const toggleFavoritesDecorator = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
-            clickAndKeyEventHandler(toggleFavorites, e);
+            const symbol = (e?.currentTarget as HTMLElement).getAttribute('data-symbol') || '';
+            clickAndKeyEventHandler(() => toggleFavorites(symbol), e);
         };
 
         return (

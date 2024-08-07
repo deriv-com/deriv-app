@@ -112,7 +112,7 @@ const GuideDescriptionModal = ({
                         <VideoPlayer
                             className='modal-player__wrapper'
                             data_testid='dt_video_player'
-                            height='206px'
+                            height='169px'
                             is_mobile
                             src={video_src}
                         />

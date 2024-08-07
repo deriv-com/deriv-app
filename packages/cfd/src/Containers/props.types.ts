@@ -223,8 +223,6 @@ export type TJurisdictionCheckBoxProps = {
     is_checked: boolean;
     jurisdiction_selected_shortcode: string;
     onCheck: () => void;
-    should_restrict_bvi_account_creation: boolean;
-    should_restrict_vanuatu_account_creation: boolean;
 };
 export type TOpenAccountTransferMeta = {
     category: string;

@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { observer, useStore } from '@deriv/stores';
-import { Loading, Text, StaticUrl } from '@deriv/components';
+import { Loading, Text } from '@deriv/components';
 import {
     formatMoney,
     getAuthenticationStatusInfo,
@@ -11,7 +11,7 @@ import {
     setPerformanceValue,
 } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import ListingContainer from 'Components/containers/listing-container';
 import AddOptionsAccount from 'Components/add-options-account';
@@ -208,6 +208,7 @@ const CFDsListing = observer(() => {
             {has_svg_accounts_to_migrate && <MigrationBanner />}
             {is_landing_company_loaded && !is_populating_mt5_account_list ? (
                 <React.Fragment>
+                    {/* MT5 */}
                     {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
 
@@ -309,6 +310,8 @@ const CFDsListing = observer(() => {
             ) : (
                 <PlatformLoader />
             )}
+
+            {/* cTrader */}
             {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                 <Fragment>
                     <div className='cfd-full-row'>

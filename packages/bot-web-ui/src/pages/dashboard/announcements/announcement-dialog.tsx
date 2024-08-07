@@ -13,8 +13,15 @@ type TAccumulatorAnnouncementDialog = {
     handleOnCancel: () => void;
 };
 
-const AnnouncementDialog = ({ announcement, handleOnConfirm, handleOnCancel, isAnnounceDialogOpen, setAnnounceDialogOpen }: TAccumulatorAnnouncementDialog) => {
-    const { main_title, confirm_button_text, cancel_button_text, base_classname, title, subtitle, content } = announcement;
+const AnnouncementDialog = ({
+    announcement,
+    handleOnConfirm,
+    handleOnCancel,
+    isAnnounceDialogOpen,
+    setAnnounceDialogOpen,
+}: TAccumulatorAnnouncementDialog) => {
+    const { main_title, confirm_button_text, cancel_button_text, base_classname, title, subtitle, content } =
+        announcement;
 
     return (
         <Dialog
@@ -48,20 +55,18 @@ const AnnouncementDialog = ({ announcement, handleOnConfirm, handleOnCancel, isA
                     <Text as='p' line_height='xl' size='xs' align='center' className={`${base_classname}__title`}>
                         <Localize i18n_default_text={subtitle} />
                     </Text>
-                    {
-                        content.map((content: TContentItem) => {
-                            return (
-                                <div className={`${base_classname}__body-item`} key={content?.id}>
-                                    <div>
-                                        <LabelPairedCheckCaptionFillIcon />
-                                    </div>
-                                    <Text as='p' line_height='xl' size='xs'>
-                                        <Localize i18n_default_text={content?.text} />
-                                    </Text>
+                    {content.map((content: TContentItem) => {
+                        return (
+                            <div className={`${base_classname}__body-item`} key={content?.id}>
+                                <div>
+                                    <LabelPairedCheckCaptionFillIcon />
                                 </div>
-                            );
-                        })
-                    }
+                                <Text as='p' line_height='xl' size='xs'>
+                                    <Localize i18n_default_text={content?.text} />
+                                </Text>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
         </Dialog>

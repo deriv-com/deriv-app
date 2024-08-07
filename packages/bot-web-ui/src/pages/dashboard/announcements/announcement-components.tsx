@@ -5,11 +5,11 @@ import { LabelPairedCircleInfoCaptionBoldIcon } from '@deriv/quill-icons';
 export const IconAnnounce = ({ announce }: { announce: boolean }) => (
     <>
         <LabelPairedCircleInfoCaptionBoldIcon fill='#0777C4' width='24' height='26' />
-        {announce && <div className='notification__icon--indicator'></div>}
+        {announce && <div className='notification__icon--indicator' />}
     </>
 );
 
-export const TitleAnnounce = ({ title, announce }: { title: string, announce: boolean }) => (
+export const TitleAnnounce = ({ title, announce }: { title: string; announce: boolean }) => (
     <Text
         size='xs'
         line_height='l'
@@ -20,7 +20,7 @@ export const TitleAnnounce = ({ title, announce }: { title: string, announce: bo
     </Text>
 );
 
-export const MessageAnnounce = ({ message, date, announce }: { message: string, date: string, announce: boolean }) => (
+export const MessageAnnounce = ({ message, date, announce }: { message: string; date: string; announce: boolean }) => (
     <>
         <Text
             size='xs'

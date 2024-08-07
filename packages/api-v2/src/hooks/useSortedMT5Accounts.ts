@@ -68,9 +68,7 @@ const useSortedMT5Accounts = (regulation?: string) => {
                     : acc_account.market_type === key
             );
 
-            if (is_duplicate) {
-                return acc;
-            }
+            if (is_duplicate) return acc;
 
             return [...acc, account];
         }, [] as typeof non_added_accounts);

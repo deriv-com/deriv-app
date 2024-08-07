@@ -153,7 +153,7 @@ describe('<OpenPositionsSVGModal/>', () => {
         };
         renderComponent({ props: new_mock_props });
         const modal_content = screen.getByText(
-            /Your MT5 Standard SVG account will be archived after 30 days of inactivity. You can still access your trade history until the account is archived./
+            /Your MT5 Standard SVG account will be archived after 60 days of inactivity. You can still access your trade history until the account is archived./
         );
         expect(modal_content).toBeInTheDocument();
     });
@@ -166,7 +166,7 @@ describe('<OpenPositionsSVGModal/>', () => {
         };
         renderComponent({ props: new_mock_props });
         const modal_content = screen.getByText(
-            /Your MT5 Financial SVG account will be archived after 30 days of inactivity. You can still access your trade history until the account is archived./
+            /Your MT5 Financial SVG account will be archived after 60 days of inactivity. You can still access your trade history until the account is archived./
         );
         expect(modal_content).toBeInTheDocument();
     });

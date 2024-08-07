@@ -7,7 +7,7 @@ import { useCashierStore } from '../../stores/useCashierStores';
 import DepositLocked from './deposit-locked';
 
 const PageContainer = React.lazy(
-    () => import(/* webpackChunkName: "page-container" */ 'Components/page-container/page-container')
+    () => import(/* webpackChunkName: "page-container" */ '../../components/page-container')
 );
 
 const Deposit = observer(() => {

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { observer } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import { Divider } from '../../components/divider';
-import { PageContainer } from '../../components/page-container';
+import PageContainer from '../../components/page-container';
 import { useCashierStore } from '../../stores/useCashierStores';
 import { DepositCryptoCurrencyDetails, DepositCryptoSideNotes, DepositCryptoWalletAddress } from './components';
 import DepositCryptoSideNoteTryFiatOnRamp from './components/deposit-crypto-side-notes/deposit-crypto-side-note-try-fiat-onramp';

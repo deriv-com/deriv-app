@@ -8,7 +8,7 @@ import PaymentAgentList from './payment-agent-list';
 import { useCashierStore } from '../../stores/useCashierStores';
 
 const PageContainer = React.lazy(
-    () => import(/* webpackChunkName: "page-container" */ 'Components/page-container/page-container')
+    () => import(/* webpackChunkName: "page-container" */ '../../components/page-container')
 );
 
 type TPaymentAgent = {

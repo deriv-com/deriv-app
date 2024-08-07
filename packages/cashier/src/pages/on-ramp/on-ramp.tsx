@@ -13,7 +13,7 @@ import { useCashierStore } from '../../stores/useCashierStores';
 import './on-ramp.scss';
 
 const PageContainer = React.lazy(
-    () => import(/* webpackChunkName: "page-container" */ 'Components/page-container/page-container')
+    () => import(/* webpackChunkName: "page-container" */ '../../components/page-container')
 );
 
 type TMenuOption = {

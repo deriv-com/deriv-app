@@ -1,10 +1,11 @@
 import React from 'react';
 import { useCashierLocked, useCurrentCurrencyConfig, useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import { PageContainer } from 'Components/page-container';
 import { useCashierStore } from '../../stores/useCashierStores';
 import { Virtual } from '../cashier-container';
 import CashierLocked from '../cashier-locked';
+
+const PageContainer = React.lazy(() => import(/* webpackChunkName: "page-container" */ '../page-container'));
 
 const CashierLockedChecker: React.FC<React.PropsWithChildren<unknown>> = observer(({ children }) => {
     const { client } = useStore();

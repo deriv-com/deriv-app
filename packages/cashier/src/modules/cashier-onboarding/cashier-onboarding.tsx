@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useHasSetCurrency } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { useHistory } from 'react-router';
-import { PageContainer } from '../../components/page-container';
+import PageContainer from '../../components/page-container';
 import { useCashierStore } from '../../stores/useCashierStores';
 import {
     CashierOnboardingAccountIdentifierMessage,

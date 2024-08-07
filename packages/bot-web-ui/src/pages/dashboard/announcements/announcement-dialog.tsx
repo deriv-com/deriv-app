@@ -8,7 +8,7 @@ import { TAnnouncement, TContentItem } from './config';
 type TAccumulatorAnnouncementDialog = {
     announcement: TAnnouncement;
     isAnnounceDialogOpen: boolean;
-    setAnnounceDialogOpen: (isAnnounceDialogOpen: boolean) => void;
+    setIsAnnounceDialogOpen: (isAnnounceDialogOpen: boolean) => void;
     handleOnConfirm: () => void;
     handleOnCancel: () => void;
 };
@@ -18,7 +18,7 @@ const AnnouncementDialog = ({
     handleOnConfirm,
     handleOnCancel,
     isAnnounceDialogOpen,
-    setAnnounceDialogOpen,
+    setIsAnnounceDialogOpen,
 }: TAccumulatorAnnouncementDialog) => {
     const { main_title, confirm_button_text, cancel_button_text, base_classname, title, subtitle, content } =
         announcement;
@@ -34,7 +34,7 @@ const AnnouncementDialog = ({
             onCancel={handleOnCancel}
             is_mobile_full_width
             has_close_icon
-            onClose={() => setAnnounceDialogOpen(!isAnnounceDialogOpen)}
+            onClose={() => setIsAnnounceDialogOpen(!isAnnounceDialogOpen)}
             className={base_classname}
         >
             <div className={`${base_classname}__body-text`}>

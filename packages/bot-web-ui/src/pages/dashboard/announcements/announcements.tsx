@@ -20,7 +20,7 @@ type TAnnouncements = {
 const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) => {
     const { quick_strategy } = useDBotStore();
     const { onSubmit } = quick_strategy;
-    const [isAnnounceDialogOpen, setAnnounceDialogOpen] = useState(false);
+    const [isAnnounceDialogOpen, setIsAnnounceDialogOpen] = useState(false);
     const [isOpenAnnounceList, setIsOpenAnnounceList] = useState(false);
     const [amountAnnounce, setAmountAnnounce] = useState({} as Record<string, boolean>);
     const accumulator_announcement = ANNOUNCEMENTS.ACCUMULATOR_ANNOUNCE;
@@ -87,7 +87,7 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
                 />
             ),
             buttonAction: () => {
-                setAnnounceDialogOpen(true);
+                setIsAnnounceDialogOpen(true);
                 setIsOpenAnnounceList(prev => !prev);
                 handleAnnounceSubmit({ ...amountAnnounce, announce_3: false });
             },
@@ -175,7 +175,7 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
             <AnnouncementDialog
                 announcement={accumulator_announcement}
                 isAnnounceDialogOpen={isAnnounceDialogOpen}
-                setAnnounceDialogOpen={setAnnounceDialogOpen}
+                setIsAnnounceDialogOpen={setIsAnnounceDialogOpen}
                 handleOnCancel={handleOnCancelAccumulator}
                 handleOnConfirm={handleOnConfirmAccumulator}
             />

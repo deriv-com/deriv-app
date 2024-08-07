@@ -9,7 +9,7 @@ import './MT5TradeDetailsItem.scss';
 
 type TMT5TradeDetailsItemProps = {
     label?: string;
-    value: string;
+    value?: string;
     variant?: 'clipboard' | 'info' | 'password';
 };
 
@@ -38,7 +38,7 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, vari
                         >
                             {value}
                         </Text>
-                        <WalletClipboard popoverAlignment='left' textCopy={value} />
+                        <WalletClipboard popoverAlignment='left' textCopy={value ?? ''} />
                     </div>
                 </React.Fragment>
             )}

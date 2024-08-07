@@ -167,13 +167,13 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                                 value={details?.server_info?.environment ?? 'Deriv-Server'}
                             />
                             <MT5TradeDetailsItem label='Login ID' value={loginId ?? '12345678'} />
-                            <MT5TradeDetailsItem label='Password' value='' variant='password' />
+                            <MT5TradeDetailsItem label='Password' variant='password' />
                         </Fragment>
                     )}
                     {getModalState('platform') === dxtradePlatform && (
                         <Fragment>
                             <MT5TradeDetailsItem label='Username' value={details?.login ?? '12345678'} />
-                            <MT5TradeDetailsItem label='Password' value='' variant='password' />
+                            <MT5TradeDetailsItem label='Password' variant='password' />
                         </Fragment>
                     )}
                     {getModalState('platform') === ctraderPlatform && (

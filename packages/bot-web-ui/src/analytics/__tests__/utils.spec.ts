@@ -1,11 +1,6 @@
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { TFormStrategy } from '../constants';
-import {
-    getRsDropdownTextFromLocalStorage,
-    getSubpageName,
-    getTradeParameterData,
-    rudderstack_text_error,
-} from '../utils';
+import { getRsDropdownTextFromLocalStorage, getTradeParameterData, rudderstack_text_error } from '../utils';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 
@@ -81,47 +76,5 @@ describe('utils', () => {
             purchase_condition: 'MULT',
             initial_stake: '100',
         });
-    });
-
-    it('getSubpageName() should "undefined" if was not pass anything', () => {
-        const result = getSubpageName();
-
-        expect(result).toEqual('undefined');
-    });
-
-    it('getSubpageName() should return "dashboard" active_tab equals 0', () => {
-        // eslint-disable-next-line no-proto
-        jest.spyOn(localStorage.__proto__, 'getItem').mockReturnValue(`${DBOT_TABS.DASHBOARD}`);
-
-        const result = getSubpageName();
-
-        expect(result).toEqual(subpage_name[`${DBOT_TABS.DASHBOARD}`]);
-    });
-
-    it('getSubpageName() should return "bot_builder" active_tab equals 1', () => {
-        // eslint-disable-next-line no-proto
-        jest.spyOn(localStorage.__proto__, 'getItem').mockReturnValue(`${DBOT_TABS.BOT_BUILDER}`);
-
-        const result = getSubpageName();
-
-        expect(result).toEqual(subpage_name[`${DBOT_TABS.BOT_BUILDER}`]);
-    });
-
-    it('getSubpageName() should return "charts" active_tab equals 2', () => {
-        // eslint-disable-next-line no-proto
-        jest.spyOn(localStorage.__proto__, 'getItem').mockReturnValue(`${DBOT_TABS.CHART}`);
-
-        const result = getSubpageName();
-
-        expect(result).toEqual(subpage_name[`${DBOT_TABS.CHART}`]);
-    });
-
-    it('getSubpageName() should return "tutorials" active_tab equals 3', () => {
-        // eslint-disable-next-line no-proto
-        jest.spyOn(localStorage.__proto__, 'getItem').mockReturnValue(`${DBOT_TABS.TUTORIAL}`);
-
-        const result = getSubpageName();
-
-        expect(result).toEqual(subpage_name[`${DBOT_TABS.TUTORIAL}`]);
     });
 });

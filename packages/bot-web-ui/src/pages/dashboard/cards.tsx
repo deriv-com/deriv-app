@@ -50,7 +50,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             method: () => {
                 openFileLoader();
                 rudderStackSendOpenEvent({
-                    subpage_name: 'dashboard',
+                    subpage_name: 'bot_builder',
                     subform_source: 'dashboard',
                     subform_name: 'load_strategy',
                     load_strategy_tab: 'local',
@@ -64,7 +64,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             method: () => {
                 openGoogleDriveDialog();
                 rudderStackSendOpenEvent({
-                    subpage_name: 'dashboard',
+                    subpage_name: 'bot_builder',
                     subform_source: 'dashboard',
                     subform_name: 'load_strategy',
                     load_strategy_tab: 'google drive',
@@ -77,7 +77,10 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             content: localize('Bot Builder'),
             method: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
-                rudderStackSendDashboardClickEvent({ dashboard_click_name: 'bot_builder' });
+                rudderStackSendDashboardClickEvent({
+                    dashboard_click_name: 'bot_builder',
+                    subpage_name: 'bot_builder',
+                });
             },
         },
         {
@@ -88,11 +91,10 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
                 setFormVisibility(true);
                 rudderStackSendOpenEvent({
-                    subpage_name: 'dashboard',
+                    subpage_name: 'bot_builder',
                     subform_source: 'dashboard',
                     subform_name: 'quick_strategy',
                 });
-                rudderStackSendDashboardClickEvent({ dashboard_click_name: 'quick_strategy' });
             },
         },
     ];

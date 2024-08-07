@@ -1,6 +1,6 @@
 import { Analytics, TEvents } from '@deriv-com/analytics';
 import { ACTION, form_name, TFormStrategy } from './constants';
-import { getRsStrategyType, getSubpageName } from './utils';
+import { getRsStrategyType } from './utils';
 
 export const rudderStackSendOpenEvent = ({
     subpage_name,
@@ -34,11 +34,11 @@ export const rudderStackSendCloseEvent = ({
     });
 };
 
-export const rudderStackSendRunBotEvent = () => {
+export const rudderStackSendRunBotEvent = ({ subpage_name }: TEvents['ce_bot_form']) => {
     Analytics.trackEvent('ce_bot_form', {
         action: ACTION.RUN_BOT,
         form_name,
-        subpage_name: getSubpageName(),
+        subpage_name,
     });
 };
 

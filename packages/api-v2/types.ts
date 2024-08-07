@@ -1670,7 +1670,7 @@ type TPrivateSocketEndpoints = {
                       /**
                        * Sub account type
                        */
-                      sub_account_type?: 'standard' | 'swap_free' | 'stp';
+                      sub_account_type?: 'standard' | 'swap_free' | 'stp' | 'zero_spread';
                   }[]
                 | null;
             /**

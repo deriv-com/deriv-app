@@ -55,18 +55,27 @@ const useSortedMT5Accounts = (regulation?: string) => {
     const filtered_data = useMemo(() => {
         if (!modified_data) return;
 
-        const added_accounts = modified_data.filter(account => account.is_added);
-        const non_added_accounts = modified_data.filter(account => !account.is_added);
+        const addedAccounts = modified_data.filter(account => account.is_added);
+        const nonAddedAccounts = modified_data.filter(account => !account.is_added);
 
-        const filtered_non_added_accounts = non_added_accounts.reduce((acc, account) => {
-            const existing_account = acc.find(acc_account => acc_account.market_type === account.market_type);
-            const added_account = added_accounts.find(acc_account => acc_account.market_type === account.market_type);
-            if (existing_account || added_account) return acc;
+        const filteredNonAddedAccounts = nonAddedAccounts.reduce((acc, account) => {
+            const { market_type, sub_account_type } = account;
+            const key = sub_account_type === 'zero_spread' ? `${market_type}_${sub_account_type}` : market_type;
+
+            const isDuplicate = acc.some(accAccount =>
+                accAccount.sub_account_type === 'zero_spread'
+                    ? `${accAccount.market_type}_${accAccount.sub_account_type}` === key
+                    : accAccount.market_type === key
+            );
+
+            if (isDuplicate) {
+                return acc;
+            }
 
             return [...acc, account];
-        }, [] as typeof non_added_accounts);
+        }, [] as typeof nonAddedAccounts);
 
-        return [...added_accounts, ...filtered_non_added_accounts];
+        return [...addedAccounts, ...filteredNonAddedAccounts];
     }, [modified_data]);
 
     // Sort the data by market_type to make sure the order is 'synthetic', 'financial', 'all'

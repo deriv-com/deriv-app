@@ -1,4 +1,4 @@
-import { Localize, localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 
 export type TContentItem = {
     id: number;
@@ -25,7 +25,7 @@ export const ANNOUNCEMENTS: Record<string, Readonly<TAnnouncement>> = {
         subtitle: localize('Boost your trading strategy with Accumulators'),
         content: [
             { id: 0, text: localize('Leverage Accumulators to enhance potential profits with a structured approach.') },
-            { id: 1, text: localize('Customize your investment period and price levels to fit your trading goals.')},
+            { id: 1, text: localize('Customize your investment period and price levels to fit your trading goals.') },
             { id: 2, text: localize('Manage risks while capitalizing on market opportunities.') },
         ],
     },

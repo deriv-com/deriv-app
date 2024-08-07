@@ -22,11 +22,11 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
     const { onSubmit } = quick_strategy;
     const [isAnnounceDialogOpen, setAnnounceDialogOpen] = useState(false);
     const [isOpenAnnounceList, setIsOpenAnnounceList] = useState(false);
-    const [amount_announce, setAmountAnnounce] = useState({} as Record<string, boolean>);
-    const accumulator_announcement = ANNOUNCEMENTS['ACCUMULATOR_ANNOUNCE'];
-    const is_active_announce_1 = amount_announce?.announce_1;
-    const is_active_announce_2 = amount_announce?.announce_2;
-    const is_active_announce_3 = amount_announce?.announce_3;
+    const [amountAnnounce, setAmountAnnounce] = useState({} as Record<string, boolean>);
+    const accumulator_announcement = ANNOUNCEMENTS.ACCUMULATOR_ANNOUNCE;
+    const is_active_announce_1 = amountAnnounce?.announce_1;
+    const is_active_announce_2 = amountAnnounce?.announce_2;
+    const is_active_announce_3 = amountAnnounce?.announce_3;
 
     const handleAnnounceSubmit = (data: Record<string, boolean>) => {
         setAmountAnnounce(data);
@@ -36,42 +36,60 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
     const announcements = [
         {
             icon: <IconAnnounce announce={is_active_announce_1} />,
-            title: <TitleAnnounce title={localize('Moving Binary Bot strategies to Deriv Bot')} announce={is_active_announce_1} />,
-            message: <MessageAnnounce
-                        message={localize('Follow these steps for a smooth transition of your strategies.')}
-                        date='6 Aug 2024 00:00 UTC'
-                        announce={is_active_announce_1}
-                    />,
+            title: (
+                <TitleAnnounce
+                    title={localize('Moving Binary Bot strategies to Deriv Bot')}
+                    announce={is_active_announce_1}
+                />
+            ),
+            message: (
+                <MessageAnnounce
+                    message={localize('Follow these steps for a smooth transition of your strategies.')}
+                    date='6 Aug 2024 00:00 UTC'
+                    announce={is_active_announce_1}
+                />
+            ),
             buttonAction: () => {
-                handleAnnounceSubmit({ ...amount_announce, 'announce_1': false });
+                handleAnnounceSubmit({ ...amountAnnounce, announce_1: false });
             },
             actionText: '',
         },
         {
             icon: <IconAnnounce announce={is_active_announce_2} />,
-            title: <TitleAnnounce title={localize('Impact of Google Blockly V10 update')} announce={is_active_announce_2} />,
-            message: <MessageAnnounce
-                        message={localize('This update means variable names in XML files are no longer case-sensitive.')}
-                        date='6 Aug 2024 00:00 UTC'
-                        announce={is_active_announce_2}
-                    />,
+            title: (
+                <TitleAnnounce
+                    title={localize('Impact of Google Blockly V10 update')}
+                    announce={is_active_announce_2}
+                />
+            ),
+            message: (
+                <MessageAnnounce
+                    message={localize('This update means variable names in XML files are no longer case-sensitive.')}
+                    date='6 Aug 2024 00:00 UTC'
+                    announce={is_active_announce_2}
+                />
+            ),
             buttonAction: () => {
-                handleAnnounceSubmit({ ...amount_announce, 'announce_2': false });
+                handleAnnounceSubmit({ ...amountAnnounce, announce_2: false });
             },
             actionText: '',
         },
         {
             icon: <IconAnnounce announce={is_active_announce_3} />,
-            title: <TitleAnnounce title={localize('Accumulators is now on Deriv Bot')} announce={is_active_announce_3} />,
-            message: <MessageAnnounce
-                        message={localize('Boost your trading strategy with Accumulators.')}
-                        date='20 July 2024 00:00 UTC'
-                        announce={is_active_announce_3}
-                    />,
+            title: (
+                <TitleAnnounce title={localize('Accumulators is now on Deriv Bot')} announce={is_active_announce_3} />
+            ),
+            message: (
+                <MessageAnnounce
+                    message={localize('Boost your trading strategy with Accumulators.')}
+                    date='20 July 2024 00:00 UTC'
+                    announce={is_active_announce_3}
+                />
+            ),
             buttonAction: () => {
                 setAnnounceDialogOpen(true);
-                setIsOpenAnnounceList(!isOpenAnnounceList);
-                handleAnnounceSubmit({ ...amount_announce, 'announce_3': false });
+                setIsOpenAnnounceList(prev => !prev);
+                handleAnnounceSubmit({ ...amountAnnounce, announce_3: false });
             },
             actionText: '',
         },
@@ -81,9 +99,8 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
         let data: Record<string, boolean> | null = null;
         try {
             data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
-            console.log('data', data, data && Object.keys(data).length !== 0);
-            
-            if (data && Object.keys(data).length !== 0){
+
+            if (data && Object.keys(data).length !== 0) {
                 setAmountAnnounce(data);
             } else {
                 const obj_announcements = Object.fromEntries(
@@ -95,7 +112,7 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
         } catch {
             data = null;
         }
-    }, [])
+    }, []);
 
     const handleOnCancelAccumulator = () => {
         handleTabChange(DBOT_TABS.TUTORIAL);
@@ -103,14 +120,14 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
 
     const handleOnConfirmAccumulator = () => {
         handleTabChange(DBOT_TABS.BOT_BUILDER);
-        onSubmit({ 'tradetype': 'accumulator' })
+        onSubmit({ tradetype: 'accumulator' });
     };
 
     const countActiveAnnouncements = (): number => {
-        return Object.values(amount_announce as Record<string, boolean>).reduce((count: number, value: boolean) => {
+        return Object.values(amountAnnounce as Record<string, boolean>).reduce((count: number, value: boolean) => {
             return value === true ? count + 1 : count;
         }, 0);
-    }
+    };
 
     const number_ammount_announce = countActiveAnnouncements();
 
@@ -118,7 +135,7 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
         <div className='announcements'>
             <button
                 className='announcements__button'
-                onClick={() => setIsOpenAnnounceList(!isOpenAnnounceList)}
+                onClick={() => setIsOpenAnnounceList(prev => !prev)}
                 data-testid='btn-announcements'
             >
                 <StandaloneBullhornRegularIcon fill='#000000' iconSize='sm' />
@@ -127,9 +144,11 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
                         {localize('Announcements')}
                     </Text>
                 )}
-                {number_ammount_announce !== 0 && <div className='announcements__amount'>
-                    <p>{number_ammount_announce}</p>
-                </div>}
+                {number_ammount_announce !== 0 && (
+                    <div className='announcements__amount'>
+                        <p>{number_ammount_announce}</p>
+                    </div>
+                )}
             </button>
             <div className='notifications__wrapper'>
                 <Announcement
@@ -138,8 +157,8 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
                         'notifications__wrapper--desktop': !is_mobile,
                     })}
                     clearNotificationsCallback={() => {
-                        Object.entries(amount_announce).forEach(([key]) => {
-                            (amount_announce as { [key: string]: boolean })[key] = false;
+                        Object.entries(amountAnnounce).forEach(([key]) => {
+                            (amountAnnounce as { [key: string]: boolean })[key] = false;
                         });
                     }}
                     componentConfig={{

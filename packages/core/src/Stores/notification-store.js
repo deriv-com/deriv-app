@@ -446,7 +446,6 @@ export default class NotificationStore extends BaseStore {
                     ASK_FIX_DETAILS,
                     ASK_SELF_EXCLUSION_MAX_TURNOVER_SET,
                     ASK_TIN_INFORMATION,
-                    ASK_UK_FUNDS_PROTECTION,
                 } = cashier_validation ? getCashierValidations(cashier_validation) : {};
                 const needs_poa =
                     is_10k_withdrawal_limit_reached &&
@@ -516,8 +515,6 @@ export default class NotificationStore extends BaseStore {
                         this.addNotificationMessage(this.client_notifications.risk);
                     } else if (isAccountOfType('financial') && ASK_TIN_INFORMATION) {
                         this.addNotificationMessage(this.client_notifications.tax);
-                    } else if (ASK_UK_FUNDS_PROTECTION) {
-                        this.addNotificationMessage(this.client_notifications.ask_uk_funds_protection);
                     } else if (ASK_SELF_EXCLUSION_MAX_TURNOVER_SET) {
                         this.addNotificationMessage(this.client_notifications.max_turnover_limit_not_set);
                     } else if (ASK_FIX_DETAILS) {
@@ -774,16 +771,6 @@ export default class NotificationStore extends BaseStore {
                 action: {
                     route: routes.financial_assessment,
                     text: localize('Click here'),
-                },
-                type: 'warning',
-            },
-            ask_uk_funds_protection: {
-                key: 'ask_uk_funds_protection',
-                header: localize('Your cashier is locked'),
-                message: localize('See how we protect your funds to unlock the cashier.'),
-                action: {
-                    route: routes.cashier_deposit,
-                    text: localize('Find out more'),
                 },
                 type: 'warning',
             },

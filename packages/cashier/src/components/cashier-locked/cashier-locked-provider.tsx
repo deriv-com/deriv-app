@@ -53,7 +53,6 @@ const getMessage = ({
     const ask_tin_information = cashier_validation?.includes('ASK_TIN_INFORMATION');
     const ask_self_exclusion_max_turnover_set = cashier_validation?.includes('ASK_SELF_EXCLUSION_MAX_TURNOVER_SET');
     const ask_fix_details = cashier_validation?.includes('ASK_FIX_DETAILS');
-    const ask_uk_funds_protection = cashier_validation?.includes('ASK_UK_FUNDS_PROTECTION');
     const pa_commision_withdrawal_limit = cashier_validation?.includes('PACommisionWithdrawalLimit');
     const pathname = history.location.pathname;
 
@@ -307,19 +306,6 @@ const getMessage = ({
                         i18n_default_text='You have not provided your tax identification number. This information is necessary for legal and regulatory requirements. Please go to <0>Personal details</0> in your account settings, and fill in your latest tax identification number.'
                         components={[
                             <a key={0} className='link' rel='noopener noreferrer' href={'/account/personal-details'} />,
-                        ]}
-                    />
-                ),
-            };
-        if (ask_uk_funds_protection)
-            return {
-                icon: 'IcCashierLocked',
-                title: localize('Cashier is locked'),
-                description: (
-                    <Localize
-                        i18n_default_text='Your cashier is locked. See <0>how we protect your funds</0> before you proceed.'
-                        components={[
-                            <a key={0} className='link' rel='noopener noreferrer' href={'/cashier/deposit'} />,
                         ]}
                     />
                 ),

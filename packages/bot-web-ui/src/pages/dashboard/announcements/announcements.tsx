@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Text } from '@deriv/components';
 import { Notifications as Announcement } from '@deriv-com/ui';
-import { useDBotStore } from 'Stores/useDBotStore';
 import { observer } from '@deriv/stores';
 import { StandaloneBullhornRegularIcon } from '@deriv/quill-icons';
+import { load } from '@deriv/bot-skeleton';
+import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import clsx from 'clsx';
 import { localize } from '@deriv/translations';
 import AnnouncementDialog from './announcement-dialog';
@@ -17,9 +18,7 @@ type TAnnouncements = {
     handleTabChange: (item: number) => void;
 };
 
-const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) => {
-    const { quick_strategy } = useDBotStore();
-    const { onSubmit } = quick_strategy;
+const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
     const [isAnnounceDialogOpen, setIsAnnounceDialogOpen] = useState(false);
     const [isOpenAnnounceList, setIsOpenAnnounceList] = useState(false);
     const [amountAnnounce, setAmountAnnounce] = useState({} as Record<string, boolean>);
@@ -97,20 +96,16 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
 
     useEffect(() => {
         let data: Record<string, boolean> | null = null;
-        try {
-            data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
+        data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
 
-            if (data && Object.keys(data).length !== 0) {
-                setAmountAnnounce(data);
-            } else {
-                const obj_announcements = Object.fromEntries(
-                    Array.from({ length: announcements.length }, (_, i) => [`announce_${i + 1}`, true])
-                );
-                setAmountAnnounce(obj_announcements);
-                localStorage?.setItem('bot-announcements', JSON.stringify(obj_announcements));
-            }
-        } catch {
-            data = null;
+        if (data && Object.keys(data).length !== 0) {
+            setAmountAnnounce(data);
+        } else {
+            const obj_announcements = Object.fromEntries(
+                Array.from({ length: announcements.length }, (_, i) => [`announce_${i + 1}`, true])
+            );
+            setAmountAnnounce(obj_announcements);
+            localStorage?.setItem('bot-announcements', JSON.stringify(obj_announcements));
         }
     }, []);
 
@@ -118,9 +113,33 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
         handleTabChange(DBOT_TABS.TUTORIAL);
     };
 
-    const handleOnConfirmAccumulator = () => {
+    const handleOnConfirmAccumulator = async () => {
         handleTabChange(DBOT_TABS.BOT_BUILDER);
-        onSubmit({ tradetype: 'accumulator' });
+        const strategy_xml = await import(
+            /* webpackChunkName: `[request]` */ '@deriv/bot-skeleton/src/scratch/xml/main.xml'
+        );
+        const strategy_dom = Blockly.utils.xml.textToDom(strategy_xml.default);
+        const modifyFieldDropdownValues = (name: string, value: string) => {
+            const name_list = `${name.toUpperCase()}_LIST`;
+            const el_blocks = strategy_dom?.querySelectorAll(`field[name="${name_list}"]`);
+
+            el_blocks?.forEach((el_block: HTMLElement) => {
+                el_block.innerHTML = value;
+            });
+        };
+        modifyFieldDropdownValues('tradetypecat', 'accumulator');
+
+        const { derivWorkspace: workspace } = Blockly;
+
+        await load({
+            block_string: Blockly.Xml.domToText(strategy_dom),
+            file_name: 'Strategy with accumulator trade type',
+            workspace,
+            from: save_types.UNSAVED,
+            drop_event: null,
+            strategy_id: null,
+            showIncompatibleStrategyDialog: null,
+        });
     };
 
     const countActiveAnnouncements = (): number => {
@@ -170,6 +189,7 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
                     isOpen={isOpenAnnounceList}
                     notifications={announcements}
                     setIsOpen={setIsOpenAnnounceList}
+                    data-testid='announcement'
                 />
             </div>
             <AnnouncementDialog
@@ -181,6 +201,6 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
             />
         </div>
     );
-});
+};
 
 export default Announcements;

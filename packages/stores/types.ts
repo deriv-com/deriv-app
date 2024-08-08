@@ -144,6 +144,7 @@ type AvailableAccount = {
     currency?: string;
     display_balance?: string;
     display_login?: string;
+    product?: TProduct;
 };
 
 type BrandConfig = {
@@ -516,7 +517,6 @@ type TClientStore = {
     verification_code: {
         payment_agent_withdraw: string;
         payment_withdraw: string;
-        phone_number_verification: string;
         request_email: string;
         reset_password: string;
         signup: string;
@@ -540,12 +540,6 @@ type TClientStore = {
     account_settings: GetSettings & {
         upload_file?: string;
         poi_state?: string;
-        phone_number_verification?: {
-            verified?: 0 | 1;
-            next_attempt?: number;
-            next_email_attempt?: number;
-            next_verify_attempt?: number;
-        };
     };
     residence_list: ResidenceList;
     should_restrict_bvi_account_creation: boolean;
@@ -610,15 +604,18 @@ type TClientStore = {
     is_wallet_migration_request_is_in_progress: boolean;
     is_passkey_supported: boolean;
     setIsPasskeySupported: (value: boolean) => void;
-    should_show_effortless_login_modal: boolean;
-    setShouldShowEffortlessLoginModal: (value: boolean) => void;
-    fetchShouldShowEffortlessLoginModal: () => void;
+    setPasskeysStatusToCookie: (status: 'available' | 'not_available') => void;
+    should_show_passkey_notification: boolean;
+    setShouldShowPasskeyNotification: (value: boolean) => void;
+    fetchShouldShowPasskeyNotification: () => void;
     exchange_rates: Record<string, Record<string, number>>;
     getExchangeRate: (base_currency: string, target_currency: string) => number;
     subscribeToExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
     unsubscribeFromExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
     unsubscribeFromAllExchangeRates: () => void;
     virtual_account_loginid?: string;
+    is_cr_account: boolean;
+    is_mf_account: boolean;
 };
 
 type TCommonStoreError = {
@@ -686,7 +683,6 @@ type TUiStore = {
     is_advanced_duration: boolean;
     is_cashier_visible: boolean;
     is_history_tab_active: boolean;
-    is_redirected_from_email: boolean;
     is_wallet_modal_visible: boolean;
     is_chart_asset_info_visible?: boolean;
     is_chart_layout_default: boolean;
@@ -698,6 +694,7 @@ type TUiStore = {
     is_dark_mode_on: boolean;
     is_loading: boolean;
     is_reports_visible: boolean;
+    is_reset_password_modal_visible: boolean;
     is_route_modal_on: boolean;
     is_language_settings_modal_on: boolean;
     is_verification_modal_visible: boolean;
@@ -741,7 +738,6 @@ type TUiStore = {
     setCurrentFocus: (value: string | null) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setIsWalletModalVisible: (value: boolean) => void;
-    setRedirectFromEmail: (value: boolean) => void;
     setHasOnlyForwardingContracts: (has_only_forward_starting_contracts?: boolean) => void;
     setMobileLanguageMenuOpen: (is_mobile_language_menu_open: boolean) => void;
     setReportsTabIndex: (value: number) => void;
@@ -754,8 +750,6 @@ type TUiStore = {
     setRealAccountSignupEnd: (status: boolean) => void;
     setPurchaseState: (index: number) => void;
     simple_duration_unit: string;
-    should_show_phone_number_otp: boolean;
-    setShouldShowPhoneNumberOTP: (value: boolean) => void;
     sub_section_index: number;
     setPromptHandler: (
         condition: boolean,
@@ -773,6 +767,7 @@ type TUiStore = {
     togglePositionsDrawer: () => void;
     toggleReadyToDepositModal: () => void;
     toggleResetEmailModal: (state_change: boolean) => void;
+    toggleResetPasswordModal: (state_change: boolean) => void;
     toggleServicesErrorModal: (is_visible: boolean) => void;
     toggleSetCurrencyModal: () => void;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
@@ -825,6 +820,10 @@ type TUiStore = {
     toggleKycInformationSubmittedModal: () => void;
     setAccountSwitcherDisabledMessage: (message?: string) => void;
     is_set_currency_modal_visible: boolean;
+    should_show_deposit_now_or_later_modal: boolean;
+    setShouldShowDepositNowOrLaterModal: (value: boolean) => void;
+    should_show_crypto_transaction_processing_modal: boolean;
+    setShouldShowCryptoTransactionProcessingModal: (value: boolean) => void;
 };
 
 type TPortfolioStore = {
@@ -849,6 +848,9 @@ type TPortfolioStore = {
     positions: TPortfolioPosition[];
     removePositionById: (contract_id?: number) => void;
     setContractType: (contract_type: string) => void;
+    setAddNotificationBannerCallback: (
+        cb?: (params: { message: string; redirectTo: string; timestamp: number; title: string }, status: string) => void
+    ) => void;
 };
 
 type TAccumulatorBarriersData = {
@@ -940,6 +942,7 @@ type TContractTradeStore = {
     }>;
     onUnmount: () => void;
     prev_chart_type: string;
+    prev_contract: TContractStore | Record<string, never>;
     prev_granularity: number | null;
     removeContract: (data: { contract_id: string }) => void;
     savePreviousChartMode: (chart_type: string, granularity: number | null) => void;
@@ -1107,6 +1110,12 @@ type TTradersHubStore = {
     getAccount: () => void;
     showTopUpModal: (existing_account?: DetailsOfEachMT5Loginid) => void;
     is_regulators_compare_modal_visible: boolean;
+    is_setup_real_account_or_go_to_demo_modal_visible: boolean;
+    is_cfd_restricted_country: boolean;
+    is_financial_restricted_country: boolean;
+    setIsCFDRestrictedCountry: (value: boolean) => void;
+    setIsFinancialRestrictedCountry: (value: boolean) => void;
+    setIsSetupRealAccountOrGoToDemoModalVisible: (value: boolean) => void;
 };
 
 type TContractReplay = {

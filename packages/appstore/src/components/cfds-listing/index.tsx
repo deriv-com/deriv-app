@@ -205,7 +205,7 @@ const CFDsListing = observer(() => {
                     {localize('Deriv MT5')}
                 </Text>
             </div>
-            {has_svg_accounts_to_migrate && <MigrationBanner />}
+            {has_svg_accounts_to_migrate && is_landing_company_loaded && <MigrationBanner />}
             {is_landing_company_loaded && !is_populating_mt5_account_list ? (
                 <React.Fragment>
                     {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
@@ -340,6 +340,7 @@ const CFDsListing = observer(() => {
                                         key={`trading_app_card_${existing_account.display_login}`}
                                         onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                             const button_name = e?.currentTarget?.name;
+                                            setProduct();
                                             if (button_name === 'transfer-btn') {
                                                 Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                                     action: 'account_transfer',
@@ -379,6 +380,7 @@ const CFDsListing = observer(() => {
                                     platform={account.platform}
                                     description={account.description}
                                     onAction={() => {
+                                        setProduct();
                                         Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                             action: 'account_get',
                                             form_name: 'traders_hub_default',
@@ -439,7 +441,7 @@ const CFDsListing = observer(() => {
                                         key={`trading_app_card_${existing_account.login}`}
                                         onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                             const button_name = e?.currentTarget?.name;
-
+                                            setProduct();
                                             if (button_name === 'transfer-btn') {
                                                 Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                                     action: 'account_transfer',
@@ -480,6 +482,7 @@ const CFDsListing = observer(() => {
                                     platform={account.platform}
                                     description={account.description}
                                     onAction={() => {
+                                        setProduct();
                                         Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                             action: 'account_get',
                                             form_name: 'traders_hub_default',

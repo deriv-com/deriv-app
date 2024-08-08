@@ -284,6 +284,7 @@ export default class CFDStore extends BaseStore {
             }
         } else if (platform === CFD_PLATFORMS.CTRADER) {
             startPerformanceEventTimer('create_ctrader_account_time');
+            this.root_store.client.setIsLandingCompanyLoaded(false);
 
             this.setJurisdictionSelectedShortcode('svg');
             if (this.account_type.category === 'demo') {
@@ -300,10 +301,14 @@ export default class CFDStore extends BaseStore {
             if (!response.error) {
                 this.setError(false);
 
-                const trading_platform_accounts_list_response = await WS.tradingPlatformAccountsList(
-                    CFD_PLATFORMS.CTRADER
-                );
-                this.root_store.client.responseTradingPlatformAccountsList(trading_platform_accounts_list_response);
+                const account_list = {
+                    echo_req: response.echo_req,
+                    trading_platform_accounts: [
+                        ...this.root_store.client.ctrader_accounts_list,
+                        response.trading_platform_new_account,
+                    ],
+                };
+                this.root_store.client.responseTradingPlatformAccountsList(account_list);
                 WS.transferBetweenAccounts();
                 const trading_platform_available_accounts_list_response = await WS.tradingPlatformAvailableAccounts(
                     CFD_PLATFORMS.CTRADER
@@ -313,11 +318,13 @@ export default class CFDStore extends BaseStore {
                 );
                 this.setCFDSuccessDialog(true);
                 this.setIsAccountBeingCreated(false);
+                WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER);
                 setPerformanceValue('create_ctrader_account_time');
             } else {
                 this.setError(true, response.error);
                 this.setIsAccountBeingCreated(false);
             }
+            this.root_store.client.setIsLandingCompanyLoaded(true);
         } else if (platform === CFD_PLATFORMS.MT5) {
             if (category === 'real') {
                 this.toggleJurisdictionModal();

@@ -1,7 +1,5 @@
 import React from 'react';
-
 import { fireEvent, render, screen } from '@testing-library/react';
-
 import TourButton from '../tour-button';
 
 const mocked_props = {

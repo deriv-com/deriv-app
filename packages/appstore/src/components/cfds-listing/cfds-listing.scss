@@ -1530,9 +1530,11 @@
         padding: 0.8rem 2rem 2.4rem;
     }
     &__body {
-        padding: 8.9rem 2.4rem;
-        &-has-open-positions {
-            padding: 6rem 2.4rem;
+        padding: 5.2rem 2.4rem;
+        &-bullets--list {
+            list-style: disc;
+            margin-top: 1rem;
+            margin-inline-start: 2rem;
         }
     }
     &__title {
@@ -1572,6 +1574,9 @@
             .dc-btn {
                 width: 100%;
             }
+        }
+        @include mobile-screen {
+            bottom: 4rem;
         }
     }
 }

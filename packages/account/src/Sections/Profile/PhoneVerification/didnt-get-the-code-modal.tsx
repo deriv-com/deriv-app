@@ -90,14 +90,14 @@ const DidntGetTheCodeModal = ({
                         <Localize i18n_default_text='Get a new code' />
                     </Text>
                     <div className='phone-verification__get-code-modal--contents__buttons'>
-                        <Button fullWidth color='black' size='lg' onClick={handleResendCode}>
+                        <Button fullWidth color='black-white' size='lg' onClick={handleResendCode}>
                             <Text color='white' bold>
                                 <Localize i18n_default_text='Resend code' />
                             </Text>
                         </Button>
                         <Button
                             fullWidth
-                            color='black'
+                            color='black-white'
                             variant='secondary'
                             size='lg'
                             onClick={handleChangeOTPVerification}

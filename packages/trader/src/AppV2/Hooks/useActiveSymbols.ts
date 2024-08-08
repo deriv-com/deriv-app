@@ -81,7 +81,10 @@ const useActiveSymbols = () => {
                 setActiveSymbols(active_symbols);
                 setActiveSymbolsV2(active_symbols);
                 default_symbol_ref.current = symbol || (await pickDefaultSymbol(active_symbols)) || '1HZ100V';
-                onChange({ target: { name: 'symbol', value: default_symbol_ref.current } });
+
+                if (symbol !== default_symbol_ref.current) {
+                    onChange({ target: { name: 'symbol', value: default_symbol_ref.current } });
+                }
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps

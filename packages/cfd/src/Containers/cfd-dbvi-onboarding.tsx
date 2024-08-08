@@ -30,10 +30,15 @@ const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) =>
 
 const CFDDbviOnboarding = observer(() => {
     const { isDesktop } = useDevice();
-    const { client, ui } = useStore();
+    const {
+        client,
+        ui,
+        modules: { cfd },
+    } = useStore();
 
     const { account_status, fetchAccountSettings, is_virtual, updateAccountStatus, updateMT5Status } = client;
     const { disableApp, enableApp } = ui;
+    const { setProduct } = cfd;
 
     const {
         has_created_account_for_selected_jurisdiction,
@@ -74,6 +79,11 @@ const CFDDbviOnboarding = observer(() => {
             setIsLoading(false);
         });
         setIsLoading(false);
+    };
+
+    const clickOncloseButton = () => {
+        toggleCFDVerificationModal();
+        setProduct();
     };
 
     React.useEffect(() => {
@@ -129,7 +139,7 @@ const CFDDbviOnboarding = observer(() => {
                     enableApp={enableApp}
                     is_open={is_cfd_verification_modal_visible}
                     title={getModalTitle()}
-                    toggleModal={toggleCFDVerificationModal}
+                    toggleModal={clickOncloseButton}
                     height='700px'
                     width='996px'
                     onMount={() => getAccountStatusFromAPI()}
@@ -143,7 +153,7 @@ const CFDDbviOnboarding = observer(() => {
                     title={getModalTitle()}
                     wrapper_classname='cfd-financial-stp-modal'
                     visible={is_cfd_verification_modal_visible}
-                    onClose={toggleCFDVerificationModal}
+                    onClose={clickOncloseButton}
                 >
                     {getModalContent()}
                 </MobileDialog>

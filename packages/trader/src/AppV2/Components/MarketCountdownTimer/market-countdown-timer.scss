@@ -1,0 +1,8 @@
+.market-countdown-timer {
+    display: flex;
+    gap: var(--core-spacing-200);
+
+    &-text {
+        color: var(--semantic-color-slate-solid-surface-normal-lowest);
+    }
+}

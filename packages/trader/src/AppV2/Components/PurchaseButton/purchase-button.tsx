@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { Button } from '@deriv-com/quill-ui';
+import { Button, useNotifications } from '@deriv-com/quill-ui';
 import { useDevice } from '@deriv-com/ui';
 import {
     getContractTypeDisplay,
@@ -16,10 +16,12 @@ import {
 import { Localize } from '@deriv/translations';
 import PurchaseButtonContent from './purchase-button-content';
 import { getTradeTypeTabsList } from 'AppV2/Utils/trade-params-utils';
+import { StandaloneStopwatchRegularIcon } from '@deriv/quill-icons';
 
 const PurchaseButton = observer(() => {
     const [loading_button_index, setLoadingButtonIndex] = React.useState<number | null>(null);
     const { isMobile } = useDevice();
+    const { addBanner } = useNotifications();
 
     const {
         portfolio: { all_positions, onClickSell },
@@ -83,6 +85,12 @@ const PurchaseButton = observer(() => {
         return button_index ? 'sell' : 'purchase';
     };
 
+    const addNotificationBannerCallback = (params: Parameters<typeof addBanner>[0]) =>
+        addBanner({
+            icon: <StandaloneStopwatchRegularIcon iconSize='sm' className='trade-notification--purchase' />,
+            ...params,
+        });
+
     React.useEffect(() => {
         if (is_purchase_enabled) setLoadingButtonIndex(null);
     }, [is_purchase_enabled]);
@@ -135,7 +143,7 @@ const PurchaseButton = observer(() => {
                         disabled={is_disabled && !is_loading}
                         onClick={() => {
                             setLoadingButtonIndex(index);
-                            onPurchaseV2(trade_type, isMobile);
+                            onPurchaseV2(trade_type, isMobile, addNotificationBannerCallback);
                         }}
                     >
                         {!is_loading && (

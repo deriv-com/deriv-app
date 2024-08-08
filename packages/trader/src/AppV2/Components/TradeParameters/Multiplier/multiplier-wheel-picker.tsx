@@ -12,6 +12,10 @@ type TMultiplierWheelPickerProps = {
     setMultiplier: (multiplier: number) => void;
 };
 
+const debouncedSetMultiplier = debounce((setMultiplier, multiplier) => {
+    setMultiplier(multiplier);
+}, 200);
+
 const MultiplierWheelPicker = ({
     multiplier,
     multiplier_range_list = [],
@@ -22,10 +26,6 @@ const MultiplierWheelPicker = ({
     const multiplier_array = multiplier_range_list.map(item => ({ value: item.text }));
     const initial_multiplier = React.useRef<number>();
     const selected_multiplier = React.useRef<number>(multiplier);
-
-    const debouncedSetMultiplier = debounce((setMultiplier, multiplier) => {
-        setMultiplier(multiplier);
-    }, 200);
 
     useEffect(() => {
         if (!initial_multiplier.current && multiplier) {

@@ -42,6 +42,12 @@
             button {
                 border-radius: 0.5rem;
                 color: var(--text-general, #333333);
+                cursor: pointer;
+
+                &:disabled {
+                    color: #757575;
+                    cursor: not-allowed;
+                }
             }
 
             &__navigation {

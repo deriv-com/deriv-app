@@ -79,7 +79,7 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
             <div className='phone-verification__card--buttons_container'>
                 <Button
                     variant='secondary'
-                    color='black'
+                    color='black-white'
                     fullWidth
                     size='lg'
                     onClick={() => handleSubmit(VERIFICATION_SERVICES.SMS)}
@@ -90,7 +90,7 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
                     </Text>
                 </Button>
                 <Button
-                    color='black'
+                    color='black-white'
                     fullWidth
                     size='lg'
                     onClick={() => handleSubmit(VERIFICATION_SERVICES.WHATSAPP)}

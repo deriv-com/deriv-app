@@ -100,7 +100,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { data: settings, update: updateSettings } = useSettings();
     const { submitIDVDocuments } = useIdentityDocumentVerificationAdd();
     const { getModalState, hide, show } = useModal();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     const selectedMarketType = getModalState('marketType') ?? 'all';
     const platform = getModalState('platform') ?? PlatformDetails.mt5.platform;
@@ -349,7 +349,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     : () => (
                           <Button
                               disabled={isNextDisabled(context)}
-                              isFullWidth={isMobile}
+                              isFullWidth={!isDesktop}
                               isLoading={isNextLoading(context)}
                               onClick={() => nextFlowHandler(context)}
                               size='lg'

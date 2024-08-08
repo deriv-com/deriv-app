@@ -16,7 +16,7 @@ type TProps = {
 export const SuccessModalFooter = ({ isDemo }: Pick<TProps, 'isDemo'>) => {
     const history = useHistory();
     const { hide } = useModal();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     const handleOnClickReal = () => {
         hide();
@@ -26,7 +26,7 @@ export const SuccessModalFooter = ({ isDemo }: Pick<TProps, 'isDemo'>) => {
     if (isDemo) {
         return (
             <div className='wallets-success-btn'>
-                <Button isFullWidth onClick={hide} size={isMobile ? 'lg' : 'md'}>
+                <Button isFullWidth onClick={hide} size={!isDesktop ? 'lg' : 'md'}>
                     OK
                 </Button>
             </div>
@@ -35,10 +35,10 @@ export const SuccessModalFooter = ({ isDemo }: Pick<TProps, 'isDemo'>) => {
 
     return (
         <WalletButtonGroup isFlex isFullWidth>
-            <Button color='black' onClick={hide} size={isMobile ? 'lg' : 'md'} variant='outlined'>
+            <Button color='black' onClick={hide} size={!isDesktop ? 'lg' : 'md'} variant='outlined'>
                 Maybe later
             </Button>
-            <Button onClick={() => handleOnClickReal()} size={isMobile ? 'lg' : 'md'}>
+            <Button onClick={() => handleOnClickReal()} size={!isDesktop ? 'lg' : 'md'}>
                 Transfer funds
             </Button>
         </WalletButtonGroup>

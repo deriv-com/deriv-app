@@ -12,25 +12,10 @@ const CreatePasswordModal: FC<ComponentProps<typeof CreatePassword>> = ({
     password,
     platform,
 }) => {
-    const { isMobile } = useDevice();
-    if (isMobile) {
+    const { isDesktop } = useDevice();
+    if (isDesktop) {
         return (
-            <ModalStepWrapper
-                renderFooter={() => {
-                    return (
-                        <Button
-                            disabled={!password || isLoading}
-                            isFullWidth
-                            isLoading={isLoading}
-                            onClick={onPrimaryClick}
-                            size={isMobile ? 'lg' : 'md'}
-                        >
-                            {`Create ${PlatformDetails[platform].title} password`}
-                        </Button>
-                    );
-                }}
-                title={''}
-            >
+            <ModalWrapper>
                 <CreatePassword
                     isLoading={isLoading}
                     onPasswordChange={onPasswordChange}
@@ -38,12 +23,27 @@ const CreatePasswordModal: FC<ComponentProps<typeof CreatePassword>> = ({
                     password={password}
                     platform={platform}
                 />
-            </ModalStepWrapper>
+            </ModalWrapper>
         );
     }
 
     return (
-        <ModalWrapper>
+        <ModalStepWrapper
+            renderFooter={() => {
+                return (
+                    <Button
+                        disabled={!password || isLoading}
+                        isFullWidth
+                        isLoading={isLoading}
+                        onClick={onPrimaryClick}
+                        size='lg'
+                    >
+                        {`Create ${PlatformDetails[platform].title} password`}
+                    </Button>
+                );
+            }}
+            title={''}
+        >
             <CreatePassword
                 isLoading={isLoading}
                 onPasswordChange={onPasswordChange}
@@ -51,7 +51,7 @@ const CreatePasswordModal: FC<ComponentProps<typeof CreatePassword>> = ({
                 password={password}
                 platform={platform}
             />
-        </ModalWrapper>
+        </ModalStepWrapper>
     );
 };
 

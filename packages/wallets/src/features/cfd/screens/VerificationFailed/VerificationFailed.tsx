@@ -25,7 +25,7 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
     const { hide, show } = useModal();
     const { data: poiStatus } = usePOI();
     const { data: poaStatus } = usePOA();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     const isPOIFailed = poiStatus?.is_rejected || poiStatus?.is_expired || poiStatus?.is_suspected;
     const isPOAFailed = poaStatus?.is_rejected || poaStatus?.is_expired || poaStatus?.is_suspected;
@@ -56,7 +56,7 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
                 </WalletText>
             </div>
             <div className='wallets-verification-failed__footer'>
-                <Button color='black' onClick={() => hide()} size={isMobile ? 'md' : 'lg'} variant='outlined'>
+                <Button color='black' onClick={() => hide()} size={!isDesktop ? 'md' : 'lg'} variant='outlined'>
                     Maybe later
                 </Button>
                 <Button
@@ -67,7 +67,7 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
                             </Suspense>
                         )
                     }
-                    size={isMobile ? 'md' : 'lg'}
+                    size={!isDesktop ? 'md' : 'lg'}
                 >
                     Resubmit documents
                 </Button>

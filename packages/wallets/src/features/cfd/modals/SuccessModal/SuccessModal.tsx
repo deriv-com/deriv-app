@@ -19,7 +19,7 @@ const SuccessModal: FC<TProps> = ({
     onSecondaryClick,
     platform = 'dxtrade',
 }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { data: activeWallet } = useActiveWalletAccount();
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
     const title = `Your ${PlatformDetails[platform].title}${
@@ -29,23 +29,23 @@ const SuccessModal: FC<TProps> = ({
     const renderButton = () => {
         return accountType === 'demo' ? (
             <div className='wallets-success-btn'>
-                <Button isFullWidth onClick={onSecondaryClick} size={isMobile ? 'lg' : 'md'}>
+                <Button isFullWidth onClick={onSecondaryClick} size={!isDesktop ? 'lg' : 'md'}>
                     OK
                 </Button>
             </div>
         ) : (
             <WalletButtonGroup isFlex isFullWidth>
-                <Button color='black' onClick={onSecondaryClick} size={isMobile ? 'lg' : 'md'} variant='outlined'>
+                <Button color='black' onClick={onSecondaryClick} size={!isDesktop ? 'lg' : 'md'} variant='outlined'>
                     Maybe later
                 </Button>
-                <Button onClick={onPrimaryClick} size={isMobile ? 'lg' : 'md'}>
+                <Button onClick={onPrimaryClick} size={!isDesktop ? 'lg' : 'md'}>
                     Transfer funds
                 </Button>
             </WalletButtonGroup>
         );
     };
 
-    if (isMobile) {
+    if (!isDesktop) {
         return (
             <ModalStepWrapper renderFooter={renderButton} title={' '}>
                 <CFDSuccess

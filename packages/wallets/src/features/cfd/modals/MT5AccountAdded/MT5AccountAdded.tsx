@@ -29,7 +29,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
     const { getVerificationStatus, isSuccess } = useJurisdictionStatus();
 
     const history = useHistory();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { getModalState, hide } = useModal();
 
     const addedAccount = mt5Accounts?.find(acc => acc.login === account?.login);
@@ -59,7 +59,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
             if (isTransferAllowed) {
                 return (
                     <WalletButtonGroup isFlex isFullWidth>
-                        <Button color='black' onClick={hide} size={isMobile ? 'lg' : 'md'} variant='outlined'>
+                        <Button color='black' onClick={hide} size={!isDesktop ? 'lg' : 'md'} variant='outlined'>
                             Maybe later
                         </Button>
                         <Button
@@ -67,7 +67,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                                 hide();
                                 history.push('/wallet/account-transfer', { toAccountLoginId: addedAccount?.loginid });
                             }}
-                            size={isMobile ? 'lg' : 'md'}
+                            size={!isDesktop ? 'lg' : 'md'}
                         >
                             Transfer funds
                         </Button>
@@ -76,13 +76,13 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
             }
             return (
                 <div className='wallets-success-btn'>
-                    <Button isFullWidth onClick={hide} size={isMobile ? 'lg' : 'md'}>
+                    <Button isFullWidth onClick={hide} size={!isDesktop ? 'lg' : 'md'}>
                         OK
                     </Button>
                 </div>
             );
         },
-        [hide, history, addedAccount?.loginid, isMobile]
+        [hide, history, addedAccount?.loginid, isDesktop]
     );
 
     const renderSuccessDescription = useMemo(() => {
@@ -162,7 +162,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
 
     if (isLoading) return null;
 
-    if (isMobile) {
+    if (!isDesktop) {
         return <ModalStepWrapper renderFooter={renderAccountSuccessButton}>{renderMainContent}</ModalStepWrapper>;
     }
 

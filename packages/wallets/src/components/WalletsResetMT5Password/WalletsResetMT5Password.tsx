@@ -32,7 +32,7 @@ const WalletsResetMT5Password = ({
     platform,
     verificationCode,
 }: WalletsResetMT5PasswordProps) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { title } = isInvestorPassword ? PlatformDetails.mt5Investor : PlatformDetails[platform];
     const {
         error: changePasswordError,
@@ -101,7 +101,7 @@ const WalletsResetMT5Password = ({
                 <WalletsErrorMT5InvestorPassword
                     errorMessage={changeInvestorPasswordError?.error?.message}
                     renderButtons={() => (
-                        <Button isFullWidth={isMobile} onClick={hide} textSize={isMobile ? 'md' : 'sm'}>
+                        <Button isFullWidth={!isDesktop} onClick={hide} textSize={!isDesktop ? 'md' : 'sm'}>
                             Ok
                         </Button>
                     )}
@@ -116,7 +116,7 @@ const WalletsResetMT5Password = ({
         <div className={'wallets-reset-mt5-password__footer'}>
             <Button
                 color='black'
-                isFullWidth={isMobile}
+                isFullWidth={!isDesktop}
                 onClick={() => hide()}
                 size='lg'
                 textSize='sm'
@@ -126,7 +126,7 @@ const WalletsResetMT5Password = ({
             </Button>
             <Button
                 disabled={isMT5 ? !validPasswordMT5(password) : !validPassword(password)}
-                isFullWidth={isMobile}
+                isFullWidth={!isDesktop}
                 isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
                 onClick={handleSubmit}
                 size='lg'
@@ -140,13 +140,13 @@ const WalletsResetMT5Password = ({
 
     return (
         <ModalStepWrapper
-            renderFooter={isMobile ? renderButtons : undefined}
-            shouldHideFooter={!isMobile}
-            shouldHideHeader={!isMobile}
+            renderFooter={!isDesktop ? renderButtons : undefined}
+            shouldHideFooter={isDesktop}
+            shouldHideHeader={isDesktop}
             title={`Manage ${title} password`}
         >
             <div className='wallets-reset-mt5-password'>
-                <WalletText align={isMobile ? 'center' : 'left'} weight='bold'>
+                <WalletText align={!isDesktop ? 'center' : 'left'} weight='bold'>
                     {`Create a new ${title} password`}
                 </WalletText>
                 {isMT5 && !isInvestorPassword && (
@@ -159,7 +159,7 @@ const WalletsResetMT5Password = ({
                     password={password}
                 />
                 <WalletText size='sm'>{modalDescription[platform]}</WalletText>
-                {!isMobile && renderButtons()}
+                {isDesktop && renderButtons()}
             </div>
         </ModalStepWrapper>
     );

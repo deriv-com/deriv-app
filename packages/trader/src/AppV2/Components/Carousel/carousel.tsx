@@ -1,13 +1,15 @@
 import React from 'react';
 import CarouselHeader from './carousel-header';
+import clsx from 'clsx';
 
 type TCarousel = {
+    classname?: string;
     header: typeof CarouselHeader;
     pages: { id: number; component: JSX.Element }[];
     title?: React.ReactNode;
 };
 
-const Carousel = ({ header, pages, title }: TCarousel) => {
+const Carousel = ({ classname, header, pages, title }: TCarousel) => {
     const [current_index, setCurrentIndex] = React.useState(0);
 
     const HeaderComponent = header;
@@ -23,7 +25,7 @@ const Carousel = ({ header, pages, title }: TCarousel) => {
                 onPrevClick={onPrevClick}
                 title={title}
             />
-            <ul className='carousel'>
+            <ul className={clsx('carousel', classname)} data-testid='dt_carousel'>
                 {pages.map(({ component, id }) => (
                     <li
                         className='carousel__item'

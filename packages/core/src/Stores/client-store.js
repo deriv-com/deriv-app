@@ -1517,7 +1517,7 @@ export default class ClientStore extends BaseStore {
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
-        if (action_param === 'request_email') {
+        if (action_param === 'request_email' && this.is_logged_in) {
             const request_email_code = code_param ?? LocalStore.get(`verification_code.${action_param}`) ?? '';
             if (request_email_code) {
                 this.setVerificationCode(request_email_code, action_param);

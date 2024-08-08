@@ -34,6 +34,7 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
                         displayAccountName={displayWalletName}
                         displayActionType={displayActionType}
                         isDemo={Boolean(wallet?.is_virtual)}
+                        transactionID={transaction.transaction_id}
                     />
                 ) : (
                     <TransactionsCompletedRowTransferAccountDetails
@@ -44,6 +45,7 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
                                 loginid => loginid !== wallet?.loginid
                             ) ?? ''
                         }
+                        transactionID={transaction.transaction_id}
                     />
                 )}
                 <div className='wallets-transactions-completed-row__transaction-details'>

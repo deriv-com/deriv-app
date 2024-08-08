@@ -8,9 +8,15 @@ type TProps = {
     accounts: THooks.AllAccountsList;
     direction: 'from' | 'to';
     loginid: string;
+    transactionID?: number;
 };
 
-const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({ accounts, direction, loginid }) => {
+const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({
+    accounts,
+    direction,
+    loginid,
+    transactionID,
+}) => {
     const { data: activeWallet } = useActiveWalletAccount();
 
     const wallet = accounts.wallets?.find(account => account.loginid === loginid);
@@ -43,6 +49,7 @@ const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({ acco
                 isDemo={Boolean(transferAccount.is_virtual)}
                 isInterWallet={transferAccount === wallet}
                 mt5Group={transferAccount === mt5Account ? mt5Account.group : undefined}
+                transactionID={transactionID}
             />
         );
     }

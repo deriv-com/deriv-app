@@ -19,4 +19,11 @@
         gap: 0.4rem;
         align-items: center;
     }
+
+    &__column {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 10.4rem;
+    }
 }

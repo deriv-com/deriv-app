@@ -79,7 +79,6 @@ describe('<Multiplier />', () => {
         expect(screen.getByRole('textbox')).toHaveValue('x1');
     });
     it('should open ActionSheet with WheelPicker component, details, "Save" button and trade param definition if user clicks on multiplier trade param', () => {
-        default_mock_store.modules.trade.maximum_ticks = 55;
         mockMultiplier();
 
         expect(screen.queryByTestId('dt-actionsheet-overlay')).not.toBeInTheDocument();

@@ -47,7 +47,7 @@ export const ContractCardStatusTimer = ({
     return displayedDuration ? (
         <Tag
             className='timer'
-            icon={<LabelPairedStopwatchCaptionRegularIcon />}
+            icon={<LabelPairedStopwatchCaptionRegularIcon key='open-contract-card' />}
             label={displayedDuration}
             variant='custom'
             size='sm'

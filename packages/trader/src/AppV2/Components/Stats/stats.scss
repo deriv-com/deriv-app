@@ -1,0 +1,30 @@
+.accumulators-stats {
+    background: var(--general-main-1);
+    padding: var(--core-spacing-400);
+    &__container {
+        display: flex;
+        justify-content: space-between;
+        &__heading {
+            padding: var(--core-spacing-300) var(--core-spacing-400);
+        }
+        &__divider {
+            border-right: 1px solid var(--core-color-opacity-black-100);
+            padding: var(--core-spacing-50) var(--core-spacing-400);
+        }
+        &__stats {
+            margin: var(--core-spacing-300) var(--core-spacing-50);
+            display: flex;
+            width: calc(100% - );
+            overflow: hidden;
+            justify-content: space-between;
+            gap: var(--core-spacing-400);
+            &__stat {
+                margin: var(--core-spacing-50) var(--core-spacing-400);
+            }
+        }
+        &__expand {
+            padding: var(--core-spacing-300) var(--core-spacing-400);
+            margin-left: var(--core-spacing-400);
+        }
+    }
+}

@@ -57,7 +57,7 @@ const getMessage = ({
     const pa_commision_withdrawal_limit = cashier_validation?.includes('PACommisionWithdrawalLimit');
     const pathname = history.location.pathname;
 
-    if (is_account_to_be_closed_by_residence) {
+    if (is_account_to_be_closed_by_residence && pathname === routes.cashier_deposit) {
         return {
             icon: 'IcCashierNoBalance',
             title: localize('Deposits disabled'),

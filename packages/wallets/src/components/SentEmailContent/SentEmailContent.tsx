@@ -112,6 +112,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
                 icon={<EmailSentIcon width={133} />}
                 renderButtons={() => (
                     <Button
+                        color='primary-transparent'
                         disabled={shouldShowResendEmailReasons}
                         onClick={() => {
                             setShouldShowResendEmailReasons(true);

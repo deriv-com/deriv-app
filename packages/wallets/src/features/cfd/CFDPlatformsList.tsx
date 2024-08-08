@@ -30,6 +30,7 @@ const CFDPlatformsList: React.FC = () => {
                             </a>
                         </WalletText>
                         <Button
+                            color='primary-transparent'
                             onClick={() => {
                                 history.push('/compare-accounts');
                             }}
@@ -47,6 +48,7 @@ const CFDPlatformsList: React.FC = () => {
                                 CFDs
                             </WalletText>
                             <Button
+                                color='primary-transparent'
                                 onClick={() => {
                                     history.push('/compare-accounts');
                                 }}

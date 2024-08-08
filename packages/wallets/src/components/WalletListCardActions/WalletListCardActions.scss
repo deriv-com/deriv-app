@@ -4,6 +4,11 @@
         align-items: center;
         gap: 0.8rem;
 
+        /* stylelint-disable-next-line selector-class-pattern */
+        .deriv-button__border-width--sm {
+            border-radius: 1.2rem;
+        }
+
         &-label {
             font-weight: 700;
             display: none;

@@ -14,6 +14,7 @@ jest.mock('AppV2/Components/BottomNav', () =>
         </div>
     ))
 );
+jest.mock('AppV2/Components/ClosedMarketMessage', () => jest.fn(() => <div>ClosedMarketMessage</div>));
 jest.mock('AppV2/Components/CurrentSpot', () => jest.fn(() => <div>Current Spot</div>));
 jest.mock('AppV2/Components/PurchaseButton', () => jest.fn(() => <div>Purchase Button</div>));
 jest.mock('../trade-types', () => jest.fn(() => <div>Trade Types Selection</div>));

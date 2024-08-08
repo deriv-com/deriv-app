@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react';
 import { LegacyWarningIcon } from '@deriv/quill-icons';
+import { Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../Base';
 import WalletButton from '../Base/WalletButton/WalletButton';
@@ -14,13 +15,7 @@ type TProps = {
     title?: string;
 };
 
-const WalletError: React.FC<TProps> = ({
-    buttonText = 'Try again',
-    buttonVariant = 'contained',
-    errorMessage,
-    onClick,
-    title,
-}) => {
+const WalletError: React.FC<TProps> = ({ buttonText, buttonVariant = 'contained', errorMessage, onClick, title }) => {
     const { isDesktop, isMobile } = useDevice();
 
     return (
@@ -31,7 +26,7 @@ const WalletError: React.FC<TProps> = ({
                     icon={<LegacyWarningIcon fill='#FF444F' iconSize='2xl' />}
                     renderButtons={() => (
                         <WalletButton isFullWidth={isMobile} onClick={onClick} size='lg' variant={buttonVariant}>
-                            {buttonText}
+                            {buttonText ?? <Localize i18n_default_text='Try again' />}
                         </WalletButton>
                     )}
                     title={title}

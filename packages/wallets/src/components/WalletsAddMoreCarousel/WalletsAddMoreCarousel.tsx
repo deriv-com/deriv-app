@@ -3,8 +3,9 @@ import useEmblaCarousel, { EmblaCarouselType } from 'embla-carousel-react';
 import { useHover } from 'usehooks-ts';
 import { useAllWalletAccounts, useAuthorize } from '@deriv/api-v2';
 import { LabelPairedChevronLeftLgFillIcon, LabelPairedChevronRightLgFillIcon } from '@deriv/quill-icons';
-import { useDevice } from '@deriv-com/ui';
-import { IconButton, WalletText } from '../Base';
+import { Localize } from '@deriv-com/translations';
+import { Text, useDevice } from '@deriv-com/ui';
+import { IconButton } from '../Base';
 import { WalletsAddMoreLoader } from '../SkeletonLoader';
 import WalletsAddMoreCard from '../WalletsAddMoreCard';
 import './WalletsAddMoreCarousel.scss';
@@ -50,9 +51,9 @@ const WalletsAddMoreCarousel: React.FC = () => {
     return (
         <div className='wallets-add-more' ref={hoverRef}>
             <div className='wallets-add-more__header'>
-                <WalletText size='xl' weight='bold'>
-                    Add more Wallets
-                </WalletText>
+                <Text size='xl' weight='bold'>
+                    <Localize i18n_default_text='Add more Wallets' />
+                </Text>
             </div>
             <div className='wallets-add-more__carousel' data-testid='dt-wallets-add-more' ref={walletsAddMoreEmblaRef}>
                 <div className='wallets-add-more__carousel-wrapper' id='wallets_add_more_carousel_wrapper'>

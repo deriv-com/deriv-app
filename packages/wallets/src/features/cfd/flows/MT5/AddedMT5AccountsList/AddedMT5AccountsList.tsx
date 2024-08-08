@@ -7,7 +7,7 @@ import { InlineMessage, WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import { THooks } from '../../../../../types';
-import { MarketTypeDetails, PlatformDetails } from '../../../constants';
+import { getMarketTypeDetails, PlatformDetails } from '../../../constants';
 import { MT5TradeModal, VerificationFailedModal } from '../../../modals';
 import './AddedMT5AccountsList.scss';
 
@@ -22,7 +22,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         () => getVerificationStatus(account.landing_company_short || 'svg', account.status),
         [account.landing_company_short, account.status, getVerificationStatus]
     );
-    const { title } = MarketTypeDetails[account.market_type ?? 'all'];
+    const { title } = getMarketTypeDetails()[account.market_type ?? 'all'];
     const { isDesktop } = useDevice();
     const { show } = useModal();
 
@@ -30,7 +30,9 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         <TradingAccountCard
             disabled={jurisdictionStatus.is_pending}
             leading={
-                <div className='wallets-added-mt5__icon'>{MarketTypeDetails[account.market_type || 'all'].icon}</div>
+                <div className='wallets-added-mt5__icon'>
+                    {getMarketTypeDetails()[account.market_type || 'all'].icon}
+                </div>
             }
             onClick={() => {
                 jurisdictionStatus.is_failed

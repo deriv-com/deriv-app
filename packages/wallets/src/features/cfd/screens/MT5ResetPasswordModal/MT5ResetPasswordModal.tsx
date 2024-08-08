@@ -10,7 +10,7 @@ import {
     WalletTextField,
 } from '../../../../components';
 import PasswordViewerIcon from '../../../../components/Base/WalletPasswordField/PasswordViewerIcon';
-import { passwordRequirements } from '../../../../constants/password';
+import { getPasswordRequirements } from '../../../../constants/password';
 import { validPasswordMT5 } from '../../../../utils/password-validation';
 import { PlatformDetails } from '../../constants';
 import { TPlatformPasswordChange } from '../../modals/MT5PasswordModal/MT5PasswordModal';
@@ -117,7 +117,7 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
                                     />
                                 </div>
                                 <ul className='wallets-mt5-reset__requirements'>
-                                    {passwordRequirements.map(requirement => (
+                                    {getPasswordRequirements().map(requirement => (
                                         <li key={requirement}>
                                             <WalletText size='sm'>{requirement}</WalletText>
                                         </li>

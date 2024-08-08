@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useCreateWallet } from '@deriv/api-v2';
 import { LabelPairedCheckMdFillIcon, LabelPairedPlusMdFillIcon } from '@deriv/quill-icons';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
@@ -24,12 +25,17 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
     const history = useHistory();
     const modal = useModal();
     const { addWalletAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
+    const { localize } = useTranslations();
 
     useEffect(
         () => {
             if (status === 'error') {
                 modal.show(
-                    <WalletError buttonText='Close' errorMessage={error.error.message} onClick={() => modal.hide()} />
+                    <WalletError
+                        buttonText={localize('Close')}
+                        errorMessage={error.error.message}
+                        onClick={() => modal.hide()}
+                    />
                 );
             } else if (status === 'success') {
                 modal.show(
@@ -91,7 +97,7 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
                 }}
                 size={isDesktop ? 'lg' : 'sm'}
             >
-                {isAdded ? 'Added' : 'Add'}
+                {isAdded ? <Localize i18n_default_text='Added' /> : <Localize i18n_default_text='Add' />}
             </WalletButton>
         </div>
     );

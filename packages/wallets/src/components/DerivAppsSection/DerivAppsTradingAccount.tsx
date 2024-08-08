@@ -3,14 +3,14 @@ import { useHistory } from 'react-router-dom';
 import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useAuthorize } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
+import { Localize } from '@deriv-com/translations';
+import { Text, useDevice } from '@deriv-com/ui';
 import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
-import { useDevice } from '@deriv-com/ui';
-import { WalletText } from '../Base';
 import { WalletListCardBadge } from '../WalletListCardBadge';
 import { WalletMarketIcon } from '../WalletMarketIcon';
 
 const DerivAppsTradingAccount = () => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const history = useHistory();
     const { data: authorizeData } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
@@ -20,27 +20,29 @@ const DerivAppsTradingAccount = () => {
 
     return (
         <div className='wallets-deriv-apps-section wallets-deriv-apps-section__border'>
-            <div className={isMobile ? 'wallets-deriv-apps-section__icon-small' : 'wallets-deriv-apps-section__icon'}>
-                <WalletMarketIcon icon='standard' size={isMobile ? 'md' : 'lg'} />
+            <div className={isDesktop ? 'wallets-deriv-apps-section__icon' : 'wallets-deriv-apps-section__icon-small'}>
+                <WalletMarketIcon icon='standard' size={isDesktop ? 'lg' : 'md'} />
             </div>
             <div className='wallets-deriv-apps-section__details'>
                 <div className='wallets-deriv-apps-section__title-and-badge'>
-                    <WalletText size='sm'>Options</WalletText>
+                    <Text size='sm'>
+                        <Localize i18n_default_text='Options' />
+                    </Text>
                     {activeWallet?.is_virtual && <WalletListCardBadge />}
                 </div>
                 {isBalanceLoading ? (
                     <div className='wallets-skeleton wallets-deriv-apps-balance-loader' />
                 ) : (
-                    <WalletText size='sm' weight='bold'>
+                    <Text size='sm' weight='bold'>
                         {displayMoney(balance, activeLinkedToTradingAccount?.currency_config?.display_code, {
                             fractional_digits: activeLinkedToTradingAccount?.currency_config?.fractional_digits,
                             preferred_language: authorizeData?.preferred_language,
                         })}
-                    </WalletText>
+                    </Text>
                 )}
-                <WalletText color='less-prominent' lineHeight='sm' size='xs' weight='bold'>
+                <Text color='less-prominent' lineHeight='sm' size='xs' weight='bold'>
                     {activeLinkedToTradingAccount?.loginid}
-                </WalletText>
+                </Text>
             </div>
             <button
                 className='wallets-deriv-apps-section__button'

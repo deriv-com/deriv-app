@@ -2,7 +2,7 @@ import React from 'react';
 import EntryExitDetails from 'AppV2/Components/EntryExitDetails';
 import TakeProfitHistory from 'AppV2/Components/TakeProfitHistory';
 import PayoutInfo from 'AppV2/Components/PayoutInfo';
-import { ChartPlaceholder } from '../Chart';
+import ContractDetailsChart from '../Chart/contract-details-chart';
 import CardWrapper from 'AppV2/Components/CardWrapper';
 import { observer, useStore } from '@deriv/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
@@ -86,7 +86,7 @@ const ContractDetails = observer(() => {
                 <div className='contract-card-wrapper'>
                     <ContractCard contractInfo={contract_info} serverTime={server_time} />
                 </div>
-                <ChartPlaceholder />
+                <ContractDetailsChart />
                 <DealCancellation />
                 {showRiskManagement && (
                     <CardWrapper>

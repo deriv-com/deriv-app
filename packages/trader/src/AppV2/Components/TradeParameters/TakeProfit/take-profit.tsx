@@ -171,7 +171,12 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                         title={<Localize i18n_default_text='Take profit' />}
                     />
                     {/* this input with inline styles is needed to fix a focus issue in Safari */}
-                    <input ref={focused_input_ref} style={{ height: 0, opacity: 0, display: 'none' }} />
+                    <input
+                        ref={focused_input_ref}
+                        style={{ height: 0, opacity: 0, display: 'none' }}
+                        pattern='[^0-9.,]/g'
+                        inputMode='decimal'
+                    />
                 </ActionSheet.Portal>
             </ActionSheet.Root>
         </React.Fragment>

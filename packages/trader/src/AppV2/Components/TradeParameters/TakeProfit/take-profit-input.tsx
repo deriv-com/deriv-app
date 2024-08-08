@@ -44,6 +44,7 @@ const TakeProfitInput = React.forwardRef(
                         allowDecimals
                         disabled={!is_enabled}
                         decimals={decimals}
+                        inputMode='decimal'
                         message={message}
                         name='take_profit'
                         onChange={onInputChange}

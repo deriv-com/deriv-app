@@ -16,12 +16,12 @@ import { localize } from '@deriv-com/translations';
 import { TPlatforms } from '../../types';
 import { ctraderLinks, whiteLabelLinks } from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 
-export const getMarketTypeDetails = () =>
+export const getMarketTypeDetails = (subAccountType?: TPlatforms.SubAccountType) =>
     ({
         all: {
             description: localize('Swap-free CFDs on selected financial and derived instruments'),
             icon: <AccountsDmt5SwfIcon height={48} width={48} />,
-            title: 'Swap-Free',
+            title: subAccountType === 'zero_spread' ? 'Zero Spread' : 'Swap-Free',
         },
         financial: {
             description: localize('CFDs on financial instruments'),

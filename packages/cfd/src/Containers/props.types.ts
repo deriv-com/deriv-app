@@ -56,7 +56,6 @@ export type TMT5AccountOpeningRealFinancialStpModal = {
     enableApp: () => void;
     disableApp: () => void;
     toggleCFDVerificationModal: () => void;
-    is_cfd_verification_modal_visible: boolean;
 };
 
 export type TMissingRealAccount = {
@@ -328,7 +327,6 @@ export type TCFDDbviOnboardingProps = {
     fetchAccountSettings: () => void;
     has_created_account_for_selected_jurisdiction: boolean;
     has_submitted_cfd_personal_details: boolean;
-    is_cfd_verification_modal_visible: boolean;
     is_virtual: boolean;
     jurisdiction_selected_shortcode: string;
     openPasswordModal: () => void;

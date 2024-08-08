@@ -176,8 +176,6 @@ const ModalManager = () => {
         getRealFinancialAccountsExistingData,
         getRealSwapfreeAccountsExistingData,
         has_cfd_error,
-        is_jurisdiction_modal_visible,
-        is_cfd_verification_modal_visible,
         mt5_migration_error,
         is_mt5_password_invalid_format_modal_visible,
         is_cfd_password_modal_enabled,

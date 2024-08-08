@@ -1,7 +1,7 @@
 name: Build Docker image and push to dockerhub
 on:
   workflow_run:
-    workflows: ["Deriv App Release to Test environment Workflow"]
+    workflows: ["Deriv App Release to Test environment Workflow", "Deriv App Staging Workflow"]
     types: [completed]
   workflow_dispatch:
     inputs:

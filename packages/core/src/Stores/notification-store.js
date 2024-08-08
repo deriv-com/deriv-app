@@ -1093,6 +1093,7 @@ export default class NotificationStore extends BaseStore {
                     route: routes.phone_verification,
                     text: localize('Get started'),
                 },
+                should_show_again: true,
             },
             poa_rejected_for_mt5: {
                 action: {

@@ -14,7 +14,7 @@
         &__stats {
             margin: var(--core-spacing-300) var(--core-spacing-50);
             display: flex;
-            width: calc(100% - );
+            width: calc(100% - 1px);
             overflow: hidden;
             justify-content: space-between;
             gap: var(--core-spacing-400);

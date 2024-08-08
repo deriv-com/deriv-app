@@ -615,6 +615,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             positions: [],
             removePositionById: jest.fn(),
             setContractType: jest.fn(),
+            setAddNotificationBannerCallback: jest.fn(),
         },
         contract_trade: {
             accountSwitchListener: jest.fn(),

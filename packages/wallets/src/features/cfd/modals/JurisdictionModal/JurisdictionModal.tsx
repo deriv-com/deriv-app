@@ -43,7 +43,7 @@ const JurisdictionModal = () => {
         return (
             <Suspense fallback={<Loader />}>
                 <LazyVerification
-                    onFirstTimeCompletion={() => {
+                    onCompletion={() => {
                         setShowMt5PasswordModal(true);
                     }}
                     selectedJurisdiction={selectedJurisdiction}

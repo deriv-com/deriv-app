@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { useInvalidateQuery, useMT5AccountsList, usePOA, usePOI, useSettings } from '@deriv/api-v2';
+import { useInvalidateQuery, usePOA, usePOI, useSettings } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import { useModal } from '../../../../components/ModalProvider';
@@ -8,7 +8,8 @@ import { Poa, Poi, TaxInformation } from '../../../accounts';
 import { ResubmissionSuccessMessage } from './components';
 
 type TClientVerificationProps = {
-    onFirstTimeCompletion?: VoidFunction;
+    hasVerificationFailed?: boolean;
+    onCompletion?: VoidFunction;
     selectedJurisdiction?: string;
 };
 type TStatusCodes = Exclude<THooks.POA['status'] | THooks.POI['current']['status'], undefined>;
@@ -22,12 +23,15 @@ const isSubmissionRequired: Record<TStatusCodes, boolean> = {
     verified: false,
 };
 
-const ClientVerification: React.FC<TClientVerificationProps> = ({ onFirstTimeCompletion, selectedJurisdiction }) => {
+const ClientVerification: React.FC<TClientVerificationProps> = ({
+    hasVerificationFailed,
+    onCompletion,
+    selectedJurisdiction,
+}) => {
     const { localize } = useTranslations();
     const { data: poiData, isLoading: isPoiDataLoading } = usePOI();
     const { data: poaData, isLoading: isPoaDataLoading } = usePOA();
     const { data: accountSettings, isLoading: isAccountSettingsLoading } = useSettings();
-    const { data: mt5AccountsList, isLoading: isMT5AccountsListLoading } = useMT5AccountsList();
     const invalidate = useInvalidateQuery();
     const { hide } = useModal();
 
@@ -35,9 +39,7 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({ onFirstTimeCom
     const [isPoiJustCompleted, setIsPoiJustCompleted] = useState(false);
     const [isTaxInformationJustCompleted, setIsTaxInformationJustCompleted] = useState(false);
 
-    const isLoading = isAccountSettingsLoading || isMT5AccountsListLoading || isPoaDataLoading || isPoiDataLoading;
-
-    const clientsHasMT5Accounts = mt5AccountsList?.some(account => account.account_type === 'real');
+    const isLoading = isAccountSettingsLoading || isPoaDataLoading || isPoiDataLoading;
 
     const isPoaRequired = useMemo(
         () =>
@@ -71,7 +73,7 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({ onFirstTimeCom
 
     // client resubmits the docs if MT5 account is created but the verification of their docs fail
     const hasResubmittedDocuments =
-        clientsHasMT5Accounts && !shouldSubmitPoi && !shouldSubmitPoa && !shouldSubmitTaxInformation;
+        !shouldSubmitPoi && !shouldSubmitPoa && !shouldSubmitTaxInformation && hasVerificationFailed;
 
     const onPoaCompletion = () => {
         setIsPoaJustCompleted(true);
@@ -113,9 +115,9 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({ onFirstTimeCom
                 }}
             />
         );
-    } else if (onFirstTimeCompletion) {
+    } else if (onCompletion) {
         // proceed to MT5 account creation
-        onFirstTimeCompletion();
+        onCompletion();
     }
 
     return null;

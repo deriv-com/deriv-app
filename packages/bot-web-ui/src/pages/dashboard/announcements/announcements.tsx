@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text } from '@deriv/components';
 import { Notifications as Announcement } from '@deriv-com/ui';
-import { observer } from '@deriv/stores';
 import { StandaloneBullhornRegularIcon } from '@deriv/quill-icons';
 import { load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
@@ -107,7 +106,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
             setAmountAnnounce(obj_announcements);
             localStorage?.setItem('bot-announcements', JSON.stringify(obj_announcements));
         }
-    }, []);
+    }, [announcements.length]);
 
     const handleOnCancelAccumulator = () => {
         handleTabChange(DBOT_TABS.TUTORIAL);

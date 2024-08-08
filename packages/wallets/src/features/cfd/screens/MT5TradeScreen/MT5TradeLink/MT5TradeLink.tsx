@@ -1,24 +1,22 @@
 import React, { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useCtraderServiceToken } from '@deriv/api-v2';
 import { Divider } from '@deriv-com/ui';
 import { WalletButton, WalletText } from '../../../../../components/Base';
 import { getPlatformFromUrl } from '../../../../../helpers/urls';
 import { THooks, TPlatforms } from '../../../../../types';
-import { AppToContentMapper, CFD_PLATFORMS, PlatformDetails, PlatformToLabelIconMapper } from '../../../constants';
+import { CFD_PLATFORMS, getAppToContentMapper, PlatformDetails, PlatformToLabelIconMapper } from '../../../constants';
 import { ctraderLinks, dxtradeLinks } from './urlConfig';
 import './MT5TradeLink.scss';
 
 type TMT5TradeLinkProps = {
-    app?: keyof typeof AppToContentMapper;
+    app?: keyof ReturnType<typeof getAppToContentMapper>;
     isDemo?: THooks.ActiveWalletAccount['is_virtual'];
     platform?: TPlatforms.All;
 };
 
 const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, platform }) => {
     const { mutateAsync: requestToken } = useCtraderServiceToken();
-    const { t } = useTranslation();
-    const { icon, link, text, title } = AppToContentMapper[app];
+    const { icon, link, text, title } = getAppToContentMapper()[app];
 
     const getCtraderToken = () => {
         const cTraderTokenResponse = requestToken({
@@ -65,11 +63,9 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
                     )}
                     {platform !== CFD_PLATFORMS.MT5 && app !== CFD_PLATFORMS.CTRADER && (
                         <WalletText size='sm'>
-                            {t('Run {{platform}} on your browser', {
-                                platform:
-                                    PlatformDetails[(platform as keyof typeof PlatformDetails) ?? CFD_PLATFORMS.DXTRADE]
-                                        .title,
-                            })}
+                            Run{' '}
+                            {PlatformDetails[(platform as keyof typeof PlatformDetails) ?? CFD_PLATFORMS.DXTRADE].title}{' '}
+                            on your browser
                         </WalletText>
                     )}
                 </div>
@@ -86,7 +82,7 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
                             ]
                         }
                         <WalletText color='white' size='xs' weight='bold'>
-                            {t('Web terminal')}
+                            Web terminal
                         </WalletText>
                     </button>
                 )}

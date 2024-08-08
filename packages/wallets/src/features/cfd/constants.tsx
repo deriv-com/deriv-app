@@ -12,26 +12,28 @@ import {
     PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon,
     PartnersProductDerivMt5BrandLightLogoHorizontalIcon,
 } from '@deriv/quill-icons';
+import { localize } from '@deriv-com/translations';
 import { TPlatforms } from '../../types';
 import { ctraderLinks, whiteLabelLinks } from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 
-export const MarketTypeDetails = {
-    all: {
-        description: 'Swap-free CFDs on selected financial and derived instruments',
-        icon: <AccountsDmt5SwfIcon height={48} width={48} />,
-        title: 'Swap-Free',
-    },
-    financial: {
-        description: 'CFDs on financial instruments',
-        icon: <AccountsDmt5FinancialIcon height={48} width={48} />,
-        title: 'Financial',
-    },
-    synthetic: {
-        description: 'CFDs on derived and financial instruments',
-        icon: <AccountsDmt5StandardIcon height={48} width={48} />,
-        title: 'Standard',
-    },
-} as const;
+export const getMarketTypeDetails = () =>
+    ({
+        all: {
+            description: localize('Swap-free CFDs on selected financial and derived instruments'),
+            icon: <AccountsDmt5SwfIcon height={48} width={48} />,
+            title: 'Swap-Free',
+        },
+        financial: {
+            description: localize('CFDs on financial instruments'),
+            icon: <AccountsDmt5FinancialIcon height={48} width={48} />,
+            title: 'Financial',
+        },
+        synthetic: {
+            description: localize('CFDs on derived and financial instruments'),
+            icon: <AccountsDmt5StandardIcon height={48} width={48} />,
+            title: 'Standard',
+        },
+    } as const);
 
 export const PlatformDetails = {
     ctrader: {
@@ -72,51 +74,57 @@ export const companyNamesAndUrls = {
     vanuatu: { name: 'Deriv (V) Ltd', shortcode: 'Vanuatu', tncUrl: 'tnc/general-terms.pdf' },
 } as const;
 
-export const AppToContentMapper = {
-    ctrader: {
-        icon: <LabelPairedWindowsXlIcon />,
-        link: ctraderLinks.windows,
-        text: 'Download',
-        title: 'CTrader Windows App',
-    },
-    linux: {
-        icon: <LabelPairedLinuxXlIcon />,
-        link: whiteLabelLinks.linux,
-        text: 'Learn more',
-        title: 'MetaTrader 5 Linux app',
-    },
-    macos: {
-        icon: <LabelPairedMacosXlIcon />,
-        link: whiteLabelLinks.macos,
-        text: 'Download',
-        title: 'MetaTrader 5 MacOS app',
-    },
-    web: {
-        icon: <PartnersProductDerivMt5BrandLightLogoHorizontalIcon height={32} width={32} />,
-        link: whiteLabelLinks.webtrader_url,
-        text: 'Open',
-        title: 'MetaTrader 5 web',
-    },
-    windows: {
-        icon: <LabelPairedWindowsXlIcon />,
-        link: whiteLabelLinks.windows,
-        text: 'Download',
-        title: 'MetaTrader 5 Windows app',
-    },
-} as const;
+export const getAppToContentMapper = () =>
+    ({
+        ctrader: {
+            icon: <LabelPairedWindowsXlIcon />,
+            link: ctraderLinks.windows,
+            text: localize('Download'),
+            title: 'CTrader Windows App',
+        },
+        linux: {
+            icon: <LabelPairedLinuxXlIcon />,
+            link: whiteLabelLinks.linux,
+            text: localize('Learn more'),
+            title: 'MetaTrader 5 Linux app',
+        },
+        macos: {
+            icon: <LabelPairedMacosXlIcon />,
+            link: whiteLabelLinks.macos,
+            text: localize('Download'),
+            title: 'MetaTrader 5 MacOS app',
+        },
+        web: {
+            icon: <PartnersProductDerivMt5BrandLightLogoHorizontalIcon height={32} width={32} />,
+            link: whiteLabelLinks.webtrader_url,
+            text: localize('Open'),
+            title: 'MetaTrader 5 web',
+        },
+        windows: {
+            icon: <LabelPairedWindowsXlIcon />,
+            link: whiteLabelLinks.windows,
+            text: localize('Download'),
+            title: 'MetaTrader 5 Windows app',
+        },
+    } as const);
 
 export const PlatformToLabelIconMapper = {
     ctrader: <PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon height={8} width={58} />,
     dxtrade: <DerivProductDerivXBrandDarkWordmarkIcon height={10} width={35} />,
 } as const;
 
-export const serviceMaintenanceMessages = {
-    ctrader:
-        'Server maintenance occurs every first Saturday of the month from 7 to 10 GMT time. You may experience service disruption during this time.',
-    dxtrade:
-        'Server maintenance starts at 06:00 GMT every Sunday and may last up to 2 hours. You may experience service disruption during this time.',
-    mt5: 'Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.',
-} as const;
+export const getServiceMaintenanceMessages = () =>
+    ({
+        ctrader: localize(
+            'Server maintenance occurs every first Saturday of the month from 7 to 10 GMT time. You may experience service disruption during this time.'
+        ),
+        dxtrade: localize(
+            'Server maintenance starts at 06:00 GMT every Sunday and may last up to 2 hours. You may experience service disruption during this time.'
+        ),
+        mt5: localize(
+            'Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.'
+        ),
+    } as const);
 
 export const CFD_PLATFORMS = {
     CFDS: 'CFDs',

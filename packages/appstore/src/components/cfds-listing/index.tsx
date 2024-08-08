@@ -210,7 +210,7 @@ const CFDsListing = observer(() => {
                     {localize('Deriv MT5')}
                 </Text>
             </div>
-            {has_svg_accounts_to_migrate && <MigrationBanner />}
+            {has_svg_accounts_to_migrate && is_landing_company_loaded && <MigrationBanner />}
             {is_landing_company_loaded && !is_populating_mt5_account_list ? (
                 <React.Fragment>
                     {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
@@ -357,6 +357,7 @@ const CFDsListing = observer(() => {
                                         key={`trading_app_card_${existing_account.display_login}`}
                                         onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                             const button_name = e?.currentTarget?.name;
+                                            setProduct();
                                             if (button_name === 'transfer-btn') {
                                                 if (is_traders_dashboard_tracking_enabled) {
                                                     Analytics.trackEvent('ce_tradershub_dashboard_form', {
@@ -405,6 +406,7 @@ const CFDsListing = observer(() => {
                                     platform={account.platform}
                                     description={account.description}
                                     onAction={() => {
+                                        setProduct();
                                         if (is_traders_dashboard_tracking_enabled) {
                                             Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                                 action: 'account_get',
@@ -413,7 +415,6 @@ const CFDsListing = observer(() => {
                                                 account_name: track_account_name,
                                             });
                                         }
-
                                         if ((has_no_real_account || no_CR_account) && is_real) {
                                             openDerivRealAccountNeededModal();
                                         } else {
@@ -468,7 +469,7 @@ const CFDsListing = observer(() => {
                                         key={`trading_app_card_${existing_account.login}`}
                                         onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                             const button_name = e?.currentTarget?.name;
-
+                                            setProduct();
                                             if (button_name === 'transfer-btn') {
                                                 if (is_traders_dashboard_tracking_enabled) {
                                                     Analytics.trackEvent('ce_tradershub_dashboard_form', {
@@ -518,6 +519,7 @@ const CFDsListing = observer(() => {
                                     platform={account.platform}
                                     description={account.description}
                                     onAction={() => {
+                                        setProduct();
                                         if (is_traders_dashboard_tracking_enabled) {
                                             Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                                 action: 'account_get',
@@ -526,7 +528,6 @@ const CFDsListing = observer(() => {
                                                 account_name: track_account_name,
                                             });
                                         }
-
                                         if ((has_no_real_account || no_CR_account) && is_real) {
                                             openDerivRealAccountNeededModal();
                                         } else {

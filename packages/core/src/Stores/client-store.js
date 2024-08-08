@@ -416,6 +416,7 @@ export default class ClientStore extends BaseStore {
             unsubscribeFromExchangeRate: action.bound,
             unsubscribeFromAllExchangeRates: action.bound,
             setExchangeRates: action.bound,
+            setIsLandingCompanyLoaded: action.bound,
             is_cr_account: computed,
             is_mf_account: computed,
             is_tradershub_tracking: observable,
@@ -1525,7 +1526,7 @@ export default class ClientStore extends BaseStore {
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
-        if (action_param === 'request_email') {
+        if (action_param === 'request_email' && this.is_logged_in) {
             const request_email_code = code_param ?? LocalStore.get(`verification_code.${action_param}`) ?? '';
             if (request_email_code) {
                 this.setVerificationCode(request_email_code, action_param);
@@ -1668,6 +1669,10 @@ export default class ClientStore extends BaseStore {
         this.landing_companies = response.landing_company;
         this.is_landing_company_loaded = true;
         this.setStandpoint(this.landing_companies);
+    }
+
+    setIsLandingCompanyLoaded(state) {
+        this.is_landing_company_loaded = state;
     }
 
     setStandpoint(landing_companies) {

@@ -62,13 +62,17 @@ const useSortedMT5Accounts = (regulation?: string) => {
             const { market_type, sub_account_type } = account;
             const key = sub_account_type === 'zero_spread' ? `${market_type}_${sub_account_type}` : market_type;
 
-            const is_duplicate = acc.some(acc_account =>
+            const existing_account = acc.find(acc_account =>
                 acc_account.sub_account_type === 'zero_spread'
                     ? `${acc_account.market_type}_${acc_account.sub_account_type}` === key
                     : acc_account.market_type === key
             );
-
-            if (is_duplicate) return acc;
+            const added_account = added_accounts.find(acc_account =>
+                acc_account.sub_account_type === 'zero_spread'
+                    ? `${acc_account.market_type}_${acc_account.sub_account_type}` === key
+                    : acc_account.market_type === key
+            );
+            if (existing_account || added_account) return acc;
 
             return [...acc, account];
         }, [] as typeof non_added_accounts);

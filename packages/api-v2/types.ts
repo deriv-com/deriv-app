@@ -2236,8 +2236,15 @@ type TWhiteLabelLinks = {
     };
 };
 
-type TExtendedMT5AccounListType = NonNullable<MT5AccountsListResponse['mt5_login_list']>[number] & {
+type TExtendedMT5AccounListType = Omit<
+    NonNullable<MT5AccountsListResponse['mt5_login_list']>[number],
+    'sub_account_type'
+> & {
     white_label_links: TWhiteLabelLinks['white_label_links'];
+    /**
+     * Sub account type
+     */
+    sub_account_type?: 'standard' | 'financial' | 'financial_stp' | 'swap_free' | 'zero_spread';
 };
 
 type MT5AccountListResponse = {

@@ -77,6 +77,10 @@ const InformationSubmittedModal = React.lazy(() =>
     import(/* webpackChunkName: "information-submitted-modal" */ './information-submitted-modal')
 );
 
+const TncStatusUpdateModal = React.lazy(() =>
+    import(/* webpackChunkName: "information-submitted-modal" */ './tnc-status-update-modal')
+);
+
 const AppModals = observer(() => {
     const { client, ui, traders_hub } = useStore();
     const {
@@ -109,6 +113,7 @@ const AppModals = observer(() => {
         should_show_one_time_deposit_modal,
         should_show_account_success_modal,
         should_show_crypto_transaction_processing_modal,
+        is_tnc_update_modal_open,
     } = ui;
     const temp_session_signup_params = SessionStore.get('signup_query_param');
     const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
@@ -231,6 +236,10 @@ const AppModals = observer(() => {
 
         if (is_kyc_information_submitted_modal_open) {
             ComponentToLoad = <InformationSubmittedModal />;
+        }
+
+        if (is_tnc_update_modal_open) {
+            ComponentToLoad = <TncStatusUpdateModal />;
         }
     }
 

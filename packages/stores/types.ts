@@ -615,6 +615,7 @@ type TClientStore = {
     virtual_account_loginid?: string;
     is_cr_account: boolean;
     is_mf_account: boolean;
+    is_tnc_status_updated: Record<string, boolean>;
 };
 
 type TCommonStoreError = {
@@ -823,6 +824,8 @@ type TUiStore = {
     setShouldShowDepositNowOrLaterModal: (value: boolean) => void;
     should_show_crypto_transaction_processing_modal: boolean;
     setShouldShowCryptoTransactionProcessingModal: (value: boolean) => void;
+    is_tnc_update_modal_open: boolean;
+    toggleTncUpdateModal: (value: boolean) => void;
 };
 
 type TPortfolioStore = {

@@ -70,6 +70,7 @@ export { default as useRegisterPasskey } from './useRegisterPasskey';
 export { default as useRenamePasskey } from './useRenamePasskey';
 export { default as useServiceToken } from './useServiceToken';
 export { default as useStatesList } from './useStatesList';
+export { default as useStoreHasAccountDeposited } from './useStoreHasAccountDeposited';
 export { default as useStoreLinkedWalletsAccounts } from './useStoreLinkedWalletsAccounts';
 export { default as useStoreWalletAccountsList } from './useStoreWalletAccountsList';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';

@@ -24,6 +24,7 @@ import type {
     P2POrderListResponse,
     WebsiteStatus,
     GetSelfExclusion,
+    Statement,
 } from '@deriv/api-types';
 
 import type { FeatureFlagsStore } from './src/stores';
@@ -616,6 +617,7 @@ type TClientStore = {
     virtual_account_loginid?: string;
     is_cr_account: boolean;
     is_mf_account: boolean;
+    statement: Statement;
 };
 
 type TCommonStoreError = {

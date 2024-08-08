@@ -306,6 +306,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             virtual_account_loginid: '',
             is_cr_account: false,
             is_mf_account: false,
+            statement: {},
         },
         common: {
             error: common_store_error,

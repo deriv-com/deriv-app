@@ -5,7 +5,7 @@ import { WalletMarketCurrencyIcon, WalletSuccess, WalletText } from '../../../..
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import useDevice from '../../../../hooks/useDevice';
 import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../../../types';
-import { CFD_PLATFORMS, MARKET_TYPE, MarketTypeDetails, PlatformDetails } from '../../constants';
+import { CFD_PLATFORMS, getMarketTypeDetails, MARKET_TYPE, PlatformDetails } from '../../constants';
 import './CFDSuccess.scss';
 
 type TSuccessProps = {
@@ -43,7 +43,7 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
         if (isDxtradeOrCtrader && isPlatformValid) {
             marketTypeTitle = PlatformDetails[platform].title;
         } else {
-            marketTypeTitle = MarketTypeDetails[marketType].title;
+            marketTypeTitle = getMarketTypeDetails()[marketType].title;
         }
     }
 

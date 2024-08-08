@@ -14,6 +14,7 @@ import ResetContractChartElements from 'Modules/SmartChart/Components/Markers/re
 import { SmartChart } from 'Modules/SmartChart';
 import ChartMarker from 'Modules/SmartChart/Components/Markers/marker';
 import { useDevice } from '@deriv-com/ui';
+import { useFeatureFlags } from '@deriv/hooks';
 
 const ReplayChart = observer(
     ({
@@ -80,6 +81,9 @@ const ReplayChart = observer(
 
         const has_ended = !!getEndTime(contract_info);
 
+        const is_dtrader_v2_enabled =
+            useFeatureFlags()['is_dtrader_v2_enabled' as keyof ReturnType<typeof useFeatureFlags>];
+
         return (
             <SmartChart
                 id='replay'
@@ -105,7 +109,7 @@ const ReplayChart = observer(
                 stateChangeListener={chartStateChange}
                 symbol={symbol}
                 allTicks={all_ticks}
-                topWidgets={ChartTopWidgets}
+                topWidgets={is_dtrader_v2_enabled && isMobile ? () => <React.Fragment /> : ChartTopWidgets}
                 isConnectionOpened={is_socket_opened}
                 isStaticChart={
                     // forcing chart reload when start_epoch changes to an earlier epoch for ACCU closed contract:

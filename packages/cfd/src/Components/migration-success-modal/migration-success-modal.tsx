@@ -1,9 +1,9 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { Modal, PageOverlay } from '@deriv/components';
-import { Jurisdiction, MT5_ACCOUNT_STATUS, routes } from '@deriv/shared';
+import { Jurisdiction, getFormattedJurisdictionMarketTypes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getFormattedJurisdictionCode } from '../../Stores/Modules/CFD/Helpers/cfd-config';
+
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import MigrationSuccessModalContent from './migration-success-modal-content';
 
@@ -13,9 +13,7 @@ type TMigrationSuccessModal = {
 };
 
 const MigrationSuccessModal = observer(({ is_open, closeModal }: TMigrationSuccessModal) => {
-    const history = useHistory();
-    const { ui, client } = useStore();
-    const { mt5_login_list } = client;
+    const { ui } = useStore();
     const { is_mobile, setMT5MigrationModalEnabled } = ui;
     const { migrated_mt5_accounts, setIsFromMt5MigrationModal } = useCfdStore();
 
@@ -23,24 +21,10 @@ const MigrationSuccessModal = observer(({ is_open, closeModal }: TMigrationSucce
     const eligible_account_to_migrate = getFormattedJurisdictionCode(
         migrated_mt5_accounts.map(account => Object.values(account?.to_account ?? {})?.[0])?.[0]
     );
-    const has_open_positions = React.useMemo(
-        () =>
-            mt5_login_list.some(account =>
-                migrated_mt5_accounts.some(
-                    migrated_acc =>
-                        migrated_acc.login_id === account.login &&
-                        account.status === MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION
-                )
-            ),
-        [mt5_login_list, migrated_mt5_accounts]
-    );
 
-    const directToCashier = () => {
-        closeMigrationModals();
-        if (!has_open_positions) {
-            history.push(routes.cashier_acc_transfer);
-        }
-    };
+    const jurisdiction_market_name = migrated_mt5_accounts.map(account =>
+        getFormattedJurisdictionMarketTypes(Object.keys(account?.to_account ?? {})?.[0])
+    );
 
     const closeMigrationModals = () => {
         setIsFromMt5MigrationModal(false);
@@ -75,10 +59,10 @@ const MigrationSuccessModal = observer(({ is_open, closeModal }: TMigrationSucce
 
     const ModalContent = () => (
         <MigrationSuccessModalContent
-            directToCashier={directToCashier}
+            closePopupModal={closeMigrationModals}
             icon={getMigrationIcon()}
             eligible_account_to_migrate={eligible_account_to_migrate}
-            has_open_positions={has_open_positions}
+            jurisdiction_market_name={jurisdiction_market_name}
         />
     );
 

@@ -17,7 +17,6 @@ const JurisdictionCheckBox = observer(
     }: TJurisdictionCheckBoxProps) => {
         const { ui } = useStore();
         const { is_mobile } = ui;
-
         const shouldShowCheckBox = () => {
             if (
                 !jurisdiction_selected_shortcode ||
@@ -31,14 +30,14 @@ const JurisdictionCheckBox = observer(
         };
 
         const getCheckboxLabel = () => (
-            <Text as='p' align='center' size={is_mobile ? 'xxs' : 'xs'} line_height='xs'>
+            <Text as='p' align={is_mobile ? 'left' : 'center'} size='xxs' line_height='m'>
                 <Localize
-                    i18n_default_text="I confirm and accept {{company}} 's <0>Terms and Conditions</0>"
+                    i18n_default_text="I confirm and accept {{company}} 's <0>terms and conditions</0>"
                     values={{ company: DBVI_COMPANY_NAMES[jurisdiction_selected_shortcode].name }}
                     components={[
                         <StaticUrl
                             key={0}
-                            className='link--no-bold'
+                            className='link link--no-underline'
                             href={DBVI_COMPANY_NAMES[jurisdiction_selected_shortcode].tnc_url}
                             is_document
                         />,

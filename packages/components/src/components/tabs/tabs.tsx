@@ -70,13 +70,23 @@ const Tabs = ({
     };
 
     const setActiveLineStyle = React.useCallback(() => {
+        const html = document.querySelector('html');
+        const is_screen_rotated = html?.classList.contains('tablet-landscape');
+
         const tabs_wrapper_bounds = tabs_wrapper_ref?.current?.getBoundingClientRect();
         const active_tab_bounds = active_tab_ref?.current?.getBoundingClientRect();
         if (tabs_wrapper_bounds && active_tab_bounds) {
-            updateActiveLineStyle({
-                left: active_tab_bounds.left - tabs_wrapper_bounds.left,
-                width: active_tab_bounds.width,
-            });
+            updateActiveLineStyle(
+                is_screen_rotated
+                    ? {
+                          left: tabs_wrapper_bounds.bottom - active_tab_bounds.bottom,
+                          width: active_tab_bounds.height,
+                      }
+                    : {
+                          left: active_tab_bounds.left - tabs_wrapper_bounds.left,
+                          width: active_tab_bounds.width,
+                      }
+            );
         } else {
             setTimeout(() => {
                 setActiveLineStyle();

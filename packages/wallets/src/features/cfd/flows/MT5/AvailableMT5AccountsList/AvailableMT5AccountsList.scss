@@ -20,4 +20,18 @@
         align-items: flex-start;
         flex-grow: 1;
     }
+    &__title {
+        display: flex;
+        gap: 8px;
+    }
+
+    &__badge {
+        border-radius: 4px;
+        max-height: 22px;
+        padding: 2px 4px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        background: #fff7e6;
+    }
 }

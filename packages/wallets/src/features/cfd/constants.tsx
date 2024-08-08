@@ -30,7 +30,7 @@ const swapFreeDetails = {
 
 export const getMarketTypeDetails = (subAccountType?: TPlatforms.SubAccountType) =>
     ({
-        all: subAccountType === 'zero_spread' ? zeroSpreadDetails : swapFreeDetails,
+        all: subAccountType === PRODUCT.ZEROSPREAD ? zeroSpreadDetails : swapFreeDetails,
         financial: {
             description: localize('CFDs on financial instruments'),
             icon: <AccountsDmt5FinancialIcon height={48} width={48} />,
@@ -165,4 +165,11 @@ export const JURISDICTION = {
     MALTA_INVEST: 'maltainvest',
     SVG: 'svg',
     VANUATU: 'vanuatu',
+} as const;
+
+export const PRODUCT = {
+    CTRADER: 'ctrader',
+    DERIVX: 'derivx',
+    SWAPFREE: 'swap_free',
+    ZEROSPREAD: 'zero_spread',
 } as const;

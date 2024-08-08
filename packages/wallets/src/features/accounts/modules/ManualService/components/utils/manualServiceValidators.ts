@@ -1,30 +1,55 @@
 import moment from 'moment';
 import * as Yup from 'yup';
-import { localize } from '@deriv-com/translations';
+import { TTranslations } from '../../../../../../types';
 
-export const documentRequiredValidator = (documentType: string) =>
-    Yup.string().required(localize('{{type}} is required', { type: documentType }));
+export const documentRequiredValidator = (documentName: string, localize: TTranslations['localize']) =>
+    Yup.string().required(localize('{{name}} is required', { name: documentName }));
 
-export const expiryDateValidator = Yup.string()
-    .nullable()
-    .required(localize('Expiry date is required.'))
-    .test({
-        name: 'test-expiry-date-is-null',
-        test: (value, context) => {
-            if (value === null) {
-                return context.createError({ message: localize('Expiry date is required.') });
-            }
-            return true;
-        },
-    })
-    .test({
-        name: 'test-min-expiry-date',
-        test: (value, context) => {
-            if (moment(value).isBefore(new Date())) {
-                return context.createError({ message: localize('Expiry date cannot be today date or in the past') });
-            }
-            return true;
-        },
-    });
+export const getExpiryDateValidator = (localize: TTranslations['localize']) => {
+    return Yup.string()
+        .nullable()
+        .required(localize('Expiry date is required.'))
+        .test({
+            name: 'test-expiry-date-is-null',
+            test: (value, context) => {
+                if (value === null) {
+                    return context.createError({ message: localize('Expiry date is required.') });
+                }
+                return true;
+            },
+        })
+        .test({
+            name: 'test-min-expiry-date',
+            test: (value, context) => {
+                if (moment(value).isBefore(new Date())) {
+                    return context.createError({
+                        message: localize('Expiry date cannot be today date or in the past'),
+                    });
+                }
+                return true;
+            },
+        });
+};
+
+export const getDocumentNumberValidator = (documentName: string, localize: TTranslations['localize']) => {
+    return Yup.string()
+        .required(
+            localize('{{name}} number is required.', {
+                name: documentName,
+            })
+        )
+        .max(
+            30,
+            localize('{{name}} number must be less than 30 characters.', {
+                name: documentName,
+            })
+        )
+        .matches(
+            new RegExp(/^[\w\s-]{0,30}$/g),
+            localize('Only letters, numbers, space, underscore, and hyphen are allowed for {{name}} number.', {
+                name: documentName,
+            })
+        );
+};
 
 export const fileValidator = Yup.mixed().required();

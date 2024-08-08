@@ -61,7 +61,7 @@ const MultiplierWheelPicker = ({
                             setSelectedValue={handlePickerValuesChange}
                         />
                     ) : (
-                        <Skeleton.Square width={359} height={240} />
+                        <Skeleton.Square />
                     )}
                 </div>
                 <div className='multiplier__commission'>

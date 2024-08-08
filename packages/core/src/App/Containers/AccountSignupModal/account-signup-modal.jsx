@@ -16,7 +16,7 @@ import QuestionnaireModal from '../QuestionnaireModal';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 
 import validateSignupFields from './validate-signup-fields.jsx';
-
+import { AnalyticsInitializer } from 'Utils/Analytics';
 import 'Sass/app/modules/account-signup.scss';
 
 const AccountSignup = ({
@@ -57,6 +57,7 @@ const AccountSignup = ({
 
     // didMount lifecycle hook
     React.useEffect(() => {
+        AnalyticsInitializer();
         Analytics.trackEvent('ce_virtual_signup_form', {
             action: 'signup_confirmed',
             form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',

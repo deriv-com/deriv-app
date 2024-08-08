@@ -54,7 +54,7 @@ describe('PayoutPerPointMobileInput', () => {
 
         expect(
             screen.getAllByText(
-                'You receive a payout at expiry if the spot price never touches or breaches the barrier throughout the contract duration. Otherwise, your contract will be terminated early.'
+                'You will receive a payout at expiry if the spot price never breaches the barrier throughout the contract duration. Otherwise, your contract will be terminated early.'
             ).length
         ).toBeGreaterThan(0);
     });

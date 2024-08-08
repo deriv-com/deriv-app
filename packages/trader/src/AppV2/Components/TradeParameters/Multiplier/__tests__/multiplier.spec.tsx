@@ -125,7 +125,6 @@ describe('<Multiplier />', () => {
         jest.useFakeTimers();
         mockMultiplier();
 
-        default_mock_store.modules.trade.multiplier_range_list[1];
         userEvent.click(screen.getByText(multiplier_param_label));
         userEvent.click(screen.getByText('x2'));
         userEvent.click(screen.getByText('Save'));

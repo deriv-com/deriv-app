@@ -11,6 +11,7 @@ import React, {
 import classNames from 'classnames';
 import { useDropzone } from 'react-dropzone';
 import { DerivLightDropzoneFrameIcon, DerivLightIcCloudUploadIcon, LegacyClose2pxIcon } from '@deriv/quill-icons';
+import { useTranslations } from '@deriv-com/translations';
 import { Button } from '@deriv-com/ui';
 import { IconButton, WalletText } from '../Base';
 import './Dropzone.scss';
@@ -54,11 +55,23 @@ const Dropzone: React.FC<TProps> = ({
     title = false,
     titleType = 'normal',
 }) => {
+    const { localize } = useTranslations();
+
+    const getFileErrorMessage = (errorCode: string) => {
+        switch (errorCode) {
+            case 'file-too-large':
+                return localize('File size should be 8MB or less');
+            default:
+                return localize('File uploaded is not supported');
+        }
+    };
+
     const [file, setFile] = useState<TFile | null>(
         defaultFile ? { file: defaultFile, name: defaultFile.name, preview: URL.createObjectURL(defaultFile) } : null
     );
+
     const [showHoverMessage, setShowHoverMessage] = useState(false);
-    const [showErrorMessage, setShowErrorMessage] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string>();
     const { getInputProps, getRootProps, open, rootRef } = useDropzone({
         accept: fileFormats,
         maxSize,
@@ -78,10 +91,13 @@ const Dropzone: React.FC<TProps> = ({
             }
         },
         onDropAccepted() {
-            setShowErrorMessage(false);
+            setErrorMessage(undefined);
         },
         onDropRejected(fileRejections) {
-            if (fileRejections?.[0]?.errors?.[0].message) setShowErrorMessage(true);
+            if (fileRejections?.[0]?.errors?.[0].message) {
+                const message = getFileErrorMessage(fileRejections[0].errors[0].code);
+                setErrorMessage(message);
+            }
         },
     });
 
@@ -97,7 +113,7 @@ const Dropzone: React.FC<TProps> = ({
     }, []);
 
     const resetError = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        setShowErrorMessage(false);
+        setErrorMessage(undefined);
         e.stopPropagation();
     }, []);
 
@@ -112,12 +128,12 @@ const Dropzone: React.FC<TProps> = ({
                     'wallets-dropzone',
                     { 'wallets-dropzone--hover': showHoverMessage },
                     { 'wallets-dropzone--active': file },
-                    { 'wallets-dropzone--error': showErrorMessage }
+                    { 'wallets-dropzone--error': errorMessage }
                 )}
             >
                 <div className='wallets-dropzone__content'>
                     {showHoverMessage && <WalletText size='sm'>{hoverMessage}</WalletText>}
-                    {!showHoverMessage && !showErrorMessage && !file && (
+                    {!showHoverMessage && !errorMessage && !file && (
                         <div className='wallets-dropzone__placeholder'>
                             <div className='wallets-dropzone__placeholder-icon'>{icon}</div>
                             {title && (
@@ -178,7 +194,7 @@ const Dropzone: React.FC<TProps> = ({
                             )}
                         </React.Fragment>
                     )}
-                    {showErrorMessage && (
+                    {errorMessage && (
                         <div className='wallets-dropzone__error'>
                             <IconButton
                                 className='wallets-dropzone__remove-file'
@@ -188,7 +204,7 @@ const Dropzone: React.FC<TProps> = ({
                                 size='sm'
                             />
                             <WalletText align='center' color='red'>
-                                File uploaded is not supported
+                                {errorMessage}
                             </WalletText>
                         </div>
                     )}

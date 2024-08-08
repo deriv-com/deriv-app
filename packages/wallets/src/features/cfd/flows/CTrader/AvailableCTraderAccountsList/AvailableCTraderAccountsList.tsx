@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
+import { Text } from '@deriv-com/ui';
 import { TradingAccountCard, WalletError } from '../../../../../components';
-import { WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { PlatformDetails } from '../../../constants';
 import { CTraderSuccessModal } from '../../../modals/CTraderSuccessModal';
+import { Localize } from '@deriv-com/translations';
 
 const AvailableCTraderAccountsList: React.FC = () => {
     const { hide, show } = useModal();
@@ -19,7 +19,6 @@ const AvailableCTraderAccountsList: React.FC = () => {
         status,
     } = useCreateOtherCFDAccount();
     const { data: activeWallet } = useActiveWalletAccount();
-    const { t } = useTranslation();
 
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
 
@@ -59,8 +58,10 @@ const AvailableCTraderAccountsList: React.FC = () => {
         <TradingAccountCard disabled={isCFDAccountCreationLoading || isCFDAccountCreationSuccess} onClick={onSubmit}>
             <TradingAccountCard.Icon>{PlatformDetails.ctrader.icon}</TradingAccountCard.Icon>
             <TradingAccountCard.Content>
-                <WalletText size='sm'>{PlatformDetails.ctrader.title}</WalletText>
-                <WalletText size='xs'>{t('CFDs on financial and derived instruments with copy trading.')}</WalletText>
+                <Text size='sm'>{PlatformDetails.ctrader.title}</Text>
+                <Text size='xs'>
+                    <Localize i18n_default_text='CFDs on financial and derived instruments with copy trading.' />
+                </Text>
             </TradingAccountCard.Content>
             <TradingAccountCard.Button>
                 <LabelPairedChevronRightCaptionRegularIcon width={16} />

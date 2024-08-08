@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../utils';
 
 Blockly.Blocks.math_number = {
     init() {
@@ -26,6 +27,9 @@ Blockly.Blocks.math_number = {
             category: Blockly.Categories.Mathematical,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     meta() {
         return {
             display_name: localize('Number'),
@@ -42,7 +46,7 @@ Blockly.Blocks.math_number = {
     },
 };
 
-Blockly.JavaScript.math_number = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.math_number = block => {
     const code = block.getFieldValue('NUM');
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

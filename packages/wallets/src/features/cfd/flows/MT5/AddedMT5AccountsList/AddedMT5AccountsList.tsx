@@ -1,16 +1,16 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 import { useAuthorize, useJurisdictionStatus } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { InlineMessage, WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
-import useDevice from '../../../../../hooks/useDevice';
 import { THooks } from '../../../../../types';
-import { MarketTypeDetails, PlatformDetails } from '../../../constants';
+import { getMarketTypeDetails, PlatformDetails } from '../../../constants';
 import { MT5TradeModal, VerificationFailedModal } from '../../../modals';
 import './AddedMT5AccountsList.scss';
+import { Localize } from '@deriv-com/translations';
+import { Text, useDevice } from '@deriv-com/ui';
 
 type TProps = {
     account: THooks.MT5AccountsList;
@@ -23,10 +23,9 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         () => getVerificationStatus(account.landing_company_short || 'svg', account.status),
         [account.landing_company_short, account.status, getVerificationStatus]
     );
-    const { title } = MarketTypeDetails[account.market_type ?? 'all'];
+    const { title } = getMarketTypeDetails()[account.market_type ?? 'all'];
     const { isMobile } = useDevice();
     const { show } = useModal();
-    const { t } = useTranslation();
 
     return (
         <TradingAccountCard
@@ -45,33 +44,35 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                       );
             }}
         >
-            <TradingAccountCard.Icon>{MarketTypeDetails[account.market_type || 'all'].icon}</TradingAccountCard.Icon>
+            <TradingAccountCard.Icon className='wallets-added-mt5__icon'>
+                {getMarketTypeDetails()[account.market_type || 'all'].icon}
+            </TradingAccountCard.Icon>
             <TradingAccountCard.Content className='wallets-added-mt5__details'>
                 <div className='wallets-added-mt5__details-title'>
-                    <WalletText size='sm'>{title}</WalletText>
+                    <Text size='sm'>{title}</Text>
                     {!activeWallet?.is_virtual && (
                         <div className='wallets-added-mt5__details-title-landing-company'>
-                            <WalletText color='black' size={isMobile ? 'sm' : 'xs'}>
+                            <Text color='prominent' size={isMobile ? 'sm' : 'xs'}>
                                 {account.landing_company_short?.toUpperCase()}
-                            </WalletText>
+                            </Text>
                         </div>
                     )}
                 </div>
                 {!(jurisdictionStatus.is_failed || jurisdictionStatus.is_pending) && (
-                    <WalletText size='sm' weight='bold'>
+                    <Text size='sm' weight='bold'>
                         {account.display_balance}
-                    </WalletText>
+                    </Text>
                 )}
 
-                <WalletText as='p' size='xs'>
+                <Text as='p' size='xs'>
                     {account.display_login}
-                </WalletText>
+                </Text>
                 {jurisdictionStatus.is_pending && (
                     <div className='wallets-added-mt5__details-badge'>
                         <InlineMessage size='xs' type='warning' variant='outlined'>
-                            <WalletText color='warning' size='2xs' weight='bold'>
-                                {t('Pending verification')}
-                            </WalletText>
+                            <Text color='warning' size='2xs' weight='bold'>
+                                <Localize i18n_default_text='Pending verification' />
+                            </Text>
                         </InlineMessage>
                     </div>
                 )}
@@ -79,8 +80,8 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 {jurisdictionStatus.is_failed && (
                     <div className='wallets-added-mt5__details-badge'>
                         <InlineMessage size='xs' type='error' variant='outlined'>
-                            <WalletText color='error' size='2xs' weight='bold'>
-                                {t('Verification failed.')}{' '}
+                            <Text color='error' size='2xs' weight='bold'>
+                                <Localize i18n_default_text='Verification failed' />
                                 <a
                                     onClick={() =>
                                         show(
@@ -93,9 +94,9 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                                         )
                                     }
                                 >
-                                    {t('Why?')}
+                                    <Localize i18n_default_text='Why?' />
                                 </a>
-                            </WalletText>
+                            </Text>
                         </InlineMessage>
                     </div>
                 )}

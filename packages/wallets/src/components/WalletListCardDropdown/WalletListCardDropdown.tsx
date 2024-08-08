@@ -1,14 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
-import { Trans, useTranslation } from 'react-i18next';
 import { useEventListener, useOnClickOutside } from 'usehooks-ts';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { LabelPairedChevronDownLgFillIcon } from '@deriv/quill-icons';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
+import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
-import { THooks, TSubscribedBalance } from '../../types';
+import { THooks } from '../../types';
 import reactNodeToString from '../../utils/react-node-to-string';
-import { WalletText, WalletTextField } from '../Base';
+import { WalletTextField } from '../Base';
 import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import './WalletListCardDropdown.scss';
 
@@ -19,25 +21,21 @@ type WalletList = {
     text: React.ReactNode;
 }[];
 
-const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
+const WalletListCardDropdown = () => {
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const switchWalletAccount = useWalletAccountSwitcher();
-    const { t } = useTranslation();
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    const { data: balanceData } = balance;
+    const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
     const loginId = activeWallet?.loginid;
     const [inputWidth, setInputWidth] = useState('auto');
     const [isOpen, setIsOpen] = useState(false);
     const [selectedText, setSelectedText] = useState('');
 
-    const generateTitleText = useCallback(
-        (wallet: THooks.WalletAccountsList) => {
-            return t(`${wallet?.currency} Wallet`);
-        },
-        [t]
-    );
+    const generateTitleText = useCallback((wallet: THooks.WalletAccountsList) => {
+        return `${wallet?.currency} Wallet`;
+    }, []);
 
     const walletList: WalletList = useMemo(() => {
         return (
@@ -111,9 +109,9 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
                     {isOpen && (
                         <ul className='wallets-listcard-dropdown__items'>
                             <div className='wallets-listcard-dropdown__items-header'>
-                                <WalletText size='sm' weight='bold'>
-                                    <Trans defaults='Select Wallet' />
-                                </WalletText>
+                                <Text size='sm' weight='bold'>
+                                    <Localize i18n_default_text='Select Wallet' />
+                                </Text>
                             </div>
                             {walletList.map((wallet, index) => (
                                 <li
@@ -127,21 +125,24 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
                                     <div className='wallets-listcard-dropdown__list-item'>
                                         <WalletCurrencyIcon currency={wallet.currency ?? 'USD'} rounded />
                                         <div className='wallets-listcard-dropdown__list-content'>
-                                            <WalletText size='2xs'>
-                                                <Trans defaults={`${wallet.currency} Wallet`} />
-                                            </WalletText>
-                                            <WalletText size='sm' weight='bold'>
-                                                <Trans
-                                                    defaults={displayMoney?.(
-                                                        balanceData?.accounts?.[wallet.loginid]?.balance ?? 0,
-                                                        wallet?.currency || '',
+                                            <Text size='2xs'>{wallet.currency} Wallet</Text>
+                                            {isBalanceLoading ? (
+                                                <div
+                                                    className='wallets-skeleton wallets-list-card-dropdown__balance-loader'
+                                                    data-testid='dt_wallets_list_card_dropdown_balance_loader'
+                                                />
+                                            ) : (
+                                                <Text size='sm' weight='bold'>
+                                                    {displayMoney(
+                                                        balanceData?.[wallet.loginid]?.balance,
+                                                        wallet?.currency,
                                                         {
                                                             fractional_digits:
                                                                 wallet?.currencyConfig?.fractional_digits,
                                                         }
                                                     )}
-                                                />
-                                            </WalletText>
+                                                </Text>
+                                            )}
                                         </div>
                                     </div>
                                 </li>

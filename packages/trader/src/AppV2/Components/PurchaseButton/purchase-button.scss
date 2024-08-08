@@ -1,0 +1,57 @@
+.purchase-button {
+    flex-direction: column-reverse;
+    padding-block: var(--core-spacing-400);
+    align-items: flex-end;
+    height: var(--core-size-2800);
+    gap: 0px;
+
+    &:nth-child(2):not(.purchase-button--loading) {
+        align-items: flex-start;
+    }
+
+    &--single {
+        align-items: center;
+        justify-content: center;
+
+        .purchase-button__information__wrapper {
+            justify-content: center;
+            gap: var(--core-spacing-400);
+        }
+    }
+
+    &--loading {
+        align-items: center;
+    }
+
+    &__information {
+        &__wrapper {
+            width: 100%;
+            display: inline-flex;
+            justify-content: space-between;
+            align-items: center;
+
+            &--reverse {
+                flex-direction: row-reverse;
+            }
+
+            &--disabled-placeholder {
+                min-height: var(--core-size-900);
+            }
+        }
+
+        &__item {
+            color: var(--core-color-solid-slate-50);
+        }
+    }
+
+    &__wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0px var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-400);
+        gap: var(--core-spacing-400);
+        position: sticky;
+        z-index: 2; // chart has z-index: 1, it should not push purchase buttons down
+        bottom: 0;
+    }
+}

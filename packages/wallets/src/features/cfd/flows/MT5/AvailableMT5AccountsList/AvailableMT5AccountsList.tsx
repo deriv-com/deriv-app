@@ -1,10 +1,11 @@
 import React, { useCallback } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
-import { TradingAccountCard, WalletText } from '../../../../../components';
+import { Text } from '@deriv-com/ui';
+import { TradingAccountCard } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
-import { MarketTypeDetails } from '../../../constants';
+import { getMarketTypeDetails } from '../../../constants';
 import { JurisdictionModal, MT5PasswordModal } from '../../../modals';
 
 type TProps = {
@@ -14,7 +15,7 @@ type TProps = {
 const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { setModalState, show } = useModal();
-    const { description, title } = MarketTypeDetails[account.market_type || 'all'];
+    const { description, title } = getMarketTypeDetails()[account.market_type || 'all'];
 
     const onButtonClick = useCallback(() => {
         activeWallet?.is_virtual
@@ -25,12 +26,14 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
 
     return (
         <TradingAccountCard onClick={onButtonClick}>
-            <TradingAccountCard.Icon>{MarketTypeDetails[account.market_type || 'all'].icon}</TradingAccountCard.Icon>
-            <TradingAccountCard.Content>
-                <WalletText size='sm'>{title}</WalletText>
-                <WalletText size='xs'>{description}</WalletText>
+            <TradingAccountCard.Icon className='wallets-available-mt5__icon'>
+                {getMarketTypeDetails()[account.market_type || 'all'].icon}
+            </TradingAccountCard.Icon>
+            <TradingAccountCard.Content className='wallets-available-mt5__details'>
+                <Text size='sm'>{title}</Text>
+                <Text size='xs'>{description}</Text>
             </TradingAccountCard.Content>
-            <TradingAccountCard.Button>
+            <TradingAccountCard.Button className='wallets-available-mt5__icon'>
                 <LabelPairedChevronRightCaptionRegularIcon width={16} />
             </TradingAccountCard.Button>
         </TradingAccountCard>

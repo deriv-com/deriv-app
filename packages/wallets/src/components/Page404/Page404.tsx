@@ -1,5 +1,4 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import useDevice from '../../hooks/useDevice';
 import { WalletButton, WalletText } from '../Base';
@@ -35,7 +34,7 @@ const Page404 = () => {
                         size={buttonSize}
                     >
                         <WalletText color='white' size={buttonTextSize} weight='bold'>
-                            <Trans defaults="Return to Trader's Hub" />
+                            Return to Trader&apos;s Hub
                         </WalletText>
                     </WalletButton>
                 )}

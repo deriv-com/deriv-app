@@ -292,7 +292,7 @@ export default class AppStore {
                                 .filter(block => block.type === 'trade_definition_market')
                                 .forEach(block => {
                                     runIrreversibleEvents(() => {
-                                        const fake_create_event = new window.Blockly.Events.BlockCreate(this);
+                                        const fake_create_event = new window.Blockly.Events.BlockCreate(block);
                                         window.Blockly.Events.fire(fake_create_event);
                                     });
                                 });

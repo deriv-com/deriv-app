@@ -6,7 +6,6 @@ export type TError = {
     fields: string[] | string;
     is_ask_authentication: boolean;
     is_ask_financial_risk_approval: boolean;
-    is_ask_uk_funds_protection: boolean;
     is_self_exclusion_max_turnover_set: boolean;
     is_show_full_page: boolean;
     message?: string;

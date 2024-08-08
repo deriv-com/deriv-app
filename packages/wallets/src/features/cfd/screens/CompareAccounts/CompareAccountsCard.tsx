@@ -1,7 +1,7 @@
 import React from 'react';
 import { WalletText } from '../../../../components';
 import { THooks, TPlatforms } from '../../../../types';
-import { CFD_PLATFORMS } from '../../constants';
+import { PRODUCT } from '../../constants';
 import CompareAccountsDescription from './CompareAccountsDescription';
 import CompareAccountsPlatformLabel from './CompareAccountsPlatformLabel';
 import CompareAccountsTitleIcon from './CompareAccountsTitleIcon';
@@ -14,6 +14,7 @@ type TCompareAccountsCard = {
     isEuUser: boolean;
     marketType: THooks.AvailableMT5Accounts['market_type'];
     platform: TPlatforms.All;
+    product?: THooks.AvailableMT5Accounts['product'];
     shortCode: THooks.AvailableMT5Accounts['shortcode'];
 };
 
@@ -23,13 +24,14 @@ const CompareAccountsCard = ({
     isEuUser,
     marketType,
     platform,
+    product,
     shortCode,
 }: TCompareAccountsCard) => {
     return (
         <div>
             <div className='wallets-compare-accounts-card'>
                 <CompareAccountsPlatformLabel platform={platform} />
-                {platform === CFD_PLATFORMS.CTRADER && (
+                {product === PRODUCT.ZEROSPREAD && (
                     <div className='wallets-compare-accounts-card__banner'>
                         <WalletText color='white' size='xs' weight='bold'>
                             New!
@@ -40,12 +42,15 @@ const CompareAccountsCard = ({
                     isDemo={isDemo}
                     marketType={marketType}
                     platform={platform}
+                    product={product}
                     shortCode={shortCode}
                 />
                 <CompareAccountsDescription
                     isDemo={isDemo}
                     isEuRegion={isEuRegion}
                     marketType={marketType}
+                    platform={platform}
+                    product={product}
                     shortCode={shortCode}
                 />
                 <InstrumentsLabelHighlighted
@@ -53,6 +58,7 @@ const CompareAccountsCard = ({
                     isEuRegion={isEuRegion}
                     marketType={marketType}
                     platform={platform}
+                    product={product}
                     shortCode={shortCode}
                 />
                 {isEuUser && (

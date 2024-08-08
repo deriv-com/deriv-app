@@ -1,7 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { WalletText } from '../../../../components';
-import { THooks } from '../../../../types';
+import { THooks, TPlatforms } from '../../../../types';
+import { CFD_PLATFORMS } from '../../constants';
 import { getJurisdictionDescription } from './compareAccountsConfig';
 import './CompareAccountsDescription.scss';
 
@@ -9,11 +10,23 @@ type TCompareAccountsDescription = {
     isDemo: boolean;
     isEuRegion: boolean;
     marketType: THooks.AvailableMT5Accounts['market_type'];
+    platform: TPlatforms.All;
+    product?: THooks.AvailableMT5Accounts['product'];
     shortCode: THooks.AvailableMT5Accounts['shortcode'];
 };
 
-const CompareAccountsDescription = ({ isDemo, isEuRegion, marketType, shortCode }: TCompareAccountsDescription) => {
-    const marketTypeShortCode = marketType?.concat('_', shortCode ?? '');
+const CompareAccountsDescription = ({
+    isDemo,
+    isEuRegion,
+    marketType,
+    platform,
+    product,
+    shortCode,
+}: TCompareAccountsDescription) => {
+    const marketTypeShortCode =
+        platform === CFD_PLATFORMS.MT5 && marketType === 'all'
+            ? `${marketType}_${product}_${shortCode}`
+            : marketType?.concat('_', shortCode ?? '');
     const jurisdictionData = getJurisdictionDescription(marketTypeShortCode ?? '');
 
     return (

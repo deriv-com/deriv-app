@@ -3,7 +3,7 @@ import { Divider, Tooltip } from '@deriv-com/ui';
 import { WalletText } from '../../../../components';
 import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TPlatforms } from '../../../../types';
-import { CFD_PLATFORMS } from '../../constants';
+import { CFD_PLATFORMS, MARKET_TYPE, PRODUCT } from '../../constants';
 import { ACCOUNT_ICONS, MARKET_TYPE_SHORTCODE } from './constants';
 import './CompareAccountsTitleIcon.scss';
 
@@ -13,14 +13,23 @@ type TCompareAccountsTitleIcon = {
     isDemo: boolean;
     marketType: TMarketType;
     platform: TPlatforms.All;
+    product?: THooks.AvailableMT5Accounts['product'];
     shortCode: THooks.AvailableMT5Accounts['shortcode'];
 };
 
-const getAccountIcon = (platform: TPlatforms.All, marketType: TMarketType) => {
+const getAccountIcon = (
+    platform: TPlatforms.All,
+    marketType: TMarketType,
+    product?: THooks.AvailableMT5Accounts['product']
+) => {
     if (platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER) {
         return ACCOUNT_ICONS[platform];
     }
-    return (marketType && ACCOUNT_ICONS[marketType]) || ACCOUNT_ICONS.default;
+    return (
+        (product === PRODUCT.ZEROSPREAD && ACCOUNT_ICONS[product]) ||
+        (marketType && ACCOUNT_ICONS[marketType]) ||
+        ACCOUNT_ICONS.default
+    );
 };
 
 type TMarketWithShortCode = `${TMarketType}_${string}`;
@@ -41,8 +50,10 @@ const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms.OtherA
             return 'Financial - Vanuatu';
         case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
             return 'Financial - Labuan';
-        case MARKET_TYPE_SHORTCODE.ALL_SVG:
+        case MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG:
             return isDemo ? 'Swap-Free Demo' : 'Swap-Free - SVG';
+        case MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI:
+            return isDemo ? 'Zero Spread Demo' : 'Zero Spread - BVI';
         case CFD_PLATFORMS.DXTRADE:
             return isDemo ? 'Deriv X Demo' : 'Deriv X';
         case CFD_PLATFORMS.CTRADER:
@@ -52,9 +63,13 @@ const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms.OtherA
     }
 };
 
-const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: TCompareAccountsTitleIcon) => {
-    const marketTypeShortCode: TMarketWithShortCode = `${marketType}_${shortCode}`;
-    const jurisdictionCardIcon = getAccountIcon(platform, marketType);
+const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, product, shortCode }: TCompareAccountsTitleIcon) => {
+    const marketTypeShortCode: TMarketWithShortCode =
+        platform === CFD_PLATFORMS.MT5 && marketType === MARKET_TYPE.ALL
+            ? `${marketType}_${product}_${shortCode}`
+            : `${marketType}_${shortCode}`;
+
+    const jurisdictionCardIcon = getAccountIcon(platform, marketType, product);
 
     const jurisdictionCardTitle =
         platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER

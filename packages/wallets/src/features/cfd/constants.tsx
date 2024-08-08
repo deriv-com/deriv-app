@@ -5,6 +5,7 @@ import {
     AccountsDmt5FinancialIcon,
     AccountsDmt5StandardIcon,
     AccountsDmt5SwfIcon,
+    AccountsDmt5ZrsIcon,
     DerivProductDerivXBrandDarkWordmarkIcon,
     LabelPairedLinuxXlIcon,
     LabelPairedMacosXlIcon,
@@ -16,13 +17,20 @@ import { localize } from '@deriv-com/translations';
 import { TPlatforms } from '../../types';
 import { ctraderLinks, whiteLabelLinks } from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 
+const zeroSpreadDetails = {
+    description: localize('Zero spread CFDs on financial and derived instruments'),
+    icon: <AccountsDmt5ZrsIcon height={48} width={48} />,
+    title: 'Zero Spread',
+};
+const swapFreeDetails = {
+    description: localize('Swap-free CFDs on selected financial and derived instruments'),
+    icon: <AccountsDmt5SwfIcon height={48} width={48} />,
+    title: 'Swap-Free',
+};
+
 export const getMarketTypeDetails = (subAccountType?: TPlatforms.SubAccountType) =>
     ({
-        all: {
-            description: localize('Swap-free CFDs on selected financial and derived instruments'),
-            icon: <AccountsDmt5SwfIcon height={48} width={48} />,
-            title: subAccountType === 'zero_spread' ? 'Zero Spread' : 'Swap-Free',
-        },
+        all: subAccountType === 'zero_spread' ? zeroSpreadDetails : swapFreeDetails,
         financial: {
             description: localize('CFDs on financial instruments'),
             icon: <AccountsDmt5FinancialIcon height={48} width={48} />,

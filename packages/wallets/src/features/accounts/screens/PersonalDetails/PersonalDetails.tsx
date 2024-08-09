@@ -146,7 +146,6 @@ const PersonalDetails = () => {
                                     touched?.taxResidence && !formValues.taxResidence ? taxResidenceValidator() : ''
                                 }
                                 isFullWidth
-                                isRequired
                                 label='Tax residence*'
                                 list={residenceList.map(residence => ({
                                     text: residence.text,

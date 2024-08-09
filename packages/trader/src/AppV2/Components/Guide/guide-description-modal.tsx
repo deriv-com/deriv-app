@@ -1,10 +1,10 @@
 import React from 'react';
 import { ActionSheet, Heading, Chip, Text } from '@deriv-com/quill-ui';
+import { VideoPlayer } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { clickAndKeyEventHandler } from '@deriv/shared';
 import { AVAILABLE_CONTRACTS, CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
 import { getDescriptionVideoIds } from 'AppV2/Utils/contract-description-utils';
-import VideoPlayer from 'App/Components/Elements/VideoPlayer';
 import TradeDescription from './Description/trade-description';
 import VideoPreview from './Description/video-preview';
 

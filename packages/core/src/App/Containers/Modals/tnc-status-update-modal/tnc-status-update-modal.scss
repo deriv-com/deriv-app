@@ -23,7 +23,6 @@
         align-items: flex-start;
         align-self: stretch;
         .dc-text {
-            font-size: 1.4rem;
             @include mobile-screen {
                 font-size: 1.2rem;
             }

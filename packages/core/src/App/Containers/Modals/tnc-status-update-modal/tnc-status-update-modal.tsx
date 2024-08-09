@@ -21,14 +21,14 @@ const TncStatusUpdateModal = observer(() => {
             className='tnc-status-update-modal-wrapper'
             is_open={is_tnc_update_modal_open}
             has_close_icon={false}
-            width='440px'
+            width='44rem'
         >
             <div className='tnc-status-update-modal'>
                 <Text size='s' weight='bold' className='tnc-status-update-modal__header'>
                     <Localize i18n_default_text="Updated T&C's" />
                 </Text>
                 <div className='tnc-status-update-modal__text-container'>
-                    <Text as='xs'>
+                    <Text size='xs'>
                         <Localize
                             i18n_default_text='Please review our updated <0>terms and conditions</0>.'
                             components={[
@@ -41,7 +41,7 @@ const TncStatusUpdateModal = observer(() => {
                             ]}
                         />
                     </Text>
-                    <Text as='xs'>
+                    <Text size='xs'>
                         <Localize i18n_default_text='By continuing you understand and accept the changes.' />
                     </Text>
                 </div>

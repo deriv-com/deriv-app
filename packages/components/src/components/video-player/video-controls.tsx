@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Text, Icon } from '@deriv/components';
+import Icon from '../icon';
+import Text from '../text';
 import { formatDurationTime } from '@deriv/shared';
 import VolumeControl from './volume-control';
 import PlaybackRateControl from './playback-rate-control';

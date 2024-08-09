@@ -70,8 +70,6 @@ const useAccountStatus = () => {
             is_social_signup: status.has('social_signup'),
             /** client has not completed the trading experience questionnaire. */
             is_trading_experience_not_complete: status.has('trading_experience_not_complete'),
-            /** client has acknowledged UKGC funds protection notice. */
-            is_ukgc_funds_protection: status.has('ukgc_funds_protection'),
             /** client cannot deposit or buy contracts, but can withdraw or sell contracts. */
             is_unwelcome: status.has('unwelcome'),
             /** deposits allowed but withdrawals are not allowed. */

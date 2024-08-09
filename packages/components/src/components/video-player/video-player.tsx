@@ -11,10 +11,11 @@ type TVideoPlayerProps = {
     data_testid?: string;
     height?: string;
     is_mobile?: boolean;
+    muted?: boolean;
     src: string;
 };
 
-const VideoPlayer = ({ className, data_testid, height, is_mobile, src }: TVideoPlayerProps) => {
+const VideoPlayer = ({ className, data_testid, height, is_mobile, muted = false, src }: TVideoPlayerProps) => {
     const should_autoplay =
         (!isSafariBrowser() || (is_mobile && mobileOSDetect() !== 'iOS' && mobileOSDetect() !== 'unknown')) ?? true;
 
@@ -22,7 +23,7 @@ const VideoPlayer = ({ className, data_testid, height, is_mobile, src }: TVideoP
     const [has_enlarged_dot, setHasEnlargedDot] = React.useState(false);
     const [is_animated, setIsAnimated] = React.useState(true);
     const [is_playing, setIsPlaying] = React.useState(false);
-    const [is_muted, setIsMuted] = React.useState(false);
+    const [is_muted, setIsMuted] = React.useState(muted);
     const [playback_rate, setPlaybackRate] = React.useState(1);
     const [show_controls, setShowControls] = React.useState(!should_autoplay);
     const [shift_X, setShiftX] = React.useState(0);

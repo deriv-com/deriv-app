@@ -89,7 +89,7 @@ export default class ClientStore extends BaseStore {
     has_changed_two_fa = false;
     landing_companies = {};
     is_new_session = false;
-
+    is_tradershub_tracking = false;
     // All possible landing companies of user between all
     standpoint = {
         svg: false,
@@ -419,6 +419,8 @@ export default class ClientStore extends BaseStore {
             setIsLandingCompanyLoaded: action.bound,
             is_cr_account: computed,
             is_mf_account: computed,
+            is_tradershub_tracking: observable,
+            setTradersHubTracking: action.bound,
         });
 
         reaction(
@@ -875,6 +877,10 @@ export default class ClientStore extends BaseStore {
 
     get is_bot_allowed() {
         return this.isBotAllowed();
+    }
+
+    setTradersHubTracking(is_tradershub_tracking = false) {
+        this.is_tradershub_tracking = is_tradershub_tracking;
     }
 
     setExternalParams = params => {
@@ -1429,11 +1435,14 @@ export default class ClientStore extends BaseStore {
     }
 
     async resetVirtualBalance() {
-        Analytics.trackEvent('ce_tradershub_dashboard_form', {
-            action: 'reset_balance',
-            form_name: 'traders_hub_default',
-            account_mode: 'demo',
-        });
+        if (this.is_tradershub_tracking) {
+            Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                action: 'reset_balance',
+                form_name: 'traders_hub_default',
+                account_mode: 'demo',
+            });
+        }
+
         this.root_store.notifications.removeNotificationByKey({ key: 'reset_virtual_balance' });
         this.root_store.notifications.removeNotificationMessage({
             key: 'reset_virtual_balance',

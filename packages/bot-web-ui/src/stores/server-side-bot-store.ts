@@ -106,6 +106,7 @@ export default class ServerBotStore {
     subscriptions: { [key: string]: any } = {};
 
     pocs: { [key: string]: ProposalOpenContract } = {};
+    should_subscribe = true;
 
     constructor(root_store: RootStore) {
         this.root_store = root_store;
@@ -117,6 +118,8 @@ export default class ServerBotStore {
             active_bot: observable,
             pocs: observable,
             journal: observable,
+            should_subscribe: observable,
+            setShouldSubscribe: action,
             performance: computed,
             setListLoading: action,
             getBotList: action,
@@ -361,7 +364,11 @@ export default class ServerBotStore {
         this.transactions = {};
     };
 
-    getBotList = async (should_subscribe?: boolean) => {
+    setShouldSubscribe = (should_subscribe: boolean) => {
+        this.should_subscribe = should_subscribe;
+    };
+
+    getBotList = async () => {
         try {
             this.setListLoading(true);
             await getAPI();
@@ -371,7 +378,7 @@ export default class ServerBotStore {
             // eslint-disable-next-line no-console
             console.info('%cAUTHORIZATION SUCCESSFUL', 'color:green;');
 
-            if (should_subscribe) api_base.api?.onMessage()?.subscribe(this.onMessage);
+            if (this.should_subscribe) api_base.api?.onMessage()?.subscribe(this.onMessage);
 
             const { bot_list, error } = await api_base.api.send({ bot_list: 1 });
             if (error) {
@@ -391,11 +398,13 @@ export default class ServerBotStore {
                 this.subscribeToBotNotification(running_bot?.bot_id);
             }
 
-            if (should_subscribe && !!list.length) {
+            if (this.should_subscribe && !!list.length) {
                 this.onJournalMessage(JOURNAL_TYPE.INFO, {
                     msg: localize('Bots loaded successfully'),
                 });
             }
+
+            this.setShouldSubscribe(false);
         } catch (error) {
             // eslint-disable-next-line no-console
             console.dir(error);
@@ -461,7 +470,7 @@ export default class ServerBotStore {
                 bot_id: bot_create.bot_id,
                 msg: bot_create.message,
             });
-            this.getBotList(false);
+            this.getBotList();
         } catch (error) {
             // eslint-disable-next-line no-console
             console.dir(error);
@@ -480,7 +489,7 @@ export default class ServerBotStore {
                 return;
             }
 
-            this.getBotList(false);
+            this.getBotList();
             botNotification(bot_remove.message);
             this.onJournalMessage(JOURNAL_TYPE.INFO, {
                 msg: bot_remove.message || localize('Bot deleted successfully'),

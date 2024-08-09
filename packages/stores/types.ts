@@ -144,6 +144,7 @@ type AvailableAccount = {
     currency?: string;
     display_balance?: string;
     display_login?: string;
+    product?: TProduct;
 };
 
 type BrandConfig = {
@@ -480,6 +481,7 @@ type TClientStore = {
     is_virtual: boolean;
     is_withdrawal_lock: boolean;
     landing_company_shortcode: string;
+    is_tradershub_tracking: boolean;
     is_populating_account_list: boolean;
     local_currency_config: {
         currency: string;
@@ -615,6 +617,7 @@ type TClientStore = {
     virtual_account_loginid?: string;
     is_cr_account: boolean;
     is_mf_account: boolean;
+    setTradersHubTracking: (value: boolean) => void;
 };
 
 type TCommonStoreError = {
@@ -847,6 +850,9 @@ type TPortfolioStore = {
     positions: TPortfolioPosition[];
     removePositionById: (contract_id?: number) => void;
     setContractType: (contract_type: string) => void;
+    setAddNotificationBannerCallback: (
+        cb?: (params: { message: string; redirectTo: string; timestamp: number; title: string }, status: string) => void
+    ) => void;
 };
 
 type TAccumulatorBarriersData = {

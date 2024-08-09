@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text } from '@deriv/components';
 import { Notifications as Announcement } from '@deriv-com/ui';
 import { StandaloneBullhornRegularIcon } from '@deriv/quill-icons';
@@ -157,9 +157,8 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                         'notifications__wrapper--desktop': !is_mobile,
                     })}
                     clearNotificationsCallback={() => {
-                        Object.entries(amountAnnounce).forEach(([key]) => {
-                            (amountAnnounce as { [key: string]: boolean })[key] = false;
-                        });
+                        const announce_obj = Object.fromEntries(Object.keys(amountAnnounce).map(key => [key, false]));
+                        setAmountAnnounce(announce_obj);
                     }}
                     componentConfig={{
                         clearButtonText: localize('Mark all as read'),

@@ -4,11 +4,7 @@ import BinaryRoutes from '../../Components/Routes';
 import ErrorComponent from '../../Components/Errors/error-component.jsx';
 import { observer, useStore } from '@deriv/stores';
 
-type TRoutes = {
-    passthrough: object;
-};
-
-const Routes = observer(({ passthrough }: TRoutes) => {
+const Routes = observer(() => {
     const { client, common } = useStore();
 
     const { is_logged_in, is_logging_in } = client;
@@ -18,7 +14,7 @@ const Routes = observer(({ passthrough }: TRoutes) => {
         return <ErrorComponent {...error} />;
     }
 
-    return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;
+    return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} />;
 });
 
 // need to wrap withRouter around connect

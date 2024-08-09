@@ -4,16 +4,19 @@ import { Localize } from '@deriv/translations';
 import getRoutesConfig from '../../Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 
-const BinaryRoutes = props => {
+type TBinaryRoutes = {
+    is_logged_in: boolean;
+    is_logging_in: boolean;
+};
+
+const BinaryRoutes = (props: TBinaryRoutes) => {
     return (
         <React.Suspense
-            fallback={() => {
-                return (
-                    <div>
-                        <Localize i18n_default_text='Loading...' />
-                    </div>
-                );
-            }}
+            fallback={
+                <div>
+                    <Localize i18n_default_text='Loading...' />
+                </div>
+            }
         >
             <Switch>
                 {getRoutesConfig().map(route => (

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import {
     useDocumentUpload,
     useIdentityDocumentVerificationAdd,
@@ -41,6 +41,7 @@ const screens = {
     idvScreen: <IDVDocumentUpload />,
     loadingScreen: <Loading />,
     manualScreen: <ManualDocumentUpload />,
+    mt5PasswordModal: <></>,
     onfidoScreen: <Onfido />,
     personalDetailsScreen: <PersonalDetails />,
     poaScreen: <PoaScreen />,
@@ -135,7 +136,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             if (serviceStatus === 'pending' || serviceStatus === 'verified') {
                 if (shouldSubmitPOA) return 'poaScreen';
                 if (shouldFillPersonalDetails) return 'personalDetailsScreen';
-                show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
+                return 'mt5PasswordModal';
             }
             if (service === 'idv') return 'idvScreen';
             if (service === 'onfido') return 'onfidoScreen';
@@ -147,9 +148,6 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         isSuccessPOIStatus,
         shouldSubmitPOA,
         shouldFillPersonalDetails,
-        show,
-        selectedMarketType,
-        platform,
         isErrorManualDocumentUpload,
         errorManualDocumentUpload,
     ]);
@@ -325,6 +323,12 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             uploadDocument,
         ]
     );
+
+    useEffect(() => {
+        if (initialScreenId === 'mt5PasswordModal') {
+            show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
+        }
+    }, [initialScreenId, show, selectedMarketType, platform]);
 
     return (
         <FlowProvider

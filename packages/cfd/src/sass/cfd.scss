@@ -205,14 +205,6 @@
         display: flex;
         align-self: baseline;
         margin-inline-start: -0.8rem;
-        .dc-text {
-            font-size: var(--text-size-xxs);
-            text-align: var(--text-align-left);
-            & > a {
-                font-weight: bold;
-                text-transform: lowercase;
-            }
-        }
     }
     &-info,
     &__checkbox {

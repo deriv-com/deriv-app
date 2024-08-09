@@ -24,7 +24,7 @@ const TncStatusUpdateModal = observer(() => {
             width='44rem'
         >
             <div className='tnc-status-update-modal'>
-                <Text size='s' weight='bold' className='tnc-status-update-modal__header'>
+                <Text weight='bold' className='tnc-status-update-modal__header'>
                     <Localize i18n_default_text="Updated T&C's" />
                 </Text>
                 <div className='tnc-status-update-modal__text-container'>

@@ -1,31 +1,20 @@
 .dc-modal__container_tnc-status-update-modal-wrapper {
     padding: 24px;
     @include mobile-screen {
-        padding: 16px;
+        padding: 1.6rem;
     }
 }
 
 .tnc-status-update-modal {
     display: flex;
     flex-direction: column;
-    gap: 24px;
-
-    &__header {
-        @include mobile-screen {
-            font-size: 1.4rem;
-        }
-    }
+    gap: 2.4rem;
 
     &__text-container {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         align-self: stretch;
-        .dc-text {
-            @include mobile-screen {
-                font-size: 1.2rem;
-            }
-        }
     }
 
     &__button {
@@ -33,7 +22,7 @@
     }
 
     @include mobile-screen {
-        gap: 16px;
+        gap: 1.6rem;
     }
 }
 

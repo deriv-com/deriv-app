@@ -21,6 +21,11 @@ jest.mock('@deriv/shared', () => ({
     },
 }));
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
+
 describe('<TncStatusUpdateModal />', () => {
     let modal_root_el: HTMLDivElement;
 
@@ -60,21 +65,12 @@ describe('<TncStatusUpdateModal />', () => {
         expect(screen.queryByText('Please review our updated terms and conditions')).not.toBeInTheDocument();
     });
 
-    it('should render the TncStatusUpdateModal component', async () => {
-        renderComponent({});
-        expect(screen.getByText("Updated T&C's")).toBeInTheDocument();
-    });
-
-    it('should render TncStatusUpdateModal component with Messages and Button', async () => {
+    it('Should render TncStatusUpdateModal with correct content and verify that clicking the button triggers the API call and toggles the modal.', async () => {
         renderComponent({});
         expect(screen.getByText("Updated T&C's")).toBeInTheDocument();
         expect(screen.getByText('By continuing you understand and accept the changes.')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Continue' })).toBeInTheDocument();
-    });
-
-    it('should render TncStatusUpdateModal click on Button to called toggle modal function', async () => {
-        renderComponent({});
         const continue_button = screen.getByRole('button', { name: 'Continue' });
+
         await userEvent.click(continue_button);
         expect(WS.tncApproval).toBeCalled();
         expect(WS.getSettings).toBeCalled();

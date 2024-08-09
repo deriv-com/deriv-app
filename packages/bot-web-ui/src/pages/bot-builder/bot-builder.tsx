@@ -14,6 +14,7 @@ import SaveModal from '../dashboard/load-bot-preview/save-modal';
 import BotBuilderTourHandler from '../tutorials/dbot-tours/bot-builder-tour';
 import QuickStrategy1 from './quick-strategy';
 import WorkspaceWrapper from './workspace-wrapper';
+import Accumulators from '../chart/AccumulatorsStats';
 
 const BotBuilder = observer(() => {
     const { ui } = useStore();
@@ -122,6 +123,7 @@ const BotBuilder = observer(() => {
                         <WorkspaceWrapper />
                     </div>
                 )}
+                <Accumulators />
             </div>
             {active_tab === 1 && <BotBuilderTourHandler is_mobile={!is_desktop} />}
             {/* removed this outside from toolbar becuase it needs to loaded seperately without dependency */}

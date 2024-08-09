@@ -549,7 +549,7 @@ export default class LoadModalStore implements ILoadModalStore {
                 this.local_workspace = Blockly.inject(ref, {
                     media: `${__webpack_public_path__}media/`, // eslint-disable-line
                     zoom: {
-                        wheel: false,
+                        wheel: true,
                         startScale: config.workspaces.previewWorkspaceStartScale,
                     },
                     readOnly: true,

@@ -12,6 +12,7 @@ import DBotStore from './dbot-store';
 import { isAllRequiredBlocksEnabled, updateDisabledBlocks, validateErrorOnBlockDelete } from './utils';
 
 import { loadBlockly } from './blockly';
+import Accumulators from '../services/api/accumlators';
 
 class DBot {
     constructor() {
@@ -20,6 +21,7 @@ class DBot {
         this.before_run_funcs = [];
         this.symbol = null;
         this.is_bot_running = false;
+        this.accumlators = null;
     }
 
     /**
@@ -31,6 +33,9 @@ class DBot {
         api_base.init();
         this.interpreter = Interpreter();
         const that = this;
+        const accumlators = new Accumulators();
+        this.accumlators = accumlators;
+        let called = false;
         Blockly.Blocks.trade_definition_tradetype.onchange = function (event) {
             if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
                 return;
@@ -41,6 +46,27 @@ class DBot {
             const { name, type } = event;
 
             if (type === Blockly.Events.BLOCK_CHANGE) {
+                const trade_type_accumlators = this.getFieldValue('TRADETYPE_LIST');
+                const is_accummulator = trade_type_accumlators === 'accumulator';
+                if (is_accummulator) {
+                    const request = {
+                        amount: 1,
+                        basis: 'stake',
+                        contract_type: 'ACCU',
+                        currency: 'USD',
+                        growth_rate: 0.03,
+                        proposal: 1,
+                        subscribe: 1,
+                        symbol: '1HZ100V',
+                    };
+                    if (!called) {
+                        called = true;
+                        const { dashboard } = DBotStore.instance;
+                        accumlators.requestAccumulators(request, dashboard);
+                        accumlators.getAccumulatorStats(dashboard);
+                    }
+                }
+
                 const is_symbol_list_change = name === 'SYMBOL_LIST';
                 const is_trade_type_cat_list_change = name === 'TRADETYPECAT_LIST';
 

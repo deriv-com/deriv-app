@@ -24,7 +24,7 @@ const MultiplierWheelPicker = ({
     setMultiplier,
 }: TMultiplierWheelPickerProps) => {
     const multiplier_array = multiplier_range_list.map(item => ({ value: item.text }));
-    const initial_multiplier = React.useRef<number>();
+    const initial_multiplier = React.useRef<number>(multiplier);
     const selected_multiplier = React.useRef<number>(multiplier);
 
     useEffect(() => {

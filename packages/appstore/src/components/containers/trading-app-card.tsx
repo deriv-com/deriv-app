@@ -13,6 +13,7 @@ import {
 } from 'Constants/platform-config';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import {
     CFD_PLATFORMS,
@@ -58,6 +59,11 @@ const TradingAppCard = ({
     const { is_account_being_created } = cfd;
     const { account_status: { authentication } = {} } = client;
 
+    const [is_traders_dashboard_tracking_enabled] = useGrowthbookGetFeatureValue({
+        featureFlag: 'ce_tradershub_dashboard_tracking',
+        defaultValue: false,
+    });
+
     const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
@@ -89,12 +95,15 @@ const TradingAppCard = ({
     };
 
     const openStaticPage = () => {
-        Analytics.trackEvent('ce_tradershub_dashboard_form', {
-            action: 'account_logo_push',
-            form_name: 'traders_hub_default',
-            account_mode: selected_account_type,
-            account_name: !is_real ? `${sub_title === undefined ? name : sub_title}` : name,
-        });
+        if (is_traders_dashboard_tracking_enabled) {
+            Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                action: 'account_logo_push',
+                form_name: 'traders_hub_default',
+                account_mode: selected_account_type,
+                account_name: !is_real ? `${sub_title === undefined ? name : sub_title}` : name,
+            });
+        }
+
         if (is_deriv_platform) {
             switch (name) {
                 case DERIV_PLATFORM_NAMES.TRADER:

@@ -28,9 +28,6 @@ const MultiplierWheelPicker = ({
     const selected_multiplier = React.useRef<number>(multiplier);
 
     useEffect(() => {
-        if (!initial_multiplier.current && multiplier) {
-            initial_multiplier.current = multiplier;
-        }
         return () => {
             if (initial_multiplier.current && initial_multiplier.current !== selected_multiplier.current) {
                 setMultiplier(initial_multiplier.current);

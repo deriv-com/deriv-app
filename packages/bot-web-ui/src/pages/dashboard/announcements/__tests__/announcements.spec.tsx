@@ -40,48 +40,6 @@ describe('Announcements', () => {
         );
     });
 
-    it('the list of announcements should be displayed, and clicking on the first one should decrease the indicator count from 3 to 2.', async () => {
-        const { container } = render(<Announcements handleTabChange={mockHandleTabChange} is_mobile={true} />, {
-            wrapper,
-        });
-        const button = screen.getByTestId('btn-announcements');
-        userEvent.click(button);
-
-        await waitFor(() => {
-            // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
-            const notification_button = container.querySelectorAll('.notification__button')[0];
-
-            expect(notification_button).toBeInTheDocument();
-
-            if (notification_button) {
-                userEvent.click(notification_button);
-            }
-        }).then(() => {
-            expect(screen.getByTestId('announcements__amount')).toHaveTextContent('2');
-        });
-    });
-
-    it('the list of announcements should be displayed, and clicking on the second one should decrease the indicator count from 2 to 1.', async () => {
-        const { container } = render(<Announcements handleTabChange={mockHandleTabChange} is_mobile={true} />, {
-            wrapper,
-        });
-        const button_announcements = screen.getByTestId('btn-announcements');
-        userEvent.click(button_announcements);
-
-        await waitFor(() => {
-            // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
-            const notificationButton = container.querySelectorAll('.notification__button')[1];
-
-            expect(notificationButton).toBeInTheDocument();
-
-            if (notificationButton) {
-                userEvent.click(notificationButton);
-            }
-        }).then(() => {
-            expect(screen.getByTestId('announcements__amount')).toHaveTextContent('1');
-        });
-    });
-
     it('the list of announcements should be displayed, and clicking on the third one should decrease the indicator count and remove it, and redirect to tutorial page.', async () => {
         const { container } = render(<Announcements handleTabChange={mockHandleTabChange} is_mobile={true} />, {
             wrapper,
@@ -91,7 +49,7 @@ describe('Announcements', () => {
 
         await waitFor(() => {
             // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
-            const notification_button = container.querySelectorAll('.notification__button')[2];
+            const notification_button = container.querySelector('.notification__button');
 
             expect(notification_button).toBeInTheDocument();
 
@@ -119,7 +77,7 @@ describe('Announcements', () => {
 
         await waitFor(() => {
             // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
-            const notification_button = container.querySelectorAll('.notification__button')[2];
+            const notification_button = container.querySelector('.notification__button');
 
             expect(notification_button).toBeInTheDocument();
 

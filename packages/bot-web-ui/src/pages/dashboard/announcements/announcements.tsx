@@ -25,8 +25,6 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
     const wrapperRef = React.useRef<HTMLDivElement>(null);
     const accumulator_announcement = ANNOUNCEMENTS.ACCUMULATOR_ANNOUNCE;
     const is_active_announce_1 = amountAnnounce?.announce_1;
-    const is_active_announce_2 = amountAnnounce?.announce_2;
-    const is_active_announce_3 = amountAnnounce?.announce_3;
 
     const handleClickOutside = (event: React.MouseEvent<HTMLButtonElement>) => {
         if (
@@ -53,59 +51,19 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
         {
             icon: <IconAnnounce announce={is_active_announce_1} />,
             title: (
-                <TitleAnnounce
-                    title={localize('Moving Binary Bot strategies to Deriv Bot')}
-                    announce={is_active_announce_1}
-                />
-            ),
-            message: (
-                <MessageAnnounce
-                    message={localize('Follow these steps for a smooth transition of your strategies.')}
-                    date='6 Aug 2024 00:00 UTC'
-                    announce={is_active_announce_1}
-                />
-            ),
-            buttonAction: () => {
-                handleAnnounceSubmit({ ...amountAnnounce, announce_1: false });
-            },
-            actionText: '',
-        },
-        {
-            icon: <IconAnnounce announce={is_active_announce_2} />,
-            title: (
-                <TitleAnnounce
-                    title={localize('Impact of Google Blockly V10 update')}
-                    announce={is_active_announce_2}
-                />
-            ),
-            message: (
-                <MessageAnnounce
-                    message={localize('This update means variable names in XML files are no longer case-sensitive.')}
-                    date='6 Aug 2024 00:00 UTC'
-                    announce={is_active_announce_2}
-                />
-            ),
-            buttonAction: () => {
-                handleAnnounceSubmit({ ...amountAnnounce, announce_2: false });
-            },
-            actionText: '',
-        },
-        {
-            icon: <IconAnnounce announce={is_active_announce_3} />,
-            title: (
-                <TitleAnnounce title={localize('Accumulators is now on Deriv Bot')} announce={is_active_announce_3} />
+                <TitleAnnounce title={localize('Accumulators is now on Deriv Bot')} announce={is_active_announce_1} />
             ),
             message: (
                 <MessageAnnounce
                     message={localize('Boost your trading strategy with Accumulators.')}
                     date='20 July 2024 00:00 UTC'
-                    announce={is_active_announce_3}
+                    announce={is_active_announce_1}
                 />
             ),
             buttonAction: () => {
                 setIsAnnounceDialogOpen(true);
                 setIsOpenAnnounceList(prev => !prev);
-                handleAnnounceSubmit({ ...amountAnnounce, announce_3: false });
+                handleAnnounceSubmit({ ...amountAnnounce, announce_1: false });
             },
             actionText: '',
         },

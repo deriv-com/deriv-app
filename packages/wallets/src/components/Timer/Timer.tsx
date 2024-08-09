@@ -27,7 +27,7 @@ const Timer = ({ countStart = 60, intervalMs = 1000, onComplete }: TTimerProps) 
 
     return (
         <Text as='p' color='less-prominent' size='sm'>
-            <Localize i18n_default_text='{{counts}}s' values={{ count }} />
+            <Localize i18n_default_text='{{count}}s' values={{ count }} />
         </Text>
     );
 };

@@ -51,10 +51,11 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
             : '';
 
     const isTakeProfitOutOfRange = (value = take_profit_value) => {
-        if (!value) {
-            setErrorMessage(<Localize i18n_default_text='Please enter a take profit amount.' />);
-            return true;
+        if (value === '' || (Number(value) >= Number(min_take_profit) && Number(value) <= Number(max_take_profit))) {
+            setErrorMessage('');
+            return false;
         }
+
         if (Number(value) < Number(min_take_profit) || Number(value) > Number(max_take_profit)) {
             setErrorMessage(
                 <Localize
@@ -64,18 +65,13 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
             );
             return true;
         }
-        setErrorMessage('');
-        return false;
     };
 
     const onToggleSwitch = (new_value: boolean) => {
         setIsEnabled(new_value);
 
         if (new_value) {
-            if (take_profit_value !== '' && take_profit_value !== undefined) {
-                isTakeProfitOutOfRange();
-            }
-
+            isTakeProfitOutOfRange();
             clearTimeout(focus_timeout.current);
             focus_timeout.current = focusAndOpenKeyboard(focused_input_ref.current, input_ref.current);
         } else {
@@ -96,6 +92,10 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     };
 
     const onSave = () => {
+        if (take_profit_value === '' && is_enabled) {
+            setErrorMessage(<Localize i18n_default_text='Please enter a take profit amount.' />);
+            return;
+        }
         if (isTakeProfitOutOfRange() && is_enabled) return;
 
         onChangeMultiple({
@@ -174,7 +174,6 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                     <input
                         ref={focused_input_ref}
                         style={{ height: 0, opacity: 0, display: 'none' }}
-                        pattern='[^0-9.,]/g'
                         inputMode='decimal'
                     />
                 </ActionSheet.Portal>

@@ -112,6 +112,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         });
 
         return options;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         is_account_transfer_visible,
         is_onramp_visible,
@@ -120,6 +121,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         is_payment_agent_visible,
         p2p_notification_count,
         routes_config,
+        common.current_language,
     ]);
 
     const selected_route = useMemo(
@@ -129,11 +131,11 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
 
     const is_default_route = !!selected_route.default;
 
-    const getHeaderTitle = useMemo(() => {
+    const getHeaderTitle = () => {
         if (!is_mobile || (is_default_route && (is_loading || is_cashier_onboarding))) return localize('Cashier');
 
         return selected_route.getTitle?.();
-    }, [is_cashier_onboarding, is_default_route, is_loading, selected_route, is_mobile]);
+    };
 
     const updateActiveTab = useCallback(
         (path?: string) => {
@@ -256,7 +258,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         <FadeWrapper is_visible={is_visible} className='cashier__page-wrapper' keyname='cashier__page-wrapper'>
             <ErrorDialog error={error} />
             <div className='cashier'>
-                <PageOverlay header={getHeaderTitle} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
+                <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
                     <DesktopWrapper>
                         <VerticalTab
                             current_path={location.pathname}

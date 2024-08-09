@@ -19,6 +19,7 @@ describe('useStoreHasAccountDeposited', () => {
         expect(result.current.count).toEqual(0);
         expect(result.current.transactions).toHaveLength(0);
         expect(result.current.hasDeposited).toEqual(false);
+        expect(result.current.hasTransferred).toEqual(false);
     });
 
     it('should return count, transaction length and hasDeposited correct #1', () => {
@@ -35,6 +36,7 @@ describe('useStoreHasAccountDeposited', () => {
         expect(result.current.count).toEqual(1);
         expect(result.current.transactions).toHaveLength(1);
         expect(result.current.hasDeposited).toEqual(false);
+        expect(result.current.hasTransferred).toEqual(true);
     });
 
     it('should return count, transaction length and hasDeposited correct #2', () => {
@@ -54,5 +56,6 @@ describe('useStoreHasAccountDeposited', () => {
         expect(result.current.count).toEqual(2);
         expect(result.current.transactions).toHaveLength(2);
         expect(result.current.hasDeposited).toEqual(true);
+        expect(result.current.hasTransferred).toEqual(true);
     });
 });

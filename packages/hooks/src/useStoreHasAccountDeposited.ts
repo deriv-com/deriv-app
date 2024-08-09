@@ -10,9 +10,10 @@ const useStoreHasAccountDeposited = () => {
 
     const count = statement?.count ?? 0;
     const transactions = statement?.transactions ?? [];
-    const hasDeposited = transactions?.some(tx => tx.action_type === 'deposit') ?? false;
+    const hasDeposited = transactions.some(tx => tx.action_type === 'deposit');
+    const hasTransferred = transactions.some(tx => tx.action_type === 'transfer' && tx.amount && tx.amount > 0);
 
-    return { count, transactions, hasDeposited };
+    return { count, transactions, hasDeposited, hasTransferred };
 };
 
 export default useStoreHasAccountDeposited;

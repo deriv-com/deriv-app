@@ -2,18 +2,21 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { useCurrentCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import TransactionsCryptoHistory from '../../components/transactions-crypto-history';
-import Error from '../../components/error';
-import NoBalance from '../../components/no-balance';
 import { SideNoteFAQ } from '../../components/side-notes';
 import { DepositCryptoSideNotes } from '../../modules/deposit-crypto/components';
 import { useCashierStore } from '../../stores/useCashierStores';
 import PageContainer from '../../components/page-container';
+import Error from '../../components/error';
+import NoBalance from '../../components/no-balance';
+import TransactionsCryptoHistory from '../../components/transactions-crypto-history';
 import WithdrawalCryptoForm from './withdrawal-crypto-form';
-import WithdrawalCryptoReceipt from './withdrawal-crypto-receipt';
 import WithdrawalFiat from './withdrawal-fiat';
 import WithdrawalLocked from './withdrawal-locked';
 import WithdrawalVerificationEmail from './withdrawal-verification-email';
+
+const WithdrawalCryptoReceipt = React.lazy(
+    () => import(/* webpackChunkName: "cashier-withdrawal-crypto-receipt" */ './withdrawal-crypto-receipt')
+);
 
 const WithdrawalSideNotes = observer(() => {
     const { client } = useStore();
@@ -110,7 +113,7 @@ const Withdrawal = observer(() => {
     if (is_switching || is_10k_withdrawal_limit_reached === undefined)
         return (
             <PageContainer hide_breadcrumb>
-                <Loading is_fullscreen={false} />
+                <Loading className='cashier__loader' is_fullscreen={false} />
             </PageContainer>
         );
 

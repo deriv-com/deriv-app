@@ -2,15 +2,18 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { useCashierLocked } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import CashierLocked from 'Components/cashier-locked';
-import Error from 'Components/error';
-import NoBalance from 'Components/no-balance';
-import { Virtual } from 'Components/cashier-container';
-import PaymentAgentTransferConfirm from './payment-agent-transfer-confirm';
-import PaymentAgentTransferForm from './payment-agent-transfer-form';
-import PaymentAgentTransferReceipt from './payment-agent-transfer-receipt';
 import { useCashierStore } from '../../stores/useCashierStores';
+import PaymentAgentTransferForm from './payment-agent-transfer-form';
 import PageContainer from '../../components/page-container';
+import CashierLocked from '../../components/cashier-locked';
+import Error from '../../components/error';
+import NoBalance from '../../components/no-balance';
+import Virtual from '../../components/cashier-container/virtual';
+import PaymentAgentTransferConfirm from './payment-agent-transfer-confirm';
+
+const PaymentAgentTransferReceipt = React.lazy(
+    () => import(/* webpackChunkName: "cashier-payment-agent-transfer-receipt" */ './payment-agent-transfer-receipt')
+);
 
 const PaymentAgentTransfer = observer(() => {
     const { client } = useStore();
@@ -48,7 +51,7 @@ const PaymentAgentTransfer = observer(() => {
     if (is_loading) {
         return (
             <PageContainer hide_breadcrumb>
-                <Loading className='cashier__loader' />
+                <Loading className='cashier__loader' is_fullscreen={false} />
             </PageContainer>
         );
     }

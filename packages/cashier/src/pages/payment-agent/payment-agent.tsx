@@ -2,11 +2,11 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { useCashierLocked } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import CashierLocked from 'Components/cashier-locked';
-import { Virtual } from 'Components/cashier-container';
-import PaymentAgentList from './payment-agent-list';
 import { useCashierStore } from '../../stores/useCashierStores';
+import PaymentAgentList from './payment-agent-list';
 import PageContainer from '../../components/page-container';
+import CashierLocked from '../../components/cashier-locked';
+import Virtual from '../../components/cashier-container/virtual';
 
 type TPaymentAgent = {
     setSideNotes?: (notes: React.ReactNode[]) => void;
@@ -41,7 +41,7 @@ const PaymentAgent = observer(({ setSideNotes }: TPaymentAgent) => {
     if (is_switching) {
         return (
             <PageContainer hide_breadcrumb>
-                <Loading />
+                <Loading className='cashier__loader' is_fullscreen={false} />
             </PageContainer>
         );
     }

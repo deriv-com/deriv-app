@@ -43,6 +43,7 @@ const Notifications = observer(() => {
             className='trade-notification'
             isMobile
             onClose={removeBanner}
+            zIndex={99}
         />
     );
 });

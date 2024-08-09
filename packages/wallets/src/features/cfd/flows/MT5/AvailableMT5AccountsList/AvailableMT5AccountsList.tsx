@@ -6,10 +6,11 @@ import { useModal } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
 import { getMarketTypeDetails, PRODUCT } from '../../../constants';
 import { JurisdictionModal, MT5PasswordModal } from '../../../modals';
+import { Verification } from '../../Verification';
 import './AvailableMT5AccountsList.scss';
 
 type TProps = {
-    account: THooks.SortedMT5Accounts;
+    account: THooks.AvailableMT5Accounts;
 };
 
 const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
@@ -18,11 +19,23 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { description, title } = getMarketTypeDetails(account.sub_account_type)[account.market_type || 'all'];
 
     const onButtonClick = useCallback(() => {
-        activeWallet?.is_virtual
-            ? show(<MT5PasswordModal marketType={account?.market_type || 'synthetic'} platform={account.platform} />)
-            : show(<JurisdictionModal />);
+        if (activeWallet?.is_virtual) {
+            show(<MT5PasswordModal marketType={account?.market_type || 'synthetic'} platform={account.platform} />);
+        } else if (account.sub_account_type === PRODUCT.ZEROSPREAD) {
+            show(<Verification selectedJurisdiction={account.shortcode} />);
+        } else {
+            show(<JurisdictionModal />);
+        }
         setModalState('marketType', account.market_type);
-    }, [activeWallet?.is_virtual, show, account.market_type, account.platform, setModalState]);
+    }, [
+        activeWallet?.is_virtual,
+        show,
+        account.market_type,
+        account.platform,
+        setModalState,
+        account.sub_account_type,
+        account?.shortcode,
+    ]);
 
     return (
         <TradingAccountCard

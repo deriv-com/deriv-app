@@ -50,17 +50,35 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
               )
             : '';
 
-    const isTakeProfitOutOfRange = (value = take_profit_value) => {
+    const isTakeProfitOutOfRange = ({
+        value,
+        should_validate_empty_value,
+    }: {
+        value?: string | number;
+        should_validate_empty_value?: boolean;
+    }) => {
+        if (should_validate_empty_value && value === '') {
+            setErrorMessage(<Localize i18n_default_text='Please enter a take profit amount.' />);
+            return true;
+        }
         if (value === '' || (Number(value) >= Number(min_take_profit) && Number(value) <= Number(max_take_profit))) {
             setErrorMessage('');
             return false;
         }
-
-        if (Number(value) < Number(min_take_profit) || Number(value) > Number(max_take_profit)) {
+        if (Number(value) < Number(min_take_profit)) {
             setErrorMessage(
                 <Localize
-                    i18n_default_text='Acceptable range: {{min_take_profit}} to {{max_take_profit}} {{currency}}'
-                    values={{ currency, min_take_profit, max_take_profit }}
+                    i18n_default_text='Please enter a take profit amount that’s higher than {{min_take_profit}}.'
+                    values={{ min_take_profit }}
+                />
+            );
+            return true;
+        }
+        if (Number(value) > Number(max_take_profit)) {
+            setErrorMessage(
+                <Localize
+                    i18n_default_text='Please enter a take profit amount that’s lower than {{max_take_profit}}.'
+                    values={{ max_take_profit }}
                 />
             );
             return true;
@@ -71,7 +89,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
         setIsEnabled(new_value);
 
         if (new_value) {
-            isTakeProfitOutOfRange();
+            isTakeProfitOutOfRange({ value: take_profit_value });
             clearTimeout(focus_timeout.current);
             focus_timeout.current = focusAndOpenKeyboard(focused_input_ref.current, input_ref.current);
         } else {
@@ -88,15 +106,12 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
         if (value !== '' && Number(value) <= 0) value = '0';
 
         setTakeProfitValue(value);
-        isTakeProfitOutOfRange(value);
+        isTakeProfitOutOfRange({ value });
     };
 
     const onSave = () => {
-        if (take_profit_value === '' && is_enabled) {
-            setErrorMessage(<Localize i18n_default_text='Please enter a take profit amount.' />);
+        if (isTakeProfitOutOfRange({ value: take_profit_value, should_validate_empty_value: true }) && is_enabled)
             return;
-        }
-        if (isTakeProfitOutOfRange() && is_enabled) return;
 
         onChangeMultiple({
             has_take_profit: is_enabled,

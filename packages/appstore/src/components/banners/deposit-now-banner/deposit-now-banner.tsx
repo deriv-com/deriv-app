@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import { useDevice } from '@deriv-com/ui';
 import { Localize } from '@deriv/translations';
 import { Button, Text, Icon } from '@deriv/components';
-// import { useStore, observer } from '@deriv/stores';
 import { routes } from '@deriv/shared';
 import './deposit-now-banner.scss';
 
@@ -30,7 +29,6 @@ const DepositNowBanner = () => {
                     </Text>
                     <Button
                         className='deposit-now-banner__button'
-                        // black
                         large
                         primary
                         onClick={() => history.push(routes.cashier_deposit)}
@@ -39,11 +37,11 @@ const DepositNowBanner = () => {
                     </Button>
                 </div>
                 <Icon
-                    icon={`IcAppstoreLoggedOut${'NonEu'}Coins${!isDesktop ? 'Responsive' : 'Desktop'}`}
+                    icon={`IcAppstoreDepositNowCoins${isDesktop ? 'Desktop' : 'Responsive'}`}
                     width={!isDesktop ? responsiveWidth : desktopWidth}
                     height={!isDesktop ? responsiveHeight : desktopHeight}
                     className='deposit-now-banner__image'
-                    data_testid={`dt_logged_out_${'non_eu'}_coins_${!isDesktop ? 'responsive' : 'desktop'}`}
+                    data_testid={`dt_deposit_now_coins_${isDesktop ? 'desktop' : 'responsive'}`}
                 />
             </div>
         </div>

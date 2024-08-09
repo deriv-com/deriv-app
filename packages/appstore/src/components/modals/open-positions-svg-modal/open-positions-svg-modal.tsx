@@ -58,7 +58,7 @@ const OpenPositionsSVGModal = ({ market_type, status, is_modal_open, setModalOpe
                         />
                     ) : (
                         <Localize
-                            i18n_default_text='Your {{from_account}} account will be archived after 30 days of inactivity. You can still access your trade history until the account is archived.'
+                            i18n_default_text='Your {{from_account}} account will be archived after 60 days of inactivity. You can still access your trade history until the account is archived.'
                             values={{
                                 from_account: getMT5AccountTitle({
                                     account_type: market_type,

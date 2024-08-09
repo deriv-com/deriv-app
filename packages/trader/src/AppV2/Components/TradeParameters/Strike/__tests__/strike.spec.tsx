@@ -8,7 +8,6 @@ import TraderProviders from '../../../../../trader-providers';
 import Strike from '../strike';
 
 const strike_trade_param_label = 'Strike price';
-const data_testid_strike = 'dt_strike_wrapper';
 
 jest.mock('@deriv-com/quill-ui', () => ({
     ...jest.requireActual('@deriv-com/quill-ui'),
@@ -111,7 +110,7 @@ describe('Strike', () => {
 
         userEvent.click(screen.getByText(strike_trade_param_label));
 
-        expect(screen.getByTestId(data_testid_strike)).toHaveClass('strike__wrapper--small-screen');
+        expect(screen.getByTestId('dt_carousel')).toHaveClass('strike__carousel--small');
         window.innerHeight = original_height;
     });
 

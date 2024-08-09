@@ -2,7 +2,7 @@ $HANDLEBAR_HEIGHT: var(--core-size-1000);
 $HEADER_TITLE_HEIGHT: var(--core-size-3200);
 $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
 
-.strike {
+.growth-rate {
     &__carousel {
         & > .carousel__item {
             height: 100%;
@@ -11,7 +11,7 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
             height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
         }
         &--small {
-            .strike__wrapper {
+            .growth-rate__picker {
                 height: calc(90dvh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $FOOTER_BUTTON_HEIGHT);
             }
             .trade-param-definition {
@@ -19,31 +19,35 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
             }
         }
     }
-
-    &__wrapper {
+    &__picker {
         height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $FOOTER_BUTTON_HEIGHT);
-        padding-block: 0;
+        gap: var(--core-spacing-400);
+        padding: 0 var(--component-actionSheet-spacing-padding-md);
+    }
+    &__picker,
+    &__details-item {
         display: flex;
         flex-direction: column;
-        gap: var(--core-spacing-400);
     }
-
     &__wheel-picker {
         flex-grow: 1;
         min-height: 0;
+        overflow: hidden;
     }
-
-    &__payout {
-        min-height: var(--core-size-2200);
+    &__details {
         display: flex;
-        flex-direction: column;
-        align-items: center;
+        justify-content: space-around;
+        min-height: var(--core-size-2200);
 
-        &__content {
-            display: flex;
-            justify-content: center;
+        &-item {
             align-items: center;
-            flex-grow: 1;
+
+            &-value {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-grow: 1;
+            }
         }
     }
 }

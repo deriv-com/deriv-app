@@ -8,9 +8,8 @@ import './PersonalDetails.scss';
 
 const PersonalDetails = () => {
     const { data: residenceList, isLoading, isSuccess: isResidenceListSuccess } = useResidenceList();
-    const { formValues, setFormValues } = useFlow();
+    const { formValues, setFormValues, setTouched, touched } = useFlow();
     const { data: getSettings } = useSettings();
-
     const countryCodeToPatternMapper = useMemo(() => {
         const countryCodeToPatternMapping: Record<string, string> = {};
 
@@ -24,7 +23,7 @@ const PersonalDetails = () => {
         return countryCodeToPatternMapping;
     }, [isResidenceListSuccess, residenceList]);
 
-    const tinValidator = useMemo(() => {
+    const tinValidator = () => {
         const patternStr = countryCodeToPatternMapper[formValues?.taxResidence];
         try {
             if (patternStr) {
@@ -40,7 +39,15 @@ const PersonalDetails = () => {
         } catch (err) {
             return (err as Yup.ValidationError).message;
         }
-    }, [countryCodeToPatternMapper, formValues?.taxIdentificationNumber, formValues?.taxResidence]);
+    };
+
+    const taxResidenceValidator = () => {
+        try {
+            Yup.string().nullable().required('Tax residence is required').validateSync(formValues?.taxResidence);
+        } catch (error) {
+            if (error instanceof Yup.ValidationError) return error.message;
+        }
+    };
 
     useEffect(() => {
         if (getSettings && isResidenceListSuccess) {
@@ -92,7 +99,6 @@ const PersonalDetails = () => {
                                 name='wallets-personal-details__dropdown-citizenship'
                                 onSelect={selectedItem => setFormValues('citizenship', selectedItem)}
                                 value={formValues?.citizenship ?? getSettings?.citizen}
-                                variant='comboBox'
                             />
                         </div>
                         <div className='wallets-personal-details__dropdown'>
@@ -115,7 +121,9 @@ const PersonalDetails = () => {
                         <div className='wallets-personal-details__dropdown'>
                             <Dropdown
                                 data-testid='dt_wallets_personal_details_dropdown_residence'
-                                errorMessage='Tax residence is required'
+                                errorMessage={
+                                    touched?.taxResidence && !formValues.taxResidence ? taxResidenceValidator() : ''
+                                }
                                 isFullWidth
                                 isRequired
                                 label='Tax residence*'
@@ -125,10 +133,23 @@ const PersonalDetails = () => {
                                 }))}
                                 listHeight='sm'
                                 name='wallets-personal-details__dropdown-tax-residence'
+                                onBlur={e => {
+                                    const matchFound = residenceList.find(
+                                        residence =>
+                                            residence.text?.toLocaleLowerCase() === e.target.value.toLocaleLowerCase()
+                                    );
+                                    if (!matchFound) {
+                                        setFormValues('taxResidence', '');
+                                    }
+                                }}
+                                onFocus={() => {
+                                    setTouched({ ...touched, taxResidence: true });
+                                }}
                                 onSearch={inputValue => {
-                                    residenceList.forEach(residence => {
+                                    residenceList.some(residence => {
                                         if (residence.text?.toLowerCase() === inputValue.toLowerCase()) {
                                             setFormValues('taxResidence', residence.value);
+                                            return true;
                                         }
                                     });
                                 }}
@@ -136,14 +157,15 @@ const PersonalDetails = () => {
                                     setFormValues('taxResidence', selectedItem);
                                 }}
                                 value={formValues?.taxResidence ?? getSettings?.tax_residence}
-                                variant='comboBox'
                             />
                         </div>
                         <FlowTextField
                             defaultValue={getSettings?.tax_identification_number ?? formValues?.taxIdentificationNumber}
-                            errorMessage={!formValues?.taxResidence ? 'Please fill in tax residence' : tinValidator}
+                            errorMessage={!formValues?.taxResidence ? 'Please fill in tax residence' : tinValidator()}
                             isInvalid={
-                                !formValues.taxResidence || !formValues.taxIdentificationNumber || Boolean(tinValidator)
+                                !formValues.taxResidence ||
+                                !formValues.taxIdentificationNumber ||
+                                Boolean(tinValidator())
                             }
                             label='Tax identification number*'
                             name='taxIdentificationNumber'

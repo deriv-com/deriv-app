@@ -8,8 +8,8 @@ import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import { focusAndOpenKeyboard } from 'AppV2/Utils/trade-params-utils';
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
-import TakeProfitDescription from './take-profit-description';
 import TakeProfitInput from './take-profit-input';
+import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 
 type TTakeProfitProps = {
     is_minimized?: boolean;
@@ -135,7 +135,13 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
         },
         {
             id: 2,
-            component: <TakeProfitDescription />,
+            component: (
+                <TradeParamDefinition
+                    description={
+                        <Localize i18n_default_text='When your profit reaches or exceeds the set amount, your trade will be closed automatically.' />
+                    }
+                />
+            ),
         },
     ];
 

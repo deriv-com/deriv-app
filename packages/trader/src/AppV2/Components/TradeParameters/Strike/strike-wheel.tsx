@@ -1,5 +1,4 @@
 import React from 'react';
-import clsx from 'clsx';
 import debounce from 'lodash.debounce';
 import { ActionSheet, Text, WheelPicker } from '@deriv-com/quill-ui';
 import { Skeleton } from '@deriv/components';
@@ -8,7 +7,6 @@ import { Localize } from '@deriv/translations';
 type TStrikeWheelProps = {
     current_strike: string;
     currency: string;
-    is_small_screen_device?: boolean;
     onStrikePriceSelect: (e: {
         target: {
             name: string;
@@ -31,7 +29,6 @@ const onWheelPickerScrollDebounced = debounce(
 const StrikeWheel = ({
     current_strike,
     currency,
-    is_small_screen_device,
     onStrikePriceSelect,
     payout_per_point,
     strike_price_list,
@@ -61,10 +58,7 @@ const StrikeWheel = ({
 
     return (
         <React.Fragment>
-            <ActionSheet.Content
-                className={clsx('strike__wrapper', is_small_screen_device && 'strike__wrapper--small-screen')}
-                data-testid='dt_strike_wrapper'
-            >
+            <ActionSheet.Content className='strike__wrapper' data-testid='dt_strike_wrapper'>
                 <div className='strike__wheel-picker'>
                     <WheelPicker
                         data={strike_price_list}

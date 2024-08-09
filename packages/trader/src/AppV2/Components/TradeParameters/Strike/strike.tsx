@@ -5,11 +5,11 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { ActionSheet, TextField } from '@deriv-com/quill-ui';
 import { getCurrencyDisplayCode, isEmptyObject } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { Skeleton } from '@deriv/components';
+import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
-import StrikeDescription from './strike-description';
 import StrikeWheel from './strike-wheel';
-import { Skeleton } from '@deriv/components';
 
 type TStrikeProps = {
     is_minimized?: boolean;
@@ -26,7 +26,7 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
         proposal_info,
     } = useTraderStore();
 
-    const is_small_screen_device = window.innerHeight <= 640;
+    const is_small_screen = window.innerHeight <= 640;
     const strike_price_list = strike_price_choices.map((strike_price: string) => ({ value: strike_price }));
     const payout_per_point: string | number = isEmptyObject(proposal_info)
         ? ''
@@ -38,7 +38,6 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
                 <StrikeWheel
                     current_strike={barrier_1}
                     currency={getCurrencyDisplayCode(currency)}
-                    is_small_screen_device={is_small_screen_device}
                     onStrikePriceSelect={onChange}
                     payout_per_point={payout_per_point}
                     strike_price_list={strike_price_list}
@@ -47,7 +46,7 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
         },
         {
             id: 2,
-            component: <StrikeDescription is_small_screen_device={is_small_screen_device} />,
+            component: <TradeParamDefinition description={<Localize i18n_default_text='Content goes here.' />} />,
         },
     ];
     const classname = clsx('trade-params__option', is_minimized && 'trade-params__option--minimized');
@@ -70,8 +69,9 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
                 value={barrier_1}
             />
             <ActionSheet.Root isOpen={is_open} onClose={() => setIsOpen(false)} position='left' expandable={false}>
-                <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen={is_small_screen_device}>
+                <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen={is_small_screen}>
                     <Carousel
+                        classname={clsx('strike__carousel', is_small_screen && 'strike__carousel--small')}
                         header={CarouselHeader}
                         pages={action_sheet_content}
                         title={<Localize i18n_default_text='Strike price' />}

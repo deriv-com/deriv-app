@@ -44,8 +44,8 @@ const TakeProfitInput = React.forwardRef(
                         allowDecimals
                         disabled={!is_enabled}
                         decimals={decimals}
-                        inputMode='decimal'
                         data-testid='dt_input_with_steppers'
+                        inputMode='decimal'
                         message={message}
                         minusDisabled={Number(take_profit_value) - 1 <= 0}
                         name='take_profit'

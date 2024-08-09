@@ -85,11 +85,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     };
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        //TODO: check if we will need all this logic with latest Quill update. Add disabling "-" icon when value is < 1
-        let value: string | number = e.target.value;
-        value = String(value).trim().replace(',', '.');
-
-        if (value !== '' && Number(value) <= 0) value = '0';
+        const value: string | number = e.target.value.replace(',', '.');
 
         setTakeProfitValue(value);
         isTakeProfitOutOfRange(value);
@@ -123,7 +119,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
             id: 1,
             component: (
                 <TakeProfitInput
-                    currency={currency}
+                    currency={getCurrencyDisplayCode(currency)}
                     decimals={decimals}
                     error_message={error_message}
                     is_enabled={is_enabled}
@@ -159,15 +155,15 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     return (
         <React.Fragment>
             <TextField
-                variant='fill'
-                readOnly
+                className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
+                disabled={has_open_accu_contract}
                 label={
                     <Localize i18n_default_text='Take profit' key={`take-profit${is_minimized ? '-minimized' : ''}`} />
                 }
-                value={has_take_profit && take_profit ? `${take_profit} ${getCurrencyDisplayCode(currency)}` : '-'}
-                className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
-                disabled={has_open_accu_contract}
                 onClick={() => setIsOpen(true)}
+                readOnly
+                variant='fill'
+                value={has_take_profit && take_profit ? `${take_profit} ${getCurrencyDisplayCode(currency)}` : '-'}
             />
             <ActionSheet.Root isOpen={is_open} onClose={onActionSheetClose} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>

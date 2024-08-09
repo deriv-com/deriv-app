@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import * as Yup from 'yup';
 import { useResidenceList, useSettings } from '@deriv/api-v2';
+import { useTranslations } from '@deriv-com/translations';
 import { Dropdown, Loader } from '@deriv-com/ui';
 import { FlowTextField, InlineMessage, useFlow, WalletText } from '../../../../components';
 import { accountOpeningReasonList } from './constants';
@@ -10,6 +11,7 @@ const PersonalDetails = () => {
     const { data: residenceList, isLoading, isSuccess: isResidenceListSuccess } = useResidenceList();
     const { formValues, setFormValues, setTouched, touched } = useFlow();
     const { data: getSettings } = useSettings();
+    const { localize } = useTranslations();
     const countryCodeToPatternMapper = useMemo(() => {
         const countryCodeToPatternMapping: Record<string, string> = {};
 
@@ -89,6 +91,7 @@ const PersonalDetails = () => {
                         <div className='wallets-personal-details__dropdown'>
                             <Dropdown
                                 data-testid='dt_wallets_personal_details_dropdown_citizenship'
+                                emptyResultMessage={localize('No results found')}
                                 isFullWidth
                                 label='Citizenship*'
                                 list={residenceList.map(residence => ({
@@ -97,6 +100,23 @@ const PersonalDetails = () => {
                                 }))}
                                 listHeight='sm'
                                 name='wallets-personal-details__dropdown-citizenship'
+                                onBlur={e => {
+                                    const matchFound = residenceList.find(
+                                        residence =>
+                                            residence.text?.toLocaleLowerCase() === e.target.value.toLocaleLowerCase()
+                                    );
+                                    if (!matchFound) {
+                                        setFormValues('citizenship', '');
+                                    }
+                                }}
+                                onSearch={inputValue => {
+                                    residenceList.some(residence => {
+                                        if (residence.text?.toLowerCase() === inputValue.toLowerCase()) {
+                                            setFormValues('citizenship', residence.value);
+                                            return true;
+                                        }
+                                    });
+                                }}
                                 onSelect={selectedItem => setFormValues('citizenship', selectedItem)}
                                 value={formValues?.citizenship ?? getSettings?.citizen}
                             />
@@ -121,6 +141,7 @@ const PersonalDetails = () => {
                         <div className='wallets-personal-details__dropdown'>
                             <Dropdown
                                 data-testid='dt_wallets_personal_details_dropdown_residence'
+                                emptyResultMessage={localize('No results found')}
                                 errorMessage={
                                     touched?.taxResidence && !formValues.taxResidence ? taxResidenceValidator() : ''
                                 }

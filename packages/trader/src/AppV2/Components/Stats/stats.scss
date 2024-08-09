@@ -48,9 +48,13 @@
         padding: var(--core-spacing-600) var(--core-spacing-75);
         justify-content: space-between;
         border-bottom: var(--core-spacing-75) solid var(--core-color-opacity-black-100);
-        p {
+        &__number {
             width: var(--core-spacing-3600);
             text-align: center;
+            p {
+                display: inline-block;
+                width: auto;
+            }
         }
     }
 }

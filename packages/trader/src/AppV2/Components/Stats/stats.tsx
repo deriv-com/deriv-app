@@ -1,14 +1,16 @@
 import { ActionSheet, Text } from '@deriv-com/quill-ui';
 import { LabelPairedChevronDownSmBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
+import { observer } from '@deriv/stores';
 import React from 'react';
 import { useTraderStore } from 'Stores/useTraderStores';
 
-const AccumulatorStats = () => {
+const AccumulatorStats = observer(() => {
     const { ticks_history_stats = {} } = useTraderStore();
     const [is_open, setIsOpen] = React.useState(false);
     const [is_open_description, setIsOpenDescription] = React.useState(false);
     const ticks_history = ticks_history_stats?.ticks_stayed_in ?? [];
+
     const rows = ticks_history.reduce((acc: number[][], _el, index) => {
         const row_size = 5;
         if (index % row_size === 0) {
@@ -39,12 +41,14 @@ const AccumulatorStats = () => {
                     <div className='accumulators-stats__container__stats'>
                         {rows[0].concat(rows[1])?.map((el, i) => (
                             <div key={i} className='accumulators-stats__container__stats__stat'>
-                                <Text size='sm'>{el}</Text>
+                                <Text size='sm' bold={i == 0}>
+                                    {el}
+                                </Text>
                             </div>
                         ))}
                     </div>
                     <div className='accumulators-stats__container__expand' onClick={() => setIsOpen(true)}>
-                        <LabelPairedChevronDownSmBoldIcon />
+                        <LabelPairedChevronDownSmBoldIcon data-testid='expand-stats-icon' />
                     </div>
                 </div>
             </div>
@@ -70,9 +74,11 @@ const AccumulatorStats = () => {
                             {rows.map((item, index) => (
                                 <div key={index} className='stats-sheet__stats'>
                                     {item.map((item, innerIndex) => (
-                                        <Text key={innerIndex} size='sm'>
-                                            {item}
-                                        </Text>
+                                        <div key={innerIndex} className='stats-sheet__stats__number'>
+                                            <Text size='sm' bold={innerIndex == 0 && index == 0}>
+                                                {item}
+                                            </Text>
+                                        </div>
                                     ))}
                                 </div>
                             ))}
@@ -100,7 +106,7 @@ const AccumulatorStats = () => {
                             alignment='vertical'
                             primaryAction={{
                                 content: <Localize i18n_default_text='Got it' />,
-                                onAction: () => {},
+                                onAction: onActionSheetClose,
                             }}
                         />
                     </ActionSheet.Portal>
@@ -108,6 +114,6 @@ const AccumulatorStats = () => {
             </ActionSheet.Root>
         </React.Fragment>
     );
-};
+});
 
 export default AccumulatorStats;

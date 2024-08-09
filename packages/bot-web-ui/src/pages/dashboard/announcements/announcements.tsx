@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Text } from '@deriv/components';
 import { Notifications as Announcement } from '@deriv-com/ui';
 import { StandaloneBullhornRegularIcon } from '@deriv/quill-icons';
@@ -19,12 +19,31 @@ type TAnnouncements = {
 
 const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
     const [isAnnounceDialogOpen, setIsAnnounceDialogOpen] = useState(false);
-    const [isOpenAnnounceList, setIsOpenAnnounceList] = useState(false);
+    const [isOpenAnnounceList, setIsOpenAnnounceList] = React.useState(false);
     const [amountAnnounce, setAmountAnnounce] = useState({} as Record<string, boolean>);
+    const buttonRef = React.useRef<HTMLButtonElement>(null);
+    const wrapperRef = React.useRef<HTMLDivElement>(null);
     const accumulator_announcement = ANNOUNCEMENTS.ACCUMULATOR_ANNOUNCE;
     const is_active_announce_1 = amountAnnounce?.announce_1;
     const is_active_announce_2 = amountAnnounce?.announce_2;
     const is_active_announce_3 = amountAnnounce?.announce_3;
+
+    const handleClickOutside = (event: React.MouseEvent<HTMLButtonElement>) => {
+        if (
+            !wrapperRef?.current?.contains(event.target as HTMLButtonElement) &&
+            !buttonRef?.current?.contains(event.target as HTMLButtonElement)
+        ) {
+            setIsOpenAnnounceList(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('click', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
 
     const handleAnnounceSubmit = (data: Record<string, boolean>) => {
         setAmountAnnounce(data);
@@ -149,12 +168,18 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
 
     const number_ammount_announce = countActiveAnnouncements();
 
+    const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        setIsOpenAnnounceList(prevState => !prevState);
+    };
+
     return (
         <div className='announcements'>
             <button
                 className='announcements__button'
-                onClick={() => setIsOpenAnnounceList(prev => !prev)}
+                onClick={handleButtonClick}
                 data-testid='btn-announcements'
+                ref={buttonRef}
             >
                 <StandaloneBullhornRegularIcon fill='#000000' iconSize='sm' />
                 {!is_mobile && (
@@ -168,7 +193,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                     </div>
                 )}
             </button>
-            <div className='notifications__wrapper'>
+            <div className='notifications__wrapper' ref={wrapperRef}>
                 <Announcement
                     className={clsx('', {
                         'notifications__wrapper--mobile': is_mobile,
@@ -187,8 +212,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                     }}
                     isOpen={isOpenAnnounceList}
                     notifications={announcements}
-                    setIsOpen={setIsOpenAnnounceList}
-                    data-testid='announcement'
+                    setIsOpen={() => handleButtonClick}
                 />
             </div>
             <AnnouncementDialog

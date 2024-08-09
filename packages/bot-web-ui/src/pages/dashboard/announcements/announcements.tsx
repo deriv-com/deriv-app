@@ -39,7 +39,6 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
 
     useEffect(() => {
         document.addEventListener('click', handleClickOutside);
-
         return () => {
             document.removeEventListener('click', handleClickOutside);
         };
@@ -188,7 +187,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                     </Text>
                 )}
                 {number_ammount_announce !== 0 && (
-                    <div className='announcements__amount'>
+                    <div className='announcements__amount' data-testid='announcements__amount'>
                         <p>{number_ammount_announce}</p>
                     </div>
                 )}

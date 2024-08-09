@@ -36,7 +36,7 @@ describe('<TncStatusUpdateModal />', () => {
 
     const mock_store = mockStore({
         ui: {
-            is_tnc_update_modal_open: false,
+            is_tnc_update_modal_open: true,
             toggleTncUpdateModal: jest.fn(),
         },
     });
@@ -50,47 +50,34 @@ describe('<TncStatusUpdateModal />', () => {
     };
 
     it('should not render the TncStatusUpdateModal component', async () => {
-        renderComponent({});
+        const mock = mockStore({
+            ui: {
+                is_tnc_update_modal_open: false,
+            },
+        });
+
+        renderComponent({ store_config: mock });
         expect(screen.queryByText('Please review our updated terms and conditions')).not.toBeInTheDocument();
     });
 
     it('should render the TncStatusUpdateModal component', async () => {
-        const mock = mockStore({
-            ui: {
-                is_tnc_update_modal_open: true,
-            },
-        });
-
-        renderComponent({ store_config: mock });
+        renderComponent({});
         expect(screen.getByText("Updated T&C's")).toBeInTheDocument();
     });
 
     it('should render TncStatusUpdateModal component with Messages and Button', async () => {
-        const mock = mockStore({
-            ui: {
-                is_tnc_update_modal_open: true,
-            },
-        });
-
-        renderComponent({ store_config: mock });
+        renderComponent({});
         expect(screen.getByText("Updated T&C's")).toBeInTheDocument();
         expect(screen.getByText('By continuing you understand and accept the changes.')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Continue' })).toBeInTheDocument();
     });
 
     it('should render TncStatusUpdateModal click on Button to called toggle modal function', async () => {
-        const mock = mockStore({
-            ui: {
-                is_tnc_update_modal_open: true,
-                toggleTncUpdateModal: jest.fn(),
-            },
-        });
-
-        renderComponent({ store_config: mock });
+        renderComponent({});
         const continue_button = screen.getByRole('button', { name: 'Continue' });
         await userEvent.click(continue_button);
         expect(WS.tncApproval).toBeCalled();
         expect(WS.getSettings).toBeCalled();
-        expect(mock.ui.toggleTncUpdateModal).toHaveBeenCalledWith(false);
+        expect(mock_store.ui.toggleTncUpdateModal).toHaveBeenCalledWith(false);
     });
 });

@@ -141,7 +141,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
             const el_blocks = strategy_dom?.querySelectorAll(`field[name="${name_list}"]`);
 
             el_blocks?.forEach((el_block: HTMLElement) => {
-                el_block.innerHTML = value;
+                el_block.textContent = value;
             });
         };
         modifyFieldDropdownValues('tradetypecat', 'accumulator');

@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import { ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { routes, checkServerMaintenance, startPerformanceEventTimer } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -11,11 +11,10 @@ import OptionsAndMultipliersListing from 'Components/options-multipliers-listing
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import AfterSignupFlow from 'Components/after-signup-flow';
 import Disclaimer from 'Components/disclaimer';
-import { useContentFlag, useGrowthbookGetFeatureValue } from '@deriv/hooks';
+import TradersHubBanners from 'Components/banners/traders-hub-banners';
+import { useContentFlag } from '@deriv/hooks';
 import classNames from 'classnames';
 import './traders-hub.scss';
-
-const RealAccountCreationBanner = lazy(() => import('Components/real-account-creation-banner'));
 
 type OrderedPlatformSectionsProps = {
     is_cfd_visible?: boolean;
@@ -54,8 +53,6 @@ const TradersHub = observer(() => {
         is_account_setting_loaded,
         is_mt5_allowed,
         website_status,
-        has_any_real_account,
-        is_eu,
     } = client;
 
     const { is_eu_demo, is_eu_real } = useContentFlag();
@@ -79,11 +76,6 @@ const TradersHub = observer(() => {
     React.useLayoutEffect(() => {
         startPerformanceEventTimer('option_multiplier_section_loading_time');
     }, []);
-
-    const [should_show_banner] = useGrowthbookGetFeatureValue({
-        featureFlag: 'traders-hub-real-account-banner',
-        defaultValue: false,
-    });
 
     const eu_title = is_eu_demo || is_eu_real || is_eu_user;
     const getPlatformToggleOptions = () => [
@@ -162,13 +154,7 @@ const TradersHub = observer(() => {
                     })}
                     ref={traders_hub_ref}
                 >
-                    {has_any_real_account && is_real && <div className='get-started-trading-banner-ct' />}
-                    {should_show_banner && !has_any_real_account && !is_eu && is_landing_company_loaded && (
-                        <Suspense fallback={<div />}>
-                            <RealAccountCreationBanner />
-                        </Suspense>
-                    )}
-
+                    <TradersHubBanners />
                     <MainTitleBar />
                     {isDesktop ? desktopContent : mobileTabletContent}
                     <ModalManager />

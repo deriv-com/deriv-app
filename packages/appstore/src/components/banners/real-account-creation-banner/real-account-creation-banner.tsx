@@ -30,6 +30,9 @@ const RealAccountCreationBanner = observer(() => {
         });
     }, []);
 
+    // feature_flag: traders-hub-real-account-banner
+    // banner_name: real_account_cta
+
     return (
         <div className='real-account-creation-banner'>
             <img

@@ -34,7 +34,7 @@ const TradeParametersContainer = ({
                 <Text>
                     <Localize i18n_default_text='Set your trade' />
                 </Text>
-                <Guide has_label />
+                <Guide has_label show_guide_for_selected_contract />
             </div>
             {children}
         </section>

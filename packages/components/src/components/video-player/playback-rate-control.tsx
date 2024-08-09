@@ -1,5 +1,6 @@
 import React from 'react';
-import { Dropdown, Icon } from '@deriv/components';
+import Dropdown from '../dropdown';
+import Icon from '../icon';
 import { localize } from '@deriv/translations';
 
 type TPlaybackRateControl = {

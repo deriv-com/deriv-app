@@ -40,6 +40,9 @@
     &__dropdown {
         width: 100%;
         padding-bottom: 2rem;
+        label {
+            text-transform: none;
+        }
     }
 
     &__inline {

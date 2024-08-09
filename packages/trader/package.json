@@ -87,7 +87,6 @@
         "webpack-node-externals": "^2.5.2"
     },
     "dependencies": {
-        "@cloudflare/stream-react": "^1.9.1",
         "@deriv-com/analytics": "1.12.1",
         "@deriv-com/quill-tokens": "^2.0.4",
         "@deriv-com/quill-ui": "1.13.27",

@@ -1716,6 +1716,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
                 &__field[type='textarea'] {
                     height: 8rem;
+                    font-weight: bold;
                 }
             }
 

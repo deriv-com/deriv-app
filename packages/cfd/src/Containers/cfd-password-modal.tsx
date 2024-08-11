@@ -363,8 +363,9 @@ const CFDPasswordForm = observer(
     }: TCFDPasswordFormProps) => {
         const { isDesktop } = useDevice();
         const { jurisdiction_selected_shortcode } = useCfdStore();
-        const [checked, setChecked] = React.useState(false); //TODO: @amina
-        const need_tnc = jurisdiction_selected_shortcode !== 'svg'; //TODO: @amina
+        const [checked, setChecked] = React.useState(false); // TODO: check for default jurisdiction project
+        const need_tnc = jurisdiction_selected_shortcode !== 'svg'; /// TODO: check for default jurisdiction project
+
         const button_label = React.useMemo(() => {
             if (error_type === 'PasswordReset') {
                 return localize('Try later');
@@ -480,14 +481,13 @@ const CFDPasswordForm = observer(
                                     />
                                 </Text>
                             )}
-                            {need_tnc && (
-                                <CfdPasswordModalTnc
-                                    className='cfd-password-modal-tnc--bottom'
-                                    platform={platform}
-                                    checked={checked}
-                                    onCheck={() => setChecked(prev => !prev)}
-                                />
-                            )}
+                            <CfdPasswordModalTnc
+                                className='cfd-password-modal-tnc--bottom'
+                                platform={platform}
+                                checked={checked}
+                                onCheck={() => setChecked(prev => !prev)}
+                                need_tnc={need_tnc}
+                            />
                         </div>
                         <FormSubmitButton
                             is_disabled={!values.password || !checked}

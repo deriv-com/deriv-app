@@ -20,7 +20,7 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 import CompareAccount from 'Components/compare-account';
 import CFDsDescription from 'Components/elements/cfds-description';
 import { getHasDivider } from 'Constants/utils';
-import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
+import { useMT5SVGEligibleToMigrate, useGetDefaultMT5Jurisdiction } from '@deriv/hooks';
 import './cfds-listing.scss';
 
 const MigrationBanner = makeLazyLoader(
@@ -67,7 +67,7 @@ const CFDsListing = observer(() => {
         financial_restricted_countries,
     } = traders_hub;
 
-    const { setAccountType, toggleCTraderTransferModal, setProduct } = cfd;
+    const { setAccountType, toggleCTraderTransferModal, setProduct, setJurisdictionSelectedShortcode } = cfd;
     const {
         account_status,
         is_landing_company_loaded,
@@ -88,6 +88,7 @@ const CFDsListing = observer(() => {
         is_idv_revoked,
     } = getAuthenticationStatusInfo(account_status);
 
+    const default_jurisdiction = useGetDefaultMT5Jurisdiction();
     const { has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
     const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
 
@@ -254,6 +255,7 @@ const CFDsListing = observer(() => {
                                             });
                                             setProduct(existing_account.product);
                                             setAppstorePlatform(existing_account.platform);
+                                            setJurisdictionSelectedShortcode(default_jurisdiction);
                                             getAccount();
                                         }
                                     } else if (existing_account.action_type === 'multi-action') {
@@ -418,6 +420,7 @@ const CFDsListing = observer(() => {
                             </Text>
                         </div>
                     </React.Fragment>
+                    {/* dxtrade */}
                     {is_landing_company_loaded ? (
                         available_dxtrade_accounts?.map(account => {
                             const existing_accounts = getExistingAccounts(account.platform, account.market_type);

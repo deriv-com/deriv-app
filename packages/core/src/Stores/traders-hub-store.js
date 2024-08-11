@@ -611,12 +611,9 @@ export default class TradersHubStore extends BaseStore {
     async openRealAccount(account_type, platform) {
         const { client, modules } = this.root_store;
         const { has_active_real_account } = client;
-        const { createCFDAccount, enableCFDPasswordModal, setJurisdictionSelectedShortcode, setAccountType } =
-            modules.cfd;
+        const { createCFDAccount, enableCFDPasswordModal, setAccountType } = modules.cfd;
         if (has_active_real_account && platform === CFD_PLATFORMS.MT5) {
             setAccountType(account_type);
-            // getDefaultJurisdiction();
-            setJurisdictionSelectedShortcode('vanuatu'); // TODO:@amina
             enableCFDPasswordModal();
         } else if (platform === CFD_PLATFORMS.DXTRADE) {
             enableCFDPasswordModal();

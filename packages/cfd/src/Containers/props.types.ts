@@ -218,12 +218,6 @@ export type TVerificationStatusBannerProps = {
     residence_list: ResidenceList;
 };
 
-export type TJurisdictionCheckBoxProps = {
-    class_name: string;
-    is_checked: boolean;
-    jurisdiction_selected_shortcode: string;
-    onCheck: () => void;
-};
 export type TOpenAccountTransferMeta = {
     category: string;
     type?: string;

@@ -117,13 +117,13 @@ const MT5CreatePassword = ({
                                     )}
                                 </PasswordMeter>
                             </div>
-                            {need_tnc && (
-                                <CfdPasswordModalTnc
-                                    platform={platform}
-                                    checked={checked}
-                                    onCheck={() => setChecked(prev => !prev)}
-                                />
-                            )}
+
+                            <CfdPasswordModalTnc
+                                platform={platform}
+                                checked={checked}
+                                onCheck={() => setChecked(prev => !prev)}
+                                need_tnc={need_tnc}
+                            />
                             <FormSubmitButton
                                 is_disabled={!values.password || !checked || Object.keys(errors).length > 0}
                                 is_loading={isSubmitting}

@@ -10,7 +10,7 @@ type CfdPasswordModalInfoProps = {
 };
 
 const CfdPasswordModalInfo = ({ jurisdiction_selected_shortcode, platform, product }: CfdPasswordModalInfoProps) => {
-    const need_tnc = jurisdiction_selected_shortcode !== 'svg'; //TODO: @amina
+    const need_tnc = jurisdiction_selected_shortcode !== 'svg'; //TODO: check for default jurisdiction project
 
     return (
         <div className='cfd-password-modal-info'>

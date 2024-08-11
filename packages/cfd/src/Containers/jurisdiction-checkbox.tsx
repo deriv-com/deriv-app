@@ -3,19 +3,18 @@ import { Checkbox, StaticUrl, Text } from '@deriv/components';
 import { DBVI_COMPANY_NAMES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { TJurisdictionCheckBoxProps } from './props.types';
-import { JURISDICTION } from '../Helpers/cfd-config';
+
+type TJurisdictionCheckBoxProps = {
+    class_name: string;
+    is_checked: boolean;
+    jurisdiction_selected_shortcode: string;
+    onCheck: () => void;
+};
 
 const JurisdictionCheckBox = observer(
     ({ class_name, is_checked, jurisdiction_selected_shortcode, onCheck }: TJurisdictionCheckBoxProps) => {
         const { ui } = useStore();
         const { is_mobile } = ui;
-        const shouldShowCheckBox = () => {
-            if (!jurisdiction_selected_shortcode || jurisdiction_selected_shortcode === JURISDICTION.SVG) {
-                return false;
-            }
-            return true;
-        };
 
         const getCheckboxLabel = () => (
             <Text as='p' align={is_mobile ? 'left' : 'center'} size='xxs' line_height='m'>
@@ -35,18 +34,14 @@ const JurisdictionCheckBox = observer(
         );
 
         return (
-            <React.Fragment>
-                {shouldShowCheckBox() && (
-                    <div className={class_name}>
-                        <Checkbox
-                            value={is_checked}
-                            onChange={onCheck}
-                            label={getCheckboxLabel()}
-                            defaultChecked={!!is_checked}
-                        />
-                    </div>
-                )}
-            </React.Fragment>
+            <div className={class_name}>
+                <Checkbox
+                    value={is_checked}
+                    onChange={onCheck}
+                    label={getCheckboxLabel()}
+                    defaultChecked={!!is_checked}
+                />
+            </div>
         );
     }
 );

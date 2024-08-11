@@ -19,7 +19,6 @@ import {
     getCFDPlatformLabel,
     getCFDPlatformNames,
     getErrorMessages,
-    getLegalEntityName,
     routes,
     validLength,
     validPassword,
@@ -31,13 +30,22 @@ import {
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import SuccessDialog from '../Components/success-dialog.jsx';
-import CFDPasswordModalTitle from './cfd-password-modal-title';
+import CFDEnterPasswordModalTitle from './cfd-enter-password-modal-title';
 import MigrationSuccessModal from '../Components/migration-success-modal';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
-import { CFD_PLATFORMS, CATEGORY, PRODUCT } from '../Helpers/cfd-config';
+import { CFD_PLATFORMS, CATEGORY } from '../Helpers/cfd-config';
 import { getDxCompanies, getMtCompanies, TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import '../sass/cfd.scss';
-import CfdPasswordModalTnc from './cfd-password-modal-tnc';
+
+const MT5CreatePassword = makeLazyLoader(
+    () => moduleLoader(() => import('./mt5-create-password')),
+    () => <div />
+)();
+
+const CfdPasswordModalTnc = makeLazyLoader(
+    () => moduleLoader(() => import('./cfd-password-modal-tnc')),
+    () => <div />
+)();
 
 const CFDPasswordChange = makeLazyLoader(
     () => moduleLoader(() => import('./cfd-password-change')),
@@ -79,14 +87,12 @@ type TCFDPasswordFormReusedProps = {
 type TCFDCreatePasswordProps = TCFDPasswordFormReusedProps & {
     password: string;
     onSubmit: TOnSubmitPassword;
-    is_real_financial_stp: boolean;
     need_tnc: boolean;
 };
 
 type TCFDCreatePasswordFormProps = TCFDPasswordFormReusedProps & {
     has_mt5_account: boolean;
     submitPassword: TOnSubmitPassword;
-    is_real_financial_stp: boolean;
     need_tnc: boolean;
 };
 
@@ -100,9 +106,7 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     error_type?: string;
     form_error?: string;
     has_mt5_account: boolean;
-    is_bvi: boolean;
     is_dxtrade_allowed: boolean;
-    is_real_financial_stp: boolean;
     onCancel: () => void;
     onForgotPassword: () => void;
     should_set_trading_password: boolean;
@@ -121,23 +125,46 @@ const PasswordModalHeader = ({
     platform,
 }: TPasswordModalHeaderProps) => {
     const { isDesktop } = useDevice();
+    const is_mt5 = platform === CFD_PLATFORMS.MT5;
 
     const element = !isDesktop ? 'p' : 'span';
-    const alignment = 'center';
-    const font_size = 's';
+
     const style = !isDesktop
         ? {
               padding: '2rem',
           }
         : {};
 
+    if (is_mt5 && !is_password_reset_error) {
+        const platform_name = getCFDPlatformNames(platform);
+        return (
+            <Text styles={style} as={element} line_height='m' weight='bold' size='s' align='center'>
+                {should_set_trading_password ? (
+                    <Localize
+                        i18n_default_text='Create an {{platform_name}} account'
+                        values={{
+                            platform_name,
+                        }}
+                    />
+                ) : (
+                    <Localize
+                        i18n_default_text='Add an {{platform_name}} account'
+                        values={{
+                            platform_name,
+                        }}
+                    />
+                )}
+            </Text>
+        );
+    }
+
     return (
-        <Text styles={style} as={element} line_height='m' weight='bold' size={font_size} align={alignment}>
+        <Text styles={style} as={element} line_height='m' weight='bold' size='s' align='center'>
             {!should_set_trading_password && !is_password_reset_error && (
                 <Localize
-                    i18n_default_text='Add a {{platform}} account'
+                    i18n_default_text='Enter your {{platform}} password'
                     values={{
-                        platform: getCFDPlatformNames(platform),
+                        platform: getCFDPlatformLabel(platform),
                     }}
                 />
             )}
@@ -170,21 +197,7 @@ const handlePasswordInputChange = (
     });
 };
 
-// first MT5 password
-const CreatePassword = ({
-    password,
-    platform,
-    validatePassword,
-    onSubmit,
-    error_message,
-    is_real_financial_stp,
-    need_tnc,
-}: TCFDCreatePasswordProps) => {
-    const { product, account_type } = useCfdStore();
-    const [checked, setChecked] = React.useState(
-        !(product === PRODUCT.ZEROSPREAD && account_type.category === CATEGORY.REAL)
-    );
-
+const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_message }: TCFDCreatePasswordProps) => {
     return (
         <Formik
             initialValues={{
@@ -210,11 +223,7 @@ const CreatePassword = ({
                         className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body cfd-password-modal__create-password-content'
                         data-testid='dt_create_password'
                     >
-                        <Icon
-                            icon={platform === CFD_PLATFORMS.MT5 ? 'IcMt5OnePassword' : 'IcDxtradeOnePassword'}
-                            width='122'
-                            height='108'
-                        />
+                        <Icon icon='IcDxtradeOnePassword' width='122' height='108' />
                         <Text
                             size='s'
                             align='center'
@@ -263,20 +272,8 @@ const CreatePassword = ({
                                 )}
                             </PasswordMeter>
                         </div>
-                        {is_real_financial_stp && (
-                            <div className='dc-modal__container_cfd-password-modal__description'>
-                                <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).' />
-                            </div>
-                        )}
-                        {need_tnc && (
-                            <CfdPasswordModalTnc
-                                platform={platform}
-                                checked={checked}
-                                onCheck={() => setChecked(prev => !prev)}
-                            />
-                        )}
                         <FormSubmitButton
-                            is_disabled={!values.password || !checked || Object.keys(errors).length > 0}
+                            is_disabled={!values.password || Object.keys(errors).length > 0}
                             is_loading={isSubmitting}
                             label={localize('Create {{platform}} password', {
                                 platform: getCFDPlatformLabel(platform),
@@ -296,7 +293,6 @@ const CFDCreatePasswordForm = ({
     error_message,
     validatePassword,
     submitPassword,
-    is_real_financial_stp,
     need_tnc,
 }: TCFDCreatePasswordFormProps) => {
     const multi_step_ref = React.useRef<TMultiStepRefProps>();
@@ -313,17 +309,26 @@ const CFDCreatePasswordForm = ({
 
     const steps = [
         {
-            component: (
-                <CreatePassword
-                    password={password}
-                    platform={platform}
-                    error_message={error_message}
-                    validatePassword={validatePassword}
-                    onSubmit={onSubmit}
-                    is_real_financial_stp={is_real_financial_stp}
-                    need_tnc={need_tnc}
-                />
-            ),
+            component:
+                platform === CFD_PLATFORMS.MT5 ? (
+                    <MT5CreatePassword
+                        password={password}
+                        platform={platform}
+                        error_message={error_message}
+                        validatePassword={validatePassword}
+                        onSubmit={onSubmit}
+                        need_tnc={need_tnc}
+                    />
+                ) : (
+                    <CreatePassword
+                        password={password}
+                        platform={platform}
+                        error_message={error_message}
+                        validatePassword={validatePassword}
+                        onSubmit={onSubmit}
+                        need_tnc={need_tnc}
+                    />
+                ),
         },
         {
             component: (
@@ -349,7 +354,6 @@ const CFDPasswordForm = observer(
         error_type,
         form_error,
         has_mt5_account,
-        is_real_financial_stp,
         onCancel,
         onForgotPassword,
         platform,
@@ -418,7 +422,6 @@ const CFDPasswordForm = observer(
                     validatePassword={validatePassword}
                     submitPassword={submitPassword}
                     has_mt5_account={has_mt5_account}
-                    is_real_financial_stp={is_real_financial_stp}
                     need_tnc={need_tnc}
                 />
             );
@@ -447,7 +450,7 @@ const CFDPasswordForm = observer(
                 }) => (
                     <form onSubmit={handleSubmit}>
                         <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
-                            <CFDPasswordModalTitle platform={platform} />
+                            <CFDEnterPasswordModalTitle platform={platform} />
                             <div className='input-element'>
                                 <PasswordInput
                                     autoComplete='new-password'
@@ -467,17 +470,6 @@ const CFDPasswordForm = observer(
                                     data_testId={`dt_${platform}_password`}
                                 />
                             </div>
-
-                            {is_real_financial_stp && (
-                                <div className='dc-modal__container_cfd-password-modal__description'>
-                                    <Localize
-                                        i18n_default_text='Your MT5 Financial STP account will be opened through {{legal_entity_name}}. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).'
-                                        values={{
-                                            legal_entity_name: getLegalEntityName('fx'),
-                                        }}
-                                    />
-                                </div>
-                            )}
                             {error_type === 'PasswordError' && (
                                 <Text size='xs' as='p' className='dc-modal__container_mt5-password-modal__hint'>
                                     <Localize
@@ -488,7 +480,6 @@ const CFDPasswordForm = observer(
                                     />
                                 </Text>
                             )}
-                            {/* {product === PRODUCT.ZEROSPREAD && account_type.category === CATEGORY.REAL && ( */}
                             {need_tnc && (
                                 <CfdPasswordModalTnc
                                     className='cfd-password-modal-tnc--bottom'
@@ -560,7 +551,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const history = useHistory();
 
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
-    const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
     const has_mt5_account = Boolean(mt5_login_list?.length);
     const should_set_trading_password =
         Array.isArray(account_status?.status) &&
@@ -708,8 +698,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const should_show_sent_email_modal = is_sent_email_modal_enabled && is_password_modal_exited;
 
-    const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
-
     const should_show_password_modal = React.useMemo(() => {
         if (should_show_password) {
             return should_set_trading_password ? true : isDesktop;
@@ -829,14 +817,12 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const cfd_password_form = (
         <CFDPasswordForm
-            is_bvi={is_bvi}
             closeModal={closeModal}
             error_type={error_type}
             error_message={error_type !== 'InvalidTradingPlatformPasswordFormat' ? error_message : ''}
             has_mt5_account={has_mt5_account}
             form_error={form_error}
             should_set_trading_password={should_set_trading_password}
-            is_real_financial_stp={is_real_financial_stp}
             validatePassword={validatePassword}
             onForgotPassword={handleForgotPassword}
             submitPassword={submitPassword}

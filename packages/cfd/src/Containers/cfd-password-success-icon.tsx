@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import { CFD_PLATFORMS, PRODUCT } from 'Helpers/cfd-config';
+import { CFD_PLATFORMS, PRODUCT } from '../Helpers/cfd-config';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { TProducts } from '../Components/props.types';
 

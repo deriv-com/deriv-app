@@ -25,6 +25,7 @@ type TCFDPasswordChangeProps = TCFDPasswordFormReusedProps & {
     onForgotPassword: () => void;
     setNewPasswordValue?: React.Dispatch<React.SetStateAction<string>>;
     should_set_trading_password: boolean;
+    need_tnc: boolean;
 };
 
 type TOnSubmitPasswordChange = (
@@ -41,6 +42,7 @@ const CFDPasswordChange = observer(
         setNewPasswordValue,
         should_set_trading_password,
         platform,
+        need_tnc,
     }: TCFDPasswordChangeProps) => {
         const { ui, modules } = useStore();
         const { product, account_type } = useCfdStore();
@@ -197,6 +199,7 @@ const CFDPasswordChange = observer(
                                         platform={platform}
                                         checked={checked}
                                         onCheck={() => setChecked(prev => !prev)}
+                                        need_tnc={need_tnc}
                                     />
                                 )}
                             </div>

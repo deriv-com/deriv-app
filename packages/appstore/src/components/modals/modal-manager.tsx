@@ -5,7 +5,6 @@ import { makeLazyLoader, moduleLoader } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import { useStores } from 'Stores';
-import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 const FailedVerificationModal = makeLazyLoader(
@@ -168,9 +167,7 @@ const ModalManager = () => {
     const { platform } = common;
     const {
         current_list,
-        enableCFDPasswordModal,
         is_mt5_trade_modal_visible,
-        setAccountType,
         toggleMT5TradeModal,
         getRealSyntheticAccountsExistingData,
         getRealFinancialAccountsExistingData,
@@ -234,11 +231,6 @@ const ModalManager = () => {
             selected_account_type: type || '',
             selected_server: server || '',
         }));
-    };
-
-    const openRealPasswordModal = (account_type: TOpenAccountTransferMeta) => {
-        setAccountType(account_type);
-        enableCFDPasswordModal();
     };
 
     const existing_accounts_data = (acc_type: TTradingPlatformAvailableAccount['market_type'] | 'synthetic') => {

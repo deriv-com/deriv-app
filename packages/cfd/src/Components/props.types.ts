@@ -8,7 +8,7 @@ export type TCFDPlatform = 'dxtrade' | 'mt5' | 'ctrader';
 
 export type TCFDsPlatformType = 'dxtrade' | 'mt5' | 'ctrader' | '';
 
-export type TProducts = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx';
+export type TProducts = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx' | 'financial' | 'standard';
 
 export type TShortcode = DetailsOfEachMT5Loginid['landing_company_short'];
 

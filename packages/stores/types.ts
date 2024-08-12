@@ -258,6 +258,7 @@ type TTradingPlatformAvailableAccount = {
     max_count?: number;
     available_count?: number;
     product: TProduct;
+    is_default_jurisdiction: boolean; //TODO: check for default jurisdiction project
 };
 
 type TAvailableCFDAccounts = {

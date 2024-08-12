@@ -28,7 +28,7 @@ Blockly.Gesture.prototype.updateIsDraggingFromFlyout = function () {
         this.targetBlock = this.flyout.createBlock(this.mostRecentEvent, this.targetBlock);
         this.targetBlock.select();
 
-        // retuning true since block has been dragged from flyout
+        // retuning false since block has been dragged from flyout
         Blockly.Gesture.inProgress = () => false;
         return true;
     }

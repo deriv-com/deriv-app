@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-import { useWalletMigration } from '@deriv/hooks';
+import { useWalletMigration, useTncStatusUpdate } from '@deriv/hooks';
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
@@ -114,6 +114,7 @@ const AppModals = observer(() => {
         should_show_account_success_modal,
         should_show_crypto_transaction_processing_modal,
         is_tnc_update_modal_open,
+        toggleTncUpdateModal,
     } = ui;
     const temp_session_signup_params = SessionStore.get('signup_query_param');
     const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
@@ -125,6 +126,10 @@ const AppModals = observer(() => {
 
     const should_show_wallets_upgrade_completed_modal = Cookies.get('recent_wallets_migration');
 
+    const is_tnc_status_updated = useTncStatusUpdate();
+    if (is_tnc_status_updated) {
+        toggleTncUpdateModal(true);
+    }
     React.useEffect(() => {
         if (is_logged_in && is_authorize) {
             fetchFinancialAssessment().then(response => {

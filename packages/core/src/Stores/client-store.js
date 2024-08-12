@@ -272,7 +272,6 @@ export default class ClientStore extends BaseStore {
             is_poa_expired: computed,
             real_account_creation_unlock_date: computed,
             is_tnc_needed: computed,
-            is_tnc_status_updated: computed,
             is_social_signup: computed,
             isEligibleForMoreDemoMt5Svg: action.bound,
             isEligibleForMoreRealMt5: action.bound,
@@ -724,11 +723,6 @@ export default class ClientStore extends BaseStore {
         const { terms_conditions_version } = this.website_status || {};
 
         return typeof client_tnc_status !== 'undefined' && client_tnc_status !== terms_conditions_version;
-    }
-
-    get is_tnc_status_updated() {
-        const { tnc_status } = this.account_settings || {};
-        return tnc_status;
     }
 
     get is_social_signup() {
@@ -1639,9 +1633,6 @@ export default class ClientStore extends BaseStore {
             this.resetMt5AccountListPopulation();
         }
         this.responseWebsiteStatus(await WS.wait('website_status'));
-        if (this.is_tnc_status_updated?.landing_company_short === 0) {
-            this.root_store.ui.toggleTncUpdateModal(true);
-        }
 
         this.registerReactions();
         this.setIsLoggingIn(false);

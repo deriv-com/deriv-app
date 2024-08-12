@@ -18,15 +18,7 @@ const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
     const chart_ref = React.useRef<HTMLDivElement>(null);
 
-    const {
-        active_symbols,
-        contract_type,
-        contract_types_list,
-        onMount,
-        onChange,
-        onUnmount,
-        clearWheelPickerInitialValues,
-    } = useTraderStore();
+    const { active_symbols, contract_type, contract_types_list, onMount, onChange, onUnmount } = useTraderStore();
 
     const trade_types = React.useMemo(() => getTradeTypesList(contract_types_list), [contract_types_list]);
     const symbols = React.useMemo(
@@ -65,10 +57,7 @@ const Trade = observer(() => {
 
     React.useEffect(() => {
         onMount();
-        return () => {
-            clearWheelPickerInitialValues();
-            onUnmount();
-        };
+        return onUnmount;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

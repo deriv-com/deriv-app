@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import { InlineMessage, Loading } from '@deriv/components';
+import { useInvalidateQuery } from '@deriv/api';
 import { useGetPasskeysList, useRegisterPasskey, useRemovePasskey, useRenamePasskey } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
@@ -18,8 +19,8 @@ import {
     passkeysMenuActionEventTrack,
     TPasskeysStatus,
 } from './passkeys-configs';
-import './passkeys.scss';
 import { TServerError } from '../../../Types';
+import './passkeys.scss';
 
 export type TPasskey = {
     id: number;
@@ -63,14 +64,18 @@ const Passkeys = observer(() => {
         name: '',
     });
 
+    const invalidate = useInvalidateQuery();
+
     const onSuccessPasskeyRegister = () => {
         setShouldShowPasskeyNotification(false);
         removeNotificationByKey({ key: 'enable_passkey' });
         passkeysMenuActionEventTrack('create_passkey_finished');
         setPasskeyStatus(PASSKEY_STATUS_CODES.CREATED);
+        setPasskeysStatusToCookie('available');
     };
 
     const onSuccessPasskeyRemove = () => {
+        invalidate('passkeys_list');
         setPasskeyStatus(PASSKEY_STATUS_CODES.REMOVED);
         passkeysMenuActionEventTrack('passkey_remove_success');
     };
@@ -105,6 +110,7 @@ const Passkeys = observer(() => {
 
         if (!passkeys_list?.length) {
             setPasskeyStatus(PASSKEY_STATUS_CODES.NO_PASSKEY);
+            setPasskeysStatusToCookie('not_available');
         } else {
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
         }

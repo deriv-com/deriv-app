@@ -14,6 +14,8 @@ import './appstore/ic-appstore-checked.svg';
 import './appstore/ic-appstore-circle.svg';
 import './appstore/ic-appstore-close-dark.svg';
 import './appstore/ic-appstore-close-light.svg';
+import './appstore/ic-appstore-deposit-now-coins-desktop.svg';
+import './appstore/ic-appstore-deposit-now-coins-responsive.svg';
 import './appstore/ic-appstore-deriv-logo.svg';
 import './appstore/ic-appstore-ellipse.svg';
 import './appstore/ic-appstore-error.svg';

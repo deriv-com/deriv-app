@@ -1,9 +1,11 @@
+import React from 'react';
+import { Localize } from '@deriv-com/translations';
 import { TMessageFnProps, TTransferMessage } from '../../../types';
 
-let text: TTransferMessage['message']['text'], values: TTransferMessage['message']['values'];
+let message: TTransferMessage['message'];
 
 const verifyPOIAction = {
-    buttonLabel: 'Verify',
+    buttonLabel: <Localize i18n_default_text='Verify' />,
     navigateTo: '/account/proof-of-identity',
     shouldOpenInNewTab: true,
 };
@@ -70,15 +72,22 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
     );
 
     if (availableSumActiveWalletCurrency === 0) {
-        text =
-            targetWalletType === 'crypto'
-                ? "You've reached the lifetime transfer limit from your {{sourceAccountName}} to any cryptocurrency Wallet. Verify your account to upgrade the limit."
-                : "You've reached the lifetime transfer limit from your {{sourceAccountName}} to any fiat Wallet. Verify your account to upgrade the limit.";
-        values = { sourceAccountName: sourceAccount.accountName };
+        message =
+            targetWalletType === 'crypto' ? (
+                <Localize
+                    i18n_default_text="You've reached the lifetime transfer limit from your {{sourceAccountName}} to any cryptocurrency Wallet. Verify your account to upgrade the limit."
+                    values={{ sourceAccountName: sourceAccount.accountName }}
+                />
+            ) : (
+                <Localize
+                    i18n_default_text="You've reached the lifetime transfer limit from your {{sourceAccountName}} to any fiat Wallet. Verify your account to upgrade the limit."
+                    values={{ sourceAccountName: sourceAccount.accountName }}
+                />
+            );
 
         return {
             action: verifyPOIAction,
-            message: { text, values },
+            message,
             type: 'error' as const,
         };
     }
@@ -87,23 +96,33 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
         switch (limitsCaseKey) {
             case 'fiat_to_crypto':
             case 'crypto_to_fiat':
-                text =
-                    targetWalletType === 'crypto'
-                        ? 'The lifetime transfer limit from {{sourceAccountName}} to any cryptocurrency Wallets is up to {{formattedSourceCurrencyLimit}}.'
-                        : 'The lifetime transfer limit from {{sourceAccountName}} to any fiat Wallets is up to {{formattedSourceCurrencyLimit}}.';
-                values = { formattedSourceCurrencyLimit, sourceAccountName: sourceAccount.accountName };
+                message =
+                    targetWalletType === 'crypto' ? (
+                        <Localize
+                            i18n_default_text='The lifetime transfer limit from {{sourceAccountName}} to any cryptocurrency Wallets is up to {{formattedSourceCurrencyLimit}}.'
+                            values={{ formattedSourceCurrencyLimit, sourceAccountName: sourceAccount.accountName }}
+                        />
+                    ) : (
+                        <Localize
+                            i18n_default_text='The lifetime transfer limit from {{sourceAccountName}} to any fiat Wallets is up to {{formattedSourceCurrencyLimit}}.'
+                            values={{ formattedSourceCurrencyLimit, sourceAccountName: sourceAccount.accountName }}
+                        />
+                    );
 
                 return {
-                    message: { text, values },
+                    message,
                     type: 'success' as const,
                 };
             case 'crypto_to_crypto':
-                text =
-                    'The lifetime transfer limit between cryptocurrency Wallets is up to {{formattedSourceCurrencyLimit}}.';
-                values = { formattedSourceCurrencyLimit };
+                message = (
+                    <Localize
+                        i18n_default_text='The lifetime transfer limit between cryptocurrency Wallets is up to {{formattedSourceCurrencyLimit}}.'
+                        values={{ formattedSourceCurrencyLimit }}
+                    />
+                );
 
                 return {
-                    message: { text, values },
+                    message,
                     type: 'success' as const,
                 };
             default:
@@ -113,25 +132,35 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
     switch (limitsCaseKey) {
         case 'fiat_to_crypto':
         case 'crypto_to_fiat':
-            text =
-                targetWalletType === 'crypto'
-                    ? 'Your remaining lifetime transfer limit from {{sourceAccountName}} to any cryptocurrency Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.'
-                    : 'Your remaining lifetime transfer limit from {{sourceAccountName}} to any fiat Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.';
-            values = { formattedSourceCurrencyRemainder, sourceAccountName: sourceAccount.accountName };
+            message =
+                targetWalletType === 'crypto' ? (
+                    <Localize
+                        i18n_default_text='Your remaining lifetime transfer limit from {{sourceAccountName}} to any cryptocurrency Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.'
+                        values={{ formattedSourceCurrencyRemainder, sourceAccountName: sourceAccount.accountName }}
+                    />
+                ) : (
+                    <Localize
+                        i18n_default_text='Your remaining lifetime transfer limit from {{sourceAccountName}} to any fiat Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.'
+                        values={{ formattedSourceCurrencyRemainder, sourceAccountName: sourceAccount.accountName }}
+                    />
+                );
 
             return {
                 action: verifyPOIAction,
-                message: { text, values },
+                message,
                 type: 'success' as const,
             };
         case 'crypto_to_crypto':
-            text =
-                'Your remaining lifetime transfer limit between cryptocurrency Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.';
-            values = { formattedSourceCurrencyRemainder };
+            message = (
+                <Localize
+                    i18n_default_text='Your remaining lifetime transfer limit between cryptocurrency Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.'
+                    values={{ formattedSourceCurrencyRemainder }}
+                />
+            );
 
             return {
                 action: verifyPOIAction,
-                message: { text, values },
+                message,
                 type: 'success' as const,
             };
         default:

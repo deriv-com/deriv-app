@@ -1,5 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import { Formik } from 'formik';
+import { Localize } from '@deriv-com/translations';
 import { Button, Loader } from '@deriv-com/ui';
 import useDevice from '../../../../../../hooks/useDevice';
 import { useTransfer } from '../../provider';
@@ -60,7 +61,7 @@ const TransferForm = () => {
                                 textSize={isMobile ? 'sm' : 'md'}
                                 type='submit'
                             >
-                                Transfer
+                                <Localize i18n_default_text='Transfer' />
                             </Button>
                         </div>
                     </form>

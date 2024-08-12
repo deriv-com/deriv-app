@@ -1,4 +1,4 @@
-import React from 'react';
+import { useRef, useReducer, useEffect, ChangeEvent } from 'react';
 import clsx from 'clsx';
 import { Formik, Form, Field, FormikErrors, FieldProps, FormikHelpers } from 'formik';
 import { ApiToken as TApitoken, APITokenResponse as TAPITokenResponse } from '@deriv/api-types';
@@ -6,7 +6,7 @@ import { Timeline, Input, Button, ThemedScrollbars, Loading } from '@deriv/compo
 import { useDevice } from '@deriv-com/ui';
 import { getPropertyValue, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { TToken } from '../../../Types';
 import { ApiTokenContext, ApiTokenArticle, ApiTokenCard, ApiTokenTable } from '../../../Components/api-token';
 import InlineNoteWithIcon from '../../../Components/inline-note-with-icon';
@@ -36,10 +36,11 @@ type TApiTokenForm = {
 const ApiToken = observer(() => {
     const { client } = useStore();
     const { is_switching } = client;
-    const prev_is_switching = React.useRef(is_switching);
+    const prev_is_switching = useRef(is_switching);
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
 
-    const [state, setState] = React.useReducer(
+    const [state, setState] = useReducer(
         (prev_state: Partial<AptTokenState>, value: Partial<AptTokenState>) => ({
             ...prev_state,
             ...value,
@@ -55,10 +56,10 @@ const ApiToken = observer(() => {
         }
     );
 
-    const handle_submit_timeout_ref = React.useRef<NodeJS.Timeout | undefined>();
-    const delete_token_timeout_ref = React.useRef<NodeJS.Timeout | undefined>();
+    const handle_submit_timeout_ref = useRef<NodeJS.Timeout | undefined>();
+    const delete_token_timeout_ref = useRef<NodeJS.Timeout | undefined>();
 
-    React.useEffect(() => {
+    useEffect(() => {
         getApiTokens();
 
         return () => {
@@ -67,7 +68,7 @@ const ApiToken = observer(() => {
         };
     }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (prev_is_switching.current !== is_switching) {
             prev_is_switching.current = is_switching;
             getApiTokens();
@@ -248,7 +249,7 @@ const ApiToken = observer(() => {
                                                             className='da-api-token__input dc-input__input-group'
                                                             label={localize('Token name')}
                                                             value={values.token_name}
-                                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                                                 setFieldTouched('token_name', true);
                                                                 handleChange(e);
                                                             }}

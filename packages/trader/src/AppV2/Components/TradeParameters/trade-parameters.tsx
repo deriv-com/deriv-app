@@ -17,7 +17,8 @@ import TradeTypeTabs from './TradeTypeTabs';
 import Strike from './Strike';
 import PayoutPerPoint from './PayoutPerPoint';
 import LastDigitPrediction from './LastDigitPrediction';
-import MultipliersExpirationInfo from '../MultipliersExpirationInfo';
+import MultipliersExpirationInfo from './MultipliersExpirationInfo';
+import BarrierInfo from './BarrierInfo';
 
 type TTradeParametersProps = {
     is_minimized?: boolean;
@@ -50,6 +51,7 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
             {isVisible('risk_management') && <RiskManagement is_minimized={is_minimized} />}
             {isVisible('expiration') && <MultipliersExpirationInfo />}
             {isVisible('accu_info_display') && <AccumulatorsInformation is_minimized={is_minimized} />}
+            {isVisible('barrier_info') && <BarrierInfo />}
             {isVisible('mult_info_display') && <MultipliersInformation is_minimized={is_minimized} />}
         </div>
     );

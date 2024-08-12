@@ -30,10 +30,7 @@ const mockTransaction = {
     address_url: '',
     amount: 0.0002,
     description: '',
-    formatted_address_hash: '',
     formatted_amount: '',
-    formatted_confirmations: 'Pending',
-    formatted_transaction_hash: 'Pending',
     id: '',
     is_deposit: false,
     is_valid_to_cancel: 1 as const,
@@ -70,10 +67,7 @@ describe('CryptoTransaction', () => {
             address_url: '',
             amount: 0.0002,
             description: '',
-            formatted_address_hash: '',
             formatted_amount: '',
-            formatted_confirmations: 'Pending',
-            formatted_transaction_hash: 'Pending',
             id: '',
             is_deposit: true,
             is_valid_to_cancel: 1 as const,
@@ -82,6 +76,7 @@ describe('CryptoTransaction', () => {
             status_message: '',
             status_name: '',
             submit_date: 123456,
+            transaction_hash: '',
             transaction_type: 'withdrawal' as const,
         };
         (useCancelCryptoTransaction as jest.Mock).mockReturnValue({ mutate: jest.fn() });
@@ -94,7 +89,7 @@ describe('CryptoTransaction', () => {
 
         expect(screen.getByText('Deposit BTC')).toBeInTheDocument();
         expect(screen.getByText(/Confirmations/)).toBeInTheDocument();
-        expect(screen.getAllByText(/Pending/)[1]).toBeInTheDocument();
+        expect(screen.getByText(/Pending/)).toBeInTheDocument();
     });
 
     it('should open modal when cancel button is clicked', async () => {

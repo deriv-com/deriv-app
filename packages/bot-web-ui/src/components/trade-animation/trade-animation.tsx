@@ -62,7 +62,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
             progress_status += 1;
         }
 
-        for (let i = 0; i < progress_status; i++) {
+        for (let i = 0; i < progress_status - 1; i++) {
             status_classes[i] = 'completed';
         }
     }

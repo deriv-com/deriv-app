@@ -1,3 +1,5 @@
+import React from 'react';
+import { Localize } from '@deriv-com/translations';
 import { TMessageFnProps } from '../../../types';
 
 const insufficientBalanceMessageFn = ({ sourceAccount, sourceAmount }: TMessageFnProps) => {
@@ -6,10 +8,13 @@ const insufficientBalanceMessageFn = ({ sourceAccount, sourceAmount }: TMessageF
     const sourceAccountBalance = Number(sourceAccount.balance);
 
     if (sourceAccountBalance === 0 || sourceAccountBalance < sourceAmount) {
-        const message = {
-            text: 'Your {{sourceAccountName}} has insufficient balance.',
-            values: { sourceAccountName: sourceAccount.accountName },
-        };
+        const message = (
+            <Localize
+                i18n_default_text='Your {{sourceAccountName}} has insufficient balance.'
+                values={{ sourceAccountName: sourceAccount.accountName }}
+            />
+        );
+
         return {
             message,
             type: 'error' as const,

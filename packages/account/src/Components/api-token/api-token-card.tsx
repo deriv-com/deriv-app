@@ -1,4 +1,4 @@
-import React from 'react';
+import { PropsWithChildren } from 'react';
 import { Field, FieldProps } from 'formik';
 import { CompositeCheckbox } from '@deriv/components';
 
@@ -8,7 +8,7 @@ type TApiTokenCard = {
     name: string;
 };
 
-const ApiTokenCard = ({ name, display_name, description, children }: React.PropsWithChildren<TApiTokenCard>) => {
+const ApiTokenCard = ({ name, display_name, description, children }: PropsWithChildren<TApiTokenCard>) => {
     return (
         <Field name={name}>
             {({ field, form: { setFieldValue } }: FieldProps<boolean>) => (

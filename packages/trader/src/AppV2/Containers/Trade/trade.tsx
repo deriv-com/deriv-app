@@ -51,7 +51,7 @@ const Trade = observer(() => {
         if (current_chart_ref) {
             const chart_bottom_Y = current_chart_ref.getBoundingClientRect().bottom;
             const container_bottom_Y = window.innerHeight - HEIGHT.BOTTOM_NAV;
-            setIsMinimizedParamsVisible(chart_bottom_Y < container_bottom_Y);
+            setIsMinimizedParamsVisible(chart_bottom_Y <= container_bottom_Y);
         }
     }, []);
 

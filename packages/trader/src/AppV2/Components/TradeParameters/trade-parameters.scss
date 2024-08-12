@@ -12,7 +12,6 @@
         align-items: center;
         justify-content: space-between;
     }
-
     &__options__wrapper {
         display: flex;
         flex-direction: column;
@@ -60,7 +59,6 @@
             }
         }
     }
-
     &__option {
         &--minimized {
             width: 16rem;
@@ -72,5 +70,9 @@
         .input {
             padding-inline-start: 0;
         }
+    }
+    &--minimized {
+        height: var(--core-size-3600);
+        width: 100%;
     }
 }

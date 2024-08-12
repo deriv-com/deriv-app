@@ -39,7 +39,7 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
         {
             icon: (
                 <LegacyMarketBasketIndicesIcon
-                    iconSize='sm'
+                    iconSize='xs'
                     fill='var(--semantic-color-monochrome-textIcon-normal-high)'
                 />
             ),

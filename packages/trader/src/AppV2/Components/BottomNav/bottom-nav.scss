@@ -5,41 +5,48 @@
 
     &-container {
         display: flex;
-        padding: var(--core-spacing-400);
+        padding: var(--core-spacing-200) var(--core-spacing-400);
         align-items: flex-start;
         gap: var(--core-spacing-500);
         width: 100%;
+        height: var(--core-size-2800);
         border-top: 1px solid var(--core-color-opacity-black-100); // waiting on quill tokens in deriv-app
         background-color: var(--core-color-solid-slate-50);
     }
-
     &-selection {
         flex: 1;
         overflow: auto;
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
-
     &-item {
         all: unset;
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
         flex: 1 0 0;
-        height: var(--core-size-2100);
+        height: var(--core-size-2400);
 
         &--active {
             .bottom-nav-item-label {
                 color: var(--core-color-opacity-coral-600);
             }
-            svg {
-                fill: var(--core-color-opacity-coral-600);
+            svg,
+            svg path {
+                fill: var(--core-color-opacity-coral-600) !important;
             }
         }
-
         &-label {
             font-size: var(--core-fontSize-50);
             line-height: var(--core-lineHeight-100);
+        }
+        span {
+            width: var(--core-size-1200);
+            height: var(--core-size-1200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
 }

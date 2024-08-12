@@ -17,7 +17,7 @@ import { TMarketTypes, TPlatforms } from '../../../../types';
 import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
 import { CFD_PLATFORMS, JURISDICTION, MARKET_TYPE, PlatformDetails } from '../../constants';
-import { CreatePassword, EnterPassword, MT5ResetPasswordModal } from '../../screens';
+import { CreatePassword, CreatePasswordMT5, EnterPassword, MT5ResetPasswordModal } from '../../screens';
 import MT5AccountAdded from '../MT5AccountAdded/MT5AccountAdded';
 import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
 import { MT5PasswordModalFooter, SuccessModalFooter } from './MT5PasswordModalFooters';
@@ -220,9 +220,20 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     ]);
 
     const PasswordComponent = useMemo(() => {
-        if (isMT5PasswordNotSet)
+        if (isMT5PasswordNotSet && platform !== CFD_PLATFORMS.MT5)
             return (
                 <CreatePassword
+                    isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
+                    onPasswordChange={e => setPassword(e.target.value)}
+                    onPrimaryClick={onSubmit}
+                    password={password}
+                    platform={mt5Platform}
+                />
+            );
+
+        if (isMT5PasswordNotSet && platform === CFD_PLATFORMS.MT5)
+            return (
+                <CreatePasswordMT5
                     isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}
@@ -268,6 +279,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         updateMT5Password,
         tradingPasswordChangeError,
         tradingPlatformPasswordChangeLoading,
+        platform,
     ]);
 
     if (emailVerificationStatus === 'error') {

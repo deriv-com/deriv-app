@@ -3,6 +3,7 @@ import { ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { routes, checkServerMaintenance, startPerformanceEventTimer } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import { useContentFlag } from '@deriv/hooks';
 import { useDevice } from '@deriv-com/ui';
 import CFDsListing from 'Components/cfds-listing';
 import ModalManager from 'Components/modals/modal-manager';
@@ -12,7 +13,7 @@ import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import AfterSignupFlow from 'Components/after-signup-flow';
 import Disclaimer from 'Components/disclaimer';
 import TradersHubBanners from 'Components/banners/traders-hub-banners';
-import { useContentFlag } from '@deriv/hooks';
+import BusinessClosureBanner from 'Components/banners/business-closure-banner';
 import classNames from 'classnames';
 import './traders-hub.scss';
 
@@ -144,6 +145,7 @@ const TradersHub = observer(() => {
     return (
         <React.Fragment>
             <AfterSignupFlow />
+            <BusinessClosureBanner />
             <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop}>
                 {can_show_notify && <Notifications />}
                 <div

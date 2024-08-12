@@ -541,6 +541,7 @@ type TClientStore = {
     account_settings: GetSettings & {
         upload_file?: string;
         poi_state?: string;
+        tnc_status?: Record<string, number>;
     };
     residence_list: ResidenceList;
     should_restrict_bvi_account_creation: boolean;
@@ -620,7 +621,6 @@ type TClientStore = {
     setTradersHubTracking: (value: boolean) => void;
     account_time_of_closure?: number;
     is_account_to_be_closed_by_residence: boolean;
-    is_tnc_status_updated: Record<string, boolean>;
 };
 
 type TCommonStoreError = {

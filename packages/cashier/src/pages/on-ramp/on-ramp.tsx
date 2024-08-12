@@ -9,6 +9,7 @@ import CashierLocked from '../../components/cashier-locked';
 import SideNote from '../../components/side-note';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
+import { DepositSubPageAnalyticsEventTracker } from '../../components/deposit-sub-page-analytics-event-tracker';
 import { useCashierStore } from '../../stores/useCashierStores';
 import PageContainer from '../../components/page-container';
 import './on-ramp.scss';
@@ -122,6 +123,7 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
     return (
         <PageContainer hide_breadcrumb>
             <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>
+                <DepositSubPageAnalyticsEventTracker deposit_category='fiat_onramp' />
                 {!isDesktop && (
                     <React.Fragment>
                         <SelectNative

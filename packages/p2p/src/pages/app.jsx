@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { reaction } from 'mobx';
+import { Analytics } from '@deriv-com/analytics';
 import { Loading } from '@deriv/components';
 import { useP2PCompletedOrdersNotification, useP2PSettings, useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { isEmptyObject, routes, WS } from '@deriv/shared';
@@ -23,7 +24,7 @@ const App = () => {
         defaultValue: false,
     });
     const { notifications, client, ui, common, modules } = useStore();
-    const { balance, is_logging_in } = client;
+    const { balance, currency, is_logging_in, loginid } = client;
     const { setOnRemount } = modules?.cashier?.general_store;
 
     const { isDesktop } = useDevice();
@@ -194,6 +195,18 @@ const App = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setQueryOrder]);
+
+    React.useEffect(() => {
+        if (loginid && currency) {
+            Analytics.trackEvent('ce_cashier_deposit_onboarding_form', {
+                action: 'open_deposit_subpage',
+                form_name: 'ce_cashier_deposit_onboarding_form',
+                deposit_category: 'p2p',
+                currency,
+                login_id: loginid,
+            });
+        }
+    }, [currency, loginid]);
 
     const setQueryOrder = React.useCallback(
         input_order_id => {

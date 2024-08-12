@@ -19,6 +19,7 @@ import PayoutPerPoint from './PayoutPerPoint';
 import LastDigitPrediction from './LastDigitPrediction';
 import MultipliersExpirationInfo from './MultipliersExpirationInfo';
 import BarrierInfo from './BarrierInfo';
+import PayoutPerPointInfo from './PayoutPerPointInfo';
 
 type TTradeParametersProps = {
     is_minimized?: boolean;
@@ -54,13 +55,16 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
                 {isVisible('accu_info_display') && <AccumulatorsInformation is_minimized={is_minimized} />}
                 {isVisible('barrier_info') && <BarrierInfo is_minimized={is_minimized} />}
                 {isVisible('mult_info_display') && <MultipliersInformation is_minimized={is_minimized} />}
+                {isVisible('payout_per_point_info') && <PayoutPerPointInfo is_minimized={is_minimized} />}
             </div>
             <div
                 className={clsx('trade-params__options-info__container', {
-                    'trade-params__options-info__container--isHidden': !is_minimized || !isVisible('expiration'),
+                    'trade-params__options-info__container--isHidden':
+                        !is_minimized || !(isVisible('expiration') || isVisible('payout_per_point_info')),
                 })}
             >
                 {isVisible('expiration') && <MultipliersExpirationInfo is_minimized={!is_minimized} />}
+                {isVisible('payout_per_point_info') && <PayoutPerPointInfo is_minimized={!is_minimized} />}
             </div>
         </React.Fragment>
     );

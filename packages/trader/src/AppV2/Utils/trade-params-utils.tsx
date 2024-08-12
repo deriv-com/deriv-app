@@ -39,8 +39,8 @@ export const getTradeParams = (symbol?: string) => ({
         'take_profit',
         'barrier_info',
     ],
-    [TRADE_TYPES.VANILLA.CALL]: ['trade_type_tabs', 'duration', 'strike', 'stake'],
-    [TRADE_TYPES.VANILLA.PUT]: ['trade_type_tabs', 'duration', 'strike', 'stake'],
+    [TRADE_TYPES.VANILLA.CALL]: ['trade_type_tabs', 'duration', 'strike', 'stake', 'payout_per_point_info'],
+    [TRADE_TYPES.VANILLA.PUT]: ['trade_type_tabs', 'duration', 'strike', 'stake', 'payout_per_point_info'],
 });
 
 export const isDigitContractWinning = (

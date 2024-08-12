@@ -8,12 +8,7 @@ import type { TWheelPickerInitialValues } from 'Stores/Modules/Trading/trade-sto
 type TStrikeWheelProps = {
     current_strike: string;
     currency: string;
-    onStrikePriceSelect: (e: {
-        target: {
-            name: string;
-            value: unknown;
-        };
-    }) => void;
+    onStrikePriceSelect: (new_value: string | number) => void;
     payout_per_point?: string | number;
     strike_price_list: {
         value: string;
@@ -28,9 +23,7 @@ type TStrikeWheelProps = {
 };
 
 const onWheelPickerScrollDebounced = debounce(
-    (new_value: string | number, callback: TStrikeWheelProps['onStrikePriceSelect']) => {
-        callback({ target: { name: 'barrier_1', value: new_value } });
-    },
+    (new_value: string | number, callback: TStrikeWheelProps['onStrikePriceSelect']) => callback(new_value),
     200
 );
 
@@ -46,10 +39,8 @@ const StrikeWheel = ({
     const selected_value_ref = React.useRef<string | number>(current_strike);
 
     const onSave = () => {
-        if (selected_value_ref.current !== initial_value_ref.current) {
-            initial_value_ref.current = selected_value_ref.current;
-            setWheelPickerInitialValues({ value: selected_value_ref.current, name: 'strike' });
-        }
+        initial_value_ref.current = selected_value_ref.current;
+        setWheelPickerInitialValues({ value: selected_value_ref.current, name: 'strike' });
     };
 
     React.useEffect(() => {
@@ -59,8 +50,8 @@ const StrikeWheel = ({
         }
 
         return () => {
-            if (initial_value_ref.current !== selected_value_ref.current) {
-                onStrikePriceSelect({ target: { name: 'barrier_1', value: initial_value_ref.current } });
+            if (initial_value_ref.current && initial_value_ref.current !== selected_value_ref.current) {
+                onStrikePriceSelect(initial_value_ref.current);
             }
             onWheelPickerScrollDebounced.cancel();
         };

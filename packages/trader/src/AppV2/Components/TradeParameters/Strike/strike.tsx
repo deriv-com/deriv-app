@@ -33,6 +33,10 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
     const payout_per_point: string | number = isEmptyObject(proposal_info)
         ? ''
         : proposal_info[contract_type.toUpperCase()]?.obj_contract_basis?.value;
+
+    const handleStrikeChange = (new_value: number | string) =>
+        onChange({ target: { name: 'barrier_1', value: new_value } });
+
     const action_sheet_content = [
         {
             id: 1,
@@ -40,7 +44,7 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
                 <StrikeWheel
                     current_strike={barrier_1}
                     currency={getCurrencyDisplayCode(currency)}
-                    onStrikePriceSelect={onChange}
+                    onStrikePriceSelect={handleStrikeChange}
                     payout_per_point={payout_per_point}
                     strike_price_list={strike_price_list}
                     setWheelPickerInitialValues={setWheelPickerInitialValues}
@@ -56,8 +60,9 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
 
     React.useEffect(() => {
         const initial_strike = wheel_picker_initial_values?.strike;
-        if (initial_strike && barrier_1 !== initial_strike)
-            onChange({ target: { name: 'barrier_1', value: initial_strike } });
+        if (initial_strike && barrier_1 !== initial_strike) {
+            handleStrikeChange(initial_strike);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

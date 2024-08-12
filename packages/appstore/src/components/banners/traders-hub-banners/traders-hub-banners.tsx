@@ -43,19 +43,19 @@ const TradersHubBanners = observer(() => {
         defaultValue: false,
     });
 
-    // ff: traders-hub-deposit-now-banner
-    // banner_name: first_deposit_cta
+    // ff: traders_hub_deposit_banner
+    // banner_name: deposit_cta
     // banner_type: with_cta,
 
-    const [ff_first_deposit_banner] = useGrowthbookGetFeatureValue({
-        featureFlag: 'traders_hub_first_deposit_banner',
+    const [ff_deposit_banner] = useGrowthbookGetFeatureValue({
+        featureFlag: 'traders_hub_deposit_banner',
         defaultValue: false,
     });
 
     const should_add_empty_div_for_get_started_trading_banner_clever_tap = has_any_real_account;
     const should_show_real_account_creation_banner =
         ff_real_account_creation_banner && !has_any_real_account && !is_eu && is_landing_company_loaded;
-    // const should_show_deposit_now_banner = ff_first_deposit_banner && !hasDeposited && !hasTransferred;
+    // const should_show_deposit_now_banner = ff_deposit_banner && !hasDeposited && !hasTransferred;
     const should_show_deposit_now_banner = !hasDeposited && !hasTransferred;
 
     return (

@@ -1,0 +1,14 @@
+.trading-disabled-by-residence-modal {
+    &__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2.4rem;
+        padding: 3.2rem;
+
+        @include mobile-screen {
+            padding: 1.6rem;
+        }
+    }
+}

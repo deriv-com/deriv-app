@@ -3,15 +3,15 @@ import { Loading } from '@deriv/components';
 import { useCashierLocked } from '@deriv/hooks';
 import { WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import Error from '../../components/error';
-import NoBalance from '../../components/no-balance';
-import { Virtual } from '../../components/cashier-container';
-import CashierLocked from '../../components/cashier-locked';
-import AccountTransferForm from './account-transfer-form';
-import AccountTransferNoAccount from './account-transfer-no-account';
-import AccountTransferLocked from './account-transfer-locked';
 import { useCashierStore } from '../../stores/useCashierStores';
 import PageContainer from '../../components/page-container';
+import CashierLocked from '../../components/cashier-locked';
+import Error from '../../components/error';
+import NoBalance from '../../components/no-balance';
+import Virtual from '../../components/cashier-container/virtual';
+import AccountTransferLocked from './account-transfer-locked';
+import AccountTransferNoAccount from './account-transfer-no-account';
+import AccountTransferForm from './account-transfer-form';
 
 type TAccountTransferProps = {
     onClickDeposit?: VoidFunction;

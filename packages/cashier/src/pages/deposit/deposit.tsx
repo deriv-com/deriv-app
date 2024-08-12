@@ -1,10 +1,12 @@
 import React from 'react';
 import { useDepositLocked } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import TransactionsCryptoHistory from '../../components/transactions-crypto-history';
-import { CashierOnboardingModule, DepositCryptoModule, DepositFiatModule } from '../../modules';
 import { useCashierStore } from '../../stores/useCashierStores';
+import { CashierOnboardingModule } from '../../modules/cashier-onboarding';
 import PageContainer from '../../components/page-container';
+import DepositFiatModule from '../../modules/deposit-fiat/deposit-fiat';
+import DepositCryptoModule from '../../modules/deposit-crypto/deposit-crypto';
+import TransactionsCryptoHistory from '../../components/transactions-crypto-history';
 import DepositLocked from './deposit-locked';
 
 const Deposit = observer(() => {

@@ -34,43 +34,50 @@ const AppContent = observer(() => {
     const init_api_interval = React.useRef(null);
     const msg_listener = React.useRef(null);
 
-    const handleMessage = ({ data }) => {
-        if (data?.msg_type === 'proposal_open_contract' && !data?.error) {
-            const { proposal_open_contract } = data;
-            if (
-                proposal_open_contract?.status !== 'open' &&
-                !recovered_transactions?.includes(proposal_open_contract?.contract_id)
-            ) {
-                recoverPendingContracts(proposal_open_contract);
+    const handleMessage = React.useCallback(
+        ({ data }) => {
+            if (data?.msg_type === 'proposal_open_contract' && !data?.error) {
+                const { proposal_open_contract } = data;
+                if (
+                    proposal_open_contract?.status !== 'open' &&
+                    !recovered_transactions?.includes(proposal_open_contract?.contract_id)
+                ) {
+                    recoverPendingContracts(proposal_open_contract);
+                }
             }
-        }
-    };
+        },
+        [recovered_transactions, recoverPendingContracts]
+    );
 
-    function checkIfApiInitialized() {
+    const checkIfApiInitialized = React.useCallback(() => {
         init_api_interval.current = setInterval(() => {
             if (api_base?.api) {
                 clearInterval(init_api_interval.current);
+
                 // Listen for proposal open contract messages to check
                 // if there is any active contract from bot still running
                 if (api_base?.api && !is_subscribed_to_msg_listener.current) {
                     is_subscribed_to_msg_listener.current = true;
-                    msg_listener.current = api_base.api?.onMessage()?.subscribe(handleMessage);
+                    msg_listener.current = api_base.api.onMessage()?.subscribe(handleMessage);
                 }
             }
         }, 500);
-    }
+    }, [handleMessage]);
 
     React.useEffect(() => {
-        // Check until api is initialized and then subscribe to the proposal open conrtact
-        checkIfApiInitialized();
+        // Check until api is initialized and then subscribe to the api messages
+        // Also we should only subscribe to the messages once user is logged in
+        // And is not already subscribed to the messages
+        if (!is_subscribed_to_msg_listener.current && client.is_logged_in) {
+            checkIfApiInitialized();
+        }
         return () => {
             if (is_subscribed_to_msg_listener.current && msg_listener.current) {
                 is_subscribed_to_msg_listener.current = false;
                 msg_listener.current.unsubscribe();
             }
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [checkIfApiInitialized, client.is_logged_in, client.loginid]);
 
     React.useEffect(() => {
         showDigitalOptionsMaltainvestError(client, common);
@@ -118,6 +125,9 @@ const AppContent = observer(() => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const show_blocker_on_mobile_landscape_view = document.getElementById('landscape_blocker');
+    if (show_blocker_on_mobile_landscape_view) return null;
 
     return is_loading ? (
         <Loading />

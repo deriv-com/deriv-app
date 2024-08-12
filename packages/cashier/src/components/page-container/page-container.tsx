@@ -2,8 +2,11 @@ import React from 'react';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
-import CashierBreadcrumb from '../cashier-breadcrumb';
 import './page-container.scss';
+
+const CashierBreadcrumb = React.lazy(
+    () => import(/* webpackChunkName: "cashier-breadcrumb" */ '../cashier-breadcrumb')
+);
 
 type TProps = {
     hide_breadcrumb?: boolean;

@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactElement, PropsWithChildren } from 'react';
 import clsx from 'clsx';
 import { Text } from '@deriv/components';
 
@@ -6,7 +6,7 @@ type TAccountLimitsTableCell = {
     align: 'right' | 'left';
     is_hint: boolean;
     level: string;
-    renderExtraInfo: () => React.ReactElement;
+    renderExtraInfo: () => ReactElement;
 };
 
 const AccountLimitsTableCell = ({
@@ -15,7 +15,7 @@ const AccountLimitsTableCell = ({
     is_hint,
     level,
     renderExtraInfo,
-}: React.PropsWithChildren<Partial<TAccountLimitsTableCell>>) => {
+}: PropsWithChildren<Partial<TAccountLimitsTableCell>>) => {
     const text_size = is_hint ? 'xxxs' : 'xxs';
 
     return (

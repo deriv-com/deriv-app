@@ -8,7 +8,7 @@ const AdTypeSectionTrailingIcon = ({ label }: TAdTypeSectionTrailingIcon) => {
     const { isDesktop } = useDevice();
 
     return (
-        <Text color={isDesktop ? 'less-prominent' : 'prominent'} size={isDesktop ? 'xxs' : 's'}>
+        <Text color='less-prominent' size={isDesktop ? 'xxs' : 's'}>
             {label}
         </Text>
     );

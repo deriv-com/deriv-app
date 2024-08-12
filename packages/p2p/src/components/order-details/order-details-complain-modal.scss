@@ -17,7 +17,7 @@
             margin: 1.6rem;
         }
 
-        @include tablet-up {
+        @include desktop-screen {
             border-radius: 8px;
         }
     }

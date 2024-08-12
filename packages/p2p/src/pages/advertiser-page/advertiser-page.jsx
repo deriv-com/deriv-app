@@ -300,7 +300,7 @@ const AdvertiserPage = () => {
                                         <Text
                                             className='advertiser-page__joined-since'
                                             color='less-prominent'
-                                            size='xxxs'
+                                            size={mobileTextSize}
                                         >
                                             {joined_since ? (
                                                 <Localize

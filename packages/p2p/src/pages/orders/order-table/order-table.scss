@@ -5,7 +5,7 @@
 
     &__toggle-wrapper {
         .toggle-container {
-            @include tablet-up {
+            @include desktop-screen {
                 margin: 2.4rem 0 4.8rem;
             }
         }

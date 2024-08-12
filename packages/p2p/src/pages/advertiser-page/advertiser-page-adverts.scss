@@ -81,7 +81,7 @@
     }
 
     &__scrollbar {
-        @include tablet-up {
+        @include desktop-screen {
             height: calc(100vh - 527px);
         }
 

@@ -4,8 +4,9 @@
     flex-direction: column;
     flex: 1;
 
-    @include tablet-up {
+    @include desktop-screen {
         border-radius: 4px;
+        border: 8px solid var(--general-section-1);
         margin-left: 3.2rem;
         width: 440px;
     }

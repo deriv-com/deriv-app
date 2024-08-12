@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, MobileFullPageModal, Modal, Text } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 import { localize, Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import FormError from 'Components/section-error';
 import OrderDetailsComplainModalRadioGroup from './order-details-complain-modal-radio-group.jsx';
 import 'Components/order-details/order-details-complain-modal.scss';
-import { useDevice } from '@deriv-com/ui';
 
 const ComplainExplanation = () => (
     <div className='order-details-complain-modal__explanation'>

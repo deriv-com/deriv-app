@@ -50,6 +50,8 @@ const screens = {
 };
 
 type TVerificationProps = {
+    isVirtual?: boolean;
+    product?: THooks.AvailableMT5Accounts['product'];
     selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];
 };
 
@@ -87,7 +89,7 @@ const getManualVerificationFooter = ({
     );
 };
 
-const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
+const Verification: FC<TVerificationProps> = ({ isVirtual, product, selectedJurisdiction }) => {
     const { data: mt5AccountsList } = useMT5AccountsList();
     const { data: poiStatus, isSuccess: isSuccessPOIStatus } = usePOI();
     const { data: poaStatus, isSuccess: isSuccessPOAStatus } = usePOA();
@@ -326,9 +328,16 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
 
     useEffect(() => {
         if (initialScreenId === 'mt5PasswordModal') {
-            show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
+            show(
+                <MT5PasswordModal
+                    isVirtual={isVirtual}
+                    marketType={selectedMarketType}
+                    platform={platform}
+                    product={product}
+                />
+            );
         }
-    }, [initialScreenId, show, selectedMarketType, platform]);
+    }, [initialScreenId, show, selectedMarketType, platform, isVirtual, product]);
 
     return (
         <FlowProvider

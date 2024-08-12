@@ -1,27 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { DerivLightDmt5PasswordIcon } from '@deriv/quill-icons';
 import { Checkbox, InlineMessage } from '@deriv-com/ui';
 import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
-import { TPlatforms } from '../../../../types';
+import { THooks, TPlatforms } from '../../../../types';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
-import { CFD_PLATFORMS, PlatformDetails } from '../../constants';
+import { CFD_PLATFORMS, PlatformDetails, PRODUCT } from '../../constants';
 import './CreatePasswordMT5.scss';
 
 type TProps = {
     isLoading?: boolean;
+    isVirtual?: boolean;
     onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onPrimaryClick: () => void;
     password: string;
     platform: TPlatforms.All;
+    product?: THooks.AvailableMT5Accounts['product'];
 };
 
-const CreatePasswordMT5: React.FC<TProps> = ({ isLoading, onPasswordChange, onPrimaryClick, password, platform }) => {
+const CreatePasswordMT5: React.FC<TProps> = ({
+    isLoading,
+    isVirtual,
+    onPasswordChange,
+    onPrimaryClick,
+    password,
+    platform,
+    product,
+}) => {
     const { isDesktop } = useDevice();
     const { title } = PlatformDetails[platform as keyof typeof PlatformDetails];
     const isMT5 = platform === CFD_PLATFORMS.MT5;
     const disableButton = isMT5 ? !validPasswordMT5(password) : !validPassword(password);
     // const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
+    const [checked, setChecked] = useState(!(product === PRODUCT.ZEROSPREAD && !isVirtual));
 
     return (
         <div className='wallets-create-password-mt5'>
@@ -43,34 +54,39 @@ const CreatePasswordMT5: React.FC<TProps> = ({ isLoading, onPasswordChange, onPr
                     onChange={onPasswordChange}
                     password={password}
                 />
-                <InlineMessage
-                    className='wallets-create-password-mt5__inline-message'
-                    iconPosition='top'
-                    variant='info'
-                >
-                    <WalletText size={isDesktop ? '2xs' : 'xs'}>
-                        You are adding your Deriv MT5 CFDs account under Deriv Investments (Europe) Limited, regulated
-                        by Malta Financial Services Authority (MFSA) (licence no. IS/70156).
-                    </WalletText>
-                </InlineMessage>
-                <Checkbox
-                    label={
-                        <WalletText size={isDesktop ? 'xs' : 'sm'}>
-                            I confirm and accept Deriv (BVI) Ltd’s{' '}
-                            <a className='wallets-create-password-mt5__tnc-link' href=''>
-                                terms and conditions
-                            </a>
-                        </WalletText>
-                    }
-                    name='example-checkbox'
-                    onChange={() => null}
-                />
+                {product === PRODUCT.ZEROSPREAD && !isVirtual && (
+                    <>
+                        <InlineMessage
+                            className='wallets-create-password-mt5__inline-message'
+                            iconPosition='top'
+                            variant='info'
+                        >
+                            <WalletText size={isDesktop ? '2xs' : 'xs'}>
+                                You are adding your Deriv MT5 CFDs account under Deriv Investments (Europe) Limited,
+                                regulated by Malta Financial Services Authority (MFSA) (licence no. IS/70156).
+                            </WalletText>
+                        </InlineMessage>
+                        <Checkbox
+                            checked={checked}
+                            label={
+                                <WalletText size={isDesktop ? 'xs' : 'sm'}>
+                                    I confirm and accept Deriv (BVI) Ltd’s{' '}
+                                    <a className='wallets-create-password-mt5__tnc-link' href=''>
+                                        terms and conditions
+                                    </a>
+                                </WalletText>
+                            }
+                            name='zerospread-checkbox'
+                            onChange={() => setChecked(prev => !prev)}
+                        />
+                    </>
+                )}
             </div>
 
             {isDesktop && (
                 <div className='wallets-create-password-mt5__footer'>
                     <WalletButton
-                        disabled={!password || isLoading || disableButton}
+                        disabled={!password || isLoading || disableButton || !checked}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'

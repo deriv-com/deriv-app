@@ -20,9 +20,17 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
 
     const onButtonClick = useCallback(() => {
         if (activeWallet?.is_virtual) {
-            show(<MT5PasswordModal marketType={account?.market_type || 'synthetic'} platform={account.platform} />);
-        } else if (account.sub_account_type === PRODUCT.ZEROSPREAD) {
-            show(<Verification selectedJurisdiction={account.shortcode} />);
+            if (account.sub_account_type === PRODUCT.ZEROSPREAD) {
+                show(
+                    <Verification
+                        isVirtual={activeWallet?.is_virtual}
+                        product={account.product}
+                        selectedJurisdiction={account.shortcode}
+                    />
+                );
+            } else {
+                show(<MT5PasswordModal marketType={account?.market_type || 'synthetic'} platform={account.platform} />);
+            }
         } else {
             show(<JurisdictionModal />);
         }
@@ -34,6 +42,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
         account.platform,
         setModalState,
         account.sub_account_type,
+        account.product,
         account?.shortcode,
     ]);
 

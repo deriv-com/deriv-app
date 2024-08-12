@@ -13,7 +13,7 @@ import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
-import { TMarketTypes, TPlatforms } from '../../../../types';
+import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
 import { CFD_PLATFORMS, JURISDICTION, MARKET_TYPE, PlatformDetails } from '../../constants';
@@ -23,8 +23,10 @@ import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
 import { MT5PasswordModalFooter, SuccessModalFooter } from './MT5PasswordModalFooters';
 
 type TProps = {
+    isVirtual?: boolean;
     marketType: TMarketTypes.SortedMT5Accounts;
     platform: TPlatforms.All;
+    product?: THooks.AvailableMT5Accounts['product'];
 };
 
 export type TPlatformPasswordChange = {
@@ -32,7 +34,7 @@ export type TPlatformPasswordChange = {
     newPassword: string;
 };
 
-const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
+const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, product }) => {
     const {
         data: createMT5AccountData,
         error: createMT5AccountError,
@@ -235,10 +237,12 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
             return (
                 <CreatePasswordMT5
                     isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
+                    isVirtual={isVirtual}
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}
                     password={password}
                     platform={mt5Platform}
+                    product={product}
                 />
             );
 
@@ -280,6 +284,8 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         tradingPasswordChangeError,
         tradingPlatformPasswordChangeLoading,
         platform,
+        isVirtual,
+        product,
     ]);
 
     if (emailVerificationStatus === 'error') {

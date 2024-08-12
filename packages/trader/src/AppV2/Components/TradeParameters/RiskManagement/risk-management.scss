@@ -1,0 +1,9 @@
+.risk-management {
+    &__description {
+        height: unset;
+
+        &__definition {
+            margin-block-end: var(--core-spacing-800);
+        }
+    }
+}

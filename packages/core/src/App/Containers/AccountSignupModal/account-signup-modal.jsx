@@ -63,15 +63,19 @@ const AccountSignup = ({
 
     const trackEvent = event => {
         if (window.rudderanalytics) {
+            console.log('here');
             window.rudderanalytics?.track(event.name, event.properties);
         } else {
+            console.log('else');
             queueEvent(event);
         }
     };
 
     const loadPendingEvents = () => {
         const storedEvents = localStorage.getItem('pending_events');
+        console.log('pending events', storedEvents);
         if (storedEvents) {
+            console.log('storedEvents');
             eventQueue = JSON.parse(storedEvents);
         }
     };
@@ -82,6 +86,7 @@ const AccountSignup = ({
             console.log('analytics loaded');
 
             if (eventQueue.length > 0) {
+                console.log('eventQueue.length');
                 eventQueue.forEach(event => {
                     window.rudderanalytics.track(event.name, event.properties);
                 });
@@ -100,13 +105,19 @@ const AccountSignup = ({
     console.log('after calling analytics');
     // didMount lifecycle hook
     React.useEffect(() => {
-        trackEvent('ce_virtual_signup_form', {
-            action: 'signup_confirmed',
-            form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+        trackEvent({
+            name: 'ce_virtual_signup_form',
+            properties: {
+                action: 'signup_confirmed',
+                form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+            },
         });
-        trackEvent('ce_virtual_signup_form', {
-            action: 'country_selection_screen_opened',
-            form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+        trackEvent({
+            name: 'ce_virtual_signup_form',
+            properties: {
+                action: 'country_selection_screen_opened',
+                form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+            },
         });
 
         WS.wait('website_status', 'residence_list').then(() => {

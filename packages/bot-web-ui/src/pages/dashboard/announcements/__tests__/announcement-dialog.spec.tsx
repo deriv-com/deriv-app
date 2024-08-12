@@ -34,7 +34,7 @@ describe('AnnouncementDialog', () => {
         );
     });
 
-    it('when "Try now" button is clicked, it should trigger the handleOnConfirm() function.', async () => {
+    it('should trigger the handleOnConfirm() function, when "Try now" button is clicked.', async () => {
         render(<AnnouncementDialog {...mocked_props} />, { wrapper });
         const buttonConfirm = screen.getByRole('button', { name: /Try now/i });
         userEvent.click(buttonConfirm);
@@ -44,7 +44,7 @@ describe('AnnouncementDialog', () => {
         });
     });
 
-    it('when "Learn more" button is clicked, it should trigger the handleOnCancel() function.', async () => {
+    it('should trigger the handleOnCancel() function, when "Learn more" button is clicked.', async () => {
         render(<AnnouncementDialog {...mocked_props} />, { wrapper });
         const buttonCancel = screen.getByRole('button', { name: /Learn more/i });
         userEvent.click(buttonCancel);
@@ -54,7 +54,7 @@ describe('AnnouncementDialog', () => {
         });
     });
 
-    it('when the icon cross button is clicked, it should trigger the setIsAnnounceDialogOpen() function.', async () => {
+    it('should trigger the setIsAnnounceDialogOpen() function, when the icon cross button is clicked.', async () => {
         const { container } = render(<AnnouncementDialog {...mocked_props} />, { wrapper });
 
         // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container

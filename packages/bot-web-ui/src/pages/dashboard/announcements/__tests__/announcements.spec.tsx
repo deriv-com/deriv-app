@@ -40,7 +40,7 @@ describe('Announcements', () => {
         );
     });
 
-    it('the list of announcements should be displayed, and clicking on the third one should decrease the indicator count and remove it, and redirect to tutorial page.', async () => {
+    it('should decrease the indicator count and remove it, the list of announcements should be displayed, and redirect to tutorial page upon clicking on the announcement item.', async () => {
         const { container } = render(<Announcements handleTabChange={mockHandleTabChange} is_mobile={true} />, {
             wrapper,
         });
@@ -68,7 +68,7 @@ describe('Announcements', () => {
             });
     });
 
-    it('the list of announcements should be displayed, and clicking on the third one should decrease the indicator count and remove it, and redirect to bot builder page.', async () => {
+    it('should decrease the indicator count and remove it, the list of announcements should be displayed, and redirect to bot builder page upon clicking on the announcement item.', async () => {
         const { container } = render(<Announcements handleTabChange={mockHandleTabChange} is_mobile={true} />, {
             wrapper,
         });
@@ -95,7 +95,7 @@ describe('Announcements', () => {
             });
     });
 
-    it('when the "Mark All as Read" button is clicked, the announcements indicator should disappear.', async () => {
+    it('should disappear the announcements indicator, when the "Mark All as Read" button is clicked.', async () => {
         render(<Announcements handleTabChange={mockHandleTabChange} is_mobile={false} />, {
             wrapper,
         });
@@ -111,7 +111,7 @@ describe('Announcements', () => {
         });
     });
 
-    it('the announcements should display all active announcements when bot-announcements has already existed in local storage.', () => {
+    it('should display all active announcements when bot-announcements has already existed in local storage.', () => {
         localStorage?.setItem(
             'bot-announcements',
             JSON.stringify({ announce_1: true, announce_2: true, announce_3: true })

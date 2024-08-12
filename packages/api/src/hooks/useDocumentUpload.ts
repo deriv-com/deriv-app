@@ -70,23 +70,21 @@ const useDocumentUpload = () => {
                     if (data.error) {
                         derivAPI.connection?.removeEventListener('message', handleUploadStatus);
                         setDocumentUploadStatus('error');
-                        clearTimeout(timeout);
                         return;
                     }
 
                     if (data.document_upload && data.document_upload?.status === 'failure') {
                         derivAPI.connection?.removeEventListener('message', handleUploadStatus);
                         setDocumentUploadStatus('failure');
-                        clearTimeout(timeout);
                         return;
                     }
 
                     if (data.document_upload && data.document_upload?.status === 'success') {
                         derivAPI.connection?.removeEventListener('message', handleUploadStatus);
                         setDocumentUploadStatus('success');
-                        clearTimeout(timeout);
                     }
                 };
+                clearTimeout(timeout);
 
                 derivAPI.connection?.addEventListener('message', handleUploadStatus);
 

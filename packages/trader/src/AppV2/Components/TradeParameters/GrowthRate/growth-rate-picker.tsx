@@ -11,7 +11,13 @@ type TGrowthRatePickerProps = {
     growth_rate: number;
     maximum_ticks: number;
     setGrowthRate: (growth_rate: number) => void;
-    setWheelPickerInitialValues: ({ value, name }: { value: number; name: keyof TWheelPickerInitialValues }) => void;
+    setWheelPickerInitialValues: ({
+        value,
+        name,
+    }: {
+        value: number | string;
+        name: keyof TWheelPickerInitialValues;
+    }) => void;
     should_show_details?: boolean;
     tick_size_barrier_percentage: string;
 };

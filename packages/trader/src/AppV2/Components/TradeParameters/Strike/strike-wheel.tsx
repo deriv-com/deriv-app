@@ -3,6 +3,7 @@ import debounce from 'lodash.debounce';
 import { ActionSheet, Text, WheelPicker } from '@deriv-com/quill-ui';
 import { Skeleton } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import type { TWheelPickerInitialValues } from 'Stores/Modules/Trading/trade-store';
 
 type TStrikeWheelProps = {
     current_strike: string;
@@ -17,6 +18,13 @@ type TStrikeWheelProps = {
     strike_price_list: {
         value: string;
     }[];
+    setWheelPickerInitialValues: ({
+        value,
+        name,
+    }: {
+        value: number | string;
+        name: keyof TWheelPickerInitialValues;
+    }) => void;
 };
 
 const onWheelPickerScrollDebounced = debounce(
@@ -32,6 +40,7 @@ const StrikeWheel = ({
     onStrikePriceSelect,
     payout_per_point,
     strike_price_list,
+    setWheelPickerInitialValues,
 }: TStrikeWheelProps) => {
     const initial_value_ref = React.useRef<string | number>();
     const selected_value_ref = React.useRef<string | number>(current_strike);
@@ -39,12 +48,14 @@ const StrikeWheel = ({
     const onSave = () => {
         if (selected_value_ref.current !== initial_value_ref.current) {
             initial_value_ref.current = selected_value_ref.current;
+            setWheelPickerInitialValues({ value: selected_value_ref.current, name: 'strike' });
         }
     };
 
     React.useEffect(() => {
         if (!initial_value_ref.current && current_strike) {
             initial_value_ref.current = current_strike;
+            setWheelPickerInitialValues({ value: current_strike, name: 'strike' });
         }
 
         return () => {

@@ -24,6 +24,8 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
         currency,
         onChange,
         proposal_info,
+        setWheelPickerInitialValues,
+        wheel_picker_initial_values,
     } = useTraderStore();
 
     const is_small_screen = window.innerHeight <= 640;
@@ -41,6 +43,7 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
                     onStrikePriceSelect={onChange}
                     payout_per_point={payout_per_point}
                     strike_price_list={strike_price_list}
+                    setWheelPickerInitialValues={setWheelPickerInitialValues}
                 />
             ),
         },
@@ -50,6 +53,13 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
         },
     ];
     const classname = clsx('trade-params__option', is_minimized && 'trade-params__option--minimized');
+
+    React.useEffect(() => {
+        const initial_strike = wheel_picker_initial_values?.strike;
+        if (initial_strike && barrier_1 !== initial_strike)
+            onChange({ target: { name: 'barrier_1', value: initial_strike } });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     if (!barrier_1)
         return (

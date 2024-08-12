@@ -1,3 +1,5 @@
+import React from 'react';
+import { Localize } from '@deriv-com/translations';
 import lifetimeAccountLimitsBetweenWalletsMessageFn from '../lifetimeAccountLimitsBetweenWalletsMessageFn';
 
 const mockDisplayMoney = jest.fn((amount, currency, decimals) => `${amount.toFixed(decimals)} ${currency}`);
@@ -54,11 +56,17 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
             targetAccount: fiatAccount,
         });
         expect(result).toEqual({
-            action: { buttonLabel: 'Verify', navigateTo: '/account/proof-of-identity', shouldOpenInNewTab: true },
-            message: {
-                text: "You've reached the lifetime transfer limit from your {{sourceAccountName}} to any fiat Wallet. Verify your account to upgrade the limit.",
-                values: { sourceAccountName: 'Crypto Account' },
+            action: {
+                buttonLabel: <Localize i18n_default_text='Verify' />,
+                navigateTo: '/account/proof-of-identity',
+                shouldOpenInNewTab: true,
             },
+            message: (
+                <Localize
+                    i18n_default_text="You've reached the lifetime transfer limit from your {{sourceAccountName}} to any fiat Wallet. Verify your account to upgrade the limit."
+                    values={{ sourceAccountName: cryptoAccount.accountName }}
+                />
+            ),
             type: 'error',
         });
     });
@@ -82,11 +90,17 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
             targetAccount: cryptoAccount,
         });
         expect(result).toEqual({
-            action: { buttonLabel: 'Verify', navigateTo: '/account/proof-of-identity', shouldOpenInNewTab: true },
-            message: {
-                text: "You've reached the lifetime transfer limit from your {{sourceAccountName}} to any cryptocurrency Wallet. Verify your account to upgrade the limit.",
-                values: { sourceAccountName: 'Fiat Account' },
+            action: {
+                buttonLabel: <Localize i18n_default_text='Verify' />,
+                navigateTo: '/account/proof-of-identity',
+                shouldOpenInNewTab: true,
             },
+            message: (
+                <Localize
+                    i18n_default_text="You've reached the lifetime transfer limit from your {{sourceAccountName}} to any cryptocurrency Wallet. Verify your account to upgrade the limit."
+                    values={{ sourceAccountName: fiatAccount.accountName }}
+                />
+            ),
             type: 'error',
         });
     });
@@ -111,11 +125,20 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
             targetAccount: cryptoAccount,
         });
         expect(result).toEqual({
-            action: { buttonLabel: 'Verify', navigateTo: '/account/proof-of-identity', shouldOpenInNewTab: true },
-            message: {
-                text: 'Your remaining lifetime transfer limit from {{sourceAccountName}} to any cryptocurrency Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.',
-                values: { formattedSourceCurrencyRemainder: '500.00 USD', sourceAccountName: 'Fiat Account' },
+            action: {
+                buttonLabel: <Localize i18n_default_text='Verify' />,
+                navigateTo: '/account/proof-of-identity',
+                shouldOpenInNewTab: true,
             },
+            message: (
+                <Localize
+                    i18n_default_text='Your remaining lifetime transfer limit from {{sourceAccountName}} to any cryptocurrency Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.'
+                    values={{
+                        formattedSourceCurrencyRemainder: '500.00 USD',
+                        sourceAccountName: fiatAccount.accountName,
+                    }}
+                />
+            ),
             type: 'success',
         });
     });
@@ -140,10 +163,12 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
             targetAccount: cryptoAccount,
         });
         expect(result).toEqual({
-            message: {
-                text: 'The lifetime transfer limit from {{sourceAccountName}} to any cryptocurrency Wallets is up to {{formattedSourceCurrencyLimit}}.',
-                values: { formattedSourceCurrencyLimit: '1000.00 USD', sourceAccountName: 'Fiat Account' },
-            },
+            message: (
+                <Localize
+                    i18n_default_text='The lifetime transfer limit from {{sourceAccountName}} to any cryptocurrency Wallets is up to {{formattedSourceCurrencyLimit}}.'
+                    values={{ formattedSourceCurrencyLimit: '1000.00 USD', sourceAccountName: fiatAccount.accountName }}
+                />
+            ),
             type: 'success',
         });
     });
@@ -168,11 +193,20 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
             targetAccount: fiatAccount,
         });
         expect(result).toEqual({
-            action: { buttonLabel: 'Verify', navigateTo: '/account/proof-of-identity', shouldOpenInNewTab: true },
-            message: {
-                text: 'Your remaining lifetime transfer limit from {{sourceAccountName}} to any fiat Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.',
-                values: { formattedSourceCurrencyRemainder: '5.00000000 BTC', sourceAccountName: 'Crypto Account' },
+            action: {
+                buttonLabel: <Localize i18n_default_text='Verify' />,
+                navigateTo: '/account/proof-of-identity',
+                shouldOpenInNewTab: true,
             },
+            message: (
+                <Localize
+                    i18n_default_text='Your remaining lifetime transfer limit from {{sourceAccountName}} to any fiat Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.'
+                    values={{
+                        formattedSourceCurrencyRemainder: '5.00000000 BTC',
+                        sourceAccountName: cryptoAccount.accountName,
+                    }}
+                />
+            ),
             type: 'success',
         });
     });
@@ -197,10 +231,15 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
             targetAccount: fiatAccount,
         });
         expect(result).toEqual({
-            message: {
-                text: 'The lifetime transfer limit from {{sourceAccountName}} to any fiat Wallets is up to {{formattedSourceCurrencyLimit}}.',
-                values: { formattedSourceCurrencyLimit: '10.00000000 BTC', sourceAccountName: 'Crypto Account' },
-            },
+            message: (
+                <Localize
+                    i18n_default_text='The lifetime transfer limit from {{sourceAccountName}} to any fiat Wallets is up to {{formattedSourceCurrencyLimit}}.'
+                    values={{
+                        formattedSourceCurrencyLimit: '10.00000000 BTC',
+                        sourceAccountName: cryptoAccount.accountName,
+                    }}
+                />
+            ),
             type: 'success',
         });
     });
@@ -225,11 +264,17 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
             targetAccount: cryptoAccount,
         });
         expect(result).toEqual({
-            action: { buttonLabel: 'Verify', navigateTo: '/account/proof-of-identity', shouldOpenInNewTab: true },
-            message: {
-                text: 'Your remaining lifetime transfer limit between cryptocurrency Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.',
-                values: { formattedSourceCurrencyRemainder: '500.00000000 BTC' },
+            action: {
+                buttonLabel: <Localize i18n_default_text='Verify' />,
+                navigateTo: '/account/proof-of-identity',
+                shouldOpenInNewTab: true,
             },
+            message: (
+                <Localize
+                    i18n_default_text='Your remaining lifetime transfer limit between cryptocurrency Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.'
+                    values={{ formattedSourceCurrencyRemainder: '500.00000000 BTC' }}
+                />
+            ),
             type: 'success',
         });
     });
@@ -254,10 +299,12 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
             targetAccount: cryptoAccount,
         });
         expect(result).toEqual({
-            message: {
-                text: 'The lifetime transfer limit between cryptocurrency Wallets is up to {{formattedSourceCurrencyLimit}}.',
-                values: { formattedSourceCurrencyLimit: '1000.00000000 BTC' },
-            },
+            message: (
+                <Localize
+                    i18n_default_text='The lifetime transfer limit between cryptocurrency Wallets is up to {{formattedSourceCurrencyLimit}}.'
+                    values={{ formattedSourceCurrencyLimit: '1000.00000000 BTC' }}
+                />
+            ),
             type: 'success',
         });
     });

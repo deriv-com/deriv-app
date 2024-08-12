@@ -5,7 +5,6 @@ import { makeLazyLoader, moduleLoader } from '@deriv/shared';
 import { useGrowthbookGetFeatureValue, useStoreHasAccountDeposited } from '@deriv/hooks';
 import BookBanner from 'Components/banners/book-banner';
 import WalletsBanner from 'Components/banners/wallets-banner';
-// import DepositNowBanner from 'Components/banners/deposit-now-banner';
 
 const RealAccountCreationBanner = makeLazyLoader(
     () =>
@@ -40,10 +39,6 @@ const TradersHubBanners = observer(() => {
         defaultValue: false,
     });
 
-    // ff: traders_hub_first_deposit_banner
-    // banner_name: first_deposit
-    // banner_type: with_cta,
-
     const [ff_deposit_now_banner] = useGrowthbookGetFeatureValue({
         featureFlag: 'traders_hub_first_deposit_banner',
         defaultValue: false,
@@ -52,8 +47,7 @@ const TradersHubBanners = observer(() => {
     const should_add_empty_div_for_get_started_trading_banner_clever_tap = has_any_real_account;
     const should_show_real_account_creation_banner =
         ff_real_account_creation_banner && !has_any_real_account && !is_eu && is_landing_company_loaded;
-    // const should_show_deposit_now_banner = ff_deposit_now_banner && is_real && !hasDeposited && !hasTransferred;
-    const should_show_deposit_now_banner = is_real && !hasDeposited && !hasTransferred;
+    const should_show_deposit_now_banner = ff_deposit_now_banner && is_real && !hasDeposited && !hasTransferred;
 
     return (
         <React.Fragment>

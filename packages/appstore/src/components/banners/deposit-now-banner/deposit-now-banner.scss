@@ -1,6 +1,11 @@
 .deposit-now-banner {
     border: 1px solid var(--general-section-5);
     border-radius: $BORDER_RADIUS * 4;
+    margin-block-end: 6.4rem;
+
+    @include mobile-or-tablet-screen {
+        margin-block-end: 3.2rem;
+    }
 
     &__content {
         position: relative;
@@ -27,10 +32,11 @@
         align-self: center;
         gap: 1.6rem;
         margin-inline-start: 4.8rem;
-        max-width: 50%;
+        width: 50%;
 
         @include mobile-or-tablet-screen {
             margin-inline-start: 1.6rem;
+            min-width: 16rem;
         }
     }
 

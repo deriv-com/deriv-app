@@ -24,15 +24,15 @@ const CreatePasswordMT5: React.FC<TProps> = ({ isLoading, onPasswordChange, onPr
     // const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
 
     return (
-        <div className='wallets-create-password'>
+        <div className='wallets-create-password-mt5'>
             {isDesktop && (
-                <div className='wallets-create-password__header'>
+                <div className='wallets-create-password-mt5__header'>
                     <WalletText lineHeight='xl' weight='bold'>
                         Create a {title} password
                     </WalletText>
                 </div>
             )}
-            <div className='wallets-create-password__body'>
+            <div className='wallets-create-password-mt5__body'>
                 <DerivLightDmt5PasswordIcon height={120} width={120} />
                 <WalletText size={isDesktop ? 'sm' : 'md'}>
                     Note: You can use this password for all your {title} accounts.
@@ -43,7 +43,11 @@ const CreatePasswordMT5: React.FC<TProps> = ({ isLoading, onPasswordChange, onPr
                     onChange={onPasswordChange}
                     password={password}
                 />
-                <InlineMessage className='wallets-create-password__inline-message' iconPosition='top' variant='info'>
+                <InlineMessage
+                    className='wallets-create-password-mt5__inline-message'
+                    iconPosition='top'
+                    variant='info'
+                >
                     <WalletText size={isDesktop ? '2xs' : 'xs'}>
                         You are adding your Deriv MT5 CFDs account under Deriv Investments (Europe) Limited, regulated
                         by Malta Financial Services Authority (MFSA) (licence no. IS/70156).
@@ -53,7 +57,7 @@ const CreatePasswordMT5: React.FC<TProps> = ({ isLoading, onPasswordChange, onPr
                     label={
                         <WalletText size={isDesktop ? 'xs' : 'sm'}>
                             I confirm and accept Deriv (BVI) Ltd’s{' '}
-                            <a className='wallets-create-password__tnc-link' href=''>
+                            <a className='wallets-create-password-mt5__tnc-link' href=''>
                                 terms and conditions
                             </a>
                         </WalletText>
@@ -64,7 +68,7 @@ const CreatePasswordMT5: React.FC<TProps> = ({ isLoading, onPasswordChange, onPr
             </div>
 
             {isDesktop && (
-                <div className='wallets-create-password__footer'>
+                <div className='wallets-create-password-mt5__footer'>
                     <WalletButton
                         disabled={!password || isLoading || disableButton}
                         isLoading={isLoading}

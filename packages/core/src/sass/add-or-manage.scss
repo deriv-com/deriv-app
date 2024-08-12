@@ -76,6 +76,8 @@
         }
         .currency-selector__radio-group--with-margin {
             margin-bottom: 3rem;
+            max-width: 60rem;
+            margin-inline: auto;
         }
         & .change-currency {
             .currency-list__items {
@@ -106,7 +108,7 @@
             border: 2px solid var(--general-section-1);
 
             button {
-                width: 100%;
+                min-width: 100%;
             }
         }
     }

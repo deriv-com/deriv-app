@@ -306,6 +306,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             virtual_account_loginid: '',
             is_cr_account: false,
             is_mf_account: false,
+            is_tradershub_tracking: false,
+            setTradersHubTracking: jest.fn(),
         },
         common: {
             error: common_store_error,
@@ -608,6 +610,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             positions: [],
             removePositionById: jest.fn(),
             setContractType: jest.fn(),
+            setAddNotificationBannerCallback: jest.fn(),
         },
         contract_trade: {
             accountSwitchListener: jest.fn(),

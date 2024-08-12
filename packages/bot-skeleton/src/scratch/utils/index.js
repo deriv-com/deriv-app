@@ -458,16 +458,16 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
         */
 
         if (window.innerWidth < 768) {
-            workspace.scrollbar.set(0, scroll_y);
+            workspace?.scrollbar?.set(0, scroll_y);
             const calc_scroll =
                 workspace.svgBlockCanvas_?.getBoundingClientRect().width -
                 workspace.svgBlockCanvas_?.getBoundingClientRect().left +
                 60;
-            workspace.scrollbar.set(calc_scroll, scroll_y);
+            workspace?.scrollbar?.set(calc_scroll, scroll_y);
             return;
         }
     }
-    workspace.scrollbar.set(scroll_x, scroll_y);
+    workspace?.scrollbar?.set(scroll_x, scroll_y);
 };
 
 /**

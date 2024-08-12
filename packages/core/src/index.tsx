@@ -13,7 +13,9 @@ import AppNotificationMessages from './App/Containers/app-notification-messages.
 import { AnalyticsInitializer } from 'Utils/Analytics';
 
 (async () => {
+    console.log('before calling analytics');
     await AnalyticsInitializer();
+    console.log('after calling analytics');
     if (
         !!window?.localStorage.getItem?.('debug_service_worker') || // To enable local service worker related development
         (!window.location.hostname.startsWith('localhost') && !/binary\.sx/.test(window.location.hostname)) ||

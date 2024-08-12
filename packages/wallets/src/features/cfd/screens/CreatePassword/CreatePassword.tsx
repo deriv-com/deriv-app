@@ -30,15 +30,17 @@ const CreatePassword: React.FC<TProps> = ({ isLoading, onPasswordChange, onPrima
 
     return (
         <div className='wallets-create-password'>
-            <div className='wallets-create-password__header'>
-                <WalletText lineHeight='xl' weight='bold'>
-                    Create a {title} password
-                </WalletText>
-            </div>
+            {isDesktop && (
+                <div className='wallets-create-password__header'>
+                    <WalletText lineHeight='xl' weight='bold'>
+                        Create a {title} password
+                    </WalletText>
+                </div>
+            )}
             <div className='wallets-create-password__body'>
                 {CreatePasswordIcon[platform as keyof typeof CreatePasswordIcon]}
-                <WalletText align='center' size='sm'>
-                    You can use this password for all your {title} accounts.
+                <WalletText size={isDesktop ? 'sm' : 'md'}>
+                    Note: You can use this password for all your {title} accounts.
                 </WalletText>
                 <WalletPasswordFieldLazy
                     label={`${title} password`}
@@ -47,15 +49,14 @@ const CreatePassword: React.FC<TProps> = ({ isLoading, onPasswordChange, onPrima
                     password={password}
                 />
                 <InlineMessage className='wallets-create-password__inline-message' iconPosition='top' variant='info'>
-                    <WalletText size='2xs'>
+                    <WalletText size={isDesktop ? '2xs' : 'xs'}>
                         You are adding your Deriv MT5 CFDs account under Deriv Investments (Europe) Limited, regulated
                         by Malta Financial Services Authority (MFSA) (licence no. IS/70156).
                     </WalletText>
                 </InlineMessage>
                 <Checkbox
-                    className='wallets-create-password__checkbox'
                     label={
-                        <WalletText size='xs'>
+                        <WalletText size={isDesktop ? 'xs' : 'sm'}>
                             I confirm and accept Deriv (BVI) Ltd’s{' '}
                             <a className='wallets-create-password__tnc-link' href=''>
                                 terms and conditions

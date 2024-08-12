@@ -1,8 +1,8 @@
+import React from 'react';
+import { Localize } from '@deriv-com/translations';
 import { TMessageFnProps, TTransferMessage } from '../../../types';
 
-let text: TTransferMessage['message']['text'],
-    type: TTransferMessage['type'],
-    values: TTransferMessage['message']['values'];
+let message: TTransferMessage['message'], type: TTransferMessage['type'];
 
 const countLimitMessageFn = ({ activeWallet, limits, sourceAccount, targetAccount }: TMessageFnProps) => {
     if (!targetAccount) return null;
@@ -32,32 +32,40 @@ const countLimitMessageFn = ({ activeWallet, limits, sourceAccount, targetAccoun
     if (allowedCount === undefined || availableCount === undefined) return null;
 
     if (availableCount === 0 && isDemoTransfer) {
-        text =
-            'You have reached your daily transfer limit of {{allowedCount}} transfers for your virtual funds. The limit will reset at 00:00 GMT.';
-        values = {
-            allowedCount,
-        };
+        message = (
+            <Localize
+                i18n_default_text='You have reached your daily transfer limit of {{allowedCount}} transfers for your virtual funds. The limit will reset at 00:00 GMT.'
+                values={{ allowedCount }}
+            />
+        );
         type = 'error' as const;
 
         return {
-            message: { text, values },
+            message,
             type,
         };
     }
 
     if (availableCount === 0) {
-        text = isTransferBetweenWallets
-            ? 'You have reached your daily transfer limit of {{allowedCount}} transfers between your Wallets. The limit will reset at 00:00 GMT.'
-            : 'You have reached your daily transfer limit of {{allowedCount}} transfers between your {{sourceAccountName}} and {{targetAccountName}}. The limit will reset at 00:00 GMT.';
-        values = {
-            allowedCount,
-            sourceAccountName: sourceAccount.accountName,
-            targetAccountName: targetAccount.accountName,
-        };
+        message = isTransferBetweenWallets ? (
+            <Localize
+                i18n_default_text='You have reached your daily transfer limit of {{allowedCount}} transfers between your Wallets. The limit will reset at 00:00 GMT.'
+                values={{ allowedCount }}
+            />
+        ) : (
+            <Localize
+                i18n_default_text='You have reached your daily transfer limit of {{allowedCount}} transfers between your {{sourceAccountName}} and {{targetAccountName}}. The limit will reset at 00:00 GMT.'
+                values={{
+                    allowedCount,
+                    sourceAccountName: sourceAccount.accountName,
+                    targetAccountName: targetAccount.accountName,
+                }}
+            />
+        );
         type = 'error' as const;
 
         return {
-            message: { text, values },
+            message,
             type,
         };
     }

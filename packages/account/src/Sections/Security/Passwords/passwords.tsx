@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import DerivPassword from './deriv-password';
@@ -8,7 +8,7 @@ import PasswordsPlatform from './passwords-platform';
 /**
  *  Displays the Email, Password, section under Account settings.
  * @name Passwords
- * @returns {React.ReactNode}
+ * @returns {ReactNode}
  */
 const Passwords = observer(() => {
     const { client, common } = useStore();
@@ -23,11 +23,11 @@ const Passwords = observer(() => {
     } = client;
     const { is_from_derivgo } = common;
 
-    const [is_loading, setIsLoading] = React.useState(true);
+    const [is_loading, setIsLoading] = useState(true);
     const has_mt5_accounts = mt5_login_list?.length > 0 || !is_mt5_password_not_set;
     const has_dxtrade_accounts = dxtrade_accounts_list?.length > 0 || !is_dxtrade_password_not_set;
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (
             is_populating_mt5_account_list === false &&
             is_populating_dxtrade_account_list === false &&

@@ -46,12 +46,15 @@ const TakeProfitInput = React.forwardRef(
                         decimals={decimals}
                         data-testid='dt_input_with_steppers'
                         message={message}
+                        minusDisabled={Number(take_profit_value) - 1 <= 0}
                         name='take_profit'
                         onChange={onInputChange}
                         placeholder={localize('Amount')}
                         ref={ref}
+                        regex={/[^0-9.,]/g}
                         status={error_message ? 'error' : 'neutral'}
                         textAlignment='center'
+                        inputMode='decimal'
                         unitLeft={currency}
                         variant='fill'
                         value={take_profit_value}

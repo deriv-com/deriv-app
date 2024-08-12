@@ -618,6 +618,8 @@ type TClientStore = {
     is_cr_account: boolean;
     is_mf_account: boolean;
     setTradersHubTracking: (value: boolean) => void;
+    account_time_of_closure?: number;
+    is_account_to_be_closed_by_residence: boolean;
     is_tnc_status_updated: Record<string, boolean>;
 };
 
@@ -827,6 +829,8 @@ type TUiStore = {
     setShouldShowDepositNowOrLaterModal: (value: boolean) => void;
     should_show_crypto_transaction_processing_modal: boolean;
     setShouldShowCryptoTransactionProcessingModal: (value: boolean) => void;
+    is_trading_disabled_by_residence_modal_visible: boolean;
+    setIsTradingDisabledByResidenceModal: (value: boolean) => void;
     is_tnc_update_modal_open: boolean;
     toggleTncUpdateModal: (value: boolean) => void;
 };

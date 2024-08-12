@@ -1,5 +1,4 @@
-import React from 'react';
-import { localize, Localize } from '@deriv/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { FormSubmitButton, Icon, Text, Modal } from '@deriv/components';
 
 type TClosingAccountWarningModalProps = {
@@ -13,6 +12,8 @@ const ClosingAccountWarningModal = ({
     startDeactivating,
     closeWarningModal,
 }: TClosingAccountWarningModalProps) => {
+    const { localize } = useTranslations();
+
     return (
         <Modal className='closing-account-reasons' is_open={show_warning_modal} toggleModal={closeWarningModal}>
             <div className='account-closure-warning-modal'>

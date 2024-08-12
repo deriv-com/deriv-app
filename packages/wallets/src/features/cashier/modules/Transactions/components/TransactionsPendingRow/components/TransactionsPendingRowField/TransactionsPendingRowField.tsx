@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
-import { Tooltip } from '@deriv-com/ui';
-import { WalletText } from '../../../../../../../../components/Base';
+import { useTranslations } from '@deriv-com/translations';
+import { Text, Tooltip } from '@deriv-com/ui';
 import { useModal } from '../../../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../../../hooks/useDevice';
 import { WalletActionModal } from '../../../../../../components/WalletActionModal';
@@ -15,12 +15,13 @@ type TProps = {
         tooltipAlignment?: React.ComponentProps<typeof Tooltip>['tooltipPosition'];
     };
     name: string;
-    value: string;
-    valueTextProps?: Omit<React.ComponentProps<typeof WalletText>, 'children'>;
+    value: JSX.Element | string;
+    valueTextProps?: Omit<React.ComponentProps<typeof Text>, 'children'>;
 };
 
 const TransactionsPendingRowField: React.FC<TProps> = ({ className, hint, name, value, valueTextProps }) => {
     const { isMobile } = useDevice();
+    const { localize } = useTranslations();
     const { show } = useModal();
 
     const onValueClick = useCallback(() => {
@@ -32,23 +33,23 @@ const TransactionsPendingRowField: React.FC<TProps> = ({ className, hint, name, 
                               {
                                   isPrimary: true,
                                   onClick: () => window.open(hint?.link),
-                                  text: 'View',
+                                  text: localize('View'),
                               },
                           ]
                         : []
                 }
                 description={hint?.text}
-                title='Transaction details'
+                title={localize('Transaction details')}
             />,
             { defaultRootId: 'wallets_modal_root' }
         );
-    }, [hint, show]);
+    }, [hint?.link, hint?.text, localize, show]);
 
     return (
         <div className={classNames('wallets-transactions-pending-row-field', className)} key={name}>
-            <WalletText color='primary' size='xs'>
+            <Text color='primary' size='xs'>
                 {name}
-            </WalletText>
+            </Text>
             {hint ? (
                 <Tooltip
                     as='div'
@@ -56,7 +57,7 @@ const TransactionsPendingRowField: React.FC<TProps> = ({ className, hint, name, 
                     tooltipContent={hint.text}
                     tooltipPosition={hint.tooltipAlignment}
                 >
-                    <WalletText {...{ color: 'red', size: 'xs', weight: 'bold', ...valueTextProps }}>
+                    <Text {...{ color: 'red', size: 'xs', weight: 'bold', ...valueTextProps }}>
                         {isMobile ? (
                             <button className='wallets-transactions-pending-row-field__button' onClick={onValueClick}>
                                 {value}
@@ -71,12 +72,12 @@ const TransactionsPendingRowField: React.FC<TProps> = ({ className, hint, name, 
                                 {value}
                             </a>
                         )}
-                    </WalletText>
+                    </Text>
                 </Tooltip>
             ) : (
-                <WalletText color='red' size='xs' weight='bold' {...valueTextProps}>
+                <Text color='red' size='xs' weight='bold' {...valueTextProps}>
                     {value}
-                </WalletText>
+                </Text>
             )}
         </div>
     );

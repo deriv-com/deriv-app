@@ -1,5 +1,4 @@
-import React from 'react';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
 
 export const MAX_ALLOWED_REASONS_FOR_CLOSING_ACCOUNT = 3;
 export const CHARACTER_LIMIT_FOR_CLOSING_ACCOUNT = 110;

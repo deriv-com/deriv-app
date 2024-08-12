@@ -49,7 +49,12 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             content: is_mobile ? localize('Local') : localize('My computer'),
             method: () => {
                 openFileLoader();
-                rudderStackSendDashboardClickEvent({ dashboard_click_name: 'my_computer' });
+                rudderStackSendOpenEvent({
+                    subpage_name: 'bot_builder',
+                    subform_source: 'dashboard',
+                    subform_name: 'load_strategy',
+                    load_strategy_tab: 'local',
+                });
             },
         },
         {
@@ -58,7 +63,12 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             content: localize('Google Drive'),
             method: () => {
                 openGoogleDriveDialog();
-                rudderStackSendDashboardClickEvent({ dashboard_click_name: 'google_drive' });
+                rudderStackSendOpenEvent({
+                    subpage_name: 'bot_builder',
+                    subform_source: 'dashboard',
+                    subform_name: 'load_strategy',
+                    load_strategy_tab: 'google drive',
+                });
             },
         },
         {
@@ -67,7 +77,10 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             content: localize('Bot Builder'),
             method: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
-                rudderStackSendDashboardClickEvent({ dashboard_click_name: 'bot_builder' });
+                rudderStackSendDashboardClickEvent({
+                    dashboard_click_name: 'bot_builder',
+                    subpage_name: 'bot_builder',
+                });
             },
         },
         {
@@ -77,9 +90,11 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             method: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
                 setFormVisibility(true);
-                // send to rs if quick strategy is opened from dashbaord
-                rudderStackSendOpenEvent({ subform_source: 'dashboard', subform_name: 'quick_strategy' });
-                rudderStackSendDashboardClickEvent({ dashboard_click_name: 'quick_strategy' });
+                rudderStackSendOpenEvent({
+                    subpage_name: 'bot_builder',
+                    subform_source: 'dashboard',
+                    subform_name: 'quick_strategy',
+                });
             },
         },
     ];

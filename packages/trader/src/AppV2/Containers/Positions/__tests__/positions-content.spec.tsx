@@ -14,14 +14,6 @@ const emptyPositions = 'EmptyPositions';
 const loaderTestId = 'dt_positions_loader';
 const totalProfitLoss = 'Total profit/loss:';
 
-const mediaQueryList = {
-    matches: true,
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-};
-
-window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
-
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     WS: {

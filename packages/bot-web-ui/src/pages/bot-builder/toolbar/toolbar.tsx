@@ -20,7 +20,11 @@ const Toolbar = observer(() => {
     const handleQuickStrategyOpen = () => {
         setFormVisibility(true);
         // send to rs if quick strategy is opened from bot builder (mobile)
-        rudderStackSendOpenEvent({ subform_source: 'bot_builder', subform_name: 'quick_strategy' });
+        rudderStackSendOpenEvent({
+            subpage_name: 'bot_builder',
+            subform_source: 'bot_builder',
+            subform_name: 'quick_strategy',
+        });
     };
     return (
         <React.Fragment>

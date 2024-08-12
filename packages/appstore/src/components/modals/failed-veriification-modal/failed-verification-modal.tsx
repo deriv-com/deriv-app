@@ -78,7 +78,7 @@ const FailedVerificationModal = () => {
         startTrade,
     } = traders_hub;
     const { account_status } = client;
-    const { toggleCFDVerificationModal, current_list } = cfd;
+    const { current_list } = cfd;
     const { disableApp, enableApp, is_mt5_verification_failed_modal, setIsMT5VerificationFailedModal } = ui;
     const is_from_multipliers = open_failed_verification_for === 'multipliers';
     const has_mf_mt5_account = Object.keys(current_list)
@@ -108,8 +108,6 @@ const FailedVerificationModal = () => {
             } else {
                 history.push(routes.proof_of_address);
             }
-        } else {
-            toggleCFDVerificationModal();
         }
     };
 

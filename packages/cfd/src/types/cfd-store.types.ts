@@ -6,7 +6,6 @@ import { TDxCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-confi
 
 export type TCFDStore = {
     setMT5TradeAccount: <T>(arg: T) => void;
-    toggleCFDVerificationModal: () => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     setAccountType: (account_type: { category: string; type?: string }) => void;
     product: TProducts;
@@ -32,9 +31,6 @@ export type TCFDStore = {
         category: string;
     };
     jurisdiction_selected_shortcode: string;
-    toggleJurisdictionModal: () => void;
-    has_submitted_cfd_personal_details: boolean;
-    is_jurisdiction_modal_visible: boolean;
     clearCFDError: () => void;
     current_list: Record<string, DetailsOfEachMT5Loginid & { enabled: number } & DetailsOfEachMT5Loginid[]>;
     is_compare_accounts_visible: boolean;
@@ -74,7 +70,6 @@ export type TCFDStore = {
         actions: FormikHelpers<TCFDPasswordFormValues>
     ) => void;
     new_account_response: Mt5NewAccount;
-    is_cfd_verification_modal_visible: boolean;
     has_created_account_for_selected_jurisdiction: boolean;
     enableCFDPasswordModal: () => void;
     setSentEmailModalStatus: (status: boolean) => void;

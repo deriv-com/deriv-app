@@ -1,5 +1,4 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useWalletMigration } from '@deriv/hooks';
 import { makeLazyLoader, moduleLoader } from '@deriv/shared';
@@ -60,34 +59,12 @@ const CFDServerErrorDialog = makeLazyLoader(
     () => <Loading />
 )();
 
-const JurisdictionModal = makeLazyLoader(
-    () =>
-        moduleLoader(
-            () =>
-                import(
-                    /* webpackChunkName: "modal_cfd_jurisdiction-modal" */ '@deriv/cfd/src/Containers/jurisdiction-modal/jurisdiction-modal'
-                )
-        ),
-    () => <Loading />
-)();
-
 const CFDPasswordModal = makeLazyLoader(
     () =>
         moduleLoader(
             () =>
                 import(
                     /* webpackChunkName: "modal_cfd_cfd-password-modal" */ '@deriv/cfd/src/Containers/cfd-password-modal'
-                )
-        ),
-    () => <Loading />
-)();
-
-const CFDDbviOnBoarding = makeLazyLoader(
-    () =>
-        moduleLoader(
-            () =>
-                import(
-                    /* webpackChunkName: "modal_cfd_cfd-dbvi-onboarding" */ '@deriv/cfd/src/Containers/cfd-dbvi-onboarding'
                 )
         ),
     () => <Loading />
@@ -199,8 +176,6 @@ const ModalManager = () => {
         getRealFinancialAccountsExistingData,
         getRealSwapfreeAccountsExistingData,
         has_cfd_error,
-        is_jurisdiction_modal_visible,
-        is_cfd_verification_modal_visible,
         mt5_migration_error,
         is_mt5_password_invalid_format_modal_visible,
         is_cfd_password_modal_enabled,
@@ -297,9 +272,7 @@ const ModalManager = () => {
 
     return (
         <React.Fragment>
-            {is_jurisdiction_modal_visible && <JurisdictionModal openPasswordModal={openRealPasswordModal} />}
             {should_show_cfd_password_modal && <CFDPasswordModal platform={platform} />}
-            {is_cfd_verification_modal_visible && <CFDDbviOnBoarding />}
             <CFDResetPasswordModal platform={platform} /> {/* a new condition for this hotfix needs to be found */}
             {is_ctrader_transfer_modal_visible && <CTraderTransferModal />}
             {has_cfd_error && <CFDServerErrorDialog />}

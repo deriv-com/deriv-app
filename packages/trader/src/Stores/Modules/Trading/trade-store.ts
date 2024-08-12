@@ -475,6 +475,7 @@ export default class TradeStore extends BaseStore {
             clearLimitOrderBarriers: action.bound,
             clearPurchaseInfo: action.bound,
             clientInitListener: action.bound,
+            clearWheelPickerInitialValues: action.bound,
             enablePurchase: action.bound,
             exportLayout: action.bound,
             forgetAllProposal: action.bound,
@@ -640,6 +641,10 @@ export default class TradeStore extends BaseStore {
 
     setWheelPickerInitialValues({ value, name }: { value: number | string; name: keyof TWheelPickerInitialValues }) {
         this.wheel_picker_initial_values = { ...this.wheel_picker_initial_values, ...{ [name]: value } };
+    }
+
+    clearWheelPickerInitialValues() {
+        this.wheel_picker_initial_values = {};
     }
 
     setDefaultGrowthRate() {

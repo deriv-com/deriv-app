@@ -16,6 +16,7 @@ import QuestionnaireModal from '../QuestionnaireModal';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import validateSignupFields from './validate-signup-fields.jsx';
 import 'Sass/app/modules/account-signup.scss';
+import { AnalyticsInitializer } from 'Utils/Analytics';
 
 const AccountSignup = ({
     enableApp,
@@ -53,17 +54,61 @@ const AccountSignup = ({
         setPWInput(new_password);
     };
 
+    let eventQueue = [];
+
+    const queueEvent = event => {
+        eventQueue.push(event);
+        localStorage.setItem('pending_events', JSON.stringify(eventQueue));
+    };
+
+    const trackEvent = event => {
+        if (window.rudderanalytics) {
+            window.rudderanalytics?.track(event.name, event.properties);
+        } else {
+            queueEvent(event);
+        }
+    };
+
+    const loadPendingEvents = () => {
+        const storedEvents = localStorage.getItem('pending_events');
+        if (storedEvents) {
+            eventQueue = JSON.parse(storedEvents);
+        }
+    };
+
+    const initializeAnalytics = async () => {
+        try {
+            await AnalyticsInitializer();
+            console.log('analytics loaded');
+
+            if (eventQueue.length > 0) {
+                eventQueue.forEach(event => {
+                    window.rudderanalytics.track(event.name, event.properties);
+                });
+
+                eventQueue = [];
+                localStorage.removeItem('pending_events');
+            }
+        } catch (error) {
+            console.error('Analytics failed to load', error);
+        }
+    };
+
+    console.log('before calling analytics');
+    loadPendingEvents();
+    initializeAnalytics();
+    console.log('after calling analytics');
     // didMount lifecycle hook
     React.useEffect(() => {
-        Analytics?.trackEvent('ce_virtual_signup_form', {
+        trackEvent('ce_virtual_signup_form', {
             action: 'signup_confirmed',
             form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
         });
-
-        Analytics?.trackEvent('ce_virtual_signup_form', {
+        trackEvent('ce_virtual_signup_form', {
             action: 'country_selection_screen_opened',
             form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
         });
+
         WS.wait('website_status', 'residence_list').then(() => {
             if (clients_country && residence_list) {
                 setCountry(getLocation(residence_list, clients_country, 'text'));

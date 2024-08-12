@@ -1,7 +1,7 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { useCancelCryptoTransaction } from '@deriv/api-v2';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { ModalProvider } from '../../../../../../../components/ModalProvider';
 import CryptoTransaction from '../CryptoTransaction';
 
@@ -87,9 +87,12 @@ describe('CryptoTransaction', () => {
             </ModalProvider>
         );
 
+        const confirmationElement = screen.getByText(/Confirmations/);
+        const pendingElement = within(confirmationElement).getByText(/Pending/);
+
         expect(screen.getByText('Deposit BTC')).toBeInTheDocument();
-        expect(screen.getByText(/Confirmations/)).toBeInTheDocument();
-        expect(screen.getByText(/Pending/)).toBeInTheDocument();
+        expect(confirmationElement).toBeInTheDocument();
+        expect(pendingElement).toBeInTheDocument();
     });
 
     it('should open modal when cancel button is clicked', async () => {

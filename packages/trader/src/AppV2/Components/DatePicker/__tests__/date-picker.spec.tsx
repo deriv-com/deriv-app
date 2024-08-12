@@ -12,13 +12,6 @@ const mockProps = {
     setCustomTimeRangeFilter: jest.fn(),
     handleDateChange: jest.fn(),
 };
-const mediaQueryList = {
-    matches: true,
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-};
-
-window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
 
 describe('DateRangePicker', () => {
     it('should render Action Sheet with Date Picker', () => {

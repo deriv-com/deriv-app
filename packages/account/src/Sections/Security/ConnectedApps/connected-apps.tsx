@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { OauthApps } from '@deriv/api-types';
 import { Loading } from '@deriv/components';
 import { observer } from '@deriv/stores';
@@ -16,13 +16,13 @@ import './connected-apps.scss';
 
 const ConnectedApps = observer(() => {
     const { isDesktop } = useDevice();
-    const [is_loading, setLoading] = React.useState(true);
-    const [is_modal_open, setIsModalOpen] = React.useState(false);
-    const [selected_app_id, setSelectedAppId] = React.useState<number | null>(null);
-    const [is_error, setError] = React.useState(false);
-    const [connected_apps, setConnectedApps] = React.useState<OauthApps>([]);
+    const [is_loading, setLoading] = useState(true);
+    const [is_modal_open, setIsModalOpen] = useState(false);
+    const [selected_app_id, setSelectedAppId] = useState<number | null>(null);
+    const [is_error, setError] = useState(false);
+    const [connected_apps, setConnectedApps] = useState<OauthApps>([]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         /* eslint-disable no-console */
         fetchConnectedApps().catch(error => console.error('error: ', error));
     }, []);
@@ -36,12 +36,12 @@ const ConnectedApps = observer(() => {
         }
     };
 
-    const handleToggleModal = React.useCallback((app_id: number | null = null) => {
+    const handleToggleModal = useCallback((app_id: number | null = null) => {
         setIsModalOpen(is_modal_open => !is_modal_open);
         setSelectedAppId(app_id);
     }, []);
 
-    const revokeConnectedApp = React.useCallback(async (app_id: number | null) => {
+    const revokeConnectedApp = useCallback(async (app_id: number | null) => {
         setLoading(true);
         const response = await WS.authorized.send({ revoke_oauth_app: app_id });
         if (!response.error) {
@@ -53,7 +53,7 @@ const ConnectedApps = observer(() => {
         }
     }, []);
 
-    const handleRevokeAccess = React.useCallback(() => {
+    const handleRevokeAccess = useCallback(() => {
         setIsModalOpen(false);
         revokeConnectedApp(selected_app_id);
     }, [revokeConnectedApp, selected_app_id]);

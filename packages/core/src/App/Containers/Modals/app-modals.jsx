@@ -78,7 +78,7 @@ const InformationSubmittedModal = React.lazy(() =>
 );
 
 const TncStatusUpdateModal = React.lazy(() =>
-    import(/* webpackChunkName: "information-submitted-modal" */ './tnc-status-update-modal')
+    import(/* webpackChunkName: "tnc-status-update-modal" */ './tnc-status-update-modal')
 );
 
 const AppModals = observer(() => {
@@ -126,8 +126,8 @@ const AppModals = observer(() => {
 
     const should_show_wallets_upgrade_completed_modal = Cookies.get('recent_wallets_migration');
 
-    const is_tnc_status_updated = useTncStatusUpdate();
-    if (is_tnc_status_updated) {
+    const need_tnc_status_update = useTncStatusUpdate();
+    if (need_tnc_status_update) {
         toggleTncUpdateModal(true);
     }
     React.useEffect(() => {

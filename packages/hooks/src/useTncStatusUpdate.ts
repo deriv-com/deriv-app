@@ -5,8 +5,8 @@ export const useTncStatusUpdate = () => {
     const { account_settings, landing_company_shortcode } = client;
 
     const { tnc_status } = account_settings || {};
-    const is_tnc_status_updated = tnc_status?.[landing_company_shortcode] === 0;
-    return is_tnc_status_updated;
+    const need_tnc_status_update = tnc_status?.[landing_company_shortcode] === 0;
+    return need_tnc_status_update;
 };
 
 export default useTncStatusUpdate;

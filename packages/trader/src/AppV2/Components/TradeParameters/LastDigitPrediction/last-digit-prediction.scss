@@ -60,14 +60,4 @@
             margin: var(--core-spacing-1600) 0;
         }
     }
-    &--stats-mode {
-        border-radius: var(--core-borderRadius-400);
-        background-color: var(--core-color-solid-slate-50);
-        padding: var(--core-spacing-400) var(--core-spacing-800) var(--core-spacing-800);
-
-        .digit button {
-            background-color: unset;
-            border: unset;
-        }
-    }
 }

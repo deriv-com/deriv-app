@@ -14,7 +14,7 @@ export const TitleAnnounce = ({ title, announce }: { title: string; announce: bo
         size='xs'
         line_height='l'
         weight={announce ? 'bold' : 'normal'}
-        styles={!announce ? { color: 'var(--text-announce-message-disabled)' } : {}}
+        styles={!announce ? { color: 'var(--text-general)' } : {}}
     >
         {title}
     </Text>
@@ -26,11 +26,11 @@ export const MessageAnnounce = ({ message, date, announce }: { message: string; 
             size='xs'
             line_height='l'
             weight={announce ? 'normal' : 'lighter'}
-            styles={!announce ? { color: 'var(--text-announce-message-disabled)' } : {}}
+            styles={!announce ? { color: 'var(--text-general)' } : {}}
         >
             {message}
         </Text>
-        <Text size='xxs' styles={{ color: 'var(--text-date)' }}>
+        <Text size='xxs' styles={{ color: 'var(--text-primary)' }}>
             {date}
         </Text>
     </>

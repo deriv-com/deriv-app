@@ -138,7 +138,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                 data-testid='btn-announcements'
                 ref={buttonRef}
             >
-                <StandaloneBullhornRegularIcon fill='#000000' iconSize='sm' />
+                <StandaloneBullhornRegularIcon fill='var(--icon-black-plus)' iconSize='sm' />
                 {!is_mobile && (
                     <Text size='xs' line_height='s' className='announcements__label'>
                         {localize('Announcements')}

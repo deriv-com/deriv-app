@@ -59,7 +59,7 @@ const AnnouncementDialog = ({
                         return (
                             <div className={`${base_classname}__body-item`} key={content?.id}>
                                 <div>
-                                    <LabelPairedCheckCaptionFillIcon />
+                                    <LabelPairedCheckCaptionFillIcon fill='var(--icon-black-plus)' />
                                 </div>
                                 <Text as='p' line_height='xl' size='xs'>
                                     <Localize i18n_default_text={content?.text} />

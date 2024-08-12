@@ -49,6 +49,14 @@ $card-width: 456px;
             }
         }
     }
+
+    @include tablet-screen {
+        & .dc-page-overlay__content {
+            & .dc-mobile-full-page-modal {
+                overflow: hidden;
+            }
+        }
+    }
 }
 
 .order-details-card {

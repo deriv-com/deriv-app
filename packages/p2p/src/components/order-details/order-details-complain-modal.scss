@@ -21,6 +21,12 @@
             border-radius: 8px;
         }
     }
+    @include tablet-screen {
+        & .dc-mobile-full-page-modal {
+            top: 0;
+            overflow: hidden;
+        }
+    }
 }
 
 .dc-modal__container_order-details-complain-modal {

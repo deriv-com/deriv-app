@@ -57,7 +57,7 @@ const TradersHub = observer(() => {
     } = client;
 
     const { is_eu_demo, is_eu_real } = useContentFlag();
-    const { selected_platform_type, setTogglePlatformType, is_eu_user, is_real } = traders_hub;
+    const { selected_platform_type, setTogglePlatformType, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef<HTMLDivElement>(null);
 
     const can_show_notify =

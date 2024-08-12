@@ -12,7 +12,6 @@ import TakeProfit from './TakeProfit';
 import AccumulatorsInformation from './AccumulatorsInformation';
 import Multiplier from './Multiplier';
 import RiskManagement from './RiskManagement';
-import MultipliersInformation from './MultipliersInformation';
 import TradeTypeTabs from './TradeTypeTabs';
 import Strike from './Strike';
 import PayoutPerPoint from './PayoutPerPoint';
@@ -54,7 +53,6 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
                 {isVisible('expiration') && <MultipliersExpirationInfo is_minimized={is_minimized} />}
                 {isVisible('accu_info_display') && <AccumulatorsInformation is_minimized={is_minimized} />}
                 {isVisible('barrier_info') && <BarrierInfo is_minimized={is_minimized} />}
-                {isVisible('mult_info_display') && <MultipliersInformation is_minimized={is_minimized} />}
                 {isVisible('payout_per_point_info') && <PayoutPerPointInfo is_minimized={is_minimized} />}
             </div>
             <div

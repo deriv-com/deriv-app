@@ -21,7 +21,6 @@ export const getTradeParams = (symbol?: string) => ({
         'stake',
         'risk_management',
         ...(shouldShowExpiration(symbol) ? ['expiration'] : []),
-        'mult_info_display',
     ],
     [TRADE_TYPES.TURBOS.LONG]: [
         'trade_type_tabs',

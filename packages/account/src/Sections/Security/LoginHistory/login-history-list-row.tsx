@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { TLoginHistoryItems } from '../../../Types';
 import { Table } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import getLoginHistoryTableHeaders from '../../../Constants/get-login-history-table-headers';
 import ListCell from './list-cell';

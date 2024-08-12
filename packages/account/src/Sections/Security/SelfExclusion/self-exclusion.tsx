@@ -1,4 +1,4 @@
-import React from 'react';
+import { Dispatch, SetStateAction, useRef, useReducer, useEffect } from 'react';
 import { Loading } from '@deriv/components';
 import {
     getBrandWebsiteName,
@@ -10,7 +10,7 @@ import {
     useIsMounted,
     WS,
 } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { useTranslations } from '@deriv-com/translations';
 import DemoMessage from '../../../Components/demo-message';
 import '../../../Components/self-exclusion/self-exclusion.scss';
 import LoadErrorMessage from '../../../Components/load-error-message';
@@ -25,7 +25,7 @@ import { observer, useStore } from '@deriv/stores';
 type TSelfExclusion = {
     is_app_settings?: boolean;
     overlay_ref: HTMLDivElement;
-    setIsOverlayShown?: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsOverlayShown?: Dispatch<SetStateAction<boolean>>;
 };
 type TExclusionData = {
     max_deposit: string;
@@ -71,6 +71,7 @@ type TResponse = {
 
 const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShown }: TSelfExclusion) => {
     const { client, ui } = useStore();
+    const { localize } = useTranslations();
     const {
         currency,
         is_virtual,
@@ -110,9 +111,9 @@ const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShow
         max_open_bets: localize('Max. open positions'),
     };
 
-    const prev_is_switching = React.useRef<boolean | null>(null);
-    const exclusion_limits = React.useRef<TExclusionLimits>({});
-    const exclusion_data = React.useRef<TExclusionData>({
+    const prev_is_switching = useRef<boolean | null>(null);
+    const exclusion_limits = useRef<TExclusionLimits>({});
+    const exclusion_data = useRef<TExclusionData>({
         max_deposit: '',
         max_turnover: '',
         max_losses: '',
@@ -142,14 +143,14 @@ const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShow
     });
 
     const isMounted = useIsMounted();
-    const [state, setState] = React.useReducer<(prev_state: TCustomState, value: TCustomState) => TCustomState>(
+    const [state, setState] = useReducer<(prev_state: TCustomState, value: TCustomState) => TCustomState>(
         (prev_state, value) => {
             return { ...prev_state, ...value };
         },
         initial_state
     );
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (is_virtual) {
             setState({ is_loading: false });
         } else {
@@ -163,7 +164,7 @@ const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShow
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (prev_is_switching.current !== is_switching) {
             prev_is_switching.current = is_switching;
 
@@ -174,7 +175,7 @@ const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShow
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setIsOverlayShown?.(!!state?.show_article);
     }, [state.show_article, setIsOverlayShown]);
 

@@ -1,16 +1,16 @@
-import React from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 import { Text } from '@deriv/components';
 
 type TClosingAccountPendingWrapperProps = {
     title: JSX.Element;
-    description?: React.ReactNode;
+    description?: ReactNode;
 };
 
 const ClosingAccountPendingWrapper = ({
     children,
     title,
     description,
-}: React.PropsWithChildren<TClosingAccountPendingWrapperProps>) => (
+}: PropsWithChildren<TClosingAccountPendingWrapperProps>) => (
     <div className='closing-account-error'>
         <Text as='p' line_height='s' size='xs' weight='bold' color='prominent' className='closing-account-error__title'>
             {title}

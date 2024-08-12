@@ -55,7 +55,6 @@ export type TCFDDashboardContainer = {
 export type TMT5AccountOpeningRealFinancialStpModal = {
     enableApp: () => void;
     disableApp: () => void;
-    toggleCFDVerificationModal: () => void;
 };
 
 export type TMissingRealAccount = {
@@ -326,11 +325,9 @@ export type TCFDDbviOnboardingProps = {
     enableApp: () => void;
     fetchAccountSettings: () => void;
     has_created_account_for_selected_jurisdiction: boolean;
-    has_submitted_cfd_personal_details: boolean;
     is_virtual: boolean;
     jurisdiction_selected_shortcode: string;
     openPasswordModal: () => void;
-    toggleCFDVerificationModal: () => void;
     updateAccountStatus: () => void;
     updateMT5Status: () => void;
 };

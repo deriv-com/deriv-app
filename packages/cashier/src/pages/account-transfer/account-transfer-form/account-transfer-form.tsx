@@ -24,15 +24,9 @@ import PercentageSelector from '../../../components/percentage-selector';
 import SideNote from '../../../components/side-note';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import { TAccount, TAccountsList, TError, TReactChangeEvent } from '../../../types';
+import AccountTransferReceipt from '../account-transfer-receipt/account-transfer-receipt';
 import AccountTransferNote from './account-transfer-form-side-note';
 import './account-transfer-form.scss';
-
-const AccountTransferReceipt = React.lazy(
-    () =>
-        import(
-            /* webpackChunkName: "cashier-account-transfer-receipt" */ '../account-transfer-receipt/account-transfer-receipt'
-        )
-);
 
 type TAccountTransferFormProps = {
     error?: TError;

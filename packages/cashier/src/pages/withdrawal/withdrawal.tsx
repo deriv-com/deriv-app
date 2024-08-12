@@ -10,13 +10,10 @@ import Error from '../../components/error';
 import NoBalance from '../../components/no-balance';
 import TransactionsCryptoHistory from '../../components/transactions-crypto-history';
 import WithdrawalCryptoForm from './withdrawal-crypto-form';
+import WithdrawalCryptoReceipt from './withdrawal-crypto-receipt';
 import WithdrawalFiat from './withdrawal-fiat';
 import WithdrawalLocked from './withdrawal-locked';
 import WithdrawalVerificationEmail from './withdrawal-verification-email';
-
-const WithdrawalCryptoReceipt = React.lazy(
-    () => import(/* webpackChunkName: "cashier-withdrawal-crypto-receipt" */ './withdrawal-crypto-receipt')
-);
 
 const WithdrawalSideNotes = observer(() => {
     const { client } = useStore();

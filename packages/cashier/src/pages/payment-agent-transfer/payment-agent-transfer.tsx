@@ -10,10 +10,7 @@ import Error from '../../components/error';
 import NoBalance from '../../components/no-balance';
 import Virtual from '../../components/cashier-container/virtual';
 import PaymentAgentTransferConfirm from './payment-agent-transfer-confirm';
-
-const PaymentAgentTransferReceipt = React.lazy(
-    () => import(/* webpackChunkName: "cashier-payment-agent-transfer-receipt" */ './payment-agent-transfer-receipt')
-);
+import PaymentAgentTransferReceipt from './payment-agent-transfer-receipt';
 
 const PaymentAgentTransfer = observer(() => {
     const { client } = useStore();

@@ -12,6 +12,7 @@
 
     @include tablet-screen {
         & .dc-mobile-full-page-modal {
+            z-index: 5;
             width: 60rem;
             & .dc-page-overlay {
                 & .dc-page-overlay__header {

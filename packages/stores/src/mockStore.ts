@@ -689,6 +689,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 cancellation_range_list: [],
                 clearContractPurchaseToastBox: jest.fn(),
                 clearPurchaseInfo: jest.fn(),
+                clearWheelPickerInitialValues: jest.fn(),
                 contract_expiry_type: '',
                 contract_purchase_toast_box: {},
                 contract_start_type: '',

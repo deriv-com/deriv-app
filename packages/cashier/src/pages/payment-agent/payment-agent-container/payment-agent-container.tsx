@@ -11,11 +11,8 @@ import PaymentAgentSearchBox from '../payment-agent-search-box';
 import PaymentAgentUnlistedWithdrawForm from '../payment-agent-unlisted-withdraw-form';
 import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
 import { useCashierStore } from '../../../stores/useCashierStores';
+import PaymentAgentReceipt from '../payment-agent-receipt';
 import './payment-agent-container.scss';
-
-const PaymentAgentReceipt = React.lazy(
-    () => import(/* webpackChunkName: "cashier-payment-agent-receipt" */ '../payment-agent-receipt')
-);
 
 type TPaymentAgentContainer = {
     is_deposit?: boolean;

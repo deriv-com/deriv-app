@@ -21,7 +21,6 @@ const PhoneVerificationPage = observer(() => {
         phone_verification_type: '',
     });
     const [is_loading, setIsLoading] = useState(false);
-    const [should_show_cancel_verification_modal, setShouldShowCancelVerificationModal] = useState(false);
     const [should_show_verification_link_expired_modal, setShouldShowVerificationLinkExpiredModal] = useState(false);
     const handleBackButton = () => {
         //@ts-expect-error will remove this error when Analytics package types are being updated
@@ -29,7 +28,7 @@ const PhoneVerificationPage = observer(() => {
             action: 'back',
             form_name: 'ce_phone_verification_form',
         });
-        setShouldShowCancelVerificationModal(true);
+        setShouldShowCancelVerificationModal({ show_modal: true });
     };
     const { sendEmailOTPVerification, email_otp_error, is_email_verified } = useSendOTPVerificationCode();
     const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookGetFeatureValue({
@@ -37,7 +36,7 @@ const PhoneVerificationPage = observer(() => {
     });
 
     const { client, ui } = useStore();
-    const { is_redirected_from_email, setRedirectFromEmail } = ui;
+    const { is_redirected_from_email, setRedirectFromEmail, setShouldShowCancelVerificationModal } = ui;
     const {
         verification_code: { phone_number_verification: phone_number_verification_code },
         is_authorize,
@@ -80,10 +79,7 @@ const PhoneVerificationPage = observer(() => {
                 should_show_verification_link_expired_modal={should_show_verification_link_expired_modal}
                 setShouldShowVerificationLinkExpiredModal={setShouldShowVerificationLinkExpiredModal}
             />
-            <CancelPhoneVerificationModal
-                should_show_cancel_verification_modal={should_show_cancel_verification_modal}
-                setShouldShowCancelVerificationModal={setShouldShowCancelVerificationModal}
-            />
+            <CancelPhoneVerificationModal />
             <div className='phone-verification__redirect_button'>
                 <IconButton
                     color='black-white'

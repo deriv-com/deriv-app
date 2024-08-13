@@ -27,17 +27,21 @@ describe('CancelPhoneVerificationModal', () => {
         document.body.removeChild(modal_root_el);
     });
 
-    const mock_store = mockStore({});
+    const mock_store = mockStore({
+        ui: {
+            should_show_cancel_verification_modal: {
+                show_modal: true,
+            },
+            setShouldShowCancelVerificationModal: mockSetShowCancelModal,
+        },
+    });
 
     const buttons = [/Go back/, /Yes, cancel/];
 
     const renderComponent = () => {
         render(
             <StoreProvider store={mock_store}>
-                <CancelPhoneVerificationModal
-                    should_show_cancel_verification_modal
-                    setShouldShowCancelVerificationModal={mockSetShowCancelModal}
-                />
+                <CancelPhoneVerificationModal />
             </StoreProvider>
         );
     };

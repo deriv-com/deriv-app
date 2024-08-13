@@ -132,6 +132,7 @@ export default class UIStore extends BaseStore {
 
     //phone number verification
     should_show_phone_number_otp = false;
+    should_show_cancel_verification_modal = { show_modal: false };
 
     //warn user if they want to close create real account modal
     is_closing_create_real_account_modal = false;
@@ -306,6 +307,7 @@ export default class UIStore extends BaseStore {
             reports_route_tab_index: observable,
             settings_extension: observable,
             should_show_phone_number_otp: observable,
+            should_show_cancel_verification_modal: observable,
             should_show_deposit_now_or_later_modal: observable,
             should_show_crypto_transaction_processing_modal: observable,
             should_show_appropriateness_warning_modal: observable,
@@ -359,6 +361,7 @@ export default class UIStore extends BaseStore {
             resetRealAccountSignupParams: action.bound,
             resetRealAccountSignupTarget: action.bound,
             setShouldShowPhoneNumberOTP: action.bound,
+            setShouldShowCancelVerificationModal: action.bound,
             setAccountSwitcherDisabledMessage: action.bound,
             setAppContentsScrollRef: action.bound,
             setCFDPasswordResetModal: action.bound,
@@ -458,6 +461,10 @@ export default class UIStore extends BaseStore {
 
     setIsRealTabEnabled(is_real_tab_enabled) {
         this.is_real_tab_enabled = is_real_tab_enabled;
+    }
+
+    setShouldShowCancelVerificationModal(should_show_cancel_verification_modal) {
+        this.should_show_cancel_verification_modal = should_show_cancel_verification_modal;
     }
 
     setShouldShowPhoneNumberOTP(should_show_phone_number_otp) {

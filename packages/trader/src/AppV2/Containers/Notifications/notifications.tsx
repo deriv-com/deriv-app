@@ -12,6 +12,7 @@ const Notifications = observer(() => {
     const { pathname } = useLocation();
 
     React.useEffect(() => {
+        if (banners.length > 1) removeBanner(banners[0].id);
         if (pathname === routes.trade) return;
         banners.forEach(({ type, id }) => {
             if (!type) {
@@ -42,6 +43,7 @@ const Notifications = observer(() => {
             className='trade-notification'
             isMobile
             onClose={removeBanner}
+            zIndex={99}
         />
     );
 });

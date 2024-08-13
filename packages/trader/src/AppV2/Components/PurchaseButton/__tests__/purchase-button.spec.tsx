@@ -233,7 +233,7 @@ describe('PositionsContent', () => {
         default_mock_store.modules.trade.is_accumulator = true;
         mockPurchaseButton();
 
-        const sell_button = screen.getByText('Sell');
+        const sell_button = screen.getByText('Close 19.32 USD');
         expect(sell_button).toBeInTheDocument();
         expect(default_mock_store.portfolio.onClickSell).not.toBeCalled();
 

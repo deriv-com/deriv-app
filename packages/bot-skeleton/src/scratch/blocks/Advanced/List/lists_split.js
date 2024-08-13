@@ -69,7 +69,7 @@ Blockly.Blocks.lists_split = {
         }
 
         this.initSvg();
-        //this.render(false);
+        this.renderEfficiently();
     },
     customContextMenu(menu) {
         modifyContextMenu(menu);

@@ -9,18 +9,12 @@ import { TERM } from 'AppV2/Utils/contract-description-utils';
 import TraderProviders from '../../../../trader-providers';
 import Guide from '../guide';
 
-const mediaQueryList = {
-    matches: true,
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-};
 const trade_types = 'Trade types';
 
 jest.mock('@lottiefiles/dotlottie-react', () => ({
     DotLottieReact: jest.fn(() => <div>DotLottieReact</div>),
 }));
 
-window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
 Loadable.preloadAll();
 
 describe('Guide', () => {

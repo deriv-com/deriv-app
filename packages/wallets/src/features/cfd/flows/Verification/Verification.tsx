@@ -7,6 +7,7 @@ import {
     usePOI,
     useSettings,
 } from '@deriv/api-v2';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import { ModalStepWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
@@ -101,6 +102,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { submitIDVDocuments } = useIdentityDocumentVerificationAdd();
     const { getModalState, hide, show } = useModal();
     const { isMobile } = useDevice();
+    const { localize } = useTranslations();
 
     const selectedMarketType = getModalState('marketType') ?? 'all';
     const platform = getModalState('platform') ?? PlatformDetails.mt5.platform;
@@ -354,7 +356,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                               onClick={() => nextFlowHandler(context)}
                               size='lg'
                           >
-                              Next
+                              <Localize i18n_default_text='Next' />
                           </WalletButton>
                       );
 
@@ -369,8 +371,8 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                         renderFooter={renderFooter}
                         title={
                             context.currentScreenId === 'duplicateUploadErrorScreen'
-                                ? 'Submit your proof of identity'
-                                : 'Add a real MT5 account'
+                                ? localize('Submit your proof of identity')
+                                : localize('Add a real MT5 account')
                         }
                     >
                         {context.WalletScreen}

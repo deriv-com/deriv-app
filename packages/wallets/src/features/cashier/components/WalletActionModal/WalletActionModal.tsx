@@ -10,7 +10,7 @@ type TWalletActionModal = {
         onClick: VoidFunction;
         text: string;
     }[];
-    description?: string;
+    description?: JSX.Element | string;
     hideCloseButton?: React.ComponentProps<typeof ModalWrapper>['hideCloseButton'];
     title: string;
 };

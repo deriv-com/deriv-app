@@ -1,6 +1,5 @@
-import React from 'react';
 import { Button, Modal, Text, Icon } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 
 type TUnlinkAccountModalProps = {
     onClose: () => void;
@@ -23,6 +22,7 @@ const UnlinkAccountModal = ({ onClose, is_open, identifier_title, onClickSendEma
         onClose();
         onClickSendEmail();
     };
+    const { localize } = useTranslations();
 
     return (
         <Modal className={'unlink-account__modal'} is_open={is_open} has_close_icon toggleModal={onClose} width='440px'>

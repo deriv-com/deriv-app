@@ -2,12 +2,13 @@ import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { ActionSheet, Text, TextField, SectionMessage } from '@deriv-com/quill-ui';
+import { ActionSheet, TextField } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import RiskManagementPicker from './risk-management-picker';
+import RiskManagementContent from './risk-management-content';
 
 type TRiskManagementProps = {
     is_minimized?: boolean;
@@ -29,37 +30,7 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
             component: (
                 <TradeParamDefinition
                     description={
-                        <React.Fragment>
-                            <Text bold color='quill-typography__color--prominent'>
-                                <Localize i18n_default_text='TakeProfit' />
-                            </Text>
-                            <Text className='risk-management__description__definition'>
-                                <Localize i18n_default_text='When your profit reaches or exceeds this amount, your trade will be closed automatically.' />
-                            </Text>
-                            <Text bold color='quill-typography__color--prominent'>
-                                <Localize i18n_default_text='Stop loss' />
-                            </Text>
-                            <Text className='risk-management__description__definition'>
-                                <Localize i18n_default_text='When your loss reaches or exceeds this amount, your trade will be closed automatically.' />
-                            </Text>
-                            {should_show_deal_cancellation && (
-                                <React.Fragment>
-                                    <Text bold color='quill-typography__color--prominent'>
-                                        <Localize i18n_default_text='Deal cancellation' />
-                                    </Text>
-                                    <Text className='risk-management__description__definition'>
-                                        <Localize i18n_default_text='When this is active, you can cancel your trade within the chosen time frame. Your stake will be returned without loss.' />
-                                    </Text>
-                                    <SectionMessage
-                                        message={
-                                            <Localize i18n_default_text='Take profit and/or stop loss are not available while deal cancellation is active.' />
-                                        }
-                                        size='sm'
-                                        status='info'
-                                    />
-                                </React.Fragment>
-                            )}
-                        </React.Fragment>
+                        <RiskManagementContent should_show_deal_cancellation={should_show_deal_cancellation} />
                     }
                     classname='risk-management__description'
                     is_custom_description

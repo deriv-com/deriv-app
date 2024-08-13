@@ -82,7 +82,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
             setAmountAnnounce(obj_announcements);
             localStorage?.setItem('bot-announcements', JSON.stringify(obj_announcements));
         }
-    }, [announcements.length]);
+    }, []);
 
     const handleOnCancelAccumulator = () => {
         handleTabChange(DBOT_TABS.TUTORIAL);

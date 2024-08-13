@@ -22,7 +22,7 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
     const action_sheet_content = [
         {
             id: 1,
-            component: <RiskManagementPicker />,
+            component: <RiskManagementPicker should_show_deal_cancellation={should_show_deal_cancellation} />,
         },
         {
             id: 2,

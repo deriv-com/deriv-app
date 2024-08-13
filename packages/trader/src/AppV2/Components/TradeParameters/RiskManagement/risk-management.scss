@@ -1,6 +1,13 @@
+$FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
+
 .risk-management {
     &__carousel {
         min-height: 40rem;
+    }
+
+    &__picker {
+        padding-block-start: 0;
+        min-height: calc(100% - $FOOTER_BUTTON_HEIGHT);
     }
 
     &__description {

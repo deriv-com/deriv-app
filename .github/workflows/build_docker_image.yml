@@ -15,8 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     env: 
       tag_name: ${{ github.event.inputs.docker_image_tag_name || github.ref_name }}
-    outputs:
-      image_name: ${{ steps.branch_name.outputs.image_name }}
     permissions:
       packages: write
       contents: read
@@ -65,7 +63,7 @@ jobs:
           TRUSTPILOT_API_KEY: ${{ secrets.TRUSTPILOT_API_KEY }}
 
       - name: Run Build Docker
-        run: docker build -t ${{ secrets.WEB_ACCESS_DOCKERHUB_USERNAME }}/${{ needs.push_to_registry.outputs.image_name }} . --platform=linux/amd64
+        run: docker build -t ${{ secrets.WEB_ACCESS_DOCKERHUB_USERNAME }}/${{ steps.branch_name.outputs.image_name }} . --platform=linux/amd64
       
       - name: Run Tag Docker
         run: docker tag ${{ secrets.WEB_ACCESS_DOCKERHUB_USERNAME }}/${{ needs.push_to_registry.outputs.image_name }} ${{ secrets.WEB_ACCESS_DOCKERHUB_USERNAME }}/${{ needs.push_to_registry.outputs.image_name }}

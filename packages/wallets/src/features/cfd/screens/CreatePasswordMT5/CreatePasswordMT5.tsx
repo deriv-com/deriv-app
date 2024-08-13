@@ -6,7 +6,7 @@ import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../c
 import useDevice from '../../../../hooks/useDevice';
 import { THooks, TPlatforms } from '../../../../types';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
-import { CFD_PLATFORMS, PlatformDetails, PRODUCT } from '../../constants';
+import { CFD_PLATFORMS, companyNamesAndUrls, getMarketTypeDetails, PlatformDetails, PRODUCT } from '../../constants';
 import './CreatePasswordMT5.scss';
 
 type TProps = {
@@ -17,6 +17,7 @@ type TProps = {
     password: string;
     platform: TPlatforms.All;
     product?: THooks.AvailableMT5Accounts['product'];
+    selectedJurisdiction?: THooks.AvailableMT5Accounts['shortcode'];
 };
 
 const CreatePasswordMT5: React.FC<TProps> = ({
@@ -27,14 +28,16 @@ const CreatePasswordMT5: React.FC<TProps> = ({
     password,
     platform,
     product,
+    selectedJurisdiction,
 }) => {
     const { isDesktop } = useDevice();
     const { title } = PlatformDetails[platform as keyof typeof PlatformDetails];
     const isMT5 = platform === CFD_PLATFORMS.MT5;
     const disableButton = isMT5 ? !validPasswordMT5(password) : !validPassword(password);
-    // const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
+    const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
+    const platformTitle = PlatformDetails[platform].title;
+    const productTitle = getMarketTypeDetails(product).all.title;
     const [checked, setChecked] = useState(!(product === PRODUCT.ZEROSPREAD && !isVirtual));
-    const company = '';
 
     return (
         <div className='wallets-create-password-mt5'>
@@ -64,16 +67,17 @@ const CreatePasswordMT5: React.FC<TProps> = ({
                             variant='info'
                         >
                             <WalletText size={isDesktop ? '2xs' : 'xs'}>
-                                You are adding your {platform} {product} account under {company}, regulated by Malta
-                                Financial Services Authority (MFSA) (licence no. IS/70156).
+                                You are adding your {platformTitle}
+                                {productTitle} account under {selectedCompany.name}, regulated by Malta Financial
+                                Services Authority (MFSA) (licence no. IS/70156).
                             </WalletText>
                         </InlineMessage>
                         <Checkbox
                             checked={checked}
                             label={
                                 <WalletText size={isDesktop ? 'xs' : 'sm'}>
-                                    I confirm and accept Deriv (BVI) Ltd’s{' '}
-                                    <a className='wallets-create-password-mt5__tnc-link' href=''>
+                                    I confirm and accept {selectedCompany.name}’s
+                                    <a className='wallets-create-password-mt5__tnc-link' href={selectedCompany.tncUrl}>
                                         terms and conditions
                                     </a>
                                 </WalletText>

@@ -69,6 +69,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
     const hasMT5Account = mt5AccountsData?.find(account => account.login);
     const isDemo = activeWalletData?.is_virtual;
     const { platform: mt5Platform, title: mt5Title } = PlatformDetails.mt5;
+    const selectedJurisdiction = isDemo ? JURISDICTION.SVG : getModalState('selectedJurisdiction');
 
     const updateMT5Password =
         createMT5AccountStatus === 'error' &&
@@ -81,7 +82,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
         // then only mt5_create_account can be called, otherwise it will response an error for password required.
         // =================================
 
-        const selectedJurisdiction = isDemo ? JURISDICTION.SVG : getModalState('selectedJurisdiction');
         const accountType = marketType === MARKET_TYPE.SYNTHETIC ? 'gaming' : marketType;
         const categoryAccountType = isDemo ? 'demo' : accountType;
 
@@ -125,7 +125,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
     }, [
         availableMT5AccountsData,
         createMT5AccountMutate,
-        getModalState,
         isDemo,
         isMT5PasswordNotSet,
         marketType,
@@ -140,6 +139,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
         settingsData?.first_name,
         settingsData?.phone,
         tradingPasswordChangeMutateAsync,
+        selectedJurisdiction,
     ]);
 
     const sendEmailVerification = useCallback(() => {
@@ -243,6 +243,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
                     password={password}
                     platform={mt5Platform}
                     product={product}
+                    selectedJurisdiction={selectedJurisdiction}
                 />
             );
 
@@ -286,6 +287,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
         platform,
         isVirtual,
         product,
+        selectedJurisdiction,
     ]);
 
     if (emailVerificationStatus === 'error') {

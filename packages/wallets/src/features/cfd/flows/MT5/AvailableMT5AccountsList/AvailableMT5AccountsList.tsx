@@ -33,6 +33,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
             show(<JurisdictionModal />);
         }
         setModalState('marketType', account.market_type);
+        setModalState('selectedJurisdiction', account.shortcode);
     }, [
         activeWallet?.is_virtual,
         show,

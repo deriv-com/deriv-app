@@ -19,20 +19,6 @@ export const getRsStrategyType = (selected_strategy: string) => STRATEGIES[selec
 
 export const getQsActiveTabString = (tab: string) => (tab === 'TRADE_PARAMETERS' ? 'trade parameters' : 'learn more');
 
-export const getSubpageName = () => {
-    const active_tab = localStorage.getItem('active_tab');
-    if (active_tab === '0') {
-        return 'dashboard';
-    } else if (active_tab === '1') {
-        return 'bot_builder';
-    } else if (active_tab === '2') {
-        return 'charts';
-    } else if (active_tab === '3') {
-        return 'tutorials';
-    }
-    return 'undefined';
-};
-
 enum LOAD_MODAL_TABS_VALUE {
     recent = 'recent',
     local = 'local',

@@ -1,7 +1,7 @@
-import React from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { useIsMounted } from '@deriv/shared';
 import { Button, Icon, Modal, Text, Popover, useCopyToClipboard } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
 import { TPopoverAlignment } from '../../Types';
 
 type TApiTokenClipboard = {
@@ -26,7 +26,7 @@ const WarningNoteBullet = ({ message }: TWarningNoteBullet) => (
 );
 
 const WarningDialogMessage = () => (
-    <React.Fragment>
+    <Fragment>
         <Text as='p' color='prominent ' size='xs' line_height='m'>
             <Localize i18n_default_text='Be careful who you share this token with. Anyone with this token can perform the following actions on your account behalf' />
         </Text>
@@ -37,7 +37,7 @@ const WarningDialogMessage = () => (
             />
             <WarningNoteBullet message={<Localize i18n_default_text='Modify account settings' />} />
         </div>
-    </React.Fragment>
+    </Fragment>
 );
 
 const ApiTokenClipboard = ({
@@ -48,8 +48,8 @@ const ApiTokenClipboard = ({
     popover_alignment = 'bottom',
 }: TApiTokenClipboard) => {
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
-    const [is_modal_open, setIsModalOpen] = React.useState(false);
-    const [is_popover_open, setIsPopoverOpen] = React.useState(false);
+    const [is_modal_open, setIsModalOpen] = useState(false);
+    const [is_popover_open, setIsPopoverOpen] = useState(false);
     const isMounted = useIsMounted();
     let timeout_clipboard: NodeJS.Timeout | undefined, timeout_clipboard_2: NodeJS.Timeout | undefined;
     const has_admin_scope = scopes?.includes('Admin');
@@ -88,7 +88,7 @@ const ApiTokenClipboard = ({
         } else onClick();
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         return () => {
             clearTimeout(timeout_clipboard);
             clearTimeout(timeout_clipboard_2);
@@ -96,7 +96,7 @@ const ApiTokenClipboard = ({
     }, [timeout_clipboard, timeout_clipboard_2]);
 
     return (
-        <React.Fragment>
+        <Fragment>
             <Modal is_open={is_modal_open} small>
                 <Modal.Body>
                     <WarningDialogMessage />
@@ -125,7 +125,7 @@ const ApiTokenClipboard = ({
                     onMouseLeave={onMouseLeaveHandler}
                 />
             </Popover>
-        </React.Fragment>
+        </Fragment>
     );
 };
 

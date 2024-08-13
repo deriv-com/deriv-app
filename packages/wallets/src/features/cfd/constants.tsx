@@ -14,7 +14,7 @@ import {
     PartnersProductDerivMt5BrandLightLogoHorizontalIcon,
 } from '@deriv/quill-icons';
 import { localize } from '@deriv-com/translations';
-import { TPlatforms } from '../../types';
+import { THooks, TPlatforms } from '../../types';
 import { ctraderLinks, whiteLabelLinks } from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 
 const zeroSpreadDetails = {
@@ -28,9 +28,9 @@ const swapFreeDetails = {
     title: 'Swap-Free',
 };
 
-export const getMarketTypeDetails = (subAccountType?: TPlatforms.SubAccountType) =>
+export const getMarketTypeDetails = (product?: THooks.AvailableMT5Accounts['product']) =>
     ({
-        all: subAccountType === PRODUCT.ZEROSPREAD ? zeroSpreadDetails : swapFreeDetails,
+        all: product === PRODUCT.ZEROSPREAD ? zeroSpreadDetails : swapFreeDetails,
         financial: {
             description: localize('CFDs on financial instruments'),
             icon: <AccountsDmt5FinancialIcon height={48} width={48} />,

@@ -16,21 +16,19 @@ type TProps = {
 const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { setModalState, show } = useModal();
-    const { description, title } = getMarketTypeDetails(account.sub_account_type)[account.market_type || 'all'];
+    const { description, title } = getMarketTypeDetails(account.product)[account.market_type || 'all'];
 
     const onButtonClick = useCallback(() => {
         if (activeWallet?.is_virtual) {
-            if (account.sub_account_type === PRODUCT.ZEROSPREAD) {
-                show(
-                    <Verification
-                        isVirtual={activeWallet?.is_virtual}
-                        product={account.product}
-                        selectedJurisdiction={account.shortcode}
-                    />
-                );
-            } else {
-                show(<MT5PasswordModal marketType={account?.market_type || 'synthetic'} platform={account.platform} />);
-            }
+            show(<MT5PasswordModal marketType={account?.market_type || 'synthetic'} platform={account.platform} />);
+        } else if (account.product === PRODUCT.ZEROSPREAD) {
+            show(
+                <Verification
+                    isVirtual={activeWallet?.is_virtual}
+                    product={account.product}
+                    selectedJurisdiction={account.shortcode}
+                />
+            );
         } else {
             show(<JurisdictionModal />);
         }
@@ -41,7 +39,6 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
         account.market_type,
         account.platform,
         setModalState,
-        account.sub_account_type,
         account.product,
         account?.shortcode,
     ]);
@@ -50,7 +47,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
         <TradingAccountCard
             leading={
                 <div className='wallets-available-mt5__icon'>
-                    {getMarketTypeDetails(account.sub_account_type)[account.market_type || 'all'].icon}
+                    {getMarketTypeDetails(account.product)[account.market_type || 'all'].icon}
                 </div>
             }
             onClick={onButtonClick}
@@ -63,7 +60,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
             <div className='wallets-available-mt5__details'>
                 <div className='wallets-available-mt5__title'>
                     <WalletText size='sm'>{title}</WalletText>
-                    {account.sub_account_type === PRODUCT.ZEROSPREAD && (
+                    {account.product === PRODUCT.ZEROSPREAD && (
                         <div className='wallets-available-mt5__badge'>
                             <WalletText size='xs' weight='bold'>
                                 NEW

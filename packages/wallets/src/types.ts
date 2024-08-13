@@ -73,7 +73,6 @@ export namespace TPlatforms {
         'derivez'
     >;
     export type SortedMT5Accounts = THooks.SortedMT5Accounts['platform'];
-    export type SubAccountType = THooks.SortedMT5Accounts['sub_account_type'];
 }
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace TMarketTypes {

@@ -54,16 +54,18 @@ const AccountTransferModal = observer(({ is_modal_open, toggleModal }: TAccountT
         history.push(routes.cashier_acc_transfer);
     };
 
+    const dismissError = () => {
+        toggleModal();
+        setIsErrorDialogOpen(false);
+        error.setErrorMessage({ code: '', message: '' }, null, false);
+    };
+
     if (is_error_dialog_open) {
         return (
             <Dialog
                 title={localize('Cashier Error')}
                 confirm_button_text={localize('OK')}
-                onConfirm={() => {
-                    toggleModal();
-                    setIsErrorDialogOpen(false);
-                    error.setErrorMessage({ code: '', message: '' }, null, false);
-                }}
+                onConfirm={dismissError}
                 is_visible={is_error_dialog_open}
                 has_close_icon={false}
                 dismissable={false}
@@ -71,16 +73,7 @@ const AccountTransferModal = observer(({ is_modal_open, toggleModal }: TAccountT
                 <Localize
                     i18n_default_text='Please complete your <0>financial assessment</0>.'
                     components={[
-                        <Link
-                            to={routes.financial_assessment}
-                            key={0}
-                            className='link'
-                            onClick={() => {
-                                toggleModal();
-                                setIsErrorDialogOpen(false);
-                                error.setErrorMessage({ code: '', message: '' }, null, false);
-                            }}
-                        />,
+                        <Link to={routes.financial_assessment} key={0} className='link' onClick={dismissError} />,
                     ]}
                 />
             </Dialog>

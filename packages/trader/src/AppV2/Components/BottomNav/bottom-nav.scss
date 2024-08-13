@@ -37,16 +37,20 @@
                 fill: var(--core-color-opacity-coral-600) !important;
             }
         }
-        &-label {
+        &__label {
             font-size: var(--core-fontSize-50);
             line-height: var(--core-lineHeight-100);
         }
-        span {
+        &__icon {
             width: var(--core-size-1200);
             height: var(--core-size-1200);
             display: flex;
             align-items: center;
             justify-content: center;
+
+            .badge__base {
+                z-index: 1;
+            }
         }
     }
 }

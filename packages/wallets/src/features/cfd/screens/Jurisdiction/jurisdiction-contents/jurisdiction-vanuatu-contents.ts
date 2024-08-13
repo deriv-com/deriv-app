@@ -1,14 +1,17 @@
+import { localize } from '@deriv-com/translations';
 import { TJurisdictionCardItems } from './props.types';
 
 export const getJurisdictionVanuatuContents = (): TJurisdictionCardItems => ({
     contents: {
         financial: [
             {
-                description: 'Forex (standard/micro), stocks, stock indices, commodities, cryptocurrencies and ETFs',
+                description: localize(
+                    'Forex (standard/micro), stocks, stock indices, commodities, cryptocurrencies and ETFs'
+                ),
                 key: 'assets',
-                title: 'Assets',
+                title: localize('Assets'),
                 titleIndicators: {
-                    displayText: '90+',
+                    displayText: localize('90+'),
                     displayTextSkinColor: 'red-dark',
                     type: 'displayText',
                 },
@@ -17,23 +20,23 @@ export const getJurisdictionVanuatuContents = (): TJurisdictionCardItems => ({
                 clickableDescription: [
                     {
                         tag: 'dynamicLeverage',
-                        text: 'Dynamic Leverage',
+                        text: localize('Dynamic Leverage'),
                         type: 'link',
                     },
                 ],
                 key: 'leverage',
-                title: 'Leverage up to',
+                title: localize('Leverage up to'),
                 titleIndicators: {
-                    displayText: '1:1000',
+                    displayText: localize('1:1000'),
                     displayTextSkinColor: 'yellow-light',
                     type: 'displayText',
                 },
             },
             {
                 key: 'spreads-from',
-                title: 'Spreads from',
+                title: localize('Spreads from'),
                 titleIndicators: {
-                    displayText: '0.5 pips',
+                    displayText: localize('0.5 pips'),
                     displayTextSkinColor: 'violet-dark',
                     type: 'displayText',
                 },
@@ -41,43 +44,44 @@ export const getJurisdictionVanuatuContents = (): TJurisdictionCardItems => ({
             {
                 clickableDescription: [
                     {
-                        text: 'Learn more',
+                        text: localize('Learn more'),
                         type: 'link',
                     },
                     {
-                        text: 'about verifications needed.',
+                        text: localize('about verifications needed.'),
                         type: 'text',
                     },
                 ],
                 key: 'verifications',
-                title: 'Verifications',
+                title: localize('Verifications'),
                 titleIndicators: {
                     type: 'displayIcons',
                 },
             },
             {
-                description: 'Vanuatu Financial Services Commission',
+                description: localize('Vanuatu Financial Services Commission'),
                 key: 'regulator',
-                title: 'Regulator/EDR',
+                title: localize('Regulator/EDR'),
             },
         ],
         synthetic: [
             {
-                description:
-                    'Forex (standard), stock indices, commodities, cryptocurrencies, synthetic indices, basket indices and derived FX',
+                description: localize(
+                    'Forex (standard), stock indices, commodities, cryptocurrencies, synthetic indices, basket indices and derived FX'
+                ),
                 key: 'assets',
-                title: 'Assets',
+                title: localize('Assets'),
                 titleIndicators: {
-                    displayText: '210+',
+                    displayText: localize('210+'),
                     displayTextSkinColor: 'red-darker',
                     type: 'displayText',
                 },
             },
             {
                 key: 'leverage',
-                title: 'Leverage up to',
+                title: localize('Leverage up to'),
                 titleIndicators: {
-                    displayText: '1:1000',
+                    displayText: localize('1:1000'),
                     displayTextSkinColor: 'yellow-light',
                     type: 'displayText',
                 },
@@ -85,28 +89,28 @@ export const getJurisdictionVanuatuContents = (): TJurisdictionCardItems => ({
             {
                 clickableDescription: [
                     {
-                        text: 'Learn more',
+                        text: localize('Learn more'),
                         type: 'link',
                     },
                     {
-                        text: 'about verifications needed.',
+                        text: localize('about verifications needed.'),
                         type: 'text',
                     },
                 ],
                 key: 'verifications',
-                title: 'Verifications',
+                title: localize('Verifications'),
                 titleIndicators: {
                     type: 'displayIcons',
                 },
             },
             {
-                description: 'Vanuatu Financial Services Commission',
+                description: localize('Vanuatu Financial Services Commission'),
                 key: 'regulator',
-                title: 'Regulator/EDR',
+                title: localize('Regulator/EDR'),
             },
         ],
     },
-    header: 'Vanuatu',
+    header: localize('Vanuatu'),
     isOverHeaderAvailable: false,
     verificationDocs: {
         financial: ['documentNumber', 'nameAndAddress'],

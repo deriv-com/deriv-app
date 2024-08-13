@@ -1,7 +1,7 @@
 interface AnalyticsEvent {
     name: string;
     properties: {
-        [key: string]: any;
+        [key: string]: string;
     };
 }
 
@@ -12,24 +12,24 @@ const setEvent = (event: AnalyticsEvent): void => {
     localStorage.setItem('pending_events', JSON.stringify(eventQueue));
 };
 
-const trackEvent = (event: AnalyticsEvent): void => {
+const trackEventWithCache = (event: AnalyticsEvent): void => {
     if (window.rudderanalytics) {
         window.rudderanalytics.track(event.name, event.properties);
     } else {
         setEvent(event);
+        handleCachedEvents();
     }
 };
+const handleCachedEvents = () => {
+    const loadPendingEvents = () => {
+        const storedEvents = localStorage.getItem('pending_events');
 
-const loadPendingEvents = (): void => {
-    const storedEvents = localStorage.getItem('pending_events');
-
-    if (storedEvents) {
-        eventQueue = JSON.parse(storedEvents) as AnalyticsEvent[];
-    }
-};
-
-const initializeAnalytics = async (): Promise<void> => {
+        if (storedEvents) {
+            eventQueue = JSON.parse(storedEvents) as AnalyticsEvent[];
+        }
+    };
     try {
+        loadPendingEvents();
         if (eventQueue.length > 0) {
             eventQueue.forEach(event => {
                 window.rudderanalytics.track(event.name, event.properties);
@@ -39,12 +39,8 @@ const initializeAnalytics = async (): Promise<void> => {
             localStorage.removeItem('pending_events');
         }
     } catch (error) {
-        console.log('Error initializing analytics:', error);
+        console.log(error);
     }
 };
 
-// Initialize the module
-loadPendingEvents();
-initializeAnalytics();
-
-export { trackEvent };
+export { trackEventWithCache, handleCachedEvents };

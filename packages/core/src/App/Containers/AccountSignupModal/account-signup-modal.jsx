@@ -16,7 +16,7 @@ import QuestionnaireModal from '../QuestionnaireModal';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import validateSignupFields from './validate-signup-fields.jsx';
 import 'Sass/app/modules/account-signup.scss';
-import { trackEvent } from 'Utils/Analytics/analytics.ts';
+import { trackEventWithCache } from 'Utils/Analytics/analytics.ts';
 
 const AccountSignup = ({
     enableApp,
@@ -56,14 +56,14 @@ const AccountSignup = ({
 
     // didMount lifecycle hook
     React.useEffect(() => {
-        trackEvent({
+        trackEventWithCache({
             name: 'ce_virtual_signup_form',
             properties: {
                 action: 'signup_confirmed',
                 form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
             },
         });
-        trackEvent({
+        trackEventWithCache({
             name: 'ce_virtual_signup_form',
             properties: {
                 action: 'country_selection_screen_opened',

@@ -16,7 +16,7 @@ import QuestionnaireModal from '../QuestionnaireModal';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import validateSignupFields from './validate-signup-fields.jsx';
 import 'Sass/app/modules/account-signup.scss';
-import { AnalyticsInitializer } from 'Utils/Analytics';
+import { trackEvent } from 'Utils/Analytics/analytics.ts';
 
 const AccountSignup = ({
     enableApp,
@@ -54,55 +54,6 @@ const AccountSignup = ({
         setPWInput(new_password);
     };
 
-    let eventQueue = [];
-
-    const queueEvent = event => {
-        eventQueue.push(event);
-        localStorage.setItem('pending_events', JSON.stringify(eventQueue));
-    };
-
-    const trackEvent = event => {
-        if (window.rudderanalytics) {
-            console.log('here');
-            window.rudderanalytics?.track(event.name, event.properties);
-        } else {
-            console.log('else');
-            queueEvent(event);
-        }
-    };
-
-    const loadPendingEvents = () => {
-        const storedEvents = localStorage.getItem('pending_events');
-        console.log('pending events', storedEvents);
-        if (storedEvents) {
-            console.log('storedEvents');
-            eventQueue = JSON.parse(storedEvents);
-        }
-    };
-
-    const initializeAnalytics = async () => {
-        try {
-            await AnalyticsInitializer();
-            console.log('analytics loaded');
-
-            if (eventQueue.length > 0) {
-                console.log('eventQueue.length');
-                eventQueue.forEach(event => {
-                    window.rudderanalytics.track(event.name, event.properties);
-                });
-
-                eventQueue = [];
-                localStorage.removeItem('pending_events');
-            }
-        } catch (error) {
-            console.error('Analytics failed to load', error);
-        }
-    };
-
-    console.log('before calling analytics');
-    loadPendingEvents();
-    initializeAnalytics();
-    console.log('after calling analytics');
     // didMount lifecycle hook
     React.useEffect(() => {
         trackEvent({

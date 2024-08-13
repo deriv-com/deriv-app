@@ -8,6 +8,7 @@ import { convertPhoneTypeDisplay } from '../../../Helpers/utils';
 import ResendCodeTimer from './resend-code-timer';
 import DidntGetTheCodeModal from './didnt-get-the-code-modal';
 import PhoneNumberVerifiedModal from './phone-number-verified-modal';
+import { Analytics } from '@deriv-com/analytics';
 
 type TOTPVerification = {
     phone_verification_type: string;
@@ -43,6 +44,24 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     }, [invalidate]);
 
     useEffect(() => {
+        if (should_show_phone_number_otp) {
+            //@ts-expect-error will remove this error when Analytics package types are being updated
+            Analytics.trackEvent('ce_phone_verification_form', {
+                action: 'open',
+                form_name: 'ce_phone_verification_form',
+                subform_name: 'verify_phone_otp_screen',
+            });
+        } else {
+            //@ts-expect-error will remove this error when Analytics package types are being updated
+            Analytics.trackEvent('ce_phone_verification_form', {
+                action: 'open',
+                form_name: 'ce_phone_verification_form',
+                subform_name: 'verify_email_screen',
+            });
+        }
+    }, [should_show_phone_number_otp]);
+
+    useEffect(() => {
         if (is_authorize) {
             setIsButtonDisabled(true);
             reInitializeGetSettings();
@@ -71,8 +90,20 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
 
     const handleVerifyOTP = () => {
         if (should_show_phone_number_otp) {
+            //@ts-expect-error will remove this error when Analytics package types are being updated
+            Analytics.trackEvent('ce_phone_verification_form', {
+                action: 'click_cta',
+                form_name: 'ce_phone_verification_form',
+                subform_name: 'verify_phone_otp_screen',
+            });
             sendPhoneOTPVerification(otp);
         } else {
+            //@ts-expect-error will remove this error when Analytics package types are being updated
+            Analytics.trackEvent('ce_phone_verification_form', {
+                action: 'click_cta',
+                form_name: 'ce_phone_verification_form',
+                subform_name: 'verify_email_screen',
+            });
             sendEmailOTPVerification(otp);
         }
     };

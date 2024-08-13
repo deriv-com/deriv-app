@@ -6,6 +6,7 @@ import { observer, useStore } from '@deriv/stores';
 import { usePhoneNumberVerificationSetTimer, useRequestPhoneNumberOTP, useSettings } from '@deriv/hooks';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 import { validatePhoneNumber } from './validation';
+import { Analytics } from '@deriv-com/analytics';
 
 type TConfirmPhoneNumber = {
     setOtpVerification: (value: { show_otp_verification: boolean; phone_verification_type: string }) => void;
@@ -28,6 +29,15 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
     const { ui } = useStore();
     const { setShouldShowPhoneNumberOTP } = ui;
     const { next_otp_request } = usePhoneNumberVerificationSetTimer(true);
+
+    useEffect(() => {
+        //@ts-expect-error will remove this error when Analytics package types are being updated
+        Analytics.trackEvent('ce_phone_verification_form', {
+            action: 'open',
+            form_name: 'ce_phone_verification_form',
+            subform_name: 'verify_phone_screen',
+        });
+    }, []);
 
     useEffect(() => {
         setPhoneNumber(account_settings?.phone?.replace('+', '') || '');
@@ -55,6 +65,12 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
         const { error } = await setUsersPhoneNumber({ phone: `+${phone_number}` });
 
         if (!error) {
+            //@ts-expect-error will remove this error when Analytics package types are being updated
+            Analytics.trackEvent('ce_phone_verification_form', {
+                action: 'click_cta',
+                form_name: 'ce_phone_verification_form',
+                subform_name: 'verify_phone_screen',
+            });
             phone_verification_type === VERIFICATION_SERVICES.SMS ? requestOnSMS() : requestOnWhatsApp();
         } else {
             setIsButtonLoading(false);

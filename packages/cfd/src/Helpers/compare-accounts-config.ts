@@ -263,7 +263,9 @@ const getJuridisctionDescription = (shortcode: string) => {
                 'British Virgin Islands',
                 localize('British Virgin Islands Financial Services Commission'),
                 localize('(License no. SIBA/L/18/1114)'),
-                localize('Regulator/External dispute resolution')
+                localize('Regulator/External dispute resolution'),
+                cfd_config().leverage,
+                shortcode === MARKET_TYPE_SHORTCODE.SYNTHETIC_BVI ? '0.1 pips' : '0.2 pips'
             );
         case MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI:
             return createDescription(
@@ -282,7 +284,9 @@ const getJuridisctionDescription = (shortcode: string) => {
                 'Vanuatu',
                 localize('Vanuatu Financial Services Commission'),
                 '',
-                localize('Regulator/External dispute resolution')
+                localize('Regulator/External dispute resolution'),
+                cfd_config().leverage,
+                shortcode === MARKET_TYPE_SHORTCODE.SYNTHETIC_VANUATU ? '0.1 pips' : '0.2 pips'
             );
         case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
             return createDescription(
@@ -292,7 +296,7 @@ const getJuridisctionDescription = (shortcode: string) => {
                 localize('(licence no. MB/18/0024)'),
                 localize('Regulator/External dispute resolution'),
                 '1:100',
-                '1.4 pips'
+                '0.6 pips'
             );
         case MARKET_TYPE_SHORTCODE.FINANCIAL_MALTA_INVEST:
             return createDescription(
@@ -303,10 +307,13 @@ const getJuridisctionDescription = (shortcode: string) => {
                 '',
                 '1:30'
             );
-        case MARKET_TYPE_SHORTCODE.ALL_DXTRADE:
-        case MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG:
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_SVG:
+            return { ...cfd_config(), spread: '0.1 pips' };
         case MARKET_TYPE_SHORTCODE.FINANCIAL_SVG:
+            return { ...cfd_config(), spread: '0.2 pips' };
+        case MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG:
+            return { ...cfd_config(), spread: '0.3 pips' };
+        case MARKET_TYPE_SHORTCODE.ALL_DXTRADE:
         default:
             return cfd_config();
     }

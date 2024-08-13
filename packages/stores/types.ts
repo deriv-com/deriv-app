@@ -144,6 +144,7 @@ type AvailableAccount = {
     currency?: string;
     display_balance?: string;
     display_login?: string;
+    product?: TProduct;
 };
 
 type BrandConfig = {
@@ -480,6 +481,7 @@ type TClientStore = {
     is_virtual: boolean;
     is_withdrawal_lock: boolean;
     landing_company_shortcode: string;
+    is_tradershub_tracking: boolean;
     is_populating_account_list: boolean;
     local_currency_config: {
         currency: string;
@@ -604,9 +606,9 @@ type TClientStore = {
     is_passkey_supported: boolean;
     setIsPasskeySupported: (value: boolean) => void;
     setPasskeysStatusToCookie: (status: 'available' | 'not_available') => void;
-    should_show_effortless_login_modal: boolean;
-    setShouldShowEffortlessLoginModal: (value: boolean) => void;
-    fetchShouldShowEffortlessLoginModal: () => void;
+    should_show_passkey_notification: boolean;
+    setShouldShowPasskeyNotification: (value: boolean) => void;
+    fetchShouldShowPasskeyNotification: () => void;
     exchange_rates: Record<string, Record<string, number>>;
     getExchangeRate: (base_currency: string, target_currency: string) => number;
     subscribeToExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
@@ -615,6 +617,7 @@ type TClientStore = {
     virtual_account_loginid?: string;
     is_cr_account: boolean;
     is_mf_account: boolean;
+    setTradersHubTracking: (value: boolean) => void;
 };
 
 type TCommonStoreError = {
@@ -847,6 +850,9 @@ type TPortfolioStore = {
     positions: TPortfolioPosition[];
     removePositionById: (contract_id?: number) => void;
     setContractType: (contract_type: string) => void;
+    setAddNotificationBannerCallback: (
+        cb?: (params: { message: string; redirectTo: string; timestamp: number; title: string }, status: string) => void
+    ) => void;
 };
 
 type TAccumulatorBarriersData = {
@@ -1107,6 +1113,10 @@ type TTradersHubStore = {
     showTopUpModal: (existing_account?: DetailsOfEachMT5Loginid) => void;
     is_regulators_compare_modal_visible: boolean;
     is_setup_real_account_or_go_to_demo_modal_visible: boolean;
+    is_cfd_restricted_country: boolean;
+    is_financial_restricted_country: boolean;
+    setIsCFDRestrictedCountry: (value: boolean) => void;
+    setIsFinancialRestrictedCountry: (value: boolean) => void;
     setIsSetupRealAccountOrGoToDemoModalVisible: (value: boolean) => void;
 };
 

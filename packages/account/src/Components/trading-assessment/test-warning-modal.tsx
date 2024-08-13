@@ -1,6 +1,6 @@
 import React from 'react';
 import { MobileDialog, Modal } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 
 type TestWarningModalProps = {
@@ -11,6 +11,8 @@ type TestWarningModalProps = {
 
 const TestWarningModal = ({ show_risk_modal, body_content, footer_content }: TestWarningModalProps) => {
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
+
     return (
         <React.Fragment>
             {isDesktop ? (

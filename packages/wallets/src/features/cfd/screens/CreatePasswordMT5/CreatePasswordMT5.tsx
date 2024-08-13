@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { DerivLightDmt5PasswordIcon } from '@deriv/quill-icons';
-// import { DBVI_COMPANY_NAMES } from '@deriv/shared';
-import { Checkbox, InlineMessage } from '@deriv-com/ui';
-import { URLUtils } from '@deriv-com/utils';
 import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks, TPlatforms } from '../../../../types';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
-import { CFD_PLATFORMS, companyNamesAndUrls, getMarketTypeDetails, PlatformDetails, PRODUCT } from '../../constants';
+import { CFDPasswordModalTnc } from '../../components/CFDPasswordModalTnc';
+import { CFD_PLATFORMS, PlatformDetails, PRODUCT } from '../../constants';
 import './CreatePasswordMT5.scss';
 
 type TProps = {
@@ -18,7 +16,6 @@ type TProps = {
     password: string;
     platform: TPlatforms.All;
     product?: THooks.AvailableMT5Accounts['product'];
-    selectedJurisdiction?: THooks.AvailableMT5Accounts['shortcode'];
 };
 
 const CreatePasswordMT5: React.FC<TProps> = ({
@@ -29,15 +26,11 @@ const CreatePasswordMT5: React.FC<TProps> = ({
     password,
     platform,
     product,
-    selectedJurisdiction,
 }) => {
     const { isDesktop } = useDevice();
     const { title } = PlatformDetails[platform as keyof typeof PlatformDetails];
     const isMT5 = platform === CFD_PLATFORMS.MT5;
     const disableButton = isMT5 ? !validPasswordMT5(password) : !validPassword(password);
-    const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
-    const platformTitle = PlatformDetails[platform].title;
-    const productTitle = getMarketTypeDetails(product).all.title;
     const [checked, setChecked] = useState(!(product === PRODUCT.ZEROSPREAD && !isVirtual));
 
     return (
@@ -61,37 +54,12 @@ const CreatePasswordMT5: React.FC<TProps> = ({
                     password={password}
                 />
                 {product === PRODUCT.ZEROSPREAD && !isVirtual && (
-                    <>
-                        <InlineMessage
-                            className='wallets-create-password-mt5__inline-message'
-                            iconPosition='top'
-                            variant='info'
-                        >
-                            <WalletText size={isDesktop ? '2xs' : 'xs'}>
-                                You are adding your {platformTitle}
-                                {productTitle} account under {selectedCompany.name}, regulated by Malta Financial
-                                Services Authority (MFSA) (licence no. IS/70156).
-                            </WalletText>
-                        </InlineMessage>
-                        <Checkbox
-                            checked={checked}
-                            label={
-                                <WalletText size={isDesktop ? 'xs' : 'sm'}>
-                                    I confirm and accept {selectedCompany.name}’s{' '}
-                                    <a
-                                        className='wallets-create-password-mt5__tnc-link'
-                                        href={URLUtils.getDerivStaticURL(selectedCompany.tncUrl)}
-                                        rel='noreferrer'
-                                        target='_blank'
-                                    >
-                                        terms and conditions
-                                    </a>
-                                </WalletText>
-                            }
-                            name='zerospread-checkbox'
-                            onChange={() => setChecked(prev => !prev)}
-                        />
-                    </>
+                    <CFDPasswordModalTnc
+                        checked={checked}
+                        onChange={() => setChecked(prev => !prev)}
+                        platform={platform}
+                        product={product}
+                    />
                 )}
             </div>
 

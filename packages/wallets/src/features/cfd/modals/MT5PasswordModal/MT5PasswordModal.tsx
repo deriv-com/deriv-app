@@ -244,7 +244,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
                     password={password}
                     platform={mt5Platform}
                     product={product}
-                    selectedJurisdiction={selectedJurisdiction}
                 />
             );
 
@@ -288,7 +287,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
         platform,
         isVirtual,
         product,
-        selectedJurisdiction,
     ]);
 
     if (emailVerificationStatus === 'error') {

@@ -274,7 +274,14 @@ const Verification: FC<TVerificationProps> = ({ isVirtual, product, selectedJuri
                 } else if (hasCreatedMT5Accounts) {
                     switchScreen('poiPoaDocsSubmitted');
                 } else {
-                    show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
+                    show(
+                        <MT5PasswordModal
+                            isVirtual={isVirtual}
+                            marketType={selectedMarketType}
+                            platform={platform}
+                            product={product}
+                        />
+                    );
                 }
             } else if (currentScreenId === 'manualScreen') {
                 switchScreen('selfieScreen');
@@ -294,7 +301,14 @@ const Verification: FC<TVerificationProps> = ({ isVirtual, product, selectedJuri
                 if (shouldFillPersonalDetails) {
                     switchScreen('personalDetailsScreen');
                 } else {
-                    show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
+                    show(
+                        <MT5PasswordModal
+                            isVirtual={isVirtual}
+                            marketType={selectedMarketType}
+                            platform={platform}
+                            product={product}
+                        />
+                    );
                 }
             } else if (currentScreenId === 'personalDetailsScreen') {
                 updateSettings({
@@ -304,7 +318,14 @@ const Verification: FC<TVerificationProps> = ({ isVirtual, product, selectedJuri
                     tax_identification_number: formValues.taxIdentificationNumber,
                     tax_residence: formValues.taxResidence,
                 });
-                show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
+                show(
+                    <MT5PasswordModal
+                        isVirtual={isVirtual}
+                        marketType={selectedMarketType}
+                        platform={platform}
+                        product={product}
+                    />
+                );
             } else {
                 hide();
             }
@@ -312,17 +333,19 @@ const Verification: FC<TVerificationProps> = ({ isVirtual, product, selectedJuri
         [
             hasCreatedMT5Accounts,
             hide,
-            platform,
-            selectedMarketType,
             settings?.citizen,
             settings?.country_code,
             shouldFillPersonalDetails,
             shouldSubmitPOA,
-            show,
             submitIDVDocuments,
             updateSettings,
             upload,
             uploadDocument,
+            isVirtual,
+            platform,
+            product,
+            selectedMarketType,
+            show,
         ]
     );
 

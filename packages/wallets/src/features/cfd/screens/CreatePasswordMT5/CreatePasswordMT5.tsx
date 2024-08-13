@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { DerivLightDmt5PasswordIcon } from '@deriv/quill-icons';
+// import { DBVI_COMPANY_NAMES } from '@deriv/shared';
 import { Checkbox, InlineMessage } from '@deriv-com/ui';
 import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
@@ -33,6 +34,7 @@ const CreatePasswordMT5: React.FC<TProps> = ({
     const disableButton = isMT5 ? !validPasswordMT5(password) : !validPassword(password);
     // const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
     const [checked, setChecked] = useState(!(product === PRODUCT.ZEROSPREAD && !isVirtual));
+    const company = '';
 
     return (
         <div className='wallets-create-password-mt5'>
@@ -62,8 +64,8 @@ const CreatePasswordMT5: React.FC<TProps> = ({
                             variant='info'
                         >
                             <WalletText size={isDesktop ? '2xs' : 'xs'}>
-                                You are adding your Deriv MT5 CFDs account under Deriv Investments (Europe) Limited,
-                                regulated by Malta Financial Services Authority (MFSA) (licence no. IS/70156).
+                                You are adding your {platform} {product} account under {company}, regulated by Malta
+                                Financial Services Authority (MFSA) (licence no. IS/70156).
                             </WalletText>
                         </InlineMessage>
                         <Checkbox

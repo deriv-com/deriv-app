@@ -3,12 +3,12 @@ import { Dialog, Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { LabelPairedCheckCaptionFillIcon } from '@deriv/quill-icons';
 import './announcement-dialog.scss';
-import { TAnnouncement, TContentItem } from './config';
+import { TAnnounce, TContentItem } from './config';
 
 type TAccumulatorAnnouncementDialog = {
-    announcement: TAnnouncement;
-    isAnnounceDialogOpen: boolean;
-    setIsAnnounceDialogOpen: (isAnnounceDialogOpen: boolean) => void;
+    announcement: TAnnounce;
+    is_announce_dialog_open: boolean;
+    setIsAnnounceDialogOpen: (is_announce_dialog_open: boolean) => void;
     handleOnConfirm: () => void;
     handleOnCancel: () => void;
 };
@@ -17,24 +17,23 @@ const AnnouncementDialog = ({
     announcement,
     handleOnConfirm,
     handleOnCancel,
-    isAnnounceDialogOpen,
+    is_announce_dialog_open,
     setIsAnnounceDialogOpen,
 }: TAccumulatorAnnouncementDialog) => {
     const { main_title, confirm_button_text, cancel_button_text, base_classname, title, subtitle, content } =
         announcement;
-
     return (
         <Dialog
             portal_element_id='modal_root_absolute'
             title={main_title}
-            is_visible={isAnnounceDialogOpen}
+            is_visible={is_announce_dialog_open}
             confirm_button_text={confirm_button_text}
             onConfirm={handleOnConfirm}
             cancel_button_text={cancel_button_text}
             onCancel={handleOnCancel}
             is_mobile_full_width
             has_close_icon
-            onClose={() => setIsAnnounceDialogOpen(!isAnnounceDialogOpen)}
+            onClose={() => setIsAnnounceDialogOpen(!is_announce_dialog_open)}
             className={base_classname}
         >
             <div className={`${base_classname}__body-text`}>
@@ -49,7 +48,7 @@ const AnnouncementDialog = ({
                     align='center'
                     className={`${base_classname}__title`}
                 >
-                    <Localize i18n_default_text={title} />
+                    {title && <Localize i18n_default_text={title} />}
                 </Text>
                 <div>
                     <Text as='p' line_height='xl' size='xs' align='center' className={`${base_classname}__title`}>

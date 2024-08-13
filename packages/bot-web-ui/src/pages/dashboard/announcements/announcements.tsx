@@ -2,14 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Text } from '@deriv/components';
 import { Notifications as Announcement } from '@deriv-com/ui';
 import { StandaloneBullhornRegularIcon } from '@deriv/quill-icons';
-import { load } from '@deriv/bot-skeleton';
-import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import clsx from 'clsx';
 import { localize } from '@deriv/translations';
 import AnnouncementDialog from './announcement-dialog';
-import { ANNOUNCEMENTS } from './config';
+import { ANNOUNCEMENTS, TAnnouncement } from './config';
 import './announcements.scss';
-import { DBOT_TABS } from 'Constants/bot-contents';
 import { IconAnnounce, MessageAnnounce, TitleAnnounce } from './announcement-components';
 
 type TAnnouncements = {
@@ -18,13 +15,11 @@ type TAnnouncements = {
 };
 
 const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
-    const [isAnnounceDialogOpen, setIsAnnounceDialogOpen] = useState(false);
-    const [isOpenAnnounceList, setIsOpenAnnounceList] = React.useState(false);
-    const [amountAnnounce, setAmountAnnounce] = useState({} as Record<string, boolean>);
-    const buttonRef = React.useRef<HTMLButtonElement>(null);
-    const wrapperRef = React.useRef<HTMLDivElement>(null);
-    const accumulator_announcement = ANNOUNCEMENTS.ACCUMULATOR_ANNOUNCE;
-    const is_active_announce_1 = amountAnnounce?.announce_1;
+    const [is_announce_dialog_open, setIsAnnounceDialogOpen] = useState(false);
+    const [is_open_announce_list, setIsOpenAnnounceList] = React.useState(false);
+    const [selected_announcement, setSelectedAnnouncement] = React.useState<TAnnouncement | null>(null);
+    const [amount_announce, setAmountAnnounce] = useState({} as Record<string, boolean>);
+    const is_active_announce_1 = amount_announce?.announce_1;
 
     const handleAnnounceSubmit = (data: Record<string, boolean>) => {
         setAmountAnnounce(data);
@@ -33,6 +28,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
 
     const announcements = [
         {
+            id: 0,
             icon: <IconAnnounce announce={is_active_announce_1} />,
             title: (
                 <TitleAnnounce title={localize('Accumulators is now on Deriv Bot')} announce={is_active_announce_1} />
@@ -45,9 +41,10 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                 />
             ),
             buttonAction: () => {
+                setSelectedAnnouncement(ANNOUNCEMENTS.ACCUMULATOR_ANNOUNCE);
                 setIsAnnounceDialogOpen(true);
                 setIsOpenAnnounceList(prev => !prev);
-                handleAnnounceSubmit({ ...amountAnnounce, announce_1: false });
+                handleAnnounceSubmit({ ...amount_announce, announce_1: false });
             },
             actionText: '',
         },
@@ -60,67 +57,26 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
         if (data && Object.keys(data).length !== 0) {
             setAmountAnnounce(data);
         } else {
-            const obj_announcements = Object.fromEntries(
-                Array.from({ length: announcements.length }, (_, i) => [`announce_${i + 1}`, true])
-            );
+            const obj_announcements = Object.fromEntries(Object.keys(amount_announce).map(key => [key, false]));
             setAmountAnnounce(obj_announcements);
             localStorage?.setItem('bot-announcements', JSON.stringify(obj_announcements));
         }
     }, []);
 
-    const handleOnCancelAccumulator = () => {
-        handleTabChange(DBOT_TABS.TUTORIAL);
-    };
-
-    const handleOnConfirmAccumulator = async () => {
-        handleTabChange(DBOT_TABS.BOT_BUILDER);
-        const strategy_xml = await import(
-            /* webpackChunkName: `[request]` */ '@deriv/bot-skeleton/src/scratch/xml/main.xml'
-        );
-        const strategy_dom = Blockly.utils.xml.textToDom(strategy_xml.default);
-        const modifyFieldDropdownValues = (name: string, value: string) => {
-            const name_list = `${name.toUpperCase()}_LIST`;
-            const el_blocks = strategy_dom?.querySelectorAll(`field[name="${name_list}"]`);
-
-            el_blocks?.forEach((el_block: HTMLElement) => {
-                el_block.textContent = value;
-            });
-        };
-        modifyFieldDropdownValues('tradetypecat', 'accumulator');
-
-        const { derivWorkspace: workspace } = Blockly;
-
-        await load({
-            block_string: Blockly.Xml.domToText(strategy_dom),
-            file_name: 'Strategy with accumulator trade type',
-            workspace,
-            from: save_types.UNSAVED,
-            drop_event: null,
-            strategy_id: null,
-            showIncompatibleStrategyDialog: null,
-        });
-    };
-
     const countActiveAnnouncements = (): number => {
-        return Object.values(amountAnnounce as Record<string, boolean>).reduce((count: number, value: boolean) => {
+        return Object.values(amount_announce as Record<string, boolean>).reduce((count: number, value: boolean) => {
             return value === true ? count + 1 : count;
         }, 0);
     };
 
     const number_ammount_announce = countActiveAnnouncements();
 
-    const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.stopPropagation();
-        setIsOpenAnnounceList(prevState => !prevState);
-    };
-
     return (
         <div className='announcements'>
             <button
                 className='announcements__button'
-                onClick={handleButtonClick}
+                onClick={() => setIsOpenAnnounceList(prevState => !prevState)}
                 data-testid='btn-announcements'
-                ref={buttonRef}
             >
                 <StandaloneBullhornRegularIcon fill='var(--icon-black-plus)' iconSize='sm' />
                 {!is_mobile && (
@@ -134,14 +90,14 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                     </div>
                 )}
             </button>
-            <div className='notifications__wrapper' ref={wrapperRef}>
+            <div className='notifications__wrapper'>
                 <Announcement
                     className={clsx('', {
                         'notifications__wrapper--mobile': is_mobile,
                         'notifications__wrapper--desktop': !is_mobile,
                     })}
                     clearNotificationsCallback={() => {
-                        const announce_obj = Object.fromEntries(Object.keys(amountAnnounce).map(key => [key, false]));
+                        const announce_obj = Object.fromEntries(Object.keys(amount_announce).map(key => [key, false]));
                         setAmountAnnounce(announce_obj);
                     }}
                     componentConfig={{
@@ -150,17 +106,29 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                         noNotificationsMessage: localize('No announcements MESSAGE'),
                         noNotificationsTitle: localize('No announcements'),
                     }}
-                    isOpen={isOpenAnnounceList}
+                    isOpen={is_open_announce_list}
                     notifications={announcements}
                 />
             </div>
-            <AnnouncementDialog
-                announcement={accumulator_announcement}
-                isAnnounceDialogOpen={isAnnounceDialogOpen}
-                setIsAnnounceDialogOpen={setIsAnnounceDialogOpen}
-                handleOnCancel={handleOnCancelAccumulator}
-                handleOnConfirm={handleOnConfirmAccumulator}
-            />
+            {selected_announcement?.announcement && (
+                <AnnouncementDialog
+                    announcement={selected_announcement.announcement}
+                    is_announce_dialog_open={is_announce_dialog_open}
+                    setIsAnnounceDialogOpen={setIsAnnounceDialogOpen}
+                    handleOnCancel={() => {
+                        if (selected_announcement?.switch_tab_on_cancel) {
+                            handleTabChange(selected_announcement.switch_tab_on_cancel);
+                        }
+                        selected_announcement.onCancel?.();
+                    }}
+                    handleOnConfirm={() => {
+                        if (selected_announcement?.switch_tab_on_confirm) {
+                            handleTabChange(selected_announcement.switch_tab_on_confirm);
+                        }
+                        selected_announcement.onConfirm?.();
+                    }}
+                />
+            )}
         </div>
     );
 };

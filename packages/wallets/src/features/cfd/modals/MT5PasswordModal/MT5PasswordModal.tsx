@@ -310,7 +310,14 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
     }
 
     if (createMT5AccountSuccess && !isMT5PasswordNotSet) {
-        return <MT5AccountAdded account={createMT5AccountData} marketType={marketType} platform={platform} />;
+        return (
+            <MT5AccountAdded
+                account={createMT5AccountData}
+                marketType={marketType}
+                platform={platform}
+                product={product}
+            />
+        );
     }
     if (
         createMT5AccountStatus === 'error' &&

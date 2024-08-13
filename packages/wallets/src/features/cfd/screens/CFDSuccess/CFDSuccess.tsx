@@ -4,7 +4,7 @@ import { useActiveWalletAccount } from '@deriv/api-v2';
 import { WalletMarketCurrencyIcon, WalletSuccess, WalletText } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import useDevice from '../../../../hooks/useDevice';
-import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../../../types';
+import { TDisplayBalance, THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS, getMarketTypeDetails, MARKET_TYPE, PlatformDetails } from '../../constants';
 import './CFDSuccess.scss';
 
@@ -14,8 +14,10 @@ type TSuccessProps = {
         | TDisplayBalance.CtraderAccountsList
         | TDisplayBalance.DxtradeAccountsList
         | TDisplayBalance.MT5AccountsList;
+    landingCompanyName?: string;
     marketType?: TMarketTypes.SortedMT5Accounts;
     platform?: TPlatforms.All;
+    product?: THooks.AvailableMT5Accounts['product'];
     renderButton?: ComponentProps<typeof WalletSuccess>['renderButtons'];
     title: string;
 };
@@ -23,8 +25,10 @@ type TSuccessProps = {
 const CFDSuccess: React.FC<TSuccessProps> = ({
     description,
     displayBalance,
+    landingCompanyName,
     marketType,
     platform,
+    product,
     renderButton,
     title,
 }) => {
@@ -43,7 +47,7 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
         if (isDxtradeOrCtrader && isPlatformValid) {
             marketTypeTitle = PlatformDetails[platform].title;
         } else {
-            marketTypeTitle = getMarketTypeDetails()[marketType].title;
+            marketTypeTitle = getMarketTypeDetails(product)[marketType].title;
         }
     }
 
@@ -82,7 +86,7 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
                             </div>
                             <div className='wallets-cfd-success__info'>
                                 <WalletText size='2xs'>
-                                    {platformTitlePrefix} {marketTypeTitle}
+                                    {platformTitlePrefix} {marketTypeTitle} {landingCompanyName}
                                 </WalletText>
                                 <WalletText color='primary' size='2xs'>
                                     {data?.currency} Wallet

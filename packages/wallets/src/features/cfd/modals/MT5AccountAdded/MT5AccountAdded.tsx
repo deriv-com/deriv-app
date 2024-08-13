@@ -18,9 +18,10 @@ type TProps = {
     account?: THooks.CreateMT5Account;
     marketType: TMarketTypes.SortedMT5Accounts;
     platform: TPlatforms.All;
+    product?: THooks.AvailableMT5Accounts['product'];
 };
 
-const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
+const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product }) => {
     const { data: activeWallet, isLoading: isActiveWalletAccountLoading } = useActiveWalletAccount();
     const { data: mt5Accounts, isLoading: isMT5AccountsListLoading } = useMT5AccountsList();
     const { data: poiData, isLoading: isPOILoading } = usePOI();
@@ -45,7 +46,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
     const marketTypeTitle =
         marketType === MARKET_TYPE.ALL && platform in PlatformDetails && platform !== CFD_PLATFORMS.MT5
             ? PlatformDetails[platform].title
-            : getMarketTypeDetails()[marketType].title;
+            : getMarketTypeDetails(product)[marketType].title;
     const selectedJurisdiction = getModalState('selectedJurisdiction');
     const landingCompanyName = `(${
         companyNamesAndUrls?.[selectedJurisdiction as keyof typeof companyNamesAndUrls]?.shortcode
@@ -88,8 +89,14 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
         if (isDemo) {
             return `Let's practise trading with ${addedAccount?.display_balance} virtual funds.`;
         }
-        return `Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your ${marketTypeTitle} account to start trading.`;
-    }, [activeWallet?.wallet_currency_type, addedAccount?.display_balance, isDemo, marketTypeTitle]);
+        return `Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your ${marketTypeTitle} ${landingCompanyName} account to start trading.`;
+    }, [
+        activeWallet?.wallet_currency_type,
+        addedAccount?.display_balance,
+        isDemo,
+        marketTypeTitle,
+        landingCompanyName,
+    ]);
 
     const renderMainContent = useMemo(() => {
         if (!isSuccess || isLoading) return null;
@@ -107,8 +114,10 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                             isDemo ? ' demo' : landingCompanyName
                         } account. You’ll get an in-app notification as soon as this is done.`}
                         displayBalance={addedAccount?.display_balance}
+                        landingCompanyName={landingCompanyName}
                         marketType={marketType}
                         platform={platform}
+                        product={product}
                         renderButton={renderAccountSuccessButton}
                         title='Almost there'
                     />
@@ -122,8 +131,10 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                             isDemo ? ' demo' : landingCompanyName
                         } account. You’ll get an email as soon as this is done.`}
                         displayBalance={addedAccount?.display_balance}
+                        landingCompanyName={landingCompanyName}
                         marketType={marketType}
                         platform={platform}
+                        product={product}
                         renderButton={renderAccountSuccessButton}
                         title='Almost there'
                     />
@@ -135,10 +146,12 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
             <CFDSuccess
                 description={renderSuccessDescription}
                 displayBalance={addedAccount?.display_balance}
+                landingCompanyName={landingCompanyName}
                 marketType={marketType}
                 platform={platform}
+                product={product}
                 renderButton={() => renderAccountSuccessButton(!isDemo)}
-                title={`Your ${marketTypeTitle} ${isDemo ? 'demo' : ''} account is ready`}
+                title={`Your ${marketTypeTitle} ${landingCompanyName} ${isDemo ? 'demo' : ''} account is ready`}
             />
         );
     }, [
@@ -157,6 +170,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
         poiData,
         renderAccountSuccessButton,
         renderSuccessDescription,
+        product,
     ]);
 
     if (isLoading) return null;

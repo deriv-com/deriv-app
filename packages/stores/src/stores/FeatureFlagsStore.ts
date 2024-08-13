@@ -1,7 +1,7 @@
 import BaseStore from './BaseStore';
 
 const FLAGS = {
-    dtrader_v2: true,
+    dtrader_v2: false,
     next_server_bot: false,
     next_cashier: false,
     sharkfin: false,

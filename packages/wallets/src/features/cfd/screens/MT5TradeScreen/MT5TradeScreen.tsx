@@ -2,11 +2,10 @@ import React, { FC, Fragment, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api-v2';
 import { LabelPairedArrowUpArrowDownMdBoldIcon, LabelPairedCircleExclamationMdFillIcon } from '@deriv/quill-icons';
-import { Button } from '@deriv-com/ui';
+import { Button, useDevice } from '@deriv-com/ui';
 import { WalletListCardBadge } from '../../../../components';
 import { InlineMessage, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
-import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
 import { CFD_PLATFORMS, getMarketTypeDetails, getServiceMaintenanceMessages, PlatformDetails } from '../../constants';
 import MT5DesktopRedirectOption from './MT5TradeLink/MT5DesktopRedirectOption';
@@ -168,13 +167,13 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                                 value={details?.server_info?.environment ?? 'Deriv-Server'}
                             />
                             <MT5TradeDetailsItem label='Login ID' value={loginId ?? '12345678'} />
-                            <MT5TradeDetailsItem label='Password' value='********' variant='password' />
+                            <MT5TradeDetailsItem label='Password' variant='password' />
                         </Fragment>
                     )}
                     {getModalState('platform') === dxtradePlatform && (
                         <Fragment>
                             <MT5TradeDetailsItem label='Username' value={details?.login ?? '12345678'} />
-                            <MT5TradeDetailsItem label='Password' value='********' variant='password' />
+                            <MT5TradeDetailsItem label='Password' variant='password' />
                         </Fragment>
                     )}
                     {getModalState('platform') === ctraderPlatform && (

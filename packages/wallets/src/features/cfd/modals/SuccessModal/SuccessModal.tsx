@@ -1,8 +1,7 @@
 import React, { ComponentProps, FC } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { Button } from '@deriv-com/ui';
+import { Button, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper, ModalWrapper, WalletButtonGroup } from '../../../../components';
-import useDevice from '../../../../hooks/useDevice';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess } from '../../screens';
 
@@ -29,16 +28,16 @@ const SuccessModal: FC<TProps> = ({
     const renderButton = () => {
         return accountType === 'demo' ? (
             <div className='wallets-success-btn'>
-                <Button isFullWidth onClick={onSecondaryClick} size={!isDesktop ? 'lg' : 'md'}>
+                <Button isFullWidth onClick={onSecondaryClick} size={isDesktop ? 'md' : 'lg'}>
                     OK
                 </Button>
             </div>
         ) : (
             <WalletButtonGroup isFlex isFullWidth>
-                <Button color='black' onClick={onSecondaryClick} size={!isDesktop ? 'lg' : 'md'} variant='outlined'>
+                <Button color='black' onClick={onSecondaryClick} size={isDesktop ? 'md' : 'lg'} variant='outlined'>
                     Maybe later
                 </Button>
-                <Button onClick={onPrimaryClick} size={!isDesktop ? 'lg' : 'md'}>
+                <Button onClick={onPrimaryClick} size={isDesktop ? 'md' : 'lg'}>
                     Transfer funds
                 </Button>
             </WalletButtonGroup>

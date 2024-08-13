@@ -26,7 +26,7 @@ export const SuccessModalFooter = ({ isDemo }: Pick<TProps, 'isDemo'>) => {
     if (isDemo) {
         return (
             <div className='wallets-success-btn'>
-                <Button isFullWidth onClick={hide} size={!isDesktop ? 'lg' : 'md'}>
+                <Button isFullWidth onClick={hide} size={isDesktop ? 'md' : 'lg'}>
                     OK
                 </Button>
             </div>
@@ -35,10 +35,10 @@ export const SuccessModalFooter = ({ isDemo }: Pick<TProps, 'isDemo'>) => {
 
     return (
         <WalletButtonGroup isFlex isFullWidth>
-            <Button color='black' onClick={hide} size={!isDesktop ? 'lg' : 'md'} variant='outlined'>
+            <Button color='black' onClick={hide} size={isDesktop ? 'md' : 'lg'} variant='outlined'>
                 Maybe later
             </Button>
-            <Button onClick={() => handleOnClickReal()} size={!isDesktop ? 'lg' : 'md'}>
+            <Button onClick={() => handleOnClickReal()} size={isDesktop ? 'md' : 'lg'}>
                 Transfer funds
             </Button>
         </WalletButtonGroup>
@@ -51,7 +51,7 @@ export const MT5PasswordModalFooter = ({
     onPrimaryClick,
     onSecondaryClick,
 }: Exclude<TProps, 'isDemo'>) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     return (
         <WalletButtonGroup isFullWidth>
@@ -59,7 +59,7 @@ export const MT5PasswordModalFooter = ({
                 color='black'
                 isFullWidth
                 onClick={onSecondaryClick}
-                size={isMobile ? 'lg' : 'md'}
+                size={isDesktop ? 'md' : 'lg'}
                 variant='outlined'
             >
                 Forgot password?
@@ -69,7 +69,7 @@ export const MT5PasswordModalFooter = ({
                 isFullWidth
                 isLoading={isLoading}
                 onClick={onPrimaryClick}
-                size={isMobile ? 'lg' : 'md'}
+                size={isDesktop ? 'md' : 'lg'}
             >
                 Add account
             </Button>

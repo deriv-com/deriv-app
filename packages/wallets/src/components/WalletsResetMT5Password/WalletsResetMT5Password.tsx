@@ -101,7 +101,7 @@ const WalletsResetMT5Password = ({
                 <WalletsErrorMT5InvestorPassword
                     errorMessage={changeInvestorPasswordError?.error?.message}
                     renderButtons={() => (
-                        <Button isFullWidth={!isDesktop} onClick={hide} textSize={!isDesktop ? 'md' : 'sm'}>
+                        <Button isFullWidth={!isDesktop} onClick={hide} textSize={isDesktop ? 'sm' : 'md'}>
                             Ok
                         </Button>
                     )}
@@ -140,13 +140,13 @@ const WalletsResetMT5Password = ({
 
     return (
         <ModalStepWrapper
-            renderFooter={!isDesktop ? renderButtons : undefined}
+            renderFooter={isDesktop ? undefined : renderButtons}
             shouldHideFooter={isDesktop}
             shouldHideHeader={isDesktop}
             title={`Manage ${title} password`}
         >
             <div className='wallets-reset-mt5-password'>
-                <WalletText align={!isDesktop ? 'center' : 'left'} weight='bold'>
+                <WalletText align={isDesktop ? 'left' : 'center'} weight='bold'>
                     {`Create a new ${title} password`}
                 </WalletText>
                 {isMT5 && !isInvestorPassword && (

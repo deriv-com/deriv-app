@@ -30,7 +30,13 @@ const getSortedIndex = (type: string, index: number) => {
 const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean }) => {
     const {
         portfolio: { all_positions, onClickSell },
-        ui: { purchase_states: purchased_states_arr, is_mobile, setPurchaseState },
+        ui: {
+            purchase_states: purchased_states_arr,
+            is_mobile,
+            setPurchaseState,
+            setIsTradingDisabledByResidenceModal,
+        },
+        client: { is_account_to_be_closed_by_residence },
     } = useStore();
     const {
         basis,
@@ -47,7 +53,7 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean })
         is_vanilla_fx,
         is_vanilla,
         onHoverPurchase,
-        onPurchase: onClickPurchase,
+        onPurchase,
         proposal_info,
         purchase_info,
         symbol,
@@ -81,6 +87,10 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean })
     };
 
     const components: JSX.Element[] = [];
+
+    const onClickPurchase = is_account_to_be_closed_by_residence
+        ? () => setIsTradingDisabledByResidenceModal(true)
+        : onPurchase;
 
     Object.keys(trade_types).forEach((type, index) => {
         const info = proposal_info?.[type] || {};

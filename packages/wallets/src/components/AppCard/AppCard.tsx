@@ -8,14 +8,14 @@ import './AppCard.scss';
 
 type TProps = {
     activeWalletCurrency?: THooks.ActiveWalletAccount['currency'];
-    appName?: string;
+    appName?: JSX.Element | string;
     balance?: string;
     cardSize: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     device: 'desktop' | 'mobile';
     isDemoWallet?: THooks.ActiveWalletAccount['is_virtual'];
     marketType?: React.ComponentProps<typeof WalletMarketCurrencyIcon>['marketType'];
     platform?: React.ComponentProps<typeof WalletMarketCurrencyIcon>['platform'];
-    walletName?: string;
+    walletName?: JSX.Element | string;
 };
 
 const AppCard: React.FC<TProps> = ({

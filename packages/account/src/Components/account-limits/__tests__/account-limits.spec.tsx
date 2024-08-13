@@ -1,10 +1,10 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { formatMoney } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
 import AccountLimits from '../account-limits';
 import { BrowserRouter } from 'react-router-dom';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { FormatUtils } from '@deriv-com/utils';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -25,9 +25,11 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    formatMoney: jest.fn(),
+jest.mock('@deriv-com/utils', () => ({
+    ...jest.requireActual('@deriv-com/utils'),
+    FormatUtils: {
+        formatMoney: jest.fn(),
+    },
 }));
 
 jest.mock('Components/demo-message', () => jest.fn(() => 'mockedDemoMessage'));
@@ -288,7 +290,7 @@ describe('<AccountLimits/>', () => {
             </StoreProvider>
         );
         const { account_balance } = store.client.account_limits;
-        expect(formatMoney).toHaveBeenCalledWith(store.client.currency, account_balance, true);
+        expect(FormatUtils.formatMoney).toHaveBeenCalledWith(account_balance, { currency: store.client.currency });
     });
 
     it('should render Trading limits table and its maximum daily turnover contents properly', () => {

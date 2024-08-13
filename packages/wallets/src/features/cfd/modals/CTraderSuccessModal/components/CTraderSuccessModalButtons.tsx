@@ -18,7 +18,7 @@ const CTraderSuccessModalButtons = ({ createdAccount, hide, isDemo }: TCTraderSu
     if (isDemo) {
         return (
             <div className='wallets-success-btn'>
-                <Button isFullWidth onClick={hide} size={!isDesktop ? 'lg' : 'md'}>
+                <Button isFullWidth onClick={hide} size={isDesktop ? 'md' : 'lg'}>
                     OK
                 </Button>
             </div>
@@ -27,7 +27,7 @@ const CTraderSuccessModalButtons = ({ createdAccount, hide, isDemo }: TCTraderSu
 
     return (
         <WalletButtonGroup isFlex isFullWidth>
-            <Button color='black' onClick={hide} size={!isDesktop ? 'lg' : 'md'} variant='outlined'>
+            <Button color='black' onClick={hide} size={isDesktop ? 'md' : 'lg'} variant='outlined'>
                 Maybe later
             </Button>
             <Button
@@ -35,7 +35,7 @@ const CTraderSuccessModalButtons = ({ createdAccount, hide, isDemo }: TCTraderSu
                     hide();
                     history.push('/wallet/account-transfer', { toAccountLoginId: createdAccount?.account_id });
                 }}
-                size={!isDesktop ? 'lg' : 'md'}
+                size={isDesktop ? 'md' : 'lg'}
             >
                 Transfer funds
             </Button>

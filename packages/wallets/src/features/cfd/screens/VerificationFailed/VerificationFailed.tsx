@@ -1,9 +1,8 @@
 import React, { FC, lazy, Suspense } from 'react';
 import { usePOA, usePOI } from '@deriv/api-v2';
-import { Button, Loader } from '@deriv-com/ui';
+import { Button, Loader, useDevice } from '@deriv-com/ui';
 import { WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
-import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
 import './VerificationFailed.scss';
 
@@ -56,7 +55,7 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
                 </WalletText>
             </div>
             <div className='wallets-verification-failed__footer'>
-                <Button color='black' onClick={() => hide()} size={!isDesktop ? 'md' : 'lg'} variant='outlined'>
+                <Button color='black' onClick={() => hide()} size={isDesktop ? 'lg' : 'md'} variant='outlined'>
                     Maybe later
                 </Button>
                 <Button
@@ -67,7 +66,7 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
                             </Suspense>
                         )
                     }
-                    size={!isDesktop ? 'md' : 'lg'}
+                    size={isDesktop ? 'lg' : 'md'}
                 >
                     Resubmit documents
                 </Button>

@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { TSocketError } from '@deriv/api-v2/types';
-import { Button } from '@deriv-com/ui';
+import { Button, useDevice } from '@deriv-com/ui';
 import { WalletButtonGroup, WalletPasswordFieldLazy, WalletText, WalletTextField } from '../../../../components';
 import PasswordViewerIcon from '../../../../components/Base/WalletPasswordField/PasswordViewerIcon';
 import { getPasswordRequirements } from '../../../../constants/password';
-import useDevice from '../../../../hooks/useDevice';
 import { validPasswordMT5 } from '../../../../utils/password-validation';
 import { PlatformDetails } from '../../constants';
 import { TPlatformPasswordChange } from '../../modals/MT5PasswordModal/MT5PasswordModal';
@@ -124,7 +123,7 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
                                 <Button
                                     color='black'
                                     onClick={sendEmailVerification}
-                                    size={!isDesktop ? 'lg' : 'md'}
+                                    size={isDesktop ? 'md' : 'lg'}
                                     variant='outlined'
                                 >
                                     Forgot password?
@@ -132,7 +131,7 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
                                 <Button
                                     disabled={!!errors.currentPassword || !validPasswordMT5(values.newPassword)}
                                     isLoading={isLoading}
-                                    size={!isDesktop ? 'lg' : 'md'}
+                                    size={isDesktop ? 'md' : 'lg'}
                                     type='submit'
                                 >
                                     Change my password

@@ -17,10 +17,7 @@ const mockTransactions = [
         address_url: '',
         amount: 0.0001,
         description: '',
-        formatted_address_hash: '',
         formatted_amount: '0.00010000 BTC',
-        formatted_confirmations: '',
-        formatted_transaction_hash: '',
         id: '',
         is_deposit: false,
         is_valid_to_cancel: 1 as const,
@@ -29,6 +26,7 @@ const mockTransactions = [
         status_message: '',
         status_name: '',
         submit_date: 123456,
+        transaction_hash: '',
         transaction_type: 'withdrawal' as const,
     },
 ];
@@ -104,7 +102,7 @@ describe('TransactionStatusSuccess', () => {
         jest.clearAllMocks();
     });
 
-    it('should render winthdrawal info for withdrawal transactions', () => {
+    it('should render withdrawal info for withdrawal transactions', () => {
         render(
             <APIProvider>
                 <WalletsAuthProvider>
@@ -119,7 +117,7 @@ describe('TransactionStatusSuccess', () => {
             </APIProvider>
         );
 
-        expect(screen.getByText('Withdrawal')).toBeInTheDocument();
+        expect(screen.getByText(/Withdrawal/)).toBeInTheDocument();
         expect(screen.getByText('0.00010000 BTC')).toBeInTheDocument();
         expect(screen.queryByText('No recent transactions.')).not.toBeInTheDocument();
         expect(screen.queryByText('View more')).not.toBeInTheDocument();
@@ -132,10 +130,7 @@ describe('TransactionStatusSuccess', () => {
                 address_url: '',
                 amount: 0.0001,
                 description: '',
-                formatted_address_hash: '',
                 formatted_amount: '0.00010000 BTC',
-                formatted_confirmations: '',
-                formatted_transaction_hash: '',
                 id: '',
                 is_deposit: true,
                 is_valid_to_cancel: 1 as const,
@@ -144,6 +139,7 @@ describe('TransactionStatusSuccess', () => {
                 status_message: '',
                 status_name: '',
                 submit_date: 123456,
+                transaction_hash: '',
                 transaction_type: 'withdrawal' as const,
             },
         ];
@@ -162,7 +158,7 @@ describe('TransactionStatusSuccess', () => {
             </APIProvider>
         );
 
-        expect(screen.getByText('Deposit')).toBeInTheDocument();
+        expect(screen.getByText(/Deposit/)).toBeInTheDocument();
         expect(screen.getByText('0.00010000 BTC')).toBeInTheDocument();
         expect(screen.queryByText('No recent transactions.')).not.toBeInTheDocument();
         expect(screen.queryByText('View more')).not.toBeInTheDocument();
@@ -180,7 +176,7 @@ describe('TransactionStatusSuccess', () => {
         );
 
         expect(screen.getByText('No recent transactions.')).toBeInTheDocument();
-        expect(screen.queryByText('Deposit')).not.toBeInTheDocument();
+        expect(screen.queryByText(/Deposit/)).not.toBeInTheDocument();
         expect(screen.queryByText('Withdrawal')).not.toBeInTheDocument();
         expect(screen.queryByText('View more')).not.toBeInTheDocument();
     });
@@ -195,10 +191,7 @@ describe('TransactionStatusSuccess', () => {
                 address_url: '',
                 amount: 0.0001,
                 description: '',
-                formatted_address_hash: '',
                 formatted_amount: '',
-                formatted_confirmations: '',
-                formatted_transaction_hash: '',
                 id: `transaction_${i}`,
                 is_deposit: false,
                 is_valid_to_cancel: 1 as const,
@@ -207,6 +200,7 @@ describe('TransactionStatusSuccess', () => {
                 status_message: '',
                 status_name: '',
                 submit_date: 123456,
+                transaction_hash: '',
                 transaction_type: 'withdrawal' as const,
             };
 
@@ -228,7 +222,7 @@ describe('TransactionStatusSuccess', () => {
         );
 
         expect(screen.queryByText('No recent transactions.')).not.toBeInTheDocument();
-        expect(screen.getAllByText('Withdrawal')[0]).toBeInTheDocument();
+        expect(screen.getAllByText(/Withdrawal/)[0]).toBeInTheDocument();
         expect(screen.getAllByText('0.00010000 BTC')[0]).toBeInTheDocument();
         expect(screen.getByText('View more')).toBeInTheDocument();
 

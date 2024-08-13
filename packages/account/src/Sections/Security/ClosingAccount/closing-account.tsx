@@ -1,9 +1,9 @@
-import React from 'react';
+import { useState } from 'react';
 import ClosingAccountSteps from './closing-account-steps';
 import ClosingAccountReason from './closing-account-reason';
 
 const ClosingAccount = () => {
-    const [render_close_account_reason, setRenderCloseAccountReason] = React.useState(false);
+    const [render_close_account_reason, setRenderCloseAccountReason] = useState(false);
     const redirectToReasons = () => {
         setRenderCloseAccountReason(true);
     };

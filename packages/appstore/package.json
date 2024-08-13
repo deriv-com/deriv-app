@@ -45,8 +45,7 @@
         "react-content-loader": "^6.2.0",
         "react-joyride": "^2.5.3",
         "react-router": "^5.2.0",
-        "react-router-dom": "^5.2.0",
-        "@cloudflare/stream-react": "^1.9.1"
+        "react-router-dom": "^5.2.0"
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",

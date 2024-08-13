@@ -168,13 +168,13 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                                 value={details?.server_info?.environment ?? localize('Deriv-Server')}
                             />
                             <MT5TradeDetailsItem label={localize('Login ID')} value={loginId ?? '12345678'} />
-                            <MT5TradeDetailsItem label={localize('Password')} value='********' variant='password' />
+                            <MT5TradeDetailsItem label={localize('Password')} variant='password' />
                         </Fragment>
                     )}
                     {getModalState('platform') === dxtradePlatform && (
                         <Fragment>
                             <MT5TradeDetailsItem label={localize('Username')} value={details?.login ?? '12345678'} />
-                            <MT5TradeDetailsItem label={localize('Password')} value='********' variant='password' />
+                            <MT5TradeDetailsItem label={localize('Password')} variant='password' />
                         </Fragment>
                     )}
                     {getModalState('platform') === ctraderPlatform && (

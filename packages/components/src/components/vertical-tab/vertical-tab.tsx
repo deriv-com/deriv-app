@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { matchRoute } from '@deriv/shared';
 import VerticalTabContentContainer, { TAction_bar } from './vertical-tab-content-container';
@@ -29,6 +29,7 @@ type TVerticalTab = {
     has_mixed_dimensions?: boolean;
     header_classname?: string;
     header_title?: string;
+    initial_vertical_tab_index?: number;
     is_collapsible?: boolean;
     is_floating?: boolean;
     is_grid?: boolean;
@@ -81,6 +82,7 @@ const VerticalTab = ({
     has_mixed_dimensions,
     header_classname,
     header_title,
+    initial_vertical_tab_index,
     is_collapsible,
     is_floating,
     is_grid,
@@ -95,7 +97,8 @@ const VerticalTab = ({
     title,
     vertical_tab_index,
 }: TVerticalTab) => {
-    const [curr_tab_index, setCurrTabIndex] = React.useState(vertical_tab_index || 0);
+    const [curr_tab_index, setCurrTabIndex] = React.useState(initial_vertical_tab_index ?? (vertical_tab_index || 0));
+    const selected = useMemo(() => list[curr_tab_index] || list[0], [curr_tab_index, list]);
 
     const changeSelected = (e: TItem) => {
         setSelectedIndex({
@@ -153,7 +156,7 @@ const VerticalTab = ({
                         items={list}
                         item_groups={list_groups}
                         onChange={changeSelected}
-                        selected={list[curr_tab_index] || list[0]}
+                        selected={selected}
                         has_mixed_dimensions={has_mixed_dimensions}
                         is_collapsible={is_collapsible}
                         is_floating={is_floating}
@@ -172,7 +175,7 @@ const VerticalTab = ({
                 className={className}
                 is_floating={is_floating}
                 items={list}
-                selected={list[curr_tab_index] || list[0]}
+                selected={selected}
                 is_routed={is_routed}
             />
         </div>

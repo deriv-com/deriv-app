@@ -306,6 +306,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             virtual_account_loginid: '',
             is_cr_account: false,
             is_mf_account: false,
+            is_tradershub_tracking: false,
+            setTradersHubTracking: jest.fn(),
+            account_time_of_closure: undefined,
+            is_account_to_be_closed_by_residence: false,
         },
         common: {
             error: common_store_error,
@@ -479,6 +483,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             setShouldShowDepositNowOrLaterModal: jest.fn(),
             should_show_crypto_transaction_processing_modal: false,
             setShouldShowCryptoTransactionProcessingModal: jest.fn(),
+            is_trading_disabled_by_residence_modal_visible: false,
+            setIsTradingDisabledByResidenceModal: jest.fn(),
         },
         traders_hub: {
             getAccount: jest.fn(),
@@ -608,6 +614,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             positions: [],
             removePositionById: jest.fn(),
             setContractType: jest.fn(),
+            setAddNotificationBannerCallback: jest.fn(),
         },
         contract_trade: {
             accountSwitchListener: jest.fn(),

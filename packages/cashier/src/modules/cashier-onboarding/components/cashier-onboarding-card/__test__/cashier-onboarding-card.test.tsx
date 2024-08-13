@@ -10,6 +10,7 @@ describe('CashierOnboardingCard', () => {
         const props: React.ComponentProps<typeof CashierOnboardingCard> = {
             title: 'foo',
             description: 'bar',
+            depositCategory: 'crypto',
             onClick: jest.fn(),
         };
 

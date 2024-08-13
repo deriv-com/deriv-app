@@ -416,6 +416,14 @@ export default class NotificationStore extends BaseStore {
                 this.removeNotificationByKey({ key: this.client_notifications.enable_passkey });
             }
 
+            if (this.root_store.client.is_account_to_be_closed_by_residence) {
+                this.addNotificationMessage(this.client_notifications.notify_account_is_to_be_closed_by_residence);
+            } else {
+                this.removeNotificationByKey({
+                    key: this.client_notifications.notify_account_is_to_be_closed_by_residence,
+                });
+            }
+
             const client = accounts[loginid];
             if (client && !client.is_virtual) {
                 if (isEmptyObject(account_status)) return;
@@ -438,7 +446,6 @@ export default class NotificationStore extends BaseStore {
                     ASK_FIX_DETAILS,
                     ASK_SELF_EXCLUSION_MAX_TURNOVER_SET,
                     ASK_TIN_INFORMATION,
-                    ASK_UK_FUNDS_PROTECTION,
                 } = cashier_validation ? getCashierValidations(cashier_validation) : {};
                 const needs_poa =
                     is_10k_withdrawal_limit_reached &&
@@ -508,8 +515,6 @@ export default class NotificationStore extends BaseStore {
                         this.addNotificationMessage(this.client_notifications.risk);
                     } else if (isAccountOfType('financial') && ASK_TIN_INFORMATION) {
                         this.addNotificationMessage(this.client_notifications.tax);
-                    } else if (ASK_UK_FUNDS_PROTECTION) {
-                        this.addNotificationMessage(this.client_notifications.ask_uk_funds_protection);
                     } else if (ASK_SELF_EXCLUSION_MAX_TURNOVER_SET) {
                         this.addNotificationMessage(this.client_notifications.max_turnover_limit_not_set);
                     } else if (ASK_FIX_DETAILS) {
@@ -766,16 +771,6 @@ export default class NotificationStore extends BaseStore {
                 action: {
                     route: routes.financial_assessment,
                     text: localize('Click here'),
-                },
-                type: 'warning',
-            },
-            ask_uk_funds_protection: {
-                key: 'ask_uk_funds_protection',
-                header: localize('Your cashier is locked'),
-                message: localize('See how we protect your funds to unlock the cashier.'),
-                action: {
-                    route: routes.cashier_deposit,
-                    text: localize('Find out more'),
                 },
                 type: 'warning',
             },
@@ -1552,6 +1547,24 @@ export default class NotificationStore extends BaseStore {
                         this.markNotificationMessage({ key: 'additional_kyc_info' });
                     },
                 },
+                type: 'warning',
+            },
+            notify_account_is_to_be_closed_by_residence: {
+                action: {
+                    route: routes.cashier_withdrawal,
+                    text: localize('Withdraw funds'),
+                },
+                header: localize('Deposits and trading disabled'),
+                key: 'notify_account_is_to_be_closed_by_residence',
+                message: (
+                    <Localize
+                        i18n_default_text='Due to business changes, client accounts in Senegal are to be closed. Withdraw your funds by {{date}}.'
+                        values={{
+                            date: formatDate(this.root_store.client.account_time_of_closure, 'DD MMM YYYY'),
+                        }}
+                    />
+                ),
+                should_show_again: true,
                 type: 'warning',
             },
         };

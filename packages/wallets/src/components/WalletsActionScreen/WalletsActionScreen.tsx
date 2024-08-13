@@ -1,4 +1,4 @@
-import React, { ComponentProps, isValidElement, PropsWithChildren, ReactElement, ReactNode } from 'react';
+import React, { ComponentProps, PropsWithChildren, ReactElement, ReactNode } from 'react';
 import { Text } from '@deriv-com/ui';
 import { WalletButton, WalletButtonGroup } from '../Base';
 import './WalletsActionScreen.scss';
@@ -38,13 +38,9 @@ const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
                         {title}
                     </Text>
                 )}
-                {isValidElement(description) ? (
-                    description
-                ) : (
-                    <Text align='center' size={descriptionSize}>
-                        {description}
-                    </Text>
-                )}
+                <Text align='center' size={descriptionSize}>
+                    {description}
+                </Text>
             </div>
             {renderButtons?.()}
         </div>

@@ -115,7 +115,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
                               account_type: MARKET_TYPE.FINANCIAL,
                               mt5_account_type: 'financial_stp',
                           })),
-                ...(marketType === MARKET_TYPE.ALL && { sub_account_category: 'swap_free' }),
+                ...(marketType === MARKET_TYPE.ALL && { product }),
                 name: settingsData?.first_name ?? '',
                 phone: settingsData?.phone ?? '',
                 state: settingsData?.address_state ?? '',
@@ -140,6 +140,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
         settingsData?.phone,
         tradingPasswordChangeMutateAsync,
         selectedJurisdiction,
+        product,
     ]);
 
     const sendEmailVerification = useCallback(() => {

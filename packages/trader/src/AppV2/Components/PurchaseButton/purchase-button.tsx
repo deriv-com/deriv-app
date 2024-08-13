@@ -18,12 +18,12 @@ import {
 import PurchaseButtonContent from './purchase-button-content';
 import { getTradeTypeTabsList } from 'AppV2/Utils/trade-params-utils';
 import { StandaloneStopwatchRegularIcon } from '@deriv/quill-icons';
+import { CSSTransition } from 'react-transition-group';
 
 const PurchaseButton = observer(() => {
     const [loading_button_index, setLoadingButtonIndex] = React.useState<number | null>(null);
     const { isMobile } = useDevice();
     const { addBanner } = useNotifications();
-
     const {
         portfolio: { all_positions, onClickSell },
     } = useStore();
@@ -44,6 +44,8 @@ const PurchaseButton = observer(() => {
         trade_type_tab,
         trade_types,
     } = useTraderStore();
+
+    const [isSellButtonVisible, setIsSellButtonVisibile] = React.useState(is_accumulator && has_open_accu_contract);
 
     /*TODO: add error handling when design will be ready. validation_errors can be taken from useTraderStore
     const hasError = (info: TTradeStore['proposal_info'][string]) => {
@@ -79,6 +81,8 @@ const PurchaseButton = observer(() => {
         (is_valid_to_sell && active_accu_contract && getIndicativePrice(active_accu_contract.contract_info)) || null;
     const cardLabels = getCardLabelsV2();
 
+    const is_accu_sell_disabled = !is_valid_to_sell || active_accu_contract?.is_sell_requested;
+
     const getButtonType = (index: number, trade_type: string) => {
         const tab_index = getTradeTypeTabsList(contract_type).findIndex(tab => tab.contract_type === trade_type);
         const button_index = tab_index < 0 ? index : tab_index;
@@ -95,70 +99,101 @@ const PurchaseButton = observer(() => {
         if (is_purchase_enabled) setLoadingButtonIndex(null);
     }, [is_purchase_enabled]);
 
-    if (is_accumulator && has_open_accu_contract) {
-        const is_accu_sell_disabled = !is_valid_to_sell || active_accu_contract?.is_sell_requested;
-        return (
-            <div className='purchase-button__wrapper'>
-                <Button
-                    color='black'
-                    size='lg'
-                    label={
-                        is_accu_sell_disabled
-                            ? `${cardLabels.CLOSE}`
-                            : `${cardLabels.CLOSE} ${current_stake} ${currency}`
-                    }
-                    fullWidth
-                    className='purchase-button purchase-button--single'
-                    disabled={is_accu_sell_disabled}
-                    onClick={() => onClickSell(active_accu_contract?.contract_info.contract_id)}
-                />
-                {is_accu_sell_disabled && <div className='purchase-button purchase-button--disabled-background' />}
-            </div>
-        );
-    }
+    React.useEffect(() => {
+        if (is_accumulator && has_open_accu_contract) {
+            setIsSellButtonVisibile(true);
+        } else if (is_accumulator && !has_open_accu_contract) {
+            setIsSellButtonVisibile(false);
+        }
+    }, [is_accumulator, has_open_accu_contract]);
 
     return (
-        <div className='purchase-button__wrapper'>
-            {trade_types_array.map((trade_type, index) => {
-                const info = proposal_info?.[trade_type] || {};
-                const is_single_button = trade_types_array.length === 1;
-                const is_loading = loading_button_index === index;
-                const is_disabled = !is_trade_enabled || is_proposal_empty || !info.id || !is_purchase_enabled;
+        <React.Fragment>
+            <CSSTransition
+                in={!isSellButtonVisible}
+                timeout={450}
+                classNames='slide'
+                key='purchase-button'
+                unmountOnExit
+                mountOnEnter
+            >
+                <div className='purchase-button__wrapper'>
+                    {trade_types_array.map((trade_type, index) => {
+                        const info = proposal_info?.[trade_type] || {};
+                        const is_single_button = trade_types_array.length === 1;
+                        const is_loading = loading_button_index === index;
+                        const is_disabled = !is_trade_enabled || is_proposal_empty || !info.id || !is_purchase_enabled;
 
-                return (
-                    <React.Fragment key={trade_type}>
-                        <Button
-                            color={getButtonType(index, trade_type)}
-                            size='lg'
-                            label={getContractTypeDisplay(trade_type, { isHighLow: is_high_low, showButtonName: true })}
-                            fullWidth
-                            className={clsx(
-                                'purchase-button',
-                                is_loading && 'purchase-button--loading',
-                                is_single_button && 'purchase-button--single'
-                            )}
-                            isLoading={is_loading}
-                            disabled={is_disabled && !is_loading}
-                            onClick={() => {
-                                setLoadingButtonIndex(index);
-                                onPurchase(info.id, info.stake, trade_type, isMobile, addNotificationBannerCallback);
-                            }}
-                        >
-                            {!is_loading && !is_accumulator && (
-                                <PurchaseButtonContent
-                                    {...purchase_button_content_props}
-                                    info={info}
-                                    is_reverse={!!index}
-                                />
-                            )}
-                        </Button>
-                        {is_disabled && !is_loading && (
-                            <div className='purchase-button purchase-button--disabled-background' />
-                        )}
-                    </React.Fragment>
-                );
-            })}
-        </div>
+                        return (
+                            <React.Fragment key={trade_type}>
+                                <Button
+                                    color={getButtonType(index, trade_type)}
+                                    size='lg'
+                                    label={getContractTypeDisplay(trade_type, {
+                                        isHighLow: is_high_low,
+                                        showButtonName: true,
+                                    })}
+                                    fullWidth
+                                    className={clsx(
+                                        'purchase-button',
+                                        is_loading && 'purchase-button--loading',
+                                        is_single_button && 'purchase-button--single'
+                                    )}
+                                    isLoading={is_loading}
+                                    disabled={is_disabled && !is_loading}
+                                    onClick={() => {
+                                        setLoadingButtonIndex(index);
+                                        onPurchase(
+                                            info.id,
+                                            info.stake,
+                                            trade_type,
+                                            isMobile,
+                                            addNotificationBannerCallback
+                                        );
+                                    }}
+                                >
+                                    {!is_loading && !is_accumulator && (
+                                        <PurchaseButtonContent
+                                            {...purchase_button_content_props}
+                                            info={info}
+                                            is_reverse={!!index}
+                                        />
+                                    )}
+                                </Button>
+                                {is_disabled && !is_loading && (
+                                    <div className='purchase-button purchase-button--disabled-background' />
+                                )}
+                            </React.Fragment>
+                        );
+                    })}
+                </div>
+            </CSSTransition>
+            <CSSTransition
+                in={isSellButtonVisible}
+                timeout={450}
+                classNames='slide'
+                key='sell-button'
+                unmountOnExit
+                mountOnEnter
+            >
+                <div className='purchase-button__wrapper'>
+                    <Button
+                        color='black'
+                        size='lg'
+                        label={
+                            is_accu_sell_disabled
+                                ? `${cardLabels.CLOSE}`
+                                : `${cardLabels.CLOSE} ${current_stake} ${currency}`
+                        }
+                        fullWidth
+                        className='purchase-button purchase-button--single'
+                        disabled={is_accu_sell_disabled}
+                        onClick={() => onClickSell(active_accu_contract?.contract_info.contract_id)}
+                    />
+                    {is_accu_sell_disabled && <div className='purchase-button purchase-button--disabled-background' />}
+                </div>
+            </CSSTransition>
+        </React.Fragment>
     );
 });
 

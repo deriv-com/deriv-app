@@ -1,6 +1,8 @@
+import React from 'react';
+import { Localize } from '@deriv-com/translations';
 import { TMessageFnProps, TTransferMessage } from '../../../types';
 
-let text: TTransferMessage['message']['text'], values: TTransferMessage['message']['values'];
+let message: TTransferMessage['message'];
 
 const cumulativeAccountLimitsMessageFn = ({
     activeWallet,
@@ -53,20 +55,28 @@ const cumulativeAccountLimitsMessageFn = ({
 
     if (isDemoTransfer) {
         if (allowedSumUSD === availableSumUSD) {
-            text = 'Your daily transfer limit for virtual funds is {{formattedDemoLimit}}';
-            values = { formattedDemoLimit };
+            message = (
+                <Localize
+                    i18n_default_text='Your daily transfer limit for virtual funds is {{formattedDemoLimit}}'
+                    values={{ formattedDemoLimit }}
+                />
+            );
 
             return {
-                message: { text, values },
+                message,
                 type: 'success' as const,
             };
         }
 
-        text = 'Your remaining daily transfer limit for virtual funds is {{formattedDemoLimit}}.';
-        values = { formattedDemoLimit };
+        message = (
+            <Localize
+                i18n_default_text='Your remaining daily transfer limit for virtual funds is {{formattedDemoLimit}}.'
+                values={{ formattedDemoLimit }}
+            />
+        );
 
         return {
-            message: { text, values },
+            message,
             type: 'success' as const,
         };
     }
@@ -105,48 +115,69 @@ const cumulativeAccountLimitsMessageFn = ({
     );
 
     if (availableSumUSD === 0) {
-        text = isTransferBetweenWallets
-            ? 'You have reached your daily transfer limit of {{formattedSourceCurrencyLimit}} between your Wallets. The limit will reset at 00:00 GMT.'
-            : 'You have reached your daily transfer limit of {{formattedSourceCurrencyLimit}} between your {{sourceAccountName}} and {{targetAccountName}}. The limit will reset at 00:00 GMT.';
-        values = {
-            formattedSourceCurrencyLimit,
-            sourceAccountName: sourceAccount.accountName,
-            targetAccountName: targetAccount.accountName,
-        };
+        message = isTransferBetweenWallets ? (
+            <Localize
+                i18n_default_text='You have reached your daily transfer limit of {{formattedSourceCurrencyLimit}} between your Wallets. The limit will reset at 00:00 GMT.'
+                values={{ formattedSourceCurrencyLimit }}
+            />
+        ) : (
+            <Localize
+                i18n_default_text='You have reached your daily transfer limit of {{formattedSourceCurrencyLimit}} between your {{sourceAccountName}} and {{targetAccountName}}. The limit will reset at 00:00 GMT.'
+                values={{
+                    formattedSourceCurrencyLimit,
+                    sourceAccountName: sourceAccount.accountName,
+                    targetAccountName: targetAccount.accountName,
+                }}
+            />
+        );
 
         return {
-            message: { text, values },
+            message,
             type: 'error' as const,
         };
     }
 
     if (allowedSumUSD === availableSumUSD) {
-        text = isTransferBetweenWallets
-            ? 'The daily transfer limit between your Wallets is {{formattedSourceCurrencyLimit}}.'
-            : 'The daily transfer limit between your {{sourceAccountName}} and {{targetAccountName}} is {{formattedSourceCurrencyLimit}}.';
-        values = {
-            formattedSourceCurrencyLimit,
-            sourceAccountName: sourceAccount.accountName,
-            targetAccountName: targetAccount.accountName,
-        };
+        message = isTransferBetweenWallets ? (
+            <Localize
+                i18n_default_text='The daily transfer limit between your Wallets is {{formattedSourceCurrencyLimit}}.'
+                values={{ formattedSourceCurrencyLimit }}
+            />
+        ) : (
+            <Localize
+                i18n_default_text='The daily transfer limit between your {{sourceAccountName}} and {{targetAccountName}} is {{formattedSourceCurrencyLimit}}.'
+                values={{
+                    formattedSourceCurrencyLimit,
+                    sourceAccountName: sourceAccount.accountName,
+                    targetAccountName: targetAccount.accountName,
+                }}
+            />
+        );
 
         return {
-            message: { text, values },
+            message,
             type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
         };
     }
 
-    text = isTransferBetweenWallets
-        ? 'The remaining daily transfer limit between your Wallets is {{formattedSourceCurrencyRemainder}}.'
-        : 'The remaining daily transfer limit between your {{sourceAccountName}} and {{targetAccountName}} is {{formattedSourceCurrencyRemainder}}.';
-    values = {
-        formattedSourceCurrencyRemainder,
-        sourceAccountName: sourceAccount.accountName,
-        targetAccountName: targetAccount.accountName,
-    };
+    message = isTransferBetweenWallets ? (
+        <Localize
+            i18n_default_text='The remaining daily transfer limit between your Wallets is {{formattedSourceCurrencyRemainder}}.'
+            values={{ formattedSourceCurrencyRemainder }}
+        />
+    ) : (
+        <Localize
+            i18n_default_text='The remaining daily transfer limit between your {{sourceAccountName}} and {{targetAccountName}} is {{formattedSourceCurrencyRemainder}}.'
+            values={{
+                formattedSourceCurrencyRemainder,
+                sourceAccountName: sourceAccount.accountName,
+                targetAccountName: targetAccount.accountName,
+            }}
+        />
+    );
 
     return {
-        message: { text, values },
+        message,
         type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
     };
 };

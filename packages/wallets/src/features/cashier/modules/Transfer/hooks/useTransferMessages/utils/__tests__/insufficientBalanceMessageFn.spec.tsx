@@ -1,3 +1,5 @@
+import React from 'react';
+import { Localize } from '@deriv-com/translations';
 import insufficientBalanceMessageFn from '../insufficientBalanceMessageFn';
 
 describe('insufficientBalanceMessageFn', () => {
@@ -33,10 +35,12 @@ describe('insufficientBalanceMessageFn', () => {
         } as Parameters<typeof insufficientBalanceMessageFn>[0]);
 
         expect(result).toEqual({
-            message: {
-                text: 'Your {{sourceAccountName}} has insufficient balance.',
-                values: { sourceAccountName: 'USD Wallet' },
-            },
+            message: (
+                <Localize
+                    i18n_default_text='Your {{sourceAccountName}} has insufficient balance.'
+                    values={{ sourceAccountName: 'USD Wallet' }}
+                />
+            ),
             type: 'error',
         });
     });
@@ -51,10 +55,12 @@ describe('insufficientBalanceMessageFn', () => {
         } as Parameters<typeof insufficientBalanceMessageFn>[0]);
 
         expect(result).toEqual({
-            message: {
-                text: 'Your {{sourceAccountName}} has insufficient balance.',
-                values: { sourceAccountName: 'USD Wallet' },
-            },
+            message: (
+                <Localize
+                    i18n_default_text='Your {{sourceAccountName}} has insufficient balance.'
+                    values={{ sourceAccountName: 'USD Wallet' }}
+                />
+            ),
             type: 'error',
         });
     });

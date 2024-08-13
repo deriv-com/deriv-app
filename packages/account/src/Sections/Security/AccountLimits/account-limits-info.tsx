@@ -1,6 +1,6 @@
-import React from 'react';
+import { Fragment } from 'react';
 import { Icon, Text } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-com/translations';
 
 const currency_name_map = {
     BTC: { display_code: 'BTC', name: localize('Bitcoin') },
@@ -22,9 +22,9 @@ type TAccountLimitsInfo = {
 };
 
 const AccountLimitsInfo = ({ currency, is_virtual = false }: TAccountLimitsInfo) => (
-    <>
+    <Fragment>
         {!is_virtual && (
-            <>
+            <Fragment>
                 <Icon
                     className='account__inset_header-icon'
                     icon={currency ? `IcCurrency-${currency}` : 'IcCurrencyUnknown'}
@@ -42,9 +42,9 @@ const AccountLimitsInfo = ({ currency, is_virtual = false }: TAccountLimitsInfo)
                         <Localize i18n_default_text='No currency has been set for this account' />
                     )}
                 </Text>
-            </>
+            </Fragment>
         )}
-    </>
+    </Fragment>
 );
 
 export default AccountLimitsInfo;

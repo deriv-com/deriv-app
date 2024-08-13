@@ -77,7 +77,7 @@ export const getJurisdictionBviContents = ({
             title: localize('Spreads from'),
             title_indicators: {
                 type: 'displayText',
-                display_text: localize('0.5 pips'),
+                display_text: localize('0.2 pips'),
                 display_text_skin_color: 'violet-dark',
             },
         },

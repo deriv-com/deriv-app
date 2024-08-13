@@ -26,22 +26,6 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
     const accumulator_announcement = ANNOUNCEMENTS.ACCUMULATOR_ANNOUNCE;
     const is_active_announce_1 = amountAnnounce?.announce_1;
 
-    const handleClickOutside = (event: React.MouseEvent<HTMLButtonElement>) => {
-        if (
-            !wrapperRef?.current?.contains(event.target as HTMLButtonElement) &&
-            !buttonRef?.current?.contains(event.target as HTMLButtonElement)
-        ) {
-            setIsOpenAnnounceList(false);
-        }
-    };
-
-    useEffect(() => {
-        document.addEventListener('click', handleClickOutside);
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-        };
-    }, []);
-
     const handleAnnounceSubmit = (data: Record<string, boolean>) => {
         setAmountAnnounce(data);
         localStorage?.setItem('bot-announcements', JSON.stringify(data));
@@ -168,7 +152,6 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                     }}
                     isOpen={isOpenAnnounceList}
                     notifications={announcements}
-                    setIsOpen={() => handleButtonClick}
                 />
             </div>
             <AnnouncementDialog

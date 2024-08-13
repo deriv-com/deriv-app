@@ -8,11 +8,11 @@ type TTradeParamDefinitionProps = {
     is_custom_description?: boolean;
 };
 
-const TradeParamDefinition = ({ classname, description, is_custom_description = true }: TTradeParamDefinitionProps) => {
+const TradeParamDefinition = ({ classname, description, is_custom_description }: TTradeParamDefinitionProps) => {
     if (!description) return null;
     return (
         <ActionSheet.Content className={clsx('trade-param-definition', classname)}>
-            {is_custom_description ? description : <Text as='div'>{description}</Text>}
+            {is_custom_description ? description : <Text>{description}</Text>}
         </ActionSheet.Content>
     );
 };

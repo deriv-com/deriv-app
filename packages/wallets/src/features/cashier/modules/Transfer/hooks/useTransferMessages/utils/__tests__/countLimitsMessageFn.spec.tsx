@@ -1,3 +1,5 @@
+import React from 'react';
+import { Localize } from '@deriv-com/translations';
 import countLimitMessageFn from '../countLimitsMessageFn';
 
 describe('countLimitMessageFn', () => {
@@ -27,10 +29,12 @@ describe('countLimitMessageFn', () => {
             targetAccount: {},
         });
         expect(result).toEqual({
-            message: {
-                text: 'You have reached your daily transfer limit of {{allowedCount}} transfers for your virtual funds. The limit will reset at 00:00 GMT.',
-                values: { allowedCount: 10 },
-            },
+            message: (
+                <Localize
+                    i18n_default_text='You have reached your daily transfer limit of {{allowedCount}} transfers for your virtual funds. The limit will reset at 00:00 GMT.'
+                    values={{ allowedCount: 10 }}
+                />
+            ),
             type: 'error',
         });
     });
@@ -53,10 +57,12 @@ describe('countLimitMessageFn', () => {
             targetAccount: { account_category: 'wallet', accountName: 'Target Wallet' },
         });
         expect(result).toEqual({
-            message: {
-                text: 'You have reached your daily transfer limit of {{allowedCount}} transfers between your Wallets. The limit will reset at 00:00 GMT.',
-                values: { allowedCount: 5, sourceAccountName: 'Source Wallet', targetAccountName: 'Target Wallet' },
-            },
+            message: (
+                <Localize
+                    i18n_default_text='You have reached your daily transfer limit of {{allowedCount}} transfers between your Wallets. The limit will reset at 00:00 GMT.'
+                    values={{ allowedCount: 5 }}
+                />
+            ),
             type: 'error',
         });
     });
@@ -79,10 +85,16 @@ describe('countLimitMessageFn', () => {
             targetAccount: { account_category: 'trading', accountName: 'Target Account' },
         });
         expect(result).toEqual({
-            message: {
-                text: 'You have reached your daily transfer limit of {{allowedCount}} transfers between your {{sourceAccountName}} and {{targetAccountName}}. The limit will reset at 00:00 GMT.',
-                values: { allowedCount: 5, sourceAccountName: 'Source Account', targetAccountName: 'Target Account' },
-            },
+            message: (
+                <Localize
+                    i18n_default_text='You have reached your daily transfer limit of {{allowedCount}} transfers between your {{sourceAccountName}} and {{targetAccountName}}. The limit will reset at 00:00 GMT.'
+                    values={{
+                        allowedCount: 5,
+                        sourceAccountName: 'Source Account',
+                        targetAccountName: 'Target Account',
+                    }}
+                />
+            ),
             type: 'error',
         });
     });

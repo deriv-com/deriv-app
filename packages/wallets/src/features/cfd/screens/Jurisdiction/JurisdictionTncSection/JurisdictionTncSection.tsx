@@ -1,5 +1,6 @@
 import React from 'react';
-import { WalletText } from '../../../../../components/Base';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import { useModal } from '../../../../../components/ModalProvider';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import useDevice from '../../../../../hooks/useDevice';
@@ -41,30 +42,34 @@ const JurisdictionTncSection: React.FC<TProps> = ({
                         type='checkbox'
                     />
                     <label className='wallets-jurisdiction-tnc-checkbox-label' htmlFor='tnc-checkbox'>
-                        <WalletText size={isMobile ? 'sm' : 'md'}>
-                            I confirm and accept {selectedCompany.name}&lsquo;s{' '}
-                            <a
-                                className='wallets-jurisdiction-tnc-checkbox__link'
-                                onClick={() => {
-                                    window.open(getStaticUrl(selectedCompany.tncUrl), '_blank');
-                                }}
-                                // Reason: To fix sonarcloud issue
-                                onKeyDown={(event: React.KeyboardEvent<HTMLAnchorElement>) => {
-                                    if (event.key === 'Enter') {
-                                        window.open(
-                                            getStaticUrl(
-                                                companyNamesAndUrls[
-                                                    selectedJurisdiction as keyof typeof companyNamesAndUrls
-                                                ].tncUrl
-                                            ),
-                                            '_blank'
-                                        );
-                                    }
-                                }}
-                            >
-                                Terms and Conditions
-                            </a>
-                        </WalletText>
+                        <Text size={isMobile ? 'sm' : 'md'}>
+                            <Localize
+                                components={[
+                                    <a
+                                        className='wallets-jurisdiction-tnc-checkbox__link'
+                                        key={0}
+                                        onClick={() => {
+                                            window.open(getStaticUrl(selectedCompany.tncUrl), '_blank');
+                                        }}
+                                        // Reason: To fix sonarcloud issue
+                                        onKeyDown={(event: React.KeyboardEvent<HTMLAnchorElement>) => {
+                                            if (event.key === 'Enter') {
+                                                window.open(
+                                                    getStaticUrl(
+                                                        companyNamesAndUrls[
+                                                            selectedJurisdiction as keyof typeof companyNamesAndUrls
+                                                        ].tncUrl
+                                                    ),
+                                                    '_blank'
+                                                );
+                                            }
+                                        }}
+                                    />,
+                                ]}
+                                i18n_default_text="I confirm and accept {{companyName}}'s <0>Terms and Conditions</0>"
+                                values={{ companyName: selectedCompany.name }}
+                            />
+                        </Text>
                     </label>
                 </div>
             )}

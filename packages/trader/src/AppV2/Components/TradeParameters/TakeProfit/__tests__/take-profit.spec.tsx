@@ -9,14 +9,6 @@ import TakeProfit from '../take-profit';
 const take_profit_trade_param = 'Take profit';
 const data_testid = 'dt_input_with_steppers';
 
-const mediaQueryList = {
-    matches: true,
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-};
-
-window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
-
 describe('TakeProfit', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
 

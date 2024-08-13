@@ -1,10 +1,11 @@
-import React from 'react';
+import { RefObject, useState, useEffect } from 'react';
 import { FormikValues } from 'formik';
 import clsx from 'clsx';
-import { formatMoney, useIsMounted } from '@deriv/shared';
+import { useIsMounted } from '@deriv/shared';
+import { FormatUtils, CurrencyConstants } from '@deriv-com/utils';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { observer, useStore } from '@deriv/stores';
 import DemoMessage from '../demo-message';
 import LoadErrorMessage from '../load-error-message';
@@ -19,7 +20,7 @@ import AccountLimitsTurnoverLimitRow, { TAccountLimitsCollection } from './accou
 import WithdrawalLimitsTable from './withdrawal-limits-table';
 
 type TAccountLimits = {
-    footer_ref?: React.RefObject<HTMLElement>;
+    footer_ref?: RefObject<HTMLElement>;
     is_app_settings?: boolean;
     overlay_ref: HTMLDivElement;
     setIsOverlayShown?: (is_overlay_shown?: boolean) => void;
@@ -37,18 +38,19 @@ const AccountLimits = observer(
         should_bypass_scrollbars,
         should_show_article = true,
     }: TAccountLimits) => {
+        const { localize } = useTranslations();
         const { client } = useStore();
         const { account_limits, account_status, currency, getLimits, is_virtual, is_switching } = client;
         const isMounted = useIsMounted();
-        const [is_loading, setLoading] = React.useState(true);
-        const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
+        const [is_loading, setLoading] = useState(true);
+        const [is_overlay_shown, setIsOverlayShown] = useState(false);
         const { isDesktop } = useDevice();
 
         const handleGetLimitsResponse = () => {
             if (isMounted()) setLoading(false);
         };
 
-        React.useEffect(() => {
+        useEffect(() => {
             if (is_virtual) {
                 setLoading(false);
             } else {
@@ -57,13 +59,13 @@ const AccountLimits = observer(
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
 
-        React.useEffect(() => {
+        useEffect(() => {
             if (!is_virtual && account_limits && is_loading && Object.keys(account_status).length > 0) {
                 setLoading(false);
             }
         }, [account_limits, is_virtual, is_loading, account_status]);
 
-        React.useEffect(() => {
+        useEffect(() => {
             if (typeof setIsPopupOverlayShown === 'function') {
                 setIsPopupOverlayShown(is_overlay_shown);
             }
@@ -165,7 +167,9 @@ const AccountLimits = observer(
                                             <AccountLimitsTableCell align='right'>
                                                 {/* null or 0 are expected form BE when max balance limit is not set */}
                                                 {account_balance ? (
-                                                    formatMoney(currency, account_balance, true)
+                                                    FormatUtils.formatMoney(account_balance, {
+                                                        currency: currency as CurrencyConstants.Currency,
+                                                    })
                                                 ) : (
                                                     <Localize i18n_default_text='Not set' />
                                                 )}
@@ -184,7 +188,9 @@ const AccountLimits = observer(
                                                 <Localize i18n_default_text='Maximum aggregate payouts on open positions' />
                                             </AccountLimitsTableCell>
                                             <AccountLimitsTableCell align='right'>
-                                                {formatMoney(currency, payout as number, true)}
+                                                {FormatUtils.formatMoney(payout as number, {
+                                                    currency: currency as CurrencyConstants.Currency,
+                                                })}
                                             </AccountLimitsTableCell>
                                         </tr>
                                         <tr>

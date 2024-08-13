@@ -1,5 +1,5 @@
-import React from 'react';
-import { formatMoney } from '@deriv/shared';
+import { useContext, Fragment } from 'react';
+import { FormatUtils, CurrencyConstants } from '@deriv-com/utils';
 import AccountLimitsTableCell from './account-limits-table-cell';
 import AccountLimitsContext, { TAccountLimitsContext } from './account-limits-context';
 
@@ -17,10 +17,10 @@ type TAccountLimitsTurnoverLimitRow = {
 };
 
 const AccountLimitsTurnoverLimitRow = ({ collection, title }: TAccountLimitsTurnoverLimitRow) => {
-    const { currency } = React.useContext<TAccountLimitsContext>(AccountLimitsContext);
+    const { currency } = useContext<TAccountLimitsContext>(AccountLimitsContext);
 
     return (
-        <React.Fragment>
+        <Fragment>
             {collection?.map(({ name, turnover_limit, level }) => (
                 <tr key={name} data-testid='account-limits-turnover-limit-row'>
                     <AccountLimitsTableCell level={level}>
@@ -28,11 +28,11 @@ const AccountLimitsTurnoverLimitRow = ({ collection, title }: TAccountLimitsTurn
                         {name}
                     </AccountLimitsTableCell>
                     <AccountLimitsTableCell align='right'>
-                        {formatMoney(currency, turnover_limit, true)}
+                        {FormatUtils.formatMoney(turnover_limit, { currency: currency as CurrencyConstants.Currency })}
                     </AccountLimitsTableCell>
                 </tr>
             ))}
-        </React.Fragment>
+        </Fragment>
     );
 };
 

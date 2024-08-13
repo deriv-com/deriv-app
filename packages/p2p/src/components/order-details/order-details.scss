@@ -7,7 +7,7 @@ $card-width: 456px;
     flex-direction: row;
     flex: 1;
 
-    @include tablet-up {
+    @include desktop-screen {
         min-height: $card-height;
         max-height: $card-height;
         margin-bottom: 3rem;
@@ -28,6 +28,10 @@ $card-width: 456px;
         margin-bottom: 1.6rem;
         width: fit-content;
 
+        @include tablet-screen {
+            width: calc(100% - 4rem);
+        }
+
         @include mobile-or-tablet-screen {
             margin: 1rem 2rem;
         }
@@ -45,6 +49,14 @@ $card-width: 456px;
             }
         }
     }
+
+    @include tablet-screen {
+        & .dc-page-overlay__content {
+            & .dc-mobile-full-page-modal {
+                overflow: hidden;
+            }
+        }
+    }
 }
 
 .order-details-card {
@@ -53,8 +65,9 @@ $card-width: 456px;
     flex-direction: column;
     height: fit-content;
 
-    @include tablet-up {
+    @include desktop-screen {
         border-radius: 4px;
+        border: 8px solid var(--general-section-1);
         width: $card-width;
     }
 
@@ -139,7 +152,7 @@ $card-width: 456px;
         border-bottom: 1px solid var(--general-section-1);
         align-items: center;
 
-        @include tablet-up {
+        @include desktop-screen {
             padding: 1.6rem 2.4rem;
         }
 
@@ -177,7 +190,7 @@ $card-width: 456px;
     }
 
     &__info {
-        @include tablet-up {
+        @include desktop-screen {
             padding: 1.6rem 0;
         }
 
@@ -205,6 +218,9 @@ $card-width: 456px;
         margin: 0;
         padding: 0;
         width: $card-width;
+        @include tablet-screen {
+            width: 100%;
+        }
     }
 
     &__modal-checkbox {

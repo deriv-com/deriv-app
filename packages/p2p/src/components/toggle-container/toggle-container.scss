@@ -4,7 +4,7 @@
     width: fit-content;
     border-radius: $BORDER_RADIUS;
 
-    @include tablet-up {
+    @include desktop-screen {
         margin: 2.4rem 0;
     }
 

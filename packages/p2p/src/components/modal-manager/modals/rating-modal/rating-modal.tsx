@@ -22,7 +22,7 @@ const RatingModal = ({
     onClickDone,
     onClickSkip,
 }: TRatingModalProps) => {
-    const { isDesktop, isMobile } = useDevice();
+    const { isMobile } = useDevice();
     const { order_store } = useStores();
     const { is_modal_open } = useModalManagerContext();
     const { handleRating, rating_value, setIsRecommended } = order_store;
@@ -37,7 +37,7 @@ const RatingModal = ({
             is_open={is_modal_open}
             title={localize('How would you rate this transaction?')}
             toggleModal={onClickSkip}
-            width={isDesktop ? '' : '90vw'}
+            width={isMobile ? '90vw' : ''}
         >
             <Modal.Body className='rating-modal__body'>
                 <div className='rating-modal__body__star'>

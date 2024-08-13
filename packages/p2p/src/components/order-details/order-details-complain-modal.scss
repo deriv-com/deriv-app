@@ -17,8 +17,14 @@
             margin: 1.6rem;
         }
 
-        @include tablet-up {
+        @include desktop-screen {
             border-radius: 8px;
+        }
+    }
+    @include tablet-screen {
+        & .dc-mobile-full-page-modal {
+            top: 0;
+            overflow: hidden;
         }
     }
 }

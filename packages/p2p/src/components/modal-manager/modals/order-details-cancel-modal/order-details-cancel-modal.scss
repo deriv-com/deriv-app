@@ -6,9 +6,19 @@
                 display: flex;
                 flex-direction: column;
 
+                @include tablet-screen {
+                    width: 100%;
+                    align-items: unset;
+                    margin-right: 1rem;
+                }
+
                 .dc-btn {
                     margin-top: 0.8rem;
                     width: 80vw;
+
+                    @include tablet-screen {
+                        width: 100%;
+                    }
                 }
             }
         }

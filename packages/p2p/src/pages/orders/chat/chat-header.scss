@@ -4,7 +4,7 @@
     display: flex;
     height: 76px;
 
-    @include tablet-up {
+    @include desktop-screen {
         border-top-left-radius: $BORDER_RADIUS;
         border-top-right-radius: $BORDER_RADIUS;
     }
@@ -22,7 +22,7 @@
         justify-content: center;
         width: 40px;
 
-        @include tablet-up {
+        @include desktop-screen {
             margin: 1.6rem 1.6rem 1.6rem 2.4rem;
         }
 

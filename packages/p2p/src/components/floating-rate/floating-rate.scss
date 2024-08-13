@@ -47,6 +47,9 @@
             position: relative;
             right: 9rem;
         }
+        @include tablet-screen {
+            right: 22.5rem;
+        }
         &:before {
             @include typeface(--paragraph-center-normal-black);
             color: inherit;

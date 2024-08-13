@@ -11,7 +11,7 @@ const AdvertiserPageStats = () => {
     const {
         client: { currency },
     } = useStore();
-    const { isDesktop } = useDevice();
+    const { isDesktop, isMobile } = useDevice();
 
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
@@ -31,13 +31,15 @@ const AdvertiserPageStats = () => {
     const avg_buy_time_in_minutes = buy_time_avg > 60 ? Math.round(buy_time_avg / 60) : '< 1';
     const avg_release_time_in_minutes = release_time_avg > 60 ? Math.round(release_time_avg / 60) : '< 1';
 
+    const mobileTextSize = isMobile ? 'xxxs' : 'xs';
+
     if (!isDesktop) {
         return (
             <React.Fragment>
                 <Table className='advertiser-page-stats__wrapper'>
                     <Table.Row className='advertiser-page-stats__row'>
                         <Table.Cell className='advertiser-page-stats__cell'>
-                            <Text as='p' color='less-prominent' size='xxxs'>
+                            <Text as='p' color='less-prominent' size={mobileTextSize}>
                                 <Localize
                                     i18n_default_text='Buy completion  <0>30d</0>'
                                     components={[
@@ -45,7 +47,7 @@ const AdvertiserPageStats = () => {
                                             key={0}
                                             className='advertiser-page__italic'
                                             color='less-prominent'
-                                            size='xxxs'
+                                            size={mobileTextSize}
                                         />,
                                     ]}
                                 />
@@ -56,7 +58,7 @@ const AdvertiserPageStats = () => {
                         </Table.Cell>
                         <div className='advertiser-page-stats__cell-separator' />
                         <Table.Cell className='advertiser-page-stats__cell'>
-                            <Text as='p' color='less-prominent' size='xxxs'>
+                            <Text as='p' color='less-prominent' size={mobileTextSize}>
                                 <Localize
                                     i18n_default_text='Avg. pay time  <0>30d</0>'
                                     components={[
@@ -64,7 +66,7 @@ const AdvertiserPageStats = () => {
                                             key={0}
                                             className='advertiser-page__italic'
                                             color='less-prominent'
-                                            size='xxxs'
+                                            size={mobileTextSize}
                                         />,
                                     ]}
                                 />
@@ -82,7 +84,7 @@ const AdvertiserPageStats = () => {
                 <Table className='advertiser-page-stats__wrapper'>
                     <Table.Row className='advertiser-page-stats__row'>
                         <Table.Cell className='advertiser-page-stats__cell'>
-                            <Text as='p' color='less-prominent' size='xxxs'>
+                            <Text as='p' color='less-prominent' size={mobileTextSize}>
                                 <Localize
                                     i18n_default_text='Sell completion  <0>30d</0>'
                                     components={[
@@ -90,7 +92,7 @@ const AdvertiserPageStats = () => {
                                             key={0}
                                             className='advertiser-page__italic'
                                             color='less-prominent'
-                                            size='xxxs'
+                                            size={mobileTextSize}
                                         />,
                                     ]}
                                 />
@@ -101,7 +103,7 @@ const AdvertiserPageStats = () => {
                         </Table.Cell>
                         <div className='advertiser-page-stats__cell-separator' />
                         <Table.Cell className='advertiser-page-stats__cell'>
-                            <Text as='p' color='less-prominent' size='xxxs'>
+                            <Text as='p' color='less-prominent' size={mobileTextSize}>
                                 <Localize
                                     i18n_default_text='Avg. release time  <0>30d</0>'
                                     components={[
@@ -109,7 +111,7 @@ const AdvertiserPageStats = () => {
                                             key={0}
                                             className='advertiser-page__italic'
                                             color='less-prominent'
-                                            size='xxxs'
+                                            size={mobileTextSize}
                                         />,
                                     ]}
                                 />
@@ -127,7 +129,7 @@ const AdvertiserPageStats = () => {
                 <Table className='advertiser-page-stats__wrapper'>
                     <Table.Row className='advertiser-page-stats__row'>
                         <Table.Cell className='advertiser-page-stats__cell'>
-                            <Text as='p' color='less-prominent' size='xxxs'>
+                            <Text as='p' color='less-prominent' size={mobileTextSize}>
                                 <Localize
                                     i18n_default_text='Trade volume  <0>30d</0>'
                                     components={[
@@ -135,7 +137,7 @@ const AdvertiserPageStats = () => {
                                             key={0}
                                             className='advertiser-page__italic'
                                             color='less-prominent'
-                                            size='xxxs'
+                                            size={mobileTextSize}
                                         />,
                                     ]}
                                 />
@@ -154,7 +156,7 @@ const AdvertiserPageStats = () => {
                         </Table.Cell>
                         <div className='advertiser-page-stats__cell-separator' />
                         <Table.Cell className='advertiser-page-stats__cell'>
-                            <Text as='p' color='less-prominent' size='xxxs'>
+                            <Text as='p' color='less-prominent' size={mobileTextSize}>
                                 <Localize i18n_default_text='Trade partners' />
                             </Text>
                             <Text as='p' color='prominent' size='xs' weight='bold'>

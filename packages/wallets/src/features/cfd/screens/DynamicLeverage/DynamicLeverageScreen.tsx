@@ -2,7 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { useDebounceValue } from 'usehooks-ts';
 import { useDynamicLeverage } from '@deriv/api-v2';
-import { WalletText } from '../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
 import { PlatformDetails } from '../../constants';
 import { DynamicLeverageMarketCard } from './DynamicLeverageMarketCard';
@@ -23,11 +24,14 @@ const DynamicLeverageScreen = () => {
                     !isDynamicLeverageVisible && isDynamicLeverageHidden,
             })}
         >
-            <WalletText>
-                Enjoy dynamic leverage of <strong>up to 1:1500</strong> when trading selected instruments in the forex,
+            <Text>
+                <Localize
+                    components={[<strong key={0} />]}
+                    i18n_default_text='Enjoy dynamic leverage of <0>up to 1:1500</0> when trading selected instruments in the forex,
                 commodities, cryptocurrencies, and stock indices markets. Our dynamic leverage adjusts automatically to
-                your trading position, based on asset type and trading volume.
-            </WalletText>
+                your trading position, based on asset type and trading volume.'
+                />
+            </Text>
             <div className='wallets-dynamic-leverage-screen__content'>
                 {(['forex', 'metals', 'cryptocurrencies', 'stock_indices'] as const).map(key => {
                     const {

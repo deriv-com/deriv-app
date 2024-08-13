@@ -112,7 +112,7 @@ const PurchaseButton = observer(() => {
                     disabled={is_accu_sell_disabled}
                     onClick={() => onClickSell(active_accu_contract?.contract_info.contract_id)}
                 />
-                {is_accu_sell_disabled && <div className='purchase-button purchase-button--disabled-background' />}
+                {is_accu_sell_disabled && <div className={clsx('purchase-button--disabled-background single')} />}
             </div>
         );
     }
@@ -153,7 +153,9 @@ const PurchaseButton = observer(() => {
                             )}
                         </Button>
                         {is_disabled && !is_loading && (
-                            <div className='purchase-button purchase-button--disabled-background' />
+                            <div
+                                className={clsx('purchase-button--disabled-background', is_single_button && 'single')}
+                            />
                         )}
                     </React.Fragment>
                 );

@@ -618,6 +618,8 @@ type TClientStore = {
     is_cr_account: boolean;
     is_mf_account: boolean;
     setTradersHubTracking: (value: boolean) => void;
+    account_time_of_closure?: number;
+    is_account_to_be_closed_by_residence: boolean;
 };
 
 type TCommonStoreError = {
@@ -826,6 +828,8 @@ type TUiStore = {
     setShouldShowDepositNowOrLaterModal: (value: boolean) => void;
     should_show_crypto_transaction_processing_modal: boolean;
     setShouldShowCryptoTransactionProcessingModal: (value: boolean) => void;
+    is_trading_disabled_by_residence_modal_visible: boolean;
+    setIsTradingDisabledByResidenceModal: (value: boolean) => void;
 };
 
 type TPortfolioStore = {
@@ -991,6 +995,10 @@ type TNotificationStore = {
     is_notifications_empty: boolean;
     is_notifications_visible: boolean;
     filterNotificationMessages: () => void;
+    handleCurrencyRemovalNotification: (
+        account_currency_closure_status: Record<string, unknown>,
+        currency: string
+    ) => void;
     notifications: TNotificationMessage[];
     p2p_advertiser_info: P2PAdvertiserInformationResponse['p2p_advertiser_info'];
     p2p_completed_orders: NonNullable<P2POrderListResponse['p2p_order_list']>['list'];

@@ -134,6 +134,11 @@ export const getDateFromNow = (
     return date.add(days, unit).format(format);
 };
 
+/** returns the DD MM YYYY format */
+export const getDateFromTimestamp = (timestamp: number) => {
+    return moment.unix(timestamp).format('DD MM YYYY');
+};
+
 /**
  * return formatted duration `2 days 01:23:59`
  * @param  {moment.duration} moment duration object

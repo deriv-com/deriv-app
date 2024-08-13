@@ -11,6 +11,7 @@ import OptionsAndMultipliersListing from 'Components/options-multipliers-listing
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import AfterSignupFlow from 'Components/after-signup-flow';
 import Disclaimer from 'Components/disclaimer';
+import BusinessClosureBanner from 'Components/banners/business-closure-banner';
 import { useContentFlag, useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import classNames from 'classnames';
 import './traders-hub.scss';
@@ -59,7 +60,7 @@ const TradersHub = observer(() => {
     } = client;
 
     const { is_eu_demo, is_eu_real } = useContentFlag();
-    const { selected_platform_type, setTogglePlatformType, is_eu_user, is_real } = traders_hub;
+    const { selected_platform_type, setTogglePlatformType, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef<HTMLDivElement>(null);
 
     const can_show_notify =
@@ -152,6 +153,7 @@ const TradersHub = observer(() => {
     return (
         <React.Fragment>
             <AfterSignupFlow />
+            <BusinessClosureBanner />
             <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop}>
                 {can_show_notify && <Notifications />}
                 <div
@@ -162,7 +164,7 @@ const TradersHub = observer(() => {
                     })}
                     ref={traders_hub_ref}
                 >
-                    {has_any_real_account && is_real && <div className='get-started-trading-banner-ct' />}
+                    {has_any_real_account && <div className='get-started-trading-banner-ct' />}
                     {should_show_banner && !has_any_real_account && !is_eu && is_landing_company_loaded && (
                         <Suspense fallback={<div />}>
                             <RealAccountCreationBanner />

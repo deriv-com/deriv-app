@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import Bowser from 'bowser';
 import { LoginHistory } from '@deriv/api-types';
 
@@ -37,7 +37,7 @@ export const getLoginHistoryFormattedData = (login_history: LoginHistory) => {
         );
         const date = environment_split[0];
         const time = environment_split[1].replace('GMT', ' GMT');
-        data[i].date = `${moment(date, 'DD-MMM-YY').format('YYYY-MM-DD')} ${time}`;
+        data[i].date = `${dayjs(date).format('YYYY-MM-DD')} ${time}`;
         data[i].action = login_history[i].action === 'login' ? 'Login' : 'Logout';
         const user_agent_string = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
         const user_agent: TUserAgent = mobile_app_UA

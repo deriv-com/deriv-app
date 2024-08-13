@@ -56,16 +56,16 @@ describe('Announcements', () => {
             if (notification_button) {
                 userEvent.click(notification_button);
             }
-        })
-            .then(() => {
-                expect(screen.queryByTestId('announcements__amount')).not.toBeInTheDocument();
+        });
+        await waitFor(() => {
+            expect(screen.queryByTestId('announcements__amount')).not.toBeInTheDocument();
 
-                const button_cancel = screen.getByRole('button', { name: /Learn more/i });
-                userEvent.click(button_cancel);
-            })
-            .then(() => {
-                expect(mock_DBot_store?.dashboard.setActiveTab(DBOT_TABS.TUTORIAL));
-            });
+            const button_cancel = screen.getByRole('button', { name: /Learn more/i });
+            userEvent.click(button_cancel);
+        });
+        await waitFor(() => {
+            expect(mock_DBot_store?.dashboard.setActiveTab(DBOT_TABS.TUTORIAL));
+        });
     });
 
     it('should decrease the indicator count and remove it, the list of announcements should be displayed, and redirect to bot builder page upon clicking on the announcement item.', async () => {
@@ -84,15 +84,15 @@ describe('Announcements', () => {
             if (notification_button) {
                 userEvent.click(notification_button);
             }
-        })
-            .then(() => {
-                expect(screen.queryByTestId('announcements__amount')).not.toBeInTheDocument();
-                const buttonConfirm = screen.getByRole('button', { name: /Try now/i });
-                userEvent.click(buttonConfirm);
-            })
-            .then(() => {
-                expect(mock_DBot_store?.dashboard.setActiveTab(DBOT_TABS.BOT_BUILDER));
-            });
+        });
+        await waitFor(() => {
+            expect(screen.queryByTestId('announcements__amount')).not.toBeInTheDocument();
+            const buttonConfirm = screen.getByRole('button', { name: /Try now/i });
+            userEvent.click(buttonConfirm);
+        });
+        await waitFor(() => {
+            expect(mock_DBot_store?.dashboard.setActiveTab(DBOT_TABS.BOT_BUILDER));
+        });
     });
 
     it('should disappear the announcements indicator, when the "Mark All as Read" button is clicked.', async () => {

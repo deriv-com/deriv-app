@@ -1,21 +1,18 @@
 import React from 'react';
 // import { observer } from 'mobx-react';
 // import { useTraderStore } from 'Stores/useTraderStores';
-import { ActionSheet, SegmentedControlSingleChoice } from '@deriv-com/quill-ui';
+import { ActionSheet, Button, SegmentedControlSingleChoice } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 // import { Skeleton } from '@deriv/components';
 import DealCancellation from './deal-cancellation';
 
 type TRiskManagementPickerProps = {
+    closeActionSheet: () => void;
     should_show_deal_cancellation?: boolean;
 };
 
-const RiskManagementPicker = ({ should_show_deal_cancellation }: TRiskManagementPickerProps) => {
+const RiskManagementPicker = ({ closeActionSheet, should_show_deal_cancellation }: TRiskManagementPickerProps) => {
     const [tab_index, setTabIndex] = React.useState(0);
-
-    const onSave = () => {
-        // console.log('onSave')
-    };
 
     return (
         <React.Fragment>
@@ -33,21 +30,22 @@ const RiskManagementPicker = ({ should_show_deal_cancellation }: TRiskManagement
                     />
                 )}
                 {tab_index ? (
-                    <DealCancellation />
+                    <DealCancellation closeActionSheet={closeActionSheet} />
                 ) : (
                     <React.Fragment>
                         <div>TP</div>
                         <div>SL</div>
+                        <Button
+                            color='black'
+                            size='lg'
+                            label={<Localize i18n_default_text='Save' />}
+                            fullWidth
+                            className='risk-management__save-button'
+                            // onClick={() => console.log('Click')}
+                        />
                     </React.Fragment>
                 )}
             </ActionSheet.Content>
-            <ActionSheet.Footer
-                alignment='vertical'
-                primaryAction={{
-                    content: <Localize i18n_default_text='Save' />,
-                    onAction: onSave,
-                }}
-            />
         </React.Fragment>
     );
 };

@@ -16,14 +16,26 @@ type TRiskManagementProps = {
 
 const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
     const [is_open, setIsOpen] = React.useState(false);
-    const { cancellation_range_list } = useTraderStore();
+    const { has_cancellation, cancellation_range_list, cancellation_duration } = useTraderStore();
+
+    const closeActionSheet = () => setIsOpen(false);
+    const getRiskManagementText = () => {
+        //TODO: add cases for TP and SL
+        if (!has_cancellation) return '-';
+        return `DC: ${cancellation_duration}`;
+    };
 
     const should_show_deal_cancellation = cancellation_range_list?.length > 0;
     const classname = clsx('trade-params__option', is_minimized && 'trade-params__option--minimized');
     const action_sheet_content = [
         {
             id: 1,
-            component: <RiskManagementPicker should_show_deal_cancellation={should_show_deal_cancellation} />,
+            component: (
+                <RiskManagementPicker
+                    closeActionSheet={closeActionSheet}
+                    should_show_deal_cancellation={should_show_deal_cancellation}
+                />
+            ),
         },
         {
             id: 2,
@@ -38,6 +50,7 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
             ),
         },
     ];
+
     return (
         <>
             <TextField
@@ -50,10 +63,10 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
                 }
                 onClick={() => setIsOpen(true)}
                 readOnly
-                value={'-'}
+                value={getRiskManagementText()}
                 variant='fill'
             />
-            <ActionSheet.Root isOpen={is_open} onClose={() => setIsOpen(false)} position='left' expandable={false}>
+            <ActionSheet.Root isOpen={is_open} onClose={closeActionSheet} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         classname={clsx('risk-management__carousel')}

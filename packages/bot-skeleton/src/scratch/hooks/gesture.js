@@ -24,10 +24,10 @@ Blockly.Gesture.prototype.updateIsDraggingFromFlyout = function () {
         }
 
         // The start block is no longer relevant, because this is a drag.
+        this.startBlock.workspace.clearGesture();
         this.startBlock = null;
         this.targetBlock = this.flyout.createBlock(this.mostRecentEvent, this.targetBlock);
         this.targetBlock.select();
-        this.startBlock.workspace.clearGesture();
         return true;
     }
     return false;

@@ -4,7 +4,7 @@ import { LabelPairedCircleInfoCaptionBoldIcon } from '@deriv/quill-icons';
 
 export const IconAnnounce = ({ announce }: { announce: boolean }) => (
     <>
-        <LabelPairedCircleInfoCaptionBoldIcon fill='#0777C4' width='24' height='26' />
+        <LabelPairedCircleInfoCaptionBoldIcon fill='var(--text-info-blue)' width='24' height='26' />
         {announce && <div className='notification__icon--indicator' />}
     </>
 );

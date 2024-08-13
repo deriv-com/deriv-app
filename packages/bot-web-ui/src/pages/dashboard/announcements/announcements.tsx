@@ -162,7 +162,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                     }}
                     componentConfig={{
                         clearButtonText: localize('Mark all as read'),
-                        modalTitle: localize('Announcement'),
+                        modalTitle: localize('Announcements'),
                         noNotificationsMessage: localize('No announcements MESSAGE'),
                         noNotificationsTitle: localize('No announcements'),
                     }}

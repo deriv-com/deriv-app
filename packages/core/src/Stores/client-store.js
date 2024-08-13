@@ -425,6 +425,8 @@ export default class ClientStore extends BaseStore {
             is_mf_account: computed,
             is_tradershub_tracking: observable,
             setTradersHubTracking: action.bound,
+            account_time_of_closure: computed,
+            is_account_to_be_closed_by_residence: computed,
         });
 
         reaction(
@@ -2890,5 +2892,15 @@ export default class ClientStore extends BaseStore {
 
     get is_mf_account() {
         return this.loginid?.startsWith('MF');
+    }
+
+    get account_time_of_closure() {
+        return this.account_status?.account_closure?.find(
+            item => item?.status_codes?.includes('residence_closure') && item?.type === 'residence'
+        )?.time_of_closure;
+    }
+
+    get is_account_to_be_closed_by_residence() {
+        return this.account_time_of_closure && this.residence && this.residence === 'sn';
     }
 }

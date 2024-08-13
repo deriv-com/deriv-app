@@ -424,9 +424,6 @@ export default class LoadModalStore implements ILoadModalStore {
             this.setLoadedLocalFile(null);
         }
 
-        const dark_mode = document.body.classList.contains('theme--dark');
-        setColors(dark_mode);
-
         //to load the bot on first load
         const ref = document.getElementById('load-strategy__blockly-container');
         if (!ref) {

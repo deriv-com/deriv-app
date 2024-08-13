@@ -5,6 +5,7 @@ import VerificationLinkExpiredModal from '../verification-link-expired-modal';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { routes } from '@deriv/shared';
 import { usePhoneNumberVerificationSetTimer } from '@deriv/hooks';
+import { APIProvider } from '@deriv/api';
 
 const mock_push_function = jest.fn();
 jest.mock('react-router', () => ({
@@ -46,12 +47,14 @@ describe('VerificationLinkExpiredModal', () => {
 
     const renderComponent = () => {
         render(
-            <StoreProvider store={mock_store}>
-                <VerificationLinkExpiredModal
-                    should_show_verification_link_expired_modal
-                    setShouldShowVerificationLinkExpiredModal={mockSetShowVerificationLinkExpiredModal}
-                />
-            </StoreProvider>
+            <APIProvider>
+                <StoreProvider store={mock_store}>
+                    <VerificationLinkExpiredModal
+                        should_show_verification_link_expired_modal
+                        setShouldShowVerificationLinkExpiredModal={mockSetShowVerificationLinkExpiredModal}
+                    />
+                </StoreProvider>
+            </APIProvider>
         );
     };
 

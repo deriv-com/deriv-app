@@ -761,7 +761,9 @@ type TUiStore = {
     setPurchaseState: (index: number) => void;
     simple_duration_unit: string;
     should_show_phone_number_otp: boolean;
+    should_show_cancel_verification_modal: { show_modal: boolean; routing_path?: string };
     setShouldShowPhoneNumberOTP: (value: boolean) => void;
+    setShouldShowCancelVerificationModal: (value: { show_modal: boolean; routing_path?: string }) => void;
     sub_section_index: number;
     setPromptHandler: (
         condition: boolean,

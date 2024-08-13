@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { DerivLightDmt5PasswordIcon } from '@deriv/quill-icons';
 // import { DBVI_COMPANY_NAMES } from '@deriv/shared';
 import { Checkbox, InlineMessage } from '@deriv-com/ui';
+import { URLUtils } from '@deriv-com/utils';
 import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks, TPlatforms } from '../../../../types';
@@ -76,8 +77,13 @@ const CreatePasswordMT5: React.FC<TProps> = ({
                             checked={checked}
                             label={
                                 <WalletText size={isDesktop ? 'xs' : 'sm'}>
-                                    I confirm and accept {selectedCompany.name}’s
-                                    <a className='wallets-create-password-mt5__tnc-link' href={selectedCompany.tncUrl}>
+                                    I confirm and accept {selectedCompany.name}’s{' '}
+                                    <a
+                                        className='wallets-create-password-mt5__tnc-link'
+                                        href={URLUtils.getDerivStaticURL(selectedCompany.tncUrl)}
+                                        rel='noreferrer'
+                                        target='_blank'
+                                    >
                                         terms and conditions
                                     </a>
                                 </WalletText>

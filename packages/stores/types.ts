@@ -995,6 +995,10 @@ type TNotificationStore = {
     is_notifications_empty: boolean;
     is_notifications_visible: boolean;
     filterNotificationMessages: () => void;
+    handleCurrencyRemovalNotification: (
+        account_currency_closure_status: Record<string, unknown>,
+        currency: string
+    ) => void;
     notifications: TNotificationMessage[];
     p2p_advertiser_info: P2PAdvertiserInformationResponse['p2p_advertiser_info'];
     p2p_completed_orders: NonNullable<P2POrderListResponse['p2p_order_list']>['list'];

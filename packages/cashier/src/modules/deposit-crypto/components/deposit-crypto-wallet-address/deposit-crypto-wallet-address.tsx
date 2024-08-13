@@ -1,4 +1,5 @@
 import React from 'react';
+import { Analytics } from '@deriv-com/analytics';
 import { Button, Clipboard, InlineMessage, Loading, Text } from '@deriv/components';
 import { useDepositCryptoAddress } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
@@ -9,13 +10,23 @@ import { DepositCryptoDisclaimers } from '../deposit-crypto-disclaimers';
 import './deposit-crypto-wallet-address.scss';
 
 const DepositCryptoWalletAddress: React.FC = observer(() => {
-    const { ui } = useStore();
+    const { client, ui } = useStore();
+    const { currency, loginid } = client;
     const { is_mobile } = ui;
     const { data: deposit_crypto_address, isLoading, error, resend } = useDepositCryptoAddress();
 
     if (isLoading) return <Loading is_fullscreen={false} />;
 
     setPerformanceValue('load_crypto_deposit_cashier_time');
+
+    const onClickHandler = () => {
+        Analytics.trackEvent('ce_cashier_deposit_onboarding_form', {
+            action: 'click_copy_crypto_address',
+            form_name: 'ce_cashier_deposit_onboarding_form',
+            currency,
+            login_id: loginid,
+        });
+    };
 
     if (error) {
         return (
@@ -49,6 +60,7 @@ const DepositCryptoWalletAddress: React.FC = observer(() => {
                         text_copy={deposit_crypto_address || ''}
                         info_message={is_mobile ? undefined : localize('copy')}
                         success_message={localize('copied!')}
+                        onClickHandler={onClickHandler}
                         popoverAlignment={is_mobile ? 'left' : 'bottom'}
                     />
                 </div>

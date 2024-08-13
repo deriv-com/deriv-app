@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { useOnfido, usePOA } from '@deriv/api-v2';
+import { useTranslations } from '@deriv-com/translations';
 import { InlineMessage } from '../../../../components';
 import { useFlow } from '../../../../components/FlowProvider';
 import { VerifyDocumentDetails } from '../../../accounts';
@@ -11,6 +12,7 @@ const Onfido = () => {
         data: { hasSubmitted, onfidoContainerId, onfidoRef },
         isServiceTokenLoading,
     } = useOnfido();
+    const { localize } = useTranslations();
     const { switchScreen } = useFlow();
     const { data: poaStatus } = usePOA();
     const { formValues, setFormValues } = useFlow();
@@ -43,14 +45,14 @@ const Onfido = () => {
                     {!formValues.verifiedDocumentDetails ? (
                         <div className='wallets-onfido__wrapper-overlay'>
                             <InlineMessage
-                                message='Hit the checkbox above to choose your document.'
+                                message={localize('Hit the checkbox above to choose your document.')}
                                 size='sm'
                                 type='information'
                             />
                         </div>
                     ) : (
                         <InlineMessage
-                            message='Your personal details have been saved successfully.'
+                            message={localize('Your personal details have been saved successfully.')}
                             size='sm'
                             type='announcement'
                         />

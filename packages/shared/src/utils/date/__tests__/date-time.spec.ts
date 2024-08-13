@@ -130,3 +130,9 @@ describe('getTimeSince', () => {
         expect(DateTime.getTimeSince(0)).toEqual('');
     });
 });
+
+describe('getDateFromTimestamp', () => {
+    it('should return correct date with timestamp passed', () => {
+        expect(DateTime.getDateFromTimestamp(1814966400)).toEqual('07 07 2027');
+    });
+});

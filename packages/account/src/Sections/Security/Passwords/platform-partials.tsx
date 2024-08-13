@@ -1,7 +1,7 @@
-import React from 'react';
+import { Fragment } from 'react';
 import { Button, Icon, Popover, Text } from '@deriv/components';
 import { getPlatformSettings, CFD_PLATFORMS } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { useTranslations } from '@deriv-com/translations';
 
 type TPlatformPartialsProps = {
     description: JSX.Element;
@@ -19,9 +19,10 @@ type TPlatformPartialsProps = {
  */
 const PlatformPartials = ({ description, type, handleClick }: TPlatformPartialsProps) => {
     const platform_config = getPlatformSettings(type);
+    const { localize } = useTranslations();
 
     return (
-        <React.Fragment>
+        <Fragment>
             <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
                 {description}
             </Text>
@@ -38,7 +39,7 @@ const PlatformPartials = ({ description, type, handleClick }: TPlatformPartialsP
                     large
                 />
             </div>
-        </React.Fragment>
+        </Fragment>
     );
 };
 

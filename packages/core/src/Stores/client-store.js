@@ -89,7 +89,7 @@ export default class ClientStore extends BaseStore {
     has_changed_two_fa = false;
     landing_companies = {};
     is_new_session = false;
-
+    is_tradershub_tracking = false;
     // All possible landing companies of user between all
     standpoint = {
         svg: false,
@@ -416,8 +416,13 @@ export default class ClientStore extends BaseStore {
             unsubscribeFromExchangeRate: action.bound,
             unsubscribeFromAllExchangeRates: action.bound,
             setExchangeRates: action.bound,
+            setIsLandingCompanyLoaded: action.bound,
             is_cr_account: computed,
             is_mf_account: computed,
+            is_tradershub_tracking: observable,
+            setTradersHubTracking: action.bound,
+            account_time_of_closure: computed,
+            is_account_to_be_closed_by_residence: computed,
         });
 
         reaction(
@@ -874,6 +879,10 @@ export default class ClientStore extends BaseStore {
 
     get is_bot_allowed() {
         return this.isBotAllowed();
+    }
+
+    setTradersHubTracking(is_tradershub_tracking = false) {
+        this.is_tradershub_tracking = is_tradershub_tracking;
     }
 
     setExternalParams = params => {
@@ -1428,11 +1437,14 @@ export default class ClientStore extends BaseStore {
     }
 
     async resetVirtualBalance() {
-        Analytics.trackEvent('ce_tradershub_dashboard_form', {
-            action: 'reset_balance',
-            form_name: 'traders_hub_default',
-            account_mode: 'demo',
-        });
+        if (this.is_tradershub_tracking) {
+            Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                action: 'reset_balance',
+                form_name: 'traders_hub_default',
+                account_mode: 'demo',
+            });
+        }
+
         this.root_store.notifications.removeNotificationByKey({ key: 'reset_virtual_balance' });
         this.root_store.notifications.removeNotificationMessage({
             key: 'reset_virtual_balance',
@@ -1516,7 +1528,7 @@ export default class ClientStore extends BaseStore {
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
-        if (action_param === 'request_email') {
+        if (action_param === 'request_email' && this.is_logged_in) {
             const request_email_code = code_param ?? LocalStore.get(`verification_code.${action_param}`) ?? '';
             if (request_email_code) {
                 this.setVerificationCode(request_email_code, action_param);
@@ -1659,6 +1671,10 @@ export default class ClientStore extends BaseStore {
         this.landing_companies = response.landing_company;
         this.is_landing_company_loaded = true;
         this.setStandpoint(this.landing_companies);
+    }
+
+    setIsLandingCompanyLoaded(state) {
+        this.is_landing_company_loaded = state;
     }
 
     setStandpoint(landing_companies) {
@@ -2866,5 +2882,15 @@ export default class ClientStore extends BaseStore {
 
     get is_mf_account() {
         return this.loginid?.startsWith('MF');
+    }
+
+    get account_time_of_closure() {
+        return this.account_status?.account_closure?.find(
+            item => item?.status_codes?.includes('residence_closure') && item?.type === 'residence'
+        )?.time_of_closure;
+    }
+
+    get is_account_to_be_closed_by_residence() {
+        return this.account_time_of_closure && this.residence && this.residence === 'sn';
     }
 }

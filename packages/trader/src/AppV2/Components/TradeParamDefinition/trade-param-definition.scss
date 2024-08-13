@@ -1,0 +1,7 @@
+$HANDLEBAR_HEIGHT: var(--core-size-1000);
+$HEADER_TITLE_HEIGHT: var(--core-size-3200);
+
+.trade-param-definition {
+    height: calc(400px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
+    padding-block-start: 0;
+}

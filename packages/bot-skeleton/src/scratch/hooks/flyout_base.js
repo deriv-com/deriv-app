@@ -1,4 +1,4 @@
-//import { config } from '../../constants/config';
+import { config } from '../../constants/config';
 import DBotStore from '../dbot-store';
 
 /**
@@ -34,14 +34,13 @@ Blockly.Flyout.prototype.createBlock = function (event, original_block) {
         // Delete blocks of which we can only have a single instance. Dispose emits a BlockDelete
         // event that respects the current Blockly.Events group, this is required to maintain
         // a working undo/redo stack.
-        //commentrd this since it create=s two instances of the blockl from flyout
-        //if (config.single_instance_blocks.includes(new_block.type)) {
-        main_workspace.getAllBlocks().forEach(ws_block => {
-            if (ws_block.type === new_block.type && ws_block.id !== new_block.id) {
-                ws_block.dispose();
-            }
-        });
-        //}
+        if (config.single_instance_blocks.includes(new_block.type)) {
+            main_workspace.getAllBlocks().forEach(ws_block => {
+                if (ws_block.type === new_block.type && ws_block.id !== new_block.id) {
+                    ws_block.dispose();
+                }
+            });
+        }
 
         // Fire a VarCreate event for each (if any) new variable created.
         new_variables.forEach(new_variable => {

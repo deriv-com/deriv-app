@@ -31,6 +31,7 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
         deleteBot,
         active_bot,
         setActiveBotId,
+        should_subscribe,
     } = server_bot;
 
     const [menu_open, setMenuOpen] = React.useState({ visible: false, y: 0, bot_id: '' });
@@ -40,7 +41,7 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
     const { is_logged_in } = client;
 
     useEffect(() => {
-        getBotList(true);
+        if (should_subscribe) getBotList();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -172,7 +173,7 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
                                     </Text>
                                     <Text size='xs'>
                                         <Localize
-                                            i18n_default_text='To get started, tap <0>+ Create Bbot</0>'
+                                            i18n_default_text='To get started, tap <0>+ Create bot</0>'
                                             components={[<strong key={0} />]}
                                         />
                                     </Text>

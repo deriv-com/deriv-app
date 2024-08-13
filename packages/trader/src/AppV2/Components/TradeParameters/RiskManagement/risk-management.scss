@@ -1,13 +1,19 @@
+$HANDLEBAR_HEIGHT: var(--core-size-1000);
+$HEADER_TITLE_HEIGHT: var(--core-size-3200);
 $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
 
 .risk-management {
     &__carousel {
-        min-height: 40rem;
+        .trade-param-definition {
+            min-height: calc(48rem - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
+        }
     }
 
     &__picker {
         padding-block-start: 0;
-        min-height: calc(100% - $FOOTER_BUTTON_HEIGHT);
+        padding-block-end: 0;
+        min-height: calc(48rem - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $FOOTER_BUTTON_HEIGHT);
+        height: calc(100% - $FOOTER_BUTTON_HEIGHT);
     }
 
     &__description {
@@ -16,5 +22,27 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
         &__definition {
             margin-block-end: var(--core-spacing-800);
         }
+    }
+}
+
+.deal-cancellation {
+    &__container {
+        display: flex;
+        flex-direction: column;
+        height: 27.6rem;
+        gap: var(--core-spacing-400);
+    }
+
+    &__toggle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--core-spacing-400) 0;
+        margin-block-start: var(--core-spacing-400);
+    }
+
+    &__wheel-picker {
+        flex-grow: 1;
+        min-height: 0;
     }
 }

@@ -1,7 +1,10 @@
 import React from 'react';
-import { ActionSheet, SegmentedControlSingleChoice, Text, WheelPicker } from '@deriv-com/quill-ui';
+// import { observer } from 'mobx-react';
+// import { useTraderStore } from 'Stores/useTraderStores';
+import { ActionSheet, SegmentedControlSingleChoice } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
-import { Skeleton } from '@deriv/components';
+// import { Skeleton } from '@deriv/components';
+import DealCancellation from './deal-cancellation';
 
 type TRiskManagementPickerProps = {
     should_show_deal_cancellation?: boolean;
@@ -30,7 +33,7 @@ const RiskManagementPicker = ({ should_show_deal_cancellation }: TRiskManagement
                     />
                 )}
                 {tab_index ? (
-                    <div>DC</div>
+                    <DealCancellation />
                 ) : (
                     <React.Fragment>
                         <div>TP</div>

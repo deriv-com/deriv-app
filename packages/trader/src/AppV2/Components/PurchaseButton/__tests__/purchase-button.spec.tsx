@@ -175,7 +175,7 @@ describe('PositionsContent', () => {
     });
 
     it('should disable the button if one of the prop is false (is_trade_enabled, is_proposal_empty, !info.id, is_purchase_enabled): button should have a specific attribute and if user clicks on it onPurchase will not be called', () => {
-        default_mock_store.modules.trade.is_purchase_enabled = false;
+        default_mock_store.modules.trade.is_trade_enabled_v2 = false;
         mockPurchaseButton();
 
         const purchase_button = screen.getAllByRole('button')[0];

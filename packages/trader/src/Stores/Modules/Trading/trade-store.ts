@@ -1287,7 +1287,7 @@ export default class TradeStore extends BaseStore {
     }
 
     get is_dtrader_v2_enabled() {
-        const is_dtrader_v2 = JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '').data.dtrader_v2;
+        const is_dtrader_v2 = JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2;
 
         return (
             is_dtrader_v2 &&

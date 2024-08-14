@@ -9,12 +9,12 @@ import {
     DerivLightIcTypoEmailPasskeyIcon,
     DerivLightIcWrongEmailPasskeyIcon,
 } from '@deriv/quill-icons';
-import { Button } from '@deriv-com/ui';
+import { Localize } from '@deriv-com/translations';
+import { Button, Text } from '@deriv-com/ui';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import useSendPasswordResetEmail from '../../hooks/useSendPasswordResetEmail';
 import { TPlatforms } from '../../types';
-import { WalletText } from '../Base';
 import { WalletError } from '../WalletError';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 import './SentEmailContent.scss';
@@ -31,23 +31,28 @@ type SentEmailContentProps = {
 // NOTE: key field is not from BE or requirements, its only used for key prop
 const emailReasons = [
     {
-        content: 'The email is in your spam folder (Sometimes things get lost there).',
+        content: <Localize i18n_default_text='The email is in your spam folder (Sometimes things get lost there).' />,
         icon: <DerivLightIcSpamEmailPasskeyIcon height='36px' width='36px' />,
         key: 'EmailInSpamFolder',
     },
     {
-        content:
-            'You accidentally gave us another email address (Usually a work or a personal one instead of the one you meant).',
+        content: (
+            <Localize i18n_default_text='You accidentally gave us another email address (Usually a work or a personal one instead of the one you meant).' />
+        ),
         icon: <DerivLightIcWrongEmailPasskeyIcon height='36px' width='36px' />,
         key: 'AnotherEmailAddress',
     },
     {
-        content: 'The email address you entered had a mistake or typo (happens to the best of us).',
+        content: (
+            <Localize i18n_default_text='The email address you entered had a mistake or typo (happens to the best of us).' />
+        ),
         icon: <DerivLightIcTypoEmailPasskeyIcon height='36px' width='36px' />,
         key: 'TypoEmailAddress',
     },
     {
-        content: 'We can’t deliver the email to this address (Usually because of firewalls or filtering).',
+        content: (
+            <Localize i18n_default_text="We can't deliver the email to this address (Usually because of firewalls or filtering)." />
+        ),
         icon: <DerivLightIcFirewallEmailPasskeyIcon height='36px' width='36px' />,
         key: 'UnableToDeliverEmailAddress',
     },
@@ -65,6 +70,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
     const [hasCountdownStarted, setHasCountdownStarted] = useState(false);
     const { error: resetPasswordError, sendEmail } = useSendPasswordResetEmail();
     const { isMobile } = useDevice();
+
     const mt5Platform = PlatformDetails.mt5.platform;
     const { title } = PlatformDetails[platform ?? mt5Platform];
     const titleSize = 'md';
@@ -107,7 +113,14 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
             })}
         >
             <WalletsActionScreen
-                description={description ?? `Please click on the link in the email to change your ${title} password.`}
+                description={
+                    description ?? (
+                        <Localize
+                            i18n_default_text='Please click on the link in the email to change your {{title}} password.'
+                            values={{ title }}
+                        />
+                    )
+                }
                 descriptionSize={descriptionSize}
                 icon={<EmailSentIcon width={133} />}
                 renderButtons={() => (
@@ -120,12 +133,12 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
                         size='lg'
                         variant='ghost'
                     >
-                        <WalletText color='error' size={emailButtonTextSize} weight='bold'>
-                            Didn&apos;t receive the email?
-                        </WalletText>
+                        <Text color='error' size={emailButtonTextSize} weight='bold'>
+                            <Localize i18n_default_text="Didn't receive the email?" />
+                        </Text>
                     </Button>
                 )}
-                title='We’ve sent you an email'
+                title={<Localize i18n_default_text="We've sent you an email" />}
                 titleSize={titleSize}
             />
             {shouldShowResendEmailReasons && (
@@ -135,9 +148,9 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
                             return (
                                 <div className='wallets-sent-email-content__reasons' key={emailReason.key}>
                                     {emailReason.icon}
-                                    <WalletText lineHeight='sm' size={emailReasonsSize}>
+                                    <Text lineHeight='sm' size={emailReasonsSize}>
                                         {emailReason.content}
-                                    </WalletText>
+                                    </Text>
                                 </div>
                             );
                         })}
@@ -150,7 +163,11 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
                         textSize={emailButtonTextSize}
                         variant='contained'
                     >
-                        {hasCountdownStarted ? `Resend email in ${count} seconds` : 'Resend email'}
+                        {hasCountdownStarted ? (
+                            <Localize i18n_default_text='Resend email in {{count}} seconds' values={{ count }} />
+                        ) : (
+                            <Localize i18n_default_text='Resend email' />
+                        )}
                     </Button>
                 </Fragment>
             )}

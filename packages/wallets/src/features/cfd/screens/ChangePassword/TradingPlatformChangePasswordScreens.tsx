@@ -2,8 +2,9 @@ import React, { FC, useState } from 'react';
 import classNames from 'classnames';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { DerivLightDmt5PasswordIcon, DerivLightIcDxtradePasswordIcon } from '@deriv/quill-icons';
-import { Button, useDevice } from '@deriv-com/ui';
-import { SentEmailContent, WalletsActionScreen, WalletText } from '../../../../components';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { Button, Text, useDevice } from '@deriv-com/ui';
+import { SentEmailContent, WalletsActionScreen } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import { TPlatforms } from '../../../../types';
 import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
@@ -24,8 +25,9 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
     const { mutate } = useVerifyEmail();
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
-    const buttonTextSize = isMobile ? 'md' : 'sm';
+    const { localize } = useTranslations();
 
+    const buttonTextSize = isMobile ? 'md' : 'sm';
     const { title } = PlatformDetails[platform];
 
     const isDerivX = platform === PlatformDetails.dxtrade.platform;
@@ -45,14 +47,17 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
     const ChangePasswordScreens = {
         confirmationScreen: {
             bodyText: (
-                <WalletText align='center' color='error' size='sm'>
-                    This will change the password to all of your {title} accounts.
-                </WalletText>
+                <Text align='center' color='error' size='sm'>
+                    <Localize
+                        i18n_default_text='This will change the password to all of your {{title}} accounts.'
+                        values={{ title }}
+                    />
+                </Text>
             ),
             button: (
                 <div className='wallets-change-password__btn'>
                     <Button color='black' onClick={() => hide()} size='lg' textSize={buttonTextSize} variant='outlined'>
-                        Cancel
+                        <Localize i18n_default_text='Cancel' />
                     </Button>
                     <Button
                         onClick={() => {
@@ -62,20 +67,23 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
                         size='lg'
                         textSize={buttonTextSize}
                     >
-                        Confirm
+                        <Localize i18n_default_text='Confirm' />
                     </Button>
                 </div>
             ),
-            headingText: `Confirm to change your ${title} password`,
+            headingText: localize('Confirm to change your {{title}} password', { title }),
         },
         introScreen: {
-            bodyText: `Use this password to log in to your ${title} accounts on the desktop, web, and mobile apps.`,
+            bodyText: localize(
+                'Use this password to log in to your {{title}} accounts on the desktop, web, and mobile apps.',
+                { title }
+            ),
             button: (
                 <Button onClick={() => handleClick('confirmationScreen')} size='lg' textSize={buttonTextSize}>
-                    Change password
+                    <Localize i18n_default_text='Change password' />
                 </Button>
             ),
-            headingText: `${title} password`,
+            headingText: localize('{{title}} password', { title }),
         },
     };
 

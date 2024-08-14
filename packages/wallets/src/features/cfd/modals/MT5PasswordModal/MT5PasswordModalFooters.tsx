@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Localize } from '@deriv-com/translations';
 import { Button } from '@deriv-com/ui';
 import { WalletButtonGroup } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
@@ -27,7 +28,7 @@ export const SuccessModalFooter = ({ isDemo }: Pick<TProps, 'isDemo'>) => {
         return (
             <div className='wallets-success-btn'>
                 <Button isFullWidth onClick={hide} size={isDesktop ? 'md' : 'lg'}>
-                    OK
+                    <Localize i18n_default_text='OK' />
                 </Button>
             </div>
         );
@@ -36,10 +37,10 @@ export const SuccessModalFooter = ({ isDemo }: Pick<TProps, 'isDemo'>) => {
     return (
         <WalletButtonGroup isFlex isFullWidth>
             <Button color='black' onClick={hide} size={isDesktop ? 'md' : 'lg'} variant='outlined'>
-                Maybe later
+                <Localize i18n_default_text='Maybe later' />
             </Button>
             <Button onClick={() => handleOnClickReal()} size={isDesktop ? 'md' : 'lg'}>
-                Transfer funds
+                <Localize i18n_default_text='Transfer funds' />
             </Button>
         </WalletButtonGroup>
     );
@@ -62,7 +63,7 @@ export const MT5PasswordModalFooter = ({
                 size={isDesktop ? 'md' : 'lg'}
                 variant='outlined'
             >
-                Forgot password?
+                <Localize i18n_default_text='Forgot password?' />
             </Button>
             <Button
                 disabled={disabled}
@@ -71,7 +72,7 @@ export const MT5PasswordModalFooter = ({
                 onClick={onPrimaryClick}
                 size={isDesktop ? 'md' : 'lg'}
             >
-                Add account
+                <Localize i18n_default_text='Add account' />
             </Button>
         </WalletButtonGroup>
     );

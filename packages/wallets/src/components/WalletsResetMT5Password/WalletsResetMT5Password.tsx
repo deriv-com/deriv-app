@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordReset } from '@deriv/api-v2';
-import { Button } from '@deriv-com/ui';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { Button, Text } from '@deriv-com/ui';
 import { CFD_PLATFORMS, PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import { TPlatforms } from '../../types';
 import { validPassword, validPasswordMT5 } from '../../utils/password-validation';
-import { ModalStepWrapper, WalletPasswordFieldLazy, WalletText } from '../Base';
+import { ModalStepWrapper, WalletPasswordFieldLazy } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletError } from '../WalletError';
 import WalletsErrorMT5InvestorPassword from './WalletsErrorMT5InvestorPassword';
@@ -13,10 +14,12 @@ import WalletSuccessResetMT5Password from './WalletSuccessResetMT5Password';
 import './WalletsResetMT5Password.scss';
 
 const modalDescription = {
-    [CFD_PLATFORMS.DXTRADE]:
-        'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.',
-    [CFD_PLATFORMS.MT5]:
-        'Your password must contain between 8-16 characters that include uppercase and lowercase letters, and at least one number and special character such as ( _ @ ? ! / # ).',
+    [CFD_PLATFORMS.DXTRADE]: (
+        <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
+    ),
+    [CFD_PLATFORMS.MT5]: (
+        <Localize i18n_default_text='Your password must contain between 8-16 characters that include uppercase and lowercase letters, and at least one number and special character such as ( _ @ ? ! / # ).' />
+    ),
 } as const;
 
 type WalletsResetMT5PasswordProps = {
@@ -50,6 +53,7 @@ const WalletsResetMT5Password = ({
     } = useTradingPlatformInvestorPasswordReset();
 
     const { hide, show } = useModal();
+    const { localize } = useTranslations();
     const [password, setPassword] = useState('');
 
     const isMT5 = platform === CFD_PLATFORMS.MT5;
@@ -102,7 +106,7 @@ const WalletsResetMT5Password = ({
                     errorMessage={changeInvestorPasswordError?.error?.message}
                     renderButtons={() => (
                         <Button isFullWidth={!isDesktop} onClick={hide} textSize={isDesktop ? 'sm' : 'md'}>
-                            Ok
+                            <Localize i18n_default_text='Ok' />
                         </Button>
                     )}
                     title={title}
@@ -122,7 +126,7 @@ const WalletsResetMT5Password = ({
                 textSize='sm'
                 variant='outlined'
             >
-                Cancel
+                <Localize i18n_default_text='Cancel' />
             </Button>
             <Button
                 disabled={isMT5 ? !validPasswordMT5(password) : !validPassword(password)}
@@ -133,7 +137,7 @@ const WalletsResetMT5Password = ({
                 textSize='sm'
                 variant='contained'
             >
-                Create
+                <Localize i18n_default_text='Create' />
             </Button>
         </div>
     );
@@ -146,19 +150,28 @@ const WalletsResetMT5Password = ({
             title={`Manage ${title} password`}
         >
             <div className='wallets-reset-mt5-password'>
-                <WalletText align={isDesktop ? 'left' : 'center'} weight='bold'>
-                    {`Create a new ${title} password`}
-                </WalletText>
+                <Text align={isDesktop ? 'left' : 'center'} weight='bold'>
+                    <Localize i18n_default_text='Create a new {{title}} password' values={{ title }} />
+                </Text>
                 {isMT5 && !isInvestorPassword && (
-                    <WalletText size='sm'>You can use this password for all your {title} accounts.</WalletText>
+                    <Text size='sm'>
+                        <Localize
+                            i18n_default_text='You can use this password for all your {{title}} accounts.'
+                            values={{ title }}
+                        />
+                    </Text>
                 )}
                 <WalletPasswordFieldLazy
-                    label={isInvestorPassword ? 'New investor password' : `${title} password`}
+                    label={
+                        isInvestorPassword
+                            ? localize('New investor password')
+                            : localize('{{title}} password', { title })
+                    }
                     mt5Policy={isMT5}
                     onChange={e => setPassword(e.target.value)}
                     password={password}
                 />
-                <WalletText size='sm'>{modalDescription[platform]}</WalletText>
+                <Text size='sm'>{modalDescription[platform]}</Text>
                 {isDesktop && renderButtons()}
             </div>
         </ModalStepWrapper>

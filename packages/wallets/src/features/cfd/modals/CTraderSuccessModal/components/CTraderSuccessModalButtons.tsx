@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { Localize } from '@deriv-com/translations';
 import { Button } from '@deriv-com/ui';
 import { WalletButtonGroup } from '../../../../../components';
 import useDevice from '../../../../../hooks/useDevice';
@@ -19,7 +20,7 @@ const CTraderSuccessModalButtons = ({ createdAccount, hide, isDemo }: TCTraderSu
         return (
             <div className='wallets-success-btn'>
                 <Button isFullWidth onClick={hide} size={isDesktop ? 'md' : 'lg'}>
-                    OK
+                    <Localize i18n_default_text='OK' />
                 </Button>
             </div>
         );
@@ -28,7 +29,7 @@ const CTraderSuccessModalButtons = ({ createdAccount, hide, isDemo }: TCTraderSu
     return (
         <WalletButtonGroup isFlex isFullWidth>
             <Button color='black' onClick={hide} size={isDesktop ? 'md' : 'lg'} variant='outlined'>
-                Maybe later
+                <Localize i18n_default_text='Maybe later' />
             </Button>
             <Button
                 onClick={() => {
@@ -37,7 +38,7 @@ const CTraderSuccessModalButtons = ({ createdAccount, hide, isDemo }: TCTraderSu
                 }}
                 size={isDesktop ? 'md' : 'lg'}
             >
-                Transfer funds
+                <Localize i18n_default_text='Transfer funds' />
             </Button>
         </WalletButtonGroup>
     );

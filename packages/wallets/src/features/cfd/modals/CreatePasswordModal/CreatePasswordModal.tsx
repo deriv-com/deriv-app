@@ -1,4 +1,5 @@
 import React, { ComponentProps, FC } from 'react';
+import { Localize } from '@deriv-com/translations';
 import { Button } from '@deriv-com/ui';
 import { ModalStepWrapper, ModalWrapper } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
@@ -38,7 +39,10 @@ const CreatePasswordModal: FC<ComponentProps<typeof CreatePassword>> = ({
                         onClick={onPrimaryClick}
                         size='lg'
                     >
-                        {`Create ${PlatformDetails[platform].title} password`}
+                        <Localize
+                            i18n_default_text='Create {{platformTitle}} password'
+                            values={{ platformTitle: PlatformDetails[platform].title }}
+                        />
                     </Button>
                 );
             }}

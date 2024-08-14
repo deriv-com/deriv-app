@@ -5,7 +5,7 @@ import { routes } from '@deriv/shared';
 import { LabelPairedBadgeCheckLgRegularIcon } from '@deriv/quill-icons';
 import { useDevice } from '@deriv-com/ui';
 import { useEffect } from 'react';
-import { Analytics } from '@deriv-com/analytics';
+import { usePhoneVerificationAnalytics } from '@deriv/hooks';
 
 type TPhoneNumberVerifiedModal = {
     should_show_phone_number_verified_modal: boolean;
@@ -22,17 +22,16 @@ const PhoneNumberVerifiedModal = ({
         history.push(routes.personal_details);
     };
     const { isMobile } = useDevice();
+    const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
 
     useEffect(() => {
         if (should_show_phone_number_verified_modal) {
-            //@ts-expect-error will remove this error when Analytics package types are being updated
-            Analytics.trackEvent('ce_phone_verification_form', {
+            trackPhoneVerificationEvents({
                 action: 'open',
-                form_name: 'ce_phone_verification_form',
                 subform_name: 'verification_successful',
             });
         }
-    }, [should_show_phone_number_verified_modal]);
+    }, [should_show_phone_number_verified_modal, trackPhoneVerificationEvents]);
 
     return (
         <Modal

@@ -23,10 +23,9 @@ type PageOverlayWrapperProps = {
  */
 const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperProps) => {
     const history = useHistory();
-    const { client, common, ui } = useStore();
+    const { client, common } = useStore();
     const { logout } = client;
     const { is_from_derivgo } = common;
-    const { setShouldShowCancelVerificationModal } = ui;
     const { isDesktop } = useDevice();
 
     const passkeysMenuCloseActionEventTrack = React.useCallback(() => {
@@ -46,9 +45,6 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const onClickClose = React.useCallback(() => {
         if (location.pathname === shared_routes.passkeys) {
             passkeysMenuCloseActionEventTrack();
-        } else if (location.pathname === shared_routes.phone_verification) {
-            setShouldShowCancelVerificationModal({ show_modal: true, routing_path: shared_routes.traders_hub });
-            return;
         }
 
         history.push(shared_routes.traders_hub);

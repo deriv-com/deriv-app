@@ -20,7 +20,13 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
 
     const onButtonClick = useCallback(() => {
         if (activeWallet?.is_virtual) {
-            show(<MT5PasswordModal marketType={account?.market_type || 'synthetic'} platform={account.platform} />);
+            show(
+                <MT5PasswordModal
+                    marketType={account?.market_type || 'synthetic'}
+                    platform={account.platform}
+                    product={account.product}
+                />
+            );
         } else if (account.product === PRODUCT.ZEROSPREAD) {
             show(
                 <Verification

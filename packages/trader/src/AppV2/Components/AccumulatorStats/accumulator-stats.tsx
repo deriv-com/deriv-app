@@ -4,7 +4,7 @@ import { LabelPairedChevronDownSmBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import StatsRow from './stats-row';
+import StatsRow from './accumulator-stats-row';
 
 const AccumulatorStats = observer(() => {
     const { ticks_history_stats = {} } = useTraderStore();

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import AccumulatorStats from '../stats';
+import AccumulatorStats from '../accumulator-stats';
 import TraderProviders from '../../../../trader-providers';
 import { mockStore, useStore } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';

@@ -22,7 +22,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         () => getVerificationStatus(account.landing_company_short || 'svg', account.status),
         [account.landing_company_short, account.status, getVerificationStatus]
     );
-    const { title } = getMarketTypeDetails()[account.market_type ?? 'all'];
+    const { title } = getMarketTypeDetails(account.product)[account.market_type ?? 'all'];
     const { isMobile } = useDevice();
     const { show } = useModal();
 
@@ -31,7 +31,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
             disabled={jurisdictionStatus.is_pending}
             leading={
                 <div className='wallets-added-mt5__icon'>
-                    {getMarketTypeDetails()[account.market_type || 'all'].icon}
+                    {getMarketTypeDetails(account.product)[account.market_type || 'all'].icon}
                 </div>
             }
             onClick={() => {

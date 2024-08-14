@@ -2245,6 +2245,10 @@ type TExtendedMT5AccounListType = Omit<
      * Sub account type
      */
     sub_account_type?: 'standard' | 'financial' | 'financial_stp' | 'swap_free' | 'zero_spread';
+    /**
+     * Product Type
+     */
+    product?: 'zero_spread' | 'swap_free' | 'standard';
 };
 
 type MT5AccountListResponse = {

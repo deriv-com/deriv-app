@@ -2,6 +2,7 @@ import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import DepositCryptoDisclaimers from '../deposit-crypto-disclaimers';
+import { APIProvider } from '@deriv/api';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -26,7 +27,9 @@ describe('DepositCryptoDisclaimers', () => {
         const mock = mockStore({ client: { currency: 'BTC' } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <StoreProvider store={mock}>
+                <APIProvider>{children}</APIProvider>
+            </StoreProvider>
         );
         render(<DepositCryptoDisclaimers />, { wrapper });
 
@@ -37,7 +40,9 @@ describe('DepositCryptoDisclaimers', () => {
         const mock = mockStore({ client: { currency: 'ETH' } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <StoreProvider store={mock}>
+                <APIProvider>{children}</APIProvider>
+            </StoreProvider>
         );
         render(<DepositCryptoDisclaimers />, { wrapper });
 
@@ -48,7 +53,9 @@ describe('DepositCryptoDisclaimers', () => {
         const mock = mockStore({ client: { currency: 'LTC' } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <StoreProvider store={mock}>
+                <APIProvider>{children}</APIProvider>
+            </StoreProvider>
         );
         render(<DepositCryptoDisclaimers />, { wrapper });
 
@@ -59,7 +66,9 @@ describe('DepositCryptoDisclaimers', () => {
         const mock = mockStore({ client: { currency: 'USDC' } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <StoreProvider store={mock}>
+                <APIProvider>{children}</APIProvider>
+            </StoreProvider>
         );
         render(<DepositCryptoDisclaimers />, { wrapper });
 
@@ -70,7 +79,9 @@ describe('DepositCryptoDisclaimers', () => {
         const mock = mockStore({ client: { currency: 'UST' } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <StoreProvider store={mock}>
+                <APIProvider>{children}</APIProvider>
+            </StoreProvider>
         );
         render(<DepositCryptoDisclaimers />, { wrapper });
 
@@ -81,7 +92,9 @@ describe('DepositCryptoDisclaimers', () => {
         const mock = mockStore({ client: { currency: 'eUSDT' } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <StoreProvider store={mock}>
+                <APIProvider>{children}</APIProvider>
+            </StoreProvider>
         );
         render(<DepositCryptoDisclaimers />, { wrapper });
 

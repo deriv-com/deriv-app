@@ -3,11 +3,11 @@ import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ActionSheet, TextField } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
-import { isSmallScreen } from 'AppV2/Utils/trade-params-utils';
+import { addUnit, isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import RiskManagementPicker from './risk-management-picker';
 import RiskManagementContent from './risk-management-content';
 
@@ -18,12 +18,11 @@ type TRiskManagementProps = {
 const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
     const [is_open, setIsOpen] = React.useState(false);
     const { has_cancellation, cancellation_range_list, cancellation_duration } = useTraderStore();
-
     const closeActionSheet = () => setIsOpen(false);
     const getRiskManagementText = () => {
         //TODO: add cases for TP and SL
         if (!has_cancellation) return '-';
-        return `DC: ${cancellation_duration}`;
+        return `DC: ${addUnit(cancellation_duration, localize('minutes'))}`;
     };
 
     const is_small_screen = isSmallScreen();

@@ -2,7 +2,8 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Button, Text, ToggleSwitch, WheelPicker } from '@deriv-com/quill-ui';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
+import { addUnit } from 'AppV2/Utils/trade-params-utils';
 
 type TDealCancellationProps = {
     closeActionSheet: () => void;
@@ -10,8 +11,6 @@ type TDealCancellationProps = {
 
 const DealCancellation = observer(({ closeActionSheet }: TDealCancellationProps) => {
     const { has_cancellation, cancellation_range_list, cancellation_duration, onChangeMultiple } = useTraderStore();
-    const addUnit = (value: string, unit = localize('min'), should_add_space = true) =>
-        `${parseInt(value)}${should_add_space ? ' ' : ''}${unit}`;
 
     const [is_enabled, setIsEnabled] = React.useState(has_cancellation);
     const [selected_value, setSelectedValue] = React.useState<string>(addUnit(cancellation_duration));

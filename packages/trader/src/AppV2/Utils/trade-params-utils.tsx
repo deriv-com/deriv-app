@@ -6,6 +6,7 @@ import {
     shouldShowExpiration,
     TRADE_TYPES,
 } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 
 export const getTradeParams = (symbol?: string) => ({
     [TRADE_TYPES.RISE_FALL]: ['duration', 'stake', 'allow_equals'],
@@ -114,3 +115,6 @@ export const getTradeTypeTabsList = (contract_type = '') => {
 };
 
 export const isSmallScreen = () => window.innerHeight <= 640;
+
+export const addUnit = (value: string, unit = localize('min'), should_add_space = true) =>
+    `${parseInt(value)}${should_add_space ? ' ' : ''}${unit}`;

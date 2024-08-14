@@ -351,6 +351,7 @@ export type TNotificationMessage = {
     timeout?: number;
     timeoutMessage?: (remaining: number | string) => string;
     type: string;
+    only_toast_message: boolean;
 };
 
 type TNotification =

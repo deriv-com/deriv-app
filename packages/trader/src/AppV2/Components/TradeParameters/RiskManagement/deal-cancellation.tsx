@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Button, Text, ToggleSwitch, WheelPicker, useSnackbar } from '@deriv-com/quill-ui';
+import { Skeleton } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { addUnit } from 'AppV2/Utils/trade-params-utils';
 
@@ -78,13 +79,17 @@ const DealCancellation = observer(({ closeActionSheet }: TDealCancellationProps)
                     <ToggleSwitch checked={is_enabled} onChange={setIsEnabled} />
                 </div>
                 <div className='deal-cancellation__wheel-picker'>
-                    <WheelPicker
-                        data={cancellation_range_list.map(({ value }) => ({ value: addUnit(value) }))}
-                        selectedValue={selected_value}
-                        setSelectedValue={
-                            setSelectedValue as React.ComponentProps<typeof WheelPicker>['setSelectedValue']
-                        }
-                    />
+                    {cancellation_range_list.length ? (
+                        <WheelPicker
+                            data={cancellation_range_list.map(({ value }) => ({ value: addUnit(value) }))}
+                            selectedValue={selected_value}
+                            setSelectedValue={
+                                setSelectedValue as React.ComponentProps<typeof WheelPicker>['setSelectedValue']
+                            }
+                        />
+                    ) : (
+                        <Skeleton />
+                    )}
                 </div>
             </div>
             <Button

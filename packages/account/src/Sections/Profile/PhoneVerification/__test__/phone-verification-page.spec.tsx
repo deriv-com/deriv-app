@@ -22,6 +22,12 @@ jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Loading: jest.fn(() => 'mockedLoading'),
 }));
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: jest.fn(),
+    }),
+}));
 
 describe('ConfirmPhoneNumber', () => {
     let mock_store_data = mockStore({});

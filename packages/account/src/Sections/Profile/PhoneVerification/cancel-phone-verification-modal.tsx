@@ -1,37 +1,59 @@
+import { useEffect, useState } from 'react';
 import { Modal, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import { observer, useStore } from '@deriv/stores';
 import { LabelPairedCircleXmarkLgRegularIcon } from '@deriv/quill-icons';
 import { useDevice } from '@deriv-com/ui';
-import { routes } from '@deriv/shared';
 
 const CancelPhoneVerificationModal = observer(() => {
     const history = useHistory();
+    const location = useLocation();
+    const [show_modal, setShowModal] = useState(false);
+    const [next_location, setNextLocation] = useState(location.pathname);
     const { ui, client } = useStore();
-    const { setShouldShowPhoneNumberOTP, setShouldShowCancelVerificationModal, should_show_cancel_verification_modal } =
-        ui;
+    const { setShouldShowPhoneNumberOTP } = ui;
+    const { setVerificationCode, is_virtual } = client;
     const { isMobile } = useDevice();
-    const { setVerificationCode } = client;
 
-    const handleCancelButton = () => {
-        setVerificationCode('', 'phone_number_verification');
-        setShouldShowPhoneNumberOTP(false);
-        setShouldShowCancelVerificationModal({ show_modal: false, routing_path: '' });
-        history.push(should_show_cancel_verification_modal?.routing_path || routes.personal_details);
+    useEffect(() => {
+        const unblock = history.block((location: Location) => {
+            if (!show_modal && !is_virtual) {
+                setShowModal(true);
+                setNextLocation(location.pathname);
+                return false;
+            }
+            return true;
+        });
+
+        return () => unblock();
+    }, [history, show_modal, is_virtual]);
+
+    const handleStayAtPhoneVerificationPage = () => {
+        setShowModal(false);
+        setNextLocation(location.pathname);
+    };
+
+    const handleLeavePhoneVerificationPage = () => {
+        if (next_location) {
+            setVerificationCode('', 'phone_number_verification');
+            setShouldShowPhoneNumberOTP(false);
+            setShowModal(false);
+            history.push(next_location);
+        }
     };
 
     return (
         <Modal
             isMobile={isMobile}
             showHandleBar
-            isOpened={should_show_cancel_verification_modal.show_modal}
-            primaryButtonCallback={() => setShouldShowCancelVerificationModal({ show_modal: false, routing_path: '' })}
+            isOpened={show_modal}
+            primaryButtonCallback={handleStayAtPhoneVerificationPage}
             primaryButtonLabel={<Localize i18n_default_text='Go back' />}
             disableCloseOnOverlay
             showSecondaryButton
             secondaryButtonLabel={<Localize i18n_default_text='Yes, cancel' />}
-            secondaryButtonCallback={handleCancelButton}
+            secondaryButtonCallback={handleLeavePhoneVerificationPage}
         >
             <Modal.Header
                 className='phone-verification__cancel-modal--header'

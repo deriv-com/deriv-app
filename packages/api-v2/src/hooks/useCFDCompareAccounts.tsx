@@ -136,7 +136,12 @@ const useCFDCompareAccounts = (isEU?: boolean) => {
     const demoAvailableAccounts = useMemo(() => {
         if (!sortedMt5Accounts) return;
         if (isEU) return sortedMt5Accounts.filter(account => account.shortcode === JURISDICTION.MALTAINVEST);
-        return sortedMt5Accounts.filter(account => account.shortcode === JURISDICTION.SVG);
+        return sortedMt5Accounts.filter(account => {
+            if (account.product === 'zero_spread') {
+                return account.shortcode === JURISDICTION.BVI;
+            }
+            return account.shortcode === JURISDICTION.SVG;
+        });
     }, [isEU, sortedMt5Accounts]);
 
     const modifiedData = useMemo(() => {

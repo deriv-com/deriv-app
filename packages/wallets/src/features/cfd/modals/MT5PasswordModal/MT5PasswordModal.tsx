@@ -260,6 +260,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
         return (
             <EnterPassword
                 isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
+                isVirtual={activeWalletData?.is_virtual}
                 marketType={marketType}
                 modalTitle='Enter your Deriv MT5 password'
                 onPasswordChange={e => setPassword(e.target.value)}
@@ -268,6 +269,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
                 password={password}
                 passwordError={createMT5AccountError?.error?.code === 'PasswordError'}
                 platform={mt5Platform}
+                product={product}
                 setPassword={setPassword}
             />
         );
@@ -287,6 +289,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
         platform,
         isVirtual,
         product,
+        activeWalletData?.is_virtual,
     ]);
 
     if (emailVerificationStatus === 'error') {

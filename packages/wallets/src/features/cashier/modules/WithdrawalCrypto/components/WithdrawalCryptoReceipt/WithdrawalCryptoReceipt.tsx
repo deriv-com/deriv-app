@@ -59,7 +59,7 @@ const WithdrawalCryptoReceipt: React.FC<TProps> = ({ onClose, withdrawalReceipt 
                 >
                     <Localize i18n_default_text='View transactions' />
                 </Button>
-                <Button onClick={onClose} size='lg'>
+                <Button onClick={onClose} size='lg' textSize='md'>
                     <Localize i18n_default_text='Close' />
                 </Button>
             </div>

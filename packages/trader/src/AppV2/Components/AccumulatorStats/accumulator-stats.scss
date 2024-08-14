@@ -62,7 +62,7 @@
             gap: var(--core-spacing-400);
             position: relative;
             overflow-x: auto;
-            &:-webkit-scrollbar {
+            &::-webkit-scrollbar {
                 display: none;
             }
             &__moving {

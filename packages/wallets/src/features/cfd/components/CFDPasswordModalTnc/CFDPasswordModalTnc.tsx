@@ -6,6 +6,7 @@ import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks, TPlatforms } from '../../../../types';
 import { companyNamesAndUrls, getMarketTypeDetails, PlatformDetails } from '../../constants';
+import './CFDPasswordModalTnc.scss';
 
 type TCFDPasswordModalTncProps = {
     checked: boolean;
@@ -22,9 +23,10 @@ const CFDPasswordModalTnc = ({ checked, onChange, platform, product }: TCFDPassw
     const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
     const platformTitle = PlatformDetails[platform].title;
     const productTitle = getMarketTypeDetails(product).all.title;
+
     return (
-        <React.Fragment>
-            <InlineMessage className='wallets-create-password-mt5__inline-message' iconPosition='top' variant='info'>
+        <div className='wallets-cfd-modal-tnc'>
+            <InlineMessage iconPosition='top' variant='info'>
                 <WalletText size={isDesktop ? '2xs' : 'xs'}>
                     You are adding your {platformTitle}
                     {productTitle} account under {selectedCompany.name}, regulated by Malta Financial Services Authority
@@ -37,7 +39,7 @@ const CFDPasswordModalTnc = ({ checked, onChange, platform, product }: TCFDPassw
                     <WalletText size={isDesktop ? 'xs' : 'sm'}>
                         I confirm and accept {selectedCompany.name}’s{' '}
                         <a
-                            className='wallets-create-password-mt5__tnc-link'
+                            className='wallets-cfd-modal-tnc__tnc-link'
                             href={URLUtils.getDerivStaticURL(selectedCompany.tncUrl)}
                             rel='noreferrer'
                             target='_blank'
@@ -49,7 +51,7 @@ const CFDPasswordModalTnc = ({ checked, onChange, platform, product }: TCFDPassw
                 name='zerospread-checkbox'
                 onChange={onChange}
             />
-        </React.Fragment>
+        </div>
     );
 };
 

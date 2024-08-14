@@ -42,7 +42,7 @@ const FiatOnRampProviderCard: React.FC<TFiatOnRampProvider> = ({
                 {paymentIcons.map(paymentIcon => (
                     <div
                         className='wallets-fiat-onramp-provider__payment-icon'
-                        key={`payment-method-icon-${paymentIcon.name}`}
+                        key={`payment-method-mobile-icon-${paymentIcon.name}`}
                     >
                         {paymentIcon.icon}
                     </div>

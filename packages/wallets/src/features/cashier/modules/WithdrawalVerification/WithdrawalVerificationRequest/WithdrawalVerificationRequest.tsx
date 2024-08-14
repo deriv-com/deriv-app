@@ -32,7 +32,7 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
                     </div>
                 }
                 renderButtons={() => (
-                    <Button onClick={sendEmail} size='lg'>
+                    <Button onClick={sendEmail} size='lg' textSize='md'>
                         <Localize i18n_default_text='Send email' />
                     </Button>
                 )}

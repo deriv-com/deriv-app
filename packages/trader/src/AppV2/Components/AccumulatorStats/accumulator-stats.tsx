@@ -64,11 +64,14 @@ const AccumulatorStats = observer(() => {
         <div>
             <div className='accumulators-stats'>
                 <div className='accumulators-stats__container'>
-                    <div className='accumulators-stats__container__heading' onClick={() => setIsOpenDescription(true)}>
+                    <button
+                        className='accumulators-stats__container__heading'
+                        onClick={() => setIsOpenDescription(true)}
+                    >
                         <Text size='sm'>
                             <Localize i18n_default_text='Stats' />
                         </Text>
-                    </div>
+                    </button>
                     <div className='accumulators-stats__container__divider' />
                     <div className='accumulators-stats__container__stats'>
                         <StatsRow
@@ -78,9 +81,9 @@ const AccumulatorStats = observer(() => {
                             className='accumulators-stats__container__stats'
                         />
                     </div>
-                    <div className='accumulators-stats__container__expand' onClick={() => setIsOpen(true)}>
+                    <button className='accumulators-stats__container__expand' onClick={() => setIsOpen(true)}>
                         <LabelPairedChevronDownSmBoldIcon data-testid='expand-stats-icon' />
-                    </div>
+                    </button>
                 </div>
             </div>
             <ActionSheet.Root

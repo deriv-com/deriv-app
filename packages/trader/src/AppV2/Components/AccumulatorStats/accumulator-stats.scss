@@ -43,7 +43,6 @@
         }
 
         &__stats {
-            position: relative;
             margin: var(--core-spacing-300) var(--core-spacing-50);
             display: flex;
             width: calc(100% - 48px - 9px - 40px);

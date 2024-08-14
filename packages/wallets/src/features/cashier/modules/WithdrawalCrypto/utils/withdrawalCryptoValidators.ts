@@ -75,7 +75,8 @@ const validateCryptoInput = (
 
     if (amount > activeWallet.balance) return helperMessageMapper.insufficientFunds;
 
-    const MIN_WITHDRAWAL_AMOUNT = minimumWithdrawal;
+    // Min withdrawal value for XRP is hardcoded to 0.000001
+    const MIN_WITHDRAWAL_AMOUNT = activeAccount.currency === 'XRP' ? 0.000001 : minimumWithdrawal;
 
     if (MIN_WITHDRAWAL_AMOUNT && activeWallet.balance < MIN_WITHDRAWAL_AMOUNT) {
         return helperMessageMapper.balanceLessThanMinWithdrawalLimit(

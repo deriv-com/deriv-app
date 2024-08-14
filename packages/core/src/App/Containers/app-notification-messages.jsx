@@ -92,6 +92,7 @@ const AppNotificationMessages = observer(
             const is_non_hidden_notification = isMobile()
                 ? [
                       ...maintenance_notifications,
+                      'account_currency_closure',
                       'authenticate',
                       'deriv_go',
                       'document_needs_action',

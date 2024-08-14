@@ -1,7 +1,8 @@
 import React, { FC, lazy, Suspense } from 'react';
 import { usePOA, usePOI } from '@deriv/api-v2';
-import { Loader } from '@deriv-com/ui';
-import { WalletButton, WalletText } from '../../../../components/Base';
+import { Localize, localize } from '@deriv-com/translations';
+import { Loader, Text } from '@deriv-com/ui';
+import { WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
@@ -12,9 +13,9 @@ const LazyVerification = lazy(
 );
 
 const getDocumentTitle = (isPOIFailed?: boolean, isPOAFailed?: boolean) => {
-    if (isPOIFailed && isPOAFailed) return 'proof of identity and proof of address documents';
-    if (isPOIFailed) return 'proof of identity document';
-    return 'proof of address document';
+    if (isPOIFailed && isPOAFailed) return localize('proof of identity and proof of address documents');
+    if (isPOIFailed) return localize('proof of identity document');
+    return localize('proof of address document');
 };
 
 type TVerificationFailedProps = {
@@ -32,32 +33,43 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
 
     return (
         <div className='wallets-verification-failed'>
-            <WalletText size='md' weight='bold'>
-                Why did my verification fail?
-            </WalletText>
+            <Text size='md' weight='bold'>
+                <Localize i18n_default_text='Why did my verification fail?' />
+            </Text>
             <div className='wallets-verification-failed__content'>
-                <WalletText size='sm'>
-                    Your {getDocumentTitle(isPOIFailed, isPOAFailed)} did not pass our verification checks. This could
-                    be due to reasons such as:
-                </WalletText>
+                <Text size='sm'>
+                    <Localize
+                        i18n_default_text='Your {{documentTitle}} did not pass our verification checks. This could be due to reasons such as:'
+                        values={{ documentTitle: getDocumentTitle(isPOIFailed, isPOAFailed) }}
+                    />
+                </Text>
                 <ul>
                     <li>
-                        <WalletText size='sm'>Document details do not match profile details</WalletText>
+                        <Text size='sm'>
+                            <Localize i18n_default_text='Document details do not match profile details' />
+                        </Text>
                     </li>
                     <li>
-                        <WalletText size='sm'>Expired documents</WalletText>
+                        <Text size='sm'>
+                            <Localize i18n_default_text='Expired documents' />
+                        </Text>
                     </li>
                     <li>
-                        <WalletText size='sm'>Poor image quality</WalletText>
+                        <Text size='sm'>
+                            <Localize i18n_default_text='Poor image quality' />
+                        </Text>
                     </li>
                 </ul>
-                <WalletText size='sm'>
-                    Click <strong>Resubmit documents</strong> to find out more and try again.
-                </WalletText>
+                <Text size='sm'>
+                    <Localize
+                        components={[<strong key={0} />]}
+                        i18n_default_text='Click <0>Resubmit documents</0> to find out more and try again.'
+                    />
+                </Text>
             </div>
             <div className='wallets-verification-failed__footer'>
                 <WalletButton onClick={() => hide()} size={isMobile ? 'md' : 'lg'} variant='outlined'>
-                    Maybe later
+                    <Localize i18n_default_text='Maybe later' />
                 </WalletButton>
                 <WalletButton
                     onClick={() =>
@@ -69,7 +81,7 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
                     }
                     size={isMobile ? 'md' : 'lg'}
                 >
-                    Resubmit documents
+                    <Localize i18n_default_text='Resubmit documents' />
                 </WalletButton>
             </div>
         </div>

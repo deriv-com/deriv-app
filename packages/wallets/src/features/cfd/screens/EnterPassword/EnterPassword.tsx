@@ -97,7 +97,7 @@ const EnterPassword: React.FC<TProps> = ({
                         Forgot password?
                     </WalletButton>
                     <WalletButton
-                        disabled={isLoading || !validPassword(password)}
+                        disabled={isLoading || !validPassword(password) || !checked}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'

@@ -95,7 +95,7 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
                 variant='fill'
             />
             <ActionSheet.Root isOpen={is_open} onClose={onActionSheetClose} position='left' expandable={false}>
-                <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen={is_small_screen}>
+                <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         classname={clsx('growth-rate__carousel', is_small_screen && 'growth-rate__carousel--small')}
                         header={CarouselHeader}

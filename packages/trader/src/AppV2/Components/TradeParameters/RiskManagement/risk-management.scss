@@ -14,14 +14,19 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
         &--small {
             .risk-management__picker {
                 height: calc(90dvh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
+                max-height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
             }
             .trade-param-definition {
                 height: calc(90dvh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
+                max-height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
             }
             .deal-cancellation {
                 &__container {
                     height: calc(
                         90dvh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $SEGMENTED_CONTROL - $FOOTER_BUTTON_HEIGHT
+                    );
+                    max-height: calc(
+                        480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $SEGMENTED_CONTROL - $FOOTER_BUTTON_HEIGHT
                     );
                 }
             }

@@ -9,7 +9,7 @@ type TRiskManagementContentProps = {
 const RiskManagementContent = ({ should_show_deal_cancellation }: TRiskManagementContentProps) => (
     <React.Fragment>
         <Text bold color='quill-typography__color--prominent'>
-            <Localize i18n_default_text='TakeProfit' />
+            <Localize i18n_default_text='Take Profit' />
         </Text>
         <Text className='risk-management__description__definition'>
             <Localize i18n_default_text='When your profit reaches or exceeds this amount, your trade will be closed automatically.' />

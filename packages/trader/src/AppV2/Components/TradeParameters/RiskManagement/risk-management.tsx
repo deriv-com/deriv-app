@@ -69,7 +69,7 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
                 variant='fill'
             />
             <ActionSheet.Root isOpen={is_open} onClose={closeActionSheet} position='left' expandable={false}>
-                <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen={is_small_screen}>
+                <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         classname={clsx(
                             'risk-management__carousel',

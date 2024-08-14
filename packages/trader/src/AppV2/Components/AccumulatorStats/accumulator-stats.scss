@@ -75,7 +75,7 @@
                     bottom: 0;
                     left: 0;
                     width: 100%;
-                    height: 2px;
+                    height: var(--core-borderRadius-100);
                     transform: scaleX(0);
                     transform-origin: left;
                     background-color: var(--core-color-solid-green-600);
@@ -162,7 +162,7 @@
                     bottom: 0;
                     left: 0;
                     width: 100%;
-                    height: 2px;
+                    height: var(--core-spacing-100);
                     transform: scaleX(0);
                     transform-origin: left;
                     opacity: 0;

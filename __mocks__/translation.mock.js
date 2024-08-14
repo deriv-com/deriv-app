@@ -4,6 +4,10 @@ const replaceValue = (text, values) => {
     const valueMatch = text.match(/{{(\w+)}}/);
     if (valueMatch) {
         const valueKey = valueMatch[1];
+        // If the value is an empty string, return an empty fragment to render nothing
+        if (values[valueKey] === '') {
+            return '';
+        }
         return values[valueKey] || text;
     }
     return text;

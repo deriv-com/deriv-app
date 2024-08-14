@@ -2,7 +2,7 @@ import React, { FC, Fragment, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api-v2';
 import { LabelPairedArrowUpArrowDownMdBoldIcon, LabelPairedCircleExclamationMdFillIcon } from '@deriv/quill-icons';
-import { WalletListCardBadge } from '../../../../components';
+import { WalletBadge, WalletListCardBadge } from '../../../../components';
 import { InlineMessage, WalletButton, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
@@ -34,7 +34,9 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     const platform = getModalState('platform') ?? mt5Platform;
 
     const { icon: platformIcon, title: platformTitle } = PlatformDetails[platform as keyof typeof PlatformDetails];
-    const { icon: marketTypeIcon, title: marketTypeTitle } = getMarketTypeDetails()[marketType ?? 'all'];
+    const { icon: marketTypeIcon, title: marketTypeTitle } = getMarketTypeDetails(mt5Account?.product)[
+        marketType ?? 'all'
+    ];
 
     const platformToAccountsListMapper = useMemo(
         () => ({
@@ -123,10 +125,12 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                         </div>
                         <div className='wallets-mt5-trade-screen__description-details'>
                             <div className='wallets-mt5-trade-screen__label'>
-                                <WalletText lineHeight='3xs' size={isDesktop ? 'sm' : 'md'}>
+                                <WalletText size={isDesktop ? 'sm' : 'md'}>
                                     {platform === mt5Platform ? marketTypeTitle : platformTitle}{' '}
-                                    {!activeWalletData?.is_virtual && details?.landing_company_short?.toUpperCase()}
                                 </WalletText>
+                                {!activeWalletData?.is_virtual && (
+                                    <WalletBadge>{details?.landing_company_short?.toUpperCase()}</WalletBadge>
+                                )}
                                 {activeWalletData?.is_virtual && <WalletListCardBadge />}
                             </div>
                             <WalletText color='less-prominent' size='xs'>

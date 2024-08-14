@@ -3,10 +3,13 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
 import {
+    addUnit,
+    focusAndOpenKeyboard,
     getTradeParams,
     getTradeTypeTabsList,
+    getSnackBarText,
     isDigitContractWinning,
-    focusAndOpenKeyboard,
+    isSmallScreen,
 } from '../trade-params-utils';
 
 describe('getTradeParams', () => {
@@ -183,5 +186,106 @@ describe('getTradeTypeTabsList', () => {
                 is_displayed: true,
             },
         ]);
+    });
+});
+
+describe('isSmallScreen', () => {
+    const original_height = window.innerHeight;
+
+    it('should return true if window.innerHeight is less or equal to 640', () => {
+        window.innerHeight = 640;
+        expect(isSmallScreen()).toBe(true);
+    });
+
+    it('should return false if window.innerHeight is more to 640', () => {
+        window.innerHeight = 700;
+        expect(isSmallScreen()).toBe(false);
+    });
+
+    window.innerHeight = original_height;
+});
+
+describe('addUnit', () => {
+    it('should return correct string', () => {
+        expect(addUnit('15')).toBe('15 min');
+        expect(addUnit('15', 'minutes')).toBe('15 minutes');
+        expect(addUnit('15', 'm', false)).toBe('15m');
+    });
+});
+
+describe('getSnackBarText', () => {
+    it('should return correct string if switching_DC, has_cancellation, has_take_profit and has_stop_loss are true', () => {
+        render(
+            <div>
+                {getSnackBarText({
+                    has_cancellation: true,
+                    has_take_profit: true,
+                    has_stop_loss: true,
+                    switching_DC: true,
+                })}
+            </div>
+        );
+
+        expect(screen.getByText('TP and SL have been turned off.')).toBeInTheDocument();
+    });
+
+    it('should return correct string if switching_DC === true, has_cancellation === true, has_take_profit === true and has_stop_loss === false', () => {
+        render(
+            <div>
+                {getSnackBarText({
+                    has_cancellation: true,
+                    has_take_profit: true,
+                    has_stop_loss: false,
+                    switching_DC: true,
+                })}
+            </div>
+        );
+
+        expect(screen.getByText('TP has been turned off.')).toBeInTheDocument();
+    });
+
+    it('should return correct string if switching_DC === true,has_cancellation === true, has_take_profit === false and has_stop_loss === true', () => {
+        render(
+            <div>
+                {getSnackBarText({
+                    has_cancellation: true,
+                    has_take_profit: false,
+                    has_stop_loss: true,
+                    switching_DC: true,
+                })}
+            </div>
+        );
+
+        expect(screen.getByText('SL has been turned off.')).toBeInTheDocument();
+    });
+
+    it('should return correct string if switching_TP_SL === true, has_cancellation === true, has_take_profit === true and has_stop_loss === false', () => {
+        render(
+            <div>
+                {getSnackBarText({
+                    has_cancellation: true,
+                    has_take_profit: true,
+                    has_stop_loss: false,
+                    switching_TP_SL: true,
+                })}
+            </div>
+        );
+
+        expect(screen.getByText('DC has been turned off.')).toBeInTheDocument();
+    });
+
+    it('should return correct string if switching_TP_SL === true, has_cancellation === true, has_take_profit === false and has_stop_loss === true', () => {
+        render(
+            <div>
+                {getSnackBarText({
+                    has_cancellation: true,
+                    has_take_profit: false,
+                    has_stop_loss: true,
+                    switching_TP_SL: true,
+                })}
+            </div>
+        );
+
+        expect(screen.getByText('DC has been turned off.')).toBeInTheDocument();
     });
 });

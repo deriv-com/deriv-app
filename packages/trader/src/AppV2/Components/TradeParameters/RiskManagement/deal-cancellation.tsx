@@ -29,9 +29,14 @@ const DealCancellation = observer(({ closeActionSheet }: TDealCancellationProps)
 
         if (has_cancellation === is_enabled && new_cancellation_duration === cancellation_duration) return;
 
-        if (has_take_profit || has_stop_loss) {
+        if (is_enabled && (has_take_profit || has_stop_loss)) {
             addSnackbar({
-                message: getSnackBarText({ has_cancellation: is_enabled, has_stop_loss, has_take_profit }),
+                message: getSnackBarText({
+                    has_cancellation: is_enabled,
+                    has_stop_loss,
+                    has_take_profit,
+                    switching_DC: true,
+                }),
                 hasCloseButton: true,
                 delay: 100,
             });

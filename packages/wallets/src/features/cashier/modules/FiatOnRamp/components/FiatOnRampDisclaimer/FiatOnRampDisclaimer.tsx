@@ -36,7 +36,7 @@ const FiatOnRampDisclaimer: React.FC<TFiatOnRampDisclaimer> = ({ handleDisclaime
                 />
             </Text>
             <div className='wallets-fiat-onramp-disclaimer__buttons'>
-                <Button color='white' onClick={handleDisclaimer} size='md' variant='outlined'>
+                <Button borderWidth='sm' color='black' onClick={handleDisclaimer} size='md' variant='outlined'>
                     <Localize i18n_default_text='Back' />
                 </Button>
                 <Button isLoading={isLoading} onClick={() => redirectToBanxa()} size='md'>

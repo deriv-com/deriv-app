@@ -18,7 +18,10 @@ const UserGuide: React.FC<TUserGuide> = ({ is_mobile, handleTabChange, setActive
                 onClick={() => {
                     handleTabChange(DBOT_TABS.TUTORIAL);
                     setActiveTabTutorial(0);
-                    rudderStackSendDashboardClickEvent({ dashboard_click_name: 'user_guide' });
+                    rudderStackSendDashboardClickEvent({
+                        dashboard_click_name: 'user_guide',
+                        subpage_name: 'tutorials',
+                    });
                 }}
                 data-testid='btn-user-guide'
             >

@@ -56,6 +56,7 @@ const mock_errors: FormikErrors<TPersonalDetailsSectionForm> = {
 
 const tax_residence_pop_over_text =
     /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i;
+const tin_pop_over_text = /don't know your tax identification number\?/i;
 
 const runCommonFormfieldsTests = (is_svg: boolean) => {
     expect(screen.getByRole('radio', { name: /mr/i })).toBeInTheDocument();
@@ -819,6 +820,23 @@ describe('<PersonalDetails/>', () => {
     //     expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
     //     expect(screen.queryByRole('link', { name: 'here' })).not.toBeInTheDocument();
     // });
+
+    it('should close tax_identification_number_pop_over when scrolled', () => {
+        renderwithRouter({});
+
+        const tax_identification_number_pop_over = screen.getByTestId('tax_identification_number_pop_over');
+        expect(tax_identification_number_pop_over).toBeInTheDocument();
+        fireEvent.click(tax_identification_number_pop_over);
+        expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
+
+        fireEvent.scroll(screen.getByTestId('dt_personal_details_container'), {
+            target: { scrollY: 100 },
+        });
+
+        expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
+        expect(screen.queryByRole('link', { name: 'here' })).not.toBeInTheDocument();
+    });
 
     it('should validate idv values when a document type is selected', async () => {
         (shouldShowIdentityInformation as jest.Mock).mockReturnValue(true);

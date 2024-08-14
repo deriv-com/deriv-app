@@ -356,8 +356,8 @@ export default class BlockConversion {
         // For old "market" blocks, move everything in "Trade options" except "DURATION"
         // to "Run once at start". Legacy "market" blocks had no such thing as "Run once at start"
         // not moving everything would kill Martingale strategies as they'd be reinitialised each run.
-        const trade_definition_block = this.workspace.getTradeDefinitionBlock();
-        const has_initialization_block = trade_definition_block.getBlocksInStatement('INITIALIZATION').length > 0;
+        const trade_definition_block = this.workspace?.getTradeDefinitionBlock();
+        const has_initialization_block = trade_definition_block?.getBlocksInStatement('INITIALIZATION').length > 0;
         if (trade_definition_block) {
             trade_definition_block.getBlocksInStatement('SUBMARKET').forEach(block => {
                 if (
@@ -505,8 +505,7 @@ export default class BlockConversion {
 
         this.workspace.getAllBlocks(true).forEach(block => {
             block.initSvg();
-            // keep this commneted to fix backward compatibility issue
-            // block.render();
+            block.renderEfficiently();
         });
 
         this.workspace.cleanUp();

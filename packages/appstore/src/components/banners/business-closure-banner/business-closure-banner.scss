@@ -1,0 +1,14 @@
+.business-closure-banner {
+    padding-inline: 1.6rem;
+    // One more solution just change the color and make it without opacity instead of height calc (background-color: #fff4e4;)
+
+    @include desktop-screen {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+
+        & + div {
+            height: calc(100vh - $HEADER_HEIGHT - $FOOTER_HEIGHT - 3.4rem);
+        }
+    }
+}

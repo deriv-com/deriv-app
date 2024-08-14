@@ -10,7 +10,7 @@ import { observer, useStore } from '@deriv/stores';
 import AcceptRiskForm from './accept-risk-form.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
-import { useResidenceSelfDeclaration } from '@deriv/hooks';
+import { useResidenceSelfDeclaration, useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import 'Sass/details-form.scss';
 import { Analytics } from '@deriv-com/analytics';
 
@@ -103,6 +103,11 @@ const AccountWizard = observer(props => {
     const [state_items, setStateItems] = React.useState(real_account_signup_form_data ?? []);
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
     const { is_residence_self_declaration_required } = useResidenceSelfDeclaration();
+
+    const [direct_deposit_flow] = useGrowthbookGetFeatureValue({
+        featureFlag: 'direct-deposit-flow',
+        defaultValue: false,
+    });
 
     const trackEvent = React.useCallback(
         payload => {
@@ -405,6 +410,9 @@ const AccountWizard = observer(props => {
                 } else if (modifiedProps.real_account_signup_target === 'samoa') {
                     modifiedProps.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
                 } else {
+                    if (direct_deposit_flow) {
+                        modifiedProps.onOpenDepositModal();
+                    }
                     modifiedProps.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
                 const country_code = modifiedProps.account_settings.citizen || modifiedProps.residence;
@@ -536,6 +544,7 @@ AccountWizard.propTypes = {
     onClose: PropTypes.func,
     onError: PropTypes.func,
     onFinishSuccess: PropTypes.func,
+    onNewFinishSuccess: PropTypes.func,
     onLoading: PropTypes.func,
     onOpenWelcomeModal: PropTypes.func,
     real_account_signup_target: PropTypes.string,

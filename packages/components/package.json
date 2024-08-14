@@ -72,8 +72,9 @@
         "webpack-cli": "^4.7.2"
     },
     "dependencies": {
+        "@cloudflare/stream-react": "^1.9.1",
         "@contentpass/zxcvbn": "^4.4.3",
-        "@deriv-com/ui": "1.29.3",
+        "@deriv-com/ui": "1.29.9",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",

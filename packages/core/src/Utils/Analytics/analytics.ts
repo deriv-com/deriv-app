@@ -5,41 +5,43 @@ interface AnalyticsEvent {
     };
 }
 
-let eventQueue: AnalyticsEvent[] = [];
+const handleCachedEvents = () => {
+    let eventQueue: AnalyticsEvent[] = [];
+    const storedEvents = localStorage.getItem('pending_events');
+    try {
+        if (storedEvents) {
+            eventQueue = JSON.parse(storedEvents) as AnalyticsEvent[];
+            if (eventQueue.length > 0) {
+                eventQueue.forEach(event => {
+                    window.rudderanalytics.track(event.name, event.properties);
+                });
+
+                eventQueue = [];
+                localStorage.removeItem('pending_events');
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 const setEvent = (event: AnalyticsEvent): void => {
+    const storedEvents = localStorage.getItem('pending_events');
+    let eventQueue: AnalyticsEvent[] = [];
+    if (storedEvents) {
+        eventQueue = JSON.parse(storedEvents) as AnalyticsEvent[];
+    }
     eventQueue.push(event);
     localStorage.setItem('pending_events', JSON.stringify(eventQueue));
 };
 
 const trackEventWithCache = (event: AnalyticsEvent): void => {
     if (window.rudderanalytics) {
+        handleCachedEvents();
         window.rudderanalytics.track(event.name, event.properties);
     } else {
         setEvent(event);
-        handleCachedEvents();
-    }
-};
-const handleCachedEvents = () => {
-    const loadPendingEvents = () => {
-        const storedEvents = localStorage.getItem('pending_events');
-
-        if (storedEvents) {
-            eventQueue = JSON.parse(storedEvents) as AnalyticsEvent[];
-        }
-    };
-    try {
-        loadPendingEvents();
-        if (eventQueue.length > 0) {
-            eventQueue.forEach(event => {
-                window.rudderanalytics.track(event.name, event.properties);
-            });
-
-            eventQueue = [];
-            localStorage.removeItem('pending_events');
-        }
-    } catch (error) {
-        console.log(error);
+        // handleCachedEvents();
     }
 };
 

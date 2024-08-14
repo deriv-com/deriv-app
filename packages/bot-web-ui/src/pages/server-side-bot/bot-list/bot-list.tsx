@@ -81,8 +81,7 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
                 stopBot(bot_id);
                 break;
             case 'OPEN':
-                // eslint-disable-next-line no-console
-                console.log('OPEN');
+                setActiveBotId(bot_id);
                 closeMenu();
                 break;
             case 'DELETE':

@@ -43,9 +43,11 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const isWithdrawalLocked = accountStatus?.is_withdrawal_locked;
 
     const remainder = accountLimits?.remainder;
-    const cryptoMinWithdrawal = isCryptoProvider ? cryptoConfig?.minimum_withdrawal : 0.01;
-    // Min withdrawal value for XRP is hardcoded to 0.000001
-    const minimumWithdrawal = activeWallet?.currency === 'XRP' ? 0.000001 : cryptoMinWithdrawal;
+    const fractionalDigits = activeWallet?.currency_config?.fractional_digits
+        ? Math.pow(10, -activeWallet.currency_config.fractional_digits)
+        : 0.01;
+    const minimumWithdrawal = isCryptoProvider ? cryptoConfig?.minimum_withdrawal : fractionalDigits;
+
     const withdrawalLimitReached = !!(
         typeof remainder !== 'undefined' &&
         typeof minimumWithdrawal !== 'undefined' &&

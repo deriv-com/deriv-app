@@ -36,4 +36,5 @@ const lightMode = () => {
         colourTertiary: '#0e0e0e',
     };
 };
+
 export const setColors = () => lightMode();

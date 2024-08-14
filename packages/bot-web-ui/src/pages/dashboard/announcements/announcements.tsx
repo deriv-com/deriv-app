@@ -87,7 +87,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
     };
 
     useEffect(() => {
-        () => countActiveAnnouncements();
+        countActiveAnnouncements();
     }, [stored_notifications]);
 
     const number_ammount_announce = countActiveAnnouncements();

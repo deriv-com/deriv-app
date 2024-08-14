@@ -23,7 +23,7 @@ const PhoneVerificationPage = observer(() => {
     const [is_loading, setIsLoading] = useState(false);
     const [should_show_verification_link_expired_modal, setShouldShowVerificationLinkExpiredModal] = useState(false);
     const handleBackButton = () => {
-        setShouldShowCancelVerificationModal({ show_modal: true });
+        history.push(routes.personal_details);
     };
     const { sendEmailOTPVerification, email_otp_error, is_email_verified } = useSendOTPVerificationCode();
     const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookGetFeatureValue({

@@ -10,12 +10,18 @@ jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
     useHistory: () => ({
         push: mock_push,
+        block: jest.fn(callback => {
+            callback({ pathname: routes.personal_details });
+            return jest.fn();
+        }),
+    }),
+    useLocation: () => ({
+        pathname: '/phone-verification',
     }),
 }));
 
 describe('CancelPhoneVerificationModal', () => {
     let modal_root_el: HTMLElement;
-    const mockSetShowCancelModal = jest.fn();
 
     beforeAll(() => {
         modal_root_el = document.createElement('div');
@@ -34,10 +40,7 @@ describe('CancelPhoneVerificationModal', () => {
     const renderComponent = () => {
         render(
             <StoreProvider store={mock_store}>
-                <CancelPhoneVerificationModal
-                    should_show_cancel_verification_modal
-                    setShouldShowCancelVerificationModal={mockSetShowCancelModal}
-                />
+                <CancelPhoneVerificationModal />
             </StoreProvider>
         );
     };
@@ -55,7 +58,6 @@ describe('CancelPhoneVerificationModal', () => {
         renderComponent();
         const cancelButton = screen.getByRole('button', { name: buttons[0] });
         userEvent.click(cancelButton);
-        expect(mockSetShowCancelModal).toBeCalled();
         expect(mock_push).not.toBeCalled();
     });
 
@@ -63,7 +65,6 @@ describe('CancelPhoneVerificationModal', () => {
         renderComponent();
         const cancelButton = screen.getByRole('button', { name: buttons[1] });
         userEvent.click(cancelButton);
-        expect(mockSetShowCancelModal).toBeCalled();
         expect(mock_push).toBeCalledWith(routes.personal_details);
     });
 });

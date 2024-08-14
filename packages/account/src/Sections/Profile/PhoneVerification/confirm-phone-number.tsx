@@ -9,10 +9,11 @@ import { validatePhoneNumber } from './validation';
 import { Analytics } from '@deriv-com/analytics';
 
 type TConfirmPhoneNumber = {
+    show_confirm_phone_number?: boolean;
     setOtpVerification: (value: { show_otp_verification: boolean; phone_verification_type: string }) => void;
 };
 
-const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber) => {
+const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerification }: TConfirmPhoneNumber) => {
     const [phone_number, setPhoneNumber] = useState('');
     const [phone_verification_type, setPhoneVerificationType] = useState('');
     const [is_button_loading, setIsButtonLoading] = useState(false);
@@ -31,13 +32,15 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
     const { next_otp_request } = usePhoneNumberVerificationSetTimer(true);
 
     useEffect(() => {
-        //@ts-expect-error will remove this error when Analytics package types are being updated
-        Analytics.trackEvent('ce_phone_verification_form', {
-            action: 'open',
-            form_name: 'ce_phone_verification_form',
-            subform_name: 'verify_phone_screen',
-        });
-    }, []);
+        if (show_confirm_phone_number) {
+            //@ts-expect-error will remove this error when Analytics package types are being updated
+            Analytics.trackEvent('ce_phone_verification_form', {
+                action: 'open',
+                form_name: 'ce_phone_verification_form',
+                subform_name: 'verify_phone_screen',
+            });
+        }
+    }, [show_confirm_phone_number]);
 
     useEffect(() => {
         setPhoneNumber(account_settings?.phone?.replace('+', '') || '');

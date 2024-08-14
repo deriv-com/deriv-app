@@ -5,6 +5,7 @@ import { useHistory, useLocation } from 'react-router';
 import { observer, useStore } from '@deriv/stores';
 import { LabelPairedCircleXmarkLgRegularIcon } from '@deriv/quill-icons';
 import { useDevice } from '@deriv-com/ui';
+import { Analytics } from '@deriv-com/analytics';
 
 const CancelPhoneVerificationModal = observer(() => {
     const history = useHistory();
@@ -15,6 +16,16 @@ const CancelPhoneVerificationModal = observer(() => {
     const { setShouldShowPhoneNumberOTP } = ui;
     const { setVerificationCode, is_virtual } = client;
     const { isMobile } = useDevice();
+
+    useEffect(() => {
+        if (show_modal) {
+            //@ts-expect-error will remove this error when Analytics package types are being updated
+            Analytics.trackEvent('ce_phone_verification_form', {
+                action: 'back',
+                form_name: 'ce_phone_verification_form',
+            });
+        }
+    }, [show_modal]);
 
     useEffect(() => {
         const unblock = history.block((location: Location) => {

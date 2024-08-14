@@ -12,7 +12,6 @@ import { Loading } from '@deriv/components';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
-import { Analytics } from '@deriv-com/analytics';
 
 const PhoneVerificationPage = observer(() => {
     const history = useHistory();
@@ -23,11 +22,6 @@ const PhoneVerificationPage = observer(() => {
     const [is_loading, setIsLoading] = useState(false);
     const [should_show_verification_link_expired_modal, setShouldShowVerificationLinkExpiredModal] = useState(false);
     const handleBackButton = () => {
-        //@ts-expect-error will remove this error when Analytics package types are being updated
-        Analytics.trackEvent('ce_phone_verification_form', {
-            action: 'back',
-            form_name: 'ce_phone_verification_form',
-        });
         history.push(routes.personal_details);
     };
     const { sendEmailOTPVerification, email_otp_error, is_email_verified } = useSendOTPVerificationCode();
@@ -104,7 +98,10 @@ const PhoneVerificationPage = observer(() => {
                     setOtpVerification={setOtpVerification}
                 />
             ) : (
-                <ConfirmPhoneNumber setOtpVerification={setOtpVerification} />
+                <ConfirmPhoneNumber
+                    show_confirm_phone_number={!otp_verification.show_otp_verification}
+                    setOtpVerification={setOtpVerification}
+                />
             )}
         </div>
     );

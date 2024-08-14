@@ -2255,6 +2255,17 @@ type MT5AccountListResponse = {
     mt5_login_list?: TExtendedMT5AccounListType[];
 };
 
+type TExtendTransferAccount = NonNullable<TransferBetweenAccountsResponse['accounts']>[number] & {
+    /**
+     * Product Type
+     */
+    product?: 'zero_spread' | 'swap_free' | 'standard';
+};
+
+type TExtendTransferBetweenAccountsResponse = TransferBetweenAccountsResponse & {
+    accounts?: TExtendTransferAccount[];
+};
+
 type TAccountList = NonNullable<AccountListResponse['account_list']>[number] & { excluded_until: Date };
 
 interface IExtendedAccountListResponse extends AccountListResponse {
@@ -2712,7 +2723,7 @@ type TSocketEndpoints = {
     };
     transfer_between_accounts: {
         request: TransferBetweenAccountsRequest;
-        response: TransferBetweenAccountsResponse;
+        response: TExtendTransferBetweenAccountsResponse;
     };
     unsubscribe_email: {
         request: UnsubscribeEmailRequest;

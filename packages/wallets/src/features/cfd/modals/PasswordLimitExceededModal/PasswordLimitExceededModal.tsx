@@ -1,11 +1,7 @@
 import React from 'react';
-import {
-    ModalStepWrapper,
-    ModalWrapper,
-    WalletButton,
-    WalletButtonGroup,
-    WalletText,
-} from '../../../../components/Base';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
+import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import './PasswordLimitExceededModal.scss';
 
@@ -16,6 +12,8 @@ type TProps = {
 
 const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecondaryClick }) => {
     const { isMobile } = useDevice();
+    const { localize } = useTranslations();
+
     const textSize = isMobile ? 'md' : 'sm';
     const alignment = isMobile ? 'center' : 'start';
     if (isMobile) {
@@ -32,21 +30,21 @@ const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecond
                                 textSize='md'
                                 variant='outlined'
                             >
-                                Forgot password?
+                                <Localize i18n_default_text='Forgot password?' />
                             </WalletButton>
                             <WalletButton isFullWidth onClick={onPrimaryClick} size='lg' textSize='md'>
-                                Try later
+                                <Localize i18n_default_text='Try later' />
                             </WalletButton>
                         </WalletButtonGroup>
                     );
                 }}
-                title='Too many attempts'
+                title={localize('Too many attempts')}
             >
                 <div className='wallets-password-limit-exceeded-modal'>
                     <div className='wallets-password-limit-exceeded-modal__content'>
-                        <WalletText align={alignment} size={textSize}>
-                            Please try again in a minute.
-                        </WalletText>
+                        <Text align={alignment} size={textSize}>
+                            <Localize i18n_default_text='Please try again in a minute.' />
+                        </Text>
                     </div>
                 </div>
             </ModalStepWrapper>
@@ -56,14 +54,14 @@ const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecond
         <ModalWrapper hideCloseButton>
             <div className='wallets-password-limit-exceeded-modal'>
                 <div className='wallets-password-limit-exceeded-modal__title'>
-                    <WalletText align='start' weight='bold'>
-                        Too many attempts
-                    </WalletText>
+                    <Text align='start' weight='bold'>
+                        <Localize i18n_default_text='Too many attempts' />
+                    </Text>
                 </div>
                 <div className='wallets-password-limit-exceeded-modal__content'>
-                    <WalletText align={alignment} size={textSize}>
-                        Please try again in a minute.
-                    </WalletText>
+                    <Text align={alignment} size={textSize}>
+                        <Localize i18n_default_text='Please try again in a minute.' />
+                    </Text>
                 </div>
                 <div className='wallets-password-limit-exceeded-modal__buttons'>
                     <WalletButton
@@ -73,10 +71,10 @@ const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecond
                         textSize={textSize}
                         variant='outlined'
                     >
-                        Forgot password?
+                        <Localize i18n_default_text='Forgot password?' />
                     </WalletButton>
                     <WalletButton onClick={onPrimaryClick} size='lg' textSize={textSize}>
-                        Try later
+                        <Localize i18n_default_text='Try later' />
                     </WalletButton>
                 </div>
             </div>

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, useHistory } from 'react-router-dom';
 import { loginUrl, routes, redirectToLogin, SessionStore } from '@deriv/shared';
@@ -17,7 +18,6 @@ const Redirect = observer(() => {
         openRealAccountSignup,
         setCFDPasswordResetModal,
         setResetTradingPasswordModalOpen,
-        setRedirectFromEmail,
         toggleAccountSignupModal,
         toggleResetPasswordModal,
         toggleResetEmailModal,
@@ -64,7 +64,20 @@ const Redirect = observer(() => {
             break;
         }
         case 'request_email': {
-            toggleResetEmailModal(true);
+            if (!is_logging_in && !is_logged_in) {
+                if (verification_code[action_param]) {
+                    sessionStorage.setItem('request_email_code', verification_code[action_param]);
+                }
+                redirectToLogin(is_logged_in, getLanguage(), true);
+                redirected_to_route = true;
+            } else {
+                if (!verification_code[action_param]) {
+                    const request_email_code = sessionStorage.getItem('request_email_code');
+                    setVerificationCode(request_email_code, action_param);
+                    sessionStorage.removeItem('request_email_code');
+                }
+                toggleResetEmailModal(true);
+            }
             break;
         }
         case 'social_email_change': {
@@ -130,12 +143,6 @@ const Redirect = observer(() => {
             }
 
             setResetTradingPasswordModalOpen(true);
-            break;
-        }
-        case 'phone_number_verification': {
-            setRedirectFromEmail(true);
-            history.push(routes.phone_verification);
-            redirected_to_route = true;
             break;
         }
         case 'payment_deposit': {
@@ -252,13 +259,14 @@ const Redirect = observer(() => {
         default:
             break;
     }
-
-    if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
-        history.push({
-            pathname: routes.traders_hub,
-            search: url_query_string,
-        });
-    }
+    useEffect(() => {
+        if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
+            history.push({
+                pathname: routes.traders_hub,
+                search: url_query_string,
+            });
+        }
+    }, [redirected_to_route, url_query_string, history]);
 
     return null;
 });

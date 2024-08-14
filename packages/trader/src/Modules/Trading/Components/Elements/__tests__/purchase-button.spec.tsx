@@ -31,6 +31,7 @@ const default_mocked_props: React.ComponentProps<typeof PurchaseButton> = {
         profit: '',
         returns: '',
         spot: 0,
+        validation_params: undefined,
     },
     is_accumulator: false,
     is_disabled: false,

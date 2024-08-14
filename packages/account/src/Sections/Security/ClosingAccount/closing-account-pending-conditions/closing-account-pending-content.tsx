@@ -1,11 +1,11 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import { Icon, Text } from '@deriv/components';
 
 type TClosingAccountPendingContentProps = {
     currency_icon: string;
     loginid?: string;
-    title?: React.ReactNode;
-    value: React.ReactNode;
+    title?: ReactNode;
+    value: ReactNode;
 };
 
 const ClosingAccountPendingContent = ({ currency_icon, loginid, title, value }: TClosingAccountPendingContentProps) => (

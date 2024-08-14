@@ -1,16 +1,17 @@
-import React, { ReactNode, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import * as Yup from 'yup';
 import { useResidenceList, useSettings } from '@deriv/api-v2';
-import { Loader } from '@deriv-com/ui';
-import { FlowTextField, InlineMessage, useFlow, WalletDropdown, WalletText } from '../../../../components';
+import { useTranslations } from '@deriv-com/translations';
+import { Dropdown, Loader } from '@deriv-com/ui';
+import { FlowTextField, InlineMessage, useFlow, WalletText } from '../../../../components';
 import { accountOpeningReasonList } from './constants';
 import './PersonalDetails.scss';
 
 const PersonalDetails = () => {
     const { data: residenceList, isLoading, isSuccess: isResidenceListSuccess } = useResidenceList();
-    const { formValues, setFormValues } = useFlow();
+    const { formValues, setFormValues, setTouched, touched } = useFlow();
     const { data: getSettings } = useSettings();
-
+    const { localize } = useTranslations();
     const countryCodeToPatternMapper = useMemo(() => {
         const countryCodeToPatternMapping: Record<string, string> = {};
 
@@ -24,7 +25,7 @@ const PersonalDetails = () => {
         return countryCodeToPatternMapping;
     }, [isResidenceListSuccess, residenceList]);
 
-    const tinValidator = useMemo(() => {
+    const tinValidator = () => {
         const patternStr = countryCodeToPatternMapper[formValues?.taxResidence];
         try {
             if (patternStr) {
@@ -40,7 +41,15 @@ const PersonalDetails = () => {
         } catch (err) {
             return (err as Yup.ValidationError).message;
         }
-    }, [countryCodeToPatternMapper, formValues?.taxIdentificationNumber, formValues?.taxResidence]);
+    };
+
+    const taxResidenceValidator = () => {
+        try {
+            Yup.string().nullable().required('Tax residence is required').validateSync(formValues?.taxResidence);
+        } catch (error) {
+            if (error instanceof Yup.ValidationError) return error.message;
+        }
+    };
 
     useEffect(() => {
         if (getSettings && isResidenceListSuccess) {
@@ -79,71 +88,121 @@ const PersonalDetails = () => {
                         </InlineMessage>
                     </div>
                     <div className='wallets-personal-details__form'>
-                        <WalletDropdown
-                            label='Citizenship*'
-                            list={residenceList.map(residence => ({
-                                text: residence.text as ReactNode,
-                                value: residence.value ?? '',
-                            }))}
-                            listHeight='sm'
-                            name='wallets-personal-details__dropdown-citizenship'
-                            onSelect={selectedItem => setFormValues('citizenship', selectedItem)}
-                            value={getSettings?.citizen ?? formValues?.citizenship}
-                            variant='comboBox'
-                        />
-                        <WalletDropdown
-                            disabled={getSettings?.place_of_birth !== ''}
-                            label='Place of birth*'
-                            list={residenceList.map(residence => ({
-                                text: residence.text as ReactNode,
-                                value: residence.value ?? '',
-                            }))}
-                            listHeight='sm'
-                            name='wallets-personal-details__dropdown-pob'
-                            onSelect={selectedItem => setFormValues('placeOfBirth', selectedItem)}
-                            value={getSettings?.place_of_birth ?? ''}
-                            variant='comboBox'
-                        />
-                        <WalletDropdown
-                            errorMessage={'Tax residence is required'}
-                            isRequired
-                            label='Tax residence*'
-                            list={residenceList.map(residence => ({
-                                text: residence.text as ReactNode,
-                                value: residence.value ?? '',
-                            }))}
-                            listHeight='sm'
-                            name='wallets-personal-details__dropdown-tax-residence'
-                            onChange={inputValue => {
-                                residenceList.forEach(residence => {
-                                    if (residence.text?.toLowerCase() === inputValue.toLowerCase()) {
-                                        setFormValues('taxResidence', residence.value);
+                        <div className='wallets-personal-details__dropdown'>
+                            <Dropdown
+                                data-testid='dt_wallets_personal_details_dropdown_citizenship'
+                                emptyResultMessage={localize('No results found')}
+                                isFullWidth
+                                label='Citizenship*'
+                                list={residenceList.map(residence => ({
+                                    text: residence.text,
+                                    value: residence.value ?? '',
+                                }))}
+                                listHeight='sm'
+                                name='wallets-personal-details__dropdown-citizenship'
+                                onBlur={e => {
+                                    const matchFound = residenceList.find(
+                                        residence =>
+                                            residence.text?.toLocaleLowerCase() === e.target.value.toLocaleLowerCase()
+                                    );
+                                    if (!matchFound) {
+                                        setFormValues('citizenship', '');
                                     }
-                                });
-                            }}
-                            onSelect={selectedItem => {
-                                setFormValues('taxResidence', selectedItem);
-                            }}
-                            value={getSettings?.tax_residence ?? formValues?.taxResidence}
-                            variant='comboBox'
-                        />
+                                }}
+                                onSearch={inputValue => {
+                                    residenceList.some(residence => {
+                                        if (residence.text?.toLowerCase() === inputValue.toLowerCase()) {
+                                            setFormValues('citizenship', residence.value);
+                                            return true;
+                                        }
+                                    });
+                                }}
+                                onSelect={selectedItem => setFormValues('citizenship', selectedItem)}
+                                value={formValues?.citizenship ?? getSettings?.citizen}
+                            />
+                        </div>
+                        <div className='wallets-personal-details__dropdown'>
+                            <Dropdown
+                                data-testid='dt_wallets_personal_details_dropdown_pob'
+                                disabled={getSettings?.place_of_birth !== ''}
+                                isFullWidth
+                                label='Place of birth*'
+                                list={residenceList.map(residence => ({
+                                    text: residence.text,
+                                    value: residence.value ?? '',
+                                }))}
+                                listHeight='sm'
+                                name='wallets-personal-details__dropdown-pob'
+                                onSelect={selectedItem => setFormValues('placeOfBirth', selectedItem)}
+                                value={getSettings?.place_of_birth ?? ''}
+                                variant='comboBox'
+                            />
+                        </div>
+                        <div className='wallets-personal-details__dropdown'>
+                            <Dropdown
+                                data-testid='dt_wallets_personal_details_dropdown_residence'
+                                emptyResultMessage={localize('No results found')}
+                                errorMessage={
+                                    touched?.taxResidence && !formValues.taxResidence ? taxResidenceValidator() : ''
+                                }
+                                isFullWidth
+                                isRequired
+                                label='Tax residence*'
+                                list={residenceList.map(residence => ({
+                                    text: residence.text,
+                                    value: residence.value ?? '',
+                                }))}
+                                listHeight='sm'
+                                name='wallets-personal-details__dropdown-tax-residence'
+                                onBlur={e => {
+                                    const matchFound = residenceList.find(
+                                        residence =>
+                                            residence.text?.toLocaleLowerCase() === e.target.value.toLocaleLowerCase()
+                                    );
+                                    if (!matchFound) {
+                                        setFormValues('taxResidence', '');
+                                    }
+                                }}
+                                onFocus={() => {
+                                    setTouched({ ...touched, taxResidence: true });
+                                }}
+                                onSearch={inputValue => {
+                                    residenceList.some(residence => {
+                                        if (residence.text?.toLowerCase() === inputValue.toLowerCase()) {
+                                            setFormValues('taxResidence', residence.value);
+                                            return true;
+                                        }
+                                    });
+                                }}
+                                onSelect={selectedItem => {
+                                    setFormValues('taxResidence', selectedItem);
+                                }}
+                                value={formValues?.taxResidence ?? getSettings?.tax_residence}
+                            />
+                        </div>
                         <FlowTextField
                             defaultValue={getSettings?.tax_identification_number ?? formValues?.taxIdentificationNumber}
-                            errorMessage={!formValues?.taxResidence ? 'Please fill in tax residence' : tinValidator}
+                            errorMessage={!formValues?.taxResidence ? 'Please fill in tax residence' : tinValidator()}
                             isInvalid={
-                                !formValues.taxResidence || !formValues.taxIdentificationNumber || Boolean(tinValidator)
+                                !formValues.taxResidence ||
+                                !formValues.taxIdentificationNumber ||
+                                Boolean(tinValidator())
                             }
                             label='Tax identification number*'
                             name='taxIdentificationNumber'
                         />
-                        <WalletDropdown
-                            label='Account opening reason*'
-                            list={accountOpeningReasonList}
-                            name='wallets-personal-details__dropdown-opening-reason'
-                            onSelect={selectedItem => setFormValues('accountOpeningReason', selectedItem)}
-                            value={getSettings?.account_opening_reason ?? formValues?.accountOpeningReason}
-                            variant='comboBox'
-                        />
+                        <div className='wallets-personal-details__dropdown'>
+                            <Dropdown
+                                data-testid='dt_wallets_personal_details_dropdown_openingreason'
+                                isFullWidth
+                                label='Account opening reason*'
+                                list={accountOpeningReasonList}
+                                name='wallets-personal-details__dropdown-opening-reason'
+                                onSelect={selectedItem => setFormValues('accountOpeningReason', selectedItem)}
+                                value={formValues?.accountOpeningReason ?? getSettings?.account_opening_reason}
+                                variant='comboBox'
+                            />
+                        </div>
                     </div>
                 </>
             )}

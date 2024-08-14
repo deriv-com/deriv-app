@@ -32,11 +32,16 @@
         gap: 1.6rem;
         margin-top: 0.8rem;
 
-        & .wallets-dropdown,
-        & .wallets-textfield {
-            @include desktop {
-                max-width: 40rem;
-            }
+        @include desktop {
+            max-width: 40rem;
+        }
+    }
+
+    &__dropdown {
+        width: 100%;
+        padding-bottom: 2rem;
+        label {
+            text-transform: none;
         }
     }
 

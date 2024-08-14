@@ -1,16 +1,22 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
-import { useHover } from 'usehooks-ts';
 import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api-v2';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
-import { Divider } from '@deriv-com/ui';
-import { Tooltip, WalletButton, WalletText } from '../../../../../../components/Base';
+import { getTruncatedString } from '@deriv/utils';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { Button, Divider, Text, Tooltip } from '@deriv-com/ui';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
 import useDevice from '../../../../../../hooks/useDevice';
 import { THooks } from '../../../../../../types';
 import { WalletActionModal } from '../../../../components/WalletActionModal';
+import {
+    getFormattedConfirmations,
+    getStatusDescription,
+    getStatusName,
+} from '../../../../helpers/transaction-helpers';
+import { getTransactionLabels } from '../../constants';
 import { TransactionsPendingRowField } from './components/TransactionsPendingRowField';
 import './TransactionsPendingRow.scss';
 
@@ -18,14 +24,20 @@ type TProps = {
     transaction: THooks.CryptoTransactions;
 };
 
-const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
+const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
     const { data } = useActiveWalletAccount();
     const { isMobile } = useDevice();
+    const { localize } = useTranslations();
     const displayCode = useMemo(() => data?.currency_config?.display_code || 'USD', [data]);
     const modal = useModal();
-
-    const statusRef = useRef(null);
-    const isStatusHovered = useHover(statusRef);
+    const formattedTransactionHash = transaction.transaction_hash
+        ? getTruncatedString(transaction.transaction_hash, { type: 'middle' })
+        : localize('Pending');
+    const formattedAddressHash = transaction.address_hash
+        ? getTruncatedString(transaction.address_hash, { type: 'middle' })
+        : localize('NA');
+    const formattedConfirmations = getFormattedConfirmations(transaction.confirmations, transaction.status_code);
+    const statusDescription = getStatusDescription(transaction.transaction_type, transaction.status_code);
 
     const { mutate } = useCancelCryptoTransaction();
 
@@ -40,21 +52,21 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                 actionButtonsOptions={[
                     {
                         onClick: modal.hide,
-                        text: "No, don't cancel",
+                        text: localize("No, don't cancel"),
                     },
                     {
                         isPrimary: true,
                         onClick: cancelTransaction,
-                        text: 'Yes, cancel',
+                        text: localize('Yes, cancel'),
                     },
                 ]}
-                description='Are you sure you want to cancel this transaction?'
+                description={localize('Are you sure you want to cancel this transaction?')}
                 hideCloseButton
-                title='Cancel transaction'
+                title={localize('Cancel transaction')}
             />,
             { defaultRootId: 'wallets_modal_root' }
         );
-    }, [cancelTransaction, modal]);
+    }, [cancelTransaction, localize, modal]);
 
     const onMobileStatusClick = useCallback(() => {
         if (isMobile) {
@@ -64,17 +76,17 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                         {
                             isPrimary: true,
                             onClick: modal.hide,
-                            text: 'Ok',
+                            text: localize('Ok'),
                         },
                     ]}
-                    description={transaction.description}
+                    description={statusDescription}
                     hideCloseButton
-                    title='Transaction details'
+                    title={localize('Transaction details')}
                 />,
                 { defaultRootId: 'wallets_modal_root' }
             );
         }
-    }, [isMobile, modal, transaction.description]);
+    }, [isMobile, localize, modal, statusDescription]);
 
     return (
         <React.Fragment>
@@ -83,13 +95,12 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                 <div className='wallets-transactions-pending-row__wallet-info'>
                     <WalletCurrencyCard currency={data?.currency || 'USD'} isDemo={data?.is_virtual} size='md' />
                     <div className='wallets-transactions-pending-row__column'>
-                        <WalletText color='primary' size='xs'>
-                            {transaction.transaction_type.charAt(0).toUpperCase() +
-                                transaction.transaction_type.slice(1)}
-                        </WalletText>
-                        <WalletText color='general' size='xs' weight='bold'>
+                        <Text color='primary' size='xs'>
+                            {getTransactionLabels()[transaction.transaction_type]}
+                        </Text>
+                        <Text color='general' size='xs' weight='bold'>
                             {displayCode} Wallet
-                        </WalletText>
+                        </Text>
                     </div>
                 </div>
                 <div className='wallets-transactions-pending-row__fields-container'>
@@ -99,40 +110,40 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                             transaction.transaction_url
                                 ? {
                                       link: transaction.transaction_url,
-                                      text: 'View transaction hash on Blockchain',
+                                      text: localize('View transaction hash on Blockchain'),
                                       tooltipAlignment: 'right',
                                   }
                                 : undefined
                         }
-                        name='Transaction hash'
-                        value={transaction.formatted_transaction_hash}
+                        name={localize('Transaction hash')}
+                        value={formattedTransactionHash}
                     />
                     <TransactionsPendingRowField
                         className={{ 'wallets-transactions-pending-row__transaction-address': !isMobile }}
                         hint={{
                             link: transaction.address_url,
-                            text: 'View address on Blockchain',
+                            text: localize('View address on Blockchain'),
                             tooltipAlignment: 'right',
                         }}
-                        name='Address'
-                        value={transaction.formatted_address_hash}
+                        name={localize('Address')}
+                        value={formattedAddressHash}
                     />
                     <TransactionsPendingRowField
                         className={{ 'wallets-transactions-pending-row__transaction-confirmations': !isMobile }}
-                        name='Confirmations'
-                        value={transaction.formatted_confirmations.toString()}
+                        name={localize('Confirmations')}
+                        value={formattedConfirmations}
                     />
                     {isMobile && (
                         <React.Fragment>
                             <TransactionsPendingRowField
-                                name='Amount'
+                                name={localize('Amount')}
                                 value={`${transaction.is_deposit ? '+' : '-'}${transaction.formatted_amount}`}
                                 valueTextProps={{
                                     color: transaction.is_deposit ? 'success' : 'red',
                                 }}
                             />
                             <TransactionsPendingRowField
-                                name='Date'
+                                name={localize('Date')}
                                 value={moment.unix(transaction.submit_date).format('DD MMM YYYY')}
                                 valueTextProps={{
                                     color: 'general',
@@ -142,7 +153,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     )}
                     <TransactionsPendingRowField
                         className={{ 'wallets-transactions-pending-row__transaction-time': !isMobile }}
-                        name='Time'
+                        name={localize('Time')}
                         value={moment
                             .unix(transaction.submit_date)
                             .utc()
@@ -155,7 +166,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     />
                     {!isMobile && (
                         <div className='wallets-transactions-pending-row__transaction-amount'>
-                            <WalletText
+                            <Text
                                 align='right'
                                 color={transaction.is_deposit ? 'success' : 'red'}
                                 size='sm'
@@ -163,35 +174,32 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                             >
                                 {transaction.is_deposit ? '+' : '-'}
                                 {transaction.formatted_amount}
-                            </WalletText>
+                            </Text>
                         </div>
                     )}
                 </div>
                 <div className='wallets-transactions-pending-row__transaction-status'>
-                    <button
+                    <Tooltip
+                        as='button'
                         className='wallets-transactions-pending-row__transaction-status-button'
                         data-testid='dt_transaction_status_button'
+                        hideTooltip={isMobile}
                         onClick={onMobileStatusClick}
-                        ref={statusRef}
+                        tooltipContent={statusDescription}
+                        tooltipPosition='left'
                     >
-                        <Tooltip
-                            alignment='left'
-                            isVisible={!isMobile && isStatusHovered}
-                            message={transaction.description}
-                        >
-                            <div
-                                className={classNames(
-                                    'wallets-transactions-pending-row__transaction-status-dot',
-                                    `wallets-transactions-pending-row__transaction-status-dot--${transaction.status_code
-                                        .toLowerCase()
-                                        .replace('_', '-')}`
-                                )}
-                            />
-                        </Tooltip>
-                        <WalletText color='general' size='sm'>
-                            {transaction.status_name}
-                        </WalletText>
-                    </button>
+                        <div
+                            className={classNames(
+                                'wallets-transactions-pending-row__transaction-status-dot',
+                                `wallets-transactions-pending-row__transaction-status-dot--${transaction.status_code
+                                    .toLowerCase()
+                                    .replace('_', '-')}`
+                            )}
+                        />
+                        <Text color='general' size='sm'>
+                            {getStatusName(transaction.status_code)}
+                        </Text>
+                    </Tooltip>
                     {!isMobile && !!transaction.is_valid_to_cancel && (
                         <button
                             className='wallets-transactions-pending-row__transaction-cancel-button'
@@ -203,13 +211,20 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                 </div>
 
                 {isMobile && !!transaction.is_valid_to_cancel && (
-                    <WalletButton isFullWidth onClick={onCancelButtonClick} size='sm' variant='outlined'>
-                        Cancel transaction
-                    </WalletButton>
+                    <Button
+                        borderWidth='sm'
+                        color='black'
+                        isFullWidth
+                        onClick={onCancelButtonClick}
+                        size='sm'
+                        variant='outlined'
+                    >
+                        <Localize i18n_default_text='Cancel transaction' />
+                    </Button>
                 )}
             </div>
         </React.Fragment>
     );
 };
 
-export default TransactionsCryptoRow;
+export default TransactionsPendingRow;

@@ -6,11 +6,11 @@ import { TransactionsCompletedRowAccountDetails } from '../TransactionsCompleted
 
 type TProps = {
     accounts: THooks.AllAccountsList;
-    direction: 'from' | 'to';
+    displayActionType: string;
     loginid: string;
 };
 
-const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({ accounts, direction, loginid }) => {
+const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({ accounts, displayActionType, loginid }) => {
     const { data: activeWallet } = useActiveWalletAccount();
 
     const wallet = accounts.wallets?.find(account => account.loginid === loginid);
@@ -39,7 +39,7 @@ const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({ acco
                 actionType='transfer'
                 currency={transferAccount.currency ?? 'USD'}
                 displayAccountName={displayAccountName ?? ''}
-                displayActionType={`Transfer ${direction}`}
+                displayActionType={displayActionType}
                 isDemo={Boolean(transferAccount.is_virtual)}
                 isInterWallet={transferAccount === wallet}
                 mt5Group={transferAccount === mt5Account ? mt5Account.group : undefined}

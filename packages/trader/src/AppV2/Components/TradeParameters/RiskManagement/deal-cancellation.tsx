@@ -4,7 +4,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { Button, Text, ToggleSwitch, WheelPicker, useSnackbar } from '@deriv-com/quill-ui';
 import { Skeleton } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { addUnit } from 'AppV2/Utils/trade-params-utils';
+import { addUnit, getSnackBarText } from 'AppV2/Utils/trade-params-utils';
 
 type TDealCancellationProps = {
     closeActionSheet: () => void;
@@ -23,25 +23,6 @@ const DealCancellation = observer(({ closeActionSheet }: TDealCancellationProps)
 
     const [is_enabled, setIsEnabled] = React.useState(has_cancellation);
     const [selected_value, setSelectedValue] = React.useState<string>(addUnit(cancellation_duration));
-
-    const getSnackBarText = ({
-        has_cancellation,
-        has_take_profit,
-        has_stop_loss,
-    }: {
-        has_cancellation?: boolean;
-        has_take_profit?: boolean;
-        has_stop_loss?: boolean;
-    }) => {
-        if (has_cancellation) {
-            if (has_take_profit && has_stop_loss)
-                return <Localize i18n_default_text='TP and SL have been turned off.' />;
-            if (has_take_profit) return <Localize i18n_default_text='TP has been turned off.' />;
-            if (has_stop_loss) return <Localize i18n_default_text='SL has been turned off.' />;
-        }
-        if ((has_take_profit || has_stop_loss) && has_cancellation)
-            return <Localize i18n_default_text='DC has been turned off.' />;
-    };
 
     const onSave = () => {
         const new_cancellation_duration = addUnit(selected_value, 'm', false);

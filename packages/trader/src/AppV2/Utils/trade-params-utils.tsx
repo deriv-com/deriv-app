@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     CONTRACT_TYPES,
     isTouchContract,
@@ -6,7 +7,7 @@ import {
     shouldShowExpiration,
     TRADE_TYPES,
 } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 
 export const getTradeParams = (symbol?: string) => ({
     [TRADE_TYPES.RISE_FALL]: ['duration', 'stake', 'allow_equals'],
@@ -118,3 +119,21 @@ export const isSmallScreen = () => window.innerHeight <= 640;
 
 export const addUnit = (value: string, unit = localize('min'), should_add_space = true) =>
     `${parseInt(value)}${should_add_space ? ' ' : ''}${unit}`;
+
+export const getSnackBarText = ({
+    has_cancellation,
+    has_take_profit,
+    has_stop_loss,
+}: {
+    has_cancellation?: boolean;
+    has_take_profit?: boolean;
+    has_stop_loss?: boolean;
+}) => {
+    if (has_cancellation) {
+        if (has_take_profit && has_stop_loss) return <Localize i18n_default_text='TP and SL have been turned off.' />;
+        if (has_take_profit) return <Localize i18n_default_text='TP has been turned off.' />;
+        if (has_stop_loss) return <Localize i18n_default_text='SL has been turned off.' />;
+    }
+    if ((has_take_profit || has_stop_loss) && has_cancellation)
+        return <Localize i18n_default_text='DC has been turned off.' />;
+};

@@ -1,35 +1,69 @@
+import React, { useEffect, useMemo, useState } from 'react';
 import { ActionSheet, Text } from '@deriv-com/quill-ui';
 import { LabelPairedChevronDownSmBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
-import React from 'react';
 import { useTraderStore } from 'Stores/useTraderStores';
+import StatsRow from './stats-row';
 
 const AccumulatorStats = observer(() => {
     const { ticks_history_stats = {} } = useTraderStore();
-    const [is_open, setIsOpen] = React.useState(false);
-    const [is_open_description, setIsOpenDescription] = React.useState(false);
-    const ticks_history = ticks_history_stats?.ticks_stayed_in ?? [];
+    const [is_open, setIsOpen] = useState(false);
+    const [is_open_description, setIsOpenDescription] = useState(false);
 
-    const rows = ticks_history.reduce((acc: number[][], _el, index) => {
+    const ticks_history = useMemo(() => {
+        return ticks_history_stats?.ticks_stayed_in ?? [];
+    }, [ticks_history_stats]);
+
+    const [animationClass, setAnimationClass] = useState('');
+    const [lastValue, setLastValue] = useState<number | null>(null);
+    const [isMovingTransition, setIsMovingTransition] = useState(false);
+
+    const rows: number[][] = useMemo(() => {
         const row_size = 5;
-        if (index % row_size === 0) {
-            acc.push(ticks_history.slice(index, index + row_size));
-        }
-        return acc;
-    }, []);
+        return ticks_history.reduce<number[][]>((acc, _el, index) => {
+            if (index % row_size === 0) {
+                acc.push(ticks_history.slice(index, index + row_size));
+            }
+            return acc;
+        }, []);
+    }, [ticks_history]);
 
     const onActionSheetClose = () => {
         setIsOpen(false);
         setIsOpenDescription(false);
     };
 
-    if (rows.length == 0) {
-        return <></>;
+    useEffect(() => {
+        if (rows[0] && rows[0].length > 0) {
+            if (lastValue !== null) {
+                setAnimationClass('');
+                if (lastValue === rows[0][1]) {
+                    setTimeout(() => {
+                        setAnimationClass('animate-error');
+                    }, 0);
+                } else {
+                    setTimeout(() => {
+                        setAnimationClass('animate-success');
+                    }, 0);
+                }
+            }
+            if (lastValue === rows[0][1]) {
+                setIsMovingTransition(true);
+                setTimeout(() => setIsMovingTransition(false), 600);
+            } else {
+                setIsMovingTransition(false);
+            }
+            setLastValue(rows[0][0]);
+        }
+    }, [rows[0]?.[0]]);
+
+    if (rows.length === 0) {
+        return null;
     }
 
     return (
-        <React.Fragment>
+        <div>
             <div className='accumulators-stats'>
                 <div className='accumulators-stats__container'>
                     <div className='accumulators-stats__container__heading' onClick={() => setIsOpenDescription(true)}>
@@ -39,13 +73,12 @@ const AccumulatorStats = observer(() => {
                     </div>
                     <div className='accumulators-stats__container__divider' />
                     <div className='accumulators-stats__container__stats'>
-                        {rows[0].concat(rows[1])?.map((el, i) => (
-                            <div key={i} className='accumulators-stats__container__stats__stat'>
-                                <Text size='sm' bold={i == 0}>
-                                    {el}
-                                </Text>
-                            </div>
-                        ))}
+                        <StatsRow
+                            rows={[...rows[0], ...rows[1]]}
+                            animationClass={animationClass}
+                            isMovingTransition={isMovingTransition}
+                            className='accumulators-stats__container__stats'
+                        />
                     </div>
                     <div className='accumulators-stats__container__expand' onClick={() => setIsOpen(true)}>
                         <LabelPairedChevronDownSmBoldIcon data-testid='expand-stats-icon' />
@@ -56,6 +89,7 @@ const AccumulatorStats = observer(() => {
                 isOpen={is_open || is_open_description}
                 onClose={onActionSheetClose}
                 position='left'
+                className='accumulator-stats-sheet-wrapper'
                 expandable={false}
             >
                 {is_open && (
@@ -71,13 +105,20 @@ const AccumulatorStats = observer(() => {
                                     <Localize i18n_default_text='History of tick counts' />
                                 </Text>
                             </div>
-                            {rows.map((item, index) => (
+
+                            <div className='stats-sheet__stats'>
+                                <StatsRow
+                                    rows={rows[0]}
+                                    animationClass={animationClass}
+                                    isMovingTransition={isMovingTransition}
+                                    className='stats-sheet__stats'
+                                />
+                            </div>
+                            {rows.slice(1).map((item, index) => (
                                 <div key={index} className='stats-sheet__stats'>
-                                    {item.map((item, innerIndex) => (
-                                        <div key={innerIndex} className='stats-sheet__stats__number'>
-                                            <Text size='sm' bold={innerIndex == 0 && index == 0}>
-                                                {item}
-                                            </Text>
+                                    {item.map((item: number, innerIndex: number) => (
+                                        <div key={`${index}-${innerIndex}`} className='stats-sheet__stats__number'>
+                                            <Text size='sm'>{item}</Text>
                                         </div>
                                     ))}
                                 </div>
@@ -112,7 +153,7 @@ const AccumulatorStats = observer(() => {
                     </ActionSheet.Portal>
                 )}
             </ActionSheet.Root>
-        </React.Fragment>
+        </div>
     );
 });
 

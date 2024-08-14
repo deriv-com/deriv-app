@@ -85,6 +85,7 @@ const BarrierInput = observer(
                             value={barrier_1}
                             allowDecimals
                             allowSign={false}
+                            inputMode='numeric'
                             onChange={handleOnChange}
                             placeholder={localize('Distance to spot')}
                             variant='fill'
@@ -98,6 +99,7 @@ const BarrierInput = observer(
                             addonLabel={option == 0 ? '+' : '-'}
                             value={barrier_1.replace(/[+-]/g, '')}
                             allowDecimals
+                            inputMode='numeric'
                             allowSign={false}
                             status={validation_errors?.barrier_1.length > 0 ? 'error' : 'neutral'}
                             onChange={handleOnChange}

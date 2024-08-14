@@ -4,11 +4,13 @@ import userEvent from '@testing-library/user-event';
 import AccumulatorStats from '../stats';
 import TraderProviders from '../../../../trader-providers';
 import { mockStore, useStore } from '@deriv/stores';
+import { TStores } from '@deriv/stores/types';
 
 describe('AccumulatorStats', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
+        jest.useFakeTimers();
         default_mock_store = mockStore({
             modules: {
                 trade: {
@@ -16,14 +18,17 @@ describe('AccumulatorStats', () => {
                     validation_errors: { barrier_1: [] },
                     duration: 10,
                     ticks_history_stats: {
-                        ticks_stayed_in: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                        ticks_stayed_in: [
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                        ],
                     },
                 },
             },
         });
     });
 
-    const renderAccumulatorState = () => {
+    const renderAccumulatorState = (default_mock_store: TStores) => {
         render(
             <TraderProviders store={default_mock_store}>
                 <AccumulatorStats />
@@ -32,18 +37,18 @@ describe('AccumulatorStats', () => {
     };
 
     test('should render without crashing', () => {
-        renderAccumulatorState();
+        renderAccumulatorState(default_mock_store);
         expect(screen.getByText('Stats')).toBeInTheDocument();
     });
 
     test('should render stats when data is available', () => {
-        renderAccumulatorState();
+        renderAccumulatorState(default_mock_store);
         const stats = screen.getAllByText(/\d/);
         expect(stats.length).toBeGreaterThan(0);
     });
 
     test('should open description when heading is clicked', () => {
-        renderAccumulatorState();
+        renderAccumulatorState(default_mock_store);
         const heading = screen.getByText('Stats');
         userEvent.click(heading);
 
@@ -55,7 +60,7 @@ describe('AccumulatorStats', () => {
     });
 
     test('should open ActionSheet with stats when expand icon is clicked', () => {
-        renderAccumulatorState();
+        renderAccumulatorState(default_mock_store);
         const expandIcon = screen.getByTestId('expand-stats-icon');
         userEvent.click(expandIcon);
 
@@ -64,7 +69,7 @@ describe('AccumulatorStats', () => {
     });
 
     test('should close ActionSheet when primary action is clicked', () => {
-        renderAccumulatorState();
+        renderAccumulatorState(default_mock_store);
         const heading = screen.getByText('Stats');
         userEvent.click(heading);
 
@@ -76,5 +81,12 @@ describe('AccumulatorStats', () => {
                 'Stats show the history of consecutive tick counts, i.e. the number of ticks the price remained within range continuously.'
             )
         ).not.toBeInTheDocument();
+    });
+    test('should return null when ticks_stayed_in are empty', () => {
+        default_mock_store.modules.trade.ticks_history_stats = {
+            ticks_stayed_in: [],
+        };
+        renderAccumulatorState(default_mock_store);
+        expect(screen.queryByText('Stats')).not.toBeInTheDocument();
     });
 });

@@ -20,19 +20,16 @@ export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) 
     return Yup.object({
         employment_status: Yup.string().required(localize('Employment status is required.')),
         tax_residence: Yup.string(),
-        confirm_no_tax_details: Yup.bool(),
-        tax_identification_confirm: Yup.bool().when(
-            ['tax_identification_number', 'tax_residence', 'confirm_no_tax_details'],
-            {
-                is: (tax_identification_number: string, tax_residence: string, confirm_no_tax_details: boolean) =>
-                    tax_identification_number && tax_residence && !confirm_no_tax_details,
-                then: Yup.bool().required().oneOf([true]),
-                otherwise: Yup.bool().notRequired(),
-            }
-        ),
+        tin_skipped: Yup.number().oneOf([0, 1]).default(0),
+        tax_identification_confirm: Yup.bool().when(['tax_identification_number', 'tax_residence', 'tin_skipped'], {
+            is: (tax_identification_number: string, tax_residence: string, tin_skipped: boolean) =>
+                tax_identification_number && tax_residence && !tin_skipped,
+            then: Yup.bool().required().oneOf([true]),
+            otherwise: Yup.bool().notRequired(),
+        }),
         tax_identification_number: Yup.string()
-            .when('confirm_no_tax_details', {
-                is: (confirm_no_tax_details: boolean) => confirm_no_tax_details,
+            .when('tin_skipped', {
+                is: (tin_skipped: boolean) => tin_skipped,
                 then: Yup.string().notRequired(),
             })
             .max(25, localize("Tax identification number can't be longer than 25 characters."))

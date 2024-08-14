@@ -24,7 +24,7 @@ describe('getEmploymentAndTaxValidationSchema', () => {
         const valid_values = {
             employment_status: 'Employed',
             tax_residence: 'Germany',
-            confirm_no_tax_details: false,
+            tin_skipped: false,
             tax_identification_confirm: true,
             tax_identification_number: '12345',
         };
@@ -35,7 +35,7 @@ describe('getEmploymentAndTaxValidationSchema', () => {
     it('should throw employment status required error when employment status is not provided', () => {
         const invalid_values = {
             tax_residence: 'Germany',
-            confirm_no_tax_details: false,
+            tin_skipped: false,
             tax_identification_confirm: true,
             tax_identification_number: '12345',
         };
@@ -52,7 +52,7 @@ describe('getEmploymentAndTaxValidationSchema', () => {
         const invalid_values = {
             employment_status: 'Employed',
             tax_residence: 'Germany',
-            confirm_no_tax_details: false,
+            tin_skipped: false,
             tax_identification_confirm: false,
             tax_identification_number: '12345',
         };
@@ -71,7 +71,7 @@ describe('getEmploymentAndTaxValidationSchema', () => {
         const invalid_values = {
             employment_status: 'Employed',
             tax_residence: 'Germany',
-            confirm_no_tax_details: false,
+            tin_skipped: false,
             tax_identification_confirm: true,
             tax_identification_number: '12345678901234567890123456',
         };
@@ -89,7 +89,7 @@ describe('getEmploymentAndTaxValidationSchema', () => {
         const invalid_values = {
             employment_status: 'Employed',
             tax_residence: 'Germany',
-            confirm_no_tax_details: false,
+            tin_skipped: false,
             tax_identification_confirm: true,
             tax_identification_number: '1234',
         };
@@ -105,7 +105,7 @@ describe('getEmploymentAndTaxValidationSchema', () => {
         const invalid_values = {
             employment_status: 'Employed',
             tax_residence: 'Germany',
-            confirm_no_tax_details: false,
+            tin_skipped: false,
             tax_identification_confirm: true,
             tax_identification_number: '-1234',
         };
@@ -121,7 +121,7 @@ describe('getEmploymentAndTaxValidationSchema', () => {
         const invalid_values = {
             employment_status: 'Employed',
             tax_residence: '',
-            confirm_no_tax_details: false,
+            tin_skipped: false,
             tax_identification_confirm: true,
             tax_identification_number: '1234',
         };
@@ -133,10 +133,10 @@ describe('getEmploymentAndTaxValidationSchema', () => {
         }
     });
 
-    it('should not validate tax details when confirm_no_tax_details is true', () => {
+    it('should not validate tax details when tin_skipped is true', () => {
         const valid_values = {
             employment_status: 'Student',
-            confirm_no_tax_details: true,
+            tin_skipped: true,
             tax_residence: 'Germany',
         };
 

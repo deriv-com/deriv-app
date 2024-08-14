@@ -98,8 +98,8 @@ const EmploymentTaxDetailsContainer = ({
                 isFieldImmutable('tax_residence', editable_fields)) ||
             !values.tax_identification_number ||
             !values.tax_residence ||
-            !!values.confirm_no_tax_details,
-        [editable_fields, values.tax_identification_number, values.tax_residence, values.confirm_no_tax_details]
+            !!values.tin_skipped,
+        [editable_fields, values.tax_identification_number, values.tax_residence, values.tin_skipped]
     );
 
     useOnClickOutside(tax_residence_ref, () => setIsTaxResidencePopoverOpen(false), validateClickOutside);
@@ -113,10 +113,10 @@ const EmploymentTaxDetailsContainer = ({
         ((!is_tin_mandatory &&
             tin_employment_status_bypass?.includes(values.employment_status) &&
             !!values.tax_residence) ||
-            values.confirm_no_tax_details);
+            values.tin_skipped);
 
     const isFieldDisabled = (field_name: string) =>
-        isFieldImmutable(field_name, editable_fields) || !!values.confirm_no_tax_details;
+        isFieldImmutable(field_name, editable_fields) || !!values.tin_skipped;
 
     return (
         <Fragment>
@@ -124,24 +124,25 @@ const EmploymentTaxDetailsContainer = ({
 
             {should_show_no_tax_details_checkbox && (
                 <Checkbox
-                    name='confirm_no_tax_details'
+                    name='tin_skipped'
                     className='employment_tax_detail_field-checkbox'
                     data-lpignore
-                    onChange={() =>
+                    onChange={() => {
+                        const confirm_no_tax_details = values.tin_skipped ? 0 : 1;
                         setValues(
                             {
                                 ...values,
-                                confirm_no_tax_details: !values.confirm_no_tax_details,
+                                tin_skipped: confirm_no_tax_details,
                                 tax_identification_number: '',
                                 tax_identification_confirm: false,
                             },
                             true
-                        )
-                    }
-                    value={values.confirm_no_tax_details}
+                        );
+                    }}
+                    value={values.tin_skipped}
                     label={localize('I do not have tax information')}
                     withTabIndex={0}
-                    data-testid='confirm_no_tax_details'
+                    data-testid='tin_skipped'
                     label_font_size={!isDesktop ? 'xxs' : 'xs'}
                     label_line_height='m'
                 />

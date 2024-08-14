@@ -321,5 +321,5 @@ export type TListItem = {
 export type PersonalDetailsValueTypes = Omit<GetSettings, 'date_of_birth'> & {
     date_of_birth?: string;
     tax_identification_confirm?: boolean;
-    confirm_no_tax_details?: boolean;
+    tin_skipped?: boolean;
 };

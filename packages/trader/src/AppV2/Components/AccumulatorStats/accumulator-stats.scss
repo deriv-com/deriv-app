@@ -1,3 +1,38 @@
+@mixin accumulatorSlideToNext {
+    animation: slideToNext 0.24s ease-in-out forwards;
+    @keyframes slideToNext {
+        from {
+            transform: translateX(-30px);
+        }
+        to {
+            transform: translateX(0px);
+        }
+    }
+}
+
+@mixin accumulatorUnderlineAnimation($color: var(--core-color-solid-green-600)) {
+    animation: underlineAnimation 640ms ease-in-out forwards;
+    background-color: $color;
+    @keyframes underlineAnimation {
+        0% {
+            transform: scaleX(0);
+            opacity: 0;
+        }
+        50% {
+            transform: scaleX(1);
+            opacity: 1;
+        }
+        50.1% {
+            transform: scaleX(1);
+            opacity: 1;
+        }
+        100% {
+            transform: scaleX(0);
+            opacity: 0;
+        }
+    }
+}
+
 .accumulators-stats {
     background: var(--general-main-1);
     padding: var(--core-spacing-400);
@@ -6,40 +41,17 @@
         justify-content: space-between;
         &__heading {
             margin: var(--core-spacing-300) var(--core-spacing-400);
-            border-bottom: dashed;
+            background: transparent;
+            border: none;
+            border-bottom: var(--core-spacing-75) dashed;
+            padding: var(--core-spacing-50);
         }
         &__divider {
             border-right: var(--core-spacing-75) solid var(--core-color-opacity-black-100);
             margin: var(--core-spacing-50) var(--core-spacing-400);
         }
         .slide-right {
-            animation: slideToNext 0.24s ease-in-out forwards;
-        }
-        @keyframes underlineAnimation {
-            0% {
-                transform: scaleX(0);
-                opacity: 0;
-            }
-            50% {
-                transform: scaleX(1);
-                opacity: 1;
-            }
-            50.1% {
-                transform: scaleX(1);
-                opacity: 1;
-            }
-            100% {
-                transform: scaleX(0);
-                opacity: 0;
-            }
-        }
-        @keyframes slideToNext {
-            from {
-                transform: translateX(-30px);
-            }
-            to {
-                transform: translateX(0px);
-            }
+            @include accumulatorSlideToNext;
         }
 
         &__stats {
@@ -62,6 +74,7 @@
             &__stat {
                 position: relative;
                 padding: var(--core-spacing-50) var(--core-spacing-400);
+                margin-top: var(--core-spacing-200);
                 p {
                     position: relative;
                     display: inline-block;
@@ -81,17 +94,17 @@
                     opacity: 0;
                 }
                 .animate-error::after {
-                    animation: underlineAnimation 640ms ease-in-out forwards;
-                    background-color: var(--core-color-solid-red-600);
+                    @include accumulatorUnderlineAnimation(var(--core-color-solid-red-600));
                 }
                 .animate-success::after {
-                    animation: underlineAnimation 640ms ease-in-out forwards;
+                    @include accumulatorUnderlineAnimation;
                 }
             }
         }
         &__expand {
-            margin: var(--core-spacing-300) var(--core-spacing-400);
-            margin-left: var(--core-spacing-600);
+            background: transparent;
+            border: none;
+            padding-top: var(--core-spacing-200);
         }
     }
 }
@@ -100,37 +113,10 @@
     .stats-sheet {
         padding: var(--core-spacing-800);
         text-align: center;
-
         .slide-right {
-            animation: slideToNext 0.24s ease-in-out forwards;
+            @include accumulatorSlideToNext;
         }
 
-        @keyframes slideToNext {
-            from {
-                transform: translateX(-30px);
-            }
-            to {
-                transform: translateX(0px);
-            }
-        }
-        @keyframes underlineAnimation {
-            0% {
-                transform: scaleX(0);
-                opacity: 0;
-            }
-            50% {
-                transform: scaleX(1);
-                opacity: 1;
-            }
-            50.1% {
-                transform: scaleX(1);
-                opacity: 1;
-            }
-            100% {
-                transform: scaleX(0);
-                opacity: 0;
-            }
-        }
         &__title {
             margin-bottom: var(--core-spacing-1200);
         }
@@ -168,11 +154,10 @@
                     background-color: var(--core-color-solid-green-600);
                 }
                 .animate-error::after {
-                    animation: underlineAnimation 640ms ease-in-out forwards;
-                    background-color: var(--core-color-solid-red-600);
+                    @include accumulatorUnderlineAnimation(var(--core-color-solid-red-600));
                 }
                 .animate-success::after {
-                    animation: underlineAnimation 640ms ease-in-out forwards;
+                    @include accumulatorUnderlineAnimation;
                 }
             }
             &__number {

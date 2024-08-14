@@ -1,11 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import {
-    WalletCurrencyCard,
-    WalletListCardBadge,
-    WalletMarketCurrencyIcon,
-    WalletText,
-} from '../../../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
+import { WalletCurrencyCard, WalletListCardBadge, WalletMarketCurrencyIcon } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../../../types';
 import { PlatformStatusBadge } from '../../../../../cfd/components/PlatformStatusBadge';
@@ -56,10 +53,17 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) 
             </div>
 
             <div className='wallets-transfer-form-account-card__content'>
-                <WalletText as='p' size={isInput ? '2xs' : 'sm'} weight='bold'>
+                <Text as='p' size={isInput ? '2xs' : 'sm'} weight='bold'>
                     {account?.accountName}
-                </WalletText>
-                <WalletText size={isInput ? '2xs' : 'xs'}>Balance: {account?.displayBalance}</WalletText>
+                </Text>
+                <Text size={isInput ? '2xs' : 'xs'}>
+                    <Localize
+                        i18n_default_text='Balance: {{balance}}'
+                        values={{
+                            balance: account?.displayBalance,
+                        }}
+                    />
+                </Text>
             </div>
 
             {account?.status && hasPlatformStatus && (

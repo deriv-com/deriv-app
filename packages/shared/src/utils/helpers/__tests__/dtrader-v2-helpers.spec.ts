@@ -1,5 +1,10 @@
 import { routes } from '../../routes';
-import { getPositionsV2TabIndexFromURL, isDTraderV2, POSITIONS_V2_TAB_NAME } from '../dtrader-v2-helpers';
+import {
+    getPositionsV2TabIndexFromURL,
+    getTradeNotificationMessage,
+    isDTraderV2,
+    POSITIONS_V2_TAB_NAME,
+} from '../dtrader-v2-helpers';
 
 describe('getPositionsV2TabIndexFromURL', () => {
     const originalWindowLocation = window.location;
@@ -69,5 +74,19 @@ describe('isDTraderV2', () => {
         window.innerWidth = 599;
         window.localStorage.clear();
         expect(isDTraderV2()).toBe(false);
+    });
+});
+
+describe('getTradeNotificationMessage', () => {
+    it('should return correct trade notification message based on passed shortcode', () => {
+        expect(getTradeNotificationMessage('ACCU_1HZ100V_10.00_0_0.03_1_0.000379665263_1722518733_0')).toBe(
+            'Accumulators - Volatility 100 (1s) Index'
+        );
+        expect(getTradeNotificationMessage('PUT_1HZ100V_19.51_1722518877_1722519177_S0P_0')).toBe(
+            'Fall - Volatility 100 (1s) Index'
+        );
+        expect(getTradeNotificationMessage('CALL_FRXAUDUSD_26.62_1722518945_1722988799_658680_0')).toBe(
+            'Higher - AUD/USD'
+        );
     });
 });

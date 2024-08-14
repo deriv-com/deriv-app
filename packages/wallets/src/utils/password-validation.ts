@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { passwordErrorMessage, passwordRegex, passwordValues } from '../constants/password';
+import { getPasswordErrorMessage, passwordRegex, passwordValues } from '../constants/password';
 
 export type Score = 0 | 1 | 2 | 3 | 4;
 export type passwordKeys =
@@ -75,12 +75,12 @@ export const calculateScoreMT5 = (password: string) => {
 
 // Password Schemas
 export const mt5Schema = Yup.string()
-    .required(passwordErrorMessage.invalidLengthMT5)
-    .matches(passwordRegex.isMT5LengthValid, passwordErrorMessage.invalidLengthMT5)
-    .matches(passwordRegex.isPasswordValid, passwordErrorMessage.missingCharacter)
-    .matches(passwordRegex.isMT5PasswordValid, passwordErrorMessage.missingCharacterMT5);
+    .required(getPasswordErrorMessage().invalidLengthMT5)
+    .matches(passwordRegex.isMT5LengthValid, getPasswordErrorMessage().invalidLengthMT5)
+    .matches(passwordRegex.isPasswordValid, getPasswordErrorMessage().missingCharacter)
+    .matches(passwordRegex.isMT5PasswordValid, getPasswordErrorMessage().missingCharacterMT5);
 
 export const cfdSchema = Yup.string()
-    .required(passwordErrorMessage.invalidLength)
-    .matches(passwordRegex.isLengthValid, passwordErrorMessage.invalidLength)
-    .matches(passwordRegex.isPasswordValid, passwordErrorMessage.missingCharacter);
+    .required(getPasswordErrorMessage().invalidLength)
+    .matches(passwordRegex.isLengthValid, getPasswordErrorMessage().invalidLength)
+    .matches(passwordRegex.isPasswordValid, getPasswordErrorMessage().missingCharacter);

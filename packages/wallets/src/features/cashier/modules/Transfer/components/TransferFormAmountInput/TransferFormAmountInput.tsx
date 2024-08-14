@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useFormikContext } from 'formik';
 import { useDebounce } from 'usehooks-ts';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button } from '@deriv-com/ui';
 import { ATMAmountInput, Timer } from '../../../../../../components';
 import useInputDecimalFormatter from '../../../../../../hooks/useInputDecimalFormatter';
@@ -19,6 +20,7 @@ const DEBOUNCE_DELAY_MS = 500;
 const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     const { setFieldValue, setValues, values } = useFormikContext<TInitialTransferFormValues>();
     const { fromAccount, fromAmount, toAccount, toAmount } = values;
+    const { localize } = useTranslations();
 
     const {
         USDExchangeRates,
@@ -47,8 +49,8 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     const amountValue = isFromAmountField ? fromAmount : toAmount;
     const debouncedAmountValue = useDebounce(amountValue, DEBOUNCE_DELAY_MS);
 
-    const toAmountLabel = isSameCurrency || !toAccount ? 'Amount you receive' : 'Estimated amount';
-    const amountLabel = isFromAmountField ? 'Amount you send' : toAmountLabel;
+    const toAmountLabel = isSameCurrency || !toAccount ? localize('Amount you receive') : localize('Estimated amount');
+    const amountLabel = isFromAmountField ? localize('Amount you send') : toAmountLabel;
 
     const currency = isFromAmountField ? fromAccount?.currency : toAccount?.currency;
     const fractionDigits = isFromAmountField
@@ -208,7 +210,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
                     size='sm'
                     variant='outlined'
                 >
-                    Max
+                    <Localize i18n_default_text='Max' />
                 </Button>
             )}
         </div>

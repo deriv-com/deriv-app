@@ -7,6 +7,7 @@ import useDevice from '../../../../../../../hooks/useDevice';
 import TransferFormAccountSelection from '../TransferFormAccountSelection';
 
 jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
     Divider: jest.fn(() => <div data-testid='wallets-divider' />),
 }));
 

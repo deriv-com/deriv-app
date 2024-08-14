@@ -36,6 +36,25 @@ type TObjExpiry = {
     date_expiry?: number;
 };
 
+type TValidationParams =
+    | {
+          validation_params?: {
+              max_payout?: string;
+              max_ticks?: number;
+              stake?: {
+                  max: string;
+                  min: string;
+              };
+              take_profit: {
+                  max: string;
+                  min: string;
+              };
+          };
+      }
+    | undefined;
+
+type ExpandedProposal = Proposal & TValidationParams;
+
 const isVisible = (elem: HTMLElement) => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
 
 const map_error_field: { [key: string]: string } = {
@@ -59,7 +78,7 @@ export const getProposalInfo = (
     response: PriceProposalResponse & TError,
     obj_prev_contract_basis: TObjContractBasis
 ) => {
-    const proposal = response.proposal || ({} as Proposal);
+    const proposal: ExpandedProposal = response.proposal || ({} as ExpandedProposal);
     const profit = (proposal.payout || 0) - (proposal.ask_price || 0);
     const returns = (profit * 100) / (proposal.ask_price || 1);
     const stake = proposal.display_value;
@@ -72,7 +91,7 @@ export const getProposalInfo = (
 
     const is_stake = contract_basis?.value === 'stake';
 
-    const price = is_stake ? stake : (proposal[contract_basis?.value as keyof Proposal] as string | number);
+    const price = is_stake ? stake : (proposal[contract_basis?.value as keyof ExpandedProposal] as string | number);
 
     const obj_contract_basis = {
         text: contract_basis?.text || '',
@@ -103,6 +122,7 @@ export const getProposalInfo = (
         returns: `${returns.toFixed(2)}%`,
         stake,
         spot: proposal.spot,
+        validation_params: proposal?.validation_params,
         ...accumulators_details,
     };
 };

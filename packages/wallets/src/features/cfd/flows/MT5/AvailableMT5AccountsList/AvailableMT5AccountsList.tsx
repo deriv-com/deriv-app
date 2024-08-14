@@ -4,7 +4,7 @@ import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { TradingAccountCard, WalletText } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
-import { MARKET_TYPE, MarketTypeDetails, TRADING_PLATFORM_STATUS } from '../../../constants';
+import { getMarketTypeDetails, MARKET_TYPE, TRADING_PLATFORM_STATUS } from '../../../constants';
 import { JurisdictionModal, MT5PasswordModal, TradingPlatformStatusModal } from '../../../modals';
 import './AvailableMT5AccountsList.scss';
 
@@ -16,9 +16,8 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { getPlatformStatus } = useTradingPlatformStatus();
     const { setModalState, show } = useModal();
+    const { description, title } = getMarketTypeDetails()[account.market_type || MARKET_TYPE.ALL];
     const { data: mt5Accounts } = useMT5AccountsList();
-
-    const { description, title } = MarketTypeDetails[account.market_type || MARKET_TYPE.ALL];
     const platformStatus = getPlatformStatus(account.platform);
     const hasUnavailableAccount = mt5Accounts?.some(account => account.status === 'unavailable');
 
@@ -57,7 +56,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
         <TradingAccountCard
             leading={
                 <div className='wallets-available-mt5__icon'>
-                    {MarketTypeDetails[account.market_type || MARKET_TYPE.ALL].icon}
+                    {getMarketTypeDetails()[account.market_type || MARKET_TYPE.ALL].icon}
                 </div>
             }
             onClick={onButtonClick}

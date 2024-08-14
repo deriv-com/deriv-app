@@ -3,6 +3,7 @@ import { SideNote } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { PageContainer } from '../../components/page-container';
+import { DepositSubPageAnalyticsEventTracker } from '../../components/deposit-sub-page-analytics-event-tracker';
 import { DepositFiatIframe } from './components';
 import { SideNoteFAQ } from 'Components/side-notes';
 
@@ -41,6 +42,7 @@ const DepositFiat: React.FC = observer(() => {
                 </>
             }
         >
+            <DepositSubPageAnalyticsEventTracker deposit_category='fiat' />
             <DepositFiatIframe />
         </PageContainer>
     );

@@ -21,7 +21,12 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 import CompareAccount from 'Components/compare-account';
 import CFDsDescription from 'Components/elements/cfds-description';
 import { getHasDivider } from 'Constants/utils';
-import { useMT5SVGEligibleToMigrate, useTradingPlatformStatus, TradingPlatformStatus } from '@deriv/hooks';
+import {
+    useMT5SVGEligibleToMigrate,
+    useTradingPlatformStatus,
+    TradingPlatformStatus,
+    useGrowthbookGetFeatureValue,
+} from '@deriv/hooks';
 
 import './cfds-listing.scss';
 
@@ -96,6 +101,11 @@ const CFDsListing = observer(() => {
         poa_resubmit_for_labuan,
         is_idv_revoked,
     } = getAuthenticationStatusInfo(account_status);
+
+    const [is_traders_dashboard_tracking_enabled] = useGrowthbookGetFeatureValue({
+        featureFlag: 'ce_tradershub_dashboard_tracking',
+        defaultValue: false,
+    });
 
     const { has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
     const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
@@ -237,7 +247,7 @@ const CFDsListing = observer(() => {
                     {localize('Deriv MT5')}
                 </Text>
             </div>
-            {has_svg_accounts_to_migrate && <MigrationBanner />}
+            {has_svg_accounts_to_migrate && is_landing_company_loaded && <MigrationBanner />}
             {is_landing_company_loaded && !is_populating_mt5_account_list ? (
                 <React.Fragment>
                     {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
@@ -268,13 +278,15 @@ const CFDsListing = observer(() => {
                                 has_divider={(!is_eu_user || is_demo) && getHasDivider(index, list_size, 3)}
                                 onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                     if (existing_account.action_type === 'get') {
-                                        Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                            action: 'account_get',
-                                            form_name: 'traders_hub_default',
-                                            account_mode: selected_account_type,
-                                            account_name: track_account_subtitle,
-                                        });
-                                        if (hasUnavailableAccount) return setAccountUnavailableModal(true);
+                                        if (is_traders_dashboard_tracking_enabled) {
+                                            Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                                action: 'account_get',
+                                                form_name: 'traders_hub_default',
+                                                account_mode: selected_account_type,
+                                                account_name: track_account_subtitle,
+                                            });
+                                            if (hasUnavailableAccount) return setAccountUnavailableModal(true);
+                                        }
 
                                         if (real_account_creation_unlock_date && no_real_mf_account_eu_regulator) {
                                             setShouldShowCooldownModal(true);
@@ -293,30 +305,39 @@ const CFDsListing = observer(() => {
                                         const button_name = e?.currentTarget?.name;
                                         setProduct(existing_account.product);
                                         if (button_name === 'transfer-btn') {
-                                            Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                action: 'account_transfer',
-                                                form_name: 'traders_hub_default',
-                                                account_mode: selected_account_type,
-                                                account_name: track_account_subtitle,
-                                            });
+                                            if (is_traders_dashboard_tracking_enabled) {
+                                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                                    action: 'account_transfer',
+                                                    form_name: 'traders_hub_default',
+                                                    account_mode: selected_account_type,
+                                                    account_name: track_account_subtitle,
+                                                });
+                                            }
+
                                             toggleAccountTransferModal();
                                             setSelectedAccount(existing_account);
                                         } else if (button_name === 'topup-btn') {
-                                            Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                action: 'account_topup',
-                                                form_name: 'traders_hub_default',
-                                                account_mode: selected_account_type,
-                                                account_name: track_account_subtitle,
-                                            });
+                                            if (is_traders_dashboard_tracking_enabled) {
+                                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                                    action: 'account_topup',
+                                                    form_name: 'traders_hub_default',
+                                                    account_mode: selected_account_type,
+                                                    account_name: track_account_subtitle,
+                                                });
+                                            }
+
                                             showTopUpModal(existing_account);
                                             setAppstorePlatform(existing_account.platform);
                                         } else {
-                                            Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                action: 'account_open',
-                                                form_name: 'traders_hub_default',
-                                                account_mode: selected_account_type,
-                                                account_name: track_account_subtitle,
-                                            });
+                                            if (is_traders_dashboard_tracking_enabled) {
+                                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                                    action: 'account_open',
+                                                    form_name: 'traders_hub_default',
+                                                    account_mode: selected_account_type,
+                                                    account_name: track_account_subtitle,
+                                                });
+                                            }
+
                                             if (has_mt5_account_status === MT5_ACCOUNT_STATUS.FAILED && is_eu_user) {
                                                 setIsMT5VerificationFailedModal(true);
                                                 openFailedVerificationModal(existing_account);
@@ -374,30 +395,40 @@ const CFDsListing = observer(() => {
                                         key={`trading_app_card_${existing_account.display_login}`}
                                         onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                             const button_name = e?.currentTarget?.name;
+                                            setProduct();
                                             if (button_name === 'transfer-btn') {
-                                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                    action: 'account_transfer',
-                                                    form_name: 'traders_hub_default',
-                                                    account_mode: selected_account_type,
-                                                    account_name: track_account_name,
-                                                });
+                                                if (is_traders_dashboard_tracking_enabled) {
+                                                    Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                                        action: 'account_transfer',
+                                                        form_name: 'traders_hub_default',
+                                                        account_mode: selected_account_type,
+                                                        account_name: track_account_name,
+                                                    });
+                                                }
+
                                                 toggleCTraderTransferModal();
                                             } else if (button_name === 'topup-btn') {
-                                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                    action: 'account_topup',
-                                                    form_name: 'traders_hub_default',
-                                                    account_mode: selected_account_type,
-                                                    account_name: track_account_name,
-                                                });
+                                                if (is_traders_dashboard_tracking_enabled) {
+                                                    Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                                        action: 'account_topup',
+                                                        form_name: 'traders_hub_default',
+                                                        account_mode: selected_account_type,
+                                                        account_name: track_account_name,
+                                                    });
+                                                }
+
                                                 showTopUpModal(existing_account);
                                                 setAppstorePlatform(account.platform);
                                             } else {
-                                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                    action: 'account_open',
-                                                    form_name: 'traders_hub_default',
-                                                    account_mode: selected_account_type,
-                                                    account_name: track_account_name,
-                                                });
+                                                if (is_traders_dashboard_tracking_enabled) {
+                                                    Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                                        action: 'account_open',
+                                                        form_name: 'traders_hub_default',
+                                                        account_mode: selected_account_type,
+                                                        account_name: track_account_name,
+                                                    });
+                                                }
+
                                                 startTrade(account.platform, existing_account);
                                             }
                                         }}
@@ -413,12 +444,15 @@ const CFDsListing = observer(() => {
                                     platform={account.platform}
                                     description={account.description}
                                     onAction={() => {
-                                        Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                            action: 'account_get',
-                                            form_name: 'traders_hub_default',
-                                            account_mode: selected_account_type,
-                                            account_name: track_account_name,
-                                        });
+                                        setProduct();
+                                        if (is_traders_dashboard_tracking_enabled) {
+                                            Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                                action: 'account_get',
+                                                form_name: 'traders_hub_default',
+                                                account_mode: selected_account_type,
+                                                account_name: track_account_name,
+                                            });
+                                        }
                                         if ((has_no_real_account || no_CR_account) && is_real) {
                                             openDerivRealAccountNeededModal();
                                         } else {
@@ -473,32 +507,41 @@ const CFDsListing = observer(() => {
                                         key={`trading_app_card_${existing_account.login}`}
                                         onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                             const button_name = e?.currentTarget?.name;
-
+                                            setProduct();
                                             if (button_name === 'transfer-btn') {
-                                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                    action: 'account_transfer',
-                                                    form_name: 'traders_hub_default',
-                                                    account_mode: selected_account_type,
-                                                    account_name: track_account_name,
-                                                });
+                                                if (is_traders_dashboard_tracking_enabled) {
+                                                    Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                                        action: 'account_transfer',
+                                                        form_name: 'traders_hub_default',
+                                                        account_mode: selected_account_type,
+                                                        account_name: track_account_name,
+                                                    });
+                                                }
+
                                                 toggleAccountTransferModal();
                                                 setSelectedAccount(existing_account);
                                             } else if (button_name === 'topup-btn') {
-                                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                    action: 'account_topup',
-                                                    form_name: 'traders_hub_default',
-                                                    account_mode: selected_account_type,
-                                                    account_name: track_account_name,
-                                                });
+                                                if (is_traders_dashboard_tracking_enabled) {
+                                                    Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                                        action: 'account_topup',
+                                                        form_name: 'traders_hub_default',
+                                                        account_mode: selected_account_type,
+                                                        account_name: track_account_name,
+                                                    });
+                                                }
+
                                                 showTopUpModal(existing_account);
                                                 setAppstorePlatform(account.platform);
                                             } else {
-                                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                    action: 'account_open',
-                                                    form_name: 'traders_hub_default',
-                                                    account_mode: selected_account_type,
-                                                    account_name: track_account_name,
-                                                });
+                                                if (is_traders_dashboard_tracking_enabled) {
+                                                    Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                                        action: 'account_open',
+                                                        form_name: 'traders_hub_default',
+                                                        account_mode: selected_account_type,
+                                                        account_name: track_account_name,
+                                                    });
+                                                }
+
                                                 startTrade(account.platform, existing_account);
                                             }
                                         }}
@@ -514,12 +557,15 @@ const CFDsListing = observer(() => {
                                     platform={account.platform}
                                     description={account.description}
                                     onAction={() => {
-                                        Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                            action: 'account_get',
-                                            form_name: 'traders_hub_default',
-                                            account_mode: selected_account_type,
-                                            account_name: track_account_name,
-                                        });
+                                        setProduct();
+                                        if (is_traders_dashboard_tracking_enabled) {
+                                            Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                                action: 'account_get',
+                                                form_name: 'traders_hub_default',
+                                                account_mode: selected_account_type,
+                                                account_name: track_account_name,
+                                            });
+                                        }
                                         if ((has_no_real_account || no_CR_account) && is_real) {
                                             openDerivRealAccountNeededModal();
                                         } else {

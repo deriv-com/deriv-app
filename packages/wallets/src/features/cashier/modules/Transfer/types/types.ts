@@ -15,19 +15,14 @@ export type TInitialTransferFormValues = {
 };
 
 type TAction = {
-    buttonLabel?: string;
+    buttonLabel?: JSX.Element;
     navigateTo?: string;
     shouldOpenInNewTab?: boolean;
 };
 
-type TMessage = {
-    text: string;
-    values: Record<string, boolean | number | string | undefined>;
-};
-
 export type TTransferMessage = {
     action?: TAction;
-    message: TMessage;
+    message: JSX.Element;
     type: 'error' | 'info' | 'success' | 'warning';
 };
 

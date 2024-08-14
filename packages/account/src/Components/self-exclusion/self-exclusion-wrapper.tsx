@@ -1,12 +1,12 @@
-import React from 'react';
+import { ReactNode, useContext } from 'react';
 import clsx from 'clsx';
 import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
 import SelfExclusionArticle from './self-exclusion-article';
 import SelfExclusionContext from './self-exclusion-context';
 import { useDevice } from '@deriv-com/ui';
 
-const SelfExclusionWrapper = ({ children }: { children?: React.ReactNode }) => {
-    const { is_app_settings, is_wrapper_bypassed, state } = React.useContext(SelfExclusionContext);
+const SelfExclusionWrapper = ({ children }: { children?: ReactNode }) => {
+    const { is_app_settings, is_wrapper_bypassed, state } = useContext(SelfExclusionContext);
     const { isDesktop } = useDevice();
 
     // "is_wrapper_bypassed" is currently used for a <AppSettings> hosted <SelfExclusion>.

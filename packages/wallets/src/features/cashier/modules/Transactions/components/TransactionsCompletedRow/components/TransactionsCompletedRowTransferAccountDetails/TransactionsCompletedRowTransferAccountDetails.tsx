@@ -6,14 +6,14 @@ import { TransactionsCompletedRowAccountDetails } from '../TransactionsCompleted
 
 type TProps = {
     accounts: THooks.AllAccountsList;
-    direction: 'from' | 'to';
+    displayActionType: string;
     loginid: string;
     transactionID?: number;
 };
 
 const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({
     accounts,
-    direction,
+    displayActionType,
     loginid,
     transactionID,
 }) => {
@@ -45,7 +45,7 @@ const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({
                 actionType='transfer'
                 currency={transferAccount.currency ?? 'USD'}
                 displayAccountName={displayAccountName ?? ''}
-                displayActionType={`Transfer ${direction}`}
+                displayActionType={displayActionType}
                 isDemo={Boolean(transferAccount.is_virtual)}
                 isInterWallet={transferAccount === wallet}
                 mt5Group={transferAccount === mt5Account ? mt5Account.group : undefined}

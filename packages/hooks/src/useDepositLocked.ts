@@ -5,7 +5,12 @@ import useNeedTNC from './useNeedTNC';
 
 const useDepositLocked = () => {
     const { client } = useStore();
-    const { is_deposit_lock, is_trading_experience_incomplete, landing_company_shortcode } = client;
+    const {
+        is_deposit_lock,
+        is_trading_experience_incomplete,
+        landing_company_shortcode,
+        is_account_to_be_closed_by_residence,
+    } = client;
     const is_need_authentication = useNeedAuthentication();
     const is_need_tnc = useNeedTNC();
     const is_need_financial_assessment = useNeedFinancialAssessment();
@@ -18,7 +23,8 @@ const useDepositLocked = () => {
         is_deposit_lock ||
         is_need_authentication ||
         is_need_tnc ||
-        is_trading_experience_incomplete_or_need_financial_assessment;
+        is_trading_experience_incomplete_or_need_financial_assessment ||
+        is_account_to_be_closed_by_residence;
 
     return is_deposit_locked;
 };

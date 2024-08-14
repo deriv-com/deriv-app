@@ -14,13 +14,6 @@ jest.mock('Stores/Modules/Trading/Helpers/allow-equals', () => ({
 }));
 
 const title = 'Allow equals';
-const mediaQueryList = {
-    matches: true,
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-};
-
-window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
 
 describe('AllowEquals', () => {
     let default_mock_store: ReturnType<typeof mockStore>;

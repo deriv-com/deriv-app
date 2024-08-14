@@ -1,9 +1,9 @@
 import React from 'react';
-import { Divider } from '@deriv-com/ui';
-import { WalletText } from '../../../../../../components/Base';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { Divider, Text } from '@deriv-com/ui';
 import { THooks } from '../../../../../../types';
-import { TransactionsCompletedRowAccountDetails } from './components/TransactionsCompletedRowAccountDetails';
-import { TransactionsCompletedRowTransferAccountDetails } from './components/TransactionsCompletedRowTransferAccountDetails';
+import { getTransactionLabels } from '../../constants';
+import { TransactionsCompletedRowAccountDetails, TransactionsCompletedRowTransferAccountDetails } from './components';
 import './TransactionsCompletedRow.scss';
 
 type TProps = {
@@ -13,14 +13,19 @@ type TProps = {
 };
 
 const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wallet }) => {
+    const { localize } = useTranslations();
+
     if (!transaction.action_type || !transaction.amount) return null;
 
     const displayCurrency = wallet?.currency_config?.display_code || 'USD';
     const displayWalletName = `${displayCurrency} Wallet`;
-    const displayActionType =
+    const displayNonTransferActionType =
         wallet.is_virtual && ['deposit', 'withdrawal'].includes(transaction.action_type)
-            ? 'Reset balance'
-            : transaction.action_type.replace(/^\w/, c => c.toUpperCase());
+            ? getTransactionLabels().reset_balance
+            : //@ts-expect-error we only need partial action types
+              getTransactionLabels()[transaction.action_type];
+    const displayTransferActionType =
+        transaction.from?.loginid === wallet?.loginid ? localize('Transfer to') : localize('Transfer from');
 
     return (
         <React.Fragment>
@@ -32,14 +37,14 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
                         actionType={transaction.action_type}
                         currency={wallet?.currency ?? 'USD'}
                         displayAccountName={displayWalletName}
-                        displayActionType={displayActionType}
+                        displayActionType={displayNonTransferActionType}
                         isDemo={Boolean(wallet?.is_virtual)}
                         transactionID={transaction.transaction_id}
                     />
                 ) : (
                     <TransactionsCompletedRowTransferAccountDetails
                         accounts={accounts}
-                        direction={transaction.from?.loginid === wallet?.loginid ? 'to' : 'from'}
+                        displayActionType={displayTransferActionType}
                         loginid={
                             [transaction.from?.loginid, transaction.to?.loginid].find(
                                 loginid => loginid !== wallet?.loginid
@@ -49,13 +54,18 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
                     />
                 )}
                 <div className='wallets-transactions-completed-row__transaction-details'>
-                    <WalletText color={transaction.amount > 0 ? 'success' : 'error'} size='xs' weight='bold'>
+                    <Text color={transaction.amount > 0 ? 'success' : 'error'} size='xs' weight='bold'>
                         {transaction.amount && transaction.amount > 0 ? '+' : ''}
                         {transaction.display_amount}
-                    </WalletText>
-                    <WalletText color='primary' size='2xs'>
-                        Balance: {transaction.display_balance_after}
-                    </WalletText>
+                    </Text>
+                    <Text color='primary' size='2xs'>
+                        <Localize
+                            i18n_default_text='Balance: {{balance}}'
+                            values={{
+                                balance: transaction.display_balance_after,
+                            }}
+                        />
+                    </Text>
                 </div>
             </div>
         </React.Fragment>

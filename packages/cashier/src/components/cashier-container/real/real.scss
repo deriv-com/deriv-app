@@ -3,4 +3,20 @@
         width: 100%;
         height: 80vh;
     }
+
+    &__iframe {
+        @include mobile {
+            position: absolute;
+            height: calc(100% - 3.2rem);
+            inset-inline-end: 0;
+            padding: 0 1.6rem;
+
+            + .page-container__sidebar--right {
+                position: relative;
+                top: calc(100% + 1.6rem);
+                padding-bottom: 1.6rem;
+                flex: none;
+            }
+        }
+    }
 }

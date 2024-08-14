@@ -1,13 +1,25 @@
-import { DBOT_TABS } from 'Constants/bot-contents';
-import { TFormStrategy } from '../constants';
+import { Analytics } from '@deriv-com/analytics';
+import { ACTION, TFormStrategy } from '../constants';
+import { rudderStackSendSwitchLoadStrategyTabEvent } from '../rudderstack-bot-builder';
 import {
-    getTradeParameterData,
+    rudderStackSendGoogleDriveConnectEvent,
+    rudderStackSendGoogleDriveDisconnectEvent,
+    rudderStackSendUploadStrategyCompletedEvent,
+} from '../rudderstack-common-events';
+import {
     getRsDropdownTextFromLocalStorage,
-    getSubpageName,
+    getStrategyType,
+    getTradeParameterData,
     rudderstack_text_error,
 } from '../utils';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
+
+jest.mock('@deriv-com/analytics', () => ({
+    Analytics: {
+        trackEvent: jest.fn(),
+    },
+}));
 
 describe('utils', () => {
     const form_strategy = {
@@ -18,13 +30,6 @@ describe('utils', () => {
             stake: '100',
         },
     } as TFormStrategy;
-
-    const subpage_name = {
-        [`${DBOT_TABS.DASHBOARD}`]: 'dashboard',
-        [`${DBOT_TABS.BOT_BUILDER}`]: 'bot_builder',
-        [`${DBOT_TABS.CHART}`]: 'charts',
-        [`${DBOT_TABS.TUTORIAL}`]: 'tutorials',
-    };
 
     it('getRsDropdownTextFromLocalStorage() should return empty object when parced json of "qs-analytics" localStorage equals undefined or null', () => {
         const result = getRsDropdownTextFromLocalStorage();
@@ -83,45 +88,111 @@ describe('utils', () => {
         });
     });
 
-    it('getSubpageName() should "undefined" if was not pass anything', () => {
-        const result = getSubpageName();
+    it('should return "new" if the XML has is_dbot="true"', () => {
+        const xml = `
+            <xml is_dbot="true">
+                <block></block>
+            </xml>`;
 
-        expect(result).toEqual('undefined');
+        const result = getStrategyType(xml);
+        expect(result).toBe('new');
     });
 
-    it('getSubpageName() should return "dashboard" active_tab equals 0', () => {
-        // eslint-disable-next-line no-proto
-        jest.spyOn(localStorage.__proto__, 'getItem').mockReturnValue(`${DBOT_TABS.DASHBOARD}`);
+    it('should return "old" if the XML has is_dbot="false"', () => {
+        const xml = `
+            <xml is_dbot="false">
+                <someElement></someElement>
+            </xml>`;
 
-        const result = getSubpageName();
-
-        expect(result).toEqual(subpage_name[`${DBOT_TABS.DASHBOARD}`]);
+        const result = getStrategyType(xml);
+        expect(result).toBe('old');
     });
 
-    it('getSubpageName() should return "bot_builder" active_tab equals 1', () => {
-        // eslint-disable-next-line no-proto
-        jest.spyOn(localStorage.__proto__, 'getItem').mockReturnValue(`${DBOT_TABS.BOT_BUILDER}`);
-
-        const result = getSubpageName();
-
-        expect(result).toEqual(subpage_name[`${DBOT_TABS.BOT_BUILDER}`]);
+    it('should return "old" if the XML does not contain the is_dbot attribute', () => {
+        const xml = `
+            <xml>
+                <block></block>
+            </xml>`;
+        const result = getStrategyType(xml);
+        expect(result).toBe('old');
     });
 
-    it('getSubpageName() should return "charts" active_tab equals 2', () => {
-        // eslint-disable-next-line no-proto
-        jest.spyOn(localStorage.__proto__, 'getItem').mockReturnValue(`${DBOT_TABS.CHART}`);
+    it('should return "old" for invalid XML', () => {
+        const xml = `
+            <xml>
+                <block>
+            </xml>`;
 
-        const result = getSubpageName();
-
-        expect(result).toEqual(subpage_name[`${DBOT_TABS.CHART}`]);
+        const result = getStrategyType(xml);
+        expect(result).toBe('old');
     });
 
-    it('getSubpageName() should return "tutorials" active_tab equals 3', () => {
-        // eslint-disable-next-line no-proto
-        jest.spyOn(localStorage.__proto__, 'getItem').mockReturnValue(`${DBOT_TABS.TUTORIAL}`);
+    it('should return "old" if an unexpected error occurs during parsing', () => {
+        global.DOMParser = jest.fn().mockImplementation(() => {
+            return {
+                parseFromString: () => {
+                    throw new Error('Parsing error');
+                },
+            };
+        });
 
-        const result = getSubpageName();
+        const xml = '<xml></xml>';
+        const result = getStrategyType(xml);
 
-        expect(result).toEqual(subpage_name[`${DBOT_TABS.TUTORIAL}`]);
+        expect(result).toBe('old');
+    });
+
+    it('should call Analytics.trackEvent with the correct parameters', () => {
+        const load_strategy = { load_strategy_tab: 'local' };
+
+        rudderStackSendSwitchLoadStrategyTabEvent(load_strategy);
+
+        expect(Analytics.trackEvent).toHaveBeenCalledWith('ce_bot_form', {
+            action: ACTION.SWITCH_LOAD_STRATEGY_TAB,
+            form_name: 'ce_bot_form',
+            load_strategy_tab: load_strategy.load_strategy_tab,
+            subform_name: 'load_strategy',
+            subpage_name: 'bot_builder',
+        });
+    });
+
+    it('should call Analytics.trackEvent with correct parameters for upload strategy completed event', () => {
+        const upload_parameters = {
+            upload_provider: 'my_computer',
+            upload_id: '12345',
+            upload_type: 'new',
+        };
+
+        rudderStackSendUploadStrategyCompletedEvent(upload_parameters);
+
+        expect(Analytics.trackEvent).toHaveBeenCalledWith('ce_bot_form', {
+            action: ACTION.UPLOAD_STRATEGY_COMPLETED,
+            form_name: 'ce_bot_form',
+            subform_name: 'load_strategy',
+            subpage_name: 'bot_builder',
+            upload_provider: upload_parameters.upload_provider,
+            upload_id: upload_parameters.upload_id,
+            upload_type: upload_parameters.upload_type,
+        });
+    });
+
+    it('should call Analytics.trackEvent with correct parameters for Google Drive connect event', () => {
+        rudderStackSendGoogleDriveConnectEvent();
+
+        expect(Analytics.trackEvent).toHaveBeenCalledWith('ce_bot_form', {
+            action: ACTION.GOOGLE_DRIVE_CONNECT,
+            form_name: 'ce_bot_form',
+            subpage_name: 'bot_builder',
+        });
+    });
+
+    it('should call Analytics.trackEvent with correct parameters for Google Drive disconnect event', () => {
+        rudderStackSendGoogleDriveDisconnectEvent();
+
+        expect(Analytics.trackEvent).toHaveBeenCalledWith('ce_bot_form', {
+            action: ACTION.GOOGLE_DRIVE_DISCONNECT,
+            form_name: 'ce_bot_form',
+            subpage_name: 'bot_builder',
+        });
     });
 });

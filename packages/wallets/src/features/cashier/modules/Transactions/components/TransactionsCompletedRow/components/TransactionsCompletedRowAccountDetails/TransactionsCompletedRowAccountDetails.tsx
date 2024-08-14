@@ -11,7 +11,7 @@ type TProps = {
     accountType: string;
     actionType: NonNullable<(THooks.InfiniteTransactions | THooks.Transactions)['action_type']>;
     currency: string;
-    displayAccountName: string;
+    displayAccountName: JSX.Element | string;
     displayActionType: string;
     isDemo: boolean;
     isInterWallet?: boolean;

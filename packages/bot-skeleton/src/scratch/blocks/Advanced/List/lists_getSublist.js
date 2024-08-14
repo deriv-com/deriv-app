@@ -83,8 +83,7 @@ Blockly.Blocks.lists_getSublist = {
         }
 
         this.initSvg();
-        //commented this line breaks the backward compatibility
-        //this.render(false);
+        this.renderEfficiently();
     },
     customContextMenu(menu) {
         modifyContextMenu(menu);

@@ -4,7 +4,6 @@
     align-items: flex-end;
     height: var(--core-size-2800);
     gap: 0px;
-    box-shadow: var(--core-elevation-shadow-230);
 
     &:nth-child(2):not(.purchase-button--loading) {
         align-items: flex-start;

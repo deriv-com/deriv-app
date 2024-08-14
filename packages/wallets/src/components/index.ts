@@ -14,6 +14,7 @@ export * from './SkeletonLoader';
 export * from './Timer';
 export * from './ToggleSwitch';
 export * from './TradingAccountCard';
+export * from './WalletBadge';
 export * from './WalletCard';
 export * from './WalletCurrencyCard';
 export * from './WalletCurrencyIcon';

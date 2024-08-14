@@ -12,7 +12,6 @@ import { Loading } from '@deriv/components';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
-import { Analytics } from '@deriv-com/analytics';
 
 const PhoneVerificationPage = observer(() => {
     const history = useHistory();
@@ -99,7 +98,10 @@ const PhoneVerificationPage = observer(() => {
                     setOtpVerification={setOtpVerification}
                 />
             ) : (
-                <ConfirmPhoneNumber setOtpVerification={setOtpVerification} />
+                <ConfirmPhoneNumber
+                    show_confirm_phone_number={!otp_verification.show_otp_verification}
+                    setOtpVerification={setOtpVerification}
+                />
             )}
         </div>
     );

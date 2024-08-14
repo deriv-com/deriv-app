@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Text } from '@deriv/components';
 import { Notifications as Announcement } from '@deriv-com/ui';
 import { StandaloneBullhornRegularIcon } from '@deriv/quill-icons';
+import { useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import { localize } from '@deriv/translations';
 import AnnouncementDialog from './announcement-dialog';
-import { ANNOUNCEMENTS, TAnnouncement } from './config';
+import { BOT_ANNOUNCEMENTS_LIST, TAnnouncement, TNotifications } from './config';
 import './announcements.scss';
-import { IconAnnounce, MessageAnnounce, TitleAnnounce } from './announcement-components';
+import { MessageAnnounce, TitleAnnounce } from './announcement-components';
+import { getButtonAction } from './utils/accumulator-helper-functions';
 
 type TAnnouncements = {
     is_mobile?: boolean;
@@ -18,58 +20,102 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
     const [is_announce_dialog_open, setIsAnnounceDialogOpen] = useState(false);
     const [is_open_announce_list, setIsOpenAnnounceList] = React.useState(false);
     const [selected_announcement, setSelectedAnnouncement] = React.useState<TAnnouncement | null>(null);
-    const [amount_announce, setAmountAnnounce] = useState({} as Record<string, boolean>);
-    const is_active_announce_1 = amount_announce?.announce_1;
+    const [stored_notifications, setStoredNotifications] = React.useState({} as Record<string, boolean>);
+    const history = useHistory();
+    const [notifications, setNotifications] = useState([] as TNotifications[]);
 
-    const handleAnnounceSubmit = (data: Record<string, boolean>) => {
-        setAmountAnnounce(data);
-        localStorage?.setItem('bot-announcements', JSON.stringify(data));
+    const storeDataInLocalStorage = (temp_data: Record<string, boolean>) => {
+        localStorage?.setItem('bot-announcements', JSON.stringify(temp_data));
     };
 
-    const announcements = [
-        {
-            id: 0,
-            icon: <IconAnnounce announce={is_active_announce_1} />,
-            title: (
-                <TitleAnnounce title={localize('Accumulators is now on Deriv Bot')} announce={is_active_announce_1} />
-            ),
-            message: (
-                <MessageAnnounce
-                    message={localize('Boost your trading strategy with Accumulators.')}
-                    date='20 July 2024 00:00 UTC'
-                    announce={is_active_announce_1}
-                />
-            ),
-            buttonAction: () => {
-                setSelectedAnnouncement(ANNOUNCEMENTS.ACCUMULATOR_ANNOUNCE);
-                setIsAnnounceDialogOpen(true);
-                setIsOpenAnnounceList(prev => !prev);
-                handleAnnounceSubmit({ ...amount_announce, announce_1: false });
-            },
-            actionText: '',
-        },
-    ];
+    const modalButtonAction = (announce_id: string, announcement: TAnnouncement) => () => {
+        setSelectedAnnouncement(announcement);
+        setIsAnnounceDialogOpen(true);
+        setIsOpenAnnounceList(prev => !prev);
 
-    useEffect(() => {
         let data: Record<string, boolean> | null = null;
         data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
 
-        if (data && Object.keys(data).length !== 0) {
-            setAmountAnnounce(data);
-        } else {
-            const obj_announcements = Object.fromEntries(Object.keys(amount_announce).map(key => [key, false]));
-            setAmountAnnounce(obj_announcements);
-            localStorage?.setItem('bot-announcements', JSON.stringify(obj_announcements));
+        storeDataInLocalStorage({ ...data, [announce_id]: false });
+        const temp_notifications = updateNotifications();
+        setStoredNotifications(temp_notifications);
+    };
+
+    const handleRedirect = (url: string) => {
+        if (history) {
+            history.push(url);
         }
+    };
+
+    const updateNotifications = () => {
+        let data: Record<string, boolean> | null = null;
+        data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
+        const tmp_notifications: TNotifications[] = [];
+        const temp_localstorage_data: Record<string, boolean> | null = {};
+        BOT_ANNOUNCEMENTS_LIST.map(item => {
+            let is_not_read = true;
+            if (data && Object.hasOwn(data, item.id)) {
+                is_not_read = data[item.id];
+            }
+            tmp_notifications.push({
+                key: item.id,
+                icon: <item.icon announce={is_not_read} />,
+                title: <TitleAnnounce title={item.title} announce={is_not_read} />,
+                message: <MessageAnnounce message={item.message} date={item.date} announce={is_not_read} />,
+                buttonAction: getButtonAction(item, modalButtonAction, handleRedirect),
+                actionText: item.actionText,
+            });
+            temp_localstorage_data[item.id] = is_not_read;
+        });
+        setNotifications(tmp_notifications);
+        return temp_localstorage_data;
+    };
+
+    useEffect(() => {
+        const temp_localstorage_data = updateNotifications();
+        storeDataInLocalStorage(temp_localstorage_data);
+        setStoredNotifications(temp_localstorage_data);
     }, []);
 
     const countActiveAnnouncements = (): number => {
-        return Object.values(amount_announce as Record<string, boolean>).reduce((count: number, value: boolean) => {
-            return value === true ? count + 1 : count;
-        }, 0);
+        return Object.values(stored_notifications as Record<string, boolean>).reduce(
+            (count: number, value: boolean) => {
+                return value === true ? count + 1 : count;
+            },
+            0
+        );
     };
 
+    useEffect(() => {
+        () => countActiveAnnouncements();
+    }, [stored_notifications]);
+
     const number_ammount_announce = countActiveAnnouncements();
+
+    const handleOnCancel = () => {
+        if (selected_announcement?.switch_tab_on_cancel) {
+            handleTabChange(selected_announcement.switch_tab_on_cancel);
+        }
+        selected_announcement?.onCancel?.();
+        setSelectedAnnouncement(null);
+    };
+
+    const handleOnConfirm = () => {
+        if (selected_announcement?.switch_tab_on_confirm) {
+            handleTabChange(selected_announcement.switch_tab_on_confirm);
+        }
+        selected_announcement?.onConfirm?.();
+        setSelectedAnnouncement(null);
+    };
+
+    const clearNotificationsCallback = () => {
+        const temp_stored_notifications = Object.fromEntries(
+            Object.keys(stored_notifications).map(key => [key, false])
+        );
+        storeDataInLocalStorage(temp_stored_notifications);
+        const temp_notifications = updateNotifications();
+        setStoredNotifications(temp_notifications);
+    };
 
     return (
         <div className='announcements'>
@@ -96,10 +142,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                         'notifications__wrapper--mobile': is_mobile,
                         'notifications__wrapper--desktop': !is_mobile,
                     })}
-                    clearNotificationsCallback={() => {
-                        const announce_obj = Object.fromEntries(Object.keys(amount_announce).map(key => [key, false]));
-                        setAmountAnnounce(announce_obj);
-                    }}
+                    clearNotificationsCallback={clearNotificationsCallback}
                     componentConfig={{
                         clearButtonText: localize('Mark all as read'),
                         modalTitle: localize('Announcements'),
@@ -107,7 +150,11 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                         noNotificationsTitle: localize('No announcements'),
                     }}
                     isOpen={is_open_announce_list}
-                    notifications={announcements}
+                    // eslint-disable-next-line no-empty-function
+                    setIsOpen={() => {
+                        /* Need to be fixed from the UI library*/
+                    }}
+                    notifications={notifications}
                 />
             </div>
             {selected_announcement?.announcement && (
@@ -115,18 +162,8 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                     announcement={selected_announcement.announcement}
                     is_announce_dialog_open={is_announce_dialog_open}
                     setIsAnnounceDialogOpen={setIsAnnounceDialogOpen}
-                    handleOnCancel={() => {
-                        if (selected_announcement?.switch_tab_on_cancel) {
-                            handleTabChange(selected_announcement.switch_tab_on_cancel);
-                        }
-                        selected_announcement.onCancel?.();
-                    }}
-                    handleOnConfirm={() => {
-                        if (selected_announcement?.switch_tab_on_confirm) {
-                            handleTabChange(selected_announcement.switch_tab_on_confirm);
-                        }
-                        selected_announcement.onConfirm?.();
-                    }}
+                    handleOnCancel={handleOnCancel}
+                    handleOnConfirm={handleOnConfirm}
                 />
             )}
         </div>

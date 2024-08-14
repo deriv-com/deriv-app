@@ -20,8 +20,7 @@ const AnnouncementDialog = ({
     is_announce_dialog_open,
     setIsAnnounceDialogOpen,
 }: TAccumulatorAnnouncementDialog) => {
-    const { main_title, confirm_button_text, cancel_button_text, base_classname, title, subtitle, content } =
-        announcement;
+    const { main_title, confirm_button_text, cancel_button_text, base_classname, title, content } = announcement;
     return (
         <Dialog
             portal_element_id='modal_root_absolute'
@@ -40,19 +39,9 @@ const AnnouncementDialog = ({
                 <div className={`${base_classname}__body-icon`}>
                     <Icon icon='IcTradetypeAccu' className='category-type' color='brand' size='80' />
                 </div>
-                <Text
-                    as='p'
-                    size='s'
-                    weight='bold'
-                    line_height='xxl'
-                    align='center'
-                    className={`${base_classname}__title`}
-                >
-                    {title && <Localize i18n_default_text={title} />}
-                </Text>
                 <div>
                     <Text as='p' line_height='xl' size='xs' align='center' className={`${base_classname}__title`}>
-                        <Localize i18n_default_text={subtitle} />
+                        <Localize i18n_default_text={title} />
                     </Text>
                     {content.map((content: TContentItem) => {
                         return (

@@ -1,4 +1,5 @@
 import { load, save_types } from '@deriv/bot-skeleton';
+import { ANNOUNCEMENTS, BUTTON_ACTION_TYPE, TAnnouncement, TAnnouncementItem } from '../config';
 
 export const handleOnConfirmAccumulator = async () => {
     const strategy_xml = await import(
@@ -26,4 +27,25 @@ export const handleOnConfirmAccumulator = async () => {
         strategy_id: null,
         showIncompatibleStrategyDialog: null,
     });
+};
+
+export const getButtonAction = (
+    item: TAnnouncementItem,
+    modalButtonAction: (announce_id: string, announcement: TAnnouncement) => void,
+    handleRedirect: (url: string) => void
+) => {
+    switch (item.buttonAction) {
+        case BUTTON_ACTION_TYPE.MODAL_BUTTON_ACTION: {
+            return modalButtonAction(item.id, ANNOUNCEMENTS[item.id]);
+        }
+        case BUTTON_ACTION_TYPE.REDIRECT_BUTTON_ACTION: {
+            const urlRedirect = ANNOUNCEMENTS[item.id].url_redirect;
+            if (urlRedirect) {
+                return handleRedirect(urlRedirect);
+            }
+            return false;
+        }
+        default:
+            return false;
+    }
 };

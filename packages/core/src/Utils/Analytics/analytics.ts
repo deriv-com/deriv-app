@@ -21,6 +21,7 @@ const handleCachedEvents = () => {
             }
         }
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.log(error);
     }
 };
@@ -41,7 +42,6 @@ const trackEventWithCache = (event: AnalyticsEvent): void => {
         window.rudderanalytics.track(event.name, event.properties);
     } else {
         setEvent(event);
-        // handleCachedEvents();
     }
 };
 

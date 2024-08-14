@@ -63,7 +63,12 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
                     </WalletText>
                 </div>
                 {isMobile && (
-                    <Text as='div' color='less-prominent' size='2xs'>
+                    <Text
+                        as='div'
+                        className='wallets-transactions-completed-row-account-details__transaction-id'
+                        color='less-prominent'
+                        size='xs'
+                    >
                         <Localize i18n_default_text='Ref. ID: {{transactionID}}' values={{ transactionID }} />
                     </Text>
                 )}

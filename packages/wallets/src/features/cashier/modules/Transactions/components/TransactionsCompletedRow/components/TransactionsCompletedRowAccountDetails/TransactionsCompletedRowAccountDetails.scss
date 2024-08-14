@@ -5,6 +5,7 @@
 
     &__currency-card {
         border-radius: 0.4rem;
+        max-height: 4rem;
     }
 
     &__type-and-wallet-name {
@@ -25,5 +26,10 @@
         flex-direction: column;
         justify-content: center;
         min-width: 10.4rem;
+    }
+    &__transaction-id {
+        @include mobile {
+            margin-top: 0.4rem;
+        }
     }
 }

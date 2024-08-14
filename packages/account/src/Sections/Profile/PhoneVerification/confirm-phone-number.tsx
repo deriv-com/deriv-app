@@ -3,10 +3,14 @@ import PhoneVerificationCard from './phone-verification-card';
 import { Button, Snackbar, Text, TextFieldAddon } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { usePhoneNumberVerificationSetTimer, useRequestPhoneNumberOTP, useSettings } from '@deriv/hooks';
+import {
+    usePhoneNumberVerificationSetTimer,
+    usePhoneVerificationAnalytics,
+    useRequestPhoneNumberOTP,
+    useSettings,
+} from '@deriv/hooks';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 import { validatePhoneNumber } from './validation';
-import { Analytics } from '@deriv-com/analytics';
 
 type TConfirmPhoneNumber = {
     show_confirm_phone_number?: boolean;
@@ -30,17 +34,16 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
     const { ui } = useStore();
     const { setShouldShowPhoneNumberOTP } = ui;
     const { next_otp_request } = usePhoneNumberVerificationSetTimer(true);
+    const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
 
     useEffect(() => {
         if (show_confirm_phone_number) {
-            //@ts-expect-error will remove this error when Analytics package types are being updated
-            Analytics.trackEvent('ce_phone_verification_form', {
+            trackPhoneVerificationEvents({
                 action: 'open',
-                form_name: 'ce_phone_verification_form',
                 subform_name: 'verify_phone_screen',
             });
         }
-    }, [show_confirm_phone_number]);
+    }, [show_confirm_phone_number, trackPhoneVerificationEvents]);
 
     useEffect(() => {
         setPhoneNumber(account_settings?.phone?.replace('+', '') || '');
@@ -68,10 +71,8 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
         const { error } = await setUsersPhoneNumber({ phone: `+${phone_number}` });
 
         if (!error) {
-            //@ts-expect-error will remove this error when Analytics package types are being updated
-            Analytics.trackEvent('ce_phone_verification_form', {
+            trackPhoneVerificationEvents({
                 action: 'click_cta',
-                form_name: 'ce_phone_verification_form',
                 subform_name: 'verify_phone_screen',
             });
             phone_verification_type === VERIFICATION_SERVICES.SMS ? requestOnSMS() : requestOnWhatsApp();

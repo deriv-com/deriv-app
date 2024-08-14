@@ -252,7 +252,9 @@ export default class TradeStore extends BaseStore {
      *
      */
     market_close_times: string[] = [];
-    validation_params?: TValidationParams | Record<string, never> = {};
+    validation_params: {
+        [key: string]: TValidationParams | Record<string, never>;
+    } = {};
 
     // Last Digit
     digit_stats: number[] = [];
@@ -1397,6 +1399,7 @@ export default class TradeStore extends BaseStore {
             ...this.proposal_info,
             [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
         };
+        this.validation_params[contract_type] = this.proposal_info[contract_type].validation_params;
 
         if (this.is_multiplier && this.proposal_info && this.proposal_info.MULTUP) {
             const { commission, cancellation, limit_order } = this.proposal_info.MULTUP;
@@ -1410,15 +1413,6 @@ export default class TradeStore extends BaseStore {
             this.stop_out = limit_order?.stop_out?.order_amount;
         }
 
-        if (this.is_turbos && (this.proposal_info?.TURBOSSHORT || this.proposal_info?.TURBOSLONG)) {
-            if (this.proposal_info?.TURBOSSHORT) {
-                this.validation_params = this.proposal_info.TURBOSSHORT.validation_params;
-            }
-            if (this.proposal_info?.TURBOSLONG) {
-                this.validation_params = this.proposal_info.TURBOSLONG.validation_params;
-            }
-        }
-
         if (this.is_accumulator && this.proposal_info?.ACCU) {
             const {
                 barrier_spot_distance,
@@ -1430,14 +1424,12 @@ export default class TradeStore extends BaseStore {
                 high_barrier,
                 low_barrier,
                 spot_time,
-                validation_params,
             } = this.proposal_info.ACCU;
             this.ticks_history_stats = getUpdatedTicksHistoryStats({
                 previous_ticks_history_stats: this.ticks_history_stats,
                 new_ticks_history_stats: ticks_stayed_in,
                 last_tick_epoch,
             });
-            this.validation_params = validation_params;
             this.maximum_ticks = maximum_ticks;
             this.maximum_payout = maximum_payout;
             this.tick_size_barrier_percentage = tick_size_barrier_percentage;

@@ -8,6 +8,7 @@ import { useDevice } from '@deriv-com/ui';
 import {
     getCardLabelsV2,
     getContractTypeDisplay,
+    getContractTypePosition,
     getIndicativePrice,
     hasContractEntered,
     isAccumulatorContract,
@@ -18,6 +19,17 @@ import {
 import PurchaseButtonContent from './purchase-button-content';
 import { getTradeTypeTabsList } from 'AppV2/Utils/trade-params-utils';
 import { StandaloneStopwatchRegularIcon } from '@deriv/quill-icons';
+
+const getSortedIndex = (type: string, index?: number) => {
+    switch (getContractTypePosition(type as 'CALL')) {
+        case 'top':
+            return 0;
+        case 'bottom':
+            return 1;
+        default:
+            return index;
+    }
+};
 
 const PurchaseButton = observer(() => {
     const [loading_button_index, setLoadingButtonIndex] = React.useState<number | null>(null);
@@ -61,9 +73,9 @@ const PurchaseButton = observer(() => {
         is_vanilla_fx,
         is_vanilla,
     };
-    const trade_types_array = Object.keys(trade_types).filter(
-        type => !getTradeTypeTabsList(contract_type).length || type === trade_type_tab
-    );
+    const trade_types_array = Object.keys(trade_types)
+        .filter(type => !getTradeTypeTabsList(contract_type).length || type === trade_type_tab)
+        .sort((a, b) => Number(getSortedIndex(a) ?? 0) - Number(getSortedIndex(b) ?? 0));
     const active_accu_contract = is_accumulator
         ? all_positions.find(
               ({ contract_info, type }) =>

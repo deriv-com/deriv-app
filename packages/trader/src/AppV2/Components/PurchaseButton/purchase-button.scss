@@ -5,7 +5,7 @@
     height: var(--core-size-2800);
     gap: 0px;
 
-    &:nth-child(2):not(.purchase-button--loading) {
+    &:not(:first-child):not(.purchase-button--loading) {
         align-items: flex-start;
     }
     &--single {
@@ -69,6 +69,8 @@
         }
     }
     &:disabled {
-        opacity: var(--core-opacity-300); // disabled button opacity in quill-ui is 0.48 (var(--core-opacity-600))
+        opacity: var(
+            --core-opacity-300
+        ); // TODO: remove this when disabled button opacity in quill-ui is no longer 0.48 (var(--core-opacity-600))
     }
 }

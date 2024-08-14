@@ -12,6 +12,38 @@ import { APIProvider } from '@deriv/api';
 jest.mock('@deriv/hooks', () => {
     return {
         ...jest.requireActual('@deriv/hooks'),
+        usePaymentAgentList: jest.fn(() => ({
+            data: [
+                {
+                    currencies: 'USD',
+                    email: 'pa-test@email.com',
+                    further_information: 'Further information',
+                    max_withdrawal: '2000',
+                    min_withdrawal: '10',
+                    name: 'PA',
+                    paymentagent_loginid: 'CR9999999',
+                    phone_numbers: [
+                        {
+                            phone_number: '+987654321',
+                        },
+                    ],
+                    summary: '',
+                    supported_payment_methods: [
+                        {
+                            payment_method: 'Visa',
+                        },
+                    ],
+                    urls: [
+                        {
+                            url: 'https://test.test',
+                        },
+                    ],
+                    withdrawal_commission: '0',
+                },
+            ],
+            isLoading: false,
+            isSuccess: true,
+        })),
         usePaymentAgentTransferVisible: jest.fn(() => ({
             data: true,
             isLoading: false,
@@ -106,9 +138,6 @@ describe('<Cashier />', () => {
                     transaction_history: {
                         is_transactions_crypto_visible: false,
                     },
-                    payment_agent: {
-                        is_payment_agent_visible: false,
-                    },
                 },
             },
         });
@@ -155,9 +184,6 @@ describe('<Cashier />', () => {
                     },
                     transaction_history: {
                         is_transactions_crypto_visible: true,
-                    },
-                    payment_agent: {
-                        is_payment_agent_visible: true,
                     },
                 },
             },
@@ -209,9 +235,6 @@ describe('<Cashier />', () => {
     //                 transaction_history: {
     //                     is_transactions_crypto_visible: false,
     //                 },
-    //                 payment_agent: {
-    //                     is_payment_agent_visible: true,
-    //                 },
     //             },
     //         },
     //     });
@@ -262,9 +285,6 @@ describe('<Cashier />', () => {
                     transaction_history: {
                         is_transactions_crypto_visible: true,
                     },
-                    payment_agent: {
-                        is_payment_agent_visible: true,
-                    },
                 },
             },
         });
@@ -313,9 +333,6 @@ describe('<Cashier />', () => {
                     },
                     transaction_history: {
                         is_transactions_crypto_visible: true,
-                    },
-                    payment_agent: {
-                        is_payment_agent_visible: true,
                     },
                 },
             },
@@ -366,9 +383,6 @@ describe('<Cashier />', () => {
                     },
                     transaction_history: {
                         is_transactions_crypto_visible: true,
-                    },
-                    payment_agent: {
-                        is_payment_agent_visible: true,
                     },
                 },
             },

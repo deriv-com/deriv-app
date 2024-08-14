@@ -8,6 +8,7 @@ import {
     extractInfoFromShortcode,
     formatDate,
     formatMoney,
+    getDateFromTimestamp,
     getEndTime,
     getMarketName,
     getPathname,
@@ -100,6 +101,7 @@ export default class NotificationStore extends BaseStore {
             trade_notifications: observable,
             unmarkNotificationMessage: action.bound,
             updateNotifications: action.bound,
+            handleCurrencyRemovalNotification: action.bound,
         });
 
         reaction(
@@ -331,6 +333,7 @@ export default class NotificationStore extends BaseStore {
             is_proof_of_ownership_enabled,
             is_p2p_enabled,
             is_poa_expired,
+            currency,
         } = this.root_store.client;
         const { upgradable_daily_limits } = this.p2p_advertiser_info || {};
         const { max_daily_buy, max_daily_sell } = upgradable_daily_limits || {};
@@ -359,6 +362,7 @@ export default class NotificationStore extends BaseStore {
                 authentication: { document, identity, income, needs_verification, ownership } = {},
                 status,
                 cashier_validation,
+                account_closure = [],
             } = account_status;
 
             const {
@@ -372,6 +376,14 @@ export default class NotificationStore extends BaseStore {
             } = getStatusValidations(status || []);
 
             this.handlePOAAddressMismatchNotifications();
+
+            const account_currency_closure_status = account_closure.find(
+                closure_type => closure_type.type === 'currency'
+            );
+
+            if (account_currency_closure_status) {
+                this.handleCurrencyRemovalNotification(account_currency_closure_status, currency);
+            }
 
             if (status?.includes('mt5_additional_kyc_required'))
                 this.addNotificationMessage(this.client_notifications.additional_kyc_info);
@@ -416,6 +428,14 @@ export default class NotificationStore extends BaseStore {
                 this.removeNotificationByKey({ key: this.client_notifications.enable_passkey });
             }
 
+            if (this.root_store.client.is_account_to_be_closed_by_residence) {
+                this.addNotificationMessage(this.client_notifications.notify_account_is_to_be_closed_by_residence);
+            } else {
+                this.removeNotificationByKey({
+                    key: this.client_notifications.notify_account_is_to_be_closed_by_residence,
+                });
+            }
+
             const client = accounts[loginid];
             if (client && !client.is_virtual) {
                 if (isEmptyObject(account_status)) return;
@@ -438,7 +458,6 @@ export default class NotificationStore extends BaseStore {
                     ASK_FIX_DETAILS,
                     ASK_SELF_EXCLUSION_MAX_TURNOVER_SET,
                     ASK_TIN_INFORMATION,
-                    ASK_UK_FUNDS_PROTECTION,
                 } = cashier_validation ? getCashierValidations(cashier_validation) : {};
                 const needs_poa =
                     is_10k_withdrawal_limit_reached &&
@@ -508,8 +527,6 @@ export default class NotificationStore extends BaseStore {
                         this.addNotificationMessage(this.client_notifications.risk);
                     } else if (isAccountOfType('financial') && ASK_TIN_INFORMATION) {
                         this.addNotificationMessage(this.client_notifications.tax);
-                    } else if (ASK_UK_FUNDS_PROTECTION) {
-                        this.addNotificationMessage(this.client_notifications.ask_uk_funds_protection);
                     } else if (ASK_SELF_EXCLUSION_MAX_TURNOVER_SET) {
                         this.addNotificationMessage(this.client_notifications.max_turnover_limit_not_set);
                     } else if (ASK_FIX_DETAILS) {
@@ -766,16 +783,6 @@ export default class NotificationStore extends BaseStore {
                 action: {
                     route: routes.financial_assessment,
                     text: localize('Click here'),
-                },
-                type: 'warning',
-            },
-            ask_uk_funds_protection: {
-                key: 'ask_uk_funds_protection',
-                header: localize('Your cashier is locked'),
-                message: localize('See how we protect your funds to unlock the cashier.'),
-                action: {
-                    route: routes.cashier_deposit,
-                    text: localize('Find out more'),
                 },
                 type: 'warning',
             },
@@ -1554,6 +1561,24 @@ export default class NotificationStore extends BaseStore {
                 },
                 type: 'warning',
             },
+            notify_account_is_to_be_closed_by_residence: {
+                action: {
+                    route: routes.cashier_withdrawal,
+                    text: localize('Withdraw funds'),
+                },
+                header: localize('Deposits and trading disabled'),
+                key: 'notify_account_is_to_be_closed_by_residence',
+                message: (
+                    <Localize
+                        i18n_default_text='Due to business changes, client accounts in Senegal are to be closed. Withdraw your funds by {{date}}.'
+                        values={{
+                            date: formatDate(this.root_store.client.account_time_of_closure, 'DD MMM YYYY'),
+                        }}
+                    />
+                ),
+                should_show_again: true,
+                type: 'warning',
+            },
         };
 
         this.client_notifications = notifications;
@@ -1638,6 +1663,52 @@ export default class NotificationStore extends BaseStore {
             type: 'danger',
             should_show_again: true,
             platform: 'Account',
+        });
+    };
+
+    handleCurrencyRemovalNotification = (account_currency_closure_status, currency) => {
+        const is_funded_account = account_currency_closure_status.status_codes.includes('funded_account');
+        const is_non_funded_account = account_currency_closure_status.status_codes.includes('non_funded_account');
+
+        if (!is_funded_account && !is_non_funded_account) return;
+
+        const notification_header = is_funded_account
+            ? localize('Withdraw your funds')
+            : localize('Change your currency');
+
+        const time_of_closure = getDateFromTimestamp(account_currency_closure_status.time_of_closure);
+
+        const notification_message = is_funded_account ? (
+            <Localize
+                i18n_default_text="{{currency}} accounts won't be available after {{time_of_closure}}."
+                values={{ time_of_closure, currency }}
+            />
+        ) : (
+            <Localize
+                i18n_default_text="{{currency}} accounts won't be available after {{time_of_closure}}. Choose a new account currency."
+                values={{ time_of_closure, currency }}
+            />
+        );
+
+        const notification_button_action = is_funded_account
+            ? {
+                  route: routes.cashier_withdrawal,
+                  text: <Localize i18n_default_text='Withdraw {{currency}}' values={{ currency }} />,
+              }
+            : {
+                  text: localize('Contact live chat'),
+                  onClick: () => {
+                      window.LC_API.open_chat_window();
+                  },
+              };
+
+        this.addNotificationMessage({
+            key: 'account_currency_closure',
+            header: notification_header,
+            message: notification_message,
+            action: notification_button_action,
+            type: 'warning',
+            should_show_again: true,
         });
     };
 }

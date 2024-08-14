@@ -16,16 +16,6 @@ describe('ErrorStore', () => {
         expect(error_store.message).toBe('ERROR');
     });
 
-    it('should change value of the variable is_ask_uk_funds_protection', () => {
-        error_store.setIsAskUkFundsProtection(false);
-
-        expect(error_store.is_ask_uk_funds_protection).toBeFalsy();
-
-        error_store.setIsAskUkFundsProtection(true);
-
-        expect(error_store.is_ask_uk_funds_protection).toBeTruthy();
-    });
-
     it('should change value of the variable is_self_exclusion_max_turnover_set', () => {
         error_store.setIsSelfExclusionMaxTurnoverSet(false);
 
@@ -67,10 +57,6 @@ describe('ErrorStore', () => {
 
         expect(spySetErrorMessage).toHaveBeenCalledWith({ code: 'ASK_FIX_DETAILS', message: '' }, null, true);
 
-        error_store.handleCashierError({ code: 'ASK_UK_FUNDS_PROTECTION', message: '' });
-
-        expect(error_store.is_ask_uk_funds_protection).toBeTruthy();
-
         error_store.handleCashierError({ code: 'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET', message: '' });
 
         expect(error_store.is_self_exclusion_max_turnover_set).toBeTruthy();
@@ -90,7 +76,6 @@ describe('ErrorStore', () => {
         error_store.handleCashierError({ code: 'DEFAULT_ERROR_CODE', message: '' });
 
         expect(spySetErrorMessage).toHaveBeenCalledWith({ code: 'DEFAULT_ERROR_CODE', message: '' });
-        expect(error_store.is_ask_uk_funds_protection).toBeFalsy();
         expect(error_store.is_self_exclusion_max_turnover_set).toBeFalsy();
         expect(error_store.is_ask_authentication).toBeFalsy();
         expect(error_store.is_ask_financial_risk_approval).toBeFalsy();

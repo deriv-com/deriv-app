@@ -1,12 +1,12 @@
-import React from 'react';
+import { ReactNode, Fragment } from 'react';
 import { Icon, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
 import './article.scss';
 import clsx from 'clsx';
 
 export type TArticle = {
     title: JSX.Element | string;
-    descriptions: Array<React.ReactNode>;
+    descriptions: Array<ReactNode>;
     onClickLearnMore?: () => void;
     className?: string;
 };
@@ -21,7 +21,7 @@ const Article = ({ title, descriptions, onClickLearnMore, className }: TArticle)
                 {title}
             </Text>
             {has_descriptions && (
-                <React.Fragment>
+                <Fragment>
                     {has_single_description ? (
                         <Text as='p' size='xxs' line_height='m'>
                             {descriptions[0]}
@@ -37,7 +37,7 @@ const Article = ({ title, descriptions, onClickLearnMore, className }: TArticle)
                             ))}
                         </ul>
                     )}
-                </React.Fragment>
+                </Fragment>
             )}
             {onClickLearnMore && (
                 <div className='da-article__learn-more' onClick={onClickLearnMore}>

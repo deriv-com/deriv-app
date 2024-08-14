@@ -7,13 +7,6 @@ import ModulesProvider from 'Stores/Providers/modules-providers';
 import LastDigitPrediction from '../last-digit-prediction';
 
 const title = 'Last digit prediction';
-const mediaQueryList = {
-    matches: true,
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-};
-
-window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
 
 describe('LastDigitPrediction', () => {
     let default_mock_store: ReturnType<typeof mockStore>;

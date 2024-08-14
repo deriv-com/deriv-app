@@ -214,13 +214,6 @@ describe('useTransferMessages', () => {
         ]);
     });
 
-    test('should pass values with correct format to messageFns', () => {
-        const { result } = renderHook(() => useTransferMessages(mockWalletsTransfer));
-
-        expect(result.current[0].message.values.feeMessageText).toEqual('0.1 USD');
-        expect(result.current[0].message.values.minimumFeeText).toEqual('0.1 USD');
-    });
-
     test('should not render transfer messages when active wallet is null', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({ data: null });
 

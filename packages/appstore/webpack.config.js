@@ -42,6 +42,10 @@ const svg_loaders = [
 // const default_plugins = [new CleanWebpackPlugin(), new ForkTsCheckerWebpackPlugin()];
 const default_plugins = [
     // new BundleAnalyzerPlugin(),
+    new Dotenv(),
+    new DefinePlugin({
+        'process.env.TRUSTPILOT_API_KEY': JSON.stringify(process.env.TRUSTPILOT_API_KEY),
+    }),
     new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
     new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
 ];
@@ -87,12 +91,6 @@ module.exports = function (env) {
             },
             extensions: ['.ts', '.tsx', '.js'],
         },
-        plugins: [
-            new Dotenv(),
-            new DefinePlugin({
-                'process.env.TRUSTPILOT_API_KEY': JSON.stringify(process.env.TRUSTPILOT_API_KEY),
-            }),
-        ],
         module: {
             rules: [
                 {

@@ -3,15 +3,21 @@ import PhoneVerificationCard from './phone-verification-card';
 import { Button, Snackbar, Text, TextFieldAddon } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { usePhoneNumberVerificationSetTimer, useRequestPhoneNumberOTP, useSettings } from '@deriv/hooks';
+import {
+    usePhoneNumberVerificationSetTimer,
+    usePhoneVerificationAnalytics,
+    useRequestPhoneNumberOTP,
+    useSettings,
+} from '@deriv/hooks';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 import { validatePhoneNumber } from './validation';
 
 type TConfirmPhoneNumber = {
+    show_confirm_phone_number?: boolean;
     setOtpVerification: (value: { show_otp_verification: boolean; phone_verification_type: string }) => void;
 };
 
-const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber) => {
+const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerification }: TConfirmPhoneNumber) => {
     const [phone_number, setPhoneNumber] = useState('');
     const [phone_verification_type, setPhoneVerificationType] = useState('');
     const [is_button_loading, setIsButtonLoading] = useState(false);
@@ -28,6 +34,16 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
     const { ui } = useStore();
     const { setShouldShowPhoneNumberOTP } = ui;
     const { next_otp_request } = usePhoneNumberVerificationSetTimer(true);
+    const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
+
+    useEffect(() => {
+        if (show_confirm_phone_number) {
+            trackPhoneVerificationEvents({
+                action: 'open',
+                subform_name: 'verify_phone_screen',
+            });
+        }
+    }, [show_confirm_phone_number, trackPhoneVerificationEvents]);
 
     useEffect(() => {
         setPhoneNumber(account_settings?.phone?.replace('+', '') || '');
@@ -55,6 +71,10 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
         const { error } = await setUsersPhoneNumber({ phone: `+${phone_number}` });
 
         if (!error) {
+            trackPhoneVerificationEvents({
+                action: 'click_cta',
+                subform_name: 'verify_phone_screen',
+            });
             phone_verification_type === VERIFICATION_SERVICES.SMS ? requestOnSMS() : requestOnWhatsApp();
         } else {
             setIsButtonLoading(false);

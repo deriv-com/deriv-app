@@ -98,7 +98,10 @@ const PhoneVerificationPage = observer(() => {
                     setOtpVerification={setOtpVerification}
                 />
             ) : (
-                <ConfirmPhoneNumber setOtpVerification={setOtpVerification} />
+                <ConfirmPhoneNumber
+                    show_confirm_phone_number={!otp_verification.show_otp_verification}
+                    setOtpVerification={setOtpVerification}
+                />
             )}
         </div>
     );

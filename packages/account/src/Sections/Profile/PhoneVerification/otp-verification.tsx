@@ -3,7 +3,7 @@ import PhoneVerificationCard from './phone-verification-card';
 import { Text, InputGroupButton } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { useSendOTPVerificationCode, useSettings } from '@deriv/hooks';
+import { usePhoneVerificationAnalytics, useSendOTPVerificationCode, useSettings } from '@deriv/hooks';
 import { convertPhoneTypeDisplay } from '../../../Helpers/utils';
 import ResendCodeTimer from './resend-code-timer';
 import DidntGetTheCodeModal from './didnt-get-the-code-modal';
@@ -22,6 +22,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     const [should_show_didnt_get_the_code_modal, setShouldShowDidntGetTheCodeModal] = useState(false);
     const [otp, setOtp] = useState('');
     const [is_button_disabled, setIsButtonDisabled] = useState(false);
+    const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
 
     const {
         sendPhoneOTPVerification,
@@ -41,6 +42,20 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
             setIsButtonDisabled(false);
         });
     }, [invalidate]);
+
+    useEffect(() => {
+        if (should_show_phone_number_otp) {
+            trackPhoneVerificationEvents({
+                action: 'open',
+                subform_name: 'verify_phone_otp_screen',
+            });
+        } else {
+            trackPhoneVerificationEvents({
+                action: 'open',
+                subform_name: 'verify_email_screen',
+            });
+        }
+    }, [should_show_phone_number_otp, trackPhoneVerificationEvents]);
 
     useEffect(() => {
         if (is_authorize) {
@@ -71,8 +86,16 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
 
     const handleVerifyOTP = () => {
         if (should_show_phone_number_otp) {
+            trackPhoneVerificationEvents({
+                action: 'click_cta',
+                subform_name: 'verify_phone_otp_screen',
+            });
             sendPhoneOTPVerification(otp);
         } else {
+            trackPhoneVerificationEvents({
+                action: 'click_cta',
+                subform_name: 'verify_email_screen',
+            });
             sendEmailOTPVerification(otp);
         }
     };

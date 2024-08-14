@@ -62,7 +62,7 @@
             gap: var(--core-spacing-400);
             position: relative;
             overflow-x: auto;
-            &::-webkit-scrollbar {
+            &:-webkit-scrollbar {
                 display: none;
             }
             &__moving {
@@ -80,23 +80,23 @@
                     display: inline-block;
                     overflow: hidden;
                     margin: 0;
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 100%;
+                        height: var(--core-borderRadius-100);
+                        transform: scaleX(0);
+                        transform-origin: left;
+                        background-color: var(--core-color-solid-green-600);
+                        opacity: 0;
+                    }
                 }
-                p::after {
-                    content: '';
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    width: 100%;
-                    height: var(--core-borderRadius-100);
-                    transform: scaleX(0);
-                    transform-origin: left;
-                    background-color: var(--core-color-solid-green-600);
-                    opacity: 0;
-                }
-                .animate-error::after {
+                .animate-error:after {
                     @include accumulatorUnderlineAnimation(var(--core-color-solid-red-600));
                 }
-                .animate-success::after {
+                .animate-success:after {
                     @include accumulatorUnderlineAnimation;
                 }
             }
@@ -140,23 +140,23 @@
                     display: inline-block;
                     width: auto;
                     position: relative;
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 100%;
+                        height: var(--core-spacing-100);
+                        transform: scaleX(0);
+                        transform-origin: left;
+                        opacity: 0;
+                        background-color: var(--core-color-solid-green-600);
+                    }
                 }
-                p::after {
-                    content: '';
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    width: 100%;
-                    height: var(--core-spacing-100);
-                    transform: scaleX(0);
-                    transform-origin: left;
-                    opacity: 0;
-                    background-color: var(--core-color-solid-green-600);
-                }
-                .animate-error::after {
+                .animate-error:after {
                     @include accumulatorUnderlineAnimation(var(--core-color-solid-red-600));
                 }
-                .animate-success::after {
+                .animate-success:after {
                     @include accumulatorUnderlineAnimation;
                 }
             }

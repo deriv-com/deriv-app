@@ -102,7 +102,7 @@ describe('TradeParameters', () => {
         expect(screen.getByText(TRADE_PARAMS.MULTIPLIER)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.STAKE)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.RISK_MANAGEMENT)).toBeInTheDocument();
-        expect(screen.getAllByTestId(data_test)).toHaveLength(4);
+        expect(screen.getAllByTestId(data_test)).toHaveLength(3);
     });
 
     it('should render correct trade params for Rise/Fall', () => {

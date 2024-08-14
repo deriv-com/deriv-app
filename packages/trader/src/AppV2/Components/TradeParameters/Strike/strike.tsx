@@ -9,6 +9,7 @@ import { Skeleton } from '@deriv/components';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
+import { isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import StrikeWheel from './strike-wheel';
 
 type TStrikeProps = {
@@ -26,7 +27,7 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
         proposal_info,
     } = useTraderStore();
 
-    const is_small_screen = window.innerHeight <= 640;
+    const is_small_screen = isSmallScreen();
     const strike_price_list = strike_price_choices.map((strike_price: string) => ({ value: strike_price }));
     const payout_per_point: string | number = isEmptyObject(proposal_info)
         ? ''

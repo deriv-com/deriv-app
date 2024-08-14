@@ -112,3 +112,5 @@ export const getTradeTypeTabsList = (contract_type = '') => {
     ];
     return tab_list.filter(({ is_displayed }) => is_displayed);
 };
+
+export const isSmallScreen = () => window.innerHeight <= 640;

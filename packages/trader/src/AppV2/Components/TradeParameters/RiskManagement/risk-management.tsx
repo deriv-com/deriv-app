@@ -7,6 +7,7 @@ import { Localize } from '@deriv/translations';
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
+import { isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import RiskManagementPicker from './risk-management-picker';
 import RiskManagementContent from './risk-management-content';
 
@@ -25,6 +26,7 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
         return `DC: ${cancellation_duration}`;
     };
 
+    const is_small_screen = isSmallScreen();
     const should_show_deal_cancellation = cancellation_range_list?.length > 0;
     const classname = clsx('trade-params__option', is_minimized && 'trade-params__option--minimized');
     const action_sheet_content = [
@@ -67,9 +69,12 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
                 variant='fill'
             />
             <ActionSheet.Root isOpen={is_open} onClose={closeActionSheet} position='left' expandable={false}>
-                <ActionSheet.Portal shouldCloseOnDrag>
+                <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen={is_small_screen}>
                     <Carousel
-                        classname={clsx('risk-management__carousel')}
+                        classname={clsx(
+                            'risk-management__carousel',
+                            is_small_screen && 'risk-management__carousel--small'
+                        )}
                         header={CarouselHeader}
                         pages={action_sheet_content}
                         title={<Localize i18n_default_text='Risk Management' />}

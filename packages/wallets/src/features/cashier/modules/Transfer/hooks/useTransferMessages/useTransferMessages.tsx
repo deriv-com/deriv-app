@@ -10,12 +10,12 @@ import { displayMoney as displayMoney_ } from '@deriv/api-v2/src/utils';
 import { THooks } from '../../../../../../types';
 import { TRADING_PLATFORM_STATUS } from '../../../../../cfd/constants';
 import { TAccount, TInitialTransferFormValues, TMessageFnProps, TTransferMessage } from '../../types';
-import tradingPlatformStatusMessageFn from './utils/tradingPlatformStatusMessageFn';
 import {
     countLimitMessageFn,
     cumulativeAccountLimitsMessageFn,
     insufficientBalanceMessageFn,
     lifetimeAccountLimitsBetweenWalletsMessageFn,
+    tradingPlatformStatusMessageFn,
     transferFeesBetweenWalletsMessageFn,
 } from './utils';
 

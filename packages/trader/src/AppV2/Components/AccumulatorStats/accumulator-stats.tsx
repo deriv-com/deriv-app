@@ -36,18 +36,17 @@ const AccumulatorStats = observer(() => {
 
     useEffect(() => {
         if (rows[0] && rows[0].length > 0) {
-            if (lastValue !== null) {
-                setAnimationClass('');
-                if (lastValue === rows[0][1]) {
-                    setTimeout(() => {
-                        setAnimationClass('animate-error');
-                    }, 0);
-                } else {
-                    setTimeout(() => {
-                        setAnimationClass('animate-success');
-                    }, 0);
-                }
+            setAnimationClass('');
+            if (lastValue && lastValue === rows[0][1]) {
+                setTimeout(() => {
+                    setAnimationClass('animate-error');
+                }, 0);
+            } else {
+                setTimeout(() => {
+                    setAnimationClass('animate-success');
+                }, 0);
             }
+
             if (lastValue === rows[0][1]) {
                 setIsMovingTransition(true);
                 setTimeout(() => setIsMovingTransition(false), 600);
@@ -61,7 +60,6 @@ const AccumulatorStats = observer(() => {
     if (rows.length === 0) {
         return null;
     }
-
     return (
         <div>
             <div className='accumulators-stats'>
@@ -74,7 +72,7 @@ const AccumulatorStats = observer(() => {
                     <div className='accumulators-stats__container__divider' />
                     <div className='accumulators-stats__container__stats'>
                         <StatsRow
-                            rows={[...rows[0], ...rows[1]]}
+                            rows={[...rows[0], ...(rows[1] || [])]}
                             animationClass={animationClass}
                             isMovingTransition={isMovingTransition}
                             className='accumulators-stats__container__stats'

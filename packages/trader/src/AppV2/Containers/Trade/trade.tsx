@@ -13,7 +13,7 @@ import { TradeChart } from '../Chart';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import TemporaryTradeTypes from './trade-types';
 import MarketSelector from 'AppV2/Components/MarketSelector';
-import AccumulatorStats from 'AppV2/Components/Stats';
+import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
 import { isAccumulatorContract } from '@deriv/shared';
 
 const Trade = observer(() => {

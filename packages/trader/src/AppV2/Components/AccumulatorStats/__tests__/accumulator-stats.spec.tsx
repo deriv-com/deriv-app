@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AccumulatorStats from '../accumulator-stats';
 import TraderProviders from '../../../../trader-providers';
@@ -88,5 +88,12 @@ describe('AccumulatorStats', () => {
         };
         renderAccumulatorState(default_mock_store);
         expect(screen.queryByText('Stats')).not.toBeInTheDocument();
+    });
+    test('should set animationClass and isMovingTransition based on rows[0][0] changes', async () => {
+        renderAccumulatorState(default_mock_store);
+        jest.advanceTimersByTime(3000);
+        await waitFor(() => {
+            expect(screen.getByTestId('accumulator-first-stat')).toHaveClass('animate-success');
+        });
     });
 });

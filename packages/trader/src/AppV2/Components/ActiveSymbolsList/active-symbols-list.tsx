@@ -62,6 +62,7 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
                                 setSelectedSymbol={setSelectedSymbol}
                                 setIsOpen={setIsOpen}
                                 isOpen={isOpen}
+                                marketCategoriesRef={marketCategoriesRef}
                             />
                         )}
                     </Tab.Container>

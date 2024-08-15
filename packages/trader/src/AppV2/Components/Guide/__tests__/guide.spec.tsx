@@ -2,29 +2,37 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Loadable from 'react-loadable';
+import { StoreProvider, mockStore } from '@deriv/stores';
+import { TRADE_TYPES } from '@deriv/shared';
 import { CONTRACT_LIST, AVAILABLE_CONTRACTS } from 'AppV2/Utils/trade-types-utils';
 import { TERM } from 'AppV2/Utils/contract-description-utils';
+import TraderProviders from '../../../../trader-providers';
 import Guide from '../guide';
-import { StoreProvider, mockStore } from '@deriv/stores';
 
-const mediaQueryList = {
-    matches: true,
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-};
+const trade_types = 'Trade types';
 
 jest.mock('@lottiefiles/dotlottie-react', () => ({
     DotLottieReact: jest.fn(() => <div>DotLottieReact</div>),
 }));
 
-window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
 Loadable.preloadAll();
 
 describe('Guide', () => {
-    const renderGuide = (mockProps: React.ComponentProps<typeof Guide> = { has_label: true }) => {
+    let default_mock_store: ReturnType<typeof mockStore>;
+
+    beforeEach(() => {
+        default_mock_store = mockStore({
+            modules: { trade: { contract_type: TRADE_TYPES.RISE_FALL, is_vanilla: false } },
+        });
+    });
+    const renderGuide = (
+        mockProps: React.ComponentProps<typeof Guide> = { has_label: true, show_guide_for_selected_contract: false }
+    ) => {
         render(
-            <StoreProvider store={mockStore({})}>
-                <Guide {...mockProps} />
+            <StoreProvider store={default_mock_store}>
+                <TraderProviders store={default_mock_store}>
+                    <Guide {...mockProps} />
+                </TraderProviders>
             </StoreProvider>
         );
     };
@@ -33,35 +41,59 @@ describe('Guide', () => {
         jest.clearAllMocks();
     });
 
-    it('should render component', () => {
+    it('should render component with label and if user clicks on it, should show available contract information', () => {
         renderGuide();
 
         expect(screen.getByText('Guide')).toBeInTheDocument();
-        expect(screen.getByText('Trade types')).toBeInTheDocument();
+
+        userEvent.click(screen.getByRole('button'));
+
+        expect(screen.getByText(trade_types)).toBeInTheDocument();
         AVAILABLE_CONTRACTS.forEach(({ id }) => expect(screen.getByText(id)).toBeInTheDocument());
     });
 
-    it('should render component without label if has_label === false', () => {
+    it('should render component without label if has_label === false and if user clicks on it, should show available contract information', () => {
         renderGuide({ has_label: false });
 
         expect(screen.queryByText('Guide')).not.toBeInTheDocument();
-        expect(screen.getByText('Trade types')).toBeInTheDocument();
+
+        userEvent.click(screen.getByRole('button'));
+
+        expect(screen.getByText(trade_types)).toBeInTheDocument();
         AVAILABLE_CONTRACTS.forEach(({ id }) => expect(screen.getByText(id)).toBeInTheDocument());
     });
 
-    it('should set correct contract type if user clicked on chip', () => {
-        const mockSelectedContractType = jest.fn();
-        jest.spyOn(React, 'useState')
-            .mockImplementationOnce(() => [false, jest.fn()])
-            .mockImplementationOnce(() => [CONTRACT_LIST.RISE_FALL, mockSelectedContractType])
-            .mockImplementationOnce(() => ['', jest.fn()]);
+    it('should render component with description for only for selected trade type if show_guide_for_selected_contract === true', () => {
+        renderGuide({ show_guide_for_selected_contract: true });
 
-        renderGuide();
+        userEvent.click(screen.getByRole('button'));
 
-        userEvent.click(screen.getByText('Guide'));
+        expect(screen.queryByText(trade_types)).not.toBeInTheDocument();
+        expect(screen.getByText(CONTRACT_LIST.RISE_FALL)).toBeInTheDocument();
 
-        userEvent.click(screen.getByText(CONTRACT_LIST.ACCUMULATORS));
-        expect(mockSelectedContractType).toHaveBeenCalledWith(CONTRACT_LIST.ACCUMULATORS);
+        AVAILABLE_CONTRACTS.forEach(({ id }) =>
+            id === CONTRACT_LIST.RISE_FALL
+                ? expect(screen.getByText(id)).toBeInTheDocument()
+                : expect(screen.queryByText(id)).not.toBeInTheDocument()
+        );
+    });
+
+    it('should render component with correct title description for Vanillas if show_guide_for_selected_contract === true and is_vanilla === true', () => {
+        default_mock_store.modules.trade.is_vanilla = true;
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.VANILLA;
+
+        renderGuide({ show_guide_for_selected_contract: true });
+
+        userEvent.click(screen.getByRole('button'));
+
+        expect(screen.queryByText(trade_types)).not.toBeInTheDocument();
+        expect(screen.getByText(CONTRACT_LIST.VANILLAS)).toBeInTheDocument();
+
+        AVAILABLE_CONTRACTS.forEach(({ id }) =>
+            id === CONTRACT_LIST.VANILLAS
+                ? expect(screen.getByText(id)).toBeInTheDocument()
+                : expect(screen.queryByText(id)).not.toBeInTheDocument()
+        );
     });
 
     it('should render term definition if user clicked on it', () => {

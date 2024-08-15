@@ -1,6 +1,6 @@
-import React from 'react';
+import { Fragment } from 'react';
 import { Text } from '@deriv/components';
-import { formatMoney } from '@deriv/shared';
+import { FormatUtils, CurrencyConstants } from '@deriv-com/utils';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import AccountLimitsTableCell from './account-limits-table-cell';
@@ -17,7 +17,7 @@ const WithdrawalLimitsTable = observer(
         const { client } = useStore();
         const { currency, is_fully_authenticated } = client;
         return (
-            <React.Fragment>
+            <Fragment>
                 <table className='da-account-limits__table' data-testid='withdrawal_limits_table'>
                     <thead>
                         <tr>
@@ -33,13 +33,15 @@ const WithdrawalLimitsTable = observer(
                     </thead>
                     <tbody>
                         {!is_fully_authenticated && (
-                            <React.Fragment>
+                            <Fragment>
                                 <tr>
                                     <AccountLimitsTableCell>
                                         <Localize i18n_default_text='Total withdrawal allowed' />
                                     </AccountLimitsTableCell>
                                     <AccountLimitsTableCell align='right'>
-                                        {formatMoney(currency, num_of_days_limit ?? 0, true)}
+                                        {FormatUtils.formatMoney((num_of_days_limit as number) ?? 0, {
+                                            currency: currency as CurrencyConstants.Currency,
+                                        })}
                                     </AccountLimitsTableCell>
                                 </tr>
                                 <tr>
@@ -47,7 +49,9 @@ const WithdrawalLimitsTable = observer(
                                         <Localize i18n_default_text='Total withdrawn' />
                                     </AccountLimitsTableCell>
                                     <AccountLimitsTableCell align='right'>
-                                        {formatMoney(currency, withdrawal_since_inception_monetary ?? 0, true)}
+                                        {FormatUtils.formatMoney((withdrawal_since_inception_monetary as number) ?? 0, {
+                                            currency: currency as CurrencyConstants.Currency,
+                                        })}
                                     </AccountLimitsTableCell>
                                 </tr>
                                 <tr>
@@ -55,10 +59,12 @@ const WithdrawalLimitsTable = observer(
                                         <Localize i18n_default_text='Maximum withdrawal remaining' />
                                     </AccountLimitsTableCell>
                                     <AccountLimitsTableCell align='right'>
-                                        {formatMoney(currency, remainder ?? '', true)}
+                                        {FormatUtils.formatMoney((remainder as number) ?? 0, {
+                                            currency: currency as CurrencyConstants.Currency,
+                                        })}
                                     </AccountLimitsTableCell>
                                 </tr>
-                            </React.Fragment>
+                            </Fragment>
                         )}
                     </tbody>
                 </table>
@@ -71,7 +77,7 @@ const WithdrawalLimitsTable = observer(
                         )}
                     </Text>
                 </div>
-            </React.Fragment>
+            </Fragment>
         );
     }
 );

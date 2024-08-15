@@ -1,15 +1,8 @@
-import React from 'react';
 import { Money } from '@deriv/components';
-import {
-    CFD_PLATFORMS,
-    formatMoney,
-    getCFDAccount,
-    getCFDAccountDisplay,
-    getCFDPlatformLabel,
-    getMT5Icon,
-} from '@deriv/shared';
+import { CFD_PLATFORMS, getCFDAccount, getCFDAccountDisplay, getCFDPlatformLabel, getMT5Icon } from '@deriv/shared';
+import { FormatUtils, CurrencyConstants } from '@deriv-com/utils';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
 import { TCFDPlatform, TDetailsOfDerivXAccount, TDetailsOfMT5Account } from '../../../../Types';
 import ClosingAccountPendingWrapper from './closing-account-pending-wrapper';
 import ClosingAccountPendingContent from './closing-account-pending-content';
@@ -75,7 +68,9 @@ const ClosingAccountPendingBalance = observer(({ platform, account_balance }: TC
                             account.currency && (
                                 <Money
                                     currency={account.currency}
-                                    amount={formatMoney(account.currency, account.balance ?? 0, true)}
+                                    amount={FormatUtils.formatMoney(account.balance ?? 0, {
+                                        currency: account.currency as CurrencyConstants.Currency,
+                                    })}
                                     should_format={false}
                                 />
                             )

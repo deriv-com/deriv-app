@@ -173,7 +173,7 @@ describe('MT5AccountAdded', () => {
         expect(screen.getByText('Almost there')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'We need 1-3 days to review your documents before you can start trading with your Financial (SVG) account. You’ll get an email as soon as this is done.'
+                "We need 1-3 days to review your documents before you can start trading with your Financial (SVG) account. You'll get an email as soon as this is done."
             )
         ).toBeInTheDocument();
     });
@@ -218,7 +218,7 @@ describe('MT5AccountAdded', () => {
         expect(screen.getByText('Almost there')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'We need a few minutes to review your documents before you can start trading with your Financial (SVG) account. You’ll get an in-app notification as soon as this is done.'
+                "We need a few minutes to review your documents before you can start trading with your Financial (SVG) account. You'll get an in-app notification as soon as this is done."
             )
         ).toBeInTheDocument();
     });

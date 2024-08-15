@@ -92,6 +92,7 @@ const AppNotificationMessages = observer(
             const is_non_hidden_notification = isMobile()
                 ? [
                       ...maintenance_notifications,
+                      'account_currency_closure',
                       'authenticate',
                       'deriv_go',
                       'document_needs_action',
@@ -129,6 +130,7 @@ const AppNotificationMessages = observer(
                       'trustpilot',
                       'unwelcome',
                       'additional_kyc_info',
+                      'notify_account_is_to_be_closed_by_residence',
                   ].includes(message.key) || message.type === 'p2p_completed_order'
                 : true;
 

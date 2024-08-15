@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { WalletButton } from '../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Button } from '@deriv-com/ui';
 import { THooks } from '../../../../types';
 
 type TGetMessageProps = {
@@ -19,18 +20,22 @@ const getMessage = ({
     isVirtual,
 }: TGetMessageProps) => {
     if (!hasAccountsForTransfer) {
-        const title = isVirtual
-            ? 'No trading accounts are available to receive funds'
-            : 'No trading accounts or other wallets are available to receive funds';
-        const description = isVirtual
-            ? "Add a demo trading account in Trader's hub to receive funds from this Wallet to start trading."
-            : "Add a trading account or Wallet in Trader's hub to receive funds from this Wallet.";
+        const title = isVirtual ? (
+            <Localize i18n_default_text='No trading accounts are available to receive funds' />
+        ) : (
+            <Localize i18n_default_text='No trading accounts or other wallets are available to receive funds' />
+        );
+        const description = isVirtual ? (
+            <Localize i18n_default_text="Add a demo trading account in Trader's hub to receive funds from this Wallet to start trading." />
+        ) : (
+            <Localize i18n_default_text="Add a trading account or Wallet in Trader's hub to receive funds from this Wallet." />
+        );
 
         return {
             actionButton: () => (
-                <WalletButton onClick={() => history.push('/')} size='lg'>
-                    Back to Trader&apos;s hub
-                </WalletButton>
+                <Button borderWidth='sm' onClick={() => history.push('/')} size='lg' textSize='md'>
+                    <Localize i18n_default_text="Back to Trader's hub" />
+                </Button>
             ),
             description,
             title,
@@ -38,20 +43,31 @@ const getMessage = ({
     }
 
     if (!hasTransferAccountsWithFunds) {
-        const title = isVirtual
-            ? 'No funds in Demo wallet and demo trading accounts'
-            : 'No funds in any trading accounts or wallets';
-        const description = isVirtual
-            ? 'Please reset the balance of your Demo Wallet to make a transfer.'
-            : `Please make a deposit to your ${currency} Wallet to make a transfer.`;
+        const title = isVirtual ? (
+            <Localize i18n_default_text='No funds in Demo wallet and demo trading accounts' />
+        ) : (
+            <Localize i18n_default_text='No funds in any trading accounts or wallets' />
+        );
+        const description = isVirtual ? (
+            <Localize i18n_default_text='Please reset the balance of your Demo Wallet to make a transfer.' />
+        ) : (
+            <Localize
+                i18n_default_text='Please make a deposit to your {{currency}} Wallet to make a transfer.'
+                values={{ currency }}
+            />
+        );
         const locationPathName = `/wallet/${isVirtual ? 'reset-balance' : 'deposit'}` as const;
-        const buttonText = isVirtual ? 'Reset balance' : 'Deposit';
+        const buttonText = isVirtual ? (
+            <Localize i18n_default_text='Reset balance' />
+        ) : (
+            <Localize i18n_default_text='Deposit' />
+        );
 
         return {
             actionButton: () => (
-                <WalletButton onClick={() => history.push(locationPathName)} size='lg'>
+                <Button borderWidth='sm' onClick={() => history.push(locationPathName)} size='lg' textSize='md'>
                     {buttonText}
-                </WalletButton>
+                </Button>
             ),
             description,
             title,

@@ -1,7 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { LegacyArrowRight2pxIcon } from '@deriv/quill-icons';
-import { AppCard, WalletButton, WalletCard, WalletText } from '../../../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Button, Text } from '@deriv-com/ui';
+import { AppCard, WalletCard } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../../../types';
 import { useTransfer } from '../../provider';
@@ -64,7 +66,17 @@ const TransferReceipt = () => {
     const transferredAmountMessage = isSameCurrency
         ? displayTransferredFromAmount
         : `${displayTransferredFromAmount} (${displayTransferredToAmount})`;
-    const feeMessage = feeAmount ? `Transfer fees: ${feeAmount} ${fromAccount?.currencyConfig?.display_code}` : '';
+    const feeMessage = feeAmount ? (
+        <Localize
+            i18n_default_text='Transfer fees: {{feeAmount}} {{displayCode}}'
+            values={{
+                displayCode: fromAccount?.currencyConfig?.display_code,
+                feeAmount,
+            }}
+        />
+    ) : (
+        ''
+    );
 
     return (
         <div className='wallets-transfer-receipt'>
@@ -89,27 +101,28 @@ const TransferReceipt = () => {
                 })}
             >
                 <div className='wallets-transfer-receipt__amount'>
-                    <WalletText size='xl' weight='bold'>
+                    <Text size='xl' weight='bold'>
                         {transferredAmountMessage}
-                    </WalletText>
+                    </Text>
                     {Boolean(feeMessage) && (
-                        <WalletText color='less-prominent' size='md'>
+                        <Text color='less-prominent' size='md'>
                             {feeMessage}
-                        </WalletText>
+                        </Text>
                     )}
                 </div>
-                <WalletText align='center' size='lg' weight='bold'>
-                    Your transfer is successful!
-                </WalletText>
+                <Text align='center' size='lg' weight='bold'>
+                    <Localize i18n_default_text='Your transfer is successful!' />
+                </Text>
             </div>
             <div className='wallets-transfer-receipt__button'>
-                <WalletButton
+                <Button
+                    borderWidth='sm'
                     onClick={() => resetTransfer()}
                     size={isMobile ? 'md' : 'lg'}
                     textSize={isMobile ? 'md' : 'sm'}
                 >
-                    Make a new transfer
-                </WalletButton>
+                    <Localize i18n_default_text='Make a new transfer' />
+                </Button>
             </div>
         </div>
     );

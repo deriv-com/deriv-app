@@ -1,7 +1,7 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback } from 'react';
 import classNames from 'classnames';
-import { useHover } from 'usehooks-ts';
-import { Tooltip, WalletText } from '../../../../../../../../components/Base';
+import { useTranslations } from '@deriv-com/translations';
+import { Text, Tooltip } from '@deriv-com/ui';
 import { useModal } from '../../../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../../../hooks/useDevice';
 import { WalletActionModal } from '../../../../../../components/WalletActionModal';
@@ -12,18 +12,17 @@ type TProps = {
     hint?: {
         link?: string;
         text: string;
-        tooltipAlignment?: React.ComponentProps<typeof Tooltip>['alignment'];
+        tooltipAlignment?: React.ComponentProps<typeof Tooltip>['tooltipPosition'];
     };
     name: string;
-    value: string;
-    valueTextProps?: Omit<React.ComponentProps<typeof WalletText>, 'children'>;
+    value: JSX.Element | string;
+    valueTextProps?: Omit<React.ComponentProps<typeof Text>, 'children'>;
 };
 
 const TransactionsPendingRowField: React.FC<TProps> = ({ className, hint, name, value, valueTextProps }) => {
     const { isMobile } = useDevice();
+    const { localize } = useTranslations();
     const { show } = useModal();
-    const fieldRef = useRef(null);
-    const isFieldHovered = useHover(fieldRef);
 
     const onValueClick = useCallback(() => {
         show(
@@ -34,51 +33,51 @@ const TransactionsPendingRowField: React.FC<TProps> = ({ className, hint, name, 
                               {
                                   isPrimary: true,
                                   onClick: () => window.open(hint?.link),
-                                  text: 'View',
+                                  text: localize('View'),
                               },
                           ]
                         : []
                 }
                 description={hint?.text}
-                title='Transaction details'
+                title={localize('Transaction details')}
             />,
             { defaultRootId: 'wallets_modal_root' }
         );
-    }, [hint, show]);
+    }, [hint?.link, hint?.text, localize, show]);
 
     return (
         <div className={classNames('wallets-transactions-pending-row-field', className)} key={name}>
-            <WalletText color='primary' size='xs'>
+            <Text color='primary' size='xs'>
                 {name}
-            </WalletText>
+            </Text>
             {hint ? (
-                <Tooltip alignment={hint.tooltipAlignment} isVisible={!isMobile && isFieldHovered} message={hint.text}>
-                    <WalletText {...{ color: 'red', size: 'xs', weight: 'bold', ...valueTextProps }}>
+                <Tooltip
+                    as='div'
+                    hideTooltip={isMobile}
+                    tooltipContent={hint.text}
+                    tooltipPosition={hint.tooltipAlignment}
+                >
+                    <Text {...{ color: 'red', size: 'xs', weight: 'bold', ...valueTextProps }}>
                         {isMobile ? (
-                            <button
-                                className='wallets-transactions-pending-row-field__button'
-                                onClick={onValueClick}
-                                ref={fieldRef}
-                            >
+                            <button className='wallets-transactions-pending-row-field__button' onClick={onValueClick}>
                                 {value}
                             </button>
                         ) : (
                             <a
                                 className='wallets-transactions-pending-row-field__link'
                                 href={hint.link}
-                                ref={fieldRef}
                                 rel='noopener noreferrer'
                                 target='_blank'
                             >
                                 {value}
                             </a>
                         )}
-                    </WalletText>
+                    </Text>
                 </Tooltip>
             ) : (
-                <WalletText color='red' size='xs' weight='bold' {...valueTextProps}>
+                <Text color='red' size='xs' weight='bold' {...valueTextProps}>
                     {value}
-                </WalletText>
+                </Text>
             )}
         </div>
     );

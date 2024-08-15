@@ -37,7 +37,7 @@ const AccumulatorStats = observer(() => {
     };
 
     useEffect(() => {
-        let successTimeout: ReturnType<typeof setTimeout>| undefined,
+        let successTimeout: ReturnType<typeof setTimeout> | undefined,
             errorTimeout: ReturnType<typeof setTimeout> | undefined,
             transitionTimeout: ReturnType<typeof setTimeout> | undefined;
 

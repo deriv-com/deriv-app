@@ -7,7 +7,10 @@ import { THooks } from '../../../../types';
 import './VerificationFailed.scss';
 
 const LazyVerification = lazy(
-    () => import(/* webpackChunkName: "wallets-verification-flow" */ '../../flows/Verification/Verification')
+    () =>
+        import(
+            /* webpackChunkName: "wallets-client-verification" */ '../../flows/ClientVerification/ClientVerification'
+        )
 );
 
 const getDocumentTitle = (isPOIFailed?: boolean, isPOAFailed?: boolean) => {
@@ -73,7 +76,7 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
                     onClick={() =>
                         show(
                             <Suspense fallback={<Loader />}>
-                                <LazyVerification selectedJurisdiction={selectedJurisdiction} />
+                                <LazyVerification hasVerificationFailed selectedJurisdiction={selectedJurisdiction} />
                             </Suspense>
                         )
                     }

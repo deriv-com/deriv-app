@@ -20,6 +20,7 @@ import {
     rudderStackSendUploadStrategyStartEvent,
 } from '../analytics/rudderstack-common-events';
 import { getStrategyType } from '../analytics/utils';
+
 import RootStore from './root-store';
 
 interface ILoadModalStore {
@@ -265,7 +266,7 @@ export default class LoadModalStore implements ILoadModalStore {
         if (this.local_workspace) {
             this.local_workspace = null;
         }
-        this.setActiveTabIndex(0, true); // Reset to first tab.
+        this.setActiveTabIndex(0); // Reset to first tab.
         this.setLoadedLocalFile(null);
     };
 
@@ -275,15 +276,8 @@ export default class LoadModalStore implements ILoadModalStore {
         }
     };
 
-    setActiveTabIndex = (index: number, is_default: boolean): void => {
+    setActiveTabIndex = (index: number): void => {
         this.active_index = index;
-        if (!is_default) {
-            const { ui } = this.core;
-            const { is_mobile } = ui;
-            rudderStackSendSwitchLoadStrategyTabEvent({
-                load_strategy_tab: LOAD_MODAL_TABS[index + (is_mobile ? 1 : 0)],
-            });
-        }
     };
 
     setLoadedLocalFile = (loaded_local_file: File | null): void => {
@@ -561,22 +555,20 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     loadStrategyOnBotBuilder = async () => {
-        const { strategy_id, xml, file_name, from } = window.Blockly.readFileXml;
+        const { strategy_id, xml, file_name, from } = window.Blockly.xmlValues;
         const { save_modal } = this.root_store;
         const { updateBotName } = save_modal;
 
-        const convertedDom = window.Blockly.utils.xml.textToDom(xml);
         const derivWorkspace = window.Blockly.derivWorkspace;
 
-        window.Blockly.Xml.clearWorkspaceAndLoadFromXml(convertedDom, derivWorkspace);
+        window.Blockly.Xml.clearWorkspaceAndLoadFromXml(xml, derivWorkspace);
         derivWorkspace.cleanUp();
         derivWorkspace.clearUndo();
         derivWorkspace.current_strategy_id = strategy_id || Blockly.utils.idGenerator.genUid();
 
         updateBotName(file_name);
 
-        const xml_dom = window.Blockly.utils.xml.textToDom(xml);
-        await saveWorkspaceToRecent(xml_dom, from);
+        await saveWorkspaceToRecent(xml, from);
 
         const recent_files = await getSavedWorkspaces();
         if (recent_files?.length > 0) this.setSelectedStrategyId(recent_files[0]?.id);
@@ -585,12 +577,15 @@ export default class LoadModalStore implements ILoadModalStore {
 
     loadStrategyOnModalRecentPreview = async workspace_id => {
         if (this.recent_strategies.length === 0 || this.tab_name !== tabs_title.TAB_RECENT) return;
+
         const { blockly_store } = this.root_store;
         const { setLoading } = blockly_store;
         setLoading(true);
+
         const injectWorkspace = { ...this.injectWorkspace, theme: window?.Blockly?.Themes?.zelos_renderer };
         this.setLoadedLocalFile(null);
         this.setSelectedStrategyId(workspace_id);
+
         let ref_preview;
         while (!ref_preview) {
             ref_preview = document?.getElementById('load-strategy__blockly-container');
@@ -611,17 +606,31 @@ export default class LoadModalStore implements ILoadModalStore {
         const mainWorkspace = window.Blockly?.getMainWorkspace();
 
         window.Blockly?.Xml?.clearWorkspaceAndLoadFromXml(convertedDom, mainWorkspace);
+
+        if (window.Blockly && window.Blockly.xmlValues) {
+            window.Blockly.xmlValues = {
+                ...window.Blockly.xmlValues,
+                strategy_id: this.selected_strategy_id,
+                xml: convertedDom,
+                file_name: this.selected_strategy?.name,
+                from: this.selected_strategy?.save_type,
+            };
+        }
+
         setLoading(false);
     };
 
     loadStrategyOnModalLocalPreview = async load_options => {
         const injectWorkspace = { ...this.injectWorkspace, theme: window?.Blockly?.Themes?.zelos_renderer };
         const ref = document?.getElementById('load-strategy__blockly-container');
+
         this.local_workspace = window.Blockly.inject(ref, injectWorkspace);
         load_options.workspace = this.local_workspace;
+
         if (load_options.workspace) {
             (load_options.workspace as any).RTL = isDbotRTL();
         }
+
         await load(load_options);
     };
 }

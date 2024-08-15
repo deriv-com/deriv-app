@@ -179,11 +179,11 @@ export const load = async ({
             workspace,
             Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type'))
         );
-        window.Blockly.readFileXml = {
+        window.Blockly.xmlValues = {
             file_name,
             strategy_id,
             from,
-            xml: window.Blockly.Xml.domToText(xml),
+            xml,
         };
 
         if (is_collection) {

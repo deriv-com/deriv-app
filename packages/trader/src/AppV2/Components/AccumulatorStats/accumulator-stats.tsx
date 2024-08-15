@@ -37,9 +37,9 @@ const AccumulatorStats = observer(() => {
     };
 
     useEffect(() => {
-        let successTimeout: NodeJS.Timeout | undefined,
-            errorTimeout: NodeJS.Timeout | undefined,
-            transitionTimeout: NodeJS.Timeout | undefined;
+        let successTimeout: ReturnType<typeof setTimeout>| undefined,
+            errorTimeout: ReturnType<typeof setTimeout> | undefined,
+            transitionTimeout: ReturnType<typeof setTimeout> | undefined;
 
         if (rows[0] && rows[0].length > 0) {
             setAnimationClass('');

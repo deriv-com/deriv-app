@@ -125,7 +125,7 @@ const BarrierInput = observer(
                             <Text size='sm'>
                                 <Localize i18n_default_text='Current spot' />
                             </Text>
-                            <Text size='sm'> {spotPrice}</Text>
+                            <Text size='sm'>{spotPrice}</Text>
                         </div>
                     </div>
                 </ActionSheet.Content>

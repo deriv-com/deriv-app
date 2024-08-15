@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import BinaryRoutes from '../Components/Routes';
-import ErrorComponent from '../Components/Errors/error-component.js';
+import ErrorComponent from '../Components/Errors/error-component';
 import { observer, useStore } from '@deriv/stores';
 
 const Routes = observer(({ passthrough }) => {

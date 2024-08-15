@@ -118,6 +118,8 @@ export default class TradersHubStore extends BaseStore {
             toggleWalletsUpgrade: action.bound,
             setWalletsMigrationFailedPopup: action.bound,
             cleanup: action.bound,
+            setIsCFDRestrictedCountry: action.bound,
+            setIsFinancialRestrictedCountry: action.bound,
             setIsSetupRealAccountOrGoToDemoModalVisible: action.bound,
         });
 
@@ -197,6 +199,14 @@ export default class TradersHubStore extends BaseStore {
 
     setWalletModalActiveWalletID(wallet_id) {
         this.active_modal_wallet_id = wallet_id;
+    }
+
+    setIsCFDRestrictedCountry(value) {
+        this.is_cfd_restricted_country = value;
+    }
+
+    setIsFinancialRestrictedCountry(value) {
+        this.is_financial_restricted_country = value;
     }
 
     get no_MF_account() {
@@ -445,7 +455,7 @@ export default class TradersHubStore extends BaseStore {
         const is_restricted =
             this.is_financial_restricted_country || (financial_company?.shortcode === 'svg' && !gaming_company);
         // update the flag in the store
-        this.is_financial_restricted_country = is_restricted;
+        this.setIsFinancialRestrictedCountry(is_restricted);
 
         return is_restricted;
     }
@@ -456,7 +466,7 @@ export default class TradersHubStore extends BaseStore {
         const is_restricted =
             this.is_cfd_restricted_country || (gaming_company?.shortcode === 'svg' && !financial_company);
         // update the flag in the store
-        this.is_cfd_restricted_country = is_restricted;
+        this.setIsCFDRestrictedCountry(is_restricted);
 
         return is_restricted;
     }
@@ -815,8 +825,8 @@ export default class TradersHubStore extends BaseStore {
             (!this.root_store.client.is_logged_in && localStorage.getItem('active_loginid') === 'null')
         ) {
             localStorage.removeItem('traders_hub_store');
-            this.is_cfd_restricted_country = false;
-            this.is_financial_restricted_country = false;
+            this.setIsFinancialRestrictedCountry(false);
+            this.setIsCFDRestrictedCountry(false);
             this.available_platforms = [];
         }
     }

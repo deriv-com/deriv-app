@@ -5,10 +5,12 @@ import {
     PaymentMethodMastercardBrandIcon,
     PaymentMethodVisaBrandIcon,
 } from '@deriv/quill-icons';
+import { Localize } from '@deriv-com/translations';
 
 export const fiatOnRampProvider = {
-    description:
-        'A fast and secure fiat-to-crypto payment service. Deposit cryptocurrencies from anywhere in the world using your credit/debit cards and bank transfers.',
+    description: (
+        <Localize i18n_default_text='A fast and secure fiat-to-crypto payment service. Deposit cryptocurrencies from anywhere in the world using your credit/debit cards and bank transfers.' />
+    ),
     getPaymentIcons: () => [
         {
             icon: <PaymentMethodApplePayBrandIcon />,
@@ -24,5 +26,5 @@ export const fiatOnRampProvider = {
         },
     ],
     icon: <PaymentMethodBanxaBrandIcon key='banxa' />,
-    name: 'Banxa',
+    name: <Localize i18n_default_text='Banxa' />,
 };

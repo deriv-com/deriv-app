@@ -4,6 +4,7 @@ import { Tab, Text, CaptionText } from '@deriv-com/quill-ui';
 import MarketCategoryItem from '../MarketCategoryItem';
 import { ActiveSymbols } from '@deriv/api-types';
 import FavoriteSymbols from '../FavoriteSymbols';
+import { usePrevious } from '@deriv/components';
 
 type TMarketCategory = {
     category: MarketGroup;
@@ -16,9 +17,10 @@ type TMarketCategory = {
 const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen, isOpen }: TMarketCategory) => {
     const itemRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
     const timerRef = useRef<ReturnType<typeof setTimeout>>();
+    const prevSymbol = usePrevious(selectedSymbol);
 
     useEffect(() => {
-        if (isOpen && category.market === 'all' && selectedSymbol && itemRefs.current[selectedSymbol]) {
+        if (isOpen && category.market === 'all' && selectedSymbol && itemRefs.current[selectedSymbol] && !prevSymbol) {
             timerRef.current = setTimeout(() => {
                 itemRefs.current[selectedSymbol]?.scrollIntoView({ block: 'center' });
             }, 50);
@@ -26,7 +28,7 @@ const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen
         return () => {
             clearTimeout(timerRef.current);
         };
-    }, [isOpen, category.market, selectedSymbol]);
+    }, [isOpen, category.market, selectedSymbol, prevSymbol]);
 
     return (
         <Tab.Panel key={category.market_display_name}>

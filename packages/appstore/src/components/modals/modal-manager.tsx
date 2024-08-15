@@ -6,6 +6,7 @@ import { Loading } from '@deriv/components';
 import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import { useStores } from 'Stores';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import CFDResetPasswordModal from '@deriv/cfd/src/Containers/cfd-reset-password-modal';
 
 const FailedVerificationModal = makeLazyLoader(
     () =>
@@ -64,17 +65,6 @@ const CFDPasswordModal = makeLazyLoader(
             () =>
                 import(
                     /* webpackChunkName: "modal_cfd_cfd-password-modal" */ '@deriv/cfd/src/Containers/cfd-password-modal'
-                )
-        ),
-    () => <Loading />
-)();
-
-const CFDResetPasswordModal = makeLazyLoader(
-    () =>
-        moduleLoader(
-            () =>
-                import(
-                    /* webpackChunkName: "modal_cfd_cfd-reset-password-modal" */ '@deriv/cfd/src/Containers/cfd-reset-password-modal'
                 )
         ),
     () => <Loading />
@@ -240,7 +230,7 @@ const ModalManager = () => {
         const acc = current_list_keys.some(
             key => key.startsWith(`${platform}.real.${acc_type}`) && should_be_enabled(current_list[key])
         )
-            ? Object.keys(current_list)
+            ? current_list_keys
                   .filter(key => key.startsWith(`${platform}.real.${acc_type}`))
                   .reduce((_acc, cur) => {
                       _acc.push(current_list[cur]);

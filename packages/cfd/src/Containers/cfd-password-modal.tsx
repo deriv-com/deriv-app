@@ -34,6 +34,7 @@ import CFDEnterPasswordModalTitle from './cfd-enter-password-modal-title';
 import MigrationSuccessModal from '../Components/migration-success-modal';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { CFD_PLATFORMS, CATEGORY } from '../Helpers/cfd-config';
+import classNames from 'classnames';
 import { getDxCompanies, getMtCompanies, TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import '../sass/cfd.scss';
 
@@ -278,7 +279,7 @@ const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_
                             label={localize('Create {{platform}} password', {
                                 platform: getCFDPlatformLabel(platform),
                             })}
-                            is_center={true}
+                            is_center={platform !== CFD_PLATFORMS.MT5}
                         />
                     </div>
                 </form>
@@ -834,7 +835,9 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const password_modal = (
         <Modal
-            className='cfd-password-modal'
+            className={classNames('cfd-password-modal', {
+                'cfd-password-modal__mt5': platform === CFD_PLATFORMS.MT5 && should_set_trading_password,
+            })}
             has_close_icon
             is_open={should_show_password_modal}
             toggleModal={closeModal}
@@ -855,6 +858,25 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         </Modal>
     );
 
+    const password_modal_mobile = (
+        <MobileDialog
+            has_full_height
+            portal_element_id='modal_root'
+            visible={should_show_password_modal}
+            onClose={closeModal}
+            wrapper_classname='cfd-password-modal cfd-password-modal__mt5'
+            renderTitle={() => (
+                <PasswordModalHeader
+                    should_set_trading_password={should_set_trading_password}
+                    is_password_reset_error={is_password_reset}
+                    platform={platform}
+                />
+            )}
+        >
+            {cfd_password_form}
+        </MobileDialog>
+    );
+
     const password_dialog = (
         <MobileDialog
             has_full_height
@@ -862,14 +884,15 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             visible={should_show_password_dialog}
             onClose={closeModal}
             wrapper_classname='cfd-password-modal'
+            renderTitle={() => (
+                <PasswordModalHeader
+                    should_set_trading_password={should_set_trading_password}
+                    has_mt5_account={has_mt5_account}
+                    is_password_reset_error={is_password_reset}
+                    platform={platform}
+                />
+            )}
         >
-            <PasswordModalHeader
-                should_set_trading_password={should_set_trading_password}
-                has_mt5_account={has_mt5_account}
-                is_password_reset_error={is_password_reset}
-                platform={platform}
-            />
-
             {cfd_password_form}
         </MobileDialog>
     );
@@ -926,6 +949,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     return (
         <React.Fragment>
+            {platform === CFD_PLATFORMS.MT5 && !isDesktop && password_modal_mobile}
             {password_modal}
             {password_dialog}
             <SuccessDialog

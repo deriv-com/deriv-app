@@ -22,4 +22,10 @@
     &--selected {
         background-color: var(--semantic-color-slate-solid-surface-inverse-lowest);
     }
+    &-left {
+        display: flex;
+        flex: 1 0 0;
+        align-items: center;
+        gap: var(--semantic-spacing-gap-lg);
+    }
 }

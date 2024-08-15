@@ -16,11 +16,11 @@ const App: React.FC = () => {
     return (
         <APIProvider standalone>
             <WalletsAuthProvider>
-                <ModalProvider>
-                    <TranslationProvider defaultLang='EN' i18nInstance={i18nInstance}>
+                <TranslationProvider defaultLang='EN' i18nInstance={i18nInstance}>
+                    <ModalProvider>
                         <AppContent />
-                    </TranslationProvider>
-                </ModalProvider>
+                    </ModalProvider>
+                </TranslationProvider>
             </WalletsAuthProvider>
         </APIProvider>
     );

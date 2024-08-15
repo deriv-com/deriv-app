@@ -36,7 +36,7 @@ const RouteWithSubRoutes = (route: TRouteWithSubRoutesProps) => {
 
             result = (
                 <React.Fragment>
-                    {has_default_subroute && pathname === route.path && <Redirect to={default_subroute.path} />}
+                    {has_default_subroute && pathname === route.path && <Redirect to={default_subroute?.path} />}
                     <RouteComponent {...props} routes={route.routes} />
                 </React.Fragment>
             );

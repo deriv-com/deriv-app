@@ -3,7 +3,7 @@ import { act, renderHook } from '@testing-library/react-hooks';
 import { CashierScrollContext, useCashierScroll } from '../CashierScrollContext';
 
 describe('CashierScrollContext', () => {
-    it('should provide the correct context value', () => {
+    it('provides the correct context value', () => {
         const mockOnCashierScroll = jest.fn();
         const mockSetOnCashierScroll = jest.fn();
 
@@ -24,7 +24,7 @@ describe('CashierScrollContext', () => {
         expect(result.current.setOnCashierScroll).toBe(mockSetOnCashierScroll);
     });
 
-    it('should throw an error when used outside of CashierScrollContext.Provider', () => {
+    it('throws an error when used outside of CashierScrollContext.Provider', () => {
         const { result } = renderHook(() => useCashierScroll());
 
         expect(result.error).toEqual(
@@ -32,7 +32,7 @@ describe('CashierScrollContext', () => {
         );
     });
 
-    it('should update context value when setOnCashierScroll is called', () => {
+    it('updates context value when setOnCashierScroll is called', () => {
         const mockOnCashierScroll = jest.fn();
         const mockSetOnCashierScroll = jest.fn();
 

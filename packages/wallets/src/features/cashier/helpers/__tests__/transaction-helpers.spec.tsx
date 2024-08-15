@@ -7,9 +7,9 @@ import {
     TModifiedTransaction,
 } from '../transaction-helpers';
 
-describe('Crypto Transaction Status Functions', () => {
+describe('Cashier Transaction Helpers', () => {
     describe('getStatusName', () => {
-        it('should return correct status name for each status code', () => {
+        it('returns correct status name for each status code', () => {
             const testStatus = (statusCode: TModifiedTransaction['statusCode'], expectedText: string) => {
                 render(<>{getStatusName(statusCode)}</>);
                 expect(screen.getAllByText(expectedText)[0]).toBeInTheDocument();
@@ -29,7 +29,7 @@ describe('Crypto Transaction Status Functions', () => {
             testStatus('LOCKED', 'In review');
         });
 
-        it('should return empty string for unknown status name', () => {
+        it('returns empty string for unknown status name', () => {
             render(
                 <div data-testid='status-name'>{getStatusName('UNKNOWN' as TModifiedTransaction['statusCode'])}</div>
             );
@@ -39,7 +39,7 @@ describe('Crypto Transaction Status Functions', () => {
     });
 
     describe('getStatusDescription', () => {
-        it('should return correct description for deposit statuses', () => {
+        it('returns correct description for deposit statuses', () => {
             render(<>{getStatusDescription('deposit', 'CONFIRMED')}</>);
             expect(screen.getByText('Your deposit is successful.')).toBeInTheDocument();
 
@@ -49,7 +49,7 @@ describe('Crypto Transaction Status Functions', () => {
             ).toBeInTheDocument();
         });
 
-        it('should return correct description for withdrawal statuses', () => {
+        it('returns correct description for withdrawal statuses', () => {
             const testDescription = (statusCode: TModifiedTransaction['statusCode'], expectedText: RegExp | string) => {
                 render(<>{getStatusDescription('withdrawal', statusCode)}</>);
                 expect(screen.getAllByText(expectedText)[0]).toBeInTheDocument();
@@ -75,7 +75,7 @@ describe('Crypto Transaction Status Functions', () => {
             testDescription('SENT', 'Your withdrawal is successful.');
         });
 
-        it('should return correct description for ERROR status', () => {
+        it('returns correct description for ERROR status', () => {
             render(<>{getStatusDescription('deposit', 'ERROR')}</>);
             expect(
                 screen.getByText(
@@ -91,7 +91,7 @@ describe('Crypto Transaction Status Functions', () => {
             ).toBeInTheDocument();
         });
 
-        it('should return empty string for unknown status description', () => {
+        it('returns empty string for unknown status description', () => {
             render(
                 <div data-testid='status-description'>
                     {getStatusDescription('deposit', 'UNKNOWN' as TModifiedTransaction['statusCode'])}
@@ -103,19 +103,19 @@ describe('Crypto Transaction Status Functions', () => {
     });
 
     describe('getFormattedConfirmations', () => {
-        it('should return "Confirmed" for CONFIRMED status', () => {
+        it('returns "Confirmed" for CONFIRMED status', () => {
             expect(getFormattedConfirmations(3, 'CONFIRMED')).toBe('Confirmed');
         });
 
-        it('should return "NA" for ERROR status', () => {
+        it('returns "NA" for ERROR status', () => {
             expect(getFormattedConfirmations(3, 'ERROR')).toBe('NA');
         });
 
-        it('should return confirmation count for other statuses', () => {
+        it('returns confirmation count for other statuses', () => {
             expect(getFormattedConfirmations(3, 'PENDING')).toBe('3');
         });
 
-        it('should return "Pending" if confirmations is undefined', () => {
+        it('returns "Pending" if confirmations is undefined', () => {
             expect(getFormattedConfirmations(undefined, 'PENDING')).toBe('Pending');
         });
     });

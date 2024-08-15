@@ -52,7 +52,7 @@ const NotificationsList = observer(() => {
     const filtered_notifications = notifications_array.filter(item => !item.only_toast_message);
     return (
         <React.Fragment>
-            {filtered_notifications?.length > 0 ? (
+            {filtered_notifications.length > 0 ? (
                 filtered_notifications.map(item => (
                     <div className='notifications-item' key={item.key}>
                         <Text as='h2' className='notifications-item__title' weight='bold' size='xs' color='prominent'>

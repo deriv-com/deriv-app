@@ -1,48 +1,55 @@
+import { localize } from '@deriv-com/translations';
 import { TJurisdictionCardItems } from './props.types';
 
 export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
     contents: {
         all: [
             {
-                description: 'Synthetics, Forex, Stocks, Stock Indices, Cryptocurrencies, and ETFs',
+                description: localize(
+                    'Forex, stocks, stock indices, commodities, cryptocurrencies, ETFs and synthetic indices'
+                ),
                 key: 'assets',
-                title: 'Assets',
+                title: localize('Assets'),
                 titleIndicators: {
-                    displayText: '40+',
+                    displayText: localize('40+'),
                     displayTextSkinColor: 'red-darker',
                     type: 'displayText',
                 },
             },
             {
                 key: 'leverage',
-                title: 'Leverage',
+                title: localize('Leverage up to'),
                 titleIndicators: {
-                    displayText: '1:1000',
+                    displayText: localize('1:1000'),
                     displayTextSkinColor: 'yellow-light',
                     type: 'displayText',
                 },
             },
             {
-                description: 'You will need to submit proof of identity and address once you reach certain thresholds.',
+                description: localize(
+                    'You will need to submit proof of identity and address once you reach certain thresholds.'
+                ),
                 key: 'verifications',
-                title: 'Verifications',
+                title: localize('Verifications'),
                 titleIndicators: {
                     type: 'displayIcons',
                 },
             },
             {
-                description: 'Deriv (SVG) LLC (company no. 273 LLC 2020)',
+                description: localize('Deriv (SVG) LLC (company no. 273 LLC 2020)'),
                 key: 'regulator',
-                title: 'Regulator/EDR',
+                title: localize('Regulator/EDR'),
             },
         ],
         financial: [
             {
-                description: 'Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies',
+                description: localize(
+                    'Forex (standard/micro), stocks, stock indices, commodities, cryptocurrencies and ETFs'
+                ),
                 key: 'assets',
-                title: 'Assets',
+                title: localize('Assets'),
                 titleIndicators: {
-                    displayText: '170+',
+                    displayText: localize('170+'),
                     displayTextSkinColor: 'red-light',
                     type: 'displayText',
                 },
@@ -51,77 +58,83 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
                 clickableDescription: [
                     {
                         tag: 'dynamicLeverage',
-                        text: 'Dynamic Leverage',
+                        text: localize('Dynamic Leverage'),
                         type: 'link',
                     },
                 ],
                 key: 'leverage',
-                title: 'Leverage',
+                title: localize('Leverage up to'),
                 titleIndicators: {
-                    displayText: '1:1000',
+                    displayText: localize('1:1000'),
                     displayTextSkinColor: 'yellow-light',
                     type: 'displayText',
                 },
             },
             {
                 key: 'spreads-from',
-                title: 'Spreads from',
+                title: localize('Spreads from'),
                 titleIndicators: {
-                    displayText: '0.6 pips',
+                    displayText: localize('0.6 pips'),
                     displayTextSkinColor: 'violet-dark',
                     type: 'displayText',
                 },
             },
             {
-                description: 'You will need to submit proof of identity and address once you reach certain thresholds.',
+                description: localize(
+                    'You will need to submit proof of identity and address once you reach certain thresholds.'
+                ),
                 key: 'verifications',
-                title: 'Verifications',
+                title: localize('Verifications'),
                 titleIndicators: {
                     type: 'displayIcons',
                 },
             },
             {
-                description: 'Deriv (SVG) LLC (company no. 273 LLC 2020)',
+                description: localize('Deriv (SVG) LLC (company no. 273 LLC 2020)'),
                 key: 'regulator',
-                title: 'Regulator/EDR',
+                title: localize('Regulator/EDR'),
             },
         ],
         synthetic: [
             {
-                description: 'Synthetics, Baskets and Derived FX',
+                description: localize(
+                    'Forex (standard), stock indices, commodities, cryptocurrencies, synthetic indices, basket indices and derived FX'
+                ),
                 key: 'assets',
-                title: 'Assets',
+                title: localize('Assets'),
                 titleIndicators: {
-                    displayText: '40+',
+                    displayText: localize('210+'),
                     displayTextSkinColor: 'red-darker',
                     type: 'displayText',
                 },
             },
             {
                 key: 'leverage',
-                title: 'Leverage',
+                title: localize('Leverage up to'),
                 titleIndicators: {
-                    displayText: '1:1000',
+                    displayText: localize('1:1000'),
                     displayTextSkinColor: 'yellow-light',
                     type: 'displayText',
                 },
             },
             {
-                description: 'You will need to submit proof of identity and address once you reach certain thresholds.',
+                description: localize(
+                    'You will need to submit proof of identity and address once you reach certain thresholds.'
+                ),
                 key: 'verifications',
-                title: 'Verifications',
+                title: localize('Verifications'),
                 titleIndicators: {
                     type: 'displayIcons',
                 },
             },
             {
-                description: 'Deriv (SVG) LLC (company no. 273 LLC 2020)',
+                description: localize('Deriv (SVG) LLC (company no. 273 LLC 2020)'),
                 key: 'regulator',
-                title: 'Regulator/EDR',
+                title: localize('Regulator/EDR'),
             },
         ],
     },
-    header: 'St. Vincent & Grenadines',
+    header: localize('St. Vincent & Grenadines'),
     isOverHeaderAvailable: false,
     verificationDocs: {
         financial: ['notApplicable'],

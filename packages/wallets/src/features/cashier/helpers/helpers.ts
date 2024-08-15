@@ -14,7 +14,7 @@ export const getMarketType = (mt5Group?: string) => {
     if (mt5Group?.includes(MT5MarketTypeDetails.financial.name)) return MT5MarketTypeDetails.financial.name;
     if (mt5Group?.includes(MT5MarketTypeDetails.synthetic.name)) return MT5MarketTypeDetails.synthetic.name;
     if (mt5Group?.includes(MT5MarketTypeDetails.all.name)) return MT5MarketTypeDetails.all.name;
-    return MT5MarketTypeDetails.all.name;
+    return undefined;
 };
 
 //TODO: remove this function when landing_company_name will be added to transfer_between_accounts response in API for mt5 accounts
@@ -24,26 +24,6 @@ export const getLandingCompanyNameOfMT5Account = (mt5Group?: string) => {
     if (mt5Group?.includes(LandingCompanyDetails.svg.name)) return LandingCompanyDetails.svg.name;
     if (mt5Group?.includes(LandingCompanyDetails.vanuatu.name)) return LandingCompanyDetails.vanuatu.name;
     return LandingCompanyDetails.svg.name;
-};
-
-export const getTradingAppIcon = (
-    accountType: string,
-    landingCompanyName: TWalletLandingCompanyName,
-    mt5Group?: string
-) => {
-    const marketType = getMarketType(mt5Group);
-    const mt5Platform = PlatformDetails.mt5;
-
-    if (accountType === mt5Platform.name) {
-        if (marketType === mt5Platform.marketType.financial.name) {
-            return mt5Platform.marketType.financial.landingCompany?.[landingCompanyName].icon.light;
-        } else if (marketType === mt5Platform.marketType.synthetic.name) {
-            return mt5Platform.marketType.synthetic.icon?.light;
-        }
-        return mt5Platform.marketType.all.icon?.light;
-    }
-    //@ts-expect-error needs backend typing
-    return PlatformDetails[accountType]?.icon.light;
 };
 
 export const getAccountName = ({

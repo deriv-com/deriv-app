@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
+import classNames from 'classnames';
 import { useAuthorize, useJurisdictionStatus } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { InlineMessage, WalletText } from '../../../../../components/Base';
@@ -7,7 +7,7 @@ import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import useDevice from '../../../../../hooks/useDevice';
 import { THooks } from '../../../../../types';
-import { MarketTypeDetails, PlatformDetails } from '../../../constants';
+import { getMarketTypeDetails, PlatformDetails } from '../../../constants';
 import { MT5TradeModal, VerificationFailedModal } from '../../../modals';
 import './AddedMT5AccountsList.scss';
 
@@ -22,16 +22,17 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         () => getVerificationStatus(account.landing_company_short || 'svg', account.status),
         [account.landing_company_short, account.status, getVerificationStatus]
     );
-    const { title } = MarketTypeDetails[account.market_type ?? 'all'];
+    const { title } = getMarketTypeDetails()[account.market_type ?? 'all'];
     const { isMobile } = useDevice();
     const { show } = useModal();
-    const { t } = useTranslation();
 
     return (
         <TradingAccountCard
             disabled={jurisdictionStatus.is_pending}
             leading={
-                <div className='wallets-added-mt5__icon'>{MarketTypeDetails[account.market_type || 'all'].icon}</div>
+                <div className='wallets-added-mt5__icon'>
+                    {getMarketTypeDetails()[account.market_type || 'all'].icon}
+                </div>
             }
             onClick={() => {
                 jurisdictionStatus.is_failed
@@ -47,7 +48,11 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                       );
             }}
             trailing={
-                <div className='wallets-added-mt5__icon'>
+                <div
+                    className={classNames('wallets-added-mt5__icon', {
+                        'wallets-added-mt5__icon--pending': jurisdictionStatus.is_pending,
+                    })}
+                >
                     <LabelPairedChevronRightCaptionRegularIcon width={16} />
                 </div>
             }
@@ -76,7 +81,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     <div className='wallets-added-mt5__details-badge'>
                         <InlineMessage size='xs' type='warning' variant='outlined'>
                             <WalletText color='warning' size='2xs' weight='bold'>
-                                {t('Pending verification')}
+                                Pending verification
                             </WalletText>
                         </InlineMessage>
                     </div>
@@ -86,7 +91,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     <div className='wallets-added-mt5__details-badge'>
                         <InlineMessage size='xs' type='error' variant='outlined'>
                             <WalletText color='error' size='2xs' weight='bold'>
-                                {t('Verification failed.')}{' '}
+                                Verification failed.{' '}
                                 <a
                                     onClick={() =>
                                         show(
@@ -99,7 +104,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                                         )
                                     }
                                 >
-                                    {t('Why?')}
+                                    Why?
                                 </a>
                             </WalletText>
                         </InlineMessage>

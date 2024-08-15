@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { LegacyArrowLeft2pxIcon } from '@deriv/quill-icons';
-import { WalletButton, WalletText } from '../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Button, Text } from '@deriv-com/ui';
 import { FiatOnRampDisclaimer, FiatOnRampProviderCard } from './components';
 import { fiatOnRampProvider } from './constants';
 import './FiatOnRamp.scss';
@@ -19,22 +20,24 @@ const FiatOnRamp = () => {
             ) : (
                 <div className='wallets-fiat-onramp'>
                     <div className='wallets-fiat-onramp__actions'>
-                        <WalletButton
+                        <Button
                             color='white'
                             icon={<LegacyArrowLeft2pxIcon iconSize='xs' />}
-                            onClick={() => history.push('/wallets/cashier/deposit')}
+                            onClick={() => history.push('/wallet/deposit')}
                         >
-                            Back
-                        </WalletButton>
+                            <Localize i18n_default_text='Back' />
+                        </Button>
                     </div>
                     <div className='wallets-fiat-onramp__content'>
                         <div className='wallets-fiat-onramp__description'>
-                            <WalletText align='center' color='primary' size='xs'>
-                                Fiat onramp is a cashier service that allows you to convert fiat currencies to
+                            <Text align='center' color='primary' size='xs'>
+                                <Localize
+                                    i18n_default_text="Fiat onramp is a cashier service that allows you to convert fiat currencies to
                                 cryptocurrencies to top up your Deriv crypto Wallet(s). Listed here are third-party
-                                cryptocurrency exchanges. You&apos;ll need to create an account with them to use their
-                                services.
-                            </WalletText>
+                                cryptocurrency exchanges. You'll need to create an account with them to use their
+                                services."
+                                />
+                            </Text>
                         </div>
                         <FiatOnRampProviderCard
                             description={fiatOnRampProvider.description}

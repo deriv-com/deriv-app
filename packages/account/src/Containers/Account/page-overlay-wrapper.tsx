@@ -2,18 +2,18 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Analytics } from '@deriv-com/analytics';
 import { PageOverlay, VerticalTab } from '@deriv/components';
-import { useFeatureFlags } from '@deriv/hooks';
-import { getOSNameWithUAParser, getSelectedRoute, getStaticUrl, routes as shared_routes } from '@deriv/shared';
+import { getOSNameWithUAParser, getSelectedRoute, routes as shared_routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import TradingHubLogout from './tradinghub-logout';
 import { TRoute } from '../../Types';
+import { useDevice } from '@deriv-com/ui';
 
 type RouteItems = React.ComponentProps<typeof VerticalTab>['list'];
 
 type PageOverlayWrapperProps = {
     routes: Array<TRoute>;
-    subroutes: RouteItems;
+    subroutes: TRoute[];
 };
 
 /**
@@ -23,11 +23,10 @@ type PageOverlayWrapperProps = {
  */
 const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperProps) => {
     const history = useHistory();
-    const { client, common, ui } = useStore();
-    const { is_mobile } = ui;
+    const { client, common } = useStore();
     const { logout } = client;
     const { is_from_derivgo } = common;
-    const { is_next_wallet_enabled } = useFeatureFlags();
+    const { isDesktop } = useDevice();
 
     const passkeysMenuCloseActionEventTrack = React.useCallback(() => {
         Analytics.trackEvent('ce_passkey_account_settings_form', {
@@ -39,7 +38,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
 
     const list_groups = routes.map(route_group => ({
         icon: route_group.icon,
-        label: route_group?.getTitle(),
+        label: route_group?.getTitle?.(),
         subitems: route_group?.subroutes?.length ? route_group.subroutes.map(sub => subroutes.indexOf(sub)) : [],
     }));
 
@@ -48,20 +47,25 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
             passkeysMenuCloseActionEventTrack();
         }
 
-        is_next_wallet_enabled ? history.push(shared_routes.wallets) : history.push(shared_routes.traders_hub);
-    }, [history, is_next_wallet_enabled]);
+        history.push(shared_routes.traders_hub);
+    }, [history]);
 
-    const selected_route = getSelectedRoute({ routes: subroutes as Array<TRoute>, pathname: location.pathname });
+    //@ts-expect-error as component type conflicts with VerticalTab type
+    const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });
 
     const onClickLogout = () => {
-        history.push(shared_routes.index);
-        logout().then(() => (window.location.href = getStaticUrl('/')));
+        history.push(shared_routes.traders_hub);
+        logout();
     };
 
-    if (is_mobile && selected_route) {
+    if (!isDesktop && selected_route) {
         const RouteComponent = selected_route.component as React.ElementType<{ component_icon: string | undefined }>;
         return (
-            <PageOverlay header={selected_route?.getTitle()} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
+            <PageOverlay
+                header={selected_route?.getTitle?.()}
+                onClickClose={onClickClose}
+                is_from_app={is_from_derivgo}
+            >
                 <RouteComponent component_icon={selected_route.icon_component} />
             </PageOverlay>
         );
@@ -77,9 +81,10 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
                 current_path={location.pathname}
                 is_routed
                 is_full_width
-                list={subroutes}
+                list={subroutes as RouteItems}
                 list_groups={list_groups}
                 extra_content={<TradingHubLogout handleOnLogout={onClickLogout} />}
+                is_sidebar_enabled={isDesktop}
             />
         </PageOverlay>
     );

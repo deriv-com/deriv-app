@@ -1,19 +1,22 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { isDesktop, isMobile } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { isDocumentNumberValid } from 'Helpers/utils';
 import IdvDocumentSubmit from '../idv-document-submit';
+import { useDevice } from '@deriv-com/ui';
 
 const mock_store = mockStore({
     client: {
         getChangeableFields: jest.fn(() => []),
     },
-    ui: { is_desktop: true },
 });
 
-jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
+jest.mock('@deriv/quill-icons', () => ({
+    ...jest.requireActual('@deriv/quill-icons'),
+    DerivLightUploadPoiIcon: () => 'DerivLightUploadPoiIcon',
+}));
+
 jest.mock('Helpers/utils', () => ({
     ...jest.requireActual('Helpers/utils'),
     getDocumentData: jest.fn((country_code, key) => {
@@ -38,8 +41,6 @@ jest.mock('Helpers/utils', () => ({
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    isDesktop: jest.fn(() => true),
-    isMobile: jest.fn(() => false),
     formatInput: jest.fn(() => '5436454364243'),
     WS: {
         send: jest.fn(() => Promise.resolve({ error: '' })),
@@ -55,6 +56,11 @@ jest.mock('@deriv/shared', () => ({
         last_name: 'test',
         date_of_birth: '1970-01-01',
     })),
+}));
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
 describe('<IdvDocumentSubmit/>', () => {
@@ -83,15 +89,18 @@ describe('<IdvDocumentSubmit/>', () => {
             },
         },
         getChangeableFields: jest.fn(() => []),
-        is_from_external: false,
     };
 
-    it('should render IdvDocumentSubmit component', () => {
+    const renderComponent = () => {
         render(
             <StoreProvider store={mock_store}>
                 <IdvDocumentSubmit {...mock_props} />
             </StoreProvider>
         );
+    };
+
+    it('should render IdvDocumentSubmit component', () => {
+        renderComponent();
 
         expect(screen.getByText(/Identity verification/i)).toBeInTheDocument();
         expect(screen.getByText(/details/i)).toBeInTheDocument();
@@ -105,11 +114,7 @@ describe('<IdvDocumentSubmit/>', () => {
     });
 
     it('should  trigger "go back" button, inputs and check document_type validation after rendering IdvDocumentSubmit component', async () => {
-        render(
-            <StoreProvider store={mock_store}>
-                <IdvDocumentSubmit {...mock_props} />
-            </StoreProvider>
-        );
+        renderComponent();
 
         const backBtn = screen.getByRole('button', { name: /back/i });
         userEvent.click(backBtn);
@@ -135,14 +140,9 @@ describe('<IdvDocumentSubmit/>', () => {
     });
 
     it('should change inputs, check document_number validation and trigger "Verify" button after rendering IdvDocumentSubmit component', async () => {
-        (isDesktop as jest.Mock).mockReturnValue(false);
-        (isMobile as jest.Mock).mockReturnValue(true);
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
 
-        render(
-            <StoreProvider store={mock_store}>
-                <IdvDocumentSubmit {...mock_props} />
-            </StoreProvider>
-        );
+        renderComponent();
 
         const verifyBtn = screen.getByRole('button', { name: /verify/i });
         expect(verifyBtn).toBeDisabled();

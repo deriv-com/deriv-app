@@ -19,11 +19,22 @@ const QuickStrategyForm = observer(() => {
     const { quick_strategy } = useDBotStore();
     const { selected_strategy, setValue, form_data } = quick_strategy;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
-    const { is_mobile } = ui;
+    const { is_desktop } = ui;
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
-    const { current_duration_min_max, is_enabled_toggle_switch, setIsEnabledToggleSwitch } = quick_strategy;
+    const { current_duration_min_max } = quick_strategy;
+
+    const [isEnabledToggleSwitch, setIsEnabledToggleSwitch] = React.useState(false);
+
     React.useEffect(() => {
         window.addEventListener('keydown', handleEnter);
+        let data: TFormData | null = null;
+        try {
+            data = JSON.parse(localStorage.getItem('qs-fields') ?? '{}');
+        } catch {
+            data = null;
+        }
+        setIsEnabledToggleSwitch(!!data?.boolean_max_stake);
+
         return () => {
             window.removeEventListener('keydown', handleEnter);
         };
@@ -49,6 +60,10 @@ const QuickStrategyForm = observer(() => {
             return values[item.key as keyof TFormData] === item.value;
         });
 
+    const toggleSwitch = () => {
+        setIsEnabledToggleSwitch(prev => !prev);
+    };
+
     const renderForm = () => {
         return config.map((group, group_index) => {
             if (!group?.length) return null;
@@ -58,8 +73,8 @@ const QuickStrategyForm = observer(() => {
                         const key = `${field.name || field.type} + ${field_index}`;
 
                         if (
-                            (is_mobile && field.hide?.includes('mobile')) ||
-                            (!is_mobile && field.hide?.includes('desktop'))
+                            (!is_desktop && field.hide?.includes('mobile')) ||
+                            (is_desktop && field.hide?.includes('desktop'))
                         ) {
                             return null;
                         }
@@ -101,7 +116,7 @@ const QuickStrategyForm = observer(() => {
                                     max = 9;
                                 }
                                 if (should_have?.length) {
-                                    if (!should_enable && (is_mobile || hide_without_should_have)) {
+                                    if (!should_enable && (!is_desktop || hide_without_should_have)) {
                                         return null;
                                     }
                                     return (
@@ -147,8 +162,8 @@ const QuickStrategyForm = observer(() => {
                                         key={key}
                                         name={field.name as string}
                                         label={field.label as string}
-                                        isEnabledToggleSwitch={!!is_enabled_toggle_switch}
-                                        setIsEnabledToggleSwitch={setIsEnabledToggleSwitch}
+                                        isEnabledToggleSwitch={!!isEnabledToggleSwitch}
+                                        setIsEnabledToggleSwitch={toggleSwitch}
                                     />
                                 );
                             // Dedicated components only for Quick-Strategy

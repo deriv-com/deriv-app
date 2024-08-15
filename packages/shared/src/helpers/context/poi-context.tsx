@@ -17,7 +17,7 @@ const service_code = {
 type TSubmissionStatus = keyof typeof submission_status_code;
 type TSubmissionService = keyof typeof service_code;
 
-type TPOIContext = {
+export type TPOIContext = {
     submission_status: TSubmissionStatus;
     setSubmissionStatus: React.Dispatch<React.SetStateAction<TSubmissionStatus>>;
     submission_service: TSubmissionService;

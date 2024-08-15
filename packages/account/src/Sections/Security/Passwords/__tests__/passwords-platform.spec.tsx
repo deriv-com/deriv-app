@@ -25,7 +25,12 @@ describe('<PasswordsPlatform />', () => {
 
     const store = mockStore({ client: { email: 'test@demo.com' } });
 
-    const renderComponent = ({ props = mock_props, store_config = store }) =>
+    type TRenderComponent = {
+        props: React.ComponentProps<typeof PasswordsPlatform>;
+        store_config: ReturnType<typeof mockStore>;
+    };
+
+    const renderComponent = ({ props = mock_props, store_config = store }: Partial<TRenderComponent>) =>
         render(
             <APIProvider>
                 <StoreProvider store={store_config}>

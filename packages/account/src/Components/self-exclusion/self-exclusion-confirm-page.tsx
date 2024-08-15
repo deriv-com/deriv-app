@@ -1,22 +1,24 @@
-import * as React from 'react';
+import { useContext, Fragment } from 'react';
 import { Button, Icon, StaticUrl, Text } from '@deriv/components';
 import { FormikValues, useFormikContext } from 'formik';
-import { formatMoney, toMoment } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { toMoment } from '@deriv/shared';
+import { FormatUtils, CurrencyConstants } from '@deriv-com/utils';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import SelfExclusionContext from './self-exclusion-context';
 import SelfExclusionConfirmLimits from './self-exclusion-confirm-limits';
 
 const SelfExclusionConfirmPage = () => {
     const { backFromConfirmLimits, currency, currency_display, exclusion_texts, is_eu, state } =
-        React.useContext(SelfExclusionContext);
+        useContext(SelfExclusionContext);
     const { isSubmitting, values } = useFormikContext<FormikValues>();
+    const { localize } = useTranslations();
 
     if (state?.show_confirm) {
         return <SelfExclusionConfirmLimits />;
     }
 
     return (
-        <React.Fragment>
+        <Fragment>
             <div onClick={backFromConfirmLimits} className='da-self-exclusion__back'>
                 <Icon icon='IcArrowLeftBold' />
                 <Text as='p' size='xs' weight='bold'>
@@ -57,7 +59,9 @@ const SelfExclusionConfirmPage = () => {
                     if (need_date_format.includes(key)) {
                         value = toMoment(values[key]).format('DD/MM/YYYY');
                     } else if (need_money_format.includes(key)) {
-                        value = `${formatMoney(currency, +values[key], true)} ${currency_display}`;
+                        value = `${FormatUtils.formatMoney(+values[key], {
+                            currency: currency as CurrencyConstants.Currency,
+                        })} ${currency_display}`;
                     } else if (need_minutes.includes(key)) {
                         value = localize('{{value}} mins', { value: values[key] });
                     } else if (need_amount.includes(key)) {
@@ -106,7 +110,7 @@ const SelfExclusionConfirmPage = () => {
                     </Button>
                 )}
             </div>
-        </React.Fragment>
+        </Fragment>
     );
 };
 

@@ -1,25 +1,24 @@
-import React from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Modal, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { getStaticUrl, PlatformContext } from '@deriv/shared';
+import { URLUtils } from '@deriv-com/utils';
+import { Localize } from '@deriv-com/translations';
 
 const AccountClosed = observer(() => {
     const { client } = useStore();
     const { logout } = client;
-    const [is_modal_open, setModalState] = React.useState(true);
-    const [timer, setTimer] = React.useState(10);
-    const { is_appstore } = React.useContext(PlatformContext);
+    const [is_modal_open, setModalState] = useState(true);
+    const [timer, setTimer] = useState(10);
 
-    const counter = React.useCallback(() => {
+    const counter = useCallback(() => {
         if (timer > 0) {
             setTimer(timer - 1);
         } else {
-            window.location.href = getStaticUrl('/', { is_appstore });
+            window.location.href = URLUtils.getDerivStaticURL('/');
         }
-    }, [is_appstore, timer]);
+    }, [timer]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         window.history.pushState(null, '', '/');
         logout();
         const handleInterval = setInterval(() => counter(), 1000);

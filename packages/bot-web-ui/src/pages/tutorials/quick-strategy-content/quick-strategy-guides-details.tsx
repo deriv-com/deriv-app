@@ -3,6 +3,7 @@ import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { rudderStackSendSelectQsStrategyGuideEvent } from '../../../analytics/rudderstack-tutorials';
 import { STRATEGIES } from '../../bot-builder/quick-strategy/config';
 import StrategyTabContent from '../../bot-builder/quick-strategy/form-wrappers/strategy-tab-content';
 
@@ -21,8 +22,15 @@ type TQuickStrategyGuides = {
 const QuickStrategyGuidesDetail = observer(
     ({ quick_strategy_tab_content, tutorial_selected_strategy, setTutorialSelectedStrategy }: TQuickStrategyGuides) => {
         const { ui } = useStore();
-        const { is_mobile } = ui;
-        const text_size = is_mobile ? 'xs' : 's';
+        const { is_desktop } = ui;
+        const text_size = is_desktop ? 's' : 'xs';
+
+        const scrollToTop = () => {
+            const qs_guide = document.querySelector('.tutorials-mobile__qs-guide');
+            if (qs_guide) {
+                qs_guide.scrollTop = 0;
+            }
+        };
 
         return (
             <>
@@ -32,7 +40,11 @@ const QuickStrategyGuidesDetail = observer(
                             <div
                                 className='tutorials-quick-strategy__placeholder'
                                 key={type}
-                                onClick={() => setTutorialSelectedStrategy(qs_name)}
+                                onClick={() => {
+                                    setTutorialSelectedStrategy(qs_name);
+                                    rudderStackSendSelectQsStrategyGuideEvent({ selected_strategy: qs_name });
+                                    scrollToTop();
+                                }}
                                 tabIndex={index}
                                 data-testid={'dt_quick_strategy_guides_details'}
                                 onKeyDown={(e: KeyboardEvent) => {

@@ -51,6 +51,8 @@ import type {
     CountriesListResponse,
     CryptocurrencyConfigurationsRequest,
     CryptocurrencyConfigurationsResponse,
+    CryptocurrencyEstimationsRequest,
+    CryptocurrencyEstimationsResponse,
     DocumentUploadRequest,
     DocumentUploadResponse,
     EconomicCalendarRequest,
@@ -1516,54 +1518,56 @@ type TPrivateSocketEndpoints = {
             req_id?: number;
         };
         response: {
-            /**
-             * ID of Trading account.
-             */
-            account_id?: string;
-            /**
-             * Account type.
-             */
-            account_type?: 'demo' | 'real' | 'all';
-            /**
-             * Agent Details.
-             */
-            agent?: null | string;
-            /**
-             * Balance of the Trading account.
-             */
-            balance?: number;
-            /**
-             * Currency of the Trading account.
-             */
-            currency?: string;
-            /**
-             * Account balance, formatted to appropriate decimal places.
-             */
-            display_balance?: string;
-            /**
-             * Account enabled status
-             */
-            enabled?: number;
-            /**
-             * Landing company shortcode of the Trading account.
-             */
-            landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'svg' | 'vanuatu' | 'seychelles';
-            /**
-             * Login name used to log in into Trading platform.
-             */
-            login?: string;
-            /**
-             * Market type.
-             */
-            market_type?: 'financial' | 'synthetic' | 'all';
-            /**
-             * Name of trading platform.
-             */
-            platform?: 'dxtrade' | 'ctrader';
-            /**
-             * Sub account type.
-             */
-            sub_account_type?: 'financial' | 'financial_stp' | 'swap_free';
+            trading_platform_new_account: {
+                /**
+                 * ID of Trading account.
+                 */
+                account_id?: string;
+                /**
+                 * Account type.
+                 */
+                account_type?: 'demo' | 'real' | 'all';
+                /**
+                 * Agent Details.
+                 */
+                agent?: null | string;
+                /**
+                 * Balance of the Trading account.
+                 */
+                balance?: number;
+                /**
+                 * Currency of the Trading account.
+                 */
+                currency?: string;
+                /**
+                 * Account balance, formatted to appropriate decimal places.
+                 */
+                display_balance?: string;
+                /**
+                 * Account enabled status
+                 */
+                enabled?: number;
+                /**
+                 * Landing company shortcode of the Trading account.
+                 */
+                landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'svg' | 'vanuatu' | 'seychelles';
+                /**
+                 * Login name used to log in into Trading platform.
+                 */
+                login?: string;
+                /**
+                 * Market type.
+                 */
+                market_type?: 'financial' | 'synthetic' | 'all';
+                /**
+                 * Name of trading platform.
+                 */
+                platform?: 'dxtrade' | 'ctrader';
+                /**
+                 * Sub account type.
+                 */
+                sub_account_type?: 'financial' | 'financial_stp' | 'swap_free';
+            };
         };
         /**
          * Echo of the request made.
@@ -1620,6 +1624,10 @@ type TPrivateSocketEndpoints = {
                        * Landing Company legal name
                        */
                       name?: string;
+                      /**
+                       * This needs to be removed after updating api-types version
+                       */
+                      product?: 'zero_spread' | 'swap_free' | 'standard';
                       /**
                        * Legal requirements for the Landing Company
                        */
@@ -2217,6 +2225,25 @@ type TPrivateSocketEndpoints = {
     };
 };
 
+// Need this because deriv-api-types is assigning the response of MT5LoginList to another type called DetailsOfEachMT5Loginid which is not updated automatically by BE
+// Need to manualy update the type here after BE updates the response
+type TWhiteLabelLinks = {
+    white_label_links: {
+        android: string;
+        ios: string;
+        webtrader_url: string;
+        windows: string;
+    };
+};
+
+type TExtendedMT5AccounListType = NonNullable<MT5AccountsListResponse['mt5_login_list']>[number] & {
+    white_label_links: TWhiteLabelLinks['white_label_links'];
+};
+
+type MT5AccountListResponse = {
+    mt5_login_list?: TExtendedMT5AccounListType[];
+};
+
 type TAccountList = NonNullable<AccountListResponse['account_list']>[number] & { excluded_until: Date };
 
 interface IExtendedAccountListResponse extends AccountListResponse {
@@ -2324,6 +2351,10 @@ type TSocketEndpoints = {
         request: CryptocurrencyConfigurationsRequest;
         response: CryptocurrencyConfigurationsResponse;
     };
+    crypto_estimations: {
+        request: CryptocurrencyEstimationsRequest;
+        response: CryptocurrencyEstimationsResponse;
+    };
     document_upload: {
         request: DocumentUploadRequest;
         response: DocumentUploadResponse;
@@ -2398,7 +2429,7 @@ type TSocketEndpoints = {
     };
     mt5_login_list: {
         request: MT5AccountsListRequest;
-        response: MT5AccountsListResponse;
+        response: MT5AccountListResponse;
     };
     mt5_new_account: {
         request: MT5NewAccountRequest;

@@ -5,15 +5,7 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TradersHubOnboarding from '../traders-hub-onboarding';
-import { routes } from '@deriv/shared';
 import { TCoreStores } from '@deriv/stores/types';
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useFeatureFlags: jest.fn(() => ({
-        is_next_wallet_enabled: false,
-    })),
-}));
 
 describe('TradersHubOnboarding', () => {
     const onboarding_icon_testid = 'dt_traders_hub_onboarding_icon';

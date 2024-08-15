@@ -49,6 +49,8 @@ import type {
     CountriesListResponse,
     CryptocurrencyConfigurationsRequest,
     CryptocurrencyConfigurationsResponse,
+    CryptocurrencyEstimationsRequest,
+    CryptocurrencyEstimationsResponse,
     DocumentUploadRequest,
     DocumentUploadResponse,
     EconomicCalendarRequest,
@@ -123,6 +125,8 @@ import type {
     P2PAdvertUpdateResponse,
     P2PChatCreateRequest,
     P2PChatCreateResponse,
+    P2PCountryListRequest,
+    P2PCountryListResponse,
     P2POrderCancelRequest,
     P2POrderCancelResponse,
     P2POrderConfirmRequest,
@@ -2146,6 +2150,50 @@ type TPrivateSocketEndpoints = {
             [k: string]: unknown;
         };
     };
+    reset_password: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            reset_password: 1;
+            /**
+             * New password. For validation (Accepts any printable ASCII character. Must be within 8-25 characters, and include numbers, lowercase and uppercase letters. Must not be the same as the user's email address).
+             */
+            new_password: string;
+            /**
+             * Email verification code (received from a `verify_email` call, which must be done first)
+             */
+            verification_code: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            reset_password?: 0 | 1;
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'reset_password';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
 };
 
 // TODO: remove these mock passkeys types after implementing them inside api-types
@@ -2236,6 +2284,41 @@ type PasskeyRegisterResponse = {
     req_id?: number;
     [k: string]: unknown;
 };
+type PasskeysRenameRequest = {
+    passkeys_rename: 1;
+    id: number;
+    name: string;
+    req_id?: number;
+};
+type PasskeysRenameResponse = {
+    passkeys_rename?: 1 | 0;
+    echo_req: {
+        [k: string]: unknown;
+    };
+    msg_type: 'passkeys_rename';
+    req_id?: number;
+    [k: string]: unknown;
+};
+
+type ChangeEmailRequest = {
+    change_email: 'verify' | 'update';
+    new_email: string;
+    new_password?: string;
+    verification_code: string;
+    loginid?: string;
+    passthrough?: {
+        [k: string]: unknown;
+    };
+    req_id?: number;
+};
+type ChangeEmailResponse = {
+    change_email: 0 | 1;
+    echo_req: {
+        [k: string]: unknown;
+    };
+    msg_type: 'change_email';
+    req_id?: number;
+};
 
 type TSocketEndpoints = {
     active_symbols: {
@@ -2302,6 +2385,10 @@ type TSocketEndpoints = {
         request: CashierInformationRequest;
         response: CashierInformationResponse;
     };
+    change_email: {
+        request: ChangeEmailRequest;
+        response: ChangeEmailResponse;
+    };
     contract_update_history: {
         request: UpdateContractHistoryRequest;
         response: UpdateContractHistoryResponse;
@@ -2333,6 +2420,10 @@ type TSocketEndpoints = {
     crypto_config: {
         request: CryptocurrencyConfigurationsRequest;
         response: CryptocurrencyConfigurationsResponse;
+    };
+    crypto_estimations: {
+        request: CryptocurrencyEstimationsRequest;
+        response: CryptocurrencyEstimationsResponse;
     };
     document_upload: {
         request: DocumentUploadRequest;
@@ -2494,6 +2585,10 @@ type TSocketEndpoints = {
         request: P2PChatCreateRequest;
         response: P2PChatCreateResponse;
     };
+    p2p_country_list: {
+        request: P2PCountryListRequest;
+        response: P2PCountryListResponse;
+    };
     p2p_order_cancel: {
         request: P2POrderCancelRequest;
         response: P2POrderCancelResponse;
@@ -2533,6 +2628,10 @@ type TSocketEndpoints = {
     passkeys_list: {
         request: PasskeysListRequest;
         response: PasskeysListResponse;
+    };
+    passkeys_rename: {
+        request: PasskeysRenameRequest;
+        response: PasskeysRenameResponse;
     };
     passkeys_register_options: {
         request: PasskeysRegisterOptionsRequest;
@@ -2745,7 +2844,7 @@ export type TSocketResponseData<T extends TSocketEndpointNames> = Omit<
     'req_id' | 'msg_type' | 'echo_req' | 'subscription'
 >;
 
-type TSocketRequest<T extends TSocketEndpointNames> = TSocketEndpoints[T]['request'];
+export type TSocketRequest<T extends TSocketEndpointNames> = TSocketEndpoints[T]['request'];
 
 type TRemovableEndpointName<T extends TSocketEndpointNames> = T extends KeysMatching<TSocketRequest<T>, 1> ? T : never;
 

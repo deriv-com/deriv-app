@@ -1,20 +1,25 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { APIProvider } from '@deriv/api';
 import { mockStore, P2PSettingsProvider, StoreProvider } from '@deriv/stores';
 import { adverts } from 'Pages/my-ads/__mocks__/mock-data';
 import { useStores } from 'Stores/index';
 import CopyAdvertModal from '../copy-advert-modal';
 
 const wrapper = ({ children }) => (
-    <StoreProvider store={mockStore({})}>
-        <P2PSettingsProvider>{children}</P2PSettingsProvider>
-    </StoreProvider>
+    <APIProvider>
+        <StoreProvider store={mockStore({})}>
+            <P2PSettingsProvider>{children}</P2PSettingsProvider>
+        </StoreProvider>
+    </APIProvider>
 );
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     my_ads_store: {
         payment_method_ids: [],
         payment_method_names: [],
+        setMinCompletionRate: jest.fn(),
+        setMinJoinDays: jest.fn(),
         setShowEditAdForm: jest.fn(),
     },
 };
@@ -45,7 +50,7 @@ describe('<CopyAdvertModal />', () => {
     });
 
     it('should render CopyAdvertModal', () => {
-        render(<CopyAdvertModal advert={adverts[0]} />, { wrapper });
+        render(<CopyAdvertModal advert={adverts[0]} country_list={{}} />, { wrapper });
 
         expect(screen.getByText('Create a similar ad')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Cancel' }));

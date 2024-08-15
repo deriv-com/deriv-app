@@ -1,16 +1,16 @@
 import React from 'react';
-import classNames from 'classnames';
-import { useFormikContext } from 'formik';
+import clsx from 'clsx';
+import { FormikErrors, useFormikContext } from 'formik';
 import { Button, Input, Icon } from '@deriv/components';
 import { compressImageFiles } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { TPaymentMethod, TProofOfOwnershipFormValue } from 'Types';
+import { TFile, TPaymentMethod, TProofOfOwnershipFormValue } from 'Types';
 
 type TFileUploaderProps = {
     class_name?: string;
     name: TPaymentMethod;
-    sub_index: number | string;
-    payment_id: number | string;
+    sub_index: number;
+    payment_id: number;
 };
 
 /**
@@ -24,27 +24,31 @@ type TFileUploaderProps = {
  */
 
 const FileUploader = ({ class_name, name, sub_index, payment_id }: TFileUploaderProps) => {
-    const { values, setFieldValue, errors, setFieldError } = useFormikContext<Partial<TProofOfOwnershipFormValue>>();
+    const { values, setFieldValue, errors, setFieldError } = useFormikContext<TProofOfOwnershipFormValue>();
 
     const [show_browse_button, setShowBrowseButton] = React.useState(
         !values[name]?.[payment_id]?.files?.[sub_index]?.name
     );
     // Create a reference to the hidden file input element
-    const hidden_file_input = React.useRef(null);
-    const handleClick = e => {
+    const hidden_file_input = React.useRef<HTMLInputElement>(null);
+    const handleClick = (e: React.MouseEvent) => {
         e.nativeEvent.preventDefault();
         e.nativeEvent.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
         hidden_file_input?.current?.click();
     };
 
-    const handleChange = async (event: React.FormEvent<HTMLInputElement>) => {
+    const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         event.nativeEvent.preventDefault();
         event.nativeEvent.stopPropagation();
         event.nativeEvent.stopImmediatePropagation();
+        // Check if files exist before proceeding
+        if (!event.target.files || event.target.files.length === 0) {
+            return;
+        }
         const file_to_upload = await compressImageFiles([event.target.files[0]]);
         const payment_file_data = [...(values[name]?.[payment_id]?.files ?? [])];
-        payment_file_data[sub_index] = file_to_upload[0];
+        payment_file_data[sub_index] = file_to_upload[0] as TFile;
         const selected_payment_method = values?.[name];
         if (!selected_payment_method) {
             return;
@@ -58,24 +62,18 @@ const FileUploader = ({ class_name, name, sub_index, payment_id }: TFileUploader
     };
 
     const updateError = () => {
-        const payment_method_error = errors?.[name] ?? {};
-        const payment_method_file_error = payment_method_error?.[payment_id]?.files ?? {};
+        const payment_method_error = { ...(errors?.[name] ?? {}) };
+        const payment_method_file_error = (payment_method_error?.[payment_id]?.files as FormikErrors<TFile>[]) ?? {};
         delete payment_method_file_error?.[sub_index];
-        // @ts-expect-error Error is an object
         payment_method_error[payment_id] = {
-            // @ts-expect-error Error is an object
             ...(payment_method_error[payment_id] ?? {}),
             files: payment_method_file_error,
         };
-        if (Object.keys(payment_method_error[payment_id]?.files).length === 0) {
-            delete payment_method_error[payment_id]?.payment_method_identifier;
-        }
-
         // @ts-expect-error Error is an array
         setFieldError(name, { ...payment_method_error });
     };
 
-    const handleIconClick = async e => {
+    const handleIconClick = async (e: React.MouseEvent) => {
         e.nativeEvent.preventDefault();
         e.nativeEvent.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
@@ -97,7 +95,7 @@ const FileUploader = ({ class_name, name, sub_index, payment_id }: TFileUploader
         updateError();
     };
     return (
-        <div className={classNames('poo-file-uploader', class_name)}>
+        <div className={clsx('poo-file-uploader', class_name)}>
             <input
                 type='file'
                 accept='image/png, image/jpeg, image/jpg, application/pdf'
@@ -117,21 +115,21 @@ const FileUploader = ({ class_name, name, sub_index, payment_id }: TFileUploader
                 color='less-prominent'
                 type={'text'}
                 tabIndex={-1}
-                error={errors?.[name]?.[payment_id]?.files?.[sub_index]}
+                error={errors?.[name]?.[payment_id]?.files?.[sub_index] as string}
                 trailing_icon={
                     <Icon
                         onClick={handleIconClick}
                         icon='IcCross'
                         height='100%'
                         size={20}
-                        className={classNames('stack-top ', {
+                        className={clsx('stack-top ', {
                             'remove-element': show_browse_button,
                         })}
                     />
                 }
             />
             <Button
-                className={classNames('proof-of-ownership__card-open-inputs-photo-btn ', {
+                className={clsx('proof-of-ownership__card-open-inputs-photo-btn ', {
                     'remove-element': !show_browse_button,
                 })}
                 text={localize('Browse')}

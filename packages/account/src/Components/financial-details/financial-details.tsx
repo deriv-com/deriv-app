@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Formik } from 'formik';
 import {
     AutoHeightWrapper,
@@ -9,7 +9,7 @@ import {
     Text,
     ThemedScrollbars,
 } from '@deriv/components';
-import { isDesktop, isMobile, EMPLOYMENT_VALUES, shouldHideOccupationField } from '@deriv/shared';
+import { EMPLOYMENT_VALUES, shouldHideOccupationField } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { TFinancialInformationForm } from 'Types';
 import { observer, useStore } from '@deriv/stores';
@@ -17,6 +17,7 @@ import FinancialInformation from './financial-details-partials';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
 import InlineNoteWithIcon from '../inline-note-with-icon';
+import { useDevice } from '@deriv-com/ui';
 
 type TFinancialDetails = {
     goToPreviousStep: () => void;
@@ -33,7 +34,7 @@ type TFinancialDetails = {
     validate: (values: TFinancialInformationForm) => object;
     value: TFinancialInformationForm;
     employment_status: string;
-    is_eu_user: boolean;
+    is_eu_user?: boolean;
 };
 
 /**
@@ -48,7 +49,7 @@ const FinancialDetails = observer((props: TFinancialDetails) => {
         props.onSave(current_step, values);
         props.onCancel(current_step, props.goToPreviousStep);
     };
-
+    const { isDesktop } = useDevice();
     const {
         traders_hub: { is_eu_user },
     } = useStore();
@@ -64,10 +65,10 @@ const FinancialDetails = observer((props: TFinancialDetails) => {
         return errors;
     };
 
-    const fields_to_scroll_top = isMobile()
-        ? ['income_source', 'account_turnover', 'estimated_worth']
-        : ['income_source'];
-    const fields_to_scroll_bottom = isMobile() ? [] : ['account_turnover', 'estimated_worth'];
+    const fields_to_scroll_top = isDesktop
+        ? ['income_source']
+        : ['income_source', 'account_turnover', 'estimated_worth'];
+    const fields_to_scroll_bottom = isDesktop ? ['account_turnover', 'estimated_worth'] : [];
 
     return (
         <Formik
@@ -94,9 +95,9 @@ const FinancialDetails = observer((props: TFinancialDetails) => {
                                     fields_to_scroll_bottom={fields_to_scroll_bottom}
                                 />
                                 <Div100vhContainer
-                                    className={classNames('details-form', 'financial-assessment')}
+                                    className={clsx('details-form', 'financial-assessment')}
                                     height_offset='110px'
-                                    is_disabled={isDesktop()}
+                                    is_disabled={isDesktop}
                                 >
                                     {is_eu_user ? (
                                         <div className='details-form__banner-container'>
@@ -119,17 +120,12 @@ const FinancialDetails = observer((props: TFinancialDetails) => {
                                         </Text>
                                     )}
                                     <ThemedScrollbars autohide={window.innerHeight >= 890} height={Number(height) - 77}>
-                                        <div
-                                            className={classNames(
-                                                'details-form__elements',
-                                                'financial-assessment__form'
-                                            )}
-                                        >
+                                        <div className={clsx('details-form__elements', 'financial-assessment__form')}>
                                             <FinancialInformation employment_status={props.employment_status} />
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer has_separator is_bypassed={isMobile()}>
+                                <Modal.Footer has_separator is_bypassed={!isDesktop}>
                                     <FormSubmitButton
                                         is_disabled={
                                             isSubmitting ||
@@ -138,7 +134,7 @@ const FinancialDetails = observer((props: TFinancialDetails) => {
                                                 values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED
                                             )
                                         }
-                                        is_absolute={isMobile()}
+                                        is_absolute={!isDesktop}
                                         label={localize('Next')}
                                         has_cancel
                                         cancel_label={localize('Previous')}

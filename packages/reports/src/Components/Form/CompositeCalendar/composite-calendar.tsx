@@ -1,6 +1,7 @@
 import React from 'react';
 import Loadable from 'react-loadable';
-import { DesktopWrapper, InputField, MobileWrapper, useOnClickOutside } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
+import { InputField, useOnClickOutside } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { daysFromTodayTo, toMoment } from '@deriv/shared';
 import CompositeCalendarMobile from './composite-calendar-mobile';
@@ -35,7 +36,7 @@ const CompositeCalendar = observer((props: TCompositeCalendar) => {
     const { ui } = useStore();
     const { current_focus, setCurrentFocus } = ui;
     const { onChange, to, from } = props;
-
+    const { isDesktop } = useDevice();
     const [show_to, setShowTo] = React.useState(false);
     const [show_from, setShowFrom] = React.useState(false);
     const [list] = React.useState([
@@ -133,9 +134,9 @@ const CompositeCalendar = observer((props: TCompositeCalendar) => {
 
     const isPeriodDisabledFrom = (date: moment.Moment) => date.unix() > to;
 
-    return (
-        <React.Fragment>
-            <DesktopWrapper>
+    if (isDesktop) {
+        return (
+            <React.Fragment>
                 <div id='dt_composite_calendar_inputs' className='composite-calendar__input-fields'>
                     <InputField
                         id='dt_calendar_input_from'
@@ -174,16 +175,17 @@ const CompositeCalendar = observer((props: TCompositeCalendar) => {
                         />
                     </div>
                 )}
-            </DesktopWrapper>
-            <MobileWrapper>
-                <CompositeCalendarMobile
-                    duration_list={list}
-                    setCurrentFocus={setCurrentFocus}
-                    current_focus={current_focus}
-                    {...props}
-                />
-            </MobileWrapper>
-        </React.Fragment>
+            </React.Fragment>
+        );
+    }
+
+    return (
+        <CompositeCalendarMobile
+            duration_list={list}
+            setCurrentFocus={setCurrentFocus}
+            current_focus={current_focus}
+            {...props}
+        />
     );
 });
 

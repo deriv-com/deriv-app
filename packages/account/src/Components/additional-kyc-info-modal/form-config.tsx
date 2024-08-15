@@ -2,18 +2,7 @@ import React from 'react';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Localize, localize } from '@deriv/translations';
 import { generateValidationFunction } from '@deriv/shared';
-
-// Type for the list of items in a dropdown or select
-export type TListItem = {
-    /**
-     * The text of the item (e.g. 'United Kingdom', 'Germany', etc.)
-     */
-    text?: string;
-    /**
-     * The value of the item
-     */
-    value?: string;
-};
+import { TListItem } from 'Types';
 
 export type TFields = 'place_of_birth' | 'tax_residence' | 'tax_identification_number' | 'account_opening_reason';
 

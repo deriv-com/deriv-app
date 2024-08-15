@@ -1,20 +1,20 @@
-import React from 'react';
+import { useContext, Fragment } from 'react';
 import { Text } from '@deriv/components';
 import { formatDate } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import ApiTokenContext from './api-token-context';
 import ApiTokenDeleteButton from './api-token-delete-button';
-import ApiTokenTableBodyRow from './api-token-table-row';
+import ApiTokenTableRow from './api-token-table-row';
 import ApiTokenTableRowHeader from './api-token-table-row-header';
 import ApiTokenTableRowScopesCell from './api-token-table-row-scopes-cell';
 import ApiTokenTableRowTokenCell from './api-token-table-row-token-cell';
-import { TApiContext, TToken } from 'Types';
-import { useStore } from '@deriv/stores';
+import { TApiContext, TToken } from '../../Types';
 
 const ApiTokenTable = () => {
-    const { api_tokens } = React.useContext<TApiContext>(ApiTokenContext);
-    const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { api_tokens } = useContext<TApiContext>(ApiTokenContext);
+    const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
 
     const formatTokenScopes = (str: string) => {
         const replace_filter = str.replace(/[-_]/g, ' ');
@@ -40,21 +40,21 @@ const ApiTokenTable = () => {
     };
 
     const getScopeValue = (token: TToken) => {
-        const titled_scopes = token.scopes?.map((scope: string) => getTranslatedScopes(scope));
-        const date_format = token.last_used ? formatDate(token.last_used, 'DD/MM/YYYY') : localize('Never');
+        const titled_scopes = token?.scopes?.map((scope: string) => getTranslatedScopes(scope));
+        const date_format = token?.last_used ? formatDate(token.last_used, 'DD/MM/YYYY') : localize('Never');
 
         return {
             display_name: token.display_name,
-            scopes: titled_scopes,
+            formatted_scopes: titled_scopes ?? [],
             last_used: date_format,
             token: token.token,
         };
     };
-    if (is_mobile) {
+    if (!isDesktop) {
         return (
-            <React.Fragment>
+            <Fragment>
                 {api_tokens?.map((token_data: TToken) => {
-                    const token: TToken = getScopeValue(token_data);
+                    const token = getScopeValue(token_data);
                     return (
                         <div key={token.token} className='da-api-token__scope'>
                             <div className='da-api-token__scope-item'>
@@ -78,7 +78,7 @@ const ApiTokenTable = () => {
                                     <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
                                         <Localize i18n_default_text='Token' />
                                     </Text>
-                                    <ApiTokenTableRowTokenCell token={token.token} scopes={token.scopes} />
+                                    <ApiTokenTableRowTokenCell token={token.token} scopes={token.formatted_scopes} />
                                 </div>
                                 <div>
                                     <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
@@ -94,7 +94,7 @@ const ApiTokenTable = () => {
                                     <Text as='h5' size='xxs' color='general' line_height='xs' weight='bold'>
                                         <Localize i18n_default_text='Scopes' />
                                     </Text>
-                                    <ApiTokenTableRowScopesCell scopes={token.scopes} />
+                                    <ApiTokenTableRowScopesCell scopes={token.formatted_scopes} />
                                 </div>
                                 <div>
                                     <ApiTokenDeleteButton token={token} />
@@ -103,7 +103,7 @@ const ApiTokenTable = () => {
                         </div>
                     );
                 })}
-            </React.Fragment>
+            </Fragment>
         );
     }
 
@@ -120,7 +120,7 @@ const ApiTokenTable = () => {
             </thead>
             <tbody>
                 {api_tokens?.map((api_token: TToken) => (
-                    <ApiTokenTableBodyRow key={api_token.token} token={getScopeValue(api_token)} />
+                    <ApiTokenTableRow key={api_token?.token} token={getScopeValue(api_token)} />
                 ))}
             </tbody>
         </table>

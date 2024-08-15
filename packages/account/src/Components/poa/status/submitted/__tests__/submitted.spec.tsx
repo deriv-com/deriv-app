@@ -29,8 +29,8 @@ describe('<Submitted />', () => {
         ).toBeInTheDocument();
     });
 
-    it('should show ContinueTradingButton if needs_poi is false and is_description_enabled is false', () => {
-        renderWithRouter(<Submitted needs_poi={false} is_description_enabled={false} />);
+    it('should show ContinueTradingButton if no props are passed', () => {
+        renderWithRouter(<Submitted />);
         expect(screen.getByTestId('continue-trading-button')).toBeInTheDocument();
     });
 });

@@ -57,8 +57,10 @@ const LeaveConfirmComponent = () => {
     );
 };
 
+// @ts-expect-error [TODO]: Fix type for error
 const withRouter = Component => {
     const history = createBrowserHistory();
+    // @ts-expect-error [TODO]: Fix type for error
     const WrapperComponent = props => (
         <Router history={history}>
             <Component {...props} />

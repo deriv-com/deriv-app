@@ -24,7 +24,7 @@ const BotBuilder = observer(() => {
     const { is_loading } = blockly_store;
     const is_blockly_listener_registered = React.useRef(false);
     const is_blockly_delete_listener_registered = React.useRef(false);
-    const { is_mobile } = ui;
+    const { is_desktop } = ui;
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
     const isMounted = useIsMounted();
@@ -85,10 +85,11 @@ const BotBuilder = observer(() => {
     }, [is_loading]);
 
     const handleBlockDelete = (e: TBlocklyEvents) => {
-        if (e.type === 'ui' && e.element === 'selected' && !e.group?.includes('dbot-')) {
-            selection_id = e.oldValue;
+        if (e.isUiEvent && e.type === 'selected' && !e.group?.includes('dbot-')) {
+            selection_id = e.newElementId;
         }
-        if (e.type === 'endDrag' && !e.group?.includes('dbot-')) {
+
+        if (e.type === 'drag' && !e.isStart && !e.group?.includes('dbot-')) {
             end_drag_id = e.group;
         }
         if (e.type === 'delete' && (end_drag_id === e.group || selection_id === e.blockId)) {
@@ -122,7 +123,7 @@ const BotBuilder = observer(() => {
                     </div>
                 )}
             </div>
-            {active_tab === 1 && <BotBuilderTourHandler is_mobile={is_mobile} />}
+            {active_tab === 1 && <BotBuilderTourHandler is_mobile={!is_desktop} />}
             {/* removed this outside from toolbar becuase it needs to loaded seperately without dependency */}
             <LoadModal />
             <SaveModal />

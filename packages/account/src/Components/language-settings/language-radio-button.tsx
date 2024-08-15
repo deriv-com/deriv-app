@@ -1,24 +1,23 @@
-import React from 'react';
-import { Text, Icon } from '@deriv/components';
-import classNames from 'classnames';
-import { getAllowedLanguages } from '@deriv/translations';
+import { ChangeEventHandler } from 'react';
+import { Text } from '@deriv/components';
+import clsx from 'clsx';
+import { TranslationFlag } from '@deriv/shared';
 
 export type TLanguageRadioButton = {
     is_current_language: boolean;
     id: string;
-    language_code: string;
+    language_text: string;
     name: string;
-    onChange: React.ChangeEventHandler<HTMLInputElement>;
+    onChange: ChangeEventHandler<HTMLInputElement>;
 };
 
-const LanguageRadioButton = ({ is_current_language, id, language_code, name, onChange }: TLanguageRadioButton) => {
-    const allowed_languages: Record<string, string> = getAllowedLanguages();
+const LanguageRadioButton = ({ is_current_language, id, language_text, name, onChange }: TLanguageRadioButton) => {
     return (
         <div
-            className={classNames('settings-language__language-link', {
+            className={clsx('settings-language__language-link', {
                 'settings-language__language-link--active': is_current_language,
             })}
-            id={`dt_settings_${language_code}_button`}
+            id={`dt_settings_${id}_button`}
             data-testid={'dt_language_settings_button'}
         >
             <input
@@ -26,24 +25,19 @@ const LanguageRadioButton = ({ is_current_language, id, language_code, name, onC
                 id={id}
                 name={name}
                 onChange={onChange}
-                value={language_code}
+                value={id}
                 className='settings-language__language--radio-button'
             />
             <label htmlFor={id} className='settings-language__language--center-label'>
-                <div>
-                    <Icon
-                        icon={`IcFlag${id.replace('_', '-')}`}
-                        className='settings-language__language-link-flag settings-language__language-flag'
-                    />
-                </div>
+                <div>{TranslationFlag[id](36, 24)}</div>
                 <div>
                     <Text
                         size='xs'
-                        className={classNames('settings-language__language-name', {
+                        className={clsx('settings-language__language-name', {
                             'settings-language__language-name--active': is_current_language,
                         })}
                     >
-                        {allowed_languages[language_code]}
+                        {language_text}
                     </Text>
                 </div>
             </label>

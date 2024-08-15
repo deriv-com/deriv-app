@@ -1,6 +1,6 @@
 import React from 'react';
-import classNames from 'classnames';
-import { Form, Formik, FormikHelpers, FormikState, FormikValues } from 'formik';
+import clsx from 'clsx';
+import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
 import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button, HintBox, Loading, Text } from '@deriv/components';
 import {
@@ -15,7 +15,7 @@ import {
 } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import PoiNameDobExample from '../../../../Assets/ic-poi-name-dob-example.svg';
+import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import FormBody from '../../../form-body';
 import IDVForm from '../../../forms/idv-form';
 import FormFooter from '../../../form-footer';
@@ -37,9 +37,10 @@ import {
     generateIDVError,
 } from '../../../../Configs/poi-error-config';
 import { API_ERROR_CODES } from '../../../../Constants/api-error-codes';
-import { TIDVFormValues, TPersonalDetailsForm } from '../../../../Types';
+import { TIDVFormValues, TConfirmPersonalDetailsForm } from '../../../../Types';
 import LoadErrorMessage from '../../../load-error-message';
 import { TIdvDocumentSubmitForm } from '../../idv-document-submit/idv-document-submit';
+import { useDevice } from '@deriv-com/ui';
 
 type TRestState = {
     api_error: string;
@@ -67,7 +68,7 @@ type TIDVFailureConfig = {
     inline_note_text: React.ReactNode;
 };
 
-type TIdvFailedForm = Partial<TIDVFormValues> & Partial<TPersonalDetailsForm>;
+type TIdvFailedForm = Partial<TIDVFormValues> & Partial<TConfirmPersonalDetailsForm>;
 
 const IdvFailed = ({
     getChangeableFields,
@@ -80,13 +81,13 @@ const IdvFailed = ({
     selected_country,
     handleSelectionNext,
 }: TIdvFailed) => {
-    const { client, ui } = useStore();
+    const { client } = useStore();
     const { setIsAlreadyAttempted } = client;
-    const { is_mobile } = ui;
+    const { isMobile, isDesktop } = useDevice();
 
     const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig>({
         required_fields: [],
-        side_note_image: <PoiNameDobExample />,
+        side_note_image: <DerivLightNameDobPoiIcon height='195px' width='285px' />,
         failure_message: null,
         inline_note_text: null,
     });
@@ -180,10 +181,7 @@ const IdvFailed = ({
         setIsAlreadyAttempted,
     ]);
 
-    const onSubmit = async (
-        values: TIdvFailedForm,
-        { setStatus, setSubmitting, status }: FormikHelpers<TIdvFailedForm> & FormikState<TIdvDocumentSubmitForm>
-    ) => {
+    const onSubmit = async (values: TIdvFailedForm, { setStatus, setSubmitting }: FormikHelpers<TIdvFailedForm>) => {
         if (shouldSkipIdv(values?.document_type?.id)) {
             handleSelectionNext?.(true);
             return;
@@ -191,7 +189,7 @@ const IdvFailed = ({
 
         delete values.confirmation_checkbox;
         setSubmitting(true);
-        setStatus({ ...status, error_msg: null });
+        setStatus({ error_msg: null });
         const { document_number, document_type } = values;
         const request = makeSettingsRequest(
             values,
@@ -204,7 +202,7 @@ const IdvFailed = ({
                 data.error?.code === API_ERROR_CODES.DUPLICATE_ACCOUNT
                     ? DUPLICATE_ACCOUNT_ERROR_MESSAGE
                     : GENERIC_ERROR_MESSAGE;
-            setStatus({ ...status, error_msg: response_error });
+            setStatus({ error_msg: response_error });
             setSubmitting(false);
         } else {
             const response = await WS.authorized.storage.getSettings();
@@ -231,7 +229,7 @@ const IdvFailed = ({
                     idv_update_response.error?.code === API_ERROR_CODES.CLAIMED_DOCUMENT
                         ? CLAIMED_DOCUMENT_ERROR_MESSAGE
                         : idv_update_response?.error?.message ?? GENERIC_ERROR_MESSAGE;
-                setStatus({ ...status, error_msg: response_error });
+                setStatus({ error_msg: response_error });
                 setSubmitting(false);
                 return;
             }
@@ -259,7 +257,7 @@ const IdvFailed = ({
             }
         }
 
-        const validateValues = validate(errors, values);
+        const validateValues = validate(errors as Record<string, string>, values);
 
         validateValues(val => val, idv_failure?.required_fields ?? [], localize('This field is required'));
 
@@ -289,7 +287,7 @@ const IdvFailed = ({
     }
 
     const setScrollOffset = () => {
-        if (is_mobile) {
+        if (!isDesktop) {
             if (is_from_external) {
                 return '140px';
             }
@@ -313,21 +311,21 @@ const IdvFailed = ({
         >
             {({ isSubmitting, isValid, dirty, status, values }) => (
                 <Form
-                    className={classNames('proof-of-identity__mismatch-container', {
+                    className={clsx('proof-of-identity__mismatch-container', {
                         'upload-layout': is_document_upload_required,
                         'min-height': shouldSkipIdv(values?.document_type?.id),
                     })}
                 >
                     <FormBody className='form-body' scroll_offset={setScrollOffset()}>
-                        <Text size={is_mobile ? 'xs' : 's'} weight='bold' align='center'>
+                        <Text size={isMobile ? 'xs' : 's'} weight='bold' align='center'>
                             <Localize i18n_default_text='Your identity verification failed because:' />
                         </Text>
                         {(status?.error_msg || idv_failure?.failure_message) && (
                             <HintBox
-                                className={classNames('proof-of-identity__failed-message', 'hint-box-layout')}
+                                className={clsx('proof-of-identity__failed-message', 'hint-box-layout')}
                                 icon='IcAlertDanger'
                                 message={
-                                    <Text as='p' size={is_mobile ? 'xxs' : 'xs'} data-testid={mismatch_status}>
+                                    <Text as='p' size={isMobile ? 'xxs' : 'xs'} data-testid={mismatch_status}>
                                         {status?.error_msg ?? idv_failure?.failure_message}
                                     </Text>
                                 }
@@ -336,7 +334,7 @@ const IdvFailed = ({
                         )}
                         {is_document_upload_required && (
                             <div>
-                                <Text size='xs' align={is_mobile ? 'left' : 'center'}>
+                                <Text size='xs' align={isMobile ? 'left' : 'center'}>
                                     <Localize i18n_default_text='Let’s try again. Choose another document and enter the corresponding details.' />
                                 </Text>
                                 <FormSubHeader title={localize('Identity verification')} />

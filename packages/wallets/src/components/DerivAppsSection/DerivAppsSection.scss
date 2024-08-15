@@ -7,13 +7,15 @@
     align-items: center;
     gap: 1.6rem;
 
+    @include desktop {
+        min-width: 35.2rem;
+    }
+
     @include mobile {
-        min-width: 100%;
+        width: 100%;
     }
 
     &__get-account {
-        min-width: 35.2rem;
-
         @include mobile {
             padding: 0;
         }
@@ -22,10 +24,6 @@
     &__border {
         border-radius: 0.8rem;
         border: 0.1rem solid var(--system-light-7-secondary-background, #f2f3f4);
-        min-width: 32rem;
-        @include mobile {
-            width: 100%;
-        }
     }
 
     &__get-content {

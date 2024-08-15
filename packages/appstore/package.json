@@ -8,8 +8,9 @@
         "node": "18.x"
     },
     "scripts": {
-        "analyze": "webpack-bundle-analyzer --no-open -m static -r analyzed.html stats.json ./dist && webpack-bundle-analyzer -m json stats.json ./dist",
-        "build": "rimraf dist && NODE_OPTIONS='-r ts-node/register' webpack --progress --profile --json > stats.json ",
+        "analyze:stats": "NODE_OPTIONS='-r ts-node/register' webpack --progress --profile --json=stats.json",
+        "analyze:build": "webpack-bundle-analyzer --no-open -m static -r treemap.html stats.json ./dist && webpack-bundle-analyzer -m json stats.json ./dist",
+        "build": "rimraf dist && NODE_OPTIONS='-r ts-node/register' webpack --progress",
         "build:travis": "rimraf dist && webpack",
         "serve": "rimraf dist && concurrently \"cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch\" \"tsc -w --noEmit --preserveWatchOutput\"",
         "start": "rimraf dist && npm run test && npm run serve",
@@ -25,7 +26,9 @@
     "author": "Deriv",
     "license": "Apache-2.0",
     "dependencies": {
-        "@deriv-com/analytics": "1.4.13",
+        "@deriv-com/analytics": "1.11.0",
+        "@deriv-com/translations": "1.3.5",
+        "@deriv-com/ui": "1.29.10",
         "@deriv/account": "^1.0.0",
         "@deriv/cashier": "^1.0.0",
         "@deriv/cfd": "^1.0.0",
@@ -34,6 +37,7 @@
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",
         "@deriv/hooks": "^1.0.0",
+        "@deriv/wallets": "^1.0.0",
         "classnames": "^2.2.6",
         "mobx": "^6.6.1",
         "mobx-react-lite": "^3.4.0",
@@ -46,7 +50,7 @@
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",
         "@babel/preset-react": "^7.16.7",
-        "@deriv/api-types": "^1.0.172",
+        "@deriv/api-types": "1.0.172",
         "@deriv/publisher": "^0.0.1-beta4",
         "@storybook/addon-docs": "^6.5.10",
         "@storybook/addon-essentials": "^6.5.10",

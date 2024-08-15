@@ -23,12 +23,15 @@ import type {
     useMT5AccountsList,
     usePOA,
     usePOI,
+    useSettings,
     useSortedMT5Accounts,
     useTransactions,
     useTransferBetweenAccounts,
     useWalletAccountsList,
 } from '@deriv/api-v2';
+import { TSocketError, TSocketResponse } from '@deriv/api-v2/types';
 import { IconTypes } from '@deriv/quill-icons';
+import { useTranslations } from '@deriv-com/translations';
 
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace THooks {
@@ -38,6 +41,7 @@ export namespace THooks {
     export type Authorize = NonNullable<ReturnType<typeof useAuthorize>['data']>;
     export type CreateWallet = NonNullable<ReturnType<typeof useCreateWallet>['data']>;
     export type CreateMT5Account = NonNullable<ReturnType<typeof useCreateMT5Account>['data']>;
+    export type CreateOtherCFDAccount = NonNullable<ReturnType<typeof useCreateOtherCFDAccount>['data']>;
     export type CtraderAccountsList = NonNullable<ReturnType<typeof useCtraderAccountsList>['data']>[number];
     export type DxtradeAccountsList = NonNullable<ReturnType<typeof useDxtradeAccountsList>['data']>[number];
     export type ExchangeRate = NonNullable<ReturnType<typeof useExchangeRateSubscription>['data']>;
@@ -62,6 +66,8 @@ export namespace THooks {
     export type TransferAccount = NonNullable<
         NonNullable<ReturnType<typeof useTransferBetweenAccounts>['data']>['accounts']
     >[number];
+    export type AccountSettings = NonNullable<ReturnType<typeof useSettings>['data']>;
+    export type DocumentUpload = TSocketError<'document_upload'> & TSocketResponse<'document_upload'>;
 }
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace TPlatforms {
@@ -87,10 +93,6 @@ export namespace TDisplayBalance {
     export type CtraderAccountsList = THooks.CtraderAccountsList['display_balance'];
     export type DxtradeAccountsList = THooks.DxtradeAccountsList['display_balance'];
     export type MT5AccountsList = THooks.MT5AccountsList['display_balance'];
-    export type WalletAccountsList = THooks.WalletAccountsList['display_balance'];
-    export type ActiveWalletAccount = THooks.ActiveWalletAccount['display_balance'];
-    export type AccountsList = THooks.DerivAccountsList['display_balance'];
-    export type ActiveTradingAccount = THooks.ActiveTradingAccount['display_balance'];
 }
 
 export type TGenericSizes = '2xl' | '2xs' | '3xl' | '3xs' | '4xl' | '5xl' | '6xl' | 'lg' | 'md' | 'sm' | 'xl' | 'xs';
@@ -103,3 +105,7 @@ export type TMT5LandingCompanyName = THooks.MT5AccountsList['landing_company_sho
 export type TWalletCarouselItem = Omit<THooks.AllWalletAccounts, 'landing_company_name'>;
 
 export type TIconTypes = Record<string, IconTypes>;
+
+export type TCurrencyIconTypes = Record<THooks.WalletAccountsList['wallet_currency_type'], IconTypes>;
+
+export type TTranslations = ReturnType<typeof useTranslations>;

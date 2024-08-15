@@ -5,6 +5,7 @@ import { mockCryptoConfig } from './mocks/mockCryptoConfig';
 import { mockGetAccountTypes } from './mocks/mockGetAccountTypes';
 import { mockProposalOpenContract } from './mocks/mockProposalOpenContract';
 import mockWalletsAuthorize, { DEFAULT_WALLET_ACCOUNTS } from './mocks/mockWalletsAuthorize';
+import { mockAccountList } from './mocks/mockAccountList';
 
 test.describe('Wallets - Traders Hub', () => {
     test('render USD wallet balance', async ({ baseURL, page }) => {
@@ -18,13 +19,14 @@ test.describe('Wallets - Traders Hub', () => {
                 mockCryptoConfig,
                 mockProposalOpenContract,
                 mockBalance,
+                mockAccountList,
             ],
             page,
             state: {
                 accounts: DEFAULT_WALLET_ACCOUNTS,
             },
         });
-        await page.goto(`${baseURL}/wallets`);
+        await page.goto(`${baseURL}/`);
 
         const balanceContainer = await page.textContent('.wallets-balance__container');
         expect(balanceContainer).toContain('9,988,000.89 USD');

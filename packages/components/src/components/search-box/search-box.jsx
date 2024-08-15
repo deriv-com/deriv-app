@@ -6,6 +6,7 @@ import Icon from '../icon';
 import Input from '../input';
 
 const SearchBox = ({ className, onClear, onSearch, placeholder }) => {
+    const typing_timer = React.useRef(null);
     const onSearchClear = setFieldValue => {
         setFieldValue('search', '');
 
@@ -15,9 +16,9 @@ const SearchBox = ({ className, onClear, onSearch, placeholder }) => {
     };
 
     const onSearchKeyUpDown = submitForm => {
-        clearTimeout(typing_timer);
+        clearTimeout(typing_timer.current);
 
-        const typing_timer = setTimeout(() => {
+        typing_timer.current = setTimeout(() => {
             submitForm();
         }, 500);
     };
@@ -34,6 +35,10 @@ const SearchBox = ({ className, onClear, onSearch, placeholder }) => {
             onSearch(search);
         }
     };
+
+    React.useEffect(() => {
+        return () => clearTimeout(typing_timer.current);
+    }, []);
 
     return (
         <div className={classNames('search-box', className)}>

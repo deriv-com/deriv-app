@@ -1,88 +1,72 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { routes } from '@deriv/shared';
-import { mockStore, StoreProvider } from '@deriv/stores';
-import { getStatusContent, PASSKEY_STATUS_CODES } from '../../passkeys-configs';
-import PasskeysStatusContainer from '../passkeys-status-container';
+import { PasskeysStatusContainer } from '../passkeys-status-container';
+import { PASSKEY_STATUS_CODES, TPasskeysStatus } from '../../passkeys-configs';
 
-const mockHistoryPush = jest.fn();
-
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useHistory: () => ({
-        push: mockHistoryPush,
-    }),
+jest.mock('../no-passkeys', () => ({
+    NoPasskeys: jest.fn(() => <div>NoPasskeys</div>),
+}));
+jest.mock('../passkey-created', () => ({
+    PasskeyCreated: jest.fn(() => <div>PasskeyCreated</div>),
+}));
+jest.mock('../passkeys-learn-more', () => ({
+    PasskeysLearnMore: jest.fn(() => <div>PasskeysLearnMore</div>),
+}));
+jest.mock('../passkeys-list', () => ({
+    PasskeysList: jest.fn(() => <div>PasskeysList</div>),
+}));
+jest.mock('../passkey-rename', () => ({
+    PasskeyRename: jest.fn(() => <div>PasskeyRename</div>),
 }));
 
 describe('PasskeysStatusContainer', () => {
-    const createPasskeyMock = jest.fn();
-    const setPasskeyStatusMock = jest.fn();
+    const mockOnPrimaryButtonClick = jest.fn();
+    const mockOnonPasskeyMenuClick = jest.fn();
+    const mockOnSecondaryButtonClick = jest.fn();
+    const mock_current_managed_passkey: React.ComponentProps<
+        typeof PasskeysStatusContainer
+    >['current_managed_passkey'] = { id: 777, name: 'test passkey name' };
 
-    afterEach(() => {
-        jest.clearAllMocks();
+    const renderComponent = (passkey_status: TPasskeysStatus) => {
+        render(
+            <PasskeysStatusContainer
+                current_managed_passkey={mock_current_managed_passkey}
+                passkey_status={passkey_status}
+                passkeys_list={[]}
+                onPrimaryButtonClick={mockOnPrimaryButtonClick}
+                onSecondaryButtonClick={mockOnSecondaryButtonClick}
+                onPasskeyMenuClick={mockOnonPasskeyMenuClick}
+            />
+        );
+    };
+
+    it('renders PasskeysStatusContainer with PasskeyCreated component', () => {
+        renderComponent(PASSKEY_STATUS_CODES.CREATED);
+
+        expect(screen.getByText('PasskeyCreated')).toBeInTheDocument();
     });
 
-    const mock_store = mockStore({});
+    it('renders PasskeysStatusContainer with NoPasskeys component', () => {
+        renderComponent(PASSKEY_STATUS_CODES.NO_PASSKEY);
 
-    // TODO: add more checks for renaming and verifying flows
-    it('renders correctly for each status code', () => {
-        Object.values(PASSKEY_STATUS_CODES).forEach(status => {
-            const { unmount, container } = render(
-                <StoreProvider store={mock_store}>
-                    <PasskeysStatusContainer
-                        createPasskey={createPasskeyMock}
-                        passkey_status={status}
-                        setPasskeyStatus={setPasskeyStatusMock}
-                    />
-                </StoreProvider>
-            );
-            if (status) {
-                const content = getStatusContent(status);
-                expect(screen.getByText(content.title.props.i18n_default_text)).toBeInTheDocument();
-                const primary_button = screen.getByRole('button', {
-                    name: content.primary_button_text.props.i18n_default_text,
-                });
-                const secondary_button = screen.getByRole('button', {
-                    name: content?.secondary_button_text?.props.i18n_default_text,
-                });
+        expect(screen.getByText('NoPasskeys')).toBeInTheDocument();
+    });
 
-                expect(primary_button).toBeInTheDocument();
-                expect(secondary_button).toBeInTheDocument();
+    it('renders PasskeysStatusContainer with PasskeysLearnMore component', () => {
+        renderComponent(PASSKEY_STATUS_CODES.LEARN_MORE);
 
-                if (status === PASSKEY_STATUS_CODES.LEARN_MORE || status === PASSKEY_STATUS_CODES.NO_PASSKEY) {
-                    userEvent.click(primary_button);
-                    expect(createPasskeyMock).toHaveBeenCalled();
-                    userEvent.click(secondary_button);
-                    expect(setPasskeyStatusMock).toHaveBeenCalled();
-                }
+        expect(screen.getByText('PasskeysLearnMore')).toBeInTheDocument();
+    });
 
-                if (status === PASSKEY_STATUS_CODES.CREATED) {
-                    userEvent.click(primary_button);
-                    expect(mockHistoryPush).toHaveBeenCalledWith(routes.traders_hub);
-                    userEvent.click(secondary_button);
-                    expect(setPasskeyStatusMock).toHaveBeenCalledWith(PASSKEY_STATUS_CODES.NONE);
-                }
+    it('renders PasskeysStatusContainer with PasskeysList component', () => {
+        renderComponent(PASSKEY_STATUS_CODES.LIST);
 
-                if (status === PASSKEY_STATUS_CODES.REMOVED) {
-                    userEvent.click(primary_button);
-                    expect(setPasskeyStatusMock).toHaveBeenCalledWith(PASSKEY_STATUS_CODES.NONE);
-                }
+        expect(screen.getByText('PasskeysList')).toBeInTheDocument();
+    });
 
-                if (status === PASSKEY_STATUS_CODES.NO_PASSKEY) {
-                    userEvent.click(secondary_button);
-                    expect(setPasskeyStatusMock).toHaveBeenCalledWith(PASSKEY_STATUS_CODES.LEARN_MORE);
-                }
+    it('renders PasskeysStatusContainer with PasskeyRename component', () => {
+        renderComponent(PASSKEY_STATUS_CODES.RENAMING);
 
-                if (status === PASSKEY_STATUS_CODES.RENAMING) {
-                    userEvent.click(secondary_button);
-                    expect(setPasskeyStatusMock).toHaveBeenCalledWith(PASSKEY_STATUS_CODES.NONE);
-                }
-
-                unmount();
-            } else {
-                expect(container).toBeEmptyDOMElement();
-            }
-        });
+        expect(screen.getByText('PasskeyRename')).toBeInTheDocument();
     });
 });

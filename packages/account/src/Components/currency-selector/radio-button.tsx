@@ -1,5 +1,5 @@
 import React, { AllHTMLAttributes } from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Icon } from '@deriv/components';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import USTPopover from './ust-popover';
@@ -49,12 +49,12 @@ const RadioButton = ({
                 onChange={onChange}
                 onBlur={onBlur}
                 disabled={props.selected}
-                className={classNames(className, 'currency-list__radio-button')}
+                className={clsx(className, 'currency-list__radio-button')}
                 {...props}
             />
             <label
                 htmlFor={id}
-                className={classNames('currency-list__item', {
+                className={clsx('currency-list__item', {
                     'currency-list__item--selected': id === value,
                     'currency-list__item--current': props.selected,
                 })}

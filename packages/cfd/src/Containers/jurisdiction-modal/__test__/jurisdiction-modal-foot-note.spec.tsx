@@ -60,7 +60,7 @@ describe('JurisdictionModalFootNote', () => {
             { wrapper }
         );
         expect(
-            screen.getByText('Add your Deriv MT5 Derived account under Deriv (SVG) LLC (company no. 273 LLC 2020).')
+            screen.getByText('Add your Deriv MT5 Standard account under Deriv (SVG) LLC (company no. 273 LLC 2020).')
         ).toBeInTheDocument();
     });
 
@@ -75,7 +75,7 @@ describe('JurisdictionModalFootNote', () => {
         );
         expect(
             screen.getByText(
-                'Add your Deriv MT5 Derived account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114).'
+                'Add your Deriv MT5 Standard account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114).'
             )
         ).toBeInTheDocument();
     });
@@ -139,7 +139,7 @@ describe('JurisdictionModalFootNote', () => {
         );
         expect(
             screen.getByText(
-                'Add Your Deriv MT5 Derived account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.'
+                'Add Your Deriv MT5 Standard account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.'
             )
         ).toBeInTheDocument();
     });
@@ -203,7 +203,7 @@ describe('JurisdictionModalFootNote', () => {
         );
         expect(
             screen.getByText(
-                'Add your Deriv MT5 Derived STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).'
+                'Add your Deriv MT5 Standard STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).'
             )
         ).toBeInTheDocument();
     });

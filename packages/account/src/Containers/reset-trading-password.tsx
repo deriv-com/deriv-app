@@ -1,4 +1,4 @@
-import React from 'react';
+import { useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -7,15 +7,9 @@ import { TPlatforms } from '../Types';
 
 const ResetTradingPassword = observer(() => {
     const { ui, client } = useStore();
-    const {
-        enableApp,
-        disableApp,
-        is_reset_trading_password_modal_visible,
-        is_loading,
-        setResetTradingPasswordModalOpen,
-    } = ui;
+    const { enableApp, disableApp, is_loading, setCFDPasswordResetModal, is_cfd_reset_password_modal_enabled } = ui;
     const location = useLocation();
-    const platform = React.useRef('');
+    const platform = useRef('');
     const query_params = new URLSearchParams(location.search);
     const cfd_platform = /^trading_platform_(.*)_password_reset$/.exec(query_params.get('action') ?? '')?.[1];
     if (cfd_platform) {
@@ -35,8 +29,8 @@ const ResetTradingPassword = observer(() => {
             platform={platform.current as TPlatforms}
             enableApp={enableApp}
             disableApp={disableApp}
-            toggleResetTradingPasswordModal={setResetTradingPasswordModalOpen}
-            is_visible={is_reset_trading_password_modal_visible}
+            toggleResetTradingPasswordModal={setCFDPasswordResetModal}
+            is_visible={is_cfd_reset_password_modal_enabled}
             is_loading={is_loading}
             verification_code={verification_code}
         />

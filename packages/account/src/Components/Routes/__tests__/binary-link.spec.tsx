@@ -40,7 +40,7 @@ describe('<BinaryLink />', () => {
         expect(screen.getByText('Simple test link without Navlink')).toBeInTheDocument();
     });
     it('should thorw error if the path is not found', () => {
-        findRouteByPath.mockReturnValue('');
+        (findRouteByPath as jest.Mock).mockReturnValue('');
         const renderBinaryLink = () =>
             render(
                 <Router history={history}>

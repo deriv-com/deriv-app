@@ -1,10 +1,10 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Loading, Modal, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { useCloseDerivAccount } from '@deriv/api';
-import { Localize } from '@deriv/translations';
-import { MAX_ALLOWED_REASONS_FOR_CLOSING_ACCOUNT } from 'Constants/closing-account-config';
+import { Localize } from '@deriv-com/translations';
+import { MAX_ALLOWED_REASONS_FOR_CLOSING_ACCOUNT } from '../../../Constants/closing-account-config';
 import ClosingAccountHasPendingConditions from './closing-account-pending-conditions/closing-account-has-pending-conditions';
 import ClosingAccountReasonForm from './closing-account-reason-form';
 import ClosingAccountWarningModal from './closing-account-warning-modal';
@@ -17,11 +17,11 @@ type TClosingAccountReasonProps = {
 const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) => {
     const { mutate, error, isSuccess, isLoading } = useCloseDerivAccount();
 
-    const [reasons_to_close_account, setReasonsToCloseAccount] = React.useState('');
-    const [error_info, setErrorInfo] = React.useState('');
-    const [show_warning_modal, setShowWarningModal] = React.useState(false);
+    const [reasons_to_close_account, setReasonsToCloseAccount] = useState('');
+    const [error_info, setErrorInfo] = useState('');
+    const [show_warning_modal, setShowWarningModal] = useState(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (error) {
             if (typeof error === 'object' && 'code' in error) {
                 const { code } = error;

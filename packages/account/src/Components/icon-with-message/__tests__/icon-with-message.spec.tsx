@@ -15,7 +15,7 @@ describe('<IconWithMessage />', () => {
         icon: 'string',
         message: 'title',
     };
-    const store = mockStore();
+    const store = mockStore({});
 
     it('should render the IconWithMessage component', () => {
         render(

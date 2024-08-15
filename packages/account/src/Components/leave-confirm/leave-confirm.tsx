@@ -1,96 +1,89 @@
 import React from 'react';
-import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
+import { useHistory, useLocation, RouteComponentProps, withRouter } from 'react-router-dom';
 import { FormikConsumer } from 'formik';
 import { Button, Icon, Modal } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import IconMessageContent from '../icon-message-content';
+import { useDevice } from '@deriv-com/ui';
 
 type TLeaveConfirmMessage = {
     back: () => void;
     leave: () => void;
 };
-
 type TTransitionBlocker = RouteComponentProps & {
     dirty: boolean;
     onDirty?: (prop: boolean) => void;
 };
 
 const LeaveConfirmMessage = ({ back, leave }: TLeaveConfirmMessage) => {
+    const { isMobile } = useDevice();
+
     return (
         <IconMessageContent
             className='leave-confirm'
             message={localize('Unsaved changes')}
             text={localize('You have unsaved changes. Are you sure you want to discard changes and leave this page?')}
-            icon={<Icon icon='IcUnsavedChanges' size={isMobile() ? 93 : 128} data_testid='dt_unsaved_changes_icon' />}
+            icon={<Icon icon='IcUnsavedChanges' size={isMobile ? 93 : 128} data_testid='dt_unsaved_changes_icon' />}
+            is_disabled_for_mobile={true}
         >
             <div className='account-management-flex-wrapper account-management-leave-confirm'>
-                <Button
-                    type='button'
-                    has_effect
-                    onClick={back}
-                    text={localize('Cancel')}
-                    secondary
-                    {...(isMobile() ? { large: true } : {})}
-                />
+                <Button type='button' has_effect onClick={back} text={localize('Cancel')} secondary large={isMobile} />
                 <Button
                     type='button'
                     has_effect
                     onClick={leave}
                     text={localize('Leave Settings')}
                     primary
-                    {...(isMobile() ? { large: true } : {})}
+                    large={isMobile}
                 />
             </div>
         </IconMessageContent>
     );
 };
 /**
- * Blocks routing if Formik form is dirty
+ *\ Blocks routing if Formik form is dirty
  * Has to be a child of <Formik> for FormikConsumer to work
  */
 export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
-    const [show, setShow] = React.useState(false);
-    const [next_location, setNextLocation] = React.useState<{ pathname: string } | null>(null);
     const history = useHistory();
-
+    const location = useLocation();
+    const { isMobile } = useDevice();
+    const [showModal, setShowModal] = React.useState(false);
+    const [nextLocation, setNextLocation] = React.useState(location.pathname);
     React.useEffect(() => {
+        const unblock = history.block((location: Location) => {
+            if (dirty && !showModal) {
+                if (onDirty) onDirty(false);
+                setNextLocation(location.pathname);
+                setShowModal(true);
+                return false;
+            }
+            return true;
+        });
         return () => unblock();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const unblock = history.block((location: { pathname: string }) => {
-        if (dirty) {
-            if (onDirty) onDirty(false);
-
-            if (show) leave();
-
-            setShow(true);
-            setNextLocation(location);
+    }, [dirty, showModal, history, onDirty]);
+    const leave = React.useCallback(() => {
+        if (nextLocation) {
+            setShowModal(false);
+            history.push(nextLocation);
+            if (onDirty) {
+                onDirty(false);
+            }
         }
-        return !dirty;
-    });
-
-    const leave = () => {
-        if (next_location?.pathname) {
-            const { pathname } = next_location;
-            unblock();
-            history.push(pathname);
-        } else history.push(null);
-    };
-
+    }, [nextLocation, history, onDirty]);
     const back = () => {
-        setNextLocation(null);
-        setShow(false);
-        if (onDirty) onDirty(true);
+        setShowModal(false);
+        setNextLocation(location.pathname);
+        if (onDirty) {
+            onDirty(true);
+        }
     };
-
     return (
         <>
-            {show && isMobile() ? (
+            {showModal && isMobile ? (
                 <LeaveConfirmMessage back={back} leave={leave} />
             ) : (
-                <Modal is_open={show} small toggleModal={back}>
+                <Modal is_open={showModal} small toggleModal={back}>
                     <Modal.Body>
                         <LeaveConfirmMessage back={back} leave={leave} />
                     </Modal.Body>
@@ -99,12 +92,15 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
         </>
     );
 };
+
 export const TransitionBlockerWithRouter = withRouter(TransitionBlocker);
-
-const LeaveConfirm = ({ onDirty }: { onDirty?: (prop: boolean) => void }) => (
-    <FormikConsumer>
-        {formik => <TransitionBlockerWithRouter onDirty={onDirty} dirty={formik.dirty && formik.submitCount === 0} />}
-    </FormikConsumer>
-);
-
+const LeaveConfirm = ({ onDirty }: { onDirty?: (prop: boolean) => void }) => {
+    return (
+        <FormikConsumer>
+            {formik => (
+                <TransitionBlockerWithRouter onDirty={onDirty} dirty={formik.dirty && formik.submitCount === 0} />
+            )}
+        </FormikConsumer>
+    );
+};
 export default LeaveConfirm;

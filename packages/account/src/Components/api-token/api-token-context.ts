@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { TApiContext } from 'Types';
+import { createContext } from 'react';
+import { TApiContext } from '../../Types';
 
-const ApiTokenContext = React.createContext<TApiContext>({
+const ApiTokenContext = createContext<TApiContext>({
     api_tokens: [],
     deleteToken: () => Promise.resolve(),
 });

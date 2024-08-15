@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import ContractResultOverlay from 'Components/contract-result-overlay';
 import { contract_stages } from 'Constants/contract-stage';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendRunBotEvent } from '../../pages/bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
+import { rudderStackSendRunBotEvent } from '../../analytics/rudderstack-common-events';
 import CircularWrapper from './circular-wrapper';
 import ContractStageText from './contract-stage-text';
 
@@ -16,8 +16,9 @@ type TTradeAnimation = {
 };
 
 const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnimation) => {
-    const { run_panel, summary_card } = useDBotStore();
+    const { dashboard, run_panel, summary_card } = useDBotStore();
     const { client } = useStore();
+    const { active_tab } = dashboard;
     const { is_contract_completed, profit } = summary_card;
     const {
         contract_stage,
@@ -61,7 +62,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
             progress_status += 1;
         }
 
-        for (let i = 0; i < progress_status; i++) {
+        for (let i = 0; i < progress_status - 1; i++) {
             status_classes[i] = 'completed';
         }
     }
@@ -70,16 +71,30 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
 
     const button_props = React.useMemo(() => {
         if (is_stop_button_visible) {
-            return { id: 'db-animation__stop-button', text: localize('Stop'), icon: 'IcBotStop' };
+            return {
+                id: 'db-animation__stop-button',
+                class: 'animation__stop-button',
+                text: localize('Stop'),
+                icon: 'IcBotStop',
+            };
         }
-        return { id: 'db-animation__run-button', text: localize('Run'), icon: 'IcPlay' };
+        return {
+            id: 'db-animation__run-button',
+            class: 'animation__run-button',
+            text: localize('Run'),
+            icon: 'IcPlay',
+        };
     }, [is_stop_button_visible]);
     const show_overlay = should_show_overlay && is_contract_completed;
+
+    const TAB_NAMES = ['dashboard', 'bot_builder', 'charts', 'tutorials'] as const;
+    const getTabName = (index: number) => TAB_NAMES[index];
+
     return (
         <div className={classNames('animation__wrapper', className)}>
             <Button
                 is_disabled={is_disabled && !is_unavailable_for_payment_agent}
-                className='animation__button'
+                className={button_props.class}
                 id={button_props.id}
                 text={button_props.text}
                 icon={<Icon icon={button_props.icon} color='active' />}
@@ -90,7 +105,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
                         return;
                     }
                     onRunButtonClick();
-                    rudderStackSendRunBotEvent();
+                    rudderStackSendRunBotEvent({ subpage_name: getTabName(active_tab) });
                 }}
                 has_effect
                 {...(is_stop_button_visible || !is_unavailable_for_payment_agent ? { primary: true } : { green: true })}

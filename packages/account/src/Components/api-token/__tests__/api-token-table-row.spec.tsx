@@ -7,7 +7,7 @@ describe('ApiTokenTableRow', () => {
         token: {
             display_name: 'Api Token',
             last_used: '31/12/2022',
-            scopes: ['Api scope 1', 'Api scope 2'],
+            formatted_scopes: ['Api scope 1', 'Api scope 2'],
             token: '1234567',
         },
     };

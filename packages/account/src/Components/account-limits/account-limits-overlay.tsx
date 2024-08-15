@@ -1,10 +1,11 @@
-import * as React from 'react';
+import { useContext } from 'react';
 import { Popup, StaticUrl } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import AccountLimitsContext from './account-limits-context';
 
 const AccountLimitsOverlay = () => {
-    const { overlay_ref, toggleOverlay } = React.useContext(AccountLimitsContext);
+    const { localize } = useTranslations();
+    const { overlay_ref, toggleOverlay } = useContext(AccountLimitsContext);
 
     return (
         <Popup.Overlay

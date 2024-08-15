@@ -786,3 +786,76 @@ describe('isForwardStartingBuyTransaction', () => {
         ).toBe(false);
     });
 });
+
+describe('getCurrentTick', () => {
+    const tickStreamWithFourTicks = [
+        {
+            epoch: 1716910930,
+            tick: 1338.44,
+            tick_display_value: '1338.44',
+        },
+        {
+            epoch: 1716910932,
+            tick: 1338.71,
+            tick_display_value: '1338.71',
+        },
+        {
+            epoch: 1716910934,
+            tick: 1338.69,
+            tick_display_value: '1338.69',
+        },
+        {
+            epoch: 1716910936,
+            tick: 1338.94,
+            tick_display_value: '1338.94',
+        },
+    ];
+    it('should return tick_passed if tick_passed is available for a non-digit/non-asian contract', () => {
+        const mockedAccuContractInfo = mockContractInfo({
+            contract_type: CONTRACT_TYPES.ACCUMULATOR,
+            tick_passed: 2,
+        });
+        expect(ContractUtils.getCurrentTick(mockedAccuContractInfo)).toEqual(2);
+    });
+    it('should return tick_stream.length - 1 if tick_passed is missing for a non-digit/non-asian contract', () => {
+        const mockedRiseContractInfo = mockContractInfo({
+            contract_type: CONTRACT_TYPES.RISE,
+            tick_stream: tickStreamWithFourTicks,
+        });
+        expect(ContractUtils.getCurrentTick(mockedRiseContractInfo)).toEqual(3);
+    });
+    it('should return tick_stream.length for a digit/asian contract', () => {
+        const mockedDigitContractInfo = mockContractInfo({
+            contract_type: CONTRACT_TYPES.MATCH_DIFF.MATCH,
+            tick_stream: tickStreamWithFourTicks,
+        });
+        const mockedAsianContractInfo = mockContractInfo({
+            contract_type: CONTRACT_TYPES.ASIAN.UP,
+            tick_stream: tickStreamWithFourTicks,
+        });
+        expect(ContractUtils.getCurrentTick(mockedDigitContractInfo)).toEqual(4);
+        expect(ContractUtils.getCurrentTick(mockedAsianContractInfo)).toEqual(4);
+    });
+    it('should return 0 if tick_stream is empty/missing for a digit/asian contract', () => {
+        const mockedDigitContractInfo = mockContractInfo({
+            contract_type: CONTRACT_TYPES.MATCH_DIFF.MATCH,
+        });
+        const mockedAsianContractInfo = mockContractInfo({
+            contract_type: CONTRACT_TYPES.ASIAN.UP,
+            tick_stream: [],
+        });
+        expect(ContractUtils.getCurrentTick(mockedDigitContractInfo)).toEqual(0);
+        expect(ContractUtils.getCurrentTick(mockedAsianContractInfo)).toEqual(0);
+    });
+    it('should return 0 if both tick_stream and tick_passed are empty/missing for a non-digit/non-asian contract', () => {
+        const mockedAccuContractInfo = mockContractInfo({
+            contract_type: CONTRACT_TYPES.ACCUMULATOR,
+        });
+        const mockedRiseContractInfo = mockContractInfo({
+            contract_type: CONTRACT_TYPES.RISE,
+            tick_stream: [],
+        });
+        expect(ContractUtils.getCurrentTick(mockedAccuContractInfo)).toEqual(0);
+        expect(ContractUtils.getCurrentTick(mockedRiseContractInfo)).toEqual(0);
+    });
+});

@@ -1,0 +1,11 @@
+.tabs-or-title {
+    &__button-toggle {
+        border-radius: $BORDER_RADIUS;
+        padding: 0.4rem;
+        background-color: var(--general-section-1);
+    }
+
+    &__mt5-not-allowed {
+        margin-top: 2rem;
+    }
+}

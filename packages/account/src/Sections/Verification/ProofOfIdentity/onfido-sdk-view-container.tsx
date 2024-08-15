@@ -9,9 +9,10 @@ import ErrorMessage from '../../../Components/error-component';
 import MissingPersonalDetails from '../../../Components/poi/missing-personal-details';
 import PoiConfirmWithExampleFormContainer from '../../../Components/poi/poi-confirm-with-example-form-container';
 import OnfidoSdkView from './onfido-sdk-view';
-import type { SdkHandle, SdkResponse, SupportedLanguages } from '../../../Types';
+import type { SdkError, SdkHandle, SdkResponse, SupportedLanguages } from '../../../Types';
 import { convertAlpha2toAlpha3, convertAlpha3toAlpha2, getOnfidoSupportedLocaleCode } from '../../../Helpers/utils';
 import { getOnfidoPhrases } from '../../../Constants/onfido';
+import { useDevice } from '@deriv-com/ui';
 
 type TAPIError = {
     code?: string;
@@ -49,9 +50,9 @@ const OnfidoSdkViewContainer = observer(
         const { data: account_settings } = useSettings();
 
         const { send, isSuccess: isNotified } = useNotificationEvent();
-        const { common, ui } = useStore();
+        const { common } = useStore();
         const { current_language } = common;
-        const { is_mobile } = ui;
+        const { isMobile } = useDevice();
 
         // IDV country code - Alpha ISO2. Onfido country code - Alpha ISO3
         const onfido_country_code = convertAlpha2toAlpha3(country_code);
@@ -133,7 +134,7 @@ const OnfidoSdkViewContainer = observer(
                     });
                     setIsOnfidoInitialized(true);
                 } catch (err) {
-                    setAPIError(err?.message ?? err);
+                    setAPIError((err as SdkError)?.message ?? err);
                     setIsOnfidoDisabled(true);
                     onfido_init.current = undefined;
                 } finally {
@@ -152,9 +153,10 @@ const OnfidoSdkViewContainer = observer(
                 const script_node = document.createElement('script');
                 const link_node = document.createElement('link');
 
+                // [TODO] - Need to lock version of onfido sdk - Current version in CDN is 13.8.4
                 script_node.id = 'onfido_sdk';
-                script_node.src = 'https://assets.onfido.com/web-sdk-releases/latest/onfido.min.js';
-                link_node.href = 'https://assets.onfido.com/web-sdk-releases/latest/style.css';
+                script_node.src = 'https://assets.onfido.com/web-sdk-releases/13.8.4/onfido.min.js';
+                link_node.href = 'https://assets.onfido.com/web-sdk-releases/13.8.4/style.css';
                 link_node.rel = 'stylesheet';
                 link_node.id = 'onfido_style';
 
@@ -230,7 +232,7 @@ const OnfidoSdkViewContainer = observer(
         }
 
         return (
-            <ThemedScrollbars is_bypassed={is_mobile} height={height}>
+            <ThemedScrollbars is_bypassed={isMobile} height={height}>
                 <div className='onfido-container'>
                     {component_to_load || (
                         <CSSTransition

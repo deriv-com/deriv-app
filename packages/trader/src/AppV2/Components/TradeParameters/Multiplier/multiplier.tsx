@@ -1,0 +1,89 @@
+import React, { useState } from 'react';
+import clsx from 'clsx';
+import { observer } from 'mobx-react';
+import { ActionSheet, Skeleton, TextField } from '@deriv-com/quill-ui';
+import { Localize } from '@deriv/translations';
+import { useTraderStore } from 'Stores/useTraderStores';
+import Carousel from 'AppV2/Components/Carousel';
+import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
+import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
+import MultiplierWheelPicker from './multiplier-wheel-picker';
+
+type TMultiplierProps = {
+    is_minimized?: boolean;
+};
+
+const Multiplier = observer(({ is_minimized }: TMultiplierProps) => {
+    const { multiplier, multiplier_range_list, commission, onChange, currency } = useTraderStore();
+
+    const [isOpen, setIsOpen] = useState(false);
+    const is_small_screen_device = window.innerHeight <= 640;
+    const classname = clsx('trade-params__option', is_minimized && 'trade-params__option--minimized');
+
+    const handleMultiplierChange = (multiplier: number) => {
+        onChange({ target: { name: 'multiplier', value: multiplier } });
+    };
+
+    const action_sheet_content = [
+        {
+            id: 1,
+            component: (
+                <MultiplierWheelPicker
+                    multiplier={multiplier}
+                    multiplier_range_list={multiplier_range_list}
+                    currency={currency}
+                    commission={commission}
+                    setMultiplier={handleMultiplierChange}
+                />
+            ),
+        },
+        {
+            id: 2,
+            component: <TradeParamDefinition description={<Localize i18n_default_text='Content goes here' />} />,
+        },
+    ];
+
+    if (!multiplier)
+        return (
+            <div className={classname}>
+                <Skeleton.Square />
+            </div>
+        );
+
+    return (
+        <React.Fragment>
+            <TextField
+                variant='fill'
+                readOnly
+                label={
+                    <Localize i18n_default_text='Multiplier' key={`multiplier${is_minimized ? '-minimized' : ''}`} />
+                }
+                value={`x${multiplier}`}
+                className={classname}
+                onClick={() => setIsOpen(true)}
+            />
+            <ActionSheet.Root
+                expandable
+                isOpen={isOpen}
+                position='left'
+                onClose={() => {
+                    setIsOpen(false);
+                }}
+            >
+                <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen={is_small_screen_device}>
+                    <Carousel
+                        classname={clsx(
+                            'multiplier__carousel',
+                            is_small_screen_device && 'multiplier__carousel--small'
+                        )}
+                        header={CarouselHeader}
+                        pages={action_sheet_content}
+                        title={<Localize i18n_default_text='Multiplier' />}
+                    />
+                </ActionSheet.Portal>
+            </ActionSheet.Root>
+        </React.Fragment>
+    );
+});
+
+export default Multiplier;

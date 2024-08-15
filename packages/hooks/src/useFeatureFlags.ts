@@ -5,9 +5,7 @@ const useFeatureFlags = () => {
     const { feature_flags } = useStore();
 
     const result = useMemo(() => {
-        // Safe to do null assertions here as we are setting default values in the store.
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const flags = feature_flags.data!;
+        const flags = feature_flags.data ?? {};
 
         return Object.keys(flags).reduce(
             (previous, current) => ({

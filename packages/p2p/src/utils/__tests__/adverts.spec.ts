@@ -1,6 +1,11 @@
 import moment from 'moment';
 import { toMoment } from '@deriv/shared';
-import { generateErrorDialogBody, generateErrorDialogTitle, getLastOnlineLabel } from '../adverts';
+import {
+    generateErrorDialogBody,
+    generateErrorDialogTitle,
+    getEligibilityMessage,
+    getLastOnlineLabel,
+} from '../adverts';
 
 let mock_value: moment.Moment = moment();
 jest.mock('@deriv/shared', () => ({
@@ -19,10 +24,7 @@ describe('generateErrorDialogBody', () => {
             'You already have an ad with the same exchange rate for this currency pair and order type. \n\nPlease set a different rate for your ad.'
         );
     });
-    it('should return the passed error_message when error_code is not "AdvertSameLimits" or "DuplicateAdvert"', () => {
-        expect(generateErrorDialogBody('', 'this is the error message')).toBe('this is the error message');
-    });
-    it('should return "Something\'s not right" when error_code is not "AdvertSameLimits" or "DuplicateAdvert" and no error_message is passed', () => {
+    it('should return "Something\'s not right" when error_code is not "AdvertSameLimits" or "DuplicateAdvert"', () => {
         expect(generateErrorDialogBody('')).toBe("Something's not right");
     });
 });
@@ -102,5 +104,19 @@ describe('getLastOnlineLabel', () => {
     });
     it('should return "Seen more than 6 months ago" when user is not online and last seen is not known', () => {
         expect(getLastOnlineLabel(is_online)).toBe('Seen more than 6 months ago');
+    });
+});
+
+describe('getEligibilityMessage', () => {
+    it('should return "Your completion rate is too low for this ad." if eligibility statuses only contains completion_rate', () => {
+        expect(getEligibilityMessage(['completion_rate'])).toBe('Your completion rate is too low for this ad.');
+    });
+    it('should return "You\'ve not used Deriv P2P long enough for this ad." if eligibility statuses only contains join_date', () => {
+        expect(getEligibilityMessage(['join_date'])).toBe("You've not used Deriv P2P long enough for this ad.");
+    });
+    it('should return "The advertiser has set conditions for this ad that you don\'t meet." if eligibility statuses contains more than one reason', () => {
+        expect(getEligibilityMessage(['completion_rate, join_date'])).toBe(
+            "The advertiser has set conditions for this ad that you don't meet."
+        );
     });
 });

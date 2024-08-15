@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { WS, getErrorMessages, validPassword, Jurisdiction } from '@deriv/shared';
+import { WS, getErrorMessages, validPassword, Jurisdiction, routes } from '@deriv/shared';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import CFDPasswordModal from '../cfd-password-modal';
 import CFDProviders from '../../cfd-providers';
@@ -39,6 +39,7 @@ describe('<CFDPasswordModal/>', () => {
     const mockSetCFDSuccessDialog = jest.fn();
     const mockSubmitMt5Password = jest.fn();
     const mockSubmitCFDPasswordFn = jest.fn();
+    const mockSetProductFn = jest.fn();
     const history = createBrowserHistory();
     let modal_root_el;
 
@@ -71,6 +72,7 @@ describe('<CFDPasswordModal/>', () => {
                 getAccountStatus: mockFn,
                 new_account_response: {},
                 jurisdiction_selected_shortcode: Jurisdiction.SVG,
+                setProduct: mockSetProductFn,
             },
         },
     };
@@ -91,7 +93,24 @@ describe('<CFDPasswordModal/>', () => {
         document.body.removeChild(modal_root_el);
     });
 
+    const originalWindowLocation = window.location;
+
+    beforeEach(() => {
+        Object.defineProperty(window, 'location', {
+            configurable: true,
+            enumerable: true,
+            value: {
+                pathname: routes.trade,
+            },
+        });
+    });
+
     afterEach(() => {
+        Object.defineProperty(window, 'location', {
+            configurable: true,
+            enumerable: true,
+            value: originalWindowLocation,
+        });
         jest.clearAllMocks();
     });
 
@@ -330,7 +349,7 @@ describe('<CFDPasswordModal/>', () => {
         expect(await screen.findByRole('button', { name: /transfer now/i }));
     });
 
-    it('should display Derived icon in Success Dialog', async () => {
+    it('should display Standard icon in Success Dialog', async () => {
         const store = mockStore(mockRootStore);
 
         store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
@@ -347,7 +366,7 @@ describe('<CFDPasswordModal/>', () => {
             }
         );
 
-        expect(await screen.findByText('IcMt5SyntheticPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('IcMt5StandardPlatform')).toBeInTheDocument();
     });
 
     it('should display icon in Success Dialog in tradershub', async () => {
@@ -367,7 +386,7 @@ describe('<CFDPasswordModal/>', () => {
             }
         );
 
-        expect(await screen.findByText('IcMt5SyntheticPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('IcMt5StandardPlatform')).toBeInTheDocument();
     });
 
     it('should display Financial icon in Success Dialog', async () => {

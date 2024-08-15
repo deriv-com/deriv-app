@@ -1,12 +1,14 @@
-import React from 'react';
+import { RefObject, useState, useEffect } from 'react';
 import { FormikValues } from 'formik';
-import classNames from 'classnames';
-import { formatMoney, isDesktop, isMobile, useIsMounted, PlatformContext } from '@deriv/shared';
+import clsx from 'clsx';
+import { useIsMounted } from '@deriv/shared';
+import { FormatUtils, CurrencyConstants } from '@deriv-com/utils';
 import { Loading, ThemedScrollbars } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { observer, useStore } from '@deriv/stores';
-import DemoMessage from 'Components/demo-message';
-import LoadErrorMessage from 'Components/load-error-message';
+import DemoMessage from '../demo-message';
+import LoadErrorMessage from '../load-error-message';
 import AccountLimitsArticle from './account-limits-article';
 import AccountLimitsContext, { TAccountLimitsContext } from './account-limits-context';
 import AccountLimitsExtraInfo from './account-limits-extra-info';
@@ -14,11 +16,11 @@ import AccountLimitsFooter from './account-limits-footer';
 import AccountLimitsOverlay from './account-limits-overlay';
 import AccountLimitsTableCell from './account-limits-table-cell';
 import AccountLimitsTableHeader from './account-limits-table-header';
-import AccountLimitsTurnoverLimitRow from './account-limits-turnover-limit-row';
+import AccountLimitsTurnoverLimitRow, { TAccountLimitsCollection } from './account-limits-turnover-limit-row';
 import WithdrawalLimitsTable from './withdrawal-limits-table';
 
 type TAccountLimits = {
-    footer_ref?: React.RefObject<HTMLElement>;
+    footer_ref?: RefObject<HTMLElement>;
     is_app_settings?: boolean;
     overlay_ref: HTMLDivElement;
     setIsOverlayShown?: (is_overlay_shown?: boolean) => void;
@@ -36,26 +38,19 @@ const AccountLimits = observer(
         should_bypass_scrollbars,
         should_show_article = true,
     }: TAccountLimits) => {
+        const { localize } = useTranslations();
         const { client } = useStore();
-        const {
-            account_limits,
-            account_status,
-            currency,
-            getLimits,
-            is_fully_authenticated,
-            is_virtual,
-            is_switching,
-        } = client;
+        const { account_limits, account_status, currency, getLimits, is_virtual, is_switching } = client;
         const isMounted = useIsMounted();
-        const [is_loading, setLoading] = React.useState(true);
-        const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
-        const { is_appstore } = React.useContext(PlatformContext);
+        const [is_loading, setLoading] = useState(true);
+        const [is_overlay_shown, setIsOverlayShown] = useState(false);
+        const { isDesktop } = useDevice();
 
         const handleGetLimitsResponse = () => {
             if (isMounted()) setLoading(false);
         };
 
-        React.useEffect(() => {
+        useEffect(() => {
             if (is_virtual) {
                 setLoading(false);
             } else {
@@ -64,13 +59,13 @@ const AccountLimits = observer(
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
 
-        React.useEffect(() => {
+        useEffect(() => {
             if (!is_virtual && account_limits && is_loading && Object.keys(account_status).length > 0) {
                 setLoading(false);
             }
         }, [account_limits, is_virtual, is_loading, account_status]);
 
-        React.useEffect(() => {
+        useEffect(() => {
             if (typeof setIsPopupOverlayShown === 'function') {
                 setIsPopupOverlayShown(is_overlay_shown);
             }
@@ -84,13 +79,8 @@ const AccountLimits = observer(
 
         if (is_virtual) {
             return (
-                <div
-                    data-testid='dt_account_demo_message_wrapper'
-                    className={classNames('account__demo-message-wrapper', {
-                        'account__demo-message-wrapper-dashboard': is_appstore,
-                    })}
-                >
-                    <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />
+                <div data-testid='dt_account_demo_message_wrapper' className='account__demo-message-wrapper'>
+                    <DemoMessage />
                 </div>
             );
         }
@@ -110,7 +100,7 @@ const AccountLimits = observer(
             return <LoadErrorMessage error_message={api_initial_load_error} />;
         }
 
-        const { commodities, forex, indices, synthetic_index } = { ...market_specific };
+        const { commodities, forex, indices, synthetic_index } = market_specific ?? {};
         const forex_ordered = forex?.slice().sort((a: FormikValues, b: FormikValues) => a.name.localeCompare(b.name));
         const derived_ordered = synthetic_index
             ?.slice()
@@ -127,13 +117,13 @@ const AccountLimits = observer(
             <AccountLimitsContext.Provider value={context_value}>
                 <section className='da-account-limits__wrapper' data-testid='account_limits_data'>
                     <div
-                        className={classNames('da-account-limits', {
+                        className={clsx('da-account-limits', {
                             'da-account-limits--app-settings': is_app_settings,
                         })}
                     >
-                        {should_show_article && isMobile() && <AccountLimitsArticle />}
+                        {should_show_article && !isDesktop && <AccountLimitsArticle />}
                         <div className='da-account-limits__table-wrapper'>
-                            <ThemedScrollbars is_bypassed={!!should_bypass_scrollbars || isMobile()}>
+                            <ThemedScrollbars is_bypassed={!!should_bypass_scrollbars || !isDesktop}>
                                 <table className='da-account-limits__table' data-testid='trading_limit_item_table'>
                                     <thead>
                                         <tr>
@@ -177,7 +167,9 @@ const AccountLimits = observer(
                                             <AccountLimitsTableCell align='right'>
                                                 {/* null or 0 are expected form BE when max balance limit is not set */}
                                                 {account_balance ? (
-                                                    formatMoney(currency, account_balance, true)
+                                                    FormatUtils.formatMoney(account_balance, {
+                                                        currency: currency as CurrencyConstants.Currency,
+                                                    })
                                                 ) : (
                                                     <Localize i18n_default_text='Not set' />
                                                 )}
@@ -196,7 +188,9 @@ const AccountLimits = observer(
                                                 <Localize i18n_default_text='Maximum aggregate payouts on open positions' />
                                             </AccountLimitsTableCell>
                                             <AccountLimitsTableCell align='right'>
-                                                {formatMoney(currency, payout, true)}
+                                                {FormatUtils.formatMoney(payout as number, {
+                                                    currency: currency as CurrencyConstants.Currency,
+                                                })}
                                             </AccountLimitsTableCell>
                                         </tr>
                                         <tr>
@@ -227,17 +221,24 @@ const AccountLimits = observer(
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <AccountLimitsTurnoverLimitRow collection={commodities} />
-                                        <AccountLimitsTurnoverLimitRow collection={forex_ordered} />
-                                        <AccountLimitsTurnoverLimitRow collection={indices} />
-                                        <AccountLimitsTurnoverLimitRow collection={derived_ordered} />
+                                        <AccountLimitsTurnoverLimitRow
+                                            collection={commodities as TAccountLimitsCollection[]}
+                                        />
+                                        <AccountLimitsTurnoverLimitRow
+                                            collection={forex_ordered as TAccountLimitsCollection[]}
+                                        />
+                                        <AccountLimitsTurnoverLimitRow
+                                            collection={indices as TAccountLimitsCollection[]}
+                                        />
+                                        <AccountLimitsTurnoverLimitRow
+                                            collection={derived_ordered as TAccountLimitsCollection[]}
+                                        />
                                     </tbody>
                                 </table>
                                 {/* We only show "Withdrawal Limits" on account-wide settings pages. */}
 
                                 {!is_app_settings && (
                                     <WithdrawalLimitsTable
-                                        is_appstore={is_appstore}
                                         num_of_days_limit={num_of_days_limit}
                                         remainder={remainder}
                                         withdrawal_since_inception_monetary={withdrawal_since_inception_monetary}
@@ -245,7 +246,7 @@ const AccountLimits = observer(
                                 )}
                             </ThemedScrollbars>
                         </div>
-                        {should_show_article && isDesktop() && <AccountLimitsArticle />}
+                        {should_show_article && isDesktop && <AccountLimitsArticle />}
                         {footer_ref && <AccountLimitsFooter />}
                         {is_overlay_shown && overlay_ref && <AccountLimitsOverlay />}
                     </div>

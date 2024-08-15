@@ -3,32 +3,37 @@ import type { TGenericSizes, THooks } from '../../types';
 import { AppCardBadge } from '../AppCardBadge';
 import { WalletText } from '../Base';
 import { WalletGradientBackground } from '../WalletGradientBackground';
-import { WalletsAppLinkedWithWalletIcon } from '../WalletsAppLinkedWithWalletIcon';
+import { WalletMarketCurrencyIcon } from '../WalletMarketCurrencyIcon';
 import './AppCard.scss';
 
 type TProps = {
     activeWalletCurrency?: THooks.ActiveWalletAccount['currency'];
-    appIcon: React.ComponentProps<typeof WalletsAppLinkedWithWalletIcon>['appIcon'];
-    appName?: string;
+    appName?: JSX.Element | string;
     balance?: string;
     cardSize: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     device: 'desktop' | 'mobile';
     isDemoWallet?: THooks.ActiveWalletAccount['is_virtual'];
-    walletName?: string;
+    marketType?: React.ComponentProps<typeof WalletMarketCurrencyIcon>['marketType'];
+    platform?: React.ComponentProps<typeof WalletMarketCurrencyIcon>['platform'];
+    walletName?: JSX.Element | string;
 };
 
 const AppCard: React.FC<TProps> = ({
     activeWalletCurrency,
-    appIcon,
     appName,
     balance,
     cardSize = 'md',
     device = 'desktop',
     isDemoWallet = false,
+    marketType,
+    platform,
     walletName,
 }) => {
     return (
-        <div className={`wallets-app-card wallets-app-card--border-radius--${cardSize}`}>
+        <div
+            className={`wallets-app-card wallets-app-card--border-radius--${cardSize}`}
+            data-testid='dt_wallets_app_card'
+        >
             <WalletGradientBackground currency='' hasShine theme='grey'>
                 {cardSize !== 'sm' && (
                     <div className='wallets-app-card__badge'>
@@ -37,11 +42,11 @@ const AppCard: React.FC<TProps> = ({
                 )}
                 <div className={`wallets-app-card__content wallets-app-card__content--${device}--${cardSize}`}>
                     <div className='wallets-app-card__top'>
-                        <WalletsAppLinkedWithWalletIcon
-                            appIcon={appIcon}
+                        <WalletMarketCurrencyIcon
                             currency={activeWalletCurrency ?? ''}
                             isDemo={isDemoWallet}
-                            size='small'
+                            marketType={marketType}
+                            platform={platform}
                         />
                     </div>
                     {cardSize !== 'sm' && (

@@ -2,6 +2,23 @@
     background: var(--general-main-2, #ffffff);
     border-radius: 0.8rem;
     animation: fadein 0.6s ease backwards;
+    overflow-y: auto;
+
+    @include desktop {
+        max-height: calc(var(--wallets-vh, 1vh) * 100 - 10rem);
+    }
+
+    &--disable-animation {
+        animation: none;
+
+        @include mobile {
+            animation: none;
+        }
+    }
+
+    &--disable-scroll {
+        overflow: unset;
+    }
 
     @include mobile {
         animation: popup 0.2s;
@@ -36,11 +53,15 @@
     }
 
     &__header {
-        padding: 1.6rem 2.4rem;
-        border-bottom: 0.2rem solid #f2f3f4;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        position: sticky;
+        inset: 0;
+        padding: 1.6rem 2.4rem;
+        background: var(--general-main-2, #ffffff);
+        border-bottom: 0.2rem solid #f2f3f4;
+        z-index: 1;
 
         &-close-icon {
             cursor: pointer;
@@ -49,7 +70,6 @@
         @include mobile {
             display: grid;
             grid-template-columns: auto 2rem;
-            background-color: #ffffff;
             position: relative;
             z-index: 99;
             width: 100%;
@@ -58,9 +78,8 @@
     }
 
     &__body {
-        @include mobile {
-            overflow-y: scroll;
-        }
+        height: 100%;
+        overflow-y: scroll;
     }
 
     &__footer {
@@ -74,7 +93,7 @@
         align-items: center;
 
         @include mobile {
-            background-color: #ffffff;
+            background: var(--general-main-2, #ffffff);
             position: relative;
             z-index: 99;
             height: auto;

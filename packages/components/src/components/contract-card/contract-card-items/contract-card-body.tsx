@@ -106,6 +106,7 @@ const ContractCardBody = ({
                 indicative={indicative}
                 is_sold={is_sold}
                 is_positions={is_positions}
+                toggleCancellationWarning={toggleCancellationWarning}
                 {...toggle_card_dialog_props}
             />
         );

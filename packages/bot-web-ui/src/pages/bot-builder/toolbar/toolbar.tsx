@@ -3,14 +3,14 @@ import { Dialog } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendQsOpenEventFromBotBuilder } from '../quick-strategy/analytics/rudderstack-quick-strategy';
+import { rudderStackSendOpenEvent } from '../../../analytics/rudderstack-common-events';
 import ToolbarButton from './toolbar-button';
 import WorkspaceGroup from './workspace-group';
 
 const Toolbar = observer(() => {
     const { run_panel, toolbar, quick_strategy } = useDBotStore();
     const {
-        ui: { is_mobile },
+        ui: { is_desktop },
     } = useStore();
     const { is_dialog_open, closeResetDialog, onResetOkButtonClick: onOkButtonClick } = toolbar;
     const { is_running } = run_panel;
@@ -20,13 +20,17 @@ const Toolbar = observer(() => {
     const handleQuickStrategyOpen = () => {
         setFormVisibility(true);
         // send to rs if quick strategy is opened from bot builder (mobile)
-        rudderStackSendQsOpenEventFromBotBuilder();
+        rudderStackSendOpenEvent({
+            subpage_name: 'bot_builder',
+            subform_source: 'bot_builder',
+            subform_name: 'quick_strategy',
+        });
     };
     return (
         <React.Fragment>
-            <div className='toolbar dashboard__toolbar' data-testid='dashboard__toolbar'>
+            <div className='toolbar dashboard__toolbar' data-testid='dt_dashboard_toolbar'>
                 <div className='toolbar__section'>
-                    {is_mobile && (
+                    {!is_desktop && (
                         <ToolbarButton
                             popover_message={localize('Click here to start building your Deriv Bot.')}
                             button_id='db-toolbar__get-started-button'
@@ -35,10 +39,10 @@ const Toolbar = observer(() => {
                             button_text={localize('Quick strategy')}
                         />
                     )}
-                    {!is_mobile && <WorkspaceGroup />}
+                    {is_desktop && <WorkspaceGroup />}
                 </div>
             </div>
-            {is_mobile && <WorkspaceGroup />}
+            {!is_desktop && <WorkspaceGroup />}
             <Dialog
                 portal_element_id='modal_root'
                 title={localize('Are you sure?')}
@@ -58,7 +62,7 @@ const Toolbar = observer(() => {
                             <div
                                 key={0}
                                 className='toolbar__dialog-text--second'
-                                data-testid='toolbar__dialog-text--second'
+                                data-testid='dt_toolbar_dialog_text_second'
                             />,
                         ]}
                     />

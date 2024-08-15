@@ -43,6 +43,13 @@ const ContractTypeGlossary = ({
                         type: 'paragraph',
                         text: <Localize i18n_default_text='Spot price on the previous tick.' />,
                     },
+                    { type: 'heading', text: <Localize i18n_default_text='Take profit' /> },
+                    {
+                        type: 'paragraph',
+                        text: (
+                            <Localize i18n_default_text='If you select this feature, your trade will be closed automatically at the nearest available asset price when your profit reaches or exceeds the take profit amount. Your profit may be more than the amount you entered depending on the market price at closing.' />
+                        ),
+                    },
                     { type: 'heading', text: <Localize i18n_default_text='Slippage risk' /> },
                     {
                         type: 'paragraph',

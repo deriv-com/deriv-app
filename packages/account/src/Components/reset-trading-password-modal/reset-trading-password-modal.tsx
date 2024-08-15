@@ -176,13 +176,23 @@ const ResetTradingPassword = ({
                                         />
                                     </Text>
                                     <Text as='p' size='xs' className='reset-trading-password__details'>
-                                        {localize('You can use this password for all your Deriv MT5 accounts.')}
+                                        <Localize
+                                            i18n_default_text='You can use this password for all your {{platform}} accounts.'
+                                            values={{
+                                                platform: getCFDPlatformLabel(platform),
+                                            }}
+                                        />
                                     </Text>
                                     <fieldset className='reset-trading-password__input-field'>
                                         <PasswordMeter
                                             input={values.password}
                                             has_error={!!(touched.password && errors.password)}
-                                            custom_feedback_messages={getErrorMessages().password_warnings}
+                                            custom_feedback_messages={
+                                                getErrorMessages().password_warnings as unknown as Record<
+                                                    string,
+                                                    string
+                                                >
+                                            }
                                         >
                                             <PasswordInput
                                                 autoComplete='new-password'
@@ -204,7 +214,11 @@ const ResetTradingPassword = ({
                                         </PasswordMeter>
                                     </fieldset>
                                     <Text as='p' size='xs' className='reset-trading-password__hint'>
-                                        <Localize i18n_default_text='Your password must contain between 8-16 characters that include uppercase and lowercase letters, and at least one number and special character such as ( _ @ ? ! / # ).' />
+                                        {platform === CFD_PLATFORMS.MT5 ? (
+                                            <Localize i18n_default_text='Your password must contain between 8-16 characters that include uppercase and lowercase letters, and at least one number and special character such as ( _ @ ? ! / # ).' />
+                                        ) : (
+                                            <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
+                                        )}
                                     </Text>
                                     <FormSubmitButton
                                         is_disabled={!values.password || !!errors.password || isSubmitting}

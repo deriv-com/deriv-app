@@ -45,7 +45,7 @@ const AccumulatorTradeDescription = ({
             key='3'
         />,
         <Localize
-            i18n_default_text='You can close your trade anytime. However, be aware of <0>slippage risk</0>.'
+            i18n_default_text='<0>Take profit</0> is an additional feature that lets you manage your risk by automatically closing the trade when your profit reaches the target amount. This feature is unavailable for ongoing accumulator contracts.'
             components={[
                 <span
                     className='contract-type-info__content-definition'
@@ -55,6 +55,18 @@ const AccumulatorTradeDescription = ({
                 />,
             ]}
             key='4'
+        />,
+        <Localize
+            i18n_default_text='You can close your trade anytime. However, be aware of <0>slippage risk</0>.'
+            components={[
+                <span
+                    className='contract-type-info__content-definition'
+                    onClick={onClick}
+                    onKeyDown={onClick}
+                    key={0}
+                />,
+            ]}
+            key='5'
         />,
     ];
     return (

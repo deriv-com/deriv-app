@@ -27,7 +27,7 @@ export const generateErrorDialogTitle = (error_code: string): string => {
  * @param {string} error_message - The custom error message to be displayed, if applicable.
  * @returns {string} The error message for the dialog.
  */
-export const generateErrorDialogBody = (error_code: string, error_message?: string): string => {
+export const generateErrorDialogBody = (error_code: string): string => {
     switch (error_code) {
         case api_error_codes.ADVERT_SAME_LIMITS:
             return localize(
@@ -38,7 +38,7 @@ export const generateErrorDialogBody = (error_code: string, error_message?: stri
                 'You already have an ad with the same exchange rate for this currency pair and order type. \n\nPlease set a different rate for your ad.'
             );
         default:
-            return error_message ?? localize("Something's not right");
+            return localize("Something's not right");
     }
 };
 
@@ -113,4 +113,22 @@ export const getLastOnlineLabel = (is_online: 0 | 1, last_online_time?: number) 
         return localize('Seen more than 6 months ago');
     }
     return localize('Online');
+};
+
+/**
+ * Function to get the message to be shown to users when they are not eligible to create an order against an advert.
+ *
+ * @param {string[]} eligibility_statuses - The list of reasons why the user is not eligible.
+ * @returns {string} The eligibility message based on the given eligibility statuses.
+ */
+export const getEligibilityMessage = (eligibility_statuses: string[]) => {
+    if (eligibility_statuses.length === 1) {
+        if (eligibility_statuses.includes('completion_rate')) {
+            return localize('Your completion rate is too low for this ad.');
+        } else if (eligibility_statuses.includes('join_date')) {
+            return localize("You've not used Deriv P2P long enough for this ad.");
+        }
+    }
+
+    return localize("The advertiser has set conditions for this ad that you don't meet.");
 };

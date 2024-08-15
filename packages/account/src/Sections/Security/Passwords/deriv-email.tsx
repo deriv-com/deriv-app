@@ -1,19 +1,19 @@
-import React from 'react';
+import { Fragment, useState } from 'react';
 import { Button, Text, Input } from '@deriv/components';
 import { useVerifyEmail } from '@deriv/api';
 import { toTitleCase } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
-import FormSubHeader from 'Components/form-sub-header';
-import SentEmailModal from 'Components/sent-email-modal';
-import UnlinkAccountModal from 'Components/unlink-account-modal';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import FormSubHeader from '../../../Components/form-sub-header';
+import SentEmailModal from '../../../Components/sent-email-modal';
+import UnlinkAccountModal from '../../../Components/unlink-account-modal';
 
 type TVerifyEmailPayload = Parameters<ReturnType<typeof useVerifyEmail>['mutate']>[0];
 
 /**
  * Display the user's email address and a button to change it.
  * @name DerivEmail
- * @returns {React.ReactNode}
+ * @returns { ReactNode }
  */
 const DerivEmail = observer(() => {
     const {
@@ -21,8 +21,9 @@ const DerivEmail = observer(() => {
         client: { social_identity_provider, is_social_signup, email },
     } = useStore();
     const { mutate } = useVerifyEmail();
-    const [is_unlink_account_modal_open, setIsUnlinkAccountModalOpen] = React.useState(false);
-    const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
+    const { localize } = useTranslations();
+    const [is_unlink_account_modal_open, setIsUnlinkAccountModalOpen] = useState(false);
+    const [is_send_email_modal_open, setIsSendEmailModalOpen] = useState(false);
 
     const payload: TVerifyEmailPayload = { verify_email: email, type: 'request_email' };
 
@@ -42,7 +43,7 @@ const DerivEmail = observer(() => {
     };
 
     return (
-        <React.Fragment>
+        <Fragment>
             <FormSubHeader title={localize('Email address')} />
             <div className='account__email-wrapper'>
                 <Text as='p' className='email-platform__desc' color='prominent' size='xs' weight='lighter'>
@@ -90,7 +91,7 @@ const DerivEmail = observer(() => {
                     is_modal_when_mobile={true}
                 />
             </div>
-        </React.Fragment>
+        </Fragment>
     );
 });
 

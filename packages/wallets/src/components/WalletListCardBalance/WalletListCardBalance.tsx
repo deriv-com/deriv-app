@@ -1,18 +1,19 @@
 import React from 'react';
-import { useActiveWalletAccount, useBalance } from '@deriv/api-v2';
+import { useActiveWalletAccount } from '@deriv/api-v2';
+import { displayMoney } from '@deriv/api-v2/src/utils';
+import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import { WalletText } from '../Base';
 import './WalletListCardBalance.scss';
 
 const WalletListCardBalance = () => {
-    const { isLoading: isBalanceLoading } = useBalance();
-    const { data: activeWallet, isInitializing: isActiveWalletInitializing } = useActiveWalletAccount();
-    const balance = activeWallet?.display_balance;
-
-    // ideally we should have one specific hook to use data & loading state together
-    // as right now, we are using useBalance just to figure out if account data is complete
-    // useActiveWalletAccount shouldn't return isLoading=false until the data is complete,
-    // but its not the case at the moment,
-    const showLoader = isBalanceLoading || isActiveWalletInitializing;
+    const {
+        data: activeWallet,
+        isInitializing: isActiveWalletInitializing,
+        isLoading: isActiveWalletLoading,
+    } = useActiveWalletAccount();
+    const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
+    const showLoader = isBalanceLoading || isActiveWalletInitializing || isActiveWalletLoading;
+    const balance = balanceData?.[activeWallet?.loginid ?? '']?.balance;
 
     return (
         <div className='wallets-balance__container'>
@@ -23,7 +24,9 @@ const WalletListCardBalance = () => {
                 />
             ) : (
                 <WalletText align='right' size='xl' weight='bold'>
-                    {balance}
+                    {displayMoney(balance, activeWallet?.currency, {
+                        fractional_digits: activeWallet?.currency_config?.fractional_digits,
+                    })}
                 </WalletText>
             )}
         </div>

@@ -1,12 +1,17 @@
+import { localize } from '@deriv-com/translations';
 import { TWithdrawalCryptoContext } from '../provider';
 
 const helperMessageMapper = {
-    decimalPlacesExceeded: (limit: number) => `Up to ${limit} decimal places are allowed.`,
-    fieldRequired: 'This field is required.',
-    insufficientFunds: 'Insufficient funds',
-    invalidInput: 'Should be a valid number.',
+    balanceLessThanMinWithdrawalLimit: (balance: string, min: string) =>
+        localize(
+            `Your balance (${balance}) is less than the current minimum withdrawal allowed (${min}). Please top up your wallet to continue with your withdrawal.`
+        ),
+    decimalPlacesExceeded: (limit: number) => localize(`Up to ${limit} decimal places are allowed.`),
+    fieldRequired: localize('This field is required.'),
+    insufficientFunds: localize('Insufficient funds'),
+    invalidInput: localize('Should be a valid number.'),
     withdrawalLimitError: (min: string, max: string) => {
-        return `The current allowed withdraw amount is ${min} to ${max}.`;
+        return localize(`The current allowed withdraw amount is ${min} to ${max}.`);
     },
 };
 
@@ -17,7 +22,7 @@ const validateCryptoAddress = (address: string) => {
     if (!address) return helperMessageMapper.fieldRequired;
 
     if (address.length < MIN_ADDRESS_LENGTH || address.length > MAX_ADDRESS_LENGTH) {
-        return 'Your wallet address should have 25 to 64 characters.';
+        return localize('Your wallet address should have 25 to 64 characters.');
     }
 
     return undefined;
@@ -52,7 +57,11 @@ const checkIfInvalidInput = (
 };
 
 const validateCryptoInput = (
-    activeWallet: TWithdrawalCryptoContext['activeWallet'],
+    activeWallet: {
+        balance: number;
+        currency: string;
+        displayBalance: string;
+    },
     fractionalDigits: TWithdrawalCryptoContext['fractionalDigits'],
     isClientVerified: TWithdrawalCryptoContext['isClientVerified'],
     remainder: number,
@@ -70,6 +79,13 @@ const validateCryptoInput = (
     if (amount > activeWallet.balance) return helperMessageMapper.insufficientFunds;
 
     const MIN_WITHDRAWAL_AMOUNT = minimumWithdrawal;
+
+    if (MIN_WITHDRAWAL_AMOUNT && activeWallet.balance < MIN_WITHDRAWAL_AMOUNT) {
+        return helperMessageMapper.balanceLessThanMinWithdrawalLimit(
+            activeWallet.displayBalance,
+            `${MIN_WITHDRAWAL_AMOUNT.toFixed(fractionalDigits.crypto)} ${activeWallet.currency}`
+        );
+    }
 
     const MAX_WITHDRAWAL_AMOUNT =
         !isClientVerified && remainder < activeWallet.balance ? remainder : activeWallet.balance;

@@ -1,16 +1,8 @@
-input[type='date']::-webkit-calendar-picker-indicator {
-    display: none;
-    -webkit-appearance: none;
-}
-
-abbr[title] {
-    text-decoration: none;
-}
-
 .wallets-datepicker {
     display: flex;
     flex-direction: column;
     position: relative;
+    caret-color: transparent;
 
     &__button {
         all: unset;
@@ -25,8 +17,11 @@ abbr[title] {
         position: absolute;
         display: inline-block;
         width: 28rem;
-        transform: translateY(4rem);
         z-index: 1;
+
+        @include desktop {
+            transform: translate(50%, 4rem);
+        }
 
         @include mobile {
             align-self: center;
@@ -46,6 +41,13 @@ abbr[title] {
 
             button {
                 border-radius: 0.5rem;
+                color: var(--text-general, #333333);
+                cursor: pointer;
+
+                &:disabled {
+                    color: #757575;
+                    cursor: not-allowed;
+                }
             }
 
             &__navigation {
@@ -56,14 +58,13 @@ abbr[title] {
 
                 &__arrow {
                     font-size: 2.4rem;
-                    transform: translateY(-1.2rem);
-                    justify-content: center;
-                    align-items: center;
+                    text-align: center;
                 }
 
                 &__label {
+                    text-align: center;
                     font-weight: bold;
-                    transform: translateY(-0.4rem);
+                    font-size: 1.2rem;
                 }
 
                 button {

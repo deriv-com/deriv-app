@@ -6,6 +6,7 @@ import Text from '../text';
 
 export type TButtonCommonProps = {
     alternate: boolean;
+    black: boolean;
     blue: boolean;
     green: boolean;
     has_effect: boolean;
@@ -26,6 +27,7 @@ export type TButtonCommonProps = {
     tertiary: boolean;
     text: string;
     transparent: boolean;
+    wide: boolean;
 };
 export type TButtonProps = React.PropsWithChildren<React.ButtonHTMLAttributes<HTMLButtonElement>> &
     TButtonCommonProps & {
@@ -45,6 +47,7 @@ const ButtonGroup = ({ children, className }: TButtonGroupProps) => (
     <div className={classNames('dc-btn__group', className)}>{children}</div>
 );
 const Button = ({
+    black,
     blue,
     children,
     className = '',
@@ -75,6 +78,7 @@ const Button = ({
     transparent,
     small,
     tertiary,
+    wide,
     renderText,
     ...props
 }: Partial<TButtonProps>) => {
@@ -83,6 +87,7 @@ const Button = ({
         {
             'dc-btn__effect': has_effect,
             'dc-btn--primary': primary,
+            'dc-btn--black': black,
             'dc-btn--blue': blue,
             'dc-btn--secondary': secondary,
             'dc-btn--tertiary': tertiary,
@@ -96,6 +101,7 @@ const Button = ({
             'dc-btn__medium': medium,
             'dc-btn__small': small,
             'dc-btn__toggle': is_button_toggle,
+            'dc-btn__wide': wide,
             'dc-btn--plus': is_plus,
             'dc-btn--circle': is_circle,
             'dc-btn--circular': is_circular,

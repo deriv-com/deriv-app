@@ -66,6 +66,8 @@ jest.mock('Components/route-prompt-dialog', () => ({
     default: () => <div>RoutePromptDialog</div>,
 }));
 
+jest.useFakeTimers();
+
 window.Blockly = {
     Colours: { RootBlock: {} },
     utils: {
@@ -81,10 +83,10 @@ describe('AppContent', () => {
     });
 
     beforeAll(() => {
-        mock_DBot_store = mockDBotStore(mock_store, mock_ws);
+        mock_DBot_store = mockDBotStore(mock_store, mock_ws as any);
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
-                <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
+                <DBotStoreProvider ws={mock_ws as any} mock={mock_DBot_store}>
                     {children}
                 </DBotStoreProvider>
             </StoreProvider>
@@ -135,7 +137,7 @@ describe('AppContent', () => {
     });
 
     it('should unsubscribe message handler on component unmount', async () => {
-        mock_store.client.is_logged_in = false;
+        mock_store.client.is_logged_in = true;
         mock_DBot_store?.transactions?.recovered_transactions.push(11);
 
         if (mock_DBot_store)
@@ -154,6 +156,8 @@ describe('AppContent', () => {
         const { container } = render(<AppContent />, {
             wrapper,
         });
+        jest.advanceTimersByTime(3000);
+
         unmountComponentAtNode(container);
         await waitFor(() => {
             expect(mock_unsubscribe).toBeCalled();

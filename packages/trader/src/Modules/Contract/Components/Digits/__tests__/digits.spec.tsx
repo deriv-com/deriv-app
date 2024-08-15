@@ -1,8 +1,9 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { isDesktop, isMobile, mockContractInfo, TRADE_TYPES } from '@deriv/shared';
+import { isDesktop, mockContractInfo, TRADE_TYPES } from '@deriv/shared';
 import Digits from '../digits';
+import { useDevice } from '@deriv-com/ui';
 
 const tick_information_text = /Tick/i;
 const mocked_digit_spot = 'DigitSpot';
@@ -38,9 +39,12 @@ jest.mock('../../LastDigitPrediction', () => ({
 }));
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    isDesktop: jest.fn(() => true),
-    isMobile: jest.fn(() => false),
     useIsMounted: jest.fn(() => () => true),
+}));
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isMobile: false, isDesktop: true })),
 }));
 
 describe('<Digits />', () => {
@@ -109,8 +113,7 @@ describe('<Digits />', () => {
         expect(screen.queryByTestId('dt_popover_wrapper')).not.toBeInTheDocument();
     });
     it('should render tick information text, <DigitSpot/> and <LastDigitPrediction /> for mobile if is_trade_page === true', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        (isDesktop as jest.Mock).mockReturnValue(false);
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         render(<Digits {...mocked_props} />);
 
         expect(screen.getByText(tick_information_text)).toBeInTheDocument();
@@ -118,8 +121,7 @@ describe('<Digits />', () => {
         expect(screen.getByText(mocked_last_digit_prediction)).toBeInTheDocument();
     });
     it('onLastDigitSpot function call should set new properties in <DigitSpot />', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        (isDesktop as jest.Mock).mockReturnValue(false);
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         render(<Digits {...mocked_props} />);
 
         expect(screen.getByText('Spot:')).toBeInTheDocument();

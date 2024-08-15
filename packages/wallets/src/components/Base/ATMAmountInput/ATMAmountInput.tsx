@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import classnames from 'classnames';
 import unFormatLocaleString from '@deriv/utils/src/unFormatLocaleString';
+import { Text } from '@deriv-com/ui';
 import useInputATMFormatter from '../../../hooks/useInputATMFormatter';
-import { WalletText } from '../..';
 import './ATMAmountInput.scss';
 
 type TProps = {
@@ -37,6 +37,8 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
 
     const {
         onChange: formatOnChange,
+        onKeyDown,
+        onKeyUp,
         onPaste: formatOnPaste,
         value: formattedValue,
     } = useInputATMFormatter(inputRef, value, {
@@ -61,9 +63,9 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
 
     return (
         <div className='wallets-atm-amount-input'>
-            <WalletText size='sm'>{label}</WalletText>
+            <Text size='sm'>{label}</Text>
             <div className='wallets-atm-amount-input__input-container'>
-                <WalletText size='lg' weight='bold'>
+                <Text size='lg' weight='bold'>
                     <input
                         className={classnames('wallets-atm-amount-input__input', {
                             'wallets-atm-amount-input__input--error': isError,
@@ -80,12 +82,14 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
                         onBlur={onBlurHandler}
                         onChange={formatOnChange}
                         onFocus={onFocusHandler}
+                        onKeyDown={onKeyDown}
+                        onKeyUp={onKeyUp}
                         onPaste={formatOnPaste}
                         ref={inputRef}
                         type='tel'
                         value={formattedValue}
                     />
-                </WalletText>
+                </Text>
             </div>
         </div>
     );

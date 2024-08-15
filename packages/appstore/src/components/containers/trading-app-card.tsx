@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { Text, StatusBadge } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import {
@@ -13,6 +13,7 @@ import {
 } from 'Constants/platform-config';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import {
     CFD_PLATFORMS,
@@ -21,6 +22,7 @@ import {
     getUrlSmartTrader,
     getUrlBinaryBot,
     MT5_ACCOUNT_STATUS,
+    CFD_PRODUCTS_TITLE,
 } from '@deriv/shared';
 import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
 import './trading-app-card.scss';
@@ -57,8 +59,12 @@ const TradingAppCard = ({
     const { is_account_being_created } = cfd;
     const { account_status: { authentication } = {} } = client;
 
+    const [is_traders_dashboard_tracking_enabled] = useGrowthbookGetFeatureValue({
+        featureFlag: 'ce_tradershub_dashboard_tracking',
+        defaultValue: false,
+    });
+
     const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
-    const demo_label = localize('Demo');
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -89,12 +95,15 @@ const TradingAppCard = ({
     };
 
     const openStaticPage = () => {
-        Analytics.trackEvent('ce_tradershub_dashboard_form', {
-            action: 'account_logo_push',
-            form_name: 'traders_hub_default',
-            account_mode: selected_account_type,
-            account_name: !is_real ? `${sub_title === undefined ? name : sub_title}` : name,
-        });
+        if (is_traders_dashboard_tracking_enabled) {
+            Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                action: 'account_logo_push',
+                form_name: 'traders_hub_default',
+                account_mode: selected_account_type,
+                account_name: !is_real ? `${sub_title === undefined ? name : sub_title}` : name,
+            });
+        }
+
         if (is_deriv_platform) {
             switch (name) {
                 case DERIV_PLATFORM_NAMES.TRADER:
@@ -160,15 +169,10 @@ const TradingAppCard = ({
                             color='prominent'
                             data-testid='dt_cfd-account-name'
                         >
-                            {!is_real && sub_title ? `${sub_title} ${demo_label}` : sub_title}
+                            {sub_title}
                         </Text>
                         {short_code_and_region && (
-                            <Text
-                                weight='bolder'
-                                size='xxxs'
-                                line_height='s'
-                                className='trading-app-card__details__short-code'
-                            >
+                            <Text size='xxxs' line_height='s' className='trading-app-card__details__short-code'>
                                 {short_code_and_region}
                             </Text>
                         )}
@@ -178,22 +182,16 @@ const TradingAppCard = ({
                             className='title'
                             size='xs'
                             line_height='s'
-                            weight='bold'
                             color={action_type === 'trade' ? 'prominent' : 'general'}
                             data-testid={
                                 action_type === 'get' || is_deriv_platform ? 'dt_platform-name' : 'dt_account-balance'
                             }
                         >
-                            {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
+                            {name}
                         </Text>
-                        {is_new && (
-                            <Text
-                                className='trading-app-card__details__new'
-                                weight='bolder'
-                                size='xxxs'
-                                line_height='s'
-                            >
-                                {localize('NEW!')}
+                        {is_new && name === CFD_PRODUCTS_TITLE.ZEROSPREAD && (
+                            <Text className='trading-app-card__details__new' weight='bolder' size='xxs' line_height='s'>
+                                <Localize i18n_default_text='NEW!' />
                             </Text>
                         )}
                     </div>

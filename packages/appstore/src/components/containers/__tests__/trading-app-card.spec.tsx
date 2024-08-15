@@ -19,13 +19,13 @@ describe('<TradingAppCard/>', () => {
     const mock_props: React.ComponentProps<typeof TradingAppCard> = {
         availability: 'Non-EU',
         name: '0.00 USD',
-        icon: 'Derived',
+        icon: 'Standard',
         action_type: 'multi-action',
         clickable_icon: false,
         description: 'Trade CFDs on MT5 with synthetics, baskets, and derived FX.',
         is_deriv_platform: false,
         onAction: jest.fn(),
-        sub_title: 'Derived',
+        sub_title: 'Standard',
         has_divider: false,
         platform: 'mt5',
         short_code_and_region: 'SVG',
@@ -96,7 +96,7 @@ describe('<TradingAppCard/>', () => {
         userEvent.click(status_badge);
 
         const modal_content_bvi = screen.getByText(
-            /You can no longer open new positions with your MT5 Derived SVG account. Please use your MT5 Derived BVI account to open new positions./
+            /You can no longer open new positions with your MT5 Standard SVG account. Please use your MT5 Standard BVI account to open new positions./
         );
         expect(modal_content_bvi).toBeInTheDocument();
     });
@@ -108,7 +108,7 @@ describe('<TradingAppCard/>', () => {
         userEvent.click(status_badge);
 
         const modal_content_bvi = screen.getByText(
-            /You can no longer open new positions with your MT5 Derived SVG account. Please use your MT5 Derived BVI account to open new positions./
+            /You can no longer open new positions with your MT5 Standard SVG account. Please use your MT5 Standard BVI account to open new positions./
         );
         const okButton = screen.getByRole('button', { name: /OK/i });
         userEvent.click(okButton);

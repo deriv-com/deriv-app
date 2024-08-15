@@ -1,25 +1,25 @@
-import React from 'react';
-import classNames from 'classnames';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+//@ts-nocheck [TODO] - Need to fix typescript errors in Autocomplete List items and TItems
+
+import { RefObject, useState, Fragment } from 'react';
+import clsx from 'clsx';
 import { Formik, Field, FormikProps, FormikHelpers, FormikHandlers, FormikState, FieldProps } from 'formik';
+import { useDevice } from '@deriv-com/ui';
 import { StatesList } from '@deriv/api-types';
 import {
     Autocomplete,
     AutoHeightWrapper,
-    DesktopWrapper,
     Div100vhContainer,
     FormSubmitButton,
     Loading,
-    MobileWrapper,
     Modal,
     SelectNative,
     Text,
     ThemedScrollbars,
 } from '@deriv/components';
 import { useStatesList } from '@deriv/hooks';
-import { getLocation } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
-import InlineNoteWithIcon from '../inline-note-with-icon';
 import { FormInputField } from '../forms/form-fields';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
@@ -47,7 +47,7 @@ type TAddressDetails = {
         action: (isSubmitting: boolean) => void,
         next_step: () => void
     ) => void;
-    selected_step_ref?: React.RefObject<FormikProps<TAddressDetailFormProps>>;
+    selected_step_ref?: RefObject<FormikProps<TAddressDetailFormProps>>;
     value: TAddressDetailFormProps;
     has_real_account: boolean;
 };
@@ -74,6 +74,7 @@ type TAutoComplete = {
  * @param has_real_account - has real account
  * @returns react node
  */
+
 const AddressDetails = observer(
     ({
         getCurrentStep,
@@ -88,15 +89,14 @@ const AddressDetails = observer(
         has_real_account,
         ...props
     }: TAddressDetails) => {
-        const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
+        const { isDesktop } = useDevice();
+        const [address_state_to_display, setAddressStateToDisplay] = useState('');
 
         const {
-            ui,
             client: { residence, account_settings },
             traders_hub: { is_eu_user },
         } = useStore();
 
-        const { is_desktop, is_mobile } = ui;
         const { data: states_list, isFetched } = useStatesList(residence);
 
         const handleCancel = (values: TAddressDetailFormProps) => {
@@ -127,7 +127,7 @@ const AddressDetails = observer(
                     handleChange,
                     setFieldTouched,
                 }: FormikHandlers & FormikHelpers<TAddressDetailFormProps> & FormikState<TAddressDetailFormProps>) => (
-                    <AutoHeightWrapper default_height={350} height_offset={is_desktop ? 80 : null}>
+                    <AutoHeightWrapper default_height={350} height_offset={isDesktop ? 80 : null}>
                         {({
                             setRef,
                             height,
@@ -140,37 +140,17 @@ const AddressDetails = observer(
                                 <Div100vhContainer
                                     className='details-form'
                                     height_offset='90px'
-                                    is_disabled={is_desktop}
+                                    is_disabled={isDesktop}
                                 >
                                     <ScrollToFieldWithError />
-                                    {is_eu_user ? (
-                                        <div className='details-form__banner-container'>
-                                            <InlineNoteWithIcon
-                                                icon='IcAlertWarning'
-                                                message={
-                                                    <Localize i18n_default_text='For verification purposes as required by regulation. It’s your responsibility to provide accurate and complete answers. You can update personal details at any time in your account settings.' />
-                                                }
-                                                title={localize('Why do we collect this?')}
-                                            />
-                                        </div>
-                                    ) : (
-                                        <Text
-                                            as='p'
-                                            align='left'
-                                            size='xxs'
-                                            line_height='l'
-                                            className='details-form__description'
-                                        >
-                                            <strong>
-                                                <Localize i18n_default_text='Only use an address for which you have proof of residence - ' />
-                                            </strong>
-                                            <Localize i18n_default_text='a recent utility bill (e.g. electricity, water, gas, landline, or internet), bank statement, or government-issued letter with your name and this address.' />
+                                    {!isDesktop && (
+                                        <Text size='xs' weight='bold' className='details-form__heading'>
+                                            <Localize i18n_default_text='Complete your address details' />
                                         </Text>
                                     )}
-
                                     <ThemedScrollbars height={height} className='details-form__scrollbar'>
                                         <div
-                                            className={classNames('details-form__elements', 'address-details-form', {
+                                            className={clsx('details-form__elements', 'address-details-form', {
                                                 'address-details-form__eu': is_eu_user,
                                             })}
                                         >
@@ -213,8 +193,8 @@ const AddressDetails = observer(
                                             {states_list?.length > 0 ? (
                                                 <Field name='address_state'>
                                                     {({ field }: FieldProps) => (
-                                                        <React.Fragment>
-                                                            <DesktopWrapper>
+                                                        <Fragment>
+                                                            {isDesktop ? (
                                                                 <Autocomplete
                                                                     {...field}
                                                                     {...(address_state_to_display && {
@@ -243,8 +223,7 @@ const AddressDetails = observer(
                                                                             has_real_account)
                                                                     }
                                                                 />
-                                                            </DesktopWrapper>
-                                                            <MobileWrapper>
+                                                            ) : (
                                                                 <SelectNative
                                                                     placeholder={localize('Please select')}
                                                                     label={localize('State/Province')}
@@ -267,8 +246,8 @@ const AddressDetails = observer(
                                                                             has_real_account)
                                                                     }
                                                                 />
-                                                            </MobileWrapper>
-                                                        </React.Fragment>
+                                                            )}
+                                                        </Fragment>
                                                     )}
                                                 </Field>
                                             ) : (
@@ -299,11 +278,11 @@ const AddressDetails = observer(
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer has_separator is_bypassed={is_mobile}>
+                                <Modal.Footer has_separator is_bypassed={!isDesktop}>
                                     <FormSubmitButton
                                         is_disabled={isSubmitting}
                                         label={localize('Next')}
-                                        is_absolute={is_mobile}
+                                        is_absolute={!isDesktop}
                                         has_cancel
                                         cancel_label={localize('Previous')}
                                         onCancel={() => handleCancel(values)}

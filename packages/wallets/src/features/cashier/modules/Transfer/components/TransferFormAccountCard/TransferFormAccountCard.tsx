@@ -1,33 +1,22 @@
 import React from 'react';
 import classNames from 'classnames';
-import {
-    WalletCurrencyCard,
-    WalletListCardBadge,
-    WalletsAppLinkedWithWalletIcon,
-    WalletText,
-} from '../../../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
+import { WalletCurrencyCard, WalletListCardBadge, WalletMarketCurrencyIcon } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
-import { TWalletLandingCompanyName } from '../../../../../../types';
-import { getTradingAppIcon } from '../../../../helpers';
+import { TPlatforms } from '../../../../../../types';
 import type { TAccount } from '../../types';
 import './TransferFormAccountCard.scss';
 
 type TProps = {
     account?: TAccount;
-    activeWallet?: TAccount;
     type?: 'input' | 'modal';
 };
 
-const WalletTransferFormAccountCard: React.FC<TProps> = ({ account, activeWallet, type = 'modal' }) => {
+const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) => {
     const { isMobile } = useDevice();
     const isInput = type === 'input';
     const isModal = type === 'modal';
-    const badgeLabel = account?.demo_account ? 'virtual' : account?.landingCompanyName;
-    const appIcon = getTradingAppIcon(
-        account?.account_type ?? '',
-        activeWallet?.landingCompanyName as TWalletLandingCompanyName,
-        account?.mt5_group
-    );
 
     return (
         <div
@@ -45,33 +34,39 @@ const WalletTransferFormAccountCard: React.FC<TProps> = ({ account, activeWallet
                             size='sm'
                         />
                     ) : (
-                        <WalletsAppLinkedWithWalletIcon
-                            appIcon={appIcon}
-                            currency={activeWallet?.currency ?? ''}
+                        <WalletMarketCurrencyIcon
+                            currency={account?.currency ?? ''}
                             isDemo={Boolean(account?.demo_account)}
-                            size='small'
+                            marketType={account?.market_type}
+                            platform={account?.account_type as TPlatforms.All}
+                            size='xs'
                         />
                     )}
                 </div>
-                {isInput && isMobile && (
-                    <WalletListCardBadge isDemo={Boolean(account?.demo_account)} label={badgeLabel} />
-                )}
+                {isInput && isMobile && !!account?.demo_account && <WalletListCardBadge />}
             </div>
 
             <div className='wallets-transfer-form-account-card__content'>
-                <WalletText as='p' size={isInput ? '2xs' : 'sm'} weight='bold'>
+                <Text as='p' size={isInput ? '2xs' : 'sm'} weight='bold'>
                     {account?.accountName}
-                </WalletText>
-                <WalletText size={isInput ? '2xs' : 'xs'}>Balance: {account?.displayBalance}</WalletText>
+                </Text>
+                <Text size={isInput ? '2xs' : 'xs'}>
+                    <Localize
+                        i18n_default_text='Balance: {{balance}}'
+                        values={{
+                            balance: account?.displayBalance,
+                        }}
+                    />
+                </Text>
             </div>
 
-            {isModal && (
+            {isModal && !!account?.demo_account && (
                 <div className='wallets-transfer-form-account-card__modal-badge'>
-                    <WalletListCardBadge isDemo={Boolean(account?.demo_account)} label={badgeLabel} />
+                    <WalletListCardBadge />
                 </div>
             )}
         </div>
     );
 };
 
-export default WalletTransferFormAccountCard;
+export default TransferFormAccountCard;

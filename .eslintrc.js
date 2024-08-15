@@ -25,6 +25,7 @@ module.exports = {
                 'plugin:react/recommended',
                 'plugin:@typescript-eslint/recommended',
                 'plugin:prettier/recommended',
+                'plugin:react/jsx-runtime', // Enables the new JSX transform runtime
             ],
             parserOptions: {
                 ecmaversion: 2018,

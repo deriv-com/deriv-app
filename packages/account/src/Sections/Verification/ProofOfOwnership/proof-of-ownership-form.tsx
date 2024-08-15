@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+//@ts-nocheck [TODO] - Need to fix typescript errors
+
 import React from 'react';
-import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
+import { Form, Formik, FormikHelpers } from 'formik';
 import DocumentUploader from '@binary-com/binary-document-uploader';
 import { Button } from '@deriv/components';
 import { readFiles, WS, UPLOAD_FILE_TYPE } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import FormFooter from '../../../Components/form-footer';
@@ -18,42 +22,37 @@ import {
     TProofOfOwnershipFormValue,
 } from '../../../Types';
 import { isValidPaymentMethodIdentifier, isValidFile } from './validation';
+import { API_ERROR_CODES } from 'Constants/api-error-codes';
 
 type TProofOfOwnershipFormProps = {
     grouped_payment_method_data: Partial<Record<TPaymentMethod, TPaymentMethodInfo>>;
 };
 
 const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOfOwnershipFormProps) => {
-    const { client, notifications, ui } = useStore();
+    const { client, notifications } = useStore();
     const { refreshNotifications } = notifications;
     const { email: client_email, updateAccountStatus } = client;
-    const { is_mobile } = ui;
+    const { isDesktop } = useDevice();
 
     const grouped_payment_method_data_keys = Object.keys(grouped_payment_method_data) as Array<TPaymentMethod>;
-
-    let initial_values: Partial<TProofOfOwnershipFormValue> = {};
-    const form_ref = React.useRef<FormikProps<Partial<TProofOfOwnershipFormValue>>>(null);
 
     const fileReadErrorMessage = (filename: string) => {
         return localize('Unable to read file {{name}}', { name: filename });
     };
 
-    React.useEffect(() => {
-        if (form_ref?.current) {
-            form_ref.current?.resetForm();
-        }
-    }, [grouped_payment_method_data_keys.length]);
-
     const getScrollOffset = React.useCallback(
         (items_count = 0) => {
-            if (is_mobile) return '20rem';
+            if (!isDesktop) return '20rem';
             if (items_count <= 2) return '0rem';
             return '8rem';
         },
-        [is_mobile]
+        [isDesktop]
     );
 
-    if (grouped_payment_method_data_keys) {
+    const initial_values = React.useMemo(() => {
+        if (!grouped_payment_method_data_keys?.length) {
+            return {};
+        }
         const default_value: TProofOfOwnershipData = {
             documents_required: 0,
             id: 0,
@@ -84,8 +83,8 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
             {}
         );
 
-        initial_values = { ...initial_values, ...form_value };
-    }
+        return form_value;
+    }, [grouped_payment_method_data_keys, grouped_payment_method_data]);
 
     const validateFields = (values: TProofOfOwnershipFormValue) => {
         let errors = {} as TProofOfOwnershipErrors;
@@ -208,14 +207,17 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
                             const response = await uploader.upload(processed_file);
                             const upload_error: Array<string> = [];
                             if (response?.warning) {
-                                if (response?.warning?.trim() === 'DuplicateUpload' && response?.message) {
+                                if (
+                                    response?.warning?.trim() === API_ERROR_CODES.DUPLICATE_DOCUMENT &&
+                                    response?.message
+                                ) {
                                     upload_error[index] = response?.message;
                                     const error_obj = {
                                         [payment_id]: {
                                             files: upload_error,
                                         },
                                     };
-
+                                    // @ts-expect-error Error is an array
                                     setFieldError(card_key, { ...error_obj });
                                 }
                             } else {
@@ -234,13 +236,7 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
     };
 
     return (
-        <Formik
-            initialValues={{ ...initial_values }}
-            validate={validateFields}
-            innerRef={form_ref}
-            onSubmit={handleFormSubmit}
-            enableReinitialize
-        >
+        <Formik initialValues={initial_values} validate={validateFields} onSubmit={handleFormSubmit}>
             {({ isValid, dirty, isSubmitting }) => (
                 <Form data-testid='dt_poo_form' className='proof-of-ownership'>
                     <FormBody scroll_offset={getScrollOffset(grouped_payment_method_data_keys.length)}>

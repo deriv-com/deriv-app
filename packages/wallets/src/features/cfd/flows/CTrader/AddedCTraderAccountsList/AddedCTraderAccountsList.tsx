@@ -28,7 +28,7 @@ const AddedCTraderAccountsList: React.FC = () => {
                     <div className='wallets-added-ctrader__details'>
                         <WalletText size='sm'>{PlatformDetails.ctrader.title}</WalletText>
                         <WalletText size='sm' weight='bold'>
-                            {account?.formatted_balance}
+                            {account?.display_balance}
                         </WalletText>
                         <WalletText size='xs'>{account.login}</WalletText>
                     </div>

@@ -1,5 +1,6 @@
 import { Jurisdiction } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { TProducts } from 'Components/props.types';
 
 export type TDxCompanies = ReturnType<typeof getDxCompanies>;
 export type TMtCompanies = ReturnType<typeof getMtCompanies>;
@@ -14,7 +15,7 @@ export const getDxCompanies = () => {
     const synthetic_config = {
         account_type: '',
         leverage: 500,
-        short_title: localize('Derived'),
+        short_title: localize('Standard'),
     };
     const financial_config = {
         account_type: 'financial',
@@ -32,7 +33,7 @@ export const getDxCompanies = () => {
             synthetic: {
                 dxtrade_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Demo Derived'),
+                title: localize('Demo Standard'),
                 short_title: synthetic_config.short_title,
             },
             financial: {
@@ -58,7 +59,7 @@ export const getDxCompanies = () => {
             synthetic: {
                 dxtrade_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Derived'),
+                title: localize('Standard'),
                 short_title: synthetic_config.short_title,
             },
             financial: {
@@ -97,16 +98,16 @@ export const getCTraderCompanies = () => {
     };
 };
 
-export const getMtCompanies = (is_eu: boolean) => {
+export const getMtCompanies = (is_eu: boolean, product?: TProducts) => {
     const all_config = {
         account_type: '',
         leverage: 100,
-        short_title: localize('Swap-Free'),
+        short_title: product === 'swap_free' ? localize('Swap-Free') : localize('Zero Spread'),
     };
     const synthetic_config = {
         account_type: '',
         leverage: 500,
-        short_title: localize('Derived'),
+        short_title: localize('Standard'),
     };
     const financial_config = {
         account_type: 'financial',
@@ -123,14 +124,20 @@ export const getMtCompanies = (is_eu: boolean) => {
             all: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
-                title: localize('Demo Swap-Free'),
+                title: product === 'swap_free' ? localize('Demo Swap-Free') : localize('Demo Zero Spread'),
                 short_title: all_config.short_title,
             },
-            all_svg: {
+            all_swap_free_svg: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
                 title: localize('Demo Swap-Free SVG'),
                 short_title: localize('Swap-Free SVG'),
+            },
+            all_zero_spread_bvi: {
+                mt5_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('Demo Zero Spread BVI'),
+                short_title: localize('Zero Spread BVI'),
             },
             ctrader: {
                 mt5_account_type: all_config.account_type,
@@ -141,7 +148,7 @@ export const getMtCompanies = (is_eu: boolean) => {
             synthetic: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Demo Derived'),
+                title: localize('Demo Standard'),
                 short_title: synthetic_config.short_title,
             },
             financial: {
@@ -159,7 +166,7 @@ export const getMtCompanies = (is_eu: boolean) => {
             synthetic_svg: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Demo Derived SVG'),
+                title: localize('Demo Standard SVG'),
                 short_title: synthetic_config.short_title,
             },
 
@@ -180,13 +187,19 @@ export const getMtCompanies = (is_eu: boolean) => {
             all: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
-                title: localize('Swap-Free'),
+                title: product === 'swap_free' ? localize('Swap-Free') : localize('Zero Spread'),
                 short_title: all_config.short_title,
             },
-            all_svg: {
+            all_swap_free_svg: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
                 title: localize('Swap-Free SVG'),
+                short_title: all_config.short_title,
+            },
+            all_zero_spread_bvi: {
+                mt5_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('Zero Spread BVI'),
                 short_title: all_config.short_title,
             },
             ctrader: {
@@ -204,25 +217,25 @@ export const getMtCompanies = (is_eu: boolean) => {
             synthetic: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Derived'),
+                title: localize('Standard'),
                 short_title: synthetic_config.short_title,
             },
             synthetic_svg: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Derived SVG'),
+                title: localize('Standard SVG'),
                 short_title: synthetic_config.short_title,
             },
             synthetic_bvi: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Derived BVI'),
+                title: localize('Standard BVI'),
                 short_title: synthetic_config.short_title,
             },
             synthetic_v: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Derived Vanuatu'),
+                title: localize('Standard Vanuatu'),
                 short_title: synthetic_config.short_title,
             },
             financial: {

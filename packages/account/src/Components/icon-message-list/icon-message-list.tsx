@@ -1,10 +1,10 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Div100vhContainer, Text, Button, ThemedScrollbars, Icon } from '@deriv/components';
 import { getOnfidoError } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import ListItem from './list-item';
+import { useDevice } from '@deriv-com/ui';
 
 type TIconMessageList = {
     className?: string;
@@ -14,25 +14,25 @@ type TIconMessageList = {
     onContinue: () => void;
 };
 
-const IconMessageList = observer(({ className, icon, message, message_list = [], onContinue }: TIconMessageList) => {
-    const { ui } = useStore();
-    const { is_mobile, is_desktop } = ui;
+const IconMessageList = ({ className, icon, message, message_list = [], onContinue }: TIconMessageList) => {
+    const { isDesktop, isMobile } = useDevice();
+
     return (
-        <ThemedScrollbars is_bypassed={is_mobile}>
+        <ThemedScrollbars is_bypassed={isMobile}>
             <Div100vhContainer
                 className='account-management__message-wrapper'
-                is_disabled={is_desktop}
+                is_disabled={isDesktop}
                 height_offset='110px'
             >
                 <div
-                    className={classNames('account-management__message-content', {
+                    className={clsx('account-management__message-content', {
                         [`${className}__message-content`]: className,
                     })}
                     data-testid='dt_icon_message_list'
                 >
                     {icon && (
                         <div
-                            className={classNames('account-management__message-icon', {
+                            className={clsx('account-management__message-icon', {
                                 [`${className}__message-icon`]: className,
                             })}
                         >
@@ -42,10 +42,10 @@ const IconMessageList = observer(({ className, icon, message, message_list = [],
                     <Text
                         as='div'
                         weight='bold'
-                        className={classNames('account-management__message', {
+                        className={clsx('account-management__message', {
                             [`${className}__message`]: className,
                         })}
-                        size={is_desktop ? 's' : 'xs'}
+                        size={isDesktop ? 's' : 'xs'}
                     >
                         {message}
                     </Text>
@@ -87,6 +87,6 @@ const IconMessageList = observer(({ className, icon, message, message_list = [],
             </Div100vhContainer>
         </ThemedScrollbars>
     );
-});
+};
 
 export default IconMessageList;

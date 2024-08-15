@@ -65,7 +65,7 @@ describe('MT5MigrationFrontSideContent', () => {
         expect(screen.getByRole('button', { name: 'Next' })).toBeInTheDocument();
     });
 
-    it('should render MT5MigrationFrontSideContent with derived and Financial vanuatu account details', () => {
+    it('should render MT5MigrationFrontSideContent with Standard and Financial vanuatu account details', () => {
         migration_response = {
             eligible_account_to_migrate_label: 'Vanuatu',
             eligible_svg_to_bvi_derived_accounts: false,
@@ -86,7 +86,7 @@ describe('MT5MigrationFrontSideContent', () => {
         expect(screen.getByText(/account\(s\) will remain accessible\./i)).toBeInTheDocument();
         expect(screen.getByText(/By clicking/i)).toBeInTheDocument();
         expect(screen.getByText(/you agree to move your/i)).toBeInTheDocument();
-        expect(screen.getByText(/MT5 Derived and Financial SVG account\(s\)/i)).toBeInTheDocument();
+        expect(screen.getByText(/MT5 Standard and Financial SVG account\(s\)/i)).toBeInTheDocument();
         expect(screen.getByText(/under Deriv Vanuatu Ltd’s/i)).toBeInTheDocument();
 
         const terms_conditions_link = screen.getByRole('link', { name: 'terms and conditions' });
@@ -95,11 +95,11 @@ describe('MT5MigrationFrontSideContent', () => {
         expect(screen.getByRole('button', { name: 'Next' })).toBeInTheDocument();
     });
 
-    it('should render svg to bvi derived Icons', () => {
+    it('should render svg to bvi Standard Icons', () => {
         migration_response.eligible_svg_to_bvi_derived_accounts = true;
         renderComponent();
-        expect(screen.getByTestId('dt_migrate_from_svg_derived')).toBeInTheDocument;
-        expect(screen.getByTestId('dt_migrate_to_bvi_derived')).toBeInTheDocument;
+        expect(screen.getByTestId('dt_migrate_from_svg_standard')).toBeInTheDocument;
+        expect(screen.getByTestId('dt_migrate_to_bvi_standard')).toBeInTheDocument;
     });
 
     it('should render svg to bvi financial Icons', () => {
@@ -109,11 +109,11 @@ describe('MT5MigrationFrontSideContent', () => {
         expect(screen.getByTestId('dt_migrate_to_bvi_financial')).toBeInTheDocument;
     });
 
-    it('should render svg to vanuatu derived Icons', () => {
+    it('should render svg to vanuatu Standard Icons', () => {
         migration_response.eligible_svg_to_vanuatu_derived_accounts = true;
         renderComponent();
-        expect(screen.getByTestId('dt_migrate_from_svg_derived')).toBeInTheDocument;
-        expect(screen.getByTestId('dt_migrate_to_vanuatu_derived')).toBeInTheDocument;
+        expect(screen.getByTestId('dt_migrate_from_svg_standard')).toBeInTheDocument;
+        expect(screen.getByTestId('dt_migrate_to_vanuatu_standard')).toBeInTheDocument;
     });
 
     it('should render svg to vanuatu financial Icons', () => {
@@ -123,22 +123,22 @@ describe('MT5MigrationFrontSideContent', () => {
         expect(screen.getByTestId('dt_migrate_to_vanuatu_financial')).toBeInTheDocument;
     });
 
-    it('should render both derived svg to bvi and financial svg to bvi Icons', () => {
+    it('should render both Standard svg to bvi and financial svg to bvi Icons', () => {
         migration_response.eligible_svg_to_bvi_derived_accounts = true;
         migration_response.eligible_svg_to_bvi_financial_accounts = true;
         renderComponent();
-        expect(screen.getByTestId('dt_migrate_from_svg_derived')).toBeInTheDocument;
-        expect(screen.getByTestId('dt_migrate_to_bvi_derived')).toBeInTheDocument;
+        expect(screen.getByTestId('dt_migrate_from_svg_standard')).toBeInTheDocument;
+        expect(screen.getByTestId('dt_migrate_to_bvi_standard')).toBeInTheDocument;
         expect(screen.getByTestId('dt_migrate_from_svg_financial')).toBeInTheDocument;
         expect(screen.getByTestId('dt_migrate_to_bvi_financial')).toBeInTheDocument;
     });
 
-    it('should render both derived svg to vanuatu and financial svg to vanuatu Icons', () => {
+    it('should render both Standard svg to vanuatu and financial svg to vanuatu Icons', () => {
         migration_response.eligible_svg_to_vanuatu_derived_accounts = true;
         migration_response.eligible_svg_to_vanuatu_financial_accounts = true;
         renderComponent();
-        expect(screen.getByTestId('dt_migrate_from_svg_derived')).toBeInTheDocument;
-        expect(screen.getByTestId('dt_migrate_to_vanuatu_derived')).toBeInTheDocument;
+        expect(screen.getByTestId('dt_migrate_from_svg_standard')).toBeInTheDocument;
+        expect(screen.getByTestId('dt_migrate_to_vanuatu_standard')).toBeInTheDocument;
         expect(screen.getByTestId('dt_migrate_from_svg_financial')).toBeInTheDocument;
         expect(screen.getByTestId('dt_migrate_to_vanuatu_financial')).toBeInTheDocument;
     });

@@ -15,7 +15,6 @@ jest.mock('../closing-account-warning-modal', () => ({
     default: () => <div>ClosingAccountWarningModal </div>,
 }));
 
-// @ts-expect-error ignore this until find a way to make arguments as partial
 const mockUseMutation = useMutation as jest.MockedFunction<typeof useMutation<'account_closure'>>;
 
 describe('<ClosingAccountReason />', () => {

@@ -1,10 +1,10 @@
-import React from 'react';
+import { useState, Fragment } from 'react';
 import { useMutation } from '@deriv/api';
 import { CFD_PLATFORMS, getPlatformSettings } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
-import FormSubHeader from 'Components/form-sub-header';
-import SentEmailModal from 'Components/sent-email-modal';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import FormSubHeader from '../../../Components/form-sub-header';
+import SentEmailModal from '../../../Components/sent-email-modal';
 import PlatformPartials from './platform-partials';
 
 type TPasswordsPlatformProps = {
@@ -22,13 +22,14 @@ type TPasswordsPlatformProps = {
 const PasswordsPlatform = observer(
     ({ has_dxtrade_accounts = false, has_mt5_accounts = false }: TPasswordsPlatformProps) => {
         const { mutate } = useMutation('verify_email');
+        const { localize } = useTranslations();
 
         const {
             client: { email },
         } = useStore();
 
-        const [identifier, setIdentifier] = React.useState('');
-        const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
+        const [identifier, setIdentifier] = useState('');
+        const [is_sent_email_modal_open, setIsSentEmailModalOpen] = useState(false);
 
         const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
 
@@ -64,7 +65,7 @@ const PasswordsPlatform = observer(
         };
 
         return (
-            <React.Fragment>
+            <Fragment>
                 <FormSubHeader title={getPlatformTitle()} />
                 <div className='account__passwords-wrapper'>
                     {has_mt5_accounts && (
@@ -93,7 +94,7 @@ const PasswordsPlatform = observer(
                         is_modal_when_mobile
                     />
                 </div>
-            </React.Fragment>
+            </Fragment>
         );
     }
 );

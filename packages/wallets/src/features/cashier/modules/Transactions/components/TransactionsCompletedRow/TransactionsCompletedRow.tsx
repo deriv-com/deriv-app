@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react';
-import { WalletText } from '../../../../../../components/Base';
+import React from 'react';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { Divider, Text } from '@deriv-com/ui';
 import { THooks } from '../../../../../../types';
-import { TransactionsCompletedRowAccountDetails } from './components/TransactionsCompletedRowAccountDetails';
-import { TransactionsCompletedRowTransferAccountDetails } from './components/TransactionsCompletedRowTransferAccountDetails';
+import { getTransactionLabels } from '../../constants';
+import { TransactionsCompletedRowAccountDetails, TransactionsCompletedRowTransferAccountDetails } from './components';
 import './TransactionsCompletedRow.scss';
 
 type TProps = {
@@ -12,67 +13,60 @@ type TProps = {
 };
 
 const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wallet }) => {
-    // TODO: remove this once backend adds `to` and `from` for Deriv X and CTrader transfers
-    const dxtradeOrCtraderToFrom = useMemo(() => {
-        if (transaction?.action_type !== 'transfer' || !transaction.longcode) return null;
-        const longcodeMessageTokens = transaction.longcode.split(' ');
-        const direction = longcodeMessageTokens[4] === 'cTrader' ? 'to' : longcodeMessageTokens[1];
-        const dxtradeOrCtraderLoginid = longcodeMessageTokens.find(
-            token => token.startsWith('DX') || token.startsWith('CT')
-        );
-        return dxtradeOrCtraderLoginid
-            ? {
-                  from: { loginid: wallet.loginid },
-                  to: { loginid: wallet.loginid },
-                  ...(direction && { [direction]: { loginid: dxtradeOrCtraderLoginid } }),
-              }
-            : null;
-    }, [transaction?.action_type, transaction.longcode, wallet.loginid]);
+    const { localize } = useTranslations();
 
     if (!transaction.action_type || !transaction.amount) return null;
 
     const displayCurrency = wallet?.currency_config?.display_code || 'USD';
     const displayWalletName = `${displayCurrency} Wallet`;
-    const displayActionType =
+    const displayNonTransferActionType =
         wallet.is_virtual && ['deposit', 'withdrawal'].includes(transaction.action_type)
-            ? 'Reset balance'
-            : transaction.action_type.replace(/^\w/, c => c.toUpperCase());
+            ? getTransactionLabels().reset_balance
+            : //@ts-expect-error we only need partial action types
+              getTransactionLabels()[transaction.action_type];
+    const displayTransferActionType =
+        transaction.from?.loginid === wallet?.loginid ? localize('Transfer to') : localize('Transfer from');
 
     return (
-        <div className='wallets-transactions-completed-row'>
-            {transaction.action_type !== 'transfer' ? (
-                <TransactionsCompletedRowAccountDetails
-                    accountType={wallet?.account_type ?? ''}
-                    actionType={transaction.action_type}
-                    currency={wallet?.currency ?? 'USD'}
-                    displayAccountName={displayWalletName}
-                    displayActionType={displayActionType}
-                    isDemo={Boolean(wallet?.is_virtual)}
-                />
-            ) : (
-                <TransactionsCompletedRowTransferAccountDetails
-                    accounts={accounts}
-                    direction={
-                        (transaction.from ?? dxtradeOrCtraderToFrom?.from)?.loginid === wallet?.loginid ? 'to' : 'from'
-                    }
-                    loginid={
-                        [
-                            transaction.from?.loginid ?? dxtradeOrCtraderToFrom?.from.loginid,
-                            transaction.to?.loginid ?? dxtradeOrCtraderToFrom?.to.loginid,
-                        ].find(loginid => loginid !== wallet?.loginid) ?? ''
-                    }
-                />
-            )}
-            <div className='wallets-transactions-completed-row__transaction-details'>
-                <WalletText color={transaction.amount > 0 ? 'success' : 'error'} size='xs' weight='bold'>
-                    {transaction.amount && transaction.amount > 0 ? '+' : ''}
-                    {transaction.display_amount}
-                </WalletText>
-                <WalletText color='primary' size='2xs'>
-                    Balance: {transaction.display_balance_after}
-                </WalletText>
+        <React.Fragment>
+            <Divider color='var(--border-divider)' />
+            <div className='wallets-transactions-completed-row'>
+                {transaction.action_type !== 'transfer' ? (
+                    <TransactionsCompletedRowAccountDetails
+                        accountType={wallet?.account_type ?? ''}
+                        actionType={transaction.action_type}
+                        currency={wallet?.currency ?? 'USD'}
+                        displayAccountName={displayWalletName}
+                        displayActionType={displayNonTransferActionType}
+                        isDemo={Boolean(wallet?.is_virtual)}
+                    />
+                ) : (
+                    <TransactionsCompletedRowTransferAccountDetails
+                        accounts={accounts}
+                        displayActionType={displayTransferActionType}
+                        loginid={
+                            [transaction.from?.loginid, transaction.to?.loginid].find(
+                                loginid => loginid !== wallet?.loginid
+                            ) ?? ''
+                        }
+                    />
+                )}
+                <div className='wallets-transactions-completed-row__transaction-details'>
+                    <Text color={transaction.amount > 0 ? 'success' : 'error'} size='xs' weight='bold'>
+                        {transaction.amount && transaction.amount > 0 ? '+' : ''}
+                        {transaction.display_amount}
+                    </Text>
+                    <Text color='primary' size='2xs'>
+                        <Localize
+                            i18n_default_text='Balance: {{balance}}'
+                            values={{
+                                balance: transaction.display_balance_after,
+                            }}
+                        />
+                    </Text>
+                </div>
             </div>
-        </div>
+        </React.Fragment>
     );
 };
 

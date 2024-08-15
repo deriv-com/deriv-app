@@ -1,20 +1,19 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { useHistory, useLocation } from 'react-router-dom';
-import { Icon, Popover, StaticUrl, Loading } from '@deriv/components';
-import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
-import { routes, platforms, formatMoney, makeLazyLoader, moduleLoader } from '@deriv/shared';
+import { useLocation } from 'react-router-dom';
+import { Icon, Popover, Loading } from '@deriv/components';
+import { routes, platforms, formatMoney, makeLazyLoader, moduleLoader, isTabletOs } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import { MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { BinaryLink } from 'App/Components/Routes';
-import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-rebranding-logo.svg';
 import DefaultMobileLinks from './default-mobile-links';
 import ShowNotifications from './show-notifications';
-import TradersHubOnboarding from './traders-hub-onboarding';
 import TradersHubHomeButton from './traders-hub-home-button';
+import DerivShortLogo from './deriv-short-logo';
 
 type TPlatformConfig = typeof platform_config;
 type TPlatforms = typeof platforms;
@@ -55,30 +54,31 @@ const CurrencySelectionModal = makeLazyLoader(
 )();
 
 const TradersHubHeader = observer(() => {
+    const { isDesktop } = useDevice();
     const { client, common, traders_hub, ui } = useStore();
-    const { account_type, balance, currency, has_any_real_account, is_eu, is_logged_in, is_mt5_allowed, is_virtual } =
-        client;
+    const { account_type, balance, currency, is_eu, is_logged_in, is_mt5_allowed, is_virtual } = client;
     const { platform } = common;
     const { modal_data } = traders_hub;
     const {
         header_extension,
         is_accounts_switcher_on,
         is_app_disabled,
-        is_mobile,
         is_route_modal_on,
         account_switcher_disabled_message,
         toggleAccountsDialog,
-        toggleNeedRealAccountForCashierModal,
-        toggleReadyToDepositModal,
         is_real_acc_signup_on,
         is_set_currency_modal_visible,
     } = ui;
 
-    const history = useHistory();
     const { pathname } = useLocation();
     const cashier_routes = pathname.startsWith(routes.cashier);
-    const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
     const account_balance = formatMoney(currency, balance ?? '', true);
+
+    const accountSettings = (
+        <BinaryLink className='traders-hub-header__setting' to={routes.personal_details}>
+            <Icon icon='IcUserOutline' size={20} />
+        </BinaryLink>
+    );
 
     const filterPlatformsForClients = (payload: TPlatformConfig) =>
         payload.filter(config => {
@@ -88,22 +88,6 @@ const TradersHubHeader = observer(() => {
             return true;
         });
 
-    const toggleModal = () => {
-        if (!has_any_real_account) {
-            toggleReadyToDepositModal();
-        } else if (window.location.pathname === routes.traders_hub) {
-            toggleNeedRealAccountForCashierModal();
-        }
-    };
-
-    const handleClickCashier = () => {
-        if ((!has_any_real_account && is_virtual) || real_account_needed_for_cashier) {
-            toggleModal();
-        } else {
-            history.push(routes.cashier_deposit);
-        }
-    };
-
     return (
         <header
             className={classNames('traders-hub-header', {
@@ -112,7 +96,7 @@ const TradersHubHeader = observer(() => {
             })}
         >
             <div className='traders-hub-header__menu-left'>
-                {is_mobile && (
+                {!isDesktop && (
                     <React.Fragment>
                         <ToggleMenuDrawer {...{ platform_config: filterPlatformsForClients(platform_config) }} />
                         {header_extension && is_logged_in && <div>{header_extension}</div>}
@@ -123,11 +107,9 @@ const TradersHubHeader = observer(() => {
                         'traders-hub-header__logo-wrapper--cashier': cashier_routes,
                     })}
                 >
-                    <StaticUrl href='/'>
-                        <DerivBrandLogo className='traders-hub-header__logo' />
-                    </StaticUrl>
+                    <DerivShortLogo />
                 </div>
-                {!is_mobile && (
+                {isDesktop && (
                     <React.Fragment>
                         <div className='traders-hub-header__divider' />
                         <TradersHubHomeButton />
@@ -135,28 +117,27 @@ const TradersHubHeader = observer(() => {
                 )}
                 <MenuLinks {...{ is_traders_hub_routes: true }} />
             </div>
-            {!is_mobile && (
+            {isDesktop ? (
                 <React.Fragment>
                     <div className='traders-hub-header__menu-right'>
                         <div className='traders-hub-header__divider' />
                         <div className='traders-hub-header__menu-right--items'>
-                            <div className='traders-hub-header__menu-right--items--onboarding'>
-                                <TradersHubOnboarding />
-                            </div>
                             <div className='traders-hub-header__menu-right--items--notifications'>
                                 <ShowNotifications />
                             </div>
-                            <Popover
-                                classNameBubble='account-settings-toggle__tooltip'
-                                alignment='bottom'
-                                message={<Localize i18n_default_text='Manage account settings' />}
-                                should_disable_pointer_events
-                                zIndex='9999'
-                            >
-                                <BinaryLink className='traders-hub-header__setting' to={routes.personal_details}>
-                                    <Icon icon='IcUserOutline' size={20} />
-                                </BinaryLink>
-                            </Popover>
+                            {isTabletOs ? (
+                                accountSettings
+                            ) : (
+                                <Popover
+                                    classNameBubble='account-settings-toggle__tooltip'
+                                    alignment='bottom'
+                                    message={<Localize i18n_default_text='Manage account settings' />}
+                                    should_disable_pointer_events
+                                    zIndex='9999'
+                                >
+                                    {accountSettings}
+                                </Popover>
+                            )}
                             {cashier_routes && (
                                 <div className='traders-hub-header__menu-right--items--account-toggle'>
                                     <AccountInfo
@@ -176,8 +157,7 @@ const TradersHubHeader = observer(() => {
                     </div>
                     {is_real_acc_signup_on && <RealAccountSignup />}
                 </React.Fragment>
-            )}
-            {is_mobile && (
+            ) : (
                 <React.Fragment>
                     <div className='traders-hub-header__mobile-parent'>
                         <div className='traders-hub-header__menu-middle'>
@@ -201,7 +181,7 @@ const TradersHubHeader = observer(() => {
                                     </div>
                                 </React.Fragment>
                             ) : (
-                                <DefaultMobileLinks handleClickCashier={handleClickCashier} />
+                                <DefaultMobileLinks />
                             )}
                         </div>
                     </div>

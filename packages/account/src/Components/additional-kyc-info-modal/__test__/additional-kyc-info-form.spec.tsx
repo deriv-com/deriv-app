@@ -4,15 +4,22 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import { AdditionalKycInfoForm } from '../additional-kyc-info-form';
 import userEvent from '@testing-library/user-event';
 import { useSettings } from '@deriv/api';
+import { TSocketError } from '@deriv/api/types';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useSettings: jest.fn(),
 }));
 
-const mockedUseSettings = useSettings as jest.MockedFunction<typeof useSettings>;
+const mockedUseSettings = useSettings as jest.Mock;
 
-const mock_settings: ReturnType<typeof useSettings> = {
+type TMutation = Partial<ReturnType<typeof useSettings>['mutation']>;
+
+type TMockConfig = Omit<ReturnType<typeof useSettings>, 'mutation'> & {
+    mutation: TMutation;
+};
+
+const mock_settings: Partial<TMockConfig> = {
     update: jest.fn(),
     mutation: { isLoading: false, isSuccess: false, error: null, isError: false },
     data: {
@@ -20,6 +27,7 @@ const mock_settings: ReturnType<typeof useSettings> = {
         tax_residence: '',
         place_of_birth: '',
         account_opening_reason: '',
+        has_submitted_personal_details: false,
     },
 };
 
@@ -110,7 +118,7 @@ describe('AdditionalKycInfoForm', () => {
                 status: 'error',
                 error: {
                     message: 'Invalid TIN format',
-                },
+                } as unknown as TSocketError<'set_settings'>,
             },
         });
         render(

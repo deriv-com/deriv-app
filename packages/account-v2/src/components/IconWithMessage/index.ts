@@ -1,1 +1,0 @@
-export { IconWithMessage } from './IconWithMessage';

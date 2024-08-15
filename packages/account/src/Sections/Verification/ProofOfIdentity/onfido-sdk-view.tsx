@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { CSSTransition } from 'react-transition-group';
 import { HintBox, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
@@ -50,7 +50,7 @@ const OnfidoSdkView = ({
 
     return (
         <div className='onfido-container-view_wrapper'>
-            <div className={classNames({ 'onfido-container__status-message_container': !is_onfido_disabled })}>
+            <div className={clsx({ 'onfido-container__status-message_container': !is_onfido_disabled })}>
                 <CSSTransition
                     appear={is_status_message_visible}
                     in={is_status_message_visible}
@@ -91,7 +91,7 @@ const OnfidoSdkView = ({
                 <div
                     data-testid={data_testid}
                     id={onfido_element_id}
-                    className={classNames({
+                    className={clsx({
                         'onfido-container__disabled': is_onfido_disabled,
                         'onfido-container__hidden': is_onfido_container_hidden,
                     })}

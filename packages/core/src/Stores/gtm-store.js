@@ -55,6 +55,7 @@ export default class GTMStore extends BaseStore {
             }
             return 'undefined';
         };
+
         return {
             language: getLanguage(),
             ...(this.root_store.client.is_logged_in && {

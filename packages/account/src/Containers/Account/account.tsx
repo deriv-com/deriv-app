@@ -1,12 +1,12 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { FadeWrapper, Loading } from '@deriv/components';
-import { useStoreWalletAccountsList } from '@deriv/hooks';
 import { flatten, matchRoute, routes as shared_routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import PageOverlayWrapper from './page-overlay-wrapper';
 import { TRoute } from '../../Types';
 import 'Styles/account.scss';
+import { useDevice } from '@deriv-com/ui';
 
 type TAccountProps = RouteComponentProps & {
     routes: Array<TRoute>;
@@ -23,6 +23,7 @@ type TAccountProps = RouteComponentProps & {
 const Account = observer(({ history, location, routes }: TAccountProps) => {
     const { client, ui } = useStore();
     const {
+        has_wallet,
         is_virtual,
         is_logged_in,
         is_logging_in,
@@ -32,13 +33,12 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
         should_allow_poinc_authentication,
         is_passkey_supported,
     } = client;
-    const { toggleAccountSettings, is_account_settings_visible, is_mobile, is_desktop } = ui;
-    const { has_wallet } = useStoreWalletAccountsList();
-
+    const { toggleAccountSettings, is_account_settings_visible } = ui;
+    const { isMobile } = useDevice();
     // subroutes of a route is structured as an array of arrays
     const subroutes = flatten(routes.map(i => i.subroutes));
     const selected_content = subroutes.find(r => matchRoute(r, location.pathname));
-    const should_remove_passkeys_route = is_desktop || (is_mobile && !is_passkey_supported);
+    const should_remove_passkeys_route = !isMobile || (isMobile && !is_passkey_supported);
 
     React.useEffect(() => {
         toggleAccountSettings(true);

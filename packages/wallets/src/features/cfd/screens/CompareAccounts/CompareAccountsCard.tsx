@@ -1,8 +1,8 @@
 import React from 'react';
-import { WalletText } from '../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS } from '../../constants';
-import CompareAccountsButton from './CompareAccountsButton';
 import CompareAccountsDescription from './CompareAccountsDescription';
 import CompareAccountsPlatformLabel from './CompareAccountsPlatformLabel';
 import CompareAccountsTitleIcon from './CompareAccountsTitleIcon';
@@ -10,7 +10,6 @@ import InstrumentsLabelHighlighted from './InstrumentsLabelHighlighted';
 import './CompareAccountsCard.scss';
 
 type TCompareAccountsCard = {
-    isAccountAdded: boolean;
     isDemo: boolean;
     isEuRegion: boolean;
     isEuUser: boolean;
@@ -20,7 +19,6 @@ type TCompareAccountsCard = {
 };
 
 const CompareAccountsCard = ({
-    isAccountAdded,
     isDemo,
     isEuRegion,
     isEuUser,
@@ -34,9 +32,9 @@ const CompareAccountsCard = ({
                 <CompareAccountsPlatformLabel platform={platform} />
                 {platform === CFD_PLATFORMS.CTRADER && (
                     <div className='wallets-compare-accounts-card__banner'>
-                        <WalletText color='white' size='xs' weight='bold'>
-                            New!
-                        </WalletText>
+                        <Text color='white' size='xs' weight='bold'>
+                            <Localize i18n_default_text='New!' />
+                        </Text>
                     </div>
                 )}
                 <CompareAccountsTitleIcon
@@ -60,17 +58,11 @@ const CompareAccountsCard = ({
                 />
                 {isEuUser && (
                     <div className='wallets-compare-accounts-card__eu-clients'>
-                        <WalletText color='red' size='2xs' weight='bold'>
-                            *Boom 300 and Crash 300 Index
-                        </WalletText>
+                        <Text color='red' size='2xs' weight='bold'>
+                            <Localize i18n_default_text='*Boom 300 and Crash 300 Index' />
+                        </Text>
                     </div>
                 )}
-                <CompareAccountsButton
-                    isAccountAdded={isAccountAdded}
-                    marketType={marketType}
-                    platform={platform}
-                    shortCode={shortCode}
-                />
             </div>
         </div>
     );

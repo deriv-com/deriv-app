@@ -6,9 +6,7 @@ import { PoiButton } from '../poi-button';
 
 describe('<PoiButton/>', () => {
     const history = createBrowserHistory();
-    const renderWithRouter = component => {
-        return render(<Router history={history}>{component}</Router>);
-    };
+    const renderWithRouter = (component: React.ReactElement) => render(<Router history={history}>{component}</Router>);
 
     it('should render PoiButton component', () => {
         renderWithRouter(<PoiButton />);

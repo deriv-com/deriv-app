@@ -13,7 +13,7 @@
     width: 100%;
     height: calc(100vh - 9rem);
     padding: 1.6rem;
-    @include mobile {
+    @include mobile-or-tablet-screen {
         height: calc(100vh - 6rem);
         padding: 0;
     }
@@ -53,7 +53,7 @@
                 background: var(--general-section-1);
                 justify-content: start;
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     overflow-x: auto;
                     overflow-y: hidden;
 
@@ -68,7 +68,7 @@
                 &--header {
                     &--main {
                         &__tabs {
-                            @include mobile {
+                            @include mobile-or-tablet-screen {
                                 width: 100%;
                                 overflow-x: auto;
                                 padding: 0.8rem 1.6rem 0;
@@ -78,14 +78,14 @@
                 }
 
                 &--border-bottom {
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         border-bottom: 0;
                     }
                 }
             }
 
             &__content {
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     width: 100%;
                     overflow-x: auto;
 
@@ -99,9 +99,11 @@
                         svg {
                             margin-bottom: 2.4rem;
                         }
+
                         h1 {
                             margin-bottom: 0.8rem;
                         }
+
                         span {
                             word-break: break-word;
                             text-align: center;
@@ -114,7 +116,7 @@
                         display: flex;
                         justify-content: space-between;
 
-                        @include mobile {
+                        @include mobile-or-tablet-screen {
                             flex-direction: column;
                             background-color: var(--general-section-1);
                         }
@@ -136,7 +138,7 @@
                     padding-inline-end: 0;
                     margin-inline-end: 0.8rem;
 
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         margin-inline-end: 0.2rem;
                         // gave this -ve margin becaues we cannot
                         // overwrite the default core padding which
@@ -144,12 +146,18 @@
                         margin-top: -0.5rem;
                     }
                 }
+
+                &__icon {
+                    @include mobile-or-tablet-screen {
+                        padding-top: 0.5rem;
+                    }
+                }
             }
         }
     }
 
     &__run-strategy-wrapper {
-        @include desktop {
+        @include desktop-screen {
             position: absolute;
         }
 
@@ -158,8 +166,14 @@
         z-index: 2;
 
         .animation {
-            &__button {
-                background-color: var(--purchase-main-1);
+            &__button#db-animation {
+                &__run-button {
+                    background-color: var(--purchase-main-1);
+                }
+
+                &__stop-button {
+                    background-color: var(--button-primary-hover);
+                }
             }
 
             &__container {
@@ -180,8 +194,22 @@
     }
 }
 
+.animation__wrapper {
+    .animation {
+        &__button#db-animation {
+            &__run-button {
+                background-color: var(--purchase-main-1);
+            }
+
+            &__stop-button {
+                background-color: var(--button-primary-hover);
+            }
+        }
+    }
+}
+
 .bot-stopped-dialog {
-    @include mobile {
+    @include mobile-or-tablet-screen {
         padding: 2rem;
     }
 
@@ -204,7 +232,7 @@
             }
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             &__footer {
                 flex-wrap: unset;
 
@@ -230,7 +258,7 @@
         width: 100%;
         transition: all 0.4s;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             height: var(--tab-content-height-mobile);
             background: var(--general-main-1);
 
@@ -253,6 +281,7 @@
             width: 40rem;
         }
     }
+
     &__toolbox {
         position: absolute;
         top: 0;
@@ -305,8 +334,9 @@
             }
         }
     }
+
     &__run-strategy-wrapper {
-        @include desktop {
+        @include desktop-screen {
             position: absolute;
         }
 
@@ -349,7 +379,7 @@
         .blocklyTrash {
             transition: all 0.4s;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 display: none;
             }
         }
@@ -369,7 +399,7 @@
         display: none;
     }
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         top: 5.6rem;
         inset-inline-start: 0;
         width: 100vw;
@@ -497,7 +527,7 @@
         &__left {
             margin: 0.3rem 0 0 1.2rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin: 0;
 
                 svg {
@@ -601,6 +631,9 @@
             outline: none;
             cursor: pointer;
             margin-inline-end: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
             &.default {
                 background: transparent;
@@ -676,4 +709,18 @@
     height: 2.5rem !important;
     width: 2.5rem !important;
     padding: 0.2rem 0;
+}
+
+.beta-server-bot {
+    color: var(--brand-red-coral);
+    margin-left: 8px;
+    padding: 4px 8px;
+    height: 22px;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    border: 2px solid var(--brand-red-coral);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

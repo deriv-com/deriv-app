@@ -40,7 +40,7 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
 
     const handleTradersHubRedirect = async () => {
         closeAccountsDialog();
-        history.push(routes.wallets);
+        history.push(routes.traders_hub);
     };
 
     return (

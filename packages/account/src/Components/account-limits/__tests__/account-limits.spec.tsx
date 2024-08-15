@@ -1,9 +1,10 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { formatMoney, isDesktop, isMobile, PlatformContext } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 import AccountLimits from '../account-limits';
 import { BrowserRouter } from 'react-router-dom';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { FormatUtils } from '@deriv-com/utils';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -19,11 +20,16 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     useWS: () => undefined,
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
-    isDesktop: jest.fn(() => true),
-    formatMoney: jest.fn(),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
+
+jest.mock('@deriv-com/utils', () => ({
+    ...jest.requireActual('@deriv-com/utils'),
+    FormatUtils: {
+        formatMoney: jest.fn(),
+    },
 }));
 
 jest.mock('Components/demo-message', () => jest.fn(() => 'mockedDemoMessage'));
@@ -162,8 +168,6 @@ describe('<AccountLimits/>', () => {
                 ...mock.client,
                 account_limits: {
                     api_initial_load_error: 'error in fetching data from API',
-                    account_balance: '',
-                    payout: '',
                     market_specific: {
                         commodities: [],
                         cryptocurrency: [],
@@ -171,9 +175,6 @@ describe('<AccountLimits/>', () => {
                         indices: [],
                         synthetic_index: [],
                     },
-                    num_of_days_limit: '',
-                    remainder: '',
-                    withdrawal_since_inception_monetary: '',
                 },
                 is_switching: false,
                 is_virtual: false,
@@ -216,9 +217,8 @@ describe('<AccountLimits/>', () => {
         expect(screen.queryByTestId('account_limits_data')).toBeInTheDocument();
     });
 
-    it('should render AccountLimitsArticle component if should_show_article is true in mobile mode', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        (isDesktop as jest.Mock).mockReturnValue(false);
+    it('should render AccountLimitsArticle component if should_show_article is true in responsive mode', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         render(
             <StoreProvider store={store}>
                 <AccountLimits {...props} should_show_article />
@@ -230,8 +230,7 @@ describe('<AccountLimits/>', () => {
 
     it('should not render AccountLimitsArticle component if should_show_article is false', () => {
         store = mockStore(mock);
-        (isMobile as jest.Mock).mockReturnValue(true);
-        (isDesktop as jest.Mock).mockReturnValue(false);
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         render(
             <StoreProvider store={store}>
                 <AccountLimits {...props} should_show_article={false} />
@@ -291,7 +290,7 @@ describe('<AccountLimits/>', () => {
             </StoreProvider>
         );
         const { account_balance } = store.client.account_limits;
-        expect(formatMoney).toHaveBeenCalledWith(store.client.currency, account_balance, true);
+        expect(FormatUtils.formatMoney).toHaveBeenCalledWith(account_balance, { currency: store.client.currency });
     });
 
     it('should render Trading limits table and its maximum daily turnover contents properly', () => {
@@ -362,7 +361,7 @@ describe('<AccountLimits/>', () => {
         ).toBeInTheDocument();
     });
 
-    it('withdrawal_limits_table should show `Total withdrawal limit` if is_fully_authenticated is false and is_appstore is true', () => {
+    it('withdrawal_limits_table should show `Total withdrawal allowed` when is_fully_authenticated is false', () => {
         store = mockStore({
             client: {
                 ...mock.client,
@@ -370,123 +369,45 @@ describe('<AccountLimits/>', () => {
             },
         });
         render(
-            <PlatformContext.Provider value={{ is_appstore: true, is_deriv_crypto: false, is_pre_appstore: false }}>
-                <BrowserRouter>
-                    <StoreProvider store={store}>
-                        <AccountLimits {...props} />
-                    </StoreProvider>
-                </BrowserRouter>
-            </PlatformContext.Provider>
-        );
-        expect(screen.getByText(/total withdrawal limit/i)).toBeInTheDocument();
-    });
-
-    it('withdrawal_limits_table should show `Total withdrawal allowed` when is_fully_authenticated is false and is_appstore is true', () => {
-        store = mockStore({
-            client: {
-                ...mock.client,
-                is_fully_authenticated: false,
-            },
-        });
-        render(
-            <PlatformContext.Provider value={{ is_appstore: false, is_deriv_crypto: false, is_pre_appstore: false }}>
-                <StoreProvider store={store}>
-                    <AccountLimits {...props} />
-                </StoreProvider>
-            </PlatformContext.Provider>
+            <StoreProvider store={store}>
+                <AccountLimits {...props} />
+            </StoreProvider>
         );
         expect(screen.getByText(/total withdrawal allowed/i)).toBeInTheDocument();
     });
 
-    it('withdrawal_limits_table should show the verfiy button when is_fully_authenticated is false and is_appstore is true', () => {
+    it('should show limit_notice message when is_fully_authenticated is false in responsive mode', () => {
         store = mockStore({
             client: {
                 ...mock.client,
                 is_fully_authenticated: false,
             },
         });
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         render(
-            <PlatformContext.Provider value={{ is_appstore: true, is_deriv_crypto: false, is_pre_appstore: false }}>
-                <BrowserRouter>
-                    <StoreProvider store={store}>
-                        <AccountLimits {...props} />
-                    </StoreProvider>
-                </BrowserRouter>
-            </PlatformContext.Provider>
-        );
-        expect(screen.getByText(/to increase limit please verify your identity/i)).toBeInTheDocument();
-        expect(
-            screen.getByRole('link', {
-                name: /verify/i,
-            })
-        ).toHaveAttribute('href', '/account/proof-of-identity');
-        const { num_of_days_limit } = store.client.account_limits;
-        expect(formatMoney).toHaveBeenCalledWith(store.client.currency, num_of_days_limit, true);
-    });
-
-    it('withdrawal_limits_table should show total withdrawn and withdrawn remaining details', () => {
-        store = mockStore({
-            client: {
-                ...mock.client,
-                is_fully_authenticated: false,
-            },
-        });
-        render(
-            <PlatformContext.Provider value={{ is_appstore: true, is_deriv_crypto: false, is_pre_appstore: false }}>
-                <BrowserRouter>
-                    <StoreProvider store={store}>
-                        <AccountLimits {...props} />
-                    </StoreProvider>
-                </BrowserRouter>
-            </PlatformContext.Provider>
-        );
-        const { withdrawal_since_inception_monetary, remainder } = store.client.account_limits;
-
-        expect(screen.getByText(/total withdrawn/i)).toBeInTheDocument();
-        expect(formatMoney).toHaveBeenCalledWith(store.client.currency, withdrawal_since_inception_monetary, true);
-
-        expect(screen.getByText(/maximum withdrawal remaining/i)).toBeInTheDocument();
-        expect(formatMoney).toHaveBeenCalledWith(store.client.currency, remainder, true);
-    });
-
-    it('should show limit_notice message when is_appstore is false and is_fully_authenticated is false in mobile mode', () => {
-        store = mockStore({
-            client: {
-                ...mock.client,
-                is_fully_authenticated: false,
-            },
-        });
-        (isMobile as jest.Mock).mockReturnValue(true);
-        (isDesktop as jest.Mock).mockReturnValue(false);
-        render(
-            <PlatformContext.Provider value={{ is_appstore: false, is_deriv_crypto: false, is_pre_appstore: false }}>
-                <BrowserRouter>
-                    <StoreProvider store={store}>
-                        <AccountLimits {...props} />
-                    </StoreProvider>
-                </BrowserRouter>
-            </PlatformContext.Provider>
+            <BrowserRouter>
+                <StoreProvider store={store}>
+                    <AccountLimits {...props} />
+                </StoreProvider>
+            </BrowserRouter>
         );
         expect(screen.getByText(/stated limits are subject to change without prior notice\./i)).toBeInTheDocument();
     });
 
-    it('should not  show limit_notice message when is_appstore is false and is_fully_authenticated is false', () => {
+    it('should not  show limit_notice message when is_fully_authenticated is false', () => {
         store = mockStore({
             client: {
                 ...mock.client,
                 is_fully_authenticated: false,
             },
         });
-        (isMobile as jest.Mock).mockReturnValue(false);
-        (isDesktop as jest.Mock).mockReturnValue(true);
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: true });
         render(
-            <PlatformContext.Provider value={{ is_appstore: false, is_deriv_crypto: false, is_pre_appstore: false }}>
-                <BrowserRouter>
-                    <StoreProvider store={store}>
-                        <AccountLimits {...props} is_app_settings={false} />
-                    </StoreProvider>
-                </BrowserRouter>
-            </PlatformContext.Provider>
+            <BrowserRouter>
+                <StoreProvider store={store}>
+                    <AccountLimits {...props} is_app_settings={false} />
+                </StoreProvider>
+            </BrowserRouter>
         );
         expect(
             screen.queryByText(/your account is fully authenticated and your withdrawal limits have been lifted\./i)
@@ -495,8 +416,7 @@ describe('<AccountLimits/>', () => {
 
     it('should show AccountLimitsArticle when should_show_article and isDesktop is true', () => {
         store = mockStore(mock);
-        (isMobile as jest.Mock).mockReturnValue(false);
-        (isDesktop as jest.Mock).mockReturnValue(true);
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: true });
         render(
             <StoreProvider store={store}>
                 <AccountLimits {...props} should_show_article />

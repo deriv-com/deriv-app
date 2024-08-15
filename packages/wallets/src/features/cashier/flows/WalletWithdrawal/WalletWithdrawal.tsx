@@ -1,23 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { useActiveWalletAccount, useAuthorize, useCurrencyConfig } from '@deriv/api-v2';
-import { Loader } from '../../../../components';
+import { useActiveWalletAccount, useAuthorize } from '@deriv/api-v2';
+import { Loader } from '@deriv-com/ui';
+import useAllBalanceSubscription from '../../../../hooks/useAllBalanceSubscription';
 import { WithdrawalCryptoModule, WithdrawalFiatModule, WithdrawalVerificationModule } from '../../modules';
+import { WithdrawalNoBalance } from '../../screens';
 
 const WalletWithdrawal = () => {
-    const { isSuccess: isCurrencyConfigSuccess } = useCurrencyConfig();
     const { switchAccount } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
+    const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
     const [verificationCode, setVerificationCode] = useState('');
+    const [resendEmail, setResendEmail] = useState(false);
 
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
         const loginidQueryParam = queryParams.get('loginid');
         const verificationQueryParam = queryParams.get('verification');
+        const localVerificationCode = localStorage.getItem('verification_code.payment_withdraw');
 
         // if loginid query param doesn't match active wallet's loginid on mount, initiate account switching
         if (loginidQueryParam && loginidQueryParam !== activeWallet?.loginid) {
             switchAccount(loginidQueryParam);
             return;
+        }
+
+        // for third party redirections where verification code is fetched from local storage value saved in client store
+        if (localVerificationCode) {
+            setVerificationCode(localVerificationCode);
+            localStorage.removeItem('verification_code.payment_withdraw');
         }
 
         // given that loginid query param matches active wallet's loginid on mount, clear query params and proceed
@@ -33,23 +43,27 @@ const WalletWithdrawal = () => {
 
     const isCrypto = activeWallet?.currency_config?.is_crypto;
 
-    if (verificationCode) {
-        if (isCurrencyConfigSuccess && activeWallet?.currency) {
-            return isCrypto ? (
-                <WithdrawalCryptoModule
-                    onClose={() => {
-                        setVerificationCode('');
-                    }}
-                    verificationCode={verificationCode}
-                />
-            ) : (
-                <WithdrawalFiatModule verificationCode={verificationCode} />
-            );
-        }
+    if (!activeWallet || isBalanceLoading) {
         return <Loader />;
     }
 
-    return <WithdrawalVerificationModule />;
+    if (balanceData && !isBalanceLoading && balanceData[activeWallet?.loginid ?? 'USD'].balance <= 0) {
+        return <WithdrawalNoBalance activeWallet={activeWallet} />;
+    }
+
+    if (activeWallet?.currency && verificationCode && !isBalanceLoading) {
+        return isCrypto ? (
+            <WithdrawalCryptoModule
+                setResendEmail={setResendEmail}
+                setVerificationCode={setVerificationCode}
+                verificationCode={verificationCode}
+            />
+        ) : (
+            <WithdrawalFiatModule verificationCode={verificationCode} />
+        );
+    }
+
+    return <WithdrawalVerificationModule resendEmail={resendEmail} />;
 };
 
 export default WalletWithdrawal;

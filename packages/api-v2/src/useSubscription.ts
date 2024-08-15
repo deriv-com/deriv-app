@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import useAPI from './useAPI';
+import { useAuthContext } from './AuthProvider';
 import type {
     TSocketAcceptableProps,
     TSocketError,
@@ -16,39 +16,35 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T, id
     const [data, setData] = useState<TSocketResponseData<T>>();
     const subscriber = useRef<{ unsubscribe?: VoidFunction }>();
     const idle_timeout = useRef<NodeJS.Timeout>();
-    const { subscribe: _subscribe } = useAPI();
+    const { subscribe: _subscribe } = useAuthContext();
 
-    const subscribe = useCallback(
-        (...props: TSocketAcceptableProps<T>) => {
-            const prop = props?.[0];
-            const payload = prop && 'payload' in prop ? (prop.payload as TSocketRequestPayload<T>) : undefined;
+    const subscribe = useCallback(async (...props: TSocketAcceptableProps<T>) => {
+        const prop = props?.[0];
+        const payload = prop && 'payload' in prop ? (prop.payload as TSocketRequestPayload<T>) : undefined;
 
-            setIsLoading(true);
-            setSubscribed(true);
-            setIdle(false);
+        setIsLoading(true);
+        setSubscribed(true);
+        setIdle(false);
 
-            idle_timeout.current = setTimeout(() => {
-                setIdle(true);
-                setIsLoading(false);
-            }, idle_time);
+        idle_timeout.current = setTimeout(() => {
+            setIdle(true);
+        }, idle_time);
 
-            try {
-                subscriber.current = _subscribe(name, payload).subscribe(
-                    response => {
-                        setData(response);
-                        setIsLoading(false);
-                    },
-                    response => {
-                        setError(response.error);
-                        setIsLoading(false);
-                    }
-                );
-            } catch (e) {
-                setError(e as TSocketError<T>);
-            }
-        },
-        [_subscribe, name, idle_time]
-    );
+        try {
+            subscriber.current = await _subscribe(name, payload).subscribe(
+                response => {
+                    setData(response);
+                    setIsLoading(false);
+                },
+                response => {
+                    setError(response.error);
+                    setIsLoading(false);
+                }
+            );
+        } catch (e) {
+            setError(e as TSocketError<T>);
+        }
+    }, []);
 
     const unsubscribe = useCallback(() => {
         subscriber.current?.unsubscribe?.();

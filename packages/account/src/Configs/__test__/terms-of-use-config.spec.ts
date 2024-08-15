@@ -17,6 +17,7 @@ describe('terms-of-use-config', () => {
                 real_account_signup_target: 'maltainvest',
                 account_settings,
             },
+            // @ts-expect-error mock component
             MockComponent
         );
         expect(config.props.is_multi_account).toBeTruthy();
@@ -29,6 +30,7 @@ describe('terms-of-use-config', () => {
                 real_account_signup_target: 'maltainvest',
                 account_settings,
             },
+            // @ts-expect-error mock component
             MockComponent
         );
         expect(config.props.is_multi_account).toBeFalsy();

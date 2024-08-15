@@ -87,7 +87,7 @@ describe('<TradeType />', () => {
             wrapper,
         });
 
-        const autocomplete_element = screen.getByTestId('qs_autocomplete_tradetype');
+        const autocomplete_element = screen.getByTestId('dt_qs_tradetype');
         userEvent.click(autocomplete_element);
         await waitFor(() => {
             const option_element = screen.getByText(/Rise\/Fall/i);

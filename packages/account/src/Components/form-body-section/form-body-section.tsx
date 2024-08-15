@@ -1,8 +1,8 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 import { Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 import { Localize } from '@deriv/translations';
 
 export type TFormBodySection = {
@@ -40,26 +40,27 @@ const FormBodySection = ({
     side_note_position = 'left',
     type = 'text',
 }: React.PropsWithChildren<TFormBodySection>): JSX.Element => {
+    const { isDesktop } = useDevice();
     if (has_side_note) {
         return (
             <div
                 data-testid='dt_side_note_container'
-                className={classNames('account-form__section', {
+                className={clsx('account-form__section', {
                     'account-form__section--reversed': side_note_position === 'right',
                 })}
             >
                 <div
-                    className={classNames('account-form__section-side-note', {
+                    className={clsx('account-form__section-side-note', {
                         'account-form__section-side-note__example': type !== 'text',
                     })}
                 >
                     {type === 'text' ? (
-                        <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} data-testid='dt_side_note_text'>
+                        <Text color='less-prominent' size={isDesktop ? 'xs' : 'xxs'} data-testid='dt_side_note_text'>
                             {side_note}
                         </Text>
                     ) : (
                         <React.Fragment>
-                            <Text as='p' size={isMobile() ? 'xxs' : 'xs'} weight='bold'>
+                            <Text as='p' size={isDesktop ? 'xs' : 'xxs'} weight='bold'>
                                 <Localize i18n_default_text='Example :' />
                             </Text>
                             <div className='account-form__section-side-note__example-image'>{side_note}</div>

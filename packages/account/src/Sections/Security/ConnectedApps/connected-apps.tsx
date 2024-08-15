@@ -1,9 +1,10 @@
-import React from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { OauthApps } from '@deriv/api-types';
 import { Loading } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { WS } from '@deriv/shared';
-import ErrorComponent from 'Components/error-component';
+import { useDevice } from '@deriv-com/ui';
+import ErrorComponent from '../../../Components/error-component';
 import ConnectedAppsKnowMore from './connected-apps-know-more';
 import ConnectedAppsInfo from './connected-apps-info';
 import ConnectedAppsEarnMore from './connected-apps-earn-more';
@@ -14,16 +15,14 @@ import ConnectedAppsRevokeModal from './connected-apps-revoke-modal';
 import './connected-apps.scss';
 
 const ConnectedApps = observer(() => {
-    const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { isDesktop } = useDevice();
+    const [is_loading, setLoading] = useState(true);
+    const [is_modal_open, setIsModalOpen] = useState(false);
+    const [selected_app_id, setSelectedAppId] = useState<number | null>(null);
+    const [is_error, setError] = useState(false);
+    const [connected_apps, setConnectedApps] = useState<OauthApps>([]);
 
-    const [is_loading, setLoading] = React.useState(true);
-    const [is_modal_open, setIsModalOpen] = React.useState(false);
-    const [selected_app_id, setSelectedAppId] = React.useState<number | null>(null);
-    const [is_error, setError] = React.useState(false);
-    const [connected_apps, setConnectedApps] = React.useState<OauthApps>([]);
-
-    React.useEffect(() => {
+    useEffect(() => {
         /* eslint-disable no-console */
         fetchConnectedApps().catch(error => console.error('error: ', error));
     }, []);
@@ -37,12 +36,12 @@ const ConnectedApps = observer(() => {
         }
     };
 
-    const handleToggleModal = React.useCallback((app_id: number | null = null) => {
+    const handleToggleModal = useCallback((app_id: number | null = null) => {
         setIsModalOpen(is_modal_open => !is_modal_open);
         setSelectedAppId(app_id);
     }, []);
 
-    const revokeConnectedApp = React.useCallback(async (app_id: number | null) => {
+    const revokeConnectedApp = useCallback(async (app_id: number | null) => {
         setLoading(true);
         const response = await WS.authorized.send({ revoke_oauth_app: app_id });
         if (!response.error) {
@@ -54,7 +53,7 @@ const ConnectedApps = observer(() => {
         }
     }, []);
 
-    const handleRevokeAccess = React.useCallback(() => {
+    const handleRevokeAccess = useCallback(() => {
         setIsModalOpen(false);
         revokeConnectedApp(selected_app_id);
     }, [revokeConnectedApp, selected_app_id]);
@@ -68,7 +67,7 @@ const ConnectedApps = observer(() => {
                 {connected_apps.length ? (
                     <div className='connected-apps__content--wrapper'>
                         <ConnectedAppsInfo />
-                        {is_mobile ? (
+                        {!isDesktop ? (
                             <DataListTemplate connected_apps={connected_apps} handleToggleModal={handleToggleModal} />
                         ) : (
                             <DataTableTemplate connected_apps={connected_apps} handleToggleModal={handleToggleModal} />

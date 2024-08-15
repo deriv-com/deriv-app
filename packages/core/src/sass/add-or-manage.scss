@@ -49,7 +49,7 @@
         color: var(--text-general);
         text-align: center;
     }
-    @include desktop {
+    @include desktop-screen {
         .currency-selector__radio-group--with-margin {
             margin-bottom: 3rem;
             margin-left: auto;
@@ -64,7 +64,7 @@
         }
     }
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         flex-wrap: unset;
 
         & .account-wizard__btn-area {
@@ -76,6 +76,8 @@
         }
         .currency-selector__radio-group--with-margin {
             margin-bottom: 3rem;
+            max-width: 60rem;
+            margin-inline: auto;
         }
         & .change-currency {
             .currency-list__items {
@@ -106,7 +108,7 @@
             border: 2px solid var(--general-section-1);
 
             button {
-                width: 100%;
+                min-width: 100%;
             }
         }
     }
@@ -128,6 +130,12 @@
     }
 }
 
+.dc-mobile-dialog__account-signup-mobile-dialog > .status-dialog {
+    @include mobile-or-tablet-screen {
+        justify-content: center;
+    }
+}
+
 .status-dialog {
     display: flex;
     align-items: center;
@@ -143,7 +151,7 @@
         top: 1.8rem;
         right: 1.8rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             // margin: 0.8rem;
         }
     }
@@ -175,7 +183,7 @@
                 }
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 max-width: 96px;
                 height: auto;
             }
@@ -191,13 +199,13 @@
                 right: -1rem;
                 bottom: -1rem;
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     max-width: 3.6rem;
                     height: auto;
                 }
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 flex-grow: 0;
             }
         }
@@ -239,7 +247,7 @@
         &-header {
             margin: 1rem 0 0.8rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 line-height: 24px;
                 margin-top: 1.6rem;
             }
@@ -247,7 +255,7 @@
         &-text {
             padding: 0.2rem 0;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding: 0 1rem;
                 line-height: 2rem;
             }
@@ -264,17 +272,17 @@
             height: 4rem;
             border-width: 2px;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin: 0.4rem 1.4rem;
             }
         }
     }
 
-    @include desktop {
+    @include desktop-screen {
         width: 44rem;
         min-height: 35.2rem;
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         justify-content: flex-start;
         width: 100%;
         height: 100%;
@@ -305,7 +313,7 @@
             border-width: 2px;
             text-align: center;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 &:first-child {
                     margin: 0.4rem 1.4rem;
                 }
@@ -316,11 +324,11 @@
         }
     }
 
-    @include desktop {
+    @include desktop-screen {
         width: 38.4rem;
         min-height: 30rem;
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         justify-content: flex-start;
         width: 100%;
         height: 100%;
@@ -333,7 +341,7 @@
         padding: 0.6rem 0.8rem 0;
         margin: 1.2rem 1.6rem 0 auto;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin: 0.8rem;
         }
     }

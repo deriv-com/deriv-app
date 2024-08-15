@@ -1,26 +1,13 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
+import { TooltipRenderProps } from 'react-joyride';
 import { LegacyClose2pxIcon } from '@deriv/quill-icons';
-import { Step, TooltipRenderProps } from '@deriv/react-joyride';
-import { THooks } from '../../types';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import { WalletButton } from '../Base';
-import { getDesktopSteps } from './DesktopSteps';
-import { getMobileSteps } from './MobileSteps';
 import './WalletTourGuide.scss';
 
 export const walletsOnboardingLocalStorageKey = 'walletsOnboarding';
 export const walletsOnboardingStartValue = 'started';
-
-export const tourStepConfig = (
-    isMobile: boolean,
-    isDemoWallet: boolean,
-    hasMT5Account: boolean,
-    hasDerivAppsTradingAccount: boolean,
-    isAllWalletsAlreadyAdded: boolean,
-    walletIndex = 1
-): Step[] =>
-    isMobile
-        ? getMobileSteps(isDemoWallet, hasMT5Account, hasDerivAppsTradingAccount, isAllWalletsAlreadyAdded, walletIndex)
-        : getDesktopSteps(isDemoWallet, hasMT5Account, hasDerivAppsTradingAccount, isAllWalletsAlreadyAdded);
 
 export const TooltipComponent = ({
     backProps,
@@ -47,20 +34,26 @@ export const TooltipComponent = ({
             <div className='wallets-tour-guide__footer'>
                 {index > 0 && (
                     <WalletButton {...backProps} color='white' variant='outlined'>
-                        Back
+                        <Localize i18n_default_text='Back' />
                     </WalletButton>
                 )}
-                {continuous && <WalletButton {...primaryProps}>{isLastStep ? 'Done' : 'Next'}</WalletButton>}
-                {!continuous && <WalletButton {...closeProps}>Close</WalletButton>}
+                {continuous && (
+                    <WalletButton {...primaryProps}>
+                        {isLastStep ? <Localize i18n_default_text='Done' /> : <Localize i18n_default_text='Next' />}
+                    </WalletButton>
+                )}
+                {!continuous && (
+                    <WalletButton {...closeProps}>
+                        <Localize i18n_default_text='Close' />
+                    </WalletButton>
+                )}
             </div>
         </div>
     );
 };
 
-export const getFiatWalletLoginId = (wallets?: THooks.WalletAccountsList[]) => {
-    return wallets?.find(wallet => !wallet.is_crypto)?.loginid;
-};
-
-export const getWalletIndexForTarget = (loginid?: string, wallets?: THooks.WalletAccountsList[]) => {
-    return (wallets?.findIndex(wallet => wallet.loginid === loginid) ?? 0) + 1;
-};
+export const SpotLightHeader = ({ children }: PropsWithChildren) => (
+    <Text color='red' size='sm' weight='bold'>
+        {children}
+    </Text>
+);

@@ -4,6 +4,7 @@ import { makeLazyLoader, routes, moduleLoader } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Redirect from 'App/Containers/Redirect';
+import RootComponent from 'App/Containers/RootComponent';
 import Endpoint from 'Modules/Endpoint';
 
 const CFDCompareAccounts = React.lazy(() =>
@@ -53,45 +54,10 @@ const Bot = React.lazy(() =>
     })
 );
 
-const AppStore = React.lazy(() =>
-    moduleLoader(() => {
-        // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "appstore" */ '@deriv/appstore');
-    })
-);
-
-const Wallets = React.lazy(() =>
-    moduleLoader(() => {
-        // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "wallets" */ '@deriv/wallets');
-    })
-);
-
-const TradersHub = React.lazy(() =>
-    moduleLoader(() => {
-        // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "tradershub" */ '@deriv/tradershub');
-    })
-);
-
 const P2P = React.lazy(() =>
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
         return import(/* webpackChunkName: "p2p" */ '@deriv/p2p');
-    })
-);
-
-const P2P_V2 = React.lazy(() =>
-    moduleLoader(() => {
-        // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "p2p-v2" */ '@deriv/p2p-v2');
-    })
-);
-
-const Account_V2 = React.lazy(() =>
-    moduleLoader(() => {
-        // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "account-v2" */ '@deriv/account-v2');
     })
 );
 
@@ -101,6 +67,10 @@ const Cashier_V2 = React.lazy(() =>
         return import(/* webpackChunkName: "cashier-v2" */ '@deriv/cashier-v2');
     })
 );
+
+const RedirectToNewTradersHub = () => {
+    return <Redirect to={routes.traders_hub} />;
+};
 
 const getModules = () => {
     const modules = [
@@ -284,59 +254,10 @@ const getModules = () => {
             ],
         },
         {
-            path: routes.traders_hub,
-            component: AppStore,
-            is_authenticated: true,
-            getTitle: () => localize("Trader's Hub"),
-        },
-        {
-            path: routes.wallets,
-            component: Wallets,
-            is_authenticated: true,
-            getTitle: () => localize('Wallets'),
-        },
-        {
-            path: routes.cashier_p2p_v2,
-            component: P2P_V2,
-            getTitle: () => localize('P2P-V2'),
-            is_authenticated: true,
-        },
-        {
-            path: routes.traders_hub_v2,
-            component: TradersHub,
-            is_authenticated: true,
-            getTitle: () => localize('Trader’s Hub V2'),
-        },
-        {
-            path: routes.account_v2,
-            component: Account_V2,
-            is_authenticated: true,
-            getTitle: () => localize('Account V2'),
-        },
-        {
             path: routes.cashier_v2,
             component: Cashier_V2,
             is_authenticated: true,
             getTitle: () => localize('Cashier'),
-        },
-        {
-            path: routes.onboarding,
-            component: AppStore,
-            is_authenticated: false,
-            getTitle: () => localize('Appstore'),
-            routes: [
-                {
-                    path: routes.traders_hub,
-                    component: AppStore,
-                    getTitle: () => localize("Trader's Hub"),
-                },
-                {
-                    path: routes.onboarding,
-                    component: AppStore,
-                    is_authenticated: false,
-                    getTitle: () => localize('Onboarding'),
-                },
-            ],
         },
         {
             path: routes.cashier,
@@ -431,18 +352,27 @@ const getModules = () => {
             ],
         },
         {
-            path: routes.root,
+            path: routes.trade,
             component: Trader,
             getTitle: () => localize('Trader'),
-            routes: [
-                {
-                    path: routes.contract,
-                    component: Trader,
-                    getTitle: () => localize('Contract Details'),
-                    is_authenticated: true,
-                },
-                { path: routes.error404, component: Trader, getTitle: () => localize('Error 404') },
-            ],
+        },
+        {
+            path: routes.contract,
+            component: Trader,
+            getTitle: () => localize('Contract Details'),
+            is_authenticated: true,
+        },
+        {
+            path: routes.old_traders_hub,
+            component: RedirectToNewTradersHub,
+            is_authenticated: false,
+            getTitle: () => localize("Trader's Hub"),
+        },
+        {
+            path: routes.traders_hub,
+            component: RootComponent,
+            is_authenticated: false,
+            getTitle: () => localize("Trader's Hub"),
         },
     ];
 
@@ -456,8 +386,8 @@ const lazyLoadComplaintsPolicy = makeLazyLoader(
 
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
-const initRoutesConfig = ({ is_eu_country }) => [
-    { path: routes.index, component: RouterRedirect, getTitle: () => '', to: routes.root },
+const initRoutesConfig = () => [
+    { path: routes.index, component: RouterRedirect, getTitle: () => '', to: routes.traders_hub },
     { path: routes.endpoint, component: Endpoint, getTitle: () => 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, getTitle: () => localize('Redirect') },
     {
@@ -467,7 +397,7 @@ const initRoutesConfig = ({ is_eu_country }) => [
         icon_component: 'IcComplaintsPolicy',
         is_authenticated: true,
     },
-    ...getModules({ is_eu_country }),
+    ...getModules(),
 ];
 
 let routesConfig;
@@ -475,10 +405,9 @@ let routesConfig;
 // For default page route if page/path is not found, must be kept at the end of routes_config array
 const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
-// is_deriv_crypto = true as default to prevent route ui blinking
-const getRoutesConfig = ({ is_eu_country }) => {
+const getRoutesConfig = () => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig({ is_eu_country });
+        routesConfig = initRoutesConfig();
         routesConfig.push(route_default);
     }
     return routesConfig;

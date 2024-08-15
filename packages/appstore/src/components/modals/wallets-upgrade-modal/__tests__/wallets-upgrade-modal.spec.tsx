@@ -5,10 +5,13 @@ import { useWalletMigration } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import WalletsUpgradeModal from '../wallets-upgrade-modal';
 
+const mockStartMigration = jest.fn();
+
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useWalletMigration: jest.fn(() => ({
         is_eligible: true,
+        startMigration: mockStartMigration,
     })),
 }));
 
@@ -131,5 +134,28 @@ describe('<WalletsUpgradeModal />', () => {
         expect(sessionStorage.getItem('is_wallet_migration_modal_closed')).toBe('true');
     });
 
-    // TODO: Add test for clicking Enable now button after the next flow is ready
+    it('Should start migration when Enable now button is clicked', () => {
+        const mock = mockStore({
+            traders_hub: {
+                toggleWalletsUpgrade: jest.fn(),
+            },
+            ui: {
+                is_mobile: false,
+                is_desktop: true,
+            },
+        });
+
+        jest.spyOn(React, 'useState').mockImplementationOnce(() => [true, jest.fn()]);
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+
+        render(<WalletsUpgradeModal />, { wrapper });
+
+        const enable_now_button = screen.getByRole('button', { name: 'Enable now' });
+        userEvent.click(enable_now_button);
+
+        expect(mockStartMigration).toHaveBeenCalled();
+    });
 });

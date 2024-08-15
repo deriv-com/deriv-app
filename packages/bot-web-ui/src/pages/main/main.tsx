@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { updateWorkspaceName } from '@deriv/bot-skeleton';
 import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
-import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
-import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
+import { Dialog, Tabs } from '@deriv/components';
+import { useFeatureFlags } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import TradingViewModal from 'Components/trading-view-chart/trading-view-modal';
@@ -16,6 +16,7 @@ import Chart from '../chart';
 import ChartModal from '../chart/chart-modal';
 import Dashboard from '../dashboard';
 import RunStrategy from '../dashboard/run-strategy';
+import ServerSideBot from '../server-side-bot';
 import Tutorial from '../tutorials';
 import { tour_list } from '../tutorials/dbot-tours/utils';
 
@@ -39,9 +40,16 @@ const AppWrapper = observer(() => {
     const { clear } = summary_card;
     const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
     const init_render = React.useRef(true);
-    const { ui } = useStore();
-    const { url_hashed_values, is_mobile } = ui;
+    const { ui, client } = useStore();
+    const { is_next_server_bot_enabled } = useFeatureFlags();
+    const { url_hashed_values, is_desktop } = ui;
+    const { account_settings } = client;
+
     const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial'];
+
+    // SERVER BOT VISIBILITY SET HERE //
+    const should_show_server_bot = is_next_server_bot_enabled && account_settings?.country_code?.toLowerCase() === 'aq';
+    if (should_show_server_bot) hash.push('server_bot');
 
     let tab_value: number | string = active_tab;
     const GetHashedValue = (tab: number) => {
@@ -74,7 +82,7 @@ const AppWrapper = observer(() => {
 
         if (init_render.current) {
             setActiveTab(Number(active_hash_tab));
-            if (is_mobile) handleTabChange(Number(active_hash_tab));
+            if (!is_desktop) handleTabChange(Number(active_hash_tab));
             init_render.current = false;
         } else {
             window.location.hash = hash[active_tab] || hash[0];
@@ -86,17 +94,23 @@ const AppWrapper = observer(() => {
     }, [active_tab]);
 
     React.useEffect(() => {
-        if (active_tab === BOT_BUILDER) {
-            if (is_drawer_open) {
-                isDbotRTL() ? initTrashCan(140, -260) : initTrashCan(400, -748);
-            } else {
-                initTrashCan(isDbotRTL() ? -200 : 20);
+        const trashcan_init_id = setTimeout(() => {
+            if (active_tab === BOT_BUILDER && Blockly?.derivWorkspace?.trashcan) {
+                const trashcanY = window.innerHeight - 250;
+                let trashcanX;
+                if (is_drawer_open) {
+                    trashcanX = isDbotRTL() ? 380 : window.innerWidth - 460;
+                } else {
+                    trashcanX = isDbotRTL() ? 20 : window.innerWidth - 100;
+                }
+                Blockly?.derivWorkspace?.trashcan?.setTrashcanPosition(trashcanX, trashcanY);
             }
-            setTimeout(() => {
-                window.dispatchEvent(new Event('resize')); // make the trash can work again after resize
-            }, 500);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, 100);
+
+        return () => {
+            clearTimeout(trashcan_init_id); // Clear the timeout on unmount
+        };
+        //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active_tab, is_drawer_open]);
 
     useEffect(() => {
@@ -133,7 +147,7 @@ const AppWrapper = observer(() => {
             <div className='main'>
                 <div
                     className={classNames('main__container', {
-                        'main__container--active': active_tour && active_tab === DASHBOARD && is_mobile,
+                        'main__container--active': active_tour && active_tab === DASHBOARD && !is_desktop,
                     })}
                 >
                     <Tabs
@@ -175,18 +189,39 @@ const AppWrapper = observer(() => {
                                 <Tutorial handleTabChange={handleTabChange} />
                             </div>
                         </div>
+                        {should_show_server_bot ? (
+                            <div
+                                icon='IcServerBot'
+                                label={
+                                    <Localize
+                                        i18n_default_text='Server Bot <0>Beta</0'
+                                        components={[<span key={0} className='beta-server-bot' />]}
+                                    />
+                                }
+                                id='id-server-bot'
+                            >
+                                <ServerSideBot />
+                            </div>
+                        ) : null}
                     </Tabs>
                 </div>
             </div>
-            <DesktopWrapper>
-                <div className='main__run-strategy-wrapper'>
-                    <RunStrategy />
-                    <RunPanel />
-                </div>
-                <ChartModal />
-                <TradingViewModal />
-            </DesktopWrapper>
-            <MobileWrapper>{!is_open && <RunPanel />}</MobileWrapper>
+            {is_desktop ? (
+                <>
+                    <div className='main__run-strategy-wrapper'>
+                        {active_tab !== 4 && (
+                            <>
+                                <RunStrategy />
+                                <RunPanel />
+                            </>
+                        )}
+                    </div>
+                    <ChartModal />
+                    <TradingViewModal />
+                </>
+            ) : (
+                !is_open && active_tab !== 4 && <RunPanel />
+            )}
             <Dialog
                 cancel_button_text={cancel_button_text || localize('Cancel')}
                 className='dc-dialog__wrapper--fixed'

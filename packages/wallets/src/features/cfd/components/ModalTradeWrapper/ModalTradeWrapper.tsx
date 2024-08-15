@@ -1,6 +1,7 @@
 import React, { FC, PropsWithChildren } from 'react';
 import QRCode from 'qrcode.react';
-import { WalletText } from '../../../../components/Base';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../../../../components/Base/ModalStepWrapper';
 import useDevice from '../../../../hooks/useDevice';
 import InstallationAppleIcon from '../../../../public/images/ic-installation-apple.svg';
@@ -8,6 +9,7 @@ import InstallationGoogleIcon from '../../../../public/images/ic-installation-go
 import InstallationHuaweiIcon from '../../../../public/images/ic-installation-huawei.svg';
 import { TPlatforms } from '../../../../types';
 import { PlatformDetails } from '../../constants';
+import { ctraderLinks, dxtradeLinks, whiteLabelLinks } from '../../screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 import './ModalTradeWrapper.scss';
 
 type TAppLinks = {
@@ -18,18 +20,18 @@ type TAppLinks = {
 
 const LinksMapper: Record<TPlatforms.All, TAppLinks> = {
     ctrader: {
-        android: 'https://play.google.com/store/apps/details?id=com.deriv.ct',
-        ios: 'https://apps.apple.com/cy/app/ctrader/id767428811',
+        android: ctraderLinks.android,
+        ios: ctraderLinks.ios,
     },
     dxtrade: {
-        android: 'https://play.google.com/store/apps/details?id=com.deriv.dx',
-        huawei: 'https://appgallery.huawei.com/app/C104633219',
-        ios: 'https://apps.apple.com/us/app/deriv-x/id1563337503',
+        android: dxtradeLinks.android,
+        huawei: dxtradeLinks.huawei,
+        ios: dxtradeLinks.ios,
     },
     mt5: {
-        android: 'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server,Deriv-Server-02',
-        huawei: 'https://appgallery.huawei.com/#/app/C102015329',
-        ios: 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server,Deriv-Server-02',
+        android: whiteLabelLinks.android,
+        huawei: whiteLabelLinks.huawei,
+        ios: whiteLabelLinks.ios,
     },
 };
 
@@ -54,9 +56,12 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
             renderFooter={() => {
                 return (
                     <div className='wallets-modal-trade-wrapper__footer'>
-                        <WalletText align='center' size='sm' weight='bold'>
-                            Download {title} on your phone to trade with the {title} account
-                        </WalletText>
+                        <Text align='center' size='sm' weight='bold'>
+                            <Localize
+                                i18n_default_text='Download {{title}} on your phone to trade with the {{title}} account'
+                                values={{ title }}
+                            />
+                        </Text>
                         <div className='wallets-modal-trade-wrapper__footer-installations'>
                             <div className='wallets-modal-trade-wrapper__footer-installations-icons'>
                                 {appOrder.map(app => {
@@ -69,19 +74,22 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                                     return null;
                                 })}
                             </div>
-                            {isDesktop && (
-                                <div className='wallets-modal-trade-wrapper__footer-installations-qr'>
-                                    <QRCode size={80} value={link} />
-                                    <WalletText align='center' size='xs'>
-                                        Scan the QR code to download {title}
-                                    </WalletText>
-                                </div>
-                            )}
+
+                            <div className='wallets-modal-trade-wrapper__footer-installations-qr'>
+                                <QRCode size={80} value={link} />
+                                <Text align='center' size='xs'>
+                                    <Localize
+                                        i18n_default_text=' Scan the QR code to download {{title}}'
+                                        values={{ title }}
+                                    />
+                                </Text>
+                            </div>
                         </div>
                     </div>
                 );
             }}
             shouldFixedFooter={isDesktop}
+            shouldHideFooter={!isDesktop}
             title='Trade'
         >
             {children}

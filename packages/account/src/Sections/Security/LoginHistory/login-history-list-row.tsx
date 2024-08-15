@@ -1,18 +1,17 @@
-import React from 'react';
-import classNames from 'classnames';
-import { TLoginHistoryItems } from 'Types';
+import clsx from 'clsx';
+import { TLoginHistoryItems } from '../../../Types';
 import { Table } from '@deriv/components';
-import { Localize } from '@deriv/translations';
-import getLoginHistoryTableHeaders from 'Constants/get-login-history-table-headers';
+import { Localize } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
+import getLoginHistoryTableHeaders from '../../../Constants/get-login-history-table-headers';
 import ListCell from './list-cell';
-import { observer, useStore } from '@deriv/stores';
 
-const LoginHistoryListRow = observer(({ id, date, action, browser, ip, status }: TLoginHistoryItems) => {
+const LoginHistoryListRow = ({ id, date, action, browser, ip, status }: TLoginHistoryItems) => {
     const { date_title, browser_title, action_title, ip_title, status_title } = getLoginHistoryTableHeaders();
-    const { ui } = useStore();
-    const { is_desktop } = ui;
+    const { isDesktop } = useDevice();
+
     return (
-        <div className={classNames('login-history__list__wrapper')} key={id}>
+        <div className={clsx('login-history__list__wrapper')} key={id}>
             <Table.Row className='login-history__list__row login-history__list__row--with-margin'>
                 <Table.Cell className='login-history__list__row__cell'>
                     <ListCell title={date_title} text={date} />
@@ -38,7 +37,7 @@ const LoginHistoryListRow = observer(({ id, date, action, browser, ip, status }:
                 <Table.Cell className='login-history__list__row__cell'>
                     <ListCell className='login-history__list__row__cell--ip-value' title={ip_title} text={ip} />
                 </Table.Cell>
-                {is_desktop && (
+                {isDesktop && (
                     <Table.Cell className='login-history__list__row__cell'>
                         <ListCell
                             title={status_title}
@@ -49,6 +48,6 @@ const LoginHistoryListRow = observer(({ id, date, action, browser, ip, status }:
             </Table.Row>
         </div>
     );
-});
+};
 
 export default LoginHistoryListRow;

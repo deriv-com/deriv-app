@@ -108,7 +108,7 @@ describe('<OpenPositionsSVGModal/>', () => {
         expect(modal_content_vanuatu).toBeInTheDocument();
     });
 
-    it('should render modal content correctly when status is migrated_with_position and market_type is derived', () => {
+    it('should render modal content correctly when status is migrated_with_position and market_type is standard', () => {
         const new_store: TStores = {
             ...store_config,
             client: {
@@ -133,19 +133,19 @@ describe('<OpenPositionsSVGModal/>', () => {
                 ],
             },
         };
-        const mock_props_derived: React.ComponentProps<typeof OpenPositionsSVGModal> = {
+        const mock_props_standard: React.ComponentProps<typeof OpenPositionsSVGModal> = {
             ...mock_props,
             market_type: 'synthetic',
         };
-        renderComponent({ props: mock_props_derived, store: new_store });
+        renderComponent({ props: mock_props_standard, store: new_store });
 
-        const modal_content_derived = screen.getByText(
-            /You can no longer open new positions with your MT5 Derived SVG account. Please use your MT5 Derived Vanuatu or MT5 Derived BVI account to open new positions./
+        const modal_content_standard = screen.getByText(
+            /You can no longer open new positions with your MT5 Standard SVG account. Please use your MT5 Standard Vanuatu or MT5 Standard BVI account to open new positions./
         );
-        expect(modal_content_derived).toBeInTheDocument();
+        expect(modal_content_standard).toBeInTheDocument();
     });
 
-    it('should render modal content correctly when status is migrated_without_position and market_type is derived', () => {
+    it('should render modal content correctly when status is migrated_without_position and market_type is standard', () => {
         const new_mock_props: React.ComponentProps<typeof OpenPositionsSVGModal> = {
             ...mock_props,
             market_type: 'synthetic',
@@ -153,7 +153,7 @@ describe('<OpenPositionsSVGModal/>', () => {
         };
         renderComponent({ props: new_mock_props });
         const modal_content = screen.getByText(
-            /Your MT5 Derived SVG account will be archived after 30 days of inactivity. You can still access your trade history until the account is archived./
+            /Your MT5 Standard SVG account will be archived after 60 days of inactivity. You can still access your trade history until the account is archived./
         );
         expect(modal_content).toBeInTheDocument();
     });
@@ -166,7 +166,7 @@ describe('<OpenPositionsSVGModal/>', () => {
         };
         renderComponent({ props: new_mock_props });
         const modal_content = screen.getByText(
-            /Your MT5 Financial SVG account will be archived after 30 days of inactivity. You can still access your trade history until the account is archived./
+            /Your MT5 Financial SVG account will be archived after 60 days of inactivity. You can still access your trade history until the account is archived./
         );
         expect(modal_content).toBeInTheDocument();
     });

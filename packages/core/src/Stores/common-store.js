@@ -1,11 +1,14 @@
 import * as SocketCache from '_common/base/socket_cache';
 import { action, computed, makeObservable, observable } from 'mobx';
-import { changeLanguage, getAllowedLanguages } from '@deriv/translations';
+import { changeLanguage } from '@deriv/translations';
+import { getAllowedLanguages } from '@deriv-com/translations';
 import {
+    UNSUPPORTED_LANGUAGES,
     getAppId,
     getUrlBinaryBot,
     getUrlSmartTrader,
     initMoment,
+    setLocale,
     isMobile,
     platforms,
     routes,
@@ -65,7 +68,7 @@ export default class CommonStore extends BaseStore {
         });
     }
 
-    allowed_languages = Object.keys(getAllowedLanguages());
+    allowed_languages = Object.keys(getAllowedLanguages(UNSUPPORTED_LANGUAGES));
     app_id = undefined;
     app_router = { history: null };
     app_routing_history = [];
@@ -134,6 +137,7 @@ export default class CommonStore extends BaseStore {
                 window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
                 try {
                     await initMoment(key);
+                    await setLocale(key);
                     await changeLanguage(key, () => {
                         this.changeCurrentLanguage(key);
                         BinarySocket.closeAndOpenNewConnection(key);

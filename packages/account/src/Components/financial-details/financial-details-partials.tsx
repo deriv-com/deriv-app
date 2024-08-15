@@ -1,8 +1,9 @@
 import React from 'react';
 import { Field, FormikValues, useFormikContext } from 'formik';
-import { DesktopWrapper, MobileWrapper, Dropdown, SelectNative } from '@deriv/components';
+import { Dropdown, SelectNative } from '@deriv/components';
 import { EMPLOYMENT_VALUES, TEmploymentStatus, shouldHideOccupationField } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { useTranslations } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import {
     getAccountTurnoverList,
     getEducationLevelList,
@@ -39,18 +40,19 @@ type TFinancialInformationProps = {
 const FinancialDetailsDropdownField = ({
     dropdown_list,
     field_key,
-    placeholder = localize('Please select'),
+    placeholder,
     label,
 }: TFinancialDetailsDropdownFieldProps) => {
     const { values, handleChange, handleBlur, touched, errors, setFieldValue } = useFormikContext<{
         [key: string]: string;
     }>();
-
+    const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
     return (
         <Field name={field_key}>
             {({ field }: FormikValues) => (
                 <React.Fragment>
-                    <DesktopWrapper>
+                    {isDesktop ? (
                         <Dropdown
                             placeholder={label}
                             is_align_text_left
@@ -64,10 +66,9 @@ const FinancialDetailsDropdownField = ({
                             required
                             {...field}
                         />
-                    </DesktopWrapper>
-                    <MobileWrapper>
+                    ) : (
                         <SelectNative
-                            placeholder={placeholder}
+                            placeholder={placeholder ?? localize('Please select')}
                             name={field.name}
                             label={label}
                             list_items={dropdown_list}
@@ -80,7 +81,7 @@ const FinancialDetailsDropdownField = ({
                             required
                             {...field}
                         />
-                    </MobileWrapper>
+                    )}
                 </React.Fragment>
             )}
         </Field>
@@ -90,13 +91,15 @@ const FinancialDetailsDropdownField = ({
 const FinancialDetailsOccupationDropdownField = ({
     dropdown_list,
     field_key,
-    placeholder = localize('Please select'),
+    placeholder,
     label,
     employment_status,
 }: TFinancialDetailsDropdownFieldProps) => {
     const { values, handleChange, handleBlur, touched, errors, setFieldValue } = useFormikContext<{
         [key: string]: string;
     }>();
+    const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
 
     const getFormattedOccupationValues = () =>
         employment_status === EMPLOYMENT_VALUES.EMPLOYED && values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED
@@ -107,7 +110,7 @@ const FinancialDetailsOccupationDropdownField = ({
         <Field name={field_key}>
             {({ field }: FormikValues) => (
                 <React.Fragment>
-                    <DesktopWrapper>
+                    {isDesktop ? (
                         <Dropdown
                             {...field}
                             placeholder={label}
@@ -124,11 +127,10 @@ const FinancialDetailsOccupationDropdownField = ({
                             list_portal_id='modal_root'
                             required
                         />
-                    </DesktopWrapper>
-                    <MobileWrapper>
+                    ) : (
                         <SelectNative
                             {...field}
-                            placeholder={placeholder}
+                            placeholder={placeholder ?? localize('Please select')}
                             name={field.name}
                             label={label}
                             list_items={dropdown_list}
@@ -140,7 +142,7 @@ const FinancialDetailsOccupationDropdownField = ({
                             }}
                             required
                         />
-                    </MobileWrapper>
+                    )}
                 </React.Fragment>
             )}
         </Field>
@@ -152,6 +154,8 @@ const FinancialDetailsOccupationDropdownField = ({
  * @returns {JSX.Element}
  */
 const FinancialInformation = ({ employment_status }: TFinancialInformationProps) => {
+    const { localize } = useTranslations();
+
     return (
         <React.Fragment>
             <FinancialDetailsDropdownField
@@ -166,10 +170,10 @@ const FinancialInformation = ({ employment_status }: TFinancialInformationProps)
             />
             {!shouldHideOccupationField(employment_status) && (
                 <FinancialDetailsOccupationDropdownField
-                    dropdown_list={getFormattedOccupationList(employment_status)}
+                    dropdown_list={getFormattedOccupationList(employment_status as TEmploymentStatus)}
                     field_key='occupation'
                     label={localize('Occupation')}
-                    employment_status={employment_status}
+                    employment_status={employment_status as TEmploymentStatus}
                 />
             )}
             <FinancialDetailsDropdownField

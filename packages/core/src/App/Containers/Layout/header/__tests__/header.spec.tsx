@@ -2,12 +2,13 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
+import { routes } from '@deriv/shared';
 import Header from '../header';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
-    useFeatureFlags: jest.fn(() => ({ is_next_wallet_enabled: false })),
     useStoreWalletAccountsList: jest.fn(() => ({ data: [], has_wallet: false })),
+    useFeatureFlags: jest.fn(() => ({})),
 }));
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -19,6 +20,13 @@ jest.mock('../default-header', () => () => <div data-testid='dt_default_header'>
 jest.mock('../dtrader-header', () => () => <div data-testid='dt_dtrader_header'>MockedDTraderHeader</div>);
 // eslint-disable-next-line react/display-name
 jest.mock('../traders-hub-header', () => () => <div data-testid='dt_traders_hub_header'>MockedTradersHubHeader</div>);
+jest.mock('@deriv-com/ui', () => ({
+    useDevice: jest.fn(() => ({
+        isDesktop: true,
+        isMobile: false,
+        isTablet: false,
+    })),
+}));
 
 describe('Header', () => {
     const store = mockStore({
@@ -33,7 +41,7 @@ describe('Header', () => {
 
     it('should render the "TradersHubHeader" component if user is logged in and in traders hub route', async () => {
         (useLocation as jest.Mock).mockReturnValue({
-            pathname: '/appstore/traders-hub',
+            pathname: routes.traders_hub,
         });
         renderComponent();
         expect(await screen.findByTestId('dt_traders_hub_header')).toBeInTheDocument();
@@ -42,7 +50,7 @@ describe('Header', () => {
 
     it('should render the "DTraderHeader" component if user is logged in and not in the traders hub route', async () => {
         (useLocation as jest.Mock).mockReturnValue({
-            pathname: '/',
+            pathname: routes.trade,
         });
         renderComponent();
         expect(await screen.findByTestId('dt_dtrader_header')).toBeInTheDocument();

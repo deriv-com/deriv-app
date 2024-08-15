@@ -504,6 +504,7 @@ export default class OrderStore {
                         );
                     } else if (response.error) {
                         const { code, message } = response?.error;
+                        this.setErrorCode(code);
 
                         if (
                             code === api_error_codes.INVALID_VERIFICATION_TOKEN ||

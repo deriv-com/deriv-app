@@ -2,11 +2,13 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { POILimited } from '../limited';
 
+window.LC_API = {
+    open_chat_window: jest.fn(),
+    on_chat_ended: jest.fn(),
+};
+
 describe('<POILimited/>', () => {
     it('should render POILimited component', () => {
-        window.LC_API = {
-            open_chat_window: jest.fn(),
-        };
         render(<POILimited />);
         expect(screen.getByText(/you've reached the limit for uploading your documents\./i)).toBeInTheDocument();
         expect(screen.getByText(/please contact us via/i)).toBeInTheDocument();

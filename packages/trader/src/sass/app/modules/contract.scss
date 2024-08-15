@@ -65,7 +65,7 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                 }
                 /* iPhone SE screen height fixes due to UI space restrictions */
                 @media only screen and (max-height: 667px) {
-                    &--collapsed {
+                    &--collapsed--fixed-height {
                         display: block;
                         overflow: hidden;
                         font-size: 1rem;

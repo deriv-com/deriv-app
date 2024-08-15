@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { createContext } from 'react';
 
 export type TAccountLimitsContext = {
     currency: string;
@@ -7,7 +7,7 @@ export type TAccountLimitsContext = {
     toggleOverlay?: () => void;
 };
 
-const AccountLimitsContext = React.createContext<TAccountLimitsContext>({
+const AccountLimitsContext = createContext<TAccountLimitsContext>({
     currency: '',
     overlay_ref: document.createElement('div'),
 });

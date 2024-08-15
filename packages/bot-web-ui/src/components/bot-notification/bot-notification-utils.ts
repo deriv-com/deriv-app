@@ -1,6 +1,6 @@
 import { toast, ToastPosition, TypeOptions } from 'react-toastify';
-import { localize } from '@deriv/translations';
 import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
+import { localize } from '@deriv/translations';
 
 const getToastPosition = () => {
     const is_RTL = isDbotRTL();
@@ -26,7 +26,8 @@ export type TNotificationStyle = {
     hideProgressBar: boolean;
     closeOnClick: boolean;
     pauseOnHover: boolean;
-    pauseOnFocusLoss?: boolean;
+    pauseOnFocusLoss: boolean;
+    closeButton: boolean;
 };
 
 export enum NOTIFICATION_TYPE {
@@ -40,6 +41,8 @@ export const notification_message = {
     block_delete: localize('You’ve just deleted a block.'),
     [NOTIFICATION_TYPE.BOT_IMPORT]: localize('You’ve successfully imported a bot.'),
     [NOTIFICATION_TYPE.BOT_DELETE]: localize('You’ve successfully deleted a bot.'),
+    strategy_conversion: localize('Save this strategy as an XML file from Deriv Bot for faster re-imports.'),
+    google_drive_error: localize('Your session has expired. Please sign in again.'),
 };
 
 export const notification_style = {

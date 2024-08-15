@@ -16,7 +16,9 @@ const InsufficientBalanceModal = observer(
     ({ history, is_virtual, is_visible, message, toggleModal }: TInsufficientBalanceModal) => {
         const {
             ui: { is_mobile },
+            client,
         } = useStore();
+        const { has_wallet } = client;
         return (
             <Modal
                 id='dt_insufficient_balance_modal'
@@ -34,7 +36,7 @@ const InsufficientBalanceModal = observer(
                         text={is_virtual ? localize('OK') : localize('Deposit now')}
                         onClick={() => {
                             if (!is_virtual) {
-                                history?.push?.(routes.cashier_deposit);
+                                history?.push?.(has_wallet ? routes.wallets_deposit : routes.cashier_deposit);
                             } else {
                                 toggleModal();
                             }

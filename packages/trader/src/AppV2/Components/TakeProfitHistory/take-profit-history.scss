@@ -1,0 +1,36 @@
+.take-profit-history {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: var(--core-borderRadius-500);
+
+    &__table {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+
+        &-row {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            border-bottom: var(--core-borderWidth-75) solid var(--core-color-solid-slate-75);
+            margin: var(--core-spacing-400) 0;
+        }
+
+        &-cell {
+            display: flex;
+            justify-content: space-around;
+            flex-direction: column;
+            text-align: end;
+
+            &--left {
+                text-align: start;
+            }
+        }
+
+        &--fixed-height {
+            min-height: 244px;
+            justify-content: start;
+        }
+    }
+}

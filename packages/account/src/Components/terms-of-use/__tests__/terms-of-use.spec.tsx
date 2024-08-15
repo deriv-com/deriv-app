@@ -45,6 +45,7 @@ describe('<TermsOfUse/>', () => {
         real_account_signup_target: 'svg',
         value: { agreed_tos: false, agreed_tnc: false },
         residence: 'id',
+        is_multi_account: false,
     };
 
     const commonFieldsCheck = () => {

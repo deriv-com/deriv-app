@@ -1,15 +1,15 @@
 import React from 'react';
 import { FormikValues } from 'formik';
-import { EMPLOYMENT_VALUES, isDesktop, isMobile } from '@deriv/shared';
+import { EMPLOYMENT_VALUES } from '@deriv/shared';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import FinancialDetails from '../financial-details';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isDesktop: jest.fn(() => true),
-    isMobile: jest.fn(() => false),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
 const modal_root_el = document.createElement('div');
@@ -70,8 +70,7 @@ describe('<FinancialDetails />', () => {
     });
 
     it('should render "FinancialDetails" for mobile', () => {
-        (isDesktop as jest.Mock).mockReturnValue(false);
-        (isMobile as jest.Mock).mockReturnValue(true);
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
 
         renderComponent({});
 
@@ -97,8 +96,7 @@ describe('<FinancialDetails />', () => {
     });
 
     it('should trigger "Previous" or "Submit" button', async () => {
-        (isDesktop as jest.Mock).mockReturnValue(false);
-        (isMobile as jest.Mock).mockReturnValue(true);
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
 
         renderComponent({});
 
@@ -143,23 +141,24 @@ describe('<FinancialDetails />', () => {
     });
 
     it('should change the selected value when user changes the value in the dropdown', () => {
-        (isDesktop as jest.Mock).mockReturnValue(false);
-        (isMobile as jest.Mock).mockReturnValue(true);
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
 
         renderComponent({});
 
         const select_inputs = screen.getAllByRole('combobox');
 
-        const income_source_select = select_inputs.find((option: FormikValues) => option.name === 'income_source');
+        const income_source_select = select_inputs.find(
+            (option: FormikValues) => option.name === 'income_source'
+        ) as HTMLSelectElement;
 
         userEvent.selectOptions(income_source_select as HTMLElement, 'Salaried Employee');
 
-        expect(screen.getByRole('option', { name: 'Salaried Employee' }).selected).toBe(true);
+        const selectedOption = screen.getByRole('option', { name: 'Salaried Employee' }) as HTMLOptionElement;
+        expect(selectedOption.selected).toBe(true);
     });
 
     it('should show "Unemployed" in occupation list if employment status is not "Employed"', async () => {
-        (isDesktop as jest.Mock).mockReturnValue(false);
-        (isMobile as jest.Mock).mockReturnValue(true);
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         const new_mock_props: React.ComponentProps<typeof FinancialDetails> = {
             ...mock_props,
             employment_status: 'Pensioner',

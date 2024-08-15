@@ -1,10 +1,11 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik';
-import { Autocomplete, Button, DesktopWrapper, HintBox, MobileWrapper, Text, SelectNative } from '@deriv/components';
-import { IDV_ERROR_STATUS, isMobile, TIDVErrorStatus, POIContext } from '@deriv/shared';
+import { Autocomplete, Button, HintBox, Text, SelectNative } from '@deriv/components';
+import { IDV_ERROR_STATUS, TIDVErrorStatus, POIContext } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import FormFooter from '../../form-footer';
+import { useDevice } from '@deriv-com/ui';
 import { useResidenceList } from '@deriv/api';
 
 type TCountrySelector = {
@@ -33,6 +34,7 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
 
         return errors;
     };
+    const { isDesktop } = useDevice();
 
     const updateSelectedCountry = (country_name: string) => {
         const matching_country = country_list?.find((c: FormikValues) => c.text === country_name);
@@ -65,20 +67,20 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
             }) => (
                 <React.Fragment>
                     <div
-                        className={classNames('proof-of-identity__container proof-of-identity__country-container', {
+                        className={clsx('proof-of-identity__container proof-of-identity__country-container', {
                             'min-height': !is_from_external,
                         })}
                     >
                         {failed_message ? (
                             <React.Fragment>
-                                <Text align='center' weight='bold' size={isMobile() ? 'xs' : 's'}>
+                                <Text align='center' weight='bold' size={isDesktop ? 's' : 'xs'}>
                                     <Localize i18n_default_text='Your identity verification failed because:' />
                                 </Text>
                                 <HintBox
-                                    className={classNames('proof-of-identity__failed-message', 'hint-box-layout')}
+                                    className={clsx('proof-of-identity__failed-message', 'hint-box-layout')}
                                     icon='IcAlertDanger'
                                     message={
-                                        <Text as='p' size={isMobile() ? 'xxs' : 'xs'}>
+                                        <Text as='p' size={isDesktop ? 'xs' : 'xxs'}>
                                             {failed_message}
                                         </Text>
                                     }
@@ -98,9 +100,9 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
                             <Field name='country_input'>
                                 {({ field }: FormikValues) => (
                                     <React.Fragment>
-                                        <DesktopWrapper>
+                                        {isDesktop ? (
                                             <Autocomplete
-                                                className={classNames({ 'external-dropdown': is_from_external })}
+                                                className={clsx({ 'external-dropdown': is_from_external })}
                                                 {...field}
                                                 data_testid='dt_external_dropdown'
                                                 name='country_input'
@@ -132,8 +134,7 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
                                                 }}
                                                 required
                                             />
-                                        </DesktopWrapper>
-                                        <MobileWrapper>
+                                        ) : (
                                             <div className='proof-of-identity__dropdown-container'>
                                                 <SelectNative
                                                     {...field}
@@ -151,15 +152,13 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
                                                     required
                                                 />
                                             </div>
-                                        </MobileWrapper>
+                                        )}
                                     </React.Fragment>
                                 )}
                             </Field>
                         </fieldset>
                     </div>
-                    <FormFooter
-                        className={classNames('proof-of-identity__footer', { 'external-footer': is_from_external })}
-                    >
+                    <FormFooter className={clsx('proof-of-identity__footer', { 'external-footer': is_from_external })}>
                         <Button
                             className='proof-of-identity__submit-button'
                             type='submit'

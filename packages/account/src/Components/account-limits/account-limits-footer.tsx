@@ -1,11 +1,11 @@
-import * as React from 'react';
+import { useContext } from 'react';
 import { createPortal } from 'react-dom';
 import { Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
 import AccountLimitsContext, { TAccountLimitsContext } from './account-limits-context';
 
 const AccountLimitsFooterPortal = () => {
-    const { footer_ref, toggleOverlay } = React.useContext<TAccountLimitsContext>(AccountLimitsContext);
+    const { footer_ref, toggleOverlay } = useContext<TAccountLimitsContext>(AccountLimitsContext);
 
     return createPortal(
         <a className='link link--prominent' onClick={toggleOverlay} data-testid='dt_footer_text'>

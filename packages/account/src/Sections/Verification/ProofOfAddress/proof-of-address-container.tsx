@@ -1,7 +1,7 @@
 import React from 'react';
 import { AccountStatusResponse, GetAccountStatus } from '@deriv/api-types';
 import { Button, Loading } from '@deriv/components';
-import { WS, getPlatformRedirect, platforms, AUTH_STATUS_CODES } from '@deriv/shared';
+import { WS, getPlatformRedirect, platforms, routes, AUTH_STATUS_CODES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import Expired from '../../../Components/poa/status/expired';
@@ -14,7 +14,7 @@ import Verified from '../../../Components/poa/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification.js';
 
 type TProofOfAddressContainer = {
-    onSubmit: () => void;
+    onSubmit?: () => void;
 };
 
 type TAuthenticationStatus = Record<
@@ -27,7 +27,10 @@ type TAuthenticationStatus = Record<
     | 'needs_poa'
     | 'needs_poi'
     | 'poa_address_mismatch'
-    | 'resubmit_poa',
+    | 'resubmit_poa'
+    | 'poa_expiring_soon'
+    | 'poa_authenticated_with_idv'
+    | 'has_submitted_duplicate_poa',
     boolean
 > & { document_status?: DeepRequired<GetAccountStatus>['authentication']['document']['status'] };
 
@@ -45,6 +48,9 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
         document_status: undefined,
         is_age_verified: false,
         poa_address_mismatch: false,
+        poa_expiring_soon: false,
+        poa_authenticated_with_idv: false,
+        has_submitted_duplicate_poa: false,
     });
 
     const { client, notifications, common, ui } = useStore();
@@ -67,6 +73,8 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
                         needs_poa,
                         needs_poi,
                         poa_address_mismatch,
+                        poa_authenticated_with_idv,
+                        poa_expiring_soon,
                     } = populateVerificationStatus(get_account_status);
 
                     setAuthenticationStatus(authentication_status => ({
@@ -74,11 +82,13 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
                         allow_document_upload,
                         allow_poa_resubmission,
                         document_status,
-                        has_submitted_poa,
+                        has_submitted_poa: has_submitted_poa as boolean,
                         is_age_verified,
                         needs_poa,
                         needs_poi,
                         poa_address_mismatch,
+                        poa_authenticated_with_idv,
+                        poa_expiring_soon,
                     }));
                     setIsLoading(false);
                     refreshNotifications();
@@ -88,16 +98,31 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
     }, [is_switching, refreshNotifications]);
 
     const handleResubmit = () => {
-        setAuthenticationStatus(authentication_status => ({ ...authentication_status, ...{ resubmit_poa: true } }));
-    };
-
-    const onSubmitDocument = (needs_poi: boolean) => {
         setAuthenticationStatus(authentication_status => ({
             ...authentication_status,
-            ...{ has_submitted_poa: true, needs_poi },
+            ...{ resubmit_poa: true },
+        }));
+    };
+
+    const handleDuplicatePOASubmission = () => {
+        setAuthenticationStatus(authentication_status => ({
+            ...authentication_status,
+            ...{ resubmit_poa: true, has_submitted_duplicate_poa: false, has_submitted_poa: false },
+        }));
+    };
+
+    const onSubmitDocument = (needs_poi: boolean, has_submitted_duplicate_poa?: boolean) => {
+        setAuthenticationStatus(authentication_status => ({
+            ...authentication_status,
+            ...{
+                has_submitted_poa: true,
+                needs_poi,
+                poa_expiring_soon: false,
+                has_submitted_duplicate_poa: has_submitted_duplicate_poa ?? false,
+            },
         }));
         if (is_verification_modal_visible) {
-            onSubmit();
+            onSubmit?.();
         }
     };
 
@@ -109,11 +134,24 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
         resubmit_poa,
         has_submitted_poa,
         poa_address_mismatch,
+        poa_expiring_soon,
+        poa_authenticated_with_idv,
+        has_submitted_duplicate_poa,
     } = authentication_status;
 
     const from_platform = getPlatformRedirect(app_routing_history);
 
     const should_show_redirect_btn = Object.keys(platforms).includes(from_platform?.ref ?? '');
+
+    const should_allow_resubmit =
+        resubmit_poa ||
+        allow_poa_resubmission ||
+        (has_restricted_mt5_account &&
+            document_status &&
+            ['expired', 'rejected', 'suspected'].includes(document_status)) ||
+        poa_address_mismatch ||
+        poa_expiring_soon ||
+        (poa_authenticated_with_idv && from_platform?.route === routes.cashier_p2p);
 
     const redirect_button = should_show_redirect_btn && (
         <Button
@@ -133,17 +171,21 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (!allow_document_upload) return <NotRequired />;
+    if (has_submitted_duplicate_poa)
+        return (
+            <Unverified
+                title={<Localize i18n_default_text='Proof of address documents upload failed' />}
+                description={
+                    <Localize i18n_default_text='It seems you’ve submitted this document before. Upload a new document.' />
+                }
+                button_text={<Localize i18n_default_text='Try again' />}
+                onClick={handleDuplicatePOASubmission}
+            />
+        );
     if (has_submitted_poa && !poa_address_mismatch)
         return <Submitted needs_poi={needs_poi} redirect_button={redirect_button} />;
-    if (
-        resubmit_poa ||
-        allow_poa_resubmission ||
-        (has_restricted_mt5_account &&
-            document_status &&
-            ['expired', 'rejected', 'suspected'].includes(document_status)) ||
-        poa_address_mismatch
-    ) {
-        return <ProofOfAddressForm is_resubmit onSubmit={onSubmitDocument} />;
+    if (should_allow_resubmit) {
+        return <ProofOfAddressForm is_resubmit={!poa_expiring_soon} onSubmit={onSubmitDocument} />;
     }
 
     switch (document_status) {

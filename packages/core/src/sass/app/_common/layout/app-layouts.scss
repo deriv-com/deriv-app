@@ -7,7 +7,7 @@
     }
 }
 
-@include mobile {
+@include mobile-or-tablet-screen {
     /** disabling pull to refresh on iOS / Android browsers */
     /* postcss-bem-linter: ignore */
     body,
@@ -93,58 +93,6 @@
     }
 }
 
-/** @define landscape-blocker; weak */
-.landscape-blocker {
-    /* enable temporary landscape blocker UI in landscape */
-    display: flex;
-    position: fixed;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-    width: 100%;
-    height: 100%;
-    background: var(--general-main-1);
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    color: var(--text-prominent);
-    font-size: 1.6rem;
-    z-index: 9999;
-    font-weight: bold;
-    gap: 2.4rem;
-
-    &__icon {
-        width: 8rem;
-        height: 6.2rem;
-    }
-    &__message {
-        padding: 1.6rem 11rem;
-        &--landscape {
-            @media screen and (orientation: portrait) {
-                display: none;
-            }
-        }
-
-        &--portrait {
-            text-align: center;
-            line-height: var(--text-lh-m);
-            @media screen and (orientation: landscape) {
-                display: none;
-            }
-        }
-    }
-
-    @include desktop {
-        display: none;
-    }
-
-    @include mobile {
-        @media screen and (max-aspect-ratio: 13/9) {
-            display: none;
-        }
-    }
-}
-
 /** @define app-contents; weak */
 .app-contents {
     margin: $HEADER_HEIGHT 0 $FOOTER_HEIGHT;
@@ -168,7 +116,16 @@
         margin: 0 !important;
         height: inherit;
     }
-    @include mobile {
+
+    @include mobile-screen {
+        .ciq-menu {
+            top: 0;
+            margin: 0.8rem;
+            z-index: 2;
+        }
+    }
+
+    @include mobile-or-tablet-screen {
         // no footer:
         margin-bottom: 0;
         height: calc(100% - #{$MOBILE_HEADER_HEIGHT});
@@ -185,11 +142,24 @@
         &--is-hidden {
             margin-top: 0;
         }
-        .ciq-menu {
-            top: 0;
-            margin: 0.8rem;
-            z-index: 2;
+        &--is-dtrader-v2 {
+            height: calc(100% - #{$MOBILE_HEADER_DTRADER_V2_HEIGHT});
+            margin-block-start: $MOBILE_HEADER_DTRADER_V2_HEIGHT;
+
+            &:has(.trade-notification) {
+                position: unset;
+            }
+
+            &--with-banner {
+                height: calc(100% - #{$MOBILE_HEADER_DTRADER_V2_WITH_BANNER_HEIGHT});
+                margin-block-start: $MOBILE_HEADER_DTRADER_V2_WITH_BANNER_HEIGHT;
+
+                &:has(.trade-notification) {
+                    position: unset;
+                }
+            }
         }
+
         .cq-symbol-select-btn {
             padding: 0.3rem 0.9rem;
 
@@ -211,6 +181,7 @@
                 padding: 0.4rem;
             }
         }
+
         .chart-container__loader {
             width: 100%;
             height: 100%;
@@ -324,13 +295,6 @@
 .no-scroll {
     overflow: hidden;
     max-height: 100vh;
-}
-
-/** @define desktop-only */
-.desktop-only {
-    @media (max-width: 768px) {
-        display: none !important;
-    }
 }
 
 /** @define mobile-only */

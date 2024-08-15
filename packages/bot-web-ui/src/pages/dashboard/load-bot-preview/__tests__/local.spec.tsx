@@ -10,6 +10,9 @@ import Local from '../local';
 
 window.Blockly = {
     derivWorkspace: { asyncClear: () => ({}) },
+    utils: {
+        xml: { textToDom: jest.fn() },
+    },
     Xml: { domToWorkspace: () => ({}), textToDom: () => ({}) },
 };
 
@@ -43,6 +46,7 @@ describe('local', () => {
     });
 
     it('should render the open button to open bot builder tab', async () => {
+        mock_store.ui.is_desktop = true;
         render(<Local />, { wrapper });
 
         const open_button = screen.getByRole('button', { name: 'Open' });

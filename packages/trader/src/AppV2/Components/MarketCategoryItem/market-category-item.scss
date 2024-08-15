@@ -1,0 +1,31 @@
+.market-category-item {
+    display: flex;
+    height: var(--core-size-2400);
+    padding: var(--core-spacing-200) var(--core-spacing-800);
+    align-items: center;
+    gap: var(--semantic-spacing-gap-lg);
+    align-self: stretch;
+    border-radius: var(--semantic-borderRadius-md);
+
+    &-symbol {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1 0 0;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        display: -webkit-box;
+
+        &--selected {
+            color: var(--semantic-color-slate-solid-textIcon-inverse-highest);
+        }
+    }
+    &--selected {
+        background-color: var(--semantic-color-slate-solid-surface-inverse-lowest);
+    }
+    &-left {
+        display: flex;
+        flex: 1 0 0;
+        align-items: center;
+        gap: var(--semantic-spacing-gap-lg);
+    }
+}

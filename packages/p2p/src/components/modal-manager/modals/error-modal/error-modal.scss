@@ -1,9 +1,17 @@
 .error-modal {
     &__body {
-        padding: 1rem 2.4rem;
+        padding: 0.8rem 2.4rem;
 
         @include mobile {
             padding: 0 1.6rem;
+        }
+
+        &--has-title {
+            padding-top: 2rem;
+
+            @include mobile {
+                padding: 1.6rem;
+            }
         }
     }
 }

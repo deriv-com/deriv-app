@@ -1,9 +1,9 @@
-import React from 'react';
-import classNames from 'classnames';
+import { useRef, useState, useEffect, ChangeEvent } from 'react';
+import clsx from 'clsx';
 import { Formik, Form, Field, FormikProps, FormikHelpers, FieldProps } from 'formik';
 import { Input, Button } from '@deriv/components';
 import { getPropertyValue, WS } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { useTranslations } from '@deriv-com/translations';
 import { observer, useStore } from '@deriv/stores';
 
 type TResponse = {
@@ -19,20 +19,21 @@ type TDigitFormValues = {
 
 const DigitForm = observer(() => {
     const { client, common } = useStore();
+    const { localize } = useTranslations();
     const { is_language_changing } = common;
     const { has_enabled_two_fa, setTwoFAChangedStatus, setTwoFAStatus } = client;
-    const [is_success, setSuccess] = React.useState(false);
-    const [is_ready_for_verification, setReadyForVerification] = React.useState(false);
+    const [is_success, setSuccess] = useState(false);
+    const [is_ready_for_verification, setReadyForVerification] = useState(false);
 
     const button_text = has_enabled_two_fa ? localize('Disable') : localize('Enable');
-    const formik_ref = React.useRef<FormikProps<TDigitFormValues>>(null);
+    const formik_ref = useRef<FormikProps<TDigitFormValues>>(null);
     let enable_response: TResponse;
 
     const initial_form = {
         digit_code: '',
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (is_language_changing) {
             formik_ref.current?.setFieldTouched('digit_code');
         }
@@ -87,7 +88,7 @@ const DigitForm = observer(() => {
                                     className='two-factor__input'
                                     label={localize('Authentication code')}
                                     value={values.digit_code}
-                                    onChange={e => {
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                         handleChange(e);
                                         setReadyForVerification(false);
                                     }}
@@ -100,7 +101,7 @@ const DigitForm = observer(() => {
                             )}
                         </Field>
                         <Button
-                            className={classNames('two-factor__button', {
+                            className={clsx('two-factor__button', {
                                 'two-factor__button--success': is_success,
                             })}
                             type='submit'

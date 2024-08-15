@@ -1,8 +1,9 @@
+import { FC, Fragment } from 'react';
 import { Autocomplete, SelectNative } from '@deriv/components';
-import { useStore } from '@deriv/stores';
 import { Field, FieldProps, FormikErrors } from 'formik';
-import React from 'react';
-import { TGetField, TListItem } from '../additional-kyc-info-modal/form-config';
+import { TGetField } from '../additional-kyc-info-modal/form-config';
+import { TListItem } from 'Types';
+import { useDevice } from '@deriv-com/ui';
 
 type TFormSelectField = TGetField & {
     onItemSelection?: (item: TListItem) => void;
@@ -15,7 +16,7 @@ type TSetFieldValue = (
     shouldValidate?: boolean
 ) => Promise<void | FormikErrors<Record<string, string>>>;
 
-const FormSelectField: React.FC<TFormSelectField> = ({
+const FormSelectField: FC<TFormSelectField> = ({
     label,
     name,
     required = false,
@@ -25,9 +26,7 @@ const FormSelectField: React.FC<TFormSelectField> = ({
     placeholder,
     list_height,
 }) => {
-    const { ui } = useStore();
-    const { is_mobile } = ui;
-
+    const { isDesktop } = useDevice();
     const onSelect =
         (field: string, setFieldValue: TSetFieldValue) =>
         ({ value, text }: TListItem) => {
@@ -37,8 +36,8 @@ const FormSelectField: React.FC<TFormSelectField> = ({
     return (
         <Field name={name}>
             {({ field, meta: { touched, error }, form: { setFieldValue } }: FieldProps<string>) => (
-                <React.Fragment>
-                    {is_mobile ? (
+                <Fragment>
+                    {!isDesktop ? (
                         <SelectNative
                             {...field}
                             // @ts-expect-error This needs to fixed in SelectNative component
@@ -70,7 +69,7 @@ const FormSelectField: React.FC<TFormSelectField> = ({
                             list_height={list_height}
                         />
                     )}
-                </React.Fragment>
+                </Fragment>
             )}
         </Field>
     );

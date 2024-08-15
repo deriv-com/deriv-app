@@ -3,9 +3,12 @@ import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { LegacyFilter1pxIcon } from '@deriv/quill-icons';
-import { ToggleSwitch, WalletDropdown, WalletText } from '../../../../components';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { Dropdown, Text } from '@deriv-com/ui';
+import { ToggleSwitch } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
 import { TransactionsCompleted, TransactionsCompletedDemoResetBalance, TransactionsPending } from './components';
+import { getTransactionLabels } from './constants';
 import './Transactions.scss';
 
 type TTransactionsPendingFilter = React.ComponentProps<typeof TransactionsPending>['filter'];
@@ -30,15 +33,17 @@ const filtersMapper: Record<string, Record<string, TFilterValue>> = {
 const Transactions = () => {
     const { data: wallet } = useActiveWalletAccount();
 
+    const { localize } = useTranslations();
+
     const { isLoading } = useCurrencyConfig();
     const { isMobile } = useDevice();
 
     const { location } = useHistory();
     const initialShowPending = Boolean(
-        location.pathname === '/wallets/cashier/transactions' ? location.state?.showPending : false
+        location.pathname === '/wallet/transactions' ? location.state?.showPending : false
     );
     const initialTransactionType =
-        (location.pathname === '/wallets/cashier/transactions' ? location.state?.transactionType : undefined) ?? 'all';
+        (location.pathname === '/wallet/transactions' ? location.state?.transactionType : undefined) ?? 'all';
 
     const [isPendingActive, setIsPendingActive] = useState(initialShowPending);
     const [filterValue, setFilterValue] = useState(initialTransactionType);
@@ -51,18 +56,19 @@ const Transactions = () => {
                 .map(key => ({
                     text:
                         key === 'deposit' && wallet?.is_virtual
-                            ? 'Reset balance'
-                            : key.replace(/^\w/, c => c.toUpperCase()),
+                            ? getTransactionLabels().reset_balance
+                            : //@ts-expect-error we only need partial filter values
+                              getTransactionLabels()[key],
                     value: key,
                 })),
         [isPendingActive, wallet?.is_virtual]
     );
 
     useEffect(() => {
-        if (!isLoading && !wallet?.currency_config?.is_crypto && isPendingActive) {
+        if (!isLoading && !wallet?.is_crypto && isPendingActive) {
             setIsPendingActive(false);
         }
-    }, [isLoading, wallet?.currency_config?.is_crypto, isPendingActive]);
+    }, [isLoading, wallet?.is_crypto, isPendingActive]);
 
     useEffect(() => {
         if (isPendingActive && !Object.keys(filtersMapper.pending).includes(filterValue)) {
@@ -80,20 +86,31 @@ const Transactions = () => {
             })}
         >
             <div className='wallets-transactions__header'>
-                {wallet?.currency_config?.is_crypto && (
+                {wallet?.is_crypto && (
                     <div className='wallets-transactions__toggle'>
-                        <WalletText size='sm'>Pending Transactions</WalletText>
+                        <Text size='sm'>
+                            <Localize i18n_default_text='Pending Transactions' />
+                        </Text>
                         <ToggleSwitch onChange={() => setIsPendingActive(!isPendingActive)} value={isPendingActive} />
                     </div>
                 )}
-                <WalletDropdown
-                    icon={<LegacyFilter1pxIcon iconSize='xs' />}
-                    label='Filter'
-                    list={filterOptionsList}
-                    name='wallets-transactions__dropdown'
-                    onSelect={value => setFilterValue(value)}
-                    value={filterValue}
-                />
+                <div className='wallets-transactions__dropdown'>
+                    <Dropdown
+                        data-testid='dt_wallets_transactions_dropdown'
+                        icon={<LegacyFilter1pxIcon iconSize='xs' />}
+                        isFullWidth
+                        label={localize('Filter')}
+                        list={filterOptionsList}
+                        name='wallets-transactions__dropdown'
+                        onSelect={value => {
+                            if (typeof value === 'string') {
+                                setFilterValue(value);
+                            }
+                        }}
+                        value={filterValue}
+                        variant='comboBox'
+                    />
+                </div>
             </div>
             {isPendingActive && (
                 <TransactionsPending filter={filtersMapper.pending[filterValue] as TTransactionsPendingFilter} />

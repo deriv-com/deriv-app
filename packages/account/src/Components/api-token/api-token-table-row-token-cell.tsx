@@ -1,11 +1,11 @@
-import React from 'react';
+import { useState } from 'react';
 import { Icon, Text, Popover } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
 import ApiTokenClipboard from './api-token-clipboard';
 
 type TApiTokenTableRowTokenCell = {
-    token: string;
-    scopes: string[];
+    token?: string;
+    scopes?: string[];
 };
 
 const HiddenPasswordDots = () => (
@@ -17,7 +17,7 @@ const HiddenPasswordDots = () => (
 );
 
 const ApiTokenTableRowTokenCell = ({ token, scopes }: TApiTokenTableRowTokenCell) => {
-    const [should_show_token, setShouldShowToken] = React.useState(false);
+    const [should_show_token, setShouldShowToken] = useState(false);
 
     const toggleTokenVisibility = () => {
         setShouldShowToken(prev_value => !prev_value);

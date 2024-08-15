@@ -8,9 +8,6 @@ import { Analytics } from '@deriv-com/analytics';
 type TError = { code?: string; name?: string; message: string };
 
 const passkeyErrorEventTrack = (error: TError) => {
-    // TODO: remove ts ignore after adding types to Analytics
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     Analytics.trackEvent('ce_passkey_account_settings_form', {
         action: 'error',
         form_name: 'ce_passkey_account_settings_form',
@@ -25,22 +22,18 @@ const useRegisterPasskey = () => {
     // the errors are connected with terminating the registration process or setting up the unlock method from user side
     const excluded_error_names = ['NotAllowedError', 'AbortError', 'NotReadableError', 'UnknownError'];
 
-    const [is_passkey_registration_started, setIsPasskeyRegistrationStarted] = React.useState(false);
     const [is_passkey_registered, setIsPasskeyRegistered] = React.useState(false);
     const [passkey_registration_error, setPasskeyRegistrationError] = React.useState<TError | null>(null);
     const [public_key, setPublicKey] = React.useState<null | PublicKeyCredentialCreationOptionsJSON>(null);
 
     const clearPasskeyRegistrationError = () => setPasskeyRegistrationError(null);
-    const cancelPasskeyRegistration = () => setIsPasskeyRegistrationStarted(false);
 
     const startPasskeyRegistration = async () => {
         try {
-            setIsPasskeyRegistrationStarted(true);
             const passkeys_register_options_response = await WS.send({ passkeys_register_options: 1 });
             const public_key = passkeys_register_options_response?.passkeys_register_options?.publicKey;
             setPublicKey(public_key);
         } catch (e) {
-            setIsPasskeyRegistrationStarted(false);
             setPasskeyRegistrationError(e as TError);
             passkeyErrorEventTrack(e as TError);
         }
@@ -69,16 +62,13 @@ const useRegisterPasskey = () => {
                 passkeyErrorEventTrack(e as TError);
             }
         } finally {
-            setIsPasskeyRegistrationStarted(false);
             setPublicKey(null);
         }
     };
 
     return {
-        cancelPasskeyRegistration,
         clearPasskeyRegistrationError,
         createPasskey,
-        is_passkey_registration_started,
         is_passkey_registered,
         passkey_registration_error,
         startPasskeyRegistration,

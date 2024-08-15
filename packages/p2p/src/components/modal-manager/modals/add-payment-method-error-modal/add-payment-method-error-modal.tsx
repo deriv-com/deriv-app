@@ -24,7 +24,6 @@ const AddPaymentMethodErrorModal = () => {
                     text={localize('Ok')}
                     onClick={() => {
                         setAddPaymentMethodErrorMessage('');
-                        setSelectedPaymentMethod('');
                         setSavedFormState(null);
                         setFormikRef(null);
                         hideModal({

@@ -1,13 +1,14 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text, Icon, Counter } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
 import { BinaryLink } from '../../Routes';
 import { observer, useStore } from '@deriv/stores';
 import { routes, startPerformanceEventTimer } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { useP2PNotificationCount, useIsRealAccountNeededForCashier, useFeatureFlags } from '@deriv/hooks';
-import './menu-links.scss';
+import { useP2PNotificationCount, useIsRealAccountNeededForCashier } from '@deriv/hooks';
 import { useHistory } from 'react-router';
+import './menu-links.scss';
 
 const MenuItems = ({ id, text, icon, link_to, handleClickCashier }) => {
     return (
@@ -46,9 +47,7 @@ const CashierTab = observer(() => {
     const history = useHistory();
 
     const toggle_modal_routes =
-        window.location.pathname === routes.root ||
-        window.location.pathname === routes.traders_hub ||
-        window.location.pathname === routes.bot;
+        window.location.pathname === routes.traders_hub || window.location.pathname === routes.bot;
 
     const toggleModal = () => {
         if (toggle_modal_routes && !has_any_real_account) {
@@ -89,18 +88,17 @@ const CashierTab = observer(() => {
 });
 
 const MenuLinks = observer(({ is_traders_hub_routes = false }) => {
+    const { isDesktop } = useDevice();
     const { i18n } = useTranslation();
-    const { client, ui } = useStore();
-    const { is_logged_in } = client;
-    const { is_mobile } = ui;
-    const { is_next_wallet_enabled } = useFeatureFlags();
+    const { client } = useStore();
+    const { has_wallet, is_logged_in } = client;
 
     if (!is_logged_in) return <></>;
 
     return (
         <div key={`menu-links__${i18n.language}`} className='header__menu-links'>
             {!is_traders_hub_routes && <ReportTab />}
-            {!is_mobile && !is_next_wallet_enabled && <CashierTab />}
+            {isDesktop && !has_wallet && <CashierTab />}
         </div>
     );
 });

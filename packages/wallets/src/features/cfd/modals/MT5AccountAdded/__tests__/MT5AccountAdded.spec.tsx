@@ -20,7 +20,9 @@ jest.mock('../../../../../components/ModalProvider', () => ({
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
-    useActiveWalletAccount: jest.fn(),
+    useActiveWalletAccount: jest.fn(() => ({
+        data: {},
+    })),
     useJurisdictionStatus: jest.fn(() => ({
         getVerificationStatus: jest.fn(() => ({
             is_failed: false,
@@ -30,6 +32,10 @@ jest.mock('@deriv/api-v2', () => ({
         })),
         isSuccess: true,
     })),
+    useMT5AccountsList: jest.fn(() => ({
+        data: [{ display_balance: '10,000.00 USD', login: 'MD12345', market_type: 'financial' }],
+    })),
+    usePOA: jest.fn(() => ({ data: {} })),
     usePOI: jest.fn(() => ({
         data: {
             current: {
@@ -57,13 +63,13 @@ describe('MT5AccountAdded', () => {
             <APIProvider>
                 <WalletsAuthProvider>
                     <ModalProvider>
-                        <MT5AccountAdded marketType='financial' platform='mt5' />
+                        <MT5AccountAdded account={{ login: 'MD12345' }} marketType='financial' platform='mt5' />
                     </ModalProvider>
                 </WalletsAuthProvider>
             </APIProvider>
         );
         expect(screen.getByText('Your Financial demo account is ready')).toBeInTheDocument();
-        expect(screen.getByText("Let's practise trading with 10000 USD virtual funds.")).toBeInTheDocument();
+        expect(screen.getByText("Let's practise trading with 10,000.00 USD virtual funds.")).toBeInTheDocument();
         const okButton = screen.getByRole('button', { name: 'OK' });
         expect(okButton).toBeInTheDocument();
         expect(okButton).toBeEnabled();
@@ -83,16 +89,14 @@ describe('MT5AccountAdded', () => {
             <APIProvider>
                 <WalletsAuthProvider>
                     <ModalProvider>
-                        <MT5AccountAdded marketType='financial' platform='mt5' />
+                        <MT5AccountAdded account={{ login: 'MD12345' }} marketType='financial' platform='mt5' />
                     </ModalProvider>
                 </WalletsAuthProvider>
             </APIProvider>
         );
-        expect(screen.getByText('Your Financial (SVG) account is ready')).toBeInTheDocument();
+        expect(screen.getByText('Your Financial account is ready')).toBeInTheDocument();
         expect(
-            screen.getByText(
-                'Transfer funds from your undefined Wallet to your Financial (SVG) account to start trading.'
-            )
+            screen.getByText('Transfer funds from your undefined Wallet to your Financial account to start trading.')
         ).toBeInTheDocument();
     });
 
@@ -126,7 +130,7 @@ describe('MT5AccountAdded', () => {
         expect(transferFundsButton).toBeInTheDocument();
         expect(transferFundsButton).toBeEnabled();
         transferFundsButton.click();
-        expect(history.location.pathname).toEqual('/wallets/cashier/transfer');
+        expect(history.location.pathname).toEqual('/wallet/account-transfer');
     });
 
     it('should render the onfido verification pending message if document is not verified', () => {
@@ -161,7 +165,7 @@ describe('MT5AccountAdded', () => {
             <APIProvider>
                 <WalletsAuthProvider>
                     <ModalProvider>
-                        <MT5AccountAdded marketType='financial' platform='mt5' />
+                        <MT5AccountAdded account={{ login: 'MD12345' }} marketType='financial' platform='mt5' />
                     </ModalProvider>
                 </WalletsAuthProvider>
             </APIProvider>
@@ -169,7 +173,7 @@ describe('MT5AccountAdded', () => {
         expect(screen.getByText('Almost there')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'We need 1-3 days to review your documents before you can start trading with your Financial (SVG) account. You’ll get an email as soon as this is done.'
+                "We need 1-3 days to review your documents before you can start trading with your Financial (SVG) account. You'll get an email as soon as this is done."
             )
         ).toBeInTheDocument();
     });
@@ -206,7 +210,7 @@ describe('MT5AccountAdded', () => {
             <APIProvider>
                 <WalletsAuthProvider>
                     <ModalProvider>
-                        <MT5AccountAdded marketType='financial' platform='mt5' />
+                        <MT5AccountAdded account={{ login: 'MD12345' }} marketType='financial' platform='mt5' />
                     </ModalProvider>
                 </WalletsAuthProvider>
             </APIProvider>
@@ -214,7 +218,7 @@ describe('MT5AccountAdded', () => {
         expect(screen.getByText('Almost there')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'We need a few minutes to review your documents before you can start trading with your Financial (SVG) account. You’ll get an in-app notification as soon as this is done.'
+                "We need a few minutes to review your documents before you can start trading with your Financial (SVG) account. You'll get an in-app notification as soon as this is done."
             )
         ).toBeInTheDocument();
     });

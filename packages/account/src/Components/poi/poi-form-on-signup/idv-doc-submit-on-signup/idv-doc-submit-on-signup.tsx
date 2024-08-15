@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { Formik, FormikValues, FormikHelpers, FormikErrors, Form } from 'formik';
-import { Localize, localize } from '@deriv/translations';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button } from '@deriv/components';
 import {
@@ -9,7 +8,8 @@ import {
     removeEmptyPropertiesFromObject,
     getIDVNotApplicableOption,
 } from '@deriv/shared';
-import PoiNameDobExample from '../../../../Assets/ic-poi-name-dob-example.svg';
+import { useTranslations, Localize } from '@deriv-com/translations';
+import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import FormSubHeader from '../../../form-sub-header';
 import IDVForm from '../../../forms/idv-form';
 import PersonalDetailsForm from '../../../forms/personal-details-form.jsx';
@@ -22,16 +22,19 @@ import {
     validate,
     validateName,
 } from '../../../../Helpers/utils';
+import { TIDVFormValues, TConfirmPersonalDetailsForm } from '../../../../Types';
 
 type TIdvDocSubmitOnSignup = {
     citizen_data: FormikValues;
-    onPrevious: (values: FormikValues) => void;
-    onNext: (values: FormikValues, action: FormikHelpers<FormikValues>) => void;
-    value: FormikValues;
+    onPrevious: (values: TIDVDocFormType) => void;
+    onNext: (values: TIDVDocFormType, action: FormikHelpers<TIDVDocFormType>) => void;
+    value: TIDVDocFormType;
     account_settings: GetSettings;
     getChangeableFields: () => string[];
     residence_list: ResidenceList;
 };
+
+type TIDVDocFormType = TIDVFormValues & TConfirmPersonalDetailsForm;
 
 export const IdvDocSubmitOnSignup = ({
     citizen_data,
@@ -40,9 +43,10 @@ export const IdvDocSubmitOnSignup = ({
     getChangeableFields,
     residence_list,
 }: TIdvDocSubmitOnSignup) => {
-    const side_note_image = <PoiNameDobExample />;
-    const validateFields = (values: FormikValues) => {
-        const errors: FormikErrors<FormikValues> = {};
+    const { localize } = useTranslations();
+    const side_note_image = <DerivLightNameDobPoiIcon height='195px' width='285px' />;
+    const validateFields = (values: TIDVDocFormType) => {
+        const errors: FormikErrors<Omit<TIDVDocFormType, 'document_type'> & { document_type?: string }> = {};
         const { document_type, document_number, document_additional } = values;
 
         if (shouldSkipIdv(document_type.id)) {
@@ -101,11 +105,9 @@ export const IdvDocSubmitOnSignup = ({
 
     return (
         <Formik
-            initialValues={initial_values}
+            initialValues={initial_values as TIDVDocFormType}
             validate={validateFields}
-            onSubmit={(values, actions) => {
-                onNext(values, actions);
-            }}
+            onSubmit={onNext}
             validateOnMount
             validateOnChange
             validateOnBlur

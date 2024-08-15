@@ -10,6 +10,7 @@ import {
     validPassword,
     validLength,
     getActionFromUrl,
+    removeActionParam,
 } from '@deriv/shared';
 import { getLanguage, localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
@@ -67,6 +68,7 @@ const UnlinkPassword = ({
                 onGetPasswordResponse(response, actions);
             });
         }
+        removeActionParam('social_email_change');
     };
 
     const validateReset = values => {

@@ -1,8 +1,9 @@
-import * as React from 'react';
-import classNames from 'classnames';
+import { ReactElement, useContext, Fragment, FunctionComponent, ChangeEvent } from 'react';
+import clsx from 'clsx';
 import { Button, DatePicker, Input, Text } from '@deriv/components';
-import { epochToMoment, toMoment, PlatformContext, isMobile } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { epochToMoment, toMoment } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import {
     Field,
     FormikComputedProps,
@@ -17,7 +18,7 @@ import SelfExclusionContext from './self-exclusion-context';
 import SelfExclusionFooter from './self-exclusion-footer';
 
 type TSectionTitle = {
-    title: React.ReactElement;
+    title: ReactElement;
     has_border_line?: boolean;
 };
 
@@ -33,12 +34,13 @@ type TFormikContext = {
 };
 
 const SectionTitle = ({ title, has_border_line }: TSectionTitle) => {
+    const { isDesktop } = useDevice();
     return (
         <Text
             as='h2'
             weight='bold'
-            size={isMobile() ? 'xxs' : 'xs'}
-            className={classNames('da-self-exclusion__header', {
+            size={isDesktop ? 'xs' : 'xxs'}
+            className={clsx('da-self-exclusion__header', {
                 'da-self-exclusion__header-border': has_border_line,
             })}
         >
@@ -48,10 +50,10 @@ const SectionTitle = ({ title, has_border_line }: TSectionTitle) => {
 };
 
 const StakeLossAndLimitsInputs = () => {
-    const { currency_display, getMaxLength } = React.useContext(SelfExclusionContext);
+    const { currency_display, getMaxLength } = useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, values }: TFormikContext = useFormikContext<TFormikContext>();
     return (
-        <React.Fragment>
+        <Fragment>
             <SectionTitle title={<Localize i18n_default_text='Your stake and loss limits' />} />
             <div className='da-self-exclusion__item-wrapper'>
                 <div className='da-self-exclusion__item'>
@@ -184,22 +186,19 @@ const StakeLossAndLimitsInputs = () => {
                     </Field>
                 </div>
             </div>
-        </React.Fragment>
+        </Fragment>
     );
 };
 
 const SessionAndLoginLimitsInputs = () => {
-    const { is_tablet, session_duration_digits } = React.useContext(SelfExclusionContext);
+    const { is_tablet, session_duration_digits } = useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, setFieldValue, values }: TFormikContext =
         useFormikContext<TFormikContext>();
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { localize } = useTranslations();
 
     return (
-        <React.Fragment>
-            <SectionTitle
-                title={<Localize i18n_default_text='Your session and login limits' />}
-                has_border_line={is_appstore}
-            />
+        <Fragment>
+            <SectionTitle title={<Localize i18n_default_text='Your session and login limits' />} />
             <div className='da-self-exclusion__item-wrapper'>
                 <div className='da-self-exclusion__item'>
                     <Text as='p' size='xs' className='da-self-exclusion__item-field'>
@@ -235,7 +234,7 @@ const SessionAndLoginLimitsInputs = () => {
                                 className='da-self-exclusion__input'
                                 label={localize('Date')}
                                 value={values.timeout_until && epochToMoment(values.timeout_until)}
-                                onChange={({ target }: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+                                onChange={({ target }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
                                     setFieldValue(
                                         'timeout_until',
                                         target?.value ? toMoment(target.value).unix() : '',
@@ -263,7 +262,7 @@ const SessionAndLoginLimitsInputs = () => {
                                 className='da-self-exclusion__input'
                                 label={localize('Date')}
                                 value={values.exclude_until}
-                                onChange={({ target }: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+                                onChange={({ target }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
                                     setFieldValue(
                                         'exclude_until',
                                         target?.value ? toMoment(target.value).format('YYYY-MM-DD') : '',
@@ -279,21 +278,18 @@ const SessionAndLoginLimitsInputs = () => {
                     </Field>
                 </div>
             </div>
-        </React.Fragment>
+        </Fragment>
     );
 };
 
 const MaximumAccountBalanceAndOpenPositionsInputs = () => {
-    const { currency_display, getMaxLength } = React.useContext(SelfExclusionContext);
+    const { currency_display, getMaxLength } = useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, values }: TFormikContext = useFormikContext<TFormikContext>();
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { localize } = useTranslations();
 
     return (
-        <React.Fragment>
-            <SectionTitle
-                title={<Localize i18n_default_text='Your maximum account balance and open positions' />}
-                has_border_line={is_appstore}
-            />
+        <Fragment>
+            <SectionTitle title={<Localize i18n_default_text='Your maximum account balance and open positions' />} />
             <div className='da-self-exclusion__item-wrapper'>
                 <div className='da-self-exclusion__item'>
                     <Text as='p' size='xs' className='da-self-exclusion__item-field'>
@@ -338,25 +334,21 @@ const MaximumAccountBalanceAndOpenPositionsInputs = () => {
                     </Field>
                 </div>
             </div>
-        </React.Fragment>
+        </Fragment>
     );
 };
 
 const MaximumDepositLimitInputs = () => {
-    const { currency, is_mf, getMaxLength } = React.useContext(SelfExclusionContext);
+    const { currency, is_mf, getMaxLength } = useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, values }: TFormikContext = useFormikContext<TFormikContext>();
-    const { is_appstore } = React.useContext(PlatformContext);
 
     if (!is_mf) {
         return null;
     }
 
     return (
-        <React.Fragment>
-            <SectionTitle
-                title={<Localize i18n_default_text='Your maximum deposit limit' />}
-                has_border_line={is_appstore}
-            />
+        <Fragment>
+            <SectionTitle title={<Localize i18n_default_text='Your maximum deposit limit' />} />
             <div className='da-self-exclusion__item-wrapper'>
                 <div className='da-self-exclusion__item'>
                     <h3 className='da-self-exclusion__item-title'>
@@ -431,24 +423,14 @@ const MaximumDepositLimitInputs = () => {
                     </Field>
                 </div>
             </div>
-        </React.Fragment>
+        </Fragment>
     );
 };
 
 const SelfExclusionInputs = () => {
-    const { is_appstore } = React.useContext(PlatformContext);
-    const { footer_ref, goToConfirm, is_app_settings } = React.useContext(SelfExclusionContext);
+    const { footer_ref, goToConfirm, is_app_settings } = useContext(SelfExclusionContext);
     const { dirty, isSubmitting, isValid, values }: TFormikContext = useFormikContext<TFormikContext>();
-    const versions: Record<string, { condition: boolean; components: Array<React.FunctionComponent> }> = {
-        // Global settings for account for DWallet.
-        dwallet: {
-            condition: !!is_appstore,
-            components: [
-                SessionAndLoginLimitsInputs,
-                MaximumAccountBalanceAndOpenPositionsInputs,
-                MaximumDepositLimitInputs,
-            ],
-        },
+    const versions: Record<string, { condition: boolean; components: Array<FunctionComponent> }> = {
         // App-specific settings, i.e. user accessing app settings from App Store or
         // through DWallet App header.
         app_settings: {
@@ -457,7 +439,7 @@ const SelfExclusionInputs = () => {
         },
         // Legacy Deriv.app, i.e. non-DWallet user accessing app.deriv.com/account/self-exclusion.
         deriv_app: {
-            condition: !!(!is_appstore && !is_app_settings),
+            condition: !is_app_settings,
             components: [
                 StakeLossAndLimitsInputs,
                 SessionAndLoginLimitsInputs,
@@ -468,16 +450,16 @@ const SelfExclusionInputs = () => {
     };
 
     return (
-        <React.Fragment>
+        <Fragment>
             {Object.keys(versions).map((version_name: string) => {
                 const version = versions[version_name];
                 if (!version.condition) return null;
                 return (
-                    <React.Fragment key={version_name}>
+                    <Fragment key={version_name}>
                         {version.components.map((Component, component_idx) => (
                             <Component key={`${version_name}component${component_idx}`} />
                         ))}
-                    </React.Fragment>
+                    </Fragment>
                 );
             })}
             {footer_ref ? (
@@ -496,7 +478,7 @@ const SelfExclusionInputs = () => {
                     </Button>
                 </div>
             )}
-        </React.Fragment>
+        </Fragment>
     );
 };
 

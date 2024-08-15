@@ -1,3 +1,4 @@
+import { ChartBarrierStore } from '@deriv/shared';
 import ClientStore from './client-store';
 import CommonStore from './common-store';
 import GTMStore from './gtm-store';
@@ -8,7 +9,6 @@ import ActiveSymbolsStore from './active-symbols-store';
 import PortfolioStore from './portfolio-store';
 import ContractReplayStore from './contract-replay-store';
 import ContractTradeStore from './contract-trade-store';
-import { ChartBarrierStore } from './chart-barrier-store';
 import TradersHubStore from './traders-hub-store';
 
 export default class RootStore {

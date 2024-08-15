@@ -1,10 +1,10 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 import { Localize } from '@deriv/translations';
 import { ContinueTradingButton } from '../../../poa/continue-trading-button/continue-trading-button';
-import IdvDocumentVerified from '../../../../Assets/ic-idv-verified.svg';
+import { DerivLightApprovedPoiIcon } from '@deriv/quill-icons';
 import PoaButton from '../../../poa/poa-button/poa-button';
 
 type TIdvVerified = {
@@ -19,19 +19,19 @@ const IdvVerified = ({ needs_poa, is_from_external, redirect_button }: Partial<T
     ) : (
         <Localize i18n_default_text='ID verification passed' />
     );
-
+    const { isDesktop } = useDevice();
     return (
         <div
-            className={classNames('proof-of-identity__container', 'proof-of-identity__container--status')}
+            className={clsx('proof-of-identity__container', 'proof-of-identity__container--status')}
             data-testid='poi_idv_verified_container'
         >
-            <IdvDocumentVerified className='icon' />
+            <DerivLightApprovedPoiIcon className='icon' />
             <Text className='proof-of-identity__text btm-spacer' align='center' weight='bold'>
                 {header_Text}
             </Text>
             {needs_poa ? (
                 <React.Fragment>
-                    {!isMobile() && (
+                    {isDesktop && (
                         <Text className='text' size='xs' align='center'>
                             <Localize i18n_default_text="Next, we'll need your proof of address." />
                         </Text>

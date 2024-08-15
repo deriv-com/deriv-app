@@ -1,5 +1,4 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
 import {
     useAccountLimits,
     useAccountStatus,
@@ -9,7 +8,9 @@ import {
     useCryptoConfig,
     useCurrencyConfig,
 } from '@deriv/api-v2';
-import { Loader, WalletsActionScreen } from '../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Loader } from '@deriv-com/ui';
+import { WalletsActionScreen } from '../../../../components';
 import getWithdrawalLockedDesc, { getWithdrawalLimitReachedDesc } from './WithdrawalLockedContent';
 import './WithdrawalLocked.scss';
 
@@ -20,7 +21,7 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { data: accountLimits } = useAccountLimits();
     const { data: accountStatus } = useAccountStatus();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
-    const { data: cryptoConfig, isLoading: isCryptoConfigLoading } = useCryptoConfig();
+    const { data: cryptoConfig } = useCryptoConfig();
 
     const currency = activeWallet?.currency || 'USD';
 
@@ -45,7 +46,7 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
         typeof minimumWithdrawal !== 'undefined' &&
         +remainder < minimumWithdrawal
     );
-    const isLoading = isCurrencyConfigLoading || isCryptoConfigLoading || !accountStatus;
+    const isLoading = isCurrencyConfigLoading || !accountStatus;
 
     if (isLoading) {
         return <Loader />;
@@ -63,8 +64,8 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
                         poiStatus,
                     })}
                     title={
-                        <Trans
-                            defaults='Withdrawals from your {{currency}} Wallet are temporarily locked.'
+                        <Localize
+                            i18n_default_text='Withdrawals from your {{currency}} Wallet are temporarily locked.'
                             values={{ currency }}
                         />
                     }
@@ -85,8 +86,8 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
                         withdrawalLockedStatus,
                     })}
                     title={
-                        <Trans
-                            defaults='Withdrawals from your {{currency}} Wallet are temporarily locked.'
+                        <Localize
+                            i18n_default_text='Withdrawals from your {{currency}} Wallet are temporarily locked.'
                             values={{ currency }}
                         />
                     }

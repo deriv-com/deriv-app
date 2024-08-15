@@ -42,12 +42,13 @@ jobs:
         GROWTHBOOK_DECRYPTION_KEY: ${{ vars.GROWTHBOOK_DECRYPTION_KEY }}
         REF_NAME: ${{ github.ref_name }}
         REMOTE_CONFIG_URL: ${{ vars.REMOTE_CONFIG_URL }}
+        TRUSTPILOT_API_KEY: ${{ secrets.TRUSTPILOT_API_KEY }}
     - name: Run tests
       run: npm test
     - name: Versioning
       uses: "./.github/actions/versioning"
       with:
-        RELEASE_TYPE: $RELEASE_TYPE
+        RELEASE_TYPE: ${{ env.RELEASE_TYPE }}
     - name: Extract version
       id: extract_version
       run: echo "RELEASE_VERSION=${version}" >> $GITHUB_OUTPUT
@@ -89,7 +90,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           MESSAGE: "${{ env.RELEASE_TYPE }} Release succeeded for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }}"
 
-  build_and_publish_to_docker_k8s:
+  build_and_publish_to_DR_solution:
     name: Build Docker image and push to Docker hub and K8S
     runs-on: Runner_8cores_Deriv-app
     environment: Production
@@ -102,21 +103,20 @@ jobs:
         with:
           name: build
           path: packages/core/dist
-      - name: Build Docker image and push to Docker hub and K8S
-        id: build_and_push_docker_image
-        uses: "./.github/actions/build_and_push_docker_image"
+      - name: Upload to vercel
+        id: vercel-upload
+        uses: 'deriv-com/shared-actions/.github/actions/vercel_DR_publish@master'
         with:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKERHUB_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          DOCKERHUB_ORGANISATION: ${{ secrets.DOCKERHUB_ORGANISATION }}
-          K8S_NAMESPACE: ${{ secrets.K8S_NAMESPACE }}
-          KUBE_SERVER: ${{ secrets.KUBE_SERVER }}
-          SERVICEACCOUNT_TOKEN: ${{ secrets.SERVICEACCOUNT_TOKEN }}
-          CA_CRT: ${{ secrets.CA_CRT }}
-          APP_VERSION: latest
-      - name: Send Slack Notification on Docker Publish and Kubernetes Deployment Failure
-        if: ${{ steps.build_and_push_docker_image.outcome != 'success' }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
+          ENVIRONMENT: Production
+          VERCEL_SCOPE: deriv
+          ALIAS_DOMAIN_URL: 'app-dr.binary.sx'
+        
+      - name: Send DR Slack Notification
         uses: "deriv-com/shared-actions/.github/actions/send_slack_notification@master"
+        if: ${{ steps.vercel-upload.outcome != 'success' }}
         with:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          MESSAGE: "${{ env.RELEASE_TYPE }} Docker Publish and Kubernetes Deployment for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }} has Failed"
+          MESSAGE: Disaster Recovery Release to vercel failed for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }}

@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Switch } from 'react-router-dom';
-import { Localize, localize } from '@deriv/translations';
+import { useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
+import Page404 from 'Components/page-404';
 import getRoutesConfig from 'Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes';
-import { useFeatureFlags } from '@deriv/hooks';
-import { routes } from '@deriv/shared';
 
 type TBinaryRoutesProps = {
     is_logged_in: boolean;
@@ -19,34 +19,16 @@ const Loading = () => {
     );
 };
 
-const cashierV2RoutesConfig = {
-    p2p_v2: {
-        path: routes.cashier_p2p_v2,
-        getTitle: () => localize('Deriv P2P-V2'),
-        icon_component: 'IcDp2p',
-    },
-} as const;
-
 const BinaryRoutes = (props: TBinaryRoutesProps) => {
-    const { is_p2p_v2_enabled } = useFeatureFlags();
-    const [routesConfig, setRoutesConfig] = React.useState(getRoutesConfig());
+    const { client } = useStore();
+    const { has_wallet } = client;
 
-    useEffect(() => {
-        const isRouteAdded = (routePath: string) => routesConfig[0].routes?.some(route => route.path === routePath);
-
-        const should_add_p2p_v2_route = is_p2p_v2_enabled && !isRouteAdded(routes.cashier_p2p_v2);
-
-        if (should_add_p2p_v2_route) {
-            const routes_replicate = [...routesConfig];
-            routes_replicate[0].routes?.push(cashierV2RoutesConfig.p2p_v2);
-            setRoutesConfig(routes_replicate);
-        }
-    }, [is_p2p_v2_enabled, routesConfig]);
+    if (has_wallet) return <Page404 />;
 
     return (
         <React.Suspense fallback={<Loading />}>
             <Switch>
-                {routesConfig.map((route, idx) => (
+                {getRoutesConfig().map((route, idx) => (
                     <RouteWithSubRoutes key={idx} {...route} {...props} />
                 ))}
             </Switch>

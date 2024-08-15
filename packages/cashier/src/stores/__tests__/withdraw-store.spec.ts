@@ -43,6 +43,9 @@ describe('WithdrawStore', () => {
                         },
                     };
                 },
+                account_limits: {
+                    remainder: 80,
+                },
                 loginid: 'CR9000000',
                 setVerificationCode: jest.fn(),
             },
@@ -90,6 +93,7 @@ describe('WithdrawStore', () => {
             },
             cryptoConfig: () => Promise.resolve(),
             cryptoWithdraw: jest.fn(() => Promise.resolve({})),
+            wait: jest.fn(() => Promise.resolve()),
         };
 
         withdraw_store = new WithdrawStore(WS as TWebSocket, root_store);

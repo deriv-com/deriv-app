@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import { APIProvider } from '@deriv/api';
 import { P2PSettingsProvider, StoreProvider, mockStore } from '@deriv/stores';
 import ToggleMenuDrawer from '../toggle-menu-drawer';
 
@@ -12,10 +13,6 @@ jest.mock('@deriv/components', () => {
         MobileDrawer,
     };
 });
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useFeatureFlags: jest.fn(() => ({ is_next_wallet_enabled: true })),
-}));
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useLocation: jest.fn(() => ({ pathname: '/appstore/traders-hub' })),
@@ -28,21 +25,23 @@ jest.mock('App/Components/Elements/LiveChat/use-livechat.ts', () => () => ({ isR
 describe('<ToggleMenuDrawer />', () => {
     const mockToggleMenuDrawer = () => {
         return (
-            <StoreProvider
-                store={mockStore({
-                    modules: {
-                        cashier: {
-                            payment_agent: {
-                                is_payment_agent_visible: true,
+            <APIProvider>
+                <StoreProvider
+                    store={mockStore({
+                        modules: {
+                            cashier: {
+                                payment_agent: {
+                                    is_payment_agent_visible: true,
+                                },
                             },
                         },
-                    },
-                })}
-            >
-                <P2PSettingsProvider>
-                    <ToggleMenuDrawer />
-                </P2PSettingsProvider>
-            </StoreProvider>
+                    })}
+                >
+                    <P2PSettingsProvider>
+                        <ToggleMenuDrawer />
+                    </P2PSettingsProvider>
+                </StoreProvider>
+            </APIProvider>
         );
     };
 

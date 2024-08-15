@@ -41,7 +41,6 @@ jest.mock('Components/poi/status/expired', () => jest.fn(() => 'mockedExpired'))
 
 const mock_props = {
     onStateChange: jest.fn(),
-    setIsCfdPoiCompleted: jest.fn(),
     is_from_external: false,
     height: '200',
 };
@@ -223,6 +222,17 @@ describe('ProofOfIdentityContainer', () => {
         await waitFor(() => {
             expect(screen.getByText('mockedNotRequired')).toBeInTheDocument();
         });
+    });
+
+    it('should render  POI submission section when account status is poi_expiring_soon', async () => {
+        populateVerificationStatus.mockReturnValue({
+            poi_expiring_soon: true,
+            identity_status: identity_status_codes.verified,
+            is_age_verified: true,
+            idv: { submissions_left: 3, status: identity_status_codes.verified },
+        });
+        renderComponent({});
+        expect(await screen.findByText('mockedProofOfIdentitySubmission')).toBeInTheDocument();
     });
 
     it('should render POI submission section when status is none', async () => {

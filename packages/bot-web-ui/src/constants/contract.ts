@@ -7,6 +7,7 @@ export type TContract = {
 };
 
 export type TContractType =
+    | 'ACCU'
     | 'ASIANU'
     | 'ASIAND'
     | 'CALL'
@@ -44,6 +45,10 @@ type TSupportedContracts = {
 };
 
 export const getSupportedContracts = (is_high_low: boolean): TSupportedContracts => ({
+    ACCU: {
+        name: 'Accumulators',
+        position: 'top',
+    },
     ASIANU: {
         name: localize('Asian Up'),
         position: 'top',

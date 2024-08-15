@@ -1,8 +1,16 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Dialog, PageErrorContainer } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+
+type TErrorComponentProps = {
+    header?: string;
+    is_dialog?: boolean;
+    message?: React.ReactNode;
+    redirect_label?: string;
+    redirectOnClick?: () => void;
+    should_show_refresh?: boolean;
+};
 
 const ErrorComponent = ({
     header,
@@ -11,7 +19,7 @@ const ErrorComponent = ({
     redirect_label,
     redirectOnClick,
     should_show_refresh = true,
-}) => {
+}: TErrorComponentProps) => {
     const refresh_message = should_show_refresh ? localize('Please refresh this page to continue.') : '';
 
     if (is_dialog) {
@@ -35,16 +43,6 @@ const ErrorComponent = ({
             buttonOnClick={redirectOnClick || (() => location.reload())}
         />
     );
-};
-
-ErrorComponent.propTypes = {
-    header: PropTypes.string,
-    is_dialog: PropTypes.bool,
-    message: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
-    redirect_label: PropTypes.string,
-    redirectOnClick: PropTypes.func,
-    should_show_refresh: PropTypes.bool,
-    type: PropTypes.string,
 };
 
 export default ErrorComponent;

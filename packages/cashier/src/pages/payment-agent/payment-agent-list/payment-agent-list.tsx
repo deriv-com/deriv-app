@@ -9,6 +9,7 @@ import DepositTab from './deposit-tab';
 import WithdrawalTab from './withdrawal-tab';
 import MissingPaymentMethodNote from '../missing-payment-method-note';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
+import { DepositSubPageAnalyticsEventTracker } from '../../../components/deposit-sub-page-analytics-event-tracker';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-list.scss';
 
@@ -44,6 +45,7 @@ const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
 
     return (
         <div className='payment-agent-list cashier__wrapper--align-left'>
+            <DepositSubPageAnalyticsEventTracker deposit_category='payment_agent' />
             <div
                 className={classNames('payment-agent-list__instructions', {
                     'payment-agent-list__instructions-hide-tabs': payment_agent.is_try_withdraw_successful,

@@ -62,7 +62,8 @@ const useActiveSymbols = () => {
 
             if (
                 (isVanillaContract(previous_contract_type) && is_vanilla) ||
-                (isTurbosContract(previous_contract_type) && is_turbos)
+                (isTurbosContract(previous_contract_type) && is_turbos) ||
+                getContractTypesList().length === 0
             ) {
                 return;
             }

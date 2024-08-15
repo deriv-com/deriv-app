@@ -31,7 +31,7 @@ describe('DepositCryptoDisclaimers', () => {
         ).toBeInTheDocument();
         expect(screen.queryByText(/A minimum deposit value of/)).not.toBeInTheDocument();
         expect(
-            screen.getByText('You’ll receive an email when your deposit starts being processed.')
+            screen.getByText("You'll receive an email when your deposit starts being processed.")
         ).toBeInTheDocument();
     });
 
@@ -49,7 +49,7 @@ describe('DepositCryptoDisclaimers', () => {
         expect(screen.getByText(/A minimum deposit value of/)).toBeInTheDocument();
         expect(screen.getByText(/Ethereum \(ETH\) network/)).toBeInTheDocument();
         expect(
-            screen.getByText('You’ll receive an email when your deposit starts being processed.')
+            screen.getByText("You'll receive an email when your deposit starts being processed.")
         ).toBeInTheDocument();
     });
 
@@ -76,7 +76,7 @@ describe('DepositCryptoDisclaimers', () => {
         expect(screen.getByText(/Tron \(TRC20\) network/)).toBeInTheDocument();
         expect(screen.getByText(/Otherwise, a fee is applied./)).toBeInTheDocument();
         expect(
-            screen.getByText('You’ll receive an email when your deposit starts being processed.')
+            screen.getByText("You'll receive an email when your deposit starts being processed.")
         ).toBeInTheDocument();
     });
 });

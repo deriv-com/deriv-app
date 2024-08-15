@@ -1,6 +1,7 @@
 import React, { FC, PropsWithChildren } from 'react';
 import QRCode from 'qrcode.react';
-import { WalletText } from '../../../../components/Base';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../../../../components/Base/ModalStepWrapper';
 import useDevice from '../../../../hooks/useDevice';
 import InstallationAppleIcon from '../../../../public/images/ic-installation-apple.svg';
@@ -55,9 +56,12 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
             renderFooter={() => {
                 return (
                     <div className='wallets-modal-trade-wrapper__footer'>
-                        <WalletText align='center' size='sm' weight='bold'>
-                            Download {title} on your phone to trade with the {title} account
-                        </WalletText>
+                        <Text align='center' size='sm' weight='bold'>
+                            <Localize
+                                i18n_default_text='Download {{title}} on your phone to trade with the {{title}} account'
+                                values={{ title }}
+                            />
+                        </Text>
                         <div className='wallets-modal-trade-wrapper__footer-installations'>
                             <div className='wallets-modal-trade-wrapper__footer-installations-icons'>
                                 {appOrder.map(app => {
@@ -73,9 +77,12 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
 
                             <div className='wallets-modal-trade-wrapper__footer-installations-qr'>
                                 <QRCode size={80} value={link} />
-                                <WalletText align='center' size='xs'>
-                                    Scan the QR code to download {title}
-                                </WalletText>
+                                <Text align='center' size='xs'>
+                                    <Localize
+                                        i18n_default_text=' Scan the QR code to download {{title}}'
+                                        values={{ title }}
+                                    />
+                                </Text>
                             </div>
                         </div>
                     </div>

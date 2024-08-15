@@ -36,7 +36,7 @@ describe('<AccountLimitsOverlay/>', () => {
     it('should go to help-centre page if the Help Centre link on the text is clicked', () => {
         render(<Component />);
 
-        expect(screen.getByText('Help Centre').hasAttribute('href'));
+        expect(screen.getByText(/Help Centre/).hasAttribute('href'));
     });
     it('should show Done Button', () => {
         render(<Component />);

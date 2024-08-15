@@ -1,4 +1,5 @@
 import React, { ComponentProps } from 'react';
+import { Localize } from '@deriv-com/translations';
 import { WalletButton, WalletButtonGroup } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
 
@@ -21,7 +22,7 @@ export const MT5PasswordModalFooter = ({
     return (
         <WalletButtonGroup isFullWidth>
             <WalletButton isFullWidth onClick={onSecondaryClick} size={isMobile ? 'lg' : 'md'} variant='outlined'>
-                Forgot password?
+                <Localize i18n_default_text='Forgot password?' />
             </WalletButton>
             <WalletButton
                 disabled={disabled}
@@ -30,7 +31,7 @@ export const MT5PasswordModalFooter = ({
                 onClick={onPrimaryClick}
                 size={isMobile ? 'lg' : 'md'}
             >
-                Add account
+                <Localize i18n_default_text='Add account' />
             </WalletButton>
         </WalletButtonGroup>
     );

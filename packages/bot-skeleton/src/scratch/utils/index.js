@@ -9,6 +9,28 @@ import DBotStore from '../dbot-store';
 import { LogTypes } from '../../constants/messages';
 import { error_message_map } from '../../utils/error-config';
 
+export const inject_workspace_options = {
+    media: `${__webpack_public_path__}media/`,
+    zoom: {
+        wheel: true,
+        startScale: config.workspaces.previewWorkspaceStartScale,
+    },
+    readOnly: true,
+    scrollbars: true,
+    renderer: 'zelos',
+};
+
+export const updateXmlValues = blockly_options => {
+    const { strategy_id, convertedDom, file_name, from } = blockly_options;
+    window.Blockly.xmlValues = {
+        ...window?.Blockly?.xmlValues,
+        strategy_id,
+        convertedDom,
+        file_name,
+        from,
+    };
+};
+
 export const getSelectedTradeType = (workspace = Blockly.derivWorkspace) => {
     const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
     const selected_trade_type = trade_type_block?.getFieldValue('TRADETYPE_LIST');
@@ -179,13 +201,7 @@ export const load = async ({
             workspace,
             Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type'))
         );
-        window.Blockly.xmlValues = {
-            file_name,
-            strategy_id,
-            from,
-            xml,
-        };
-
+        updateXmlValues({ strategy_id, convertedDom: xml, file_name, from });
         if (is_collection) {
             loadBlocks(xml, drop_event, event_group, workspace);
         } else {

@@ -2,7 +2,6 @@ import React from 'react';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { v4 as uuidv4 } from 'uuid';
 import {
-    config,
     getSavedWorkspaces,
     load,
     removeExistingWorkspace,
@@ -22,6 +21,8 @@ import {
 import { getStrategyType } from '../analytics/utils';
 
 import RootStore from './root-store';
+import { waitForDomElement } from '../utils/dom-observer';
+import { inject_workspace_options, updateXmlValues } from '@deriv/bot-skeleton/src/scratch/utils';
 
 interface ILoadModalStore {
     active_index: number;
@@ -533,17 +534,6 @@ export default class LoadModalStore implements ILoadModalStore {
         reader.readAsText(file);
     };
 
-    injectWorkspace = {
-        media: `${__webpack_public_path__}media/`,
-        zoom: {
-            wheel: true,
-            startScale: config.workspaces.previewWorkspaceStartScale,
-        },
-        readOnly: true,
-        scrollbars: true,
-        renderer: 'zelos',
-    };
-
     workspaceOptions = {
         block_string: this.selected_strategy?.xml,
         drop_event: {},
@@ -555,20 +545,20 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     loadStrategyOnBotBuilder = async () => {
-        const { strategy_id, xml, file_name, from } = window.Blockly.xmlValues;
+        const { strategy_id, convertedDom, file_name, from = save_types.UNSAVED } = window.Blockly.xmlValues;
         const { save_modal } = this.root_store;
         const { updateBotName } = save_modal;
 
         const derivWorkspace = window.Blockly.derivWorkspace;
 
-        window.Blockly.Xml.clearWorkspaceAndLoadFromXml(xml, derivWorkspace);
+        window.Blockly.Xml.clearWorkspaceAndLoadFromXml(convertedDom, derivWorkspace);
         derivWorkspace.cleanUp();
         derivWorkspace.clearUndo();
-        derivWorkspace.current_strategy_id = strategy_id || Blockly.utils.idGenerator.genUid();
+        derivWorkspace.current_strategy_id = strategy_id || window.Blockly.utils.idGenerator.genUid();
 
         updateBotName(file_name);
 
-        await saveWorkspaceToRecent(xml, from);
+        await saveWorkspaceToRecent(convertedDom, from);
 
         const recent_files = await getSavedWorkspaces();
         if (recent_files?.length > 0) this.setSelectedStrategyId(recent_files[0]?.id);
@@ -582,23 +572,15 @@ export default class LoadModalStore implements ILoadModalStore {
         const { setLoading } = blockly_store;
         setLoading(true);
 
-        const injectWorkspace = { ...this.injectWorkspace, theme: window?.Blockly?.Themes?.zelos_renderer };
+        const inject_options = { ...inject_workspace_options, theme: window?.Blockly?.Themes?.zelos_renderer };
+
         this.setLoadedLocalFile(null);
         this.setSelectedStrategyId(workspace_id);
 
-        let ref_preview;
-        while (!ref_preview) {
-            ref_preview = document?.getElementById('load-strategy__blockly-container');
-            // eslint-disable-next-line no-await-in-loop
-            await new Promise(resolve => setImmediate(resolve));
-        }
-        if (!ref_preview) {
-            // eslint-disable-next-line no-console
-            console.warn('Could not find preview workspace element.');
-            setLoading(false);
-            return;
-        }
-        if (!this.recent_workspace) this.recent_workspace = window.Blockly.inject(ref_preview, injectWorkspace);
+        await waitForDomElement('#load-strategy__blockly-container');
+        const ref_preview = document?.getElementById('load-strategy__blockly-container');
+
+        if (!this.recent_workspace) this.recent_workspace = window.Blockly.inject(ref_preview, inject_options);
         (this.recent_workspace as any).RTL = isDbotRTL();
         await load(this.workspaceOptions);
 
@@ -607,21 +589,17 @@ export default class LoadModalStore implements ILoadModalStore {
 
         window.Blockly?.Xml?.clearWorkspaceAndLoadFromXml(convertedDom, mainWorkspace);
 
-        if (window.Blockly && window.Blockly.xmlValues) {
-            window.Blockly.xmlValues = {
-                ...window.Blockly.xmlValues,
-                strategy_id: this.selected_strategy_id,
-                xml: convertedDom,
-                file_name: this.selected_strategy?.name,
-                from: this.selected_strategy?.save_type,
-            };
-        }
-
+        updateXmlValues({
+            strategy_id: this.selected_strategy_id,
+            convertedDom,
+            file_name: this.selected_strategy?.name,
+            from: this.selected_strategy?.save_type || save_types.UNSAVED,
+        });
         setLoading(false);
     };
 
     loadStrategyOnModalLocalPreview = async load_options => {
-        const injectWorkspace = { ...this.injectWorkspace, theme: window?.Blockly?.Themes?.zelos_renderer };
+        const injectWorkspace = { ...inject_workspace_options, theme: window?.Blockly?.Themes?.zelos_renderer };
         const ref = document?.getElementById('load-strategy__blockly-container');
 
         this.local_workspace = window.Blockly.inject(ref, injectWorkspace);

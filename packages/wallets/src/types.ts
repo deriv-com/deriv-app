@@ -23,13 +23,16 @@ import type {
     useMT5AccountsList,
     usePOA,
     usePOI,
+    useSettings,
     useSortedMT5Accounts,
     useTradingPlatformStatus,
     useTransactions,
     useTransferBetweenAccounts,
     useWalletAccountsList,
 } from '@deriv/api-v2';
+import { TSocketError, TSocketResponse } from '@deriv/api-v2/types';
 import { IconTypes } from '@deriv/quill-icons';
+import { useTranslations } from '@deriv-com/translations';
 
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace THooks {
@@ -65,6 +68,8 @@ export namespace THooks {
     export type TransferAccount = NonNullable<
         NonNullable<ReturnType<typeof useTransferBetweenAccounts>['data']>['accounts']
     >[number];
+    export type AccountSettings = NonNullable<ReturnType<typeof useSettings>['data']>;
+    export type DocumentUpload = TSocketError<'document_upload'> & TSocketResponse<'document_upload'>;
 }
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace TPlatforms {
@@ -104,3 +109,5 @@ export type TWalletCarouselItem = Omit<THooks.AllWalletAccounts, 'landing_compan
 export type TIconTypes = Record<string, IconTypes>;
 
 export type TCurrencyIconTypes = Record<THooks.WalletAccountsList['wallet_currency_type'], IconTypes>;
+
+export type TTranslations = ReturnType<typeof useTranslations>;

@@ -80,3 +80,4 @@ export { default as useIsDIELEnabled } from './useIsDIELEnabled';
 export { default as useKycAuthStatus } from './useKycAuthStatus';
 export { default as useClientCountry } from './useClientCountry';
 export { default as useTradingPlatformStatus } from './useTradingPlatformStatus';
+export { DocumentUploadStatus } from './useDocumentUpload';

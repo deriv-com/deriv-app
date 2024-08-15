@@ -12,14 +12,13 @@ const AccumulatorStats = observer(() => {
     const { ticks_history_stats = {} } = useTraderStore();
     const [is_open, setIsOpen] = useState(false);
     const [is_open_description, setIsOpenDescription] = useState(false);
+    const [animation_class, setAnimationClass] = useState('');
+    const [last_value, setLastValue] = useState<number | null>(null);
+    const [is_moving_transaction, setIsMovingTransition] = useState(false);
 
     const ticks_history = useMemo(() => {
         return ticks_history_stats?.ticks_stayed_in ?? [];
     }, [ticks_history_stats]);
-
-    const [animationClass, setAnimationClass] = useState('');
-    const [lastValue, setLastValue] = useState<number | null>(null);
-    const [isMovingTransition, setIsMovingTransition] = useState(false);
 
     const rows: number[][] = useMemo(() => {
         const row_size = 5;
@@ -37,34 +36,34 @@ const AccumulatorStats = observer(() => {
     };
 
     useEffect(() => {
-        let successTimeout: ReturnType<typeof setTimeout> | undefined,
-            errorTimeout: ReturnType<typeof setTimeout> | undefined,
-            transitionTimeout: ReturnType<typeof setTimeout> | undefined;
+        let success_timeout: ReturnType<typeof setTimeout> | undefined,
+            error_timeout: ReturnType<typeof setTimeout> | undefined,
+            transition_timeout: ReturnType<typeof setTimeout> | undefined;
 
         if (rows[0] && rows[0].length > 0) {
             setAnimationClass('');
-            clearTimeout(successTimeout);
-            clearTimeout(errorTimeout);
-            clearTimeout(transitionTimeout);
+            clearTimeout(success_timeout);
+            clearTimeout(error_timeout);
+            clearTimeout(transition_timeout);
 
-            const isSameValue = lastValue === rows[0][1];
+            const is_same_value = last_value === rows[0][1];
 
-            isSameValue
-                ? (errorTimeout = setTimeout(() => setAnimationClass('animate-error'), 0))
-                : (successTimeout = setTimeout(() => setAnimationClass('animate-success'), 0));
+            is_same_value
+                ? (error_timeout = setTimeout(() => setAnimationClass('animate-error'), 0))
+                : (success_timeout = setTimeout(() => setAnimationClass('animate-success'), 0));
 
-            setIsMovingTransition(isSameValue);
-            if (isSameValue) {
-                transitionTimeout = setTimeout(() => setIsMovingTransition(false), 600);
+            setIsMovingTransition(is_same_value);
+            if (is_same_value) {
+                transition_timeout = setTimeout(() => setIsMovingTransition(false), 600);
             }
 
             setLastValue(rows[0][0]);
         }
 
         return () => {
-            clearTimeout(successTimeout);
-            clearTimeout(errorTimeout);
-            clearTimeout(transitionTimeout);
+            clearTimeout(success_timeout);
+            clearTimeout(error_timeout);
+            clearTimeout(transition_timeout);
         };
     }, [rows[0]?.[0]]);
 
@@ -87,8 +86,8 @@ const AccumulatorStats = observer(() => {
                     <div className='accumulators-stats__container__stats'>
                         <StatsRow
                             rows={[...rows[0], ...(rows[1] || [])]}
-                            animationClass={animationClass}
-                            isMovingTransition={isMovingTransition}
+                            animation_class={animation_class}
+                            is_moving_transaction={is_moving_transaction}
                             className='accumulators-stats__container__stats'
                         />
                     </div>
@@ -107,8 +106,8 @@ const AccumulatorStats = observer(() => {
                 {is_open && (
                     <AccumulatorStatsModal
                         rows={rows}
-                        isMovingTransition={isMovingTransition}
-                        animationClass={animationClass}
+                        is_moving_transaction={is_moving_transaction}
+                        animation_class={animation_class}
                     />
                 )}
                 {is_open_description && <AccumulatorStatsDescription onActionSheetClose={onActionSheetClose} />}

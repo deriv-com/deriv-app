@@ -4,25 +4,25 @@ import clsx from 'clsx';
 
 const StatsRow = ({
     rows,
-    animationClass,
-    isMovingTransition,
+    animation_class,
+    is_moving_transaction,
     className,
 }: {
     rows: number[];
-    animationClass?: string;
-    isMovingTransition: boolean;
+    animation_class?: string;
+    is_moving_transaction: boolean;
     className: string;
 }) => {
     return (
         <>
             <div className={`${className}__stat`}>
-                <Text size='sm' bold className={animationClass} data-testid='accumulator-first-stat'>
+                <Text size='sm' bold className={animation_class} data-testid='accumulator-first-stat'>
                     {rows[0]}
                 </Text>
             </div>
             <div
                 className={clsx(`${className}__moving`, {
-                    'slide-right': isMovingTransition,
+                    'slide-right': is_moving_transaction,
                 })}
             >
                 {rows.slice(1)?.map((el: number, i: number) => (

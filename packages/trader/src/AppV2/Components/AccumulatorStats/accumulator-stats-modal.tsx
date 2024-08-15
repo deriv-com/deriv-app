@@ -6,12 +6,12 @@ import { Localize } from '@deriv/translations';
 
 const AccumulatorStatsModal = ({
     rows,
-    animationClass,
-    isMovingTransition,
+    animation_class,
+    is_moving_transaction,
 }: {
     rows: number[][];
-    animationClass?: string;
-    isMovingTransition: boolean;
+    animation_class?: string;
+    is_moving_transaction: boolean;
 }) => {
     return (
         <ActionSheet.Portal shouldCloseOnDrag>
@@ -30,8 +30,8 @@ const AccumulatorStatsModal = ({
                 <div className='stats-sheet__stats'>
                     <StatsRow
                         rows={rows[0]}
-                        animationClass={animationClass}
-                        isMovingTransition={isMovingTransition}
+                        animation_class={animation_class}
+                        is_moving_transaction={is_moving_transaction}
                         className='stats-sheet__stats'
                     />
                 </div>

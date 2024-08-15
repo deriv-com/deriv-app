@@ -32,7 +32,12 @@ const WorkspaceGroup = observer(() => {
                     action={() => {
                         setPreviewOnPopup(true);
                         toggleLoadModal();
-                        rudderStackSendOpenEvent({ subform_source: 'bot_builder', subform_name: 'load_strategy' });
+                        rudderStackSendOpenEvent({
+                            subpage_name: 'bot_builder',
+                            subform_source: 'bot_builder',
+                            subform_name: 'load_strategy',
+                            load_strategy_tab: 'recent',
+                        });
                     }}
                 />
                 <ToolbarIcon

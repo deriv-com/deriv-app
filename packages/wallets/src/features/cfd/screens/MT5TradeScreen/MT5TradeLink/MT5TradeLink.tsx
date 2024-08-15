@@ -1,22 +1,23 @@
 import React, { FC } from 'react';
 import { useCtraderServiceToken } from '@deriv/api-v2';
-import { Divider } from '@deriv-com/ui';
-import { WalletButton, WalletText } from '../../../../../components/Base';
+import { Localize } from '@deriv-com/translations';
+import { Divider, Text } from '@deriv-com/ui';
+import { WalletButton } from '../../../../../components/Base';
 import { getPlatformFromUrl } from '../../../../../helpers/urls';
 import { THooks, TPlatforms } from '../../../../../types';
-import { AppToContentMapper, CFD_PLATFORMS, PlatformDetails, PlatformToLabelIconMapper } from '../../../constants';
+import { CFD_PLATFORMS, getAppToContentMapper, PlatformDetails, PlatformToLabelIconMapper } from '../../../constants';
 import { ctraderLinks, dxtradeLinks } from './urlConfig';
 import './MT5TradeLink.scss';
 
 type TMT5TradeLinkProps = {
-    app?: keyof typeof AppToContentMapper;
+    app?: keyof ReturnType<typeof getAppToContentMapper>;
     isDemo?: THooks.ActiveWalletAccount['is_virtual'];
     platform?: TPlatforms.All;
 };
 
 const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, platform }) => {
     const { mutateAsync: requestToken } = useCtraderServiceToken();
-    const { icon, link, text, title } = AppToContentMapper[app];
+    const { icon, link, text, title } = getAppToContentMapper()[app];
 
     const getCtraderToken = () => {
         const cTraderTokenResponse = requestToken({
@@ -58,15 +59,21 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
                     {(platform === CFD_PLATFORMS.MT5 || app === CFD_PLATFORMS.CTRADER) && (
                         <React.Fragment>
                             {icon}
-                            <WalletText size='sm'>{title}</WalletText>
+                            <Text size='sm'>{title}</Text>
                         </React.Fragment>
                     )}
                     {platform !== CFD_PLATFORMS.MT5 && app !== CFD_PLATFORMS.CTRADER && (
-                        <WalletText size='sm'>
-                            Run{' '}
-                            {PlatformDetails[(platform as keyof typeof PlatformDetails) ?? CFD_PLATFORMS.DXTRADE].title}{' '}
-                            on your browser
-                        </WalletText>
+                        <Text size='sm'>
+                            <Localize
+                                i18n_default_text='Run {{platformTitle}} on your browser'
+                                values={{
+                                    platformTitle:
+                                        PlatformDetails[
+                                            (platform as keyof typeof PlatformDetails) ?? CFD_PLATFORMS.DXTRADE
+                                        ].title,
+                                }}
+                            />
+                        </Text>
                     )}
                 </div>
                 {(platform === CFD_PLATFORMS.MT5 || app === CFD_PLATFORMS.CTRADER) && (
@@ -81,9 +88,9 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
                                 (platform as keyof typeof PlatformToLabelIconMapper) ?? CFD_PLATFORMS.DXTRADE
                             ]
                         }
-                        <WalletText color='white' size='xs' weight='bold'>
-                            Web terminal
-                        </WalletText>
+                        <Text color='white' size='xs' weight='bold'>
+                            <Localize i18n_default_text='Web terminal' />
+                        </Text>
                     </button>
                 )}
             </div>

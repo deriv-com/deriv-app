@@ -97,11 +97,11 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
                 account_type: categoryAccountType,
                 address: settingsData?.address_line_1 ?? '',
                 city: settingsData?.address_city ?? '',
-                company: selectedJurisdiction,
                 country: settingsData?.country_code ?? '',
                 email: settingsData?.email ?? '',
                 leverage: availableMT5AccountsData?.find(acc => acc.market_type === marketType)?.leverage ?? 500,
                 mainPassword: password,
+                ...(selectedJurisdiction && !isDemo ? { company: selectedJurisdiction } : {}),
                 ...(marketType === MARKET_TYPE.FINANCIAL && { mt5_account_type: MARKET_TYPE.FINANCIAL }),
                 ...(selectedJurisdiction &&
                     (selectedJurisdiction !== JURISDICTION.LABUAN

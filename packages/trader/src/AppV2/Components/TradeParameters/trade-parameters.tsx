@@ -12,7 +12,7 @@ import TakeProfit from './TakeProfit';
 import AccumulatorsInformation from './AccumulatorsInformation';
 import Multiplier from './Multiplier';
 import RiskManagement from './RiskManagement';
-import MultipliersInformation from './MultipliersInformation';
+import MultipliersDealCancellationInfo from './MultipliersDealCancellationInfo';
 import TradeTypeTabs from './TradeTypeTabs';
 import Strike from './Strike';
 import PayoutPerPoint from './PayoutPerPoint';
@@ -50,10 +50,10 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
                 {isVisible('risk_management') && <RiskManagement is_minimized={is_minimized} />}
                 {/* {isVisible('expiration') && <MultipliersExpirationInfo />} */}
                 {isVisible('accu_info_display') && <AccumulatorsInformation is_minimized={is_minimized} />}
-                {isVisible('mult_info_display') && <MultipliersInformation is_minimized={is_minimized} />}
+                {isVisible('mult_info_display') && !is_minimized && <MultipliersDealCancellationInfo />}
             </div>
             {is_minimized && isVisible('mult_info_display') && (
-                <MultipliersInformation classname='multipliers-info--standalone' />
+                <MultipliersDealCancellationInfo classname='multipliers-info--standalone' />
             )}
         </React.Fragment>
     );

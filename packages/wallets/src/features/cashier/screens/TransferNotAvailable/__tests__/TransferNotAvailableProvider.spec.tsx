@@ -21,7 +21,7 @@ jest.mock('@deriv-com/translations', () => ({
     },
 }));
 
-describe('getMessage', () => {
+describe('TransferNotAvailableProvider', () => {
     const mockHistory = { push: jest.fn() };
 
     beforeEach(() => {

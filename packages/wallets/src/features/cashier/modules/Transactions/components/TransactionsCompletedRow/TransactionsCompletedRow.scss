@@ -1,11 +1,18 @@
 .wallets-transactions-completed-row {
-    display: flex;
-    padding: 1.6rem;
-    justify-content: space-between;
     align-items: center;
-
+    background-color: none;
+    display: flex;
+    justify-content: space-between;
+    padding: 1.6rem;
+    width: 100%;
+    min-height: 7.2rem;
     @include mobile {
         padding: 1.6rem 0;
+    }
+    &:hover {
+        background-color: #e6e9e9;
+        color: none;
+        cursor: pointer;
     }
 
     &__type-and-wallet-name {
@@ -32,5 +39,9 @@
         flex-direction: column;
         align-items: flex-end;
         gap: 0.4rem;
+    }
+    &--active {
+        background-color: #f2f3f4;
+        justify-content: center;
     }
 }

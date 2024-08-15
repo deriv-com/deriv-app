@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+import classNames from 'classnames';
+import { useDebounceCallback } from 'usehooks-ts';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Divider, Text } from '@deriv-com/ui';
 import { THooks } from '../../../../../../types';
@@ -12,8 +14,82 @@ type TProps = {
     wallet: THooks.ActiveWalletAccount;
 };
 
+type TTransactionsCompletedRowContentProps = TProps & {
+    displayNonTransferActionType: string;
+    displayTransferActionType: string;
+    displayWalletName: string;
+    shouldShowTraceId: boolean;
+};
+
+const TransactionsCompletedRowContent: React.FC<TTransactionsCompletedRowContentProps> = ({
+    accounts,
+    displayNonTransferActionType,
+    displayTransferActionType,
+    displayWalletName,
+    shouldShowTraceId,
+    transaction,
+    wallet,
+}) => {
+    const { action_type: actionType, longcode, transaction_id: transactionId } = transaction;
+    const { account_type: accountType = '', currency = 'USD', is_virtual: isVirtual } = wallet;
+
+    if (shouldShowTraceId && transaction.longcode) {
+        return (
+            <Text as='p' size='xs'>
+                {longcode}
+            </Text>
+        );
+    }
+    return (
+        <>
+            {actionType && actionType !== 'transfer' ? (
+                <TransactionsCompletedRowAccountDetails
+                    accountType={accountType}
+                    actionType={actionType}
+                    currency={currency}
+                    displayAccountName={displayWalletName}
+                    displayActionType={displayNonTransferActionType}
+                    isDemo={Boolean(isVirtual)}
+                    transactionID={transactionId}
+                />
+            ) : (
+                <TransactionsCompletedRowTransferAccountDetails
+                    accounts={accounts}
+                    displayActionType={displayTransferActionType}
+                    loginid={
+                        [transaction.from?.loginid, transaction.to?.loginid].find(
+                            loginid => loginid !== wallet?.loginid
+                        ) ?? ''
+                    }
+                    transactionID={transaction.transaction_id}
+                />
+            )}
+            <div className='wallets-transactions-completed-row__transaction-details'>
+                <Text
+                    color={transaction.amount && transaction.amount > 0 ? 'success' : 'error'}
+                    size='xs'
+                    weight='bold'
+                >
+                    {transaction.amount && transaction.amount > 0 ? '+' : ''}
+                    {transaction.display_amount}
+                </Text>
+                <Text color='primary' size='2xs'>
+                    <Localize
+                        i18n_default_text='Balance: {{balance}}'
+                        values={{
+                            balance: transaction.display_balance_after,
+                        }}
+                    />
+                </Text>
+            </div>
+        </>
+    );
+};
+
 const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wallet }) => {
     const { localize } = useTranslations();
+    const [shouldShowTraceId, setShouldShowTraceId] = useState(false);
+    const debouncedsetShouldShowTraceId = useDebounceCallback(() => setShouldShowTraceId(false), 5000);
 
     if (!transaction.action_type || !transaction.amount) return null;
 
@@ -27,47 +103,30 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
     const displayTransferActionType =
         transaction.from?.loginid === wallet?.loginid ? localize('Transfer to') : localize('Transfer from');
 
+    const handleRowClick = () => {
+        setShouldShowTraceId(!shouldShowTraceId);
+        debouncedsetShouldShowTraceId();
+    };
+
     return (
         <React.Fragment>
             <Divider color='var(--border-divider)' />
-            <div className='wallets-transactions-completed-row'>
-                {transaction.action_type !== 'transfer' ? (
-                    <TransactionsCompletedRowAccountDetails
-                        accountType={wallet?.account_type ?? ''}
-                        actionType={transaction.action_type}
-                        currency={wallet?.currency ?? 'USD'}
-                        displayAccountName={displayWalletName}
-                        displayActionType={displayNonTransferActionType}
-                        isDemo={Boolean(wallet?.is_virtual)}
-                        transactionID={transaction.transaction_id}
-                    />
-                ) : (
-                    <TransactionsCompletedRowTransferAccountDetails
-                        accounts={accounts}
-                        displayActionType={displayTransferActionType}
-                        loginid={
-                            [transaction.from?.loginid, transaction.to?.loginid].find(
-                                loginid => loginid !== wallet?.loginid
-                            ) ?? ''
-                        }
-                        transactionID={transaction.transaction_id}
-                    />
-                )}
-                <div className='wallets-transactions-completed-row__transaction-details'>
-                    <Text color={transaction.amount > 0 ? 'success' : 'error'} size='xs' weight='bold'>
-                        {transaction.amount && transaction.amount > 0 ? '+' : ''}
-                        {transaction.display_amount}
-                    </Text>
-                    <Text color='primary' size='2xs'>
-                        <Localize
-                            i18n_default_text='Balance: {{balance}}'
-                            values={{
-                                balance: transaction.display_balance_after,
-                            }}
-                        />
-                    </Text>
-                </div>
-            </div>
+            <button
+                className={classNames('wallets-transactions-completed-row', {
+                    'wallets-transactions-completed-row--active': shouldShowTraceId,
+                })}
+                onClick={handleRowClick}
+            >
+                <TransactionsCompletedRowContent
+                    accounts={accounts}
+                    displayNonTransferActionType={displayNonTransferActionType}
+                    displayTransferActionType={displayTransferActionType}
+                    displayWalletName={displayWalletName}
+                    shouldShowTraceId={shouldShowTraceId}
+                    transaction={transaction}
+                    wallet={wallet}
+                />
+            </button>
         </React.Fragment>
     );
 };

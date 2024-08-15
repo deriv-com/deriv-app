@@ -68,7 +68,7 @@ describe('AccumulatorStats', () => {
         expect(historyText).toBeInTheDocument();
     });
 
-    test('should close ActionSheet when primary action is clicked', () => {
+    test('should close ActionSheet when primary button is clicked', () => {
         renderAccumulatorState(default_mock_store);
         const heading = screen.getByText('Stats');
         userEvent.click(heading);

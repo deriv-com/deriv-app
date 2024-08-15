@@ -1,28 +1,24 @@
-@mixin accumulatorSlideToNext {
-    animation: slideToNext 0.24s ease-in-out forwards;
-    @keyframes slideToNext {
+@mixin accumulator-slide-to-next {
+    animation: slide-to-next 0.24s ease-in-out forwards;
+    @keyframes slide-to-next {
         from {
             transform: translateX(-30px);
         }
         to {
-            transform: translateX(0px);
+            transform: translateX(0);
         }
     }
 }
 
-@mixin accumulatorUnderlineAnimation($color: var(--core-color-solid-green-600)) {
-    animation: underlineAnimation 640ms ease-in-out forwards;
+@mixin accumulator-underline-animation($color: var(--core-color-solid-green-600)) {
+    animation: underline-animation 640ms ease-in-out forwards;
     background-color: $color;
-    @keyframes underlineAnimation {
+    @keyframes underline-animation {
         0% {
             transform: scaleX(0);
             opacity: 0;
         }
         50% {
-            transform: scaleX(1);
-            opacity: 1;
-        }
-        50.1% {
             transform: scaleX(1);
             opacity: 1;
         }
@@ -36,6 +32,7 @@
 .accumulators-stats {
     background: var(--general-main-1);
     padding: var(--core-spacing-400);
+    margin-top: calc(var(--core-spacing-600) * -1);
     &__container {
         display: flex;
         justify-content: space-between;
@@ -51,7 +48,7 @@
             margin: var(--core-spacing-50) var(--core-spacing-400);
         }
         .slide-right {
-            @include accumulatorSlideToNext;
+            @include accumulator-slide-to-next;
         }
 
         &__stats {
@@ -65,6 +62,7 @@
             &::-webkit-scrollbar {
                 display: none;
             }
+            scrollbar-width: none;
             &__moving {
                 display: flex;
                 align-items: center;
@@ -86,7 +84,7 @@
                         bottom: 0;
                         left: 0;
                         width: 100%;
-                        height: var(--core-borderRadius-100);
+                        height: var(--core-spacing-100);
                         transform: scaleX(0);
                         transform-origin: left;
                         background-color: var(--core-color-solid-green-600);
@@ -94,10 +92,10 @@
                     }
                 }
                 .animate-error:after {
-                    @include accumulatorUnderlineAnimation(var(--core-color-solid-red-600));
+                    @include accumulator-underline-animation(var(--core-color-solid-red-600));
                 }
                 .animate-success:after {
-                    @include accumulatorUnderlineAnimation;
+                    @include accumulator-underline-animation;
                 }
             }
         }
@@ -105,6 +103,8 @@
             background: transparent;
             border: none;
             padding-top: var(--core-spacing-200);
+            width: var(--core-spacing-1600);
+            text-align: center;
         }
     }
 }
@@ -114,7 +114,7 @@
         padding: var(--core-spacing-800);
         text-align: center;
         .slide-right {
-            @include accumulatorSlideToNext;
+            @include accumulator-slide-to-next;
         }
 
         &__title {
@@ -154,10 +154,10 @@
                     }
                 }
                 .animate-error:after {
-                    @include accumulatorUnderlineAnimation(var(--core-color-solid-red-600));
+                    @include accumulator-underline-animation(var(--core-color-solid-red-600));
                 }
                 .animate-success:after {
-                    @include accumulatorUnderlineAnimation;
+                    @include accumulator-underline-animation;
                 }
             }
             &__number {

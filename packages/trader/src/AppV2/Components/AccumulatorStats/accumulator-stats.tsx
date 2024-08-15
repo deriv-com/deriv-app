@@ -5,6 +5,8 @@ import { Localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import StatsRow from './accumulator-stats-row';
+import AccumulatorStatsDescription from './accumulator-stats-description';
+import AccumulatorStatsModal from './accumulator-stats-modal';
 
 const AccumulatorStats = observer(() => {
     const { ticks_history_stats = {} } = useTraderStore();
@@ -35,26 +37,32 @@ const AccumulatorStats = observer(() => {
     };
 
     useEffect(() => {
+        let successTimeout: NodeJS.Timeout | undefined;
+        let errorTimeout: NodeJS.Timeout | undefined;
+
         if (rows[0] && rows[0].length > 0) {
             setAnimationClass('');
-            if (lastValue && lastValue === rows[0][1]) {
-                setTimeout(() => {
-                    setAnimationClass('animate-error');
-                }, 0);
-            } else {
-                setTimeout(() => {
-                    setAnimationClass('animate-success');
-                }, 0);
+            if (successTimeout !== undefined) clearTimeout(successTimeout);
+            if (errorTimeout !== undefined) clearTimeout(errorTimeout);
+
+            const isSameValue = lastValue === rows[0][1];
+
+            isSameValue
+                ? (errorTimeout = setTimeout(() => setAnimationClass('animate-error'), 0))
+                : (successTimeout = setTimeout(() => setAnimationClass('animate-success'), 0));
+
+            setIsMovingTransition(isSameValue);
+            if (isSameValue) {
+                setTimeout(() => setIsMovingTransition(false), 600);
             }
 
-            if (lastValue === rows[0][1]) {
-                setIsMovingTransition(true);
-                setTimeout(() => setIsMovingTransition(false), 600);
-            } else {
-                setIsMovingTransition(false);
-            }
             setLastValue(rows[0][0]);
         }
+
+        return () => {
+            if (successTimeout !== undefined) clearTimeout(successTimeout);
+            if (errorTimeout !== undefined) clearTimeout(errorTimeout);
+        };
     }, [rows[0]?.[0]]);
 
     if (rows.length === 0) {
@@ -94,65 +102,13 @@ const AccumulatorStats = observer(() => {
                 expandable={false}
             >
                 {is_open && (
-                    <ActionSheet.Portal shouldCloseOnDrag>
-                        <div className='stats-sheet'>
-                            <div className='stats-sheet__title'>
-                                <Text size='lg' bold>
-                                    <Localize i18n_default_text='Stats' />
-                                </Text>
-                            </div>
-                            <div className='stats-sheet__caption'>
-                                <Text size='md'>
-                                    <Localize i18n_default_text='History of tick counts' />
-                                </Text>
-                            </div>
-
-                            <div className='stats-sheet__stats'>
-                                <StatsRow
-                                    rows={rows[0]}
-                                    animationClass={animationClass}
-                                    isMovingTransition={isMovingTransition}
-                                    className='stats-sheet__stats'
-                                />
-                            </div>
-                            {rows.slice(1).map((item, index) => (
-                                <div key={index} className='stats-sheet__stats'>
-                                    {item.map((item: number, innerIndex: number) => (
-                                        <div key={`${index}-${innerIndex}`} className='stats-sheet__stats__number'>
-                                            <Text size='sm'>{item}</Text>
-                                        </div>
-                                    ))}
-                                </div>
-                            ))}
-                        </div>
-                    </ActionSheet.Portal>
+                    <AccumulatorStatsModal
+                        rows={rows}
+                        isMovingTransition={isMovingTransition}
+                        animationClass={animationClass}
+                    />
                 )}
-                {is_open_description && (
-                    <ActionSheet.Portal showHandlebar={false}>
-                        <div className='stats-description'>
-                            <div className='stats-description__placeholder' />
-                            <div className='stats-description__content'>
-                                <div className='stats-description__content__title'>
-                                    <Text size='lg' bold>
-                                        <Localize i18n_default_text='Stats' />
-                                    </Text>
-                                </div>
-                                <div className='stats-description__content__description'>
-                                    <Text size='md'>
-                                        <Localize i18n_default_text='Stats show the history of consecutive tick counts, i.e. the number of ticks the price remained within range continuously.' />
-                                    </Text>
-                                </div>
-                            </div>
-                        </div>
-                        <ActionSheet.Footer
-                            alignment='vertical'
-                            primaryAction={{
-                                content: <Localize i18n_default_text='Got it' />,
-                                onAction: onActionSheetClose,
-                            }}
-                        />
-                    </ActionSheet.Portal>
-                )}
+                {is_open_description && <AccumulatorStatsDescription onActionSheetClose={onActionSheetClose} />}
             </ActionSheet.Root>
         </div>
     );

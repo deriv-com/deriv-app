@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ActionSheet, Chip, Text, TextField, TextFieldAddon } from '@deriv-com/quill-ui';
 
 import { localize, Localize } from '@deriv/translations';
@@ -17,12 +17,19 @@ const chips_options = [
     },
 ];
 const BarrierInput = observer(
-    ({ setInitialBarrierValue, isDays }: { setInitialBarrierValue: (val: string) => void; isDays: boolean }) => {
+    ({
+        setInitialBarrierValue,
+        isDays,
+        onClose,
+    }: {
+        setInitialBarrierValue: (val: string) => void;
+        isDays: boolean;
+        onClose: (val: boolean) => void;
+    }) => {
         const { barrier_1, onChange, validation_errors, proposal_info } = useTraderStore();
         const [option, setOption] = React.useState(0);
-
         const proposal = Object.values(proposal_info);
-        const spotPrice = proposal[0]?.spot ?? '';
+        const spotPrice = proposal[1]?.spot ?? '';
 
         React.useEffect(() => {
             setInitialBarrierValue(barrier_1);
@@ -62,60 +69,79 @@ const BarrierInput = observer(
         };
 
         return (
-            <ActionSheet.Content>
-                <div className='barrier-params'>
-                    {!isDays && (
-                        <div className='barrier-params__chips'>
-                            {chips_options.map((item, index) => (
-                                <Chip.Selectable
-                                    key={index}
-                                    onClick={() => handleChipSelect(index)}
-                                    selected={index == option}
-                                >
-                                    <Text size='sm'>{item.name}</Text>
-                                </Chip.Selectable>
-                            ))}
+            <>
+                <ActionSheet.Content>
+                    <div className='barrier-params'>
+                        {!isDays && (
+                            <div className='barrier-params__chips'>
+                                {chips_options.map((item, index) => (
+                                    <Chip.Selectable
+                                        key={index}
+                                        onClick={() => handleChipSelect(index)}
+                                        selected={index == option}
+                                    >
+                                        <Text size='sm'>{item.name}</Text>
+                                    </Chip.Selectable>
+                                ))}
+                            </div>
+                        )}
+
+                        <div>
+                            {option === 2 || isDays ? (
+                                <TextField
+                                    type='number'
+                                    name='barrier_1'
+                                    status={validation_errors?.barrier_1.length > 0 ? 'error' : 'neutral'}
+                                    value={barrier_1}
+                                    allowDecimals
+                                    allowSign={false}
+                                    inputMode='decimal'
+                                    textAlignment='center'
+                                    onChange={handleOnChange}
+                                    placeholder={localize('Distance to spot')}
+                                    variant='fill'
+                                    message={validation_errors?.barrier_1[0]}
+                                />
+                            ) : (
+                                <TextFieldAddon
+                                    fillAddonBorderColor='var(--semantic-color-slate-solid-surface-frame-mid)'
+                                    type='number'
+                                    name='barrier_1'
+                                    addonLabel={option == 0 ? '+' : '-'}
+                                    value={barrier_1.replace(/[+-]/g, '')}
+                                    allowDecimals
+                                    inputMode='decimal'
+                                    allowSign={false}
+                                    status={validation_errors?.barrier_1.length > 0 ? 'error' : 'neutral'}
+                                    onChange={handleOnChange}
+                                    placeholder={localize('Distance to spot')}
+                                    variant='fill'
+                                    message={validation_errors?.barrier_1[0]}
+                                />
+                            )}
+                            {validation_errors?.barrier_1.length == 0 && <div style={{ height: '22px' }} />}
                         </div>
-                    )}
-                    {option === 2 || isDays ? (
-                        <TextField
-                            type='number'
-                            name='barrier_1'
-                            status={validation_errors?.barrier_1.length > 0 ? 'error' : 'neutral'}
-                            value={barrier_1}
-                            allowDecimals
-                            allowSign={false}
-                            inputMode='numeric'
-                            onChange={handleOnChange}
-                            placeholder={localize('Distance to spot')}
-                            variant='fill'
-                            message={validation_errors?.barrier_1[0]}
-                        />
-                    ) : (
-                        <TextFieldAddon
-                            fillAddonBorderColor='var(--semantic-color-slate-solid-surface-frame-mid)'
-                            type='number'
-                            name='barrier_1'
-                            addonLabel={option == 0 ? '+' : '-'}
-                            value={barrier_1.replace(/[+-]/g, '')}
-                            allowDecimals
-                            inputMode='numeric'
-                            allowSign={false}
-                            status={validation_errors?.barrier_1.length > 0 ? 'error' : 'neutral'}
-                            onChange={handleOnChange}
-                            placeholder={localize('Distance to spot')}
-                            variant='fill'
-                            message={validation_errors?.barrier_1[0]}
-                        />
-                    )}
-                    <div className='barrier-params__current-spot-wrapper'>
-                        <Text size='sm'>
-                            <Localize i18n_default_text='Current spot' />
-                        </Text>
-                        <Text size='sm'> {spotPrice}</Text>
+                        <div className='barrier-params__current-spot-wrapper'>
+                            <Text size='sm'>
+                                <Localize i18n_default_text='Current spot' />
+                            </Text>
+                            <Text size='sm'> {spotPrice}</Text>
+                        </div>
                     </div>
-                </div>
-            </ActionSheet.Content>
+                </ActionSheet.Content>
+                <ActionSheet.Footer
+                    alignment='vertical'
+                    shouldCloseOnPrimaryButtonClick={false}
+                    primaryAction={{
+                        content: <Localize i18n_default_text='Save' />,
+                        onAction: () => {
+                            if (validation_errors.barrier_1.length === 0) {
+                                onClose(true);
+                            }
+                        },
+                    }}
+                />
+            </>
         );
     }
 );

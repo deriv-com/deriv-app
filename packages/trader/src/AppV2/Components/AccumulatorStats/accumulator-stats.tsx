@@ -37,12 +37,15 @@ const AccumulatorStats = observer(() => {
     };
 
     useEffect(() => {
-        let successTimeout: NodeJS.Timeout | undefined, errorTimeout: NodeJS.Timeout | undefined;
+        let successTimeout: NodeJS.Timeout | undefined,
+            errorTimeout: NodeJS.Timeout | undefined,
+            transitionTimeout: NodeJS.Timeout | undefined;
 
         if (rows[0] && rows[0].length > 0) {
             setAnimationClass('');
             clearTimeout(successTimeout);
             clearTimeout(errorTimeout);
+            clearTimeout(transitionTimeout);
 
             const isSameValue = lastValue === rows[0][1];
 
@@ -52,7 +55,7 @@ const AccumulatorStats = observer(() => {
 
             setIsMovingTransition(isSameValue);
             if (isSameValue) {
-                setTimeout(() => setIsMovingTransition(false), 600);
+                transitionTimeout = setTimeout(() => setIsMovingTransition(false), 600);
             }
 
             setLastValue(rows[0][0]);
@@ -61,6 +64,7 @@ const AccumulatorStats = observer(() => {
         return () => {
             clearTimeout(successTimeout);
             clearTimeout(errorTimeout);
+            clearTimeout(transitionTimeout);
         };
     }, [rows[0]?.[0]]);
 

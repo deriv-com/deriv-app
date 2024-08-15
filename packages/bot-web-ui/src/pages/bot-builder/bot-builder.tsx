@@ -123,7 +123,7 @@ const BotBuilder = observer(() => {
                         <WorkspaceWrapper />
                     </div>
                 )}
-                <Accumulators />
+                {/* <Accumulators /> */}
             </div>
             {active_tab === 1 && <BotBuilderTourHandler is_mobile={!is_desktop} />}
             {/* removed this outside from toolbar becuase it needs to loaded seperately without dependency */}

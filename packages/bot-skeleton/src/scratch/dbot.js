@@ -22,6 +22,60 @@ class DBot {
         this.symbol = null;
         this.is_bot_running = false;
         this.accumlators = null;
+        this.subscription_id = null;
+        this.debounceWait = 300;
+        this.debouncedHandleBlockChange = this.debounce(
+            this.handleProposalForAccumulators.bind(this),
+            this.debounceWait
+        );
+    }
+
+    static debounce(func, wait) {
+        let timeout;
+        return function (...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
+    }
+
+    async handleProposalForAccumulators(event, block_instance) {
+        if (event.type === Blockly.Events.BLOCK_CHANGE) {
+            const trade_type_accumulators = block_instance.getFieldValue('TRADETYPE_LIST');
+            const is_accumulator = trade_type_accumulators === 'accumulator';
+            let proposal_requested = false;
+
+            if (is_accumulator && !proposal_requested && !this.subscription_id) {
+                proposal_requested = true;
+
+                const amount = window.Blockly.selected_current_amount || 1;
+                const { currency } = DBotStore.instance.client;
+                const top_parent_block = block_instance.getTopParent();
+                const market_block = top_parent_block.getChildByType('trade_definition_market');
+                const symbol = market_block.getFieldValue('SYMBOL_LIST');
+                const growth_rate = window.Blockly.selected_growth_rate;
+
+                const request = {
+                    amount,
+                    basis: 'stake',
+                    contract_type: 'ACCU',
+                    currency,
+                    symbol,
+                    growth_rate,
+                    proposal: 1,
+                    subscribe: 1,
+                };
+                const response = await api_base?.api?.send(request);
+                this.subscription_id = response.proposal.id;
+                proposal_requested = false;
+                return response;
+            } 
+                if (!this.is_bot_running) {
+                    api_base?.api?.send({ forget_all: 'proposal' });
+                    this.subscription_id = null;
+                    proposal_requested = false;
+                }
+            
+        }
     }
 
     /**
@@ -35,7 +89,7 @@ class DBot {
         const that = this;
         const accumlators = new Accumulators();
         this.accumlators = accumlators;
-        let called = false;
+
         Blockly.Blocks.trade_definition_tradetype.onchange = function (event) {
             if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
                 return;
@@ -44,29 +98,8 @@ class DBot {
             this.enforceLimitations();
 
             const { name, type } = event;
-
             if (type === Blockly.Events.BLOCK_CHANGE) {
-                const trade_type_accumlators = this.getFieldValue('TRADETYPE_LIST');
-                const is_accummulator = trade_type_accumlators === 'accumulator';
-                if (is_accummulator) {
-                    const request = {
-                        amount: 1,
-                        basis: 'stake',
-                        contract_type: 'ACCU',
-                        currency: 'USD',
-                        growth_rate: 0.03,
-                        proposal: 1,
-                        subscribe: 1,
-                        symbol: '1HZ100V',
-                    };
-                    if (!called) {
-                        called = true;
-                        const { dashboard } = DBotStore.instance;
-                        accumlators.requestAccumulators(request, dashboard);
-                        accumlators.getAccumulatorStats(dashboard);
-                    }
-                }
-
+                that.debouncedHandleBlockChange(event, this);
                 const is_symbol_list_change = name === 'SYMBOL_LIST';
                 const is_trade_type_cat_list_change = name === 'TRADETYPECAT_LIST';
 
@@ -393,6 +426,7 @@ class DBot {
         this.interpreter = null;
         this.interpreter = Interpreter();
         await this.interpreter.bot.tradeEngine.watchTicks(this.symbol);
+        api_base?.api?.send({ forget_all: 'proposal' });
     }
 
     /**

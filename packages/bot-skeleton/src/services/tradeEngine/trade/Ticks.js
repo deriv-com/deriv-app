@@ -4,6 +4,7 @@ import * as constants from './state/constants';
 import { getDirection, getLastDigit } from '../utils/helpers';
 import { expectPositiveInteger } from '../utils/sanitize';
 import { observer as globalObserver } from '../../../utils/observer';
+import { api_base } from '../../api/api-base';
 
 let tickListenerKey;
 
@@ -69,6 +70,66 @@ export default Engine =>
                         }
                     })
             );
+        }
+
+        async fetchStatData() {
+            try {
+                const response = await api_base?.api?.expectResponse('proposal');
+                try {
+                    this.subscription = response?.proposal.subscription_id;
+                    return response?.proposal.contract_details?.ticks_stayed_in;
+                } catch (error) {
+                    throw new Error('Unexpected message type or no proposal found');
+                }
+            } catch (error) {
+                // eslint-disable-next-line no-console
+                console.error('Error fetching stat data:', error);
+                throw error;
+            }
+        }
+
+        async getStatList() {
+            try {
+                const ticksStayedIn = await this.fetchStatData();
+                return ticksStayedIn;
+            } catch (error) {
+                // eslint-disable-next-line no-console
+                console.log('Error fetching current stat:', error);
+            }
+        }
+
+        async getCurrentStat() {
+            try {
+                const ticksStayedIn = await this.fetchStatData();
+                return ticksStayedIn?.[0];
+            } catch (error) {
+                // eslint-disable-next-line no-console
+                console.log('Error fetching current stat:', error);
+            }
+        }
+
+        async getDelayTickValue(tick_value) {
+            return new Promise((resolve, reject) => {
+                try {
+                    const ticks = [];
+                    const symbol = this.symbol;
+
+                    const callback = ticksList => {
+                        ticks.push(ticksList);
+                        if (ticks.length === tick_value) {
+                            this.$scope.ticksService.stopMonitor({
+                                symbol,
+                                key: '',
+                            });
+                            resolve(ticks);
+                            ticks.length = 0;
+                        }
+                    };
+                    this.$scope.ticksService.monitor({ symbol, callback });
+                } catch (error) {
+                    reject(new Error(`Failed to start tick monitoring: ${  error.message}`));
+                }
+            });
         }
 
         getLastDigit() {

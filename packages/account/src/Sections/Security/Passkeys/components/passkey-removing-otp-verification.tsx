@@ -1,0 +1,32 @@
+import { Icon } from '@deriv/components';
+import { Localize } from '@deriv-com/translations';
+import { DerivLightIcEmailSentPasskeyIcon } from '@deriv/quill-icons';
+import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status-layout';
+
+export const PasskeyRemovingOtpVerification = ({
+    onPrimaryButtonClick,
+    onSecondaryButtonClick,
+}: TPasskeysButtonOnClicks) => (
+    <div className='passkeys'>
+        <Icon
+            data_testid='dt_learn_more_back_button'
+            icon='IcBackButton'
+            onClick={onSecondaryButtonClick}
+            className='passkeys-status__description-back-button'
+        />
+        <PasskeysStatusLayout
+            className='passkeys-status__wrapper--expanded'
+            description={
+                <Localize i18n_default_text='To keep your account safe, we need to verify your identity before removing this passkey.' />
+            }
+            icon={<DerivLightIcEmailSentPasskeyIcon height='96px' width='96px' className='passkey-status__icon' />}
+            title={<Localize i18n_default_text='We’ve sent a verification code to [user@email.com]' />}
+            onPrimaryButtonClick={onPrimaryButtonClick}
+            onSecondaryButtonClick={onSecondaryButtonClick}
+            primary_button_text={<Localize i18n_default_text='Verify with passkey' />}
+            secondary_button_text={<Localize i18n_default_text='Verify with email' />}
+        >
+            input
+        </PasskeysStatusLayout>
+    </div>
+);

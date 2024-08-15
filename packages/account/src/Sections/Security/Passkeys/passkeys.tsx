@@ -50,7 +50,6 @@ const Passkeys = observer(() => {
 
     const error_modal_timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
     const snackbar_timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const prev_passkey_status = useRef<TPasskeysStatus>(PASSKEY_STATUS_CODES.LIST);
 
     const history = useHistory();
 
@@ -129,8 +128,8 @@ const Passkeys = observer(() => {
             if (should_hide_error) return;
 
             if (isNotExistedPasskey(error as TServerError)) {
-                // TODO: add the logic for removing with passkey or email and tracking events when e-mail verification is implemented
-                // setPasskeyStatus(PASSKEY_STATUS_CODES.VERIFYING);
+                // TODO: add the logic to show the error while removing the passkey
+                // setPasskeyStatus(PASSKEY_STATUS_CODES.REMOVING);
                 return;
             }
 
@@ -166,10 +165,6 @@ const Passkeys = observer(() => {
     };
 
     const onPasskeyMenuClick = (passkey_managing_status: TPasskeysStatus, passkey_data: TCurrentManagedPasskey) => {
-        if (passkey_managing_status === PASSKEY_STATUS_CODES.REMOVING) {
-            removePasskey(passkey_data.id, passkey_data.passkey_id);
-            return;
-        }
         if (passkey_managing_status !== PASSKEY_STATUS_CODES.LIST && is_snackbar_open) {
             setIsSnackbarOpen(false);
         }
@@ -198,10 +193,9 @@ const Passkeys = observer(() => {
         if (passkey_status === PASSKEY_STATUS_CODES.REMOVED) {
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
         }
-        // TODO: add the logic for removing with passkey or email and tracking events when e-mail verification is implemented
-        // if (passkey_status === PASSKEY_STATUS_CODES.VERIFYING) {
-        //     setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
-        // }
+        if (passkey_status === PASSKEY_STATUS_CODES.REMOVING) {
+            removePasskey(current_managed_passkey?.id, current_managed_passkey?.passkey_id);
+        }
     };
 
     const onSecondaryButtonClick = () => {
@@ -209,9 +203,9 @@ const Passkeys = observer(() => {
             passkeysMenuActionEventTrack('info_open');
             setPasskeyStatus(PASSKEY_STATUS_CODES.LEARN_MORE);
         }
-        if (passkey_status === PASSKEY_STATUS_CODES.LEARN_MORE) {
+        if (passkey_status === PASSKEY_STATUS_CODES.LEARN_MORE || passkey_status === PASSKEY_STATUS_CODES.REMOVING) {
             passkeysMenuActionEventTrack('info_back');
-            setPasskeyStatus(prev_passkey_status.current);
+            setPasskeyStatus(passkeys_list?.length ? PASSKEY_STATUS_CODES.LIST : PASSKEY_STATUS_CODES.NO_PASSKEY);
         }
         if (passkey_status === PASSKEY_STATUS_CODES.CREATED) {
             passkeysMenuActionEventTrack('add_more_passkeys');
@@ -221,7 +215,6 @@ const Passkeys = observer(() => {
             passkeysMenuActionEventTrack('passkey_rename_back');
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
         }
-        prev_passkey_status.current = passkey_status;
     };
 
     return (

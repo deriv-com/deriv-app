@@ -1,7 +1,7 @@
 import { Form, Formik } from 'formik';
 import { useTranslations, Localize } from '@deriv-com/translations';
 import { DerivLightIcEditPasskeyIcon } from '@deriv/quill-icons';
-import { FormInputField } from 'Components/forms/form-fields';
+import { FormInputField } from '../../../../Components/forms/form-fields';
 import { TCurrentManagedPasskey } from '../passkeys';
 import { getPasskeyRenameValidationSchema } from '../passkeys-configs';
 import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status-layout';

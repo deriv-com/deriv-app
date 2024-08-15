@@ -4,11 +4,11 @@ import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 type TErrorComponentProps = {
-    header?: string;
+    header?: JSX.Element | string;
     is_dialog?: boolean;
-    message?: React.ReactNode;
+    message?: JSX.Element | string;
     redirect_label?: string;
-    redirectOnClick?: () => void;
+    redirectOnClick?: (() => void) | null;
     should_show_refresh?: boolean;
 };
 

@@ -7,6 +7,7 @@ import {
     isTurbosContract,
     isVanillaContract,
     pickDefaultSymbol,
+    setTradeURLParams,
 } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
@@ -83,6 +84,7 @@ const useActiveSymbols = () => {
                 setActiveSymbolsV2(active_symbols);
                 default_symbol_ref.current = symbol || (await pickDefaultSymbol(active_symbols)) || '1HZ100V';
                 onChange({ target: { name: 'symbol', value: default_symbol_ref.current } });
+                setTradeURLParams({ symbol: default_symbol_ref.current, contractType: contract_type });
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps

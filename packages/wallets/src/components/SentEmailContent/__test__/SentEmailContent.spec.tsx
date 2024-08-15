@@ -32,17 +32,22 @@ describe('SentEmailContent', () => {
         });
     });
 
-    afterAll(() => {
+    afterEach(() => {
         jest.clearAllMocks();
     });
 
-    it('renders the component and handles resend email flow', () => {
+    it('renders component', () => {
         render(<SentEmailContent platform='mt5' />, { wrapper });
 
         expect(screen.getByText("We've sent you an email")).toBeInTheDocument();
         expect(
             screen.getByText('Please click on the link in the email to change your Deriv MT5 password.')
         ).toBeInTheDocument();
+    });
+
+    it('shows additional content when button is clicked', () => {
+        render(<SentEmailContent platform='mt5' />, { wrapper });
+
         expect(screen.getByText("Didn't receive the email?")).toBeInTheDocument();
 
         fireEvent.click(screen.getByText("Didn't receive the email?"));
@@ -61,10 +66,7 @@ describe('SentEmailContent', () => {
         expect(
             screen.getByText("We can't deliver the email to this address (Usually because of firewalls or filtering).")
         ).toBeInTheDocument();
-
-        fireEvent.click(screen.getByText('Resend email'));
-
-        expect(screen.getByText(/Resend email in \d+ seconds/)).toBeInTheDocument();
+        expect(screen.getByText('Resend email')).toBeInTheDocument();
     });
 
     it('executes the resend email function when the button is clicked', () => {
@@ -73,6 +75,7 @@ describe('SentEmailContent', () => {
         fireEvent.click(screen.getByText("Didn't receive the email?"));
         fireEvent.click(screen.getByText('Resend email'));
         expect(useSendPasswordResetEmail).toBeCalled();
+        expect(screen.getByText(/Resend email in \d+ seconds/)).toBeInTheDocument();
     });
 
     it('returns WalletError when it throws error', () => {

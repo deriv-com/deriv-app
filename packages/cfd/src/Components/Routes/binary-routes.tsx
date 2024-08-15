@@ -1,13 +1,9 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
 import { Localize } from '@deriv/translations';
-import getRoutesConfig from '../../Constants/routes-config';
-import RouteWithSubRoutes from './route-with-sub-routes.jsx';
-
-type TBinaryRoutes = {
-    is_logged_in: boolean;
-    is_logging_in: boolean;
-};
+import getRoutesConfig from 'Constants/routes-config';
+import RouteWithSubRoutes from './route-with-sub-routes';
+import { TBinaryRoutes } from 'Types/types';
 
 const BinaryRoutes = (props: TBinaryRoutes) => {
     return (

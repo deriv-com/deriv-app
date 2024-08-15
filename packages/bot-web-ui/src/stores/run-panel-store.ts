@@ -21,55 +21,6 @@ export type TContractState = {
     id: string;
 };
 
-let wake_lock: WakeLockSentinel | null = null;
-
-const setWakeLock = async () => {
-    try {
-        if ('wakeLock' in navigator) {
-            wake_lock = await navigator.wakeLock.request('screen');
-            // eslint-disable-next-line no-console, no-useless-concat
-            console.log('%cSCREEN WAKE: ' + '%active', 'color: green; font-weight: bold;', 'color: green;');
-
-            wake_lock?.addEventListener('release', () => {
-                // eslint-disable-next-line no-console
-                console.log(
-                    // eslint-disable-next-line no-useless-concat
-                    '%cSCREEN WAKE: ' + '%released',
-                    'color: green; font-weight: bold;',
-                    'color: orange;'
-                );
-            });
-        }
-    } catch (error) {
-        // eslint-disable-next-line no-console, no-useless-concat
-        console.log(
-            // eslint-disable-next-line no-useless-concat
-            '%cSCREEN WAKE: ' + '%csomething went wrong!',
-            'color: red; font-weight: bold;',
-            'color: red;',
-            error
-        );
-    }
-};
-
-const releaseWakeLock = async () => {
-    try {
-        if ('wakeLock' in navigator) {
-            await wake_lock?.release();
-            wake_lock = null;
-        }
-    } catch (error) {
-        // eslint-disable-next-line no-console, no-useless-concat
-        console.log(
-            // eslint-disable-next-line no-useless-concat
-            '%cSCREEN WAKE: ' + '%cnot active!',
-            'color: red; font-weight: bold;',
-            'color: red;',
-            error
-        );
-    }
-};
-
 export default class RunPanelStore {
     root_store: RootStore;
     dbot: TDbot;
@@ -254,7 +205,6 @@ export default class RunPanelStore {
             summary_card.clear();
             this.setContractStage(contract_stages.STARTING);
             this.dbot.runBot();
-            setWakeLock();
         });
         this.setShowBotStopMessage(false);
     };
@@ -288,7 +238,6 @@ export default class RunPanelStore {
         this.dbot.stopBot();
 
         ui.setPromptHandler(false);
-        releaseWakeLock();
 
         if (this.error_type) {
             // when user click stop button when there is a error but bot is retrying

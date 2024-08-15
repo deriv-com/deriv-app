@@ -11,6 +11,7 @@ import Transactions from 'Components/transactions';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { popover_zindex } from 'Constants/z-indexes';
 import { useDBotStore } from 'Stores/useDBotStore';
+import useWakeLock from '../../hooks/use-wake-lock';
 
 type TStatisticsTile = {
     content: React.ElementType | string;
@@ -248,6 +249,9 @@ const RunPanel = observer(() => {
     const { active_tour, active_tab } = dashboard;
     const { total_payout, total_profit, total_stake, won_contracts, lost_contracts, number_of_runs } = statistics;
     const { BOT_BUILDER, CHART } = DBOT_TABS;
+
+    const { is_running } = run_panel;
+    useWakeLock(is_running);
 
     React.useEffect(() => {
         onMount();

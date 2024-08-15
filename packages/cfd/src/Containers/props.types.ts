@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormikHelpers as FormikActions } from 'formik';
-
+import { Redirect, RouteProps } from 'react-router-dom';
 import {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
@@ -22,6 +22,7 @@ import {
 import RootStore from '../Stores/index';
 
 import { TCFDPasswordFormValues } from './cfd-password-modal';
+import { TPage404 } from '../Constants/routes-config';
 
 export type TCFDPersonalDetailsContainerProps = {
     onSubmit: (index: number, value: { [key: string]: string }) => void;
@@ -343,4 +344,26 @@ export type TDynamicLeverageMarketCardProps = {
 export type TDynamicLeverageTableColumnHeader = {
     title: string;
     subtitle: string;
+};
+
+export type TRoute = {
+    exact?: boolean;
+    id?: string;
+    icon_component?: string;
+    is_invisible?: boolean;
+    path?: string;
+    icon?: string;
+    default?: boolean;
+    to?: string;
+    component?: ((props?: RouteProps['component']) => JSX.Element) | Partial<typeof Redirect> | TPage404;
+    getTitle?: () => string;
+    is_disabled?: boolean;
+    is_hidden?: boolean;
+    subroutes?: TRoute[];
+};
+
+export type TRouteConfig = TRoute & {
+    is_modal?: boolean;
+    is_authenticated?: boolean;
+    routes?: TRoute[];
 };

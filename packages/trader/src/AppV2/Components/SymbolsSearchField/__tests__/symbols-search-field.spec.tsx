@@ -40,9 +40,6 @@ describe('<SymbolsSearchField />', () => {
             setIsSearching: jest.fn(),
             searchValue: '',
             setSearchValue: jest.fn(),
-            marketCategoriesRef: {
-                current: document.createElement('div'),
-            },
         };
         jest.clearAllMocks();
     });

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { WalletText } from '../../../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import './DepositCryptoTryFiatOnRamp.scss';
 
 const DepositCryptoTryFiatOnRamp = () => {
@@ -8,16 +9,18 @@ const DepositCryptoTryFiatOnRamp = () => {
 
     return (
         <div className='wallets-deposit-crypto-try-fiat-onramp'>
-            <WalletText align='center' size='xs'>
-                Looking for a way to buy cryptocurrencies?&nbsp;
-                <a
-                    className='link wallets-deposit-crypto-try-fiat-onramp__link'
-                    onClick={() => history.push('/wallet/on-ramp')}
-                >
-                    Try Fiat onramp
-                </a>
-                .
-            </WalletText>
+            <Text align='center' size='xs'>
+                <Localize
+                    components={[
+                        <a
+                            className='link wallets-deposit-crypto-try-fiat-onramp__link'
+                            key={0}
+                            onClick={() => history.push('/wallet/on-ramp')}
+                        />,
+                    ]}
+                    i18n_default_text='Looking for a way to buy cryptocurrencies? <0>Try Fiat onramp</0>.'
+                />
+            </Text>
         </div>
     );
 };

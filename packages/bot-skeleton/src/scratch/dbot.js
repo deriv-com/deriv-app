@@ -30,7 +30,8 @@ class DBot {
         );
     }
 
-    static debounce(func, wait) {
+    /* eslint-disable class-methods-use-this */
+    debounce(func, wait) {
         let timeout;
         return function (...args) {
             clearTimeout(timeout);
@@ -68,13 +69,12 @@ class DBot {
                 this.subscription_id = response.proposal.id;
                 proposal_requested = false;
                 return response;
-            } 
-                if (!this.is_bot_running) {
-                    api_base?.api?.send({ forget_all: 'proposal' });
-                    this.subscription_id = null;
-                    proposal_requested = false;
-                }
-            
+            }
+            if (!this.is_bot_running) {
+                api_base?.api?.send({ forget_all: 'proposal' });
+                this.subscription_id = null;
+                proposal_requested = false;
+            }
         }
     }
 

@@ -86,7 +86,7 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
                             </div>
                             <div className='wallets-cfd-success__info'>
                                 <WalletText size='2xs'>
-                                    {platformTitlePrefix} {marketTypeTitle} {landingCompanyName}
+                                    {platformTitlePrefix} {marketTypeTitle} {!isDemo && landingCompanyName}
                                 </WalletText>
                                 <WalletText color='primary' size='2xs'>
                                     {data?.currency} Wallet

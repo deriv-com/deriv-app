@@ -151,7 +151,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
                 platform={platform}
                 product={product}
                 renderButton={() => renderAccountSuccessButton(!isDemo)}
-                title={`Your ${marketTypeTitle} ${landingCompanyName} ${isDemo ? 'demo' : ''} account is ready`}
+                title={`Your ${marketTypeTitle} ${isDemo ? 'demo' : landingCompanyName} account is ready`}
             />
         );
     }, [

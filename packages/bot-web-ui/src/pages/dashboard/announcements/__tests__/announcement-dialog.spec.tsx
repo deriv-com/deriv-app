@@ -11,8 +11,8 @@ import { ANNOUNCEMENTS } from '../config';
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 
 const mocked_props = {
-    announcement: ANNOUNCEMENTS.ACCUMULATOR_ANNOUNCE,
-    isAnnounceDialogOpen: true,
+    announcement: ANNOUNCEMENTS.ACCUMULATOR_ANNOUNCE.announcement,
+    is_announce_dialog_open: true,
     setIsAnnounceDialogOpen: jest.fn(),
     handleOnConfirm: jest.fn(),
     handleOnCancel: jest.fn(),

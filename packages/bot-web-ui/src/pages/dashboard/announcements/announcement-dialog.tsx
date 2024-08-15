@@ -43,18 +43,19 @@ const AnnouncementDialog = ({
                     <Text as='p' line_height='xl' size='xs' align='center' className={`${base_classname}__title`}>
                         <Localize i18n_default_text={title} />
                     </Text>
-                    {content.map((content: TContentItem) => {
-                        return (
-                            <div className={`${base_classname}__body-item`} key={content?.id}>
-                                <div>
-                                    <LabelPairedCheckCaptionFillIcon fill='var(--icon-black-plus)' />
+                    {Array.isArray(content) &&
+                        content.map((content: TContentItem) => {
+                            return (
+                                <div className={`${base_classname}__body-item`} key={content?.id}>
+                                    <div>
+                                        <LabelPairedCheckCaptionFillIcon fill='var(--icon-black-plus)' />
+                                    </div>
+                                    <Text as='p' line_height='xl' size='xs'>
+                                        <Localize i18n_default_text={content?.text} />
+                                    </Text>
                                 </div>
-                                <Text as='p' line_height='xl' size='xs'>
-                                    <Localize i18n_default_text={content?.text} />
-                                </Text>
-                            </div>
-                        );
-                    })}
+                            );
+                        })}
                 </div>
             </div>
         </Dialog>

@@ -7,6 +7,7 @@ import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import Announcements from '../announcements';
 import userEvent from '@testing-library/user-event';
 import { DBOT_TABS } from 'Constants/bot-contents';
+import { BOT_ANNOUNCEMENTS_LIST } from '../config';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/xml/main.xml', () => '<xml>sample</xml>');
@@ -112,10 +113,7 @@ describe('Announcements', () => {
     });
 
     it('should display all active announcements when bot-announcements has already existed in local storage.', () => {
-        localStorage?.setItem(
-            'bot-announcements',
-            JSON.stringify({ announce_1: true, announce_2: true, announce_3: true })
-        );
+        localStorage?.setItem('bot-announcements', JSON.stringify({ ...BOT_ANNOUNCEMENTS_LIST }));
         render(<Announcements handleTabChange={mockHandleTabChange} is_mobile={false} />, {
             wrapper,
         });
@@ -123,6 +121,6 @@ describe('Announcements', () => {
         const button = screen.getByTestId('btn-announcements');
         userEvent.click(button);
 
-        expect(screen.getByTestId('announcements__amount')).toHaveTextContent('3');
+        expect(screen.getByTestId('announcements__amount')).toHaveTextContent(`${BOT_ANNOUNCEMENTS_LIST.length}`);
     });
 });

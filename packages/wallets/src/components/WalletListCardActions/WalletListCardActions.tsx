@@ -21,7 +21,7 @@ const getWalletHeaderButtons = (localize: ReturnType<typeof useTranslations>['lo
     const buttons = [
         {
             className: isDemo ? 'wallets-mobile-actions-content-icon' : 'wallets-mobile-actions-content-icon--primary',
-            color: isDemo ? 'white' : 'primary',
+            color: isDemo ? 'black' : 'primary',
             icon: isDemo ? <LabelPairedArrowsRotateMdBoldIcon /> : <LabelPairedPlusMdBoldIcon fill='#FFF' />,
             name: isDemo ? 'reset-balance' : 'deposit',
             text: isDemo ? localize('Reset balance') : localize('Deposit'),
@@ -29,7 +29,7 @@ const getWalletHeaderButtons = (localize: ReturnType<typeof useTranslations>['lo
         },
         {
             className: 'wallets-mobile-actions-content-icon',
-            color: 'white',
+            color: 'black',
             icon: <LabelPairedMinusMdBoldIcon />,
             name: 'withdrawal',
             text: localize('Withdraw'),
@@ -37,7 +37,7 @@ const getWalletHeaderButtons = (localize: ReturnType<typeof useTranslations>['lo
         },
         {
             className: 'wallets-mobile-actions-content-icon',
-            color: 'white',
+            color: 'black',
             icon: <LabelPairedArrowUpArrowDownMdBoldIcon />,
             name: 'account-transfer',
             text: localize('Transfer'),
@@ -91,7 +91,7 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
                 <Button
                     aria-label={button.name}
                     borderWidth='sm'
-                    color={button.name === 'deposit' ? 'primary' : 'black'}
+                    color={button.color}
                     icon={button.icon}
                     key={button.name}
                     onClick={() => {

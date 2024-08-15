@@ -147,7 +147,7 @@ const WalletsResetMT5Password = ({
             renderFooter={isDesktop ? undefined : renderButtons}
             shouldHideFooter={isDesktop}
             shouldHideHeader={isDesktop}
-            title={`Manage ${title} password`}
+            title={localize('Manage {{title}} password', { title })}
         >
             <div className='wallets-reset-mt5-password'>
                 <Text align={isDesktop ? 'left' : 'center'} weight='bold'>

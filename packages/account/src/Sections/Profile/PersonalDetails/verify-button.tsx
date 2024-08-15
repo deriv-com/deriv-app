@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { CaptionText } from '@deriv-com/quill-ui';
 import { observer, useStore } from '@deriv/stores';
@@ -18,7 +18,7 @@ type TVerifyButton = {
 export const VerifyButton = observer(({ setIsPhoneFieldDisable }: TVerifyButton) => {
     const [open_popover, setOpenPopover] = useState(false);
     const { client, ui } = useStore();
-    const { setShouldShowPhoneNumberOTP } = ui;
+    const { setShouldShowPhoneNumberOTP, is_scroll_to_verify_button, setIsScrollToVerifyButton } = ui;
     const { account_settings, setVerificationCode } = client;
     const { phone_number_verification } = account_settings;
     const phone_number_verified = phone_number_verification?.verified;
@@ -27,6 +27,24 @@ export const VerifyButton = observer(({ setIsPhoneFieldDisable }: TVerifyButton)
     const { sendPhoneNumberVerifyEmail, WS } = useVerifyEmail('phone_number_verification');
     const { isDesktop } = useDevice();
     const { next_otp_request, is_request_button_disabled } = usePhoneNumberVerificationSetTimer();
+    const ref = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        if (is_scroll_to_verify_button) {
+            // To make scrolling work on mobile we need to add a delay.
+            const timeout = setTimeout(() => {
+                if (ref.current) {
+                    ref.current.style.scrollMarginTop = isDesktop ? '80px' : '40px';
+                    ref.current.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 0);
+
+            return () => {
+                clearTimeout(timeout);
+                setIsScrollToVerifyButton(false);
+            };
+        }
+    }, [is_scroll_to_verify_button, setIsScrollToVerifyButton, isDesktop]);
 
     useEffect(() => {
         if (WS.isSuccess) {
@@ -50,7 +68,7 @@ export const VerifyButton = observer(({ setIsPhoneFieldDisable }: TVerifyButton)
     };
 
     return (
-        <div className='phone-verification-btn'>
+        <div ref={ref} className='phone-verification-btn'>
             {phone_number_verified ? (
                 <div className='phone-verification-btn--verified'>
                     <LegacyWonIcon iconSize='xs' />

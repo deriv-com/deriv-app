@@ -789,7 +789,7 @@ export default class NotificationStore extends BaseStore {
 
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
-        const { has_enabled_two_fa, setTwoFAChangedStatus, logout, email } = this.root_store.client;
+        const { has_enabled_two_fa, setTwoFAChangedStatus, logout } = this.root_store.client;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
 
         const platform_name_trader = getPlatformSettings('trader').name;
@@ -1108,9 +1108,9 @@ export default class NotificationStore extends BaseStore {
                 type: 'warning',
                 action: {
                     onClick: () => {
-                        WS.verifyEmail(email, 'phone_number_verification');
+                        this.root_store.ui.setIsScrollToVerifyButton(true);
                     },
-                    route: routes.phone_verification,
+                    route: routes.personal_details,
                     text: localize('Get started'),
                 },
                 should_show_again: true,

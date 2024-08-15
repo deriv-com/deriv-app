@@ -42,8 +42,8 @@ const AccumulatorStats = observer(() => {
 
         if (rows[0] && rows[0].length > 0) {
             setAnimationClass('');
-            if (successTimeout !== undefined) clearTimeout(successTimeout);
-            if (errorTimeout !== undefined) clearTimeout(errorTimeout);
+            clearTimeout(successTimeout);
+            clearTimeout(errorTimeout);
 
             const isSameValue = lastValue === rows[0][1];
 
@@ -60,8 +60,8 @@ const AccumulatorStats = observer(() => {
         }
 
         return () => {
-            if (successTimeout !== undefined) clearTimeout(successTimeout);
-            if (errorTimeout !== undefined) clearTimeout(errorTimeout);
+            clearTimeout(successTimeout);
+            clearTimeout(errorTimeout);
         };
     }, [rows[0]?.[0]]);
 

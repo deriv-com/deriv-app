@@ -9,7 +9,7 @@ describe('<BarrierInfo />', () => {
     const mock_store = {
         modules: {
             trade: {
-                barrier_1: '1.2345', // Mocked barrier value
+                barrier_1: '1.2345',
             },
         },
     };

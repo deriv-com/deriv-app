@@ -1,5 +1,5 @@
 import React from 'react';
-import { MT5_ACCOUNT_STATUS } from '@deriv/shared';
+import { MT5_ACCOUNT_STATUS, routes } from '@deriv/shared';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
@@ -129,6 +129,11 @@ describe('<AccountTransferForm />', () => {
     };
 
     const renderAccountTransferForm = () => {
+        Object.defineProperty(window, 'location', {
+            configurable: true,
+            value: { pathname: routes.cashier },
+        });
+
         render(<AccountTransferForm {...props} />, {
             wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
         });

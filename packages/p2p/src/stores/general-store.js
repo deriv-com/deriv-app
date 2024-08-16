@@ -521,6 +521,8 @@ export default class GeneralStore extends BaseStore {
                 ),
             };
         });
+
+        this.setIsLoading(false);
     }
 
     onUnmount() {

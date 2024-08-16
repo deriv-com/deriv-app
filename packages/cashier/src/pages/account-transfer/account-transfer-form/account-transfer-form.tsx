@@ -685,7 +685,7 @@ const AccountTransferForm = observer(({ error, onClickDeposit, onClickNotes, onC
                                             </Button>
                                         </div>
                                     </div>
-                                    <ErrorDialog error={error} />
+                                    {!is_from_outside_cashier && <ErrorDialog error={error} />}
                                 </Form>
                             </>
                         )}

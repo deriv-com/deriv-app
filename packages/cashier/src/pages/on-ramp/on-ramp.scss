@@ -32,7 +32,7 @@
         border-radius: 0.8rem;
         display: grid;
         width: 100%;
-        grid-column-gap: 2.4rem;
+        grid-column-gap: 1.6rem;
         grid-template-areas: (
             'logo name name' 'logo description buy' 'logo description buy' 'logo payment-icons payment-icons'
         );
@@ -61,7 +61,7 @@
         }
         &-description {
             grid-area: description;
-            width: 37.4rem;
+            width: 34.2rem;
             min-height: 6rem;
 
             @include mobile-or-tablet-screen {

@@ -18,7 +18,7 @@ const CashierLockedChecker: React.FC<React.PropsWithChildren<unknown>> = observe
 
     if (is_virtual)
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <Virtual />
             </PageContainer>
         );
@@ -26,7 +26,7 @@ const CashierLockedChecker: React.FC<React.PropsWithChildren<unknown>> = observe
     if (is_system_maintenance) {
         if (is_cashier_locked || ((is_deposit_locked || is_withdrawal_locked) && currency_config.is_crypto)) {
             return (
-                <PageContainer hide_breadcrumb>
+                <PageContainer hide_breadcrumb right={<React.Fragment />}>
                     <CashierLocked />
                 </PageContainer>
             );
@@ -35,7 +35,7 @@ const CashierLockedChecker: React.FC<React.PropsWithChildren<unknown>> = observe
 
     if (is_cashier_locked)
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <CashierLocked />
             </PageContainer>
         );

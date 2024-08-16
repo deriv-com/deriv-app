@@ -1,6 +1,5 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import classNames from 'classnames';
 import { Button, Icon, Modal, Text } from '@deriv/components';
 import { getCurrencyDisplayCode, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -23,13 +22,11 @@ type TAccountTransferReceipt = RouteComponentProps & {
 const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferReceipt) => {
     const { common, client, traders_hub } = useStore();
     const { account_transfer } = useCashierStore();
-    const { is_from_derivgo } = common;
+    const { is_from_derivgo, is_from_outside_cashier } = common;
     const { loginid, switchAccount } = client;
     const { closeAccountTransferModal } = traders_hub;
     const { isDesktop } = useDevice();
     const { receipt, resetAccountTransfer, selected_from, selected_to, setShouldSwitchAccount } = account_transfer;
-
-    const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
 
     const [is_switch_visible, setIsSwitchVisible] = React.useState(false);
     const [switch_to, setSwitchTo] = React.useState<TSwitch>({});

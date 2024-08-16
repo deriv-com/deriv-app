@@ -36,7 +36,6 @@ type TCashierProps = RouteComponentProps & {
 type TCashierOptions = {
     count?: number;
     default?: boolean;
-    has_side_note: boolean;
     icon: string;
     label: string;
     path?: string;
@@ -101,11 +100,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                     label: route.getTitle(),
                     value: route.component,
                     path: route.path,
-                    // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
-                    has_side_note:
-                        route.path !== routes.cashier_deposit &&
-                        route.path !== routes.cashier_withdrawal &&
-                        route.path !== routes.cashier_p2p,
                 });
             }
         });

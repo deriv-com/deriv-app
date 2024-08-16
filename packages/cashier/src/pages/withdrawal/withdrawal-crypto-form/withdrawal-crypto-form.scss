@@ -3,7 +3,6 @@
     width: 100%;
     flex-direction: column;
     align-items: center;
-    padding-top: 2.4rem;
 
     .dc-input__field {
         height: auto;
@@ -35,6 +34,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        gap: 2.4rem;
     }
 
     &__submit {

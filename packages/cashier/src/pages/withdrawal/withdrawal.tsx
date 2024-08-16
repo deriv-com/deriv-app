@@ -61,7 +61,10 @@ const WithdrawalPageContent = observer(() => {
         );
 
     return (
-        <PageContainer hide_breadcrumb right={currency_config?.is_crypto ? <WithdrawalSideNotes /> : undefined}>
+        <PageContainer
+            hide_breadcrumb
+            right={currency_config?.is_crypto ? <WithdrawalSideNotes /> : <React.Fragment />}
+        >
             <WithdrawalVerificationEmail />
         </PageContainer>
     );
@@ -109,28 +112,28 @@ const Withdrawal = observer(() => {
 
     if (is_switching || is_10k_withdrawal_limit_reached === undefined)
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <Loading className='cashier__loader' is_fullscreen={false} />
             </PageContainer>
         );
 
     if (is_withdrawal_locked || is_10k_withdrawal_limit_reached)
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <WithdrawalLocked />
             </PageContainer>
         );
 
     if (!Number(balance))
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <NoBalance />
             </PageContainer>
         );
 
     if (error.is_show_full_page && error.message)
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <Error error={error} />
             </PageContainer>
         );

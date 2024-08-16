@@ -3,7 +3,6 @@ import { fireEvent, screen, render } from '@testing-library/react';
 import PaymentAgentContainer from '../payment-agent-container';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
-import { useDevice } from '@deriv-com/ui';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
@@ -22,7 +21,6 @@ jest.mock('Pages/payment-agent/payment-agent-withdraw-confirm', () =>
     jest.fn(() => <div>PaymentAgentWithdrawConfirm</div>)
 );
 jest.mock('Pages/payment-agent/payment-agent-receipt', () => jest.fn(() => <div>PaymentAgentReceipt</div>));
-jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => jest.fn(() => <div>PaymentAgentDisclaimer</div>));
 jest.mock('Pages/payment-agent/payment-agent-search-box', () => jest.fn(() => <div>PaymentAgentSearchBox</div>));
 
 describe('<PaymentAgentContainer />', () => {
@@ -139,13 +137,6 @@ describe('<PaymentAgentContainer />', () => {
         renderPaymentAgentContainer();
 
         expect(screen.getByText('PaymentAgentReceipt')).toBeInTheDocument();
-    });
-
-    it('should show PaymentAgentDisclaimer in mobile view', () => {
-        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
-        renderPaymentAgentContainer();
-
-        expect(screen.getByText('PaymentAgentDisclaimer')).toBeInTheDocument();
     });
 
     it('should show search loader when is_search_loading equal to true', () => {

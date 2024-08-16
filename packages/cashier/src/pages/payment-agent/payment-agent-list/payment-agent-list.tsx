@@ -4,45 +4,19 @@ import { Tabs } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
-import SideNote from '../../../components/side-note';
 import DepositTab from './deposit-tab';
 import WithdrawalTab from './withdrawal-tab';
-import MissingPaymentMethodNote from '../missing-payment-method-note';
-import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import { DepositSubPageAnalyticsEventTracker } from '../../../components/deposit-sub-page-analytics-event-tracker';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-list.scss';
 
-type TProps = {
-    setSideNotes?: (notes: React.ReactNode[]) => void;
-};
-
-const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
-    const { payment_agent, general_store } = useCashierStore();
+const PaymentAgentList = observer(() => {
+    const { payment_agent } = useCashierStore();
 
     const {
         common: { current_language },
     } = useStore();
     const { isDesktop } = useDevice();
-
-    React.useEffect(() => {
-        if (!general_store.is_loading && !payment_agent.is_try_withdraw_successful) {
-            setSideNotes?.([
-                <SideNote has_title={false} key={0}>
-                    <PaymentAgentDisclaimer />
-                </SideNote>,
-                <SideNote has_title={false} key={1}>
-                    <MissingPaymentMethodNote />
-                </SideNote>,
-            ]);
-        } else {
-            setSideNotes?.([]);
-        }
-
-        return () => {
-            setSideNotes?.([]);
-        };
-    }, [setSideNotes, general_store.is_loading, payment_agent.is_try_withdraw_successful, current_language]);
 
     return (
         <div className='payment-agent-list cashier__wrapper--align-left'>

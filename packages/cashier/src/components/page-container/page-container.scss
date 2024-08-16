@@ -4,7 +4,7 @@
     width: 100%;
     gap: 1.6rem;
     background-color: var(--general-main-1);
-    height: calc(100vh - 17rem);
+    height: calc(100vh - 16rem);
 
     @include mobile-or-tablet-screen {
         height: calc(100vh - 8rem);
@@ -22,10 +22,11 @@
         flex: 1;
         flex-direction: column;
         gap: 1.6rem;
-        max-width: 31.2rem;
+        max-width: 28rem;
 
         &--left {
             @extend #{$parent};
+            flex: unset;
             padding: 0 2.4rem 2.4rem 0;
         }
 
@@ -45,6 +46,7 @@
         flex: 1;
         flex-direction: column;
         gap: 2.4rem;
+        padding: 0 2.4rem 2.4rem;
 
         @include mobile-screen {
             padding: 1.6rem;
@@ -53,5 +55,13 @@
         @include tablet-screen {
             padding: 2.4rem;
         }
+
+        &--modal {
+            padding: 1.6rem 0 0;
+        }
+    }
+
+    &--modal {
+        height: 100%;
     }
 }

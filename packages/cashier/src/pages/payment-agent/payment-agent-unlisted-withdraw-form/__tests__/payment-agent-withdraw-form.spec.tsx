@@ -5,7 +5,6 @@ import PaymentAgentUnlistedWithdrawForm from '../payment-agent-unlisted-withdraw
 import { validNumber } from '@deriv/shared';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
-import { useDevice } from '@deriv-com/ui';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
@@ -16,8 +15,6 @@ jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     validNumber: jest.fn(() => ({ is_ok: true, message: '' })),
 }));
-
-jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => jest.fn(() => 'PaymentAgentDisclaimer'));
 
 describe('<PaymentAgentUnlistedWithdrawForm />', () => {
     let mockRootStore: ReturnType<typeof mockStore>, setIsUnlistedWithdraw: (value: boolean) => void;
@@ -136,12 +133,5 @@ describe('<PaymentAgentUnlistedWithdrawForm />', () => {
                 verification_code: 'ABCdef',
             });
         });
-    });
-
-    it('should show PaymentAgentDisclaimer in mobile view', () => {
-        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
-        render(mockPaymentAgentUnlistedWithdrawForm());
-
-        expect(screen.getByText('PaymentAgentDisclaimer')).toBeInTheDocument();
     });
 });

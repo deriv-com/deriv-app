@@ -40,21 +40,21 @@ const PaymentAgentTransfer = observer(() => {
 
     if (is_virtual) {
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <Virtual />
             </PageContainer>
         );
     }
     if (is_loading) {
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <Loading className='cashier__loader' is_fullscreen={false} />
             </PageContainer>
         );
     }
     if (is_cashier_locked) {
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <CashierLocked />
             </PageContainer>
         );
@@ -63,34 +63,34 @@ const PaymentAgentTransfer = observer(() => {
         // for errors with CTA hide the form and show the error,
         // for others show them at the bottom of the form next to submit button
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <Error error={error} />
             </PageContainer>
         );
     }
     if (!Number(balance)) {
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <NoBalance />
             </PageContainer>
         );
     }
     if (is_try_transfer_successful) {
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <PaymentAgentTransferConfirm />
             </PageContainer>
         );
     }
     if (is_transfer_successful) {
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <PaymentAgentTransferReceipt />
             </PageContainer>
         );
     }
     return (
-        <PageContainer hide_breadcrumb>
+        <PageContainer hide_breadcrumb right={<React.Fragment />}>
             <PaymentAgentTransferForm error={error} />
         </PageContainer>
     );

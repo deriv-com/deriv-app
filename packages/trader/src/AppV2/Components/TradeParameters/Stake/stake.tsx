@@ -36,11 +36,19 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const [is_open, setIsOpen] = React.useState(false);
     const [initial_stake_value, setInitialStakeValue] = React.useState<number>();
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
-    // TODO: use local state to not hide info upon proposal error
     const { max_payout = 0, stake } = validation_params[contract_types[0]] ?? {};
+    const { has_error, message: error, payout: main_button_payout = 0 } = proposal_info[contract_types[0]] ?? {};
     const { max: max_stake = 0, min: min_stake = 0 } = stake ?? {};
-    const main_button_payout = Number(proposal_info[contract_types[0]]?.payout ?? 0);
     const second_button_payout = Number(proposal_info[contract_types[1]]?.payout ?? 0);
+    const stake_error = validation_errors?.amount[0] || (has_error && error);
+
+    const [info, setInfo] = React.useState({
+        max_payout,
+        max_stake,
+        main_button_payout,
+        min_stake,
+        second_button_payout,
+    });
 
     const mult_content = [
         {
@@ -61,16 +69,38 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         if (basis === BASIS.PAYOUT) onChange({ target: { name: 'basis', value: BASIS.STAKE } });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [basis]);
+    React.useEffect(() => {
+        if (is_open) {
+            setInfo(info => {
+                if (
+                    (info.max_payout !== max_payout && max_payout) ||
+                    (info.max_stake !== max_stake && max_stake) ||
+                    (info.main_button_payout !== main_button_payout && main_button_payout) ||
+                    (info.min_stake !== min_stake && min_stake) ||
+                    (info.second_button_payout !== second_button_payout && second_button_payout)
+                ) {
+                    return {
+                        max_payout,
+                        max_stake,
+                        main_button_payout,
+                        min_stake,
+                        second_button_payout,
+                    };
+                }
+                return info;
+            });
+        }
+    }, [is_open, max_payout, max_stake, min_stake, main_button_payout, second_button_payout]);
 
     const getInputMessage = () =>
-        validation_errors?.amount[0] ||
-        (min_stake && max_stake && (
+        stake_error ||
+        (info.min_stake && info.max_stake && (
             <Localize
                 i18n_default_text='Acceptable range: {{min_stake}} to {{max_stake}} {{currency}}'
                 values={{
                     currency: getCurrencyDisplayCode(currency),
-                    min_stake: FormatUtils.formatMoney(+min_stake),
-                    max_stake: FormatUtils.formatMoney(+max_stake),
+                    min_stake: FormatUtils.formatMoney(+info.min_stake),
+                    max_stake: FormatUtils.formatMoney(+info.max_stake),
                 }}
             />
         ));
@@ -113,24 +143,24 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                 onChange={handleOnChange}
                                 placeholder={localize('Amount')}
                                 regex={/[^0-9.,]/g}
-                                status={validation_errors?.amount.length > 0 ? 'error' : 'neutral'}
+                                status={stake_error ? 'error' : 'neutral'}
                                 textAlignment='center'
                                 inputMode='decimal'
                                 unitLeft={getCurrencyDisplayCode(currency)}
                                 variant='fill'
                                 value={amount}
                             />
-                            {!!max_payout && !is_multiplier && (
+                            {!!info.max_payout && !is_multiplier && (
                                 <div className='barrier-params__max-payout-wrapper'>
                                     <Text size='sm'>
                                         <Localize i18n_default_text='Max payout' />
                                     </Text>
                                     <Text size='sm'>
-                                        {FormatUtils.formatMoney(+max_payout)} {getCurrencyDisplayCode(currency)}
+                                        {FormatUtils.formatMoney(+info.max_payout)} {getCurrencyDisplayCode(currency)}
                                     </Text>
                                 </div>
                             )}
-                            {main_button_payout ? (
+                            {info.main_button_payout ? (
                                 <>
                                     <div className='barrier-params__button-payout-wrapper'>
                                         <Text size='sm'>
@@ -142,7 +172,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                         })}
                                         )
                                         <Text size='sm'>
-                                            {FormatUtils.formatMoney(main_button_payout)}{' '}
+                                            {FormatUtils.formatMoney(info.main_button_payout)}{' '}
                                             {getCurrencyDisplayCode(currency)}
                                         </Text>
                                     </div>
@@ -157,7 +187,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                             })}
                                             )
                                             <Text size='sm'>
-                                                {FormatUtils.formatMoney(second_button_payout)}{' '}
+                                                {FormatUtils.formatMoney(info.second_button_payout)}{' '}
                                                 {getCurrencyDisplayCode(currency)}
                                             </Text>
                                         </div>
@@ -188,7 +218,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                         primaryAction={{
                             content: <Localize i18n_default_text='Save' />,
                             onAction: () => {
-                                if (validation_errors.amount.length === 0) {
+                                if (!stake_error) {
                                     onClose(true);
                                 }
                             },

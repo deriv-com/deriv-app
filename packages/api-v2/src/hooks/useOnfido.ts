@@ -183,7 +183,7 @@ const useOnfido = (country?: string, selectedDocument?: string) => {
             hasSubmitted,
         },
         isOnfidoInitialized,
-        isServiceTokenLoading,
+        isLoading: isServiceTokenLoading || isOnfidoLoading,
         serviceTokenError,
         onfidoInitializationError,
     };

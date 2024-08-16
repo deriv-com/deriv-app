@@ -694,6 +694,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 cancellation_range_list: [],
                 clearContractPurchaseToastBox: jest.fn(),
                 clearPurchaseInfo: jest.fn(),
+                clearWheelPickerInitialValues: jest.fn(),
                 contract_expiry_type: '',
                 contract_purchase_toast_box: {},
                 contract_start_type: '',
@@ -748,6 +749,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 setHoveredBarrier: jest.fn(),
                 setIsTradeParamsExpanded: jest.fn(),
                 setTradeTypeTab: jest.fn(),
+                setWheelPickerInitialValues: jest.fn(),
                 stake_boundary: {},
                 start_date: 0,
                 stop_loss: 0,
@@ -762,6 +764,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 trade_types: {},
                 validation_errors: {},
                 vanilla_trade_type: '',
+                wheel_picker_initial_values: {},
             },
         },
         feature_flags: {

@@ -26,8 +26,7 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
         validation_errors,
     } = useTraderStore();
 
-    const [error_message, setErrorMessage] = React.useState<React.ReactNode>('');
-
+    const [is_save_btn_clicked, setIsSaveBtnClicked] = React.useState(false);
     const has_error_ref = React.useRef<boolean>();
     const has_tp_initial_value_ref = React.useRef<boolean>();
     const has_tp_selected_value_ref = React.useRef(has_take_profit);
@@ -39,17 +38,22 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
     const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
 
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
-    const min_take_profit = validation_params[contract_types[0]]?.take_profit?.min;
-    const max_take_profit = validation_params[contract_types[0]]?.take_profit?.max;
     const decimals = getDecimalPlaces(currency);
     const be_error_text = validation_errors.take_profit[0];
     const currency_display_code = getCurrencyDisplayCode(currency);
+    const should_show_be_error =
+        (be_error_text && !!take_profit) || (be_error_text && !take_profit && is_save_btn_clicked);
+    const min_take_profit = validation_params[contract_types[0]]?.take_profit?.min;
+    const max_take_profit = validation_params[contract_types[0]]?.take_profit?.max;
+    const [info, setInfo] = React.useState({
+        min_take_profit,
+        max_take_profit,
+    });
 
     const onToggleSwitch = (new_value: boolean) => {
         has_tp_selected_value_ref.current = new_value;
 
         if (new_value) {
-            isTakeProfitOutOfRange({ value: tp_selected_value_ref.current });
             clearTimeout(focus_timeout.current);
             focus_timeout.current = focusAndOpenKeyboard(focused_input_ref.current, input_ref.current);
         } else {
@@ -63,6 +67,8 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
     };
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setIsSaveBtnClicked(false);
+
         let value = String(e.target.value).replace(',', '.');
         if (value.startsWith('.')) {
             value = value.replace(/^\./, '0.');
@@ -77,57 +83,11 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
 
         tp_selected_value_ref.current = value;
 
-        if (!isTakeProfitOutOfRange({ value }) && value !== '') {
-            onChange({ target: { name: 'take_profit', value } });
-        }
-    };
-
-    const isTakeProfitOutOfRange = ({
-        value,
-        should_validate_empty_value,
-    }: {
-        value?: string | number;
-        should_validate_empty_value?: boolean;
-    }) => {
-        if (should_validate_empty_value && value === '') {
-            has_error_ref.current = true;
-            setErrorMessage(<Localize i18n_default_text='Please enter a take profit amount.' />);
-            return true;
-        }
-        if (value === '' || (Number(value) >= Number(min_take_profit) && Number(value) <= Number(max_take_profit))) {
-            has_error_ref.current = false;
-            setErrorMessage('');
-            return false;
-        }
-        if (Number(value) < Number(min_take_profit)) {
-            has_error_ref.current = true;
-            setErrorMessage(
-                <Localize
-                    i18n_default_text='Please enter a take profit amount that’s higher than {{min_take_profit}}.'
-                    values={{ min_take_profit }}
-                />
-            );
-            return true;
-        }
-        if (Number(value) > Number(max_take_profit)) {
-            has_error_ref.current = true;
-            setErrorMessage(
-                <Localize
-                    i18n_default_text='Please enter a take profit amount that’s lower than {{max_take_profit}}.'
-                    values={{ max_take_profit }}
-                />
-            );
-            return true;
-        }
+        onChange({ target: { name: 'take_profit', value } });
     };
 
     const onSave = () => {
-        if (
-            isTakeProfitOutOfRange({ value: tp_selected_value_ref.current, should_validate_empty_value: true }) &&
-            has_tp_selected_value_ref.current
-        )
-            return;
-
+        setIsSaveBtnClicked(true);
         if (be_error_text && has_tp_selected_value_ref.current) {
             return;
         }
@@ -157,10 +117,14 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
     };
 
     const input_message =
-        min_take_profit && max_take_profit ? (
+        info.min_take_profit && info.max_take_profit ? (
             <Localize
                 i18n_default_text='Acceptable range: {{min_take_profit}} to {{max_take_profit}} {{currency}}'
-                values={{ currency: currency_display_code, min_take_profit, max_take_profit }}
+                values={{
+                    currency: currency_display_code,
+                    min_take_profit: info.min_take_profit,
+                    max_take_profit: info.max_take_profit,
+                }}
             />
         ) : (
             ''
@@ -169,6 +133,21 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
     React.useEffect(() => {
         has_error_ref.current = !!be_error_text;
     }, [be_error_text]);
+
+    React.useEffect(() => {
+        setInfo(info => {
+            if (
+                (info.min_take_profit !== min_take_profit && min_take_profit) ||
+                (info.max_take_profit !== max_take_profit && max_take_profit)
+            ) {
+                return {
+                    min_take_profit,
+                    max_take_profit,
+                };
+            }
+            return info;
+        });
+    }, [min_take_profit, max_take_profit]);
 
     React.useEffect(() => {
         if (!has_tp_initial_value_ref.current && has_take_profit) {
@@ -185,6 +164,7 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
                 (has_error_ref.current &&
                     tp_selected_value_ref.current !== '0' &&
                     tp_selected_value_ref.current !== '');
+
             const has_take_profit = should_set_empty_string ? false : has_tp_initial_value_ref.current;
             onChangeMultiple({
                 has_take_profit,
@@ -217,18 +197,14 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
                     decimals={decimals}
                     data-testid='dt_input_with_steppers'
                     inputMode='decimal'
-                    message={
-                        has_tp_selected_value_ref.current
-                            ? error_message || (be_error_text && !!take_profit) || input_message
-                            : ''
-                    }
+                    message={should_show_be_error ? be_error_text : input_message}
                     minusDisabled={Number(tp_selected_value_ref.current) - 1 <= 0}
                     name='take_profit'
                     onChange={onInputChange}
                     placeholder={localize('Amount')}
                     ref={input_ref}
                     regex={/[^0-9.,]/g}
-                    status={error_message || (be_error_text && !!take_profit) ? 'error' : 'neutral'}
+                    status={should_show_be_error ? 'error' : 'neutral'}
                     textAlignment='center'
                     unitLeft={currency_display_code}
                     variant='fill'

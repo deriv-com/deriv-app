@@ -763,6 +763,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 trade_type_tab: '',
                 trade_types: {},
                 validation_errors: {},
+                validation_params: {},
                 vanilla_trade_type: '',
                 wheel_picker_initial_values: {},
             },

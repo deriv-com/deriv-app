@@ -17,7 +17,7 @@ const TRADE_PARAMS = {
     ACCUMULATORS_INFORMATION: 'AccumulatorsInformation',
     MULTIPLIER: 'Multiplier',
     RISK_MANAGEMENT: 'RiskManagement',
-    MULTIPLIERS_INFORMATION: 'MultipliersInformation',
+    MULTIPLIERS_DEAL_CANCELLATION_INFORMATION: 'MultipliersDealCancellationInfo',
     TRADE_TYPE_TABS: 'TradeTypeTabs',
     STRIKE: 'Strike',
     PAYOUT_PER_POINT: 'PayoutPerPoint',
@@ -36,8 +36,8 @@ jest.mock('../AccumulatorsInformation', () =>
 );
 jest.mock('../Multiplier', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.MULTIPLIER}</div>));
 jest.mock('../RiskManagement', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.RISK_MANAGEMENT}</div>));
-jest.mock('../MultipliersInformation', () =>
-    jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.MULTIPLIERS_INFORMATION}</div>)
+jest.mock('../MultipliersDealCancellationInfo', () =>
+    jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.MULTIPLIERS_DEAL_CANCELLATION_INFORMATION}</div>)
 );
 jest.mock('../TradeTypeTabs', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.TRADE_TYPE_TABS}</div>));
 jest.mock('../Strike', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.STRIKE}</div>));
@@ -106,7 +106,7 @@ describe('TradeParameters', () => {
         expect(screen.getByText(TRADE_PARAMS.MULTIPLIER)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.STAKE)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.RISK_MANAGEMENT)).toBeInTheDocument();
-        expect(screen.getByText(TRADE_PARAMS.MULTIPLIERS_INFORMATION)).toBeInTheDocument();
+        expect(screen.getByText(TRADE_PARAMS.MULTIPLIERS_DEAL_CANCELLATION_INFORMATION)).toBeInTheDocument();
         expect(screen.getAllByTestId(data_test)).toHaveLength(4);
     });
 

@@ -119,7 +119,7 @@ const TakeProfitInput = ({
             tp_initial_value_ref.current = tp_selected_value_ref.current;
         }
 
-        const has_take_profit = has_error_ref.current ? false : has_tp_selected_value_ref.current;
+        const has_take_profit = be_error_text ? false : has_tp_selected_value_ref.current;
         onChangeMultiple({
             has_take_profit,
             ...(has_take_profit ? { has_cancellation: false } : {}),
@@ -128,8 +128,7 @@ const TakeProfitInput = ({
         onChange({
             target: {
                 name: 'take_profit',
-                value:
-                    has_error_ref.current || tp_selected_value_ref.current === '0' ? '' : tp_selected_value_ref.current,
+                value: be_error_text || tp_selected_value_ref.current === '0' ? '' : tp_selected_value_ref.current,
             },
         });
 

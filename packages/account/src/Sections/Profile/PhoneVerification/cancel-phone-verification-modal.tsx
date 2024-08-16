@@ -19,14 +19,6 @@ const CancelPhoneVerificationModal = observer(() => {
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
 
     useEffect(() => {
-        if (show_modal) {
-            trackPhoneVerificationEvents({
-                action: 'back',
-            });
-        }
-    }, [show_modal, trackPhoneVerificationEvents]);
-
-    useEffect(() => {
         const unblock = history.block((location: Location) => {
             if (!show_modal && !is_virtual) {
                 setShowModal(true);
@@ -49,6 +41,9 @@ const CancelPhoneVerificationModal = observer(() => {
             setVerificationCode('', 'phone_number_verification');
             setShouldShowPhoneNumberOTP(false);
             setShowModal(false);
+            trackPhoneVerificationEvents({
+                action: 'back',
+            });
             history.push(next_location);
         }
     };

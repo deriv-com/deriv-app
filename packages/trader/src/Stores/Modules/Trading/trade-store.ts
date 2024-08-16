@@ -143,6 +143,8 @@ export type TWheelPickerInitialValues = {
     growth_rate?: number;
     strike?: string | number;
     multiplier?: number;
+    take_profit?: string;
+    has_take_profit?: boolean;
 };
 type TContractDataForGTM = Omit<Partial<PriceProposalRequest>, 'cancellation' | 'limit_order'> &
     ReturnType<typeof getProposalInfo> & {
@@ -642,7 +644,13 @@ export default class TradeStore extends BaseStore {
         }
     }
 
-    setWheelPickerInitialValues({ value, name }: { value: number | string; name: keyof TWheelPickerInitialValues }) {
+    setWheelPickerInitialValues({
+        value,
+        name,
+    }: {
+        value: number | string | boolean;
+        name: keyof TWheelPickerInitialValues;
+    }) {
         this.wheel_picker_initial_values = { ...this.wheel_picker_initial_values, ...{ [name]: value } };
     }
 

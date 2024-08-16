@@ -22,6 +22,7 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
         trade_type_tab,
         onChangeMultiple,
         onChange,
+        setWheelPickerInitialValues,
         validation_params,
         validation_errors,
     } = useTraderStore();
@@ -152,9 +153,11 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
     React.useEffect(() => {
         if (!has_tp_initial_value_ref.current && has_take_profit) {
             has_tp_initial_value_ref.current = has_take_profit;
+            setWheelPickerInitialValues({ name: 'has_take_profit', value: has_take_profit });
         }
         if (!tp_initial_value_ref.current && take_profit) {
             tp_initial_value_ref.current = take_profit;
+            setWheelPickerInitialValues({ name: 'take_profit', value: take_profit });
         }
 
         return () => {

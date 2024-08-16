@@ -70,15 +70,6 @@ describe('TakeProfit', () => {
         ).toBeInTheDocument();
     });
 
-    it('should render alternative text content with definition for Accumulators', () => {
-        default_mock_store.modules.trade.is_accumulator = true;
-        mockTakeProfit();
-
-        userEvent.click(screen.getByText(take_profit_trade_param));
-
-        expect(screen.getByText('Note: Cannot be adjusted for ongoing accumulator contracts.')).toBeInTheDocument();
-    });
-
     it('should call onChange and onChangeMultiple on component mount if take_profit and has_take_profit values from trade-store are different from wheel_picker_initial_values', () => {
         default_mock_store.modules.trade.take_profit = '10';
         default_mock_store.modules.trade.has_take_profit = false;

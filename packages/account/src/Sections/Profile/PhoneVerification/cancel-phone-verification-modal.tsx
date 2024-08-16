@@ -13,14 +13,14 @@ const CancelPhoneVerificationModal = observer(() => {
     const [show_modal, setShowModal] = useState(false);
     const [next_location, setNextLocation] = useState(location.pathname);
     const { ui, client } = useStore();
-    const { setShouldShowPhoneNumberOTP } = ui;
+    const { setShouldShowPhoneNumberOTP, is_forced_to_redirect } = ui;
     const { setVerificationCode, is_virtual } = client;
     const { isMobile } = useDevice();
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
 
     useEffect(() => {
         const unblock = history.block((location: Location) => {
-            if (!show_modal && !is_virtual) {
+            if (!show_modal && !is_virtual && !is_forced_to_redirect) {
                 setShowModal(true);
                 setNextLocation(location.pathname);
                 return false;
@@ -29,7 +29,7 @@ const CancelPhoneVerificationModal = observer(() => {
         });
 
         return () => unblock();
-    }, [history, show_modal, is_virtual]);
+    }, [history, show_modal, is_virtual, is_forced_to_redirect]);
 
     const handleStayAtPhoneVerificationPage = () => {
         setShowModal(false);

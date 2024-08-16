@@ -47,6 +47,7 @@ const DerivAppsTradingAccount = () => {
             </div>
             <button
                 className='wallets-deriv-apps-section__button'
+                data-testid='dt_deriv-apps-trading-account-transfer-button'
                 onClick={() => {
                     history.push('/wallet/account-transfer', {
                         toAccountLoginId: activeLinkedToTradingAccount?.loginid,

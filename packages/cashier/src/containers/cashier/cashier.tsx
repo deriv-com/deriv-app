@@ -82,6 +82,8 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     } = useP2PSettings();
     const { is_p2p_enabled, is_p2p_enabled_success, is_p2p_enabled_loading } = useIsP2PEnabled();
     const { isSuccess } = useAuthorize();
+    const preferred_language = client.account_settings.preferred_language;
+    const current_language = common.current_language;
 
     const onClickClose = () => history.push(routes.traders_hub);
     const getMenuOptions = useMemo(() => {
@@ -120,8 +122,9 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         is_payment_agent_transfer_visible,
         is_payment_agent_visible,
         p2p_notification_count,
+        preferred_language,
+        current_language,
         routes_config,
-        common.current_language,
     ]);
 
     const selected_route = useMemo(

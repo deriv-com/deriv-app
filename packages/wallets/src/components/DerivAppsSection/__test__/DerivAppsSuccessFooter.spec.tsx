@@ -21,16 +21,16 @@ jest.mock('../../ModalProvider', () => ({
 describe('DerivAppsSuccessFooter', () => {
     it('renders the component', () => {
         render(<DerivAppsSuccessFooter />);
-        expect(screen.getByText(/Transfer funds/)).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Transfer funds' })).toBeInTheDocument();
     });
     it('hides the modal when Maybe later button is clicked', () => {
         render(<DerivAppsSuccessFooter />);
-        userEvent.click(screen.getByText(/Maybe later/));
+        userEvent.click(screen.getByRole('button', { name: 'Maybe later' }));
         expect(mockHide).toHaveBeenCalled();
     });
     it('navigates to /wallet/account-transfer when Transfer funds button is clicked', () => {
         render(<DerivAppsSuccessFooter />);
-        userEvent.click(screen.getByText(/Transfer funds/));
+        userEvent.click(screen.getByRole('button', { name: 'Transfer funds' }));
         expect(mockHistoryPush).toHaveBeenCalledWith('/wallet/account-transfer');
     });
 });

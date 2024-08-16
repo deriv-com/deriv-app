@@ -49,11 +49,7 @@ describe('DerivAppsSection', () => {
     it('renders the component when no activeLinkedToTradingAccount is exists', () => {
         (mockUseActiveLinkedToTradingAccount as jest.Mock).mockReturnValueOnce({ isLoading: false });
         render(<DerivAppsSection />, { wrapper });
-        expect(
-            screen.getByRole('button', {
-                name: 'Get',
-            })
-        ).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Get' })).toBeInTheDocument();
     });
     it('renders the component when an activeLinkedToTradingAccount exists', () => {
         render(<DerivAppsSection />, { wrapper });

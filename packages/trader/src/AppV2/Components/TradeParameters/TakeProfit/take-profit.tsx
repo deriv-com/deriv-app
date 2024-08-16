@@ -67,32 +67,46 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
               )
             : '';
 
-    const isTakeProfitOutOfRange = (value = take_profit_value) => {
-        if (!value) {
+    const isTakeProfitOutOfRange = ({
+        value,
+        should_validate_empty_value,
+    }: {
+        value?: string | number;
+        should_validate_empty_value?: boolean;
+    }) => {
+        if (should_validate_empty_value && value === '') {
             setErrorMessage(<Localize i18n_default_text='Please enter a take profit amount.' />);
             return true;
         }
-        if (Number(value) < Number(min_take_profit) || Number(value) > Number(max_take_profit)) {
+        if (value === '' || (Number(value) >= Number(min_take_profit) && Number(value) <= Number(max_take_profit))) {
+            setErrorMessage('');
+            return false;
+        }
+        if (Number(value) < Number(min_take_profit)) {
             setErrorMessage(
                 <Localize
-                    i18n_default_text='Acceptable range: {{min_take_profit}} to {{max_take_profit}} {{currency}}'
-                    values={{ currency, min_take_profit, max_take_profit }}
+                    i18n_default_text='Please enter a take profit amount that’s higher than {{min_take_profit}}.'
+                    values={{ min_take_profit }}
                 />
             );
             return true;
         }
-        setErrorMessage('');
-        return false;
+        if (Number(value) > Number(max_take_profit)) {
+            setErrorMessage(
+                <Localize
+                    i18n_default_text='Please enter a take profit amount that’s lower than {{max_take_profit}}.'
+                    values={{ max_take_profit }}
+                />
+            );
+            return true;
+        }
     };
 
     const onToggleSwitch = (new_value: boolean) => {
         setIsEnabled(new_value);
 
         if (new_value) {
-            if (take_profit_value !== '' && take_profit_value !== undefined) {
-                isTakeProfitOutOfRange();
-            }
-
+            isTakeProfitOutOfRange({ value: take_profit_value });
             clearTimeout(focus_timeout.current);
             focus_timeout.current = focusAndOpenKeyboard(focused_input_ref.current, input_ref.current);
         } else {
@@ -105,11 +119,12 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
         const value: string | number = e.target.value.replace(',', '.');
 
         setTakeProfitValue(value);
-        isTakeProfitOutOfRange(value);
+        isTakeProfitOutOfRange({ value });
     };
 
     const onSave = () => {
-        if (isTakeProfitOutOfRange() && is_enabled) return;
+        if (isTakeProfitOutOfRange({ value: take_profit_value, should_validate_empty_value: true }) && is_enabled)
+            return;
 
         onChangeMultiple({
             has_take_profit: is_enabled,
@@ -190,7 +205,11 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                         title={<Localize i18n_default_text='Take profit' />}
                     />
                     {/* this input with inline styles is needed to fix a focus issue in Safari */}
-                    <input ref={focused_input_ref} style={{ height: 0, opacity: 0, display: 'none' }} />
+                    <input
+                        ref={focused_input_ref}
+                        style={{ height: 0, opacity: 0, display: 'none' }}
+                        inputMode='decimal'
+                    />
                 </ActionSheet.Portal>
             </ActionSheet.Root>
         </React.Fragment>

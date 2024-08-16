@@ -99,7 +99,13 @@ const PurchaseButton = observer(() => {
 
     const addNotificationBannerCallback = (params: Parameters<typeof addBanner>[0]) =>
         addBanner({
-            icon: <StandaloneStopwatchRegularIcon iconSize='sm' className='trade-notification--purchase' />,
+            icon: (
+                <StandaloneStopwatchRegularIcon
+                    iconSize='sm'
+                    className='trade-notification--purchase'
+                    key='contract-opened'
+                />
+            ),
             ...params,
         });
 

@@ -1,84 +1,151 @@
-import { useCallback, useMemo, useState } from 'react';
-import useMutation from '../useMutation';
-import { compressImageFile, generateChunks, numToUint8Array, readFile } from '../utils';
+import { useState } from 'react';
 import md5 from 'md5';
-import useAPI from '../useAPI';
+import { TSocketError, TSocketRequestPayload, TSocketResponse } from '../../types';
+import { useAPIContext } from '../APIProvider';
+import { compressImageFile, generateChunks, numToUint8Array, readFile } from '../utils';
 
-type TDocumentUploadPayload = Parameters<ReturnType<typeof useMutation<'document_upload'>>['mutate']>[0]['payload'];
-type TUploadPayload = Omit<TDocumentUploadPayload, 'document_format' | 'expected_checksum' | 'file_size'> & {
-    file?: File;
+type TDocumentUploadRequest = TSocketRequestPayload<'document_upload'>;
+type TDocumentUploadRequestPayload = Partial<TDocumentUploadRequest['payload']> & { file?: File };
+type TDocumentUploadResponse = TSocketResponse<'document_upload'> & TSocketError<'document_upload'>;
+
+type TFileInfo = {
+    fileBuffer: Uint8Array;
+    fileType: File['type'];
 };
 
-/** A custom hook to handle document file uploads to our backend. */
+export enum DocumentUploadStatus {
+    LOADING = 'loading',
+    IDLE = 'idle',
+    ERROR = 'error',
+    SUCCESS = 'success',
+}
+
+const REQ_TIMEOUT = 20000;
+
 const useDocumentUpload = () => {
-    const {
-        data,
-        isLoading: _isLoading,
-        isSuccess: _isSuccess,
-        mutateAsync,
-        status,
-        ...rest
-    } = useMutation('document_upload');
-    const [isDocumentUploaded, setIsDocumentUploaded] = useState(false);
+    const { wsClient, connection } = useAPIContext();
+    const [status, setStatus] = useState<DocumentUploadStatus>(DocumentUploadStatus.IDLE);
 
-    const { connection } = useAPI();
+    const getFileInfo = async (file: TDocumentUploadRequestPayload['file']): Promise<TFileInfo> => {
+        if (!file) return Promise.reject(new Error('No file selected'));
 
-    const isLoading = _isLoading || (!isDocumentUploaded && status === 'success');
-    const isSuccess = _isSuccess && isDocumentUploaded;
+        const fileType = file.type;
+        const fileBlob = await compressImageFile(file);
+        const modifiedFile = await readFile(fileBlob);
+        // @ts-expect-error type mismatch
+        const fileBuffer = new Uint8Array(modifiedFile.buffer);
+        return { fileBuffer, fileType };
+    };
 
-    const upload = useCallback(
-        async (payload: TUploadPayload) => {
-            if (!payload?.file) return Promise.reject(new Error('No file selected'));
-            const file = payload.file;
-            delete payload.file;
-            const fileBlob = await compressImageFile(file);
-            const modifiedFile = await readFile(fileBlob);
-            // @ts-expect-error type mismatch
-            const fileBuffer = new Uint8Array(modifiedFile.buffer);
-            const checksum = md5(Array.from(fileBuffer));
+    /** Perform the initial handshake to get the upload_id from BE */
+    const handshake = async ({ fileType, fileBuffer }: TFileInfo, payload: TDocumentUploadRequestPayload) => {
+        const checksum = md5(Array.from(fileBuffer));
 
-            const updatedPayload = {
-                ...payload,
-                document_format: file.type
-                    .split('/')[1]
-                    .toLocaleUpperCase() as TDocumentUploadPayload['document_format'],
-                expected_checksum: checksum,
-                file_size: fileBuffer.length,
-                passthrough: {
-                    document_upload: true,
-                },
+        const updatedPayload = {
+            ...payload,
+            document_format: fileType
+                .split('/')[1]
+                .toLocaleUpperCase() as TDocumentUploadRequestPayload['document_format'],
+            expected_checksum: checksum,
+            file_size: fileBuffer.length,
+            passthrough: {
+                document_upload: true,
+            },
+        };
+
+        try {
+            const response = (await wsClient.request(
+                'document_upload',
+                updatedPayload
+            )) as Promise<TDocumentUploadResponse>;
+            return response;
+        } catch (error) {
+            return error as TDocumentUploadResponse;
+        }
+    };
+
+    /** asynchronously sends file data over WS */
+    const sendFile = (fileBuffer: TFileInfo['fileBuffer'], response: TDocumentUploadResponse) => {
+        const chunks = generateChunks(fileBuffer, {});
+        const id = numToUint8Array(response?.document_upload?.upload_id || 0);
+        const type = numToUint8Array(response?.document_upload?.call_type || 0);
+
+        chunks.forEach(chunk => {
+            const size = numToUint8Array(chunk.length);
+            const payload = new Uint8Array([...type, ...id, ...size, ...chunk]);
+            connection?.send(payload);
+        });
+    };
+
+    /** Initiates file upload and handles the 2nd response received  */
+    const fileUploader = async (fileBuffer: TFileInfo['fileBuffer'], response: TDocumentUploadResponse) => {
+        /** Request id of the initial document_upload call */
+        const reqId = response.req_id;
+        /** Upload id received from BE for the particular file which is appended to every chunk uploaded */
+        const uploadId = response.document_upload?.upload_id;
+        /** Timeout reference for removing WS eventListener */
+        let timeout: NodeJS.Timeout;
+
+        return new Promise((resolve, reject) => {
+            timeout = setTimeout(() => {
+                wsClient.ws?.removeEventListener('message', handleUploadStatus);
+                reject(new Error(`Request timeout for document_upload`));
+            }, REQ_TIMEOUT);
+
+            const handleUploadStatus = (messageEvent: MessageEvent) => {
+                const data = JSON.parse(messageEvent.data) as TDocumentUploadResponse;
+
+                if (data.req_id !== reqId && data.document_upload?.upload_id !== uploadId) {
+                    return;
+                }
+                if (data.error) {
+                    wsClient.ws?.removeEventListener('message', handleUploadStatus);
+                    clearTimeout(timeout);
+                    setStatus(DocumentUploadStatus.ERROR);
+                    reject(data);
+                    return;
+                }
+
+                if (data.document_upload && data.document_upload?.status === 'failure') {
+                    wsClient.ws?.removeEventListener('message', handleUploadStatus);
+
+                    clearTimeout(timeout);
+                    setStatus(DocumentUploadStatus.ERROR);
+                    reject(data);
+                    return;
+                }
+
+                if (data.document_upload && data.document_upload?.status === 'success') {
+                    wsClient.ws?.removeEventListener('message', handleUploadStatus);
+                    clearTimeout(timeout);
+                    setStatus(DocumentUploadStatus.SUCCESS);
+                    resolve(data);
+                }
             };
-            setIsDocumentUploaded(false);
-            await mutateAsync({ payload: updatedPayload }).then(async res => {
-                const chunks = generateChunks(fileBuffer, {});
-                const id = numToUint8Array(res?.document_upload?.upload_id || 0);
-                const type = numToUint8Array(res?.document_upload?.call_type || 0);
 
-                chunks.forEach(chunk => {
-                    const size = numToUint8Array(chunk.length);
-                    const payload = new Uint8Array([...type, ...id, ...size, ...chunk]);
-                    connection?.send(payload);
-                });
-                setIsDocumentUploaded(true);
-            });
-        },
-        [connection, mutateAsync]
-    );
+            wsClient.ws?.addEventListener('message', handleUploadStatus);
 
-    const modified_response = useMemo(() => ({ ...data?.document_upload }), [data?.document_upload]);
+            sendFile(fileBuffer, response);
+        }) as Promise<TDocumentUploadResponse>;
+    };
+
+    const upload = async (payload: TDocumentUploadRequestPayload) => {
+        setStatus(DocumentUploadStatus.LOADING);
+        const { file, ...rest } = payload;
+        const fileInfo = await getFileInfo(file);
+        const handshakeResponse = await handshake(fileInfo, rest);
+        if (handshakeResponse.error) {
+            setStatus(DocumentUploadStatus.ERROR);
+            return Promise.reject(handshakeResponse);
+        }
+        const uploadResponse = await fileUploader(fileInfo.fileBuffer, handshakeResponse);
+        return Promise.resolve(uploadResponse);
+    };
 
     return {
-        /** The upload response */
-        data: modified_response,
-        /** Function to upload the document */
         upload,
-        /** Mutation status */
         status,
-        /** Whether the mutation is loading */
-        isLoading,
-        /** Whether the mutation is successful */
-        isSuccess,
-        ...rest,
+        resetStatus: setStatus,
     };
 };
 

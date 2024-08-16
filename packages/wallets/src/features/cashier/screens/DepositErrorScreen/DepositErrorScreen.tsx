@@ -1,6 +1,7 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { TSocketError } from '@deriv/api-v2/types';
+import { Localize } from '@deriv-com/translations';
 import { WalletsErrorScreen } from '../../../../components';
 import { CryptoDepositErrorCodes } from '../../../../constants/errorCodes';
 
@@ -9,10 +10,10 @@ type TProps = {
 };
 
 type TErrorContent = {
-    buttonText?: string;
-    message?: string;
+    buttonText?: React.ReactNode;
+    message: React.ReactNode;
     onClick?: () => void;
-    title?: string;
+    title: React.ReactNode;
 };
 
 type TErrorCodeHandlers = Record<string, TErrorContent>;
@@ -22,29 +23,49 @@ const DepositErrorScreen: React.FC<TProps> = ({ error }) => {
     const currency = data?.currency;
 
     const defaultContent: TErrorContent = {
-        buttonText: 'Try again',
+        buttonText: <Localize i18n_default_text='Try again' />,
         message: error.message,
         onClick: () => window.location.reload(),
-        title: undefined,
+        title: <Localize i18n_default_text='Oops, something went wrong!' />,
     };
 
     const depositErrorCodeHandlers: TErrorCodeHandlers = {
         [CryptoDepositErrorCodes.CryptoConnectionError]: {
             ...defaultContent,
             buttonText: undefined,
-            title: 'Maintenance in progess',
+            title: <Localize i18n_default_text='Maintenance in progess' />,
         },
         [CryptoDepositErrorCodes.SuspendedCurrency]: {
             ...defaultContent,
             buttonText: undefined,
-            message: `Due to system maintenance, deposits with your ${currency} Wallet are unavailable at the moment. Please try again later.`,
-            title: `${currency} Wallet deposits are temporarily unavailable`,
+            message: (
+                <Localize
+                    i18n_default_text='Due to system maintenance, deposits with your {{currency}} Wallet are unavailable at the moment. Please try again later.'
+                    values={{ currency }}
+                />
+            ),
+            title: (
+                <Localize
+                    i18n_default_text='{{currency}} Wallet deposits are temporarily unavailable'
+                    values={{ currency }}
+                />
+            ),
         },
         [CryptoDepositErrorCodes.SuspendedDeposit]: {
             ...defaultContent,
             buttonText: undefined,
-            message: `Due to system maintenance, deposits with your ${currency} Wallet are unavailable at the moment. Please try again later.`,
-            title: `${currency} Wallet deposits are temporarily unavailable`,
+            message: (
+                <Localize
+                    i18n_default_text='Due to system maintenance, deposits with your {{currency}} Wallet are unavailable at the moment. Please try again later.'
+                    values={{ currency }}
+                />
+            ),
+            title: (
+                <Localize
+                    i18n_default_text='{{currency}} Wallet deposits are temporarily unavailable'
+                    values={{ currency }}
+                />
+            ),
         },
     };
 

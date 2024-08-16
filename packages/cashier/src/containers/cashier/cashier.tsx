@@ -12,7 +12,7 @@ import {
     useP2PNotificationCount,
     useP2PSettings,
 } from '@deriv/hooks';
-import { getSelectedRoute, getStaticUrl, routes, setPerformanceValue, WS, matchRoute } from '@deriv/shared';
+import { getSelectedRoute, routes, setPerformanceValue, WS, matchRoute } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import type { TCoreStores } from '@deriv/stores/types';
@@ -271,15 +271,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                             is_full_width
                             is_routed
                             list={getMenuOptions}
-                            tab_headers_note={
-                                <Button
-                                    id='cashier_learn_more'
-                                    className='cashier__page-wrapper-button'
-                                    text={localize('Learn more about payment methods')}
-                                    onClick={() => window.open(getStaticUrl('/payment-methods'))}
-                                    secondary
-                                />
-                            }
                         />
                     ) : (
                         <Div100vhContainer className='cashier__wrapper--responsive' height_offset='80px'>

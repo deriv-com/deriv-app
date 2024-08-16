@@ -173,9 +173,9 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
                 renderButton={() => renderAccountSuccessButton(!isDemo)}
                 title={
                     <Localize
-                        i18n_default_text='Your {{marketTypeTitle}}{{demoTitle}} account is ready'
+                        i18n_default_text='Your {{marketTypeTitle}} {{demoTitle}} account is ready'
                         values={{
-                            demoTitle: isDemo ? localize(' demo') : landingCompanyName,
+                            demoTitle: isDemo ? localize('demo') : landingCompanyName,
                             marketTypeTitle,
                         }}
                     />

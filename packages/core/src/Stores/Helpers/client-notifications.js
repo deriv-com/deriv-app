@@ -63,6 +63,7 @@ export const excluded_notifications = ['contract_sold', 'has_changed_two_fa'];
 export const maintenance_notifications = ['system_maintenance', 'site_maintenance'];
 
 export const priority_toast_messages = [
+    'account_currency_closure',
     'svg',
     'need_fa',
     'p2p_daily_limit_increase',
@@ -77,7 +78,6 @@ export const priority_toast_messages = [
     'poi_failed',
     'poa_failed',
     'svg_poi_expired',
-    'mt5_notification',
     'p2p_advertiser_nickname_added',
     ...maintenance_notifications,
 ];

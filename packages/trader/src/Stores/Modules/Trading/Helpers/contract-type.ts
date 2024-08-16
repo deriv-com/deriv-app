@@ -19,6 +19,7 @@ import {
     getLocalizedBasis,
     TTradeTypesCategories,
     TRADE_TYPES,
+    isDTraderV2,
 } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
@@ -40,6 +41,7 @@ type TConfig = ReturnType<typeof getContractTypesConfig>[string]['config'] & {
     has_spot?: boolean;
     durations?: ReturnType<typeof buildDurationConfig>;
     trade_types?: { [key: string]: string };
+    barrier_category?: string;
     barriers?: ReturnType<typeof buildBarriersConfig>;
     forward_starting_dates?: ReturnType<typeof buildForwardStartingConfig>;
     growth_rate_range?: number[];
@@ -130,6 +132,7 @@ export const ContractType = (() => {
                 config.durations = config.hide_duration ? undefined : buildDurationConfig(contract, config.durations);
                 config.trade_types = buildTradeTypesConfig(contract, config.trade_types);
                 config.barriers = buildBarriersConfig(contract, config.barriers);
+                config.barrier_category = contract.barrier_category as TConfig['barrier_category'];
                 config.barrier_choices = contract.barrier_choices as TConfig['barrier_choices'];
                 config.forward_starting_dates = buildForwardStartingConfig(contract, config.forward_starting_dates);
                 config.growth_rate_range = contract.growth_rate_range as TConfig['growth_rate_range'];
@@ -192,6 +195,7 @@ export const ContractType = (() => {
             short_barriers,
             long_barriers,
             strike_price_choices,
+            wheel_picker_initial_values,
         } = store;
 
         if (!contract_type) return {};
@@ -206,7 +210,13 @@ export const ContractType = (() => {
                 break;
             case 'Call':
             case 'Put':
-                stored_barriers_data = strike_price_choices;
+                stored_barriers_data =
+                    wheel_picker_initial_values?.strike && isDTraderV2()
+                        ? ({
+                              ...strike_price_choices,
+                              barrier: wheel_picker_initial_values.strike,
+                          } as TTradeStore['strike_price_choices'])
+                        : strike_price_choices;
                 break;
             default:
                 stored_barriers_data = {};
@@ -641,6 +651,10 @@ export const ContractType = (() => {
             [],
     });
 
+    const getBarrierCategory = (contract_type: string) => ({
+        barrier_category: getPropertyValue(available_contract_types, [contract_type, 'config', 'barrier_category']),
+    });
+
     const getBarrierChoices = (contract_type: string, stored_barrier_choices = [] as string[]) => ({
         barrier_choices: stored_barrier_choices.length
             ? stored_barrier_choices
@@ -696,6 +710,7 @@ export const ContractType = (() => {
 
     return {
         buildContractTypesConfig,
+        getBarrierCategory,
         getBarriers,
         getContractType,
         getContractValues,

@@ -14,6 +14,8 @@ export const PasskeyCard = ({ name, last_used, stored_on, id, icon, onPasskeyMen
                 id,
                 name,
             });
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             passkeysMenuActionEventTrack('passkey_rename_open');
         } else if (event.target.value === 'revoke') {
             // TODO: add action for revoke passkey

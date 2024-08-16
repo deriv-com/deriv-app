@@ -1,9 +1,9 @@
-import React from 'react';
+import { useContext, useState, Fragment } from 'react';
 import { Button, Icon, Modal, Text, Popover } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
 import ApiTokenContext from './api-token-context';
-import { TPopoverAlignment, TFormattedToken, TApiContext } from 'Types';
+import { TPopoverAlignment, TFormattedToken, TApiContext } from '../../Types';
 import { useDevice } from '@deriv-com/ui';
 
 type TApiTokenDeleteButton = {
@@ -13,10 +13,10 @@ type TApiTokenDeleteButton = {
 
 const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDeleteButton) => {
     const { isDesktop } = useDevice();
-    const { deleteToken } = React.useContext<TApiContext>(ApiTokenContext);
-    const [is_deleting, setIsDeleting] = React.useState(false);
-    const [is_loading, setIsLoading] = React.useState(false);
-    const [is_popover_open, setIsPopoverOpen] = React.useState(false);
+    const { deleteToken } = useContext<TApiContext>(ApiTokenContext);
+    const [is_deleting, setIsDeleting] = useState(false);
+    const [is_loading, setIsLoading] = useState(false);
+    const [is_popover_open, setIsPopoverOpen] = useState(false);
     const isMounted = useIsMounted();
 
     const getConfirmationBeforeDelete = () => {
@@ -44,7 +44,7 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDe
     };
 
     return (
-        <React.Fragment>
+        <Fragment>
             <Modal is_open={is_deleting} small>
                 <Modal.Body>
                     <Text as='h1' color='prominent' weight='bold' className='da-api-token__modal-title'>
@@ -89,7 +89,7 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDe
                     onMouseLeave={onMouseLeaveHandler}
                 />
             </Popover>
-        </React.Fragment>
+        </Fragment>
     );
 };
 

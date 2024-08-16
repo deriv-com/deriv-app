@@ -1,32 +1,26 @@
 import React, { ComponentProps } from 'react';
-import { WalletButton } from '../Base';
+import { Button } from '@deriv-com/ui';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 import './WalletsErrorScreen.scss';
 
 type TProps = {
-    buttonText?: string;
-    buttonVariant?: ComponentProps<typeof WalletButton>['variant'];
-    message?: string;
+    buttonText?: React.ReactNode;
+    buttonVariant?: ComponentProps<typeof Button>['variant'];
+    message: React.ReactNode;
     onClick?: () => void;
-    title?: string;
+    title: React.ReactNode;
 };
 
-const WalletsErrorScreen: React.FC<TProps> = ({
-    buttonText,
-    buttonVariant = 'contained',
-    message = 'Sorry an error occurred. Please try accessing our cashier again.',
-    onClick,
-    title = 'Oops, something went wrong!',
-}) => {
+const WalletsErrorScreen: React.FC<TProps> = ({ buttonText, buttonVariant = 'contained', message, onClick, title }) => {
     return (
         <div className='wallets-error-screen'>
             <WalletsActionScreen
                 description={message}
                 renderButtons={() =>
                     buttonText ? (
-                        <WalletButton onClick={onClick} size='lg' variant={buttonVariant}>
+                        <Button borderWidth='sm' onClick={onClick} size='lg' textSize='md' variant={buttonVariant}>
                             {buttonText}
-                        </WalletButton>
+                        </Button>
                     ) : null
                 }
                 title={title}

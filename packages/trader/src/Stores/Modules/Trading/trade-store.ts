@@ -11,6 +11,7 @@ import {
     getPlatformSettings,
     getPropertyValue,
     getContractSubtype,
+    getTradeNotificationMessage,
     isBarrierSupported,
     isAccumulatorContract,
     isCryptocurrency,
@@ -35,6 +36,10 @@ import {
     getContractTypesConfig,
     setTradeURLParams,
     getTradeURLParams,
+    getCardLabelsV2,
+    formatMoney,
+    getContractPath,
+    routes,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -134,6 +139,11 @@ export type TChartStateChangeOption = {
     symbol_category?: string;
     time_interval_name?: string;
 };
+export type TWheelPickerInitialValues = {
+    growth_rate?: number;
+    strike?: string | number;
+    multiplier?: number;
+};
 type TContractDataForGTM = Omit<Partial<PriceProposalRequest>, 'cancellation' | 'limit_order'> &
     ReturnType<typeof getProposalInfo> & {
         buy_price: number;
@@ -173,6 +183,7 @@ type TStakeBoundary = Record<
 >;
 type TTicksHistoryResponse = TicksHistoryResponse | TicksStreamResponse;
 type TBarriersData = Record<string, never> | { barrier: string; barrier_choices: string[] };
+type TValidationParams = ReturnType<typeof getProposalInfo>['validation_params'];
 
 const store_name = 'trade_store';
 const g_subscribers_map: Partial<Record<string, ReturnType<typeof WS.subscribeTicksHistory>>> = {}; // blame amin.m
@@ -191,6 +202,7 @@ export default class TradeStore extends BaseStore {
     is_market_closed = false;
     previous_symbol = '';
     active_symbols: ActiveSymbols = [];
+    has_symbols_for_v2 = false;
 
     form_components: string[] = [];
 
@@ -201,6 +213,7 @@ export default class TradeStore extends BaseStore {
     prev_contract_type = '';
     contract_types_list: TContractTypesList = {};
     non_available_contract_types_list: TContractTypesList = {};
+    trade_type_tab = '';
     trade_types: { [key: string]: string } = {};
 
     // Amount
@@ -244,10 +257,13 @@ export default class TradeStore extends BaseStore {
      *
      */
     market_close_times: string[] = [];
+    validation_params?: TValidationParams | Record<string, never> = {};
 
     // Last Digit
+    digit_stats: number[] = [];
     last_digit = 5;
     is_mobile_digit_view_selected = false;
+    tick_data: TickSpotData | null = null;
 
     // Purchase
     proposal_info: TProposalInfo = {};
@@ -297,6 +313,7 @@ export default class TradeStore extends BaseStore {
 
     // Mobile
     is_trade_params_expanded = true;
+    wheel_picker_initial_values: TWheelPickerInitialValues = {};
 
     debouncedSendTradeParamsAnalytics = debounce((payload: TEvents['ce_contracts_set_up_form']) => {
         if (payload.action === 'change_parameter_value') {
@@ -346,6 +363,7 @@ export default class TradeStore extends BaseStore {
             'stop_loss',
             'take_profit',
             'is_trade_params_expanded',
+            'wheel_picker_initial_values',
         ];
         const session_storage_properties = ['contract_type', 'symbol'];
 
@@ -378,6 +396,7 @@ export default class TradeStore extends BaseStore {
             contract_type: observable,
             contract_types_list: observable,
             currency: observable,
+            digit_stats: observable,
             duration_min_max: observable,
             duration_unit: observable,
             duration_units_list: observable,
@@ -393,12 +412,14 @@ export default class TradeStore extends BaseStore {
             has_equals_only: observable,
             has_open_accu_contract: computed,
             has_stop_loss: observable,
+            has_symbols_for_v2: observable,
             has_take_profit: observable,
             hovered_barrier: observable,
             hovered_contract_type: observable,
             is_accumulator: computed,
             is_chart_loading: observable,
             is_digits_widget_active: observable,
+            is_dtrader_v2_enabled: computed,
             is_equal: observable,
             is_market_closed: observable,
             is_mobile_digit_view_selected: observable,
@@ -415,6 +436,7 @@ export default class TradeStore extends BaseStore {
             market_open_times: observable,
             maximum_payout: observable,
             maximum_ticks: observable,
+            validation_params: observable,
             multiplier_range_list: observable,
             multiplier: observable,
             non_available_contract_types_list: observable,
@@ -425,6 +447,8 @@ export default class TradeStore extends BaseStore {
             setHoveredBarrier: action.bound,
             sessions: observable,
             setDefaultGrowthRate: action.bound,
+            setDigitStats: action.bound,
+            setTickData: action.bound,
             short_barriers: observable,
             should_show_active_symbols_loading: observable,
             should_skip_prepost_lifecycle: observable,
@@ -437,9 +461,12 @@ export default class TradeStore extends BaseStore {
             stop_out: observable,
             symbol: observable,
             take_profit: observable,
+            tick_data: observable,
             tick_size_barrier_percentage: observable,
             ticks_history_stats: observable,
+            trade_type_tab: observable,
             trade_types: observable,
+            wheel_picker_initial_values: observable,
             accountSwitcherListener: action.bound,
             barrier_pipsize: computed,
             barriers_flattened: computed,
@@ -449,6 +476,7 @@ export default class TradeStore extends BaseStore {
             clearLimitOrderBarriers: action.bound,
             clearPurchaseInfo: action.bound,
             clientInitListener: action.bound,
+            clearWheelPickerInitialValues: action.bound,
             enablePurchase: action.bound,
             exportLayout: action.bound,
             forgetAllProposal: action.bound,
@@ -484,6 +512,7 @@ export default class TradeStore extends BaseStore {
             resetPreviousSymbol: action.bound,
             sendTradeParamsAnalytics: action.bound,
             setActiveSymbols: action.bound,
+            setActiveSymbolsV2: action.bound,
             setBarrierChoices: action.bound,
             setChartModeFromURL: action.bound,
             setChartStatus: action.bound,
@@ -496,7 +525,9 @@ export default class TradeStore extends BaseStore {
             setPreviousSymbol: action.bound,
             setSkipPrePostLifecycle: action.bound,
             setStakeBoundary: action.bound,
+            setTradeTypeTab: action.bound,
             setTradeStatus: action.bound,
+            setWheelPickerInitialValues: action.bound,
             show_digits_stats: computed,
             updateStore: action.bound,
             updateSymbol: action.bound,
@@ -609,6 +640,14 @@ export default class TradeStore extends BaseStore {
         }
     }
 
+    setWheelPickerInitialValues({ value, name }: { value: number | string; name: keyof TWheelPickerInitialValues }) {
+        this.wheel_picker_initial_values = { ...this.wheel_picker_initial_values, ...{ [name]: value } };
+    }
+
+    clearWheelPickerInitialValues() {
+        this.wheel_picker_initial_values = {};
+    }
+
     setDefaultGrowthRate() {
         if (
             this.is_accumulator &&
@@ -644,8 +683,11 @@ export default class TradeStore extends BaseStore {
     async loadActiveSymbols(should_set_default_symbol = true, should_show_loading = true) {
         this.should_show_active_symbols_loading = should_show_loading;
 
-        await this.setActiveSymbols();
-        await this.root_store.active_symbols.setActiveSymbols();
+        if (!this.is_dtrader_v2_enabled) {
+            await this.setActiveSymbols();
+            await this.root_store.active_symbols.setActiveSymbols();
+        }
+
         const { symbol, showModal } = getTradeURLParams({ active_symbols: this.active_symbols });
         if (showModal && should_show_loading && !this.root_store.client.is_logging_in) {
             this.root_store.ui.toggleUrlUnavailableModal(true);
@@ -910,7 +952,13 @@ export default class TradeStore extends BaseStore {
 
     onPurchase = debounce(this.processPurchase, 300);
 
-    processPurchase(proposal_id: string, price: string | number, type: string, isMobile: boolean) {
+    processPurchase(
+        proposal_id: string,
+        price: string | number,
+        type: string,
+        isMobile: boolean,
+        callback?: (params: { message: string; redirectTo: string; title: string }) => void
+    ) {
         if (!this.is_purchase_enabled) return;
         if (proposal_id) {
             runInAction(() => {
@@ -1010,11 +1058,30 @@ export default class TradeStore extends BaseStore {
                             this.pushPurchaseDataToGtm(contract_data);
                             if (this.root_store.ui.is_mobile) {
                                 const shortcode = response.buy.shortcode;
+                                const extracted_info_from_shortcode = extractInfoFromShortcode(shortcode);
+                                const contract_id = response.buy.contract_id;
+                                const currency = getCurrencyDisplayCode(this.root_store.client.currency);
+                                const formatted_stake = `${getCardLabelsV2().STAKE}: ${formatMoney(
+                                    currency,
+                                    response.buy.buy_price,
+                                    true,
+                                    0,
+                                    0
+                                )} ${currency}`;
+                                const trade_type = extracted_info_from_shortcode.category;
+
+                                if (window.location.pathname === routes.trade)
+                                    callback?.({
+                                        message: getTradeNotificationMessage(shortcode),
+                                        redirectTo: getContractPath(contract_id),
+                                        title: formatted_stake,
+                                    });
+
                                 this.root_store.notifications.addTradeNotification({
                                     buy_price: is_multiplier ? this.amount : response.buy.buy_price,
-                                    contract_id: response.buy.contract_id,
-                                    contract_type: extractInfoFromShortcode(shortcode).category,
-                                    currency: getCurrencyDisplayCode(this.root_store.client.currency),
+                                    contract_id,
+                                    contract_type: trade_type,
+                                    currency,
                                     purchase_time: response.buy.purchase_time,
                                     shortcode,
                                     status: 'open',
@@ -1237,6 +1304,16 @@ export default class TradeStore extends BaseStore {
         }
     }
 
+    get is_dtrader_v2_enabled() {
+        const is_dtrader_v2 = JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2;
+
+        return (
+            is_dtrader_v2 &&
+            this.root_store.ui.is_mobile &&
+            (window.location.pathname.startsWith(routes.trade) || window.location.pathname.startsWith('/contract/'))
+        );
+    }
+
     get is_synthetics_available() {
         return !!this.active_symbols?.find(item => item.market === 'synthetic_index');
     }
@@ -1249,6 +1326,14 @@ export default class TradeStore extends BaseStore {
 
     get show_digits_stats() {
         return isDigitTradeType(this.contract_type);
+    }
+
+    setDigitStats(digit_stats: number[]) {
+        this.digit_stats = digit_stats;
+    }
+
+    setTickData(tick: TickSpotData | null) {
+        this.tick_data = tick;
     }
 
     setMobileDigitView(bool: boolean) {
@@ -1356,6 +1441,16 @@ export default class TradeStore extends BaseStore {
             }
             this.stop_out = limit_order?.stop_out?.order_amount;
         }
+
+        if (this.is_turbos && (this.proposal_info?.TURBOSSHORT || this.proposal_info?.TURBOSLONG)) {
+            if (this.proposal_info?.TURBOSSHORT) {
+                this.validation_params = this.proposal_info.TURBOSSHORT.validation_params;
+            }
+            if (this.proposal_info?.TURBOSLONG) {
+                this.validation_params = this.proposal_info.TURBOSLONG.validation_params;
+            }
+        }
+
         if (this.is_accumulator && this.proposal_info?.ACCU) {
             const {
                 barrier_spot_distance,
@@ -1367,12 +1462,14 @@ export default class TradeStore extends BaseStore {
                 high_barrier,
                 low_barrier,
                 spot_time,
+                validation_params,
             } = this.proposal_info.ACCU;
             this.ticks_history_stats = getUpdatedTicksHistoryStats({
                 previous_ticks_history_stats: this.ticks_history_stats,
                 new_ticks_history_stats: ticks_stayed_in,
                 last_tick_epoch,
             });
+            this.validation_params = validation_params;
             this.maximum_ticks = maximum_ticks;
             this.maximum_payout = maximum_payout;
             this.tick_size_barrier_percentage = tick_size_barrier_percentage;
@@ -1634,6 +1731,7 @@ export default class TradeStore extends BaseStore {
         this.disposeNetworkStatusChange();
         this.disposeThemeChange();
         this.is_trade_component_mounted = false;
+        this.clearWheelPickerInitialValues();
         // TODO: Find a more elegant solution to unmount contract-trade-store
         this.root_store.contract_trade.onUnmount();
         this.refresh();
@@ -1740,6 +1838,7 @@ export default class TradeStore extends BaseStore {
             });
         }
         if ('active_symbols' in req) {
+            if (this.is_dtrader_v2_enabled) return;
             if (this.root_store.client.is_logged_in) {
                 return WS.authorized.activeSymbols('brief');
             }
@@ -1822,6 +1921,11 @@ export default class TradeStore extends BaseStore {
         if (min_stake && max_stake) this.stake_boundary[type] = { min_stake, max_stake };
     }
 
+    setActiveSymbolsV2(active_symbols: ActiveSymbols) {
+        this.active_symbols = active_symbols;
+        this.has_symbols_for_v2 = !!active_symbols.length;
+    }
+
     setBarrierChoices(barrier_choices: string[]) {
         this.barrier_choices = barrier_choices ?? [];
         if (this.is_turbos) {
@@ -1839,5 +1943,9 @@ export default class TradeStore extends BaseStore {
 
     setIsDigitsWidgetActive(is_active: boolean) {
         this.is_digits_widget_active = is_active;
+    }
+
+    setTradeTypeTab(label = '') {
+        this.trade_type_tab = label;
     }
 }

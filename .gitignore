@@ -24,7 +24,8 @@ packages/appstore/lib/
 packages/appstore/.out
 packages/wallets/src/translations/messages.json
 .env
-nx-cloud.env
+.env.*
+*.env
 test-results/
 playwright-report/
 playwright/.cache/

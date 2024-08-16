@@ -30,9 +30,6 @@ interface ISaveModalStore {
     updateBotName: (bot_name: string) => void;
     setButtonStatus: (status: { [key: string]: string } | string | number) => void;
 }
-
-const Blockly = window.Blockly;
-
 export default class SaveModalStore implements ISaveModalStore {
     root_store: RootStore;
 
@@ -94,7 +91,7 @@ export default class SaveModalStore implements ISaveModalStore {
 
             const workspace_structure = {
                 id: workspace_id,
-                xml: Blockly.Xml.domToText(xml),
+                xml: window.Blockly.Xml.domToText(xml),
                 name: bot_name,
                 timestamp: Date.now(),
                 save_type,
@@ -139,23 +136,23 @@ export default class SaveModalStore implements ISaveModalStore {
         let xml;
         let main_strategy = null;
         if (active_tab === 1) {
-            xml = Blockly?.Xml?.workspaceToDom(Blockly?.derivWorkspace);
+            xml = window.Blockly?.Xml?.workspaceToDom(window.Blockly?.derivWorkspace);
         } else {
             const recent_files = await getSavedWorkspaces();
             main_strategy = recent_files.filter((strategy: TStrategy) => strategy.id === selected_strategy.id)?.[0];
             main_strategy.name = bot_name;
             main_strategy.save_type = is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE;
-            xml = Blockly?.Xml?.textToDom(main_strategy.xml);
+            xml = window.Blockly.utils.xml.textToDom(main_strategy.xml);
         }
-        xml?.setAttribute('is_dbot', 'true');
-        xml?.setAttribute('collection', save_as_collection ? 'true' : 'false');
+        xml.setAttribute('is_dbot', 'true');
+        xml.setAttribute('collection', save_as_collection ? 'true' : 'false');
 
         if (is_local) {
             save(bot_name, save_as_collection, xml);
         } else {
             await saveFile({
                 name: bot_name,
-                content: Blockly?.Xml?.domToPrettyText(xml),
+                content: window.Blockly?.Xml?.domToPrettyText(xml),
                 mimeType: 'application/xml',
             });
             this.setButtonStatus(button_status.COMPLETED);
@@ -164,7 +161,7 @@ export default class SaveModalStore implements ISaveModalStore {
         this.updateBotName(bot_name);
 
         if (active_tab === 0) {
-            const workspace_id = selected_strategy.id ?? Blockly?.utils?.genUid();
+            const workspace_id = selected_strategy.id ?? window.Blockly?.utils?.genUid();
             await this.addStrategyToWorkspace(workspace_id, is_local, save_as_collection, bot_name, xml);
             if (main_strategy) await loadStrategyToBuilder(main_strategy);
         } else {

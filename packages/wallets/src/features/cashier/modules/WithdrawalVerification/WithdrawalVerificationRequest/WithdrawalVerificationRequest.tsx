@@ -1,6 +1,8 @@
 import React from 'react';
 import { DerivLightEmailVerificationIcon } from '@deriv/quill-icons';
-import { WalletButton, WalletsActionScreen, WalletText } from '../../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Button, Text } from '@deriv-com/ui';
+import { WalletsActionScreen } from '../../../../../components';
 import './WithdrawalVerificationRequest.scss';
 
 type TProps = {
@@ -13,12 +15,12 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
             <WalletsActionScreen
                 description={
                     <div className='wallets-withdrawal-verification-request__description'>
-                        <WalletText align='center'>
-                            Press the button below, and we&apos;ll email you a verification link.
-                        </WalletText>
-                        <WalletText align='center'>
-                            This is to confirm that it&apos;s you making the withdrawal request.
-                        </WalletText>
+                        <Text align='center'>
+                            <Localize i18n_default_text="Press the button below, and we'll email you a verification link." />
+                        </Text>
+                        <Text align='center'>
+                            <Localize i18n_default_text="This is to confirm that it's you making the withdrawal request." />
+                        </Text>
                     </div>
                 }
                 icon={
@@ -30,11 +32,11 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
                     </div>
                 }
                 renderButtons={() => (
-                    <WalletButton onClick={sendEmail} size='lg'>
-                        Send email
-                    </WalletButton>
+                    <Button onClick={sendEmail} size='lg' textSize='md'>
+                        <Localize i18n_default_text='Send email' />
+                    </Button>
                 )}
-                title='Confirm your identity to make a withdrawal.'
+                title={<Localize i18n_default_text='Confirm your identity to make a withdrawal.' />}
             />
         </div>
     );

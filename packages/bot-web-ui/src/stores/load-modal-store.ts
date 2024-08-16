@@ -7,13 +7,12 @@ import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
 import { clearInjectionDiv, tabs_title } from 'Constants/load-modal';
 import { TStrategy } from 'Types';
-import { rudderStackSendSwitchLoadStrategyTabEvent } from '../analytics/rudderstack-bot-builder';
 import {
     rudderStackSendUploadStrategyCompletedEvent,
     rudderStackSendUploadStrategyFailedEvent,
     rudderStackSendUploadStrategyStartEvent,
 } from '../analytics/rudderstack-common-events';
-import { getStrategyType, LOAD_MODAL_TABS } from '../analytics/utils';
+import { getStrategyType } from '../analytics/utils';
 import RootStore from './root-store';
 
 interface ILoadModalStore {
@@ -50,7 +49,7 @@ interface ILoadModalStore {
     onToggleDeleteDialog: (is_delete_modal_open: boolean) => void;
     onZoomInOutClick: (is_zoom_in: string) => void;
     previewRecentStrategy: (workspace_id: string) => void;
-    setActiveTabIndex: (index: number, is_default: boolean) => void;
+    setActiveTabIndex: (index: number) => void;
     setLoadedLocalFile: (loaded_local_file: File | null) => void;
     setDashboardStrategies: (strategies: Array<TStrategy>) => void;
     setRecentStrategies: (recent_strategies: TStrategy[]) => void;
@@ -235,7 +234,7 @@ export default class LoadModalStore implements ILoadModalStore {
         const workspace = window.Blockly.derivWorkspace;
         if (workspace) {
             window.Blockly.derivWorkspace.asyncClear();
-            window.Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.cached_xml.main), workspace);
+            window.Blockly.Xml.domToWorkspace(window.Blockly.utils.xml.textToDom(workspace.cached_xml.main), workspace);
             window.Blockly.derivWorkspace.strategy_to_load = workspace.cached_xml.main;
         }
     };
@@ -275,7 +274,7 @@ export default class LoadModalStore implements ILoadModalStore {
         if (!this.selected_strategy) {
             window.Blockly.derivWorkspace.asyncClear();
             window.Blockly.Xml.domToWorkspace(
-                window.Blockly.Xml.textToDom(window.Blockly.derivWorkspace.strategy_to_load),
+                window.Blockly.utils.xml.textToDom(window.Blockly.derivWorkspace.strategy_to_load),
                 window.Blockly.derivWorkspace
             );
             this.is_open_button_loading = false;
@@ -358,12 +357,19 @@ export default class LoadModalStore implements ILoadModalStore {
 
     onDriveOpen = async () => {
         const { google_drive } = this.root_store;
+        const { verifyGoogleDriveAccessToken } = google_drive;
+        const result = await verifyGoogleDriveAccessToken();
+        if (result === 'not_verified') return;
+
         if (google_drive) {
             google_drive.upload_id = uuidv4();
         }
         rudderStackSendUploadStrategyStartEvent({ upload_provider: 'google_drive', upload_id: google_drive.upload_id });
         const { loadFile } = this.root_store.google_drive;
-        const { xml_doc, file_name } = await loadFile();
+        const load_file = await loadFile();
+        if (!load_file) return;
+        const xml_doc = load_file?.xml_doc;
+        const file_name = load_file?.file_name;
         await load({
             block_string: xml_doc,
             file_name,
@@ -442,20 +448,15 @@ export default class LoadModalStore implements ILoadModalStore {
                 },
                 readOnly: true,
                 scrollbars: true,
+                renderer: 'zelos',
+                theme: window?.Blockly?.Themes?.zelos_renderer,
             });
         }
         this.refreshStrategiesTheme();
     };
 
-    setActiveTabIndex = (index: number, is_default: boolean): void => {
+    setActiveTabIndex = (index: number): void => {
         this.active_index = index;
-        if (!is_default) {
-            const { ui } = this.core;
-            const { is_mobile } = ui;
-            rudderStackSendSwitchLoadStrategyTabEvent({
-                load_strategy_tab: LOAD_MODAL_TABS[index + (is_mobile ? 1 : 0)],
-            });
-        }
     };
 
     setLoadedLocalFile = (loaded_local_file: File | null): void => {
@@ -552,6 +553,8 @@ export default class LoadModalStore implements ILoadModalStore {
                     },
                     readOnly: true,
                     scrollbars: true,
+                    renderer: 'zelos',
+                    theme: window?.Blockly?.Themes?.zelos_renderer,
                 });
                 load_options.workspace = this.local_workspace;
                 if (load_options.workspace) {

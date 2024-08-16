@@ -1,16 +1,17 @@
-import React from 'react';
+import { Fragment } from 'react';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Button, Money, ThemedScrollbars } from '@deriv/components';
-import { CFD_PLATFORMS, formatMoney } from '@deriv/shared';
+import { CFD_PLATFORMS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
+import { FormatUtils, CurrencyConstants } from '@deriv-com/utils';
 import {
     TAccounts,
     TDetailsOfDerivAccount,
     TDetailsOfDerivXAccount,
     TDetailsOfMT5Account,
     TDetailsOfCtraderAccount,
-} from 'Types';
+} from '../../../../Types';
 import ClosingAccountPendingContent from './closing-account-pending-content';
 import ClosingAccountPendingWrapper from './closing-account-pending-wrapper';
 import ClosingAccountPendingBalance from './closing-account-pending-balance';
@@ -124,7 +125,7 @@ const ClosingAccountHasPendingConditions = observer(
         }
 
         return (
-            <React.Fragment>
+            <Fragment>
                 <ThemedScrollbars autohide={false} width='43rem'>
                     {!!deriv_open_positions.length && (
                         <ClosingAccountPendingWrapper
@@ -164,7 +165,9 @@ const ClosingAccountHasPendingConditions = observer(
                                         account.currency && (
                                             <Money
                                                 currency={account.currency}
-                                                amount={formatMoney(account.currency, account.balance ?? 0, true)}
+                                                amount={FormatUtils.formatMoney(account.balance ?? 0, {
+                                                    currency: account.currency as CurrencyConstants.Currency,
+                                                })}
                                                 should_format={false}
                                             />
                                         )
@@ -239,7 +242,7 @@ const ClosingAccountHasPendingConditions = observer(
                         <Localize i18n_default_text='OK' />
                     </Button>
                 </div>
-            </React.Fragment>
+            </Fragment>
         );
     }
 );

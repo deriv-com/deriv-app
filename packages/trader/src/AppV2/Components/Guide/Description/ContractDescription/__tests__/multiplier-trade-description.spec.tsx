@@ -1,8 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { TERM } from 'AppV2/Utils/contract-description-utils';
+import { getTerm } from 'AppV2/Utils/contract-description-utils';
 import MultipliersTradeDescription from '../multipliers-trade-description';
+
+jest.mock('@lottiefiles/dotlottie-react', () => ({
+    DotLottieReact: jest.fn(() => <div>DotLottieReact</div>),
+}));
 
 describe('MultipliersTradeDescription', () => {
     it('should render a proper content', () => {
@@ -17,7 +21,7 @@ describe('MultipliersTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<MultipliersTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: TERM.STOP_OUT_LEVEL.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().STOP_OUT_LEVEL.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -26,7 +30,7 @@ describe('MultipliersTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<MultipliersTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: TERM.TAKE_PROFIT }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().TAKE_PROFIT }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -35,7 +39,7 @@ describe('MultipliersTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<MultipliersTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: TERM.STOP_LOSS }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().STOP_LOSS }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -44,7 +48,7 @@ describe('MultipliersTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<MultipliersTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: TERM.DEAL_CANCELLATION }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().DEAL_CANCELLATION }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -53,7 +57,7 @@ describe('MultipliersTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<MultipliersTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: TERM.SLIPPAGE_RISK.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().SLIPPAGE_RISK.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });

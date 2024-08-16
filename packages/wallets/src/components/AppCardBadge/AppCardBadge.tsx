@@ -1,7 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import { THooks } from '../../types';
-import { WalletText } from '../Base';
 import './AppCardBadge.scss';
 
 type TProps = {
@@ -14,13 +15,13 @@ const AppCardBadge: React.FC<TProps> = ({ isDemo }) => {
         'wallets-app-card-badge--real': !isDemo,
     });
 
-    const formattedLabel = isDemo ? 'Demo' : 'Real';
+    const formattedLabel = isDemo ? <Localize i18n_default_text='Demo' /> : <Localize i18n_default_text='Real' />;
 
     return (
         <div className={className}>
-            <WalletText color='white' size='2xs' weight='bold'>
+            <Text color='white' size='2xs' weight='bold'>
                 {formattedLabel}
-            </WalletText>
+            </Text>
         </div>
     );
 };

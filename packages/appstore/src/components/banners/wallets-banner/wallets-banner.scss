@@ -1,20 +1,23 @@
 .wallets-banner {
-    &__container {
-        position: relative;
-        height: 18rem;
-        display: flex;
-        padding: 2.4rem;
-        margin-block: 2.4rem;
-        overflow: hidden;
-        background-color: var(--general-section-1);
-        border: 1px solid var(--wallets-banner-border-color);
-        border-radius: $BORDER_RADIUS * 4;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.2rem;
+    height: 18rem;
+    margin-block: 2.4rem;
+    padding-block: 2.4rem;
+    padding-inline-start: 2.4rem;
+    overflow: hidden;
+    background-color: var(--general-section-1);
+    border: 1px solid var(--wallets-banner-border-color);
+    border-radius: $BORDER_RADIUS * 4;
 
-        @include mobile {
-            height: 14.2rem;
-            padding: 1.6rem;
-            border-radius: $BORDER_RADIUS * 2;
-        }
+    @include mobile-or-tablet-screen {
+        height: 14.2rem;
+        border-radius: $BORDER_RADIUS * 2;
+        padding-block: 1.6rem;
+        padding-inline-start: 1.6rem;
     }
 
     &__content {
@@ -27,31 +30,26 @@
     &-upgrade {
         &__content {
             width: 55.7rem;
+            min-width: 55.7rem;
             justify-content: center;
             gap: 1.6rem;
 
-            @include mobile {
-                width: 20rem;
+            @include mobile-screen {
+                width: 19rem;
+                min-width: 19rem;
+            }
+
+            @include tablet-screen {
+                width: 25.6rem;
+                min-width: 25.6rem;
             }
         }
 
         &__button {
             padding-inline: 6.7rem;
 
-            @include mobile {
-                padding-inline: 1.6rem;
-                padding-block: 0.6rem;
-            }
-        }
-
-        &__image {
-            position: absolute;
-            top: 0;
-            right: 8rem;
-
-            @include mobile {
-                top: -2.6rem;
-                right: -5.35rem;
+            @include mobile-or-tablet-screen {
+                padding: 0.6rem 1.6rem;
             }
         }
     }
@@ -59,16 +57,30 @@
     &-upgrading {
         &__content {
             width: 48.6rem;
+            min-width: 48.6rem;
             justify-content: space-between;
+            gap: 0.8rem;
 
-            @include mobile {
+            @include mobile-screen {
                 width: 20rem;
+                min-width: 20rem;
+            }
+
+            @include tablet-screen {
+                width: 27.3rem;
+                min-width: 27.3rem;
             }
         }
 
         &__description {
-            @include mobile {
+            @include mobile-screen {
                 width: 15.1rem;
+                min-width: 15.1rem;
+            }
+
+            @include tablet-screen {
+                width: 27.3rem;
+                min-width: 27.3rem;
             }
         }
 
@@ -80,7 +92,7 @@
             align-items: center;
             gap: 0.6rem;
 
-            @include mobile {
+            @include mobile-screen {
                 width: 3.2rem;
                 height: 3.2rem;
             }
@@ -108,20 +120,9 @@
             border-radius: 50%;
             background-color: var(--wallets-banner-dot-color);
 
-            @include mobile {
+            @include mobile-screen {
                 height: 0.5rem;
                 width: 0.5rem;
-            }
-        }
-
-        &__image {
-            position: absolute;
-            top: 0;
-            right: 8rem;
-
-            @include mobile {
-                top: -2.6rem;
-                right: -5.35rem;
             }
         }
     }
@@ -129,12 +130,19 @@
     &-unsuccessful {
         &__content {
             width: 48.6rem;
+            min-width: 48.6rem;
             justify-content: center;
             gap: 0.8rem;
             z-index: 1;
 
-            @include mobile {
+            @include mobile-screen {
                 width: 17rem;
+                min-width: 17rem;
+            }
+
+            @include tablet-screen {
+                width: 29.5rem;
+                min-width: 29.5rem;
             }
         }
 
@@ -143,14 +151,41 @@
         }
 
         &__image {
-            position: absolute;
-            right: 7.5rem;
-            top: 0;
+            width: fit-content;
+            min-width: 24.2rem;
+            overflow: hidden;
+            margin-inline-end: 8rem;
 
-            @include mobile {
-                right: -3rem;
+            @include mobile-or-tablet-screen {
+                min-width: 19.2rem;
+                margin-inline-end: 2.4rem;
+            }
+            @include rtl {
+                -webkit-transform: scaleX(-1);
+                -moz-transform: scaleX(-1);
+                -o-transform: scaleX(-1);
+                transform: scaleX(-1);
             }
         }
+    }
+}
+
+.wallets-banner-upgrade__image,
+.wallets-banner-upgrading__image {
+    width: fit-content;
+    min-width: 36.8rem;
+    overflow: hidden;
+    margin-inline-end: 8rem;
+
+    @include mobile-screen {
+        min-width: 15.6rem;
+        margin-block-start: 0.4rem;
+        margin-inline-end: unset;
+    }
+
+    @include tablet-screen {
+        min-width: 23.4rem;
+        margin-inline-end: 2.4rem;
     }
 }
 

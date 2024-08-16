@@ -21,9 +21,10 @@ export const inject_workspace_options = {
 };
 
 export const updateXmlValues = blockly_options => {
+    if (!window.Blockly) return;
     const { strategy_id, convertedDom, file_name, from } = blockly_options;
     window.Blockly.xmlValues = {
-        ...window?.Blockly?.xmlValues,
+        ...window.Blockly.xmlValues,
         strategy_id,
         convertedDom,
         file_name,

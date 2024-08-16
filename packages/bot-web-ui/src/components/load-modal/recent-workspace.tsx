@@ -11,8 +11,15 @@ type TRecentWorkspaceProps = {
 };
 
 const RecentWorkspace = observer(({ workspace }: TRecentWorkspaceProps) => {
-    const { load_modal } = useDBotStore();
-    const { getRecentFileIcon, getSaveType, loadStrategyOnModalRecentPreview, selected_strategy_id } = load_modal;
+    const { load_modal, blockly_store } = useDBotStore();
+    const { setLoading } = blockly_store;
+    const {
+        getRecentFileIcon,
+        getSaveType,
+        loadStrategyOnModalRecentPreview,
+        selected_strategy_id,
+        updateXmlValuesForRecentStrategy,
+    } = load_modal;
 
     return (
         <div
@@ -21,7 +28,13 @@ const RecentWorkspace = observer(({ workspace }: TRecentWorkspaceProps) => {
             })}
             key={workspace.id}
             onClick={
-                selected_strategy_id === workspace.id ? undefined : () => loadStrategyOnModalRecentPreview(workspace.id)
+                selected_strategy_id === workspace.id
+                    ? undefined
+                    : () => {
+                          setLoading(true);
+                          loadStrategyOnModalRecentPreview(workspace.id);
+                          updateXmlValuesForRecentStrategy();
+                      }
             }
             data-testid='dt_recent_workspace_item'
         >

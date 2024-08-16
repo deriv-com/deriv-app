@@ -47,4 +47,12 @@ describe('RecentWorkspace', () => {
         render(<RecentWorkspace workspace={mock_workspace} />, { wrapper });
         expect(screen.getByText('18 Oct 2023')).toBeInTheDocument();
     });
+
+    it('should update selected strategy ID on clicking the strategy', () => {
+        mock_DBot_store?.load_modal?.setRecentStrategies(mock_workspace);
+        render(<RecentWorkspace workspace={mock_workspace} />, { wrapper });
+        const recent_workspace_item = screen.getByTestId('dt_recent_workspace_item');
+        userEvent.click(recent_workspace_item);
+        expect(mock_DBot_store?.load_modal?.selected_strategy_id).toBe(mock_workspace.id);
+    });
 });

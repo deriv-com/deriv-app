@@ -30,7 +30,7 @@ const DepositNowBanner = makeLazyLoader(
 
 const TradersHubBanners = observer(() => {
     const { client, traders_hub } = useStore();
-    const { is_landing_company_loaded, has_any_real_account, is_eu } = client;
+    const { is_landing_company_loaded, has_any_real_account, is_eu, is_switching } = client;
     const { is_real } = traders_hub;
     const { hasDeposited, hasTransferred, isLoaded } = useStoreHasAccountDeposited();
 
@@ -48,7 +48,7 @@ const TradersHubBanners = observer(() => {
     const should_show_real_account_creation_banner =
         ff_real_account_creation_banner && !has_any_real_account && !is_eu && is_landing_company_loaded;
     const should_show_deposit_now_banner =
-        ff_deposit_now_banner && is_real && isLoaded && !hasDeposited && !hasTransferred;
+        ff_deposit_now_banner && !is_switching && is_real && isLoaded && !hasDeposited && !hasTransferred;
 
     return (
         <React.Fragment>

@@ -34,6 +34,10 @@
     .dc-input {
         margin-bottom: unset;
 
+        .dc-input__field {
+            text-align: left;
+        }
+
         .dc-field--error {
             line-height: var(--text-lh-m);
             position: static;

@@ -843,7 +843,7 @@ const AccountTransferForm = observer(
                                                 />
                                             </SideNote>
                                         )}
-                                        <ErrorDialog error={error} />
+                                        {!is_from_outside_cashier && <ErrorDialog error={error} />}
                                     </Form>
                                 </>
                             )}

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Divider, Tooltip } from '@deriv-com/ui';
-import { WalletText } from '../../../../components';
+import { localize, useTranslations } from '@deriv-com/translations';
+import { Divider, Text, Tooltip } from '@deriv-com/ui';
 import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS, MARKET_TYPE, PRODUCT } from '../../constants';
@@ -37,33 +37,34 @@ type TMarketWithShortCode = `${TMarketType}_${string}`;
 const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms.OtherAccounts, isDemo?: boolean) => {
     switch (shortCode) {
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_SVG:
-            return isDemo ? 'Standard Demo' : 'Standard - SVG';
+            return isDemo ? localize('Standard Demo') : localize('Standard - SVG');
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_BVI:
-            return 'Standard - BVI';
+            return localize('Standard - BVI');
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_VANUATU:
-            return 'Standard - Vanuatu';
+            return localize('Standard - Vanuatu');
         case MARKET_TYPE_SHORTCODE.FINANCIAL_SVG:
-            return isDemo ? 'Financial Demo' : 'Financial - SVG';
+            return isDemo ? localize('Financial Demo') : localize('Financial - SVG');
         case MARKET_TYPE_SHORTCODE.FINANCIAL_BVI:
-            return 'Financial - BVI';
+            return localize('Financial - BVI');
         case MARKET_TYPE_SHORTCODE.FINANCIAL_VANUATU:
-            return 'Financial - Vanuatu';
+            return localize('Financial - Vanuatu');
         case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
             return 'Financial - Labuan';
         case MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG:
-            return isDemo ? 'Swap-Free Demo' : 'Swap-Free - SVG';
+            return isDemo ? localize('Swap-Free Demo') : localize('Swap-Free - SVG');
         case MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI:
-            return isDemo ? 'Zero Spread Demo' : 'Zero Spread - BVI';
+            return isDemo ? localize('Zero Spread Demo') : localize('Zero Spread - BVI');
         case CFD_PLATFORMS.DXTRADE:
-            return isDemo ? 'Deriv X Demo' : 'Deriv X';
+            return isDemo ? localize('Deriv X Demo') : localize('Deriv X');
         case CFD_PLATFORMS.CTRADER:
-            return isDemo ? 'Deriv cTrader Demo' : 'Deriv cTrader';
+            return isDemo ? localize('Deriv cTrader Demo') : localize('Deriv cTrader');
         default:
-            return isDemo ? 'CFDs Demo' : 'CFDs';
+            return isDemo ? localize('CFDs Demo') : localize('CFDs');
     }
 };
 
 const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, product, shortCode }: TCompareAccountsTitleIcon) => {
+    const { localize } = useTranslations();
     const marketTypeShortCode: TMarketWithShortCode =
         platform === CFD_PLATFORMS.MT5 && marketType === MARKET_TYPE.ALL
             ? `${marketType}_${product}_${shortCode}`
@@ -75,17 +76,18 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, product, short
         platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER
             ? getAccountCardTitle(platform, isDemo)
             : getAccountCardTitle(marketTypeShortCode, isDemo);
-    const labuanJurisdictionMessage =
-        'Choosing this jurisdiction will give you a Financial STP account. Your trades will go directly to the market and have tighter spreads.';
+    const labuanJurisdictionMessage = localize(
+        'Choosing this jurisdiction will give you a Financial STP account. Your trades will go directly to the market and have tighter spreads.'
+    );
 
     return (
         <React.Fragment>
             <div className='wallets-compare-accounts-title'>
                 {jurisdictionCardIcon}
                 <div className='wallets-compare-accounts-title__separator'>
-                    <WalletText align='center' as='h1' size='sm' weight='bold'>
+                    <Text align='center' as='h1' size='sm' weight='bold'>
                         {jurisdictionCardTitle}
-                    </WalletText>
+                    </Text>
                     {marketTypeShortCode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN && (
                         <Tooltip
                             as='div'

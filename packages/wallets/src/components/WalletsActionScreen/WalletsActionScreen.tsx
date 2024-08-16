@@ -1,11 +1,11 @@
 import React, { ComponentProps, PropsWithChildren, ReactElement, ReactNode } from 'react';
+import { Text } from '@deriv-com/ui';
 import { WalletButton, WalletButtonGroup } from '../Base';
-import WalletText from '../Base/WalletText/WalletText';
 import './WalletsActionScreen.scss';
 
 type TProps = {
     description?: ReactNode;
-    descriptionSize?: ComponentProps<typeof WalletText>['size'];
+    descriptionSize?: ComponentProps<typeof Text>['size'];
     icon?: ReactNode;
     renderButtons?: () =>
         | ReactElement<ComponentProps<'div'>>
@@ -13,7 +13,7 @@ type TProps = {
         | ReactElement<ComponentProps<typeof WalletButtonGroup>>
         | null;
     title?: ReactNode;
-    titleSize?: ComponentProps<typeof WalletText>['size'];
+    titleSize?: ComponentProps<typeof Text>['size'];
 };
 
 /**
@@ -34,13 +34,13 @@ const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
             {icon}
             <div className='wallets-action-screen__info'>
                 {title && (
-                    <WalletText align='center' size={titleSize} weight='bold'>
+                    <Text align='center' size={titleSize} weight='bold'>
                         {title}
-                    </WalletText>
+                    </Text>
                 )}
-                <WalletText align='center' size={descriptionSize}>
+                <Text align='center' size={descriptionSize}>
                     {description}
-                </WalletText>
+                </Text>
             </div>
             {renderButtons?.()}
         </div>

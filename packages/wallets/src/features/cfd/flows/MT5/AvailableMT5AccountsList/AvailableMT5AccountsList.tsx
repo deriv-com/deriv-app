@@ -6,7 +6,7 @@ import { useModal } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
 import { getMarketTypeDetails, PRODUCT } from '../../../constants';
 import { JurisdictionModal, MT5PasswordModal } from '../../../modals';
-import { Verification } from '../../Verification';
+import { ClientVerification } from '../../ClientVerification';
 import './AvailableMT5AccountsList.scss';
 
 type TProps = {
@@ -29,7 +29,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
             );
         } else if (account.product === PRODUCT.ZEROSPREAD) {
             show(
-                <Verification
+                <ClientVerification
                     isVirtual={activeWallet?.is_virtual}
                     product={account.product}
                     selectedJurisdiction={account.shortcode}

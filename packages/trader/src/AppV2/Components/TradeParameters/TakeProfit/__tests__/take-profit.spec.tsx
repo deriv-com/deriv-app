@@ -92,6 +92,7 @@ describe('TakeProfit', () => {
                 max: '100',
             },
         };
+        default_mock_store.modules.trade.take_profit = '';
         mockTakeProfit();
 
         userEvent.click(screen.getByText(take_profit_trade_param));
@@ -99,17 +100,15 @@ describe('TakeProfit', () => {
         const toggle_switcher = screen.getAllByRole('button')[0];
         userEvent.click(toggle_switcher);
 
-        const input = screen.getByTestId(data_testid);
-        userEvent.type(input, '{space}{backspace}');
-        expect(screen.getByText('Please enter a take profit amount.'));
-
         const save_button = screen.getByText('Save');
         userEvent.click(save_button);
+        expect(screen.getByText('Please enter a take profit amount.'));
+
         expect(default_mock_store.modules.trade.onChangeMultiple).not.toBeCalled();
         expect(default_mock_store.modules.trade.onChange).not.toBeCalled();
 
-        userEvent.type(input, '0.0002');
-        expect(screen.getByText('Acceptable range: 0.01 to 100'));
+        userEvent.type(screen.getByTestId(data_testid), '0.0002');
+        expect(screen.getByText('Please enter a take profit amount that’s higher than 0.01.'));
 
         userEvent.click(save_button);
         expect(default_mock_store.modules.trade.onChangeMultiple).not.toBeCalled();

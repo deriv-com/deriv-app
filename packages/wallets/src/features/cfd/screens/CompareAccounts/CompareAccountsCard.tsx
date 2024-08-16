@@ -1,5 +1,6 @@
 import React from 'react';
-import { WalletText } from '../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import { THooks, TPlatforms } from '../../../../types';
 import { PRODUCT } from '../../constants';
 import CompareAccountsDescription from './CompareAccountsDescription';
@@ -33,9 +34,9 @@ const CompareAccountsCard = ({
                 <CompareAccountsPlatformLabel platform={platform} />
                 {product === PRODUCT.ZEROSPREAD && (
                     <div className='wallets-compare-accounts-card__banner'>
-                        <WalletText color='white' size='xs' weight='bold'>
-                            New!
-                        </WalletText>
+                        <Text color='white' size='xs' weight='bold'>
+                            <Localize i18n_default_text='New!' />
+                        </Text>
                     </div>
                 )}
                 <CompareAccountsTitleIcon
@@ -63,9 +64,9 @@ const CompareAccountsCard = ({
                 />
                 {isEuUser && (
                     <div className='wallets-compare-accounts-card__eu-clients'>
-                        <WalletText color='red' size='2xs' weight='bold'>
-                            *Boom 300 and Crash 300 Index
-                        </WalletText>
+                        <Text color='red' size='2xs' weight='bold'>
+                            <Localize i18n_default_text='*Boom 300 and Crash 300 Index' />
+                        </Text>
                     </div>
                 )}
             </div>

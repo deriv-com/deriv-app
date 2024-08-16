@@ -1,8 +1,9 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { TERM, getContractDescription } from 'AppV2/Utils/contract-description-utils';
+import { getTerm, getContractDescription } from 'AppV2/Utils/contract-description-utils';
 
 const TurbosTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
+    const { PAYOUT, EXPIRY, BARRIER, PAYOUT_PER_POINT, FINAL_PRICE, CONTRACT_VALUE } = getTerm();
     const content = [
         {
             type: 'general',
@@ -19,17 +20,17 @@ const TurbosTradeDescription = ({ onTermClick }: { onTermClick: (term: string) =
                         <button
                             className='description__content--definition'
                             key={0}
-                            onClick={() => onTermClick(TERM.PAYOUT)}
+                            onClick={() => onTermClick(PAYOUT)}
                         />,
                         <button
                             className='description__content--definition'
                             key={1}
-                            onClick={() => onTermClick(TERM.EXPIRY)}
+                            onClick={() => onTermClick(EXPIRY)}
                         />,
                         <button
                             className='description__content--definition'
                             key={2}
-                            onClick={() => onTermClick(TERM.BARRIER)}
+                            onClick={() => onTermClick(BARRIER)}
                         />,
                     ]}
                 />
@@ -82,12 +83,12 @@ const TurbosTradeDescription = ({ onTermClick }: { onTermClick: (term: string) =
                         <button
                             className='description__content--definition'
                             key={0}
-                            onClick={() => onTermClick(TERM.PAYOUT_PER_POINT)}
+                            onClick={() => onTermClick(PAYOUT_PER_POINT)}
                         />,
                         <button
                             className='description__content--definition'
                             key={1}
-                            onClick={() => onTermClick(TERM.FINAL_PRICE)}
+                            onClick={() => onTermClick(FINAL_PRICE)}
                         />,
                     ]}
                 />
@@ -102,7 +103,7 @@ const TurbosTradeDescription = ({ onTermClick }: { onTermClick: (term: string) =
                         <button
                             className='description__content--definition'
                             key={0}
-                            onClick={() => onTermClick(TERM.CONTRACT_VALUE)}
+                            onClick={() => onTermClick(CONTRACT_VALUE)}
                         />,
                     ]}
                 />

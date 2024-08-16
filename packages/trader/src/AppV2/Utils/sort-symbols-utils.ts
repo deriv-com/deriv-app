@@ -14,7 +14,7 @@ const sortSymbols = (symbolsList: ActiveSymbols) => {
         {}
     );
 
-    return symbolsList.sort((a, b) => {
+    return symbolsList.slice().sort((a, b) => {
         const marketOrderA = marketOrderMap[a.market] !== undefined ? marketOrderMap[a.market] : symbolsList.length;
         const marketOrderB = marketOrderMap[b.market] !== undefined ? marketOrderMap[b.market] : symbolsList.length;
         if (marketOrderA !== marketOrderB) {

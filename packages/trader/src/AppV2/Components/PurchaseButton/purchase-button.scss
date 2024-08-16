@@ -68,9 +68,4 @@
             width: calc(100% - var(--core-spacing-800));
         }
     }
-    &:disabled {
-        opacity: var(
-            --core-opacity-300
-        ); // TODO: remove this when disabled button opacity in quill-ui is no longer 0.48 (var(--core-opacity-600))
-    }
 }

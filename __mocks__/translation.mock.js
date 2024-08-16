@@ -1,12 +1,13 @@
 import React from 'react';
 
 const replaceValue = (text, values) => {
-    const valueMatch = text.match(/{{(\w+)}}/);
-    if (valueMatch) {
-        const valueKey = valueMatch[1];
-        return values[valueKey] || text;
-    }
-    return text;
+    return text.replace(/{{(\w+)}}/g, (match, key) => {
+        // If the value is an empty string, return an empty fragment to render nothing
+        if (values[key] === '') {
+            return '';
+        }
+        return values[key] || match;
+    });
 };
 
 const Localize = ({ i18n_default_text, components = [], values = {} }) => {

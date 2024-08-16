@@ -412,6 +412,7 @@ export default class TradeStore extends BaseStore {
             is_accumulator: computed,
             is_chart_loading: observable,
             is_digits_widget_active: observable,
+            is_dtrader_v2_enabled: computed,
             is_equal: observable,
             is_market_closed: observable,
             is_mobile_digit_view_selected: observable,
@@ -664,8 +665,11 @@ export default class TradeStore extends BaseStore {
     async loadActiveSymbols(should_set_default_symbol = true, should_show_loading = true) {
         this.should_show_active_symbols_loading = should_show_loading;
 
-        await this.setActiveSymbols();
-        await this.root_store.active_symbols.setActiveSymbols();
+        if (!this.is_dtrader_v2_enabled) {
+            await this.setActiveSymbols();
+            await this.root_store.active_symbols.setActiveSymbols();
+        }
+
         const { symbol, showModal } = getTradeURLParams({ active_symbols: this.active_symbols });
         if (showModal && should_show_loading && !this.root_store.client.is_logging_in) {
             this.root_store.ui.toggleUrlUnavailableModal(true);
@@ -1282,6 +1286,16 @@ export default class TradeStore extends BaseStore {
         }
     }
 
+    get is_dtrader_v2_enabled() {
+        const is_dtrader_v2 = JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2;
+
+        return (
+            is_dtrader_v2 &&
+            this.root_store.ui.is_mobile &&
+            (window.location.pathname.startsWith(routes.trade) || window.location.pathname.startsWith('/contract/'))
+        );
+    }
+
     get is_synthetics_available() {
         return !!this.active_symbols?.find(item => item.market === 'synthetic_index');
     }
@@ -1805,6 +1819,7 @@ export default class TradeStore extends BaseStore {
             });
         }
         if ('active_symbols' in req) {
+            if (this.is_dtrader_v2_enabled) return;
             if (this.root_store.client.is_logged_in) {
                 return WS.authorized.activeSymbols('brief');
             }

@@ -12,6 +12,7 @@ import {
     getMarketTypeDetails,
     JURISDICTION,
     MARKET_TYPE,
+    MT5_ACCOUNT_STATUS,
     PlatformDetails,
     TRADING_PLATFORM_STATUS,
 } from '../../../constants';
@@ -38,10 +39,11 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
 
     const hasPlatformStatus =
         account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE ||
+        account.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE ||
         platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
 
     const isServerMaintenance = platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
-
+    const showPlatformStatus = hasPlatformStatus && !(jurisdictionStatus.is_pending || jurisdictionStatus.is_failed);
     return (
         <TradingAccountCard
             disabled={jurisdictionStatus.is_pending}
@@ -73,7 +75,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         'wallets-added-mt5__icon--pending': jurisdictionStatus.is_pending,
                     })}
                 >
-                    {hasPlatformStatus ? (
+                    {showPlatformStatus ? (
                         <PlatformStatusBadge
                             badgeSize='md'
                             className='wallets-added-mt5__icon--badge'

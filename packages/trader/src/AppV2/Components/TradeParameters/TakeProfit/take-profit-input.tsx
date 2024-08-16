@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
@@ -8,10 +9,22 @@ import { Localize, localize } from '@deriv/translations';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 
 type TTakeProfitInputProps = {
+    classname?: string;
+    has_save_button?: boolean;
     onActionSheetClose: () => void;
+    has_tp_initial_value_ref_parent?: React.MutableRefObject<boolean | undefined>;
+    tp_initial_value_ref_parent?: React.MutableRefObject<string | number | undefined>;
+    is_parent_save_btn_clicked?: boolean;
 };
 
-const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
+const TakeProfitInput = ({
+    classname,
+    has_save_button = true,
+    onActionSheetClose,
+    has_tp_initial_value_ref_parent,
+    tp_initial_value_ref_parent,
+    is_parent_save_btn_clicked,
+}: TTakeProfitInputProps) => {
     const {
         contract_type,
         currency,
@@ -27,11 +40,15 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
         validation_errors,
     } = useTraderStore();
 
-    const [is_save_btn_clicked, setIsSaveBtnClicked] = React.useState(false);
+    const [is_save_btn_clicked, setIsSaveBtnClicked] = React.useState(is_parent_save_btn_clicked || false);
     const has_error_ref = React.useRef<boolean>();
-    const has_tp_initial_value_ref = React.useRef<boolean>();
+
+    const has_tp_initial_value_component = React.useRef<boolean>();
+    const has_tp_initial_value_ref = has_tp_initial_value_ref_parent || has_tp_initial_value_component;
     const has_tp_selected_value_ref = React.useRef(has_take_profit);
-    const tp_initial_value_ref = React.useRef<string | number | undefined>('');
+
+    const tp_initial_value_component = React.useRef<string | number | undefined>('');
+    const tp_initial_value_ref = tp_initial_value_ref_parent || tp_initial_value_component;
     const tp_selected_value_ref = React.useRef<string | number | undefined>(take_profit);
 
     const input_ref = React.useRef<HTMLInputElement>(null);
@@ -46,6 +63,7 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
         (be_error_text && !!take_profit) || (be_error_text && !take_profit && is_save_btn_clicked);
     const min_take_profit = validation_params[contract_types[0]]?.take_profit?.min;
     const max_take_profit = validation_params[contract_types[0]]?.take_profit?.max;
+
     const [info, setInfo] = React.useState({
         min_take_profit,
         max_take_profit,
@@ -89,6 +107,7 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
 
     const onSave = () => {
         setIsSaveBtnClicked(true);
+
         if (be_error_text && has_tp_selected_value_ref.current) {
             return;
         }
@@ -134,6 +153,10 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
     React.useEffect(() => {
         has_error_ref.current = !!be_error_text;
     }, [be_error_text]);
+
+    React.useEffect(() => {
+        setIsSaveBtnClicked(!!is_parent_save_btn_clicked);
+    }, [is_parent_save_btn_clicked]);
 
     React.useEffect(() => {
         setInfo(info => {
@@ -187,7 +210,7 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
 
     return (
         <React.Fragment>
-            <ActionSheet.Content className='take-profit__wrapper'>
+            <ActionSheet.Content className={clsx('take-profit__wrapper', classname)}>
                 <div className='take-profit__content'>
                     <Text>
                         <Localize i18n_default_text='Take profit' />
@@ -228,14 +251,16 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
                     </CaptionText>
                 )}
             </ActionSheet.Content>
-            <ActionSheet.Footer
-                alignment='vertical'
-                primaryAction={{
-                    content: <Localize i18n_default_text='Save' />,
-                    onAction: onSave,
-                }}
-                shouldCloseOnPrimaryButtonClick={false}
-            />
+            {has_save_button && (
+                <ActionSheet.Footer
+                    alignment='vertical'
+                    primaryAction={{
+                        content: <Localize i18n_default_text='Save' />,
+                        onAction: onSave,
+                    }}
+                    shouldCloseOnPrimaryButtonClick={false}
+                />
+            )}
         </React.Fragment>
     );
 };

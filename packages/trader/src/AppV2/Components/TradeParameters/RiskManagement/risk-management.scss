@@ -16,6 +16,10 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
                 height: calc(90dvh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
                 max-height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
             }
+            .risk-management__tp-sl__wrapper {
+                height: calc(90dvh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $SEGMENTED_CONTROL);
+                max-height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $SEGMENTED_CONTROL);
+            }
             .trade-param-definition {
                 height: calc(90dvh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
                 max-height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
@@ -47,6 +51,25 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
 
         &__definition {
             margin-block-end: var(--core-spacing-800);
+        }
+    }
+
+    &__tp-sl {
+        margin-top: var(--core-spacing-400);
+        padding: 0;
+        flex-grow: 0;
+        height: auto;
+        min-height: 122px;
+
+        &__wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $SEGMENTED_CONTROL);
+        }
+
+        .take-profit__overlay {
+            left: 0;
         }
     }
 }

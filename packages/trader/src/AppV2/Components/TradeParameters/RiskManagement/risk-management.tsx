@@ -10,6 +10,7 @@ import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import { addUnit, isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import RiskManagementPicker from './risk-management-picker';
 import RiskManagementContent from './risk-management-content';
+import { getCurrencyDisplayCode } from '@deriv/shared';
 
 type TRiskManagementProps = {
     is_minimized?: boolean;
@@ -17,12 +18,15 @@ type TRiskManagementProps = {
 
 const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
     const [is_open, setIsOpen] = React.useState(false);
-    const { has_cancellation, cancellation_range_list, cancellation_duration } = useTraderStore();
+    const { cancellation_range_list, cancellation_duration, currency, has_cancellation, has_take_profit, take_profit } =
+        useTraderStore();
     const closeActionSheet = () => setIsOpen(false);
     const getRiskManagementText = () => {
         //TODO: add cases for TP and SL
-        if (!has_cancellation) return '-';
-        return `DC: ${addUnit(cancellation_duration, localize('minutes'))}`;
+
+        if (has_cancellation) return `DC: ${addUnit(cancellation_duration, localize('minutes'))}`;
+        if (has_take_profit) return `TP: ${take_profit} ${getCurrencyDisplayCode(currency)}`;
+        return '-';
     };
 
     const is_small_screen = isSmallScreen();

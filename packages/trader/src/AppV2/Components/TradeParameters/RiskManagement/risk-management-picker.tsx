@@ -1,7 +1,8 @@
 import React from 'react';
-import { ActionSheet, Button, SegmentedControlSingleChoice } from '@deriv-com/quill-ui';
+import { ActionSheet, SegmentedControlSingleChoice } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import DealCancellation from './deal-cancellation';
+import TakeProfitAndStopLoss from './take-profit-and-stop-loss';
 
 type TRiskManagementPickerProps = {
     closeActionSheet: () => void;
@@ -28,18 +29,7 @@ const RiskManagementPicker = ({ closeActionSheet, should_show_deal_cancellation 
             {tab_index ? (
                 <DealCancellation closeActionSheet={closeActionSheet} />
             ) : (
-                <React.Fragment>
-                    <div>TP</div>
-                    <div>SL</div>
-                    <Button
-                        color='black'
-                        size='lg'
-                        label={<Localize i18n_default_text='Save' />}
-                        fullWidth
-                        className='risk-management__save-button'
-                        // onClick={() => console.log('Click')}
-                    />
-                </React.Fragment>
+                <TakeProfitAndStopLoss closeActionSheet={closeActionSheet} />
             )}
         </ActionSheet.Content>
     );

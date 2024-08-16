@@ -103,24 +103,6 @@ jobs:
         with:
           name: build
           path: packages/core/dist
-      - name: Build Docker image and push to Docker hub and K8S
-        id: build_and_push_docker_image
-        uses: "./.github/actions/build_and_push_docker_image"
-        with:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKERHUB_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          DOCKERHUB_ORGANISATION: ${{ secrets.DOCKERHUB_ORGANISATION }}
-          K8S_NAMESPACE: ${{ secrets.K8S_NAMESPACE }}
-          KUBE_SERVER: ${{ secrets.KUBE_SERVER }}
-          SERVICEACCOUNT_TOKEN: ${{ secrets.SERVICEACCOUNT_TOKEN }}
-          CA_CRT: ${{ secrets.CA_CRT }}
-          APP_VERSION: latest
-      - name: Send Slack Notification on Docker Publish and Kubernetes Deployment Failure
-        if: ${{ steps.build_and_push_docker_image.outcome != 'success' }}
-        uses: "deriv-com/shared-actions/.github/actions/send_slack_notification@master"
-        with:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          MESSAGE: "${{ env.RELEASE_TYPE }} Docker Publish and Kubernetes Deployment for app.deriv.com with version ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION }} has Failed"
       - name: Upload to vercel
         id: vercel-upload
         uses: 'deriv-com/shared-actions/.github/actions/vercel_DR_publish@master'

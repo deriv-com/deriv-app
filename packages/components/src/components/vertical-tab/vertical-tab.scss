@@ -38,13 +38,10 @@ $MIN_HEIGHT_FLOATING: calc(
         display: flex;
         flex-flow: column nowrap;
         flex-grow: 1;
-    }
-    &__content-inner {
-        position: absolute;
-        z-index: 0;
-        height: 100%;
-        width: 100%;
-        display: flex;
+
+        &--has-side-note {
+            flex-flow: unset;
+        }
     }
     &--full-screen {
         min-height: $MIN_HEIGHT_FULL_SCREEN;

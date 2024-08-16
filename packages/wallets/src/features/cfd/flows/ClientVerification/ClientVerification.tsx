@@ -9,9 +9,7 @@ import { ResubmissionSuccessMessage } from './components';
 
 type TClientVerificationProps = {
     hasVerificationFailed?: boolean;
-    isVirtual?: boolean;
     onCompletion?: VoidFunction;
-    product?: THooks.AvailableMT5Accounts['product'];
     selectedJurisdiction?: string;
 };
 type TStatusCodes = Exclude<THooks.POA['status'] | THooks.POI['current']['status'], undefined>;

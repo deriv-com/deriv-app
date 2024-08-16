@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { TradingAccountCard, WalletText } from '../../../../../components';
@@ -17,6 +17,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { setModalState, show } = useModal();
     const { description, title } = getMarketTypeDetails(account.product)[account.market_type || 'all'];
+    const [showMt5PasswordModal, setShowMt5PasswordModal] = useState(false);
 
     const onButtonClick = useCallback(() => {
         if (activeWallet?.is_virtual) {
@@ -30,8 +31,9 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
         } else if (account.product === PRODUCT.ZEROSPREAD) {
             show(
                 <ClientVerification
-                    isVirtual={activeWallet?.is_virtual}
-                    product={account.product}
+                    onCompletion={() => {
+                        setShowMt5PasswordModal(true);
+                    }}
                     selectedJurisdiction={account.shortcode}
                 />
             );
@@ -49,6 +51,19 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
         account.product,
         account?.shortcode,
     ]);
+
+    useEffect(() => {
+        if (showMt5PasswordModal) {
+            show(
+                <MT5PasswordModal
+                    isVirtual={activeWallet?.is_virtual}
+                    marketType={account?.market_type || 'all'}
+                    platform={account.platform}
+                    product={account.product}
+                />
+            );
+        }
+    }, [showMt5PasswordModal]);
 
     return (
         <TradingAccountCard

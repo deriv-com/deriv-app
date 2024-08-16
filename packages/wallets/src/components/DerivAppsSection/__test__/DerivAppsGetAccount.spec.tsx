@@ -68,11 +68,7 @@ describe('DerivAppsGetAccount', () => {
     });
     it('renders the component', () => {
         render(<DerivAppsGetAccount />, { wrapper });
-        expect(
-            screen.getByRole('button', {
-                name: 'Get',
-            })
-        ).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Get' })).toBeInTheDocument();
     });
     it('calls createTradingAccount function when the Get button is clicked', async () => {
         const mockMutateAsync = jest.fn(() => Promise.resolve({ new_account_real: 'new_account_real' }));
@@ -81,9 +77,7 @@ describe('DerivAppsGetAccount', () => {
         (mockUseActiveLinkedToTradingAccount as jest.Mock).mockReturnValue({ isLoading: false });
         mockUseInvalidateQuery.mockReturnValue(mockInvalidate);
         render(<DerivAppsGetAccount />, { wrapper });
-        const button = screen.getByRole('button', {
-            name: 'Get',
-        });
+        const button = screen.getByRole('button', { name: 'Get' });
         userEvent.click(button);
         await waitFor(() => expect(mockMutateAsync).toBeCalled());
         await waitFor(() => expect(mockInvalidate).toBeCalledWith('account_list'));
@@ -101,10 +95,10 @@ describe('DerivAppsGetAccount', () => {
         expect(mockShow).toBeCalled();
         const args = mockShow.mock.calls[0][0];
         render(args, { wrapper });
-        expect(screen.getByText('Maybe later')).toBeInTheDocument();
-        expect(screen.getByText('Transfer funds')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Maybe later' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Transfer funds' })).toBeInTheDocument();
     });
-    it('calls show function when the Get button is clicked and new_account_real is "new_account_real" on desktop', async () => {
+    it('calls show function when the Get button is clicked and new_account_real is "new_account_real" on desktop', () => {
         const mockMutateAsync = jest.fn(() => Promise.resolve({ new_account_real: 'new_account_real' }));
         (mockUseCreateNewRealAccount as jest.Mock).mockReturnValue({
             isLoading: false,
@@ -117,8 +111,7 @@ describe('DerivAppsGetAccount', () => {
         expect(mockShow).toBeCalled();
         const args = mockShow.mock.calls[0][0];
         render(args, { wrapper });
-        const maybe = await screen.findByText('Maybe later');
-        expect(maybe).toBeInTheDocument();
-        expect(screen.getByText('Transfer funds')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Maybe later' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Transfer funds' })).toBeInTheDocument();
     });
 });

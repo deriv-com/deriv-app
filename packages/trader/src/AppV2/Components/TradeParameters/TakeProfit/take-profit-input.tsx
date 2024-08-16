@@ -5,6 +5,7 @@ import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import { focusAndOpenKeyboard } from 'AppV2/Utils/trade-params-utils';
 import { ActionSheet, CaptionText, Text, ToggleSwitch, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
+import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 
 type TTakeProfitInputProps = {
     onActionSheetClose: () => void;
@@ -12,10 +13,13 @@ type TTakeProfitInputProps = {
 
 const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
     const {
+        contract_type,
         currency,
         has_take_profit,
         is_accumulator,
         take_profit,
+        trade_types,
+        trade_type_tab,
         onChangeMultiple,
         onChange,
         validation_params,
@@ -34,8 +38,9 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
     const focused_input_ref = React.useRef<HTMLInputElement>(null);
     const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
 
-    const min_take_profit = validation_params?.take_profit?.min;
-    const max_take_profit = validation_params?.take_profit?.max;
+    const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
+    const min_take_profit = validation_params[contract_types[0]]?.take_profit?.min;
+    const max_take_profit = validation_params[contract_types[0]]?.take_profit?.max;
     const decimals = getDecimalPlaces(currency);
     const be_error_text = validation_errors.take_profit[0];
     const currency_display_code = getCurrencyDisplayCode(currency);

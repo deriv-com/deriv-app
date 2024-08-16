@@ -2,12 +2,6 @@ import React from 'react';
 import { renderHook, act } from '@testing-library/react-hooks';
 import usePhoneNumberVerificationSetTimer from '../usePhoneNumberVerificationSetTimer';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { useServerTime } from '@deriv/api';
-
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
-    useServerTime: jest.fn(),
-}));
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -37,11 +31,6 @@ describe('usePhoneNumberVerificationSetTimer', () => {
     beforeEach(() => {
         jest.clearAllMocks();
         jest.useFakeTimers();
-        (useServerTime as jest.Mock).mockReturnValue({
-            data: {
-                time: 1620000000,
-            },
-        });
     });
 
     afterEach(() => {

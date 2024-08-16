@@ -7,15 +7,12 @@ import OTPVerification from './otp-verification';
 import CancelPhoneVerificationModal from './cancel-phone-verification-modal';
 import VerificationLinkExpiredModal from './verification-link-expired-modal';
 import { observer, useStore } from '@deriv/stores';
-import {
-    useGrowthbookGetFeatureValue,
-    usePhoneNumberVerificationSessionTimer,
-    useSendOTPVerificationCode,
-} from '@deriv/hooks';
+import { useGrowthbookGetFeatureValue, useSendOTPVerificationCode } from '@deriv/hooks';
 import { Loading } from '@deriv/components';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
+import SessionTimeoutModal from './session-timeout-modal';
 
 const PhoneVerificationPage = observer(() => {
     const history = useHistory();
@@ -32,7 +29,6 @@ const PhoneVerificationPage = observer(() => {
     const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
-    const { should_show_session_timeout_modal } = usePhoneNumberVerificationSessionTimer();
 
     const { client, ui } = useStore();
     const { is_redirected_from_email, setRedirectFromEmail } = ui;
@@ -41,10 +37,6 @@ const PhoneVerificationPage = observer(() => {
         is_authorize,
         is_virtual,
     } = client;
-
-    useEffect(() => {
-        //TODO: setShouldShowSessionModal here or maybe could just implement it in the component.
-    }, [should_show_session_timeout_modal]);
 
     useEffect(() => {
         if ((isPhoneNumberVerificationGBLoaded && !isPhoneNumberVerificationEnabled) || is_virtual) {
@@ -82,6 +74,7 @@ const PhoneVerificationPage = observer(() => {
                 should_show_verification_link_expired_modal={should_show_verification_link_expired_modal}
                 setShouldShowVerificationLinkExpiredModal={setShouldShowVerificationLinkExpiredModal}
             />
+            <SessionTimeoutModal />
             <CancelPhoneVerificationModal />
             <div className='phone-verification__redirect_button'>
                 <IconButton

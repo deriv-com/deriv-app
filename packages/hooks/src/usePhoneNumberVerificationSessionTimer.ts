@@ -20,6 +20,8 @@ const usePhoneNumberVerificationSessionTimer = () => {
 
                 if (next_request > 0) {
                     setSessionTimer(next_request);
+                } else {
+                    setSessionTimer(0);
                 }
             }
         });
@@ -27,13 +29,15 @@ const usePhoneNumberVerificationSessionTimer = () => {
 
     useEffect(() => {
         let countdown: ReturnType<typeof setInterval>;
-        if (session_timer && session_timer > 0) {
-            setShouldShowSessionTimeoutModal(false);
-            countdown = setInterval(() => {
-                setSessionTimer(session_timer - 1);
-            }, 1000);
-        } else {
-            setShouldShowSessionTimeoutModal(true);
+        if (typeof session_timer === 'number') {
+            if (session_timer > 0) {
+                setShouldShowSessionTimeoutModal(false);
+                countdown = setInterval(() => {
+                    setSessionTimer(session_timer - 1);
+                }, 1000);
+            } else {
+                setShouldShowSessionTimeoutModal(true);
+            }
         }
         return () => clearInterval(countdown);
     }, [session_timer]);

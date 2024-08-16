@@ -5,7 +5,7 @@ import { useHistory, useLocation } from 'react-router';
 import { observer, useStore } from '@deriv/stores';
 import { LabelPairedCircleXmarkLgRegularIcon } from '@deriv/quill-icons';
 import { useDevice } from '@deriv-com/ui';
-import { usePhoneVerificationAnalytics } from '@deriv/hooks';
+import { usePhoneNumberVerificationSessionTimer, usePhoneVerificationAnalytics } from '@deriv/hooks';
 
 const CancelPhoneVerificationModal = observer(() => {
     const history = useHistory();
@@ -17,10 +17,11 @@ const CancelPhoneVerificationModal = observer(() => {
     const { setVerificationCode, is_virtual } = client;
     const { isMobile } = useDevice();
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
+    const { should_show_session_timeout_modal: is_session_exired } = usePhoneNumberVerificationSessionTimer();
 
     useEffect(() => {
         const unblock = history.block((location: Location) => {
-            if (!show_modal && !is_virtual && !is_forced_to_exit_pnv) {
+            if (!show_modal && !is_virtual && !is_session_exired && !is_forced_to_exit_pnv) {
                 setShowModal(true);
                 setNextLocation(location.pathname);
                 return false;
@@ -29,7 +30,7 @@ const CancelPhoneVerificationModal = observer(() => {
         });
 
         return () => unblock();
-    }, [history, show_modal, is_virtual, is_forced_to_exit_pnv]);
+    }, [history, show_modal, is_virtual, is_session_exired, is_forced_to_exit_pnv]);
 
     const handleStayAtPhoneVerificationPage = () => {
         setShowModal(false);

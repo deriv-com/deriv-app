@@ -28,7 +28,7 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
     const has_error_ref = React.useRef<boolean>();
     const has_tp_initial_value_ref = React.useRef<boolean>();
     const has_tp_selected_value_ref = React.useRef(has_take_profit);
-    const tp_initial_value_ref = React.useRef<string | number>();
+    const tp_initial_value_ref = React.useRef<string | number | undefined>('');
     const tp_selected_value_ref = React.useRef<string | number | undefined>(take_profit);
 
     const input_ref = React.useRef<HTMLInputElement>(null);
@@ -39,7 +39,6 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
     const max_take_profit = validation_params?.take_profit?.max;
     const decimals = getDecimalPlaces(currency);
     const be_error_text = validation_errors.take_profit[0];
-
     const currency_display_code = getCurrencyDisplayCode(currency);
 
     const onToggleSwitch = (new_value: boolean) => {
@@ -60,7 +59,7 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
     };
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = String(e.target.value).replace(',', '.');
+        const value = String(e.target.value).replace(',', '.').replace(/^0*/, '').replace(/^\./, '0.');
         tp_selected_value_ref.current = value;
 
         if (!isTakeProfitOutOfRange({ value }) && value !== '') {
@@ -134,7 +133,8 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
         onChange({
             target: {
                 name: 'take_profit',
-                value: has_error_ref.current ? '' : tp_selected_value_ref.current,
+                value:
+                    has_error_ref.current || tp_selected_value_ref.current === '0' ? '' : tp_selected_value_ref.current,
             },
         });
 
@@ -164,18 +164,29 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
         }
 
         return () => {
-            if (has_tp_initial_value_ref.current !== has_tp_selected_value_ref.current) {
-                const has_take_profit = has_error_ref.current ? false : has_tp_initial_value_ref.current;
-                onChangeMultiple({
-                    has_take_profit,
-                    ...(has_take_profit ? { has_cancellation: false } : {}),
-                });
-            }
-            if (tp_initial_value_ref.current !== tp_selected_value_ref.current) {
-                onChange({
-                    target: { name: 'take_profit', value: has_error_ref.current ? '' : tp_initial_value_ref.current },
-                });
-            }
+            const has_take_profit =
+                tp_initial_value_ref.current === '' ||
+                tp_initial_value_ref.current === '0' ||
+                (has_error_ref.current && tp_selected_value_ref.current !== '0' && tp_selected_value_ref.current !== '')
+                    ? false
+                    : has_tp_initial_value_ref.current;
+            onChangeMultiple({
+                has_take_profit,
+                ...(has_take_profit ? { has_cancellation: false } : {}),
+            });
+            onChange({
+                target: {
+                    name: 'take_profit',
+                    value:
+                        tp_initial_value_ref.current === '' ||
+                        tp_initial_value_ref.current === '0' ||
+                        (has_error_ref.current &&
+                            tp_selected_value_ref.current !== '0' &&
+                            tp_selected_value_ref.current !== '')
+                            ? ''
+                            : tp_initial_value_ref.current,
+                },
+            });
 
             clearTimeout(focus_timeout.current);
         };

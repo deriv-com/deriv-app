@@ -542,16 +542,6 @@ export default class LoadModalStore implements ILoadModalStore {
         reader.readAsText(file);
     };
 
-    workspaceOptions = {
-        block_string: this.selected_strategy?.xml,
-        drop_event: {},
-        workspace: this.recent_workspace,
-        file_name: this.selected_strategy?.name,
-        strategy_id: this.selected_strategy?.id,
-        from: this.selected_strategy?.save_type,
-        showIncompatibleStrategyDialog: false,
-    };
-
     saveStrategyToLocalStorage = async () => {
         const { save_modal } = this.root_store;
         const { updateBotName } = save_modal;
@@ -573,6 +563,7 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     updateXmlValuesForRecentStrategy = () => {
+        if (this.recent_strategies.length === 0) return;
         updateXmlValues({
             strategy_id: this.selected_strategy_id,
             convertedDom: window?.Blockly?.utils?.xml?.textToDom(this.selected_strategy?.xml),

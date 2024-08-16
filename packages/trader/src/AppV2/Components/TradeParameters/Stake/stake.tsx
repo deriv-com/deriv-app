@@ -24,6 +24,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         commission,
         contract_type,
         currency,
+        is_accumulator,
         is_multiplier,
         onChange,
         proposal_info,
@@ -34,6 +35,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         validation_params,
     } = useTraderStore();
     const [is_open, setIsOpen] = React.useState(false);
+    const [should_show_error, setShouldShowError] = React.useState(false);
     const [initial_stake_value, setInitialStakeValue] = React.useState<number>();
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     const { max_payout = 0, stake } = validation_params[contract_types[0]] ?? {};
@@ -93,8 +95,8 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     }, [is_open, max_payout, max_stake, min_stake, main_button_payout, second_button_payout]);
 
     const getInputMessage = () =>
-        stake_error ||
-        (info.min_stake && info.max_stake && (
+        (should_show_error && stake_error) ||
+        (!!info.min_stake && !!info.max_stake && (
             <Localize
                 i18n_default_text='Acceptable range: {{min_stake}} to {{max_stake}} {{currency}}'
                 values={{
@@ -106,6 +108,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         ));
 
     const handleOnChange = (e: { target: { name: string; value: string } }) => {
+        setShouldShowError(e.target.value !== '');
         onChange({ target: { name: 'amount', value: e.target.value } });
     };
 
@@ -143,14 +146,15 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                 onChange={handleOnChange}
                                 placeholder={localize('Amount')}
                                 regex={/[^0-9.,]/g}
-                                status={stake_error ? 'error' : 'neutral'}
+                                status={should_show_error && stake_error ? 'error' : 'neutral'}
                                 textAlignment='center'
+                                type='number'
                                 inputMode='decimal'
                                 unitLeft={getCurrencyDisplayCode(currency)}
                                 variant='fill'
                                 value={amount}
                             />
-                            {!!info.max_payout && !is_multiplier && (
+                            {!!info.max_payout && !is_accumulator && !is_multiplier && (
                                 <div className='barrier-params__max-payout-wrapper'>
                                     <Text size='sm'>
                                         <Localize i18n_default_text='Max payout' />
@@ -220,6 +224,8 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                             onAction: () => {
                                 if (!stake_error) {
                                     onClose(true);
+                                } else {
+                                    setShouldShowError(true);
                                 }
                             },
                         }}

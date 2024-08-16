@@ -24,7 +24,6 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
 
     const [error_message, setErrorMessage] = React.useState<React.ReactNode>('');
 
-    //TODO: check if can reuse in other places
     const has_error_ref = React.useRef<boolean>();
     const has_tp_initial_value_ref = React.useRef<boolean>();
     const has_tp_selected_value_ref = React.useRef(has_take_profit);
@@ -59,7 +58,18 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
     };
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = String(e.target.value).replace(',', '.').replace(/^0*/, '').replace(/^\./, '0.');
+        let value = String(e.target.value).replace(',', '.');
+        if (value.startsWith('.')) {
+            value = value.replace(/^\./, '0.');
+        }
+        if (value.length > 1) {
+            if (/^[0-]+$/.test(value)) {
+                value = '0';
+            } else {
+                value = value.replace(/^0*/, '').replace(/^\./, '0.');
+            }
+        }
+
         tp_selected_value_ref.current = value;
 
         if (!isTakeProfitOutOfRange({ value }) && value !== '') {
@@ -164,12 +174,13 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
         }
 
         return () => {
-            const has_take_profit =
+            const should_set_empty_string =
                 tp_initial_value_ref.current === '' ||
                 tp_initial_value_ref.current === '0' ||
-                (has_error_ref.current && tp_selected_value_ref.current !== '0' && tp_selected_value_ref.current !== '')
-                    ? false
-                    : has_tp_initial_value_ref.current;
+                (has_error_ref.current &&
+                    tp_selected_value_ref.current !== '0' &&
+                    tp_selected_value_ref.current !== '');
+            const has_take_profit = should_set_empty_string ? false : has_tp_initial_value_ref.current;
             onChangeMultiple({
                 has_take_profit,
                 ...(has_take_profit ? { has_cancellation: false } : {}),
@@ -177,14 +188,7 @@ const TakeProfitInput = ({ onActionSheetClose }: TTakeProfitInputProps) => {
             onChange({
                 target: {
                     name: 'take_profit',
-                    value:
-                        tp_initial_value_ref.current === '' ||
-                        tp_initial_value_ref.current === '0' ||
-                        (has_error_ref.current &&
-                            tp_selected_value_ref.current !== '0' &&
-                            tp_selected_value_ref.current !== '')
-                            ? ''
-                            : tp_initial_value_ref.current,
+                    value: should_set_empty_string ? '' : tp_initial_value_ref.current,
                 },
             });
 

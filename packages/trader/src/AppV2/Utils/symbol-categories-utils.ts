@@ -1,5 +1,6 @@
 import { ActiveSymbols } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
+import sortSymbols from './sort-symbols-utils';
 
 type SubmarketGroup = {
     submarket_display_name: string;
@@ -22,7 +23,8 @@ export const categorizeSymbols = (symbols: ActiveSymbols): Record<string, Market
         return {};
     }
     // Categorize ActiveSymbols array into object categorized by markets
-    let categorizedSymbols = symbols.reduce((acc: Record<string, MarketGroup>, symbol: ActiveSymbols[0]) => {
+    const sortedSymbols = sortSymbols(symbols);
+    let categorizedSymbols = sortedSymbols.reduce((acc: Record<string, MarketGroup>, symbol: ActiveSymbols[0]) => {
         const { market, market_display_name, subgroup, subgroup_display_name, submarket, submarket_display_name } =
             symbol;
 
@@ -42,7 +44,6 @@ export const categorizeSymbols = (symbols: ActiveSymbols): Record<string, Market
 
         return acc;
     }, {});
-
     // Sort categorizedSymbols by submarket_display_name
     Object.keys(categorizedSymbols).forEach(market => {
         Object.keys(categorizedSymbols[market].subgroups).forEach(subgroup => {

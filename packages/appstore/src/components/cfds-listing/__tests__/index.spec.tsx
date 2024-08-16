@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { useMT5SVGEligibleToMigrate, useTradingPlatformStatus } from '@deriv/hooks';
+import { useMT5SVGEligibleToMigrate, useTradingPlatformStatus, useGrowthbookGetFeatureValue } from '@deriv/hooks';
 
 import CFDsListing from '../index';
 
@@ -16,10 +16,15 @@ jest.mock('@deriv-com/ui', () => ({
     })),
 }));
 jest.mock('@deriv/hooks');
+const mockUseGrowthbookGetFeatureValue = useGrowthbookGetFeatureValue as jest.MockedFunction<
+    typeof useGrowthbookGetFeatureValue
+>;
 const mockUseTradingPlatformStatus = useTradingPlatformStatus as jest.MockedFunction<typeof useTradingPlatformStatus>;
 const mockUseMT5SVGEligibleToMigrate = useMT5SVGEligibleToMigrate as jest.MockedFunction<
     typeof useMT5SVGEligibleToMigrate
 >;
+
+mockUseGrowthbookGetFeatureValue.mockReturnValue([true, true]);
 
 mockUseMT5SVGEligibleToMigrate.mockReturnValue({
     eligible_account_to_migrate_label: 'BVI',
@@ -39,17 +44,17 @@ mockUseMT5SVGEligibleToMigrate.mockReturnValue({
         },
     ],
 });
-describe('CFDsListing', () => {
-    mockUseTradingPlatformStatus.mockReturnValue({
-        data: [
-            {
-                platform: 'mt5',
-                status: 'active',
-            },
-        ],
-        getPlatformStatus: jest.fn(),
-    });
 
+mockUseTradingPlatformStatus.mockReturnValue({
+    data: [
+        {
+            platform: 'mt5',
+            status: 'active',
+        },
+    ],
+    getPlatformStatus: jest.fn(),
+});
+describe('CFDsListing', () => {
     const mock = mockStore({
         traders_hub: {
             selected_region: 'Non-EU',

@@ -313,7 +313,7 @@ const AccountWizard = observer(props => {
             delete clone.tax_identification_number;
         }
 
-        if (clone?.tnc_acceptance[0] === 'on') {
+        if (clone?.tnc_acceptance === true) {
             clone.tnc_acceptance = 1;
         }
         clone = processInputData(clone);

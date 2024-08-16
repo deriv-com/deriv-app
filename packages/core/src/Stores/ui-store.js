@@ -87,6 +87,7 @@ export default class UIStore extends BaseStore {
 
     // verification modal
     is_verification_modal_visible = false;
+    is_forced_to_route = false;
 
     //verification document submitted modal
     is_verification_submitted = false;
@@ -278,7 +279,7 @@ export default class UIStore extends BaseStore {
             is_trading_disabled_by_residence_modal_visible: observable,
             is_mobile_language_menu_open: observable,
             is_nativepicker_visible: observable,
-
+            is_forced_to_route: observable,
             is_positions_drawer_on: observable,
             is_real_acc_signup_on: observable,
             is_real_tab_enabled: observable,
@@ -385,6 +386,7 @@ export default class UIStore extends BaseStore {
             setShouldShowRiskWarningModal: action.bound,
             setRedirectFromEmail: action.bound,
             setIsWalletModalVisible: action.bound,
+            setIsForcedToRoute: action.bound,
             setIsRealTabEnabled: action.bound,
             setIsTradingAssessmentForExistingUserEnabled: action.bound,
             setIsTradingAssessmentForNewUserEnabled: action.bound,
@@ -457,6 +459,10 @@ export default class UIStore extends BaseStore {
 
     setIsClosingCreateRealAccountModal(is_closing_create_real_account_modal) {
         this.is_closing_create_real_account_modal = is_closing_create_real_account_modal;
+    }
+
+    setIsForcedToRoute(is_forced_to_route) {
+        this.is_forced_to_route = is_forced_to_route;
     }
 
     setIsRealTabEnabled(is_real_tab_enabled) {

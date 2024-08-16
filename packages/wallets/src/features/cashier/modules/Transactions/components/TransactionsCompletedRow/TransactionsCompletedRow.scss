@@ -1,6 +1,5 @@
 .wallets-transactions-completed-row {
     align-items: center;
-    background-color: none;
     display: flex;
     justify-content: space-between;
     padding: 1.6rem;
@@ -9,10 +8,11 @@
     @include mobile {
         padding: 1.6rem 0;
     }
-    &:hover {
-        background-color: #e6e9e9;
-        color: none;
-        cursor: pointer;
+    @media (hover: hover) {
+        &:hover {
+            background-color: #e6e9e9;
+            cursor: pointer;
+        }
     }
 
     &__type-and-wallet-name {

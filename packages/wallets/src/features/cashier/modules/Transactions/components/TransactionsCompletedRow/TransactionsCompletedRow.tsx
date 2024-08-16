@@ -89,7 +89,7 @@ const TransactionsCompletedRowContent: React.FC<TTransactionsCompletedRowContent
 const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wallet }) => {
     const { localize } = useTranslations();
     const [shouldShowTraceId, setShouldShowTraceId] = useState(false);
-    const debouncedsetShouldShowTraceId = useDebounceCallback(() => setShouldShowTraceId(false), 5000);
+    const debouncedSetShouldShowTraceId = useDebounceCallback(() => setShouldShowTraceId(false), 5000);
 
     if (!transaction.action_type || !transaction.amount) return null;
 
@@ -105,7 +105,7 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
 
     const handleRowClick = () => {
         setShouldShowTraceId(!shouldShowTraceId);
-        debouncedsetShouldShowTraceId();
+        debouncedSetShouldShowTraceId();
     };
 
     return (

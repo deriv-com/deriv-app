@@ -69,7 +69,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         isSuccess: is_payment_agent_transfer_visible_is_success,
     } = usePaymentAgentTransferVisible();
     const { is_payment_agent_visible } = payment_agent;
-    const { is_from_derivgo } = common;
+    const { current_language, is_from_derivgo } = common;
     const { is_cashier_visible: is_visible, is_mobile, toggleCashier, toggleReadyToDepositModal } = ui;
     const { currency, is_account_setting_loaded, is_logged_in, is_logging_in, is_svg, is_virtual } = client;
     const is_account_transfer_visible = useAccountTransferVisible();
@@ -82,8 +82,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     } = useP2PSettings();
     const { is_p2p_enabled, is_p2p_enabled_success, is_p2p_enabled_loading } = useIsP2PEnabled();
     const { isSuccess } = useAuthorize();
-    const preferred_language = client.account_settings.preferred_language;
-    const current_language = common.current_language;
+    const should_refetch_language = !is_from_derivgo && current_language;
 
     const onClickClose = () => history.push(routes.traders_hub);
     const getMenuOptions = useMemo(() => {
@@ -122,8 +121,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         is_payment_agent_transfer_visible,
         is_payment_agent_visible,
         p2p_notification_count,
-        preferred_language,
-        current_language,
+        should_refetch_language,
         routes_config,
     ]);
 

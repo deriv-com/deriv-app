@@ -20,7 +20,6 @@ jobs:
       uses: "./.github/actions/build"
       with:
         NODE_ENV: production
-        CROWDIN_WALLETS_API_KEY: ${{ secrets.CROWDIN_WALLETS_API_KEY }}
         DATADOG_APPLICATION_ID: ${{ vars.DATADOG_APPLICATION_ID }}
         IS_GROWTHBOOK_ENABLED: ${{ vars.IS_GROWTHBOOK_ENABLED }}
         DATADOG_CLIENT_TOKEN: ${{ vars.DATADOG_CLIENT_TOKEN }}

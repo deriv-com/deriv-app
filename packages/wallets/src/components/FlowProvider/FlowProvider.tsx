@@ -9,7 +9,7 @@ import React, {
     useMemo,
     useState,
 } from 'react';
-import { Formik, FormikErrors, FormikValues } from 'formik';
+import { Formik, FormikErrors, FormikTouched, FormikValues } from 'formik';
 import * as Yup from 'yup';
 
 export type TFlowProviderContext<T> = {
@@ -22,7 +22,12 @@ export type TFlowProviderContext<T> = {
         value: unknown,
         shouldValidate?: boolean | undefined
     ) => Promise<FormikErrors<unknown> | void>;
+    setTouched: (
+        touched: FormikTouched<FormikValues>,
+        shouldValidate?: boolean
+    ) => Promise<FormikErrors<FormikValues> | void>;
     switchScreen: (screenId: keyof T) => void;
+    touched: FormikTouched<FormikValues>;
 };
 
 type FlowChildren = ReactElement | ReactFragment | ReactPortal;
@@ -107,7 +112,7 @@ function FlowProvider<T extends TWalletScreens>({
             validateOnMount
             validationSchema={validationSchema}
         >
-            {({ errors, setFieldValue, values }) => {
+            {({ errors, setFieldValue, setTouched, touched, values }) => {
                 return (
                     <FlowProvider
                         value={{
@@ -115,6 +120,8 @@ function FlowProvider<T extends TWalletScreens>({
                             errors,
                             formValues: values,
                             setFormValues: setFieldValue,
+                            setTouched,
+                            touched,
                         }}
                     >
                         {children({
@@ -122,6 +129,8 @@ function FlowProvider<T extends TWalletScreens>({
                             errors,
                             formValues: values,
                             setFormValues: setFieldValue,
+                            setTouched,
+                            touched,
                         })}
                     </FlowProvider>
                 );

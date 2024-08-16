@@ -89,7 +89,7 @@ describe('TransactionsCompletedRowTransferAccountDetails', () => {
         render(
             <TransactionsCompletedRowTransferAccountDetails
                 accounts={mockAccounts}
-                direction='from'
+                displayActionType='Transfer from'
                 loginid='CRW5555'
             />
         );
@@ -107,7 +107,7 @@ describe('TransactionsCompletedRowTransferAccountDetails', () => {
         render(
             <TransactionsCompletedRowTransferAccountDetails
                 accounts={mockAccounts}
-                direction='from'
+                displayActionType='Transfer from'
                 loginid='CRW2222'
             />
         );
@@ -125,7 +125,7 @@ describe('TransactionsCompletedRowTransferAccountDetails', () => {
         render(
             <TransactionsCompletedRowTransferAccountDetails
                 accounts={mockAccounts}
-                direction='from'
+                displayActionType='Transfer from'
                 loginid='CRW3333'
             />
         );
@@ -143,7 +143,7 @@ describe('TransactionsCompletedRowTransferAccountDetails', () => {
         render(
             <TransactionsCompletedRowTransferAccountDetails
                 accounts={mockAccounts}
-                direction='from'
+                displayActionType='Transfer from'
                 loginid='CRW4444'
             />
         );
@@ -162,7 +162,7 @@ describe('TransactionsCompletedRowTransferAccountDetails', () => {
         render(
             <TransactionsCompletedRowTransferAccountDetails
                 accounts={mockAccounts}
-                direction='from'
+                displayActionType='Transfer from'
                 loginid='CRW1111'
             />
         );
@@ -180,7 +180,7 @@ describe('TransactionsCompletedRowTransferAccountDetails', () => {
         const { container } = render(
             <TransactionsCompletedRowTransferAccountDetails
                 accounts={mockAccounts}
-                direction='from'
+                displayActionType='Transfer from'
                 loginid='CRW6666'
             />
         );

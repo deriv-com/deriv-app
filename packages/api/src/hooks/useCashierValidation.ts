@@ -29,7 +29,6 @@ const useCashierValidation = () => {
             ask_tin_information: cashier_validation.has('ASK_TIN_INFORMATION'),
             ask_self_exclusion_max_turnover_set: cashier_validation.has('ASK_SELF_EXCLUSION_MAX_TURNOVER_SET'),
             ask_fix_details: cashier_validation.has('ASK_FIX_DETAILS'),
-            ask_uk_funds_protection: cashier_validation.has('ASK_UK_FUNDS_PROTECTION'),
             pa_commision_withdrawal_limit: cashier_validation.has('PACommisionWithdrawalLimit'),
         };
     }, [get_account_status_data?.cashier_validation]);

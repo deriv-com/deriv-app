@@ -30,6 +30,8 @@ const CurrentSpot = observer(() => {
     const { tick_data, symbol } = useTraderStore();
     const { contract_id, entry_tick, date_start, contract_type, tick_stream, underlying } = contract_info;
     const prev_contract_id = usePrevious(contract_id);
+    const last_contract_ticks = last_contract.contract_info?.tick_stream?.length;
+    const prev_last_contract_ticks = usePrevious(last_contract_ticks);
 
     let tick = tick_data;
 
@@ -86,7 +88,7 @@ const CurrentSpot = observer(() => {
     const should_show_tick_count = has_contract && has_relevant_tick_data;
     const should_enter_from_left =
         !prev_contract?.contract_info ||
-        !!(is_prev_contract_elapsed && last_contract.contract_info?.tick_stream?.length === 1);
+        !!(is_prev_contract_elapsed && last_contract_ticks === 1 && !prev_last_contract_ticks);
 
     const setNewData = React.useCallback(() => {
         setDisplayedTick(current_tick);
@@ -128,8 +130,11 @@ const CurrentSpot = observer(() => {
                 'trade__current-spot',
                 should_show_tick_count && 'trade__current-spot--has-contract',
                 should_show_tick_count && should_enter_from_left && 'trade__current-spot--enter-from-left',
-                (is_won || (has_open_contract && is_winning)) && 'trade__current-spot--won',
-                (is_lost || (has_open_contract && !is_winning)) && 'trade__current-spot--lost'
+                !should_show_tick_count && is_contract_elapsed && 'trade__current-spot--enter-from-right',
+                has_open_contract && is_winning && 'trade__current-spot--winning',
+                is_won && 'trade__current-spot--won',
+                has_open_contract && !is_winning && 'trade__current-spot--losing',
+                is_lost && 'trade__current-spot--lost'
             )}
         >
             {tick && has_relevant_tick_data && displayed_spot ? (

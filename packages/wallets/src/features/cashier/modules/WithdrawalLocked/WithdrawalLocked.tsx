@@ -1,5 +1,4 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
 import {
     useAccountLimits,
     useAccountStatus,
@@ -9,6 +8,7 @@ import {
     useCryptoConfig,
     useCurrencyConfig,
 } from '@deriv/api-v2';
+import { Localize } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import { WalletsActionScreen } from '../../../../components';
 import getWithdrawalLockedDesc, { getWithdrawalLimitReachedDesc } from './WithdrawalLockedContent';
@@ -64,8 +64,8 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
                         poiStatus,
                     })}
                     title={
-                        <Trans
-                            defaults='Withdrawals from your {{currency}} Wallet are temporarily locked.'
+                        <Localize
+                            i18n_default_text='Withdrawals from your {{currency}} Wallet are temporarily locked.'
                             values={{ currency }}
                         />
                     }
@@ -86,8 +86,8 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
                         withdrawalLockedStatus,
                     })}
                     title={
-                        <Trans
-                            defaults='Withdrawals from your {{currency}} Wallet are temporarily locked.'
+                        <Localize
+                            i18n_default_text='Withdrawals from your {{currency}} Wallet are temporarily locked.'
                             values={{ currency }}
                         />
                     }

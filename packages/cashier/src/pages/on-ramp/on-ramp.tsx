@@ -8,7 +8,7 @@ import CashierLocked from '../../components/cashier-locked';
 import SideNote from '../../components/side-note';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
-import { DepositSubPageAnalyticsEventTracker } from '../../components/deposit-sub-page-event-tracker';
+import { DepositSubPageAnalyticsEventTracker } from '../../components/deposit-sub-page-analytics-event-tracker';
 import { useCashierStore } from '../../stores/useCashierStores';
 import './on-ramp.scss';
 

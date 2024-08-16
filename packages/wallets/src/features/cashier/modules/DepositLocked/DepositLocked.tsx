@@ -1,5 +1,4 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
 import {
     useAccountStatus,
     useActiveWalletAccount,
@@ -8,6 +7,7 @@ import {
     useSettings,
     useWebsiteStatus,
 } from '@deriv/api-v2';
+import { Localize } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import { WalletsActionScreen } from '../../../../components';
 import getDepositLockedDesc from './DepositLockedContent';
@@ -65,8 +65,8 @@ const DepositLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
                         websiteTncVersion,
                     })}
                     title={
-                        <Trans
-                            defaults='Deposits into your {{currency}} Wallet are temporarily locked.'
+                        <Localize
+                            i18n_default_text='Deposits into your {{currency}} Wallet are temporarily locked.'
                             values={{ currency }}
                         />
                     }

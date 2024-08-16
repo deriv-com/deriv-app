@@ -21,6 +21,7 @@ jest.mock('../../ModalProvider', () => ({
 describe('DerivAppsSuccessFooter', () => {
     it('renders the component', () => {
         render(<DerivAppsSuccessFooter />);
+        expect(screen.getByRole('button', { name: 'Maybe later' })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Transfer funds' })).toBeInTheDocument();
     });
     it('hides the modal when Maybe later button is clicked', () => {

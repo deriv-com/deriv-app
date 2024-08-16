@@ -10,9 +10,9 @@ jest.mock('@deriv/api-v2', () => ({
     useActiveLinkedToTradingAccount: jest.fn(() => ({
         data: {
             currency_config: { display_code: 'USD' },
-            isLoading: false,
             loginid: 'CRW1',
         },
+        isLoading: false,
     })),
     useActiveWalletAccount: jest.fn(() => ({
         data: { currency_config: { display_code: 'USD' }, is_virtual: false, loginid: 'CRW1' },

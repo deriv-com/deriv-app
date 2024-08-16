@@ -118,6 +118,23 @@
                 flex: 1;
             }
         }
+
+        &__otp-code {
+            &-container {
+                ul {
+                    list-style: disc;
+                    padding-inline-start: 1.2rem;
+
+                    li {
+                        margin-inline-start: 0.8rem;
+
+                        &::marker {
+                            font-size: 1rem;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     .dc-btn {

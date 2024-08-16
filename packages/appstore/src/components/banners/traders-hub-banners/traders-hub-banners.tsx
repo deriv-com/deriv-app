@@ -32,7 +32,7 @@ const TradersHubBanners = observer(() => {
     const { client, traders_hub } = useStore();
     const { is_landing_company_loaded, has_any_real_account, is_eu } = client;
     const { is_real } = traders_hub;
-    const { hasDeposited, hasTransferred } = useStoreHasAccountDeposited();
+    const { hasDeposited, hasTransferred, isLoaded } = useStoreHasAccountDeposited();
 
     const [ff_real_account_creation_banner] = useGrowthbookGetFeatureValue({
         featureFlag: 'traders-hub-real-account-banner',
@@ -47,7 +47,8 @@ const TradersHubBanners = observer(() => {
     const should_add_empty_div_for_get_started_trading_banner_clever_tap = has_any_real_account;
     const should_show_real_account_creation_banner =
         ff_real_account_creation_banner && !has_any_real_account && !is_eu && is_landing_company_loaded;
-    const should_show_deposit_now_banner = ff_deposit_now_banner && is_real && !hasDeposited && !hasTransferred;
+    const should_show_deposit_now_banner =
+        ff_deposit_now_banner && is_real && isLoaded && !hasDeposited && !hasTransferred;
 
     return (
         <React.Fragment>

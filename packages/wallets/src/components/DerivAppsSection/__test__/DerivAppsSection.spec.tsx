@@ -46,12 +46,12 @@ const wrapper = ({ children }: PropsWithChildren) => {
 };
 
 describe('DerivAppsSection', () => {
-    it('renders the component when no activeLinkedToTradingAccount is exists', () => {
+    it('renders the component when activeLinkedToTradingAccount is undefined', () => {
         (mockUseActiveLinkedToTradingAccount as jest.Mock).mockReturnValueOnce({ isLoading: false });
         render(<DerivAppsSection />, { wrapper });
         expect(screen.getByRole('button', { name: 'Get' })).toBeInTheDocument();
     });
-    it('renders the component when an activeLinkedToTradingAccount exists', () => {
+    it('renders the component when activeLinkedToTradingAccount is defined', () => {
         render(<DerivAppsSection />, { wrapper });
         expect(screen.getByText('100.00 USD')).toBeInTheDocument();
     });

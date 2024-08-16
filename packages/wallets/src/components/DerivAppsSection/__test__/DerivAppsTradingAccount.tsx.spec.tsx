@@ -66,13 +66,7 @@ const mockUseActiveLinkedToTradingAccount = useActiveLinkedToTradingAccount as j
 describe('DerivAppsTradingAccount', () => {
     it('renders the component when balance is not loading', () => {
         (mockUseActiveWalletAccount as jest.Mock).mockReturnValueOnce({ isLoading: false });
-        (mockUseActiveLinkedToTradingAccount as jest.Mock).mockReturnValueOnce({
-            data: {
-                currency_config: undefined,
-                loginid: undefined,
-            },
-            isLoading: false,
-        });
+        (mockUseActiveLinkedToTradingAccount as jest.Mock).mockReturnValueOnce({ isLoading: false });
         (mockUseAllBalanceSubscription as jest.Mock).mockReturnValueOnce({ isLoading: false });
         render(<DerivAppsTradingAccount />, { wrapper });
         expect(screen.getByTestId('dt_wallet_icon')).toBeInTheDocument();
@@ -86,7 +80,7 @@ describe('DerivAppsTradingAccount', () => {
         expect(screen.getByTestId('dt_wallet_icon')).toBeInTheDocument();
         expect(screen.getByText('Options')).toBeInTheDocument();
     });
-    it('renders the component with badge', () => {
+    it('renders the component with a badge', () => {
         (mockUseDevice as jest.Mock).mockReturnValue({ isMobile: false });
         (mockUseActiveWalletAccount as jest.Mock).mockReturnValue({
             data: { is_virtual: true },

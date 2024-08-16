@@ -128,6 +128,7 @@ const CFDsListing = observer(() => {
     };
 
     const hasUnavailableAccount = combined_cfd_mt5_accounts.some(account => account.status === 'unavailable');
+    const hasMaintenanceStatus = combined_cfd_mt5_accounts.some(account => account.status === 'under_maintenance');
 
     const getMT5AccountAuthStatus = (current_acc_status?: string | null, jurisdiction?: string) => {
         if (jurisdiction) {
@@ -255,7 +256,7 @@ const CFDsListing = observer(() => {
 
                         const track_account_subtitle = existing_account.tracking_name;
                         const has_mt5_account_status =
-                            existing_account?.status || is_idv_revoked
+                            existing_account?.status || is_idv_revoked || hasMaintenanceStatus
                                 ? getMT5AccountAuthStatus(
                                       existing_account?.status,
                                       existing_account?.landing_company_short
@@ -285,8 +286,9 @@ const CFDsListing = observer(() => {
                                                 account_mode: selected_account_type,
                                                 account_name: track_account_subtitle,
                                             });
-                                            if (hasUnavailableAccount) return setAccountUnavailableModal(true);
                                         }
+                                        if (hasUnavailableAccount || hasMaintenanceStatus)
+                                            return setServerMaintenanceModal(true);
 
                                         if (real_account_creation_unlock_date && no_real_mf_account_eu_regulator) {
                                             setShouldShowCooldownModal(true);

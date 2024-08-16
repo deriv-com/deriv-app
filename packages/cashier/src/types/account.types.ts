@@ -36,7 +36,7 @@ export type TAccountsList = {
     is_verification_failed?: boolean;
     is_verification_needed?: boolean;
     is_account_unavailable?: boolean;
-    is_server_maintenance?: string;
+    is_server_maintenance?: boolean;
     loginid?: string;
     mt5_login_list?: DetailsOfEachMT5Loginid[];
     title?: string;

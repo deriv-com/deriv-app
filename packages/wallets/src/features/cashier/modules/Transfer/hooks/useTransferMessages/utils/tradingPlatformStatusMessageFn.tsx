@@ -7,15 +7,9 @@ const tradingPlatformStatusMessageFn = ({ platformStatus }: TMessageFnProps) => 
     const isMaintenance = platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
 
     const message = isMaintenance ? (
-        <Localize
-            i18n_default_text='We’re currently performing server maintenance. Service maybe affected.'
-            values={{}}
-        />
+        <Localize i18n_default_text='We’re currently performing server maintenance. Service maybe affected.' />
     ) : (
-        <Localize
-            i18n_default_text='The server is temporarily unavailable for this account. We’re working to resolve this.'
-            values={{}}
-        />
+        <Localize i18n_default_text='The server is temporarily unavailable for this account. We’re working to resolve this.' />
     );
 
     return {

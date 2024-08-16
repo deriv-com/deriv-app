@@ -79,7 +79,7 @@ const AccountOption = ({
                     <Localize i18n_default_text='Verification failed' />
                 </Text>
             );
-        } else if (is_server_maintenance === TRADING_PLATFORM_STATUS.MAINTENANCE) {
+        } else if (is_server_maintenance) {
             return <StatusBadge account_status='under_maintenance' icon='IcAlertWarning' text='Server Maintenance' />;
         } else if (is_account_unavailable) {
             return (
@@ -110,15 +110,15 @@ const AccountOption = ({
             </div>
 
             <span className='account-transfer-form__balance'>
-                {has_show_account_status ? (
-                    getAccountStatusText()
-                ) : (
+                {!has_show_account_status ? (
                     <Money
                         amount={account.balance}
                         currency={account.currency}
                         has_sign={Boolean(account.balance && Number(account.balance) < 0)}
                         show_currency
                     />
+                ) : (
+                    getAccountStatusText()
                 )}
             </span>
         </React.Fragment>
@@ -318,9 +318,9 @@ const AccountTransferForm = observer(
                     platform = CFD_PLATFORMS.DXTRADE;
                 }
 
-                const is_server_maintenance = TradingPlatformStatusData?.find(
-                    status => status?.platform === platform
-                )?.status;
+                const is_server_maintenance =
+                    TradingPlatformStatusData?.find(status => status?.platform === platform)?.status ===
+                        TRADING_PLATFORM_STATUS.MAINTENANCE || account.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
 
                 const is_account_unavailable = account.status === MT5_ACCOUNT_STATUS.UNAVAILABLE;
 

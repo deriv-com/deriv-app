@@ -1,7 +1,7 @@
 import React from 'react';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
-import { ModalStepWrapper, ModalWrapper, WalletButtonGroup, WalletText } from '../../../../components/Base';
+import { ModalStepWrapper, ModalWrapper, WalletButtonGroup } from '../../../../components/Base';
 import './PasswordLimitExceededModal.scss';
 
 type TProps = {
@@ -20,9 +20,9 @@ const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecond
             <ModalWrapper hideCloseButton>
                 <div className='wallets-password-limit-exceeded-modal'>
                     <div className='wallets-password-limit-exceeded-modal__title'>
-                        <WalletText align='start' weight='bold'>
+                        <Text align='start' weight='bold'>
                             <Localize i18n_default_text='Too many attempts' />
-                        </WalletText>
+                        </Text>
                     </div>
                     <div className='wallets-password-limit-exceeded-modal__content'>
                         <Text align={alignment} size={textSize}>

@@ -9,10 +9,6 @@ type TSideNotes = {
     side_notes: React.ReactNode[] | null;
 };
 
-type TContentWrapper = {
-    has_side_note?: boolean;
-};
-
 type TContent = {
     is_routed?: boolean;
     items: TItem[];
@@ -46,18 +42,6 @@ const SideNotes = ({ class_name, side_notes }: TSideNotes) => {
                     {note}
                 </div>
             ))}
-        </div>
-    );
-};
-
-const ContentWrapper = ({ children, has_side_note }: React.PropsWithChildren<TContentWrapper>) => {
-    return (
-        <div
-            className={classNames({
-                'dc-vertical-tab__content-inner': has_side_note,
-            })}
-        >
-            {children}
         </div>
     );
 };
@@ -146,10 +130,16 @@ const VerticalTabContentContainer = ({
                     })}
                 </div>
             )}
-            <div className={classNames('dc-vertical-tab__content-container', tab_container_classname)}>
-                <ContentWrapper has_side_note={selected.has_side_note}>
-                    <Content is_routed={is_routed} items={items} selected={selected} />
-                </ContentWrapper>
+            <div
+                className={classNames(
+                    'dc-vertical-tab__content-container',
+                    {
+                        'dc-vertical-tab__content-container--has-side-note': selected.has_side_note,
+                    },
+                    tab_container_classname
+                )}
+            >
+                <Content is_routed={is_routed} items={items} selected={selected} />
             </div>
         </div>
     );

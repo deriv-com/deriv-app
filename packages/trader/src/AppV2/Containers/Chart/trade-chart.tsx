@@ -51,7 +51,7 @@ const TradeChart = observer(() => {
     const { all_positions } = portfolio;
     const { is_chart_countdown_visible, is_chart_layout_default, is_dark_mode_on, is_positions_drawer_on } = ui;
     const { current_language, is_socket_opened } = common;
-    const { default_symbol, activeSymbols: active_symbols } = useActiveSymbols({});
+    const { default_symbol, activeSymbols: active_symbols } = useActiveSymbols();
     const {
         barriers_flattened: extra_barriers,
         chartStateChange,
@@ -148,6 +148,7 @@ const TradeChart = observer(() => {
             enabledChartFooter={false}
             id='trade'
             isMobile={isMobile}
+            isVerticalScrollEnabled={false}
             maxTick={isMobile ? max_ticks : undefined}
             granularity={show_digits_stats || is_accumulator ? 0 : granularity}
             requestAPI={wsSendRequest}

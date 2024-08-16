@@ -1,21 +1,24 @@
-import React, { forwardRef, Ref } from 'react';
+import React from 'react';
 import { Tab } from '@deriv-com/quill-ui';
 import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 import { categorizeSymbols } from 'AppV2/Utils/symbol-categories-utils';
 import MarketCategory from '../MarketCategory';
 import MarketCategoryTab from '../MarketCategoryTab/market-category-tab';
+import { observer } from '@deriv/stores';
 
 type TMarketCategories = {
     selectedSymbol: string;
     setSelectedSymbol: (input: string) => void;
     setIsOpen: (input: boolean) => void;
     isOpen: boolean;
+    marketCategoriesRef: React.RefObject<HTMLDivElement>;
 };
 
-const MarketCategories = forwardRef(
-    ({ selectedSymbol, setSelectedSymbol, setIsOpen, isOpen }: TMarketCategories, ref: Ref<HTMLDivElement>) => {
-        const { activeSymbols } = useActiveSymbols({});
+const MarketCategories = observer(
+    ({ selectedSymbol, setSelectedSymbol, setIsOpen, isOpen, marketCategoriesRef }: TMarketCategories) => {
+        const { activeSymbols } = useActiveSymbols();
         const categorizedSymbols = categorizeSymbols(activeSymbols);
+
         return (
             <React.Fragment>
                 <Tab.List>
@@ -23,7 +26,7 @@ const MarketCategories = forwardRef(
                         <MarketCategoryTab key={category.market} category={category} />
                     ))}
                 </Tab.List>
-                <Tab.Content className='market-categories__list' ref={ref}>
+                <Tab.Content className='market-categories__list' ref={marketCategoriesRef}>
                     {Object.values(categorizedSymbols).map(category => (
                         <MarketCategory
                             key={category.market}
@@ -39,7 +42,5 @@ const MarketCategories = forwardRef(
         );
     }
 );
-
-MarketCategories.displayName = 'MarketCategories';
 
 export default MarketCategories;

@@ -1,9 +1,9 @@
-import React from 'react';
+import { Fragment } from 'react';
 import clsx from 'clsx';
 import { OauthApps } from '@deriv/api-types';
 import { Button, Text } from '@deriv/components';
 import { toMoment } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
 import { getConnectedAppsColumnNames, getConnectedAppsScopes } from './template-helper';
 
 type TDataTableTemplate = { connected_apps: OauthApps; handleToggleModal: (app_id: number) => void };
@@ -23,7 +23,7 @@ const DataTableTemplate = ({ connected_apps, handleToggleModal }: TDataTableTemp
             </Text>
         ))}
         {connected_apps.map(connected_app => (
-            <React.Fragment key={connected_app.app_id}>
+            <Fragment key={connected_app.app_id}>
                 <Text size='xs' className='connected-apps__tabular--cell connected-apps__tabular--skip-left-padding'>
                     {connected_app.name}
                 </Text>
@@ -38,7 +38,7 @@ const DataTableTemplate = ({ connected_apps, handleToggleModal }: TDataTableTemp
                         <Localize i18n_default_text='Revoke access' />
                     </Button>
                 </span>
-            </React.Fragment>
+            </Fragment>
         ))}
     </div>
 );

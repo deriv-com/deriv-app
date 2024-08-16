@@ -1,4 +1,4 @@
-import React from 'react';
+import { PropsWithChildren } from 'react';
 import clsx from 'clsx';
 import { Text } from '@deriv/components';
 
@@ -11,7 +11,7 @@ const ApiTokenTableRowCell = ({
     className,
     children,
     should_bypass_text,
-}: React.PropsWithChildren<Partial<TApiTokenTableRowCell>>) => {
+}: PropsWithChildren<Partial<TApiTokenTableRowCell>>) => {
     if (should_bypass_text) {
         return <td className={clsx('da-api-token__table-cell', className)}>{children}</td>;
     }

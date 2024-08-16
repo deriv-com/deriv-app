@@ -8,7 +8,6 @@
     &:nth-child(2):not(.purchase-button--loading) {
         align-items: flex-start;
     }
-
     &--single {
         align-items: center;
         justify-content: center;
@@ -18,11 +17,9 @@
             gap: var(--core-spacing-400);
         }
     }
-
     &--loading {
         align-items: center;
     }
-
     &__information {
         &__wrapper {
             width: 100%;
@@ -43,15 +40,27 @@
             color: var(--core-color-solid-slate-50);
         }
     }
-
     &__wrapper {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0px var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-400);
+        padding: 0 var(--core-spacing-400) var(--core-spacing-400);
         gap: var(--core-spacing-400);
         position: sticky;
         z-index: 2; // chart has z-index: 1, it should not push purchase buttons down
         bottom: 0;
+    }
+    &--disabled-background {
+        position: absolute;
+        background-color: var(--core-color-solid-slate-50);
+        top: 0;
+        left: var(--core-spacing-400);
+        width: calc(100% - var(--core-spacing-800));
+        height: calc(100% - var(--core-spacing-400));
+        border-radius: var(--component-button-border-radius-lg);
+        z-index: -1;
+    }
+    &:disabled {
+        opacity: var(--core-opacity-300); // disabled button opacity in quill-ui is 0.48 (var(--core-opacity-600))
     }
 }

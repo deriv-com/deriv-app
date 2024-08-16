@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Trans } from 'react-i18next';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { WalletText } from '../Base';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import WalletListCardActions from '../WalletListCardActions/WalletListCardActions';
 import { WalletListCardBalance } from '../WalletListCardBalance';
 import WalletListCardDropdown from '../WalletListCardDropdown/WalletListCardDropdown';
@@ -22,9 +22,9 @@ const WalletListCardDetails = () => {
     return (
         <div className='wallets-list-details__container'>
             {isDemo ? (
-                <WalletText>
-                    <Trans defaults='USD Demo Wallet' />
-                </WalletText>
+                <Text>
+                    <Localize i18n_default_text='USD Demo Wallet' />
+                </Text>
             ) : (
                 <WalletListCardDropdown />
             )}

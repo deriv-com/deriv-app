@@ -182,9 +182,7 @@ describe('DepositLockedContent', () => {
 
         if (result) render(result);
         expect(
-            screen.getByText(
-                /You have chosen to exclude yourself from trading on our website until Fri Jan 01 2100 00:00:00/
-            )
+            screen.getByText(/You have chosen to exclude yourself from trading on our website until 01 Jan 2100/)
         ).toBeInTheDocument();
         const link = screen.getByText('live chat');
         expect(link).toBeInTheDocument();

@@ -11,13 +11,6 @@ const mockProps = {
     setCustomTimeRangeFilter: jest.fn(),
     setNoMatchesFound: jest.fn(),
 };
-const mediaQueryList = {
-    matches: true,
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-};
-
-window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
 
 describe('TimeFilter', () => {
     it('should change data-state of the dropdown if user clicks on the filter', () => {

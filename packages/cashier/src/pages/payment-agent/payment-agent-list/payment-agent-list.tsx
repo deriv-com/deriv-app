@@ -9,7 +9,7 @@ import DepositTab from './deposit-tab';
 import WithdrawalTab from './withdrawal-tab';
 import MissingPaymentMethodNote from '../missing-payment-method-note';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
-import { DepositSubPageAnalyticsEventTracker } from '../../../components/deposit-sub-page-event-tracker';
+import { DepositSubPageAnalyticsEventTracker } from '../../../components/deposit-sub-page-analytics-event-tracker';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-list.scss';
 

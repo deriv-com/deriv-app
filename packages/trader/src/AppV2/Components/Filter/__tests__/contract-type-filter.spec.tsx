@@ -8,13 +8,6 @@ const mockProps = {
     onApplyContractTypeFilter: jest.fn(),
     contractTypeFilter: [],
 };
-const mediaQueryList = {
-    matches: true,
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-};
-
-window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
 
 describe('ContractTypeFilter', () => {
     it('should change data-state of the dropdown if user clicks on the filter', () => {

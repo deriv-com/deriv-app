@@ -31,7 +31,7 @@ const Poa: React.FC<TPoaProps> = ({ onCompletion }) => {
         if (isSubmissionSuccess && onCompletion) {
             onCompletion();
         }
-    }, [isSubmissionSuccess]);
+    }, [isSubmissionSuccess, onCompletion]);
 
     const upload = async (values: FormikValues) => {
         try {

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useInvalidateQuery, usePOA, usePOI, useSettings } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
@@ -79,15 +79,32 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({
     const hasResubmittedDocuments =
         !shouldSubmitPoi && !shouldSubmitPoa && !shouldSubmitTaxInformation && hasVerificationFailed;
 
-    const onPoaCompletion = () => {
+    const onPoaCompletion = useCallback(() => {
         setIsPoaJustCompleted(true);
-    };
-    const onPoiCompletion = () => {
+    }, []);
+
+    const onPoiCompletion = useCallback(() => {
         setIsPoiJustCompleted(true);
-    };
-    const onTaxInformationCompletion = () => {
+    }, []);
+
+    const onTaxInformationCompletion = useCallback(() => {
         setIsTaxInformationJustCompleted(true);
-    };
+    }, []);
+
+    useEffect(() => {
+        if (
+            !(
+                isLoading ||
+                shouldSubmitPoi ||
+                shouldSubmitPoa ||
+                shouldSubmitTaxInformation ||
+                hasResubmittedDocuments
+            ) &&
+            onCompletion
+        ) {
+            onCompletion();
+        }
+    }, [isLoading, shouldSubmitPoi, shouldSubmitPoa, shouldSubmitTaxInformation, hasResubmittedDocuments]);
 
     if (isLoading) return <Loader />;
 
@@ -119,9 +136,6 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({
                 }}
             />
         );
-    } else if (onCompletion) {
-        // proceed to MT5 account creation
-        onCompletion();
     }
 
     return null;

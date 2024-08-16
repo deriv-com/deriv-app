@@ -4,26 +4,16 @@ import { observer } from 'mobx-react';
 import { ActionSheet, TextField } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { getContractTypePosition, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
-import { focusAndOpenKeyboard, getTradeTypeTabsList } from 'AppV2/Utils/trade-params-utils';
+import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
+import { focusAndOpenKeyboard } from 'AppV2/Utils/trade-params-utils';
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TakeProfitInput from './take-profit-input';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
+import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 
 type TTakeProfitProps = {
     is_minimized?: boolean;
-};
-
-const getSortedIndex = (type: string, index?: number) => {
-    switch (getContractTypePosition(type as 'CALL')) {
-        case 'top':
-            return 0;
-        case 'bottom':
-            return 1;
-        default:
-            return index;
-    }
 };
 
 const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
@@ -50,11 +40,9 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     const focused_input_ref = React.useRef<HTMLInputElement>(null);
     const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
 
-    const trade_types_array = Object.keys(trade_types)
-        .filter(type => !getTradeTypeTabsList(contract_type).length || type === trade_type_tab)
-        .sort((a, b) => Number(getSortedIndex(a) ?? 0) - Number(getSortedIndex(b) ?? 0));
-    const min_take_profit = validation_params[trade_types_array[0]]?.take_profit?.min;
-    const max_take_profit = validation_params[trade_types_array[0]]?.take_profit?.max;
+    const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
+    const min_take_profit = validation_params[contract_types[0]]?.take_profit?.min;
+    const max_take_profit = validation_params[contract_types[0]]?.take_profit?.max;
     const decimals = getDecimalPlaces(currency);
 
     const getInputMessage = () =>

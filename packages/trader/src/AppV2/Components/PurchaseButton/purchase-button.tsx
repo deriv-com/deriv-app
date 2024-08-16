@@ -8,7 +8,6 @@ import { useDevice } from '@deriv-com/ui';
 import {
     getCardLabelsV2,
     getContractTypeDisplay,
-    getContractTypePosition,
     getIndicativePrice,
     hasContractEntered,
     isAccumulatorContract,
@@ -19,17 +18,7 @@ import {
 import PurchaseButtonContent from './purchase-button-content';
 import { getTradeTypeTabsList } from 'AppV2/Utils/trade-params-utils';
 import { StandaloneStopwatchRegularIcon } from '@deriv/quill-icons';
-
-const getSortedIndex = (type: string, index?: number) => {
-    switch (getContractTypePosition(type as 'CALL')) {
-        case 'top':
-            return 0;
-        case 'bottom':
-            return 1;
-        default:
-            return index;
-    }
-};
+import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 
 const PurchaseButton = observer(() => {
     const [loading_button_index, setLoadingButtonIndex] = React.useState<number | null>(null);
@@ -73,9 +62,7 @@ const PurchaseButton = observer(() => {
         is_vanilla_fx,
         is_vanilla,
     };
-    const trade_types_array = Object.keys(trade_types)
-        .filter(type => !getTradeTypeTabsList(contract_type).length || type === trade_type_tab)
-        .sort((a, b) => Number(getSortedIndex(a) ?? 0) - Number(getSortedIndex(b) ?? 0));
+    const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     const active_accu_contract = is_accumulator
         ? all_positions.find(
               ({ contract_info, type }) =>
@@ -137,9 +124,9 @@ const PurchaseButton = observer(() => {
 
     return (
         <div className='purchase-button__wrapper'>
-            {trade_types_array.map((trade_type, index) => {
+            {contract_types.map((trade_type, index) => {
                 const info = proposal_info?.[trade_type] || {};
-                const is_single_button = trade_types_array.length === 1;
+                const is_single_button = contract_types.length === 1;
                 const is_loading = loading_button_index === index;
                 const is_disabled = !is_trade_enabled || is_proposal_empty || !info.id || !is_purchase_enabled;
 

@@ -3,16 +3,10 @@ import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { ActionSheet, Text, TextField, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { localize, Localize } from '@deriv/translations';
-import {
-    getContractTypePosition,
-    getCurrencyDisplayCode,
-    getDecimalPlaces,
-    getTradeTypeName,
-    TRADE_TYPES,
-} from '@deriv/shared';
+import { getCurrencyDisplayCode, getDecimalPlaces, getTradeTypeName, TRADE_TYPES } from '@deriv/shared';
 import { FormatUtils } from '@deriv-com/utils';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { getTradeTypeTabsList } from 'AppV2/Utils/trade-params-utils';
+import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 
 type TStakeProps = {
     is_minimized?: boolean;
@@ -21,17 +15,6 @@ type TStakeProps = {
 const BASIS = {
     PAYOUT: 'payout',
     STAKE: 'stake',
-};
-
-const getSortedIndex = (type: string, index?: number) => {
-    switch (getContractTypePosition(type as 'CALL')) {
-        case 'top':
-            return 0;
-        case 'bottom':
-            return 1;
-        default:
-            return index;
-    }
 };
 
 const Stake = observer(({ is_minimized }: TStakeProps) => {
@@ -52,16 +35,13 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     } = useTraderStore();
     const [is_open, setIsOpen] = React.useState(false);
     const [initial_stake_value, setInitialStakeValue] = React.useState<number>();
-    const trade_types_array = Object.keys(trade_types)
-        .filter(type => !getTradeTypeTabsList(contract_type).length || type === trade_type_tab)
-        .sort((a, b) => Number(getSortedIndex(a) ?? 0) - Number(getSortedIndex(b) ?? 0));
-
+    const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     // TODO: use local state to not hide info upon proposal error
-    const min_stake = Number(validation_params[trade_types_array[0]]?.stake?.min ?? 0);
-    const max_stake = Number(validation_params[trade_types_array[0]]?.stake?.max ?? 0);
-    const max_payout = Number(validation_params[trade_types_array[0]]?.max_payout ?? 0);
-    const main_button_payout = Number(proposal_info[trade_types_array[0]]?.payout ?? 0);
-    const second_button_payout = Number(proposal_info[trade_types_array[1]]?.payout ?? 0);
+    const { max_payout = 0, stake } = validation_params[contract_types[0]] ?? {};
+    const { max: max_stake = 0, min: min_stake = 0 } = stake ?? {};
+    const main_button_payout = Number(proposal_info[contract_types[0]]?.payout ?? 0);
+    const second_button_payout = Number(proposal_info[contract_types[1]]?.payout ?? 0);
+
     const mult_content = [
         {
             label: <Localize i18n_default_text='Commission' />,
@@ -89,8 +69,8 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 i18n_default_text='Acceptable range: {{min_stake}} to {{max_stake}} {{currency}}'
                 values={{
                     currency: getCurrencyDisplayCode(currency),
-                    min_stake: FormatUtils.formatMoney(min_stake),
-                    max_stake: FormatUtils.formatMoney(max_stake),
+                    min_stake: FormatUtils.formatMoney(+min_stake),
+                    max_stake: FormatUtils.formatMoney(+max_stake),
                 }}
             />
         ));
@@ -146,7 +126,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                         <Localize i18n_default_text='Max payout' />
                                     </Text>
                                     <Text size='sm'>
-                                        {FormatUtils.formatMoney(max_payout)} {getCurrencyDisplayCode(currency)}
+                                        {FormatUtils.formatMoney(+max_payout)} {getCurrencyDisplayCode(currency)}
                                     </Text>
                                 </div>
                             )}
@@ -157,7 +137,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                             <Localize i18n_default_text='Payout' />
                                         </Text>
                                         (
-                                        {getTradeTypeName(trade_types_array[0], {
+                                        {getTradeTypeName(contract_types[0], {
                                             isHighLow: contract_type === TRADE_TYPES.HIGH_LOW,
                                         })}
                                         )
@@ -166,13 +146,13 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                             {getCurrencyDisplayCode(currency)}
                                         </Text>
                                     </div>
-                                    {trade_types_array.length > 1 && (
+                                    {contract_types.length > 1 && (
                                         <div className='barrier-params__button-payout-wrapper--second'>
                                             <Text size='sm'>
                                                 <Localize i18n_default_text='Payout' />
                                             </Text>
                                             (
-                                            {getTradeTypeName(trade_types_array[1], {
+                                            {getTradeTypeName(contract_types[1], {
                                                 isHighLow: contract_type === TRADE_TYPES.HIGH_LOW,
                                             })}
                                             )

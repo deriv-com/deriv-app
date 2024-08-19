@@ -26,27 +26,31 @@ const TakeProfitAndStopLoss = observer(({ closeActionSheet }: TTakeProfitAndStop
 
     const [is_save_btn_clicked, setIsSaveBtnClicked] = React.useState(false);
 
-    const has_tp_initial_value_ref_parent = React.useRef<boolean>();
-    const tp_initial_value_ref_parent = React.useRef<string | number | undefined>('');
+    // All initial values are used to restore correct values if user closed ActionSheet without Saving or refreshed the page
+    const has_tp_initial_value_ref = React.useRef<boolean>();
+    const tp_initial_value_ref = React.useRef<string | number | undefined>('');
+
     const be_error_text = validation_errors.take_profit[0];
 
     const onSave = () => {
         setIsSaveBtnClicked(true);
-        if (be_error_text && has_take_profit) {
-            return;
+
+        if (be_error_text && has_take_profit) return;
+
+        // Initial values are set on Mount and been updated on Save
+        if (has_take_profit !== has_tp_initial_value_ref.current) {
+            has_tp_initial_value_ref.current = has_take_profit;
+        }
+        if (take_profit !== tp_initial_value_ref.current) {
+            tp_initial_value_ref.current = take_profit;
         }
 
-        if (has_take_profit !== has_tp_initial_value_ref_parent.current) {
-            has_tp_initial_value_ref_parent.current = has_take_profit;
-        }
-        if (take_profit !== tp_initial_value_ref_parent.current) {
-            tp_initial_value_ref_parent.current = take_profit;
-        }
+        const is_tp_enabled = be_error_text ? false : has_take_profit;
 
-        const has_take_profit_1 = be_error_text ? false : has_take_profit;
+        //TODO: reset DC
         onChangeMultiple({
-            has_take_profit: has_take_profit_1,
-            ...(has_take_profit_1 ? { has_cancellation: false } : {}),
+            has_take_profit: is_tp_enabled,
+            ...(is_tp_enabled ? { has_cancellation: false } : {}),
         });
 
         onChange({
@@ -64,10 +68,10 @@ const TakeProfitAndStopLoss = observer(({ closeActionSheet }: TTakeProfitAndStop
             <TakeProfitInput
                 classname='risk-management__tp-sl'
                 has_save_button={false}
+                has_tp_initial_value_parent_ref={has_tp_initial_value_ref}
+                is_save_btn_clicked={is_save_btn_clicked}
                 onActionSheetClose={closeActionSheet}
-                has_tp_initial_value_ref_parent={has_tp_initial_value_ref_parent}
-                tp_initial_value_ref_parent={tp_initial_value_ref_parent}
-                is_parent_save_btn_clicked={is_save_btn_clicked}
+                tp_initial_value_parent_ref={tp_initial_value_ref}
             />
             <div>SL</div>
             {/* </div> */}

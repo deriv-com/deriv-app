@@ -11,19 +11,19 @@ import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 type TTakeProfitInputProps = {
     classname?: string;
     has_save_button?: boolean;
+    has_tp_initial_value_parent_ref?: React.MutableRefObject<boolean | undefined>;
+    is_save_btn_clicked?: boolean;
     onActionSheetClose: () => void;
-    has_tp_initial_value_ref_parent?: React.MutableRefObject<boolean | undefined>;
-    tp_initial_value_ref_parent?: React.MutableRefObject<string | number | undefined>;
-    is_parent_save_btn_clicked?: boolean;
+    tp_initial_value_parent_ref?: React.MutableRefObject<string | number | undefined>;
 };
 
 const TakeProfitInput = ({
     classname,
     has_save_button = true,
+    has_tp_initial_value_parent_ref,
+    is_save_btn_clicked: is_save_btn_clicked_initial_value,
     onActionSheetClose,
-    has_tp_initial_value_ref_parent,
-    tp_initial_value_ref_parent,
-    is_parent_save_btn_clicked,
+    tp_initial_value_parent_ref,
 }: TTakeProfitInputProps) => {
     const {
         contract_type,
@@ -40,17 +40,24 @@ const TakeProfitInput = ({
         validation_errors,
     } = useTraderStore();
 
-    const [is_save_btn_clicked, setIsSaveBtnClicked] = React.useState(is_parent_save_btn_clicked || false);
+    // Some of the validation errors should be shown only after Save button was clicked
+    const [is_save_btn_clicked, setIsSaveBtnClicked] = React.useState(is_save_btn_clicked_initial_value || false);
+    // Duplicate information about error in ref, because on unMount state variables and be_error_text are undefined
     const has_error_ref = React.useRef<boolean>();
 
-    const has_tp_initial_value_component = React.useRef<boolean>();
-    const has_tp_initial_value_ref = has_tp_initial_value_ref_parent || has_tp_initial_value_component;
+    /* All initial values are used to restore correct values if user closed ActionSheet without Saving or refreshed the page.
+    Current component can used its own ref values or ref, passed from parent.
+    Last option is needed in case if the parent needs an access to initial values.
+    */
+    const has_tp_initial_value = React.useRef<boolean>();
+    const has_tp_initial_value_ref = has_tp_initial_value_parent_ref || has_tp_initial_value;
     const has_tp_selected_value_ref = React.useRef(has_take_profit);
 
-    const tp_initial_value_component = React.useRef<string | number | undefined>('');
-    const tp_initial_value_ref = tp_initial_value_ref_parent || tp_initial_value_component;
+    const tp_initial_value = React.useRef<string | number | undefined>('');
+    const tp_initial_value_ref = tp_initial_value_parent_ref || tp_initial_value;
     const tp_selected_value_ref = React.useRef<string | number | undefined>(take_profit);
 
+    // Refs for handling focusing and bluring
     const input_ref = React.useRef<HTMLInputElement>(null);
     const focused_input_ref = React.useRef<HTMLInputElement>(null);
     const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
@@ -59,15 +66,31 @@ const TakeProfitInput = ({
     const decimals = getDecimalPlaces(currency);
     const be_error_text = validation_errors.take_profit[0];
     const currency_display_code = getCurrencyDisplayCode(currency);
+    // We can't use has_take_profit here as we are checking if take_profit is empty string or undefined, which is not connected with has_take_profit
     const should_show_be_error =
         (be_error_text && !!take_profit) || (be_error_text && !take_profit && is_save_btn_clicked);
     const min_take_profit = validation_params[contract_types[0]]?.take_profit?.min;
     const max_take_profit = validation_params[contract_types[0]]?.take_profit?.max;
 
+    // Storing data from validation params (proposal) in state in case if we got a validation error from BE and proposal stop streaming
     const [info, setInfo] = React.useState({
         min_take_profit,
         max_take_profit,
     });
+
+    const input_message =
+        info.min_take_profit && info.max_take_profit ? (
+            <Localize
+                i18n_default_text='Acceptable range: {{min_take_profit}} to {{max_take_profit}} {{currency}}'
+                values={{
+                    currency: currency_display_code,
+                    min_take_profit: info.min_take_profit,
+                    max_take_profit: info.max_take_profit,
+                }}
+            />
+        ) : (
+            ''
+        );
 
     const onToggleSwitch = (new_value: boolean) => {
         has_tp_selected_value_ref.current = new_value;
@@ -79,6 +102,7 @@ const TakeProfitInput = ({
             input_ref.current?.blur();
         }
 
+        // We should switch off DC if TP or SL is on and vice versa
         onChangeMultiple({
             has_take_profit: new_value,
             ...(new_value ? { has_cancellation: false } : {}),
@@ -93,15 +117,10 @@ const TakeProfitInput = ({
             value = value.replace(/^\./, '0.');
         }
         if (value.length > 1) {
-            if (/^[0-]+$/.test(value)) {
-                value = '0';
-            } else {
-                value = value.replace(/^0*/, '').replace(/^\./, '0.');
-            }
+            value = /^[0-]+$/.test(value) ? '0' : value.replace(/^0*/, '').replace(/^\./, '0.');
         }
 
         tp_selected_value_ref.current = value;
-
         onChange({ target: { name: 'take_profit', value } });
     };
 
@@ -111,7 +130,7 @@ const TakeProfitInput = ({
         if (be_error_text && has_tp_selected_value_ref.current) {
             return;
         }
-
+        // Initial values are set on Mount and been updated on Save
         if (has_tp_selected_value_ref.current !== has_tp_initial_value_ref.current) {
             has_tp_initial_value_ref.current = has_tp_selected_value_ref.current;
         }
@@ -135,27 +154,13 @@ const TakeProfitInput = ({
         onActionSheetClose();
     };
 
-    const input_message =
-        info.min_take_profit && info.max_take_profit ? (
-            <Localize
-                i18n_default_text='Acceptable range: {{min_take_profit}} to {{max_take_profit}} {{currency}}'
-                values={{
-                    currency: currency_display_code,
-                    min_take_profit: info.min_take_profit,
-                    max_take_profit: info.max_take_profit,
-                }}
-            />
-        ) : (
-            ''
-        );
-
     React.useEffect(() => {
         has_error_ref.current = !!be_error_text;
     }, [be_error_text]);
 
     React.useEffect(() => {
-        setIsSaveBtnClicked(!!is_parent_save_btn_clicked);
-    }, [is_parent_save_btn_clicked]);
+        setIsSaveBtnClicked(!!is_save_btn_clicked_initial_value);
+    }, [is_save_btn_clicked_initial_value]);
 
     React.useEffect(() => {
         setInfo(info => {

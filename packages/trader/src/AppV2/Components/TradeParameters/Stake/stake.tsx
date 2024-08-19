@@ -39,16 +39,27 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const [initial_stake_value, setInitialStakeValue] = React.useState<number>();
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     const { max_payout = 0, stake } = validation_params[contract_types[0]] ?? {};
-    const { has_error, id, message: error = '', payout: main_btn_payout = 0 } = proposal_info[contract_types[0]] ?? {};
-    const { message: error_2 = '', payout: second_btn_payout = 0 } = proposal_info[contract_types[1]] ?? {};
+    const { has_error, id, message = '', payout: main_btn_payout = 0 } = proposal_info[contract_types[0]] ?? {};
+    const { message: message_2 = '', payout: second_btn_payout = 0 } = proposal_info[contract_types[1]] ?? {};
     const { max: max_stake = 0, min: min_stake = 0 } = stake ?? {};
-    const error_payout_1 = Number(error?.match(/\d+(\.\d+)?/g)?.[2]);
-    const error_payout_2 = Number(error_2?.match(/\d+(\.\d+)?/g)?.[2]);
+    const error_text = validation_errors?.amount[0] || '';
+    const error_payout_1 = error_text ? Number(message.match(/\d+(\.\d+)?/g)?.[2]) : 0;
+    const error_payout_2 = error_text ? Number(message_2.match(/\d+(\.\d+)?/g)?.[2]) : 0;
     const main_button_payout = main_btn_payout || error_payout_1;
     const second_button_payout = second_btn_payout || error_payout_2;
-    const has_error_in_proposal = has_error || !id;
-    const stake_error = (has_error_in_proposal && (error || error_2)) || validation_errors?.amount[0];
-    const max_payout_exceeded = !!(/maximum payout/i.test(error) || /maximum payout/i.test(error_2));
+    const has_error_or_loading_proposal = has_error || !id;
+    const stake_error = validation_errors?.amount[0] || (has_error && (message || message_2));
+    const max_payout_exceeded = !!(/maximum payout/i.test(message) || /maximum payout/i.test(message_2));
+    const getDisplayedPayout = React.useCallback(
+        (new_payout: number, current_payout?: string) => {
+            return ((current_payout === '-' && !id) || stake_error) && !max_payout_exceeded
+                ? '-'
+                : FormatUtils.formatMoney(new_payout);
+        },
+        [id, max_payout_exceeded, stake_error]
+    );
+    const [displayed_payout_1, setDisplayedPayout1] = React.useState<string>(getDisplayedPayout(main_button_payout));
+    const [displayed_payout_2, setDisplayedPayout2] = React.useState<string>(getDisplayedPayout(second_button_payout));
 
     const [info, setInfo] = React.useState({
         max_payout,
@@ -77,6 +88,10 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         if (basis === BASIS.PAYOUT) onChange({ target: { name: 'basis', value: BASIS.STAKE } });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [basis]);
+    React.useEffect(() => {
+        setDisplayedPayout1(p => getDisplayedPayout(info.main_button_payout, p));
+        setDisplayedPayout2(p => getDisplayedPayout(info.second_button_payout, p));
+    }, [getDisplayedPayout, info]);
     React.useEffect(() => {
         if (is_open) {
             setInfo(info => {
@@ -182,10 +197,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                         })}
                                         )
                                         <Text size='sm'>
-                                            {stake_error && !max_payout_exceeded
-                                                ? '-'
-                                                : FormatUtils.formatMoney(info.main_button_payout)}{' '}
-                                            {getCurrencyDisplayCode(currency)}
+                                            {displayed_payout_1} {getCurrencyDisplayCode(currency)}
                                         </Text>
                                     </div>
                                     {contract_types.length > 1 && (
@@ -199,10 +211,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                             })}
                                             )
                                             <Text size='sm'>
-                                                {stake_error && !max_payout_exceeded
-                                                    ? '-'
-                                                    : FormatUtils.formatMoney(info.second_button_payout)}{' '}
-                                                {getCurrencyDisplayCode(currency)}
+                                                {displayed_payout_2} {getCurrencyDisplayCode(currency)}
                                             </Text>
                                         </div>
                                     )}
@@ -216,7 +225,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                                     {label}
                                                 </Text>
                                                 <Text size='sm' bold>
-                                                    {has_error_in_proposal || isNaN(Number(value))
+                                                    {has_error_or_loading_proposal || isNaN(Number(value))
                                                         ? '-'
                                                         : FormatUtils.formatMoney(Number(value))}{' '}
                                                     {getCurrencyDisplayCode(currency)}

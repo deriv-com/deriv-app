@@ -8,10 +8,9 @@ import { THooks, TPlatforms } from '../../../../types';
 import { companyNamesAndUrls, getMarketTypeDetails, PlatformDetails } from '../../constants';
 import './CFDPasswordModalTnc.scss';
 
-type TCFDPasswordModalTncProps = {
+export type TCFDPasswordModalTncProps = {
     checked: boolean;
     onChange: () => void;
-
     platform: TPlatforms.All;
     product?: THooks.AvailableMT5Accounts['product'];
 };

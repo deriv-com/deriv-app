@@ -35,7 +35,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         validation_params,
     } = useTraderStore();
     const [is_open, setIsOpen] = React.useState(false);
-    const [should_show_error, setShouldShowError] = React.useState(false);
+    const [should_show_error, setShouldShowError] = React.useState(true);
     const [initial_stake_value, setInitialStakeValue] = React.useState<number>();
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     const { max_payout = 0, stake } = validation_params[contract_types[0]] ?? {};

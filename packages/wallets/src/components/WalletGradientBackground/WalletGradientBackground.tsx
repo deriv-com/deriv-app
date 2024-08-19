@@ -41,7 +41,7 @@ const WalletGradientBackground: React.FC<TProps> = ({
             })}
             data-testid='dt_wallet_gradient_background'
         >
-            {hasShine && !isDemo && <span className='wallets-gradient__shine' />}
+            {hasShine && !isDemo && <span className='wallets-gradient__shine' data-testid='dt_wallet_gradient_shine' />}
             <div className='wallets-gradient__content'>{children}</div>
         </div>
     );

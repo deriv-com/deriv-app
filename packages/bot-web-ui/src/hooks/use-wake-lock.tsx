@@ -19,12 +19,7 @@ const useWakeLock = (is_running: boolean) => {
             if ('wakeLock' in navigator) {
                 const wake_lock_sentinel: WakeLockSentinel = await navigator.wakeLock.request('screen');
                 setWakeLock(wake_lock_sentinel);
-
                 log('Activated', 'green', 'bold');
-
-                wake_lock_sentinel.addEventListener('release', () => {
-                    log('Released', 'green', 'bold');
-                });
             }
         } catch (error) {
             log('Something went wrong!', 'red', 'bold');

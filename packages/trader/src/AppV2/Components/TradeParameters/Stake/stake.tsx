@@ -54,12 +54,12 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
 
     const mult_content = [
         {
-            label: <Localize i18n_default_text='Commission' />,
-            value: commission,
-        },
-        {
             label: <Localize i18n_default_text='Stop out' />,
             value: stop_out,
+        },
+        {
+            label: <Localize i18n_default_text='Commission' />,
+            value: commission,
         },
     ];
 
@@ -206,7 +206,9 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                                     {label}
                                                 </Text>
                                                 <Text size='sm' bold>
-                                                    {FormatUtils.formatMoney(Number(value))}{' '}
+                                                    {stake_error || isNaN(Number(value))
+                                                        ? '-'
+                                                        : FormatUtils.formatMoney(Number(value))}{' '}
                                                     {getCurrencyDisplayCode(currency)}
                                                 </Text>
                                             </div>

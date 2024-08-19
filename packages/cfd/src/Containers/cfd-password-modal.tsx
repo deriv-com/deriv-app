@@ -36,11 +36,11 @@ import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { CFD_PLATFORMS, CATEGORY } from '../Helpers/cfd-config';
 import classNames from 'classnames';
 import { getDxCompanies, getMtCompanies, TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
-import '../sass/cfd.scss';
+import './mt5-create-password/mt5-create-password.scss';
 import { useGetDefaultMT5Jurisdiction } from '@deriv/hooks';
 
 const MT5CreatePassword = makeLazyLoader(
-    () => moduleLoader(() => import('./mt5-create-password')),
+    () => moduleLoader(() => import('./mt5-create-password/mt5-create-password')),
     () => <div />
 )();
 

@@ -84,10 +84,10 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
             <TakeProfitAndStopLossInput
                 classname='risk-management__tp-sl'
                 has_save_button={false}
-                has_tp_initial_value_parent_ref={has_tp_initial_value_ref}
+                has_initial_value_parent_ref={has_tp_initial_value_ref}
                 is_save_btn_clicked={is_save_btn_clicked}
                 onActionSheetClose={closeActionSheet}
-                tp_initial_value_parent_ref={tp_initial_value_ref}
+                initial_value_parent_ref={tp_initial_value_ref}
             />
             <div>SL</div>
             {/* </div> */}

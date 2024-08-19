@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { getByTestId, render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import TraderProviders from '../../../../../trader-providers';
@@ -39,11 +39,11 @@ describe('MultipliersDealCancellationInfo', () => {
         expect(container).toBeEmptyDOMElement();
     });
 
-    it('should not render component, if proposal_info is empty', () => {
+    it('should render skeleton, if proposal_info is empty', () => {
         default_mock_store.modules.trade.proposal_info = {};
-        const { container } = mockMultipliersDealCancellationInfo();
+        mockMultipliersDealCancellationInfo();
 
-        expect(container).toBeEmptyDOMElement();
+        expect(screen.getByTestId('dt_skeleton')).toBeInTheDocument();
     });
 
     it('should render component', () => {

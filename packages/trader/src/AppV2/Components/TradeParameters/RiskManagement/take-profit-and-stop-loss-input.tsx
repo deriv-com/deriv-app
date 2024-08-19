@@ -11,26 +11,30 @@ import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 type TTakeProfitAndStopLossInputProps = {
     classname?: string;
     has_save_button?: boolean;
-    has_tp_initial_value_parent_ref?: React.MutableRefObject<boolean | undefined>;
+    has_initial_value_parent_ref?: React.MutableRefObject<boolean | undefined>;
     is_save_btn_clicked?: boolean;
+    initial_value_parent_ref?: React.MutableRefObject<string | number | undefined>;
     onActionSheetClose: () => void;
-    tp_initial_value_parent_ref?: React.MutableRefObject<string | number | undefined>;
+    type?: 'take_profit' | 'stop_loss';
 };
 
 const TakeProfitAndStopLossInput = ({
     classname,
     has_save_button = true,
-    has_tp_initial_value_parent_ref,
+    has_initial_value_parent_ref,
     is_save_btn_clicked: is_save_btn_clicked_initial_value,
+    initial_value_parent_ref,
     onActionSheetClose,
-    tp_initial_value_parent_ref,
+    type = 'take_profit',
 }: TTakeProfitAndStopLossInputProps) => {
     const {
         contract_type,
         currency,
         has_take_profit,
+        has_stop_loss,
         is_accumulator,
         take_profit,
+        stop_loss,
         trade_types,
         trade_type_tab,
         onChangeMultiple,
@@ -49,13 +53,13 @@ const TakeProfitAndStopLossInput = ({
     Current component can used its own ref values or ref, passed from parent.
     Last option is needed in case if the parent needs an access to initial values.
     */
-    const has_tp_initial_value = React.useRef<boolean>();
-    const has_tp_initial_value_ref = has_tp_initial_value_parent_ref || has_tp_initial_value;
-    const has_tp_selected_value_ref = React.useRef(has_take_profit);
+    const has_initial_value = React.useRef<boolean>();
+    const has_initial_value_ref = has_initial_value_parent_ref || has_initial_value;
+    const has_selected_value_ref = React.useRef(has_take_profit);
 
-    const tp_initial_value = React.useRef<string | number | undefined>('');
-    const tp_initial_value_ref = tp_initial_value_parent_ref || tp_initial_value;
-    const tp_selected_value_ref = React.useRef<string | number | undefined>(take_profit);
+    const initial_value = React.useRef<string | number | undefined>('');
+    const initial_value_ref = initial_value_parent_ref || initial_value;
+    const selected_value_ref = React.useRef<string | number | undefined>(take_profit);
 
     // Refs for handling focusing and bluring
     const input_ref = React.useRef<HTMLInputElement>(null);
@@ -69,23 +73,23 @@ const TakeProfitAndStopLossInput = ({
     // We can't use has_take_profit here as we are checking if take_profit is empty string or undefined, which is not connected with has_take_profit
     const should_show_be_error =
         (be_error_text && !!take_profit) || (be_error_text && !take_profit && is_save_btn_clicked);
-    const min_take_profit = validation_params[contract_types[0]]?.take_profit?.min;
-    const max_take_profit = validation_params[contract_types[0]]?.take_profit?.max;
+    const min_value = validation_params[contract_types[0]]?.take_profit?.min;
+    const max_value = validation_params[contract_types[0]]?.take_profit?.max;
 
     // Storing data from validation params (proposal) in state in case if we got a validation error from BE and proposal stop streaming
     const [info, setInfo] = React.useState({
-        min_take_profit,
-        max_take_profit,
+        min_value,
+        max_value,
     });
 
     const input_message =
-        info.min_take_profit && info.max_take_profit ? (
+        info.min_value && info.max_value && has_selected_value_ref.current ? (
             <Localize
-                i18n_default_text='Acceptable range: {{min_take_profit}} to {{max_take_profit}} {{currency}}'
+                i18n_default_text='Acceptable range: {{min_value}} to {{max_value}} {{currency}}'
                 values={{
                     currency: currency_display_code,
-                    min_take_profit: info.min_take_profit,
-                    max_take_profit: info.max_take_profit,
+                    min_value: info.min_value,
+                    max_value: info.max_value,
                 }}
             />
         ) : (
@@ -93,7 +97,7 @@ const TakeProfitAndStopLossInput = ({
         );
 
     const onToggleSwitch = (new_value: boolean) => {
-        has_tp_selected_value_ref.current = new_value;
+        has_selected_value_ref.current = new_value;
 
         if (new_value) {
             clearTimeout(focus_timeout.current);
@@ -116,25 +120,25 @@ const TakeProfitAndStopLossInput = ({
             value = /^[0-]+$/.test(value) ? '0' : value.replace(/^0*/, '').replace(/^\./, '0.');
         }
 
-        tp_selected_value_ref.current = value;
+        selected_value_ref.current = value;
         onChange({ target: { name: 'take_profit', value } });
     };
 
     const onSave = () => {
         setIsSaveBtnClicked(true);
 
-        if (be_error_text && has_tp_selected_value_ref.current) {
+        if (be_error_text && has_selected_value_ref.current) {
             return;
         }
         // Initial values are set on Mount and been updated on Save
-        if (has_tp_selected_value_ref.current !== has_tp_initial_value_ref.current) {
-            has_tp_initial_value_ref.current = has_tp_selected_value_ref.current;
+        if (has_selected_value_ref.current !== has_initial_value_ref.current) {
+            has_initial_value_ref.current = has_selected_value_ref.current;
         }
-        if (tp_selected_value_ref.current !== tp_initial_value_ref.current) {
-            tp_initial_value_ref.current = tp_selected_value_ref.current;
+        if (selected_value_ref.current !== initial_value_ref.current) {
+            initial_value_ref.current = selected_value_ref.current;
         }
 
-        const has_take_profit = be_error_text ? false : has_tp_selected_value_ref.current;
+        const has_take_profit = be_error_text ? false : has_selected_value_ref.current;
         // We should switch off DC if TP or SL is on and vice versa
         onChangeMultiple({
             has_take_profit,
@@ -144,7 +148,7 @@ const TakeProfitAndStopLossInput = ({
         onChange({
             target: {
                 name: 'take_profit',
-                value: be_error_text || tp_selected_value_ref.current === '0' ? '' : tp_selected_value_ref.current,
+                value: be_error_text || selected_value_ref.current === '0' ? '' : selected_value_ref.current,
             },
         });
 
@@ -161,43 +165,38 @@ const TakeProfitAndStopLossInput = ({
 
     React.useEffect(() => {
         setInfo(info => {
-            if (
-                (info.min_take_profit !== min_take_profit && min_take_profit) ||
-                (info.max_take_profit !== max_take_profit && max_take_profit)
-            ) {
+            if ((info.min_value !== min_value && min_value) || (info.max_value !== max_value && max_value)) {
                 return {
-                    min_take_profit,
-                    max_take_profit,
+                    min_value,
+                    max_value,
                 };
             }
             return info;
         });
-    }, [min_take_profit, max_take_profit]);
+    }, [min_value, max_value]);
 
     React.useEffect(() => {
-        if (!has_tp_initial_value_ref.current && has_take_profit) {
-            has_tp_initial_value_ref.current = has_take_profit;
+        if (!has_initial_value_ref.current && has_take_profit) {
+            has_initial_value_ref.current = has_take_profit;
             setWheelPickerInitialValues({ name: 'has_take_profit', value: has_take_profit });
         }
-        if (!tp_initial_value_ref.current && take_profit) {
-            tp_initial_value_ref.current = take_profit;
+        if (!initial_value_ref.current && take_profit) {
+            initial_value_ref.current = take_profit;
             setWheelPickerInitialValues({ name: 'take_profit', value: take_profit });
         }
 
         return () => {
             const should_set_empty_string =
-                tp_initial_value_ref.current === '' ||
-                tp_initial_value_ref.current === '0' ||
-                (has_error_ref.current &&
-                    tp_selected_value_ref.current !== '0' &&
-                    tp_selected_value_ref.current !== '');
+                initial_value_ref.current === '' ||
+                initial_value_ref.current === '0' ||
+                (has_error_ref.current && selected_value_ref.current !== '0' && selected_value_ref.current !== '');
 
-            const has_take_profit = should_set_empty_string ? false : has_tp_initial_value_ref.current;
+            const has_take_profit = should_set_empty_string ? false : has_initial_value_ref.current;
             onChangeMultiple({ has_take_profit });
             onChange({
                 target: {
                     name: 'take_profit',
-                    value: should_set_empty_string ? '' : tp_initial_value_ref.current,
+                    value: should_set_empty_string ? '' : initial_value_ref.current,
                 },
             });
 
@@ -213,16 +212,16 @@ const TakeProfitAndStopLossInput = ({
                     <Text>
                         <Localize i18n_default_text='Take profit' />
                     </Text>
-                    <ToggleSwitch checked={has_tp_selected_value_ref.current} onChange={onToggleSwitch} />
+                    <ToggleSwitch checked={has_selected_value_ref.current} onChange={onToggleSwitch} />
                 </div>
                 <TextFieldWithSteppers
                     allowDecimals
-                    disabled={!has_tp_selected_value_ref.current}
+                    disabled={!has_selected_value_ref.current}
                     decimals={decimals}
                     data-testid='dt_input_with_steppers'
                     inputMode='decimal'
                     message={should_show_be_error ? be_error_text : input_message}
-                    minusDisabled={Number(tp_selected_value_ref.current) - 1 <= 0}
+                    minusDisabled={Number(selected_value_ref.current) - 1 <= 0}
                     name='take_profit'
                     onChange={onInputChange}
                     placeholder={localize('Amount')}
@@ -232,9 +231,9 @@ const TakeProfitAndStopLossInput = ({
                     textAlignment='center'
                     unitLeft={currency_display_code}
                     variant='fill'
-                    value={tp_selected_value_ref.current}
+                    value={selected_value_ref.current}
                 />
-                {!has_tp_selected_value_ref.current && (
+                {!has_selected_value_ref.current && (
                     <button
                         className='take-profit__overlay'
                         onClick={() => onToggleSwitch(true)}

@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { Localize } from '@deriv/translations';
-import { Money } from '@deriv/components';
+import { Money, Skeleton } from '@deriv/components';
 import { Text } from '@deriv-com/quill-ui';
 import { useTraderStore } from 'Stores/useTraderStores';
 
@@ -14,7 +14,7 @@ const MultipliersDealCancellationInfo = observer(({ classname }: TMultipliersDea
     const { currency, has_cancellation, proposal_info } = useTraderStore();
     const deal_cancellation_fee_value = proposal_info?.MULTUP?.cancellation?.ask_price;
 
-    if (!has_cancellation || !deal_cancellation_fee_value) return null;
+    if (!has_cancellation) return null;
 
     return (
         <div className={clsx('multipliers-info__row', classname)}>
@@ -22,7 +22,11 @@ const MultipliersDealCancellationInfo = observer(({ classname }: TMultipliersDea
                 <Localize i18n_default_text='Deal cancellation fee' />
             </Text>
             <Text size='sm' bold>
-                <Money amount={deal_cancellation_fee_value} show_currency currency={currency} />
+                {deal_cancellation_fee_value ? (
+                    <Money amount={deal_cancellation_fee_value} show_currency currency={currency} />
+                ) : (
+                    <Skeleton width={65} height={18} />
+                )}
             </Text>
         </div>
     );

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { lazy, useCallback, useEffect, useState } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { TradingAccountCard, WalletText } from '../../../../../components';
@@ -6,8 +6,11 @@ import { useModal } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
 import { getMarketTypeDetails, PRODUCT } from '../../../constants';
 import { JurisdictionModal, MT5PasswordModal } from '../../../modals';
-import { ClientVerification } from '../../ClientVerification';
 import './AvailableMT5AccountsList.scss';
+
+const LazyVerification = lazy(
+    () => import(/* webpackChunkName: "wallets-client-verification" */ '../../ClientVerification/ClientVerification')
+);
 
 type TProps = {
     account: THooks.AvailableMT5Accounts;
@@ -30,7 +33,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
             );
         } else if (account.product === PRODUCT.ZEROSPREAD) {
             show(
-                <ClientVerification
+                <LazyVerification
                     onCompletion={() => {
                         setShowMt5PasswordModal(true);
                     }}
@@ -63,6 +66,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 />
             );
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [showMt5PasswordModal]);
 
     return (

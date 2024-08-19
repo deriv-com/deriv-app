@@ -26,6 +26,8 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         currency,
         is_accumulator,
         is_multiplier,
+        is_turbos,
+        is_vanilla,
         onChange,
         proposal_info,
         stop_out,
@@ -38,18 +40,31 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const [should_show_error, setShouldShowError] = React.useState(true);
     const [initial_stake_value, setInitialStakeValue] = React.useState<number>();
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
-    const { max_payout = 0, stake } = validation_params[contract_types[0]] ?? {};
     const { has_error, id, message = '', payout: main_btn_payout = 0 } = proposal_info[contract_types[0]] ?? {};
-    const { message: message_2 = '', payout: second_btn_payout = 0 } = proposal_info[contract_types[1]] ?? {};
+    const {
+        has_error: has_error_2,
+        message: message_2 = '',
+        payout: second_btn_payout = 0,
+    } = proposal_info[contract_types[1]] ?? {};
+    const proposal_error_message =
+        message !== validation_errors?.amount[0] && has_error ? message : validation_errors?.amount[0];
+    const validation_error_text = contract_types[1] ? validation_errors?.amount[0] : proposal_error_message;
+    // TODO: stop extracting max payout from error message after it's added to validation_params in proposal API:
+    const error_max_payout = validation_error_text ? Number(message.match(/\d+(\.\d+)?/g)?.[1]) : 0;
+    const { max_payout = error_max_payout, stake } = validation_params[contract_types[0]] ?? {};
     const { max: max_stake = 0, min: min_stake = 0 } = stake ?? {};
-    const error_text = validation_errors?.amount[0] || '';
-    const error_payout_1 = error_text ? Number(message.match(/\d+(\.\d+)?/g)?.[2]) : 0;
-    const error_payout_2 = error_text ? Number(message_2.match(/\d+(\.\d+)?/g)?.[2]) : 0;
+    const error_payout_1 = message ? Number(message.match(/\d+(\.\d+)?/g)?.[2]) : 0;
+    const error_payout_2 = message_2 ? Number(message_2.match(/\d+(\.\d+)?/g)?.[2]) : 0;
     const main_button_payout = main_btn_payout || error_payout_1;
     const second_button_payout = second_btn_payout || error_payout_2;
     const has_error_or_loading_proposal = has_error || !id;
-    const stake_error = validation_errors?.amount[0] || (has_error && (message || message_2));
+    const main_error_message =
+        (validation_error_text && error_payout_1 > error_payout_2 ? message_2 : message) || validation_error_text;
+    const has_both_errors = has_error && has_error_2;
+    const two_contracts_error = has_both_errors || amount.toString() === '' ? main_error_message : '';
+    const stake_error = contract_types[1] ? two_contracts_error : validation_error_text;
     const max_payout_exceeded = !!(/maximum payout/i.test(message) || /maximum payout/i.test(message_2));
+    const should_show_payout_details = !is_accumulator && !is_multiplier && !is_turbos && !is_vanilla;
     const getDisplayedPayout = React.useCallback(
         (new_payout: number, current_payout?: string) => {
             return ((current_payout === '-' && !id) || stake_error) && !max_payout_exceeded
@@ -58,8 +73,8 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         },
         [id, max_payout_exceeded, stake_error]
     );
-    const [displayed_payout_1, setDisplayedPayout1] = React.useState<string>(getDisplayedPayout(main_button_payout));
-    const [displayed_payout_2, setDisplayedPayout2] = React.useState<string>(getDisplayedPayout(second_button_payout));
+    const [displayed_payout_1, setDisplayedPayout1] = React.useState(getDisplayedPayout(main_button_payout));
+    const [displayed_payout_2, setDisplayedPayout2] = React.useState(getDisplayedPayout(second_button_payout));
 
     const [info, setInfo] = React.useState({
         max_payout,
@@ -175,64 +190,65 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                 variant='fill'
                                 value={amount}
                             />
-                            {!!info.max_payout && !is_accumulator && !is_multiplier && (
-                                <div className='barrier-params__max-payout-wrapper'>
-                                    <Text size='sm'>
-                                        <Localize i18n_default_text='Max payout' />
-                                    </Text>
-                                    <Text size='sm'>
-                                        {FormatUtils.formatMoney(+info.max_payout)} {getCurrencyDisplayCode(currency)}
-                                    </Text>
+                            {is_multiplier ? (
+                                <div className='multipliers-info__wrapper'>
+                                    {mult_content.map(({ label, value }) => (
+                                        <div key={label.props.i18n_default_text} className='multipliers-info__row'>
+                                            <Text size='sm' className='multipliers-info__title'>
+                                                {label}
+                                            </Text>
+                                            <Text size='sm' bold>
+                                                {has_error_or_loading_proposal || isNaN(Number(value))
+                                                    ? '-'
+                                                    : FormatUtils.formatMoney(Number(value))}{' '}
+                                                {getCurrencyDisplayCode(currency)}
+                                            </Text>
+                                        </div>
+                                    ))}
                                 </div>
-                            )}
-                            {info.main_button_payout ? (
-                                <>
-                                    <div className='barrier-params__button-payout-wrapper'>
-                                        <Text size='sm'>
-                                            <Localize i18n_default_text='Payout' />
-                                        </Text>
-                                        (
-                                        {getTradeTypeName(contract_types[0], {
-                                            isHighLow: contract_type === TRADE_TYPES.HIGH_LOW,
-                                        })}
-                                        )
-                                        <Text size='sm'>
-                                            {displayed_payout_1} {getCurrencyDisplayCode(currency)}
-                                        </Text>
-                                    </div>
-                                    {contract_types.length > 1 && (
-                                        <div className='barrier-params__button-payout-wrapper--second'>
+                            ) : (
+                                should_show_payout_details && (
+                                    <>
+                                        {!!info.max_payout && (
+                                            <div className='barrier-params__max-payout-wrapper'>
+                                                <Text size='sm'>
+                                                    <Localize i18n_default_text='Max payout' />
+                                                </Text>
+                                                <Text size='sm'>
+                                                    {FormatUtils.formatMoney(+info.max_payout)}{' '}
+                                                    {getCurrencyDisplayCode(currency)}
+                                                </Text>
+                                            </div>
+                                        )}
+                                        <div className='barrier-params__button-payout-wrapper'>
                                             <Text size='sm'>
                                                 <Localize i18n_default_text='Payout' />
                                             </Text>
                                             (
-                                            {getTradeTypeName(contract_types[1], {
+                                            {getTradeTypeName(contract_types[0], {
                                                 isHighLow: contract_type === TRADE_TYPES.HIGH_LOW,
                                             })}
                                             )
                                             <Text size='sm'>
-                                                {displayed_payout_2} {getCurrencyDisplayCode(currency)}
+                                                {displayed_payout_1} {getCurrencyDisplayCode(currency)}
                                             </Text>
                                         </div>
-                                    )}
-                                </>
-                            ) : (
-                                is_multiplier && (
-                                    <div className='multipliers-info__wrapper'>
-                                        {mult_content.map(({ label, value }) => (
-                                            <div key={label.props.i18n_default_text} className='multipliers-info__row'>
-                                                <Text size='sm' className='multipliers-info__title'>
-                                                    {label}
+                                        {contract_types.length > 1 && (
+                                            <div className='barrier-params__button-payout-wrapper--second'>
+                                                <Text size='sm'>
+                                                    <Localize i18n_default_text='Payout' />
                                                 </Text>
-                                                <Text size='sm' bold>
-                                                    {has_error_or_loading_proposal || isNaN(Number(value))
-                                                        ? '-'
-                                                        : FormatUtils.formatMoney(Number(value))}{' '}
-                                                    {getCurrencyDisplayCode(currency)}
+                                                (
+                                                {getTradeTypeName(contract_types[1], {
+                                                    isHighLow: contract_type === TRADE_TYPES.HIGH_LOW,
+                                                })}
+                                                )
+                                                <Text size='sm'>
+                                                    {displayed_payout_2} {getCurrencyDisplayCode(currency)}
                                                 </Text>
                                             </div>
-                                        ))}
-                                    </div>
+                                        )}
+                                    </>
                                 )
                             )}
                         </div>

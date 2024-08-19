@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, FormikValues } from 'formik';
 import { useTranslations } from '@deriv-com/translations';
 import { InlineMessage, Loader, Text } from '@deriv-com/ui';
@@ -27,11 +27,13 @@ const Poa: React.FC<TPoaProps> = ({ onCompletion }) => {
     } = usePoa();
     const [errorDocumentUpload, setErrorDocumentUpload] = useState<THooks.DocumentUpload['error']>();
 
-    if (isLoading) return <Loader />;
+    useEffect(() => {
+        if (isSubmissionSuccess && onCompletion) {
+            onCompletion();
+        }
+    }, [isSubmissionSuccess, onCompletion]);
 
-    if (isSubmissionSuccess && onCompletion) {
-        onCompletion();
-    }
+    if (isLoading) return <Loader />;
 
     const upload = async (values: FormikValues) => {
         try {

@@ -74,36 +74,61 @@ export default Engine =>
         }
 
         async fetchStatData() {
-            try {
-                this.called = false;
-                // eslint-disable-next-line no-inner-declarations
-                async function getAccumulatorStats() {
-                    if (!this.subscription_accu && !this.called) {
-                        this.called = true;
-                        const request = window?.Blockly?.selected_accumulators_amount;
+            let ticksStayedIn = [];
+            this.called = false;
+
+            const handleMessage = ({ data }) => {
+                if (data.msg_type === 'proposal') {
+                    try {
+                        this.subscription_accu = data.subscription.id;
+                        ticksStayedIn = [...(data.proposal.contract_details.ticks_stayed_in || [])].reverse();
+                    } catch (error) {
+                        // eslint-disable-next-line no-console
+                        console.error('Unexpected message type or no proposal found:', error);
+                    }
+                }
+            };
+
+            async function getAccumulatorStats() {
+                if (!this.subscription_accu && !this.called) {
+                    this.called = true;
+                    const request = window?.Blockly?.selected_accumulators_amount;
+                    if (request) {
                         await api_base?.api?.send(request);
                     }
                 }
-                const debouncedGetAccumulatorStats = debounce(
-                    async () => {
-                        await getAccumulatorStats.call(this);
-                    },
-                    300
-                );
-                debouncedGetAccumulatorStats();
+            }
 
-                const response = await api_base?.api?.expectResponse('proposal');
-                try {
-                    this.subscription_accu = response?.proposal.subscription_id;
-                    return [...(response?.proposal.contract_details?.ticks_stayed_in || [])].reverse();
-                } catch (error) {
-                    throw new Error('Unexpected message type or no proposal found');
-                }
+            const debouncedGetAccumulatorStats = debounce(async () => {
+                await getAccumulatorStats.call(this);
+            }, 300);
+
+            debouncedGetAccumulatorStats();
+
+            const subscriptionPromise = new Promise(resolve => {
+                const subscription = api_base.api.onMessage().subscribe(({ data }) => {
+                    handleMessage({ data });
+                    if (ticksStayedIn.length > 0) {
+                        resolve();
+                    }
+                });
+
+                api_base.pushSubscription(subscription);
+            });
+
+            try {
+                await subscriptionPromise;
             } catch (error) {
                 // eslint-disable-next-line no-console
-                console.error('Error fetching stat data:', error);
+                console.error('Error in subscription promise:', error);
                 throw error;
+            } finally {
+                await api_base?.api?.send({ forget_all: 'proposal' });
+                this.called = false;
+                this.subscription_accu = null;
             }
+
+            return ticksStayedIn;
         }
 
         async getStatList() {
@@ -132,7 +157,17 @@ export default Engine =>
                     const ticks = [];
                     const symbol = this.symbol;
 
-                    const callback = ticksList => {
+                    let tick_delayed = false;
+                    const entry_tick_time = this.data.contract.entry_tick_time;
+                    const exit_tick_time = this.data.contract.exit_tick_time;
+                    const total_seconds = Number(exit_tick_time) - Number(entry_tick_time);
+                    const total_delay = total_seconds * 1000;
+
+                    const callback = async ticksList => {
+                        if (!tick_delayed) {
+                            await new Promise(resolve => setTimeout(resolve, total_delay));
+                            tick_delayed = true;
+                        }
                         ticks.push(ticksList);
                         if (ticks.length === tick_value) {
                             this.$scope.ticksService.stopMonitor({

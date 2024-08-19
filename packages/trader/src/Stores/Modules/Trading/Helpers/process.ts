@@ -32,6 +32,7 @@ export const processTradeParams = async (store: TTradeStore, new_state: Partial<
 
     store.updateStore({
         is_trade_enabled: true,
+        is_trade_enabled_v2: true,
     });
 };
 

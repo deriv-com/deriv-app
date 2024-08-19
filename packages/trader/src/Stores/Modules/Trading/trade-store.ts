@@ -36,6 +36,7 @@ import {
     getContractTypesConfig,
     setTradeURLParams,
     getTradeURLParams,
+    isTouchContract,
     getCardLabelsV2,
     formatMoney,
     getContractPath,
@@ -198,6 +199,7 @@ export default class TradeStore extends BaseStore {
     is_trade_component_mounted = false;
     is_purchase_enabled = false;
     is_trade_enabled = false;
+    is_trade_enabled_v2 = false;
     is_equal = 0;
     has_equals_only = false;
 
@@ -433,6 +435,7 @@ export default class TradeStore extends BaseStore {
             is_synthetics_trading_market_available: computed,
             is_trade_component_mounted: observable,
             is_trade_enabled: observable,
+            is_trade_enabled_v2: observable,
             is_trade_params_expanded: observable,
             is_turbos: computed,
             last_digit: observable,
@@ -506,6 +509,7 @@ export default class TradeStore extends BaseStore {
             onMount: action.bound,
             onProposalResponse: action.bound,
             onPurchase: action.bound,
+            onPurchaseV2: action.bound,
             onUnmount: override,
             prepareTradeStore: action.bound,
             preSwitchAccountListener: action.bound,
@@ -961,6 +965,21 @@ export default class TradeStore extends BaseStore {
             this.main_barrier = null;
         }
     };
+
+    async onPurchaseV2(
+        trade_type: string,
+        isMobile: boolean,
+        callback?: (params: { message: string; redirectTo: string; title: string }) => void
+    ) {
+        await when(() => {
+            const proposal_info_keys = Object.keys(this.proposal_info);
+            const proposal_request_keys = Object.keys(this.proposal_requests);
+            return proposal_info_keys.length > 0 && proposal_info_keys.length === proposal_request_keys.length;
+        });
+
+        const info = this.proposal_info?.[trade_type];
+        if (info) this.onPurchase(info.id, info.stake, trade_type, isMobile, callback);
+    }
 
     onPurchase = debounce(this.processPurchase, 300);
 
@@ -1634,6 +1653,7 @@ export default class TradeStore extends BaseStore {
     preSwitchAccountListener() {
         this.clearContracts();
         this.is_trade_enabled = false;
+        this.is_trade_enabled_v2 = false;
         return Promise.resolve();
     }
 
@@ -1649,6 +1669,7 @@ export default class TradeStore extends BaseStore {
         }
         await this.setContractTypes();
         this.is_trade_enabled = true;
+        this.is_trade_enabled_v2 = true;
         this.debouncedProposal();
     }
 
@@ -1659,6 +1680,7 @@ export default class TradeStore extends BaseStore {
 
     networkStatusChangeListener(is_online: boolean) {
         this.setTradeStatus(is_online);
+        this.is_trade_enabled_v2 = is_online;
     }
 
     resetErrorServices() {
@@ -1904,6 +1926,10 @@ export default class TradeStore extends BaseStore {
 
     get is_vanilla_fx() {
         return isVanillaFxContract(this.contract_type, this.symbol);
+    }
+
+    get is_touch() {
+        return isTouchContract(this.contract_type);
     }
 
     async getFirstOpenMarket(markets_to_search: string[]) {

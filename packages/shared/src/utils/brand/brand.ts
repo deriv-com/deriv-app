@@ -74,3 +74,22 @@ export const getAppstorePlatforms = () => {
 export const getPlatformSettingsAppstore = (platform_key: keyof TPlatformsAppstore): TPlatformAppstore => {
     return config_data.platforms_appstore[platform_key];
 };
+
+export const getDomainName = () => {
+    try {
+        // Split the hostname into parts
+        const domainParts = window.location.hostname.split('.');
+
+        // Ensure we have at least two parts (SLD and TLD)
+        if (domainParts.length >= 2) {
+            // Combine the SLD and TLD
+            const domain = `${domainParts[domainParts.length - 2]}.${domainParts[domainParts.length - 1]}`;
+            return domain;
+        }
+        throw new Error('Invalid hostname format');
+    } catch (e) {
+        // eslint-disable-next-line no-console
+        console.error('Error parsing URL:', e);
+        return null;
+    }
+};

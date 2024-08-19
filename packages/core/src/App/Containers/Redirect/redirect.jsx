@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, useHistory } from 'react-router-dom';
-import { loginUrl, routes, redirectToLogin, SessionStore } from '@deriv/shared';
+import { loginUrl, routes, redirectToLogin, SessionStore, getDomainName } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
@@ -26,6 +26,22 @@ const Redirect = observer(() => {
         is_mobile,
     } = ui;
 
+    // get data from cookies and populate local storage for clients to be logged in
+    const client_accounts = Cookies.get('client.accounts');
+    const active_loginid = Cookies.get('active_loginid');
+
+    if (client_accounts && active_loginid) {
+        localStorage.setItem('client.accounts', client_accounts);
+        localStorage.setItem('active_loginid', active_loginid);
+
+        const domain = getDomainName();
+
+        // remove cookies after populating local storage
+        Cookies.remove('client.accounts', { domain: `.${domain}` });
+        Cookies.remove('active_loginid', { domain: `.${domain}` });
+        window.location.reload();
+    }
+
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
@@ -39,19 +55,6 @@ const Redirect = observer(() => {
     };
     setVerificationCode(code_param, action_param);
     setNewEmail(url_params.get('email'), action_param);
-
-    // get data from cookies and populate local storage for clients to be logged in
-    const client_accounts = Cookies.get('client.accounts');
-    const active_loginid = Cookies.get('active_loginid');
-
-    if (client_accounts && active_loginid) {
-        localStorage.setItem('client.accounts', client_accounts);
-        localStorage.setItem('active_loginid', active_loginid);
-
-        // remove cookies after populating local storage
-        Cookies.remove('client.accounts', { path: '', domain: '.deriv.com' });
-        Cookies.remove('active_loginid', { path: '', domain: '.deriv.com' });
-    }
 
     switch (action_param) {
         case 'signup': {

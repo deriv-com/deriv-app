@@ -6,6 +6,7 @@ import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
 import { Analytics } from '@deriv-com/analytics';
+import Cookies from 'js-cookie';
 
 const Redirect = observer(() => {
     const history = useHistory();
@@ -38,6 +39,19 @@ const Redirect = observer(() => {
     };
     setVerificationCode(code_param, action_param);
     setNewEmail(url_params.get('email'), action_param);
+
+    // get data from cookies and populate local storage for clients to be logged in
+    const client_accounts = Cookies.get('client.accounts');
+    const active_loginid = Cookies.get('active_loginid');
+
+    if (client_accounts && active_loginid) {
+        localStorage.setItem('client.accounts', client_accounts);
+        localStorage.setItem('active_loginid', active_loginid);
+
+        // remove cookies after populating local storage
+        Cookies.remove('client.accounts', { path: '', domain: '.deriv.com' });
+        Cookies.remove('active_loginid', { path: '', domain: '.deriv.com' });
+    }
 
     switch (action_param) {
         case 'signup': {

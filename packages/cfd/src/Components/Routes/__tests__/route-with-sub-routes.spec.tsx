@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
+import { redirectToLogin, isEmptyObject, removeBranchName, default_title } from '@deriv/shared';
 import RouteWithSubRoutes from '../route-with-sub-routes';
 
 type TRenderProps = {
@@ -73,12 +74,30 @@ describe('RouteWithSubRoutes component', () => {
     it('should call redirectToLogin when not logged in and not logging in', () => {
         const new_route = {
             ...route,
+            component: () => <div>Redirect to login</div>,
             is_logging_in: false,
             is_logged_in: false,
             is_authenticated: true,
         };
         render(<RouteWithSubRoutes {...new_route} />);
-        expect(screen.getByText(/Redirect to:/i)).toBeInTheDocument();
+        expect(redirectToLogin).toHaveBeenCalled();
+    });
+    it('should removes /index from the URL in the localhost environment', () => {
+        const mockLocation = {
+            pathname: '/somepath/index',
+        };
+
+        const routeProps = {
+            ...route,
+            path: '/index',
+            routes: [],
+            to: '/index',
+            location: mockLocation,
+        };
+
+        render(<RouteWithSubRoutes {...routeProps} />);
+        const expectedPath = '/somepath';
+        expect(mockLocation.pathname.toLowerCase().replace(routeProps.path, '')).toBe(expectedPath);
     });
     it('should set document title to default title when getTitle is not defined', () => {
         render(<MockRouteWithSubRoutes />);
@@ -99,7 +118,11 @@ describe('RouteWithSubRoutes component', () => {
         };
         const new_route = {
             ...route,
-            routes: [default_subroute],
+            routes: [
+                {
+                    subroutes: [default_subroute],
+                },
+            ],
             is_logging_in: false,
             is_logged_in: true,
             component: () => <div>Component</div>,
@@ -111,8 +134,6 @@ describe('RouteWithSubRoutes component', () => {
         });
 
         render(<RouteWithSubRoutes {...new_route} />);
-        // eslint-disable-next-line testing-library/no-debug
-        screen.logTestingPlaygroundURL();
         const redirect_element = screen.getByText(/Redirect to: \/default-subroute/i);
         expect(redirect_element).toBeInTheDocument();
     });

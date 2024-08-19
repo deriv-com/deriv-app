@@ -11,6 +11,7 @@ import {
     getPlatformSettings,
     getPropertyValue,
     getContractSubtype,
+    getTradeNotificationMessage,
     isBarrierSupported,
     isAccumulatorContract,
     isCryptocurrency,
@@ -35,6 +36,10 @@ import {
     getContractTypesConfig,
     setTradeURLParams,
     getTradeURLParams,
+    getCardLabelsV2,
+    formatMoney,
+    getContractPath,
+    routes,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -407,6 +412,7 @@ export default class TradeStore extends BaseStore {
             is_accumulator: computed,
             is_chart_loading: observable,
             is_digits_widget_active: observable,
+            is_dtrader_v2_enabled: computed,
             is_equal: observable,
             is_market_closed: observable,
             is_mobile_digit_view_selected: observable,
@@ -659,8 +665,11 @@ export default class TradeStore extends BaseStore {
     async loadActiveSymbols(should_set_default_symbol = true, should_show_loading = true) {
         this.should_show_active_symbols_loading = should_show_loading;
 
-        await this.setActiveSymbols();
-        await this.root_store.active_symbols.setActiveSymbols();
+        if (!this.is_dtrader_v2_enabled) {
+            await this.setActiveSymbols();
+            await this.root_store.active_symbols.setActiveSymbols();
+        }
+
         const { symbol, showModal } = getTradeURLParams({ active_symbols: this.active_symbols });
         if (showModal && should_show_loading && !this.root_store.client.is_logging_in) {
             this.root_store.ui.toggleUrlUnavailableModal(true);
@@ -925,7 +934,13 @@ export default class TradeStore extends BaseStore {
 
     onPurchase = debounce(this.processPurchase, 300);
 
-    processPurchase(proposal_id: string, price: string | number, type: string, isMobile: boolean) {
+    processPurchase(
+        proposal_id: string,
+        price: string | number,
+        type: string,
+        isMobile: boolean,
+        callback?: (params: { message: string; redirectTo: string; title: string }) => void
+    ) {
         if (!this.is_purchase_enabled) return;
         if (proposal_id) {
             runInAction(() => {
@@ -1025,11 +1040,30 @@ export default class TradeStore extends BaseStore {
                             this.pushPurchaseDataToGtm(contract_data);
                             if (this.root_store.ui.is_mobile) {
                                 const shortcode = response.buy.shortcode;
+                                const extracted_info_from_shortcode = extractInfoFromShortcode(shortcode);
+                                const contract_id = response.buy.contract_id;
+                                const currency = getCurrencyDisplayCode(this.root_store.client.currency);
+                                const formatted_stake = `${getCardLabelsV2().STAKE}: ${formatMoney(
+                                    currency,
+                                    response.buy.buy_price,
+                                    true,
+                                    0,
+                                    0
+                                )} ${currency}`;
+                                const trade_type = extracted_info_from_shortcode.category;
+
+                                if (window.location.pathname === routes.trade)
+                                    callback?.({
+                                        message: getTradeNotificationMessage(shortcode),
+                                        redirectTo: getContractPath(contract_id),
+                                        title: formatted_stake,
+                                    });
+
                                 this.root_store.notifications.addTradeNotification({
                                     buy_price: is_multiplier ? this.amount : response.buy.buy_price,
-                                    contract_id: response.buy.contract_id,
-                                    contract_type: extractInfoFromShortcode(shortcode).category,
-                                    currency: getCurrencyDisplayCode(this.root_store.client.currency),
+                                    contract_id,
+                                    contract_type: trade_type,
+                                    currency,
                                     purchase_time: response.buy.purchase_time,
                                     shortcode,
                                     status: 'open',
@@ -1250,6 +1284,16 @@ export default class TradeStore extends BaseStore {
             }
             this.debouncedProposal();
         }
+    }
+
+    get is_dtrader_v2_enabled() {
+        const is_dtrader_v2 = JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2;
+
+        return (
+            is_dtrader_v2 &&
+            this.root_store.ui.is_mobile &&
+            (window.location.pathname.startsWith(routes.trade) || window.location.pathname.startsWith('/contract/'))
+        );
     }
 
     get is_synthetics_available() {
@@ -1775,6 +1819,7 @@ export default class TradeStore extends BaseStore {
             });
         }
         if ('active_symbols' in req) {
+            if (this.is_dtrader_v2_enabled) return;
             if (this.root_store.client.is_logged_in) {
                 return WS.authorized.activeSymbols('brief');
             }

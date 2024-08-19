@@ -1,5 +1,6 @@
 import React from 'react';
 import { TSocketError } from '@deriv/api-v2/types';
+import { Localize } from '@deriv-com/translations';
 import { WalletsErrorScreen } from '../../../../components';
 
 type TProps = {
@@ -8,20 +9,20 @@ type TProps = {
 };
 
 type TErrorContent = {
-    buttonText?: string;
-    message?: string;
+    buttonText?: React.ReactNode;
+    message: React.ReactNode;
     onClick?: () => void;
-    title?: string;
+    title: React.ReactNode;
 };
 
 const TransferErrorScreen: React.FC<TProps> = ({ error, resetError }) => {
     const defaultContent: TErrorContent = {
-        buttonText: 'Make another transfer',
+        buttonText: <Localize i18n_default_text='Make another transfer' />,
         message: error.message,
         onClick: () => {
             resetError?.();
         },
-        title: 'Error',
+        title: <Localize i18n_default_text='Error' />,
     };
 
     return <WalletsErrorScreen {...defaultContent} />;

@@ -1,4 +1,4 @@
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
 import Article from '../../../Components/article';
 
 const openDerivAPIWebsite = () => {

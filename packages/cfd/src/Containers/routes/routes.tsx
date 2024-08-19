@@ -1,10 +1,12 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
 import BinaryRoutes from '../../Components/Routes';
 import ErrorComponent from '../../Components/Errors';
 import { observer, useStore } from '@deriv/stores';
 
-const Routes = observer(() => {
+type TRoutesProps = RouteComponentProps & { passthrough?: React.ComponentProps<typeof BinaryRoutes>['passthrough'] };
+
+const Routes = observer(({ passthrough }: TRoutesProps) => {
     const { client, common } = useStore();
 
     const { is_logged_in, is_logging_in } = client;
@@ -14,7 +16,7 @@ const Routes = observer(() => {
         return <ErrorComponent {...error} />;
     }
 
-    return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} />;
+    return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;
 });
 
 // need to wrap withRouter around connect

@@ -32,4 +32,8 @@ export type TRouteConfig = TRoute & {
 export type TBinaryRoutes = {
     is_logged_in: boolean;
     is_logging_in: boolean;
+    passthrough?: {
+        root_store: TCoreStores;
+        WS: Record<string, unknown>;
+    };
 };

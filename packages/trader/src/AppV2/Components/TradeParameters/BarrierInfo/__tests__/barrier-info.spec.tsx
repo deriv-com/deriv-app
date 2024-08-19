@@ -14,16 +14,16 @@ describe('<BarrierInfo />', () => {
         },
     };
 
-    const MockedBarrierInfo = (mocked_store: TCoreStores, is_minimized: boolean) => {
+    const MockedBarrierInfo = (mocked_store: TCoreStores) => {
         return (
             <TraderProviders store={mocked_store}>
-                <BarrierInfo is_minimized={is_minimized} />
+                <BarrierInfo />
             </TraderProviders>
         );
     };
 
     it('displays the correct barrier value', () => {
-        render(MockedBarrierInfo(mockStore(mock_store), false));
+        render(MockedBarrierInfo(mockStore(mock_store)));
         expect(screen.getByText('Barrier')).toBeInTheDocument();
         expect(screen.getByText('1.2345')).toBeInTheDocument();
     });

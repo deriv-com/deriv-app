@@ -45,7 +45,7 @@ const PurchaseButton = observer(() => {
         trade_types,
     } = useTraderStore();
 
-    const [isSellButtonVisible, setIsSellButtonVisibile] = React.useState(is_accumulator && has_open_accu_contract);
+    const [is_sell_button_visible, setIsSellButtonVisibile] = React.useState(is_accumulator && has_open_accu_contract);
 
     /*TODO: add error handling when design will be ready. validation_errors can be taken from useTraderStore
     const hasError = (info: TTradeStore['proposal_info'][string]) => {
@@ -100,17 +100,15 @@ const PurchaseButton = observer(() => {
     }, [is_purchase_enabled]);
 
     React.useEffect(() => {
-        if (is_accumulator && has_open_accu_contract) {
-            setIsSellButtonVisibile(true);
-        } else if (is_accumulator && !has_open_accu_contract) {
-            setIsSellButtonVisibile(false);
+        if (is_accumulator) {
+            setIsSellButtonVisibile(has_open_accu_contract);
         }
     }, [is_accumulator, has_open_accu_contract]);
 
     return (
         <React.Fragment>
             <CSSTransition
-                in={!isSellButtonVisible}
+                in={!is_sell_button_visible}
                 timeout={450}
                 classNames='slide'
                 key='purchase-button'
@@ -169,7 +167,7 @@ const PurchaseButton = observer(() => {
                 </div>
             </CSSTransition>
             <CSSTransition
-                in={isSellButtonVisible}
+                in={is_sell_button_visible}
                 timeout={450}
                 classNames='slide'
                 key='sell-button'

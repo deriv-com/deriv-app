@@ -3,17 +3,12 @@ import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
-import clsx from 'clsx';
 
-const BarrierInfo = observer(({ is_minimized }: { is_minimized?: boolean }) => {
+const BarrierInfo = observer(() => {
     const { barrier_1 } = useTraderStore();
 
     return (
-        <div
-            className={clsx('barrier-info__container', {
-                'barrier-info__container--isHidden': is_minimized,
-            })}
-        >
+        <div className='barrier-info__container'>
             <Text size='sm'>
                 <Localize i18n_default_text='Barrier' />
             </Text>

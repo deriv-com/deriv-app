@@ -22,16 +22,16 @@ describe('<PayoutPerPointInfo />', () => {
             },
         },
     };
-    const MockedPayoutPerPointInfo = (mocked_store: TCoreStores, is_minimized: boolean) => {
+    const MockedPayoutPerPointInfo = (mocked_store: TCoreStores) => {
         return (
             <TraderProviders store={mocked_store}>
-                <PayoutPerPointInfo is_minimized={is_minimized} />
+                <PayoutPerPointInfo />
             </TraderProviders>
         );
     };
 
     it('displays the correct payout per point label, value, and currency', () => {
-        render(MockedPayoutPerPointInfo(mockStore(mock_store), true));
+        render(MockedPayoutPerPointInfo(mockStore(mock_store)));
         expect(screen.getByText('123 USD')).toBeInTheDocument();
         expect(screen.getByText('Payout per point')).toBeInTheDocument();
     });

@@ -50,10 +50,10 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
                 {isVisible('allow_equals') && <AllowEquals is_minimized={is_minimized} />}
                 {isVisible('take_profit') && <TakeProfit is_minimized={is_minimized} />}
                 {isVisible('risk_management') && <RiskManagement is_minimized={is_minimized} />}
-                {isVisible('expiration') && <MultipliersExpirationInfo is_minimized={is_minimized} />}
+                {isVisible('expiration') && !is_minimized && <MultipliersExpirationInfo />}
                 {isVisible('accu_info_display') && <AccumulatorsInformation is_minimized={is_minimized} />}
-                {isVisible('barrier_info') && <BarrierInfo is_minimized={is_minimized} />}
-                {isVisible('payout_per_point_info') && <PayoutPerPointInfo is_minimized={is_minimized} />}
+                {isVisible('barrier_info') && !is_minimized && <BarrierInfo />}
+                {isVisible('payout_per_point_info') && !is_minimized && <PayoutPerPointInfo />}
             </div>
             <div
                 className={clsx('trade-params__options-info__container', {
@@ -61,8 +61,8 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
                         !is_minimized || !(isVisible('expiration') || isVisible('payout_per_point_info')),
                 })}
             >
-                {isVisible('expiration') && <MultipliersExpirationInfo is_minimized={!is_minimized} />}
-                {isVisible('payout_per_point_info') && <PayoutPerPointInfo is_minimized={!is_minimized} />}
+                {isVisible('expiration') && <MultipliersExpirationInfo />}
+                {isVisible('payout_per_point_info') && <PayoutPerPointInfo />}
             </div>
         </React.Fragment>
     );

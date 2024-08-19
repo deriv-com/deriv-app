@@ -27,10 +27,10 @@ describe('<MultipliersExpirationInfo />', () => {
         },
     };
 
-    const MockedMultipliersExpirationInfo = (mocked_store: TCoreStores, is_minimized: boolean) => {
+    const MockedMultipliersExpirationInfo = (mocked_store: TCoreStores) => {
         return (
             <TraderProviders store={mocked_store}>
-                <MultipliersExpirationInfo is_minimized={is_minimized} />
+                <MultipliersExpirationInfo />
             </TraderProviders>
         );
     };
@@ -39,7 +39,7 @@ describe('<MultipliersExpirationInfo />', () => {
         (formatDuration as jest.Mock).mockReturnValue({ days: 1, timestamp: '14:00' });
         (getDateFromNow as jest.Mock).mockReturnValue('13 Jul 2021');
         (getDiffDuration as jest.Mock).mockReturnValue(14400);
-        render(MockedMultipliersExpirationInfo(mockStore(mock_store), false));
+        render(MockedMultipliersExpirationInfo(mockStore(mock_store)));
 
         expect(screen.getByText('Expires on')).toBeInTheDocument();
         expect(screen.getByText('13 Jul 2021 at 14:00')).toBeInTheDocument();

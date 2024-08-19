@@ -82,12 +82,17 @@ const useSortedMT5Accounts = (regulation?: string) => {
 
     // Sort the data by market_type to make sure the order is 'synthetic', 'financial', 'all'
     const sorted_data = useMemo(() => {
-        const market_type_order = ['synthetic', 'financial', 'all'];
+        const market_type_order = ['synthetic', 'financial', 'swap_free', 'zero_spread'];
 
         if (!filtered_data) return;
 
         const sorted_data = market_type_order.reduce((acc, market_type) => {
-            const accounts = filtered_data.filter(account => account.market_type === market_type);
+            const accounts = filtered_data.filter(account => {
+                if (account.market_type === 'all') {
+                    return account.product === market_type;
+                }
+                return account.market_type === market_type;
+            });
             if (!accounts.length) return acc;
             return [...acc, ...accounts];
         }, [] as typeof filtered_data);

@@ -13,11 +13,11 @@ const useGetDefaultMT5Jurisdiction = () => {
 
     const { product } = cfd;
 
-    // const default_jurisdiction = trading_platform_available_accounts.filter(
-    //     available_account => available_account.product === product
-    //      && is_default_jurisdiction
-    // )[0]?.shortcode;
+    const default_jurisdiction = trading_platform_available_accounts.filter(
+        available_account => available_account.product === product && available_account.is_default_jurisdiction
+    )[0]?.shortcode;
 
+    // return default_jurisdiction;
     return 'vanuatu';
 };
 

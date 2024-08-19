@@ -37,6 +37,7 @@ import { CFD_PLATFORMS, CATEGORY } from '../Helpers/cfd-config';
 import classNames from 'classnames';
 import { getDxCompanies, getMtCompanies, TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import '../sass/cfd.scss';
+import { useGetDefaultMT5Jurisdiction } from '@deriv/hooks';
 
 const MT5CreatePassword = makeLazyLoader(
     () => moduleLoader(() => import('./mt5-create-password')),
@@ -511,6 +512,7 @@ const CFDPasswordForm = observer(
 const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalProps) => {
     const { isDesktop } = useDevice();
     const { client, traders_hub, ui } = useStore();
+    const default_jurisdiction = useGetDefaultMT5Jurisdiction();
 
     const {
         email,
@@ -547,6 +549,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         setIsMt5PasswordInvalidFormatModalVisible,
         is_sent_email_modal_enabled,
         setSentEmailModalStatus,
+        setJurisdictionSelectedShortcode,
     } = useCfdStore();
 
     const history = useHistory();
@@ -584,6 +587,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         if (is_logged_in) {
             updateMT5Status();
             updateAccountStatus();
+            if (platform === CFD_PLATFORMS.MT5 && default_jurisdiction)
+                setJurisdictionSelectedShortcode(default_jurisdiction);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

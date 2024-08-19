@@ -263,8 +263,12 @@ const CFDsListing = observer(() => {
                                             });
                                             setProduct(existing_account.product);
                                             setAppstorePlatform(existing_account.platform);
-                                            setJurisdictionSelectedShortcode(default_jurisdiction);
                                             getAccount();
+                                            // console.log(default_jurisdiction);
+                                            // if (default_jurisdiction) {
+                                            //     setJurisdictionSelectedShortcode(default_jurisdiction);
+
+                                            // }
                                         }
                                     } else if (existing_account.action_type === 'multi-action') {
                                         const button_name = e?.currentTarget?.name;

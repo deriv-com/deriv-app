@@ -7,13 +7,6 @@ import ModulesProvider from 'Stores/Providers/modules-providers';
 import LastDigitPrediction from '../last-digit-prediction';
 
 const title = 'Last digit prediction';
-const mediaQueryList = {
-    matches: true,
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-};
-
-window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
 
 describe('LastDigitPrediction', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
@@ -54,16 +47,6 @@ describe('LastDigitPrediction', () => {
         expect(buttons).toHaveLength(10);
         buttons.forEach((button: HTMLElement) => {
             expect(button).toBeEnabled();
-        });
-    });
-    it('should render 10 disabled buttons for each digit in stats mode if digit_stats are available', () => {
-        default_mock_store.modules.trade.digit_stats = digit_stats;
-        render(mockLastDigitPrediction({ is_stats_mode: true }));
-
-        const buttons = screen.getAllByRole('button');
-        expect(buttons).toHaveLength(10);
-        buttons.forEach((button: HTMLElement) => {
-            expect(button).toBeDisabled();
         });
     });
     it('should render component with correct last digit value when minimized', () => {

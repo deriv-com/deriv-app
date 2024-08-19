@@ -158,6 +158,8 @@ const QSInput: React.FC<TQSInput> = observer(
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleOnChange(e)}
                                         placeholder={is_exclusive_field ? '0' : ''}
                                         bottom_label={is_exclusive_field ? currency : ''}
+                                        max_characters={2}
+                                        maxLength={2}
                                         ref={input_ref}
                                     />
                                 </Popover>

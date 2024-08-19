@@ -59,17 +59,17 @@ const useSortedMT5Accounts = (regulation?: string) => {
         const non_added_accounts = modified_data.filter(account => !account.is_added);
 
         const filtered_non_added_accounts = non_added_accounts.reduce((acc, account) => {
-            const { market_type, sub_account_type } = account;
-            const key = sub_account_type === 'zero_spread' ? `${market_type}_${sub_account_type}` : market_type;
+            const { market_type, product } = account;
+            const key = product === 'zero_spread' ? `${market_type}_${product}` : market_type;
 
             const existing_account = acc.find(acc_account =>
-                acc_account.sub_account_type === 'zero_spread'
-                    ? `${acc_account.market_type}_${acc_account.sub_account_type}` === key
+                acc_account.product === 'zero_spread'
+                    ? `${acc_account.market_type}_${acc_account.product}` === key
                     : acc_account.market_type === key
             );
             const added_account = added_accounts.find(acc_account =>
-                acc_account.sub_account_type === 'zero_spread'
-                    ? `${acc_account.market_type}_${acc_account.sub_account_type}` === key
+                acc_account.product === 'zero_spread'
+                    ? `${acc_account.market_type}_${acc_account.product}` === key
                     : acc_account.market_type === key
             );
             if (existing_account || added_account) return acc;

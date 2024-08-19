@@ -1667,10 +1667,6 @@ type TPrivateSocketEndpoints = {
                        * Landing Company short code
                        */
                       shortcode?: string;
-                      /**
-                       * Sub account type
-                       */
-                      sub_account_type?: 'standard' | 'swap_free' | 'stp' | 'zero_spread';
                   }[]
                 | null;
             /**

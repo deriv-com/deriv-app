@@ -2,7 +2,7 @@ import React from 'react';
 import { ActionSheet, SegmentedControlSingleChoice } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import DealCancellation from './deal-cancellation';
-import TakeProfitAndStopLoss from './take-profit-and-stop-loss';
+import TakeProfitAndStopLossContainer from './take-profit-and-stop-loss-container';
 
 type TRiskManagementPickerProps = {
     closeActionSheet: () => void;
@@ -29,7 +29,7 @@ const RiskManagementPicker = ({ closeActionSheet, should_show_deal_cancellation 
             {tab_index ? (
                 <DealCancellation closeActionSheet={closeActionSheet} />
             ) : (
-                <TakeProfitAndStopLoss closeActionSheet={closeActionSheet} />
+                <TakeProfitAndStopLossContainer closeActionSheet={closeActionSheet} />
             )}
         </ActionSheet.Content>
     );

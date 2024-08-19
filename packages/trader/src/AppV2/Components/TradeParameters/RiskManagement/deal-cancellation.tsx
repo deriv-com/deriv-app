@@ -41,6 +41,7 @@ const DealCancellation = observer(({ closeActionSheet }: TDealCancellationProps)
                 delay: 100,
             });
         }
+        // We should switch off TP and SL if DC is on and vice versa
         onChangeMultiple({
             has_cancellation: is_enabled,
             ...(is_enabled ? { has_take_profit: false } : {}),

@@ -8,7 +8,7 @@ import { ActionSheet, CaptionText, Text, ToggleSwitch, TextFieldWithSteppers } f
 import { Localize, localize } from '@deriv/translations';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 
-type TTakeProfitInputProps = {
+type TTakeProfitAndStopLossInputProps = {
     classname?: string;
     has_save_button?: boolean;
     has_tp_initial_value_parent_ref?: React.MutableRefObject<boolean | undefined>;
@@ -17,14 +17,14 @@ type TTakeProfitInputProps = {
     tp_initial_value_parent_ref?: React.MutableRefObject<string | number | undefined>;
 };
 
-const TakeProfitInput = ({
+const TakeProfitAndStopLossInput = ({
     classname,
     has_save_button = true,
     has_tp_initial_value_parent_ref,
     is_save_btn_clicked: is_save_btn_clicked_initial_value,
     onActionSheetClose,
     tp_initial_value_parent_ref,
-}: TTakeProfitInputProps) => {
+}: TTakeProfitAndStopLossInputProps) => {
     const {
         contract_type,
         currency,
@@ -102,11 +102,7 @@ const TakeProfitInput = ({
             input_ref.current?.blur();
         }
 
-        // We should switch off DC if TP or SL is on and vice versa
-        onChangeMultiple({
-            has_take_profit: new_value,
-            ...(new_value ? { has_cancellation: false } : {}),
-        });
+        onChangeMultiple({ has_take_profit: new_value });
     };
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,6 +135,7 @@ const TakeProfitInput = ({
         }
 
         const has_take_profit = be_error_text ? false : has_tp_selected_value_ref.current;
+        // We should switch off DC if TP or SL is on and vice versa
         onChangeMultiple({
             has_take_profit,
             ...(has_take_profit ? { has_cancellation: false } : {}),
@@ -196,10 +193,7 @@ const TakeProfitInput = ({
                     tp_selected_value_ref.current !== '');
 
             const has_take_profit = should_set_empty_string ? false : has_tp_initial_value_ref.current;
-            onChangeMultiple({
-                has_take_profit,
-                ...(has_take_profit ? { has_cancellation: false } : {}),
-            });
+            onChangeMultiple({ has_take_profit });
             onChange({
                 target: {
                     name: 'take_profit',
@@ -269,4 +263,4 @@ const TakeProfitInput = ({
     );
 };
 
-export default observer(TakeProfitInput);
+export default observer(TakeProfitAndStopLossInput);

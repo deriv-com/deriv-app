@@ -5,13 +5,14 @@ import { mockStore } from '@deriv/stores';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import * as utils from 'AppV2/Utils/trade-params-utils';
 import TraderProviders from '../../../../../trader-providers';
-import TakeProfitInput from '../take-profit-input';
+import TakeProfitAndStopLossInput from '../take-profit-and-stop-loss-input';
 
 const take_profit_trade_param = 'Take profit';
 const data_testid = 'dt_input_with_steppers';
 
-describe('TakeProfitInput', () => {
-    let default_mock_store: ReturnType<typeof mockStore>, default_props: React.ComponentProps<typeof TakeProfitInput>;
+describe('TakeProfitAndStopLossInput', () => {
+    let default_mock_store: ReturnType<typeof mockStore>,
+        default_props: React.ComponentProps<typeof TakeProfitAndStopLossInput>;
 
     beforeEach(() => {
         default_mock_store = mockStore({
@@ -24,28 +25,25 @@ describe('TakeProfitInput', () => {
 
     afterEach(() => jest.clearAllMocks());
 
-    const mockTakeProfitInput = () =>
+    const mockTakeProfitAndStopLossInput = () =>
         render(
             <TraderProviders store={default_mock_store}>
                 <ModulesProvider store={default_mock_store}>
-                    <TakeProfitInput {...default_props} />
+                    <TakeProfitAndStopLossInput {...default_props} />
                 </ModulesProvider>
             </TraderProviders>
         );
 
     it('should render component', () => {
-        mockTakeProfitInput();
+        mockTakeProfitAndStopLossInput();
 
-        // const input = screen.getByRole('textbox');
-        // expect(input).toBeInTheDocument();
-        // expect(input).toHaveValue('-');
         expect(screen.getByText(take_profit_trade_param)).toBeInTheDocument();
         expect(screen.getByText('Save')).toBeInTheDocument();
     });
 
     it('should render alternative text content with definition for Accumulators', () => {
         default_mock_store.modules.trade.is_accumulator = true;
-        mockTakeProfitInput();
+        mockTakeProfitAndStopLossInput();
 
         userEvent.click(screen.getByText(take_profit_trade_param));
 
@@ -54,7 +52,7 @@ describe('TakeProfitInput', () => {
 
     it('should call focusAndOpenKeyboard, when ToggleSwitch is switched to true.', async () => {
         const mockFocusAndOpenKeyboard = jest.spyOn(utils, 'focusAndOpenKeyboard');
-        mockTakeProfitInput();
+        mockTakeProfitAndStopLossInput();
 
         const toggle_switcher = screen.getAllByRole('button')[0];
         userEvent.click(toggle_switcher);
@@ -63,7 +61,7 @@ describe('TakeProfitInput', () => {
 
     it('should call focusAndOpenKeyboard, when user clicks on Take Profit overlay.', () => {
         const mockFocusAndOpenKeyboard = jest.spyOn(utils, 'focusAndOpenKeyboard');
-        mockTakeProfitInput();
+        mockTakeProfitAndStopLossInput();
 
         const take_profit_overlay = screen.getByTestId('dt_take_profit_overlay');
         userEvent.click(take_profit_overlay);
@@ -72,7 +70,7 @@ describe('TakeProfitInput', () => {
     });
 
     it('should call onChange and onChangeMultiple if user click on Save button and there is no error', () => {
-        mockTakeProfitInput();
+        mockTakeProfitAndStopLossInput();
 
         const toggle_switcher = screen.getAllByRole('button')[0];
         userEvent.click(toggle_switcher);
@@ -86,7 +84,7 @@ describe('TakeProfitInput', () => {
 
     it('should show validation error if user click on Save button and there is an error', () => {
         default_mock_store.modules.trade.validation_errors = { take_profit: ['validation error'] };
-        mockTakeProfitInput();
+        mockTakeProfitAndStopLossInput();
 
         const toggle_switcher = screen.getAllByRole('button')[0];
         userEvent.click(toggle_switcher);
@@ -100,7 +98,7 @@ describe('TakeProfitInput', () => {
     it('should onChange function when user type new value', () => {
         default_mock_store.modules.trade.take_profit = '5';
         default_mock_store.modules.trade.has_take_profit = true;
-        mockTakeProfitInput();
+        mockTakeProfitAndStopLossInput();
 
         userEvent.clear(screen.getByTestId(data_testid));
         expect(default_mock_store.modules.trade.onChange).toBeCalledWith({

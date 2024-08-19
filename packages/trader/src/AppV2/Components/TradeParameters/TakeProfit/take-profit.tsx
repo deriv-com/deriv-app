@@ -7,7 +7,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
-import TakeProfitInput from './take-profit-input';
+import TakeProfitAndStopLossInput from '../RiskManagement/take-profit-and-stop-loss-input';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 
 type TTakeProfitProps = {
@@ -32,7 +32,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     const action_sheet_content = [
         {
             id: 1,
-            component: <TakeProfitInput onActionSheetClose={onActionSheetClose} />,
+            component: <TakeProfitAndStopLossInput onActionSheetClose={onActionSheetClose} />,
         },
         {
             id: 2,

@@ -1,20 +1,23 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { Button } from '@deriv-com/quill-ui';
+import { Button, useSnackbar } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
-import TakeProfitInput from '../TakeProfit/take-profit-input';
+import { getSnackBarText } from 'AppV2/Utils/trade-params-utils';
+import TakeProfitAndStopLossInput from './take-profit-and-stop-loss-input';
 
-type TTakeProfitAndStopLossProps = {
+type TTakeProfitAndStopLossContainerProps = {
     closeActionSheet: () => void;
     should_show_deal_cancellation?: boolean;
 };
 
 //TODO: add restoring values from wheel-p-initial-v
-const TakeProfitAndStopLoss = observer(({ closeActionSheet }: TTakeProfitAndStopLossProps) => {
+const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProfitAndStopLossContainerProps) => {
     const {
         // contract_type,
         has_take_profit,
+        has_cancellation,
+        has_stop_loss,
         take_profit,
         // trade_types,
         // trade_type_tab,
@@ -23,6 +26,7 @@ const TakeProfitAndStopLoss = observer(({ closeActionSheet }: TTakeProfitAndStop
         // setWheelPickerInitialValues,
         validation_errors,
     } = useTraderStore();
+    const { addSnackbar } = useSnackbar();
 
     const [is_save_btn_clicked, setIsSaveBtnClicked] = React.useState(false);
 
@@ -47,7 +51,19 @@ const TakeProfitAndStopLoss = observer(({ closeActionSheet }: TTakeProfitAndStop
 
         const is_tp_enabled = be_error_text ? false : has_take_profit;
 
-        //TODO: reset DC
+        if (is_tp_enabled && has_cancellation) {
+            addSnackbar({
+                message: getSnackBarText({
+                    has_cancellation,
+                    has_stop_loss,
+                    has_take_profit: is_tp_enabled,
+                    switching_TP_SL: true,
+                }),
+                hasCloseButton: true,
+                delay: 100,
+            });
+        }
+        // We should switch off DC if TP or SL is on and vice versa
         onChangeMultiple({
             has_take_profit: is_tp_enabled,
             ...(is_tp_enabled ? { has_cancellation: false } : {}),
@@ -65,7 +81,7 @@ const TakeProfitAndStopLoss = observer(({ closeActionSheet }: TTakeProfitAndStop
     return (
         <div className='risk-management__tp-sl__wrapper'>
             {/* <div> */}
-            <TakeProfitInput
+            <TakeProfitAndStopLossInput
                 classname='risk-management__tp-sl'
                 has_save_button={false}
                 has_tp_initial_value_parent_ref={has_tp_initial_value_ref}
@@ -87,4 +103,4 @@ const TakeProfitAndStopLoss = observer(({ closeActionSheet }: TTakeProfitAndStop
     );
 });
 
-export default TakeProfitAndStopLoss;
+export default TakeProfitAndStopLossContainer;

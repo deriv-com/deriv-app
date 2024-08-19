@@ -3,10 +3,10 @@ import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { Button } from '@deriv-com/quill-ui';
+import { Button, useNotifications } from '@deriv-com/quill-ui';
 import { useDevice } from '@deriv-com/ui';
 import {
-    CONTRACT_TYPES,
+    getCardLabelsV2,
     getContractTypeDisplay,
     getIndicativePrice,
     hasContractEntered,
@@ -15,12 +15,14 @@ import {
     isOpen,
     isValidToSell,
 } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
 import PurchaseButtonContent from './purchase-button-content';
+import { getTradeTypeTabsList } from 'AppV2/Utils/trade-params-utils';
+import { StandaloneStopwatchRegularIcon } from '@deriv/quill-icons';
 
 const PurchaseButton = observer(() => {
     const [loading_button_index, setLoadingButtonIndex] = React.useState<number | null>(null);
     const { isMobile } = useDevice();
+    const { addBanner } = useNotifications();
 
     const {
         portfolio: { all_positions, onClickSell },
@@ -39,6 +41,7 @@ const PurchaseButton = observer(() => {
         onPurchase,
         proposal_info,
         symbol,
+        trade_type_tab,
         trade_types,
     } = useTraderStore();
 
@@ -58,7 +61,9 @@ const PurchaseButton = observer(() => {
         is_vanilla_fx,
         is_vanilla,
     };
-    const trade_types_array = Object.keys(trade_types);
+    const trade_types_array = Object.keys(trade_types).filter(
+        type => !getTradeTypeTabsList(contract_type).length || type === trade_type_tab
+    );
     const active_accu_contract = is_accumulator
         ? all_positions.find(
               ({ contract_info, type }) =>
@@ -72,45 +77,48 @@ const PurchaseButton = observer(() => {
         : false;
     const current_stake =
         (is_valid_to_sell && active_accu_contract && getIndicativePrice(active_accu_contract.contract_info)) || null;
+    const cardLabels = getCardLabelsV2();
 
     const getButtonType = (index: number, trade_type: string) => {
-        const purchase_button_trade_types = [
-            CONTRACT_TYPES.VANILLA.CALL,
-            CONTRACT_TYPES.TURBOS.LONG,
-            CONTRACT_TYPES.ACCUMULATOR,
-        ] as string[];
-
-        const sell_button_trade_types = [CONTRACT_TYPES.VANILLA.PUT, CONTRACT_TYPES.TURBOS.SHORT] as string[];
-
-        if (purchase_button_trade_types.includes(trade_type)) return 'purchase';
-        if (sell_button_trade_types.includes(trade_type)) return 'sell';
-        return index ? 'sell' : 'purchase';
+        const tab_index = getTradeTypeTabsList(contract_type).findIndex(tab => tab.contract_type === trade_type);
+        const button_index = tab_index < 0 ? index : tab_index;
+        return button_index ? 'sell' : 'purchase';
     };
+
+    const addNotificationBannerCallback = (params: Parameters<typeof addBanner>[0]) =>
+        addBanner({
+            icon: (
+                <StandaloneStopwatchRegularIcon
+                    iconSize='sm'
+                    className='trade-notification--purchase'
+                    key='contract-opened'
+                />
+            ),
+            ...params,
+        });
 
     React.useEffect(() => {
         if (is_purchase_enabled) setLoadingButtonIndex(null);
     }, [is_purchase_enabled]);
 
     if (is_accumulator && has_open_accu_contract) {
-        const info = proposal_info?.[trade_types_array[0]] || {};
+        const is_accu_sell_disabled = !is_valid_to_sell || active_accu_contract?.is_sell_requested;
         return (
             <div className='purchase-button__wrapper'>
                 <Button
                     color='black'
-                    variant='secondary'
                     size='lg'
-                    label={<Localize i18n_default_text='Sell' />}
+                    label={
+                        is_accu_sell_disabled
+                            ? `${cardLabels.CLOSE}`
+                            : `${cardLabels.CLOSE} ${current_stake} ${currency}`
+                    }
                     fullWidth
                     className='purchase-button purchase-button--single'
-                    disabled={!is_valid_to_sell || active_accu_contract?.is_sell_requested}
+                    disabled={is_accu_sell_disabled}
                     onClick={() => onClickSell(active_accu_contract?.contract_info.contract_id)}
-                >
-                    <PurchaseButtonContent
-                        {...purchase_button_content_props}
-                        info={info}
-                        current_stake={current_stake}
-                    />
-                </Button>
+                />
+                {is_accu_sell_disabled && <div className='purchase-button purchase-button--disabled-background' />}
             </div>
         );
     }
@@ -124,32 +132,36 @@ const PurchaseButton = observer(() => {
                 const is_disabled = !is_trade_enabled || is_proposal_empty || !info.id || !is_purchase_enabled;
 
                 return (
-                    <Button
-                        key={trade_type}
-                        color={getButtonType(index, trade_type)}
-                        size='lg'
-                        label={getContractTypeDisplay(trade_type, { isHighLow: is_high_low, showButtonName: true })}
-                        fullWidth
-                        className={clsx(
-                            'purchase-button',
-                            is_loading && 'purchase-button--loading',
-                            is_single_button && 'purchase-button--single'
+                    <React.Fragment key={trade_type}>
+                        <Button
+                            color={getButtonType(index, trade_type)}
+                            size='lg'
+                            label={getContractTypeDisplay(trade_type, { isHighLow: is_high_low, showButtonName: true })}
+                            fullWidth
+                            className={clsx(
+                                'purchase-button',
+                                is_loading && 'purchase-button--loading',
+                                is_single_button && 'purchase-button--single'
+                            )}
+                            isLoading={is_loading}
+                            disabled={is_disabled && !is_loading}
+                            onClick={() => {
+                                setLoadingButtonIndex(index);
+                                onPurchase(info.id, info.stake, trade_type, isMobile, addNotificationBannerCallback);
+                            }}
+                        >
+                            {!is_loading && !is_accumulator && (
+                                <PurchaseButtonContent
+                                    {...purchase_button_content_props}
+                                    info={info}
+                                    is_reverse={!!index}
+                                />
+                            )}
+                        </Button>
+                        {is_disabled && !is_loading && (
+                            <div className='purchase-button purchase-button--disabled-background' />
                         )}
-                        isLoading={is_loading}
-                        disabled={is_disabled && !is_loading}
-                        onClick={() => {
-                            setLoadingButtonIndex(index);
-                            onPurchase(info.id, info.stake, trade_type, isMobile);
-                        }}
-                    >
-                        {!is_loading && (
-                            <PurchaseButtonContent
-                                {...purchase_button_content_props}
-                                info={info}
-                                is_reverse={!!index}
-                            />
-                        )}
-                    </Button>
+                    </React.Fragment>
                 );
             })}
         </div>

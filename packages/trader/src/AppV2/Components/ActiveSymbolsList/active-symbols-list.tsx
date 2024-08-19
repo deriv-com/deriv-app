@@ -13,7 +13,7 @@ type TActiveSymbolsList = {
 };
 
 const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) => {
-    const { default_symbol } = useActiveSymbols({});
+    const { default_symbol } = useActiveSymbols();
 
     const [isSearching, setIsSearching] = useState(false);
     const [selectedSymbol, setSelectedSymbol] = useState(default_symbol);
@@ -33,7 +33,6 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
             <ActionSheet.Root isOpen={isOpen} onClose={() => setIsOpen(false)}>
                 <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen>
                     <SymbolsSearchField
-                        marketCategoriesRef={marketCategoriesRef}
                         searchValue={searchValue}
                         setSearchValue={setSearchValue}
                         isSearching={isSearching}
@@ -62,8 +61,8 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
                                 selectedSymbol={selectedSymbol}
                                 setSelectedSymbol={setSelectedSymbol}
                                 setIsOpen={setIsOpen}
-                                ref={marketCategoriesRef}
                                 isOpen={isOpen}
+                                marketCategoriesRef={marketCategoriesRef}
                             />
                         )}
                     </Tab.Container>

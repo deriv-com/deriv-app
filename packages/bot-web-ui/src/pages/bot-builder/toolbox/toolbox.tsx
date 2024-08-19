@@ -43,7 +43,11 @@ const Toolbox = observer(() => {
     const handleQuickStrategyOpen = () => {
         setFormVisibility(true);
         // send to rs if quick strategy is opened from bot builder (desktop)
-        rudderStackSendOpenEvent({ subform_source: 'bot_builder', subform_name: 'quick_strategy' });
+        rudderStackSendOpenEvent({
+            subpage_name: 'bot_builder',
+            subform_source: 'bot_builder',
+            subform_name: 'quick_strategy',
+        });
     };
 
     if (is_desktop) {

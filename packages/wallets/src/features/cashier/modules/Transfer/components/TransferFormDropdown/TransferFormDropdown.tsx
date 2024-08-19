@@ -2,7 +2,9 @@ import React, { RefObject, useCallback, useEffect, useMemo } from 'react';
 import { useFormikContext } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { LegacyChevronDown2pxIcon } from '@deriv/quill-icons';
-import { WalletListCardBadge, WalletText } from '../../../../../../components';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
+import { WalletListCardBadge } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../hooks/useDevice';
 import { useTransfer } from '../../provider';
@@ -19,6 +21,7 @@ type TProps = {
 const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListRef }) => {
     const { setValues, values } = useFormikContext<TInitialTransferFormValues>();
     const { accounts, activeWallet } = useTransfer();
+    const { localize } = useTranslations();
     const { fromAccount, toAccount } = values;
     const { isMobile } = useDevice();
     const modal = useModal();
@@ -45,7 +48,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
 
     const selectedAccount = isFromAccountDropdown ? fromAccount : toAccount;
     const accountsList = isFromAccountDropdown ? fromAccountList : toAccountList;
-    const label = isFromAccountDropdown ? 'Transfer from' : 'Transfer to';
+    const label = isFromAccountDropdown ? localize('Transfer from') : localize('Transfer to');
     const { location } = useHistory();
     const toAccountLoginId =
         location.pathname === '/wallet/account-transfer' ? location.state?.toAccountLoginId : undefined;
@@ -116,6 +119,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                         accountsList={accountsList}
                         activeWallet={activeWallet}
                         fromAccount={fromAccount}
+                        isFromAccountDropdown={isFromAccountDropdown}
                         label={label}
                         onSelect={handleSelect}
                         selectedAccount={selectedAccount}
@@ -130,7 +134,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
         >
             <div className='wallets-transfer-form-dropdown__content'>
                 <div className='wallets-transfer-form-dropdown__header'>
-                    <WalletText size='sm'>{label}</WalletText>
+                    <Text size='sm'>{label}</Text>
 
                     {isMobile && <LegacyChevronDown2pxIcon iconSize='xs' />}
                 </div>
@@ -139,9 +143,13 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                     <TransferFormAccountCard account={selectedAccount} type='input' />
                 ) : (
                     <div className='wallets-transfer-form-dropdown__select-account-cta'>
-                        <WalletText size='sm' weight='bold'>
-                            Select a trading account{activeWallet?.demo_account === 0 ? ` or a Wallet` : ''}
-                        </WalletText>
+                        <Text size='sm' weight='bold'>
+                            {activeWallet?.demo_account === 0 ? (
+                                <Localize i18n_default_text='Select a trading account or a Wallet' />
+                            ) : (
+                                <Localize i18n_default_text='Select a trading account' />
+                            )}
+                        </Text>
                     </div>
                 )}
             </div>

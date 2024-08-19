@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { Divider } from '@deriv-com/ui';
-import { WalletText } from '../../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Divider, Text } from '@deriv-com/ui';
 import { useModal } from '../../../../../components/ModalProvider';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
 import DocumentIcon from '../../../../../public/images/ic-id-number.svg';
@@ -110,9 +110,9 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
                 <div className='wallets-jurisdiction-card-front'>
                     {isOverHeaderAvailable && <JurisdictionCardTag tag={overHeader || ''} />}
                     <div className='wallets-jurisdiction-card-front__label'>
-                        <WalletText align='center' size='lg' weight='bold'>
+                        <Text align='center' size='lg' weight='bold'>
                             {header}
-                        </WalletText>
+                        </Text>
                     </div>
                     <div className='wallets-jurisdiction-card-rows'>
                         {rows.map((row, index) => {
@@ -154,9 +154,9 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
                                                             row.titleIndicators?.displayTextSkinColor || ''
                                                         }`}
                                                     >
-                                                        <WalletText color='white' size='xs' weight='bold'>
+                                                        <Text color='white' size='xs' weight='bold'>
                                                             {row.titleIndicators.displayText}
-                                                        </WalletText>
+                                                        </Text>
                                                     </div>
                                                 );
                                             }
@@ -172,9 +172,9 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
                     </div>
                     {isAdded && (
                         <div className='wallets-jurisdiction-card__added-status'>
-                            <WalletText align='center' color='white' lineHeight='3xs' size='xs' weight='bold'>
-                                Added
-                            </WalletText>
+                            <Text align='center' color='white' lineHeight='3xs' size='xs' weight='bold'>
+                                <Localize i18n_default_text='Added' />
+                            </Text>
                         </div>
                     )}
                 </div>

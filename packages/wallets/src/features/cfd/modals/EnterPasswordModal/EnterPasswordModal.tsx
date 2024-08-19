@@ -1,4 +1,5 @@
 import React, { ComponentProps, FC } from 'react';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
 import { PlatformDetails } from '../../constants';
@@ -17,8 +18,9 @@ const EnterPasswordModal: FC<ComponentProps<typeof EnterPassword>> = ({
     setPassword,
 }) => {
     const { isMobile } = useDevice();
+    const { localize } = useTranslations();
 
-    const title = `Enter your ${PlatformDetails[platform].title} password`;
+    const title = localize('Enter your {{platformTitle}} password', { platformTitle: PlatformDetails[platform].title });
 
     if (isMobile) {
         return (
@@ -33,7 +35,7 @@ const EnterPasswordModal: FC<ComponentProps<typeof EnterPassword>> = ({
                                 size={isMobile ? 'lg' : 'md'}
                                 variant='outlined'
                             >
-                                Forgot password?
+                                <Localize i18n_default_text='Forgot password?' />
                             </WalletButton>
                             <WalletButton
                                 disabled={!password || isLoading}
@@ -42,7 +44,7 @@ const EnterPasswordModal: FC<ComponentProps<typeof EnterPassword>> = ({
                                 onClick={onPrimaryClick}
                                 size={isMobile ? 'lg' : 'md'}
                             >
-                                Add account
+                                <Localize i18n_default_text='Add account' />
                             </WalletButton>
                         </WalletButtonGroup>
                     );

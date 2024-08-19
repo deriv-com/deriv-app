@@ -8,6 +8,8 @@ import { saveWorkspaceToRecent } from '../../utils/local-storage';
 import DBotStore from '../dbot-store';
 import { LogTypes } from '../../constants/messages';
 import { error_message_map } from '../../utils/error-config';
+import { botNotification } from '../../../../bot-web-ui/src/components/bot-notification/bot-notification';
+import { notification_message } from '../../../../bot-web-ui/src/components/bot-notification/bot-notification-utils';
 
 export const getSelectedTradeType = (workspace = Blockly.derivWorkspace) => {
     const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
@@ -121,6 +123,8 @@ export const load = async ({
 }) => {
     if (!DBotStore?.instance || !workspace) return;
     const { setLoading } = DBotStore.instance;
+    const { load_modal } = DBotStore.instance;
+    const { setLoadedLocalFile } = load_modal;
     setLoading(true);
     // Delay execution to allow fully previewing previous strategy if users quickly switch between strategies.
     await delayExecution(100);
@@ -128,6 +132,8 @@ export const load = async ({
         setLoading(false);
         const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
         globalObserver.emit('ui.log.error', error_message);
+        setLoadedLocalFile(null);
+        botNotification(notification_message.invalid_xml);
         return {
             error: error_message,
         };

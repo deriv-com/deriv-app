@@ -18,6 +18,7 @@ jest.mock('@deriv-com/ui', () => ({
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useDepositLocked: jest.fn(() => false),
+    useCashierLocked: jest.fn(() => false),
 }));
 
 jest.mock('@deriv/components', () => {
@@ -56,11 +57,9 @@ describe('<OnRamp />', () => {
 
     beforeEach(() => {
         props = {
-            setSideNotes: jest.fn(),
             menu_options: [
                 {
                     default: false,
-                    has_side_note: false,
                     icon: '',
                     label: 'Deposit',
                     path: routes.cashier_deposit,
@@ -68,7 +67,6 @@ describe('<OnRamp />', () => {
                 },
                 {
                     default: false,
-                    has_side_note: false,
                     icon: '',
                     label: 'Transfer',
                     path: routes.cashier_acc_transfer,
@@ -82,30 +80,19 @@ describe('<OnRamp />', () => {
             client: {
                 is_authorize: true,
                 is_switching: false,
-                account_status: { status: [] },
-                mt5_login_list: [
-                    {
-                        account_type: 'demo',
-                        sub_account_type: 'financial_stp',
-                    },
-                ],
             },
             modules: {
                 cashier: {
                     onramp: {
                         filtered_onramp_providers: [{ name: 'name' }],
                         is_onramp_modal_open: false,
-                        onMountOnramp: jest.fn(),
-                        onUnmountOnramp: jest.fn(),
                         resetPopup: jest.fn(),
                         setIsOnRampModalOpen: jest.fn(),
                         should_show_dialog: false,
                         onramp_popup_modal_title: 'Title of the onramp popup modal',
                     },
                     general_store: {
-                        is_cashier_onboarding: false,
                         is_loading: false,
-                        cashier_route_tab_index: 0,
                     },
                 },
             },
@@ -203,12 +190,6 @@ describe('<OnRamp />', () => {
 
         expect(mockRootStore.modules.cashier.onramp.setIsOnRampModalOpen).toHaveBeenCalledWith(false);
         document.body.removeChild(modal_root_el);
-    });
-
-    it('triggers "setSideNotes" callback in Desktop mode', () => {
-        renderOnRamp();
-
-        expect(props.setSideNotes).toHaveBeenCalledTimes(1);
     });
 
     it('shows "What is Fiat onramp?" message and render <ReadMore /> component in Mobile mode', () => {

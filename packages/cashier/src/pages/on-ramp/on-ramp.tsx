@@ -1,12 +1,11 @@
 import React from 'react';
-import { Loading, Modal, SelectNative, ReadMore, Text } from '@deriv/components';
+import { Loading, Modal, SelectNative, ReadMore, SideNote, Text } from '@deriv/components';
 import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import CashierLocked from '../../components/cashier-locked';
-import SideNote from '../../components/side-note';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
 import { DepositSubPageAnalyticsEventTracker } from '../../components/deposit-sub-page-analytics-event-tracker';
@@ -21,23 +20,21 @@ type TMenuOption = {
     label: string;
     value?: string;
     path: string;
-    has_side_note?: boolean;
 };
 
 export type TOnRampProps = {
     menu_options: TMenuOption[];
-    setSideNotes?: (notes: React.ReactNode[]) => void;
 };
 
 const OnRampSideNote = () => {
-    const notes = [
-        <Localize
-            i18n_default_text='Fiat onramp is a cashier service that allows you to convert fiat currencies to crypto to top up your Deriv crypto accounts. Listed here are third-party crypto exchanges. You’ll need to create an account with them to use their services.'
-            key={0}
-        />,
-    ];
-
-    return <SideNote side_notes={notes} title={<Localize i18n_default_text='What is Fiat onramp?' />} />;
+    return (
+        <SideNote title={<Localize i18n_default_text='What is Fiat onramp?' />}>
+            <Localize
+                i18n_default_text='Fiat onramp is a cashier service that allows you to convert fiat currencies to crypto to top up your Deriv crypto accounts. Listed here are third-party crypto exchanges. You’ll need to create an account with them to use their services.'
+                key={0}
+            />
+        </SideNote>
+    );
 };
 
 const OnRampInfo = () => (
@@ -58,21 +55,19 @@ const OnRampInfo = () => (
     </div>
 );
 
-const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
+const OnRamp = observer(({ menu_options }: TOnRampProps) => {
     const { common, client } = useStore();
     const { onramp, general_store } = useCashierStore();
     const {
         filtered_onramp_providers,
         is_onramp_modal_open,
-        onMountOnramp,
-        onUnmountOnramp,
         onramp_popup_modal_title,
         resetPopup,
         setIsOnRampModalOpen,
         should_show_dialog,
     } = onramp;
     const { isDesktop } = useDevice();
-    const { is_cashier_onboarding, is_loading, cashier_route_tab_index } = general_store;
+    const { is_loading } = general_store;
     const is_cashier_locked = useCashierLocked();
     const { is_switching } = client;
     const { routeTo } = common;
@@ -86,19 +81,6 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
         }
     }, [menu_options, routeTo, selected_cashier_path]);
 
-    React.useEffect(() => {
-        onMountOnramp();
-        if (!is_switching && !is_loading) {
-            setSideNotes?.([<OnRampSideNote key={0} />]);
-        }
-
-        return () => {
-            onUnmountOnramp();
-            setSideNotes?.([]);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [onMountOnramp, onUnmountOnramp, is_cashier_onboarding, is_switching, is_loading, cashier_route_tab_index]);
-
     const getActivePaths = () =>
         (menu_options ?? []).map(menu_option => ({
             text: menu_option.label,
@@ -107,21 +89,21 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
 
     if (is_switching || is_loading)
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <Loading className='cashier-onboarding__loader' is_fullscreen />
             </PageContainer>
         );
 
     if (is_deposit_locked || is_cashier_locked) {
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <CashierLocked />
             </PageContainer>
         );
     }
 
     return (
-        <PageContainer hide_breadcrumb>
+        <PageContainer hide_breadcrumb right={isDesktop ? <OnRampSideNote key={0} /> : undefined}>
             <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>
                 <DepositSubPageAnalyticsEventTracker deposit_category='fiat_onramp' />
                 {!isDesktop && (

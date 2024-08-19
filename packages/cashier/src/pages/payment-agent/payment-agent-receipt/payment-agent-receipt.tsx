@@ -7,8 +7,6 @@ import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
 import PaymentAgentDetail from '../payment-agent-detail';
-import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
-import SideNote from 'Components/side-note';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-receipt.scss';
 import { BrowserHistory } from 'history';
@@ -61,11 +59,6 @@ const PaymentAgentReceipt = observer(({ history }: TPaymentAgentReceipt) => {
 
     return (
         <div className='cashier__wrapper--align-center payment-agent-receipt'>
-            {!isDesktop && (
-                <SideNote className='payment-agent-list__side-note' has_title={false}>
-                    <PaymentAgentDisclaimer />
-                </SideNote>
-            )}
             <Text
                 as='h1'
                 align='center'

@@ -121,11 +121,11 @@ describe('<AccountTransferForm />', () => {
     });
 
     const props = {
-        setSideNotes: jest.fn(),
         error: {
             code: 'testCode',
             message: 'testMessage',
         } as TError,
+        onClose: jest.fn(),
     };
 
     const renderAccountTransferForm = () => {

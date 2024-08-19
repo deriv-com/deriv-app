@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
-import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
+import { useCashierLocked } from '@deriv/hooks';
 import { createBrowserHistory } from 'history';
 import AccountTransfer from '../account-transfer';
 import CashierProviders from '../../../cashier-providers';
@@ -15,41 +15,35 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
             return Promise.resolve([...payload]);
         },
     },
-    useWS: () => undefined,
 }));
 
-jest.mock('../account-transfer-form', () => jest.fn(() => 'mockedAccountTransferForm'));
 jest.mock('Components/transactions-crypto-history', () => jest.fn(() => 'mockedTransactionsCryptoHistory'));
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'mockedCashierLocked'));
-jest.mock('../account-transfer-no-account', () => jest.fn(() => 'mockedAccountTransferNoAccount'));
 jest.mock('Components/error', () => jest.fn(() => 'mockedError'));
+jest.mock('../account-transfer-no-account', () => jest.fn(() => 'mockedAccountTransferNoAccount'));
+jest.mock('../account-transfer-form', () => jest.fn(() => 'mockedAccountTransferForm'));
+jest.mock('../account-transfer-form/account-transfer-form-side-note', () =>
+    jest.fn(() => 'mockedAccountTransferFormSideNote')
+);
 
 jest.mock('@deriv/hooks');
-const mockUseDepositLocked = useDepositLocked as jest.MockedFunction<typeof useDepositLocked>;
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
 describe('<AccountTransfer />', () => {
     let mockRootStore: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
-        mockUseDepositLocked.mockReturnValue(false);
         mockUseCashierLocked.mockReturnValue(false);
         mockRootStore = mockStore({
             client: {
                 is_authorize: true,
                 is_switching: false,
                 is_virtual: false,
-                mt5_login_list: [
-                    {
-                        account_type: 'demo',
-                        sub_account_type: 'financial_stp',
-                    },
-                ],
             },
             modules: {
                 cashier: {
                     general_store: {
-                        setActiveTab: jest.fn(),
+                        is_loading: false,
                     },
                     account_transfer: {
                         error: {},
@@ -61,10 +55,6 @@ describe('<AccountTransfer />', () => {
                         has_no_accounts_balance: false,
                         is_transfer_confirm: false,
                         is_transfer_locked: false,
-                    },
-                    crypto_fiat_converter: {},
-                    transaction_history: {
-                        is_transactions_crypto_visible: false,
                     },
                 },
             },
@@ -89,16 +79,7 @@ describe('<AccountTransfer />', () => {
     it('renders the account transfer form', async () => {
         renderAccountTransfer();
 
-        expect(await screen.findByText('mockedAccountTransferForm')).toBeInTheDocument();
-    });
-
-    it('does not show the side notes when switching', async () => {
-        mockRootStore.client.is_switching = true;
-        renderAccountTransfer();
-
-        await waitFor(() => {
-            expect(props.setSideNotes).toHaveBeenCalledWith([]);
-        });
+        await expect(screen.findByText('mockedAccountTransferForm')).resolves.toBeInTheDocument();
     });
 
     it('renders the virtual component if client is using a demo account', async () => {

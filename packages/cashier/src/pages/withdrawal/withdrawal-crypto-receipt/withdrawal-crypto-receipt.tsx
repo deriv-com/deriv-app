@@ -148,7 +148,7 @@ const WithdrawalCryptoReceipt = observer(() => {
     }, [is_switching, tab_index]);
 
     return (
-        <div className='cashier__wrapper'>
+        <div className='withdrawal-crypto-receipt__wrapper'>
             <Text as='h2' color='prominent' weight='bold' align='center' className='cashier__header'>
                 <Localize i18n_default_text='Your withdrawal will be processed within 24 hours' />
             </Text>

@@ -19,12 +19,17 @@ const Deposit = observer(() => {
 
     if (is_deposit_locked)
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <DepositLocked />
             </PageContainer>
         );
 
-    if (is_transactions_crypto_visible) return <TransactionsCryptoHistory />;
+    if (is_transactions_crypto_visible)
+        return (
+            <PageContainer hide_breadcrumb>
+                <TransactionsCryptoHistory />
+            </PageContainer>
+        );
 
     if (is_deposit || is_low_risk_cr_eu_real) {
         if (is_crypto) return <DepositCryptoModule />;

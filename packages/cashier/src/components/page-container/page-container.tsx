@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
@@ -15,29 +16,46 @@ type TProps = {
 };
 
 const PageContainer: React.FC<React.PropsWithChildren<TProps>> = observer(
-    ({ hide_breadcrumb = false, children, left, right }) => {
-        const { client } = useStore();
+    ({ children, hide_breadcrumb = false, left, right }) => {
+        const {
+            client,
+            common: { is_from_outside_cashier },
+        } = useStore();
         const { isDesktop } = useDevice();
         const { is_authorize } = client;
         const is_loading = !is_authorize;
 
         return (
-            <div className='page-container'>
+            <div
+                className={classNames('page-container', {
+                    'page-container--modal': is_from_outside_cashier,
+                })}
+            >
                 {is_loading && <Loading is_fullscreen={false} />}
                 {!is_loading && (
                     <div className='page-container__content'>
-                        {isDesktop && left && <div className='page-container__sidebar--left'>{left}</div>}
+                        {!is_from_outside_cashier && isDesktop && left && (
+                            <div className='page-container__sidebar--left'>{left}</div>
+                        )}
                         <ThemedScrollbars
-                            className='page-container__main'
+                            className={classNames('page-container__main', {
+                                'page-container__main--modal': is_from_outside_cashier,
+                            })}
                             height='calc(100svh - 8rem)'
                             is_scrollbar_hidden
                         >
                             {!hide_breadcrumb && <CashierBreadcrumb />}
-                            {!isDesktop && left && <div className='page-container__sidebar--left'>{left}</div>}
+                            {!is_from_outside_cashier && !isDesktop && left && (
+                                <div className='page-container__sidebar--left'>{left}</div>
+                            )}
                             {children}
-                            {!isDesktop && right && <div className='page-container__sidebar--right'>{right}</div>}
+                            {!is_from_outside_cashier && !isDesktop && right && (
+                                <div className='page-container__sidebar--right'>{right}</div>
+                            )}
                         </ThemedScrollbars>
-                        {isDesktop && right && <div className='page-container__sidebar--right'>{right}</div>}
+                        {!is_from_outside_cashier && isDesktop && right && (
+                            <div className='page-container__sidebar--right'>{right}</div>
+                        )}
                     </div>
                 )}
             </div>

@@ -1,8 +1,8 @@
 import React, { PropsWithChildren } from 'react';
 import { APIProvider, useActiveWalletAccount } from '@deriv/api-v2';
+import { render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../AuthProvider';
 import { ModalProvider } from '../../ModalProvider';
-import { render, screen } from '@testing-library/react';
 import DesktopWalletsList from '../DesktopWalletsList';
 
 jest.mock('@deriv/api-v2', () => ({

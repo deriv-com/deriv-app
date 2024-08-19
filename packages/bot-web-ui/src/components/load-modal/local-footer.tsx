@@ -10,6 +10,7 @@ const LocalFooter = observer(() => {
     const { load_modal, dashboard } = useDBotStore();
     const {
         is_open_button_loading,
+        is_open_button_disabled,
         loadStrategyOnBotBuilder,
         setLoadedLocalFile,
         saveStrategyToLocalStorage,
@@ -39,6 +40,7 @@ const LocalFooter = observer(() => {
                 has_effect
                 primary
                 large
+                disabled={is_open_button_disabled}
             />
         </Wrapper>
     );

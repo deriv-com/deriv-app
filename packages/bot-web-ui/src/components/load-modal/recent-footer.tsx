@@ -7,7 +7,7 @@ import { useDBotStore } from 'Stores/useDBotStore';
 
 const RecentFooter = observer(() => {
     const { load_modal, dashboard } = useDBotStore();
-    const { is_open_button_loading, loadStrategyOnBotBuilder, toggleLoadModal } = load_modal;
+    const { is_open_button_loading, is_open_button_disabled, loadStrategyOnBotBuilder, toggleLoadModal } = load_modal;
     const { setOpenSettings } = dashboard;
 
     return (
@@ -22,6 +22,7 @@ const RecentFooter = observer(() => {
             has_effect
             primary
             large
+            disabled={is_open_button_disabled}
         />
     );
 });

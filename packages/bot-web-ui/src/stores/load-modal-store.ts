@@ -36,6 +36,7 @@ interface ILoadModalStore {
     selected_strategy_id: string | undefined;
     is_strategy_removed: boolean;
     is_delete_modal_open: boolean;
+    is_open_button_disabled: boolean;
     current_workspace_id: string;
     preview_workspace: Blockly.WorkspaceSvg | null;
     selected_strategy: TStrategy;
@@ -50,6 +51,7 @@ interface ILoadModalStore {
         is_body: boolean
     ) => boolean;
     loadFileFromLocal: () => void;
+    loadStrategyOnBotBuilder: () => void;
     onActiveIndexChange: () => void;
     onDriveConnect: () => void;
     onDriveOpen: () => void;
@@ -70,6 +72,7 @@ interface ILoadModalStore {
     updateListStrategies: (workspaces: Array<TStrategy>) => void;
     getRecentFileIcon: (save_type: { [key: string]: string } | string) => string;
     getSaveType: (save_type: { [key: string]: string } | string) => string;
+    setOpenButtonDisabled: (is_open_button_disabled: boolean) => void;
 }
 
 export default class LoadModalStore implements ILoadModalStore {
@@ -84,7 +87,6 @@ export default class LoadModalStore implements ILoadModalStore {
             previewed_strategy_id: observable,
             is_load_modal_open: observable,
             is_explanation_expand: observable,
-            is_open_button_loading: observable,
             is_strategy_loaded: observable,
             is_delete_modal_open: observable,
             is_strategy_removed: observable,
@@ -97,6 +99,8 @@ export default class LoadModalStore implements ILoadModalStore {
             preview_workspace: computed,
             selected_strategy: computed,
             tab_name: computed,
+            is_open_button_disabled: observable,
+            setOpenButtonDisabled: action.bound,
             setPreviewedStrategyId: action.bound,
             getSelectedStrategyID: action.bound,
             refreshStrategies: action.bound,
@@ -162,6 +166,7 @@ export default class LoadModalStore implements ILoadModalStore {
     is_load_modal_open = false;
     is_explanation_expand = false;
     is_open_button_loading = false;
+    is_open_button_disabled = false;
     loaded_local_file: File | null = null;
     recent_strategies: Array<TStrategy> = [];
     dashboard_strategies: Array<TStrategy> | [] = [];
@@ -195,6 +200,10 @@ export default class LoadModalStore implements ILoadModalStore {
         if (this.active_index === 2) return tabs_title.TAB_GOOGLE;
         return '';
     }
+
+    setOpenButtonDisabled = (is_open_button_disabled: boolean) => {
+        this.is_open_button_disabled = is_open_button_disabled;
+    };
 
     setPreviewedStrategyId = (clicked_id: string) => {
         this.previewed_strategy_id = clicked_id;
@@ -574,6 +583,7 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     loadStrategyOnModalRecentPreview = async workspace_id => {
+        this.setOpenButtonDisabled(true);
         if (this.recent_strategies.length === 0 || this.tab_name !== tabs_title.TAB_RECENT) return;
 
         const { blockly_store } = this.root_store;
@@ -596,9 +606,11 @@ export default class LoadModalStore implements ILoadModalStore {
         window.Blockly?.Xml?.clearWorkspaceAndLoadFromXml(convertedDom, mainWorkspace);
 
         setLoading(false);
+        this.setOpenButtonDisabled(false);
     };
 
     loadStrategyOnModalLocalPreview = async load_options => {
+        this.setOpenButtonDisabled(true);
         const injectWorkspace = { ...inject_workspace_options, theme: window?.Blockly?.Themes?.zelos_renderer };
         const ref = document?.getElementById('load-strategy__blockly-container');
 
@@ -610,5 +622,6 @@ export default class LoadModalStore implements ILoadModalStore {
         }
 
         await load(load_options);
+        this.setOpenButtonDisabled(false);
     };
 }

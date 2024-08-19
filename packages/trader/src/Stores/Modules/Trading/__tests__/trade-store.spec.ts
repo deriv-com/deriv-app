@@ -370,4 +370,34 @@ describe('TradeStore', () => {
             expect(mockedTradeStore.trade_type_tab).toEqual('');
         });
     });
+    describe('setWheelPickerInitialValues', () => {
+        beforeEach(() => {
+            mockedTradeStore.clearWheelPickerInitialValues();
+        });
+        it('should set growth rate into a wheel_picker_initial_values', () => {
+            expect(mockedTradeStore.wheel_picker_initial_values).toEqual({});
+
+            mockedTradeStore.setWheelPickerInitialValues({ name: 'growth_rate', value: 0.03 });
+
+            expect(mockedTradeStore.wheel_picker_initial_values.growth_rate).toEqual(0.03);
+        });
+        it('should set strike into a wheel_picker_initial_values', () => {
+            expect(mockedTradeStore.wheel_picker_initial_values).toEqual({});
+
+            mockedTradeStore.setWheelPickerInitialValues({ name: 'strike', value: '+1.30' });
+
+            expect(mockedTradeStore.wheel_picker_initial_values.strike).toEqual('+1.30');
+        });
+        it('should clear all values when clearWheelPickerInitialValues is called', () => {
+            mockedTradeStore.setWheelPickerInitialValues({ name: 'strike', value: '+1.00' });
+            mockedTradeStore.setWheelPickerInitialValues({ name: 'growth_rate', value: 0.05 });
+
+            expect(mockedTradeStore.wheel_picker_initial_values.strike).toEqual('+1.00');
+            expect(mockedTradeStore.wheel_picker_initial_values.growth_rate).toEqual(0.05);
+
+            mockedTradeStore.clearWheelPickerInitialValues();
+
+            expect(mockedTradeStore.wheel_picker_initial_values).toEqual({});
+        });
+    });
 });

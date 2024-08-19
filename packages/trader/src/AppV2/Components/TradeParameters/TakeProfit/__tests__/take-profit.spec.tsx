@@ -7,14 +7,7 @@ import TraderProviders from '../../../../../trader-providers';
 import TakeProfit from '../take-profit';
 
 const take_profit_trade_param = 'Take profit';
-
-const mediaQueryList = {
-    matches: true,
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-};
-
-window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
+const data_testid = 'dt_input_with_steppers';
 
 describe('TakeProfit', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
@@ -47,7 +40,7 @@ describe('TakeProfit', () => {
         userEvent.click(screen.getByText(take_profit_trade_param));
 
         expect(screen.getByTestId('dt-actionsheet-overlay')).toBeInTheDocument();
-        const input = screen.getByRole('spinbutton');
+        const input = screen.getByTestId(data_testid);
         expect(input).toBeInTheDocument();
         expect(screen.getByText('Save')).toBeInTheDocument();
         expect(
@@ -72,7 +65,7 @@ describe('TakeProfit', () => {
         userEvent.click(screen.getByText(take_profit_trade_param));
 
         const toggle_switcher = screen.getAllByRole('button')[0];
-        const input = screen.getByRole('spinbutton');
+        const input = screen.getByTestId(data_testid);
 
         expect(input).toBeDisabled();
         userEvent.click(toggle_switcher);
@@ -85,7 +78,7 @@ describe('TakeProfit', () => {
         userEvent.click(screen.getByText(take_profit_trade_param));
 
         const take_profit_overlay = screen.getByTestId('dt_take_profit_overlay');
-        const input = screen.getByRole('spinbutton');
+        const input = screen.getByTestId(data_testid);
 
         expect(input).toBeDisabled();
         userEvent.click(take_profit_overlay);
@@ -99,6 +92,7 @@ describe('TakeProfit', () => {
                 max: '100',
             },
         };
+        default_mock_store.modules.trade.take_profit = '';
         mockTakeProfit();
 
         userEvent.click(screen.getByText(take_profit_trade_param));
@@ -106,17 +100,15 @@ describe('TakeProfit', () => {
         const toggle_switcher = screen.getAllByRole('button')[0];
         userEvent.click(toggle_switcher);
 
-        const input = screen.getByRole('spinbutton');
-        userEvent.type(input, ' ');
-        expect(screen.getByText('Please enter a take profit amount.'));
-
         const save_button = screen.getByText('Save');
         userEvent.click(save_button);
+        expect(screen.getByText('Please enter a take profit amount.'));
+
         expect(default_mock_store.modules.trade.onChangeMultiple).not.toBeCalled();
         expect(default_mock_store.modules.trade.onChange).not.toBeCalled();
 
-        userEvent.type(input, '0.0002');
-        expect(screen.getByText('Acceptable range: 0.01 to 100'));
+        userEvent.type(screen.getByTestId(data_testid), '0.0002');
+        expect(screen.getByText('Please enter a take profit amount that’s higher than 0.01.'));
 
         userEvent.click(save_button);
         expect(default_mock_store.modules.trade.onChangeMultiple).not.toBeCalled();
@@ -137,7 +129,7 @@ describe('TakeProfit', () => {
         const toggle_switcher = screen.getAllByRole('button')[0];
         userEvent.click(toggle_switcher);
 
-        const input = screen.getByRole('spinbutton');
+        const input = screen.getByTestId(data_testid);
         userEvent.type(input, '2');
         expect(screen.getByText('Acceptable range: 0.01 to 100'));
 

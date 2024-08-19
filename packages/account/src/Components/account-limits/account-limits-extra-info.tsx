@@ -1,4 +1,3 @@
-import React from 'react';
 import { Popover, Text } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
 

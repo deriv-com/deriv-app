@@ -1,5 +1,5 @@
-import React from 'react';
-import { localize, Localize } from '@deriv/translations';
+import { ReactElement } from 'react';
+import { Localize, useTranslations, localize } from '@deriv-com/translations';
 import { Div100vhContainer, Icon, MobileDialog, Modal, SendEmailTemplate, Text, Popover } from '@deriv/components';
 import { getPlatformSettings, CFD_PLATFORMS } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
@@ -16,7 +16,7 @@ type TSentEmailModal = {
 type TNoEmailContentItem = {
     key: string;
     icon: string;
-    content: string | React.ReactElement;
+    content: string | ReactElement;
 };
 
 const getNoEmailContentStrings = (): TNoEmailContentItem[] => {
@@ -57,9 +57,10 @@ const SentEmailModal = ({
     onClose,
 }: TSentEmailModal) => {
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
 
     const getSubtitle = () => {
-        let subtitle: string | React.ReactElement = '';
+        let subtitle: string | ReactElement = '';
         switch (identifier_title) {
             case CFD_PLATFORMS.DXTRADE:
                 subtitle = (
@@ -113,7 +114,7 @@ const SentEmailModal = ({
         />
     ) : null;
 
-    const sent_email_template: React.ReactElement = (
+    const sent_email_template: ReactElement = (
         <SendEmailTemplate
             className='sent-email'
             subtitle={getSubtitle()}

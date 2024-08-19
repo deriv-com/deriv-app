@@ -1,12 +1,14 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { formatMoney } from '@deriv/shared';
 import AccountLimitsTurnoverLimitRow from '../account-limits-turnover-limit-row';
 import AccountLimitsContext from '../account-limits-context';
+import { FormatUtils } from '@deriv-com/utils';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    formatMoney: jest.fn(),
+jest.mock('@deriv-com/utils', () => ({
+    ...jest.requireActual('@deriv-com/utils'),
+    FormatUtils: {
+        formatMoney: jest.fn(),
+    },
 }));
 const AccountLimitsTurnoverLimitRowComponent = (props: React.ComponentProps<typeof AccountLimitsTurnoverLimitRow>) => (
     <AccountLimitsContext.Provider value={{ currency: 'AUD', overlay_ref: document.createElement('div') }}>
@@ -47,6 +49,6 @@ describe('<AccountLimitsTurnoverLimitRow/>', () => {
             container: document.body.appendChild(document.createElement('tbody')),
         });
 
-        expect(formatMoney).toHaveBeenCalledWith('AUD', 100000, true);
+        expect(FormatUtils.formatMoney).toHaveBeenCalledWith(100000, { currency: 'AUD' });
     });
 });

@@ -177,7 +177,6 @@ const CFDAccountCardComponent = observer(
             setAccountType,
             setJurisdictionSelectedShortcode,
             setMT5TradeAccount,
-            toggleCFDVerificationModal,
             toggleMT5TradeModal,
         } = useCfdStore();
 
@@ -272,7 +271,6 @@ const CFDAccountCardComponent = observer(
                             });
                             setJurisdictionSelectedShortcode(landing_company_short);
                             updateAccountStatus();
-                            toggleCFDVerificationModal();
                         }}
                         primary
                         large

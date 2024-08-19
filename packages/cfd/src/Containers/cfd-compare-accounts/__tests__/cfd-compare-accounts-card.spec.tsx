@@ -25,7 +25,6 @@ describe('<CFDCompareAccountsCard />', () => {
                 setAccountType: jest.fn(),
                 setJurisdictionSelectedShortcode: jest.fn(),
                 enableCFDPasswordModal: jest.fn(),
-                toggleCFDVerificationModal: jest.fn(),
             },
         },
     });

@@ -74,10 +74,14 @@ export default Engine =>
 
         async fetchStatData() {
             try {
+                if (!this.subscription) {
+                    const request = window?.Blockly?.selected_accumlators_amount;
+                    api_base?.api?.send({ request });
+                }
                 const response = await api_base?.api?.expectResponse('proposal');
                 try {
                     this.subscription = response?.proposal.subscription_id;
-                    return response?.proposal.contract_details?.ticks_stayed_in;
+                    return response?.proposal.contract_details?.ticks_stayed_in?.reverse();
                 } catch (error) {
                     throw new Error('Unexpected message type or no proposal found');
                 }
@@ -100,8 +104,8 @@ export default Engine =>
 
         async getCurrentStat() {
             try {
-                const ticksStayedIn = await this.fetchStatData();
-                return ticksStayedIn?.[0];
+                const ticks_stayed_in = await this.fetchStatData();
+                return ticks_stayed_in?.[ticks_stayed_in?.length - 1];
             } catch (error) {
                 // eslint-disable-next-line no-console
                 console.log('Error fetching current stat:', error);
@@ -127,7 +131,7 @@ export default Engine =>
                     };
                     this.$scope.ticksService.monitor({ symbol, callback });
                 } catch (error) {
-                    reject(new Error(`Failed to start tick monitoring: ${  error.message}`));
+                    reject(new Error(`Failed to start tick monitoring: ${error.message}`));
                 }
             });
         }

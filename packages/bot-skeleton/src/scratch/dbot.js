@@ -23,6 +23,7 @@ class DBot {
         this.is_bot_running = false;
         this.accumlators = null;
         this.subscription_id = null;
+        this.proposal_requested = false;
         this.debounceWait = 300;
         this.debouncedHandleBlockChange = this.debounce(
             this.handleProposalForAccumulators.bind(this),
@@ -43,10 +44,9 @@ class DBot {
         if (event.type === Blockly.Events.BLOCK_CHANGE) {
             const trade_type_accumulators = block_instance.getFieldValue('TRADETYPE_LIST');
             const is_accumulator = trade_type_accumulators === 'accumulator';
-            let proposal_requested = false;
 
-            if (is_accumulator && !proposal_requested && !this.subscription_id) {
-                proposal_requested = true;
+            if (is_accumulator && !this.proposal_requested && !this.subscription_id) {
+                this.proposal_requested = true;
 
                 const amount = window.Blockly.selected_current_amount || 1;
                 const { currency } = DBotStore.instance.client;
@@ -65,15 +65,16 @@ class DBot {
                     proposal: 1,
                     subscribe: 1,
                 };
+                window.Blockly.selected_accumlators_amount = request;
                 const response = await api_base?.api?.send(request);
                 this.subscription_id = response.proposal.id;
-                proposal_requested = false;
+                this.proposal_requested = false;
                 return response;
             }
             if (!this.is_bot_running) {
                 api_base?.api?.send({ forget_all: 'proposal' });
                 this.subscription_id = null;
-                proposal_requested = false;
+                this.proposal_requested = false;
             }
         }
     }

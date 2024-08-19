@@ -16,6 +16,8 @@ type TTakeProfitAndStopLossInputProps = {
     initial_value_parent_ref?: React.MutableRefObject<string | number | undefined>;
     onActionSheetClose: () => void;
     type?: 'take_profit' | 'stop_loss';
+    should_wrap_with_actionsheet?: boolean;
+    show_acceptable_range?: boolean;
 };
 
 const TakeProfitAndStopLossInput = ({
@@ -26,6 +28,8 @@ const TakeProfitAndStopLossInput = ({
     initial_value_parent_ref,
     onActionSheetClose,
     type = 'take_profit',
+    should_wrap_with_actionsheet = true,
+    show_acceptable_range = true,
 }: TTakeProfitAndStopLossInputProps) => {
     const {
         contract_type,
@@ -44,6 +48,7 @@ const TakeProfitAndStopLossInput = ({
         validation_errors,
     } = useTraderStore();
 
+    const is_take_profit_input = type === 'take_profit';
     // Some of the validation errors should be shown only after Save button was clicked
     const [is_save_btn_clicked, setIsSaveBtnClicked] = React.useState(is_save_btn_clicked_initial_value || false);
     // Duplicate information about error in ref, because on unMount state variables and be_error_text are undefined
@@ -55,11 +60,13 @@ const TakeProfitAndStopLossInput = ({
     */
     const has_initial_value = React.useRef<boolean>();
     const has_initial_value_ref = has_initial_value_parent_ref || has_initial_value;
-    const has_selected_value_ref = React.useRef(has_take_profit);
+    const has_selected_value_ref = React.useRef(is_take_profit_input ? has_take_profit : has_stop_loss);
 
     const initial_value = React.useRef<string | number | undefined>('');
     const initial_value_ref = initial_value_parent_ref || initial_value;
-    const selected_value_ref = React.useRef<string | number | undefined>(take_profit);
+    const selected_value_ref = React.useRef<string | number | undefined>(
+        is_take_profit_input ? take_profit : stop_loss
+    );
 
     // Refs for handling focusing and bluring
     const input_ref = React.useRef<HTMLInputElement>(null);
@@ -68,13 +75,19 @@ const TakeProfitAndStopLossInput = ({
 
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     const decimals = getDecimalPlaces(currency);
-    const be_error_text = validation_errors.take_profit[0];
+    const be_error_text = is_take_profit_input ? validation_errors.take_profit[0] : validation_errors.stop_loss[0];
     const currency_display_code = getCurrencyDisplayCode(currency);
     // We can't use has_take_profit here as we are checking if take_profit is empty string or undefined, which is not connected with has_take_profit
-    const should_show_be_error =
-        (be_error_text && !!take_profit) || (be_error_text && !take_profit && is_save_btn_clicked);
-    const min_value = validation_params[contract_types[0]]?.take_profit?.min;
-    const max_value = validation_params[contract_types[0]]?.take_profit?.max;
+    const should_show_be_error = is_take_profit_input
+        ? (be_error_text && !!take_profit) || (be_error_text && !take_profit && is_save_btn_clicked)
+        : (be_error_text && !!stop_loss) || (be_error_text && !stop_loss && is_save_btn_clicked);
+    const min_value = is_take_profit_input
+        ? validation_params[contract_types[0]]?.take_profit?.min
+        : validation_params[contract_types[0]]?.stop_loss?.min;
+    const max_value = is_take_profit_input
+        ? validation_params[contract_types[0]]?.take_profit?.max
+        : validation_params[contract_types[0]]?.stop_loss?.max;
+    const Component = should_wrap_with_actionsheet ? ActionSheet.Content : 'div';
 
     // Storing data from validation params (proposal) in state in case if we got a validation error from BE and proposal stop streaming
     const [info, setInfo] = React.useState({
@@ -83,7 +96,7 @@ const TakeProfitAndStopLossInput = ({
     });
 
     const input_message =
-        info.min_value && info.max_value && has_selected_value_ref.current ? (
+        info.min_value && info.max_value && has_selected_value_ref.current && show_acceptable_range ? (
             <Localize
                 i18n_default_text='Acceptable range: {{min_value}} to {{max_value}} {{currency}}'
                 values={{
@@ -106,7 +119,9 @@ const TakeProfitAndStopLossInput = ({
             input_ref.current?.blur();
         }
 
-        onChangeMultiple({ has_take_profit: new_value });
+        onChangeMultiple({
+            ...(is_take_profit_input ? { has_take_profit: new_value } : { has_stop_loss: new_value }),
+        });
     };
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,7 +136,7 @@ const TakeProfitAndStopLossInput = ({
         }
 
         selected_value_ref.current = value;
-        onChange({ target: { name: 'take_profit', value } });
+        onChange({ target: { name: is_take_profit_input ? 'take_profit' : 'stop_loss', value } });
     };
 
     const onSave = () => {
@@ -138,16 +153,16 @@ const TakeProfitAndStopLossInput = ({
             initial_value_ref.current = selected_value_ref.current;
         }
 
-        const has_take_profit = be_error_text ? false : has_selected_value_ref.current;
+        const is_enabled = be_error_text ? false : has_selected_value_ref.current;
         // We should switch off DC if TP or SL is on and vice versa
         onChangeMultiple({
-            has_take_profit,
-            ...(has_take_profit ? { has_cancellation: false } : {}),
+            ...(is_take_profit_input ? { has_take_profit: is_enabled } : { has_stop_loss: is_enabled }),
+            ...(is_enabled ? { has_cancellation: false } : {}),
         });
 
         onChange({
             target: {
-                name: 'take_profit',
+                name: is_take_profit_input ? 'take_profit' : 'stop_loss',
                 value: be_error_text || selected_value_ref.current === '0' ? '' : selected_value_ref.current,
             },
         });
@@ -176,13 +191,24 @@ const TakeProfitAndStopLossInput = ({
     }, [min_value, max_value]);
 
     React.useEffect(() => {
-        if (!has_initial_value_ref.current && has_take_profit) {
-            has_initial_value_ref.current = has_take_profit;
-            setWheelPickerInitialValues({ name: 'has_take_profit', value: has_take_profit });
-        }
-        if (!initial_value_ref.current && take_profit) {
-            initial_value_ref.current = take_profit;
-            setWheelPickerInitialValues({ name: 'take_profit', value: take_profit });
+        if (is_take_profit_input) {
+            if (!has_initial_value_ref.current && has_take_profit) {
+                has_initial_value_ref.current = has_take_profit;
+                setWheelPickerInitialValues({ name: 'has_take_profit', value: has_take_profit });
+            }
+            if (!initial_value_ref.current && take_profit) {
+                initial_value_ref.current = take_profit;
+                setWheelPickerInitialValues({ name: 'take_profit', value: take_profit });
+            }
+        } else {
+            if (!has_initial_value_ref.current && has_stop_loss) {
+                has_initial_value_ref.current = has_stop_loss;
+                setWheelPickerInitialValues({ name: 'has_stop_loss', value: has_stop_loss });
+            }
+            if (!initial_value_ref.current && stop_loss) {
+                initial_value_ref.current = stop_loss;
+                setWheelPickerInitialValues({ name: 'stop_loss', value: stop_loss });
+            }
         }
 
         return () => {
@@ -191,11 +217,13 @@ const TakeProfitAndStopLossInput = ({
                 initial_value_ref.current === '0' ||
                 (has_error_ref.current && selected_value_ref.current !== '0' && selected_value_ref.current !== '');
 
-            const has_take_profit = should_set_empty_string ? false : has_initial_value_ref.current;
-            onChangeMultiple({ has_take_profit });
+            const is_enabled = should_set_empty_string ? false : has_initial_value_ref.current;
+            onChangeMultiple({
+                ...(is_take_profit_input ? { has_take_profit: is_enabled } : { has_stop_loss: is_enabled }),
+            });
             onChange({
                 target: {
-                    name: 'take_profit',
+                    name: is_take_profit_input ? 'take_profit' : 'stop_loss',
                     value: should_set_empty_string ? '' : initial_value_ref.current,
                 },
             });
@@ -207,10 +235,14 @@ const TakeProfitAndStopLossInput = ({
 
     return (
         <React.Fragment>
-            <ActionSheet.Content className={clsx('take-profit__wrapper', classname)}>
+            <Component className={clsx('take-profit__wrapper', classname)} key={type}>
                 <div className='take-profit__content'>
                     <Text>
-                        <Localize i18n_default_text='Take profit' />
+                        {is_take_profit_input ? (
+                            <Localize i18n_default_text='Take profit' />
+                        ) : (
+                            <Localize i18n_default_text='Stop loss' />
+                        )}
                     </Text>
                     <ToggleSwitch checked={has_selected_value_ref.current} onChange={onToggleSwitch} />
                 </div>
@@ -222,7 +254,7 @@ const TakeProfitAndStopLossInput = ({
                     inputMode='decimal'
                     message={should_show_be_error ? be_error_text : input_message}
                     minusDisabled={Number(selected_value_ref.current) - 1 <= 0}
-                    name='take_profit'
+                    name={type}
                     onChange={onInputChange}
                     placeholder={localize('Amount')}
                     ref={input_ref}
@@ -247,7 +279,7 @@ const TakeProfitAndStopLossInput = ({
                         <Localize i18n_default_text='Note: Cannot be adjusted for ongoing accumulator contracts.' />
                     </CaptionText>
                 )}
-            </ActionSheet.Content>
+            </Component>
             {has_save_button && (
                 <ActionSheet.Footer
                     alignment='vertical'

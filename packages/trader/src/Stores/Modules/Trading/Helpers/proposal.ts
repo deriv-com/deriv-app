@@ -49,6 +49,7 @@ type TValidationParams =
                   max: string;
                   min: string;
               };
+              stop_loss: { max: string; min: string };
           };
       }
     | undefined;

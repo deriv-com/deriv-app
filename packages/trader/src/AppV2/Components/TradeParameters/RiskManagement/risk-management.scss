@@ -3,6 +3,62 @@ $HEADER_TITLE_HEIGHT: var(--core-size-3200);
 $SEGMENTED_CONTROL: var(--core-size-2000);
 $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
 
+.deal-cancellation {
+    &__container {
+        display: flex;
+        flex-direction: column;
+        height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $SEGMENTED_CONTROL - $FOOTER_BUTTON_HEIGHT);
+        gap: var(--core-spacing-400);
+    }
+
+    &__toggle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--core-spacing-400) 0;
+        margin-block-start: var(--core-spacing-400);
+    }
+
+    &__wheel-picker {
+        flex-grow: 1;
+        min-height: 0;
+    }
+}
+
+.take-profit {
+    &__wrapper {
+        position: relative;
+        height: calc(400px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $FOOTER_BUTTON_HEIGHT);
+        padding-block: 0;
+    }
+
+    &__accu-information {
+        position: absolute;
+        bottom: 0;
+        inset-inline-start: var(--component-actionSheet-spacing-padding-md);
+    }
+
+    &__warning {
+        margin-block-start: var(--core-spacing-800);
+    }
+
+    &__content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-block: var(--core-spacing-400);
+    }
+
+    &__overlay {
+        all: unset;
+        height: var(--core-size-2800);
+        width: calc(100vw - var(--core-spacing-1600));
+        position: absolute;
+        top: var(--core-spacing-2200);
+        left: var(--core-spacing-800);
+    }
+}
+
 .risk-management {
     &__carousel {
         & > .carousel__item {
@@ -55,11 +111,10 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
     }
 
     &__tp-sl {
-        margin-top: var(--core-spacing-400);
         padding: 0;
         flex-grow: 0;
-        height: auto;
-        min-height: 122px;
+        min-height: 140px;
+        height: 140px;
 
         &__wrapper {
             display: flex;
@@ -71,27 +126,5 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
         .take-profit__overlay {
             left: 0;
         }
-    }
-}
-
-.deal-cancellation {
-    &__container {
-        display: flex;
-        flex-direction: column;
-        height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $SEGMENTED_CONTROL - $FOOTER_BUTTON_HEIGHT);
-        gap: var(--core-spacing-400);
-    }
-
-    &__toggle {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: var(--core-spacing-400) 0;
-        margin-block-start: var(--core-spacing-400);
-    }
-
-    &__wheel-picker {
-        flex-grow: 1;
-        min-height: 0;
     }
 }

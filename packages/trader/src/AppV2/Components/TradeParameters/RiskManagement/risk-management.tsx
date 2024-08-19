@@ -18,14 +18,25 @@ type TRiskManagementProps = {
 
 const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
     const [is_open, setIsOpen] = React.useState(false);
-    const { cancellation_range_list, cancellation_duration, currency, has_cancellation, has_take_profit, take_profit } =
-        useTraderStore();
+    const {
+        cancellation_range_list,
+        cancellation_duration,
+        currency,
+        has_cancellation,
+        has_take_profit,
+        has_stop_loss,
+        take_profit,
+        stop_loss,
+    } = useTraderStore();
     const closeActionSheet = () => setIsOpen(false);
     const getRiskManagementText = () => {
-        //TODO: add cases for TP and SL
-
         if (has_cancellation) return `DC: ${addUnit(cancellation_duration, localize('minutes'))}`;
+        if (has_take_profit && has_stop_loss)
+            return `TP: ${take_profit} ${getCurrencyDisplayCode(currency)} / SL: ${stop_loss} ${getCurrencyDisplayCode(
+                currency
+            )}`;
         if (has_take_profit) return `TP: ${take_profit} ${getCurrencyDisplayCode(currency)}`;
+        if (has_stop_loss) return `SL: ${stop_loss} ${getCurrencyDisplayCode(currency)}`;
         return '-';
     };
 

@@ -1,0 +1,24 @@
+.duration-container {
+    &__header {
+        margin: 24px auto;
+        text-align: center;
+    }
+    &__chips {
+        display: flex;
+        width: 100vw;
+        overflow: auto;
+        position: relative;
+        inset-inline-start: calc(-1 * var(--core-spacing-400));
+        padding: var(--core-spacing-400) var(--core-spacing-800);
+        display: flex;
+        gap: var(--core-spacing-400);
+        overflow-x: auto;
+        min-height: var(--core-spacing-1600);
+        white-space: nowrap;
+        scrollbar-width: none;
+    }
+    &__wheel-picker {
+        padding: 0px;
+        height: 270px;
+    }
+}

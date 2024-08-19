@@ -18,7 +18,7 @@ const RecentWorkspace = observer(({ workspace }: TRecentWorkspaceProps) => {
         getSaveType,
         loadStrategyOnModalRecentPreview,
         selected_strategy_id,
-        updateXmlValuesForRecentStrategy,
+        updateXmlValuesOnStrategySelection,
     } = load_modal;
 
     return (
@@ -33,7 +33,7 @@ const RecentWorkspace = observer(({ workspace }: TRecentWorkspaceProps) => {
                     : () => {
                           setLoading(true);
                           loadStrategyOnModalRecentPreview(workspace.id);
-                          updateXmlValuesForRecentStrategy();
+                          updateXmlValuesOnStrategySelection();
                       }
             }
             data-testid='dt_recent_workspace_item'

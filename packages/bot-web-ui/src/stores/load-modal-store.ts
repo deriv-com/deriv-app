@@ -127,7 +127,7 @@ export default class LoadModalStore implements ILoadModalStore {
             loadStrategyOnModalRecentPreview: action,
             loadStrategyOnBotBuilder: action,
             saveStrategyToLocalStorage: action,
-            updateXmlValuesForRecentStrategy: action,
+            updateXmlValuesOnStrategySelection: action,
         });
 
         this.root_store = root_store;
@@ -142,9 +142,10 @@ export default class LoadModalStore implements ILoadModalStore {
             async is_load_modal_open => {
                 if (is_load_modal_open) {
                     const saved_workspaces = await getSavedWorkspaces();
-                    this.setRecentStrategies(saved_workspaces || []);
-                    if (!this.selected_strategy_id) {
-                        this.setSelectedStrategyId(saved_workspaces[0]?.id);
+                    if (!saved_workspaces) return;
+                    this.setRecentStrategies(saved_workspaces);
+                    if (saved_workspaces.length > 0 && !this.selected_strategy_id) {
+                        this.setSelectedStrategyId(saved_workspaces[0].id);
                     }
                 } else {
                     this.onLoadModalClose();
@@ -267,7 +268,7 @@ export default class LoadModalStore implements ILoadModalStore {
         const { setLoading } = blockly_store;
         setLoading(true);
         this.loadStrategyOnModalRecentPreview(this.selected_strategy_id);
-        this.updateXmlValuesForRecentStrategy();
+        this.updateXmlValuesOnStrategySelection();
     };
 
     onLoadModalClose = (): void => {
@@ -436,7 +437,7 @@ export default class LoadModalStore implements ILoadModalStore {
     onActiveIndexChange = (): void => {
         if (this.tab_name === tabs_title.TAB_RECENT) {
             this.loadStrategyOnModalRecentPreview(this.selected_strategy_id);
-            this.updateXmlValuesForRecentStrategy();
+            this.updateXmlValuesOnStrategySelection();
         } else if (this.recent_workspace) {
             setTimeout(() => {
                 // Dispose of recent workspace when switching away from Recent tab.
@@ -506,7 +507,7 @@ export default class LoadModalStore implements ILoadModalStore {
             rudderStackSendUploadStrategyStartEvent({ upload_provider: 'my_computer', upload_id: this.upload_id });
         }
         const reader = new FileReader();
-        const file_name = file?.name.replace(/\.[^/.]+$/, '');
+        const file_name = file?.name.replace(/\.[^/.]+$/, '') || '';
 
         reader.onload = action(async e => {
             const load_options = {
@@ -562,7 +563,7 @@ export default class LoadModalStore implements ILoadModalStore {
         derivWorkspace.current_strategy_id = strategy_id;
     };
 
-    updateXmlValuesForRecentStrategy = () => {
+    updateXmlValuesOnStrategySelection = () => {
         if (this.recent_strategies.length === 0) return;
         updateXmlValues({
             strategy_id: this.selected_strategy_id,

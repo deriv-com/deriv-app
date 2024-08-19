@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import QSInput from '../qs-input';
+import QSInput from '../add-input';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 

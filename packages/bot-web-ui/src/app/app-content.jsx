@@ -126,9 +126,6 @@ const AppContent = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const show_blocker_on_mobile_landscape_view = document.getElementById('landscape_blocker');
-    if (show_blocker_on_mobile_landscape_view) return null;
-
     return is_loading ? (
         <Loading />
     ) : (

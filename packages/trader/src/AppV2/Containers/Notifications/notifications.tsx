@@ -26,7 +26,13 @@ const Notifications = observer(() => {
     React.useEffect(() => {
         const addNotificationBannerCallback = (params: Parameters<typeof addBanner>[0], result: string) =>
             addBanner({
-                icon: <StandaloneFlagCheckeredFillIcon iconSize='sm' className={`trade-notification--${result}`} />,
+                icon: (
+                    <StandaloneFlagCheckeredFillIcon
+                        iconSize='sm'
+                        className={`trade-notification--${result}`}
+                        key='contract-closed'
+                    />
+                ),
                 ...params,
             });
 

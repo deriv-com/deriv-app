@@ -64,9 +64,9 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     ];
 
     React.useEffect(() => {
-        setInitialStakeValue(amount);
+        setInitialStakeValue(is_open && !initial_stake_value ? amount : undefined);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [is_open]);
     React.useEffect(() => {
         if (basis === BASIS.PAYOUT) onChange({ target: { name: 'basis', value: BASIS.STAKE } });
         // eslint-disable-next-line react-hooks/exhaustive-deps

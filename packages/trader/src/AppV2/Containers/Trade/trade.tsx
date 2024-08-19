@@ -18,9 +18,9 @@ const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
     const chart_ref = React.useRef<HTMLDivElement>(null);
 
-    const { active_symbols, contract_type, contract_types_list, onMount, onChange, onUnmount } = useTraderStore();
+    const { active_symbols, contract_type, contract_types_list_V2, onMount, onChange, onUnmount } = useTraderStore();
 
-    const trade_types = React.useMemo(() => getTradeTypesList(contract_types_list), [contract_types_list]);
+    const trade_types = React.useMemo(() => getTradeTypesList(contract_types_list_V2), [contract_types_list_V2]);
     const symbols = React.useMemo(
         () =>
             active_symbols.map(({ display_name, symbol: underlying }) => ({

@@ -104,7 +104,14 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({
         ) {
             onCompletion();
         }
-    }, [isLoading, shouldSubmitPoi, shouldSubmitPoa, shouldSubmitTaxInformation, hasResubmittedDocuments]);
+    }, [
+        isLoading,
+        shouldSubmitPoi,
+        shouldSubmitPoa,
+        shouldSubmitTaxInformation,
+        hasResubmittedDocuments,
+        onCompletion,
+    ]);
 
     if (isLoading) return <Loader />;
 

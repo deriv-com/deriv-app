@@ -6,7 +6,6 @@ import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import GuideContent from '..';
 import userEvent from '@testing-library/user-event';
 import { DBOT_TABS } from 'Constants/bot-contents';
-import RootStore from 'Stores/root-store';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 

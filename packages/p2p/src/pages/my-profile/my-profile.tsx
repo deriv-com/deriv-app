@@ -34,7 +34,12 @@ const MyProfile = () => {
     }, []);
 
     React.useEffect(() => {
-        if (is_poi_poa_verified && !general_store.is_advertiser && !general_store.is_loading) {
+        if (
+            is_poi_poa_verified &&
+            !general_store.is_advertiser &&
+            !general_store.is_loading &&
+            general_store.is_p2p_user === false
+        ) {
             showModal({
                 key: 'NicknameModal',
                 props: {
@@ -44,7 +49,7 @@ const MyProfile = () => {
                 },
             });
         }
-    }, [is_poi_poa_verified, general_store.is_advertiser, general_store.is_loading]);
+    }, [is_poi_poa_verified, general_store.is_advertiser, general_store.is_loading, general_store.is_p2p_user]);
 
     if (general_store.is_p2p_user === null) {
         return <Loading is_fullscreen={false} />;

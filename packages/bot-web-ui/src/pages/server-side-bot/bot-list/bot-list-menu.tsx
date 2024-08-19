@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import ReactDom from 'react-dom';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
@@ -9,9 +10,17 @@ type TBotListMenu = {
     bot_id: string;
     botAction: (action: string, bot_id: string) => void;
     is_mobile?: boolean;
+    disable_delete: boolean;
 };
 
-const BotListMenu: React.FC<TBotListMenu> = ({ is_open, y_position, botAction, bot_id, is_mobile = false }) => {
+const BotListMenu: React.FC<TBotListMenu> = ({
+    is_open,
+    y_position,
+    botAction,
+    bot_id,
+    is_mobile = false,
+    disable_delete,
+}) => {
     if (!is_open) return null;
     const el_portal = document.getElementById('ssb-bot-list-menu');
     if (!el_portal) return null;
@@ -41,11 +50,17 @@ const BotListMenu: React.FC<TBotListMenu> = ({ is_open, y_position, botAction, b
                 </div>
             )}
             <div
-                className='ssb-list__menu__item'
-                onClick={() => botAction('DELETE', bot_id)}
+                className={classNames('ssb-list__menu__item', {
+                    'ssb-list__menu__item--disabled': disable_delete,
+                })}
+                onClick={() => {
+                    if (!disable_delete) {
+                        botAction('DELETE', bot_id);
+                    }
+                }}
                 tabIndex={0}
                 onKeyDown={(e: React.KeyboardEvent) => {
-                    if (e.key === 'Enter') {
+                    if (e.key === 'Enter' && !disable_delete) {
                         botAction('DELETE', bot_id);
                     }
                 }}

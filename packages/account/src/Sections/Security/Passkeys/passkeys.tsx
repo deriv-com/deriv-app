@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import { InlineMessage, Loading } from '@deriv/components';
 import { useGetPasskeysList, useRegisterPasskey, useRenamePasskey } from '@deriv/hooks';
@@ -39,7 +39,7 @@ const Passkeys = observer(() => {
 
     const error_modal_timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
     const snackbar_timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const prev_passkey_status = React.useRef<TPasskeysStatus>(PASSKEY_STATUS_CODES.LIST);
+    const prev_passkey_status = useRef<TPasskeysStatus>(PASSKEY_STATUS_CODES.LIST);
 
     const history = useHistory();
 
@@ -72,6 +72,7 @@ const Passkeys = observer(() => {
         } else {
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_passkeys_list_loading, passkeys_list?.length]);
 
     useEffect(() => {

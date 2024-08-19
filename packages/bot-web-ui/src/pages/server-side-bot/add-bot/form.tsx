@@ -83,7 +83,9 @@ const QuickStrategyForm = observer(() => {
                         switch (field.type) {
                             // Generic or common fields
                             case 'text': {
-                                if (field.name === 'name') return <QsTextInput field={field} name={field.name} />;
+                                if (field.name === 'name') {
+                                    return <QsTextInput key={key} field={field} name={field.name} />;
+                                }
                                 return (
                                     <QSInput
                                         {...field}

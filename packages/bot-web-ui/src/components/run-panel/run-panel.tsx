@@ -11,8 +11,8 @@ import Transactions from 'Components/transactions';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { popover_zindex } from 'Constants/z-indexes';
 import { useDBotStore } from 'Stores/useDBotStore';
+import useNotification from '../../hooks/use-notification';
 import useWakeLock from '../../hooks/use-wake-lock';
-import useNotification from './use-notification';
 
 type TStatisticsTile = {
     content: React.ElementType | string;

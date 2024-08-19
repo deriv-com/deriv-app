@@ -57,10 +57,10 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({
 
     const isPoiRequired = useMemo(
         () =>
-            poiData?.current.status && isSubmissionRequired[poiData?.current.status] && poiData?.previous?.status
-                ? // @ts-expect-error broken api-types for attempts/latest key in get_account_settings
-                  isSubmissionRequired[poiData.previous.status]
-                : true,
+            (poiData?.current.status && isSubmissionRequired[poiData?.current.status]) ||
+            (poiData?.previous?.status &&
+                // @ts-expect-error broken api-types for attempts/latest key in get_account_settings
+                isSubmissionRequired[poiData.previous.status]),
         [poiData]
     );
 

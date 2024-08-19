@@ -5,6 +5,7 @@ import { getDirection, getLastDigit } from '../utils/helpers';
 import { expectPositiveInteger } from '../utils/sanitize';
 import { observer as globalObserver } from '../../../utils/observer';
 import { api_base } from '../../api/api-base';
+import { debounce } from 'lodash';
 
 let tickListenerKey;
 
@@ -74,14 +75,27 @@ export default Engine =>
 
         async fetchStatData() {
             try {
-                if (!this.subscription) {
-                    const request = window?.Blockly?.selected_accumlators_amount;
-                    api_base?.api?.send({ request });
+                this.called = false;
+                // eslint-disable-next-line no-inner-declarations
+                async function getAccumulatorStats() {
+                    if (!this.subscription_accu && !this.called) {
+                        this.called = true;
+                        const request = window?.Blockly?.selected_accumulators_amount;
+                        await api_base?.api?.send(request);
+                    }
                 }
+                const debouncedGetAccumulatorStats = debounce(
+                    async () => {
+                        await getAccumulatorStats.call(this);
+                    },
+                    300
+                );
+                debouncedGetAccumulatorStats();
+
                 const response = await api_base?.api?.expectResponse('proposal');
                 try {
-                    this.subscription = response?.proposal.subscription_id;
-                    return response?.proposal.contract_details?.ticks_stayed_in?.reverse();
+                    this.subscription_accu = response?.proposal.subscription_id;
+                    return [...(response?.proposal.contract_details?.ticks_stayed_in || [])].reverse();
                 } catch (error) {
                     throw new Error('Unexpected message type or no proposal found');
                 }
@@ -105,7 +119,7 @@ export default Engine =>
         async getCurrentStat() {
             try {
                 const ticks_stayed_in = await this.fetchStatData();
-                return ticks_stayed_in?.[ticks_stayed_in?.length - 1];
+                return ticks_stayed_in?.[0];
             } catch (error) {
                 // eslint-disable-next-line no-console
                 console.log('Error fetching current stat:', error);

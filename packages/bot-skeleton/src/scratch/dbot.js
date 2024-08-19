@@ -65,16 +65,17 @@ class DBot {
                     proposal: 1,
                     subscribe: 1,
                 };
-                window.Blockly.selected_accumlators_amount = request;
+                window.Blockly.selected_accumulators_amount = request;
                 const response = await api_base?.api?.send(request);
                 this.subscription_id = response.proposal.id;
                 this.proposal_requested = false;
                 return response;
             }
             if (!this.is_bot_running) {
-                api_base?.api?.send({ forget_all: 'proposal' });
+                await api_base?.api?.send({ forget_all: 'proposal' });
                 this.subscription_id = null;
                 this.proposal_requested = false;
+                this.interpreter.bot.tradeEngine.subscription_accu = null;
             }
         }
     }
@@ -427,7 +428,8 @@ class DBot {
         this.interpreter = null;
         this.interpreter = Interpreter();
         await this.interpreter.bot.tradeEngine.watchTicks(this.symbol);
-        api_base?.api?.send({ forget_all: 'proposal' });
+        await api_base?.api?.send({ forget_all: 'proposal' });
+        this.interpreter.bot.tradeEngine.subscription_accu = null;
     }
 
     /**

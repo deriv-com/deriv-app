@@ -66,7 +66,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
     constructor($scope) {
         super();
         this.observer = $scope.observer;
-        this.subscription = null;
+        this.subscription_accu = null;
         this.$scope = $scope;
         this.observe();
         this.data = {

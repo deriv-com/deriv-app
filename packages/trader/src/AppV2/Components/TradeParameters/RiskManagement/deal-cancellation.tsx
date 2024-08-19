@@ -22,12 +22,18 @@ const DealCancellation = observer(({ closeActionSheet }: TDealCancellationProps)
     const { addSnackbar } = useSnackbar();
 
     const [is_enabled, setIsEnabled] = React.useState(has_cancellation);
-    const [selected_value, setSelectedValue] = React.useState<string>(addUnit(cancellation_duration));
+    const [selected_value, setSelectedValue] = React.useState<string>(cancellation_duration);
+
+    const data = cancellation_range_list.map(({ text, value }) => ({
+        label: addUnit({ value: text }),
+        value,
+    }));
 
     const onSave = () => {
-        const new_cancellation_duration = addUnit(selected_value, 'm', false);
-
-        if (has_cancellation === is_enabled && new_cancellation_duration === cancellation_duration) return;
+        if (has_cancellation === is_enabled && selected_value === cancellation_duration) {
+            closeActionSheet();
+            return;
+        }
 
         if (is_enabled && (has_take_profit || has_stop_loss)) {
             addSnackbar({
@@ -46,15 +52,10 @@ const DealCancellation = observer(({ closeActionSheet }: TDealCancellationProps)
             has_cancellation: is_enabled,
             ...(is_enabled ? { has_take_profit: false } : {}),
             ...(is_enabled ? { has_stop_loss: false } : {}),
-            cancellation_duration: new_cancellation_duration,
+            cancellation_duration: selected_value,
         });
         closeActionSheet();
     };
-
-    React.useEffect(() => {
-        setIsEnabled(has_cancellation);
-        setSelectedValue(addUnit(cancellation_duration));
-    }, [has_cancellation, cancellation_duration]);
 
     return (
         <React.Fragment>
@@ -68,7 +69,8 @@ const DealCancellation = observer(({ closeActionSheet }: TDealCancellationProps)
                 <div className='deal-cancellation__wheel-picker'>
                     {cancellation_range_list.length ? (
                         <WheelPicker
-                            data={cancellation_range_list.map(({ value }) => ({ value: addUnit(value) }))}
+                            data={data}
+                            disabled={!is_enabled}
                             selectedValue={selected_value}
                             setSelectedValue={
                                 setSelectedValue as React.ComponentProps<typeof WheelPicker>['setSelectedValue']

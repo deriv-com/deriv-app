@@ -207,9 +207,10 @@ describe('isSmallScreen', () => {
 
 describe('addUnit', () => {
     it('should return correct string', () => {
-        expect(addUnit('15')).toBe('15 min');
-        expect(addUnit('15', 'minutes')).toBe('15 minutes');
-        expect(addUnit('15', 'm', false)).toBe('15m');
+        expect(addUnit({ value: 30 })).toBe('30 min');
+        expect(addUnit({ value: '15' })).toBe('15 min');
+        expect(addUnit({ value: '15', unit: 'minutes' })).toBe('15 minutes');
+        expect(addUnit({ value: '15', unit: 'm', should_add_space: false })).toBe('15m');
     });
 });
 

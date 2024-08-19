@@ -16,9 +16,9 @@ jest.mock('@deriv-com/quill-ui', () => ({
         <div>
             <p>{wheel_picker}</p>
             <ul>
-                {data.map(({ value }: { value: string }) => (
+                {data.map(({ label, value }: { label: string; value: string }) => (
                     <li key={value}>
-                        <button onClick={() => setSelectedValue(value)}>{value}</button>
+                        <button onClick={() => setSelectedValue(value)}>{label}</button>
                     </li>
                 ))}
             </ul>

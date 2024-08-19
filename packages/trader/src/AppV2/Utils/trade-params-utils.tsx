@@ -117,8 +117,15 @@ export const getTradeTypeTabsList = (contract_type = '') => {
 
 export const isSmallScreen = () => window.innerHeight <= 640;
 
-export const addUnit = (value: string, unit = localize('min'), should_add_space = true) =>
-    `${parseInt(value)}${should_add_space ? ' ' : ''}${unit}`;
+export const addUnit = ({
+    value,
+    unit = localize('min'),
+    should_add_space = true,
+}: {
+    value: string | number;
+    unit?: string;
+    should_add_space?: boolean;
+}) => `${typeof value === 'number' ? value : parseInt(value)}${should_add_space ? ' ' : ''}${unit}`;
 
 export const getSnackBarText = ({
     has_cancellation,

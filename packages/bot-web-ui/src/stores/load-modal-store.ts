@@ -273,11 +273,13 @@ export default class LoadModalStore implements ILoadModalStore {
 
     onEntered = (): void => {
         if (this.recent_strategies.length === 0 || this.tab_name !== tabs_title.TAB_RECENT) return;
+        this.setOpenButtonDisabled(true);
         const { blockly_store } = this.root_store;
         const { setLoading } = blockly_store;
         setLoading(true);
         this.loadStrategyOnModalRecentPreview(this.selected_strategy_id);
         this.updateXmlValuesOnStrategySelection();
+        this.setOpenButtonDisabled(false);
     };
 
     onLoadModalClose = (): void => {
@@ -444,6 +446,7 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     onActiveIndexChange = (): void => {
+        this.setOpenButtonDisabled(true);
         if (this.tab_name === tabs_title.TAB_RECENT) {
             this.loadStrategyOnModalRecentPreview(this.selected_strategy_id);
             this.updateXmlValuesOnStrategySelection();
@@ -479,6 +482,7 @@ export default class LoadModalStore implements ILoadModalStore {
         if (this.tab_name !== tabs_title.TAB_LOCAL && this.drop_zone) {
             this.drop_zone.removeEventListener('drop', event => this.handleFileChange(event, false));
         }
+        this.setOpenButtonDisabled(false);
     };
 
     handleFileChange = (

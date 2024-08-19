@@ -1,7 +1,6 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
 import { Button, StaticUrl, Text } from '@deriv/components';
 
 type TClosingAccountStepsProps = {

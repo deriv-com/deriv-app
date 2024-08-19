@@ -13,6 +13,8 @@ import { TradeChart } from '../Chart';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import TradeTypes from './trade-types';
 import MarketSelector from 'AppV2/Components/MarketSelector';
+import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
+import { isAccumulatorContract } from '@deriv/shared';
 
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
@@ -79,6 +81,7 @@ const Trade = observer(() => {
                         <section className='trade__chart' style={{ height: dynamic_chart_height }} ref={chart_ref}>
                             <TradeChart />
                         </section>
+                        {isAccumulatorContract(contract_type) && <AccumulatorStats />}
                     </div>
                     <TradeParametersContainer is_minimized_visible={is_minimized_params_visible} is_minimized>
                         <TradeParameters is_minimized />

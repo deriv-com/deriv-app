@@ -1,7 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { WalletButton, WalletLink, WalletText } from '../../components/Base';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
+import { WalletButton, WalletLink } from '../../components/Base';
 import useDevice from '../../hooks/useDevice';
 import CFDPlatformsListEmptyState from './CFDPlatformsListEmptyState';
 import { CFDPlatformsListAccounts } from './components';
@@ -17,17 +19,20 @@ const CFDPlatformsList: React.FC = () => {
             <section className='wallets-cfd-list__header'>
                 {isMobile ? (
                     <div className='wallets-cfd-list__header-description'>
-                        <WalletText size='sm'>
-                            Trade bigger positions with less capital on a wide range of global markets.{' '}
-                            <a
-                                className='wallets-cfd-list__header-description__link'
-                                href='https://deriv.com/trade-types/cfds/'
-                                rel='noopener noreferrer'
-                                target='_blank'
-                            >
-                                Learn more
-                            </a>
-                        </WalletText>
+                        <Text size='sm'>
+                            <Localize
+                                components={[
+                                    <a
+                                        className='wallets-cfd-list__header-description__link'
+                                        href='https://deriv.com/trade-types/cfds/'
+                                        key={0}
+                                        rel='noopener noreferrer'
+                                        target='_blank'
+                                    />,
+                                ]}
+                                i18n_default_text='Trade bigger positions with less capital on a wide range of global markets. <0>Learn more</0>'
+                            />
+                        </Text>
                         <WalletButton
                             onClick={() => {
                                 history.push('/compare-accounts');
@@ -36,15 +41,15 @@ const CFDPlatformsList: React.FC = () => {
                             textSize='sm'
                             variant='ghost'
                         >
-                            Compare accounts
+                            <Localize i18n_default_text='Compare accounts' />
                         </WalletButton>
                     </div>
                 ) : (
                     <div>
                         <div className='wallets-cfd-list__header-compare-accounts'>
-                            <WalletText size='xl' weight='bold'>
-                                CFDs
-                            </WalletText>
+                            <Text size='xl' weight='bold'>
+                                <Localize i18n_default_text='CFDs' />
+                            </Text>
                             <WalletButton
                                 onClick={() => {
                                     history.push('/compare-accounts');
@@ -52,15 +57,15 @@ const CFDPlatformsList: React.FC = () => {
                                 size='sm'
                                 variant='ghost'
                             >
-                                Compare accounts
+                                <Localize i18n_default_text='Compare accounts' />
                             </WalletButton>
                         </div>
-                        <WalletText size='md'>
-                            Trade bigger positions with less capital on a wide range of global markets.{' '}
-                            <WalletLink key={0} staticUrl='/trade-types/cfds/'>
-                                Learn more
-                            </WalletLink>
-                        </WalletText>
+                        <Text size='md'>
+                            <Localize
+                                components={[<WalletLink key={0} staticUrl='/trade-types/cfds/' />]}
+                                i18n_default_text='Trade bigger positions with less capital on a wide range of global markets. <0>Learn more</0>'
+                            />
+                        </Text>
                     </div>
                 )}
             </section>

@@ -1,6 +1,5 @@
-import React from 'react';
 import { PageError } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
 import { routes } from '@deriv/shared';
 
 type TErrorComponent = {

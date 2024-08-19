@@ -66,13 +66,13 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const handleOpen = async () => {
         await loadFileFromRecent();
         setActiveTab(DBOT_TABS.BOT_BUILDER);
-        rudderStackSendDashboardClickEvent({ dashboard_click_name: 'open' });
+        rudderStackSendDashboardClickEvent({ dashboard_click_name: 'open', subpage_name: 'bot_builder' });
     };
 
     const handleSave = () => {
         updateBotName(workspace?.name);
         toggleSaveModal();
-        rudderStackSendDashboardClickEvent({ dashboard_click_name: 'save' });
+        rudderStackSendDashboardClickEvent({ dashboard_click_name: 'save', subpage_name: 'dashboard' });
     };
 
     const viewRecentStrategy = async (type: string) => {
@@ -89,7 +89,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
 
             case STRATEGY.DELETE:
                 onToggleDeleteDialog(true);
-                rudderStackSendDashboardClickEvent({ dashboard_click_name: 'delete' });
+                rudderStackSendDashboardClickEvent({ dashboard_click_name: 'delete', subpage_name: 'dashboard' });
                 break;
 
             default:

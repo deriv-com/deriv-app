@@ -22,7 +22,7 @@ jest.mock('@deriv/hooks', () => ({
         },
     })),
     usePhoneNumberVerificationSetTimer: jest.fn(() => ({
-        next_otp_request: '',
+        next_request_time: '',
     })),
 }));
 
@@ -36,7 +36,7 @@ describe('ConfirmPhoneNumber', () => {
 
     afterEach(() => {
         jest.clearAllMocks();
-        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_otp_request: '' });
+        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_request_time: '' });
     });
 
     const mockSetShouldShowDidntGetTheCodeModal = jest.fn();
@@ -67,7 +67,7 @@ describe('ConfirmPhoneNumber', () => {
     });
 
     it('should disable button if usePhoneNumberVerificationSetTimer returns next_otp_request', async () => {
-        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_otp_request: 'in 59s' });
+        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_request_time: 59 });
         renderComponent();
 
         expect(screen.queryByRole('button', { name: 'Resend code in 59s' })).toBeDisabled;
@@ -94,9 +94,9 @@ describe('ConfirmPhoneNumber', () => {
     });
 
     it('should display Didn’t get the code? (60s) when usePhoneNumberSetTimer returns (60s)', () => {
-        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_otp_request: ' (60s)' });
+        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_request_time: 60 });
         renderComponent(false, false);
-        const resend_button = screen.getByRole('button', { name: "Didn't get the code? (60s)" });
+        const resend_button = screen.getByRole('button', { name: "Didn't get the code? (1m)" });
         expect(resend_button).toBeInTheDocument();
     });
 

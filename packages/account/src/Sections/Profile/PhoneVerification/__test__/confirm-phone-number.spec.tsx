@@ -19,7 +19,7 @@ jest.mock('@deriv/hooks', () => ({
         invalidate: jest.fn(),
     })),
     usePhoneNumberVerificationSetTimer: jest.fn(() => ({
-        next_otp_request: undefined,
+        next_request_time: undefined,
     })),
 }));
 
@@ -141,7 +141,7 @@ describe('ConfirmPhoneNumber', () => {
     });
 
     it('should make both buttons disabled if next_otp_request text is provided', async () => {
-        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_otp_request: '60 seconds' });
+        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_request_time: 60 });
         render(
             <StoreProvider store={store}>
                 <ConfirmPhoneNumber setOtpVerification={mockSetOtp} />
@@ -154,12 +154,12 @@ describe('ConfirmPhoneNumber', () => {
     });
 
     it('should get snackbar text when next_otp_request text is provided', async () => {
-        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_otp_request: '60 seconds' });
+        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_request_time: 60 });
         render(
             <StoreProvider store={store}>
                 <ConfirmPhoneNumber setOtpVerification={mockSetOtp} />
             </StoreProvider>
         );
-        expect(screen.getByText(/An error occurred. Request a new OTP in 60 seconds./));
+        expect(screen.getByText(/An error occurred. Request a new OTP in 1 minutes./));
     });
 });

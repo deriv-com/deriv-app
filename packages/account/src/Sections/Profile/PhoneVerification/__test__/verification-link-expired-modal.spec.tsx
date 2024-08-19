@@ -18,7 +18,7 @@ jest.mock('react-router', () => ({
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     usePhoneNumberVerificationSetTimer: jest.fn(() => ({
-        next_otp_request: '',
+        next_request_time: '',
     })),
 }));
 
@@ -76,8 +76,8 @@ describe('VerificationLinkExpiredModal', () => {
     });
 
     it('should show in 60s which is coming from usePhoneNumberVerificationSetTimer', () => {
-        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_otp_request: ' in 60s' });
+        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_request_time: 60 });
         renderComponent();
-        expect(screen.getByText(/in 60s/)).toBeInTheDocument();
+        expect(screen.getByText(/in 1m/)).toBeInTheDocument();
     });
 });

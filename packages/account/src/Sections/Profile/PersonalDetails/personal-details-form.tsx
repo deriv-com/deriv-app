@@ -11,6 +11,7 @@ import {
     HintBox,
     Input,
     Loading,
+    OpenLiveChatLink,
     SelectNative,
     Text,
 } from '@deriv/components';
@@ -31,11 +32,21 @@ import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, ma
 import FormSelectField from 'Components/forms/form-select-field';
 import { VerifyButton } from './verify-button';
 import { useInvalidateQuery } from '@deriv/api';
-import { useStatesList, useResidenceList, useGrowthbookGetFeatureValue } from '@deriv/hooks';
+import {
+    useStatesList,
+    useResidenceList,
+    useGrowthbookGetFeatureValue,
+    usePhoneNumberVerificationSetTimer,
+} from '@deriv/hooks';
 
 type TRestState = {
     show_form: boolean;
     api_error?: string;
+};
+
+type THintMessage = {
+    is_phone_number_editted: boolean;
+    is_phone_number_empty: boolean;
 };
 
 const PersonalDetailsForm = observer(() => {
@@ -43,12 +54,12 @@ const PersonalDetailsForm = observer(() => {
     const [is_loading, setIsLoading] = useState(false);
     const [is_btn_loading, setIsBtnLoading] = useState(false);
     const [is_submit_success, setIsSubmitSuccess] = useState(false);
-    const [is_phone_field_disable, setIsPhoneFieldDisable] = useState(false);
     const invalidate = useInvalidateQuery();
     const history = useHistory();
     const [isPhoneNumberVerificationEnabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
+    const { next_request_time, is_request_button_disabled } = usePhoneNumberVerificationSetTimer();
 
     const {
         client,
@@ -108,6 +119,33 @@ const PersonalDetailsForm = observer(() => {
             init();
         }
     }, [invalidate, is_language_changing]);
+
+    const hintMessage = ({ is_phone_number_editted, is_phone_number_empty }: THintMessage) => {
+        if (account_settings?.phone_number_verification?.verified) {
+            return (
+                <Localize
+                    i18n_default_text='To change your verified phone number, contact us via <0></0>'
+                    components={[<OpenLiveChatLink text_size='xxs' key={0} />]}
+                />
+            );
+        } else if (next_request_time) {
+            return (
+                <Localize
+                    i18n_default_text='Verify your phone number in {{next_request_time}} '
+                    values={{
+                        next_request_time:
+                            next_request_time < 60
+                                ? localize(`${next_request_time} seconds`)
+                                : localize(`${next_request_time / 60} minutes`),
+                    }}
+                />
+            );
+        } else if (is_phone_number_editted) {
+            return <Localize i18n_default_text='Save your changes before verifying your phone number.' />;
+        } else if (is_phone_number_empty) {
+            return <Localize i18n_default_text='Save your phone number before verifying.' />;
+        }
+    };
 
     const onSubmit = async (values: GetSettings, { setStatus, setSubmitting }: FormikHelpers<GetSettings>) => {
         setStatus({ msg: '' });
@@ -366,12 +404,12 @@ const PersonalDetailsForm = observer(() => {
                                             name='phone'
                                             id={'phone'}
                                             label={localize('Phone number*')}
-                                            className={clsx({
-                                                'account-form__fieldset--phone':
-                                                    account_settings?.phone_number_verification?.verified,
-                                            })}
                                             //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
                                             value={values.phone}
+                                            hint={hintMessage({
+                                                is_phone_number_editted: account_settings.phone !== values.phone,
+                                                is_phone_number_empty: !account_settings.phone,
+                                            })}
                                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                                 handleChange(e);
                                                 setStatus('');
@@ -379,14 +417,23 @@ const PersonalDetailsForm = observer(() => {
                                             onBlur={handleBlur}
                                             required
                                             error={errors.phone}
-                                            disabled={isFieldDisabled('phone') || is_phone_field_disable}
+                                            disabled={
+                                                isFieldDisabled('phone') ||
+                                                is_request_button_disabled ||
+                                                !!next_request_time
+                                            }
                                             data-testid='dt_phone'
                                         />
-                                        {isPhoneNumberVerificationEnabled &&
-                                            account_settings.phone &&
-                                            account_settings.phone === values.phone && (
-                                                <VerifyButton setIsPhoneFieldDisable={setIsPhoneFieldDisable} />
-                                            )}
+                                        {isPhoneNumberVerificationEnabled && (
+                                            <VerifyButton
+                                                is_verify_button_disabled={
+                                                    is_request_button_disabled ||
+                                                    !!next_request_time ||
+                                                    account_settings.phone !== values.phone ||
+                                                    !account_settings.phone
+                                                }
+                                            />
+                                        )}
                                     </fieldset>
                                 )}
                                 <Fragment>

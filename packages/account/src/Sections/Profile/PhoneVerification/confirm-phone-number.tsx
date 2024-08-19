@@ -33,7 +33,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
     const { data: account_settings, invalidate } = useSettings();
     const { ui } = useStore();
     const { setShouldShowPhoneNumberOTP } = ui;
-    const { next_otp_request } = usePhoneNumberVerificationSetTimer(true);
+    const { next_request_time } = usePhoneNumberVerificationSetTimer(true);
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
 
     useEffect(() => {
@@ -81,6 +81,21 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
         }
     };
 
+    const resendPhoneOtpTimer = () => {
+        let resendPhoneOtpTimer = '';
+        if (next_request_time) {
+            next_request_time < 60
+                ? (resendPhoneOtpTimer = localize(`${next_request_time} seconds`))
+                : (resendPhoneOtpTimer = localize(
+                      `${next_request_time && Math.round(next_request_time / 60)} minutes`
+                  ));
+        } else {
+            resendPhoneOtpTimer = '';
+        }
+
+        return resendPhoneOtpTimer;
+    };
+
     return (
         <PhoneVerificationCard>
             <Text bold>
@@ -103,7 +118,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                     fullWidth
                     size='lg'
                     onClick={() => handleSubmit(VERIFICATION_SERVICES.SMS)}
-                    disabled={is_button_loading || !!next_otp_request}
+                    disabled={is_button_loading || !!next_request_time}
                 >
                     <Text bold>
                         <Localize i18n_default_text='Get code via SMS' />
@@ -114,7 +129,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                     fullWidth
                     size='lg'
                     onClick={() => handleSubmit(VERIFICATION_SERVICES.WHATSAPP)}
-                    disabled={is_button_loading || !!next_otp_request}
+                    disabled={is_button_loading || !!next_request_time}
                 >
                     <Text color='white' bold>
                         <Localize i18n_default_text='Get code via WhatsApp' />
@@ -126,10 +141,10 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                 message={
                     <Localize
                         i18n_default_text='An error occurred. Request a new OTP in {{next_phone_number_attempt_timestamp}}.'
-                        values={{ next_phone_number_attempt_timestamp: next_otp_request }}
+                        values={{ next_phone_number_attempt_timestamp: resendPhoneOtpTimer() }}
                     />
                 }
-                isVisible={!!next_otp_request}
+                isVisible={!!next_request_time}
             />
         </PhoneVerificationCard>
     );

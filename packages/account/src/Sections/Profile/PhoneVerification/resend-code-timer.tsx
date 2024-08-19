@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, CaptionText } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { usePhoneNumberVerificationSetTimer, useVerifyEmail } from '@deriv/hooks';
+import { localize } from '@deriv-com/translations';
 
 type TResendCodeTimer = {
     is_button_disabled: boolean;
@@ -21,7 +22,7 @@ const ResendCodeTimer = ({
 }: TResendCodeTimer) => {
     // @ts-expect-error this for now
     const { sendPhoneNumberVerifyEmail, WS, error } = useVerifyEmail('phone_number_verification');
-    const { next_otp_request, is_request_button_disabled } = usePhoneNumberVerificationSetTimer();
+    const { is_request_button_disabled, next_request_time } = usePhoneNumberVerificationSetTimer();
 
     React.useEffect(() => {
         if (WS.isSuccess || error) reInitializeGetSettings();
@@ -37,20 +38,53 @@ const ResendCodeTimer = ({
         }
     };
 
+    const resendCodeTimer = () => {
+        let resendCodeTimer = '';
+        if (next_request_time) {
+            next_request_time < 60
+                ? (resendCodeTimer = localize(` in ${next_request_time}s`))
+                : (resendCodeTimer = localize(` in ${next_request_time && Math.round(next_request_time / 60)}m`));
+        } else {
+            resendCodeTimer = '';
+        }
+
+        return resendCodeTimer;
+    };
+
+    const didntGetACodeTimer = () => {
+        let didntGetACodeTimer = '';
+        if (next_request_time) {
+            next_request_time < 60
+                ? (didntGetACodeTimer = localize(` (${next_request_time}s)`))
+                : (didntGetACodeTimer = localize(` (${next_request_time && Math.round(next_request_time / 60)}m)`));
+        } else {
+            didntGetACodeTimer = '';
+        }
+
+        return didntGetACodeTimer;
+    };
+
     return (
         <Button
             variant='tertiary'
             onClick={resendCode}
-            disabled={!!next_otp_request || is_button_disabled || is_request_button_disabled}
+            disabled={!!next_request_time || is_button_disabled || is_request_button_disabled}
             color='black'
         >
             <CaptionText bold underlined>
                 {should_show_resend_code_button ? (
-                    <Localize i18n_default_text='Resend code{{resendCode}}' values={{ resendCode: next_otp_request }} />
+                    <Localize
+                        i18n_default_text='Resend code{{resendCode}}'
+                        values={{
+                            resendCode: resendCodeTimer(),
+                        }}
+                    />
                 ) : (
                     <Localize
                         i18n_default_text="Didn't get the code?{{resendCode}}"
-                        values={{ resendCode: next_otp_request }}
+                        values={{
+                            resendCode: didntGetACodeTimer(),
+                        }}
                     />
                 )}
             </CaptionText>

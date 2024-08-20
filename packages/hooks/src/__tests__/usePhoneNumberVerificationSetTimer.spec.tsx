@@ -56,9 +56,9 @@ describe('usePhoneNumberVerificationSetTimer', () => {
 
         const { result, waitFor } = renderHook(() => usePhoneNumberVerificationSetTimer(), { wrapper });
 
-        expect(result.current.is_request_button_diabled).toBe(true);
+        expect(result.current.is_request_button_disabled).toBe(true);
 
-        await waitFor(() => result.current.is_request_button_diabled === false);
+        await waitFor(() => result.current.is_request_button_disabled === false);
 
         expect(result.current.next_otp_request).toMatch(/\(1m\)/);
 
@@ -75,7 +75,7 @@ describe('usePhoneNumberVerificationSetTimer', () => {
 
         const { result, waitFor } = renderHook(() => usePhoneNumberVerificationSetTimer(), { wrapper });
 
-        await waitFor(() => result.current.is_request_button_diabled === false);
+        await waitFor(() => result.current.is_request_button_disabled === false);
 
         act(() => {
             jest.advanceTimersByTime(1000);
@@ -89,7 +89,7 @@ describe('usePhoneNumberVerificationSetTimer', () => {
             mock_store.client.account_settings.phone_number_verification.next_email_attempt = 1620000066;
         const { result, waitFor } = renderHook(() => usePhoneNumberVerificationSetTimer(true), { wrapper });
 
-        await waitFor(() => result.current.is_request_button_diabled === false);
+        await waitFor(() => result.current.is_request_button_disabled === false);
 
         expect(result.current.next_otp_request).toMatch(/ 1 minutes/);
 

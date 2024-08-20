@@ -26,7 +26,7 @@ export const VerifyButton = observer(({ setIsPhoneFieldDisable }: TVerifyButton)
     //@ts-expect-error remove this comment when types are added in GetSettings api types
     const { sendPhoneNumberVerifyEmail, WS } = useVerifyEmail('phone_number_verification');
     const { isDesktop } = useDevice();
-    const { next_otp_request, is_request_button_diabled } = usePhoneNumberVerificationSetTimer();
+    const { next_otp_request, is_request_button_disabled } = usePhoneNumberVerificationSetTimer();
 
     useEffect(() => {
         if (WS.isSuccess) {
@@ -35,15 +35,15 @@ export const VerifyButton = observer(({ setIsPhoneFieldDisable }: TVerifyButton)
     }, [WS.isSuccess, history]);
 
     useEffect(() => {
-        if (next_otp_request || is_request_button_diabled) {
+        if (next_otp_request || is_request_button_disabled) {
             setIsPhoneFieldDisable(true);
         } else {
             setIsPhoneFieldDisable(false);
         }
-    }, [next_otp_request, is_request_button_diabled]);
+    }, [next_otp_request, is_request_button_disabled]);
 
     const redirectToPhoneVerification = () => {
-        if (next_otp_request || is_request_button_diabled) return;
+        if (next_otp_request || is_request_button_disabled) return;
         setVerificationCode('', 'phone_number_verification');
         setShouldShowPhoneNumberOTP(false);
         sendPhoneNumberVerifyEmail();
@@ -83,7 +83,7 @@ export const VerifyButton = observer(({ setIsPhoneFieldDisable }: TVerifyButton)
                     color='red'
                     className={clsx('phone-verification-btn--not-verified', {
                         'phone-verification-btn--not-verified--disabled':
-                            !!next_otp_request || is_request_button_diabled,
+                            !!next_otp_request || is_request_button_disabled,
                     })}
                     disabled={true}
                     onClick={redirectToPhoneVerification}

@@ -7,11 +7,3 @@ exports[`WalletBadge Component should render correctly when isMobile is true 1`]
   Test Child
 </span>
 `;
-
-exports[`WalletBadge Component should render correctly when isMobile is true} 1`] = `
-<span
-  class="wallets-text wallets-text__size--sm wallets-text__weight--normal wallets-text__align--left wallets-text__color--black wallets-text__line-height--undefined wallets-text__font-style--normal"
->
-  Test Child
-</span>
-`;

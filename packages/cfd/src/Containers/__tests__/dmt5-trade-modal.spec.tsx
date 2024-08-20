@@ -13,8 +13,6 @@ jest.mock('@deriv/shared', () => ({
     getCFDAccountDisplay: jest.fn(),
 }));
 
-jest.mock('../../Assets/svgs/trading-platform', () => jest.fn(() => 'MockTradingPlatformIcon'));
-
 jest.mock('../migration-banner', () => jest.fn(() => <div>MockMigrateBanner</div>));
 
 describe('<DMT5TradeModal/>', () => {

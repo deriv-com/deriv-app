@@ -2,6 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { Loading, Text } from '@deriv/components';
 import {
+    CFD_PLATFORMS,
     formatMoney,
     getAuthenticationStatusInfo,
     Jurisdiction,
@@ -127,10 +128,22 @@ const CFDsListing = observer(() => {
         }
     };
 
-    const hasUnavailableAccount = combined_cfd_mt5_accounts.some(account => account.status === 'unavailable');
-    const hasMaintenanceStatus = combined_cfd_mt5_accounts.some(account => account.status === 'under_maintenance');
+    const hasUnavailableAccount = combined_cfd_mt5_accounts.some(
+        account => account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE
+    );
+    const hasMaintenanceStatus =
+        combined_cfd_mt5_accounts.some(account => account.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE) ||
+        combined_cfd_mt5_accounts.some(
+            account => getPlatformStatus(account.platform ?? CFD_PLATFORMS.MT5) === TRADING_PLATFORM_STATUS.MAINTENANCE
+        );
 
     const getMT5AccountAuthStatus = (current_acc_status?: string | null, jurisdiction?: string) => {
+        if (current_acc_status === 'under_maintenance') {
+            return MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
+        } else if (current_acc_status === 'unavailable') {
+            return TRADING_PLATFORM_STATUS.UNAVAILABLE;
+        }
+
         if (jurisdiction) {
             switch (jurisdiction) {
                 case Jurisdiction.BVI: {
@@ -183,10 +196,6 @@ const CFDsListing = observer(() => {
                         return MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION;
                     } else if (current_acc_status === 'migrated_without_position') {
                         return MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION;
-                    } else if (current_acc_status === 'under_maintenance') {
-                        return MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
-                    } else if (current_acc_status === 'unavailable') {
-                        return TRADING_PLATFORM_STATUS.UNAVAILABLE;
                     }
                     return null;
             }

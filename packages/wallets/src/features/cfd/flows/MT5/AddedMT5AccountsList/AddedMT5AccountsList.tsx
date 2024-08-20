@@ -42,7 +42,9 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         account.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE ||
         platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
 
-    const isServerMaintenance = platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
+    const isServerMaintenance =
+        platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE ||
+        account.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
     const showPlatformStatus = hasPlatformStatus && !(jurisdictionStatus.is_pending || jurisdictionStatus.is_failed);
     return (
         <TradingAccountCard

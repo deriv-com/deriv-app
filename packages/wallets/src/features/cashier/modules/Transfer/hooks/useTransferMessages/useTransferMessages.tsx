@@ -8,7 +8,7 @@ import {
 } from '@deriv/api-v2';
 import { displayMoney as displayMoney_ } from '@deriv/api-v2/src/utils';
 import { THooks } from '../../../../../../types';
-import { TRADING_PLATFORM_STATUS } from '../../../../../cfd/constants';
+import { MT5_ACCOUNT_STATUS, TRADING_PLATFORM_STATUS } from '../../../../../cfd/constants';
 import { TAccount, TInitialTransferFormValues, TMessageFnProps, TTransferMessage } from '../../types';
 import {
     countLimitMessageFn,
@@ -46,7 +46,9 @@ const useTransferMessages = ({
     const platformStatus =
         getPlatformStatus(fromAccount?.account_type ?? '') || getPlatformStatus(toAccount?.account_type ?? '');
 
-    const isServerMaintenance = platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
+    const isServerMaintenance =
+        platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE ||
+        [fromAccount?.status, toAccount?.status].includes(MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE);
     const isAccountUnavailable = [fromAccount?.status, toAccount?.status].includes(TRADING_PLATFORM_STATUS.UNAVAILABLE);
     const hasTradingPlatformStatus = isServerMaintenance || isAccountUnavailable;
 

@@ -29,7 +29,7 @@ describe('DesktopWalletsList', () => {
         render(<DesktopWalletsList />, { wrapper });
         expect(screen.getByTestId('dt_desktop-wallets-list')).toBeInTheDocument();
     });
-    it('renders the component when the activeWalletAccount is not initializing', () => {
+    it('renders the component when authorization is not initializing', () => {
         const mockUseActiveWalletAccount = {
             data: {
                 is_active: true,
@@ -43,7 +43,7 @@ describe('DesktopWalletsList', () => {
         render(<DesktopWalletsList />, { wrapper });
         expect(screen.getByTestId('dt_wallets_container')).toBeInTheDocument();
     });
-    it('renders the component when the activeWalletAccount is initializing', () => {
+    it('displays loader while authorization is initializing', () => {
         const mockUseActiveWalletAccount = {
             isInitializing: true,
         };

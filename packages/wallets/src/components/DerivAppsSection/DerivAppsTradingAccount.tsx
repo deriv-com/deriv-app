@@ -32,7 +32,10 @@ const DerivAppsTradingAccount = () => {
                     {activeWallet?.is_virtual && <WalletListCardBadge />}
                 </div>
                 {isBalanceLoading ? (
-                    <div className='wallets-skeleton wallets-deriv-apps-balance-loader' />
+                    <div
+                        className='wallets-skeleton wallets-deriv-apps-balance-loader'
+                        data-testid='dt_deriv-apps-balance-loader'
+                    />
                 ) : (
                     <Text size='sm' weight='bold'>
                         {displayMoney(balance, activeLinkedToTradingAccount?.currency_config?.display_code, {

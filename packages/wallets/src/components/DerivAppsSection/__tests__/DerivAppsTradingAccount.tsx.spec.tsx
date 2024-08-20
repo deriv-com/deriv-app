@@ -77,8 +77,7 @@ describe('DerivAppsTradingAccount', () => {
         (mockUseActiveLinkedToTradingAccount as jest.Mock).mockReturnValueOnce({ isLoading: false });
         (mockUseAllBalanceSubscription as jest.Mock).mockReturnValueOnce({ isLoading: true });
         render(<DerivAppsTradingAccount />, { wrapper });
-        expect(screen.getByTestId('dt_wallet_icon')).toBeInTheDocument();
-        expect(screen.getByText('Options')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_deriv-apps-balance-loader')).toBeInTheDocument();
     });
     it('renders the component with a badge', () => {
         (mockUseDevice as jest.Mock).mockReturnValue({ isMobile: false });

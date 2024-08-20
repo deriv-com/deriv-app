@@ -14,26 +14,7 @@ jest.mock('@deriv/api-v2', () => ({
         },
         isLoading: false,
     })),
-    useActiveWalletAccount: jest.fn(() => ({
-        data: { currency_config: { display_code: 'USD' }, is_virtual: false, loginid: 'CRW1' },
-    })),
 }));
-
-jest.mock('../../../hooks/useAllBalanceSubscription', () =>
-    jest.fn(() => ({
-        data: {
-            CRW1: {
-                balance: 100,
-                currency: 'USD',
-            },
-        },
-        isLoading: false,
-    }))
-);
-
-const mockUseActiveLinkedToTradingAccount = useActiveLinkedToTradingAccount as jest.MockedFunction<
-    typeof useActiveLinkedToTradingAccount
->;
 
 const wrapper = ({ children }: PropsWithChildren) => {
     return (
@@ -45,14 +26,21 @@ const wrapper = ({ children }: PropsWithChildren) => {
     );
 };
 
+jest.mock('../DerivAppsGetAccount', () => ({
+    DerivAppsGetAccount: jest.fn(() => 'mockDerivAppsGetAccount'),
+}));
+jest.mock('../DerivAppsTradingAccount', () => ({
+    DerivAppsTradingAccount: jest.fn(() => 'mockDerivAppsTradingAccount'),
+}));
+
 describe('DerivAppsSection', () => {
-    it('renders the component when activeLinkedToTradingAccount is undefined', () => {
-        (mockUseActiveLinkedToTradingAccount as jest.Mock).mockReturnValueOnce({ isLoading: false });
+    it('displays DerivAppsTradingAccount when the client already has a linked account', () => {
         render(<DerivAppsSection />, { wrapper });
-        expect(screen.getByRole('button', { name: 'Get' })).toBeInTheDocument();
+        expect(screen.getByText('mockDerivAppsTradingAccount')).toBeInTheDocument();
     });
-    it('renders the component when activeLinkedToTradingAccount is defined', () => {
-        render(<DerivAppsSection />, { wrapper });
-        expect(screen.getByText('100.00 USD')).toBeInTheDocument();
+    it('displays DerviAppsGetAccount when the client does not have a linked account', () => {
+        (useActiveLinkedToTradingAccount as jest.Mock).mockReturnValueOnce({ isLoading: false });
+        render(<DerivAppsSection />);
+        expect(screen.getByText('mockDerivAppsGetAccount')).toBeInTheDocument();
     });
 });

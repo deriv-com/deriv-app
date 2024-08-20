@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv-com/ui';
+import { WalletText } from '../../../../components';
 import { TPlatforms } from '../../../../types';
 import { getPlatformType } from './compareAccountsConfig';
 import { headerColor, platformLabel } from './constants';
@@ -20,9 +20,9 @@ const CompareAccountsPlatformLabel = ({ platform }: TCompareAccountsPlatformLabe
             `}
             data-testid='dt_wallets_compare_accounts_platform_label'
         >
-            <Text align='center' as='p' color={headerColor[platformType]} size='xs' weight='bold'>
+            <WalletText align='center' as='p' color={headerColor[platformType]} size='xs' weight='bold'>
                 {platformLabel[platformType]}
-            </Text>
+            </WalletText>
         </div>
     );
 };

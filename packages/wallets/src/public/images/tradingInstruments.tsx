@@ -11,8 +11,8 @@ import {
     IllustrativeSyntheticIndicesIcon,
 } from '@deriv/quill-icons';
 
-const getInstrumentsIcons = (isDesktop: boolean) => {
-    const size = isDesktop ? { height: 24, width: 24 } : { height: 16, width: 16 };
+const getInstrumentsIcons = (isMobile: boolean) => {
+    const size = isMobile ? { height: 16, width: 16 } : { height: 24, width: 24 };
 
     return {
         Baskets: <IllustrativeBasketIndicesIcon {...size} />,

@@ -40,51 +40,74 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const [should_show_error, setShouldShowError] = React.useState(true);
     const [initial_stake_value, setInitialStakeValue] = React.useState<number>();
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
-    const { has_error, id, message = '', payout: main_btn_payout = 0 } = proposal_info[contract_types[0]] ?? {};
+    // first contract type data:
+    const {
+        has_error: has_error_1,
+        id: id_1,
+        message: message_1 = '',
+        payout: payout_1 = 0,
+    } = proposal_info[contract_types[0]] ?? {};
+    // second contract type data:
     const {
         has_error: has_error_2,
+        id: id_2,
         message: message_2 = '',
-        payout: second_btn_payout = 0,
+        payout: payout_2 = 0,
     } = proposal_info[contract_types[1]] ?? {};
-    const proposal_error_message =
-        message !== validation_errors?.amount[0] && has_error ? message : validation_errors?.amount[0];
-    const validation_error_text = contract_types[1] ? validation_errors?.amount[0] : proposal_error_message;
-    // TODO: stop extracting max payout from error message after it's added to validation_params in proposal API:
-    const error_max_payout = validation_error_text ? Number(message.match(/\d+(\.\d+)?/g)?.[1]) : 0;
+    const should_show_payout_details = !is_accumulator && !is_multiplier && !is_turbos && !is_vanilla;
+
+    const proposal_error_message_1 = has_error_1 ? message_1 : '';
+    const proposal_error_message_2 = has_error_2 ? message_2 : '';
+    const proposal_error_message = proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount[0];
+    const max_payout_exceeded = !!(
+        /maximum payout/i.test(proposal_error_message_1) || /maximum payout/i.test(proposal_error_message_2)
+    );
+    // TODO: stop extracting Max payout from error message after it's added to validation_params in proposal API:
+    const float_number_search_regex = /\d+(\.\d+)?/g;
+    const error_max_payout =
+        max_payout_exceeded && proposal_error_message
+            ? Number(proposal_error_message.match(float_number_search_regex)?.[1])
+            : 0;
     const { max_payout = error_max_payout, stake } = validation_params[contract_types[0]] ?? {};
     const { max: max_stake = 0, min: min_stake = 0 } = stake ?? {};
-    const error_payout_1 = message ? Number(message.match(/\d+(\.\d+)?/g)?.[2]) : 0;
-    const error_payout_2 = message_2 ? Number(message_2.match(/\d+(\.\d+)?/g)?.[2]) : 0;
-    const main_button_payout = main_btn_payout || error_payout_1;
-    const second_button_payout = second_btn_payout || error_payout_2;
-    const has_error_or_loading_proposal = has_error || !id;
+    const error_payout_1 = proposal_error_message_1
+        ? Number(proposal_error_message_1.match(float_number_search_regex)?.[2])
+        : 0;
+    const error_payout_2 = proposal_error_message_2
+        ? Number(proposal_error_message_2.match(float_number_search_regex)?.[2])
+        : 0;
+    const first_contract_payout = payout_1 || error_payout_1;
+    const second_contract_payout = payout_2 || error_payout_2;
+    const has_error_or_loading_proposal = has_error_1 || has_error_2 || !id_1 || !id_2;
+    const validation_error_text = contract_types[1] ? validation_errors?.amount[0] : proposal_error_message;
     const main_error_message =
-        (validation_error_text && error_payout_1 > error_payout_2 ? message_2 : message) || validation_error_text;
-    const has_both_errors = has_error && has_error_2;
+        (validation_error_text && error_payout_1 > error_payout_2
+            ? proposal_error_message_2
+            : proposal_error_message_1) || validation_error_text;
+    const has_both_errors = has_error_1 && has_error_2;
     const two_contracts_error = has_both_errors || amount.toString() === '' ? main_error_message : '';
     const stake_error = contract_types[1] ? two_contracts_error : validation_error_text;
-    const max_payout_exceeded = !!(/maximum payout/i.test(message) || /maximum payout/i.test(message_2));
-    const should_show_payout_details = !is_accumulator && !is_multiplier && !is_turbos && !is_vanilla;
+
     const getDisplayedPayout = React.useCallback(
         (new_payout: number, current_payout?: string) => {
-            return ((current_payout === '-' && !id) || stake_error) && !max_payout_exceeded
+            return ((current_payout === '-' && !id_1) || stake_error) && !max_payout_exceeded
                 ? '-'
                 : FormatUtils.formatMoney(new_payout);
         },
-        [id, max_payout_exceeded, stake_error]
+        [id_1, max_payout_exceeded, stake_error]
     );
-    const [displayed_payout_1, setDisplayedPayout1] = React.useState(getDisplayedPayout(main_button_payout));
-    const [displayed_payout_2, setDisplayedPayout2] = React.useState(getDisplayedPayout(second_button_payout));
 
+    const [displayed_payout_1, setDisplayedPayout1] = React.useState(getDisplayedPayout(first_contract_payout));
+    const [displayed_payout_2, setDisplayedPayout2] = React.useState(getDisplayedPayout(second_contract_payout));
     const [info, setInfo] = React.useState({
+        first_contract_payout,
         max_payout,
         max_stake,
-        main_button_payout,
         min_stake,
-        second_button_payout,
+        second_contract_payout,
     });
 
-    const mult_content = [
+    const multipliers_content = [
         {
             label: <Localize i18n_default_text='Stop out' />,
             value: stop_out,
@@ -104,31 +127,31 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [basis]);
     React.useEffect(() => {
-        setDisplayedPayout1(p => getDisplayedPayout(info.main_button_payout, p));
-        setDisplayedPayout2(p => getDisplayedPayout(info.second_button_payout, p));
+        setDisplayedPayout1(p => getDisplayedPayout(info.first_contract_payout, p));
+        setDisplayedPayout2(p => getDisplayedPayout(info.second_contract_payout, p));
     }, [getDisplayedPayout, info]);
     React.useEffect(() => {
         if (is_open) {
             setInfo(info => {
                 if (
+                    (info.first_contract_payout !== first_contract_payout && first_contract_payout) ||
                     (info.max_payout !== max_payout && max_payout) ||
                     (info.max_stake !== max_stake && max_stake) ||
-                    (info.main_button_payout !== main_button_payout && main_button_payout) ||
                     (info.min_stake !== min_stake && min_stake) ||
-                    (info.second_button_payout !== second_button_payout && second_button_payout)
+                    (info.second_contract_payout !== second_contract_payout && second_contract_payout)
                 ) {
                     return {
+                        first_contract_payout,
                         max_payout,
                         max_stake,
-                        main_button_payout,
                         min_stake,
-                        second_button_payout,
+                        second_contract_payout,
                     };
                 }
                 return info;
             });
         }
-    }, [is_open, max_payout, max_stake, min_stake, main_button_payout, second_button_payout]);
+    }, [is_open, max_payout, max_stake, min_stake, first_contract_payout, second_contract_payout]);
 
     const getInputMessage = () =>
         (should_show_error && stake_error) ||
@@ -191,16 +214,16 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                 value={amount}
                             />
                             {is_multiplier ? (
-                                <div className='multipliers-info__wrapper'>
-                                    {mult_content.map(({ label, value }) => (
-                                        <div key={label.props.i18n_default_text} className='multipliers-info__row'>
-                                            <Text size='sm' className='multipliers-info__title'>
+                                <div className='multipliers-details__wrapper'>
+                                    {multipliers_content.map(({ label, value }) => (
+                                        <div key={label.props.i18n_default_text} className='multipliers-details__row'>
+                                            <Text size='sm' className='multipliers-details__title'>
                                                 {label}
                                             </Text>
                                             <Text size='sm' bold>
                                                 {has_error_or_loading_proposal || isNaN(Number(value))
                                                     ? '-'
-                                                    : FormatUtils.formatMoney(Number(value))}{' '}
+                                                    : FormatUtils.formatMoney(Math.abs(Number(value)))}{' '}
                                                 {getCurrencyDisplayCode(currency)}
                                             </Text>
                                         </div>
@@ -210,7 +233,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                 should_show_payout_details && (
                                     <>
                                         {!!info.max_payout && (
-                                            <div className='barrier-params__max-payout-wrapper'>
+                                            <div className='stake-params__max-payout-wrapper'>
                                                 <Text size='sm'>
                                                     <Localize i18n_default_text='Max payout' />
                                                 </Text>
@@ -220,7 +243,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                                 </Text>
                                             </div>
                                         )}
-                                        <div className='barrier-params__button-payout-wrapper'>
+                                        <div className='stake-params__payout-wrapper'>
                                             <Text size='sm'>
                                                 <Localize i18n_default_text='Payout' />
                                             </Text>
@@ -234,7 +257,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                             </Text>
                                         </div>
                                         {contract_types.length > 1 && (
-                                            <div className='barrier-params__button-payout-wrapper--second'>
+                                            <div className='stake-params__payout-wrapper'>
                                                 <Text size='sm'>
                                                     <Localize i18n_default_text='Payout' />
                                                 </Text>

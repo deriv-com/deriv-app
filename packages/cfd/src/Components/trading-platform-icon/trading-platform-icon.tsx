@@ -43,14 +43,7 @@ const TradingPlatformIcon = ({ icon, className, size, onClick }: IconProps) => {
     const IconComponent = PlatformIcons[icon];
 
     return IconComponent ? (
-        <IconComponent
-            fill='#000000'
-            iconSize='xl'
-            className={className}
-            width={size}
-            height={size}
-            onClick={onClick}
-        />
+        <IconComponent fill='#000000' className={className} width={size} height={size} onClick={onClick} />
     ) : null;
 };
 

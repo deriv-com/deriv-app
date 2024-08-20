@@ -7,7 +7,7 @@ import { getCFDAccountKey, MT5_ACCOUNT_STATUS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { CFD_PLATFORMS, MARKET_TYPE, PRODUCT } from '../Helpers/cfd-config';
-import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import TradingPlatformIcon from '../Components/trading-platform-icon';
 import MigrationBanner from './migration-banner';
 import MT5DesktopRedirectOption from './mt5-desktop-redirect-option';
 import MT5MobileRedirectOption from './mt5-mobile-redirect-option';

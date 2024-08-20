@@ -191,7 +191,13 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
 
     if (isMobile) {
         return (
-            <ModalStepWrapper renderFooter={() => renderAccountSuccessButton(!isDemo)}>
+            <ModalStepWrapper
+                renderFooter={() =>
+                    renderAccountSuccessButton(
+                        !isDemo && poiData.status === 'verified' && poaData.status === 'verified'
+                    )
+                }
+            >
                 {renderMainContent}
             </ModalStepWrapper>
         );

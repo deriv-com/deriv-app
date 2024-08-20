@@ -14,25 +14,25 @@ describe('CompareAccountsHeader', () => {
         (useHistory as jest.Mock).mockReturnValue({ push: mockHistoryPush });
     });
 
-    it('renders correctly for non-demo, non-EU accounts', () => {
+    it('displays CFDs compare accounts header title for non-demo, non-EU accounts', () => {
         render(<CompareAccountsHeader isDemo={false} isEuRegion={false} />);
 
         expect(screen.getByText('Compare CFDs accounts')).toBeInTheDocument();
     });
 
-    it('renders correctly for demo, non-EU accounts', () => {
+    it('displays CFDs compare accounts header title for demo, non-EU accounts', () => {
         render(<CompareAccountsHeader isDemo={true} isEuRegion={false} />);
 
         expect(screen.getByText('Compare CFDs demo accounts')).toBeInTheDocument();
     });
 
-    it('renders correctly for non-demo, EU accounts', () => {
+    it('displays MT5 CFDs compare accounts header title for non-demo, EU accounts', () => {
         render(<CompareAccountsHeader isDemo={false} isEuRegion={true} />);
 
         expect(screen.getByText('Deriv MT5 CFDs real account')).toBeInTheDocument();
     });
 
-    it('renders correctly for demo, EU accounts', () => {
+    it('displays MT5 CFDs compare accounts header title for demo, EU accounts', () => {
         render(<CompareAccountsHeader isDemo={true} isEuRegion={true} />);
 
         expect(screen.getByText('Deriv MT5 CFDs Demo account')).toBeInTheDocument();

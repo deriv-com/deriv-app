@@ -27,7 +27,7 @@ describe('InstrumentsLabelHighlighted', () => {
         (getHighlightedIconLabel as jest.Mock).mockReturnValue(mockIconData);
     });
 
-    it('renders correctly with default props', () => {
+    it('renders default content and label for given trading instrument', () => {
         render(<InstrumentsLabelHighlighted {...defaultProps} />);
 
         const container = screen.getByTestId('dt_compare_cfd_account_outline__container');

@@ -11,13 +11,13 @@ describe('CompareAccountsTitleIcon', () => {
         shortCode: 'SVG',
     };
 
-    it('renders correctly with default props', () => {
+    it('renders default real account title when isDemo is false', () => {
         render(<CompareAccountsTitleIcon {...defaultProps} />);
 
         expect(screen.getByText('CFDs')).toBeInTheDocument();
     });
 
-    it('renders demo account title when isDemo is true', () => {
+    it('renders default demo account title when isDemo is true', () => {
         render(<CompareAccountsTitleIcon {...defaultProps} isDemo={true} />);
 
         expect(screen.getByText('CFDs Demo')).toBeInTheDocument();

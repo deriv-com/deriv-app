@@ -33,7 +33,7 @@ describe('CompareAccountsDescription', () => {
         shortCode: 'SVG',
     };
 
-    it('renders correctly for non-demo, non-EU accounts', () => {
+    it('renders correct compare accounts descriptions for non-demo, non-EU accounts', () => {
         render(<CompareAccountsDescription {...defaultProps} />);
 
         expect(screen.getByText('Up to 1:1000')).toBeInTheDocument();
@@ -46,7 +46,7 @@ describe('CompareAccountsDescription', () => {
         expect(screen.getByText('License number')).toBeInTheDocument();
     });
 
-    it('renders correctly for demo accounts', () => {
+    it('renders correct compare accounts descriptions for demo accounts', () => {
         render(<CompareAccountsDescription {...defaultProps} isDemo={true} />);
 
         expect(screen.getByText('Up to 1:1000')).toBeInTheDocument();
@@ -56,7 +56,7 @@ describe('CompareAccountsDescription', () => {
         expect(screen.queryByText('St. Vincent & Grenadines')).not.toBeInTheDocument();
     });
 
-    it('renders correctly for EU region accounts', () => {
+    it('renders correct compare accounts descriptions for EU region accounts', () => {
         render(<CompareAccountsDescription {...defaultProps} isEuRegion={true} />);
 
         expect(screen.getByText('Up to 1:1000')).toBeInTheDocument();

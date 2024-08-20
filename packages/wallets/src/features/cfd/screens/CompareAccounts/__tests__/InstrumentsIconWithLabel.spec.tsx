@@ -23,7 +23,7 @@ describe('InstrumentsIconWithLabel', () => {
         text: 'Forex',
     };
 
-    it('renders correctly with default props', () => {
+    it('renders default icon with label for given trading instrument', () => {
         render(<InstrumentsIconWithLabel {...defaultProps} />);
 
         expect(screen.getByTestId('dt_instruments_icon_container')).toBeInTheDocument();

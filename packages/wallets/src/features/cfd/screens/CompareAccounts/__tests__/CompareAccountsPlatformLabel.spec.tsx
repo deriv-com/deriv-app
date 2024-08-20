@@ -15,7 +15,7 @@ describe('CompareAccountsPlatformLabel', () => {
         (getPlatformType as jest.Mock).mockReturnValue('MT5');
     });
 
-    it('renders correctly with the given platform', () => {
+    it('renders correct platform label according to the given platform', () => {
         render(<CompareAccountsPlatformLabel platform={mockPlatform} />);
 
         const labelElement = screen.getByTestId('dt_wallets_compare_accounts_platform_label');

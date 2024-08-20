@@ -211,17 +211,17 @@ const IconType = React.memo(({ platform, type, show_eu_related_content, product 
     } else {
         switch (type) {
             case 'synthetic':
-                return <Icon icon='IcMt5StandardPlatform' size={128} />;
+                return <TradingPlatformIcon icon='Standard' size={128} />;
             case 'all':
                 if (product === PRODUCT.ZEROSPREAD) {
-                    return <Icon icon='IcMt5ZeroSpread' size={128} />;
+                    return <TradingPlatformIcon icon='ZeroSpread' size={128} />;
                 }
-                return <Icon icon='IcMt5SwapFreePlatform' size={128} />;
+                return <TradingPlatformIcon icon='SwapFree' size={128} />;
             case 'financial':
                 if (show_eu_related_content) {
-                    return <Icon icon='IcMt5CfdPlatform' size={128} />;
+                    return <TradingPlatformIcon icon='CFDs' size={128} />;
                 }
-                return <Icon icon='IcMt5FinancialPlatform' size={128} />;
+                return <TradingPlatformIcon icon='Financial' size={128} />;
             default:
                 return <Icon icon='IcMt5FinancialStpPlatform' size={128} />;
         }

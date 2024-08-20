@@ -5,6 +5,7 @@ import {
     useCreateNewRealAccount,
     useInvalidateQuery,
 } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import WalletsAuthProvider from '../../../AuthProvider';
@@ -35,7 +36,10 @@ jest.mock('../../../hooks/useAllBalanceSubscription', () =>
         isLoading: false,
     }))
 );
-jest.mock('../../../hooks/useDevice', () => jest.fn(() => ({ isDesktop: false })));
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 jest.mock('../../ModalProvider', () => ({
     ...jest.requireActual('../../ModalProvider'),
     useModal: jest.fn(() => ({ show: mockShow })),
@@ -58,6 +62,13 @@ const wrapper = ({ children }: PropsWithChildren) => {
 };
 
 describe('DerivAppsGetAccount', () => {
+    beforeEach(() => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
     it('renders the component', () => {
         render(<DerivAppsGetAccount />, { wrapper });
         expect(screen.getByText('Get')).toBeInTheDocument();

@@ -11,8 +11,9 @@ import {
     LabelPairedSquareListMdRegularIcon,
     LegacyClose2pxIcon,
 } from '@deriv/quill-icons';
-import { useDevice } from '@deriv-com/ui';
-import { WalletCurrencyIcon, WalletGradientBackground, WalletText } from '../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Text, useDevice } from '@deriv-com/ui';
+import { WalletCurrencyIcon, WalletGradientBackground } from '../../../../components';
 import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
 import useAllBalanceSubscription from '../../../../hooks/useAllBalanceSubscription';
 import './WalletCashierHeader.scss';
@@ -21,46 +22,54 @@ type TProps = {
     hideWalletDetails: boolean;
 };
 
-const realAccountTabs = [
-    {
-        icon: <LabelPairedPlusMdRegularIcon />,
-        path: 'deposit',
-        text: 'Deposit',
-    },
-    {
-        icon: <LabelPairedMinusMdRegularIcon />,
-        path: 'withdrawal',
-        text: 'Withdraw',
-    },
-    {
-        icon: <LabelPairedArrowUpArrowDownMdRegularIcon />,
-        path: 'account-transfer',
-        text: 'Transfer',
-    },
-    {
-        icon: <LabelPairedSquareListMdRegularIcon />,
-        path: 'transactions',
-        text: 'Transactions',
-    },
-] as const;
+const getRealAccountTabs = () => {
+    const realAccountTabs = [
+        {
+            icon: <LabelPairedPlusMdRegularIcon />,
+            path: 'deposit',
+            text: <Localize i18n_default_text='Deposit' />,
+        },
+        {
+            icon: <LabelPairedMinusMdRegularIcon />,
+            path: 'withdrawal',
+            text: <Localize i18n_default_text='Withdraw' />,
+        },
+        {
+            icon: <LabelPairedArrowUpArrowDownMdRegularIcon />,
+            path: 'account-transfer',
+            text: <Localize i18n_default_text='Transfer' />,
+        },
+        {
+            icon: <LabelPairedSquareListMdRegularIcon />,
+            path: 'transactions',
+            text: <Localize i18n_default_text='Transactions' />,
+        },
+    ] as const;
 
-const virtualAccountTabs = [
-    {
-        icon: <LabelPairedArrowUpArrowDownMdRegularIcon />,
-        path: 'account-transfer',
-        text: 'Transfer',
-    },
-    {
-        icon: <LabelPairedSquareListMdRegularIcon />,
-        path: 'transactions',
-        text: 'Transactions',
-    },
-    {
-        icon: <LabelPairedArrowsRotateMdRegularIcon />,
-        path: 'reset-balance',
-        text: 'Reset Balance',
-    },
-] as const;
+    return realAccountTabs;
+};
+
+const getVirtualAccountTabs = () => {
+    const virtualAccountTabs = [
+        {
+            icon: <LabelPairedArrowUpArrowDownMdRegularIcon />,
+            path: 'account-transfer',
+            text: <Localize i18n_default_text='Transfer' />,
+        },
+        {
+            icon: <LabelPairedSquareListMdRegularIcon />,
+            path: 'transactions',
+            text: <Localize i18n_default_text='Transactions' />,
+        },
+        {
+            icon: <LabelPairedArrowsRotateMdRegularIcon />,
+            path: 'reset-balance',
+            text: <Localize i18n_default_text='Reset Balance' />,
+        },
+    ] as const;
+
+    return virtualAccountTabs;
+};
 
 const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const { data: activeWallet } = useActiveWalletAccount();
@@ -71,7 +80,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const location = useLocation();
     const accountsActiveTabIndexRef = useRef<number>(location.state?.accountsActiveTabIndex ?? 0);
 
-    const tabs = activeWallet?.is_virtual ? virtualAccountTabs : realAccountTabs;
+    const tabs = activeWallet?.is_virtual ? getVirtualAccountTabs() : getRealAccountTabs();
     const isDemo = activeWallet?.is_virtual;
 
     useEffect(() => {
@@ -96,9 +105,9 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                                 'wallets-cashier-header__details--hide-details': hideWalletDetails,
                             })}
                         >
-                            <WalletText color={isDemo ? 'system-dark-2-general-text' : 'general'} size='md'>
+                            <Text color={isDemo ? 'system-dark-2-general-text' : 'general'} size='md'>
                                 {activeWallet?.currency} Wallet
-                            </WalletText>
+                            </Text>
                             {isDemo && <WalletListCardBadge />}
                         </div>
                         {isBalanceLoading ? (
@@ -107,7 +116,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                                 data-testid='dt_wallets_cashier_header_balance_loader'
                             />
                         ) : (
-                            <WalletText color={isDemo ? 'white' : 'general'} size='xl' weight='bold'>
+                            <Text color={isDemo ? 'white' : 'general'} size='xl' weight='bold'>
                                 {displayMoney(
                                     balanceData?.[activeWallet?.loginid ?? '']?.balance,
                                     activeWallet?.currency,
@@ -115,7 +124,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                                         fractional_digits: activeWallet?.currency_config?.fractional_digits,
                                     }
                                 )}
-                            </WalletText>
+                            </Text>
                         )}
                     </div>
                     <div className='wallets-cashier-header__top-right-info'>
@@ -170,13 +179,13 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                                 >
                                     {tab.icon}
                                 </div>
-                                <WalletText
+                                <Text
                                     color={isDemo && !isActiveTab ? 'system-dark-2-general-text' : 'general'}
                                     size='sm'
                                     weight={isActiveTab ? 'bold' : 'normal'}
                                 >
                                     {tab.text}
-                                </WalletText>
+                                </Text>
                             </button>
                         );
                     })}

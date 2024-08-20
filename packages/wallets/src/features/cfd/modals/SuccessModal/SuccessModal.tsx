@@ -1,5 +1,6 @@
 import React, { ComponentProps, FC } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components';
 import { PlatformDetails } from '../../constants';
@@ -19,11 +20,10 @@ const SuccessModal: FC<TProps> = ({
     platform = 'dxtrade',
 }) => {
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
     const { data: activeWallet } = useActiveWalletAccount();
-    const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
-    const title = `Your ${PlatformDetails[platform].title}${
-        accountType === 'demo' ? ` ${accountType}` : ''
-    } account is ready`;
+
+    const accountType = activeWallet?.is_virtual ? localize('demo') : 'real';
 
     const buttonSize = isDesktop ? 'md' : 'lg';
 
@@ -31,16 +31,16 @@ const SuccessModal: FC<TProps> = ({
         return accountType === 'demo' ? (
             <div className='wallets-success-btn'>
                 <WalletButton isFullWidth onClick={onSecondaryClick} size={buttonSize}>
-                    OK
+                    <Localize i18n_default_text='OK' />
                 </WalletButton>
             </div>
         ) : (
             <WalletButtonGroup isFlex isFullWidth>
                 <WalletButton onClick={onSecondaryClick} size={buttonSize} variant='outlined'>
-                    Maybe later
+                    <Localize i18n_default_text='Maybe later' />
                 </WalletButton>
                 <WalletButton onClick={onPrimaryClick} size={buttonSize}>
-                    Transfer funds
+                    <Localize i18n_default_text='Transfer funds' />
                 </WalletButton>
             </WalletButtonGroup>
         );
@@ -55,7 +55,15 @@ const SuccessModal: FC<TProps> = ({
                     marketType={marketType}
                     platform={platform}
                     renderButton={renderButton}
-                    title={title}
+                    title={
+                        <Localize
+                            i18n_default_text='Your {{platformTitle}}{{demoTitle}} account is ready'
+                            values={{
+                                demoTitle: accountType === localize('demo') ? ` ${accountType}` : '',
+                                platformTitle: PlatformDetails[platform].title,
+                            }}
+                        />
+                    }
                 />
             </ModalWrapper>
         );
@@ -68,7 +76,15 @@ const SuccessModal: FC<TProps> = ({
                 displayBalance={displayBalance}
                 marketType={marketType}
                 platform={platform}
-                title={title}
+                title={
+                    <Localize
+                        i18n_default_text='Your {{platformTitle}}{{demoTitle}} account is ready'
+                        values={{
+                            demoTitle: accountType === localize('demo') ? ` ${accountType}` : '',
+                            platformTitle: PlatformDetails[platform].title,
+                        }}
+                    />
+                }
             />
         </ModalStepWrapper>
     );

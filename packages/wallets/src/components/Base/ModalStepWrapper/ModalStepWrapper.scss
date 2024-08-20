@@ -8,6 +8,14 @@
         max-height: calc(var(--wallets-vh, 1vh) * 100 - 10rem);
     }
 
+    &--disable-animation {
+        animation: none;
+
+        @include mobile {
+            animation: none;
+        }
+    }
+
     &--disable-scroll {
         overflow: unset;
     }

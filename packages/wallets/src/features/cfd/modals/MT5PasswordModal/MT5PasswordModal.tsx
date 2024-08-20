@@ -9,6 +9,7 @@ import {
     useTradingPlatformPasswordChange,
     useVerifyEmail,
 } from '@deriv/api-v2';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components/Base';
@@ -20,7 +21,7 @@ import { CFD_PLATFORMS, JURISDICTION, MARKET_TYPE, PlatformDetails } from '../..
 import { CreatePassword, EnterPassword, MT5ResetPasswordModal } from '../../screens';
 import MT5AccountAdded from '../MT5AccountAdded/MT5AccountAdded';
 import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
-import { MT5PasswordModalFooter, SuccessModalFooter } from './MT5PasswordModalFooters';
+import { MT5PasswordModalFooter } from './MT5PasswordModalFooters';
 
 type TProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
@@ -58,6 +59,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const { isDesktop } = useDevice();
     const { getModalState, hide } = useModal();
     const { data: settingsData } = useSettings();
+    const { localize } = useTranslations();
 
     const { email } = settingsData;
 
@@ -165,17 +167,19 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     );
 
     const renderTitle = useCallback(() => {
-        const accountAction = hasMT5Account ? 'Add' : 'Create';
-        const accountType = isDemo ? 'demo' : 'real';
+        const accountAction = hasMT5Account ? localize('Add') : localize('Create');
+        const accountType = isDemo ? localize('demo') : localize('real');
 
         return updateMT5Password
-            ? `${mt5Title} latest password requirements`
-            : `${accountAction} a ${accountType} ${mt5Title} account`;
-    }, [hasMT5Account, isDemo, mt5Title, updateMT5Password]);
+            ? localize('{{mt5Title}} latest password requirements', { mt5Title })
+            : localize('{{accountAction}} a {{accountType}} {{mt5Title}} account', {
+                  accountAction,
+                  accountType,
+                  mt5Title,
+              });
+    }, [hasMT5Account, isDemo, localize, mt5Title, updateMT5Password]);
 
     const renderFooter = useCallback(() => {
-        if (createMT5AccountSuccess) return <SuccessModalFooter isDemo={isDemo} />;
-
         if (isMT5PasswordNotSet)
             return (
                 <WalletButton
@@ -190,7 +194,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                     onClick={onSubmit}
                     size='lg'
                 >
-                    Create {mt5Title} password
+                    <Localize i18n_default_text='Create {{mt5Title}} password' values={{ mt5Title }} />
                 </WalletButton>
             );
 
@@ -209,8 +213,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         );
     }, [
         createMT5AccountLoading,
-        createMT5AccountSuccess,
-        isDemo,
         isMT5PasswordNotSet,
         mt5Title,
         onSubmit,
@@ -245,7 +247,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
             <EnterPassword
                 isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                 marketType={marketType}
-                modalTitle='Enter your Deriv MT5 password'
+                modalTitle={localize('Enter your Deriv MT5 password')}
                 onPasswordChange={e => setPassword(e.target.value)}
                 onPrimaryClick={onSubmit}
                 onSecondaryClick={() => sendEmailVerification()}
@@ -256,18 +258,19 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
             />
         );
     }, [
-        createMT5AccountError?.error?.code,
-        createMT5AccountLoading,
         isMT5PasswordNotSet,
-        marketType,
-        mt5Platform,
+        tradingPlatformPasswordChangeLoading,
+        createMT5AccountLoading,
         onSubmit,
-        onSubmitPasswordChange,
         password,
-        sendEmailVerification,
+        mt5Platform,
         updateMT5Password,
         tradingPasswordChangeError,
-        tradingPlatformPasswordChangeLoading,
+        onSubmitPasswordChange,
+        marketType,
+        localize,
+        createMT5AccountError?.error?.code,
+        sendEmailVerification,
     ]);
 
     if (emailVerificationStatus === 'error') {
@@ -275,7 +278,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
             <WalletError
                 errorMessage={emailVerificationError?.error?.message ?? ''}
                 onClick={hide}
-                title={emailVerificationError?.error?.code ?? 'Error'}
+                title={emailVerificationError?.error?.code ?? localize('Error')}
             />
         );
     }

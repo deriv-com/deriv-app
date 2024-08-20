@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { useDevice } from '@deriv-com/ui';
-import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { Text, useDevice } from '@deriv-com/ui';
+import { WalletButton, WalletPasswordFieldLazy } from '../../../../components/Base';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password-validation';
 import { CFD_PLATFORMS, getMarketTypeDetails, PlatformDetails } from '../../constants';
@@ -35,12 +36,17 @@ const EnterPassword: React.FC<TProps> = ({
     setPassword,
 }) => {
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
     const { data } = useActiveWalletAccount();
-    const accountType = data?.is_virtual ? 'Demo' : 'Real';
+
+    const accountType = data?.is_virtual ? localize('Demo') : localize('Real');
     const title = PlatformDetails[platform].title;
     const marketTypeTitle =
         platform === PlatformDetails.dxtrade.platform ? accountType : getMarketTypeDetails()[marketType].title;
-    const passwordErrorHints = `Hint: You may have entered your Deriv password, which is different from your ${title} password.`;
+    const passwordErrorHints = localize(
+        'Hint: You may have entered your Deriv password, which is different from your {{title}} password.',
+        { title }
+    );
 
     useEffect(() => {
         if (passwordError) {
@@ -51,25 +57,31 @@ const EnterPassword: React.FC<TProps> = ({
     return (
         <div className='wallets-enter-password'>
             <div className='wallets-enter-password__container'>
-                <WalletText lineHeight='xl' weight='bold'>
+                <Text lineHeight='xl' weight='bold'>
                     {modalTitle}
-                </WalletText>
+                </Text>
                 <div className='wallets-enter-password__content'>
-                    <WalletText size='sm'>
-                        Enter your {title} password to add a{' '}
-                        {platform === CFD_PLATFORMS.MT5 && accountType === 'Demo'
-                            ? `${accountType.toLocaleLowerCase()} ${CFD_PLATFORMS.MT5.toLocaleUpperCase()}`
-                            : title}{' '}
-                        {marketTypeTitle} account.
-                    </WalletText>
+                    <Text size='sm'>
+                        <Localize
+                            i18n_default_text='Enter your {{title}} password to add a {{accountTitle}} {{marketTypeTitle}} account'
+                            values={{
+                                accountTitle:
+                                    platform === CFD_PLATFORMS.MT5 && accountType === 'Demo'
+                                        ? `${accountType.toLocaleLowerCase()} ${CFD_PLATFORMS.MT5.toLocaleUpperCase()}`
+                                        : title,
+                                marketTypeTitle,
+                                title,
+                            }}
+                        />
+                    </Text>
                     <WalletPasswordFieldLazy
-                        label={`${title} password`}
+                        label={localize('{{title}} password', { title })}
                         onChange={onPasswordChange}
                         password={password}
                         passwordError={passwordError}
                         shouldDisablePasswordMeter
                     />
-                    {passwordError && <WalletText size='sm'>{passwordErrorHints}</WalletText>}
+                    {passwordError && <Text size='sm'>{passwordErrorHints}</Text>}
                 </div>
             </div>
             {isDesktop && (
@@ -80,7 +92,7 @@ const EnterPassword: React.FC<TProps> = ({
                         size='md'
                         variant='outlined'
                     >
-                        Forgot password?
+                        <Localize i18n_default_text='Forgot password?' />
                     </WalletButton>
                     <WalletButton
                         disabled={isLoading || !validPassword(password)}
@@ -88,7 +100,7 @@ const EnterPassword: React.FC<TProps> = ({
                         onClick={onPrimaryClick}
                         size='md'
                     >
-                        Add account
+                        <Localize i18n_default_text='Add account' />
                     </WalletButton>
                 </div>
             )}

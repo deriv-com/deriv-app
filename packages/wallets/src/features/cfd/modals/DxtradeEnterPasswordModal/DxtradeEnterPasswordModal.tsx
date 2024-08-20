@@ -6,6 +6,7 @@ import {
     useCreateOtherCFDAccount,
     useDxtradeAccountsList,
 } from '@deriv/api-v2';
+import { useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalWrapper } from '../../../../components/Base';
@@ -40,6 +41,7 @@ const DxtradeEnterPasswordModal = () => {
         sendEmail,
     } = useSendPasswordResetEmail();
     const { hide, show } = useModal();
+    const { localize } = useTranslations();
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
     const dxtradePlatform = PlatformDetails.dxtrade.platform;
 
@@ -62,9 +64,12 @@ const DxtradeEnterPasswordModal = () => {
 
     const successDescription = useMemo(() => {
         return accountType === 'demo'
-            ? `Let's practise trading with ${dxtradeBalance} virtual funds.`
-            : `Transfer funds from your ${activeWallet?.currency} Wallet to your ${PlatformDetails.dxtrade.title} account to start trading.`;
-    }, [accountType, activeWallet?.currency, dxtradeBalance]);
+            ? localize("Let's practise trading with {{dxtradeBalance}} virtual funds.", { dxtradeBalance })
+            : localize(
+                  'Transfer funds from your {{currency}} Wallet to your {{dxtradeTitle}} account to start trading.',
+                  { currency: activeWallet?.currency, dxtradeTitle: PlatformDetails.dxtrade.title }
+              );
+    }, [accountType, activeWallet?.currency, dxtradeBalance, localize]);
 
     useEffect(() => {
         if (!isResetPasswordSuccessful) return;

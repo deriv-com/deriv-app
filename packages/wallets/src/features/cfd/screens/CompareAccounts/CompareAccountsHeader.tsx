@@ -1,7 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { LegacyClose2pxIcon } from '@deriv/quill-icons';
-import { WalletText } from '../../../../components';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import './CompareAccountsHeader.scss';
 
 type TCompareAccountsHeader = {
@@ -11,17 +12,24 @@ type TCompareAccountsHeader = {
 
 const CompareAccountsHeader = ({ isDemo, isEuRegion }: TCompareAccountsHeader) => {
     const history = useHistory();
-
-    const headerTitle = isEuRegion
-        ? `Deriv MT5 CFDs ${isDemo ? 'Demo' : 'real'} account`
-        : `Compare CFDs ${isDemo ? 'demo ' : ''}accounts`;
+    const { localize } = useTranslations();
 
     return (
         <div className='wallets-compare-accounts-header'>
             <div className='wallets-compare-accounts-header__title'>
-                <WalletText size='xl' weight='bold'>
-                    {headerTitle}
-                </WalletText>
+                <Text size='xl' weight='bold'>
+                    {isEuRegion ? (
+                        <Localize
+                            i18n_default_text='Deriv MT5 CFDs {{demoTitle}} account'
+                            values={{ demoTitle: isDemo ? localize('Demo') : localize('real') }}
+                        />
+                    ) : (
+                        <Localize
+                            i18n_default_text='Compare CFDs{{demoTitle}} accounts'
+                            values={{ demoTitle: isDemo ? localize(' demo') : '' }}
+                        />
+                    )}
+                </Text>
             </div>
             <LegacyClose2pxIcon
                 className='wallets-compare-accounts-header__close-icon'

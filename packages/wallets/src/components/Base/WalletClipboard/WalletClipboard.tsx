@@ -1,4 +1,5 @@
 import React, { ComponentProps, useEffect, useState } from 'react';
+import classNames from 'classnames';
 import { useCopyToClipboard } from 'usehooks-ts';
 import { LegacyCopy1pxIcon, LegacyWonIcon } from '@deriv/quill-icons';
 import { Tooltip, useDevice } from '@deriv-com/ui';
@@ -31,7 +32,7 @@ const WalletClipboard = ({ className, popoverAlignment = 'right', textCopy }: TP
     return (
         <Tooltip
             as='button'
-            className={className}
+            className={classNames('wallets-clipboard', className)}
             hideTooltip={!isDesktop}
             onClick={onClick}
             tooltipContent={isCopied ? 'Copied!' : 'Copy'}

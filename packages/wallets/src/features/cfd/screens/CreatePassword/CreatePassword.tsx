@@ -1,7 +1,8 @@
 import React from 'react';
 import { DerivLightDmt5PasswordIcon, DerivLightIcDxtradePasswordIcon } from '@deriv/quill-icons';
-import { useDevice } from '@deriv-com/ui';
-import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { Text, useDevice } from '@deriv-com/ui';
+import { WalletButton, WalletPasswordFieldLazy } from '../../../../components/Base';
 import { TPlatforms } from '../../../../types';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
 import { CFD_PLATFORMS, PlatformDetails } from '../../constants';
@@ -22,6 +23,8 @@ const CreatePasswordIcon = {
 
 const CreatePassword: React.FC<TProps> = ({ isLoading, onPasswordChange, onPrimaryClick, password, platform }) => {
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
+
     const { title } = PlatformDetails[platform as keyof typeof PlatformDetails];
     const isMT5 = platform === CFD_PLATFORMS.MT5;
     const disableButton = isMT5 ? !validPasswordMT5(password) : !validPassword(password);
@@ -30,15 +33,18 @@ const CreatePassword: React.FC<TProps> = ({ isLoading, onPasswordChange, onPrima
         <div className='wallets-create-password'>
             {CreatePasswordIcon[platform as keyof typeof CreatePasswordIcon]}
             <div className='wallets-create-password__text'>
-                <WalletText align='center' lineHeight='xl' weight='bold'>
-                    Create a {title} password
-                </WalletText>
-                <WalletText align='center' size='sm'>
-                    You can use this password for all your {title} accounts.
-                </WalletText>
+                <Text align='center' lineHeight='xl' weight='bold'>
+                    <Localize i18n_default_text='Create a {{title}} password' values={{ title }} />
+                </Text>
+                <Text align='center' size='sm'>
+                    <Localize
+                        i18n_default_text='You can use this password for all your {{title}} accounts.'
+                        values={{ title }}
+                    />
+                </Text>
             </div>
             <WalletPasswordFieldLazy
-                label={`${title} password`}
+                label={localize('{{title}} password', { title })}
                 mt5Policy={isMT5}
                 onChange={onPasswordChange}
                 password={password}
@@ -50,7 +56,7 @@ const CreatePassword: React.FC<TProps> = ({ isLoading, onPasswordChange, onPrima
                     onClick={onPrimaryClick}
                     size='md'
                 >
-                    {`Create ${title} password`}
+                    <Localize i18n_default_text='Create {{title}} password' values={{ title }} />
                 </WalletButton>
             )}
         </div>

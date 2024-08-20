@@ -1,7 +1,8 @@
 import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
+import { useTranslations } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
-import { WalletText } from '../Base';
 import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import './WalletCard.scss';
@@ -24,6 +25,7 @@ const WalletCard: React.FC<TProps> = ({
     onClick,
 }) => {
     const { isLoading: isBalanceLoading } = useAllBalanceSubscription();
+    const { localize } = useTranslations();
 
     return (
         <button
@@ -54,22 +56,22 @@ const WalletCard: React.FC<TProps> = ({
                             <WalletCurrencyIcon currency={isDemo ? 'DEMO' : currency} size={iconSize} />
                         </div>
                         <div className='wallets-card__details-bottom'>
-                            <WalletText color={isDemo ? 'white' : 'general'} size={isCarouselContent ? 'md' : '2xs'}>
-                                {currency} {isDemo && isCarouselContent ? 'Demo' : ''} Wallet
-                            </WalletText>
+                            <Text color={isDemo ? 'white' : 'general'} size={isCarouselContent ? 'md' : '2xs'}>
+                                {currency} {isDemo && isCarouselContent ? localize('Demo') : ''} Wallet
+                            </Text>
                             {isBalanceLoading ? (
                                 <div
                                     className='wallets-skeleton wallets-card__balance-loader'
                                     data-testid='dt_wallet_card_balance_loader'
                                 />
                             ) : (
-                                <WalletText
+                                <Text
                                     color={isDemo ? 'white' : 'general'}
-                                    size={isCarouselContent ? 'xl' : 'sm'}
+                                    size={isCarouselContent ? 'lg' : 'sm'}
                                     weight='bold'
                                 >
                                     {balance}
-                                </WalletText>
+                                </Text>
                             )}
                         </div>
                     </div>

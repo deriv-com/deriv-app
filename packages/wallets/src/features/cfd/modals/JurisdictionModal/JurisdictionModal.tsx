@@ -1,5 +1,6 @@
 import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { useAvailableMT5Accounts } from '@deriv/api-v2';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Loader, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
@@ -11,7 +12,10 @@ import { MT5PasswordModal } from '..';
 import './JurisdictionModal.scss';
 
 const LazyVerification = lazy(
-    () => import(/* webpackChunkName: "wallets-verification-flow" */ '../../flows/Verification/Verification')
+    () =>
+        import(
+            /* webpackChunkName: "wallets-client-verification" */ '../../flows/ClientVerification/ClientVerification'
+        )
 );
 
 const JurisdictionModal = () => {
@@ -22,6 +26,7 @@ const JurisdictionModal = () => {
     const { getModalState, setModalState, show } = useModal();
     const { isLoading } = useAvailableMT5Accounts();
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
 
     const marketType = getModalState('marketType') ?? 'all';
     const platform = getModalState('platform') ?? PlatformDetails.mt5.platform;
@@ -31,13 +36,19 @@ const JurisdictionModal = () => {
     }, [isDynamicLeverageVisible, setIsDynamicLeverageVisible]);
 
     const JurisdictionFlow = () => {
-        if (selectedJurisdiction === 'svg') {
+        const [showMt5PasswordModal, setShowMt5PasswordModal] = useState(false);
+        if (selectedJurisdiction === 'svg' || showMt5PasswordModal) {
             return <MT5PasswordModal marketType={marketType} platform={platform} />;
         }
 
         return (
             <Suspense fallback={<Loader />}>
-                <LazyVerification selectedJurisdiction={selectedJurisdiction} />
+                <LazyVerification
+                    onCompletion={() => {
+                        setShowMt5PasswordModal(true);
+                    }}
+                    selectedJurisdiction={selectedJurisdiction}
+                />
             </Suspense>
         );
     };
@@ -50,7 +61,7 @@ const JurisdictionModal = () => {
                   isFullWidth={!isDesktop}
                   onClick={() => show(<JurisdictionFlow />)}
               >
-                  Next
+                  <Localize i18n_default_text='Next' />
               </WalletButton>
           );
 
@@ -59,14 +70,14 @@ const JurisdictionModal = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedJurisdiction]);
 
-    if (isLoading) return <h1>Loading...</h1>;
+    if (isLoading) return <Loader />;
 
     return (
         <DynamicLeverageContext.Provider value={{ isDynamicLeverageVisible, toggleDynamicLeverage }}>
             <ModalStepWrapper
                 renderFooter={modalFooter}
                 shouldHideHeader={isDynamicLeverageVisible}
-                title='Choose a jurisdiction'
+                title={localize('Choose a jurisdiction')}
             >
                 {isDynamicLeverageVisible && <DynamicLeverageTitle />}
                 <div className='wallets-jurisdiction-modal'>

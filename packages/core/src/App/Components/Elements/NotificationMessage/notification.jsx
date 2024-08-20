@@ -165,7 +165,7 @@ Notification.propTypes = {
         action: PropTypes.shape({
             onClick: PropTypes.func,
             route: PropTypes.string,
-            text: PropTypes.string,
+            text: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
         }),
         cta_btn: PropTypes.object,
         className: PropTypes.string,

@@ -1,8 +1,7 @@
 import React, { ComponentProps } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import { WalletButton, WalletButtonGroup } from '../../../../components';
-import { useModal } from '../../../../components/ModalProvider';
 
 type TProps = {
     disabled: ComponentProps<typeof WalletButton>['disabled'];
@@ -10,40 +9,6 @@ type TProps = {
     isLoading: ComponentProps<typeof WalletButton>['isLoading'];
     onPrimaryClick: ComponentProps<typeof WalletButton>['onClick'];
     onSecondaryClick: ComponentProps<typeof WalletButton>['onClick'];
-};
-
-export const SuccessModalFooter = ({ isDemo }: Pick<TProps, 'isDemo'>) => {
-    const history = useHistory();
-    const { hide } = useModal();
-    const { isDesktop } = useDevice();
-
-    const handleOnClickReal = () => {
-        hide();
-        history.push('/wallet/account-transfer');
-    };
-
-    const walletButtonSize = isDesktop ? 'md' : 'lg';
-
-    if (isDemo) {
-        return (
-            <div className='wallets-success-btn'>
-                <WalletButton isFullWidth onClick={hide} size={walletButtonSize}>
-                    OK
-                </WalletButton>
-            </div>
-        );
-    }
-
-    return (
-        <WalletButtonGroup isFlex isFullWidth>
-            <WalletButton onClick={hide} size={walletButtonSize} variant='outlined'>
-                Maybe later
-            </WalletButton>
-            <WalletButton onClick={() => handleOnClickReal()} size={walletButtonSize}>
-                Transfer funds
-            </WalletButton>
-        </WalletButtonGroup>
-    );
 };
 
 export const MT5PasswordModalFooter = ({
@@ -58,7 +23,7 @@ export const MT5PasswordModalFooter = ({
     return (
         <WalletButtonGroup isFullWidth>
             <WalletButton isFullWidth onClick={onSecondaryClick} size={walletButtonSize} variant='outlined'>
-                Forgot password?
+                <Localize i18n_default_text='Forgot password?' />
             </WalletButton>
             <WalletButton
                 disabled={disabled}
@@ -67,7 +32,7 @@ export const MT5PasswordModalFooter = ({
                 onClick={onPrimaryClick}
                 size={walletButtonSize}
             >
-                Add account
+                <Localize i18n_default_text='Add account' />
             </WalletButton>
         </WalletButtonGroup>
     );

@@ -1,12 +1,7 @@
 import React from 'react';
-import { useDevice } from '@deriv-com/ui';
-import {
-    ModalStepWrapper,
-    ModalWrapper,
-    WalletButton,
-    WalletButtonGroup,
-    WalletText,
-} from '../../../../components/Base';
+import { Localize } from '@deriv-com/translations';
+import { Text, useDevice } from '@deriv-com/ui';
+import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import './PasswordLimitExceededModal.scss';
 
 type TProps = {
@@ -16,6 +11,7 @@ type TProps = {
 
 const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecondaryClick }) => {
     const { isDesktop } = useDevice();
+
     const textSize = isDesktop ? 'sm' : 'md';
     const alignment = isDesktop ? 'start' : 'center';
     if (isDesktop) {
@@ -23,14 +19,14 @@ const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecond
             <ModalWrapper hideCloseButton>
                 <div className='wallets-password-limit-exceeded-modal'>
                     <div className='wallets-password-limit-exceeded-modal__title'>
-                        <WalletText align='start' weight='bold'>
-                            Too many attempts
-                        </WalletText>
+                        <Text align='start' weight='bold'>
+                            <Localize i18n_default_text='Too many attempts' />
+                        </Text>
                     </div>
                     <div className='wallets-password-limit-exceeded-modal__content'>
-                        <WalletText align={alignment} size={textSize}>
-                            Please try again in a minute.
-                        </WalletText>
+                        <Text align={alignment} size={textSize}>
+                            <Localize i18n_default_text='Please try again in a minute.' />
+                        </Text>
                     </div>
                     <div className='wallets-password-limit-exceeded-modal__buttons'>
                         <WalletButton
@@ -63,10 +59,10 @@ const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecond
                             textSize='md'
                             variant='outlined'
                         >
-                            Forgot password?
+                            <Localize i18n_default_text='Forgot password?' />
                         </WalletButton>
                         <WalletButton isFullWidth onClick={onPrimaryClick} size='lg' textSize='md'>
-                            Try later
+                            <Localize i18n_default_text='Try later' />
                         </WalletButton>
                     </WalletButtonGroup>
                 );
@@ -75,9 +71,9 @@ const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecond
         >
             <div className='wallets-password-limit-exceeded-modal'>
                 <div className='wallets-password-limit-exceeded-modal__content'>
-                    <WalletText align={alignment} size={textSize}>
-                        Please try again in a minute.
-                    </WalletText>
+                    <Text align={alignment} size={textSize}>
+                        <Localize i18n_default_text='Please try again in a minute.' />
+                    </Text>
                 </div>
             </div>
         </ModalStepWrapper>

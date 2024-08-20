@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import { useTradingPlatformInvestorPasswordChange } from '@deriv/api-v2';
-import { useDevice } from '@deriv-com/ui';
-import { WalletButton, WalletsActionScreen, WalletText } from '../../../../../components';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { Text, useDevice } from '@deriv-com/ui';
+import { WalletButton, WalletsActionScreen } from '../../../../../components';
 import { WalletPasswordFieldLazy, WalletTextField } from '../../../../../components/Base';
 import PasswordViewerIcon from '../../../../../components/Base/WalletPasswordField/PasswordViewerIcon';
 import { useModal } from '../../../../../components/ModalProvider';
@@ -21,6 +22,8 @@ type TProps = {
 
 const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, setNextScreen }) => {
     const { getModalState } = useModal();
+    const { localize } = useTranslations();
+
     const mt5AccountId = getModalState('accountId') ?? '';
     const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);
     const [hasCurrentPasswordFieldTouched, setHasCurrentPasswordFieldTouched] = useState(false);
@@ -36,7 +39,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
     const initialValues: TFormInitialValues = { currentPassword: '', newPassword: '' };
 
     const validateCurrentPassword = (value: string) => {
-        if (!value) return 'The field is required';
+        if (!value) return localize('The field is required');
         return undefined;
     };
 
@@ -54,18 +57,22 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
         <WalletsActionScreen
             description={
                 <>
-                    <WalletText size='sm'>
-                        Use this password to grant viewing access to another user. While they may view your trading
-                        account, they will not be able to trade or take any other actions.
-                    </WalletText>
-                    <WalletText size='sm'>
-                        If this is the first time you try to create a password, or you have forgotten your password,
-                        please reset it.
-                    </WalletText>
+                    <Text size='sm'>
+                        <Localize
+                            i18n_default_text='Use this password to grant viewing access to another user. While they may view your trading
+                        account, they will not be able to trade or take any other actions.'
+                        />
+                    </Text>
+                    <Text size='sm'>
+                        <Localize
+                            i18n_default_text='If this is the first time you try to create a password, or you have forgotten your password,
+                        please reset it.'
+                        />
+                    </Text>
                     {changeInvestorPasswordError && (
-                        <WalletText align='center' color='error' size='sm'>
+                        <Text align='center' color='error' size='sm'>
                             {changeInvestorPasswordError?.error?.message}
-                        </WalletText>
+                        </Text>
                     )}
                 </>
             }
@@ -84,7 +91,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                                 isInvalid={
                                                     hasCurrentPasswordFieldTouched && Boolean(form.errors[field.name])
                                                 }
-                                                label='Current investor password'
+                                                label={localize('Current investor password')}
                                                 name={field.name}
                                                 onBlur={e => {
                                                     setHasCurrentPasswordFieldTouched(true);
@@ -105,8 +112,10 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                 </Field>
                                 <WalletPasswordFieldLazy
                                     autoComplete='new-password'
-                                    label='New investor password'
-                                    message='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
+                                    label={localize('New investor password')}
+                                    message={localize(
+                                        'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
+                                    )}
                                     mt5Policy
                                     name='newPassword'
                                     onChange={handleChange}
@@ -122,10 +131,10 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                     textSize={buttonTextSize}
                                     type='submit'
                                 >
-                                    Change investor password
+                                    <Localize i18n_default_text='Change investor password' />
                                 </WalletButton>
                                 <WalletButton onClick={sendEmail} size='lg' textSize={buttonTextSize} variant='ghost'>
-                                    Create or reset investor password
+                                    <Localize i18n_default_text='Create or reset investor password' />
                                 </WalletButton>
                             </div>
                         </Form>

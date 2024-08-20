@@ -26,7 +26,7 @@ const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = f
     const { phone_number_verification } = account_settings;
     const [timer, setTimer] = React.useState<number | undefined>();
     const [next_otp_request, setNextOtpRequest] = React.useState('');
-    const [is_request_button_diabled, setIsRequestButtonDisabled] = React.useState(false);
+    const [is_request_button_disabled, setIsRequestButtonDisabled] = React.useState(false);
 
     const setTitle = React.useCallback(
         (timer: number) => {
@@ -103,7 +103,7 @@ const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = f
 
     return {
         next_otp_request,
-        is_request_button_diabled,
+        is_request_button_disabled,
     };
 };
 

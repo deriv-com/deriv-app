@@ -13,6 +13,7 @@ import { TradeChart } from '../Chart';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import TradeTypes from './trade-types';
 import MarketSelector from 'AppV2/Components/MarketSelector';
+import useContractsForCompany, { TContractTypesList } from 'AppV2/Hooks/useContractsForCompany';
 import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
 import { isAccumulatorContract } from '@deriv/shared';
 
@@ -20,9 +21,15 @@ const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
     const chart_ref = React.useRef<HTMLDivElement>(null);
 
-    const { active_symbols, contract_type, contract_types_list_V2, onMount, onChange, onUnmount } = useTraderStore();
+    const { active_symbols, contract_type, onMount, onChange, onUnmount } = useTraderStore();
+    const { contract_types_list } = useContractsForCompany();
 
-    const trade_types = React.useMemo(() => getTradeTypesList(contract_types_list_V2), [contract_types_list_V2]);
+    const trade_types = React.useMemo(() => {
+        return Array.isArray(contract_types_list) && contract_types_list.length === 0
+            ? []
+            : getTradeTypesList(contract_types_list as TContractTypesList);
+    }, [contract_types_list]);
+
     const symbols = React.useMemo(
         () =>
             active_symbols.map(({ display_name, symbol: underlying }) => ({

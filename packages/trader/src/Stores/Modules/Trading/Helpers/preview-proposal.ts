@@ -13,15 +13,22 @@ type TResponse<Req, Res extends { [key: string]: unknown }, K extends string> = 
     };
 };
 export const requestPreviewProposal = debounce(
-    (store: TTradeStore, onProposalResponse: TTradeStore['onProposalResponse'], override = {}) => {
+    (
+        store: TTradeStore,
+        onProposalResponse: TTradeStore['onProposalResponse'],
+        override = {},
+        should_show_error = false
+    ) => {
         const new_store = { ...store, ...override };
         const requests = createProposalRequests(new_store);
         const subscription_map: { [key: string]: boolean } = {};
 
         const onResponse = (response: TResponse<PriceProposalRequest, PriceProposalResponse, 'proposal'>) => {
-            if (response.error || !response.subscription) return;
+            if (!should_show_error && (response.error || !response.subscription)) return;
 
-            subscription_map[response.subscription.id] = true;
+            if (response.subscription) {
+                subscription_map[response.subscription.id] = true;
+            }
             onProposalResponse(response);
         };
 

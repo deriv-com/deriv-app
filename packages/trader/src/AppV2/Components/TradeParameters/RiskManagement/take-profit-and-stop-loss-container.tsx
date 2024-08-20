@@ -2,16 +2,17 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Button, useSnackbar } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { getSnackBarText } from 'AppV2/Utils/trade-params-utils';
 import TakeProfitAndStopLossInput from './take-profit-and-stop-loss-input';
+import { WS } from '@deriv/shared';
 
 type TTakeProfitAndStopLossContainerProps = {
     closeActionSheet: () => void;
     should_show_deal_cancellation?: boolean;
 };
 
-//TODO: add restoring values from wheel-p-initial-v
+// TODO: remove add to loc storage
 const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProfitAndStopLossContainerProps) => {
     const {
         has_take_profit,
@@ -19,45 +20,36 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
         has_stop_loss,
         take_profit,
         onChangeMultiple,
-        onChange,
         stop_loss,
         validation_errors,
     } = useTraderStore();
+
     const { addSnackbar } = useSnackbar();
 
-    const [is_save_btn_clicked, setIsSaveBtnClicked] = React.useState(false);
+    const [tp_error_text, setTPErrorText] = React.useState(validation_errors.take_profit[0] ?? '');
+    const tp_subscription_id_ref = React.useRef<string>();
+    const tp_ref = React.useRef({ has_take_profit, take_profit, tp_error_text: validation_errors.take_profit[0] });
 
-    // All initial values are used to restore correct values if user closed ActionSheet without Saving or refreshed the page
-    const has_tp_initial_value_ref = React.useRef<boolean>();
-    const tp_initial_value_ref = React.useRef<string | number | undefined>('');
-    const has_sl_initial_value_ref = React.useRef<boolean>();
-    const sl_initial_value_ref = React.useRef<string | number | undefined>('');
-
-    const tp_be_error_text = validation_errors.take_profit[0];
-    const sl_be_error_text = validation_errors.stop_loss[0];
+    const [sl_error_text, setSLErrorText] = React.useState(validation_errors.stop_loss[0] ?? '');
+    const sl_subscription_id_ref = React.useRef<string>();
+    const sl_ref = React.useRef({ has_stop_loss, stop_loss, sl_error_text: validation_errors.stop_loss[0] });
 
     const onSave = () => {
-        setIsSaveBtnClicked(true);
+        WS.forget(tp_subscription_id_ref.current);
+        WS.forget(sl_subscription_id_ref.current);
 
-        if ((tp_be_error_text && has_take_profit) || (sl_be_error_text && has_stop_loss)) return;
+        if (tp_ref.current.tp_error_text && tp_ref.current.has_take_profit) return;
+        if (sl_ref.current.sl_error_text && sl_ref.current.has_stop_loss) return;
 
-        // Initial values are set on Mount and been updated on Save
-        if (has_take_profit !== has_tp_initial_value_ref.current) {
-            has_tp_initial_value_ref.current = has_take_profit;
-        }
-        if (take_profit !== tp_initial_value_ref.current) {
-            tp_initial_value_ref.current = take_profit;
-        }
-        if (has_stop_loss !== has_sl_initial_value_ref.current) {
-            has_sl_initial_value_ref.current = has_stop_loss;
-        }
-        if (stop_loss !== sl_initial_value_ref.current) {
-            sl_initial_value_ref.current = stop_loss;
-        }
+        const is_tp_empty = tp_ref.current.take_profit === '' && tp_ref.current.has_take_profit;
+        const is_sl_empty = sl_ref.current.stop_loss === '' && sl_ref.current.has_stop_loss;
+        if (is_tp_empty) setTPErrorText(localize('Please enter a take profit amount.'));
+        if (is_sl_empty) setSLErrorText(localize('Please enter a stop loss amount.'));
+        if (is_sl_empty || is_tp_empty) return;
 
-        const is_tp_enabled = tp_be_error_text ? false : has_take_profit;
-        const is_sl_enabled = sl_be_error_text ? false : has_stop_loss;
-
+        // Show notification, that DC will be disabled if TP or SL is enabled
+        const is_tp_enabled = tp_ref.current.tp_error_text ? false : tp_ref.current.has_take_profit;
+        const is_sl_enabled = sl_ref.current.sl_error_text ? false : sl_ref.current.has_stop_loss;
         if ((is_tp_enabled || is_sl_enabled) && has_cancellation) {
             addSnackbar({
                 message: getSnackBarText({
@@ -71,25 +63,13 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
             });
         }
 
-        // We should switch off DC if TP or SL is on and vice versa
         onChangeMultiple({
-            has_take_profit: is_tp_enabled,
-            has_stop_loss: is_sl_enabled,
+            has_take_profit: tp_ref.current.has_take_profit,
+            take_profit:
+                tp_ref.current.tp_error_text || tp_ref.current.take_profit === '0' ? '' : tp_ref.current.take_profit,
+            has_stop_loss: sl_ref.current.has_stop_loss,
+            stop_loss: sl_ref.current.sl_error_text || sl_ref.current.stop_loss === '0' ? '' : sl_ref.current.stop_loss,
             ...(is_tp_enabled || is_sl_enabled ? { has_cancellation: false } : {}),
-        });
-
-        onChange({
-            target: {
-                name: 'take_profit',
-                value: tp_be_error_text || take_profit === '0' ? '' : take_profit,
-            },
-        });
-
-        onChange({
-            target: {
-                name: 'stop_loss',
-                value: sl_be_error_text || stop_loss === '0' ? '' : stop_loss,
-            },
         });
 
         closeActionSheet();
@@ -100,10 +80,10 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
             <TakeProfitAndStopLossInput
                 classname='risk-management__tp-sl'
                 has_save_button={false}
-                has_initial_value_parent_ref={has_tp_initial_value_ref}
-                is_save_btn_clicked={is_save_btn_clicked}
-                initial_value_parent_ref={tp_initial_value_ref}
+                initial_error_text={tp_error_text}
                 onActionSheetClose={closeActionSheet}
+                parent_subscription_id_ref={tp_subscription_id_ref}
+                parent_ref={tp_ref}
                 should_wrap_with_actionsheet={false}
                 show_acceptable_range={false}
                 key='take_profit'
@@ -111,10 +91,10 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
             <TakeProfitAndStopLossInput
                 classname='risk-management__tp-sl'
                 has_save_button={false}
-                has_initial_value_parent_ref={has_sl_initial_value_ref}
-                is_save_btn_clicked={is_save_btn_clicked}
-                initial_value_parent_ref={sl_initial_value_ref}
+                initial_error_text={sl_error_text}
                 onActionSheetClose={closeActionSheet}
+                parent_subscription_id_ref={sl_subscription_id_ref}
+                parent_ref={sl_ref}
                 type='stop_loss'
                 should_wrap_with_actionsheet={false}
                 show_acceptable_range={false}

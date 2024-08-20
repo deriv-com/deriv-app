@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
+import { Localize } from '@deriv/translations';
 import { useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Button, useNotifications } from '@deriv-com/quill-ui';
@@ -129,7 +130,13 @@ const PurchaseButton = observer(() => {
                 const info = proposal_info?.[trade_type] || {};
                 const is_single_button = contract_types.length === 1;
                 const is_loading = loading_button_index === index;
-                const is_disabled = !is_trade_enabled_v2;
+                const is_disabled = !is_trade_enabled_v2 || info.has_error;
+                /* TODO: stop using error text for max_payout_exceeded after validation_params are added to proposal API (both success & error response):
+                E.g., for max_payout_exceeded, we have to temporarily check the error text: Max payout error always contains 3 numbers, the check will work for any languages: */
+                const float_number_search_regex = /\d+(\.\d+)?/g;
+                const max_payout_exceeded =
+                    info.has_error && info.message?.match(float_number_search_regex)?.length === 3;
+                const error_message = max_payout_exceeded ? <Localize i18n_default_text='Exceeds max payout' /> : '';
 
                 return (
                     <React.Fragment key={trade_type}>
@@ -153,6 +160,7 @@ const PurchaseButton = observer(() => {
                             {!is_loading && !is_accumulator && (
                                 <PurchaseButtonContent
                                     {...purchase_button_content_props}
+                                    error={error_message}
                                     info={info}
                                     is_reverse={!!index}
                                 />

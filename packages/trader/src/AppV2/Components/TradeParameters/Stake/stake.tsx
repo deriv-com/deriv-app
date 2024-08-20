@@ -55,15 +55,15 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         payout: payout_2 = 0,
     } = proposal_info[contract_types[1]] ?? {};
     const should_show_payout_details = !is_accumulator && !is_multiplier && !is_turbos && !is_vanilla;
-
     const proposal_error_message_1 = has_error_1 ? message_1 : '';
     const proposal_error_message_2 = has_error_2 ? message_2 : '';
     const proposal_error_message = proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount[0];
-    // TODO: stop extracting Max payout from error message after it's added to validation_params in proposal API:
-    const max_payout_exceeded = !!(
-        /maximum payout/i.test(proposal_error_message_1) || /maximum payout/i.test(proposal_error_message_2)
-    );
+    /* TODO: stop using Max payout from error text as a default max payout and stop using error text for max_payout_exceeded after validation_params are added to proposal API (both success & error response):
+    E.g., for max_payout_exceeded, we have to temporarily check the error text: Max payout error always contains 3 numbers, the check will work for any languages: */
     const float_number_search_regex = /\d+(\.\d+)?/g;
+    const max_payout_exceeded =
+        proposal_error_message_1.match(float_number_search_regex)?.length === 3 ||
+        proposal_error_message_2.match(float_number_search_regex)?.length === 3;
     const error_max_payout =
         max_payout_exceeded && proposal_error_message
             ? Number(proposal_error_message.match(float_number_search_regex)?.[1])

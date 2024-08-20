@@ -2,6 +2,15 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import { Formik, FormikErrors, FormikHelpers } from 'formik';
 import { useDevice } from '@deriv-com/ui';
+import {
+    AccountsDerivCtraderIcon,
+    AccountsDerivXIcon,
+    AccountsDmt5CfdsIcon,
+    AccountsDmt5FinancialIcon,
+    AccountsDmt5StandardIcon,
+    AccountsDmt5SwfIcon,
+    AccountsDmt5ZrsIcon,
+} from '@deriv/quill-icons';
 
 import { SentEmailModal } from '@deriv/account';
 import {
@@ -35,7 +44,6 @@ import { Localize, localize } from '@deriv/translations';
 import { TProducts } from '../Components/props.types';
 import SuccessDialog from '../Components/success-dialog.jsx';
 import CFDPasswordModalTitle from './cfd-password-modal-title';
-import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import MigrationSuccessModal from '../Components/migration-success-modal';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { CFD_PLATFORMS, JURISDICTION, CATEGORY, PRODUCT } from '../Helpers/cfd-config';
@@ -187,41 +195,41 @@ const ReviewMessageForMT5 = ({
 const IconType = React.memo(({ platform, type, show_eu_related_content, product }: TIconTypeProps) => {
     const traders_hub = window.location.pathname === routes.traders_hub;
     if (platform === CFD_PLATFORMS.DXTRADE) {
-        return <Icon icon='IcRebrandingDxtradeDashboard' size={128} />;
+        return <AccountsDerivXIcon width={128} height={128} />;
     } else if (traders_hub) {
         if (platform === CFD_PLATFORMS.CTRADER) {
-            return <TradingPlatformIcon icon='CTrader' size={128} />;
+            return <AccountsDerivCtraderIcon width={128} height={128} />;
         }
         switch (type) {
             case 'synthetic':
-                return <TradingPlatformIcon icon='Standard' size={128} />;
+                return <AccountsDmt5StandardIcon width={128} height={128} />;
             case 'all':
                 if (product === PRODUCT.ZEROSPREAD) {
-                    return <TradingPlatformIcon icon='ZeroSpread' size={128} />;
+                    return <AccountsDmt5ZrsIcon width={128} height={128} />;
                 }
-                return <TradingPlatformIcon icon='SwapFree' size={128} />;
+                return <AccountsDmt5SwfIcon width={128} height={128} />;
             case 'financial':
                 if (show_eu_related_content) {
-                    return <TradingPlatformIcon icon='CFDs' size={128} />;
+                    return <AccountsDmt5CfdsIcon width={128} height={128} />;
                 }
-                return <TradingPlatformIcon icon='Financial' size={128} />;
+                return <AccountsDmt5FinancialIcon width={128} height={128} />;
             default:
-                return <TradingPlatformIcon icon='Financial' size={128} />;
+                return <AccountsDmt5FinancialIcon width={128} height={128} />;
         }
     } else {
         switch (type) {
             case 'synthetic':
-                return <Icon icon='IcMt5StandardPlatform' size={128} />;
+                return <AccountsDmt5StandardIcon width={128} height={128} />;
             case 'all':
                 if (product === PRODUCT.ZEROSPREAD) {
-                    return <Icon icon='IcMt5ZeroSpread' size={128} />;
+                    return <AccountsDmt5ZrsIcon width={128} height={128} />;
                 }
-                return <Icon icon='IcMt5SwapFreePlatform' size={128} />;
+                return <AccountsDmt5SwfIcon width={128} height={128} />;
             case 'financial':
                 if (show_eu_related_content) {
-                    return <Icon icon='IcMt5CfdPlatform' size={128} />;
+                    return <AccountsDmt5CfdsIcon width={128} height={128} />;
                 }
-                return <Icon icon='IcMt5FinancialPlatform' size={128} />;
+                return <AccountsDmt5FinancialIcon width={128} height={128} />;
             default:
                 return <Icon icon='IcMt5FinancialStpPlatform' size={128} />;
         }

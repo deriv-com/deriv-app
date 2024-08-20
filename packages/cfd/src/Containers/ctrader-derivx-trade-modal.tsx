@@ -19,6 +19,7 @@ import {
 } from '../Helpers/constants';
 
 import { TCFDPasswordReset } from './props.types';
+import { AccountsDerivCtraderIcon, AccountsDerivXIcon } from '@deriv/quill-icons';
 
 type TTradeModalProps = {
     ctrader_derivx_trade_account: Required<DetailsOfEachMT5Loginid>;
@@ -45,7 +46,11 @@ const PlatformIconsAndDescriptions = (
 ) => {
     return (
         <React.Fragment>
-            <Icon icon={`IcRebranding${platform.charAt(0).toUpperCase()}${platform.slice(1)}Dashboard`} size={24} />
+            {platform === CFD_PLATFORMS.CTRADER ? (
+                <AccountsDerivCtraderIcon width={24} height={24} />
+            ) : (
+                <AccountsDerivXIcon width={24} height={24} />
+            )}
             <div className='cfd-trade-modal__desc'>
                 <Text size='xs' line_height='l' weight='bold' className='cfd-trade-modal__desc-heading'>
                     <Localize

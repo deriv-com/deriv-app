@@ -193,88 +193,90 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
             />
             <ActionSheet.Root isOpen={is_open} onClose={() => onClose(false)} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>
-                    <ActionSheet.Content>
-                        <div className='stake-content'>
-                            <TextFieldWithSteppers
-                                allowDecimals
-                                decimals={getDecimalPlaces(currency)}
-                                data-testid='dt_input_with_steppers'
-                                message={getInputMessage()}
-                                minusDisabled={Number(amount) - 1 <= 0}
-                                name='amount'
-                                onChange={handleOnChange}
-                                placeholder={localize('Amount')}
-                                regex={/[^0-9.,]/g}
-                                status={should_show_error && stake_error ? 'error' : 'neutral'}
-                                textAlignment='center'
-                                type='number'
-                                inputMode='decimal'
-                                unitLeft={getCurrencyDisplayCode(currency)}
-                                variant='fill'
-                                value={amount}
-                            />
-                            {is_multiplier ? (
-                                <div className='multipliers-details__wrapper'>
-                                    {multipliers_content.map(({ label, value }) => (
-                                        <div key={label.props.i18n_default_text} className='multipliers-details__row'>
-                                            <Text size='sm' className='multipliers-details__title'>
-                                                {label}
+                    <ActionSheet.Header title={<Localize i18n_default_text='Stake' />} />
+                    <ActionSheet.Content className='stake-content'>
+                        <TextFieldWithSteppers
+                            allowDecimals
+                            decimals={getDecimalPlaces(currency)}
+                            data-testid='dt_input_with_steppers'
+                            message={getInputMessage()}
+                            minusDisabled={Number(amount) - 1 <= 0}
+                            name='amount'
+                            onChange={handleOnChange}
+                            placeholder={localize('Amount')}
+                            regex={/[^0-9.,]/g}
+                            status={should_show_error && stake_error ? 'error' : 'neutral'}
+                            textAlignment='center'
+                            type='number'
+                            inputMode='decimal'
+                            unitLeft={getCurrencyDisplayCode(currency)}
+                            variant='fill'
+                            value={amount}
+                        />
+                        {is_multiplier ? (
+                            <div className='stake-content__multipliers-details'>
+                                {multipliers_content.map(({ label, value }) => (
+                                    <div
+                                        key={label.props.i18n_default_text}
+                                        className='stake-content__multipliers-details-row'
+                                    >
+                                        <Text size='sm' className='stake-content__multipliers-details-title'>
+                                            {label}
+                                        </Text>
+                                        <Text size='sm' bold>
+                                            {has_error_or_loading_proposal || isNaN(Number(value))
+                                                ? '-'
+                                                : FormatUtils.formatMoney(Math.abs(Number(value)))}{' '}
+                                            {getCurrencyDisplayCode(currency)}
+                                        </Text>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            should_show_payout_details && (
+                                <>
+                                    {!!info.max_payout && (
+                                        <div className='stake-content__payout-wrapper--max'>
+                                            <Text size='sm'>
+                                                <Localize i18n_default_text='Max payout' />
                                             </Text>
-                                            <Text size='sm' bold>
-                                                {has_error_or_loading_proposal || isNaN(Number(value))
-                                                    ? '-'
-                                                    : FormatUtils.formatMoney(Math.abs(Number(value)))}{' '}
+                                            <Text size='sm'>
+                                                {FormatUtils.formatMoney(+info.max_payout)}{' '}
                                                 {getCurrencyDisplayCode(currency)}
                                             </Text>
                                         </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                should_show_payout_details && (
-                                    <>
-                                        {!!info.max_payout && (
-                                            <div className='stake-params__max-payout-wrapper'>
-                                                <Text size='sm'>
-                                                    <Localize i18n_default_text='Max payout' />
-                                                </Text>
-                                                <Text size='sm'>
-                                                    {FormatUtils.formatMoney(+info.max_payout)}{' '}
-                                                    {getCurrencyDisplayCode(currency)}
-                                                </Text>
-                                            </div>
-                                        )}
-                                        <div className='stake-params__payout-wrapper'>
+                                    )}
+                                    <div className='stake-content__payout-wrapper'>
+                                        <Text size='sm'>
+                                            <Localize i18n_default_text='Payout' />
+                                        </Text>
+                                        (
+                                        {getTradeTypeName(contract_types[0], {
+                                            isHighLow: contract_type === TRADE_TYPES.HIGH_LOW,
+                                        })}
+                                        )
+                                        <Text size='sm'>
+                                            {displayed_payout_1} {getCurrencyDisplayCode(currency)}
+                                        </Text>
+                                    </div>
+                                    {contract_types.length > 1 && (
+                                        <div className='stake-content__payout-wrapper'>
                                             <Text size='sm'>
                                                 <Localize i18n_default_text='Payout' />
                                             </Text>
                                             (
-                                            {getTradeTypeName(contract_types[0], {
+                                            {getTradeTypeName(contract_types[1], {
                                                 isHighLow: contract_type === TRADE_TYPES.HIGH_LOW,
                                             })}
                                             )
                                             <Text size='sm'>
-                                                {displayed_payout_1} {getCurrencyDisplayCode(currency)}
+                                                {displayed_payout_2} {getCurrencyDisplayCode(currency)}
                                             </Text>
                                         </div>
-                                        {contract_types.length > 1 && (
-                                            <div className='stake-params__payout-wrapper'>
-                                                <Text size='sm'>
-                                                    <Localize i18n_default_text='Payout' />
-                                                </Text>
-                                                (
-                                                {getTradeTypeName(contract_types[1], {
-                                                    isHighLow: contract_type === TRADE_TYPES.HIGH_LOW,
-                                                })}
-                                                )
-                                                <Text size='sm'>
-                                                    {displayed_payout_2} {getCurrencyDisplayCode(currency)}
-                                                </Text>
-                                            </div>
-                                        )}
-                                    </>
-                                )
-                            )}
-                        </div>
+                                    )}
+                                </>
+                            )
+                        )}
                     </ActionSheet.Content>
                     <ActionSheet.Footer
                         alignment='vertical'

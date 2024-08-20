@@ -25,6 +25,7 @@ const getWalletHeaderButtons = (localize: ReturnType<typeof useTranslations>['lo
             name: isDemo ? 'reset-balance' : 'deposit',
             text: isDemo ? localize('Reset balance') : localize('Deposit'),
             variant: isDemo ? 'outlined' : 'contained',
+            weight: isDemo ? 'normal' : 'bold',
         },
         {
             className: 'wallets-mobile-actions-content-icon',
@@ -33,6 +34,7 @@ const getWalletHeaderButtons = (localize: ReturnType<typeof useTranslations>['lo
             name: 'withdrawal',
             text: localize('Withdraw'),
             variant: 'outlined',
+            weight: 'normal',
         },
         {
             className: 'wallets-mobile-actions-content-icon',
@@ -41,6 +43,7 @@ const getWalletHeaderButtons = (localize: ReturnType<typeof useTranslations>['lo
             name: 'account-transfer',
             text: localize('Transfer'),
             variant: 'outlined',
+            weight: 'normal',
         },
     ] as const;
 
@@ -94,11 +97,7 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
                             }}
                             size='lg'
                         />
-                        <Text
-                            align='center'
-                            size='2xs'
-                            weight={button.text === localize('Deposit') ? 'bold' : 'normal'}
-                        >
+                        <Text align='center' size='2xs' weight={button.weight}>
                             {button.text}
                         </Text>
                     </div>

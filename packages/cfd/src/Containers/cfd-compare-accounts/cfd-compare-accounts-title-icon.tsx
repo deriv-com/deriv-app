@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import TradigPlatformIconProps from '../../Assets/svgs/trading-platform';
+import TradigPlatformIcon from '../../Components/trading-platform-icon';
 import { TCompareAccountsCard } from 'Components/props.types';
 import { getAccountCardTitle, getMarketType, getAccountIcon } from '../../Helpers/compare-accounts-config';
 import { CFD_PLATFORMS, MARKET_TYPE, MARKET_TYPE_SHORTCODE } from '../../Helpers/cfd-config';
@@ -27,7 +27,7 @@ const CFDCompareAccountsTitleIcon = ({ trading_platforms, is_eu_user, is_demo }:
     return (
         <React.Fragment>
             <div className={'compare-cfd-account-icon-title'}>
-                <TradigPlatformIconProps icon={jurisdiction_card_icon} size={48} />
+                <TradigPlatformIcon icon={jurisdiction_card_icon} size={48} />
                 <div className='compare-cfd-account-icon-title__separator'>
                     <Text as='h1' weight='bold' size='xs' align='center'>
                         {jurisdiction_card_title}

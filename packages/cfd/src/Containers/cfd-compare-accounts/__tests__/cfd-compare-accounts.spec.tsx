@@ -15,7 +15,7 @@ jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),
 }));
 
-jest.mock('../../../Assets/svgs/trading-platform', () => jest.fn(() => <div>Mocked Icon</div>));
+jest.mock('../../../Components/trading-platform-icon', () => jest.fn(() => <div>Mocked Icon</div>));
 jest.mock('../instruments-icon-with-label', () => jest.fn(() => <div>Mocked Icon With Label</div>));
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),

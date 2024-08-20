@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CFDCompareAccountsTitleIcon from '../cfd-compare-accounts-title-icon';
 
-jest.mock('../../../Assets/svgs/trading-platform', () => jest.fn(() => <div>Mocked Icon</div>));
+jest.mock('../../../Components/trading-platform-icon', () => jest.fn(() => <div>Mocked Icon</div>));
 
 const mocked_props = {
     trading_platforms: {

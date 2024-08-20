@@ -6,7 +6,7 @@ import { render, screen } from '@testing-library/react';
 
 import CFDCompareAccountsCard from '../cfd-compare-accounts-card';
 
-jest.mock('../../../Assets/svgs/trading-platform', () => jest.fn(() => <div>Mocked Icon</div>));
+jest.mock('../../../Components/trading-platform-icon', () => jest.fn(() => <div>Mocked Icon</div>));
 jest.mock('../instruments-icon-with-label', () => jest.fn(() => <div>Mocked Icon With Label</div>));
 
 describe('<CFDCompareAccountsCard />', () => {

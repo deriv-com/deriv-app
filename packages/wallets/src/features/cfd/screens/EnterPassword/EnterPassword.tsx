@@ -57,9 +57,11 @@ const EnterPassword: React.FC<TProps> = ({
     return (
         <div className='wallets-enter-password'>
             <div className='wallets-enter-password__container'>
-                <Text lineHeight='xl' weight='bold'>
-                    {modalTitle}
-                </Text>
+                {isDesktop && (
+                    <Text lineHeight='xl' weight='bold'>
+                        {modalTitle}
+                    </Text>
+                )}
                 <div className='wallets-enter-password__content'>
                     <Text size='sm'>
                         <Localize

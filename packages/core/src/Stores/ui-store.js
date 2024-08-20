@@ -131,7 +131,7 @@ export default class UIStore extends BaseStore {
 
     //phone number verification
     should_show_phone_number_otp = false;
-    is_forced_to_redirect = false;
+    is_forced_to_exit_pnv = false;
 
     //warn user if they want to close create real account modal
     is_closing_create_real_account_modal = false;
@@ -254,7 +254,7 @@ export default class UIStore extends BaseStore {
             header_extension: observable,
             is_account_needed_modal_on: observable,
             is_account_settings_visible: observable,
-            is_forced_to_redirect: observable,
+            is_forced_to_exit_pnv: observable,
 
             is_accounts_switcher_on: observable,
 
@@ -368,7 +368,7 @@ export default class UIStore extends BaseStore {
             setDarkMode: action.bound,
             setHasOnlyForwardingContracts: action.bound,
             setHashedValue: action.bound,
-            setIsForcedToRedirect: action.bound,
+            setIsForcedToExitPnv: action.bound,
             setIsClosingCreateRealAccountModal: action.bound,
             setIsFromSignupAccount: action.bound,
             setIsNativepickerVisible: action.bound,
@@ -464,8 +464,8 @@ export default class UIStore extends BaseStore {
         this.should_show_phone_number_otp = should_show_phone_number_otp;
     }
 
-    setIsForcedToRedirect(is_forced_to_redirect) {
-        this.is_forced_to_redirect = is_forced_to_redirect;
+    setIsForcedToExitPnv(is_forced_to_exit_pnv) {
+        this.is_forced_to_exit_pnv = is_forced_to_exit_pnv;
     }
 
     setHashedValue(url_hashed_values) {

@@ -35,7 +35,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
         requestOnWhatsApp,
         email_otp_error,
     } = useSendOTPVerificationCode();
-    const { should_show_phone_number_otp, setIsForcedToRedirect } = ui;
+    const { should_show_phone_number_otp, setIsForcedToExitPnv } = ui;
 
     const reInitializeGetSettings = useCallback(() => {
         invalidate('get_settings').then(() => {
@@ -67,7 +67,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     useEffect(() => {
         if (is_phone_number_verified) {
             reInitializeGetSettings();
-            setIsForcedToRedirect(true);
+            setIsForcedToExitPnv(true);
             setShouldShowPhoneNumberVerifiedModal(true);
         } else if (is_email_verified && !should_show_phone_number_otp) {
             setVerificationCode(otp, 'phone_number_verification');

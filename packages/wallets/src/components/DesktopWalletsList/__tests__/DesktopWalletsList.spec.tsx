@@ -21,6 +21,14 @@ const wrapper = ({ children }: PropsWithChildren) => {
 };
 
 describe('DesktopWalletsList', () => {
+    it('renders the component', () => {
+        const mockUseActiveWalletAccount = {
+            isInitializing: true,
+        };
+        (useActiveWalletAccount as jest.Mock).mockReturnValue(mockUseActiveWalletAccount);
+        render(<DesktopWalletsList />, { wrapper });
+        expect(screen.getByTestId('dt_desktop-wallets-list')).toBeInTheDocument();
+    });
     it('renders the component when the activeWalletAccount is not initializing', () => {
         const mockUseActiveWalletAccount = {
             data: {

@@ -22,7 +22,6 @@ const DepositCrypto = () => {
 
     return (
         <div className='wallets-deposit-crypto'>
-            <div className='wallets-deposit-crypto__side-panel' />
             <div className='wallets-deposit-crypto__main-content'>
                 <DepositCryptoCurrencyDetails />
                 <DepositCryptoAddress depositCryptoAddress={depositCryptoAddress} />

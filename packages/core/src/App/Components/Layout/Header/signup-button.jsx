@@ -25,7 +25,7 @@ const SignupButton = ({ className }) => {
     const handleSignup = async () => {
         const os = await mobileOSDetectAsync();
 
-        if (os === 'iOS' && trigger_os_signup) {
+        if (os !== 'iOS' && trigger_os_signup) {
             window.open(handleOutSystemsRedirection());
         } else redirectToSignUp();
     };

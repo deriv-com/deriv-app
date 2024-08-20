@@ -3,26 +3,27 @@ import debounce from 'lodash.debounce';
 import { ActionSheet, Text, WheelPicker } from '@deriv-com/quill-ui';
 import { Skeleton } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import type { TWheelPickerInitialValues } from 'Stores/Modules/Trading/trade-store';
 
 type TStrikeWheelProps = {
     current_strike: string;
     currency: string;
-    onStrikePriceSelect: (e: {
-        target: {
-            name: string;
-            value: unknown;
-        };
-    }) => void;
+    onStrikePriceSelect: (new_value: string | number) => void;
     payout_per_point?: string | number;
     strike_price_list: {
         value: string;
     }[];
+    setWheelPickerInitialValues: ({
+        value,
+        name,
+    }: {
+        value: number | string;
+        name: keyof TWheelPickerInitialValues;
+    }) => void;
 };
 
 const onWheelPickerScrollDebounced = debounce(
-    (new_value: string | number, callback: TStrikeWheelProps['onStrikePriceSelect']) => {
-        callback({ target: { name: 'barrier_1', value: new_value } });
-    },
+    (new_value: string | number, callback: TStrikeWheelProps['onStrikePriceSelect']) => callback(new_value),
     200
 );
 
@@ -32,24 +33,25 @@ const StrikeWheel = ({
     onStrikePriceSelect,
     payout_per_point,
     strike_price_list,
+    setWheelPickerInitialValues,
 }: TStrikeWheelProps) => {
     const initial_value_ref = React.useRef<string | number>();
     const selected_value_ref = React.useRef<string | number>(current_strike);
 
     const onSave = () => {
-        if (selected_value_ref.current !== initial_value_ref.current) {
-            initial_value_ref.current = selected_value_ref.current;
-        }
+        initial_value_ref.current = selected_value_ref.current;
+        setWheelPickerInitialValues({ value: selected_value_ref.current, name: 'strike' });
     };
 
     React.useEffect(() => {
         if (!initial_value_ref.current && current_strike) {
             initial_value_ref.current = current_strike;
+            setWheelPickerInitialValues({ value: current_strike, name: 'strike' });
         }
 
         return () => {
-            if (initial_value_ref.current !== selected_value_ref.current) {
-                onStrikePriceSelect({ target: { name: 'barrier_1', value: initial_value_ref.current } });
+            if (initial_value_ref.current && initial_value_ref.current !== selected_value_ref.current) {
+                onStrikePriceSelect(initial_value_ref.current);
             }
             onWheelPickerScrollDebounced.cancel();
         };

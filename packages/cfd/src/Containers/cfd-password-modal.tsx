@@ -35,7 +35,7 @@ import { Localize, localize } from '@deriv/translations';
 import { TProducts } from '../Components/props.types';
 import SuccessDialog from '../Components/success-dialog.jsx';
 import CFDPasswordModalTitle from './cfd-password-modal-title';
-import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import TradingPlatformIcon from '../Components/trading-platform-icon';
 import MigrationSuccessModal from '../Components/migration-success-modal';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { CFD_PLATFORMS, JURISDICTION, CATEGORY, PRODUCT } from '../Helpers/cfd-config';
@@ -187,7 +187,7 @@ const ReviewMessageForMT5 = ({
 const IconType = React.memo(({ platform, type, show_eu_related_content, product }: TIconTypeProps) => {
     const traders_hub = window.location.pathname === routes.traders_hub;
     if (platform === CFD_PLATFORMS.DXTRADE) {
-        return <Icon icon='IcRebrandingDxtradeDashboard' size={128} />;
+        return <TradingPlatformIcon icon='DerivX' size={128} />;
     } else if (traders_hub) {
         if (platform === CFD_PLATFORMS.CTRADER) {
             return <TradingPlatformIcon icon='CTrader' size={128} />;

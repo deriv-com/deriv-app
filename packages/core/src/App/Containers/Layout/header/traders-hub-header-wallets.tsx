@@ -51,7 +51,17 @@ const TradersHubHeaderWallets = observer(() => {
             })}
         >
             <div className='traders-hub-header__menu-left'>
-                {!isDesktop && (
+                {isDesktop ? (
+                    <React.Fragment>
+                        <div className='traders-hub-header-wallets__logo'>
+                            <StaticUrl href='/'>
+                                <DerivBrandShortLogo />
+                            </StaticUrl>
+                        </div>
+                        <div className='traders-hub-header__divider' />
+                        <TradersHubHomeButton />
+                    </React.Fragment>
+                ) : (
                     <React.Fragment>
                         <ToggleMenuDrawer {...{ platform_config: filterPlatformsForClients(platform_config) }} />
                         {header_extension && is_logged_in && <div>{header_extension}</div>}
@@ -62,17 +72,6 @@ const TradersHubHeaderWallets = observer(() => {
                                 </StaticUrl>
                             </div>
                         </div>
-                    </React.Fragment>
-                )}
-                {isDesktop && (
-                    <React.Fragment>
-                        <div className='traders-hub-header-wallets__logo'>
-                            <StaticUrl href='/'>
-                                <DerivBrandShortLogo />
-                            </StaticUrl>
-                        </div>
-                        <div className='traders-hub-header__divider' />
-                        <TradersHubHomeButton />
                     </React.Fragment>
                 )}
                 <MenuLinks {...{ is_traders_hub_routes: true }} />

@@ -1,12 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
-import { ActionSheet, Text, TextField, TextFieldWithSteppers } from '@deriv-com/quill-ui';
+import { ActionSheet, TextField, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { localize, Localize } from '@deriv/translations';
-import { getCurrencyDisplayCode, getDecimalPlaces, getTradeTypeName, TRADE_TYPES } from '@deriv/shared';
+import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import { FormatUtils } from '@deriv-com/utils';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
+import StakeDetails from './stake-details';
 
 type TStakeProps = {
     is_minimized?: boolean;
@@ -40,7 +41,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     } = useTraderStore();
     const [is_open, setIsOpen] = React.useState(false);
     const [should_show_error, setShouldShowError] = React.useState(true);
-    const [initial_stake_value, setInitialStakeValue] = React.useState<number>();
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     // first contract type data:
     const {
@@ -56,7 +56,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         message: message_2 = '',
         payout: payout_2 = 0,
     } = proposal_info[contract_types[1]] ?? {};
-    const should_show_payout_details = !is_accumulator && !is_multiplier && !is_turbos && !is_vanilla;
     const proposal_error_message_1 = has_error_1 ? message_1 : '';
     const proposal_error_message_2 = has_error_2 ? message_2 : '';
     const proposal_error_message = proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount[0];
@@ -80,7 +79,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         : 0;
     const first_contract_payout = payout_1 || error_payout_1;
     const second_contract_payout = payout_2 || error_payout_2;
-    const has_error_or_loading_proposal = has_error_1 || has_error_2 || !id_1 || !id_2;
     const validation_error_text = contract_types[1] ? validation_errors?.amount[0] : proposal_error_message;
     const main_error_message =
         (validation_error_text && error_payout_1 > error_payout_2
@@ -90,35 +88,13 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const two_contracts_error = has_both_errors || amount.toString() === '' ? main_error_message : '';
     const stake_error = contract_types[1] ? two_contracts_error : validation_error_text;
 
-    const getDisplayedPayout = React.useCallback(
-        (new_payout: number, current_payout?: string) => {
-            return ((current_payout === '-' && !id_1) || stake_error) && !max_payout_exceeded
-                ? '-'
-                : FormatUtils.formatMoney(new_payout);
-        },
-        [id_1, max_payout_exceeded, stake_error]
-    );
-
-    const [displayed_payout_1, setDisplayedPayout1] = React.useState(getDisplayedPayout(first_contract_payout));
-    const [displayed_payout_2, setDisplayedPayout2] = React.useState(getDisplayedPayout(second_contract_payout));
-    const [info, setInfo] = React.useState({
+    const [details, setDetails] = React.useState({
         first_contract_payout,
         max_payout,
         max_stake,
         min_stake,
         second_contract_payout,
     });
-
-    const multipliers_content = [
-        {
-            label: <Localize i18n_default_text='Stop out' />,
-            value: stop_out,
-        },
-        {
-            label: <Localize i18n_default_text='Commission' />,
-            value: commission,
-        },
-    ];
 
     React.useEffect(() => {
         const initial_stake = v2_params_initial_values?.stake;
@@ -128,7 +104,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     React.useEffect(() => {
-        setInitialStakeValue(is_open && !initial_stake_value ? amount : undefined);
         if (is_open) {
             setV2ParamsInitialValues({ value: amount, name: 'stake' });
         }
@@ -139,12 +114,8 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [basis]);
     React.useEffect(() => {
-        setDisplayedPayout1(p => getDisplayedPayout(info.first_contract_payout, p));
-        setDisplayedPayout2(p => getDisplayedPayout(info.second_contract_payout, p));
-    }, [getDisplayedPayout, info]);
-    React.useEffect(() => {
         if (is_open) {
-            setInfo(info => {
+            setDetails(info => {
                 if (
                     (info.first_contract_payout !== first_contract_payout && first_contract_payout) ||
                     (info.max_payout !== max_payout && max_payout) ||
@@ -167,13 +138,13 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
 
     const getInputMessage = () =>
         (should_show_error && stake_error) ||
-        (!!info.min_stake && !!info.max_stake && (
+        (!!details.min_stake && !!details.max_stake && (
             <Localize
                 i18n_default_text='Acceptable range: {{min_stake}} to {{max_stake}} {{currency}}'
                 values={{
                     currency: getCurrencyDisplayCode(currency),
-                    min_stake: FormatUtils.formatMoney(+info.min_stake),
-                    max_stake: FormatUtils.formatMoney(+info.max_stake),
+                    min_stake: FormatUtils.formatMoney(+details.min_stake),
+                    max_stake: FormatUtils.formatMoney(+details.max_stake),
                 }}
             />
         ));
@@ -186,7 +157,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const onClose = (is_saved = false) => {
         if (is_open) {
             if (!is_saved) {
-                onChange({ target: { name: 'amount', value: initial_stake_value } });
+                onChange({ target: { name: 'amount', value: v2_params_initial_values.stake } });
             }
             setV2ParamsInitialValues({ value: amount, name: 'stake' });
             setIsOpen(false);
@@ -226,75 +197,21 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                             variant='fill'
                             value={amount}
                         />
-                        <div className='stake-content__details'>
-                            {is_multiplier
-                                ? multipliers_content.map(({ label, value }) => (
-                                      <div key={label.props.i18n_default_text} className='stake-content__details-row'>
-                                          <Text size='sm'>{label}</Text>
-                                          <Text size='sm'>
-                                              {has_error_or_loading_proposal || isNaN(Number(value))
-                                                  ? '-'
-                                                  : FormatUtils.formatMoney(Math.abs(Number(value)))}{' '}
-                                              {getCurrencyDisplayCode(currency)}
-                                          </Text>
-                                      </div>
-                                  ))
-                                : should_show_payout_details && (
-                                      <>
-                                          {!!info.max_payout && (
-                                              <div className='stake-content__details-row'>
-                                                  <Text size='sm'>
-                                                      <Localize i18n_default_text='Max payout' />
-                                                  </Text>
-                                                  <Text size='sm'>
-                                                      {FormatUtils.formatMoney(+info.max_payout)}{' '}
-                                                      {getCurrencyDisplayCode(currency)}
-                                                  </Text>
-                                              </div>
-                                          )}
-                                          <div
-                                              className={clsx(
-                                                  'stake-content__details-row',
-                                                  info.first_contract_payout > +info.max_payout &&
-                                                      max_payout_exceeded &&
-                                                      'error'
-                                              )}
-                                          >
-                                              <Text size='sm'>
-                                                  <Localize i18n_default_text='Payout' /> (
-                                                  {getTradeTypeName(contract_types[0], {
-                                                      isHighLow: contract_type === TRADE_TYPES.HIGH_LOW,
-                                                  })}
-                                                  )
-                                              </Text>
-                                              <Text size='sm'>
-                                                  {displayed_payout_1} {getCurrencyDisplayCode(currency)}
-                                              </Text>
-                                          </div>
-                                          {contract_types.length > 1 && (
-                                              <div
-                                                  className={clsx(
-                                                      'stake-content__details-row',
-                                                      info.second_contract_payout > +info.max_payout &&
-                                                          max_payout_exceeded &&
-                                                          'error'
-                                                  )}
-                                              >
-                                                  <Text size='sm'>
-                                                      <Localize i18n_default_text='Payout' /> (
-                                                      {getTradeTypeName(contract_types[1], {
-                                                          isHighLow: contract_type === TRADE_TYPES.HIGH_LOW,
-                                                      })}
-                                                      )
-                                                  </Text>
-                                                  <Text size='sm'>
-                                                      {displayed_payout_2} {getCurrencyDisplayCode(currency)}
-                                                  </Text>
-                                              </div>
-                                          )}
-                                      </>
-                                  )}
-                        </div>
+                        <StakeDetails
+                            commission={commission}
+                            contract_type={contract_type}
+                            contract_types={contract_types}
+                            currency={currency}
+                            details={details}
+                            first_contract_payout={first_contract_payout}
+                            is_loading_proposal={!id_1 || (!!contract_types[1] && !id_2)}
+                            is_multiplier={is_multiplier}
+                            max_payout_exceeded={max_payout_exceeded}
+                            second_contract_payout={second_contract_payout}
+                            should_show_payout_details={!is_accumulator && !is_multiplier && !is_turbos && !is_vanilla}
+                            stake_error={stake_error}
+                            stop_out={stop_out}
+                        />
                     </ActionSheet.Content>
                     <ActionSheet.Footer
                         alignment='vertical'

@@ -1863,7 +1863,6 @@ export default class TradeStore extends BaseStore {
             });
         }
         if ('active_symbols' in req) {
-            if (this.is_dtrader_v2_enabled) return;
             if (this.root_store.client.is_logged_in) {
                 return WS.authorized.activeSymbols('brief');
             }

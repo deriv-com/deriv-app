@@ -30,11 +30,13 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         is_vanilla,
         onChange,
         proposal_info,
+        setV2ParamsInitialValues,
         stop_out,
         trade_type_tab,
         trade_types,
         validation_errors,
         validation_params,
+        v2_params_initial_values,
     } = useTraderStore();
     const [is_open, setIsOpen] = React.useState(false);
     const [should_show_error, setShouldShowError] = React.useState(true);
@@ -119,7 +121,17 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     ];
 
     React.useEffect(() => {
+        const initial_stake = v2_params_initial_values?.stake;
+        if (initial_stake && amount !== initial_stake) {
+            onChange({ target: { name: 'amount', value: initial_stake } });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    React.useEffect(() => {
         setInitialStakeValue(is_open && !initial_stake_value ? amount : undefined);
+        if (is_open) {
+            setV2ParamsInitialValues({ value: amount, name: 'stake' });
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_open]);
     React.useEffect(() => {
@@ -176,6 +188,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
             if (!is_saved) {
                 onChange({ target: { name: 'amount', value: initial_stake_value } });
             }
+            setV2ParamsInitialValues({ value: amount, name: 'stake' });
             setIsOpen(false);
         }
     };

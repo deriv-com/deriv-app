@@ -3,7 +3,6 @@ import {
     AccountsDerivCtraderIcon,
     AccountsDerivXIcon,
     AccountsDmt5CfdsIcon,
-    AccountsDmt5DerivedIcon,
     AccountsDmt5FinancialIcon,
     AccountsDmt5StandardIcon,
     AccountsDmt5SwfIcon,
@@ -11,18 +10,9 @@ import {
     QuillSvgProps,
 } from '@deriv/quill-icons';
 
-type TPlatformIconKeys =
-    | 'Derived'
-    | 'Financial'
-    | 'CFDs'
-    | 'CTrader'
-    | 'SwapFree'
-    | 'DerivX'
-    | 'ZeroSpread'
-    | 'Standard';
+type TPlatformIconKeys = 'Financial' | 'CFDs' | 'CTrader' | 'SwapFree' | 'DerivX' | 'ZeroSpread' | 'Standard';
 
 export const PlatformIcons: Record<TPlatformIconKeys, React.ForwardRefExoticComponent<Omit<QuillSvgProps, 'ref'>>> = {
-    Derived: AccountsDmt5DerivedIcon,
     Financial: AccountsDmt5FinancialIcon,
     CFDs: AccountsDmt5CfdsIcon,
     CTrader: AccountsDerivCtraderIcon,

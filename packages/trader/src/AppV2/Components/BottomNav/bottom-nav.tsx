@@ -3,12 +3,7 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react';
 import { Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
-import {
-    LegacyMarketBasketIndicesIcon,
-    StandaloneBarsRegularIcon,
-    StandaloneChartCandlestickRegularIcon,
-    StandaloneClockThreeRegularIcon,
-} from '@deriv/quill-icons';
+import { StandaloneChartCandlestickRegularIcon, StandaloneClockThreeRegularIcon } from '@deriv/quill-icons';
 import { Badge } from '@deriv-com/quill-ui';
 import { useStore } from '@deriv/stores';
 import BottomNavItem from './bottom-nav-item';
@@ -37,16 +32,6 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
             path: routes.trade,
         },
         {
-            icon: (
-                <LegacyMarketBasketIndicesIcon
-                    iconSize='sm'
-                    fill='var(--semantic-color-monochrome-textIcon-normal-high)'
-                />
-            ),
-            label: <Localize i18n_default_text='Markets' />,
-            path: routes.markets,
-        },
-        {
             icon:
                 active_positions_count > 0 ? (
                     <Badge
@@ -70,13 +55,6 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
                 ),
             label: <Localize i18n_default_text='Positions' />,
             path: routes.trader_positions,
-        },
-        {
-            icon: (
-                <StandaloneBarsRegularIcon iconSize='sm' fill='var(--semantic-color-monochrome-textIcon-normal-high)' />
-            ),
-            label: <Localize i18n_default_text='Menu' />,
-            path: routes.trader_menu,
         },
     ];
     const navIndex = bottomNavItems.findIndex(item => item.path === location.pathname);

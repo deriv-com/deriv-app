@@ -1,11 +1,16 @@
 import React from 'react';
 import { APIProvider } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../../../../../AuthProvider';
-import useDevice from '../../../../../../../hooks/useDevice';
 import TransferFormAccountCard from '../TransferFormAccountCard';
 
 jest.mock('../../../../../../../hooks/useDevice', () => jest.fn());
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: false })),
+}));
 
 describe('TransferFormAccountCard', () => {
     const mockAccount = {

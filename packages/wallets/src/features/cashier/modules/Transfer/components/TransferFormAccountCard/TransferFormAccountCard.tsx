@@ -1,9 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { WalletCurrencyCard, WalletListCardBadge, WalletMarketCurrencyIcon } from '../../../../../../components';
-import useDevice from '../../../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../../../types';
 import { PlatformStatusBadge } from '../../../../../cfd/components/PlatformStatusBadge';
 import { TRADING_PLATFORM_STATUS } from '../../../../../cfd/constants';

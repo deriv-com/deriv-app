@@ -1,8 +1,7 @@
 import React from 'react';
-import { Trans, useTranslation } from 'react-i18next';
-import { WalletButton, WalletText } from '../../../../components/Base';
+import { useTranslations } from '@deriv-com/translations';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 import { useModal } from '../../../../components/ModalProvider';
-import useDevice from '../../../../hooks/useDevice';
 import './TradingPlatformStatus.scss';
 
 type TradingPlatformStatusModalProps = {
@@ -11,28 +10,26 @@ type TradingPlatformStatusModalProps = {
 
 const TradingPlatformStatus: React.FC<TradingPlatformStatusModalProps> = ({ isServerMaintenance }) => {
     const { hide } = useModal();
-    const { isMobile } = useDevice();
-    const { t } = useTranslation();
+    const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
 
-    const title = isServerMaintenance ? 'Server Maintenance' : 'Account Unavailable';
+    const title = isServerMaintenance ? localize('Server Maintenance') : localize('Account Unavailable');
     const content = isServerMaintenance
-        ? 'We’re currently performing server maintenance. Service maybe affected.'
-        : 'The server is temporarily unavailable for this account. We’re working to resolve this.';
+        ? localize('We’re currently performing server maintenance. Service maybe affected.')
+        : localize('The server is temporarily unavailable for this account. We’re working to resolve this.');
 
     return (
         <div className='wallets-server-maintenance'>
-            <WalletText size='md' weight='bold'>
-                <Trans defaults={title} />
-            </WalletText>
+            <Text size='md' weight='bold'>
+                {title}
+            </Text>
             <div className='wallets-server-maintenance__content'>
-                <WalletText size='sm'>
-                    <Trans defaults={content} />
-                </WalletText>
+                <Text size='sm'>{content}</Text>
             </div>
             <div className='wallets-server-maintenance__footer'>
-                <WalletButton onClick={() => hide()} size={isMobile ? 'md' : 'lg'} variant='outlined'>
-                    {t('OK')}
-                </WalletButton>
+                <Button color='black' onClick={() => hide()} size={isDesktop ? 'md' : 'sm'} variant='outlined'>
+                    {localize('OK')}
+                </Button>
             </div>
         </div>
     );

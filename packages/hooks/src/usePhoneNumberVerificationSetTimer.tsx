@@ -1,5 +1,4 @@
 import { useStore } from '@deriv/stores';
-import { useServerTime } from '@deriv/api';
 import dayjs from 'dayjs';
 import React from 'react';
 import { WS } from '@deriv/shared';
@@ -28,7 +27,6 @@ const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = f
     const [timer, setTimer] = React.useState<number | undefined>();
     const [next_otp_request, setNextOtpRequest] = React.useState('');
     const [is_request_button_diabled, setIsRequestButtonDisabled] = React.useState(false);
-    // const { data: serverTime, refetch: refetchServerTime } = useServerTime();
 
     const setTitle = React.useCallback(
         (timer: number) => {
@@ -52,33 +50,36 @@ const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = f
     );
 
     React.useEffect(() => {
-        setIsRequestButtonDisabled(true);
-        WS.send({ time: 1 }).then((response: { error?: Error; time: number }) => {
-            setIsRequestButtonDisabled(false);
-            if (response.error) return;
+        if (!phone_number_verification?.verified) {
+            setIsRequestButtonDisabled(true);
+            WS.send({ time: 1 }).then((response: { error?: Error; time: number }) => {
+                setIsRequestButtonDisabled(false);
+                if (response.error) return;
 
-            if (
-                response.time &&
-                !should_show_phone_number_otp &&
-                !is_from_request_phone_number_otp &&
-                phone_number_verification?.next_email_attempt
-            ) {
-                otpRequestCountdown(
-                    phone_number_verification.next_email_attempt,
-                    setTitle,
-                    setTimer,
-                    dayjs(response.time * 1000)
-                );
-            } else if (response.time && phone_number_verification?.next_attempt) {
-                otpRequestCountdown(
-                    phone_number_verification.next_attempt,
-                    setTitle,
-                    setTimer,
-                    dayjs(response.time * 1000)
-                );
-            }
-        });
+                if (
+                    response.time &&
+                    !should_show_phone_number_otp &&
+                    !is_from_request_phone_number_otp &&
+                    phone_number_verification?.next_email_attempt
+                ) {
+                    otpRequestCountdown(
+                        phone_number_verification.next_email_attempt,
+                        setTitle,
+                        setTimer,
+                        dayjs(response.time * 1000)
+                    );
+                } else if (response.time && phone_number_verification?.next_attempt) {
+                    otpRequestCountdown(
+                        phone_number_verification.next_attempt,
+                        setTitle,
+                        setTimer,
+                        dayjs(response.time * 1000)
+                    );
+                }
+            });
+        }
     }, [
+        phone_number_verification?.verified,
         phone_number_verification?.next_email_attempt,
         phone_number_verification?.next_attempt,
         is_from_request_phone_number_otp,

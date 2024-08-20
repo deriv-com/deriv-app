@@ -94,7 +94,11 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
                             }}
                             size='lg'
                         />
-                        <Text size='sm' weight={button.text === localize('Deposit') ? 'bold' : 'normal'}>
+                        <Text
+                            align='center'
+                            size='2xs'
+                            weight={button.text === localize('Deposit') ? 'bold' : 'normal'}
+                        >
                             {button.text}
                         </Text>
                     </div>

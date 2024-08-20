@@ -7,6 +7,7 @@ import { getCFDAccountKey, MT5_ACCOUNT_STATUS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { CFD_PLATFORMS, MARKET_TYPE, PRODUCT } from '../Helpers/cfd-config';
+import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import MigrationBanner from './migration-banner';
 import MT5DesktopRedirectOption from './mt5-desktop-redirect-option';
 import MT5MobileRedirectOption from './mt5-mobile-redirect-option';
@@ -14,13 +15,6 @@ import PasswordBox from '../Components/passwordbox';
 import SpecBox from '../Components/specbox';
 import { TCFDPasswordReset } from './props.types';
 import { TProducts, TTradingPlatformAccounts } from '../Components/props.types';
-import {
-    AccountsDmt5CfdsIcon,
-    AccountsDmt5FinancialIcon,
-    AccountsDmt5StandardIcon,
-    AccountsDmt5SwfIcon,
-    AccountsDmt5ZrsIcon,
-} from '@deriv/quill-icons';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid;
@@ -67,14 +61,13 @@ const DMT5TradeModal = observer(
         };
 
         const getAccountIcons = () => {
-            if (show_eu_related_content) return <AccountsDmt5CfdsIcon width={24} height={24} />;
-            else if (mt5_trade_account.market_type === MARKET_TYPE.SYNTHETIC)
-                return <AccountsDmt5StandardIcon width={24} height={24} />;
+            if (show_eu_related_content) return 'CFDs';
+            else if (mt5_trade_account.market_type === MARKET_TYPE.SYNTHETIC) return 'Standard';
             else if (mt5_trade_account.market_type === MARKET_TYPE.ALL && product === PRODUCT.SWAPFREE)
-                return <AccountsDmt5SwfIcon width={24} height={24} />;
+                return 'SwapFree';
             else if (mt5_trade_account.market_type === MARKET_TYPE.ALL && product === PRODUCT.ZEROSPREAD)
-                return <AccountsDmt5ZrsIcon width={24} height={24} />;
-            return <AccountsDmt5FinancialIcon width={24} height={24} />;
+                return 'ZeroSpread';
+            return 'Financial';
         };
 
         const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
@@ -103,7 +96,7 @@ const DMT5TradeModal = observer(
         return (
             <div className='cfd-trade-modal-container'>
                 <div className='cfd-trade-modal'>
-                    {getAccountIcons()}
+                    <TradingPlatformIcon icon={getAccountIcons()} size={24} />
                     <div className='cfd-trade-modal__desc'>
                         <div className='cfd-trade-modal__desc-heading'>
                             <Text size='xs' line_height='l'>

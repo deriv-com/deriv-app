@@ -23,6 +23,7 @@
     @include tablet-screen {
         width: 60rem;
         margin-inline: auto;
+        overflow: visible;
     }
 
     @include mobile-or-tablet-screen {

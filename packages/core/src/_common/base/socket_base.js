@@ -326,10 +326,11 @@ const BinarySocketBase = (() => {
 
     const activeSymbols = (mode = 'brief') => deriv_api.activeSymbols(mode);
 
-    const contractsForCompany = ({landing_company}) => deriv_api.send({
-        landing_company,
-        contracts_for_company: 1,
-    });
+    const contractsForCompany = ({ landing_company }) =>
+        deriv_api.send({
+            landing_company,
+            contracts_for_company: 1,
+        });
 
     const transferBetweenAccounts = (account_from, account_to, currency, amount) =>
         deriv_api.send({

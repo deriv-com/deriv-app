@@ -27,7 +27,6 @@ type TResultItem = {
 };
 
 const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTypesProps) => {
-    console.log('HERE: ', contract_type, trade_types);
     const [is_open, setIsOpen] = React.useState<boolean>(false);
     const [is_editing, setIsEditing] = React.useState<boolean>(false);
 
@@ -196,7 +195,10 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
             </a>
             <ActionSheet.Root isOpen={is_open} expandable={false} onClose={handleCloseTradeTypes}>
                 <ActionSheet.Portal>
-                    <ActionSheet.Header title={<Localize i18n_default_text='Trade types' />} icon={!is_editing && <Guide show_guide_for_selected_contract />} />
+                    <ActionSheet.Header
+                        title={<Localize i18n_default_text='Trade types' />}
+                        icon={!is_editing && <Guide show_guide_for_selected_contract />}
+                    />
                     <ActionSheet.Content className='mock-action-sheet--content'>
                         {is_editing ? (
                             <DraggableList

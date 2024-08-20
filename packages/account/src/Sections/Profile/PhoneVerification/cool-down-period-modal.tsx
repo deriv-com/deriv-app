@@ -13,9 +13,9 @@ const CoolDownPeriodModal = observer(
     ({ show_cool_down_period_modal, setShowCoolDownPeriodModal }: TCoolDownPeriodModal) => {
         const { ui } = useStore();
         const history = useHistory();
-        const { setIsForcedToRoute } = ui;
+        const { setIsForcedToExitPnv } = ui;
         const handleCloseCoolDownPeriodModal = () => {
-            setIsForcedToRoute(false);
+            setIsForcedToExitPnv(false);
             setShowCoolDownPeriodModal(false);
             history.push(routes.personal_details);
         };

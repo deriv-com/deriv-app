@@ -10,7 +10,7 @@ const useSendOTPVerificationCode = () => {
     const [phone_otp_error_message, setPhoneOtpErrorMessage] = useState('');
     const [show_cool_down_period_modal, setShowCoolDownPeriodModal] = useState(false);
     const { ui } = useStore();
-    const { setIsForcedToRoute } = ui;
+    const { setIsForcedToExitPnv } = ui;
     const {
         data,
         mutate,
@@ -30,7 +30,7 @@ const useSendOTPVerificationCode = () => {
                 setPhoneOtpErrorMessage(localize('Invalid code. Please try again.'));
                 break;
             case 'NoAttemptsLeft':
-                setIsForcedToRoute(true);
+                setIsForcedToExitPnv(true);
                 setShowCoolDownPeriodModal(true);
                 setPhoneOtpErrorMessage(localize('Invalid code. OTP limit reached.'));
                 break;
@@ -49,7 +49,7 @@ const useSendOTPVerificationCode = () => {
                 setPhoneOtpErrorMessage(localize('Invalid code. Press the link below to get a new code.'));
                 break;
             case 'NoAttemptsLeft':
-                setIsForcedToRoute(true);
+                setIsForcedToExitPnv(true);
                 setShowCoolDownPeriodModal(true);
                 setPhoneOtpErrorMessage(localize('Invalid code. OTP limit reached.'));
                 break;

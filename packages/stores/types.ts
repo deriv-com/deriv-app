@@ -704,7 +704,6 @@ type TUiStore = {
     is_chart_layout_default: boolean;
     is_chart_countdown_visible: boolean;
     is_closing_create_real_account_modal: boolean;
-    is_forced_to_route: boolean;
     is_from_signup_account: boolean;
     is_from_success_deposit_modal: boolean;
     is_kyc_information_submitted_modal_open: boolean;
@@ -754,7 +753,6 @@ type TUiStore = {
     setAppContentsScrollRef: (ref: React.MutableRefObject<null | HTMLDivElement>) => void;
     setCurrentFocus: (value: string | null) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
-    setIsForcedToRoute: (value: boolean) => void;
     setIsWalletModalVisible: (value: boolean) => void;
     setIsForcedToExitPnv: (value: boolean) => void;
     setRedirectFromEmail: (value: boolean) => void;

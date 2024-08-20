@@ -35,12 +35,12 @@ describe('CooldownPeriodModal', () => {
         expect(screen.getByRole('button', { name: /Ok/ })).toBeInTheDocument();
     });
 
-    it('should call history.push, setIsForcedToRoute, mockSetShowCoolDownPeriodModal with value of personal details', () => {
+    it('should call history.push, setIsForcedToExitPnv, mockSetShowCoolDownPeriodModal with value of personal details', () => {
         renderComponent();
         const ok_button = screen.getByRole('button', { name: /Ok/ });
         userEvent.click(ok_button);
         expect(mock_push_function).toBeCalledWith(routes.personal_details);
         expect(mockSetShowCoolDownPeriodModal).toBeCalledWith(false);
-        expect(mock_store.ui.setIsForcedToRoute).toBeCalledWith(false);
+        expect(mock_store.ui.setIsForcedToExitPnv).toBeCalledWith(false);
     });
 });

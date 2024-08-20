@@ -30,7 +30,7 @@ const PhoneVerificationPage = observer(() => {
     });
 
     const { client, ui } = useStore();
-    const { is_redirected_from_email, setRedirectFromEmail, setShouldShowCancelVerificationModal } = ui;
+    const { is_redirected_from_email, setRedirectFromEmail } = ui;
     const {
         verification_code: { phone_number_verification: phone_number_verification_code },
         is_authorize,

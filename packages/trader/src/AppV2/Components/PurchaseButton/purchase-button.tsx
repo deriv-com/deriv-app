@@ -11,7 +11,6 @@ import {
     getIndicativePrice,
     hasContractEntered,
     isAccumulatorContract,
-    isEmptyObject,
     isOpen,
     isValidToSell,
 } from '@deriv/shared';
@@ -35,12 +34,13 @@ const PurchaseButton = observer(() => {
         is_accumulator,
         is_multiplier,
         is_purchase_enabled,
-        is_trade_enabled,
+        is_touch,
+        is_trade_enabled_v2,
         is_turbos,
         is_vanilla_fx,
         is_vanilla,
-        onPurchase,
         proposal_info,
+        onPurchaseV2,
         symbol,
         trade_type_tab,
         trade_types,
@@ -52,12 +52,13 @@ const PurchaseButton = observer(() => {
         return has_validation_error || info?.has_error
     };*/
     const is_high_low = /^high_low$/.test(contract_type.toLowerCase());
-    const is_proposal_empty = isEmptyObject(proposal_info);
     const purchase_button_content_props = {
         currency,
         has_open_accu_contract,
         is_accumulator,
+        is_high_low,
         is_multiplier,
+        is_touch,
         is_turbos,
         is_vanilla_fx,
         is_vanilla,
@@ -128,7 +129,7 @@ const PurchaseButton = observer(() => {
                 const info = proposal_info?.[trade_type] || {};
                 const is_single_button = contract_types.length === 1;
                 const is_loading = loading_button_index === index;
-                const is_disabled = !is_trade_enabled || is_proposal_empty || !info.id || !is_purchase_enabled;
+                const is_disabled = !is_trade_enabled_v2;
 
                 return (
                     <React.Fragment key={trade_type}>
@@ -146,7 +147,7 @@ const PurchaseButton = observer(() => {
                             disabled={is_disabled && !is_loading}
                             onClick={() => {
                                 setLoadingButtonIndex(index);
-                                onPurchase(info.id, info.stake, trade_type, isMobile, addNotificationBannerCallback);
+                                onPurchaseV2(trade_type, isMobile, addNotificationBannerCallback);
                             }}
                         >
                             {!is_loading && !is_accumulator && (

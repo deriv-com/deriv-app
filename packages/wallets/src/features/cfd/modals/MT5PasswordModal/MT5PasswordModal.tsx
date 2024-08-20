@@ -22,7 +22,7 @@ import { CFD_PLATFORMS, JURISDICTION, MARKET_TYPE, PlatformDetails } from '../..
 import { CreatePassword, EnterPassword, MT5ResetPasswordModal } from '../../screens';
 import MT5AccountAdded from '../MT5AccountAdded/MT5AccountAdded';
 import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
-import { MT5PasswordModalFooter, SuccessModalFooter } from './MT5PasswordModalFooters';
+import { MT5PasswordModalFooter } from './MT5PasswordModalFooters';
 
 type TProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
@@ -181,8 +181,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     }, [hasMT5Account, isDemo, localize, mt5Title, updateMT5Password]);
 
     const renderFooter = useCallback(() => {
-        if (createMT5AccountSuccess) return <SuccessModalFooter isDemo={isDemo} />;
-
         if (isMT5PasswordNotSet)
             return (
                 <Button
@@ -216,8 +214,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         );
     }, [
         createMT5AccountLoading,
-        createMT5AccountSuccess,
-        isDemo,
         isMT5PasswordNotSet,
         mt5Title,
         onSubmit,

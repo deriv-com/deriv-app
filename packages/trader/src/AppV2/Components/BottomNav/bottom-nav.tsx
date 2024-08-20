@@ -86,11 +86,6 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
         setSelectedIndex(index);
         history.push(bottomNavItems[index].path);
     };
-    React.useEffect(() => {
-        onMount();
-        return onUnmount;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
     return (
         <div className={classNames('bottom-nav', className)}>
             <div className='bottom-nav-selection' onScroll={onScroll}>

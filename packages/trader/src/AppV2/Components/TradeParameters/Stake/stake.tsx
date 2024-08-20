@@ -59,10 +59,10 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const proposal_error_message_1 = has_error_1 ? message_1 : '';
     const proposal_error_message_2 = has_error_2 ? message_2 : '';
     const proposal_error_message = proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount[0];
+    // TODO: stop extracting Max payout from error message after it's added to validation_params in proposal API:
     const max_payout_exceeded = !!(
         /maximum payout/i.test(proposal_error_message_1) || /maximum payout/i.test(proposal_error_message_2)
     );
-    // TODO: stop extracting Max payout from error message after it's added to validation_params in proposal API:
     const float_number_search_regex = /\d+(\.\d+)?/g;
     const error_max_payout =
         max_payout_exceeded && proposal_error_message
@@ -213,70 +213,75 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                             variant='fill'
                             value={amount}
                         />
-                        {is_multiplier ? (
-                            <div className='stake-content__multipliers-details'>
-                                {multipliers_content.map(({ label, value }) => (
-                                    <div
-                                        key={label.props.i18n_default_text}
-                                        className='stake-content__multipliers-details-row'
-                                    >
-                                        <Text size='sm' className='stake-content__multipliers-details-title'>
-                                            {label}
-                                        </Text>
-                                        <Text size='sm' bold>
-                                            {has_error_or_loading_proposal || isNaN(Number(value))
-                                                ? '-'
-                                                : FormatUtils.formatMoney(Math.abs(Number(value)))}{' '}
-                                            {getCurrencyDisplayCode(currency)}
-                                        </Text>
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            should_show_payout_details && (
-                                <>
-                                    {!!info.max_payout && (
-                                        <div className='stake-content__payout-wrapper--max'>
-                                            <Text size='sm'>
-                                                <Localize i18n_default_text='Max payout' />
-                                            </Text>
-                                            <Text size='sm'>
-                                                {FormatUtils.formatMoney(+info.max_payout)}{' '}
-                                                {getCurrencyDisplayCode(currency)}
-                                            </Text>
-                                        </div>
-                                    )}
-                                    <div className='stake-content__payout-wrapper'>
-                                        <Text size='sm'>
-                                            <Localize i18n_default_text='Payout' />
-                                        </Text>
-                                        (
-                                        {getTradeTypeName(contract_types[0], {
-                                            isHighLow: contract_type === TRADE_TYPES.HIGH_LOW,
-                                        })}
-                                        )
-                                        <Text size='sm'>
-                                            {displayed_payout_1} {getCurrencyDisplayCode(currency)}
-                                        </Text>
-                                    </div>
-                                    {contract_types.length > 1 && (
-                                        <div className='stake-content__payout-wrapper'>
-                                            <Text size='sm'>
-                                                <Localize i18n_default_text='Payout' />
-                                            </Text>
-                                            (
-                                            {getTradeTypeName(contract_types[1], {
-                                                isHighLow: contract_type === TRADE_TYPES.HIGH_LOW,
-                                            })}
-                                            )
-                                            <Text size='sm'>
-                                                {displayed_payout_2} {getCurrencyDisplayCode(currency)}
-                                            </Text>
-                                        </div>
-                                    )}
-                                </>
-                            )
-                        )}
+                        <div className='stake-content__details'>
+                            {is_multiplier
+                                ? multipliers_content.map(({ label, value }) => (
+                                      <div key={label.props.i18n_default_text} className='stake-content__details-row'>
+                                          <Text size='sm'>{label}</Text>
+                                          <Text size='sm'>
+                                              {has_error_or_loading_proposal || isNaN(Number(value))
+                                                  ? '-'
+                                                  : FormatUtils.formatMoney(Math.abs(Number(value)))}{' '}
+                                              {getCurrencyDisplayCode(currency)}
+                                          </Text>
+                                      </div>
+                                  ))
+                                : should_show_payout_details && (
+                                      <>
+                                          {!!info.max_payout && (
+                                              <div className='stake-content__details-row'>
+                                                  <Text size='sm'>
+                                                      <Localize i18n_default_text='Max payout' />
+                                                  </Text>
+                                                  <Text size='sm'>
+                                                      {FormatUtils.formatMoney(+info.max_payout)}{' '}
+                                                      {getCurrencyDisplayCode(currency)}
+                                                  </Text>
+                                              </div>
+                                          )}
+                                          <div
+                                              className={clsx(
+                                                  'stake-content__details-row',
+                                                  info.first_contract_payout > +info.max_payout &&
+                                                      max_payout_exceeded &&
+                                                      'error'
+                                              )}
+                                          >
+                                              <Text size='sm'>
+                                                  <Localize i18n_default_text='Payout' /> (
+                                                  {getTradeTypeName(contract_types[0], {
+                                                      isHighLow: contract_type === TRADE_TYPES.HIGH_LOW,
+                                                  })}
+                                                  )
+                                              </Text>
+                                              <Text size='sm'>
+                                                  {displayed_payout_1} {getCurrencyDisplayCode(currency)}
+                                              </Text>
+                                          </div>
+                                          {contract_types.length > 1 && (
+                                              <div
+                                                  className={clsx(
+                                                      'stake-content__details-row',
+                                                      info.second_contract_payout > +info.max_payout &&
+                                                          max_payout_exceeded &&
+                                                          'error'
+                                                  )}
+                                              >
+                                                  <Text size='sm'>
+                                                      <Localize i18n_default_text='Payout' /> (
+                                                      {getTradeTypeName(contract_types[1], {
+                                                          isHighLow: contract_type === TRADE_TYPES.HIGH_LOW,
+                                                      })}
+                                                      )
+                                                  </Text>
+                                                  <Text size='sm'>
+                                                      {displayed_payout_2} {getCurrencyDisplayCode(currency)}
+                                                  </Text>
+                                              </div>
+                                          )}
+                                      </>
+                                  )}
+                        </div>
                     </ActionSheet.Content>
                     <ActionSheet.Footer
                         alignment='vertical'

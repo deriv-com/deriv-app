@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@deriv/components';
-import { redirectToSignUp, mobileOSDetectAsync } from '@deriv/shared';
+import { redirectToSignUp, mobileOSDetectAsync, isSafari } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 
@@ -25,8 +25,10 @@ const SignupButton = ({ className }) => {
     const handleSignup = async () => {
         const os = await mobileOSDetectAsync();
 
-        if (os !== 'iOS' && trigger_os_signup) {
-            window.open(handleOutSystemsRedirection());
+        if (trigger_os_signup) {
+            if (os === 'iOS' || isSafari()) {
+                redirectToSignUp();
+            } else window.open(handleOutSystemsRedirection());
         } else redirectToSignUp();
     };
 

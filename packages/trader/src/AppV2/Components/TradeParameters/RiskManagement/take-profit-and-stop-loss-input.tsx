@@ -200,9 +200,12 @@ const TakeProfitAndStopLossInput = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_enabled, new_input_value]);
 
+    // TODO: remove all regex replacement, when comma will be supported by quill component with type number
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         is_be_response_received_ref.current = false;
-        let value = String(e.target.value).replace(',', '.');
+        let value = String(e.target.value)
+            .replace(',', '.')
+            .replace(/[.](?!\d*$)/g, '');
         if (value.startsWith('.')) {
             value = value.replace(/^\./, '0.');
         }

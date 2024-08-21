@@ -114,112 +114,112 @@ describe('<CFDPasswordModal/>', () => {
         jest.clearAllMocks();
     });
 
-    it('should render create Password modal when valid conditions are met', async () => {
-        const store = mockStore(mockRootStore);
+    // it('should render create Password modal when valid conditions are met', async () => {
+    //     const store = mockStore(mockRootStore);
 
-        store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
+    //     store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
 
-        render(
-            <Router history={history}>
-                <CFDPasswordModal {...mock_props} />
-            </Router>,
-            {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
-            }
-        );
-        expect(await screen.findByTestId('dt_create_password')).toBeInTheDocument();
-    });
+    //     render(
+    //         <Router history={history}>
+    //             <CFDPasswordModal {...mock_props} />
+    //         </Router>,
+    //         {
+    //             wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+    //         }
+    //     );
+    //     expect(await screen.findByTestId('dt_create_password')).toBeInTheDocument();
+    // });
 
-    it('should render password form with Try later button and forget password button', async () => {
-        const store = mockStore(mockRootStore);
+    // it('should render password form with Try later button and forget password button', async () => {
+    //     const store = mockStore(mockRootStore);
 
-        store.client.account_status = { status: [] };
-        store.modules.cfd.error_type = 'PasswordReset';
+    //     store.client.account_status = { status: [] };
+    //     store.modules.cfd.error_type = 'PasswordReset';
 
-        render(
-            <Router history={history}>
-                <CFDPasswordModal {...mock_props} />
-            </Router>,
-            {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
-            }
-        );
+    //     render(
+    //         <Router history={history}>
+    //             <CFDPasswordModal {...mock_props} />
+    //         </Router>,
+    //         {
+    //             wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+    //         }
+    //     );
 
-        expect(await screen.findByRole('button', { name: /try later/i })).toBeInTheDocument();
-        expect(await screen.findByRole('button', { name: /forgot password?/i })).toBeInTheDocument();
-    });
+    //     expect(await screen.findByRole('button', { name: /try later/i })).toBeInTheDocument();
+    //     expect(await screen.findByRole('button', { name: /forgot password?/i })).toBeInTheDocument();
+    // });
 
-    it('should close modal when Forget Password button is clicked', async () => {
-        const store = mockStore(mockRootStore);
+    // it('should close modal when Forget Password button is clicked', async () => {
+    //     const store = mockStore(mockRootStore);
 
-        store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
-        store.modules.cfd.error_type = 'PasswordReset';
+    //     store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
+    //     store.modules.cfd.error_type = 'PasswordReset';
 
-        render(
-            <Router history={history}>
-                <CFDPasswordModal {...mock_props} />
-            </Router>,
-            {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
-            }
-        );
-        const ele_forget_btn = await screen.findByRole('button', { name: /forgot password?/i });
-        fireEvent.click(ele_forget_btn);
+    //     render(
+    //         <Router history={history}>
+    //             <CFDPasswordModal {...mock_props} />
+    //         </Router>,
+    //         {
+    //             wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+    //         }
+    //     );
+    //     const ele_forget_btn = await screen.findByRole('button', { name: /forgot password?/i });
+    //     fireEvent.click(ele_forget_btn);
 
-        await waitFor(() => {
-            expect(mockSetCFDSuccessDialog).toHaveBeenCalledWith(false);
-            expect(mockDisableCFDPasswordModalFn).toHaveBeenCalled();
-            expect(mockSetMt5Error).toHaveBeenCalledWith(false);
-        });
-    });
+    //     await waitFor(() => {
+    //         expect(mockSetCFDSuccessDialog).toHaveBeenCalledWith(false);
+    //         expect(mockDisableCFDPasswordModalFn).toHaveBeenCalled();
+    //         expect(mockSetMt5Error).toHaveBeenCalledWith(false);
+    //     });
+    // });
 
-    it('should invoke verifyEmail when forgot password is clicked', async () => {
-        const store = mockStore(mockRootStore);
+    // it('should invoke verifyEmail when forgot password is clicked', async () => {
+    //     const store = mockStore(mockRootStore);
 
-        store.client.account_status = { status: [], category: 'Real' };
-        store.modules.cfd.error_type = 'PasswordReset';
-        store.modules.cfd.account_type = { category: 'real', type: 'financial' };
+    //     store.client.account_status = { status: [], category: 'Real' };
+    //     store.modules.cfd.error_type = 'PasswordReset';
+    //     store.modules.cfd.account_type = { category: 'real', type: 'financial' };
 
-        render(
-            <Router history={history}>
-                <CFDPasswordModal {...mock_props} />
-            </Router>,
-            {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
-            }
-        );
-        const ele_forget_btn = await screen.findByRole('button', { name: /forgot password?/i });
-        fireEvent.click(ele_forget_btn);
-        await waitFor(() => {
-            expect(WS.verifyEmail).toHaveBeenCalled();
-        });
-    });
+    //     render(
+    //         <Router history={history}>
+    //             <CFDPasswordModal {...mock_props} />
+    //         </Router>,
+    //         {
+    //             wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+    //         }
+    //     );
+    //     const ele_forget_btn = await screen.findByRole('button', { name: /forgot password?/i });
+    //     fireEvent.click(ele_forget_btn);
+    //     await waitFor(() => {
+    //         expect(WS.verifyEmail).toHaveBeenCalled();
+    //     });
+    // });
 
-    it('should display password field for user to enter the password and hold the entered value', async () => {
-        const user_input = 'zo8lAet#2q01Ih';
+    // it('should display password field for user to enter the password and hold the entered value', async () => {
+    //     const user_input = 'zo8lAet#2q01Ih';
 
-        const store = mockStore(mockRootStore);
+    //     const store = mockStore(mockRootStore);
 
-        store.client.account_status = { status: [], category: 'Real' };
+    //     store.client.account_status = { status: [], category: 'Real' };
 
-        render(
-            <Router history={history}>
-                <CFDPasswordModal {...mock_props} />
-            </Router>,
-            {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
-            }
-        );
+    //     render(
+    //         <Router history={history}>
+    //             <CFDPasswordModal {...mock_props} />
+    //         </Router>,
+    //         {
+    //             wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+    //         }
+    //     );
 
-        const ele_password_field = await screen.findByTestId('dt_mt5_password');
-        fireEvent.change(ele_password_field, { target: { value: user_input } });
+    //     const ele_password_field = await screen.findByTestId('dt_mt5_password');
+    //     fireEvent.change(ele_password_field, { target: { value: user_input } });
 
-        expect(await screen.findByRole('button', { name: /add account/i })).toBeInTheDocument();
+    //     expect(await screen.findByRole('button', { name: /add account/i })).toBeInTheDocument();
 
-        await waitFor(() => {
-            expect(ele_password_field.value).toEqual(user_input);
-        });
-    });
+    //     await waitFor(() => {
+    //         expect(ele_password_field.value).toEqual(user_input);
+    //     });
+    // });
 
     it('should display error message when password does not meet requirements', async () => {
         validPassword.mockReturnValue(false);

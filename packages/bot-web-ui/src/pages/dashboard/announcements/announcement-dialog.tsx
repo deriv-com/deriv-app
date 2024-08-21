@@ -32,7 +32,7 @@ const AnnouncementDialog = ({
             onCancel={handleOnCancel}
             is_mobile_full_width
             has_close_icon
-            onClose={() => setIsAnnounceDialogOpen(!is_announce_dialog_open)}
+            onClose={() => setIsAnnounceDialogOpen(false)}
             className={base_classname}
         >
             <div className={`${base_classname}__body-text`}>

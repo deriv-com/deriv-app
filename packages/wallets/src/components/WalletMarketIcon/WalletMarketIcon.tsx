@@ -1,12 +1,13 @@
 /* eslint-disable sort-keys */
 import React, { CSSProperties } from 'react';
-import { AppIcons, CFDPlatformIcons, MT5MarketIcons, PlatformIcons } from '../../constants/icons';
+import { AppIcons, CFDAllMarketIcons, CFDPlatformIcons, MT5MarketIcons, PlatformIcons } from '../../constants/icons';
 import { TIconTypes } from '../../types';
 
 const Icons: TIconTypes = {
     ...AppIcons,
     ...MT5MarketIcons,
     ...CFDPlatformIcons,
+    ...CFDAllMarketIcons,
     ...PlatformIcons,
 };
 

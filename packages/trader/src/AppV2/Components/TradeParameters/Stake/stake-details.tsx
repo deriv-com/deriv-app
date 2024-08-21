@@ -8,7 +8,7 @@ import { TTradeStore } from 'Types';
 
 type TStakeDetailsProps = Pick<
     TTradeStore,
-    'commission' | 'contract_type' | 'currency' | 'is_multiplier' | 'stop_out'
+    'commission' | 'contract_type' | 'currency' | 'has_stop_loss' | 'is_multiplier' | 'stop_out'
 > & {
     contract_types: string[];
     details: {
@@ -30,6 +30,7 @@ const StakeDetails = ({
     contract_types,
     currency,
     details,
+    has_stop_loss,
     is_loading_proposal,
     is_multiplier,
     is_max_payout_exceeded,
@@ -80,7 +81,7 @@ const StakeDetails = ({
     const payout_title = <Localize i18n_default_text='Payout' />;
     const content = [
         {
-            is_displayed: is_multiplier && !should_show_payout_details,
+            is_displayed: !has_stop_loss && is_multiplier && !should_show_payout_details,
             label: <Localize i18n_default_text='Stop out' />,
             value: displayed_values.stop_out,
         },

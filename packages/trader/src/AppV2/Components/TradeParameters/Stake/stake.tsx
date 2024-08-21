@@ -25,6 +25,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         commission,
         contract_type,
         currency,
+        has_stop_loss,
         is_accumulator,
         is_multiplier,
         is_turbos,
@@ -104,7 +105,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     React.useEffect(() => {
-        if (is_open) {
+        if (is_open && v2_params_initial_values.stake !== amount) {
             setV2ParamsInitialValues({ value: amount, name: 'stake' });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -156,7 +157,9 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
             if (!is_saved) {
                 onChange({ target: { name: 'amount', value: v2_params_initial_values.stake } });
             }
-            setV2ParamsInitialValues({ value: amount, name: 'stake' });
+            if (v2_params_initial_values.stake !== amount) {
+                setV2ParamsInitialValues({ value: amount, name: 'stake' });
+            }
             setIsOpen(false);
         }
     };
@@ -200,6 +203,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                             contract_types={contract_types}
                             currency={currency}
                             details={details}
+                            has_stop_loss={has_stop_loss}
                             is_loading_proposal={!id_1 || (!!contract_types[1] && !id_2)}
                             is_multiplier={is_multiplier}
                             is_max_payout_exceeded={is_max_payout_exceeded}

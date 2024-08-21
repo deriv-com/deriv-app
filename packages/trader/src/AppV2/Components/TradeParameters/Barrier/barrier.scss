@@ -30,8 +30,12 @@
         }
     }
 
+    &__error-area {
+        height: var(--core-spacing-1100);
+    }
+
     &__current-spot-wrapper {
-        margin-top: var(--core-spacing-1100);
+        margin-top: var(--core-spacing-400);
         display: flex;
         justify-content: space-between;
     }

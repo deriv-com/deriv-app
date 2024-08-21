@@ -119,7 +119,7 @@ const PurchaseButton = observer(() => {
                     disabled={is_accu_sell_disabled}
                     onClick={() => onClickSell(active_accu_contract?.contract_info.contract_id)}
                 />
-                {is_accu_sell_disabled && <div className={clsx('purchase-button--disabled-background single')} />}
+                {is_accu_sell_disabled && <div className='purchase-button--disabled-background single' />}
             </div>
         );
     }

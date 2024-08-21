@@ -626,6 +626,5 @@ export default class LoadModalStore implements ILoadModalStore {
         }
 
         await load(load_options);
-        this.setOpenButtonDisabled(false);
     };
 }

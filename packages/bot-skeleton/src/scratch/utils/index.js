@@ -143,7 +143,8 @@ export const load = async ({
     showIncompatibleStrategyDialog,
 }) => {
     if (!DBotStore?.instance || !workspace) return;
-    const { setLoading } = DBotStore.instance;
+    const { setLoading, load_modal } = DBotStore.instance;
+    const { setOpenButtonDisabled } = load_modal;
     setLoading(true);
     // Delay execution to allow fully previewing previous strategy if users quickly switch between strategies.
     await delayExecution(100);
@@ -235,6 +236,7 @@ export const load = async ({
         return showInvalidStrategyError();
     } finally {
         setLoading(false);
+        setOpenButtonDisabled(false);
     }
 };
 

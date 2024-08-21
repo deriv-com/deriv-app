@@ -91,6 +91,7 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, product, short
                     {marketTypeShortCode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN && (
                         <Tooltip
                             as='div'
+                            data-testid='dt_wallets_compare_accounts_title__tooltip'
                             tooltipContainerClassName='wallets-compare-accounts-title__tooltip'
                             tooltipContent={labuanJurisdictionMessage}
                             tooltipPosition='bottom-start'

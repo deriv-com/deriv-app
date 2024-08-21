@@ -5,7 +5,7 @@ import { TGenericSizes } from '../../../types';
 import './WalletButton.scss';
 
 type TVariant = 'contained' | 'ghost' | 'outlined';
-type TColor = NonNullable<ComponentProps<typeof Text>['color']>;
+type TColor = 'black' | 'primary-light' | 'primary' | 'white';
 type TBorderWidth = Extract<TGenericSizes, 'md' | 'sm'> | 'none';
 
 interface WalletButtonProps {

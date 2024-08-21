@@ -26,7 +26,7 @@ const Redirect = observer(() => {
         is_mobile,
     } = ui;
 
-    // TODO: remove this afte oauth2 migration
+    // TODO: remove this after oauth2 migration
     // get data from cookies and populate local storage for clients
     // to be logged in coming from OS subdomains
     const client_accounts = Cookies.get('client.accounts');

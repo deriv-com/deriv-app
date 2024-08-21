@@ -68,11 +68,9 @@ const wrapper = ({ children }: PropsWithChildren) => {
 describe('DerivAppsGetAccount', () => {
     beforeEach(() => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
-    });
-
-    beforeEach(() => {
         jest.clearAllMocks();
     });
+
     it('renders the component', () => {
         render(<DerivAppsGetAccount />, { wrapper });
         expect(screen.getByRole('button', { name: 'Get' })).toBeInTheDocument();

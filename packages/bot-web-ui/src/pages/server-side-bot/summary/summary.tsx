@@ -44,10 +44,16 @@ const Summary: React.FC = observer(() => {
             <div className='ssb-summary__content'>
                 {has_summary ? (
                     <>
-                        {[...txns]?.reverse()?.map(txn => {
+                        {[...txns]?.reverse()?.map((txn, index) => {
                             const status = STATUS[txn.status as keyof typeof STATUS];
+                            const should_animate = index === 0;
                             return (
-                                <div className='ssb-summary__item' key={txn.contract_id}>
+                                <div
+                                    className={classNames('ssb-summary__item', {
+                                        'slide-in': should_animate,
+                                    })}
+                                    key={txn.contract_id}
+                                >
                                     <div className='ssb-summary__item__header'>
                                         <Text size='xs' weight='bold'>
                                             {txn.display_name}

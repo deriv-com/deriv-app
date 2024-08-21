@@ -1,6 +1,12 @@
 import React from 'react';
-import { render, screen, within } from '@testing-library/react';
+import { useHistory } from 'react-router-dom';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import WithdrawalNoBalance from '../WithdrawalNoBalance';
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: jest.fn(),
+}));
 
 jest.mock('@deriv/quill-icons', () => ({
     ...jest.requireActual('@deriv/quill-icons'),
@@ -44,5 +50,18 @@ describe('WithdrawalNoBalance', () => {
 
         expect(screen.getByText('DerivLightCashierNoBalanceIcon-128px/128px')).toBeInTheDocument();
         expect(within(screen.getByRole('button')).getByText('Add funds')).toBeInTheDocument();
+    });
+
+    it('should navigate to deposit page when "Add funds" button is clicked', () => {
+        const mockPush = jest.fn();
+        (useHistory as jest.Mock).mockReturnValue({ push: mockPush });
+
+        // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+        render(<WithdrawalNoBalance activeWallet={mockActiveWallet} />);
+
+        const addFundsButton = screen.getByRole('button', { name: 'Add funds' });
+        fireEvent.click(addFundsButton);
+
+        expect(mockPush).toHaveBeenCalledWith('/wallet/deposit');
     });
 });

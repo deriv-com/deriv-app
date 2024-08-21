@@ -131,8 +131,7 @@ Blockly.Blocks.text_getSubstring = {
         }
 
         this.initSvg();
-        //commented this line breaks the backward compatibility
-        //this.render(false);
+        this.renderEfficiently();
     },
     getRequiredValueInputs() {
         const hasInput = input_name => this.getInput(input_name)?.type === Blockly.INPUT_VALUE;

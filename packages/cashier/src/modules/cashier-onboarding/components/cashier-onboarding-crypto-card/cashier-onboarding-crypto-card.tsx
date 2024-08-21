@@ -36,6 +36,7 @@ const CashierOnboardingCryptoCard: React.FC = observer(() => {
         <CashierOnboardingCard
             title={localize('Deposit cryptocurrencies')}
             description={localize('We accept the following cryptocurrencies:')}
+            depositCategory='crypto'
             onClick={onClick}
         >
             <CashierOnboardingIconMarquee icons={icons.map(icon => `${icon}${is_dark_mode_on ? 'Dark' : 'Light'}`)} />

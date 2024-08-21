@@ -12,6 +12,7 @@ type TClipboard = {
     info_message?: string;
     success_message?: string;
     className?: string;
+    onClickHandler?: VoidFunction;
     popoverClassName?: string;
     popoverAlignment?: 'top' | 'right' | 'bottom' | 'left';
     popover_props?: Partial<TPopoverProps>;
@@ -23,6 +24,7 @@ const Clipboard = ({
     icon,
     success_message,
     className,
+    onClickHandler,
     popoverClassName,
     popover_props = {},
     popoverAlignment = 'bottom',
@@ -40,6 +42,7 @@ const Clipboard = ({
             }
         }, 2000);
         event.stopPropagation();
+        onClickHandler?.();
     };
 
     React.useEffect(() => {

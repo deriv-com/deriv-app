@@ -1,6 +1,8 @@
 import React from 'react';
 import { useActiveWalletAccount, useCryptoConfig } from '@deriv/api-v2';
-import { InlineMessage, WalletText } from '../../../../../../components/Base';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
+import { InlineMessage } from '../../../../../../components/Base';
 import './DepositCryptoDisclaimers.scss';
 
 // Check with BE to see if we can get the network name from the API.
@@ -24,13 +26,21 @@ const DepositCryptoDisclaimers = () => {
 
     const minimumDepositDisclaimer = data?.currency_config?.is_tUSDT ? (
         <li>
-            A minimum deposit value of <strong>{formattedMinimumDepositValue}</strong> {currency} is required.
-            Otherwise, a fee is applied.
+            <Localize
+                components={[<strong key={0} />]}
+                i18n_default_text='A minimum deposit value of <0>{{formattedMinimumDepositValue}}</0> {{currency}} is required.
+            Otherwise, a fee is applied.'
+                values={{ currency, formattedMinimumDepositValue }}
+            />
         </li>
     ) : (
         <li>
-            A minimum deposit value of <strong>{formattedMinimumDepositValue}</strong> {currency} is required.
-            Otherwise, the funds will be lost and cannot be recovered.
+            <Localize
+                components={[<strong key={0} />]}
+                i18n_default_text='A minimum deposit value of <0>{{formattedMinimumDepositValue}}</0> {{currency}} is required.
+            Otherwise, the funds will be lost and cannot be recovered.'
+                values={{ currency, formattedMinimumDepositValue }}
+            />
         </li>
     );
 
@@ -38,28 +48,34 @@ const DepositCryptoDisclaimers = () => {
         <div className='wallets-deposit-crypto-disclaimers'>
             <InlineMessage>
                 <div className='wallets-deposit-crypto-disclaimers__content'>
-                    <WalletText size='2xs' weight='bold'>
-                        To avoid loss of funds:
-                    </WalletText>
+                    <Text size='2xs' weight='bold'>
+                        <Localize i18n_default_text='To avoid loss of funds:' />
+                    </Text>
                     <ul className='wallets-deposit-crypto-disclaimers__points'>
                         {cryptoConfig?.minimum_deposit && minimumDepositDisclaimer}
-                        <li>Do not send other cryptocurrencies to this address.</li>
-                        <li>Make sure to copy your Deriv account address correctly into your crypto wallet.</li>
                         <li>
-                            In your cryptocurrency wallet, make sure to select{' '}
-                            <strong>{currency && cryptoCurrencyToNetworkMapper[currency]} network</strong> when you
-                            transfer funds to Deriv.
+                            <Localize i18n_default_text='Do not send other cryptocurrencies to this address.' />
+                        </li>
+                        <li>
+                            <Localize i18n_default_text='Make sure to copy your Deriv account address correctly into your crypto wallet.' />
+                        </li>
+                        <li>
+                            <Localize
+                                components={[<strong key={0} />]}
+                                i18n_default_text='In your cryptocurrency wallet, make sure to select <0>{{currency}} network</0> when you transfer funds to Deriv.'
+                                values={{ currency: currency && cryptoCurrencyToNetworkMapper[currency] }}
+                            />
                         </li>
                     </ul>
                 </div>
             </InlineMessage>
             <div className='wallets-deposit-crypto-disclaimers__note'>
-                <WalletText size='xs' weight='bold'>
-                    Note:
-                </WalletText>
-                <WalletText size='xs'>
-                    &nbsp;You’ll receive an email when your deposit starts being processed.
-                </WalletText>
+                <Text size='xs'>
+                    <Localize
+                        components={[<strong key={0} />]}
+                        i18n_default_text="<0>Note:</0> You'll receive an email when your deposit starts being processed."
+                    />
+                </Text>
             </div>
         </div>
     );

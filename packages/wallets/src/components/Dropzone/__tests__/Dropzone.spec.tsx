@@ -76,7 +76,7 @@ describe('Dropzone', () => {
         await waitFor(() => {
             userEvent.upload(input, file);
         });
-        expect(screen.getByText('File uploaded is not supported')).toBeInTheDocument();
+        expect(screen.getByText('File size should be 8MB or less')).toBeInTheDocument();
     });
 
     it('should show hover message when dragging the file', async () => {

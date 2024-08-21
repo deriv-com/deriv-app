@@ -32,7 +32,10 @@ const DerivAppsTradingAccount = () => {
                     {activeWallet?.is_virtual && <WalletListCardBadge />}
                 </div>
                 {isBalanceLoading ? (
-                    <div className='wallets-skeleton wallets-deriv-apps-balance-loader' />
+                    <div
+                        className='wallets-skeleton wallets-deriv-apps-balance-loader'
+                        data-testid='dt_deriv-apps-balance-loader'
+                    />
                 ) : (
                     <Text size='sm' weight='bold'>
                         {displayMoney(balance, activeLinkedToTradingAccount?.currency_config?.display_code, {
@@ -48,6 +51,7 @@ const DerivAppsTradingAccount = () => {
             <TradingAccountCard.Button>
                 <button
                     className='wallets-deriv-apps-section__button'
+                    data-testid='dt_deriv-apps-trading-account-transfer-button'
                     onClick={() => {
                         history.push('/wallet/account-transfer', {
                             toAccountLoginId: activeLinkedToTradingAccount?.loginid,

@@ -3,12 +3,14 @@ import classNames from 'classnames';
 import moment from 'moment';
 import { useCancelCryptoTransaction } from '@deriv/api-v2';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
-import { Button } from '@deriv-com/ui';
-import { WalletText } from '../../../../../../components/Base';
+import { getTruncatedString } from '@deriv/utils';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { Button, Text } from '@deriv-com/ui';
 import { useModal } from '../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../hooks/useDevice';
 import { THooks } from '../../../../../../types';
 import { WalletActionModal } from '../../../../components/WalletActionModal';
+import { getFormattedConfirmations, getStatusName } from '../../../../helpers/transaction-helpers';
 import './CryptoTransaction.scss';
 
 type TCryptoTransaction = {
@@ -26,6 +28,14 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
 }) => {
     const { hide, show } = useModal();
     const { isMobile } = useDevice();
+    const { localize } = useTranslations();
+    const formattedTransactionHash = transaction.transaction_hash
+        ? getTruncatedString(transaction.transaction_hash, { type: 'middle' })
+        : localize('Pending');
+    const formattedAddressHash = transaction.address_hash
+        ? getTruncatedString(transaction.address_hash, { type: 'middle' })
+        : localize('NA');
+    const formattedConfirmations = getFormattedConfirmations(transaction.confirmations, transaction.status_code);
 
     const { mutate } = useCancelCryptoTransaction();
 
@@ -40,30 +50,34 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                 actionButtonsOptions={[
                     {
                         onClick: hide,
-                        text: "No, don't cancel",
+                        text: localize("No, don't cancel"),
                     },
                     {
                         isPrimary: true,
                         onClick: cancelTransaction,
-                        text: 'Yes, cancel',
+                        text: localize('Yes, cancel'),
                     },
                 ]}
-                description='Are you sure you want to cancel this transaction?'
-                hideCloseButton={true}
-                title='Cancel transaction'
+                description={localize('Are you sure you want to cancel this transaction?')}
+                hideCloseButton
+                title={localize('Cancel transaction')}
             />,
             {
                 defaultRootId: 'wallets_modal_root',
             }
         );
-    }, [cancelTransaction, hide, show]);
+    }, [cancelTransaction, hide, localize, show]);
 
     return (
         <div className='wallets-crypto-transaction'>
             <div className='wallets-crypto-transaction__type-and-status'>
-                <WalletText lineHeight='sm' size='xs'>
-                    {transaction.is_deposit ? `Deposit ${currency}` : `Withdrawal ${currency}`}
-                </WalletText>
+                <Text lineHeight='sm' size='xs'>
+                    {transaction.is_deposit ? (
+                        <Localize i18n_default_text='Deposit {{currency}}' values={{ currency }} />
+                    ) : (
+                        <Localize i18n_default_text='Withdrawal {{currency}}' values={{ currency }} />
+                    )}
+                </Text>
                 <div className='wallets-crypto-transaction__status'>
                     <div
                         className={classNames(
@@ -73,9 +87,9 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                                 .replace('_', '-')}`
                         )}
                     />
-                    <WalletText lineHeight='2xs' size='2xs'>
-                        {transaction.status_name}
-                    </WalletText>
+                    <Text lineHeight='2xs' size='2xs'>
+                        {getStatusName(transaction.status_code)}
+                    </Text>
                     {!!transaction.is_valid_to_cancel && !isMobile && (
                         <button
                             className='wallets-crypto-transaction__cancel-button'
@@ -88,48 +102,63 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                 </div>
             </div>
             <div className='wallets-crypto-transaction__amount-and-date'>
-                <WalletText color='less-prominent' size='2xs'>
+                <Text color='less-prominent' size='2xs'>
                     {transaction.formatted_amount}
-                </WalletText>
-                <WalletText color='less-prominent' size='2xs'>
+                </Text>
+                <Text color='less-prominent' size='2xs'>
                     {moment.unix(transaction.submit_date).utc().format('MMM D, YYYY')}
-                </WalletText>
+                </Text>
             </div>
             {transaction?.transaction_fee && (
-                <WalletText color='less-prominent' lineHeight='xs' size='2xs'>
-                    Transaction fee: {Number(transaction.transaction_fee).toFixed(currencyDisplayFraction)} {currency}
-                </WalletText>
+                <Text color='less-prominent' lineHeight='xs' size='2xs'>
+                    <Localize
+                        i18n_default_text='Transaction fee: {{fee}} {{currency}}'
+                        values={{
+                            currency,
+                            fee: Number(transaction.transaction_fee).toFixed(currencyDisplayFraction),
+                        }}
+                    />
+                </Text>
             )}
-            <WalletText lineHeight='2xs' size='2xs'>
-                Address:{' '}
-                <a
-                    className='wallets-crypto-transaction__red-text'
-                    href={transaction.address_url}
-                    rel='noopener noreferrer'
-                    target='_blank'
-                >
-                    {transaction.formatted_address_hash}
-                </a>
-            </WalletText>
-            <WalletText lineHeight='2xs' size='2xs'>
-                Transaction hash:{' '}
-                <a
-                    className='wallets-crypto-transaction__red-text'
-                    href={transaction.transaction_url}
-                    rel='noopener noreferrer'
-                    target='_blank'
-                >
-                    {transaction.formatted_transaction_hash}
-                </a>
-            </WalletText>
+            <Text lineHeight='2xs' size='2xs'>
+                <Localize
+                    components={[
+                        <a
+                            className='wallets-crypto-transaction__red-text'
+                            href={transaction.address_url}
+                            key={0}
+                            rel='noopener noreferrer'
+                            target='_blank'
+                        />,
+                    ]}
+                    i18n_default_text='Address: <0>{{address}}</0>'
+                    values={{ address: formattedAddressHash }}
+                />
+            </Text>
+            <Text lineHeight='2xs' size='2xs'>
+                <Localize
+                    components={[
+                        <a
+                            className='wallets-crypto-transaction__red-text'
+                            href={transaction.transaction_url}
+                            key={0}
+                            rel='noopener noreferrer'
+                            target='_blank'
+                        />,
+                    ]}
+                    i18n_default_text='Transaction hash: <0>{{hash}}</0>'
+                    values={{ hash: formattedTransactionHash }}
+                />
+            </Text>
             {transaction.is_deposit && (
                 <div>
-                    <WalletText lineHeight='2xs' size='2xs'>
-                        Confirmations:{' '}
-                        <span className='wallets-crypto-transaction__red-text'>
-                            {transaction.formatted_confirmations}
-                        </span>
-                    </WalletText>
+                    <Text lineHeight='2xs' size='2xs'>
+                        <Localize
+                            components={[<span className='wallets-crypto-transaction__red-text' key={0} />]}
+                            i18n_default_text='Confirmations: <0>{{confirmations}}</0>'
+                            values={{ confirmations: formattedConfirmations }}
+                        />
+                    </Text>
                 </div>
             )}
             {!!transaction.is_valid_to_cancel && isMobile && (
@@ -142,7 +171,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                         size='sm'
                         variant='outlined'
                     >
-                        Cancel transaction
+                        <Localize i18n_default_text='Cancel transaction' />
                     </Button>
                 </div>
             )}

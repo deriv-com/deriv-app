@@ -20,13 +20,7 @@ const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen
     const prevSymbol = usePrevious(selectedSymbol);
 
     useEffect(() => {
-        if (
-            isOpen &&
-            category.market === 'all' &&
-            selectedSymbol &&
-            itemRefs.current[selectedSymbol] &&
-            prevSymbol === selectedSymbol
-        ) {
+        if (isOpen && category.market === 'all' && selectedSymbol && itemRefs.current[selectedSymbol] && !prevSymbol) {
             timerRef.current = setTimeout(() => {
                 itemRefs.current[selectedSymbol]?.scrollIntoView({ block: 'center' });
             }, 50);

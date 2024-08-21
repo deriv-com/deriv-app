@@ -8,6 +8,7 @@ import {
     getUrlBinaryBot,
     getUrlSmartTrader,
     initMoment,
+    setLocale,
     isMobile,
     platforms,
     routes,
@@ -136,6 +137,7 @@ export default class CommonStore extends BaseStore {
                 window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
                 try {
                     await initMoment(key);
+                    await setLocale(key);
                     await changeLanguage(key, () => {
                         this.changeCurrentLanguage(key);
                         BinarySocket.closeAndOpenNewConnection(key);

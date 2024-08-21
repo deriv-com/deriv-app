@@ -9,6 +9,7 @@ jest.mock('Components/cfds-listing', () => jest.fn(() => 'mockedCFDsListing'));
 jest.mock('Components/options-multipliers-listing', () => jest.fn(() => 'mocked<OptionsAndMultipliersListing>'));
 
 jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({
         isDesktop: true,
         isMobile: false,

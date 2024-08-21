@@ -1,8 +1,9 @@
+import { MouseEventHandler } from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { Localize } from '@deriv-com/translations';
 
 type TPasskeyReminderModal = {
-    onButtonClick: React.MouseEventHandler<HTMLButtonElement>;
+    onButtonClick: MouseEventHandler<HTMLButtonElement>;
     is_modal_open: boolean;
     toggleModal?: () => void;
 };

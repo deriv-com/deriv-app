@@ -9,7 +9,6 @@ import { PasskeyRename } from './passkey-rename';
 import { TPasskeysButtonOnClicks } from './passkeys-status-layout';
 import { PasskeyRemoved } from './passkey-removed';
 import { PasskeyRemove } from './passkey-remove';
-import { PasskeyRemovingOtpVerification } from './passkey-removing-otp-verification';
 
 type TPasskeysStatusContainer = {
     current_managed_passkey: TCurrentManagedPasskey;

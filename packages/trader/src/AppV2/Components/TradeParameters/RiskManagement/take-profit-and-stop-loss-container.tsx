@@ -3,9 +3,9 @@ import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Button, useSnackbar } from '@deriv-com/quill-ui';
 import { localize, Localize } from '@deriv/translations';
+import { WS } from '@deriv/shared';
 import { getSnackBarText } from 'AppV2/Utils/trade-params-utils';
 import TakeProfitAndStopLossInput from './take-profit-and-stop-loss-input';
-import { WS } from '@deriv/shared';
 
 type TTakeProfitAndStopLossContainerProps = {
     closeActionSheet: () => void;
@@ -37,18 +37,28 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
         WS.forget(tp_subscription_id_ref.current);
         WS.forget(sl_subscription_id_ref.current);
 
-        const is_tp_empty = tp_ref.current.take_profit === '' && tp_ref.current.has_take_profit;
-        const is_sl_empty = sl_ref.current.stop_loss === '' && sl_ref.current.has_stop_loss;
+        const {
+            has_take_profit: has_take_profit_current,
+            take_profit: take_profit_current,
+            tp_error_text: tp_error_text_current,
+        } = tp_ref.current;
+        const {
+            has_stop_loss: has_stop_loss_current,
+            stop_loss: stop_loss_current,
+            sl_error_text: sl_error_text_current,
+        } = sl_ref.current;
+
+        const is_tp_empty = take_profit_current === '' && has_take_profit_current;
+        const is_sl_empty = stop_loss_current === '' && has_stop_loss_current;
         if (is_tp_empty) setTPErrorText(localize('Please enter a take profit amount.'));
         if (is_sl_empty) setSLErrorText(localize('Please enter a stop loss amount.'));
-
-        if (tp_ref.current.tp_error_text && tp_ref.current.has_take_profit) return;
-        if (sl_ref.current.sl_error_text && sl_ref.current.has_stop_loss) return;
+        if ((tp_error_text_current && has_take_profit_current) || (sl_error_text_current && has_stop_loss_current))
+            return;
         if (is_sl_empty || is_tp_empty) return;
 
         // Show notification, that DC will be disabled if TP or SL is enabled
-        const is_tp_enabled = tp_ref.current.tp_error_text ? false : tp_ref.current.has_take_profit;
-        const is_sl_enabled = sl_ref.current.sl_error_text ? false : sl_ref.current.has_stop_loss;
+        const is_tp_enabled = tp_error_text_current ? false : has_take_profit_current;
+        const is_sl_enabled = sl_error_text_current ? false : has_stop_loss_current;
         if ((is_tp_enabled || is_sl_enabled) && has_cancellation) {
             addSnackbar({
                 message: getSnackBarText({
@@ -63,11 +73,10 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
         }
 
         onChangeMultiple({
-            has_take_profit: tp_ref.current.has_take_profit,
-            take_profit:
-                tp_ref.current.tp_error_text || tp_ref.current.take_profit === '0' ? '' : tp_ref.current.take_profit,
-            has_stop_loss: sl_ref.current.has_stop_loss,
-            stop_loss: sl_ref.current.sl_error_text || sl_ref.current.stop_loss === '0' ? '' : sl_ref.current.stop_loss,
+            has_take_profit: has_take_profit_current,
+            take_profit: tp_error_text_current || take_profit_current === '0' ? '' : take_profit_current,
+            has_stop_loss: has_stop_loss_current,
+            stop_loss: sl_error_text_current || stop_loss_current === '0' ? '' : stop_loss_current,
             ...(is_tp_enabled || is_sl_enabled ? { has_cancellation: false } : {}),
         });
 

@@ -32,13 +32,6 @@ describe('MultipliersDealCancellationInfo', () => {
             </TraderProviders>
         );
 
-    it('should not render component, if has_cancellation === false', () => {
-        default_mock_store.modules.trade.has_cancellation = false;
-        const { container } = mockMultipliersDealCancellationInfo();
-
-        expect(container).toBeEmptyDOMElement();
-    });
-
     it('should render skeleton, if proposal_info is empty', () => {
         default_mock_store.modules.trade.proposal_info = {};
         mockMultipliersDealCancellationInfo();

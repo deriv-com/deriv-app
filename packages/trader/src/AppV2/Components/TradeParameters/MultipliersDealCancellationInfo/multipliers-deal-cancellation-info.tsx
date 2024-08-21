@@ -11,10 +11,8 @@ type TMultipliersDealCancellationInfoProps = {
 };
 
 const MultipliersDealCancellationInfo = observer(({ classname }: TMultipliersDealCancellationInfoProps) => {
-    const { currency, has_cancellation, proposal_info } = useTraderStore();
+    const { currency, proposal_info } = useTraderStore();
     const deal_cancellation_fee_value = proposal_info?.MULTUP?.cancellation?.ask_price;
-
-    if (!has_cancellation) return null;
 
     return (
         <div className={clsx('multipliers-info__row', classname)}>

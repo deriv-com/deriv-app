@@ -23,7 +23,7 @@ type TTradeParametersProps = {
 };
 
 const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
-    const { contract_type, symbol } = useTraderStore();
+    const { contract_type, has_cancellation, symbol } = useTraderStore();
     const isVisible = (component_key: string) => {
         return getTradeParams(symbol)[contract_type].includes(component_key);
     };
@@ -50,9 +50,11 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
                 {isVisible('risk_management') && <RiskManagement is_minimized={is_minimized} />}
                 {/* {isVisible('expiration') && <MultipliersExpirationInfo />} */}
                 {isVisible('accu_info_display') && <AccumulatorsInformation is_minimized={is_minimized} />}
-                {isVisible('mult_info_display') && !is_minimized && <MultipliersDealCancellationInfo />}
+                {isVisible('mult_info_display') && !is_minimized && has_cancellation && (
+                    <MultipliersDealCancellationInfo />
+                )}
             </div>
-            {is_minimized && isVisible('mult_info_display') && (
+            {is_minimized && isVisible('mult_info_display') && has_cancellation && (
                 <MultipliersDealCancellationInfo classname='multipliers-info--standalone' />
             )}
         </React.Fragment>

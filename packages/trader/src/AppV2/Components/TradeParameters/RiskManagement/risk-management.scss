@@ -124,7 +124,7 @@ $FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
         }
 
         .take-profit__overlay {
-            left: 0;
+            inset-inline-start: 0;
         }
     }
 }

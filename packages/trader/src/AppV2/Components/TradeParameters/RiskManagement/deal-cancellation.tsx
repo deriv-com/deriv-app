@@ -22,12 +22,9 @@ const DealCancellation = observer(({ closeActionSheet }: TDealCancellationProps)
     const { addSnackbar } = useSnackbar();
 
     const [is_enabled, setIsEnabled] = React.useState(has_cancellation);
-    const [selected_value, setSelectedValue] = React.useState<string>(cancellation_duration);
+    const [selected_value, setSelectedValue] = React.useState(cancellation_duration);
 
-    const data = cancellation_range_list.map(({ text, value }) => ({
-        label: addUnit({ value: text }),
-        value,
-    }));
+    const data = cancellation_range_list.map(({ text, value }) => ({ label: addUnit({ value: text }), value }));
 
     const onSave = () => {
         if (has_cancellation === is_enabled && selected_value === cancellation_duration) {
@@ -50,8 +47,7 @@ const DealCancellation = observer(({ closeActionSheet }: TDealCancellationProps)
         // We should switch off TP and SL if DC is on and vice versa
         onChangeMultiple({
             has_cancellation: is_enabled,
-            ...(is_enabled ? { has_take_profit: false } : {}),
-            ...(is_enabled ? { has_stop_loss: false } : {}),
+            ...(is_enabled ? { has_take_profit: false, has_stop_loss: false } : {}),
             cancellation_duration: selected_value,
         });
         closeActionSheet();

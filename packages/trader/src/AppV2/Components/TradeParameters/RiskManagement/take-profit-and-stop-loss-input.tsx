@@ -19,10 +19,10 @@ type TTakeProfitAndStopLossInputProps = {
     parent_subscription_id_ref?: React.MutableRefObject<string | undefined>;
     parent_ref?: React.MutableRefObject<{
         has_take_profit?: boolean;
-        take_profit?: string;
         has_stop_loss?: boolean;
-        stop_loss?: string;
+        take_profit?: string;
         tp_error_text?: string;
+        stop_loss?: string;
         sl_error_text?: string;
     }>;
     type?: 'take_profit' | 'stop_loss';
@@ -57,13 +57,15 @@ const TakeProfitAndStopLossInput = ({
     const isMounted = useIsMounted();
 
     const is_take_profit_input = type === 'take_profit';
+
     const subscription_id = React.useRef<string>();
     const subscription_id_ref = parent_subscription_id_ref || subscription_id;
-    const [is_enabled, setIsEnabled] = React.useState<boolean>(is_take_profit_input ? has_take_profit : has_stop_loss);
-    const [new_input_value, setNewInputValue] = React.useState(is_take_profit_input ? take_profit : stop_loss);
-    const [error_text, setErrorText] = React.useState<string>(initial_error_text ?? '');
 
-    // Refs for handling focusing and bluring
+    const [is_enabled, setIsEnabled] = React.useState(is_take_profit_input ? has_take_profit : has_stop_loss);
+    const [new_input_value, setNewInputValue] = React.useState(is_take_profit_input ? take_profit : stop_loss);
+    const [error_text, setErrorText] = React.useState(initial_error_text ?? '');
+
+    // Refs for handling focusing and bluring input
     const input_ref = React.useRef<HTMLInputElement>(null);
     const focused_input_ref = React.useRef<HTMLInputElement>(null);
     const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
@@ -74,17 +76,10 @@ const TakeProfitAndStopLossInput = ({
     const Component = should_wrap_with_actionsheet ? ActionSheet.Content : 'div';
     const should_set_validation_params = is_multiplier && is_enabled && new_input_value === '';
 
-    const min_value = is_take_profit_input
-        ? validation_params[contract_types[0]]?.take_profit?.min
-        : validation_params[contract_types[0]]?.stop_loss?.min;
-    const max_value = is_take_profit_input
-        ? validation_params[contract_types[0]]?.take_profit?.max
-        : validation_params[contract_types[0]]?.stop_loss?.max;
+    const min_value = validation_params[contract_types[0]]?.[type]?.min;
+    const max_value = validation_params[contract_types[0]]?.[type]?.max;
     // Storing data from validation params (proposal) in state in case if we got a validation error from BE and proposal stop streaming
-    const [info, setInfo] = React.useState<Record<string, string | undefined>>({
-        min_value,
-        max_value,
-    });
+    const [info, setInfo] = React.useState<Record<string, string | undefined>>({ min_value, max_value });
 
     const input_message =
         info.min_value && info.max_value && is_enabled ? (
@@ -139,8 +134,7 @@ const TakeProfitAndStopLossInput = ({
             }
             if (subscription?.id) subscription_id_ref.current = subscription?.id;
 
-            const error_details_field = is_take_profit_input ? 'take_profit' : 'stop_loss';
-            const new_error = error?.details?.field === error_details_field ? error?.message : '';
+            const new_error = error?.details?.field === type ? error?.message : '';
             setErrorText(new_error);
             updateParentRef({
                 field_name: is_take_profit_input ? 'tp_error_text' : 'sl_error_text',
@@ -157,18 +151,14 @@ const TakeProfitAndStopLossInput = ({
                 (echo_req?.limit_order?.take_profit || echo_req?.limit_order?.stop_loss)
             ) {
                 const { validation_params } = proposal as ExpandedProposal;
-                const validation_param_key = is_take_profit_input ? 'take_profit' : 'stop_loss';
-
                 setInfo(info => {
                     if (
-                        (info.min_value !== validation_params?.[validation_param_key]?.min &&
-                            validation_params?.[validation_param_key]?.min) ||
-                        (info.max_value !== validation_params?.[validation_param_key]?.max &&
-                            validation_params?.[validation_param_key]?.max)
+                        (info.min_value !== validation_params?.[type]?.min && validation_params?.[type]?.min) ||
+                        (info.max_value !== validation_params?.[type]?.max && validation_params?.[type]?.max)
                     ) {
                         return {
-                            min_value: validation_params?.[validation_param_key]?.min,
-                            max_value: validation_params?.[validation_param_key]?.max,
+                            min_value: validation_params?.[type]?.min,
+                            max_value: validation_params?.[type]?.max,
                         };
                     }
                     return info;
@@ -210,7 +200,7 @@ const TakeProfitAndStopLossInput = ({
         }
 
         setNewInputValue(value);
-        updateParentRef({ field_name: is_take_profit_input ? 'take_profit' : 'stop_loss', new_value: value });
+        updateParentRef({ field_name: type, new_value: value });
     };
 
     const onSave = () => {
@@ -251,15 +241,11 @@ const TakeProfitAndStopLossInput = ({
     }, [initial_error_text]);
 
     React.useEffect(() => {
-        setInfo(info => {
-            if ((info.min_value !== min_value && min_value) || (info.max_value !== max_value && max_value)) {
-                return {
-                    min_value,
-                    max_value,
-                };
-            }
-            return info;
-        });
+        setInfo(info =>
+            (info.min_value !== min_value && min_value) || (info.max_value !== max_value && max_value)
+                ? { min_value, max_value }
+                : info
+        );
     }, [min_value, max_value]);
 
     return (
@@ -297,8 +283,8 @@ const TakeProfitAndStopLossInput = ({
                 {!is_enabled && (
                     <button
                         className='take-profit__overlay'
-                        onClick={() => onToggleSwitch(true)}
                         data-testid='dt_take_profit_overlay'
+                        onClick={() => onToggleSwitch(true)}
                     />
                 )}
                 {/* this input with inline styles is needed to fix a focus issue in Safari */}

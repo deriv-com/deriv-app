@@ -4,13 +4,13 @@ import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ActionSheet, TextField } from '@deriv-com/quill-ui';
 import { localize, Localize } from '@deriv/translations';
+import { getCurrencyDisplayCode } from '@deriv/shared';
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import { addUnit, isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import RiskManagementPicker from './risk-management-picker';
 import RiskManagementContent from './risk-management-content';
-import { getCurrencyDisplayCode } from '@deriv/shared';
 
 type TRiskManagementProps = {
     is_minimized?: boolean;
@@ -28,6 +28,7 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
         take_profit,
         stop_loss,
     } = useTraderStore();
+
     const closeActionSheet = () => setIsOpen(false);
     const getRiskManagementText = () => {
         if (has_cancellation) return `DC: ${addUnit({ value: cancellation_duration, unit: localize('minutes') })}`;
@@ -57,10 +58,10 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
             id: 2,
             component: (
                 <TradeParamDefinition
+                    classname='risk-management__description'
                     description={
                         <RiskManagementContent should_show_deal_cancellation={should_show_deal_cancellation} />
                     }
-                    classname='risk-management__description'
                     is_custom_description
                 />
             ),
@@ -68,7 +69,7 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
     ];
 
     return (
-        <>
+        <React.Fragment>
             <TextField
                 className={classname}
                 label={
@@ -95,7 +96,7 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
                     />
                 </ActionSheet.Portal>
             </ActionSheet.Root>
-        </>
+        </React.Fragment>
     );
 });
 

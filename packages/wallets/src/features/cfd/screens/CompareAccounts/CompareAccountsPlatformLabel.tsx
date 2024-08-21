@@ -18,6 +18,7 @@ const CompareAccountsPlatformLabel = ({ platform }: TCompareAccountsPlatformLabe
             wallets-compare-accounts-platform-label
             wallets-compare-accounts-platform-label--${platformType.toLowerCase()}
             `}
+            data-testid='dt_wallets_compare_accounts_platform_label'
         >
             <WalletText align='center' as='p' color={headerColor[platformType]} size='xs' weight='bold'>
                 {platformLabel[platformType]}

@@ -44,6 +44,7 @@ import { getDxCompanies, getMtCompanies, TDxCompanies, TMtCompanies } from '../S
 import '../sass/cfd.scss';
 import CfdPasswordModalTnc from './cfd-password-modal-tnc';
 import classNames from 'classnames';
+import { DerivLightIcDxtradePasswordIcon } from '@deriv/quill-icons';
 
 const CFDPasswordChange = makeLazyLoader(
     () => moduleLoader(() => import('./cfd-password-change')),
@@ -306,7 +307,7 @@ const CreatePassword = ({
                                 </>
                             ) : (
                                 <>
-                                    <Icon icon='IcDxtradeOnePassword' width='122' height='108' />
+                                    <DerivLightIcDxtradePasswordIcon height={120} width={120} />
                                     <Text
                                         size='s'
                                         align='center'

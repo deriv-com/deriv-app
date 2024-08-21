@@ -546,7 +546,7 @@ const proxyForAuthorize = obj =>
             if (target[field] && typeof target[field] !== 'function') {
                 return proxyForAuthorize(target[field]);
             }
-            return (...args) => BinarySocketBase?.wait('authorize').then(() => target[field](...args));
+            return (...args) => BinarySocketBase?.wait('authorize')?.then(() => target[field](...args));
         },
     });
 

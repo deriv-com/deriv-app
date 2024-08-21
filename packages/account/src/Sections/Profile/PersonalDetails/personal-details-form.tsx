@@ -131,19 +131,16 @@ const PersonalDetailsForm = observer(() => {
         } else if (next_request_time) {
             return (
                 <Localize
-                    i18n_default_text='Verify your phone number in {{next_request_time}} '
+                    i18n_default_text='Verification incomplete. Start again in {{next_request_time}} {{display_time}}'
                     values={{
                         next_request_time:
-                            next_request_time < 60
-                                ? localize(`${next_request_time} seconds`)
-                                : localize(`${next_request_time / 60} minutes`),
+                            next_request_time < 60 ? next_request_time : Math.round(next_request_time / 60),
+                        display_time: next_request_time < 60 ? localize('seconds') : localize('minutes'),
                     }}
                 />
             );
-        } else if (is_phone_number_editted) {
-            return <Localize i18n_default_text='Save your changes before verifying your phone number.' />;
-        } else if (is_phone_number_empty) {
-            return <Localize i18n_default_text='Save your phone number before verifying.' />;
+        } else if (is_phone_number_editted || is_phone_number_empty) {
+            return <Localize i18n_default_text='Save changes to enable verification.' />;
         }
     };
 

@@ -37,8 +37,8 @@ const VerificationLinkExpiredModal = ({
         let sendNewLinkTimer = '';
         if (next_request_time) {
             next_request_time < 60
-                ? (sendNewLinkTimer = localize(` in ${next_request_time}s`))
-                : (sendNewLinkTimer = localize(` in ${next_request_time && Math.round(next_request_time / 60)}m`));
+                ? (sendNewLinkTimer = `${localize(' in ')}${next_request_time}s`)
+                : (sendNewLinkTimer = `${localize(' in ')}${Math.round(next_request_time / 60)}m`);
         } else {
             sendNewLinkTimer = '';
         }

@@ -85,10 +85,8 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
         let resendPhoneOtpTimer = '';
         if (next_request_time) {
             next_request_time < 60
-                ? (resendPhoneOtpTimer = localize(`${next_request_time} seconds`))
-                : (resendPhoneOtpTimer = localize(
-                      `${next_request_time && Math.round(next_request_time / 60)} minutes`
-                  ));
+                ? (resendPhoneOtpTimer = next_request_time + localize(' seconds'))
+                : (resendPhoneOtpTimer = Math.round(next_request_time / 60) + localize(' minutes'));
         } else {
             resendPhoneOtpTimer = '';
         }

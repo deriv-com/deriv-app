@@ -42,8 +42,8 @@ const ResendCodeTimer = ({
         let resendCodeTimer = '';
         if (next_request_time) {
             next_request_time < 60
-                ? (resendCodeTimer = localize(` in ${next_request_time}s`))
-                : (resendCodeTimer = localize(` in ${next_request_time && Math.round(next_request_time / 60)}m`));
+                ? (resendCodeTimer = `${localize(' in ')}${next_request_time}s`)
+                : (resendCodeTimer = `${localize(' in ')}${Math.round(next_request_time / 60)}m`);
         } else {
             resendCodeTimer = '';
         }
@@ -55,8 +55,8 @@ const ResendCodeTimer = ({
         let didntGetACodeTimer = '';
         if (next_request_time) {
             next_request_time < 60
-                ? (didntGetACodeTimer = localize(` (${next_request_time}s)`))
-                : (didntGetACodeTimer = localize(` (${next_request_time && Math.round(next_request_time / 60)}m)`));
+                ? (didntGetACodeTimer = ` (${next_request_time}s)`)
+                : (didntGetACodeTimer = ` (${next_request_time && Math.round(next_request_time / 60)}m)`);
         } else {
             didntGetACodeTimer = '';
         }

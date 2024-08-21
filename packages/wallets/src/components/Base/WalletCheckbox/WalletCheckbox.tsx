@@ -2,7 +2,7 @@ import React, { CSSProperties, forwardRef, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { TGenericSizes } from 'src/types';
 import { LegacyCheckboxOnIcon } from '@deriv/quill-icons';
-import { WalletText } from '../WalletText';
+import { Text } from '@deriv-com/ui';
 import './WalletCheckbox.scss';
 
 type TCheckBoxProps = Omit<React.HTMLProps<HTMLInputElement>, 'label' | 'value'> & {
@@ -95,9 +95,9 @@ const WalletCheckbox = forwardRef<HTMLInputElement, TCheckBoxProps>(
                         )}
                     </span>
                 </span>
-                <WalletText lineHeight={labelLineHeight} size={labelFontSize} weight={labelFontWeight}>
+                <Text lineHeight={labelLineHeight} size={labelFontSize} weight={labelFontWeight}>
                     {label}
-                </WalletText>
+                </Text>
             </label>
         );
     }

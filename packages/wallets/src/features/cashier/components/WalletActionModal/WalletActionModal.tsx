@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button } from '@deriv-com/ui';
-import { ModalWrapper, WalletText } from '../../../../components/Base';
+import { Button, Text } from '@deriv-com/ui';
+import { ModalWrapper } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import './WalletActionModal.scss';
 
@@ -26,12 +26,12 @@ const WalletActionModal: React.FC<TWalletActionModal> = ({
     return (
         <ModalWrapper hideCloseButton={hideCloseButton}>
             <div className='wallets-action-modal'>
-                <WalletText lineHeight={isMobile ? 'md' : 'xl'} weight='bold'>
+                <Text lineHeight={isMobile ? 'md' : 'xl'} weight='bold'>
                     {title}
-                </WalletText>
-                <WalletText lineHeight={isMobile ? 'sm' : 'lg'} size='sm'>
+                </Text>
+                <Text lineHeight={isMobile ? 'sm' : 'lg'} size='sm'>
                     {description}
-                </WalletText>
+                </Text>
                 {!!actionButtonsOptions.length && (
                     <div className='wallets-action-modal__buttons-container'>
                         {actionButtonsOptions.map(action => (

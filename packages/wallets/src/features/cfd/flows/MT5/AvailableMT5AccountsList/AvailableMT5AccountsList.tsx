@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
-import { TradingAccountCard, WalletText } from '../../../../../components';
+import { Text } from '@deriv-com/ui';
+import { TradingAccountCard } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
 import { getMarketTypeDetails } from '../../../constants';
@@ -39,8 +40,8 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
             }
         >
             <div className='wallets-available-mt5__details'>
-                <WalletText size='sm'>{title}</WalletText>
-                <WalletText size='xs'>{description}</WalletText>
+                <Text size='sm'>{title}</Text>
+                <Text size='xs'>{description}</Text>
             </div>
         </TradingAccountCard>
     );

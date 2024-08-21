@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
+import { Text } from '@deriv-com/ui';
 import { TradingAccountCard, WalletError } from '../../../../../components';
-import { WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { PlatformDetails } from '../../../constants';
 import { CTraderSuccessModal } from '../../../modals/CTraderSuccessModal';
@@ -66,8 +66,8 @@ const AvailableCTraderAccountsList: React.FC = () => {
             }
         >
             <div className='wallets-available-ctrader__details'>
-                <WalletText size='sm'>{PlatformDetails.ctrader.title}</WalletText>
-                <WalletText size='xs'>CFDs on financial and derived instruments with copy trading.</WalletText>
+                <Text size='sm'>{PlatformDetails.ctrader.title}</Text>
+                <Text size='xs'>CFDs on financial and derived instruments with copy trading.</Text>
             </div>
         </TradingAccountCard>
     );

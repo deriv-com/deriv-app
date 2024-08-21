@@ -2,7 +2,8 @@ import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { useAuthorize, useJurisdictionStatus } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
-import { InlineMessage, WalletText } from '../../../../../components/Base';
+import { Text } from '@deriv-com/ui';
+import { InlineMessage } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import useDevice from '../../../../../hooks/useDevice';
@@ -59,30 +60,30 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         >
             <div className='wallets-added-mt5__details'>
                 <div className='wallets-added-mt5__details-title'>
-                    <WalletText size='sm'>{title}</WalletText>
+                    <Text size='sm'>{title}</Text>
                     {!activeWallet?.is_virtual && (
                         <div className='wallets-added-mt5__details-title-landing-company'>
-                            <WalletText color='black' size={isMobile ? 'sm' : 'xs'}>
+                            <Text color='black' size={isMobile ? 'sm' : 'xs'}>
                                 {account.landing_company_short?.toUpperCase()}
-                            </WalletText>
+                            </Text>
                         </div>
                     )}
                 </div>
                 {!(jurisdictionStatus.is_failed || jurisdictionStatus.is_pending) && (
-                    <WalletText size='sm' weight='bold'>
+                    <Text size='sm' weight='bold'>
                         {account.display_balance}
-                    </WalletText>
+                    </Text>
                 )}
 
-                <WalletText as='p' size='xs'>
+                <Text as='p' size='xs'>
                     {account.display_login}
-                </WalletText>
+                </Text>
                 {jurisdictionStatus.is_pending && (
                     <div className='wallets-added-mt5__details-badge'>
                         <InlineMessage size='xs' type='warning' variant='outlined'>
-                            <WalletText color='warning' size='2xs' weight='bold'>
+                            <Text color='warning' size='2xs' weight='bold'>
                                 Pending verification
-                            </WalletText>
+                            </Text>
                         </InlineMessage>
                     </div>
                 )}
@@ -90,7 +91,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 {jurisdictionStatus.is_failed && (
                     <div className='wallets-added-mt5__details-badge'>
                         <InlineMessage size='xs' type='error' variant='outlined'>
-                            <WalletText color='error' size='2xs' weight='bold'>
+                            <Text color='error' size='2xs' weight='bold'>
                                 Verification failed.{' '}
                                 <a
                                     onClick={() =>
@@ -106,7 +107,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                                 >
                                     Why?
                                 </a>
-                            </WalletText>
+                            </Text>
                         </InlineMessage>
                     </div>
                 )}

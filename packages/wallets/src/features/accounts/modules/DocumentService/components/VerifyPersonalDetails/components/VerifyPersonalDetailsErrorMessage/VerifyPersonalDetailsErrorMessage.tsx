@@ -1,7 +1,8 @@
 import React from 'react';
 import { TSocketError } from '@deriv/api-v2/types';
 import { Localize } from '@deriv-com/translations';
-import { InlineMessage, WalletText } from '../../../../../../../../components';
+import { Text } from '@deriv-com/ui';
+import { InlineMessage } from '../../../../../../../../components';
 import useDevice from '../../../../../../../../hooks/useDevice';
 
 type TErrorMessageProps = {
@@ -16,7 +17,7 @@ const VerifyPersonalDetailsErrorMessage: React.FC<TErrorMessageProps> = ({ error
     if (error === 'DuplicateAccount') {
         return (
             <InlineMessage size={!isDesktop ? 'md' : 'sm'} type='error'>
-                <WalletText as='span'>
+                <Text as='span'>
                     <Localize
                         components={[
                             <button
@@ -27,16 +28,16 @@ const VerifyPersonalDetailsErrorMessage: React.FC<TErrorMessageProps> = ({ error
                         ]}
                         i18n_default_text='An account with these details already exists. Please make sure the details you entered are correct as only one real account is allowed per client. If this is a mistake, contact us via <0>live chat</0>.'
                     />
-                </WalletText>
+                </Text>
             </InlineMessage>
         );
     }
 
     return (
         <InlineMessage>
-            <WalletText as='span'>
+            <Text as='span'>
                 <Localize i18n_default_text='Sorry, an internal error occurred. Hit the above checkbox to try again.' />
-            </WalletText>
+            </Text>
         </InlineMessage>
     );
 };

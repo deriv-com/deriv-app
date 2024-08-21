@@ -1,5 +1,5 @@
 import React from 'react';
-import { WalletText } from '../../../../../../../../components';
+import { Text } from '@deriv-com/ui';
 import { TDocumentRule } from '../../../../utils';
 import './DocumentRuleTile.scss';
 
@@ -7,9 +7,9 @@ const DocumentRuleTile: React.FC<React.PropsWithChildren<TDocumentRule>> = ({ de
     return (
         <div className='wallets-document-rule-tile'>
             {icon}
-            <WalletText align='center' size='2xs'>
+            <Text align='center' size='2xs'>
                 {description}
-            </WalletText>
+            </Text>
         </div>
     );
 };

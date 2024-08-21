@@ -1,6 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv-com/translations';
-import { InlineMessage, WalletText } from '../../../../../../components';
+import { Text } from '@deriv-com/ui';
+import { InlineMessage } from '../../../../../../components';
 
 const NeedHelpMessage = () => {
     const onClickLiveChat = () => window.LC_API.open_chat_window();
@@ -8,7 +9,7 @@ const NeedHelpMessage = () => {
     return (
         <div className='wallets-tax-information__message'>
             <InlineMessage type='information' variant='contained'>
-                <WalletText size='xs'>
+                <Text size='xs'>
                     <Localize
                         components={[
                             <button
@@ -19,7 +20,7 @@ const NeedHelpMessage = () => {
                         ]}
                         i18n_default_text='Need help with tax info? Let us know via <0>live chat</0>.'
                     />
-                </WalletText>
+                </Text>
             </InlineMessage>
         </div>
     );

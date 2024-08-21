@@ -5,7 +5,8 @@ import moment from 'moment';
 import { TSocketError } from '@deriv/api-v2/types';
 import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { DatePicker, FormField, InlineMessage, WalletText } from '../../../../../../components';
+import { Text } from '@deriv-com/ui';
+import { DatePicker, FormField, InlineMessage } from '../../../../../../components';
 import { VerifyPersonalDetailsErrorMessage } from './components';
 import { TVerifyPersonalDetailsValues } from './types';
 import {
@@ -42,12 +43,12 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
     return (
         <div className='wallets-verify-personal-details'>
             <InlineMessage>
-                <WalletText size='sm'>
+                <Text size='sm'>
                     <Localize
                         components={[<strong key={0} />]}
                         i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as it appears on your identity document.'
                     />
-                </WalletText>
+                </Text>
             </InlineMessage>
             <div className='wallets-verify-personal-details__body'>
                 <div className='wallets-verify-personal-details__content'>
@@ -83,9 +84,9 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
                     />
                 </div>
                 <div className='wallets-verify-personal-details__sidenote'>
-                    <WalletText size='xs' weight='bold'>
+                    <Text size='xs' weight='bold'>
                         <Localize i18n_default_text='Example' />
-                    </WalletText>
+                    </Text>
                     <DerivLightNameDobPoiIcon height={195} width={288} />
                 </div>
             </div>
@@ -103,9 +104,9 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
                     validate={(values: boolean) => getValidateArePersonalDetailsVerified(values, localize)}
                 />
                 <label htmlFor='idv-checkbox'>
-                    <WalletText lineHeight='2xs' size='sm'>
+                    <Text lineHeight='2xs' size='sm'>
                         <Localize i18n_default_text='I confirm that the name and date of birth above match my chosen identity document' />
-                    </WalletText>
+                    </Text>
                 </label>
             </div>
             {error && <VerifyPersonalDetailsErrorMessage error={error?.code} />}

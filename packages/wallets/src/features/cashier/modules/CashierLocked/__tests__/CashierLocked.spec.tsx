@@ -136,7 +136,7 @@ describe('CashierLocked', () => {
     });
 
     it('should render locked screen for crypto wallet', () => {
-        const mockCryptoWalletData = { ...mockActiveWalletData, is_crypto: true, currency: 'BTC' };
+        const mockCryptoWalletData = { ...mockActiveWalletData, currency: 'BTC', is_crypto: true };
         const mockLockedStatusData = { is_cashier_locked: true, is_deposit_locked: false, is_withdrawal_locked: false };
 
         (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: mockCryptoWalletData });

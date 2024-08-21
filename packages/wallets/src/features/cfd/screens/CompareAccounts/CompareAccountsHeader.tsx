@@ -33,6 +33,7 @@ const CompareAccountsHeader = ({ isDemo, isEuRegion }: TCompareAccountsHeader) =
             </div>
             <LegacyClose2pxIcon
                 className='wallets-compare-accounts-header__close-icon'
+                data-testid='dt_wallets_compare_accounts_header_close_icon'
                 iconSize='xs'
                 onClick={() => {
                     history.push('/');

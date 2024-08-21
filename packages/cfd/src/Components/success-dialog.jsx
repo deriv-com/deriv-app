@@ -1,12 +1,9 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
-import { Button, Icon, Modal, Text } from '@deriv/components';
+import { Button, Modal, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-
-const Checkmark = ({ className }) => (
-    <Icon className={className} icon='IcCheckmarkCircle' custom_color='var(--status-success)' size={24} />
-);
+import { LegacyWonIcon } from '@deriv/quill-icons';
 
 const SuccessDialog = ({
     classNameMessage = '',
@@ -45,7 +42,7 @@ const SuccessDialog = ({
                     })}
                 >
                     {icon}
-                    <Checkmark className='bottom-right-overlay' />
+                    <LegacyWonIcon className='bottom-right-overlay' />
                 </div>
                 {!heading && (
                     <Text as='h2' weight='bold' size='s' className='dc-modal-header__title'>

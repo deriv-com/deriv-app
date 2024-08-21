@@ -112,7 +112,10 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
         isClosedTab ? onClosedTabMount(true) : onOpenTabMount();
 
         return () => {
-            isClosedTab && onClosedTabUnmount();
+            if (isClosedTab) {
+                clearTable();
+                onClosedTabUnmount();
+            }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

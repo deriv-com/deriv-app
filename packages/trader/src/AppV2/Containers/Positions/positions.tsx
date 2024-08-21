@@ -7,10 +7,12 @@ import { useModulesStore } from 'Stores/useModulesStores';
 import { setPositionURLParams, TAB_NAME } from 'AppV2/Utils/positions-utils';
 import BottomNav from 'AppV2/Components/BottomNav';
 import PositionsContent from './positions-content';
+import { useHistory } from 'react-router-dom';
 
 const Positions = observer(() => {
     const [hasButtonsDemo, setHasButtonsDemo] = React.useState(true);
     const [activeTab, setActiveTab] = React.useState(getPositionsV2TabIndexFromURL());
+    const history = useHistory();
 
     const {
         positions: { onUnmount },
@@ -36,7 +38,11 @@ const Positions = observer(() => {
 
     React.useEffect(() => {
         setPositionURLParams(tabs[activeTab].id);
-        return () => onUnmount();
+
+        return () => {
+            const is_contract_details = history.location.pathname.startsWith('/contract/');
+            if (!is_contract_details) onUnmount();
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

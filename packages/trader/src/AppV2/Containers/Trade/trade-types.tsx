@@ -180,8 +180,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                     </Chip.Selectable>
                 ))}
             {!saved_pinned_trade_types[0]?.items.some((item: TItem) => item.id === contract_type) &&
-                saved_other_trade_types.length > 0 &&
-                saved_other_trade_types[0].items
+                saved_other_trade_types[0]?.items
                     .filter((item: TItem) => item.id === contract_type)
                     .map(({ title, id }: TItem) => (
                         <Chip.Selectable key={id} onChipSelect={onTradeTypeSelect} selected={isTradeTypeSelected(id)}>
@@ -197,7 +196,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                 <ActionSheet.Portal>
                     <ActionSheet.Header
                         title={<Localize i18n_default_text='Trade types' />}
-                        icon={!is_editing && <Guide show_guide_for_selected_contract />}
+                        icon={!is_editing && <Guide />}
                     />
                     <ActionSheet.Content className='mock-action-sheet--content'>
                         {is_editing ? (

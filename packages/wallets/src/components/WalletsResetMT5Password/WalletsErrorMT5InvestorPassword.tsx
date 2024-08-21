@@ -1,32 +1,32 @@
 import React from 'react';
 import { DerivLightIcDxtradePasswordIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
+import { ActionScreen } from '@deriv-com/ui';
 import useDevice from '../../hooks/useDevice';
 import { ModalStepWrapper } from '../Base';
-import { WalletsActionScreen } from '../WalletsActionScreen';
 import './WalletsErrorMT5InvestorPassword.scss';
 
 type TProps = {
+    actionButtons?: React.ComponentProps<typeof ActionScreen>['actionButtons'];
     errorMessage: string;
-    renderButtons?: React.ComponentProps<typeof WalletsActionScreen>['renderButtons'];
     title: string;
 };
 
-const WalletsErrorMT5InvestorPassword: React.FC<TProps> = ({ errorMessage, renderButtons, title }) => {
+const WalletsErrorMT5InvestorPassword: React.FC<TProps> = ({ actionButtons, errorMessage, title }) => {
     const { isMobile } = useDevice();
     const { localize } = useTranslations();
 
     return (
         <ModalStepWrapper
-            renderFooter={isMobile ? renderButtons : undefined}
+            renderFooter={isMobile ? () => actionButtons : undefined}
             shouldHideFooter={!isMobile}
             title={localize('Reset {{title}} password', { title })}
         >
             <div className='wallets-error-mt5-investor-password'>
-                <WalletsActionScreen
+                <ActionScreen
+                    actionButtons={!isMobile ? actionButtons : undefined}
                     description={errorMessage}
                     icon={<DerivLightIcDxtradePasswordIcon height={100} width={100} />}
-                    renderButtons={!isMobile ? renderButtons : undefined}
                 />
             </div>
         </ModalStepWrapper>

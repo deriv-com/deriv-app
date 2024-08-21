@@ -40,9 +40,9 @@ describe('TransferNotAvailable', () => {
         expect(screen.getByTestId('child-component')).toBeInTheDocument();
     });
 
-    it('renders WalletsActionScreen when getMessage returns a state', () => {
+    it('renders action screen when getMessage returns a state', () => {
         const mockState = {
-            actionButton: () => <button>Action</button>,
+            actionButton: <button>Action</button>,
             description: 'Test Description',
             title: 'Test Title',
         };

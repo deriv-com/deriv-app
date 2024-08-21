@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import {
     APIProvider,
     useActiveLinkedToTradingAccount,
+    useActiveWalletAccount,
     useCreateNewRealAccount,
     useInvalidateQuery,
 } from '@deriv/api-v2';
@@ -12,7 +13,6 @@ import useDevice from '../../../hooks/useDevice';
 import { ModalProvider } from '../../ModalProvider';
 import { DerivAppsGetAccount } from '../DerivAppsGetAccount';
 
-const mockShow = jest.fn();
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
     useActiveLinkedToTradingAccount: jest.fn(() => ({ isLoading: false })),
@@ -22,9 +22,11 @@ jest.mock('@deriv/api-v2', () => ({
     useCreateNewRealAccount: jest.fn(() => ({ isLoading: false })),
     useInvalidateQuery: jest.fn(() => Promise.resolve({})),
 }));
+
 jest.mock('../../../hooks/useSyncLocalStorageClientAccounts', () =>
     jest.fn(() => ({ addTradingAccountToLocalStorage: jest.fn(() => Promise.resolve({})) }))
 );
+
 jest.mock('../../../hooks/useAllBalanceSubscription', () =>
     jest.fn(() => ({
         data: {
@@ -36,7 +38,10 @@ jest.mock('../../../hooks/useAllBalanceSubscription', () =>
         isLoading: false,
     }))
 );
+
 jest.mock('../../../hooks/useDevice', () => jest.fn(() => ({ isDesktop: false })));
+
+const mockShow = jest.fn();
 jest.mock('../../ModalProvider', () => ({
     ...jest.requireActual('../../ModalProvider'),
     useModal: jest.fn(() => ({
@@ -66,10 +71,12 @@ describe('DerivAppsGetAccount', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
+
     it('renders the component', () => {
         render(<DerivAppsGetAccount />, { wrapper });
         expect(screen.getByRole('button', { name: 'Get' })).toBeInTheDocument();
     });
+
     it('calls createTradingAccount function when the Get button is clicked', async () => {
         const mockMutateAsync = jest.fn(() => Promise.resolve({ new_account_real: 'new_account_real' }));
         const mockInvalidate = jest.fn();
@@ -82,6 +89,7 @@ describe('DerivAppsGetAccount', () => {
         await waitFor(() => expect(mockMutateAsync).toBeCalled());
         await waitFor(() => expect(mockInvalidate).toBeCalledWith('account_list'));
     });
+
     it('calls show function when the Get button is clicked and new_account_real is defined on mobile', () => {
         const mockMutateAsync = jest.fn(() => Promise.resolve({ new_account_real: 'new_account_real' }));
         (mockUseCreateNewRealAccount as jest.Mock).mockReturnValue({
@@ -98,6 +106,7 @@ describe('DerivAppsGetAccount', () => {
         expect(screen.getByRole('button', { name: 'Maybe later' })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Transfer funds' })).toBeInTheDocument();
     });
+
     it('calls show function when the Get button is clicked and new_account_real is defined on desktop', () => {
         const mockMutateAsync = jest.fn(() => Promise.resolve({ new_account_real: 'new_account_real' }));
         (mockUseCreateNewRealAccount as jest.Mock).mockReturnValue({
@@ -113,5 +122,17 @@ describe('DerivAppsGetAccount', () => {
         render(args, { wrapper });
         expect(screen.getByRole('button', { name: 'Maybe later' })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Transfer funds' })).toBeInTheDocument();
+    });
+
+    it('does not create a new account when the active wallet is virtual', async () => {
+        const mockMutateAsync = jest.fn();
+        (mockUseCreateNewRealAccount as jest.Mock).mockReturnValue({ isLoading: false, mutateAsync: mockMutateAsync });
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({
+            data: { is_virtual: true },
+        });
+        render(<DerivAppsGetAccount />, { wrapper });
+        const button = screen.getByRole('button', { name: 'Get' });
+        userEvent.click(button);
+        await waitFor(() => expect(mockMutateAsync).not.toBeCalled());
     });
 });

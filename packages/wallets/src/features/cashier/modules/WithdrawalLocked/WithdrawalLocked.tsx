@@ -9,8 +9,7 @@ import {
     useCurrencyConfig,
 } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
-import { Loader } from '@deriv-com/ui';
-import { WalletsActionScreen } from '../../../../components';
+import { ActionScreen, Loader } from '@deriv-com/ui';
 import getWithdrawalLockedDesc, { getWithdrawalLimitReachedDesc } from './WithdrawalLockedContent';
 import './WithdrawalLocked.scss';
 
@@ -55,7 +54,7 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     if (withdrawalLimitReached) {
         return (
             <div className='wallets-withdrawal-locked'>
-                <WalletsActionScreen
+                <ActionScreen
                     description={getWithdrawalLimitReachedDesc({
                         askFinancialRiskApproval,
                         poaNeedsVerification,
@@ -77,7 +76,7 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     if (isWithdrawalLocked) {
         return (
             <div className='wallets-withdrawal-locked'>
-                <WalletsActionScreen
+                <ActionScreen
                     description={getWithdrawalLockedDesc({
                         askAuthenticate,
                         askFixDetails,

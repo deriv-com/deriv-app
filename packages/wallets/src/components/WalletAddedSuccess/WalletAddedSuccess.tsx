@@ -23,21 +23,19 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
     const { localize } = useTranslations();
     const description = localize('Make a deposit into your new Wallet.');
     const title = useMemo(() => localize('Your {{currency}} wallet is ready', { currency }), [currency, localize]);
-    const renderFooter = useCallback(
-        () => (
-            <div className='wallets-add-more__success-footer'>
-                <WalletButtonGroup isFlex isFullWidth>
-                    <WalletButton onClick={onSecondaryButtonClick} variant='outlined'>
-                        <Localize i18n_default_text='Maybe later' />
-                    </WalletButton>
-                    <WalletButton onClick={onPrimaryButtonClick}>
-                        <Localize i18n_default_text='Deposit' />
-                    </WalletButton>
-                </WalletButtonGroup>
-            </div>
-        ),
-        [onPrimaryButtonClick, onSecondaryButtonClick]
+    const renderFooter = (
+        <div className='wallets-add-more__success-footer'>
+            <WalletButtonGroup isFlex isFullWidth>
+                <WalletButton onClick={onSecondaryButtonClick} variant='outlined'>
+                    <Localize i18n_default_text='Maybe later' />
+                </WalletButton>
+                <WalletButton onClick={onPrimaryButtonClick}>
+                    <Localize i18n_default_text='Deposit' />
+                </WalletButton>
+            </WalletButtonGroup>
+        </div>
     );
+
     const renderIcon = useCallback(
         () => (
             <div className='wallets-add-more__success-card'>
@@ -49,7 +47,7 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
 
     if (isMobile)
         return (
-            <ModalStepWrapper renderFooter={renderFooter} title=''>
+            <ModalStepWrapper renderFooter={() => renderFooter} title=''>
                 <WalletSuccess description={description} renderIcon={renderIcon} title={title} />
             </ModalStepWrapper>
         );
@@ -57,8 +55,8 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
     return (
         <ModalWrapper hideCloseButton>
             <WalletSuccess
+                actionButtons={renderFooter}
                 description={description}
-                renderButtons={renderFooter}
                 renderIcon={renderIcon}
                 title={title}
             />

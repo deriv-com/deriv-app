@@ -79,12 +79,12 @@ const DerivAppsGetAccount: React.FC = () => {
                     shouldHideHeader={isDesktop}
                 >
                     <CFDSuccess
+                        actionButtons={<DerivAppsSuccessFooter />}
                         description={localize(
                             'Transfer funds from your {{walletCurrencyType}} Wallet to your Options account to start trading.',
                             { walletCurrencyType: activeWallet?.wallet_currency_type }
                         )}
                         displayBalance={displayBalance}
-                        renderButton={() => <DerivAppsSuccessFooter />}
                         title={localize('Your Options account is ready')}
                     />
                 </ModalStepWrapper>,

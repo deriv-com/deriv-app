@@ -128,13 +128,11 @@ const TakeProfitAndStopLossInput = ({
             if (echo_req.contract_type === CONTRACT_TYPES.MULTIPLIER.DOWN) {
                 return;
             }
-            if (!is_enabled || error?.message) {
+            if (!is_enabled) {
                 WS.forget(subscription?.id);
                 return;
             }
-            if (subscription?.id) {
-                subscription_id_ref.current = subscription?.id;
-            }
+            if (subscription?.id) subscription_id_ref.current = subscription?.id;
 
             const error_details_field = is_take_profit_input ? 'take_profit' : 'stop_loss';
             const new_error = error?.details?.field === error_details_field ? error?.message : '';
@@ -143,6 +141,7 @@ const TakeProfitAndStopLossInput = ({
                 field_name: is_take_profit_input ? 'tp_error_text' : 'sl_error_text',
                 new_value: new_error,
             });
+            if (error?.message) WS.forget(subscription?.id);
 
             // if (
             //     isMounted() &&

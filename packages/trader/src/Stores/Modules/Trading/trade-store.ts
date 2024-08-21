@@ -144,10 +144,6 @@ export type TWheelPickerInitialValues = {
     growth_rate?: number;
     strike?: string | number;
     multiplier?: number;
-    take_profit?: string;
-    has_take_profit?: boolean;
-    stop_loss?: string;
-    has_stop_loss?: boolean;
 };
 type TContractDataForGTM = Omit<Partial<PriceProposalRequest>, 'cancellation' | 'limit_order'> &
     ReturnType<typeof getProposalInfo> & {

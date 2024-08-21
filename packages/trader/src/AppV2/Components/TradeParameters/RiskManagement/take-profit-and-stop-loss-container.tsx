@@ -12,7 +12,6 @@ type TTakeProfitAndStopLossContainerProps = {
     should_show_deal_cancellation?: boolean;
 };
 
-// TODO: remove add to loc storage
 const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProfitAndStopLossContainerProps) => {
     const {
         has_take_profit,

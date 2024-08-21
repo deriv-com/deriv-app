@@ -14,7 +14,7 @@ type TWithdrawalStatus = Exclude<TStatus, TDepositStatus>;
 
 // Since BE sends the `status_code` for both `deposit` and `withdrawal` in the same field,
 // Here we modify the BE type to make `status_code` type more specific to the `transaction_type` field.
-type TModifiedTransaction = Omit<TTransaction, 'status_code' | 'transaction_type'> &
+export type TModifiedTransaction = Omit<TTransaction, 'status_code' | 'transaction_type'> &
     (
         | { statusCode: TDepositStatus; transactionType: 'deposit' }
         | { statusCode: TWithdrawalStatus; transactionType: 'withdrawal' }

@@ -25,14 +25,14 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
 
     const { addSnackbar } = useSnackbar();
 
-    const [tp_error_text, setTPErrorText] = React.useState(validation_errors.take_profit[0] ?? '');
+    const [tp_error_text, setTPErrorText] = React.useState(validation_errors?.take_profit?.[0] ?? '');
     const tp_subscription_id_ref = React.useRef<string>();
-    const tp_ref = React.useRef({ has_take_profit, take_profit, tp_error_text: validation_errors.take_profit[0] });
+    const tp_ref = React.useRef({ has_take_profit, take_profit, tp_error_text: validation_errors?.take_profit?.[0] });
     const is_be_response_tp_received_ref = React.useRef(false);
 
-    const [sl_error_text, setSLErrorText] = React.useState(validation_errors.stop_loss[0] ?? '');
+    const [sl_error_text, setSLErrorText] = React.useState(validation_errors?.stop_loss?.[0] ?? '');
     const sl_subscription_id_ref = React.useRef<string>();
-    const sl_ref = React.useRef({ has_stop_loss, stop_loss, sl_error_text: validation_errors.stop_loss[0] });
+    const sl_ref = React.useRef({ has_stop_loss, stop_loss, sl_error_text: validation_errors?.stop_loss?.[0] });
     const is_be_response_sl_received_ref = React.useRef(false);
 
     const onSave = () => {

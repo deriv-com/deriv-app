@@ -99,8 +99,20 @@ describe('TradeParameters', () => {
         expect(screen.getAllByTestId(data_test)).toHaveLength(5);
     });
 
-    it('should render correct trade params for Multipliers', () => {
+    it('should render correct trade params for Multipliers if has_cancellation === false', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.MULTIPLIER;
+        render(mockTradeParameters());
+
+        expect(screen.getByText(TRADE_PARAMS.MULTIPLIER)).toBeInTheDocument();
+        expect(screen.getByText(TRADE_PARAMS.STAKE)).toBeInTheDocument();
+        expect(screen.getByText(TRADE_PARAMS.RISK_MANAGEMENT)).toBeInTheDocument();
+        expect(screen.queryByText(TRADE_PARAMS.MULTIPLIERS_DEAL_CANCELLATION_INFORMATION)).not.toBeInTheDocument();
+        expect(screen.getAllByTestId(data_test)).toHaveLength(3);
+    });
+
+    it('should render correct trade params for Multipliers if has_cancellation === true', () => {
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.MULTIPLIER;
+        default_mock_store.modules.trade.has_cancellation = true;
         render(mockTradeParameters());
 
         expect(screen.getByText(TRADE_PARAMS.MULTIPLIER)).toBeInTheDocument();

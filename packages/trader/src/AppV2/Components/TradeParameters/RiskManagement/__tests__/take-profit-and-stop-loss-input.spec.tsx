@@ -4,11 +4,36 @@ import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import * as utils from 'AppV2/Utils/trade-params-utils';
+import { TTradeStore } from 'Types';
 import TraderProviders from '../../../../../trader-providers';
 import TakeProfitAndStopLossInput from '../take-profit-and-stop-loss-input';
 
-const take_profit_trade_param = 'Take profit';
+type TResponse = {
+    proposal: Record<string, unknown>;
+    echo_req: { contract_type: string };
+    subscription: Record<string, unknown>;
+    error?: Record<string, never> | { details: { field: string }; message: string };
+};
+
 const data_testid = 'dt_input_with_steppers';
+const acc_content = 'Note: Cannot be adjusted for ongoing accumulator contracts.';
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    WS: {
+        forget: jest.fn(),
+    },
+}));
+jest.mock('Stores/Modules/Trading/Helpers/preview-proposal', () => ({
+    ...jest.requireActual('Stores/Modules/Trading/Helpers/preview-proposal'),
+    requestPreviewProposal: (store: TTradeStore, fn: (param: TResponse) => void, new_store: Record<string, never>) =>
+        fn({
+            proposal: {},
+            echo_req: { contract_type: 'TURBOSLONG' },
+            subscription: { id: 'mock_id' },
+            error: {},
+        }),
+}));
 
 describe('TakeProfitAndStopLossInput', () => {
     let default_mock_store: ReturnType<typeof mockStore>,
@@ -17,10 +42,19 @@ describe('TakeProfitAndStopLossInput', () => {
     beforeEach(() => {
         default_mock_store = mockStore({
             modules: {
-                trade: { ...mockStore({}).modules.trade, currency: 'USD', validation_errors: { take_profit: [] } },
+                trade: {
+                    ...mockStore({}).modules.trade,
+                    currency: 'USD',
+                    validation_params: {
+                        TURBOSLONG: { take_profit: { min: '0.1', max: '100' }, stop_loss: { min: '0.1', max: '10' } },
+                    },
+                    contract_type: 'turboslong',
+                    trade_types: { TURBOSLONG: 'Turbos Long' },
+                    trade_type_tab: 'TURBOSLONG',
+                },
             },
         });
-        default_props = { classname: '', onActionSheetClose: jest.fn() };
+        default_props = { onActionSheetClose: jest.fn() };
     });
 
     afterEach(() => jest.clearAllMocks());
@@ -34,23 +68,33 @@ describe('TakeProfitAndStopLossInput', () => {
             </TraderProviders>
         );
 
-    it('should render component', () => {
+    it('should render component with correct data for take_profit type', () => {
         mockTakeProfitAndStopLossInput();
 
-        expect(screen.getByText(take_profit_trade_param)).toBeInTheDocument();
+        expect(screen.getByText('Take profit')).toBeInTheDocument();
+        expect(screen.getByTestId(data_testid)).toBeInTheDocument();
         expect(screen.getByText('Save')).toBeInTheDocument();
+        expect(screen.queryByText(acc_content)).not.toBeInTheDocument();
     });
 
-    it('should render alternative text content with definition for Accumulators', () => {
+    it('should render component with correct data for stop_loss type', () => {
+        default_props.type = 'stop_loss';
+        mockTakeProfitAndStopLossInput();
+
+        expect(screen.getByText('Stop loss')).toBeInTheDocument();
+        expect(screen.getByTestId(data_testid)).toBeInTheDocument();
+        expect(screen.getByText('Save')).toBeInTheDocument();
+        expect(screen.queryByText(acc_content)).not.toBeInTheDocument();
+    });
+
+    it('should render specific text content for cases with is_accumulator  === true', () => {
         default_mock_store.modules.trade.is_accumulator = true;
         mockTakeProfitAndStopLossInput();
 
-        userEvent.click(screen.getByText(take_profit_trade_param));
-
-        expect(screen.getByText('Note: Cannot be adjusted for ongoing accumulator contracts.')).toBeInTheDocument();
+        expect(screen.getByText(acc_content)).toBeInTheDocument();
     });
 
-    it('should call focusAndOpenKeyboard, when ToggleSwitch is switched to true.', async () => {
+    it('should call focusAndOpenKeyboard, when ToggleSwitch is switched to true.', () => {
         const mockFocusAndOpenKeyboard = jest.spyOn(utils, 'focusAndOpenKeyboard');
         mockTakeProfitAndStopLossInput();
 
@@ -69,45 +113,33 @@ describe('TakeProfitAndStopLossInput', () => {
         expect(mockFocusAndOpenKeyboard).toBeCalledTimes(1);
     });
 
-    it('should call onChange and onChangeMultiple if user click on Save button and there is no error', () => {
-        mockTakeProfitAndStopLossInput();
-
-        const toggle_switcher = screen.getAllByRole('button')[0];
-        userEvent.click(toggle_switcher);
-
-        const save_button = screen.getByText('Save');
-        userEvent.click(save_button);
-
-        expect(default_mock_store.modules.trade.onChange).toBeCalled();
-        expect(default_mock_store.modules.trade.onChangeMultiple).toBeCalled();
-    });
-
-    it('should show validation error if user click on Save button and there is an error', () => {
-        default_mock_store.modules.trade.validation_errors = { take_profit: ['validation error'] };
-        mockTakeProfitAndStopLossInput();
-
-        const toggle_switcher = screen.getAllByRole('button')[0];
-        userEvent.click(toggle_switcher);
-
-        const save_button = screen.getByText('Save');
-        userEvent.click(save_button);
-
-        expect(screen.getByText('validation error')).toBeInTheDocument();
-    });
-
-    it('should onChange function when user type new value', () => {
-        default_mock_store.modules.trade.take_profit = '5';
+    it('should render take profit overlay if ToggleSwitch was switched to false', () => {
         default_mock_store.modules.trade.has_take_profit = true;
+        default_mock_store.modules.trade.take_profit = '5';
+        mockTakeProfitAndStopLossInput();
+
+        expect(screen.queryByTestId('dt_take_profit_overlay')).not.toBeInTheDocument();
+        const toggle_switcher = screen.getAllByRole('button')[0];
+        userEvent.click(toggle_switcher);
+
+        expect(screen.getByTestId('dt_take_profit_overlay')).toBeInTheDocument();
+    });
+
+    it('should call onChangeMultiple with new typed values when user click on Save button, if there is no BE errors', () => {
+        default_mock_store.modules.trade.has_take_profit = true;
+        default_mock_store.modules.trade.take_profit = '5';
         mockTakeProfitAndStopLossInput();
 
         userEvent.clear(screen.getByTestId(data_testid));
-        expect(default_mock_store.modules.trade.onChange).toBeCalledWith({
-            target: { name: 'take_profit', value: '' },
-        });
-
         userEvent.type(screen.getByTestId(data_testid), '2');
-        expect(default_mock_store.modules.trade.onChange).toBeCalledWith({
-            target: { name: 'take_profit', value: '2' },
+
+        const save_button = screen.getByText('Save');
+        userEvent.click(save_button);
+
+        expect(default_mock_store.modules.trade.onChangeMultiple).toBeCalledWith({
+            has_cancellation: false,
+            has_take_profit: true,
+            take_profit: '2',
         });
     });
 });

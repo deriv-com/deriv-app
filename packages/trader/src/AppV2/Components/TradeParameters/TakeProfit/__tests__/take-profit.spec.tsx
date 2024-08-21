@@ -6,8 +6,10 @@ import ModulesProvider from 'Stores/Providers/modules-providers';
 import TraderProviders from '../../../../../trader-providers';
 import TakeProfit from '../take-profit';
 
-const take_profit_trade_param = 'Take profit';
-const data_testid = 'dt_input_with_steppers';
+jest.mock('../../RiskManagement/take-profit-and-stop-loss-input', () =>
+    jest.fn(() => <div>TakeProfitAndStopLossInput</div>)
+);
+jest.mock('AppV2/Components/TradeParamDefinition', () => jest.fn(() => <div>TradeParamDefinition</div>));
 
 describe('TakeProfit', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
@@ -16,7 +18,7 @@ describe('TakeProfit', () => {
         () =>
             (default_mock_store = mockStore({
                 modules: {
-                    trade: { ...mockStore({}).modules.trade, currency: 'USD', validation_errors: { take_profit: [] } },
+                    trade: { ...mockStore({}).modules.trade, currency: 'USD', has_take_profit: true, take_profit: '5' },
                 },
             }))
     );
@@ -32,56 +34,19 @@ describe('TakeProfit', () => {
             </TraderProviders>
         );
 
-    it('should render trade param with "Take profit" label and input with  value equal "-" if has_take_profit && take_profit === false', () => {
+    it('should render TP trade parameter with correct take profit from trade store', () => {
         mockTakeProfit();
 
-        const input = screen.getByRole('textbox');
-        expect(input).toBeInTheDocument();
-        expect(input).toHaveValue('-');
-        expect(screen.getByText(take_profit_trade_param)).toBeInTheDocument();
+        expect(screen.getByRole('textbox')).toHaveValue('5 USD');
+        expect(screen.getByText('Take profit')).toBeInTheDocument();
     });
 
-    it('should render trade param with "Take profit" label and input with value equal to take_profit if has_take_profit && take_profit', () => {
-        default_mock_store.modules.trade.take_profit = '5';
-        default_mock_store.modules.trade.has_take_profit = true;
+    it('should render TakeProfitAndStopLossInput and TradeParamDefinition when user clicks on TP input', () => {
         mockTakeProfit();
 
-        const input = screen.getByRole('textbox');
-        expect(input).toBeInTheDocument();
-        expect(input).toHaveValue('5 USD');
-        expect(screen.getByText(take_profit_trade_param)).toBeInTheDocument();
-    });
+        userEvent.click(screen.getByText('Take profit'));
 
-    it('should open ActionSheet with input, "Save" button and text content with definition if user clicks on trade param', () => {
-        mockTakeProfit();
-
-        expect(screen.queryByTestId('dt-actionsheet-overlay')).not.toBeInTheDocument();
-
-        userEvent.click(screen.getByText(take_profit_trade_param));
-
-        expect(screen.getByTestId('dt-actionsheet-overlay')).toBeInTheDocument();
-        const input = screen.getByTestId(data_testid);
-        expect(input).toBeInTheDocument();
-        expect(screen.getByText('Save')).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                'When your profit reaches or exceeds the set amount, your trade will be closed automatically.'
-            )
-        ).toBeInTheDocument();
-    });
-
-    it('should call onChange and onChangeMultiple on component mount if take_profit and has_take_profit values from trade-store are different from wheel_picker_initial_values', () => {
-        default_mock_store.modules.trade.take_profit = '10';
-        default_mock_store.modules.trade.has_take_profit = false;
-        default_mock_store.modules.trade.wheel_picker_initial_values = { take_profit: '5', has_take_profit: true };
-        mockTakeProfit();
-
-        expect(default_mock_store.modules.trade.onChange).toBeCalledWith({
-            target: { name: 'take_profit', value: '5' },
-        });
-        expect(default_mock_store.modules.trade.onChangeMultiple).toBeCalledWith({
-            has_take_profit: true,
-            has_cancellation: false,
-        });
+        expect(screen.getByText('TakeProfitAndStopLossInput')).toBeInTheDocument();
+        expect(screen.getByText('TradeParamDefinition')).toBeInTheDocument();
     });
 });

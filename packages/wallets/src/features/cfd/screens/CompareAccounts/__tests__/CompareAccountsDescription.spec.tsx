@@ -30,6 +30,7 @@ describe('CompareAccountsDescription', () => {
         isDemo: false,
         isEuRegion: false,
         marketType: 'financial' as const,
+        platform: 'mt5' as const,
         shortCode: 'SVG',
     };
 

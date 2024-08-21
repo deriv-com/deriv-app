@@ -2,7 +2,6 @@ import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { DBOT_TABS } from 'Constants/bot-contents';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import { faq_content } from '../../constants';
@@ -11,6 +10,8 @@ import FAQContent from '..';
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
+
+jest.useFakeTimers();
 
 describe('<FAQContent />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element;
@@ -29,12 +30,12 @@ describe('<FAQContent />', () => {
 
     it('should render FAQContent', () => {
         render(<FAQContent faq_list={faq_content} />, { wrapper });
-        expect(screen.getByTestId('id-faq__wrapper')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_faq_wrapper')).toBeInTheDocument();
     });
 
     it('should show content after clicking on accordion', () => {
         render(<FAQContent faq_list={faq_content} />, { wrapper });
-        const accordion = screen.getByTestId('id-accordion-test');
+        const accordion = screen.getByTestId('dt_accordion_test');
         userEvent.click(accordion);
         expect(accordion).toHaveTextContent('Deriv Bot is a web-based strategy builder for trading digital options.');
     });
@@ -55,19 +56,48 @@ describe('<FAQContent />', () => {
         expect(faq).toHaveStyle('--text-size: var(--text-size-xs);');
     });
 
-    it('should change tab to tutorials on clicking info panel', () => {
-        const mockHandleTabChange = jest.fn();
+    it('should call handleAccordionOpen and accordion item should open on dektop', () => {
+        mock_store.ui.is_desktop = true;
+        render(<FAQContent faq_list={faq_content} />, { wrapper });
 
-        render(<FAQContent faq_list={faq_content} handleTabChange={mockHandleTabChange} />, { wrapper });
+        const accordion = screen.getByTestId('dt_accordion_test');
+        expect(accordion).toBeInTheDocument();
 
-        // eslint-disable-next-line testing-library/no-node-access
-        const clickedElement = document.querySelectorAll('.faq__title')[1];
-        expect(clickedElement).toHaveTextContent('Where do I find the blocks I need?');
+        const faq = screen.getByText('What is Deriv Bot?');
+        userEvent.click(faq);
+        jest.advanceTimersByTime(5);
+        expect(
+            screen.getByText(
+                "Deriv Bot is a web-based strategy builder for trading digital options. It’s a platform where you can build your own automated trading bot using drag-and-drop 'blocks'."
+            )
+        ).toBeInTheDocument();
+    });
 
-        if (clickedElement) {
-            userEvent.click(clickedElement);
-            expect(mock_DBot_store.dashboard.faq_title).toBe('');
-            expect(mock_DBot_store?.dashboard.setActiveTab(DBOT_TABS.TUTORIAL));
-        }
+    it('should call handleAccordionOpen and accordion item should open on mobile', () => {
+        mock_store.ui.is_desktop = false;
+        render(<FAQContent faq_list={faq_content} />, { wrapper });
+
+        const accordion = screen.getByTestId('dt_accordion_test');
+        expect(accordion).toBeInTheDocument();
+
+        const faq = screen.getByText('What is Deriv Bot?');
+        userEvent.click(faq);
+        jest.advanceTimersByTime(5);
+        expect(
+            screen.getByText(
+                "Deriv Bot is a web-based strategy builder for trading digital options. It’s a platform where you can build your own automated trading bot using drag-and-drop 'blocks'."
+            )
+        ).toBeInTheDocument();
+    });
+
+    it('should call handleAccordionOpen and accordion item should close', () => {
+        render(<FAQContent faq_list={faq_content} />, { wrapper });
+
+        const accordion = screen.getByTestId('dt_accordion_test');
+        expect(accordion).toBeInTheDocument();
+
+        userEvent.click(accordion);
+        jest.advanceTimersByTime(5);
+        expect(screen.getByText('What is Deriv Bot?')).toBeInTheDocument();
     });
 });

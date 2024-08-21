@@ -39,8 +39,8 @@ const Redirect = observer(() => {
         const domain = getDomainName();
 
         // remove cookies after populating local storage
-        Cookies.remove('client.accounts', { domain });
-        Cookies.remove('active_loginid', { domain });
+        Cookies.remove('client.accounts', { domain, secure: true });
+        Cookies.remove('active_loginid', { domain, secure: true });
         window.location.reload();
     }
 

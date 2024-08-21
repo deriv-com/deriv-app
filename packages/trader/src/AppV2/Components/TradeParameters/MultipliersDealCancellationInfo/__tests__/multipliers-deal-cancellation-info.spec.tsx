@@ -1,5 +1,5 @@
 import React from 'react';
-import { getByTestId, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import TraderProviders from '../../../../../trader-providers';

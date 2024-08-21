@@ -25,6 +25,7 @@ type TTakeProfitAndStopLossInputProps = {
         stop_loss?: string;
         sl_error_text?: string;
     }>;
+    parent_is_be_response_received_ref?: React.MutableRefObject<boolean>;
     type?: 'take_profit' | 'stop_loss';
     should_wrap_with_actionsheet?: boolean;
 };
@@ -36,6 +37,7 @@ const TakeProfitAndStopLossInput = ({
     onActionSheetClose,
     parent_subscription_id_ref,
     parent_ref,
+    parent_is_be_response_received_ref,
     type = 'take_profit',
     should_wrap_with_actionsheet = true,
 }: TTakeProfitAndStopLossInputProps) => {
@@ -60,6 +62,10 @@ const TakeProfitAndStopLossInput = ({
 
     const subscription_id = React.useRef<string>();
     const subscription_id_ref = parent_subscription_id_ref || subscription_id;
+
+    // For handling cases when user clicks on Save btn before we got response from BE
+    const is_be_response_received = React.useRef(false);
+    const is_be_response_received_ref = parent_is_be_response_received_ref || is_be_response_received;
 
     const [is_enabled, setIsEnabled] = React.useState(is_take_profit_input ? has_take_profit : has_stop_loss);
     const [new_input_value, setNewInputValue] = React.useState(is_take_profit_input ? take_profit : stop_loss);
@@ -101,6 +107,7 @@ const TakeProfitAndStopLossInput = ({
     };
 
     const onToggleSwitch = (new_value: boolean) => {
+        is_be_response_received_ref.current = false;
         setIsEnabled(new_value);
         updateParentRef({ field_name: is_take_profit_input ? 'has_take_profit' : 'has_stop_loss', new_value });
 
@@ -126,10 +133,12 @@ const TakeProfitAndStopLossInput = ({
             // For multipliers we got 2 responses (Up and Down); the 2d one is not needed as it will be difficult to clean it when user clicks on Save btn
             if (echo_req.contract_type === CONTRACT_TYPES.MULTIPLIER.DOWN) {
                 WS.forget(subscription?.id);
+                is_be_response_received_ref.current = true;
                 return;
             }
             if (!is_enabled) {
                 WS.forget(subscription?.id);
+                is_be_response_received_ref.current = true;
                 return;
             }
             if (subscription?.id) subscription_id_ref.current = subscription?.id;
@@ -164,6 +173,7 @@ const TakeProfitAndStopLossInput = ({
                     return info;
                 });
             }
+            is_be_response_received_ref.current = true;
         };
 
         /* In order to get validation params for Multipliers when TP and SL are empty, 
@@ -191,6 +201,7 @@ const TakeProfitAndStopLossInput = ({
     }, [is_enabled, new_input_value]);
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        is_be_response_received_ref.current = false;
         let value = String(e.target.value).replace(',', '.');
         if (value.startsWith('.')) {
             value = value.replace(/^\./, '0.');
@@ -204,6 +215,8 @@ const TakeProfitAndStopLossInput = ({
     };
 
     const onSave = () => {
+        // Prevent from saving if user clicks before BE validation
+        if (!is_be_response_received_ref.current && is_enabled) return;
         WS.forget(subscription_id_ref.current);
 
         if (error_text && is_enabled) return;

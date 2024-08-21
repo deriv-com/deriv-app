@@ -30,7 +30,7 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
     mt5Group,
     transactionID,
 }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const marketType = getMarketType(mt5Group);
 
     return (
@@ -62,7 +62,7 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
                         {displayAccountName}
                     </WalletText>
                 </div>
-                {isMobile && (
+                {!isDesktop && (
                     <Text
                         as='div'
                         className='wallets-transactions-completed-row-account-details__transaction-id'
@@ -73,7 +73,7 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
                     </Text>
                 )}
             </div>
-            {!isMobile && (
+            {isDesktop && (
                 <div className='wallets-transactions-completed-row-account-details__column'>
                     <Text as='div' color='less-prominent' size='2xs'>
                         <Localize i18n_default_text='Ref. ID' />

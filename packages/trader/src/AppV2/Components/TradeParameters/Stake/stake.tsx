@@ -186,7 +186,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                             regex={/[^0-9.,]/g}
                             status={should_show_error && stake_error ? 'error' : 'neutral'}
                             textAlignment='center'
-                            type='number'
                             inputMode='decimal'
                             unitLeft={getCurrencyDisplayCode(currency)}
                             variant='fill'

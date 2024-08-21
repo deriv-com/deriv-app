@@ -56,7 +56,9 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
             }
             onClick={() => {
                 if (hasPlatformStatus)
-                    return show(<TradingPlatformStatusModal isServerMaintenance={isServerMaintenance} />);
+                    return show(<TradingPlatformStatusModal isServerMaintenance={isServerMaintenance} />, {
+                        defaultRootId: 'wallets_modal_root',
+                    });
                 if (platformStatus === TRADING_PLATFORM_STATUS.ACTIVE) {
                     return jurisdictionStatus.is_failed
                         ? show(<VerificationFailedModal selectedJurisdiction={account.landing_company_short} />, {

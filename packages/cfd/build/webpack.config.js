@@ -126,6 +126,7 @@ module.exports = function (env) {
                 '@deriv/api-types': '@deriv/api-types',
                 '@deriv/hooks': '@deriv/hooks',
                 '@deriv/stores': '@deriv/stores',
+                '@deriv/quill-icons': '@deriv/quill-icons',
                 formik: 'formik',
                 'react-transition-group': 'react-transition-group',
                 classnames: 'classnames',

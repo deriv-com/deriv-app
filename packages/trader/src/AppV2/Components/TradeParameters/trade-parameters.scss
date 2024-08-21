@@ -14,13 +14,6 @@
     }
 
     &__options {
-        &-info__container {
-            padding: 0 var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-400);
-
-            &--isHidden {
-                display: none;
-            }
-        }
         &__wrapper {
             display: flex;
             flex-direction: column;
@@ -68,6 +61,9 @@
                     width: unset;
                 }
             }
+        }
+        &-info-standalone {
+            padding: 0 var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-400);
         }
     }
 

@@ -10,21 +10,29 @@ import {
 } from '../trade-params-utils';
 
 describe('getTradeParams', () => {
-    it('should return correct array with keys for Rise/Fall', () => {
-        expect(getTradeParams()[TRADE_TYPES.RISE_FALL]).toEqual(['duration', 'stake', 'allow_equals']);
+    it('should return correct object with keys for Rise/Fall', () => {
+        expect(getTradeParams()[TRADE_TYPES.RISE_FALL]).toEqual({
+            duration: true,
+            stake: true,
+            allow_equals: true,
+        });
     });
 
-    it('should return correct array with keys for Multipliers if symbol does not start with "cry"', () => {
-        expect(getTradeParams()[TRADE_TYPES.MULTIPLIER]).toEqual(['multiplier', 'stake', 'risk_management']);
+    it('should return correct object with keys for Multipliers if symbol does not start with "cry"', () => {
+        expect(getTradeParams()[TRADE_TYPES.MULTIPLIER]).toEqual({
+            multiplier: true,
+            stake: true,
+            risk_management: true,
+        });
     });
 
-    it('should return correct array with keys for Multipliers if symbol starts with "cry"', () => {
-        expect(getTradeParams('crypto')[TRADE_TYPES.MULTIPLIER]).toEqual([
-            'multiplier',
-            'stake',
-            'risk_management',
-            'expiration',
-        ]);
+    it('should return correct object with keys for Multipliers if symbol starts with "cry"', () => {
+        expect(getTradeParams('crypto')[TRADE_TYPES.MULTIPLIER]).toEqual({
+            multiplier: true,
+            stake: true,
+            risk_management: true,
+            expiration: true,
+        });
     });
 });
 

@@ -30,6 +30,7 @@ const useActiveSymbols = () => {
         onChange,
         setActiveSymbolsV2,
         symbol,
+        is_trade_component_mounted,
     } = useTraderStore();
 
     const default_symbol_ref = useRef('');
@@ -64,7 +65,9 @@ const useActiveSymbols = () => {
             if (
                 (isVanillaContract(previous_contract_type) && is_vanilla) ||
                 (isTurbosContract(previous_contract_type) && is_turbos) ||
-                getContractTypesList().length === 0
+                // TODO: remove is_trade_component_mounted from check condition once akmals contracts_for_company changes are merged
+                // this will also solve the issue of populating unavailable active_symbols for a given trade_type in assets dropdown
+                (getContractTypesList().length === 0 && !is_trade_component_mounted)
             ) {
                 return;
             }

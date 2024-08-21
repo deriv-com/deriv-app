@@ -27,7 +27,8 @@ type TTradeParametersProps = {
 const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
     const { contract_type, symbol } = useTraderStore();
     const isVisible = (component_key: string) => {
-        return getTradeParams(symbol)[contract_type].includes(component_key);
+        const params = getTradeParams(symbol)[contract_type];
+        return component_key in params;
     };
 
     return (
@@ -55,15 +56,16 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
                 {isVisible('barrier_info') && !is_minimized && <BarrierInfo />}
                 {isVisible('payout_per_point_info') && !is_minimized && <PayoutPerPointInfo />}
             </div>
-            <div
-                className={clsx('trade-params__options-info__container', {
-                    'trade-params__options-info__container--isHidden':
-                        !is_minimized || !(isVisible('expiration') || isVisible('payout_per_point_info')),
-                })}
-            >
-                {isVisible('expiration') && <MultipliersExpirationInfo />}
-                {isVisible('payout_per_point_info') && <PayoutPerPointInfo />}
-            </div>
+            {is_minimized && isVisible('expiration') && (
+                <div className='trade-params__options-info-standalone'>
+                    <MultipliersExpirationInfo />
+                </div>
+            )}
+            {is_minimized && isVisible('payout_per_point_info') && (
+                <div className='trade-params__options-info-standalone'>
+                    <PayoutPerPointInfo />
+                </div>
+            )}
         </React.Fragment>
     );
 });

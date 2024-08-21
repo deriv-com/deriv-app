@@ -22,14 +22,14 @@ export const PlatformIcons: Record<TPlatformIconKeys, React.ForwardRefExoticComp
     Standard: AccountsDmt5StandardIcon,
 };
 
-export interface IconProps {
+export interface TTradingPlatformIconProps {
     icon: TPlatformIconKeys;
     className?: string;
     size: number;
     onClick?: () => void;
 }
 
-const TradingPlatformIcon = ({ icon, className, size, onClick }: IconProps) => {
+const TradingPlatformIcon = ({ icon, className, size, onClick }: TTradingPlatformIconProps) => {
     const IconComponent = PlatformIcons[icon];
 
     return IconComponent ? (

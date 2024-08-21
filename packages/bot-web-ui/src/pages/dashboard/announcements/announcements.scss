@@ -157,10 +157,12 @@
             text-align: center;
             background-color: var(--notification-icon-color);
             border-radius: 1.8rem;
+            align-self: flex-start;
+            margin-top: 0.7rem;
 
             &--indicator {
                 position: absolute;
-                top: 3.4rem;
+                top: 1.5rem;
                 left: 4rem;
                 width: 0.8rem;
                 height: 0.8rem;

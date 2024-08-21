@@ -76,7 +76,7 @@ const TradersHubHeaderWallets = observer(() => {
                 )}
                 <MenuLinks {...{ is_traders_hub_routes: true }} />
             </div>
-            {isDesktop && (
+            {isDesktop ? (
                 <React.Fragment>
                     <div className='traders-hub-header__menu-right'>
                         <div className='traders-hub-header__divider' />
@@ -100,8 +100,7 @@ const TradersHubHeaderWallets = observer(() => {
                     </div>
                     <RealAccountSignup />
                 </React.Fragment>
-            )}
-            {!isDesktop && (
+            ) : (
                 <React.Fragment>
                     <div className='traders-hub-header__mobile-parent'>
                         <div className='traders-hub-header__menu-middle'>

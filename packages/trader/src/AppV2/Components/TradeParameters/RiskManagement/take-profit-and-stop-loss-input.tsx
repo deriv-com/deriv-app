@@ -2,13 +2,14 @@ import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { CONTRACT_TYPES, getCurrencyDisplayCode, getDecimalPlaces, WS } from '@deriv/shared';
+import { CONTRACT_TYPES, getCurrencyDisplayCode, getDecimalPlaces, useIsMounted, WS } from '@deriv/shared';
 import { focusAndOpenKeyboard } from 'AppV2/Utils/trade-params-utils';
 import { ActionSheet, CaptionText, Text, ToggleSwitch, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
 import { TTradeStore } from 'Types';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
+import { ExpandedProposal } from 'Stores/Modules/Trading/Helpers/proposal';
 
 type TTakeProfitAndStopLossInputProps = {
     classname?: string;
@@ -26,7 +27,6 @@ type TTakeProfitAndStopLossInputProps = {
     }>;
     type?: 'take_profit' | 'stop_loss';
     should_wrap_with_actionsheet?: boolean;
-    show_acceptable_range?: boolean;
 };
 
 const TakeProfitAndStopLossInput = ({
@@ -38,7 +38,6 @@ const TakeProfitAndStopLossInput = ({
     parent_ref,
     type = 'take_profit',
     should_wrap_with_actionsheet = true,
-    show_acceptable_range = true,
 }: TTakeProfitAndStopLossInputProps) => {
     const trade_store = useTraderStore();
     const {
@@ -47,6 +46,7 @@ const TakeProfitAndStopLossInput = ({
         has_take_profit,
         has_stop_loss,
         is_accumulator,
+        is_multiplier,
         take_profit,
         stop_loss,
         trade_types,
@@ -54,6 +54,7 @@ const TakeProfitAndStopLossInput = ({
         onChangeMultiple,
         validation_params,
     } = trade_store;
+    const isMounted = useIsMounted();
 
     const is_take_profit_input = type === 'take_profit';
     const subscription_id = React.useRef<string>();
@@ -71,6 +72,7 @@ const TakeProfitAndStopLossInput = ({
     const decimals = getDecimalPlaces(currency);
     const currency_display_code = getCurrencyDisplayCode(currency);
     const Component = should_wrap_with_actionsheet ? ActionSheet.Content : 'div';
+    const should_set_validation_params = is_multiplier && is_enabled && new_input_value === '';
 
     const min_value = is_take_profit_input
         ? validation_params[contract_types[0]]?.take_profit?.min
@@ -85,7 +87,7 @@ const TakeProfitAndStopLossInput = ({
     });
 
     const input_message =
-        info.min_value && info.max_value && is_enabled && show_acceptable_range ? (
+        info.min_value && info.max_value && is_enabled ? (
             <Localize
                 i18n_default_text='Acceptable range: {{min_value}} to {{max_value}} {{currency}}'
                 values={{
@@ -117,6 +119,7 @@ const TakeProfitAndStopLossInput = ({
         }
     };
 
+    // We are using requestPreviewProposal in useEffect in order to validate both fields independently
     React.useEffect(() => {
         if (!is_enabled) {
             WS.forget(subscription_id_ref.current);
@@ -125,7 +128,9 @@ const TakeProfitAndStopLossInput = ({
 
         const onProposalResponse: TTradeStore['onProposalResponse'] = response => {
             const { proposal, echo_req, error, subscription } = response;
+            // For multipliers we got 2 responses (Up and Down); the 2d one is not needed as it will be difficult to clean it when user clicks on Save btn
             if (echo_req.contract_type === CONTRACT_TYPES.MULTIPLIER.DOWN) {
+                WS.forget(subscription?.id);
                 return;
             }
             if (!is_enabled) {
@@ -143,39 +148,45 @@ const TakeProfitAndStopLossInput = ({
             });
             if (error?.message) WS.forget(subscription?.id);
 
-            // if (
-            //     isMounted() &&
-            //     proposal
-            // echo_req.contract_type === CONTRACT_TYPES.MULTIPLIER.UP
-            // echo_req?.limit_order?.take_profit === has_selected_value_ref.current
-            // ) {
-            // console.log('proposal', proposal);
-            // const { validation_params } = proposal as ExpandedProposal;
-            // setInfo(take_profit => {
-            //     if (
-            //         (take_profit.min_value !== validation_params?.take_profit?.min &&
-            //             validation_params?.take_profit?.min) ||
-            //         (take_profit.max_value !== validation_params?.take_profit?.max &&
-            //             validation_params?.take_profit?.max)
-            //     ) {
-            //         return {
-            //             min_value: validation_params?.take_profit?.max,
-            //             max_value: validation_params?.take_profit?.min,
-            //         };
-            //     }
-            //     return take_profit;
-            // });
-            // }
+            /* For Multipliers, validation parameters come in proposal response only if TP or SL are switched on and their value is not empty.
+            Here we set them into the state in order to show further even if we got a validation error from BE.*/
+            if (
+                isMounted() &&
+                proposal &&
+                echo_req.contract_type === CONTRACT_TYPES.MULTIPLIER.UP &&
+                (echo_req?.limit_order?.take_profit || echo_req?.limit_order?.stop_loss)
+            ) {
+                const { validation_params } = proposal as ExpandedProposal;
+                const validation_param_key = is_take_profit_input ? 'take_profit' : 'stop_loss';
+
+                setInfo(info => {
+                    if (
+                        (info.min_value !== validation_params?.[validation_param_key]?.min &&
+                            validation_params?.[validation_param_key]?.min) ||
+                        (info.max_value !== validation_params?.[validation_param_key]?.max &&
+                            validation_params?.[validation_param_key]?.max)
+                    ) {
+                        return {
+                            min_value: validation_params?.[validation_param_key]?.min,
+                            max_value: validation_params?.[validation_param_key]?.max,
+                        };
+                    }
+                    return info;
+                });
+            }
         };
 
+        /* In order to get validation params for Multipliers when TP and SL are empty, 
+            we send '1' first, get validation params and set them into the state.*/
+        const input_value = should_set_validation_params ? '1' : new_input_value;
         const dispose = requestPreviewProposal(
             trade_store,
             onProposalResponse,
             {
                 ...(is_take_profit_input ? { has_take_profit: is_enabled } : { has_stop_loss: is_enabled }),
                 ...(is_take_profit_input
-                    ? { take_profit: is_enabled ? new_input_value : '' }
-                    : { stop_loss: is_enabled ? new_input_value : '' }),
+                    ? { take_profit: is_enabled ? input_value : '' }
+                    : { stop_loss: is_enabled ? input_value : '' }),
             },
             true
         );

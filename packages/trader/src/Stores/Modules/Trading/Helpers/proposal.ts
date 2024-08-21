@@ -54,7 +54,7 @@ type TValidationParams =
       }
     | undefined;
 
-type ExpandedProposal = Proposal & TValidationParams;
+export type ExpandedProposal = Proposal & TValidationParams;
 
 const isVisible = (elem: HTMLElement) => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
 

@@ -84,7 +84,6 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
                 parent_subscription_id_ref={tp_subscription_id_ref}
                 parent_ref={tp_ref}
                 should_wrap_with_actionsheet={false}
-                show_acceptable_range={false}
                 key='take_profit'
             />
             <TakeProfitAndStopLossInput
@@ -96,7 +95,6 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
                 parent_ref={sl_ref}
                 type='stop_loss'
                 should_wrap_with_actionsheet={false}
-                show_acceptable_range={false}
                 key='stop_loss'
             />
             <Button

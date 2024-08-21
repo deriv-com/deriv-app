@@ -59,14 +59,14 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const proposal_error_message_1 = has_error_1 ? message_1 : '';
     const proposal_error_message_2 = has_error_2 ? message_2 : '';
     const proposal_error_message = proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount[0];
-    /* TODO: stop using Max payout from error text as a default max payout and stop using error text for max_payout_exceeded after validation_params are added to proposal API (both success & error response):
-    E.g., for max_payout_exceeded, we have to temporarily check the error text: Max payout error always contains 3 numbers, the check will work for any languages: */
+    /* TODO: stop using Max payout from error text as a default max payout and stop using error text for is_max_payout_exceeded after validation_params are added to proposal API (both success & error response):
+    E.g., for is_max_payout_exceeded, we have to temporarily check the error text: Max payout error always contains 3 numbers, the check will work for any languages: */
     const float_number_search_regex = /\d+(\.\d+)?/g;
-    const max_payout_exceeded =
+    const is_max_payout_exceeded =
         proposal_error_message_1.match(float_number_search_regex)?.length === 3 ||
         proposal_error_message_2.match(float_number_search_regex)?.length === 3;
     const error_max_payout =
-        max_payout_exceeded && proposal_error_message
+        is_max_payout_exceeded && proposal_error_message
             ? Number(proposal_error_message.match(float_number_search_regex)?.[1])
             : 0;
     const { max_payout = error_max_payout, stake } = validation_params[contract_types[0]] ?? {};
@@ -115,26 +115,23 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     }, [basis]);
     React.useEffect(() => {
         if (is_open) {
-            setDetails(info => {
-                if (
-                    (info.first_contract_payout !== first_contract_payout && first_contract_payout) ||
-                    (info.max_payout !== max_payout && max_payout) ||
-                    (info.max_stake !== max_stake && max_stake) ||
-                    (info.min_stake !== min_stake && min_stake) ||
-                    (info.second_contract_payout !== second_contract_payout && second_contract_payout)
-                ) {
-                    return {
-                        first_contract_payout,
-                        max_payout,
-                        max_stake,
-                        min_stake,
-                        second_contract_payout,
-                    };
-                }
-                return info;
-            });
+            if (
+                (details.first_contract_payout !== first_contract_payout && first_contract_payout) ||
+                (details.max_payout !== max_payout && max_payout) ||
+                (details.max_stake !== max_stake && max_stake) ||
+                (details.min_stake !== min_stake && min_stake) ||
+                (details.second_contract_payout !== second_contract_payout && second_contract_payout)
+            ) {
+                setDetails({
+                    first_contract_payout,
+                    max_payout,
+                    max_stake,
+                    min_stake,
+                    second_contract_payout,
+                });
+            }
         }
-    }, [is_open, max_payout, max_stake, min_stake, first_contract_payout, second_contract_payout]);
+    }, [details, is_open, max_payout, max_stake, min_stake, first_contract_payout, second_contract_payout]);
 
     const getInputMessage = () =>
         (should_show_error && stake_error) ||
@@ -203,11 +200,9 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                             contract_types={contract_types}
                             currency={currency}
                             details={details}
-                            first_contract_payout={first_contract_payout}
                             is_loading_proposal={!id_1 || (!!contract_types[1] && !id_2)}
                             is_multiplier={is_multiplier}
-                            max_payout_exceeded={max_payout_exceeded}
-                            second_contract_payout={second_contract_payout}
+                            is_max_payout_exceeded={is_max_payout_exceeded}
                             should_show_payout_details={!is_accumulator && !is_multiplier && !is_turbos && !is_vanilla}
                             stake_error={stake_error}
                             stop_out={stop_out}

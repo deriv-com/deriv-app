@@ -10,7 +10,7 @@
     }
     @media (hover: hover) {
         &:hover {
-            background-color: #e6e9e9;
+            background-color: var(--du-general-hover, #e6e9e9);
             cursor: pointer;
         }
     }
@@ -41,7 +41,7 @@
         gap: 0.4rem;
     }
     &--active {
-        background-color: #f2f3f4;
+        background-color: var(--du-general-section-1, #f2f3f4);
         justify-content: center;
     }
 }

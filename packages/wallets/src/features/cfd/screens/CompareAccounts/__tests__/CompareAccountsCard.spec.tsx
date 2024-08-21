@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { CFD_PLATFORMS } from '../../../constants';
+import { CFD_PLATFORMS, PRODUCT } from '../../../constants';
 import CompareAccountsCard from '../CompareAccountsCard';
 
 describe('CompareAccountsCard', () => {
@@ -25,13 +25,13 @@ describe('CompareAccountsCard', () => {
         expect(screen.getByText('Deriv (SVG) LLC')).toBeInTheDocument();
     });
 
-    it('renders the new banner for cTrader platform', () => {
-        render(<CompareAccountsCard {...defaultProps} platform={CFD_PLATFORMS.CTRADER} />);
+    it('renders the new banner for Zero Spread platform', () => {
+        render(<CompareAccountsCard {...defaultProps} platform={CFD_PLATFORMS.MT5} product={PRODUCT.ZEROSPREAD} />);
 
         expect(screen.getByText('New!')).toBeInTheDocument();
     });
 
-    it('does not render the new banner for non-cTrader platforms', () => {
+    it('does not render the new banner for non Zero Spread platforms', () => {
         render(<CompareAccountsCard {...defaultProps} />);
 
         expect(screen.queryByText('New!')).not.toBeInTheDocument();

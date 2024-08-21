@@ -26,6 +26,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
         if (activeWallet?.is_virtual || account.product === PRODUCT.SWAPFREE) {
             show(
                 <MT5PasswordModal
+                    isVirtual={activeWallet?.is_virtual}
                     marketType={account?.market_type || 'synthetic'}
                     platform={account.platform}
                     product={account.product}

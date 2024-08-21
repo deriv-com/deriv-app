@@ -23,7 +23,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const [showMt5PasswordModal, setShowMt5PasswordModal] = useState(false);
 
     const onButtonClick = useCallback(() => {
-        if (activeWallet?.is_virtual) {
+        if (activeWallet?.is_virtual || account.product === PRODUCT.SWAPFREE) {
             show(
                 <MT5PasswordModal
                     marketType={account?.market_type || 'synthetic'}
@@ -38,14 +38,6 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         setShowMt5PasswordModal(true);
                     }}
                     selectedJurisdiction={account.shortcode}
-                />
-            );
-        } else if (account.product === PRODUCT.SWAPFREE) {
-            show(
-                <MT5PasswordModal
-                    marketType={account?.market_type || 'synthetic'}
-                    platform={account.platform}
-                    product={account.product}
                 />
             );
         } else {

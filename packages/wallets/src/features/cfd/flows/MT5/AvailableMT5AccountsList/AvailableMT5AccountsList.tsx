@@ -40,6 +40,14 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     selectedJurisdiction={account.shortcode}
                 />
             );
+        } else if (account.product === PRODUCT.SWAPFREE) {
+            show(
+                <MT5PasswordModal
+                    marketType={account?.market_type || 'synthetic'}
+                    platform={account.platform}
+                    product={account.product}
+                />
+            );
         } else {
             show(<JurisdictionModal />);
         }

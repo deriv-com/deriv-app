@@ -1,16 +1,17 @@
 import {
-    CONTRACT_TYPES,
-    TContractInfo,
     addComma,
+    CONTRACT_TYPES,
+    formatMoney,
+    getCardLabelsV2,
     getDurationPeriod,
     getDurationTime,
     getDurationUnitText,
     getGrowthRatePercentage,
+    getUnitMap,
     isAccumulatorContract,
     isResetContract,
-    getCardLabelsV2,
-    formatMoney,
     isUserCancelled,
+    TContractInfo,
 } from '@deriv/shared';
 import { getBarrierValue } from 'App/Components/Elements/PositionsDrawer/helpers';
 import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
@@ -112,9 +113,12 @@ const transformTurbosData = (data: TContractInfo) => {
 // For Digits
 const transformDigitsData = (data: TContractInfo) => {
     const commonFields = getCommonFields(data);
+    const duration_time = getDurationTime(data) ?? '';
     return {
         [CARD_LABELS.REFERENCE_ID]: commonFields[CARD_LABELS.REFERENCE_ID],
-        [CARD_LABELS.DURATION]: `${getDurationTime(data) ?? ''} ${getDurationUnitText(getDurationPeriod(data)) ?? ''}`,
+        [CARD_LABELS.DURATION]: `${duration_time} ${
+            +duration_time > 1 ? getUnitMap().t.name_plural : getUnitMap().t.name_singular
+        }`,
         [CARD_LABELS.TARGET]: getBarrierValue(data),
         [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
     };

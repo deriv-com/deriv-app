@@ -5,7 +5,7 @@ import RiskManagementInfoModal from '../RiskManagementInfoModal';
 import DealCancellationRemainingTime from '../DealCancellationRemainingTime/deal-cancellation-remaining-time';
 import { observer } from '@deriv/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
-import { CONTRACT_TYPES, formatMoney, isAccumulatorContract, isValidToCancel } from '@deriv/shared';
+import { CONTRACT_TYPES, formatMoney, isAccumulatorContract, isValidToCancel, getDecimalPlaces } from '@deriv/shared';
 
 type RiskManagementItemProps = {
     label: React.ReactNode;
@@ -155,9 +155,9 @@ const RiskManagementItem = observer(
                                     status={errorMessage ? 'error' : 'neutral'}
                                     name={type}
                                     unitRight={currency}
-                                    value={Math.abs(stepperValue)}
+                                    value={stepperValue}
+                                    decimals={getDecimalPlaces(currency)}
                                     onChange={onChange}
-                                    decimals={0}
                                     message={errorMessage}
                                 />
                             )}

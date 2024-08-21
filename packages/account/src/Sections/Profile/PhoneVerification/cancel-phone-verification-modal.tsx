@@ -3,7 +3,6 @@ import { Modal, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { useHistory, useLocation } from 'react-router';
 import { observer, useStore } from '@deriv/stores';
-import { LabelPairedCircleXmarkLgRegularIcon } from '@deriv/quill-icons';
 import { useDevice } from '@deriv-com/ui';
 import { usePhoneVerificationAnalytics } from '@deriv/hooks';
 
@@ -14,13 +13,18 @@ const CancelPhoneVerificationModal = observer(() => {
     const [next_location, setNextLocation] = useState(location.pathname);
     const { ui, client } = useStore();
     const { setShouldShowPhoneNumberOTP, is_forced_to_exit_pnv } = ui;
-    const { setVerificationCode, is_virtual } = client;
+    const { setVerificationCode, is_virtual, account_settings } = client;
     const { isMobile } = useDevice();
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
 
     useEffect(() => {
         const unblock = history.block((location: Location) => {
-            if (!show_modal && !is_virtual && !is_forced_to_exit_pnv) {
+            if (
+                !show_modal &&
+                !is_virtual &&
+                !is_forced_to_exit_pnv &&
+                !account_settings.phone_number_verification?.verified
+            ) {
                 setShowModal(true);
                 setNextLocation(location.pathname);
                 return false;
@@ -29,7 +33,7 @@ const CancelPhoneVerificationModal = observer(() => {
         });
 
         return () => unblock();
-    }, [history, show_modal, is_virtual, is_forced_to_exit_pnv]);
+    }, [history, show_modal, is_virtual, is_forced_to_exit_pnv, account_settings.phone_number_verification?.verified]);
 
     const handleStayAtPhoneVerificationPage = () => {
         setShowModal(false);
@@ -53,22 +57,17 @@ const CancelPhoneVerificationModal = observer(() => {
             isMobile={isMobile}
             showHandleBar
             isOpened={show_modal}
-            primaryButtonCallback={handleStayAtPhoneVerificationPage}
+            shouldCloseOnPrimaryButtonClick
             primaryButtonLabel={<Localize i18n_default_text='Go back' />}
-            disableCloseOnOverlay
             showSecondaryButton
+            showCrossIcon
+            toggleModal={handleStayAtPhoneVerificationPage}
             secondaryButtonLabel={<Localize i18n_default_text='Yes, cancel' />}
             secondaryButtonCallback={handleLeavePhoneVerificationPage}
         >
-            <Modal.Header
-                className='phone-verification__cancel-modal--header'
-                image={<LabelPairedCircleXmarkLgRegularIcon fill='#C40000' height={96} width={96} />}
-            />
+            <Modal.Header title={<Localize i18n_default_text='Cancel phone number verification?' />} />
             <Modal.Body>
                 <div className='phone-verification__cancel-modal--contents'>
-                    <Text bold>
-                        <Localize i18n_default_text='Cancel phone number verification?' />
-                    </Text>
                     <Text>
                         <Localize i18n_default_text='All details entered will be lost.' />
                     </Text>

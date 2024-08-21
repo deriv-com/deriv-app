@@ -35,13 +35,24 @@ const PhoneVerificationPage = observer(() => {
         verification_code: { phone_number_verification: phone_number_verification_code },
         is_authorize,
         is_virtual,
+        account_settings,
     } = client;
 
     useEffect(() => {
-        if ((isPhoneNumberVerificationGBLoaded && !isPhoneNumberVerificationEnabled) || is_virtual) {
+        if (
+            (isPhoneNumberVerificationGBLoaded && !isPhoneNumberVerificationEnabled) ||
+            is_virtual ||
+            account_settings.phone_number_verification?.verified
+        ) {
             history.push(routes.personal_details);
         }
-    }, [isPhoneNumberVerificationGBLoaded, isPhoneNumberVerificationEnabled, is_virtual, history]);
+    }, [
+        isPhoneNumberVerificationGBLoaded,
+        isPhoneNumberVerificationEnabled,
+        is_virtual,
+        history,
+        account_settings.phone_number_verification?.verified,
+    ]);
 
     useEffect(() => {
         if (is_redirected_from_email) {

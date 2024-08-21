@@ -23,7 +23,7 @@ type BottomNavProps = {
 const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) => {
     const history = useHistory();
     const location = useLocation();
-    const { active_positions_count, onMount, onUnmount } = useStore().portfolio;
+    const { active_positions_count } = useStore().portfolio;
 
     const bottomNavItems = [
         {

@@ -13,11 +13,6 @@ type TStakeProps = {
     is_minimized?: boolean;
 };
 
-const BASIS = {
-    PAYOUT: 'payout',
-    STAKE: 'stake',
-};
-
 const Stake = observer(({ is_minimized }: TStakeProps) => {
     const {
         amount,
@@ -111,7 +106,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_open]);
     React.useEffect(() => {
-        if (basis === BASIS.PAYOUT) onChange({ target: { name: 'basis', value: BASIS.STAKE } });
+        if (basis !== 'stake') onChange({ target: { name: 'basis', value: 'stake' } });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [basis]);
     React.useEffect(() => {
@@ -164,7 +159,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         }
     };
 
-    if (basis === BASIS.PAYOUT) return null;
     return (
         <>
             <TextField

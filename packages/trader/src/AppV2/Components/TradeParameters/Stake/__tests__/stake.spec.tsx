@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Stake from '../stake';
+import userEvent from '@testing-library/user-event';
+import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
 import { mockStore } from '@deriv/stores';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import TraderProviders from '../../../../../trader-providers';
-import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
-import userEvent from '@testing-library/user-event';
+import Stake from '../stake';
 
 const stake_param_label = 'Stake';
 const input_placeholder = 'Amount';
@@ -64,6 +64,15 @@ describe('Stake', () => {
             </ModulesProvider>
         </TraderProviders>
     );
+
+    it('should switch basis to stake if it is different', () => {
+        default_mock_store.modules.trade.basis = 'payout';
+        render(<MockedStake />);
+
+        expect(default_mock_store.modules.trade.onChange).toHaveBeenCalledWith({
+            target: { name: 'basis', value: 'stake' },
+        });
+    });
 
     it('should render trade param with "Stake" label and input with a value equal to the current stake amount value', () => {
         render(<MockedStake />);

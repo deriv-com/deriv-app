@@ -5,7 +5,7 @@ import { useTranslations } from '@deriv-com/translations';
 import { Badge, Text } from '@deriv-com/ui';
 import { THooks } from '../../../../types';
 import type { TAccount } from '../../../cashier/modules/Transfer/types';
-import { TRADING_PLATFORM_STATUS } from '../../constants';
+import { MT5_ACCOUNT_STATUS, TRADING_PLATFORM_STATUS } from '../../constants';
 
 type TProps = {
     badgeSize: ComponentProps<typeof Badge>['badgeSize'];
@@ -19,7 +19,9 @@ const PlatformStatusBadge: React.FC<TProps> = ({ badgeSize, cashierAccount, clas
     const platformStatus = getPlatformStatus(cashierAccount?.account_type ?? mt5Account?.platform ?? '');
     const { localize } = useTranslations();
 
-    const isMaintenance = platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
+    const isMaintenance =
+        platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE ||
+        [mt5Account?.status || cashierAccount?.status].includes(MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE);
     const isUnavailable = [mt5Account?.status, cashierAccount?.status].includes(TRADING_PLATFORM_STATUS.UNAVAILABLE);
 
     const getBadgeText = () => {

@@ -31,7 +31,8 @@ jest.mock('@deriv/shared', () => ({
     validPassword: jest.fn().mockReturnValue(true),
 }));
 
-jest.mock('../../Assets/svgs/trading-platform', () => jest.fn(() => 'MockedMT5Icon'));
+jest.mock('../../Components/trading-platform-icon', () => jest.fn(props => props.icon));
+
 describe('<CFDPasswordModal/>', () => {
     const mockFn = jest.fn();
     const mockDisableCFDPasswordModalFn = jest.fn();
@@ -366,7 +367,7 @@ describe('<CFDPasswordModal/>', () => {
             }
         );
 
-        expect(await screen.findByText('IcMt5StandardPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('Standard')).toBeInTheDocument();
     });
 
     it('should display icon in Success Dialog in tradershub', async () => {
@@ -385,8 +386,7 @@ describe('<CFDPasswordModal/>', () => {
                 wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
             }
         );
-
-        expect(await screen.findByText('IcMt5StandardPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('Standard')).toBeInTheDocument();
     });
 
     it('should display Financial icon in Success Dialog', async () => {
@@ -406,7 +406,7 @@ describe('<CFDPasswordModal/>', () => {
             }
         );
 
-        expect(await screen.findByText('IcMt5FinancialPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('Financial')).toBeInTheDocument();
     });
 
     it('should display IcRebrandingDerivx icon in Success Dialog', async () => {
@@ -426,7 +426,7 @@ describe('<CFDPasswordModal/>', () => {
             }
         );
 
-        expect(await screen.findByText('IcRebrandingDxtradeDashboard')).toBeInTheDocument();
+        expect(await screen.findByText('DerivX')).toBeInTheDocument();
     });
 
     it('should display IcCfds icon in Success Dialog', async () => {
@@ -446,7 +446,7 @@ describe('<CFDPasswordModal/>', () => {
                 wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
             }
         );
-        expect(await screen.findByText('IcMt5CfdPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('CFDs')).toBeInTheDocument();
     });
 
     it('should invoke verifyEmail for DerivX when Forgot password is clicked', async () => {

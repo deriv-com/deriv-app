@@ -40,7 +40,14 @@ const AnnouncementDialog = ({
                     <Icon icon='IcTradetypeAccu' className='category-type' color='brand' size='80' />
                 </div>
                 <div>
-                    <Text as='p' line_height='xl' size='xs' align='center' className={`${base_classname}__title`}>
+                    <Text
+                        as='p'
+                        line_height='xl'
+                        size='xs'
+                        align='center'
+                        weight='bold'
+                        className={`${base_classname}__title`}
+                    >
                         <Localize i18n_default_text={title} />
                     </Text>
                     {Array.isArray(content) &&

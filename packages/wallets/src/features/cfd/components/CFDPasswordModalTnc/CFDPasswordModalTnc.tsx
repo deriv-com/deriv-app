@@ -1,7 +1,7 @@
 import React from 'react';
+import { Localize } from '@deriv-com/translations';
 import { Checkbox, InlineMessage } from '@deriv-com/ui';
-import { URLUtils } from '@deriv-com/utils';
-import { WalletText } from '../../../../components/Base';
+import { WalletLink, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks, TPlatforms } from '../../../../types';
@@ -27,24 +27,23 @@ const CFDPasswordModalTnc = ({ checked, onChange, platform, product }: TCFDPassw
         <div className='wallets-cfd-modal-tnc'>
             <InlineMessage iconPosition='top' variant='info'>
                 <WalletText size={isDesktop ? '2xs' : 'xs'}>
-                    You are adding your {platformTitle}
-                    {productTitle} account under {selectedCompany.name}, regulated by Malta Financial Services Authority
-                    (MFSA) (licence no. IS/70156).
+                    <Localize
+                        i18n_default_text='You are adding your {{platformTitle}} {{productTitle}} account under {{company}}, regulated by Malta Financial Services Authority (MFSA) (licence no. IS/70156).'
+                        values={{ company: selectedCompany.name, platformTitle, productTitle }}
+                    />
                 </WalletText>
             </InlineMessage>
             <Checkbox
                 checked={checked}
                 label={
                     <WalletText size={isDesktop ? 'xs' : 'sm'}>
-                        I confirm and accept {selectedCompany.name}’s{' '}
-                        <a
-                            className='wallets-cfd-modal-tnc__tnc-link'
-                            href={URLUtils.getDerivStaticURL(selectedCompany.tncUrl)}
-                            rel='noreferrer'
-                            target='_blank'
-                        >
-                            terms and conditions
-                        </a>
+                        <Localize
+                            components={[<WalletLink key={0} staticUrl={selectedCompany.tncUrl} variant='bold' />]}
+                            i18n_default_text='I confirm and accept {{company}}’s <0>terms and conditions</0>'
+                            values={{
+                                company: selectedCompany.name,
+                            }}
+                        />
                     </WalletText>
                 }
                 name='zerospread-checkbox'

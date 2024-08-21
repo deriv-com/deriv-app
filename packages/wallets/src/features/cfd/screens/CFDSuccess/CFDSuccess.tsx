@@ -85,6 +85,7 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
                                     isDemo={isDemo ?? false}
                                     marketType={marketType}
                                     platform={platform}
+                                    product={product}
                                 />
                             </div>
                             <div className='wallets-cfd-success__info'>

@@ -12,7 +12,8 @@ import DBotStore from './dbot-store';
 import { isAllRequiredBlocksEnabled, updateDisabledBlocks, validateErrorOnBlockDelete } from './utils';
 
 import { loadBlockly } from './blockly';
-import Accumulators from '../services/api/accumlators';
+// commented code for stats bar
+// import Accumulators from '../services/api/accumlators';
 
 class DBot {
     constructor() {
@@ -22,7 +23,6 @@ class DBot {
         this.symbol = null;
         this.is_bot_running = false;
         this.accumlators = null;
-        this.subscription_id = null;
         this.proposal_requested = false;
         this.debounceWait = 300;
         this.debouncedHandleBlockChange = this.debounce(
@@ -45,7 +45,7 @@ class DBot {
             const trade_type_accumulators = block_instance.getFieldValue('TRADETYPE_LIST');
             const is_accumulator = trade_type_accumulators === 'accumulator';
 
-            if (is_accumulator && !this.proposal_requested && !this.subscription_id) {
+            if (is_accumulator && !this.proposal_requested && !this.interpreter.bot.tradeEngine.subscription_accu) {
                 this.proposal_requested = true;
 
                 const amount = window.Blockly.selected_current_amount || 1;
@@ -67,7 +67,7 @@ class DBot {
                 };
                 window.Blockly.selected_accumulators_amount = request;
                 const response = await api_base?.api?.send(request);
-                this.subscription_id = response.proposal.id;
+                this.interpreter.bot.tradeEngine.subscription_accu = response.proposal.id;
                 this.proposal_requested = false;
                 return response;
             }
@@ -89,8 +89,9 @@ class DBot {
         api_base.init();
         this.interpreter = Interpreter();
         const that = this;
-        const accumlators = new Accumulators();
-        this.accumlators = accumlators;
+        // commented code for stats bar
+        // const accumlators = new Accumulators();
+        // this.accumlators = accumlators;
 
         Blockly.Blocks.trade_definition_tradetype.onchange = function (event) {
             if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {

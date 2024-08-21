@@ -52,6 +52,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         message: message_2 = '',
         payout: payout_2 = 0,
     } = proposal_info[contract_types[1]] ?? {};
+    const is_loading_proposal = !id_1 || (!!contract_types[1] && !id_2);
     const proposal_error_message_1 = has_error_1 ? message_1 : '';
     const proposal_error_message_2 = has_error_2 ? message_2 : '';
     const proposal_error_message = proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount[0];
@@ -198,7 +199,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                             currency={currency}
                             details={details}
                             has_stop_loss={has_stop_loss}
-                            is_loading_proposal={!id_1 || (!!contract_types[1] && !id_2)}
+                            is_loading_proposal={is_loading_proposal}
                             is_multiplier={is_multiplier}
                             is_max_payout_exceeded={is_max_payout_exceeded}
                             should_show_payout_details={!is_accumulator && !is_multiplier && !is_turbos && !is_vanilla}
@@ -212,7 +213,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                         primaryAction={{
                             content: <Localize i18n_default_text='Save' />,
                             onAction: () => {
-                                if (!stake_error) {
+                                if (!stake_error && !is_loading_proposal) {
                                     onClose(true);
                                 } else {
                                     setShouldShowError(true);

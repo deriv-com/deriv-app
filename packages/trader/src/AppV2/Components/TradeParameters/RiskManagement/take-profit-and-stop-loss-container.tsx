@@ -37,13 +37,13 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
         WS.forget(tp_subscription_id_ref.current);
         WS.forget(sl_subscription_id_ref.current);
 
-        if (tp_ref.current.tp_error_text && tp_ref.current.has_take_profit) return;
-        if (sl_ref.current.sl_error_text && sl_ref.current.has_stop_loss) return;
-
         const is_tp_empty = tp_ref.current.take_profit === '' && tp_ref.current.has_take_profit;
         const is_sl_empty = sl_ref.current.stop_loss === '' && sl_ref.current.has_stop_loss;
         if (is_tp_empty) setTPErrorText(localize('Please enter a take profit amount.'));
         if (is_sl_empty) setSLErrorText(localize('Please enter a stop loss amount.'));
+
+        if (tp_ref.current.tp_error_text && tp_ref.current.has_take_profit) return;
+        if (sl_ref.current.sl_error_text && sl_ref.current.has_stop_loss) return;
         if (is_sl_empty || is_tp_empty) return;
 
         // Show notification, that DC will be disabled if TP or SL is enabled

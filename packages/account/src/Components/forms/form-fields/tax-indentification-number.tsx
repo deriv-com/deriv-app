@@ -1,6 +1,7 @@
 import { Localize, localize } from '@deriv/translations';
 import FormInputField from './form-input-field';
 import { Popover } from '@deriv/components';
+import { OECD_TIN_FORMAT_URL } from '../../../Constants/external-urls';
 import { isDesktop } from '@deriv/shared';
 
 type TTaxIdentificationNumberFieldProps = {
@@ -50,7 +51,7 @@ const TaxIdentificationNumberField = ({
                                 className='link link--red'
                                 rel='noopener noreferrer'
                                 target='_blank'
-                                href='https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
+                                href={OECD_TIN_FORMAT_URL}
                             />,
                         ]}
                     />

@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 import { render, screen } from '@testing-library/react';
 import TaxIdentificationNumber from '../tax-indentification-number';
 
-describe('Tesing <TaxIdentificationNumber/> component', () => {
+describe('Testing <TaxIdentificationNumber/> component', () => {
     it('should render TIN Field component', () => {
         const props: React.ComponentProps<typeof TaxIdentificationNumber> = {
             required: true,

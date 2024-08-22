@@ -10,6 +10,7 @@ import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
 import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
 import LossThresholdWarningDialog from './parts/loss-threshold-warning-dialog';
 import { STRATEGIES } from './config';
+import { SERVER_BOT_FIELDS } from './constants';
 import Form from './form';
 import { TConfigItem, TFormData } from './types';
 import './add-bot.scss';
@@ -51,11 +52,7 @@ export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children, set
     const getSavedValues = () => {
         let data: TFormData | null = null;
         try {
-            const data = JSON.parse(localStorage.getItem('server-form-fields') || '{}');
-            Object.keys(data).forEach(key => {
-                initial_value[key as keyof TFormData] = data[key];
-                setValue(key, data[key]);
-            });
+            data = JSON.parse(localStorage.getItem(SERVER_BOT_FIELDS) || '{}');
         } catch {
             data = null;
         }
@@ -75,18 +72,17 @@ export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children, set
             loss: data?.loss ?? '',
             profit: data?.profit ?? '',
             size: data?.size ?? String(qs_config.QUICK_STRATEGY.DEFAULT.size),
+            max_stake: data?.max_stake ?? 10,
         };
         return initial_value;
     };
 
     React.useEffect(() => {
+        initializeLossThresholdWarningData();
+
         return () => {
             is_mounted.current = false;
         };
-    }, []);
-
-    React.useEffect(() => {
-        initializeLossThresholdWarningData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -179,6 +175,7 @@ export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children, set
 
     const handleSubmit = (form_data: TFormData) => {
         setFormVisibility(false);
+        localStorage?.setItem(SERVER_BOT_FIELDS, JSON.stringify(form_data));
         createBot(form_data);
     };
 

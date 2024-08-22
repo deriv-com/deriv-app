@@ -5,6 +5,7 @@ import { DraggableList } from 'AppV2/Components/DraggableList';
 import { TradeTypeList } from 'AppV2/Components/TradeTypeList';
 import { getTradeTypesList } from 'AppV2/Utils/trade-types-utils';
 import { Localize, localize } from '@deriv/translations';
+import Guide from '../../Components/Guide';
 
 type TTradeTypesProps = {
     onTradeTypeSelect: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -158,12 +159,17 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     const savePinnedToLocalStorage = () => {
         localStorage.setItem('pinned_trade_types', JSON.stringify(pinned_trade_types));
         localStorage.setItem('other_trade_types', JSON.stringify(other_trade_types));
-        setIsOpen(false);
+        setIsEditing(false);
     };
 
     const handleOnDrag = (categories: TResultItem[]) => {
         setPinnedTradeTypes(categories);
     };
+
+    const handleOnTradeTypeSelect = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        onTradeTypeSelect(e);
+        setIsOpen(false);
+    }
 
     const isTradeTypeSelected = (value: string) =>
         [contract_type, value].every(type => type.startsWith('vanilla')) ||
@@ -178,6 +184,14 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                         <Text size='sm'>{title}</Text>
                     </Chip.Selectable>
                 ))}
+            {!saved_pinned_trade_types[0]?.items.some((item: TItem) => item.id === contract_type) &&
+                saved_other_trade_types[0]?.items
+                    .filter((item: TItem) => item.id === contract_type)
+                    .map(({ title, id }: TItem) => (
+                        <Chip.Selectable key={id} onChipSelect={onTradeTypeSelect} selected={isTradeTypeSelected(id)}>
+                            <Text size='sm'>{title}</Text>
+                        </Chip.Selectable>
+                    ))}
             <a key='trade-types-all' onClick={() => setIsOpen(true)} className='trade__trade-types-header'>
                 <Text size='sm' bold underlined>
                     {<Localize i18n_default_text='View all' />}
@@ -185,7 +199,10 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
             </a>
             <ActionSheet.Root isOpen={is_open} expandable={false} onClose={handleCloseTradeTypes}>
                 <ActionSheet.Portal>
-                    <ActionSheet.Header title={<Localize i18n_default_text='Trade types' />} />
+                    <ActionSheet.Header
+                        title={<Localize i18n_default_text='Trade types' />}
+                        icon={!is_editing && <Guide />}
+                    />
                     <ActionSheet.Content className='mock-action-sheet--content'>
                         {is_editing ? (
                             <DraggableList
@@ -198,7 +215,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                             <TradeTypeList
                                 categories={saved_pinned_trade_types}
                                 onAction={() => setIsEditing(true)}
-                                onTradeTypeClick={onTradeTypeSelect}
+                                onTradeTypeClick={handleOnTradeTypeSelect}
                                 selected_item={contract_type}
                                 should_show_title={false}
                                 selectable
@@ -207,7 +224,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                         <TradeTypeList
                             categories={is_editing ? other_trade_types : saved_other_trade_types}
                             onRightIconClick={is_editing ? handleAddPinnedClick : undefined}
-                            onTradeTypeClick={!is_editing ? onTradeTypeSelect : undefined}
+                            onTradeTypeClick={!is_editing ? handleOnTradeTypeSelect : undefined}
                             selected_item={contract_type}
                             selectable={!is_editing}
                         />

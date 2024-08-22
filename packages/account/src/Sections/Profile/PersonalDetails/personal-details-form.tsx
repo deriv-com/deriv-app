@@ -128,17 +128,6 @@ const PersonalDetailsForm = observer(() => {
                     components={[<OpenLiveChatLink text_size='xxs' key={0} />]}
                 />
             );
-        } else if (next_request_time) {
-            return (
-                <Localize
-                    i18n_default_text='Verification incomplete. Start again in {{next_request_time}} {{display_time}}'
-                    values={{
-                        next_request_time:
-                            next_request_time < 60 ? next_request_time : Math.round(next_request_time / 60),
-                        display_time: next_request_time < 60 ? localize('seconds') : localize('minutes'),
-                    }}
-                />
-            );
         } else if (is_phone_number_editted || is_phone_number_empty) {
             return <Localize i18n_default_text='Save changes to enable verification.' />;
         }
@@ -425,10 +414,10 @@ const PersonalDetailsForm = observer(() => {
                                             <VerifyButton
                                                 is_verify_button_disabled={
                                                     is_request_button_disabled ||
-                                                    !!next_request_time ||
                                                     account_settings.phone !== values.phone ||
                                                     !account_settings.phone
                                                 }
+                                                next_request_time={next_request_time}
                                             />
                                         )}
                                     </fieldset>
@@ -712,9 +701,7 @@ const PersonalDetailsForm = observer(() => {
                                         color='prominent'
                                         align={isDesktop ? 'right' : 'center'}
                                     >
-                                        {localize(
-                                            'Please make sure your information is correct or it may affect your trading experience.'
-                                        )}
+                                        <Localize i18n_default_text='Ensure your information is correct.' />
                                     </Text>
                                 )}
                                 <Button
@@ -728,7 +715,7 @@ const PersonalDetailsForm = observer(() => {
                                     has_effect
                                     is_loading={is_btn_loading}
                                     is_submit_success={is_submit_success}
-                                    text={localize('Submit')}
+                                    text={localize('Save changes')}
                                     large
                                     primary
                                 />

@@ -31,16 +31,21 @@ describe('VerifyButton', () => {
             },
         },
     });
+    let mock_next_request_time = 0;
 
     const renderWithRouter = () => {
         return render(
             <Router history={history}>
                 <StoreProvider store={mock_store}>
-                    <VerifyButton is_verify_button_disabled={false} />
+                    <VerifyButton is_verify_button_disabled={false} next_request_time={mock_next_request_time} />
                 </StoreProvider>
             </Router>
         );
     };
+
+    beforeEach(() => {
+        mock_next_request_time = 0;
+    });
 
     it('should render Verify Button', () => {
         renderWithRouter();
@@ -58,6 +63,13 @@ describe('VerifyButton', () => {
         const verifyButton = screen.getByText('Verify');
         userEvent.click(verifyButton);
         expect(history.location.pathname).toBe(routes.phone_verification);
+    });
+
+    it('should render Verify Button with timer if next_otp_request has value', () => {
+        mock_next_request_time = 2;
+        renderWithRouter();
+        expect(screen.getByText('Verify in 2s')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Verify in 2s' })).toBeDisabled();
     });
 
     it('should render Verified text', () => {

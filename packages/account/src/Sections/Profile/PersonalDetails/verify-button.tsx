@@ -7,12 +7,14 @@ import { Localize } from '@deriv/translations';
 import { useVerifyEmail } from '@deriv/hooks';
 import { useDevice } from '@deriv-com/ui';
 import './verify-button.scss';
+import { localize } from '@deriv-com/translations';
 
 type TVerifyButton = {
     is_verify_button_disabled: boolean;
+    next_request_time?: number;
 };
 
-export const VerifyButton = observer(({ is_verify_button_disabled }: TVerifyButton) => {
+export const VerifyButton = observer(({ is_verify_button_disabled, next_request_time }: TVerifyButton) => {
     const { client, ui } = useStore();
     const { setShouldShowPhoneNumberOTP, is_scroll_to_verify_button, setIsScrollToVerifyButton } = ui;
     const { account_settings, setVerificationCode } = client;
@@ -54,11 +56,24 @@ export const VerifyButton = observer(({ is_verify_button_disabled }: TVerifyButt
         sendPhoneNumberVerifyEmail();
     };
 
+    const verifyTimer = () => {
+        let resendCodeTimer = '';
+        if (next_request_time) {
+            next_request_time < 60
+                ? (resendCodeTimer = `${localize(' in ')}${next_request_time}s`)
+                : (resendCodeTimer = `${localize(' in ')}${Math.round(next_request_time / 60)}m`);
+        } else {
+            resendCodeTimer = '';
+        }
+
+        return resendCodeTimer;
+    };
+
     return (
         <div ref={ref}>
             <Button
                 className='phone-verification-button'
-                is_disabled={phone_number_verified || is_verify_button_disabled || is_loading}
+                is_disabled={phone_number_verified || is_verify_button_disabled || is_loading || !!next_request_time}
                 onClick={redirectToPhoneVerification}
                 has_effect
                 green={phone_number_verified}
@@ -68,7 +83,12 @@ export const VerifyButton = observer(({ is_verify_button_disabled }: TVerifyButt
                 {phone_number_verified ? (
                     <Localize i18n_default_text='Verified' />
                 ) : (
-                    <Localize i18n_default_text='Verify' />
+                    <Localize
+                        i18n_default_text='Verify{{resendCode}}'
+                        values={{
+                            resendCode: verifyTimer(),
+                        }}
+                    />
                 )}
             </Button>
         </div>

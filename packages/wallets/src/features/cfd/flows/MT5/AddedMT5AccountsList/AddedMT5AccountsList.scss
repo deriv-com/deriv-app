@@ -42,23 +42,31 @@
         }
 
         &-badge {
-            width: fit-content;
-            padding: 0 0.4rem;
-            gap: 0.4rem;
+            &-icon {
+                width: 100%;
+                height: 100%;
+                display: grid;
+                place-content: center;
+            }
+            &--error {
+                width: fit-content;
+                padding: 0 0.4rem;
+                gap: 0.4rem;
+                background: none;
+                outline: 1px solid var(--du-text-loss-danger);
 
-            /* stylelint-disable-next-line selector-class-pattern */
-            .deriv-inline-message__icon {
-                width: auto;
-                height: auto;
-                & > svg {
-                    width: 1.2rem;
-                    height: 1.2rem;
+                &-link {
+                    cursor: pointer;
+                    text-decoration: underline;
                 }
             }
 
-            & a {
-                cursor: pointer;
-                text-decoration: underline;
+            &--warning {
+                width: fit-content;
+                padding: 0 0.4rem;
+                gap: 0.4rem;
+                background: none;
+                outline: 1px solid var(--du-text-warning);
             }
         }
 

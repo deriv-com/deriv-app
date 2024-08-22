@@ -113,38 +113,6 @@ describe('<MT5CreatePassword/>', () => {
         });
     });
 
-    //  it('should display error message when password does not meet requirements', async () => {
-    //         validPassword.mockReturnValue(false);
-    //         const user_input = 'demo@deriv.com';
-
-    //         const store = mockStore(mockRootStore);
-
-    //         store.client.account_status = { status: [], category: 'Real' };
-    //         store.client.email = user_input;
-
-    //         render(
-    //             <Router history={history}>
-    //                 <MT5CreatePassword {...default_props} />
-    //             </Router>,
-    //             {
-    //                 wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
-    //             }
-    //         );
-    //         const ele_password_input = await screen.findByTestId('dt_mt5_password');
-    //         fireEvent.change(ele_password_input, { target: { value: 'Passwordååøø' } });
-    //         await waitFor(() => {
-    //             fireEvent.focusOut(ele_password_input);
-    //         });
-
-    //         await waitFor(() => {
-    //             expect(validPassword).toHaveBeenCalled();
-    //         });
-
-    //         expect(getErrorMessages).toHaveBeenCalled();
-    //         expect(
-    //             await screen.findByText(/Password should have lower and uppercase English letters with numbers./i)
-    //         ).toBeInTheDocument();
-    //     });
     it('should display password requirements message', async () => {
         render(
             <Router history={history}>
@@ -157,31 +125,6 @@ describe('<MT5CreatePassword/>', () => {
 
         expect(await screen.findByText(/This password works for all your Deriv MT5 accounts./i)).toBeInTheDocument();
     });
-
-    // it('should enable the submit button when all fields are valid and terms and conditions are accepted', async () => {
-    //     const user_input = 'zo8lAet#2q01Ih';
-    //     render(
-    //         <Router history={history}>
-    //             <MT5CreatePassword
-    //                 {...default_props}
-    //                 password={user_input}
-    //                 onSubmit={jest.fn()}
-    //                 validatePassword={() => ({})} // No errors
-    //             />
-    //         </Router>,
-    //         {
-    //             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
-    //         }
-    //     );
-
-    //     const passwordInput = await screen.findByTestId('dt_mt5_password');
-    //     const submitButton = await screen.findByRole('button', { name: /Create account/i });
-
-    //     fireEvent.change(passwordInput, { target: { value: user_input } });
-    //     fireEvent.click(submitButton);
-
-    //     expect(mockSubmitMt5Password).toHaveBeenCalled();
-    //     });
 
     it('should show TNC checkbox when need_tnc is true', async () => {
         render(
@@ -228,6 +171,39 @@ describe('<MT5CreatePassword/>', () => {
             expect(onSubmit).toHaveBeenCalled();
         });
     });
+
+    //  it('should display error message when password does not meet requirements', async () => {
+    //         validPassword.mockReturnValue(false);
+    //         const user_input = 'demo@deriv.com';
+
+    //         const store = mockStore(mockRootStore);
+
+    //         store.client.account_status = { status: [], category: 'Real' };
+    //         store.client.email = user_input;
+
+    //         render(
+    //             <Router history={history}>
+    //                 <MT5CreatePassword {...default_props} />
+    //             </Router>,
+    //             {
+    //                 wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+    //             }
+    //         );
+    //         const ele_password_input = await screen.findByTestId('dt_mt5_password');
+    //         fireEvent.change(ele_password_input, { target: { value: 'Passwordååøø' } });
+    //         await waitFor(() => {
+    //             fireEvent.focusOut(ele_password_input);
+    //         });
+
+    //         await waitFor(() => {
+    //             expect(validPassword).toHaveBeenCalled();
+    //         });
+
+    //         expect(getErrorMessages).toHaveBeenCalled();
+    //         expect(
+    //             await screen.findByText(/Password should have lower and uppercase English letters with numbers./i)
+    //         ).toBeInTheDocument();
+    //     });
 
     //  it('should enable the submit button when all fields are valid and terms and conditions are accepted', async () => {
     //         const user_input = 'zo8lAet#2q01Ih';

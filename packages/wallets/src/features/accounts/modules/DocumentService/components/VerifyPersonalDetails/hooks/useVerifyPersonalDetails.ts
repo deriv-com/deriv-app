@@ -10,7 +10,6 @@ const useVerifyPersonalDetails = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const initialValues = {
-        arePersonalDetailsVerified: false,
         dateOfBirth: getFormattedDateString(new Date((settings.date_of_birth ?? 0) * 1000)),
         firstName: settings.first_name,
         lastName: settings.last_name,

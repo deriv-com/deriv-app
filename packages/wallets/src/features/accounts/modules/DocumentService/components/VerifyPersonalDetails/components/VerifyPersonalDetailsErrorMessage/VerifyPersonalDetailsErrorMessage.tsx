@@ -1,21 +1,19 @@
 import React from 'react';
 import { TSocketError } from '@deriv/api-v2/types';
 import { Localize } from '@deriv-com/translations';
-import { InlineMessage, WalletText } from '../../../../../../../../components';
-import useDevice from '../../../../../../../../hooks/useDevice';
+import { InlineMessage } from '@deriv-com/ui';
+import { WalletText } from '../../../../../../../../components';
 
 type TErrorMessageProps = {
     error: TSocketError<'get_settings'>['error']['code'] | TSocketError<'set_settings'>['error']['code'];
 };
 
 const VerifyPersonalDetailsErrorMessage: React.FC<TErrorMessageProps> = ({ error }) => {
-    const { isDesktop } = useDevice();
-
     const handleOnClickLink = () => window.LC_API.open_chat_window();
 
     if (error === 'DuplicateAccount') {
         return (
-            <InlineMessage size={!isDesktop ? 'md' : 'sm'} type='error'>
+            <InlineMessage variant='error'>
                 <WalletText as='span'>
                     <Localize
                         components={[

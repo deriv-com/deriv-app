@@ -3,9 +3,9 @@ import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api-v2';
 import { LabelPairedArrowUpArrowDownMdBoldIcon, LabelPairedCircleExclamationMdFillIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { InlineMessage, Text } from '@deriv-com/ui';
 import { WalletListCardBadge } from '../../../../components';
-import { InlineMessage, WalletButton } from '../../../../components/Base';
+import { WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
@@ -96,7 +96,11 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
             ) {
                 case 'migrated_with_position':
                     return (
-                        <InlineMessage size='sm' type='warning' variant='outlined'>
+                        <InlineMessage
+                            className='wallets-mt5-trade-screen__description-badge'
+                            type='outlined'
+                            variant='warning'
+                        >
                             <Text color='warning' size='2xs' weight='bold'>
                                 <Localize i18n_default_text='No new positions' />
                             </Text>
@@ -104,7 +108,11 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                     );
                 case 'migrated_without_position':
                     return (
-                        <InlineMessage size='sm' type='warning' variant='outlined'>
+                        <InlineMessage
+                            className='wallets-mt5-trade-screen__description-badge'
+                            type='outlined'
+                            variant='warning'
+                        >
                             <Text color='warning' size='2xs' weight='bold'>
                                 <Localize i18n_default_text='Account closed' />
                             </Text>

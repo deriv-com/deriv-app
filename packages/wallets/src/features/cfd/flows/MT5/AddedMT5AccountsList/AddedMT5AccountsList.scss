@@ -43,14 +43,22 @@
 
         &-badge {
             width: fit-content;
+            padding: 0 0.4rem;
+            gap: 0.4rem;
+
+            /* stylelint-disable-next-line selector-class-pattern */
+            .deriv-inline-message__icon {
+                width: auto;
+                height: auto;
+                & > svg {
+                    width: 1.2rem;
+                    height: 1.2rem;
+                }
+            }
 
             & a {
                 cursor: pointer;
                 text-decoration: underline;
-            }
-
-            & > .wallets-inline-message {
-                padding: 0.5rem 0.8rem;
             }
         }
 

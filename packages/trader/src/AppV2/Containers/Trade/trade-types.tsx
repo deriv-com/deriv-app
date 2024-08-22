@@ -10,6 +10,7 @@ import Guide from '../../Components/Guide';
 type TTradeTypesProps = {
     onTradeTypeSelect: (e: React.MouseEvent<HTMLButtonElement>) => void;
     trade_types: ReturnType<typeof getTradeTypesList>;
+    contract_type: string;
 } & Pick<ReturnType<typeof useTraderStore>, 'contract_type'>;
 
 type TItem = {
@@ -169,7 +170,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     const handleOnTradeTypeSelect = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         onTradeTypeSelect(e);
         setIsOpen(false);
-    }
+    };
 
     const isTradeTypeSelected = (value: string) =>
         [contract_type, value].every(type => type.startsWith('vanilla')) ||

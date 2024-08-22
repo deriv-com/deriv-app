@@ -37,9 +37,7 @@ const useContractsForCompany = () => {
             const { contracts_for_company = [], error } = response;
             available_contract_types = {};
 
-            if (error) {
-                console.error(error);
-            } else if (contracts_for_company?.available.length) {
+            if (!error && contracts_for_company?.available.length) {
                 contracts_for_company.available.forEach((contract: any) => {
                     const type = Object.keys(contract_types).find(
                         key =>
@@ -73,6 +71,7 @@ const useContractsForCompany = () => {
                 setContractTypesList(available_categories);
             }
         } catch (err) {
+            /* eslint-disable no-console */
             console.error(err);
         }
     }, [setContractTypesListV2]);

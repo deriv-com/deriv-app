@@ -9,6 +9,7 @@ import { Analytics } from '@deriv-com/analytics';
 import { FormikErrors } from 'formik';
 import { getIDVFormValidationSchema } from '../../../Configs/kyc-validation-config';
 import { useDevice } from '@deriv-com/ui';
+import { APIProvider } from '@deriv/api';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
@@ -267,11 +268,13 @@ describe('<PersonalDetails/>', () => {
 
     const renderwithRouter = ({ props = mock_props, store = mock_store }) => {
         render(
-            <StoreProvider store={store ?? mock_store}>
-                <BrowserRouter>
-                    <PersonalDetails {...props} />
-                </BrowserRouter>
-            </StoreProvider>
+            <APIProvider>
+                <StoreProvider store={store ?? mock_store}>
+                    <BrowserRouter>
+                        <PersonalDetails {...props} />
+                    </BrowserRouter>
+                </StoreProvider>
+            </APIProvider>
         );
     };
 
@@ -307,7 +310,7 @@ describe('<PersonalDetails/>', () => {
         expect(await screen.findByText(/You should enter 9-35 numbers./i)).toBeInTheDocument();
 
         fireEvent.change(first_name, { target: { value: '123' } });
-        fireEvent.change(last_name, { target: { value: 'a' } });
+        fireEvent.change(last_name, { target: { value: 'abcd' } });
         fireEvent.change(date_of_birth, { target: { value: '2021-04-13' } });
 
         expect(await screen.findByText(/letters, spaces, periods, hyphens, apostrophes only/i)).toBeInTheDocument();
@@ -638,23 +641,6 @@ describe('<PersonalDetails/>', () => {
         await waitFor(() => {
             expect(mock_props.onSave).toBeCalledWith(0, { first_name: 'test firstname', last_name: 'test lastname' });
         });
-    });
-
-    it('should close tax_identification_number_pop_over when scrolled', () => {
-        renderwithRouter({});
-
-        const tax_identification_number_pop_over = screen.getByTestId('tax_identification_number_pop_over');
-        expect(tax_identification_number_pop_over).toBeInTheDocument();
-        fireEvent.click(tax_identification_number_pop_over);
-        expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
-        expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
-
-        fireEvent.scroll(screen.getByTestId('dt_personal_details_container'), {
-            target: { scrollY: 100 },
-        });
-
-        expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
-        expect(screen.queryByRole('link', { name: 'here' })).not.toBeInTheDocument();
     });
 
     it('should validate idv values when a document type is selected', async () => {

@@ -122,12 +122,10 @@ export const getPersonalDetailsBaseValidationSchema = (broker_code?: string) =>
         account_opening_reason: Yup.string().required(localize('Intended use of account is required.')),
         first_name: Yup.string()
             .required(localize('First name is required.'))
-            .min(1, localize('Enter no more than 50 characters.'))
             .max(50, localize('Enter no more than 50 characters.'))
             .matches(name, localize('Letters, spaces, periods, hyphens, apostrophes only.')),
         last_name: Yup.string()
             .required(localize('Last name is required.'))
-            .min(1, localize('Enter no more than 50 characters.'))
             .max(50, localize('Enter no more than 50 characters.'))
             .matches(name, localize('Letters, spaces, periods, hyphens, apostrophes only.')),
         date_of_birth: Yup.string()

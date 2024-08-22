@@ -24,7 +24,7 @@ describe('getEmploymentAndTaxValidationSchema', () => {
         const valid_values = {
             employment_status: 'Employed',
             tax_residence: 'Germany',
-            tin_skipped: false,
+            tin_skipped: 0,
             tax_identification_confirm: true,
             tax_identification_number: '12345',
         };
@@ -35,7 +35,7 @@ describe('getEmploymentAndTaxValidationSchema', () => {
     it('should throw employment status required error when employment status is not provided', () => {
         const invalid_values = {
             tax_residence: 'Germany',
-            tin_skipped: false,
+            tin_skipped: 0,
             tax_identification_confirm: true,
             tax_identification_number: '12345',
         };
@@ -52,7 +52,7 @@ describe('getEmploymentAndTaxValidationSchema', () => {
         const invalid_values = {
             employment_status: 'Employed',
             tax_residence: 'Germany',
-            tin_skipped: false,
+            tin_skipped: 0,
             tax_identification_confirm: false,
             tax_identification_number: '12345',
         };
@@ -71,7 +71,7 @@ describe('getEmploymentAndTaxValidationSchema', () => {
         const invalid_values = {
             employment_status: 'Employed',
             tax_residence: 'Germany',
-            tin_skipped: false,
+            tin_skipped: 0,
             tax_identification_confirm: true,
             tax_identification_number: '12345678901234567890123456',
         };
@@ -89,7 +89,7 @@ describe('getEmploymentAndTaxValidationSchema', () => {
         const invalid_values = {
             employment_status: 'Employed',
             tax_residence: 'Germany',
-            tin_skipped: false,
+            tin_skipped: 0,
             tax_identification_confirm: true,
             tax_identification_number: '1234',
         };
@@ -105,7 +105,7 @@ describe('getEmploymentAndTaxValidationSchema', () => {
         const invalid_values = {
             employment_status: 'Employed',
             tax_residence: 'Germany',
-            tin_skipped: false,
+            tin_skipped: 0,
             tax_identification_confirm: true,
             tax_identification_number: '-1234',
         };
@@ -121,7 +121,7 @@ describe('getEmploymentAndTaxValidationSchema', () => {
         const invalid_values = {
             employment_status: 'Employed',
             tax_residence: '',
-            tin_skipped: false,
+            tin_skipped: 0,
             tax_identification_confirm: true,
             tax_identification_number: '1234',
         };
@@ -136,7 +136,7 @@ describe('getEmploymentAndTaxValidationSchema', () => {
     it('should not validate tax details when tin_skipped is true', () => {
         const valid_values = {
             employment_status: 'Student',
-            tin_skipped: true,
+            tin_skipped: 1,
             tax_residence: 'Germany',
         };
 
@@ -272,7 +272,7 @@ describe('getPersonalDetailsBaseValidationSchema', () => {
 
         expect(first_name.validate('John')).resolves.toBe('John');
         expect(first_name.validate('')).rejects.toThrow('First name is required.');
-        expect(first_name.validate('A')).resolves.toBe('A');
+        expect(first_name.validate('A')).rejects.toThrow('Letters, spaces, periods, hyphens, apostrophes only.');
         expect(first_name.validate('ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKL')).rejects.toThrow(
             'Enter no more than 50 characters.'
         );
@@ -283,7 +283,7 @@ describe('getPersonalDetailsBaseValidationSchema', () => {
 
         expect(last_name.validate('Doe')).resolves.toBe('Doe');
         expect(last_name.validate('')).rejects.toThrow('Last name is required.');
-        expect(last_name.validate('A')).resolves.toBe('A');
+        expect(last_name.validate('A')).rejects.toThrow('Letters, spaces, periods, hyphens, apostrophes only.');
         expect(last_name.validate('ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKL')).rejects.toThrow(
             'Enter no more than 50 characters.'
         );

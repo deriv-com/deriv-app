@@ -147,6 +147,7 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
                 })}
                 onClick={handleRowClick}
                 onKeyDown={handleRowClick}
+                role='button'
             >
                 <TransactionsCompletedRowContent
                     accounts={accounts}

@@ -272,4 +272,75 @@ describe('SubscriptionsManager', () => {
 
         expect(backendUnsubscribeSpy).toHaveBeenCalledTimes(1);
     });
+
+    /*
+        async close() {
+        if (!this.authorizedWs) {
+            return;
+        }
+
+        // Collect promises from the async unsubscribe calls
+        const unsubscribePromises = Array.from(this.backendSubscriptions.values()).map(async backendSubscription => {
+            await backendSubscription.unsubscribe();
+        });
+
+        // Clear the subscriptions map after all promises have resolved
+        this.backendSubscriptions.clear();
+
+        // Await all the unsubscribe promises to finish
+        await Promise.all(unsubscribePromises);
+    }*/
+    it('close unsubscribes all backend subscriptions', async () => {
+        const unsubscribeSpy = jest.spyOn(Subscription.prototype, 'unsubscribe');
+
+        const onData1 = jest.fn();
+        const onData2 = jest.fn();
+
+        const subscriptionPromise1 = subscriptionsManager.subscribe('website_status', { payload: 'payload1' }, onData1);
+
+        mockWs.respondFromServer(
+            JSON.stringify({ data: 'initial data', req_id: 1, subscription: { id: 'SUBSCRIPTION_ID' } })
+        );
+
+        const subscriptionPromise2 = subscriptionsManager.subscribe('website_status', { payload: 'payload2' }, onData2);
+
+        mockWs.respondFromServer(
+            JSON.stringify({ data: 'initial data', req_id: 2, subscription: { id: 'SUBSCRIPTION_ID' } })
+        );
+
+        const subscription1 = await subscriptionPromise1;
+        const subscription2 = await subscriptionPromise2;
+
+        await subscriptionsManager.close();
+
+        expect(unsubscribeSpy).toHaveBeenCalledTimes(2);
+    });
+    it('close clears subscriptions map', async () => {
+        const onData1 = jest.fn();
+        const onData2 = jest.fn();
+
+        const subscriptionPromise1 = subscriptionsManager.subscribe('website_status', { payload: 'payload1' }, onData1);
+
+        mockWs.respondFromServer(
+            JSON.stringify({ data: 'initial data', req_id: 1, subscription: { id: 'SUBSCRIPTION_ID' } })
+        );
+
+        const subscriptionPromise2 = subscriptionsManager.subscribe('website_status', { payload: 'payload2' }, onData2);
+
+        mockWs.respondFromServer(
+            JSON.stringify({ data: 'initial data', req_id: 2, subscription: { id: 'SUBSCRIPTION_ID' } })
+        );
+
+        await subscriptionPromise1;
+        await subscriptionPromise2;
+
+        await subscriptionsManager.close();
+
+        expect(subscriptionsManager.backendSubscriptions.size).toBe(0);
+    });
+
+    it('does not crash if no authorized websocket available', async () => {
+        subscriptionsManager.setAuthorizedWs();
+        await subscriptionsManager.close();
+    });
 });

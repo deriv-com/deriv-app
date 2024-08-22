@@ -6,7 +6,7 @@ export default class SubscriptionsManager {
     backendSubscriptions: Map<string, Subscription> = new Map();
     authorizedWs: WebSocket | undefined;
 
-    setAuthorizedWs(authorizedWs: WebSocket) {
+    setAuthorizedWs(authorizedWs: WebSocket | undefined) {
         this.authorizedWs = authorizedWs;
 
         this.backendSubscriptions.forEach(subscription => {

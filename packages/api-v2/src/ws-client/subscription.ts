@@ -27,7 +27,11 @@ export default class Subscription {
 
     listeners: Array<(data: TSocketResponse<TSocketSubscribableEndpointNames>) => void>;
 
-    setAuthorizedWs(authorizedWs: WebSocket) {
+    setAuthorizedWs(authorizedWs: WebSocket | undefined) {
+        if (!authorizedWs) {
+            return;
+        }
+
         this.authorizedWs = authorizedWs;
 
         this.authorizedWs.removeEventListener('message', this.boundOnWsMessage);

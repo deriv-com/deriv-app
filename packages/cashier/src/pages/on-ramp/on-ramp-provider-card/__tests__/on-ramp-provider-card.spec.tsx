@@ -1,8 +1,13 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import OnRampProviderCard from '../on-ramp-provider-card';
 import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../../cashier-providers';
+import OnRampProviderCard from '../on-ramp-provider-card';
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isMobile: false })),
+}));
 
 describe('<OnRampProviderCard />', () => {
     const provider = {
@@ -30,7 +35,6 @@ describe('<OnRampProviderCard />', () => {
         const mock_root_store = mockStore({
             ui: {
                 is_dark_mode_on: false,
-                is_mobile: false,
             },
             modules: {
                 cashier: {
@@ -58,7 +62,6 @@ describe('<OnRampProviderCard />', () => {
         const mock_root_store = mockStore({
             ui: {
                 is_dark_mode_on: true,
-                is_mobile: false,
             },
             modules: {
                 cashier: {
@@ -81,7 +84,6 @@ describe('<OnRampProviderCard />', () => {
         const mock_root_store = mockStore({
             ui: {
                 is_dark_mode_on: false,
-                is_mobile: false,
             },
             modules: {
                 cashier: {

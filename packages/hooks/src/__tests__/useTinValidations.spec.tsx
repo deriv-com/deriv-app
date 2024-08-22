@@ -33,7 +33,6 @@ describe('useTinValidations', () => {
             mutate: jest.fn(),
         });
 
-        // const { tin_validation_config } = useTinValidations();
         const { result } = renderHook(() => useTinValidations(), { wrapper });
 
         expect(result.current.tin_validation_config).toEqual(tin_data);

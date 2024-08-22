@@ -3,8 +3,6 @@ import {
     getPersonalDetailsValidationSchema,
     makeSettingsRequest,
 } from '../validation';
-import { ResidenceList } from '@deriv/api-types';
-import * as Yup from 'yup';
 
 describe('getPersonalDetailsValidationSchema', () => {
     const valid_data = {

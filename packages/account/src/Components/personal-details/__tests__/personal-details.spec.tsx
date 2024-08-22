@@ -1,6 +1,6 @@
 import React, { ComponentProps, ReactNode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PersonalDetails from '../personal-details';
 import { shouldShowIdentityInformation } from '../../../Helpers/utils';

@@ -4,7 +4,6 @@ import { Formik, Form, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router';
 import { useDevice } from '@deriv-com/ui';
 import { Button, Checkbox, FormSubmitErrorMessage, HintBox, Input, Loading, Text } from '@deriv/components';
-import { GetSettings } from '@deriv/api-types';
 import { AUTH_STATUS_CODES, WS, getBrandWebsiteName, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';

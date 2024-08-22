@@ -1,7 +1,38 @@
 .cashier-locked {
-    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     .cashier-empty-state__action {
         margin: auto;
+    }
+
+    /* stylelint-disable-next-line plugin/selector-bem-pattern */
+    .dc-checklist {
+        width: 100%;
+        max-width: 50rem;
+    }
+    /* stylelint-disable-next-line plugin/selector-bem-pattern */
+    .dc-checklist__item-text {
+        max-width: 32rem;
+    }
+    &__icon {
+        width: 12.8rem;
+        height: 12.8rem;
+        margin-bottom: 2.4rem;
+    }
+    &__title {
+        margin-bottom: 0.8rem;
+        @include mobile-or-tablet-screen {
+            margin-left: 1.2rem;
+            margin-right: 1.2rem;
+        }
+    }
+    &__desc {
+        margin-bottom: 3.2rem;
+        @include mobile-or-tablet-screen {
+            padding: 0 1rem;
+        }
     }
 }

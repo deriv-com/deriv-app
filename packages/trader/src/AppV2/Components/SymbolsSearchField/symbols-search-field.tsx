@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, forwardRef, Ref } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Button, SearchField } from '@deriv-com/quill-ui';
 import clsx from 'clsx';
 import { observer, useStore } from '@deriv/stores';
@@ -11,32 +11,15 @@ export type TSymbolsSearchField = {
     setIsSearching: (input: boolean) => void;
     searchValue: string;
     setSearchValue: (input: string) => void;
-    marketCategoriesRef: React.MutableRefObject<HTMLDivElement | null>;
 };
 
 const SymbolsSearchField = observer(
-    ({ isSearching, setIsSearching, searchValue, setSearchValue, marketCategoriesRef }: TSymbolsSearchField) => {
+    ({ isSearching, setIsSearching, searchValue, setSearchValue }: TSymbolsSearchField) => {
         const { ui } = useStore();
         const { is_dark_mode_on } = ui;
         const { contract_type } = useTraderStore();
         const contract_name = getContractTypesConfig()[contract_type]?.title;
         const inputRef = useRef<HTMLInputElement | null>(null);
-        const [prevScrollY, setPrevScrollY] = useState(marketCategoriesRef.current?.scrollTop);
-        const [isSearchFieldVisible, setIsSearchFieldVisible] = useState(true);
-
-        useEffect(() => {
-            const handleScroll = () => {
-                const currentScrollY = marketCategoriesRef.current?.scrollTop;
-
-                if (prevScrollY && currentScrollY !== null && currentScrollY !== undefined)
-                    setIsSearchFieldVisible(prevScrollY > currentScrollY);
-                setPrevScrollY(currentScrollY);
-            };
-            marketCategoriesRef.current?.addEventListener('scroll', handleScroll);
-            return () => {
-                marketCategoriesRef.current?.removeEventListener('scroll', handleScroll);
-            };
-        }, [prevScrollY, marketCategoriesRef]);
 
         useEffect(() => {
             const inputElement = inputRef.current;
@@ -61,7 +44,6 @@ const SymbolsSearchField = observer(
             <div
                 className={clsx('symbols-search-field__container', {
                     'symbols-search-field--is-focused': isSearching,
-                    'symbols-search-field--is-hidden': !isSearchFieldVisible,
                 })}
             >
                 <SearchField

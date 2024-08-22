@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Button, Icon, Modal, Text } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -14,9 +14,7 @@ type TInvalidVerificationLinkModalProps = {
 
 const InvalidVerificationLinkModal = ({ error_message, order_id }: TInvalidVerificationLinkModalProps) => {
     const { order_store } = useStores();
-    const {
-        ui: { is_mobile },
-    } = useStore();
+    const { isDesktop } = useDevice();
     const { hideModal, is_modal_open } = useModalManagerContext();
     const { confirmOrderRequest, error_code, setIsVerifyingEmail } = order_store;
     const is_invalid_verification_token = error_code === api_error_codes.INVALID_VERIFICATION_TOKEN;
@@ -32,7 +30,7 @@ const InvalidVerificationLinkModal = ({ error_message, order_id }: TInvalidVerif
             width='440px'
         >
             <Modal.Body className='invalid-verification-link-modal'>
-                <Icon icon='IcEmailVerificationLinkInvalid' size={is_mobile ? '96' : '128'} />
+                <Icon icon='IcEmailVerificationLinkInvalid' size={!isDesktop ? '96' : '128'} />
                 {is_invalid_verification_token && (
                     <Text color='prominent' weight='bold'>
                         <Localize i18n_default_text='Invalid verification link' />
@@ -40,7 +38,7 @@ const InvalidVerificationLinkModal = ({ error_message, order_id }: TInvalidVerif
                 )}
                 <Text
                     align='center'
-                    size={is_mobile ? 'xs' : 's'}
+                    size={!isDesktop ? 'xs' : 's'}
                     weight={is_invalid_verification_token ? 'normal' : 'bold'}
                 >
                     {error_message}

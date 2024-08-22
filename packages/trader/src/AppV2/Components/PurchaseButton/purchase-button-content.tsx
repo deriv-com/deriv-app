@@ -9,6 +9,7 @@ type TPurchaseButtonContent = {
     current_stake?: number | null;
     info: ReturnType<typeof useTraderStore>['proposal_info'][0] | Record<string, never>;
     is_reverse?: boolean;
+    is_high_low?: boolean;
 } & Pick<
     ReturnType<typeof useTraderStore>,
     | 'currency'
@@ -18,6 +19,7 @@ type TPurchaseButtonContent = {
     | 'is_vanilla_fx'
     | 'is_vanilla'
     | 'is_turbos'
+    | 'is_touch'
 >;
 
 const PurchaseButtonContent = ({
@@ -26,35 +28,31 @@ const PurchaseButtonContent = ({
     has_open_accu_contract,
     info,
     is_accumulator,
+    is_high_low,
     is_multiplier,
     is_turbos,
     is_vanilla,
     is_vanilla_fx,
     is_reverse,
+    is_touch,
 }: TPurchaseButtonContent) => {
-    const {
-        current_stake: localized_current_stake,
-        max_payout,
-        payout,
-        payout_per_point,
-        payout_per_pip,
-        stake,
-    } = getLocalizedBasis();
+    const { current_stake: localized_current_stake, payout, stake } = getLocalizedBasis();
 
     const getAmount = () => {
-        const { stake, maximum_payout, obj_contract_basis } = info;
+        const { stake, obj_contract_basis } = info;
 
         if (is_multiplier) return stake;
-        if (is_accumulator) return has_open_accu_contract ? Number(current_stake) : maximum_payout;
+        if (is_accumulator) return Number(current_stake);
         return obj_contract_basis?.value;
     };
     const getTextBasis = () => {
-        if (is_turbos || (is_vanilla && !is_vanilla_fx)) return payout_per_point;
-        if (is_vanilla_fx) return payout_per_pip;
         if (is_multiplier) return stake;
-        if (is_accumulator) return has_open_accu_contract ? localized_current_stake : max_payout;
+        if (is_accumulator) return localized_current_stake;
         return payout;
     };
+
+    if (is_vanilla || is_vanilla_fx || is_turbos || is_high_low || is_touch) return null;
+    if (is_accumulator && !has_open_accu_contract) return null;
 
     const text_basis = getTextBasis();
     const amount = getAmount();

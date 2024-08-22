@@ -1,40 +1,46 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useMutation } from '@deriv/api-v2';
+import { useActiveWalletAccount, useMutation } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
-import { Button } from '@deriv-com/ui';
-import { WalletsActionScreen } from '../../../../components';
-//TODO: replace with quill-icons
-import IcResetDemoBalance from '../../../../public/images/ic-demo-reset-balance.svg';
-import IcResetDemoBalanceDone from '../../../../public/images/ic-demo-reset-balance-done.svg';
+import { ActionScreen, Loader } from '@deriv-com/ui';
+import useAllBalanceSubscription from '../../../../hooks/useAllBalanceSubscription';
+import { getResetBalanceContent } from './ResetBalanceContent';
+
+type ContentVariant = keyof ReturnType<typeof getResetBalanceContent>;
 
 const ResetBalance = () => {
     const history = useHistory();
     const { localize } = useTranslations();
-    const { isSuccess: isResetBalanceSuccess, mutate } = useMutation('topup_virtual');
+    const { isLoading: isResetBalanceLoading, isSuccess: isResetBalanceSuccess, mutate } = useMutation('topup_virtual');
+    const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
+    const { data: activeWallet } = useActiveWalletAccount();
 
     const resetBalance = () => {
         mutate();
     };
+
+    const navigateToTransfer = () => history.push('/wallet/account-transfer');
+    const shouldResetBalance = balanceData && balanceData?.[activeWallet?.loginid ?? '']?.balance < 10000;
+
+    const contentMapper = getResetBalanceContent(localize, resetBalance, navigateToTransfer);
+    const getContentVariant = (): ContentVariant => {
+        if (isResetBalanceSuccess) return 'success';
+        if (shouldResetBalance || isResetBalanceLoading) return 'resetAvailable';
+        return 'resetUnavailable';
+    };
+
+    const content = contentMapper[getContentVariant()];
+
+    if (isBalanceLoading) {
+        return <Loader />;
+    }
+
     return (
-        <WalletsActionScreen
-            description={
-                isResetBalanceSuccess
-                    ? localize('Your balance has been reset to 10,000.00 USD.')
-                    : localize('Reset your virtual balance to 10,000.00 USD.')
-            }
-            icon={isResetBalanceSuccess ? <IcResetDemoBalanceDone /> : <IcResetDemoBalance />}
-            renderButtons={() => (
-                <Button
-                    borderWidth='sm'
-                    onClick={isResetBalanceSuccess ? () => history.push('/wallet/account-transfer') : resetBalance}
-                    size='lg'
-                    textSize='md'
-                >
-                    {isResetBalanceSuccess ? localize('Transfer funds') : localize('Reset balance')}
-                </Button>
-            )}
-            title={isResetBalanceSuccess ? localize('Success') : localize('Reset balance')}
+        <ActionScreen
+            actionButtons={content.actionButton}
+            description={content.description}
+            icon={content.icon}
+            title={content.title}
         />
     );
 };

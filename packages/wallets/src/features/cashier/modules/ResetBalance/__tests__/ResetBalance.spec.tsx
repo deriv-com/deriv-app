@@ -1,56 +1,105 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useMutation } from '@deriv/api-v2';
+import { useActiveWalletAccount, useMutation } from '@deriv/api-v2';
 import { act, fireEvent, render, screen } from '@testing-library/react';
+import useAllBalanceSubscription from '../../../../../hooks/useAllBalanceSubscription';
 import ResetBalance from '../ResetBalance';
 
 jest.mock('@deriv/api-v2', () => ({
-    useMutation: jest.fn(() => ({
-        isSuccess: false,
-        mutate: jest.fn(),
-    })),
+    useActiveWalletAccount: jest.fn(),
+    useMutation: jest.fn(),
+}));
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    Loader: jest.fn(() => <div>Loading...</div>),
 }));
 
 jest.mock('react-router-dom', () => ({
-    useHistory: jest.fn(() => ({
-        push: jest.fn(),
-    })),
+    useHistory: jest.fn(),
 }));
 
+jest.mock('../../../../../hooks/useAllBalanceSubscription', () => jest.fn());
+
 describe('ResetBalance', () => {
+    const mockHistory = { push: jest.fn() };
+    const mockMutate = jest.fn();
+
     beforeEach(() => {
         jest.clearAllMocks();
+        (useHistory as jest.Mock).mockReturnValue(mockHistory);
+        (useMutation as jest.Mock).mockReturnValue({
+            isLoading: false,
+            isSuccess: false,
+            mutate: mockMutate,
+        });
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({
+            data: { loginid: 'VRTC1234' },
+        });
     });
 
-    it('should render with initial state', () => {
+    it('renders with initial state when balance is below 10,000', () => {
+        (useAllBalanceSubscription as jest.Mock).mockReturnValue({
+            data: { VRTC1234: { balance: 5000 } },
+            isLoading: false,
+        });
+        (useMutation as jest.Mock).mockReturnValue({
+            isLoading: true,
+            isSuccess: false,
+            mutate: mockMutate,
+        });
+
         render(<ResetBalance />);
 
         expect(screen.getByRole('button', { name: 'Reset balance' })).toBeInTheDocument();
         expect(screen.getByText('Reset your virtual balance to 10,000.00 USD.')).toBeInTheDocument();
     });
 
-    it('should render success state', () => {
-        (useMutation as jest.Mock).mockReturnValueOnce({
+    it('renders unavailable state when balance is 10,000 or above', () => {
+        (useAllBalanceSubscription as jest.Mock).mockReturnValue({
+            data: { VRTC1234: { balance: 10000 } },
+            isLoading: false,
+        });
+
+        render(<ResetBalance />);
+
+        expect(screen.queryByRole('button', { name: 'Reset balance' })).not.toBeInTheDocument();
+        expect(screen.getByText('Reset balance unavailable')).toBeInTheDocument();
+        expect(screen.getByText('You can reset your balance when it is below USD 10,000.00')).toBeInTheDocument();
+    });
+
+    it('renders success state', () => {
+        (useAllBalanceSubscription as jest.Mock).mockReturnValue({
+            data: { VRTC1234: { balance: 5000 } },
+            isLoading: false,
+        });
+        (useMutation as jest.Mock).mockReturnValue({
+            isLoading: false,
             isSuccess: true,
-            mutate: jest.fn(),
+            mutate: mockMutate,
         });
 
         render(<ResetBalance />);
 
         expect(screen.getByText('Success')).toBeInTheDocument();
         expect(screen.getByText('Your balance has been reset to 10,000.00 USD.')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Transfer funds' })).toBeInTheDocument();
     });
 
-    it('should trigger resetBalance function on button click', async () => {
-        const { mutate } = useMutation('topup_virtual');
-        (useMutation as jest.Mock).mockReturnValueOnce({
-            isSuccess: false,
-            mutate,
+    it('shows the loader if balance data is loading', () => {
+        (useAllBalanceSubscription as jest.Mock).mockReturnValue({
+            data: { VRTC1234: { balance: 10000 } },
+            isLoading: true,
         });
+        render(<ResetBalance />);
 
-        const { push } = useHistory();
-        (useHistory as jest.Mock).mockReturnValueOnce({
-            push,
+        expect(screen.getByText('Loading...')).toBeInTheDocument();
+    });
+
+    it('triggers resetBalance function on button click', async () => {
+        (useAllBalanceSubscription as jest.Mock).mockReturnValue({
+            data: { VRTC1234: { balance: 5000 } },
+            isLoading: false,
         });
 
         render(<ResetBalance />);
@@ -59,19 +108,18 @@ describe('ResetBalance', () => {
         fireEvent.click(resetBalanceButton);
 
         await act(async () => {
-            expect(mutate).toHaveBeenCalled();
+            expect(mockMutate).toHaveBeenCalled();
         });
     });
 
-    it('should redirect to transfer page on button click when reset is successful', async () => {
-        (useMutation as jest.Mock).mockReturnValueOnce({
-            isSuccess: true,
-            mutate: jest.fn(),
+    it('redirects to transfer page on button click when reset is successful', async () => {
+        (useAllBalanceSubscription as jest.Mock).mockReturnValue({
+            data: { VRTC1234: { balance: 5000 } },
+            isLoading: false,
         });
-
-        const { push } = useHistory();
-        (useHistory as jest.Mock).mockReturnValueOnce({
-            push,
+        (useMutation as jest.Mock).mockReturnValue({
+            isSuccess: true,
+            mutate: mockMutate,
         });
 
         render(<ResetBalance />);
@@ -79,6 +127,33 @@ describe('ResetBalance', () => {
         const transferFundsButton = screen.getByRole('button', { name: 'Transfer funds' });
         fireEvent.click(transferFundsButton);
 
-        expect(push).toHaveBeenCalledWith('/wallet/account-transfer');
+        expect(mockHistory.push).toHaveBeenCalledWith('/wallet/account-transfer');
+    });
+
+    it('handles case when balanceData is undefined', () => {
+        (useAllBalanceSubscription as jest.Mock).mockReturnValue({
+            data: undefined,
+            isLoading: false,
+        });
+
+        render(<ResetBalance />);
+
+        expect(screen.queryByRole('button', { name: 'Reset balance' })).not.toBeInTheDocument();
+        expect(screen.getByText('Reset balance unavailable')).toBeInTheDocument();
+    });
+
+    it('handles case when activeWallet is undefined', () => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({
+            data: undefined,
+            isLoading: false,
+        });
+        (useAllBalanceSubscription as jest.Mock).mockReturnValue({
+            data: { VRTC1234: { balance: 5000 } },
+        });
+
+        render(<ResetBalance />);
+
+        expect(screen.queryByRole('button', { name: 'Reset balance' })).not.toBeInTheDocument();
+        expect(screen.getByText('Reset balance unavailable')).toBeInTheDocument();
     });
 });

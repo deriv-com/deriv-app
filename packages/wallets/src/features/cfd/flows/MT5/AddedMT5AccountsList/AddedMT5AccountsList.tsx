@@ -97,31 +97,36 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     </InlineMessage>
                 )}
 
-                {/* {jurisdictionStatus.is_failed && ( */}
-                <InlineMessage
-                    className='wallets-added-mt5__details-badge--error'
-                    icon={
-                        <LabelPairedTriangleExclamationMdBoldIcon
-                            className='wallets-added-mt5__details-badge-icon'
-                            fill='var(--du-text-loss-danger)'
-                        />
-                    }
-                >
-                    <WalletText color='error' size='xs' weight='bold'>
-                        Verification failed.{' '}
-                        <a
-                            className='wallets-added-mt5__details-badge--error-link'
-                            onClick={() =>
-                                show(<VerificationFailedModal selectedJurisdiction={account.landing_company_short} />, {
-                                    defaultRootId: 'wallets_modal_root',
-                                })
-                            }
-                        >
-                            Why?
-                        </a>
-                    </WalletText>
-                </InlineMessage>
-                {/* )} */}
+                {jurisdictionStatus.is_failed && (
+                    <InlineMessage
+                        className='wallets-added-mt5__details-badge--error'
+                        icon={
+                            <LabelPairedTriangleExclamationMdBoldIcon
+                                className='wallets-added-mt5__details-badge-icon'
+                                fill='var(--du-text-loss-danger)'
+                            />
+                        }
+                    >
+                        <WalletText color='error' size='xs' weight='bold'>
+                            Verification failed.{' '}
+                            <a
+                                className='wallets-added-mt5__details-badge--error-link'
+                                onClick={() =>
+                                    show(
+                                        <VerificationFailedModal
+                                            selectedJurisdiction={account.landing_company_short}
+                                        />,
+                                        {
+                                            defaultRootId: 'wallets_modal_root',
+                                        }
+                                    )
+                                }
+                            >
+                                Why?
+                            </a>
+                        </WalletText>
+                    </InlineMessage>
+                )}
             </div>
         </TradingAccountCard>
     );

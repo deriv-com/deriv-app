@@ -1,44 +1,44 @@
 export const getOptionPerUnit = (unit: string) => {
-    const options = [];
-    const hourOptions = [];
     let start = 0;
     let end = 0;
     let label = '';
-    if (unit === 'm') {
-        start = 1;
-        end = 59;
-        label = 'min';
-    }
-    if (unit === 's') {
-        start = 15;
-        end = 59;
-        label = 'sec';
-    }
-    if (unit === 'd') {
-        start = 1;
-        end = 365;
-        label = 'days';
-    }
 
-    if (unit === 't') {
-        start = 1;
-        end = 10;
-        label = 'tick';
-    }
+    const generateOptions = (start: number, end: number, label: string) => {
+        return Array.from({ length: end - start + 1 }, (_, i) => ({
+            value: start + i,
+            label: `${start + i} ${label}`,
+        }));
+    };
 
-    if (unit === 'h') {
-        start = 15;
-        end = 59;
-        label = 'days';
-        for (let index = start; index <= end; index++) {
-            hourOptions.push({ value: index });
+    switch (unit) {
+        case 'm':
+            start = 1;
+            end = 59;
+            label = 'min';
+            break;
+        case 's':
+            start = 15;
+            end = 59;
+            label = 'sec';
+            break;
+        case 'd':
+            start = 1;
+            end = 365;
+            label = 'days';
+            break;
+        case 't':
+            start = 1;
+            end = 10;
+            label = 'tick';
+            break;
+        case 'h': {
+            const hourOptions = generateOptions(1, 23, 'h');
+            const minuteOptions = generateOptions(1, 59, 'min');
+            return [hourOptions, minuteOptions];
         }
-        start = 1;
-        end = 24;
-    }
-    for (let index = start; index <= end; index++) {
-        options.push({ value: index, label: `${index} ${label}` });
+        default:
+            return [];
     }
 
-    return options;
+    return generateOptions(start, end, label);
 };

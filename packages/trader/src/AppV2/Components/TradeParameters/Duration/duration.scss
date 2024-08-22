@@ -18,7 +18,31 @@
         scrollbar-width: none;
     }
     &__wheel-picker {
-        padding: 0px;
+        padding-left: var(--core-spacing-800);
+        padding-right: var(--core-spacing-800);
         height: 270px;
+    }
+    &__date-picker {
+        padding-left: var(--core-spacing-800);
+        padding-right: var(--core-spacing-800);
+        display: flex;
+        position: relative;
+        &__heading {
+            width: 100%;
+            text-align: center;
+            p {
+                margin-left: 26px;
+            }
+        }
+        &__icon {
+            width: 32px;
+            height: 32px;
+            border: 1px solid black;
+            border-radius: 12px;
+        }
+
+        &__sheet {
+            font-size: 16px;
+        }
     }
 }

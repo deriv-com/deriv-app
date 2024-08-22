@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { useDebounceCallback } from 'usehooks-ts';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Divider, Text } from '@deriv-com/ui';
+import { WalletClipboard } from '../../../../../../components';
 import { THooks } from '../../../../../../types';
 import { getTransactionLabels } from '../../constants';
 import { TransactionsCompletedRowAccountDetails, TransactionsCompletedRowTransferAccountDetails } from './components';
@@ -30,13 +31,42 @@ const TransactionsCompletedRowContent: React.FC<TTransactionsCompletedRowContent
     transaction,
     wallet,
 }) => {
-    const { action_type: actionType, longcode, transaction_id: transactionId } = transaction;
+    const { action_type: actionType, longcode = '', transaction_id: transactionId } = transaction;
     const { account_type: accountType = '', currency = 'USD', is_virtual: isVirtual } = wallet;
+    const splitLongcode = longcode.split(/,\s/);
+    const addressHashMatch = /:\s([0-9a-zA-Z]+.{25,28})/gm.exec(splitLongcode[0]);
+    const addressHash = addressHashMatch?.[1];
+    const blockchainHashMatch = /:\s([0-9a-zA-Z]+.{25,34})/gm.exec(splitLongcode[1]);
+    const blockchainHash = blockchainHashMatch?.[1];
+    let descriptions = [longcode];
 
+    if (addressHash || blockchainHash) {
+        descriptions = splitLongcode?.map(
+            description => `${description[0].toLocaleUpperCase()}${description.slice(1)}`
+        );
+    }
     if (shouldShowTraceId && transaction.longcode) {
         return (
-            <Text as='p' size='xs'>
-                {longcode}
+            <Text align='center' as='div'>
+                {descriptions.map((description, index) => {
+                    return (
+                        <React.Fragment key={description}>
+                            <Text align='center' as='p' lineHeight='xs' size='xs'>
+                                {description}
+                            </Text>
+                            <div>
+                                {blockchainHash && index === descriptions.length - 1 && (
+                                    <WalletClipboard popoverAlignment='top' textCopy={blockchainHash} />
+                                )}
+                                {addressHash &&
+                                    transaction.action_type === 'withdrawal' &&
+                                    index === descriptions.length - 1 && (
+                                        <WalletClipboard popoverAlignment='top' textCopy={addressHash} />
+                                    )}
+                            </div>
+                        </React.Fragment>
+                    );
+                })}
             </Text>
         );
     }
@@ -111,7 +141,7 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
     return (
         <React.Fragment>
             <Divider color='var(--border-divider)' />
-            <button
+            <div
                 className={classNames('wallets-transactions-completed-row', {
                     'wallets-transactions-completed-row--active': shouldShowTraceId,
                 })}
@@ -126,7 +156,7 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
                     transaction={transaction}
                     wallet={wallet}
                 />
-            </button>
+            </div>
         </React.Fragment>
     );
 };

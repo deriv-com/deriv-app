@@ -43,5 +43,10 @@
     &--active {
         background-color: var(--du-general-section-1, #f2f3f4);
         justify-content: center;
+        align-items: center;
+        @include mobile {
+            padding: 1.12em;
+            line-break: anywhere;
+        }
     }
 }

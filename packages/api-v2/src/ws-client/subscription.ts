@@ -1,4 +1,4 @@
-import request from './request';
+import request, { send } from './request';
 import {
     TSocketResponse,
     TSocketRequestPayload,
@@ -59,7 +59,7 @@ export default class Subscription {
     async unsubscribe() {
         this.authorizedWs.removeEventListener('message', this.boundOnWsMessage);
         this.authorizedWs.removeEventListener('close', this.boundOnWsClose);
-        await request(this.authorizedWs, 'forget', { forget: this.subscriptionId });
+        send(this.authorizedWs, 'forget', { forget: this.subscriptionId });
     }
 
     onWsClose() {

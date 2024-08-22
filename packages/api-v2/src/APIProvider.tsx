@@ -125,13 +125,6 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
         );
     }
 
-    useEffect(() => {
-        return () => {
-            connectionRef.current?.close();
-            reactQueryRef.current?.clear();
-        };
-    }, []);
-
     const setOnReconnected = useCallback((onReconnected: () => void) => {
         onReconnectedRef.current = onReconnected;
     }, []);
@@ -182,7 +175,8 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
                 });
             }
 
-            connectionRef.current?.close();
+            wsClientRef.current?.close();
+            reactQueryRef.current?.clear();
         };
     }, []);
 

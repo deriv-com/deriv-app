@@ -14,6 +14,23 @@ export default class SubscriptionsManager {
         });
     }
 
+    async close() {
+        if (!this.authorizedWs) {
+            return;
+        }
+
+        // Collect promises from the async unsubscribe calls
+        const unsubscribePromises = Array.from(this.backendSubscriptions.values()).map(async backendSubscription => {
+            await backendSubscription.unsubscribe();
+        });
+
+        // Clear the subscriptions map after all promises have resolved
+        this.backendSubscriptions.clear();
+
+        // Await all the unsubscribe promises to finish
+        await Promise.all(unsubscribePromises);
+    }
+
     async subscribe(
         name: TSocketSubscribableEndpointNames,
         payload: TSocketRequestPayload<TSocketSubscribableEndpointNames>['payload'],

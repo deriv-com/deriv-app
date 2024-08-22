@@ -2,17 +2,19 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { Formik, FormikValues } from 'formik';
 import { useOnfido } from '@deriv/api-v2';
+import { LegacyArrowLeft2pxIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
-import { Loader } from '@deriv-com/ui';
+import { Loader, Text } from '@deriv-com/ui';
 import { InlineMessage, ModalStepWrapper } from '../../../../../../components';
 import { useVerifyPersonalDetails, VerifyPersonalDetails } from '../VerifyPersonalDetails';
 import './Onfido.scss';
 
 type TOnfidoProps = {
+    onClickBack?: VoidFunction;
     onCompletion?: VoidFunction;
 };
 
-const Onfido: React.FC<TOnfidoProps> = ({ onCompletion }) => {
+const Onfido: React.FC<TOnfidoProps> = ({ onClickBack, onCompletion }) => {
     const { localize } = useTranslations();
     const { data: onfidoData, isLoading: isOnfidoLoading } = useOnfido();
     const { hasSubmitted: isOnfidoSubmissionSuccessful, onfidoContainerId } = onfidoData;
@@ -39,7 +41,13 @@ const Onfido: React.FC<TOnfidoProps> = ({ onCompletion }) => {
     if (isLoading) return <Loader />;
 
     return (
-        <ModalStepWrapper title={localize('Add a real MT5 account')}>
+        <ModalStepWrapper disableAnimation={!!onClickBack} title={localize('Add a real MT5 account')}>
+            {onClickBack && (
+                <button className='wallets-onfido__back-button' onClick={onClickBack}>
+                    <LegacyArrowLeft2pxIcon iconSize='xs' />
+                    <Text weight='bold'>Back</Text>
+                </button>
+            )}
             <div className='wallets-onfido'>
                 {!isPersonalDetailsSubmitted && (
                     <Formik initialValues={initialPersonalDetailsValues} onSubmit={onSubmit}>

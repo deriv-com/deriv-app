@@ -1,14 +1,24 @@
 .order-details-cancel-modal {
     &__footer {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             .dc-btn__group {
                 align-items: center;
                 display: flex;
                 flex-direction: column;
 
+                @include tablet-screen {
+                    width: 100%;
+                    align-items: unset;
+                    margin-right: 1rem;
+                }
+
                 .dc-btn {
                     margin-top: 0.8rem;
                     width: 80vw;
+
+                    @include tablet-screen {
+                        width: 100%;
+                    }
                 }
             }
         }

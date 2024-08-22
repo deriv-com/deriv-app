@@ -109,6 +109,7 @@ export const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [
     routes.bot,
     routes.account,
     routes.endpoint,
+    routes.cashier,
     /** because contract route has dynamic id */
     '/contract',
 ];

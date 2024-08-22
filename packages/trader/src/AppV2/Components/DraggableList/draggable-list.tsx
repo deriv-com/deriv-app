@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult, DragStart } from 'react-beautiful-dnd';
 import { Text } from '@deriv-com/quill-ui';
 import DraggableListItem from './draggable-list-item';
@@ -25,108 +25,137 @@ export type TDraggableListProps = {
 };
 
 const DraggableList: React.FC<TDraggableListProps> = ({ categories, onRightIconClick, onAction, onDrag }) => {
-    const [category_list, setCategoryList] = useState(categories);
-    const [draggedItemId, setDraggedItemId] = useState<string | null>(null);
+    const [category_list, setCategoryList] = React.useState(categories);
+    const [draggedItemId, setDraggedItemId] = React.useState<string | null>(null);
 
     const handleOnDragEnd = (result: DropResult) => {
         setDraggedItemId(null);
         if (!result.destination) return;
 
-        const source_category_index = category_list.findIndex(category => category.id === result.source.droppableId);
-        const dest_category_index = category_list.findIndex(
-            category => category.id === result.destination?.droppableId
-        );
-
-        if (source_category_index === -1 || dest_category_index === -1) return;
-
-        const source_category = category_list[source_category_index];
-        const dest_category = category_list[dest_category_index];
-
-        const source_items = Array.from(source_category.items);
-        const [moved_item] = source_items.splice(result.source.index, 1);
-        const new_category_list = Array.from(category_list);
-
-        if (source_category_index === dest_category_index) {
-            source_items.splice(result.destination.index, 0, moved_item);
-        } else {
-            const dest_items = Array.from(dest_category.items);
-            dest_items.splice(result.destination.index, 0, moved_item);
-            new_category_list[dest_category_index] = {
-                ...dest_category,
-                items: dest_items,
-            };
-        }
-
-        new_category_list[source_category_index] = {
-            ...source_category,
-            items: source_items,
-        };
+        const new_category_list = updateCategoriesWithDragResult(category_list, result);
         setCategoryList(new_category_list);
         onDrag?.(new_category_list);
     };
 
-    const handleOnDragStart = (start: DragStart) => {
-        setDraggedItemId(start.draggableId);
-    };
+    const handleOnDragStart = (start: DragStart) => setDraggedItemId(start.draggableId);
 
-    React.useEffect(() => {
-        setCategoryList(categories);
-    }, [categories]);
+    React.useEffect(() => setCategoryList(categories), [categories]);
 
     return (
         <DragDropContext onDragEnd={handleOnDragEnd} onDragStart={handleOnDragStart}>
             {category_list.map(category => (
-                <div key={category.id} className='draggable-list-category'>
-                    <div className='draggable-list-category-header'>
-                        <Text size='sm' bold className='draggable-list-category-header-title'>
-                            {category?.title}
-                        </Text>
-                        {onAction && (
-                            <Text
-                                size='sm'
-                                bold
-                                underlined
-                                className='draggable-list-category-header-button'
-                                onClick={onAction}
-                            >
-                                {category.button_title || <Localize i18n_default_text='Done' />}
-                            </Text>
-                        )}
-                    </div>
-                    <Droppable droppableId={category.id}>
-                        {(provided: any) => (
-                            <div
-                                {...provided.droppableProps}
-                                ref={provided.innerRef}
-                                className='draggable-list-category__droppable-area'
-                            >
-                                {category.items.map((item, index) => (
-                                    <Draggable key={item.id} draggableId={item.id} index={index}>
-                                        {(provided: any) => (
-                                            <div
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                className='draggable-list-category__item'
-                                            >
-                                                <DraggableListItem
-                                                    title={item.title}
-                                                    onRightIconClick={() => onRightIconClick(item)}
-                                                    active={draggedItemId === item.id}
-                                                    disabled={category.items.length === 1}
-                                                />
-                                            </div>
-                                        )}
-                                    </Draggable>
-                                ))}
-                                {provided.placeholder}
-                            </div>
-                        )}
-                    </Droppable>
-                </div>
+                <DraggableCategory
+                    key={category.id}
+                    category={category}
+                    draggedItemId={draggedItemId}
+                    onRightIconClick={onRightIconClick}
+                    onAction={onAction}
+                />
             ))}
         </DragDropContext>
     );
+};
+
+const DraggableCategory: React.FC<{
+    category: TDraggableListCategory;
+    draggedItemId: string | null;
+    onRightIconClick: (item: TDraggableListItem) => void;
+    onAction?: () => void;
+}> = ({ category, draggedItemId, onRightIconClick, onAction }) => (
+    <div className='draggable-list-category'>
+        <DraggableCategoryHeader title={category.title} button_title={category.button_title} onAction={onAction} />
+        <Droppable droppableId={category.id}>
+            {provided => (
+                <div
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className='draggable-list-category__droppable-area'
+                >
+                    <DraggableCategoryItems
+                        items={category.items}
+                        draggedItemId={draggedItemId}
+                        onRightIconClick={onRightIconClick}
+                    />
+                    {provided.placeholder}
+                </div>
+            )}
+        </Droppable>
+    </div>
+);
+
+const DraggableCategoryHeader: React.FC<{
+    title?: string;
+    button_title?: string;
+    onAction?: () => void;
+}> = ({ title, button_title, onAction }) => (
+    <div className='draggable-list-category-header'>
+        <Text size='sm' bold className='draggable-list-category-header-title'>
+            {title}
+        </Text>
+        {onAction && (
+            <Text size='sm' bold underlined className='draggable-list-category-header-button' onClick={onAction}>
+                {button_title || <Localize i18n_default_text='Done' />}
+            </Text>
+        )}
+    </div>
+);
+
+const DraggableCategoryItems: React.FC<{
+    items: TDraggableListItem[];
+    draggedItemId: string | null;
+    onRightIconClick: (item: TDraggableListItem) => void;
+}> = ({ items, draggedItemId, onRightIconClick }) => (
+    <>
+        {items.map((item, index) => (
+            <Draggable key={item.id} draggableId={item.id} index={index}>
+                {provided => (
+                    <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className='draggable-list-category__item'
+                    >
+                        <DraggableListItem
+                            title={item.title}
+                            onRightIconClick={() => onRightIconClick(item)}
+                            active={draggedItemId === item.id}
+                            disabled={items.length === 1}
+                        />
+                    </div>
+                )}
+            </Draggable>
+        ))}
+    </>
+);
+
+const updateCategoriesWithDragResult = (
+    category_list: TDraggableListCategory[],
+    result: DropResult
+): TDraggableListCategory[] => {
+    const { source, destination } = result;
+    if (!destination) return category_list;
+
+    const sourceIndex = category_list.findIndex(category => category.id === source.droppableId);
+    const destIndex = category_list.findIndex(category => category.id === destination.droppableId);
+
+    if (sourceIndex === -1 || destIndex === -1) return category_list;
+
+    const sourceCategory = category_list[sourceIndex];
+    const destCategory = category_list[destIndex];
+
+    const sourceItems = Array.from(sourceCategory.items);
+    const [movedItem] = sourceItems.splice(source.index, 1);
+
+    if (sourceIndex === destIndex) {
+        sourceItems.splice(destination.index, 0, movedItem);
+    } else {
+        const destItems = Array.from(destCategory.items);
+        destItems.splice(destination.index, 0, movedItem);
+        category_list[destIndex] = { ...destCategory, items: destItems };
+    }
+
+    category_list[sourceIndex] = { ...sourceCategory, items: sourceItems };
+    return Array.from(category_list);
 };
 
 export default DraggableList;

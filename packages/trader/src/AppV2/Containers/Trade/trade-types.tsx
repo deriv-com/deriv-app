@@ -58,57 +58,65 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     };
 
     const handleAddPinnedClick = (item: TItem) => {
-        setOtherTradeTypes(prev_categories =>
-            prev_categories.map(category => ({
-                ...category,
-                items: category.items.filter(i => i.id !== item.id).sort((a, b) => a.title?.localeCompare(b.title)),
-            }))
-        );
-        setPinnedTradeTypes(prev_pinned => {
-            const updated_pinned = [...prev_pinned];
-            const pinned_category = updated_pinned.find(cat => cat.id === 'pinned');
+        setOtherTradeTypes(prev_categories => modifyCategories(prev_categories, item, 'remove'));
+        setPinnedTradeTypes(prev_pinned => modifyPinnedCategories(prev_pinned, item, 'add'));
+    };
 
+    const handleRemovePinnedClick = (item: TItem) => {
+        setPinnedTradeTypes(prev_categories => modifyCategories(prev_categories, item, 'remove'));
+        setOtherTradeTypes(prev_others => modifyOtherCategories(prev_others, item));
+    };
+
+    const modifyPinnedCategories = (categories: TResultItem[], item: TItem, action: 'add' | 'remove') => {
+        const updated_categories = [...categories];
+        const pinned_category = updated_categories.find(cat => cat.id === 'pinned');
+
+        if (action === 'add') {
             if (pinned_category) {
                 pinned_category.items.push(item);
             } else {
-                updated_pinned.push({
+                updated_categories.push({
                     id: 'pinned',
                     title: localize('Pinned'),
                     items: [item],
                 });
             }
-
-            return updated_pinned;
-        });
-    };
-
-    const handleRemovePinnedClick = (item: TItem) => {
-        setPinnedTradeTypes(prev_categories =>
-            prev_categories.map(category => ({
+        } else if (action === 'remove') {
+            updated_categories.map(category => ({
                 ...category,
                 items: category.items.filter(i => i.id !== item.id),
-            }))
-        );
-        setOtherTradeTypes(prev_others => {
-            const updated_others = [...prev_others];
-            const other_category = updated_others.find(cat => cat.id === 'other');
-
-            if (other_category) {
-                other_category.items.unshift(item);
-            } else {
-                updated_others.push({
-                    id: 'other',
-                    items: [item],
-                });
-            }
-
-            updated_others.map(category => ({
-                ...category,
-                items: category.items.sort((a, b) => a.title?.localeCompare(b.title)),
             }));
+        }
 
-            return updated_others;
-        });
+        return updated_categories;
+    };
+
+    const modifyCategories = (categories: TResultItem[], item: TItem, action: 'remove' = 'remove') =>
+        categories.map(category => ({
+            ...category,
+            items:
+                action === 'remove'
+                    ? category.items.filter(i => i.id !== item.id)
+                    : category.items.filter(i => i.id !== item.id).sort((a, b) => a.title?.localeCompare(b.title)),
+        }));
+
+    const modifyOtherCategories = (categories: TResultItem[], item: TItem) => {
+        const updated_categories = [...categories];
+        const other_category = updated_categories.find(cat => cat.id === 'other');
+
+        if (other_category) {
+            other_category.items.unshift(item);
+        } else {
+            updated_categories.push({
+                id: 'other',
+                items: [item],
+            });
+        }
+
+        return updated_categories.map(category => ({
+            ...category,
+            items: category.items.sort((a, b) => a.title?.localeCompare(b.title)),
+        }));
     };
 
     React.useEffect(() => {
@@ -193,11 +201,11 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                             <Text size='sm'>{title}</Text>
                         </Chip.Selectable>
                     ))}
-            <a key='trade-types-all' onClick={() => setIsOpen(true)} className='trade__trade-types-header'>
+            <button key='trade-types-all' onClick={() => setIsOpen(true)} className='trade__trade-types-header'>
                 <Text size='sm' bold underlined>
                     {<Localize i18n_default_text='View all' />}
                 </Text>
-            </a>
+            </button>
             <ActionSheet.Root isOpen={is_open} expandable={false} onClose={handleCloseTradeTypes}>
                 <ActionSheet.Portal>
                     <ActionSheet.Header

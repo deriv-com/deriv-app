@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import TradeTypeListItem from './trade-type-list-item';
 import { Text } from '@deriv-com/quill-ui';
 import './trade-type-list.scss';
@@ -36,7 +36,7 @@ const TradeTypeList: React.FC<TTradeTypeListProps> = ({
     onAction,
     should_show_title = true,
 }) => {
-    const [category_list, setCategoryList] = useState(categories);
+    const [category_list, setCategoryList] = React.useState(categories);
 
     React.useEffect(() => {
         setCategoryList(categories);

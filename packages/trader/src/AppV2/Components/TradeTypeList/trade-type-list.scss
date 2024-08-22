@@ -34,7 +34,8 @@
             justify-content: space-between;
             padding: 0 var(--core-spacing-600) 0 var(--core-spacing-800);
 
-            &-title, &-button {
+            &-title,
+            &-button {
                 margin-bottom: var(--core-spacing-100);
             }
         }
@@ -44,7 +45,7 @@
         }
 
         &__items {
-            margin-top: var(--core-spacing-400);;
+            margin-top: var(--core-spacing-400);
         }
     }
 }

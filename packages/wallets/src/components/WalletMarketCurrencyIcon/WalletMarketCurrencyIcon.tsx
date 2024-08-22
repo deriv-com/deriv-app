@@ -19,17 +19,14 @@ const WalletMarketCurrencyIcon: FC<TWalletMarketCurrencyIconProps> = ({
     currency,
     isDemo,
     marketType,
-    platform,
+    platform = 'ctrader',
     product,
     size = 'sm',
 }) => {
+    const marketTypeAllkey = product ? `${marketType}_${product}` : platform;
     let MarketTypeIcon;
-    if (marketType === MARKET_TYPE.ALL && platform) {
-        if (platform in CFDPlatformIcons) {
-            MarketTypeIcon = platform;
-        } else {
-            MarketTypeIcon = `${marketType}_${product}`;
-        }
+    if (marketType === MARKET_TYPE.ALL && platform && marketTypeAllkey in CFDPlatformIcons) {
+        MarketTypeIcon = marketTypeAllkey;
     } else if (platform === CFD_PLATFORMS.MT5 && marketType && marketType in MT5MarketIcons) {
         MarketTypeIcon = marketType;
     } else MarketTypeIcon = 'standard';

@@ -1627,7 +1627,7 @@ type TPrivateSocketEndpoints = {
                       /**
                        * This needs to be removed after updating api-types version
                        */
-                      product?: 'zero_spread' | 'swap_free' | 'standard';
+                      product?: 'zero_spread' | 'swap_free' | 'standard' | 'financial';
                       /**
                        * Legal requirements for the Landing Company
                        */
@@ -2241,7 +2241,7 @@ type TExtendedMT5AccounListType = NonNullable<MT5AccountsListResponse['mt5_login
     /**
      * Product Type
      */
-    product?: 'zero_spread' | 'swap_free' | 'standard';
+    product?: 'zero_spread' | 'swap_free' | 'standard' | 'financial';
 };
 
 type MT5AccountListResponse = {
@@ -2252,7 +2252,7 @@ type TExtendTransferAccount = NonNullable<TransferBetweenAccountsResponse['accou
     /**
      * Product Type
      */
-    product?: 'zero_spread' | 'swap_free' | 'standard';
+    product?: 'zero_spread' | 'swap_free' | 'standard' | 'financial';
 };
 
 type TExtendTransferBetweenAccountsResponse = TransferBetweenAccountsResponse & {

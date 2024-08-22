@@ -80,18 +80,18 @@ const useSortedMT5Accounts = (regulation?: string) => {
         return [...added_accounts, ...filtered_non_added_accounts];
     }, [modified_data]);
 
-    // Sort the data by market_type to make sure the order is 'synthetic', 'financial', 'all'
+    // Sort the data by market_type and product to make sure the order is 'synthetic', 'financial', 'swap_free' and 'zero_spread'
     const sorted_data = useMemo(() => {
-        const market_type_order = ['synthetic', 'financial', 'swap_free', 'zero_spread'];
+        const sorting_order = ['synthetic', 'financial', 'swap_free', 'zero_spread'];
 
         if (!filtered_data) return;
 
-        const sorted_data = market_type_order.reduce((acc, market_type) => {
+        const sorted_data = sorting_order.reduce((acc, sort_order) => {
             const accounts = filtered_data.filter(account => {
                 if (account.market_type === 'all') {
-                    return account.product === market_type;
+                    return account.product === sort_order;
                 }
-                return account.market_type === market_type;
+                return account.market_type === sort_order;
             });
             if (!accounts.length) return acc;
             return [...acc, ...accounts];

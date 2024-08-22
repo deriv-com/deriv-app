@@ -69,8 +69,6 @@ const runCommonFormfieldsTests = (is_svg: boolean) => {
     expect(screen.queryByTestId('citizenship')).toBeInTheDocument();
     expect(screen.queryByTestId('citizenship_mobile')).not.toBeInTheDocument();
     expect(screen.queryByTestId('phone')).toBeInTheDocument();
-    // expect(screen.queryByTestId('tax_residence')).toBeInTheDocument();
-    // expect(screen.queryByTestId('tax_residence_mobile')).not.toBeInTheDocument();
 
     if (is_svg) {
         expect(screen.getByText(/your first name as in your identity document/i)).toBeInTheDocument();
@@ -91,24 +89,6 @@ const runCommonFormfieldsTests = (is_svg: boolean) => {
             screen.getByText(/Please enter your date of birth as in your official identity documents./i)
         ).toBeInTheDocument();
     }
-
-    // const tax_residence_pop_over = screen.queryByTestId('tax_residence_pop_over');
-    // if (tax_residence_pop_over) {
-    //     fireEvent.click(tax_residence_pop_over);
-    // }
-
-    // expect(screen.getByText(tax_residence_pop_over_text)).toBeInTheDocument();
-
-    // expect(screen.getByLabelText(/tax identification number/i)).toBeInTheDocument();
-    // const tax_identification_number_pop_over = screen.queryByTestId('tax_identification_number_pop_over');
-    // expect(tax_identification_number_pop_over).toBeInTheDocument();
-
-    // if (tax_identification_number_pop_over) {
-    //     fireEvent.click(tax_identification_number_pop_over);
-    // }
-
-    // expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
-    // expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
 
     if (is_svg)
         expect(
@@ -334,36 +314,7 @@ describe('<PersonalDetails/>', () => {
         expect(await screen.findByText(/you must be 18 years old and above\./i)).toBeInTheDocument();
     });
 
-    // it('submit button should be enabled if TIN or tax_residence is optional in case of CR accounts', () => {
-    //     const new_props = {
-    //         ...mock_props,
-    //         is_svg: true,
-    //         value: {
-    //             first_name: '',
-    //             last_name: '',
-    //             date_of_birth: '',
-    //             place_of_birth: '',
-    //             phone: '+34',
-    //             tax_residence: '',
-    //             tax_identification_number: '',
-    //         },
-    //     };
-    //     renderwithRouter({ props: new_props });
-
-    //     const first_name = screen.getByTestId('first_name');
-    //     const last_name = screen.getByTestId('last_name');
-    //     const date_of_birth = screen.getByTestId('date_of_birth');
-    //     const phone = screen.getByTestId('phone');
-
-    //     userEvent.type(first_name, 'test firstname');
-    //     userEvent.type(last_name, 'test lastname');
-    //     userEvent.type(date_of_birth, '2000-12-12');
-    //     userEvent.type(phone, '+49123456789012');
-    //     expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
-    // });
-
     it('should not display confirmation checkbox if opt-out of IDV', async () => {
-        // (splitValidationResultTypes as jest.Mock).mockReturnValue({ warnings: {}, errors: {} });
         const new_props = {
             ...mock_props,
             value: {
@@ -410,23 +361,6 @@ describe('<PersonalDetails/>', () => {
         });
     });
 
-    // it('should autopopulate tax_residence for MF clients', () => {
-    //     const new_props = {
-    //         ...mock_props,
-    //         is_svg: false,
-    //         value: {
-    //             ...mock_props.value,
-    //             tax_residence: 'Malta',
-    //         },
-    //     };
-    //     renderwithRouter({ props: new_props });
-    //     expect(
-    //         screen.getByRole('textbox', {
-    //             name: /tax residence\*/i,
-    //         })
-    //     ).toHaveValue('Malta');
-    // });
-
     it('should render PersonalDetails component', () => {
         renderwithRouter({});
         expect(screen.getByTestId('personal_details_form')).toBeInTheDocument();
@@ -457,22 +391,6 @@ describe('<PersonalDetails/>', () => {
 
         expect(mock_props.closeRealAccountSignup).toHaveBeenCalledTimes(1);
     });
-
-    // it('should disable tax_residence field if it is immutable from BE', () => {
-    //     const new_store = mockStore({ ui: { is_mobile: false, is_desktop: true } });
-
-    //     const new_props = {
-    //         ...mock_props,
-    //         value: {
-    //             ...mock_props.value,
-    //             ...idv_document_data,
-    //             tax_residence: 'France',
-    //         },
-    //         disabled_items: ['salutation', 'first_name', 'last_name', 'date_of_birth', 'tax_residence'],
-    //     };
-    //     renderwithRouter({ props: new_props, store: new_store });
-    //     expect(screen.getByTestId('tax_residence')).toBeDisabled();
-    // });
 
     it('should show title and Name label when salutation is passed', () => {
         const mock_store = mockStore({
@@ -567,7 +485,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByTestId('last_name')).toBeDisabled();
         expect(screen.getByTestId('date_of_birth')).toBeDisabled();
         expect(screen.getByTestId('place_of_birth')).toBeEnabled();
-        expect(screen.getByTestId('citizenship')).toBeEnabled(); // citizenship value is not disabled by BE, so enable the field
+        expect(screen.getByTestId('citizenship')).toBeEnabled();
     });
 
     it('should disable citizen field if the client is_fully_authenticated', () => {
@@ -605,40 +523,6 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
     });
-
-    // it('should select correct dropdown options in mobile mode', () => {
-    //     (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
-
-    //     const new_props = { ...mock_props, is_svg: false };
-
-    //     renderwithRouter({ props: new_props });
-    //     const place_of_birth_mobile = screen.queryByTestId('place_of_birth_mobile');
-
-    //     expect(place_of_birth_mobile).toBeInTheDocument();
-
-    //     if (place_of_birth_mobile) {
-    //         fireEvent.change(place_of_birth_mobile, { target: { value: 'Afghanistan' } });
-    //     }
-    //     const { getByText } = within(screen.getAllByTestId('selected_value')[0]);
-    //     expect(getByText('Afghanistan')).toBeInTheDocument();
-    // });
-
-    // it('should show error for invalid TIN', async () => {
-    //     const newvalidate = {
-    //         errors: {
-    //             ...mock_errors,
-    //             tax_identification_number: 'Tax Identification Number is not properly formatted.',
-    //         },
-    //     };
-    //     (splitValidationResultTypes as jest.Mock).mockReturnValue(newvalidate);
-    //     renderwithRouter({});
-    //     const tax_identification_number = screen.getByTestId('tax_identification_number');
-
-    //     fireEvent.blur(tax_identification_number);
-    //     fireEvent.change(tax_identification_number, { target: { value: '123456789012345678901234567890' } });
-
-    //     expect(await screen.findByText(/tax identification number is not properly formatted/i)).toBeInTheDocument();
-    // });
 
     it('should submit the form if there is no validation error on desktop', async () => {
         const new_props = {
@@ -755,71 +639,6 @@ describe('<PersonalDetails/>', () => {
             expect(mock_props.onSave).toBeCalledWith(0, { first_name: 'test firstname', last_name: 'test lastname' });
         });
     });
-
-    // it('should close tax_residence pop-over when clicked outside', () => {
-    //     const new_props = { ...mock_props, is_svg: false };
-    //     renderwithRouter({ props: new_props });
-
-    //     const tax_residence_pop_over = screen.getByTestId('tax_residence_pop_over');
-    //     expect(tax_residence_pop_over).toBeInTheDocument();
-
-    //     fireEvent.click(tax_residence_pop_over);
-    //     expect(screen.getByText(tax_residence_pop_over_text)).toBeInTheDocument();
-
-    //     fireEvent.click(screen.getByRole('heading', { name: /account opening reason/i }));
-
-    //     expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
-    // });
-
-    // it('should close tax_identification_number_pop_over when clicked outside', () => {
-    //     const new_props = { ...mock_props, is_svg: false };
-    //     renderwithRouter({ props: new_props });
-
-    //     const tin_pop_over = screen.getByTestId('tax_identification_number_pop_over');
-    //     expect(tin_pop_over).toBeInTheDocument();
-    //     fireEvent.click(tin_pop_over);
-
-    //     expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
-    //     expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
-
-    //     fireEvent.click(screen.getByRole('heading', { name: /account opening reason/i }));
-
-    //     expect(screen.queryByText(tin_pop_over_text)).not.toBeInTheDocument();
-    //     expect(screen.queryByRole('link', { name: 'here' })).not.toBeInTheDocument();
-    // });
-
-    // it('should close tax_residence pop-over when scrolled', () => {
-    //     renderwithRouter({});
-
-    //     const tax_residence_pop_over = screen.getByTestId('tax_residence_pop_over');
-    //     expect(tax_residence_pop_over).toBeInTheDocument();
-    //     fireEvent.click(tax_residence_pop_over);
-
-    //     expect(screen.getByText(tax_residence_pop_over_text)).toBeInTheDocument();
-
-    //     fireEvent.scroll(screen.getByTestId('dt_personal_details_container'), {
-    //         target: { scrollY: 100 },
-    //     });
-
-    //     expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
-    // });
-
-    // it('should close tax_identification_number_pop_over when scrolled', () => {
-    //     renderwithRouter({});
-
-    //     const tax_identification_number_pop_over = screen.getByTestId('tax_identification_number_pop_over');
-    //     expect(tax_identification_number_pop_over).toBeInTheDocument();
-    //     fireEvent.click(tax_identification_number_pop_over);
-    //     expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
-    //     expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
-
-    //     fireEvent.scroll(screen.getByTestId('dt_personal_details_container'), {
-    //         target: { scrollY: 100 },
-    //     });
-
-    //     expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
-    //     expect(screen.queryByRole('link', { name: 'here' })).not.toBeInTheDocument();
-    // });
 
     it('should close tax_identification_number_pop_over when scrolled', () => {
         renderwithRouter({});

@@ -29,16 +29,11 @@ const Poa: React.FC<TPoaProps> = ({ onCompletion }) => {
     const [showLoader, setShowLoader] = useState(true);
 
     useEffect(() => {
-        let isMounted = true;
         if (isSubmissionSuccess && onCompletion) {
             onCompletion();
         }
-        if (isMounted) {
-            setShowLoader(isLoading);
-        }
-        return () => {
-            isMounted = false;
-        };
+
+        setShowLoader(isLoading);
     }, [isSubmissionSuccess, onCompletion, isLoading]);
 
     const upload = async (values: FormikValues) => {

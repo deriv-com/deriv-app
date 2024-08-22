@@ -217,7 +217,7 @@ export default class TradeStore extends BaseStore {
     non_available_contract_types_list: TContractTypesList = {};
     trade_type_tab = '';
     trade_types: { [key: string]: string } = {};
-    contract_types_list_V2: TContractTypesList = {};
+    contract_types_list_v2: TContractTypesList = {};
 
     // Amount
     amount = 10;
@@ -1955,7 +1955,7 @@ export default class TradeStore extends BaseStore {
     }
 
     setContractTypesListV2(contract_types_list: TContractTypesList) {
-        this.contract_types_list_V2 = contract_types_list;
+        this.contract_types_list_v2 = contract_types_list;
     }
 
     setBarrierChoices(barrier_choices: string[]) {

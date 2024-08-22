@@ -166,6 +166,11 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         setPinnedTradeTypes(categories);
     };
 
+    const handleOnTradeTypeSelect = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        onTradeTypeSelect(e);
+        setIsOpen(false);
+    }
+
     const isTradeTypeSelected = (value: string) =>
         [contract_type, value].every(type => type.startsWith('vanilla')) ||
         [contract_type, value].every(type => type.startsWith('turbos')) ||
@@ -210,7 +215,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                             <TradeTypeList
                                 categories={saved_pinned_trade_types}
                                 onAction={() => setIsEditing(true)}
-                                onTradeTypeClick={onTradeTypeSelect}
+                                onTradeTypeClick={handleOnTradeTypeSelect}
                                 selected_item={contract_type}
                                 should_show_title={false}
                                 selectable
@@ -219,7 +224,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                         <TradeTypeList
                             categories={is_editing ? other_trade_types : saved_other_trade_types}
                             onRightIconClick={is_editing ? handleAddPinnedClick : undefined}
-                            onTradeTypeClick={!is_editing ? onTradeTypeSelect : undefined}
+                            onTradeTypeClick={!is_editing ? handleOnTradeTypeSelect : undefined}
                             selected_item={contract_type}
                             selectable={!is_editing}
                         />

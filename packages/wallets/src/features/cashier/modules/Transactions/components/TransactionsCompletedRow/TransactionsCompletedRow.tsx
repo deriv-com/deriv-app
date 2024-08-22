@@ -146,10 +146,7 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
                     'wallets-transactions-completed-row--active': shouldShowTraceId,
                 })}
                 onClick={handleRowClick}
-                // eslint-disable-next-line @typescript-eslint/no-empty-function
-                onFocus={() => {}}
-                // eslint-disable-next-line @typescript-eslint/no-empty-function
-                onMouseOver={() => {}}
+                onKeyDown={handleRowClick}
             >
                 <TransactionsCompletedRowContent
                     accounts={accounts}

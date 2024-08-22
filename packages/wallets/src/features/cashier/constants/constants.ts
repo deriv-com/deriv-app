@@ -1,4 +1,9 @@
-import { TMarketTypes, TMT5LandingCompanyName, TProduct, TWalletLandingCompanyName } from '../../../types';
+import {
+    TMarketTypes,
+    TMT5LandingCompanyName,
+    TProductForMarketDetails,
+    TWalletLandingCompanyName,
+} from '../../../types';
 
 type TDefinedMT5LandingCompanyName = Exclude<TMT5LandingCompanyName, 'malta' | 'seychelles' | undefined>;
 
@@ -9,7 +14,7 @@ interface TDefinedMT5LandingCompanyDetails {
 
 interface TMT5MarketTypeDetails extends TMT5MarketTypeDetailsCommon {
     landingCompany?: Record<TWalletLandingCompanyName, TWalletLandingCompanyDetails>;
-    product?: Record<TProduct, TMT5MarketTypeDetailsCommon>;
+    product?: Record<TProductForMarketDetails, TMT5MarketTypeDetailsCommon>;
 }
 
 interface TMT5MarketTypeDetailsCommon {

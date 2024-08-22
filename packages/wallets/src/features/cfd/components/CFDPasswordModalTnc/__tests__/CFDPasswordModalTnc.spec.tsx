@@ -12,12 +12,6 @@ jest.mock('@deriv-com/ui', () => ({
     InlineMessage: jest.fn(({ children }) => <div data-testid='inline-message'>{children}</div>),
 }));
 
-jest.mock('@deriv-com/utils', () => ({
-    URLUtils: {
-        getDerivStaticURL: jest.fn(() => 'https://example.com/tnc'),
-    },
-}));
-
 jest.mock('../../../../../hooks/useDevice', () => ({
     __esModule: true,
     default: jest.fn(() => ({ isDesktop: true })),
@@ -61,8 +55,7 @@ describe('CFDPasswordModalTnc', () => {
     it('renders the terms and conditions link', () => {
         render(<CFDPasswordModalTnc {...defaultProps} />);
         const link = screen.getByText('terms and conditions');
-        expect(link).toHaveAttribute('href', 'https://example.com/tnc');
-        expect(link).toHaveAttribute('rel', 'noreferrer');
+        expect(link).toHaveAttribute('href', 'https://deriv.com/tnc/deriv-(bvi)-ltd.pdf');
     });
 
     it('uses the correct platform and product titles', () => {

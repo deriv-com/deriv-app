@@ -24,6 +24,6 @@ describe('WalletBadge Component', () => {
         mockedUseDevice.mockReturnValue({ isDesktop: false, isMobile: true, isTablet: false });
         render(<WalletBadge>Test Child</WalletBadge>);
         const badge = screen.getByText('Test Child');
-        expect(badge).toHaveClass('wallets-text__size--sm');
+        expect(badge).toHaveClass('derivs-text__size--sm');
     });
 });

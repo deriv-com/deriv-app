@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { DerivLightDmt5PasswordIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
+import { Text } from '@deriv-com/ui';
+import { WalletButton, WalletPasswordFieldLazy } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks, TPlatforms } from '../../../../types';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
@@ -38,19 +39,19 @@ const CreatePasswordMT5: React.FC<TProps> = ({
         <div className='wallets-create-password-mt5'>
             {isDesktop && (
                 <div className='wallets-create-password-mt5__header'>
-                    <WalletText lineHeight='xl' weight='bold'>
+                    <Text lineHeight='xl' weight='bold'>
                         <Localize i18n_default_text='Create a {{title}} password' values={{ title }} />
-                    </WalletText>
+                    </Text>
                 </div>
             )}
             <div className='wallets-create-password-mt5__body'>
                 <DerivLightDmt5PasswordIcon height={120} width={120} />
-                <WalletText size={isDesktop ? 'sm' : 'md'}>
+                <Text size={isDesktop ? 'sm' : 'md'}>
                     <Localize
                         i18n_default_text='Note: You can use this password for all your {{title}} accounts.'
                         values={{ title }}
                     />
-                </WalletText>
+                </Text>
                 <WalletPasswordFieldLazy
                     label={`${title} password`}
                     mt5Policy={isMT5}

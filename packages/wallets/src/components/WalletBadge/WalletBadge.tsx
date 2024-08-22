@@ -1,6 +1,6 @@
 import React from 'react';
+import { Text } from '@deriv-com/ui';
 import useDevice from '../../hooks/useDevice';
-import { WalletText } from '../Base';
 import './WalletBadge.scss';
 
 type TWalletBadgeProps = {
@@ -11,9 +11,9 @@ const WalletBadge = ({ children }: TWalletBadgeProps) => {
     const { isMobile } = useDevice();
     return (
         <div className='wallets-badge'>
-            <WalletText color='black' size={isMobile ? 'sm' : 'xs'}>
+            <Text color='black' size={isMobile ? 'sm' : 'xs'}>
                 {children}
-            </WalletText>
+            </Text>
         </div>
     );
 };

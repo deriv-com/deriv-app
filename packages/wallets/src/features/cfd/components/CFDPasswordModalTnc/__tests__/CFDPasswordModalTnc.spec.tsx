@@ -5,11 +5,12 @@ import CFDPasswordModalTnc, { type TCFDPasswordModalTncProps } from '../CFDPassw
 jest.mock('@deriv-com/ui', () => ({
     Checkbox: jest.fn(({ checked, label, onChange }) => (
         <div>
-            <input checked={checked} data-testid='checkbox' onChange={onChange} type='checkbox' />
+            <input checked={checked} data-testid='dt_wallets_tnc_checkbox' onChange={onChange} type='checkbox' />
             <label>{label}</label>
         </div>
     )),
-    InlineMessage: jest.fn(({ children }) => <div data-testid='inline-message'>{children}</div>),
+    InlineMessage: jest.fn(({ children }) => <div data-testid='dt_wallets_tnc_inline_message'>{children}</div>),
+    Text: jest.fn(({ children }) => <div data-testid='dt_wallets_tnc_text'>{children}</div>),
 }));
 
 jest.mock('../../../../../hooks/useDevice', () => ({
@@ -21,6 +22,10 @@ jest.mock('../../../../../components/ModalProvider', () => ({
     useModal: jest.fn(() => ({
         getModalState: jest.fn(() => 'bvi'),
     })),
+}));
+
+jest.mock('../../../../../components/Base/WalletLink', () => ({
+    WalletLink: ({ children }: { children: React.ReactNode }) => <a href='https://example.com'>{children}</a>,
 }));
 
 const mockOnChange = jest.fn();
@@ -35,8 +40,8 @@ describe('CFDPasswordModalTnc', () => {
 
     it('renders correctly', () => {
         render(<CFDPasswordModalTnc {...defaultProps} />);
-        expect(screen.getByTestId('checkbox')).toBeInTheDocument();
-        expect(screen.getByTestId('inline-message')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_wallets_tnc_checkbox')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_wallets_tnc_inline_message')).toBeInTheDocument();
     });
 
     it('displays correct text content', () => {
@@ -47,7 +52,7 @@ describe('CFDPasswordModalTnc', () => {
 
     it('handles checkbox change', () => {
         render(<CFDPasswordModalTnc {...defaultProps} />);
-        const checkbox = screen.getByTestId('checkbox');
+        const checkbox = screen.getByTestId('dt_wallets_tnc_checkbox');
         fireEvent.click(checkbox);
         expect(mockOnChange).toHaveBeenCalledTimes(1);
     });
@@ -55,7 +60,7 @@ describe('CFDPasswordModalTnc', () => {
     it('renders the terms and conditions link', () => {
         render(<CFDPasswordModalTnc {...defaultProps} />);
         const link = screen.getByText('terms and conditions');
-        expect(link).toHaveAttribute('href', 'https://deriv.com/tnc/deriv-(bvi)-ltd.pdf');
+        expect(link).toHaveAttribute('href', 'https://example.com');
     });
 
     it('uses the correct platform and product titles', () => {

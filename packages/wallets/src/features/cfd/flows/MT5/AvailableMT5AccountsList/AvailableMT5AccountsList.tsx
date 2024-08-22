@@ -1,6 +1,7 @@
 import React, { lazy, useCallback, useEffect, useState } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
+import { Text } from '@deriv-com/ui';
 import { TradingAccountCard, WalletText } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
@@ -89,9 +90,9 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     <WalletText size='sm'>{title}</WalletText>
                     {account.product === PRODUCT.ZEROSPREAD && (
                         <div className='wallets-available-mt5__badge'>
-                            <WalletText size='xs' weight='bold'>
+                            <Text size='xs' weight='bold'>
                                 NEW
-                            </WalletText>
+                            </Text>
                         </div>
                     )}
                 </div>

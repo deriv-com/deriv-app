@@ -93,6 +93,10 @@
     min-height: 53.6rem !important;
     background-color: var(--general-main-2);
 
+    @include mobile-or-tablet-screen {
+        height: 100svh;
+    }
+
     .deriv-text {
         color: var(--text-prominent);
     }
@@ -178,6 +182,7 @@
 
     &__footer {
         padding: 0 !important;
+
         &__clear-button {
             height: 4rem;
             margin: 1.6rem;
@@ -185,7 +190,7 @@
             color: var(--icon-black-plus);
 
             @include mobile-or-tablet-screen {
-                width: 90%;
+                width: 92%;
                 justify-content: center;
             }
         }

@@ -58,18 +58,18 @@ const CancelPhoneVerificationModal = observer(() => {
             showHandleBar
             isOpened={show_modal}
             shouldCloseOnPrimaryButtonClick
-            primaryButtonLabel={<Localize i18n_default_text='Go back' />}
+            primaryButtonLabel={<Localize i18n_default_text='Continue verification' />}
             showSecondaryButton
             showCrossIcon
             toggleModal={handleStayAtPhoneVerificationPage}
-            secondaryButtonLabel={<Localize i18n_default_text='Yes, cancel' />}
+            secondaryButtonLabel={<Localize i18n_default_text='Cancel' />}
             secondaryButtonCallback={handleLeavePhoneVerificationPage}
         >
             <Modal.Header title={<Localize i18n_default_text='Cancel phone number verification?' />} />
             <Modal.Body>
                 <div className='phone-verification__cancel-modal--contents'>
                     <Text>
-                        <Localize i18n_default_text='All details entered will be lost.' />
+                        <Localize i18n_default_text="If you cancel, you'll lose all progress." />
                     </Text>
                 </div>
             </Modal.Body>

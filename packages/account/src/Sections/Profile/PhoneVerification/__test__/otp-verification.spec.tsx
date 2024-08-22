@@ -53,12 +53,10 @@ describe('OTPVerification', () => {
 
     it('should render ConfirmYourEmail in OTP Verification', () => {
         renderComponent();
-        expect(screen.getByText(/Confirm it's you/)).toBeInTheDocument();
+        expect(screen.getByText(/Verify access/)).toBeInTheDocument();
         expect(screen.getByText(/We've sent a verification code to/)).toBeInTheDocument();
         expect(screen.getByText('johndoe@regentmarkets.com')).toBeInTheDocument();
-        expect(
-            screen.getByText(/Enter the code or click the link in the email to verify that the account belongs to you./)
-        ).toBeInTheDocument();
+        expect(screen.getByText(/Enter the code below so we know the request has come from you./)).toBeInTheDocument();
         expect(screen.getByRole('textbox', { name: /OTP code/ })).toBeInTheDocument();
         expect(screen.getByText(/Resend Code Timer/)).toBeInTheDocument();
     });
@@ -67,7 +65,8 @@ describe('OTPVerification', () => {
         store.ui.should_show_phone_number_otp = true;
         renderComponent();
         expect(screen.getByText(/Verify your number/)).toBeInTheDocument();
-        expect(screen.getByText(/Enter the 6-digit code sent to you via SMS at :/)).toBeInTheDocument();
+        expect(screen.getByText(/Enter the 6-digit code sent to you via SMS at ./)).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Change/ })).toBeInTheDocument();
     });
 
     it('should render whatsapp when phone_verification_type is whatsapp', () => {

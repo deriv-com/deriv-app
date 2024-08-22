@@ -1,7 +1,6 @@
 import { Modal, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
-import { LabelPairedCircleXmarkLgRegularIcon } from '@deriv/quill-icons';
 import { usePhoneNumberVerificationSetTimer, useSettings, useVerifyEmail } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
@@ -68,17 +67,11 @@ const VerificationLinkExpiredModal = ({
             secondaryButtonLabel={<Localize i18n_default_text='Cancel' />}
             secondaryButtonCallback={handleCancelButton}
         >
-            <Modal.Header
-                className='phone-verification__cancel-modal--header'
-                image={<LabelPairedCircleXmarkLgRegularIcon fill='#C40000' height={96} width={96} />}
-            />
+            <Modal.Header title={<Localize i18n_default_text='Link expired' />} />
             <Modal.Body>
                 <div className='phone-verification__cancel-modal--contents'>
-                    <Text bold>
-                        <Localize i18n_default_text='Verification link expired' />
-                    </Text>
                     <Text>
-                        <Localize i18n_default_text='Get another link to verify your number.' />
+                        <Localize i18n_default_text='Request a new link to verify your phone number.' />
                     </Text>
                 </div>
             </Modal.Body>

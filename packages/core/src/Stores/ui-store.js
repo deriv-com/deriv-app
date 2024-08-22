@@ -132,7 +132,7 @@ export default class UIStore extends BaseStore {
     promptFn = () => {};
 
     //phone number verification
-    should_show_phone_number_otp = false;
+    should_show_phone_number_otp = true;
     is_forced_to_exit_pnv = false;
 
     //warn user if they want to close create real account modal

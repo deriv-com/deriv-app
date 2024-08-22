@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, Fragment } from 'react';
 import PhoneVerificationCard from './phone-verification-card';
-import { Text, InputGroupButton } from '@deriv-com/quill-ui';
+import { Text, InputGroupButton, Button } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { usePhoneVerificationAnalytics, useSendOTPVerificationCode, useSettings } from '@deriv/hooks';
@@ -134,18 +134,30 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                 {should_show_phone_number_otp ? (
                     <Localize i18n_default_text='Verify your number' />
                 ) : (
-                    <Localize i18n_default_text="Confirm it's you" />
+                    <Localize i18n_default_text='Verify access' />
                 )}
             </Text>
             <div className='phone-verification__card--email-verification-content'>
                 {should_show_phone_number_otp ? (
                     <Text size='sm'>
                         <Localize
-                            i18n_default_text='Enter the 6-digit code sent to you via {{phone_verification_type}} at {{users_phone_number}}:'
+                            i18n_default_text='Enter the 6-digit code sent to you via {{phone_verification_type}} at {{users_phone_number}}. <0></0>'
                             values={{
                                 phone_verification_type: localize(convertPhoneTypeDisplay(phone_verification_type)),
                                 users_phone_number: account_settings?.phone,
                             }}
+                            components={[
+                                <Button
+                                    key={0}
+                                    variant='tertiary'
+                                    label={localize('Change')}
+                                    size='sm'
+                                    color='black-white'
+                                    onClick={() =>
+                                        setOtpVerification({ show_otp_verification: false, phone_verification_type })
+                                    }
+                                />,
+                            ]}
                         />
                     </Text>
                 ) : (
@@ -158,7 +170,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                             />
                         </Text>
                         <Text size='sm'>
-                            <Localize i18n_default_text='Enter the code or click the link in the email to verify that the account belongs to you.' />
+                            <Localize i18n_default_text='Enter the code below so we know the request has come from you.' />
                         </Text>
                     </Fragment>
                 )}

@@ -63,8 +63,8 @@ describe('VerificationLinkExpiredModal', () => {
         buttons.forEach(value => {
             expect(screen.getByRole('button', { name: value })).toBeInTheDocument();
         });
-        expect(screen.getByText(/Verification link expired/)).toBeInTheDocument();
-        expect(screen.getByText(/Get another link to verify your number./)).toBeInTheDocument();
+        expect(screen.getByText(/Link expired/)).toBeInTheDocument();
+        expect(screen.getByText(/Request a new link to verify your phone number./)).toBeInTheDocument();
     });
 
     it('should render mockSetShowVerificationLinkExpiredModal and mock_back_router when Cancel is clicked', () => {

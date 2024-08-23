@@ -1,15 +1,8 @@
 import React from 'react';
 import { observer } from '@deriv/stores';
-import {
-    Button,
-    DesktopWrapper,
-    Loading,
-    MobileFullPageModal,
-    MobileWrapper,
-    Text,
-    ThemedScrollbars,
-} from '@deriv/components';
+import { Button, Loading, MobileFullPageModal, Text, ThemedScrollbars } from '@deriv/components';
 import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -20,6 +13,7 @@ import { TPaymentMethod } from 'Types/my-profile.types';
 
 const PaymentMethodsList = () => {
     const { data: advertiser_payment_methods, isRefetching } = useP2PAdvertiserPaymentMethods();
+    const { isDesktop } = useDevice();
     const { isCurrentModal } = useModalManagerContext();
     const { my_profile_store } = useStores();
 
@@ -55,98 +49,95 @@ const PaymentMethodsList = () => {
 
     if (should_show_loading_screen) return <Loading is_fullscreen={false} />;
 
+    if (isDesktop) {
+        return (
+            <ScrollbarWrapper height='39rem'>
+                <div className='payment-methods-list'>
+                    {add_new_button}
+                    <div className='payment-methods-list__list-container'>
+                        {advertiser_payment_methods &&
+                            Object.keys(type_to_title_mapper).map(key => {
+                                const current_title = type_to_title_mapper[key];
+                                const payment_methods = advertiser_payment_methods.filter(
+                                    payment_method => payment_method.type === key
+                                );
+
+                                if (!payment_methods.length) return null;
+
+                                return (
+                                    <React.Fragment key={key}>
+                                        <Text className='payment-methods-list__list-header' size='xs' weight='bold'>
+                                            {current_title}
+                                        </Text>
+                                        <div className='payment-methods-list__list-body'>
+                                            {payment_methods.map((each_payment_method: TPaymentMethod, key: number) => (
+                                                <PaymentMethodCard
+                                                    key={`${key}__${each_payment_method.id}`}
+                                                    large
+                                                    payment_method={each_payment_method}
+                                                    show_payment_method_name={false}
+                                                />
+                                            ))}
+                                        </div>
+                                    </React.Fragment>
+                                );
+                            })}
+                    </div>
+                </div>
+            </ScrollbarWrapper>
+        );
+    }
+
     return (
         <ScrollbarWrapper height='39rem'>
-            <React.Fragment>
-                <DesktopWrapper>
-                    <div className='payment-methods-list'>
-                        {add_new_button}
-                        <div className='payment-methods-list__list-container'>
-                            {advertiser_payment_methods &&
-                                Object.keys(type_to_title_mapper).map(key => {
-                                    const current_title = type_to_title_mapper[key];
-                                    const payment_methods = advertiser_payment_methods.filter(
-                                        payment_method => payment_method.type === key
-                                    );
+            <MobileFullPageModal
+                body_className='payment-methods-list__modal'
+                height_offset='80px'
+                is_flex
+                is_modal_open
+                onClickClose={() => {
+                    // do nothing
+                }}
+                page_header_text={localize('Payment methods')}
+                pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
+                page_footer_className='payment-methods-list__modal--footer'
+                renderPageFooterChildren={() => add_new_button}
+            >
+                <div className='payment-methods-list__list-container'>
+                    {advertiser_payment_methods &&
+                        Object.keys(type_to_title_mapper).map((key: string) => {
+                            const current_title = type_to_title_mapper[key];
+                            const payment_methods = advertiser_payment_methods.filter(
+                                payment_method => payment_method.type === key
+                            );
 
-                                    if (!payment_methods.length) return null;
+                            if (!payment_methods.length) return null;
 
-                                    return (
-                                        <React.Fragment key={key}>
-                                            <Text className='payment-methods-list__list-header' size='xs' weight='bold'>
-                                                {current_title}
-                                            </Text>
-                                            <div className='payment-methods-list__list-body'>
-                                                {payment_methods.map(
-                                                    (each_payment_method: TPaymentMethod, key: number) => (
-                                                        <PaymentMethodCard
-                                                            key={`${key}__${each_payment_method.id}`}
-                                                            large
-                                                            payment_method={each_payment_method}
-                                                            show_payment_method_name={false}
-                                                        />
-                                                    )
-                                                )}
-                                            </div>
-                                        </React.Fragment>
-                                    );
-                                })}
-                        </div>
-                    </div>
-                </DesktopWrapper>
-                <MobileWrapper>
-                    <MobileFullPageModal
-                        body_className='payment-methods-list__modal'
-                        height_offset='80px'
-                        is_flex
-                        is_modal_open
-                        onClickClose={() => {
-                            // do nothing
-                        }}
-                        page_header_text={localize('Payment methods')}
-                        pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
-                        page_footer_className='payment-methods-list__modal--footer'
-                        renderPageFooterChildren={() => add_new_button}
-                    >
-                        <div className='payment-methods-list__list-container'>
-                            {advertiser_payment_methods &&
-                                Object.keys(type_to_title_mapper).map((key: string) => {
-                                    const current_title = type_to_title_mapper[key];
-                                    const payment_methods = advertiser_payment_methods.filter(
-                                        payment_method => payment_method.type === key
-                                    );
-
-                                    if (!payment_methods.length) return null;
-
-                                    return (
-                                        <React.Fragment key={key}>
-                                            <Text className='payment-methods-list__list-header' size='xs' weight='bold'>
-                                                {current_title}
-                                            </Text>
-                                            <ThemedScrollbars
-                                                className='payment-methods-list__list-horizontal'
-                                                has_horizontal
-                                                is_only_horizontal
-                                                is_scrollbar_hidden
-                                            >
-                                                {payment_methods.map(
-                                                    (each_payment_method: TPaymentMethod, key: number) => (
-                                                        <PaymentMethodCard
-                                                            key={`${key}__${each_payment_method.id}`}
-                                                            payment_method={each_payment_method}
-                                                            small
-                                                            show_payment_method_name={false}
-                                                        />
-                                                    )
-                                                )}
-                                            </ThemedScrollbars>
-                                        </React.Fragment>
-                                    );
-                                })}
-                        </div>
-                    </MobileFullPageModal>
-                </MobileWrapper>
-            </React.Fragment>
+                            return (
+                                <React.Fragment key={key}>
+                                    <Text className='payment-methods-list__list-header' size='xs' weight='bold'>
+                                        {current_title}
+                                    </Text>
+                                    <ThemedScrollbars
+                                        className='payment-methods-list__list-horizontal'
+                                        has_horizontal
+                                        is_only_horizontal
+                                        is_scrollbar_hidden
+                                    >
+                                        {payment_methods.map((each_payment_method: TPaymentMethod, key: number) => (
+                                            <PaymentMethodCard
+                                                key={`${key}__${each_payment_method.id}`}
+                                                payment_method={each_payment_method}
+                                                small
+                                                show_payment_method_name={false}
+                                            />
+                                        ))}
+                                    </ThemedScrollbars>
+                                </React.Fragment>
+                            );
+                        })}
+                </div>
+            </MobileFullPageModal>
         </ScrollbarWrapper>
     );
 };

@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { Field, FieldProps, Form, Formik } from 'formik';
-
 import { Button, Dropdown, InlineMessage, Input, Loading, Money, StatusBadge, Text } from '@deriv/components';
 import {
     CFD_PLATFORMS,
@@ -18,19 +17,15 @@ import {
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-
+import { useMFAccountStatus, useExchangeRate } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 import AccountPlatformIcon from '../../../components/account-platform-icon';
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
 import ErrorDialog from '../../../components/error-dialog';
 import PercentageSelector from '../../../components/percentage-selector';
-import SideNote from '../../../components/side-note';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import { TAccount, TAccountsList, TError, TReactChangeEvent, TradingPlatformStatusResponse } from '../../../types';
 import AccountTransferReceipt from '../account-transfer-receipt/account-transfer-receipt';
-import { useMFAccountStatus, useExchangeRate } from '@deriv/hooks';
-
-import AccountTransferNote from './account-transfer-form-side-note';
-
 import './account-transfer-form.scss';
 
 type TAccountTransferFormProps = {
@@ -38,7 +33,6 @@ type TAccountTransferFormProps = {
     onClickDeposit?: () => void;
     onClickNotes?: () => void;
     onClose: () => void;
-    setSideNotes?: (notes: React.ReactNode[]) => void;
     TradingPlatformStatusData?: TradingPlatformStatusResponse['trading_platform_status'];
 };
 
@@ -141,20 +135,18 @@ const AccountTransferForm = observer(
         error,
         onClickDeposit,
         onClickNotes,
-        setSideNotes,
+
         onClose,
         TradingPlatformStatusData,
     }: TAccountTransferFormProps) => {
         const [arrow_icon_direction, setArrowIconDirection] = React.useState<'right' | 'left'>('right');
         const {
-            ui,
             client,
-            common: { is_from_derivgo },
+            common: { is_from_outside_cashier },
             traders_hub: { closeAccountTransferModal },
         } = useStore();
-
-        const { is_mobile } = ui;
-        const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
+        const { isDesktop, isMobile } = useDevice();
+        const { account_limits, authentication_status, getLimits: onMount } = client;
 
         const mf_account_status = useMFAccountStatus();
         const { account_transfer, crypto_fiat_converter, general_store } = useCashierStore();
@@ -163,7 +155,6 @@ const AccountTransferForm = observer(
         const {
             account_transfer_amount,
             accounts_list,
-            minimum_fee,
             onChangeTransferFrom,
             onChangeTransferTo,
             requestTransferBetweenAccounts,
@@ -172,13 +163,12 @@ const AccountTransferForm = observer(
             setAccountTransferAmount,
             error: { setErrorMessage },
             setTransferPercentageSelectorResult,
-            transfer_fee,
             transfer_limit,
             validateTransferFromAmount,
             validateTransferToAmount,
             is_transfer_confirm,
         } = account_transfer;
-        const { is_crypto, percentage, should_percentage_reset } = general_store;
+        const { percentage, should_percentage_reset } = general_store;
         const {
             converter_from_amount,
             converter_from_error,
@@ -196,8 +186,6 @@ const AccountTransferForm = observer(
         const [from_accounts, setFromAccounts] = React.useState({});
         const [to_accounts, setToAccounts] = React.useState({});
         const [transfer_to_hint, setTransferToHint] = React.useState<JSX.Element>();
-
-        const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
 
         const { daily_transfers } = account_limits;
         const mt5_remaining_transfers = daily_transfers?.mt5;
@@ -232,7 +220,7 @@ const AccountTransferForm = observer(
                     <Localize
                         i18n_default_text='<0>Verify your account to transfer funds.</0> <1>Verify now</1>'
                         components={[
-                            <Text color='var(--status-info)' key={0} size={is_mobile ? 'xxxs' : 'xxs'} />,
+                            <Text color='var(--status-info)' key={0} size={!isMobile ? 'xxs' : 'xxxs'} />,
                             <Link
                                 className='account-transfer-form__link'
                                 key={1}
@@ -245,7 +233,7 @@ const AccountTransferForm = observer(
 
             if (is_mf_status_pending)
                 return (
-                    <Text color='var(--status-info)' size={is_mobile ? 'xxxs' : 'xxs'}>
+                    <Text color='var(--status-info)' size={!isMobile ? 'xxs' : 'xxxs'}>
                         <Localize i18n_default_text='Unavailable as your documents are still under review' />
                     </Text>
                 );
@@ -404,58 +392,6 @@ const AccountTransferForm = observer(
         }, [accounts_list, selected_to, selected_from]); // eslint-disable-line react-hooks/exhaustive-deps
 
         React.useEffect(() => {
-            if (Object.keys(from_accounts).length) {
-                const side_notes = [];
-                side_notes.push(
-                    <AccountTransferNote
-                        allowed_transfers_count={{
-                            internal: internal_remaining_transfers?.allowed,
-                            mt5: mt5_remaining_transfers?.allowed,
-                            ctrader: ctrader_remaining_transfers?.allowed,
-                            dxtrade: dxtrade_remaining_transfers?.allowed,
-                        }}
-                        transfer_fee={transfer_fee}
-                        currency={selected_from.currency || ''}
-                        minimum_fee={minimum_fee}
-                        key={0}
-                        is_crypto_to_crypto_transfer={selected_from.is_crypto && selected_to.is_crypto}
-                        is_dxtrade_allowed={is_dxtrade_allowed}
-                        is_dxtrade_transfer={is_dxtrade_transfer}
-                        is_mt_transfer={is_mt_transfer}
-                        is_ctrader_transfer={is_ctrader_transfer}
-                        is_from_derivgo={is_from_derivgo}
-                    />
-                );
-                setSideNotes?.([
-                    <SideNote title={<Localize i18n_default_text='Notes' />} key={0}>
-                        {side_notes}
-                    </SideNote>,
-                ]);
-            }
-
-            return () => {
-                setSideNotes?.([]);
-            };
-        }, [
-            transfer_fee,
-            selected_from,
-            selected_to,
-            minimum_fee,
-            from_accounts,
-            is_dxtrade_allowed,
-            setSideNotes,
-            is_crypto,
-            internal_remaining_transfers?.allowed,
-            mt5_remaining_transfers?.allowed,
-            dxtrade_remaining_transfers?.allowed,
-            is_dxtrade_transfer,
-            is_mt_transfer,
-            is_from_derivgo,
-            ctrader_remaining_transfers?.allowed,
-            is_ctrader_transfer,
-        ]);
-
-        React.useEffect(() => {
             const getRemainingTransfers = () => {
                 if (is_mt_transfer) {
                     return mt5_remaining_transfers?.available;
@@ -553,7 +489,7 @@ const AccountTransferForm = observer(
                         color='prominent'
                         weight='bold'
                         align='center'
-                        className='cashier__header cashier__content-header'
+                        className='cashier__header account-transfer-form__header'
                     >
                         {localize('Transfer between your accounts in Deriv')}
                     </Text>
@@ -637,7 +573,7 @@ const AccountTransferForm = observer(
                                                 label={localize('To')}
                                                 list={to_accounts}
                                                 list_height='404'
-                                                initial_height_offset={is_mobile ? 160 : 180}
+                                                initial_height_offset={isDesktop ? 180 : 160}
                                                 name='transfer_to'
                                                 value={selected_to.value}
                                                 onChange={(e: TReactChangeEvent) => {
@@ -820,29 +756,6 @@ const AccountTransferForm = observer(
                                                 </Button>
                                             </div>
                                         </div>
-                                        {!is_from_outside_cashier && (
-                                            <SideNote title={<Localize i18n_default_text='Notes' />} is_mobile>
-                                                <AccountTransferNote
-                                                    allowed_transfers_count={{
-                                                        internal: internal_remaining_transfers?.allowed,
-                                                        mt5: mt5_remaining_transfers?.allowed,
-                                                        ctrader: ctrader_remaining_transfers?.allowed,
-                                                        dxtrade: dxtrade_remaining_transfers?.allowed,
-                                                    }}
-                                                    transfer_fee={transfer_fee}
-                                                    currency={selected_from.currency || ''}
-                                                    minimum_fee={minimum_fee}
-                                                    is_crypto_to_crypto_transfer={
-                                                        selected_from.is_crypto && selected_to.is_crypto
-                                                    }
-                                                    is_dxtrade_allowed={is_dxtrade_allowed}
-                                                    is_dxtrade_transfer={is_dxtrade_transfer}
-                                                    is_ctrader_transfer={is_ctrader_transfer}
-                                                    is_mt_transfer={is_mt_transfer}
-                                                    is_from_derivgo={is_from_derivgo}
-                                                />
-                                            </SideNote>
-                                        )}
                                         {!is_from_outside_cashier && <ErrorDialog error={error} />}
                                     </Form>
                                 </>

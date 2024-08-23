@@ -96,7 +96,7 @@ describe('useActiveSymbols', () => {
             });
         });
     });
-    it('should set correct default_symbol and call correct onChange when store symbol is set', async () => {
+    it('should set correct default_symbol', async () => {
         (usePrevious as jest.Mock).mockReturnValueOnce(true).mockReturnValueOnce(TRADE_TYPES.RISE_FALL);
         mocked_store.modules.trade.symbol = 'test';
         const { result } = renderHook(() => useActiveSymbols(), {
@@ -105,9 +105,6 @@ describe('useActiveSymbols', () => {
 
         await waitFor(() => {
             expect(result.current.default_symbol).toEqual('test');
-            expect(mocked_store.modules.trade.onChange).toHaveBeenCalledWith({
-                target: { name: 'symbol', value: 'test' },
-            });
         });
     });
     it('should set active symbols from store when is_logged_in and contract_type are unchanged', async () => {

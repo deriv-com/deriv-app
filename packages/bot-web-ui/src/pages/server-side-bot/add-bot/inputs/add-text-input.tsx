@@ -3,7 +3,7 @@ import { useFormikContext } from 'formik';
 import { Popover } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { TFormData } from 'Stores/server-bot-store';
-import './qs-text-input.scss';
+import './add-text-input.scss';
 
 export default function QsTextInput({ name, field }: { name: string; field: any }) {
     const { values, setFieldTouched, setFieldValue, errors } = useFormikContext<TFormData>();

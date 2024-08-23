@@ -1,9 +1,9 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { isDesktop } from '@deriv/shared';
+import userEvent from '@testing-library/user-event';
+import { useDevice } from '@deriv-com/ui';
 import { useStores } from 'Stores';
 import BuySellModalTitle from '../buy-sell-modal-title';
-import userEvent from '@testing-library/user-event';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     buy_sell_store: {
@@ -21,11 +21,6 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     },
 };
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isDesktop: jest.fn(() => false),
-}));
-
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
     useStores: jest.fn(() => mock_store),
@@ -35,6 +30,10 @@ const mock_props = {
     is_buy: false,
     onReturn: jest.fn(),
 };
+
+jest.mock('@deriv-com/ui', () => ({
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
 describe('<BuySellModalTitle />', () => {
     it('should display Sell USD if table type is sell', () => {
@@ -52,6 +51,7 @@ describe('<BuySellModalTitle />', () => {
     });
 
     it('should display Add payment method text if should_show_add_payment_method_form is true and isDesktop is false', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         mock_store.my_profile_store.should_show_add_payment_method_form = true;
 
         render(<BuySellModalTitle {...mock_props} />);
@@ -60,8 +60,6 @@ describe('<BuySellModalTitle />', () => {
     });
 
     it('should display Add payment method text with arrow icon if should_show_add_payment_method_form is true and isDesktop is true', () => {
-        (isDesktop as jest.Mock).mockReturnValue(true);
-
         render(<BuySellModalTitle {...mock_props} />);
 
         expect(screen.getByTestId('dt_buy_sell_modal_back_icon')).toBeInTheDocument();

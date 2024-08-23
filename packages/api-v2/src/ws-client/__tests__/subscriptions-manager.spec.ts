@@ -340,7 +340,7 @@ describe('SubscriptionsManager', () => {
     });
 
     it('does not crash if no authorized websocket available', async () => {
-        subscriptionsManager.setAuthorizedWs();
+        subscriptionsManager.setAuthorizedWs(undefined);
         await subscriptionsManager.close();
     });
 });

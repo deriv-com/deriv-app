@@ -3,6 +3,7 @@ import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { APIProvider } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { useStores } from 'Stores/index';
 import {
     payment_method_info_alipay,
@@ -30,6 +31,10 @@ const mock_modal_manager = {
     isCurrentModal: jest.fn(() => false),
 };
 
+jest.mock('@deriv-com/ui', () => ({
+    useDevice: jest.fn().mockReturnValue({ isDesktop: true }),
+}));
+
 const wrapper = ({ children }: { children: JSX.Element }) => (
     <APIProvider>
         <StoreProvider store={mockStore({})}>{children}</StoreProvider>
@@ -39,11 +44,6 @@ const wrapper = ({ children }: { children: JSX.Element }) => (
 const mock_p2p_advertiser_payment_methods_hooks = {
     data: undefined,
 };
-
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    MobileWrapper: jest.fn(({ children }) => children),
-}));
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -71,12 +71,12 @@ describe('<PaymentMethodsList /> Desktop', () => {
         mock_p2p_advertiser_payment_methods_hooks.data = [payment_method_info_alipay, payment_method_info_bank];
         render(<PaymentMethodsList />, { wrapper });
 
-        expect(screen.getAllByRole('button', { name: 'Add new' })).toHaveLength(2);
-        expect(screen.getAllByText('Alipay')).toHaveLength(2);
-        expect(screen.getAllByText('test_account')).toHaveLength(2);
+        expect(screen.getByRole('button', { name: 'Add new' })).toBeInTheDocument();
+        expect(screen.getByText('Alipay')).toBeInTheDocument();
+        expect(screen.getByText('test_account')).toBeInTheDocument();
 
-        expect(screen.getAllByText('Bank Transfers')).toHaveLength(2);
-        expect(screen.getAllByText('test_bank_name')).toHaveLength(2);
+        expect(screen.getByText('Bank Transfers')).toBeInTheDocument();
+        expect(screen.getByText('test_bank_name')).toBeInTheDocument();
     });
 
     it('should call setShouldShowAddPaymentMethodForm when clicking Add new button', () => {
@@ -90,6 +90,7 @@ describe('<PaymentMethodsList /> Desktop', () => {
     });
 
     it('should call setActiveTab when clicking return icon', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
         render(<PaymentMethodsList />, { wrapper });
 
         const pageReturnIcon = screen.getByTestId('dt_mobile_full_page_return_icon');

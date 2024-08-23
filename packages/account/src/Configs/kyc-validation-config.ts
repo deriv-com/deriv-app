@@ -50,7 +50,7 @@ export const getIDVFormValidationSchema = () => {
         document_type: Yup.mixed<TDocument>().test({
             name: 'validate-document-type',
             test: (input, context) => {
-                if (input && input.value) {
+                if (input?.value) {
                     return true;
                 }
                 return context.createError({

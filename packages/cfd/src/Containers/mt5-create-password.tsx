@@ -88,7 +88,7 @@ const MT5CreatePassword = ({
                                     has_error={!!(touched.password && errors.password)}
                                     custom_feedback_messages={getErrorMessages().password_warnings}
                                 >
-                                    {() => (
+                                    {({ has_warning }: { has_warning: boolean }) => (
                                         <PasswordInput
                                             autoComplete='new-password'
                                             label={localize('{{platform}} password', {
@@ -111,7 +111,8 @@ const MT5CreatePassword = ({
                                             }}
                                             data_testId={`dt_${platform}_password`}
                                             hint={
-                                                <Localize i18n_default_text='This password works for all your Deriv MT5 accounts.' />
+                                                (!has_warning || values.password.length === 0) &&
+                                                localize('This password works for all your Deriv MT5 accounts.')
                                             }
                                         />
                                     )}

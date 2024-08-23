@@ -454,7 +454,6 @@ export default class CFDStore extends BaseStore {
     openMT5Account(values) {
         const name = this.getName();
         const leverage = this.mt5_companies[this.account_type.category][this.account_type.type].leverage;
-        const type_request = getAccountTypeFields(this.account_type);
         const { address_line_1, address_line_2, address_postcode, address_city, address_state, country_code, phone } =
             this.root_store.client.account_settings;
 
@@ -469,21 +468,17 @@ export default class CFDStore extends BaseStore {
             phone,
             state: address_state,
             zipCode: address_postcode,
-            ...(this.account_type.type === 'all'
-                ? this.product === 'swap_free'
-                    ? { product: 'swap_free' }
-                    : { product: 'zero_spread' }
-                : {}),
+            product: this.product,
             ...(values.server ? { server: values.server } : {}),
             ...(this.jurisdiction_selected_shortcode && this.account_type.category === 'real'
                 ? { company: this.jurisdiction_selected_shortcode }
                 : {}),
-            ...(this.jurisdiction_selected_shortcode !== Jurisdiction.LABUAN
-                ? type_request
-                : {
-                      account_type: 'financial',
-                      mt5_account_type: 'financial_stp',
-                  }),
+            // ...(this.jurisdiction_selected_shortcode !== Jurisdiction.LABUAN
+            //     ? type_request
+            //     : {
+            //           account_type: 'financial',
+            //           mt5_account_type: 'financial_stp',
+            //       }),
         });
     }
 

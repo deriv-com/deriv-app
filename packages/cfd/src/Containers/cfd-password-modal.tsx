@@ -450,6 +450,7 @@ const CFDPasswordForm = observer(
                     touched,
                     values,
                     validateForm,
+                    isValid,
                 }) => (
                     <form onSubmit={handleSubmit}>
                         <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
@@ -492,7 +493,7 @@ const CFDPasswordForm = observer(
                             />
                         </div>
                         <FormSubmitButton
-                            is_disabled={!values.password || !checked}
+                            is_disabled={!values.password || !isValid || (need_tnc && !checked)}
                             has_cancel={has_cancel_button}
                             cancel_label={cancel_button_label}
                             onCancel={handleCancel}

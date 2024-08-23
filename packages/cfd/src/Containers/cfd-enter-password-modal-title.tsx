@@ -27,7 +27,7 @@ const CFDEnterPasswordModalTitle = observer(({ platform }: TCFDEnterPasswordModa
         <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>
             {platform === CFD_PLATFORMS.MT5 ? (
                 <Localize
-                    i18n_default_text='Add an {{platform}} account to add an {{platform}} {{account}} account.'
+                    i18n_default_text='Enter your {{platform}} password to add an {{platform}} {{account}} account.'
                     values={{
                         platform: getCFDPlatformNames(platform),
                         account: getAccountCardTitle(),

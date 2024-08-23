@@ -69,7 +69,7 @@ describe('<MT5CreatePassword/>', () => {
         error_message: '',
         validatePassword: jest.fn(),
         onSubmit: jest.fn(),
-        need_tnc: false,
+        need_tnc: true,
     };
 
     beforeAll(() => {
@@ -82,7 +82,7 @@ describe('<MT5CreatePassword/>', () => {
         document.body.removeChild(modal_root_el);
     });
 
-    it('should render MT5CreatePassword component with initial values', async () => {
+    it('should render MT5CreatePassword component', async () => {
         render(
             <Router history={history}>
                 <MT5CreatePassword {...default_props} />
@@ -205,72 +205,49 @@ describe('<MT5CreatePassword/>', () => {
     //         ).toBeInTheDocument();
     //     });
 
-    //  it('should enable the submit button when all fields are valid and terms and conditions are accepted', async () => {
-    //         const user_input = 'zo8lAet#2q01Ih';
+    // it('should enable the submit button when all fields are valid and terms and conditions are accepted', async () => {
+    //     const user_input = 'zo8lAet#2q01Ih';
 
-    //         render(
-    //             <Router history={history}>
-    //                 <MT5CreatePassword
-    //                     {...default_props}
-    //                     password={user_input}
-    //                     validatePassword={() => ({})} // Mock validation to return no errors
-    //                 />
-    //             </Router>,
-    //             {
-    //                 wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
-    //             }
-    //         );
+    //     render(
+    //         <Router history={history}>
+    //             <MT5CreatePassword
+    //                 {...default_props}
+    //                 password={user_input}
+    //                 validatePassword={() => ({ valid: true })}
+    //                 need_tnc={true} // Ensure TNC is required
+    //             />
+    //         </Router>,
+    //         {
+    //             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
+    //         }
+    //     );
 
-    //         // Ensure the password input, TNC checkbox, and submit button are correctly rendered
-    //         const passwordInput = await screen.findByTestId('dt_mt5_password');
-    //      const submitButton = await screen.findByRole('button', { name: /Create account/i });
-    //      const checkbox = await screen.findByRole('checkbox');;
+    //     const passwordInput = await screen.findByTestId('dt_mt5_password');
+    //     const submitButton = await screen.findByRole('button', { name: /Create account/i });
+    //     const tncCheckbox = await screen.findByRole('checkbox');
 
-    //         // Simulate user interactions
-    //         fireEvent.change(passwordInput, { target: { value: user_input } });
-    //         fireEvent.click(checkbox); // Simulate checking the TNC checkbox
+    //     fireEvent.change(passwordInput, { target: { value: user_input } });
+    //     fireEvent.click(tncCheckbox);
 
-    //         // Ensure the submit button is enabled when all conditions are met
-    //         expect(submitButton).not.toBeDisabled();
-
-    //         // Simulate form submission
-    //         fireEvent.click(submitButton);
-
-    //         // Wait for the submit function to be called
-    //         await waitFor(() => {
-    //             expect(mockSubmitMt5Password).toHaveBeenCalled();
-    //         });
+    //     await waitFor(() => {
+    //         expect(submitButton).toBeEnabled();
     //     });
 
-    // it('should display error message when password contain non-english characters', async () => {
-    //         validPassword.mockReturnValue(false);
+    //     fireEvent.click(submitButton);
 
-    //         const store = mockStore(mockRootStore);
-
-    //         store.client.account_status = { status: [], category: 'Real' };
-    //         store.client.email = 'demo@deriv.com';
-
-    //         render(
-    //             <Router history={history}>
-    //                 <MT5CreatePassword {...default_props} />
-    //             </Router>,
-    //             {
-    //                 wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
-    //             }
-    //         );
-    //         const ele_password_input = await screen.findByTestId('dt_mt5_password');
-    //         fireEvent.change(ele_password_input, { target: { value: 'Passwordååøø' } });
-    //         await waitFor(() => {
-    //             fireEvent.focusOut(ele_password_input);
-    //         });
-
-    //         await waitFor(() => {
-    //             expect(validPassword).toHaveBeenCalled();
-    //         });
-
-    //         expect(getErrorMessages).toHaveBeenCalled();
-    //         expect(
-    //             await screen.findByText(/Password should have lower and uppercase English letters with numbers./i)
-    //         ).toBeInTheDocument();
+    //     await waitFor(() => {
+    //         expect(mockSubmitMt5Password).toBeCalled();
     //     });
+    // });
+
+    // it('should take us back to traders hub when click the cross icon', async () => {
+    //     render(
+    //         <React>
+    //             <MT5CreatePassword {...default_props} />
+    //         </React>,
+    //         {
+    //             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
+    //         }
+    //     );
+    // });
 });

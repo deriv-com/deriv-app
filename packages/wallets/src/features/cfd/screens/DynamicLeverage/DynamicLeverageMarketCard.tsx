@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { THooks } from '../../../../types';
 import { DynamicLeverageTableColumnHeader } from './DynamicLeverageTableColumnHeader';
@@ -30,7 +31,7 @@ export const DynamicLeverageMarketCard: FC<TDynamicLeverageMarketCardProps> = ({
                 </Text>
             )}
             <Text align='center' color='error' data-testid='leverage_title' size='xs'>
-                {`Up to ${min}:${max}`}
+                <Localize i18n_default_text='Up to {{min}}:{{max}}' values={{ max, min }} />
             </Text>
         </div>
         <div className='wallets-dynamic-leverage-modal__market-table'>

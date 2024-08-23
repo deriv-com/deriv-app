@@ -2,7 +2,7 @@ import React, { FC, useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { useDebounceValue } from 'usehooks-ts';
 import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api-v2';
-import { Text } from '@deriv-com/ui';
+import { Loader } from '@deriv-com/ui';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
@@ -49,7 +49,7 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({
         setIsCheckBoxChecked(false);
     }, [selectedJurisdiction, setIsCheckBoxChecked]);
 
-    if (isLoading) return <Text>Loading...</Text>;
+    if (isLoading) return <Loader />;
 
     return (
         <div

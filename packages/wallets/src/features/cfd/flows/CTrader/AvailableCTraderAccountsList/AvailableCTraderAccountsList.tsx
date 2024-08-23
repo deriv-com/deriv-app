@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
+import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { TradingAccountCard, WalletError } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
-import { PlatformDetails } from '../../../constants';
+import { CFD_PLATFORMS, PlatformDetails } from '../../../constants';
 import { CTraderSuccessModal } from '../../../modals/CTraderSuccessModal';
 import './AvailableCTraderAccountsList.scss';
 
@@ -67,7 +68,12 @@ const AvailableCTraderAccountsList: React.FC = () => {
         >
             <div className='wallets-available-ctrader__details'>
                 <Text size='sm'>{PlatformDetails.ctrader.title}</Text>
-                <Text size='xs'>CFDs on financial and derived instruments with copy trading.</Text>
+                <Text size='xs'>
+                    <Localize
+                        i18n_default_text='{{platform}} on financial and derived instruments with copy trading.'
+                        values={{ platform: CFD_PLATFORMS.CFDS }}
+                    />
+                </Text>
             </div>
         </TradingAccountCard>
     );

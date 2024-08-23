@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { useAuthorize, useJurisdictionStatus } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
+import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { InlineMessage } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
@@ -82,7 +83,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     <div className='wallets-added-mt5__details-badge'>
                         <InlineMessage size='xs' type='warning' variant='outlined'>
                             <Text color='warning' size='2xs' weight='bold'>
-                                Pending verification
+                                <Localize i18n_default_text='Pending verification' />
                             </Text>
                         </InlineMessage>
                     </div>
@@ -105,7 +106,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                                         )
                                     }
                                 >
-                                    Why?
+                                    <Localize i18n_default_text='Why?' />
                                 </a>
                             </Text>
                         </InlineMessage>

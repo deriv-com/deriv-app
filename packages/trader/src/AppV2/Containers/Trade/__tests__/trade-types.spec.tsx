@@ -8,7 +8,7 @@ import { getTradeTypesList } from 'AppV2/Utils/trade-types-utils';
 
 jest.mock('AppV2/Utils/trade-types-utils');
 
-jest.mock('AppV2/Components/guide', () => jest.fn(() => <div>MockedGuide</div>));
+jest.mock('AppV2/Components/Guide', () => jest.fn(() => <div>MockedGuide</div>));
 
 const mockGetTradeTypesList = getTradeTypesList as jest.MockedFunction<typeof getTradeTypesList>;
 

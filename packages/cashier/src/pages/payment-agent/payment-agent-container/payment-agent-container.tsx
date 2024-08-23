@@ -2,15 +2,12 @@ import React from 'react';
 import { DesktopWrapper, Dropdown, Icon, Loading, MobileWrapper, SelectNative, Text } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
-import SideNote from 'Components/side-note';
-import MissingPaymentMethodNote from '../missing-payment-method-note';
 import PaymentAgentCard from '../payment-agent-card';
-import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
-import PaymentAgentReceipt from '../payment-agent-receipt';
 import PaymentAgentSearchBox from '../payment-agent-search-box';
 import PaymentAgentUnlistedWithdrawForm from '../payment-agent-unlisted-withdraw-form';
 import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
 import { useCashierStore } from '../../../stores/useCashierStores';
+import PaymentAgentReceipt from '../payment-agent-receipt';
 import './payment-agent-container.scss';
 
 type TPaymentAgentContainer = {
@@ -78,14 +75,6 @@ const PaymentAgentContainer = observer(({ is_deposit }: TPaymentAgentContainer) 
 
     return (
         <React.Fragment>
-            {!has_payment_agent_search_warning && (
-                <SideNote className='payment-agent-list__side-note' has_title={false} is_mobile>
-                    <PaymentAgentDisclaimer />
-                </SideNote>
-            )}
-            <SideNote className='payment-agent-list__side-note-second' has_title={false} is_mobile>
-                <MissingPaymentMethodNote />
-            </SideNote>
             <div className='payment-agent-list__list-header'>
                 {is_deposit ? (
                     <Text as='p' line_height='s' size='xs'>
@@ -146,7 +135,7 @@ const PaymentAgentContainer = observer(({ is_deposit }: TPaymentAgentContainer) 
             {is_search_loading ? (
                 <Loading is_fullscreen={false} className='payment-agent-list__search-loader' />
             ) : (
-                <React.Fragment>
+                <div>
                     {has_payment_agent_search_warning ? (
                         <PaymentAgentSearchWarning />
                     ) : (
@@ -161,7 +150,7 @@ const PaymentAgentContainer = observer(({ is_deposit }: TPaymentAgentContainer) 
                             );
                         })
                     )}
-                </React.Fragment>
+                </div>
             )}
         </React.Fragment>
     );

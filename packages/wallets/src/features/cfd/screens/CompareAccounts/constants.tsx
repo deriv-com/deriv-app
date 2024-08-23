@@ -2,8 +2,8 @@ import React from 'react';
 import {
     AccountsDerivXIcon,
     AccountsDmt5CfdsIcon,
-    AccountsDmt5StandardIcon,
     AccountsDmt5FinancialIcon,
+    AccountsDmt5StandardIcon,
     AccountsDmt5SwfIcon,
     PartnersProductDerivCtraderBrandLightLogoHorizontalIcon,
 } from '@deriv/quill-icons';

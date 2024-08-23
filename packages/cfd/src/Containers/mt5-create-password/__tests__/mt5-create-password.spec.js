@@ -172,73 +172,74 @@ describe('<MT5CreatePassword/>', () => {
         });
     });
 
-    //  it('should display error message when password does not meet requirements', async () => {
-    //         validPassword.mockReturnValue(false);
-    //         const user_input = 'demo@deriv.com';
+    it('should display error message when password does not meet requirements', async () => {
+        validPassword.mockReturnValue(false);
+        const user_input = 'AMINA';
 
-    //         const store = mockStore(mockRootStore);
+        const store = mockStore(mockRootStore);
+        store.client.account_status = { status: [], category: 'Real' };
+        store.client.email = user_input;
 
-    //         store.client.account_status = { status: [], category: 'Real' };
-    //         store.client.email = user_input;
+        render(
+            <Router history={history}>
+                <MT5CreatePassword {...default_props} />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
+        );
+        screen.logTestingPlaygroundURL();
+        const password_input = await screen.findByTestId('dt_mt5_password');
 
-    //         render(
-    //             <Router history={history}>
-    //                 <MT5CreatePassword {...default_props} />
-    //             </Router>,
-    //             {
-    //                 wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
-    //             }
-    //         );
-    //         const ele_password_input = await screen.findByTestId('dt_mt5_password');
-    //         fireEvent.change(ele_password_input, { target: { value: 'Passwordååøø' } });
-    //         await waitFor(() => {
-    //             fireEvent.focusOut(ele_password_input);
-    //         });
+        fireEvent.change(password_input, { target: { value: user_input } });
+        await waitFor(() => {
+            fireEvent.focusOut(password_input);
+        });
 
-    //         await waitFor(() => {
-    //             expect(validPassword).toHaveBeenCalled();
-    //         });
+        await waitFor(() => {
+            expect(default_props.validatePassword).toHaveBeenCalled(
+                'Password should have lower and uppercase English letters with numbers.'
+            );
+        });
 
-    //         expect(getErrorMessages).toHaveBeenCalled();
-    //         expect(
-    //             await screen.findByText(/Password should have lower and uppercase English letters with numbers./i)
-    //         ).toBeInTheDocument();
-    //     });
+        expect(getErrorMessages).toHaveBeenCalled('');
+        expect(await screen.findByType()).toBeInTheDocument();
+    });
 
-    // it('should enable the submit button when all fields are valid and terms and conditions are accepted', async () => {
-    //     const user_input = 'zo8lAet#2q01Ih';
+    it('should enable the submit button when all fields are valid and terms and conditions are accepted', async () => {
+        const user_input = 'zo8lAet#2q01Ih';
 
-    //     render(
-    //         <Router history={history}>
-    //             <MT5CreatePassword
-    //                 {...default_props}
-    //                 password={user_input}
-    //                 validatePassword={() => ({ valid: true })}
-    //                 need_tnc={true} // Ensure TNC is required
-    //             />
-    //         </Router>,
-    //         {
-    //             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
-    //         }
-    //     );
+        render(
+            <Router history={history}>
+                <MT5CreatePassword
+                    {...default_props}
+                    password={user_input}
+                    validatePassword={() => ({ valid: true })}
+                    need_tnc={true} // Ensure TNC is required
+                />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
+            }
+        );
 
-    //     const passwordInput = await screen.findByTestId('dt_mt5_password');
-    //     const submitButton = await screen.findByRole('button', { name: /Create account/i });
-    //     const tncCheckbox = await screen.findByRole('checkbox');
+        const passwordInput = await screen.findByTestId('dt_mt5_password');
+        const submitButton = await screen.findByRole('button', { name: /Create account/i });
+        const tncCheckbox = await screen.findByRole('checkbox');
 
-    //     fireEvent.change(passwordInput, { target: { value: user_input } });
-    //     fireEvent.click(tncCheckbox);
+        fireEvent.change(passwordInput, { target: { value: user_input } });
+        fireEvent.click(tncCheckbox);
 
-    //     await waitFor(() => {
-    //         expect(submitButton).toBeEnabled();
-    //     });
+        await waitFor(() => {
+            expect(submitButton).toBeEnabled();
+        });
 
-    //     fireEvent.click(submitButton);
+        fireEvent.click(submitButton);
 
-    //     await waitFor(() => {
-    //         expect(mockSubmitMt5Password).toBeCalled();
-    //     });
-    // });
+        await waitFor(() => {
+            expect(mockSubmitMt5Password).toBeCalled();
+        });
+    });
 
     // it('should take us back to traders hub when click the cross icon', async () => {
     //     render(

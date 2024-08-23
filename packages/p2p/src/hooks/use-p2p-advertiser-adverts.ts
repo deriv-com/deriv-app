@@ -1,3 +1,4 @@
+import { useDevice } from '@deriv-com/ui';
 import { useP2PAdvertList } from '@deriv/hooks';
 import { useStores } from 'Stores/index';
 
@@ -12,12 +13,14 @@ import { useStores } from 'Stores/index';
  * */
 
 const useP2PAdvertiserAdverts = () => {
+    const { isDesktop } = useDevice();
     const { advertiser_page_store, buy_sell_store, general_store } = useStores();
     const { advertiser_details_id, counterparty_type, is_counterparty_advertiser_blocked } = advertiser_page_store;
-    const { advertiser_id, counterparty_advertiser_id, is_advertiser_info_subscribed, list_item_limit } = general_store;
+    const { advertiser_id, counterparty_advertiser_id, is_advertiser_info_subscribed } = general_store;
     const { selected_local_currency } = buy_sell_store;
     const is_my_advert = advertiser_details_id === advertiser_id;
     const is_advertiser_blocked = !!is_counterparty_advertiser_blocked && !is_my_advert;
+    const list_item_limit = isDesktop ? 50 : 10;
 
     const {
         data: adverts = [],

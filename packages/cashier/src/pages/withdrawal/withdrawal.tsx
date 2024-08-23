@@ -2,13 +2,13 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { useCurrentCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import { PageContainer } from 'Components/page-container';
-import TransactionsCryptoHistory from '../../components/transactions-crypto-history';
-import Error from '../../components/error';
-import NoBalance from '../../components/no-balance';
 import { SideNoteFAQ } from '../../components/side-notes';
 import { DepositCryptoSideNotes } from '../../modules/deposit-crypto/components';
 import { useCashierStore } from '../../stores/useCashierStores';
+import PageContainer from '../../components/page-container';
+import Error from '../../components/error';
+import NoBalance from '../../components/no-balance';
+import TransactionsCryptoHistory from '../../components/transactions-crypto-history';
 import WithdrawalCryptoForm from './withdrawal-crypto-form';
 import WithdrawalCryptoReceipt from './withdrawal-crypto-receipt';
 import WithdrawalFiat from './withdrawal-fiat';
@@ -61,7 +61,10 @@ const WithdrawalPageContent = observer(() => {
         );
 
     return (
-        <PageContainer hide_breadcrumb right={currency_config?.is_crypto ? <WithdrawalSideNotes /> : undefined}>
+        <PageContainer
+            hide_breadcrumb
+            right={currency_config?.is_crypto ? <WithdrawalSideNotes /> : <React.Fragment />}
+        >
             <WithdrawalVerificationEmail />
         </PageContainer>
     );
@@ -107,30 +110,40 @@ const Withdrawal = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [willMountWithdraw]);
 
-    if (is_switching || is_10k_withdrawal_limit_reached === undefined) return <Loading is_fullscreen={false} />;
+    if (is_switching || is_10k_withdrawal_limit_reached === undefined)
+        return (
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
+                <Loading className='cashier__loader' is_fullscreen={false} />
+            </PageContainer>
+        );
 
     if (is_withdrawal_locked || is_10k_withdrawal_limit_reached)
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <WithdrawalLocked />
             </PageContainer>
         );
 
     if (!Number(balance))
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <NoBalance />
             </PageContainer>
         );
 
     if (error.is_show_full_page && error.message)
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <Error error={error} />
             </PageContainer>
         );
 
-    if (is_transactions_crypto_visible) return <TransactionsCryptoHistory />;
+    if (is_transactions_crypto_visible)
+        return (
+            <PageContainer hide_breadcrumb>
+                <TransactionsCryptoHistory />
+            </PageContainer>
+        );
 
     return <WithdrawalPageContent />;
 });

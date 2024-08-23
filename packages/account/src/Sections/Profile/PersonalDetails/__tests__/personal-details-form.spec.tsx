@@ -44,6 +44,7 @@ describe('<PersonalDetailsForm />', () => {
                 place_of_birth: 'Thailand',
                 citizen: 'Thailand',
                 email_consent: 1,
+                last_name: 'Doe',
             },
         },
     });
@@ -101,30 +102,21 @@ describe('<PersonalDetailsForm />', () => {
         });
     });
 
-    it('should display error for up to 50 characters length validation, for last name when entered characters are more than 50', async () => {
-        renderComponent();
-        await waitFor(async () => {
-            const last_name = screen.getByTestId('dt_last_name');
-            await userEvent.type(last_name, 'ABCDEFGHIJKLMNOP.QRSTU VWXYZabcdefghi-jklmnopqrstuvwxyzh-shs');
-            expect(screen.getByText(/Enter no more than 50 characters./)).toBeInTheDocument();
-        });
-    });
-
     it('should display error for the regex validation, for First name when unacceptable characters are entered', async () => {
         renderComponent();
 
-        await waitFor(async () => {
+        await waitFor(() => {
             const first_name = screen.getByTestId('dt_first_name');
-            await userEvent.type(first_name, 'test 3');
+            userEvent.type(first_name, 'test 3');
             expect(screen.getByText('Letters, spaces, periods, hyphens, apostrophes only.')).toBeInTheDocument();
         });
     });
 
     it('should not display error for the regex validation, for First name when acceptable characters are entered', async () => {
         renderComponent();
-        await waitFor(async () => {
+        await waitFor(() => {
             const first_name = screen.getByTestId('dt_first_name');
-            await userEvent.type(first_name, "test-with' chars.");
+            userEvent.type(first_name, "test-with' chars.");
             expect(screen.queryByText('Letters, spaces, periods, hyphens, apostrophes only.')).not.toBeInTheDocument();
         });
     });

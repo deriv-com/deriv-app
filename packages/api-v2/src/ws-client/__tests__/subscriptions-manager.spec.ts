@@ -273,23 +273,6 @@ describe('SubscriptionsManager', () => {
         expect(backendUnsubscribeSpy).toHaveBeenCalledTimes(1);
     });
 
-    /*
-        async close() {
-        if (!this.authorizedWs) {
-            return;
-        }
-
-        // Collect promises from the async unsubscribe calls
-        const unsubscribePromises = Array.from(this.backendSubscriptions.values()).map(async backendSubscription => {
-            await backendSubscription.unsubscribe();
-        });
-
-        // Clear the subscriptions map after all promises have resolved
-        this.backendSubscriptions.clear();
-
-        // Await all the unsubscribe promises to finish
-        await Promise.all(unsubscribePromises);
-    }*/
     it('close unsubscribes all backend subscriptions', async () => {
         const unsubscribeSpy = jest.spyOn(Subscription.prototype, 'unsubscribe');
 
@@ -315,6 +298,7 @@ describe('SubscriptionsManager', () => {
 
         expect(unsubscribeSpy).toHaveBeenCalledTimes(2);
     });
+
     it('close clears subscriptions map', async () => {
         const onData1 = jest.fn();
         const onData2 = jest.fn();

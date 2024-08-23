@@ -12,7 +12,6 @@ const ResetBalance = () => {
     const { isLoading: isResetBalanceLoading, isSuccess: isResetBalanceSuccess, mutate } = useMutation('topup_virtual');
     const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
     const { data: activeWallet } = useActiveWalletAccount();
-    let resetBalanceContent;
 
     const resetBalance = () => {
         mutate();
@@ -26,7 +25,7 @@ const ResetBalance = () => {
     }
 
     if (isResetBalanceSuccess) {
-        resetBalanceContent = (
+        return (
             <ActionScreen
                 actionButtons={
                     <Button borderWidth='sm' onClick={navigateToTransfer} size='lg' textSize='md'>
@@ -38,8 +37,10 @@ const ResetBalance = () => {
                 title={localize('Success')}
             />
         );
-    } else if (isResetBalanceAvailable || isResetBalanceLoading) {
-        resetBalanceContent = (
+    }
+
+    if (isResetBalanceAvailable || isResetBalanceLoading) {
+        return (
             <ActionScreen
                 actionButtons={
                     <Button borderWidth='sm' onClick={resetBalance} size='lg' textSize='md'>
@@ -51,17 +52,15 @@ const ResetBalance = () => {
                 title={localize('Reset balance')}
             />
         );
-    } else {
-        resetBalanceContent = (
-            <ActionScreen
-                description={localize('You can reset your balance when it is below USD 10,000.00')}
-                icon={<DerivLightDemoResetBalanceIcon height={128} />}
-                title={localize('Reset balance unavailable')}
-            />
-        );
     }
 
-    return resetBalanceContent;
+    return (
+        <ActionScreen
+            description={localize('You can reset your balance when it is below USD 10,000.00')}
+            icon={<DerivLightDemoResetBalanceIcon height={128} />}
+            title={localize('Reset balance unavailable')}
+        />
+    );
 };
 
 export default ResetBalance;

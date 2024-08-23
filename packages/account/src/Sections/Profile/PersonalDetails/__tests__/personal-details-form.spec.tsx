@@ -122,9 +122,9 @@ describe('<PersonalDetailsForm />', () => {
 
     it('should not display error for the regex validation, for First name when acceptable characters are entered', async () => {
         renderComponent();
-        await waitFor(() => {
+        await waitFor(async () => {
             const first_name = screen.getByTestId('dt_first_name');
-            userEvent.type(first_name, "test-with' chars.");
+            await userEvent.type(first_name, "test-with' chars.");
             expect(screen.queryByText('Letters, spaces, periods, hyphens, apostrophes only.')).not.toBeInTheDocument();
         });
     });

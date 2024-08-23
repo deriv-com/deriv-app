@@ -23,6 +23,7 @@ const CfdPasswordModalTnc = observer(
                     jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                     platform={getCFDPlatformLabel(platform)}
                     product={account_title}
+                    need_tnc={need_tnc}
                 />
                 {need_tnc && (
                     <JurisdictionCheckBox

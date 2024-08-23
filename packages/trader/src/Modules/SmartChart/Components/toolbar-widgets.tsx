@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChartMode, DrawTools, Share, StudyLegend, Views, ToolbarWidget } from 'Modules/SmartChart';
 import { useDevice } from '@deriv-com/ui';
-import { isTabletOs } from '@deriv/shared';
+import { isDesktopOs } from '@deriv/shared';
 
 type TToolbarWidgetsProps = {
     position?: string;
@@ -10,12 +10,12 @@ type TToolbarWidgetsProps = {
 };
 
 const ToolbarWidgets = ({ position, updateChartType, updateGranularity }: TToolbarWidgetsProps) => {
-    const { isDesktop, isMobile } = useDevice();
+    const { isMobile } = useDevice();
 
     return (
         <ToolbarWidget position={position || (isMobile ? 'bottom' : null)}>
             <ChartMode portalNodeId='modal_root' onChartType={updateChartType} onGranularity={updateGranularity} />
-            {isDesktop && !isTabletOs && (
+            {isDesktopOs() && !isMobile && (
                 <StudyLegend portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
             )}
             {!isMobile && (
@@ -26,8 +26,8 @@ const ToolbarWidgets = ({ position, updateChartType, updateGranularity }: TToolb
                     onGranularity={updateGranularity}
                 />
             )}
-            {isDesktop && !isTabletOs && <DrawTools portalNodeId='modal_root' />}
-            {isDesktop && !isTabletOs && <Share portalNodeId='modal_root' />}
+            {isDesktopOs() && !isMobile && <DrawTools portalNodeId='modal_root' />}
+            {isDesktopOs() && !isMobile && <Share portalNodeId='modal_root' />}
         </ToolbarWidget>
     );
 };

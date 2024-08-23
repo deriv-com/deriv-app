@@ -398,6 +398,7 @@ export default class TradeStore extends BaseStore {
             contract_start_type: observable,
             contract_type: observable,
             contract_types_list: observable,
+            contract_types_list_v2: observable,
             currency: observable,
             digit_stats: observable,
             duration_min_max: observable,

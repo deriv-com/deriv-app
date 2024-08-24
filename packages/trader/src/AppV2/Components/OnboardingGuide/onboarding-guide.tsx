@@ -2,8 +2,9 @@ import React from 'react';
 import { Modal } from '@deriv-com/quill-ui';
 import { useLocalStorageData } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
+import GuideContainer from './guide-container';
 
-// TODO: add second button for Skip, enable close on overlay click. Add handlebar?
+// TODO: add second button for Skip. Add handlebar?
 const OnboardingGuide = () => {
     const [should_show_onboarding_guide, setShouldShowOnboardingGuide] = React.useState(false);
     const [should_run_onboarding_guide, setShouldRunOnboardingGuide] = React.useState(false);
@@ -18,7 +19,7 @@ const OnboardingGuide = () => {
 
     React.useEffect(() => {
         if (!onboarding_guide_dtrader_v2) {
-            onboarding_guide_timeout_ref.current = setTimeout(() => setShouldShowOnboardingGuide(true), 8000);
+            onboarding_guide_timeout_ref.current = setTimeout(() => setShouldShowOnboardingGuide(true), 800);
         }
         return () => clearTimeout(onboarding_guide_timeout_ref.current);
     }, [onboarding_guide_dtrader_v2]);
@@ -26,7 +27,6 @@ const OnboardingGuide = () => {
     return (
         <React.Fragment>
             <Modal
-                disableCloseOnOverlay
                 isOpened={should_show_onboarding_guide}
                 isMobile
                 showHandleBar={false}
@@ -44,6 +44,7 @@ const OnboardingGuide = () => {
                     <Localize i18n_default_text='Enjoy a smoother, more intuitive trading experience. Here’s a quick tour to get you started.' />
                 </Modal.Body>
             </Modal>
+            <GuideContainer should_run={should_run_onboarding_guide} />
         </React.Fragment>
     );
 };

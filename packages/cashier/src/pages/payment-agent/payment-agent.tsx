@@ -62,11 +62,7 @@ const PaymentAgent = observer(() => {
     }
 
     return (
-        <PageContainer
-            hide_breadcrumb
-            left={!isDesktop ? <PaymentAgentSideNote /> : undefined}
-            right={isDesktop ? <PaymentAgentSideNote /> : <React.Fragment />}
-        >
+        <PageContainer hide_breadcrumb right={isDesktop ? <PaymentAgentSideNote /> : <React.Fragment />}>
             <PaymentAgentList />
         </PageContainer>
     );

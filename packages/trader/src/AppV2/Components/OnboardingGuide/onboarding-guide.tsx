@@ -17,6 +17,11 @@ const OnboardingGuide = () => {
     const imageSRC = 'https://live.staticflickr.com/603/21947667154_e63cc9252b_b.jpg';
     const ImageComponent = <img src={imageSRC} alt='Apples' />;
 
+    const onFinishGuide = React.useCallback(() => {
+        setShouldRunOnboardingGuide(false);
+        setOnboardingGuideDtraderV2(true);
+    }, [setOnboardingGuideDtraderV2]);
+
     React.useEffect(() => {
         if (!onboarding_guide_dtrader_v2) {
             onboarding_guide_timeout_ref.current = setTimeout(() => setShouldShowOnboardingGuide(true), 800);
@@ -44,7 +49,7 @@ const OnboardingGuide = () => {
                     <Localize i18n_default_text='Enjoy a smoother, more intuitive trading experience. Here’s a quick tour to get you started.' />
                 </Modal.Body>
             </Modal>
-            <GuideContainer should_run={should_run_onboarding_guide} />
+            <GuideContainer should_run={should_run_onboarding_guide} onFinishGuide={onFinishGuide} />
         </React.Fragment>
     );
 };

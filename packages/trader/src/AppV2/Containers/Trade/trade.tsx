@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { Loading } from '@deriv/components';
+import { isAccumulatorContract } from '@deriv/shared';
 import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
 import { useTraderStore } from 'Stores/useTraderStores';
 import BottomNav from 'AppV2/Components/BottomNav';
@@ -14,7 +15,7 @@ import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import TemporaryTradeTypes from './trade-types';
 import MarketSelector from 'AppV2/Components/MarketSelector';
 import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
-import { isAccumulatorContract } from '@deriv/shared';
+import OnboardingGuide from 'AppV2/Components/OnboardingGuide';
 
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
@@ -87,6 +88,7 @@ const Trade = observer(() => {
                         <TradeParameters is_minimized />
                     </TradeParametersContainer>
                     <PurchaseButton />
+                    <OnboardingGuide />
                 </React.Fragment>
             ) : (
                 <Loading.DTraderV2 />

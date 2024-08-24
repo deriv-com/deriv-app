@@ -18,16 +18,22 @@ const GuideContainer = ({ should_run }: TGuideContainerProps) => {
             content: <Localize i18n_default_text='Scroll left or right to explore trade types.' />,
             disableBeacon: true,
         },
+        {
+            target: '.market-selector__container',
+            title: <Localize i18n_default_text='Choose a market (2/6)' />,
+            content: <Localize i18n_default_text='View available markets here.' />,
+            disableBeacon: true,
+        },
     ];
 
     return (
         <Joyride
             continuous
-            tooltipComponent={GuideTooltip}
             disableCloseOnEsc
-            showSkipButton
             disableOverlayClose
             disableScrolling
+            showSkipButton
+            tooltipComponent={GuideTooltip}
             locale={locale}
             steps={steps}
             run={should_run}

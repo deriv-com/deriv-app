@@ -5,3 +5,32 @@
         width: 100%;
     }
 }
+
+.guide-tooltip {
+    &__wrapper {
+        background-color: var(--component-textIcon-normal-prominent);
+        border-radius: var(--core-borderRadius-400);
+        padding: var(--core-size-800);
+        display: flex;
+        gap: var(--core-size-800);
+        flex-direction: column;
+        align-items: flex-start;
+        min-width: var(--core-size-4300);
+        color: var(--component-textIcon-inverse-prominent);
+    }
+
+    &__button {
+        align-self: flex-end;
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__close {
+        position: relative;
+        inset-inline-start: var(--core-spacing-500);
+        inset-block-end: var(--core-spacing-500);
+    }
+}

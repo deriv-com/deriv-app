@@ -1,37 +1,54 @@
-import { Localize } from '@deriv/translations';
 import React from 'react';
+import { Button, CaptionText, IconButton } from '@deriv-com/quill-ui';
+import { LabelPairedXmarkSmBoldIcon } from '@deriv/quill-icons';
+import { Localize } from '@deriv/translations';
 import { TooltipRenderProps } from 'react-joyride';
 
 const GuideTooltip = ({
-    backProps,
+    // backProps,
     closeProps,
-    continuous,
-    index,
+    // continuous,
+    // index,
     isLastStep,
     primaryProps,
-    skipProps,
+    // skipProps,
     step,
     tooltipProps,
 }: TooltipRenderProps) => {
     // if (index == 1) {
     //   return <ScrollComponent primaryProps={primaryProps} />;
     // }
+
     return (
-        <div {...tooltipProps}>
-            {step.title && <div>{step.title}</div>}
-            {step.content && <div>{step.content}</div>}
+        <div {...tooltipProps} className='guide-tooltip__wrapper'>
             <div>
-                {continuous && (
-                    <button {...primaryProps}>
-                        <Localize i18n_default_text='Next' />
-                    </button>
+                {step.title && (
+                    <div className='guide-tooltip__header'>
+                        <CaptionText bold color='var(--component-textIcon-inverse-prominent)'>
+                            {step.title}
+                        </CaptionText>
+                        <IconButton
+                            {...closeProps}
+                            icon={<LabelPairedXmarkSmBoldIcon fill='var(--component-textIcon-inverse-prominent)' />}
+                            className='guide-tooltip__close'
+                            size='sm'
+                            color='white-black'
+                            variant='tertiary'
+                        />
+                    </div>
                 )}
-                {!continuous && (
-                    <button {...closeProps}>
-                        <Localize i18n_default_text='Done' />
-                    </button>
+                {step.content && (
+                    <CaptionText color='var(--component-textIcon-inverse-prominent)'>{step.content}</CaptionText>
                 )}
             </div>
+            <Button
+                {...(isLastStep ? closeProps : primaryProps)}
+                color='white-black'
+                className='guide-tooltip__button'
+                variant='secondary'
+                size='sm'
+                label={isLastStep ? <Localize i18n_default_text='Done' /> : <Localize i18n_default_text='Next' />}
+            />
         </div>
     );
 };

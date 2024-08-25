@@ -16,10 +16,14 @@ const {
 } = ValidationConstants.patterns;
 const { addressPermittedSpecialCharacters } = ValidationConstants.messagesHints;
 
-export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) => {
+export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations, is_mf = false) => {
     return Yup.object({
         employment_status: Yup.string().required(localize('Employment status is required.')),
-        tax_residence: Yup.string(),
+        tax_residence: Yup.string().when('is_mf', {
+            is: () => is_mf,
+            then: Yup.string().required(localize('Tax residence is required.')),
+            otherwise: Yup.string().notRequired(),
+        }),
         tin_skipped: Yup.number().oneOf([0, 1]).default(0),
         tax_identification_confirm: Yup.bool().when(['tax_identification_number', 'tax_residence', 'tin_skipped'], {
             is: (tax_identification_number: string, tax_residence: string, tin_skipped: boolean) =>
@@ -28,9 +32,10 @@ export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) 
             otherwise: Yup.bool().notRequired(),
         }),
         tax_identification_number: Yup.string()
-            .when('tin_skipped', {
-                is: (tin_skipped: boolean) => tin_skipped,
+            .when(['tin_skipped', 'is_mf'], {
+                is: (tin_skipped: boolean) => tin_skipped || !is_mf,
                 then: Yup.string().notRequired(),
+                otherwise: Yup.string().required(localize('Tax identification number is required.')),
             })
             .max(25, localize("Tax identification number can't be longer than 25 characters."))
             .matches(taxIdentificationNumber, {

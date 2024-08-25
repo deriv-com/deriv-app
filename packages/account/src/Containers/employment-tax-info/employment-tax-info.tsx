@@ -53,7 +53,9 @@ const EmploymentTaxInfo = ({
         [disabled_items]
     );
 
-    const schema = getEmploymentAndTaxValidationSchema(tin_validation_config);
+    const is_eu = real_account_signup_target === 'maltainvest';
+
+    const schema = getEmploymentAndTaxValidationSchema(tin_validation_config, is_eu);
 
     const handleCancel = (values: FormikValues) => {
         const current_step = (getCurrentStep?.() || 1) - 1;
@@ -88,7 +90,7 @@ const EmploymentTaxInfo = ({
                                 <EmploymentTaxDetailsContainer
                                     editable_fields={editable_fields}
                                     parent_ref={scroll_div_ref}
-                                    should_display_long_message={real_account_signup_target === 'maltainvest'}
+                                    should_display_long_message={is_eu}
                                     handleChange={mutate}
                                     tin_validation_config={tin_validation_config}
                                 />

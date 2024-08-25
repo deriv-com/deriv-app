@@ -82,6 +82,8 @@ const EmploymentTaxDetailsContainer = ({
             if (parent_element) {
                 parent_element.removeEventListener('scroll', closeToolTips);
             }
+            setIsTaxResidencePopoverOpen(false);
+            setIsTinPopoverOpen(false);
         };
     }, [parent_ref]);
 
@@ -153,6 +155,7 @@ const EmploymentTaxDetailsContainer = ({
                     is_tax_residence_popover_open={is_tax_residence_popover_open}
                     setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                     setIsTinPopoverOpen={setIsTinPopoverOpen}
+                    required={should_display_long_message && !values.tin_skipped}
                 />
             </div>
             <div ref={tin_ref} className='account-form__fieldset'>
@@ -161,6 +164,7 @@ const EmploymentTaxDetailsContainer = ({
                     is_tin_popover_open={is_tin_popover_open}
                     setIsTinPopoverOpen={setIsTinPopoverOpen}
                     setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
+                    required={should_display_long_message && !values.tin_skipped}
                 />
             </div>
             {!is_tin_autoset && (

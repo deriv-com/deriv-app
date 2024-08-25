@@ -31,7 +31,7 @@ const EmploymentTaxDetailsContainer = ({
     handleChange,
     is_tin_autoset,
 }: TEmploymentTaxDetailsContainerProps) => {
-    const { values, setFieldValue, touched, errors, setValues, validateField } = useFormikContext<FormikValues>();
+    const { values, setFieldValue, touched, errors, setValues } = useFormikContext<FormikValues>();
     const { isDesktop } = useDevice();
     const { data: residence_list } = useResidenceList();
     const { localize } = useTranslations();
@@ -90,9 +90,9 @@ const EmploymentTaxDetailsContainer = ({
     useEffect(() => {
         if (tin_validation_config) {
             // This is to trigger re-validation of TIN field when the validation config changes
-            validateField('tax_identification_number');
+            setFieldValue('tax_identification_number', values.tax_identification_number, true);
         }
-    }, [tin_validation_config, validateField]);
+    }, [tin_validation_config]);
 
     const is_tax_details_confirm_disabled = useMemo(
         () =>

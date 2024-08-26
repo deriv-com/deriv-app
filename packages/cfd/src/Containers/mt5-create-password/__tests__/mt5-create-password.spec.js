@@ -95,6 +95,26 @@ describe('<MT5CreatePassword/>', () => {
         expect(await screen.findByTestId('dt_create_password')).toBeInTheDocument();
     });
 
+    it('should display IcMt5OnePassword icon in the component', async () => {
+        const store = mockStore(mockRootStore);
+
+        store.client.account_status = { status: ['mt5_password_not_set'] };
+        store.traders_hub.show_eu_related_content = true;
+        store.modules.cfd.account_type = { category: 'real' };
+        store.modules.cfd.error_type = 'PasswordError';
+        store.modules.cfd.is_cfd_success_dialog_enabled = true;
+
+        render(
+            <Router history={history}>
+                <MT5CreatePassword {...default_props} />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
+        );
+        expect(await screen.findByText('IcMt5OnePassword')).toBeInTheDocument();
+    });
+
     it('should display password field for user to enter the password and hold the entered value', async () => {
         const user_input = 'zo8lAet#2q01Ih';
 

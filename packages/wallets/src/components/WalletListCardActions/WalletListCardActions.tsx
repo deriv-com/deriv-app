@@ -55,7 +55,7 @@ const getWalletHeaderButtons = (localize: ReturnType<typeof useTranslations>['lo
 
 const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { isDesktop } = useDevice();
+    const { isDesktop, isMobile } = useDevice();
     const history = useHistory();
     const { localize } = useTranslations();
 
@@ -97,7 +97,8 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
                             }}
                             size='lg'
                         />
-                        <Text align='center' size='2xs' weight={button.weight}>
+                        {/* TODO: Update text sizing based on screen sizes on deriv-com/ui package */}
+                        <Text align='center' size={isMobile ? 'sm' : 'xs'} weight={button.weight}>
                             {button.text}
                         </Text>
                     </div>

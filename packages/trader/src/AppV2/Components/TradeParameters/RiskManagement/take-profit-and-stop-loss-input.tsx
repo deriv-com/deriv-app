@@ -204,18 +204,10 @@ const TakeProfitAndStopLossInput = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_enabled, new_input_value]);
 
-    // TODO: remove all regex replacement, when comma will be supported by quill component with type number
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         is_api_response_received_ref.current = false;
-        let value = String(e.target.value)
-            .replace(',', '.')
-            .replace(/[.](?!\d*$)/g, '');
-        if (value.startsWith('.')) {
-            value = value.replace(/^\./, '0.');
-        }
-        if (value.length > 1) {
-            value = /^[0-]+$/.test(value) ? '0' : value.replace(/^0*/, '').replace(/^\./, '0.');
-        }
+        let value = String(e.target.value);
+        if (value.length > 1) value = /^[0-]+$/.test(value) ? '0' : value.replace(/^0*/, '').replace(/^\./, '0.');
 
         setNewInputValue(value);
         updateParentRef({ field_name: type, new_value: value });
@@ -283,6 +275,7 @@ const TakeProfitAndStopLossInput = ({
                 </div>
                 <TextFieldWithSteppers
                     allowDecimals
+                    customType='commaRemoval'
                     disabled={!is_enabled}
                     decimals={decimals}
                     data-testid={is_take_profit_input ? 'dt_tp_input' : 'dt_sl_input'}

@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
 import { mockStore } from '@deriv/stores';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import TraderProviders from '../../../../../trader-providers';
@@ -14,20 +13,6 @@ jest.mock('AppV2/Components/TradeParamDefinition', () => jest.fn(() => <div>Trad
 
 describe('TakeProfit', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
-    const validation_params = {
-        [CONTRACT_TYPES.MULTIPLIER.UP]: {
-            take_profit: {
-                min: '0.01',
-                max: '100',
-            },
-        },
-        [CONTRACT_TYPES.MULTIPLIER.DOWN]: {
-            take_profit: {
-                min: '0.01',
-                max: '100',
-            },
-        },
-    };
 
     beforeEach(
         () =>

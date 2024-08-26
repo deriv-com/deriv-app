@@ -1,5 +1,7 @@
 import React from 'react';
+import { APIProvider } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
+import WalletsAuthProvider from '../../../../../../../AuthProvider';
 import { useModal } from '../../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../../hooks/useDevice';
 import TransferFormAccountSelection from '../TransferFormAccountSelection';
@@ -15,6 +17,11 @@ jest.mock('../../../../../../../components/ModalProvider', () => ({
     useModal: jest.fn(),
 }));
 
+const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => (
+    <APIProvider>
+        <WalletsAuthProvider>{children}</WalletsAuthProvider>
+    </APIProvider>
+);
 describe('TransferFormAccountSelection', () => {
     const mockModalHide = jest.fn();
     const mockOnSelect = jest.fn();
@@ -57,7 +64,8 @@ describe('TransferFormAccountSelection', () => {
 
         render(
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-            <TransferFormAccountSelection {...emptyProps} />
+            <TransferFormAccountSelection {...emptyProps} />,
+            { wrapper }
         );
 
         expect(screen.getByText('Transfer to')).toBeInTheDocument();
@@ -73,7 +81,8 @@ describe('TransferFormAccountSelection', () => {
 
         render(
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-            <TransferFormAccountSelection {...emptyProps} />
+            <TransferFormAccountSelection {...emptyProps} />,
+            { wrapper }
         );
 
         expect(screen.queryByText('Account 1')).not.toBeInTheDocument();
@@ -84,7 +93,8 @@ describe('TransferFormAccountSelection', () => {
     it('should render content with accounts correctly', () => {
         render(
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-            <TransferFormAccountSelection {...props} />
+            <TransferFormAccountSelection {...props} />,
+            { wrapper }
         );
 
         expect(screen.getByText('Transfer from')).toBeInTheDocument();
@@ -96,7 +106,8 @@ describe('TransferFormAccountSelection', () => {
     it('should handle account selection and modal close on click of account', () => {
         render(
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-            <TransferFormAccountSelection {...props} />
+            <TransferFormAccountSelection {...props} />,
+            { wrapper }
         );
 
         const buttons = screen.getAllByRole('button');
@@ -116,7 +127,8 @@ describe('TransferFormAccountSelection', () => {
 
         render(
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-            <TransferFormAccountSelection {...newProps} />
+            <TransferFormAccountSelection {...newProps} />,
+            { wrapper }
         );
 
         expect(
@@ -135,7 +147,8 @@ describe('TransferFormAccountSelection', () => {
 
         render(
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-            <TransferFormAccountSelection {...newProps} />
+            <TransferFormAccountSelection {...newProps} />,
+            { wrapper }
         );
 
         expect(screen.getByText('Wallets')).toBeInTheDocument();
@@ -147,7 +160,8 @@ describe('TransferFormAccountSelection', () => {
 
         render(
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-            <TransferFormAccountSelection {...props} />
+            <TransferFormAccountSelection {...props} />,
+            { wrapper }
         );
 
         expect(screen.getByText('Trading accounts linked with USD Wallet')).toBeInTheDocument();
@@ -157,7 +171,8 @@ describe('TransferFormAccountSelection', () => {
     it('should close modal on click of close button', () => {
         render(
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-            <TransferFormAccountSelection {...props} />
+            <TransferFormAccountSelection {...props} />,
+            { wrapper }
         );
 
         fireEvent.click(screen.getByTestId('dt_wallets_transfer_form_account_selection_close_button'));
@@ -167,7 +182,8 @@ describe('TransferFormAccountSelection', () => {
     it('should render dividers between account groups when more than one group is present and not mobile', () => {
         render(
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-            <TransferFormAccountSelection {...props} />
+            <TransferFormAccountSelection {...props} />,
+            { wrapper }
         );
 
         const groups = screen.getAllByTestId('dt_wallets_transfer_form_account_selection_accounts_group');
@@ -185,7 +201,8 @@ describe('TransferFormAccountSelection', () => {
 
         render(
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-            <TransferFormAccountSelection {...singleGroupProps} />
+            <TransferFormAccountSelection {...singleGroupProps} />,
+            { wrapper }
         );
 
         expect(screen.queryByTestId('wallets-divider')).not.toBeInTheDocument();

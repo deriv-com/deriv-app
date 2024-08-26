@@ -10,9 +10,8 @@ import {
     DerivLightIcWrongEmailPasskeyIcon,
 } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { PlatformDetails } from '../../features/cfd/constants';
-import useDevice from '../../hooks/useDevice';
 import useSendPasswordResetEmail from '../../hooks/useSendPasswordResetEmail';
 import { TPlatforms } from '../../types';
 import { WalletButton } from '../Base';

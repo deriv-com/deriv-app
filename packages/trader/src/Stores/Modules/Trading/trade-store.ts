@@ -36,6 +36,7 @@ import {
     getContractTypesConfig,
     setTradeURLParams,
     getTradeURLParams,
+    isTouchContract,
     getCardLabelsV2,
     formatMoney,
     getContractPath,
@@ -139,8 +140,9 @@ export type TChartStateChangeOption = {
     symbol_category?: string;
     time_interval_name?: string;
 };
-export type TWheelPickerInitialValues = {
+export type TV2ParamsInitialValues = {
     growth_rate?: number;
+    stake?: string | number;
     strike?: string | number;
     multiplier?: number;
 };
@@ -194,6 +196,7 @@ export default class TradeStore extends BaseStore {
     is_trade_component_mounted = false;
     is_purchase_enabled = false;
     is_trade_enabled = false;
+    is_trade_enabled_v2 = false;
     is_equal = 0;
     has_equals_only = false;
 
@@ -257,7 +260,9 @@ export default class TradeStore extends BaseStore {
      *
      */
     market_close_times: string[] = [];
-    validation_params?: TValidationParams | Record<string, never> = {};
+    validation_params: {
+        [key: string]: TValidationParams | Record<string, never>;
+    } = {};
 
     // Last Digit
     digit_stats: number[] = [];
@@ -313,7 +318,7 @@ export default class TradeStore extends BaseStore {
 
     // Mobile
     is_trade_params_expanded = true;
-    wheel_picker_initial_values: TWheelPickerInitialValues = {};
+    v2_params_initial_values: TV2ParamsInitialValues = {};
 
     debouncedSendTradeParamsAnalytics = debounce((payload: TEvents['ce_contracts_set_up_form']) => {
         if (payload.action === 'change_parameter_value') {
@@ -363,7 +368,7 @@ export default class TradeStore extends BaseStore {
             'stop_loss',
             'take_profit',
             'is_trade_params_expanded',
-            'wheel_picker_initial_values',
+            'v2_params_initial_values',
         ];
         const session_storage_properties = ['contract_type', 'symbol'];
 
@@ -427,6 +432,7 @@ export default class TradeStore extends BaseStore {
             is_synthetics_trading_market_available: computed,
             is_trade_component_mounted: observable,
             is_trade_enabled: observable,
+            is_trade_enabled_v2: observable,
             is_trade_params_expanded: observable,
             is_turbos: computed,
             last_digit: observable,
@@ -466,7 +472,7 @@ export default class TradeStore extends BaseStore {
             ticks_history_stats: observable,
             trade_type_tab: observable,
             trade_types: observable,
-            wheel_picker_initial_values: observable,
+            v2_params_initial_values: observable,
             accountSwitcherListener: action.bound,
             barrier_pipsize: computed,
             barriers_flattened: computed,
@@ -476,7 +482,7 @@ export default class TradeStore extends BaseStore {
             clearLimitOrderBarriers: action.bound,
             clearPurchaseInfo: action.bound,
             clientInitListener: action.bound,
-            clearWheelPickerInitialValues: action.bound,
+            clearV2ParamsInitialValues: action.bound,
             enablePurchase: action.bound,
             exportLayout: action.bound,
             forgetAllProposal: action.bound,
@@ -500,6 +506,7 @@ export default class TradeStore extends BaseStore {
             onMount: action.bound,
             onProposalResponse: action.bound,
             onPurchase: action.bound,
+            onPurchaseV2: action.bound,
             onUnmount: override,
             prepareTradeStore: action.bound,
             preSwitchAccountListener: action.bound,
@@ -527,7 +534,7 @@ export default class TradeStore extends BaseStore {
             setStakeBoundary: action.bound,
             setTradeTypeTab: action.bound,
             setTradeStatus: action.bound,
-            setWheelPickerInitialValues: action.bound,
+            setV2ParamsInitialValues: action.bound,
             show_digits_stats: computed,
             updateStore: action.bound,
             updateSymbol: action.bound,
@@ -640,12 +647,12 @@ export default class TradeStore extends BaseStore {
         }
     }
 
-    setWheelPickerInitialValues({ value, name }: { value: number | string; name: keyof TWheelPickerInitialValues }) {
-        this.wheel_picker_initial_values = { ...this.wheel_picker_initial_values, ...{ [name]: value } };
+    setV2ParamsInitialValues({ value, name }: { value: number | string; name: keyof TV2ParamsInitialValues }) {
+        this.v2_params_initial_values = { ...this.v2_params_initial_values, ...{ [name]: value } };
     }
 
-    clearWheelPickerInitialValues() {
-        this.wheel_picker_initial_values = {};
+    clearV2ParamsInitialValues() {
+        this.v2_params_initial_values = {};
     }
 
     setDefaultGrowthRate() {
@@ -681,12 +688,15 @@ export default class TradeStore extends BaseStore {
     };
 
     async loadActiveSymbols(should_set_default_symbol = true, should_show_loading = true) {
+        if (this.is_dtrader_v2_enabled) {
+            await when(() => this.has_symbols_for_v2);
+            return;
+        }
+
         this.should_show_active_symbols_loading = should_show_loading;
 
-        if (!this.is_dtrader_v2_enabled) {
-            await this.setActiveSymbols();
-            await this.root_store.active_symbols.setActiveSymbols();
-        }
+        await this.setActiveSymbols();
+        await this.root_store.active_symbols.setActiveSymbols();
 
         const { symbol, showModal } = getTradeURLParams({ active_symbols: this.active_symbols });
         if (showModal && should_show_loading && !this.root_store.client.is_logging_in) {
@@ -949,6 +959,21 @@ export default class TradeStore extends BaseStore {
             this.main_barrier = null;
         }
     };
+
+    async onPurchaseV2(
+        trade_type: string,
+        isMobile: boolean,
+        callback?: (params: { message: string; redirectTo: string; title: string }) => void
+    ) {
+        await when(() => {
+            const proposal_info_keys = Object.keys(this.proposal_info);
+            const proposal_request_keys = Object.keys(this.proposal_requests);
+            return proposal_info_keys.length > 0 && proposal_info_keys.length === proposal_request_keys.length;
+        });
+
+        const info = this.proposal_info?.[trade_type];
+        if (info) this.onPurchase(info.id, info.stake, trade_type, isMobile, callback);
+    }
 
     onPurchase = debounce(this.processPurchase, 300);
 
@@ -1429,6 +1454,7 @@ export default class TradeStore extends BaseStore {
             ...this.proposal_info,
             [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
         };
+        this.validation_params[contract_type] = this.proposal_info[contract_type].validation_params;
 
         if (this.is_multiplier && this.proposal_info && this.proposal_info.MULTUP) {
             const { commission, cancellation, limit_order } = this.proposal_info.MULTUP;
@@ -1442,15 +1468,6 @@ export default class TradeStore extends BaseStore {
             this.stop_out = limit_order?.stop_out?.order_amount;
         }
 
-        if (this.is_turbos && (this.proposal_info?.TURBOSSHORT || this.proposal_info?.TURBOSLONG)) {
-            if (this.proposal_info?.TURBOSSHORT) {
-                this.validation_params = this.proposal_info.TURBOSSHORT.validation_params;
-            }
-            if (this.proposal_info?.TURBOSLONG) {
-                this.validation_params = this.proposal_info.TURBOSLONG.validation_params;
-            }
-        }
-
         if (this.is_accumulator && this.proposal_info?.ACCU) {
             const {
                 barrier_spot_distance,
@@ -1462,14 +1479,12 @@ export default class TradeStore extends BaseStore {
                 high_barrier,
                 low_barrier,
                 spot_time,
-                validation_params,
             } = this.proposal_info.ACCU;
             this.ticks_history_stats = getUpdatedTicksHistoryStats({
                 previous_ticks_history_stats: this.ticks_history_stats,
                 new_ticks_history_stats: ticks_stayed_in,
                 last_tick_epoch,
             });
-            this.validation_params = validation_params;
             this.maximum_ticks = maximum_ticks;
             this.maximum_payout = maximum_payout;
             this.tick_size_barrier_percentage = tick_size_barrier_percentage;
@@ -1633,6 +1648,7 @@ export default class TradeStore extends BaseStore {
     preSwitchAccountListener() {
         this.clearContracts();
         this.is_trade_enabled = false;
+        this.is_trade_enabled_v2 = false;
         return Promise.resolve();
     }
 
@@ -1648,6 +1664,7 @@ export default class TradeStore extends BaseStore {
         }
         await this.setContractTypes();
         this.is_trade_enabled = true;
+        this.is_trade_enabled_v2 = true;
         this.debouncedProposal();
     }
 
@@ -1658,6 +1675,7 @@ export default class TradeStore extends BaseStore {
 
     networkStatusChangeListener(is_online: boolean) {
         this.setTradeStatus(is_online);
+        this.is_trade_enabled_v2 = is_online;
     }
 
     resetErrorServices() {
@@ -1731,7 +1749,7 @@ export default class TradeStore extends BaseStore {
         this.disposeNetworkStatusChange();
         this.disposeThemeChange();
         this.is_trade_component_mounted = false;
-        this.clearWheelPickerInitialValues();
+        this.clearV2ParamsInitialValues();
         // TODO: Find a more elegant solution to unmount contract-trade-store
         this.root_store.contract_trade.onUnmount();
         this.refresh();
@@ -1838,7 +1856,6 @@ export default class TradeStore extends BaseStore {
             });
         }
         if ('active_symbols' in req) {
-            if (this.is_dtrader_v2_enabled) return;
             if (this.root_store.client.is_logged_in) {
                 return WS.authorized.activeSymbols('brief');
             }
@@ -1903,6 +1920,10 @@ export default class TradeStore extends BaseStore {
 
     get is_vanilla_fx() {
         return isVanillaFxContract(this.contract_type, this.symbol);
+    }
+
+    get is_touch() {
+        return isTouchContract(this.contract_type);
     }
 
     async getFirstOpenMarket(markets_to_search: string[]) {

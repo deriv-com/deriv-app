@@ -23,6 +23,7 @@ import {
     getUrlBinaryBot,
     MT5_ACCOUNT_STATUS,
     CFD_PRODUCTS_TITLE,
+    TRADING_PLATFORM_STATUS,
 } from '@deriv/shared';
 import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
 import './trading-app-card.scss';
@@ -55,8 +56,8 @@ const TradingAppCard = ({
     } = useStore();
     const { setIsVerificationModalVisible } = ui;
     const { is_eu_user, is_demo_low_risk, content_flag, is_real, selected_account_type } = traders_hub;
-    const { current_language } = common;
-    const { is_account_being_created } = cfd;
+    const { current_language, setAppstorePlatform } = common;
+    const { is_account_being_created, setAccountUnavailableModal, setServerMaintenanceModal } = cfd;
     const { account_status: { authentication } = {} } = client;
 
     const [is_traders_dashboard_tracking_enabled] = useGrowthbookGetFeatureValue({
@@ -89,8 +90,11 @@ const TradingAppCard = ({
             case MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION:
             case MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION:
                 return setIsOpenPositionSvgModalOpen(!is_open_position_svg_modal_open);
+            case MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE:
+                return setServerMaintenanceModal(true);
+            case TRADING_PLATFORM_STATUS.UNAVAILABLE:
+                return setAccountUnavailableModal(true);
             default:
-                return null;
         }
     };
 
@@ -206,13 +210,16 @@ const TradingAppCard = ({
                     >
                         {is_existing_real_ctrader_account ? '' : app_desc}
                     </Text>
-                    {mt5_acc_auth_status && (
+                    {mt5_acc_auth_status && action_type === 'multi-action' && (
                         <StatusBadge
                             className='trading-app-card__acc_status_badge'
                             account_status={mt5_acc_auth_status}
                             icon={badge_icon}
                             text={badge_text}
-                            onClick={() => handleStatusBadgeClick(mt5_acc_auth_status)}
+                            onClick={() => {
+                                setAppstorePlatform(platform);
+                                handleStatusBadgeClick(mt5_acc_auth_status);
+                            }}
                         />
                     )}
                     <OpenPositionsSVGModal

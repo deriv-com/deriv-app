@@ -23,17 +23,22 @@ jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     WS: {
         forget: jest.fn(),
+        subscribeProposal: jest.fn(),
     },
 }));
+jest.mock('Stores/Modules/Trading/Helpers/proposal', () => ({
+    ...jest.requireActual('Stores/Modules/Trading/Helpers/proposal'),
+    createProposalRequests: jest.fn(() => ({ type1: {}, type2: {} })),
+}));
+let mockFunction: jest.Mock;
+jest.mock('lodash.debounce', () => (fn: jest.Mock) => {
+    if (!mockFunction) mockFunction = fn;
+    return mockFunction;
+});
 jest.mock('Stores/Modules/Trading/Helpers/preview-proposal', () => ({
     ...jest.requireActual('Stores/Modules/Trading/Helpers/preview-proposal'),
-    requestPreviewProposal: (store: TTradeStore, fn: (param: TResponse) => void, new_store: Record<string, never>) =>
-        fn({
-            proposal: {},
-            echo_req: { contract_type: 'TURBOSLONG' },
-            subscription: { id: 'mock_id' },
-            error: {},
-        }),
+    previewProposal: (store: TTradeStore, fn: (param: TResponse) => void, new_store: Record<string, never>) =>
+        fn({ proposal: {}, echo_req: { contract_type: 'TURBOSLONG' }, subscription: { id: 'mock_id' }, error: {} }),
 }));
 
 describe('TakeProfitAndStopLossInput', () => {

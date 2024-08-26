@@ -698,7 +698,6 @@ export default class TradeStore extends BaseStore {
             await when(() => this.has_symbols_for_v2);
             return;
         }
-
         this.should_show_active_symbols_loading = should_show_loading;
 
         await this.setActiveSymbols();

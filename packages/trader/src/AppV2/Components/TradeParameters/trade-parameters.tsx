@@ -17,6 +17,9 @@ import TradeTypeTabs from './TradeTypeTabs';
 import Strike from './Strike';
 import PayoutPerPoint from './PayoutPerPoint';
 import LastDigitPrediction from './LastDigitPrediction';
+import MultipliersExpirationInfo from './MultipliersExpirationInfo';
+import BarrierInfo from './BarrierInfo';
+import PayoutPerPointInfo from './PayoutPerPointInfo';
 
 type TTradeParametersProps = {
     is_minimized?: boolean;
@@ -25,7 +28,8 @@ type TTradeParametersProps = {
 const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
     const { contract_type, has_cancellation, symbol } = useTraderStore();
     const isVisible = (component_key: string) => {
-        return getTradeParams(symbol)[contract_type].includes(component_key);
+        const params = getTradeParams(symbol, has_cancellation)[contract_type];
+        return component_key in params;
     };
 
     return (
@@ -48,13 +52,23 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
                 {isVisible('allow_equals') && <AllowEquals is_minimized={is_minimized} />}
                 {isVisible('take_profit') && <TakeProfit is_minimized={is_minimized} />}
                 {isVisible('risk_management') && <RiskManagement is_minimized={is_minimized} />}
-                {/* {isVisible('expiration') && <MultipliersExpirationInfo />} */}
+                {isVisible('expiration') && !is_minimized && <MultipliersExpirationInfo />}
                 {isVisible('accu_info_display') && <AccumulatorsInformation is_minimized={is_minimized} />}
-                {isVisible('mult_info_display') && !is_minimized && has_cancellation && (
-                    <MultipliersDealCancellationInfo />
-                )}
+                {isVisible('barrier_info') && !is_minimized && <BarrierInfo />}
+                {isVisible('payout_per_point_info') && !is_minimized && <PayoutPerPointInfo />}
+                {isVisible('mult_info_display') && !is_minimized && <MultipliersDealCancellationInfo />}
             </div>
-            {is_minimized && isVisible('mult_info_display') && has_cancellation && (
+            {is_minimized && isVisible('expiration') && (
+                <div className='trade-params__options-info-standalone'>
+                    <MultipliersExpirationInfo />
+                </div>
+            )}
+            {is_minimized && isVisible('payout_per_point_info') && (
+                <div className='trade-params__options-info-standalone'>
+                    <PayoutPerPointInfo />
+                </div>
+            )}
+            {is_minimized && isVisible('mult_info_display') && (
                 <MultipliersDealCancellationInfo classname='multipliers-info--standalone' />
             )}
         </React.Fragment>

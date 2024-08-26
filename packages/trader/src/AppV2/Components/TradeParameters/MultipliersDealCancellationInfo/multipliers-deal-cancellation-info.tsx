@@ -19,7 +19,7 @@ const MultipliersDealCancellationInfo = observer(({ classname }: TMultipliersDea
             <Text size='sm'>
                 <Localize i18n_default_text='Deal cancellation fee' />
             </Text>
-            <Text size='sm' bold>
+            <Text size='sm' bold as='div'>
                 {deal_cancellation_fee_value ? (
                     <Money amount={deal_cancellation_fee_value} show_currency currency={currency} />
                 ) : (

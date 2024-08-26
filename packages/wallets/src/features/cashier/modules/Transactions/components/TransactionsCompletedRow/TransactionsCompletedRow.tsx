@@ -5,6 +5,7 @@ import { Localize, useTranslations } from '@deriv-com/translations';
 import { Divider, Text } from '@deriv-com/ui';
 import { WalletClipboard } from '../../../../../../components';
 import { THooks } from '../../../../../../types';
+import parseCryptoLongcode from '../../../../../../utils/parse-crypto-longcode';
 import { getTransactionLabels } from '../../constants';
 import { TransactionsCompletedRowAccountDetails, TransactionsCompletedRowTransferAccountDetails } from './components';
 import './TransactionsCompletedRow.scss';
@@ -33,11 +34,7 @@ const TransactionsCompletedRowContent: React.FC<TTransactionsCompletedRowContent
 }) => {
     const { action_type: actionType, longcode = '', transaction_id: transactionId } = transaction;
     const { account_type: accountType = '', currency = 'USD', is_virtual: isVirtual } = wallet;
-    const splitLongcode = longcode.split(/,\s/);
-    const addressHashMatch = /:\s([0-9a-zA-Z]+.{25,28})/gm.exec(splitLongcode[0]);
-    const addressHash = addressHashMatch?.[1];
-    const blockchainHashMatch = /:\s([0-9a-zA-Z]+.{25,34})/gm.exec(splitLongcode[1]);
-    const blockchainHash = blockchainHashMatch?.[1];
+    const { addressHash, blockchainHash, splitLongcode } = parseCryptoLongcode(longcode);
     let descriptions = [longcode];
 
     if (addressHash || blockchainHash) {

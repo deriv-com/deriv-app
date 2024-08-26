@@ -7,6 +7,7 @@ import {
     isTurbosContract,
     isVanillaContract,
     pickDefaultSymbol,
+    setTradeURLParams,
 } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
@@ -29,6 +30,7 @@ const useActiveSymbols = () => {
         onChange,
         setActiveSymbolsV2,
         symbol,
+        is_trade_component_mounted,
     } = useTraderStore();
 
     const default_symbol_ref = useRef('');
@@ -62,7 +64,9 @@ const useActiveSymbols = () => {
 
             if (
                 (isVanillaContract(previous_contract_type) && is_vanilla) ||
-                (isTurbosContract(previous_contract_type) && is_turbos)
+                (isTurbosContract(previous_contract_type) && is_turbos) ||
+                // TODO: remove is_trade_component_mounted from check condition once akmals contracts_for_company changes are merged
+                (getContractTypesList().length === 0 && !is_trade_component_mounted)
             ) {
                 return;
             }
@@ -82,6 +86,7 @@ const useActiveSymbols = () => {
                 setActiveSymbolsV2(active_symbols);
                 default_symbol_ref.current = symbol || (await pickDefaultSymbol(active_symbols)) || '1HZ100V';
                 onChange({ target: { name: 'symbol', value: default_symbol_ref.current } });
+                setTradeURLParams({ symbol: default_symbol_ref.current, contractType: contract_type });
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps

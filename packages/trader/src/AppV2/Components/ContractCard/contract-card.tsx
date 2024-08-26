@@ -9,6 +9,7 @@ import {
     getCurrentTick,
     getMarketName,
     getTradeTypeName,
+    isCryptoContract,
     isEnded,
     isHighLow,
     isMultiplierContract,
@@ -71,6 +72,7 @@ const ContractCard = ({
     })}`.trim();
     const symbolName =
         'underlying_symbol' in contractInfo ? getMarketName(contractInfo.underlying_symbol ?? '') : display_name;
+    const is_crypto = isCryptoContract((contractInfo as TContractInfo).underlying);
     const isMultiplier = isMultiplierContract(contract_type);
     const isSold = !!sell_time || isEnded(contractInfo as TContractInfo);
     const totalProfit = getProfit(contractInfo);
@@ -142,7 +144,7 @@ const ContractCard = ({
                     <div className='status-and-profit'>
                         <ContractCardStatusTimer
                             currentTick={currentTick}
-                            hasNoAutoExpiry={isMultiplier}
+                            hasNoAutoExpiry={isMultiplier && !is_crypto}
                             isSold={isSold}
                             serverTime={serverTime}
                             {...contractInfo}

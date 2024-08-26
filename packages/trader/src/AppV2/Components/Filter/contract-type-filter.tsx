@@ -64,7 +64,7 @@ const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: T
                         ))}
                     </ActionSheet.Content>
                     <ActionSheet.Footer
-                        alignment='vertical'
+                        alignment='horizontal'
                         isSecondaryButtonDisabled={!changedOptions.length}
                         primaryAction={{
                             content: <Localize i18n_default_text='Apply' />,

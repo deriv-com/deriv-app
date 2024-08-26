@@ -167,10 +167,6 @@ export default class DashboardStore implements IDashboardStore {
             ...getQuickStrategyContent,
         ];
 
-        const {
-            load_modal: { previewRecentStrategy, current_workspace_id },
-        } = this.root_store;
-
         const refreshBotBuilderTheme = () => {
             Blockly.derivWorkspace.asyncClear();
             Blockly.Xml.domToWorkspace(

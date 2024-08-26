@@ -5,7 +5,7 @@
     height: var(--core-size-2800);
     gap: 0px;
 
-    &:nth-child(2):not(.purchase-button--loading) {
+    &:not(:first-child):not(.purchase-button--loading) {
         align-items: flex-start;
     }
     &--single {
@@ -54,13 +54,18 @@
         position: absolute;
         background-color: var(--core-color-solid-slate-50);
         top: 0;
-        left: var(--core-spacing-400);
-        width: calc(100% - var(--core-spacing-800));
+        inset-inline-start: var(--core-spacing-400);
+        width: calc((100% - var(--core-spacing-800) - var(--core-spacing-400)) / 2);
         height: calc(100% - var(--core-spacing-400));
         border-radius: var(--component-button-border-radius-lg);
         z-index: -1;
-    }
-    &:disabled {
-        opacity: var(--core-opacity-300); // disabled button opacity in quill-ui is 0.48 (var(--core-opacity-600))
+
+        &:last-child:not(.single) {
+            inset-inline-start: unset;
+            inset-inline-end: var(--core-spacing-400);
+        }
+        &.single {
+            width: calc(100% - var(--core-spacing-800));
+        }
     }
 }

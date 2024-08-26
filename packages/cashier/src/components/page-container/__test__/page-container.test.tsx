@@ -5,39 +5,39 @@ import CashierProviders from '../../../cashier-providers';
 import PageContainer from '../page-container';
 
 describe('PageContainer', () => {
-    test('should show loading if is_authorize is false', () => {
-        const mock = mockStore({ client: { is_authorize: false } });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <CashierProviders store={mock}>{children}</CashierProviders>
-        );
-
-        render(
-            <PageContainer>
-                <div>children</div>
-            </PageContainer>,
-            { wrapper }
-        );
-
-        expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
-    });
-
-    test('should show children if is_authorize is true', () => {
-        const mock = mockStore({
+    let mockRootStore: ReturnType<typeof mockStore>, mockProps: React.ComponentProps<typeof PageContainer>;
+    beforeEach(() => {
+        mockRootStore = mockStore({
             client: { is_authorize: true },
             modules: { cashier: { general_store: { setIsDeposit: jest.fn() } } },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <CashierProviders store={mock}>{children}</CashierProviders>
-        );
+        mockProps = {
+            hide_breadcrumb: true,
+            left: undefined,
+            right: undefined,
+        };
+    });
 
-        render(
-            <PageContainer>
-                <div>children</div>
-            </PageContainer>,
-            { wrapper }
-        );
+    const mockPageContainer = () => (
+        <CashierProviders store={mockRootStore}>
+            <PageContainer {...mockProps}>children</PageContainer>
+        </CashierProviders>
+    );
+
+    const renderPageContainer = () => {
+        return render(mockPageContainer());
+    };
+
+    it('shows loading if is_authorize is false', () => {
+        mockRootStore.client.is_authorize = false;
+        renderPageContainer();
+
+        expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
+    });
+
+    it('shows children if is_authorize is true', () => {
+        renderPageContainer();
 
         expect(screen.getByText('children')).toBeInTheDocument();
     });

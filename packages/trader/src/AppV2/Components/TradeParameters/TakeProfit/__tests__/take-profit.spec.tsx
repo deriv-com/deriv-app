@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
 import { mockStore } from '@deriv/stores';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import TraderProviders from '../../../../../trader-providers';
@@ -11,8 +12,36 @@ const data_testid = 'dt_input_with_steppers';
 
 describe('TakeProfit', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
+    const validation_params = {
+        [CONTRACT_TYPES.MULTIPLIER.UP]: {
+            take_profit: {
+                min: '0.01',
+                max: '100',
+            },
+        },
+        [CONTRACT_TYPES.MULTIPLIER.DOWN]: {
+            take_profit: {
+                min: '0.01',
+                max: '100',
+            },
+        },
+    };
 
-    beforeEach(() => (default_mock_store = mockStore({})));
+    beforeEach(
+        () =>
+            (default_mock_store = mockStore({
+                modules: {
+                    trade: {
+                        ...mockStore({}),
+                        contract_type: TRADE_TYPES.MULTIPLIER,
+                        trade_types: {
+                            [CONTRACT_TYPES.MULTIPLIER.UP]: 'Multiply Up',
+                            [CONTRACT_TYPES.MULTIPLIER.DOWN]: 'Multiply Down',
+                        },
+                    },
+                },
+            }))
+    );
 
     afterEach(() => jest.clearAllMocks());
 
@@ -86,12 +115,7 @@ describe('TakeProfit', () => {
     });
 
     it('should validate values, that user typed, and show error text if they are out of acceptable range. If values are wrong, when user clicks on "Save" button onChangeMultiple and onChange will not be called', () => {
-        default_mock_store.modules.trade.validation_params = {
-            take_profit: {
-                min: '0.01',
-                max: '100',
-            },
-        };
+        default_mock_store.modules.trade.validation_params = validation_params;
         default_mock_store.modules.trade.take_profit = '';
         mockTakeProfit();
 
@@ -116,12 +140,7 @@ describe('TakeProfit', () => {
     });
 
     it('should validate values, that user typed. In case if values are correct, when user clicks on "Save" button onChangeMultiple and onChange will be called', () => {
-        default_mock_store.modules.trade.validation_params = {
-            take_profit: {
-                min: '0.01',
-                max: '100',
-            },
-        };
+        default_mock_store.modules.trade.validation_params = validation_params;
         mockTakeProfit();
 
         userEvent.click(screen.getByText(take_profit_trade_param));

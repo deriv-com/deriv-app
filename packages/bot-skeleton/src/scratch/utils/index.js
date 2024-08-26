@@ -8,6 +8,8 @@ import { saveWorkspaceToRecent } from '../../utils/local-storage';
 import DBotStore from '../dbot-store';
 import { LogTypes } from '../../constants/messages';
 import { error_message_map } from '../../utils/error-config';
+import { botNotification } from '../../../../bot-web-ui/src/components/bot-notification/bot-notification';
+import { notification_message } from '../../../../bot-web-ui/src/components/bot-notification/bot-notification-utils';
 
 export const inject_workspace_options = {
     media: `${__webpack_public_path__}media/`,
@@ -144,11 +146,14 @@ export const load = async ({
 }) => {
     if (!DBotStore?.instance || !workspace) return;
     const { setLoading, load_modal } = DBotStore.instance;
-    const { setOpenButtonDisabled } = load_modal;
+    const { setOpenButtonDisabled, setLoadedLocalFile } = load_modal;
+
     setLoading(true);
     // Delay execution to allow fully previewing previous strategy if users quickly switch between strategies.
     await delayExecution(100);
     const showInvalidStrategyError = () => {
+        setLoadedLocalFile(null);
+        botNotification(notification_message.invalid_xml);
         setLoading(false);
         const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
         globalObserver.emit('ui.log.error', error_message);

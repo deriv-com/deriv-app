@@ -1,12 +1,14 @@
 import React, { RefObject, useCallback, useEffect, useMemo } from 'react';
 import { useFormikContext } from 'formik';
 import { useHistory } from 'react-router-dom';
+import { useTradingPlatformStatus } from '@deriv/api-v2';
 import { LegacyChevronDown2pxIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { WalletListCardBadge } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../hooks/useDevice';
+import { TRADING_PLATFORM_STATUS } from '../../../../../cfd/constants';
 import { useTransfer } from '../../provider';
 import { TInitialTransferFormValues, TToAccount } from '../../types';
 import { TransferFormAccountCard } from '../TransferFormAccountCard';
@@ -25,6 +27,8 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     const { fromAccount, toAccount } = values;
     const { isMobile } = useDevice();
     const modal = useModal();
+    const { getPlatformStatus } = useTradingPlatformStatus();
+
     const isFromAccountDropdown = fieldName === 'fromAccount';
 
     const fromAccountList = useMemo(() => {
@@ -54,6 +58,12 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
         location.pathname === '/wallet/account-transfer' ? location.state?.toAccountLoginId : undefined;
     const shouldDefaultUSDWallet =
         location.pathname === '/wallet/account-transfer' ? location.state?.shouldSelectDefaultWallet : false;
+
+    const platformStatus = getPlatformStatus(selectedAccount?.account_type ?? '');
+
+    const hasPlatformStatus =
+        selectedAccount?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE ||
+        platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
 
     const toDefaultAccount = useMemo(
         () => toAccountList.walletAccounts.find(wallet => wallet.currency === 'USD'),
@@ -161,7 +171,12 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                             <WalletListCardBadge />
                         </div>
                     ) : null}
-                    <LegacyChevronDown2pxIcon className='wallets-transfer-form-dropdown__icon-dropdown' iconSize='xs' />
+                    {!hasPlatformStatus && (
+                        <LegacyChevronDown2pxIcon
+                            className='wallets-transfer-form-dropdown__icon-dropdown'
+                            iconSize='xs'
+                        />
+                    )}
                 </>
             )}
         </button>

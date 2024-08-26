@@ -171,6 +171,11 @@ export default class CommonStore extends BaseStore {
         return platforms[this.platform]?.platform_name === platforms.derivgo.platform_name;
     }
 
+    // eslint-disable-next-line class-methods-use-this
+    get is_from_outside_cashier() {
+        return !window.location.pathname.startsWith(routes.cashier);
+    }
+
     setInitialRouteHistoryItem(location) {
         if (window.location.href.indexOf('?ext_platform_url=') !== -1) {
             const ext_url = decodeURI(new URL(window.location.href).searchParams.get('ext_platform_url'));

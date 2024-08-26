@@ -84,12 +84,20 @@ const BotBuilder = observer(() => {
     }, [is_loading]);
 
     const handleBlockDelete = (e: TBlocklyEvents) => {
-        const { is_reset_button_clicked } = toolbar;
+        const { is_reset_button_clicked, setResetButtonState } = toolbar;
         if (e.type === 'delete' && !is_reset_button_clicked) {
             deleted_block_id = e.blockId;
         }
         if (e.type === 'selected' && deleted_block_id === e.oldElementId) {
             handleBlockDeleteNotification();
+        }
+        if (
+            e.type === 'change' &&
+            e.name === 'AMOUNT_LIMITS' &&
+            e.newValue === '(min: 0.35 - max: 50000)' &&
+            is_reset_button_clicked
+        ) {
+            setResetButtonState(false);
         }
     };
 

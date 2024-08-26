@@ -3,4 +3,6 @@ export type TBlocklyEvents = {
     group: string;
     oldElementId: string;
     blockId: string;
+    name: string;
+    newValue: string;
 };

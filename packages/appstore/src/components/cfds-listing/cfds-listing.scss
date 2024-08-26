@@ -2092,6 +2092,21 @@
             flex-direction: row;
         }
     }
+
+    &-info {
+        border-radius: 0.4rem;
+        background: $color-status-information;
+        display: flex;
+        padding: 0.8rem;
+        align-items: flex-start;
+        gap: 0.8rem;
+        margin-block-end: 0.8rem;
+        &__icon {
+            flex-basis: 1.6rem;
+            max-width: 1.6rem;
+        }
+    }
+
     &__create-password {
         padding: 0 1.2rem;
 

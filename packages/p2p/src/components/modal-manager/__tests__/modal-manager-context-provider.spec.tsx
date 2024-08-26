@@ -1,9 +1,9 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useDevice } from '@deriv-com/ui';
 import ModalManagerContextProvider from '../modal-manager-context-provider';
 import ModalManager from '../modal-manager';
-import { isDesktop } from '@deriv/shared';
 import { useStores } from 'Stores/index';
 import {
     MockBuySellModal,
@@ -12,9 +12,8 @@ import {
     MockPage,
 } from '../__mocks__/mock-modal-manager-context-provider';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isDesktop: jest.fn(() => true),
+jest.mock('@deriv-com/ui', () => ({
+    useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
@@ -93,7 +92,7 @@ describe('<ModalManagerContextProvider />', () => {
     });
 
     it('should render the mock modal when showModal is called in responsive view', () => {
-        (isDesktop as jest.Mock).mockImplementation(() => false);
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         render(
             <React.Fragment>
                 <div id='modal_root' />
@@ -113,7 +112,7 @@ describe('<ModalManagerContextProvider />', () => {
     });
 
     it('should render the latest shown modal when showModal is called multiple times in responsive view', () => {
-        (isDesktop as jest.Mock).mockImplementation(() => false);
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         render(
             <React.Fragment>
                 <div id='modal_root' />
@@ -167,7 +166,6 @@ describe('<ModalManagerContextProvider />', () => {
     });
 
     it('should hide a modal if hideModal is called in desktop view', () => {
-        (isDesktop as jest.Mock).mockImplementation(() => true);
         render(
             <React.Fragment>
                 <div id='modal_root' />
@@ -199,7 +197,7 @@ describe('<ModalManagerContextProvider />', () => {
     });
 
     it('should hide a modal if hideModal is called in responsive view', () => {
-        (isDesktop as jest.Mock).mockImplementation(() => false);
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         render(
             <React.Fragment>
                 <div id='modal_root' />
@@ -231,7 +229,6 @@ describe('<ModalManagerContextProvider />', () => {
     });
 
     it('should hide all modals if should_hide_all_modals option is passed in hideModal function on desktop view', () => {
-        (isDesktop as jest.Mock).mockImplementation(() => true);
         render(
             <React.Fragment>
                 <div id='modal_root' />
@@ -261,7 +258,7 @@ describe('<ModalManagerContextProvider />', () => {
     });
 
     it('should hide all modals if should_hide_all_modals option is passed in hideModal function on responsive view', () => {
-        (isDesktop as jest.Mock).mockImplementation(() => false);
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         render(
             <React.Fragment>
                 <div id='modal_root' />

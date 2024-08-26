@@ -12,6 +12,7 @@ import { Loading } from '@deriv/components';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 
 const PhoneVerificationPage = observer(() => {
     const history = useHistory();
@@ -28,7 +29,7 @@ const PhoneVerificationPage = observer(() => {
     const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
-
+    const { isDesktop } = useDevice();
     const { client, ui } = useStore();
     const { is_redirected_from_email, setRedirectFromEmail } = ui;
     const {
@@ -85,24 +86,26 @@ const PhoneVerificationPage = observer(() => {
                 setShouldShowVerificationLinkExpiredModal={setShouldShowVerificationLinkExpiredModal}
             />
             <CancelPhoneVerificationModal />
-            <div className='phone-verification__redirect_button'>
-                <IconButton
-                    color='black-white'
-                    variant='tertiary'
-                    onClick={handleBackButton}
-                    icon={
-                        <LabelPairedArrowLeftCaptionFillIcon
-                            width={24}
-                            height={24}
-                            data-testid='dt_phone_verification_back_btn'
-                            className='phone-verification__redirect_button--icon'
-                        />
-                    }
-                />
-                <Text className='phone-verification__redirect_button--text' bold>
-                    <Localize i18n_default_text='Phone number verification' />
-                </Text>
-            </div>
+            {isDesktop && (
+                <div className='phone-verification__redirect_button'>
+                    <IconButton
+                        color='black-white'
+                        variant='tertiary'
+                        onClick={handleBackButton}
+                        icon={
+                            <LabelPairedArrowLeftCaptionFillIcon
+                                width={24}
+                                height={24}
+                                data-testid='dt_phone_verification_back_btn'
+                                className='phone-verification__redirect_button--icon'
+                            />
+                        }
+                    />
+                    <Text className='phone-verification__redirect_button--text' bold>
+                        <Localize i18n_default_text='Back to personal details' />
+                    </Text>
+                </div>
+            )}
             {otp_verification.show_otp_verification ? (
                 <OTPVerification
                     phone_verification_type={otp_verification.phone_verification_type}

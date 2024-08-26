@@ -1,6 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { useMT5SVGEligibleToMigrate, useTradingPlatformStatus, useGrowthbookGetFeatureValue } from '@deriv/hooks';
+
 import CFDsListing from '../index';
 
 jest.mock('Components/containers/listing-container', () =>
@@ -13,7 +15,45 @@ jest.mock('@deriv-com/ui', () => ({
         isTablet: false,
     })),
 }));
+jest.mock('@deriv/hooks');
+const mockUseGrowthbookGetFeatureValue = useGrowthbookGetFeatureValue as jest.MockedFunction<
+    typeof useGrowthbookGetFeatureValue
+>;
+const mockUseTradingPlatformStatus = useTradingPlatformStatus as jest.MockedFunction<typeof useTradingPlatformStatus>;
+const mockUseMT5SVGEligibleToMigrate = useMT5SVGEligibleToMigrate as jest.MockedFunction<
+    typeof useMT5SVGEligibleToMigrate
+>;
 
+mockUseGrowthbookGetFeatureValue.mockReturnValue([true, true]);
+
+mockUseMT5SVGEligibleToMigrate.mockReturnValue({
+    eligible_account_to_migrate_label: 'BVI',
+    eligible_svg_to_bvi_derived_accounts: true,
+    eligible_svg_to_bvi_financial_accounts: false,
+    eligible_svg_to_vanuatu_derived_accounts: false,
+    eligible_svg_to_vanuatu_financial_accounts: false,
+    getEligibleAccountToMigrate: jest.fn().mockReturnValue('BVI'),
+    has_derived_and_financial_mt5: false,
+    has_derived_mt5_to_migrate: true,
+    has_svg_accounts_to_migrate: true,
+    no_of_svg_accounts_to_migrate: 1,
+    svg_accounts_to_migrate: [
+        {
+            landing_company_short: 'svg',
+            eligible_to_migrate: { synthetic: 'BVI' },
+        },
+    ],
+});
+
+mockUseTradingPlatformStatus.mockReturnValue({
+    data: [
+        {
+            platform: 'mt5',
+            status: 'active',
+        },
+    ],
+    getPlatformStatus: jest.fn(),
+});
 describe('CFDsListing', () => {
     const mock = mockStore({
         traders_hub: {

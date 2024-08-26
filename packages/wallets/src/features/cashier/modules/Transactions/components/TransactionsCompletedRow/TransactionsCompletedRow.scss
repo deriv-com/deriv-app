@@ -44,7 +44,7 @@
         background-color: var(--du-general-section-1, #f2f3f4);
         justify-content: center;
         align-items: center;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 0.12em;
             line-break: anywhere;
         }

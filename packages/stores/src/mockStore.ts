@@ -718,6 +718,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 has_stop_loss: false,
                 has_take_profit: false,
                 is_accumulator: false,
+                is_dtrader_v2_enabled: false,
                 is_equal: 0,
                 is_mobile_digit_view_selected: false,
                 is_multiplier: false,

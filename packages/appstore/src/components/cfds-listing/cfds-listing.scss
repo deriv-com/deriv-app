@@ -2044,6 +2044,7 @@
             overflow-x: hidden;
             height: 100%;
             max-height: calc(100% - 6.4rem);
+            padding: 1rem;
         }
     }
     @include tablet-up {

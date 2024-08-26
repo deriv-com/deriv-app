@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 
 const phoneNumberSchema = Yup.string().matches(
     ValidationConstants.patterns.phoneNumber,
-    localize('Please enter a valid phone number.')
+    localize('Enter a valid phone number.')
 );
 
 export const validatePhoneNumber = (phone_number: string, setErrorMessage: (value: string) => void) => {

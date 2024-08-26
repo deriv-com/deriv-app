@@ -75,7 +75,7 @@ const useRequestPhoneNumberOTP = () => {
             case 'PhoneNumberTaken':
                 setErrorMessage(
                     <Localize
-                        i18n_default_text="This number is in use. Enter a new one or contact <0>live chat</0> if you think there's a mistake."
+                        i18n_default_text='Number already exists in our system. Enter a new one or contact us via <0>live chat</0> for help.'
                         components={[
                             <span
                                 key={0}

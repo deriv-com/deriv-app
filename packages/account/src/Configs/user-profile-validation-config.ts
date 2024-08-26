@@ -1,7 +1,7 @@
 import { localize } from '@deriv-com/translations';
 import * as Yup from 'yup';
 import { ValidationConstants } from '@deriv-com/utils';
-import { toMoment } from '@deriv/shared';
+import dayjs from 'dayjs';
 import { TinValidations } from '@deriv/api/types';
 
 const {
@@ -137,7 +137,7 @@ export const getPersonalDetailsBaseValidationSchema = (broker_code?: string) =>
             .required('Date of birth is required.')
             .test({
                 name: 'validate_dob',
-                test: value => toMoment(value).isValid() && toMoment(value).isBefore(toMoment().subtract(18, 'years')),
+                test: value => dayjs(value).isValid() && dayjs(value).isBefore(dayjs().subtract(18, 'years')),
                 message: localize('You must be 18 years old and above.'),
             }),
         phone: Yup.string()

@@ -54,9 +54,7 @@ describe('Announcements', () => {
 
             expect(notification_button).toBeInTheDocument();
 
-            if (notification_button) {
-                userEvent.click(notification_button);
-            }
+            userEvent.click(notification_button);
         });
         await waitFor(() => {
             expect(screen.queryByTestId('announcements__amount')).not.toBeInTheDocument();
@@ -69,7 +67,7 @@ describe('Announcements', () => {
         });
     });
 
-    it('should decrease the indicator count and remove it, the list of announcements should be displayed, and redirect to bot builder page upon clicking on the announcement item.', async () => {
+    it('should decrease the indicator count and remove it, the list of announcements should be displayed, and redirect to bot builder page upon clicking on the accumulator announcement item.', async () => {
         const { container } = render(<Announcements handleTabChange={mockHandleTabChange} is_mobile={true} />, {
             wrapper,
         });
@@ -82,9 +80,7 @@ describe('Announcements', () => {
 
             expect(notification_button).toBeInTheDocument();
 
-            if (notification_button) {
-                userEvent.click(notification_button);
-            }
+            userEvent.click(notification_button);
         });
         await waitFor(() => {
             expect(screen.queryByTestId('announcements__amount')).not.toBeInTheDocument();

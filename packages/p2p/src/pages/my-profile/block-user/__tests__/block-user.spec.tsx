@@ -6,6 +6,7 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
 import BlockUser from '../block-user';
+import { useDevice } from '@deriv-com/ui';
 
 const el_modal = document.createElement('div');
 
@@ -67,18 +68,17 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(() => mock_store),
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    DesktopWrapper: jest.fn(({ children }) => children),
-    MobileWrapper: jest.fn(({ children }) => children),
-}));
-
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
     ...jest.requireActual('Components/modal-manager/modal-manager-context'),
     useModalManagerContext: jest.fn(() => mock_modal_manager),
 }));
 
 jest.mock('../block-user-list', () => jest.fn(() => <div>BlockUserList</div>));
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn().mockReturnValue({ isDesktop: true }),
+}));
 
 describe('<BlockUser />', () => {
     beforeAll(() => {
@@ -93,10 +93,11 @@ describe('<BlockUser />', () => {
     it('should render the BlockUser component', () => {
         render(<BlockUser />);
 
-        expect(screen.getAllByText('BlockUserList')).toHaveLength(2);
+        expect(screen.getByText('BlockUserList')).toBeInTheDocument();
     });
 
     it('should call setActiveTab when clicking on pageReturn', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         render(<BlockUser />);
 
         const pageReturnIcon = screen.getByTestId('dt_mobile_full_page_return_icon');

@@ -34,7 +34,9 @@ describe('SessionTimeoutModal', () => {
     it('should show SessionTimeoutModal content', () => {
         renderComponent();
         expect(screen.getByText(/Session Expired/)).toBeInTheDocument();
-        expect(screen.getByText(/Restart your phone number verification./)).toBeInTheDocument();
+        expect(
+            screen.getByText(/Your phone verification is incomplete. The process will now restart./)
+        ).toBeInTheDocument();
         const ok_button = screen.getByRole('button', { name: 'OK' });
         expect(ok_button).toBeInTheDocument();
     });

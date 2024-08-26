@@ -74,6 +74,7 @@ const CreatePasswordMT5: React.FC<TProps> = ({
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'
+                        textSize='sm'
                     >
                         <Localize i18n_default_text='Create {{title}} password' values={{ title }} />
                     </Button>

@@ -1103,15 +1103,15 @@ export default class NotificationStore extends BaseStore {
             },
             phone_number_verification: {
                 key: 'phone_number_verification',
-                header: localize('Verify your phone number'),
-                message: <Localize i18n_default_text='Keep your account safe. Verify your phone number now.' />,
+                header: localize('Complete verification'),
+                message: <Localize i18n_default_text='Secure your Deriv account by verifying your phone number.' />,
                 type: 'warning',
                 action: {
                     onClick: () => {
                         this.root_store.ui.setIsScrollToVerifyButton(true);
                     },
                     route: routes.personal_details,
-                    text: localize('Get started'),
+                    text: localize('Verify now'),
                 },
                 should_show_again: true,
             },

@@ -416,7 +416,7 @@ const AccountTransferForm = observer(
             } else if (is_maintenance_status_present) {
                 hint_text = (
                     <Localize
-                        i18n_default_text={`We’re currently performing server maintenance. Service maybe affected.`}
+                        i18n_default_text={`We’re currently performing server maintenance. Service may be affected.`}
                         components={[<strong key={0} />]}
                     />
                 );

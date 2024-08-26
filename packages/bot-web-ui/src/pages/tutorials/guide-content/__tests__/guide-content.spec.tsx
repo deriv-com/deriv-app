@@ -81,7 +81,7 @@ describe('<GuideContent />', () => {
         });
     });
 
-    it('should open the dialog upon clicking the tutorial video button, should open the tab dashboard upon clicking tutorial card button.', async () => {
+    it('should open the dialog upon clicking the tutorial video button.', async () => {
         mock_store.ui.is_desktop = false;
         const { container } = render(<GuideContent {...mocked_props} />, {
             wrapper,
@@ -93,6 +93,13 @@ describe('<GuideContent />', () => {
 
         await waitFor(() => {
             expect(mock_DBot_store?.dashboard.is_dialog_open).toBeTruthy();
+        });
+    });
+
+    it('should open the tab dashboard upon clicking tutorial card button.', async () => {
+        mock_store.ui.is_desktop = false;
+        render(<GuideContent {...mocked_props} />, {
+            wrapper,
         });
 
         const tutorial_card_button = screen.getAllByTestId('tutorials-wrap--tour')[0];

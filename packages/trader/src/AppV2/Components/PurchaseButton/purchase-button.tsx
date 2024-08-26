@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
+import { Localize } from '@deriv/translations';
 import { useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Button, useNotifications } from '@deriv-com/quill-ui';
@@ -17,6 +18,7 @@ import {
 import PurchaseButtonContent from './purchase-button-content';
 import { getTradeTypeTabsList } from 'AppV2/Utils/trade-params-utils';
 import { StandaloneStopwatchRegularIcon } from '@deriv/quill-icons';
+import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 
 const PurchaseButton = observer(() => {
     const [loading_button_index, setLoadingButtonIndex] = React.useState<number | null>(null);
@@ -62,9 +64,7 @@ const PurchaseButton = observer(() => {
         is_vanilla_fx,
         is_vanilla,
     };
-    const trade_types_array = Object.keys(trade_types).filter(
-        type => !getTradeTypeTabsList(contract_type).length || type === trade_type_tab
-    );
+    const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     const active_accu_contract = is_accumulator
         ? all_positions.find(
               ({ contract_info, type }) =>
@@ -119,18 +119,24 @@ const PurchaseButton = observer(() => {
                     disabled={is_accu_sell_disabled}
                     onClick={() => onClickSell(active_accu_contract?.contract_info.contract_id)}
                 />
-                {is_accu_sell_disabled && <div className='purchase-button purchase-button--disabled-background' />}
+                {is_accu_sell_disabled && <div className='purchase-button--disabled-background single' />}
             </div>
         );
     }
 
     return (
         <div className='purchase-button__wrapper'>
-            {trade_types_array.map((trade_type, index) => {
+            {contract_types.map((trade_type, index) => {
                 const info = proposal_info?.[trade_type] || {};
-                const is_single_button = trade_types_array.length === 1;
+                const is_single_button = contract_types.length === 1;
                 const is_loading = loading_button_index === index;
-                const is_disabled = !is_trade_enabled_v2;
+                const is_disabled = !is_trade_enabled_v2 || info.has_error;
+                /* TODO: stop using error text for is_max_payout_exceeded after validation_params are added to proposal API (both success & error response):
+                E.g., for is_max_payout_exceeded, we have to temporarily check the error text: Max payout error always contains 3 numbers, the check will work for any languages: */
+                const float_number_search_regex = /\d+(\.\d+)?/g;
+                const is_max_payout_exceeded =
+                    info.has_error && info.message?.match(float_number_search_regex)?.length === 3;
+                const error_message = is_max_payout_exceeded ? <Localize i18n_default_text='Exceeds max payout' /> : '';
 
                 return (
                     <React.Fragment key={trade_type}>
@@ -154,13 +160,16 @@ const PurchaseButton = observer(() => {
                             {!is_loading && !is_accumulator && (
                                 <PurchaseButtonContent
                                     {...purchase_button_content_props}
+                                    error={error_message}
                                     info={info}
                                     is_reverse={!!index}
                                 />
                             )}
                         </Button>
                         {is_disabled && !is_loading && (
-                            <div className='purchase-button purchase-button--disabled-background' />
+                            <div
+                                className={clsx('purchase-button--disabled-background', is_single_button && 'single')}
+                            />
                         )}
                     </React.Fragment>
                 );

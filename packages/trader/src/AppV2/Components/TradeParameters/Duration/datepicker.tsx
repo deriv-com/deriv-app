@@ -1,7 +1,7 @@
 import { ActionSheet, DatePicker, Text } from '@deriv-com/quill-ui';
 import { LabelPairedCalendarLgBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 const options = {
     day: '2-digit',
     month: 'short',
@@ -16,7 +16,7 @@ const DurationEndTimePicker = ({
     expiry_date,
     setExpiryDate,
 }: {
-    setExpiryDate: Dispatch<SetStateAction<Date>>;
+    setExpiryDate: (date: Date) => void;
     expiry_date: Date;
 }) => {
     const [open_date_picker, setOpenDatePicker] = useState(false);

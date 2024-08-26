@@ -12,7 +12,7 @@ type TDurationProps = {
 };
 
 const Duration = observer(({ is_minimized }: TDurationProps) => {
-    const { duration, duration_unit } = useTraderStore();
+    const { duration, duration_unit, expiry_time } = useTraderStore();
     const { name_plural, name } = getUnitMap()[duration_unit] ?? {};
     const duration_unit_text = name_plural ?? name;
     const [selected_hour, setSelectedHour] = useState<number[]>([]);
@@ -29,6 +29,8 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
     const onClose = () => {
         setOpen(false);
     };
+    console.log('expiry_time', expiry_time);
+
     return (
         <>
             <TextField

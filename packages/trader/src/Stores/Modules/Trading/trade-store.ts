@@ -348,6 +348,7 @@ export default class TradeStore extends BaseStore {
             'duration',
             'duration_unit',
             'expiry_date',
+            'expiry_time',
             'expiry_type',
             'growth_rate',
             'has_take_profit',
@@ -525,6 +526,7 @@ export default class TradeStore extends BaseStore {
             setIsTradeParamsExpanded: action.bound,
             setIsDigitsWidgetActive: action.bound,
             setMarketStatus: action.bound,
+            setExpiryTime: action.bound,
             setMobileDigitView: action.bound,
             setPreviousSymbol: action.bound,
             setSkipPrePostLifecycle: action.bound,
@@ -1969,6 +1971,9 @@ export default class TradeStore extends BaseStore {
 
     setIsDigitsWidgetActive(is_active: boolean) {
         this.is_digits_widget_active = is_active;
+    }
+    setExpiryTime(time: string) {
+        this.expiry_time = time;
     }
 
     setTradeTypeTab(label = '') {

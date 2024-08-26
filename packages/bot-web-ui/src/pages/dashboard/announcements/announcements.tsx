@@ -146,8 +146,8 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                     componentConfig={{
                         clearButtonText: localize('Mark all as read'),
                         modalTitle: localize('Announcements'),
-                        noNotificationsMessage: localize('No announcements MESSAGE'),
-                        noNotificationsTitle: localize('No announcements'),
+                        noNotificationsMessage: '',
+                        noNotificationsTitle: '',
                     }}
                     isOpen={is_open_announce_list}
                     // eslint-disable-next-line no-empty-function

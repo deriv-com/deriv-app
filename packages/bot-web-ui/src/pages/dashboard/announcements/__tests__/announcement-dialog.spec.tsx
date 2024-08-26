@@ -62,9 +62,8 @@ describe('AnnouncementDialog', () => {
 
         expect(close_button).toBeInTheDocument();
 
-        if (close_button) {
-            userEvent.click(close_button);
-        }
+        userEvent.click(close_button);
+
         await waitFor(() => {
             expect(mocked_props.setIsAnnounceDialogOpen).toHaveBeenCalled();
         });

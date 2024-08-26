@@ -1,8 +1,8 @@
-import { Button, TButtonColor, TButtonVariant } from '@deriv-com/quill-ui';
+import React from 'react';
+import { Button, TButtonColor } from '@deriv-com/quill-ui';
 import { RemainingTime } from '@deriv/components';
 import { TContractInfo, getCardLabelsV2, isMultiplierContract, isValidToCancel, isValidToSell } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
-import React from 'react';
 import { observer } from 'mobx-react';
 import { TRegularSizesWithExtraLarge } from '@deriv-com/quill-ui/dist/types';
 import { FormatUtils } from '@deriv-com/utils';
@@ -12,7 +12,6 @@ type ContractInfoProps = {
 };
 
 type ButtonProps = {
-    variant: TButtonVariant;
     color: TButtonColor;
     size: TRegularSizesWithExtraLarge;
     fullWidth: boolean;
@@ -36,11 +35,10 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
     const is_multiplier = isMultiplierContract(contract_type);
 
     const cardLabels = getCardLabelsV2();
-    const bidDetails = !is_valid_to_cancel ? `@${bid_price} ${currency}` : '';
+    const bidDetails = !is_valid_to_cancel ? `${bid_price} ${currency}` : '';
     const label = `${cardLabels.CLOSE} ${bidDetails}`;
 
     const buttonProps: ButtonProps = {
-        variant: 'secondary',
         color: 'black',
         size: 'lg',
         fullWidth: true,
@@ -82,7 +80,7 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                 <Button
                     label={
                         is_valid_to_sell
-                            ? `${cardLabels.CLOSE} @ ${FormatUtils.formatMoney(bid_price || 0)} ${currency}`
+                            ? `${cardLabels.CLOSE} ${FormatUtils.formatMoney(bid_price || 0)} ${currency}`
                             : cardLabels.RESALE_NOT_OFFERED
                     }
                     isLoading={is_sell_requested && is_valid_to_sell}

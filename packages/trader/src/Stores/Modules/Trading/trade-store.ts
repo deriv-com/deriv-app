@@ -685,12 +685,15 @@ export default class TradeStore extends BaseStore {
     };
 
     async loadActiveSymbols(should_set_default_symbol = true, should_show_loading = true) {
+        if (this.is_dtrader_v2_enabled) {
+            await when(() => this.has_symbols_for_v2);
+            return;
+        }
+
         this.should_show_active_symbols_loading = should_show_loading;
 
-        if (!this.is_dtrader_v2_enabled) {
-            await this.setActiveSymbols();
-            await this.root_store.active_symbols.setActiveSymbols();
-        }
+        await this.setActiveSymbols();
+        await this.root_store.active_symbols.setActiveSymbols();
 
         const { symbol, showModal } = getTradeURLParams({ active_symbols: this.active_symbols });
         if (showModal && should_show_loading && !this.root_store.client.is_logging_in) {
@@ -1860,7 +1863,6 @@ export default class TradeStore extends BaseStore {
             });
         }
         if ('active_symbols' in req) {
-            if (this.is_dtrader_v2_enabled) return;
             if (this.root_store.client.is_logged_in) {
                 return WS.authorized.activeSymbols('brief');
             }

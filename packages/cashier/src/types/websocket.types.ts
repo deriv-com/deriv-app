@@ -52,6 +52,15 @@ type TServiceTokenResponse = {
     };
 };
 
+export type TradingPlatformStatus = {
+    platform: string;
+    status: 'active' | 'maintenance' | 'unavailable';
+};
+
+export type TradingPlatformStatusResponse = {
+    trading_platform_status: TradingPlatformStatus[];
+};
+
 export type TPaymentAgentTransferRequest = Omit<
     PaymentAgentTransferRequest,
     'paymentagent_transfer' | 'passthrough' | 'req_id'

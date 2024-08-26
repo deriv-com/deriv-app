@@ -1464,7 +1464,7 @@ export default class TradeStore extends BaseStore {
             if (cancellation) {
                 this.cancellation_price = cancellation.ask_price;
             }
-            this.stop_out = limit_order?.stop_out?.order_amount;
+            this.stop_out = Number(limit_order?.stop_out?.order_amount);
         }
 
         if (this.is_accumulator && this.proposal_info?.ACCU) {

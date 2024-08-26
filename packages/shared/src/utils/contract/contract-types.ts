@@ -32,7 +32,7 @@ export type TDigitsInfo = { [key: number]: { digit: number; spot: string } };
 
 type TLimitProperty = {
     display_name?: string;
-    order_amount?: null | number;
+    order_amount?: null | string | number;
     order_date?: number;
     value?: null | string;
 };

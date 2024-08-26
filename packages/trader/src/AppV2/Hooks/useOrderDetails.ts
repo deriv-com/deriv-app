@@ -45,13 +45,13 @@ const transformMultiplierData = (data: TContractInfo) => {
         [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
         [CARD_LABELS.COMMISSION]: data.commission ? `${data.commission} ${data.currency}` : '',
         [CARD_LABELS.TAKE_PROFIT]: data.limit_order?.take_profit?.order_amount
-            ? `${data.limit_order.take_profit.order_amount.toFixed(2)} ${data.currency}`
+            ? `${Number(data.limit_order.take_profit.order_amount).toFixed(2)} ${data.currency}`
             : CARD_LABELS.NOT_SET,
         [CARD_LABELS.STOP_LOSS]: data.limit_order?.stop_loss?.order_amount
-            ? `${data.limit_order.stop_loss.order_amount.toFixed(2)} ${data.currency}`
+            ? `${Number(data.limit_order.stop_loss.order_amount).toFixed(2)} ${data.currency}`
             : CARD_LABELS.NOT_SET,
         [CARD_LABELS.STOP_OUT_LEVEL]: data.limit_order?.stop_out?.order_amount
-            ? `${data.limit_order.stop_out.order_amount.toFixed(2)} ${data.currency}`
+            ? `${Number(data.limit_order.stop_out.order_amount).toFixed(2)} ${data.currency}`
             : '',
     };
 };
@@ -77,7 +77,7 @@ const transformTurbosData = (data: TContractInfo) => {
         [CARD_LABELS.PAYOUT_PER_POINT]: commonFields[CARD_LABELS.PAYOUT_PER_POINT],
         [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
         [CARD_LABELS.TAKE_PROFIT]: data.limit_order?.take_profit?.order_amount
-            ? `${data.limit_order.take_profit.order_amount.toFixed(2)} ${data.currency}`
+            ? `${Number(data.limit_order.take_profit.order_amount).toFixed(2)} ${data.currency}`
             : CARD_LABELS.NOT_SET,
     };
 };

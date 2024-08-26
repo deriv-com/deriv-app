@@ -11,7 +11,7 @@ type RiskManagementItemProps = {
     label: React.ReactNode;
     modal_body_content: React.ReactNode;
     is_deal_cancellation?: boolean;
-    value?: number | null;
+    value?: number | string | null;
     type?: string;
 };
 
@@ -20,7 +20,7 @@ const RiskManagementItem = observer(
         const [isToggleOn, setIsToggleOn] = React.useState(Boolean(value));
         const [isSheetOpen, setIsSheetOpen] = React.useState(false);
         const [isEnabled, setIsEnabled] = React.useState(false);
-        const [stepperValue, setStepperValue] = React.useState(0);
+        const [stepperValue, setStepperValue] = React.useState<string | number>(0);
         const { contract_info, contract } = useContractDetails();
         const { contract_type, currency } = contract_info;
         const { validation_errors, updateLimitOrder, clearContractUpdateConfigValues } = contract;
@@ -36,7 +36,7 @@ const RiskManagementItem = observer(
         }, [clearContractUpdateConfigValues, value]);
 
         const isDealCancellation = is_valid_to_cancel;
-        const finalValue = Math.abs(value as number);
+        const finalValue = Math.abs(Number(value));
 
         const errorKey = `contract_update_${type}` as 'contract_update_stop_loss' | 'contract_update_take_profit';
         const errorMessage = validation_errors[errorKey]?.[0] ?? '';
@@ -58,7 +58,7 @@ const RiskManagementItem = observer(
             e: React.ChangeEvent<HTMLInputElement> | { target: { name: string; value: number | string | boolean } }
         ) => {
             const { value } = e.target;
-            setStepperValue(value as number);
+            setStepperValue(Number(value));
             contract.onChange?.({
                 name: `contract_update_${type}`,
                 value,
@@ -125,7 +125,7 @@ const RiskManagementItem = observer(
                         value={`${finalValue.toFixed(2)} ${currency}`}
                         onClick={() => {
                             clearContractUpdateConfigValues();
-                            setStepperValue(finalValue);
+                            setStepperValue(Number(finalValue));
                             setIsSheetOpen(true);
                         }}
                         onFocus={() => setIsSheetOpen(true)}
@@ -151,7 +151,7 @@ const RiskManagementItem = observer(
                                     status={errorMessage ? 'error' : 'neutral'}
                                     name={type}
                                     unitRight={currency}
-                                    value={Math.abs(stepperValue)}
+                                    value={Math.abs(Number(stepperValue))}
                                     onChange={onChange}
                                     decimals={0}
                                     message={errorMessage}

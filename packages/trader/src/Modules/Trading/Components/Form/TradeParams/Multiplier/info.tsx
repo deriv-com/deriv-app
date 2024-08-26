@@ -17,7 +17,7 @@ type TMultipliersInfo = {
     multiplier?: number;
     should_show_tooltip?: boolean;
     stop_out_text_size?: string;
-    stop_out?: number | null;
+    stop_out?: number | string | null;
 };
 
 type TPopoverPosition = React.ComponentProps<typeof Popover>['alignment'];
@@ -90,7 +90,7 @@ const MultipliersInfo = observer(
             <Localize
                 i18n_default_text='Your contract will be closed automatically when your loss reaches {{stop_out_percentage}}% of your stake.'
                 values={{
-                    stop_out_percentage: Math.floor(Math.abs((stop_out * 100) / Number(amount))),
+                    stop_out_percentage: Math.floor(Math.abs((Number(stop_out) * 100) / Number(amount))),
                 }}
             />
         );

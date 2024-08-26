@@ -131,7 +131,7 @@ export const getLimitOrder = (contract_update: TContractStore) => {
 
     const new_take_profit = has_contract_update_take_profit ? +contract_update_take_profit : null;
     const has_take_profit_changed =
-        Math.abs(contract_info.limit_order?.take_profit?.order_amount ?? 0) !== Math.abs(new_take_profit ?? 0);
+        Math.abs(Number(contract_info.limit_order?.take_profit?.order_amount) ?? 0) !== Math.abs(new_take_profit ?? 0);
 
     if (has_take_profit_changed) {
         // send positive take_profit to update or null cancel
@@ -140,7 +140,7 @@ export const getLimitOrder = (contract_update: TContractStore) => {
 
     const new_stop_loss = has_contract_update_stop_loss ? +contract_update_stop_loss : null;
     const has_stop_loss_changed =
-        Math.abs(contract_info?.limit_order?.stop_loss?.order_amount ?? 0) !== Math.abs(new_stop_loss ?? 0);
+        Math.abs(Number(contract_info?.limit_order?.stop_loss?.order_amount) ?? 0) !== Math.abs(new_stop_loss ?? 0);
 
     if (has_stop_loss_changed) {
         // send positive stop_loss to update or null to cancel

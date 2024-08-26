@@ -35,7 +35,7 @@ export type TTotals = {
         };
         limit_order?: {
             take_profit?: {
-                order_amount?: number | null;
+                order_amount?: number | string | null;
             };
         };
     };
@@ -104,7 +104,7 @@ const getOpenPositionsTotals = (
             buy_price += Number(contract_info.buy_price);
             bid_price += Number(contract_info.bid_price);
             if (contract_info.limit_order?.take_profit?.order_amount)
-                take_profit += contract_info.limit_order.take_profit.order_amount;
+                take_profit += Number(contract_info.limit_order.take_profit.order_amount);
             if (contract_info) {
                 profit += getTotalProfit(contract_info);
             }

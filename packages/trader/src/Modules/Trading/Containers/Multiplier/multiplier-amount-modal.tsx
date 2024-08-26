@@ -64,7 +64,7 @@ const TradeParamsMobile = observer(({ toggleModal }: { toggleModal: TToggleModal
                 Number(echo_req.amount) === Number(stake_ref.current)
             ) {
                 setCommission(proposal.commission);
-                proposal.limit_order?.stop_out && setStopOut(proposal.limit_order.stop_out?.order_amount);
+                proposal.limit_order?.stop_out && setStopOut(Number(proposal.limit_order.stop_out?.order_amount));
             } else if (subscription?.id) {
                 WS.forget(subscription.id);
             }

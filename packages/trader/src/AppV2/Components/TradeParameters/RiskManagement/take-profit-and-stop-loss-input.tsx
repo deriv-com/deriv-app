@@ -1,12 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
+import debounce from 'lodash.debounce';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { CONTRACT_TYPES, getCurrencyDisplayCode, getDecimalPlaces, useIsMounted, WS } from '@deriv/shared';
 import { focusAndOpenKeyboard } from 'AppV2/Utils/trade-params-utils';
 import { ActionSheet, CaptionText, Text, ToggleSwitch, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
-import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
+import { previewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
 import { TTradeStore } from 'Types';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import { ExpandedProposal } from 'Stores/Modules/Trading/Helpers/proposal';
@@ -179,21 +180,24 @@ const TakeProfitAndStopLossInput = ({
         /* In order to get validation params for Multipliers when TP and SL are empty, 
             we send '1' first, get validation params and set them into the state.*/
         const input_value = should_set_validation_params ? '1' : new_input_value;
-        const dispose = requestPreviewProposal(
-            trade_store,
-            onProposalResponse,
-            {
-                ...(is_take_profit_input ? { has_take_profit: is_enabled } : { has_stop_loss: is_enabled }),
-                ...(is_take_profit_input
-                    ? { take_profit: is_enabled ? input_value : '' }
-                    : { stop_loss: is_enabled ? input_value : '' }),
-            },
-            true
+        const dispose = debounce(
+            previewProposal(
+                trade_store,
+                onProposalResponse,
+                {
+                    ...(is_take_profit_input ? { has_take_profit: is_enabled } : { has_stop_loss: is_enabled }),
+                    ...(is_take_profit_input
+                        ? { take_profit: is_enabled ? input_value : '' }
+                        : { stop_loss: is_enabled ? input_value : '' }),
+                },
+                true
+            ),
+            700,
+            { leading: true }
         );
 
         return () => {
             dispose?.();
-            WS.forget(subscription_id_ref.current);
             clearTimeout(focus_timeout.current);
         };
 

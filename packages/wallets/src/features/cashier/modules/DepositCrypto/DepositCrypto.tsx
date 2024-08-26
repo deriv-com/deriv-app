@@ -22,6 +22,7 @@ const DepositCrypto = () => {
 
     return (
         <div className='wallets-deposit-crypto'>
+            <div className='wallets-deposit-crypto__placeholder' /> {/* This is a placeholder div for alignment */}
             <div className='wallets-deposit-crypto__main-content'>
                 <DepositCryptoCurrencyDetails />
                 <DepositCryptoAddress depositCryptoAddress={depositCryptoAddress} />

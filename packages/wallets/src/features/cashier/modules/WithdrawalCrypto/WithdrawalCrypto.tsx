@@ -41,6 +41,7 @@ const WithdrawalCrypto: React.FC<Pick<TWithdrawalCryptoProps, 'setResendEmail' |
 
     return (
         <div className='wallets-withdrawal-crypto'>
+            <div className='wallets-withdrawal-crypto__placeholder' /> {/* This is a placeholder div for alignment */}
             <div className='wallets-withdrawal-crypto__content'>
                 <Text weight='bold'>
                     <Localize

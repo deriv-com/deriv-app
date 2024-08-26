@@ -3,6 +3,7 @@ import TradeTypeListItem from './trade-type-list-item';
 import { Text } from '@deriv-com/quill-ui';
 import './trade-type-list.scss';
 import { Localize } from '@deriv/translations';
+import clsx from 'clsx';
 
 type TTradeTypeItem = {
     id: string;
@@ -22,7 +23,7 @@ type TTradeTypeListProps = {
     selected_item?: string;
     selectable?: boolean;
     onRightIconClick?: (item: TTradeTypeItem) => void;
-    onTradeTypeClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+    onTradeTypeClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     onAction?: () => void;
     should_show_title?: boolean;
 };
@@ -45,7 +46,12 @@ const TradeTypeList: React.FC<TTradeTypeListProps> = ({
     return (
         <div>
             {category_list?.map(category => (
-                <div key={category.id} className='trade-type-list-category'>
+                <div
+                    key={category.id}
+                    className={clsx('trade-type-list-category', {
+                        'trade-type-list-category__border': category.items.length > 0,
+                    })}
+                >
                     <div className='trade-type-list-category-header'>
                         <Text size='sm' bold className='trade-type-list-category-header-title'>
                             {should_show_title && category?.title}

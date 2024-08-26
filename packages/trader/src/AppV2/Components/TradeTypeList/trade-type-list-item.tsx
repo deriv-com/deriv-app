@@ -9,7 +9,7 @@ type TTradeTypeListItemProps = {
     rightIcon?: React.ReactNode;
     onLeftIconClick?: () => void;
     onRightIconClick?: () => void;
-    onTradeTypeClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+    onTradeTypeClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 };
 
 const TradeTypeListItem: React.FC<TTradeTypeListItemProps> = ({
@@ -24,7 +24,7 @@ const TradeTypeListItem: React.FC<TTradeTypeListItemProps> = ({
     const default_icon = <StandaloneCirclePlusFillIcon fill='var(--core-color-solid-green-700)' iconSize='sm' />;
 
     return (
-        <button
+        <div
             className={clsx('trade-type-list-item', { 'trade-type-list-item--selected': selected })}
             onClick={onTradeTypeClick}
         >
@@ -47,7 +47,7 @@ const TradeTypeListItem: React.FC<TTradeTypeListItemProps> = ({
                     {rightIcon || default_icon}
                 </button>
             )}
-        </button>
+        </div>
     );
 };
 

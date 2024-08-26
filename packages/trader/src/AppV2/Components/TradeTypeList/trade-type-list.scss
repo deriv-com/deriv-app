@@ -27,7 +27,6 @@
 
     &-category {
         padding-bottom: var(--core-spacing-400);
-        border-bottom: var(--core-borderWidth-75) solid var(--core-color-opacity-black-100);
 
         &-header {
             display: flex;
@@ -46,6 +45,10 @@
 
         &__items {
             margin-top: var(--core-spacing-400);
+        }
+
+        &__border {
+            border-bottom: var(--core-borderWidth-75) solid var(--core-color-opacity-black-100);
         }
     }
 }

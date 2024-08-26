@@ -8,7 +8,7 @@ import { Localize, localize } from '@deriv/translations';
 import Guide from '../../Components/Guide';
 
 type TTradeTypesProps = {
-    onTradeTypeSelect: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    onTradeTypeSelect: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     trade_types: ReturnType<typeof getTradeTypesList>;
     contract_type: string;
 } & Pick<ReturnType<typeof useTraderStore>, 'contract_type'>;
@@ -55,6 +55,12 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     const handleCloseTradeTypes = () => {
         setIsOpen(false);
         setIsEditing(false);
+    };
+
+    const handleCustomizeTradeTypes = () => {
+        setPinnedTradeTypes(saved_pinned_trade_types);
+        setOtherTradeTypes(saved_other_trade_types);
+        setIsEditing(true);
     };
 
     const handleAddPinnedClick = (item: TItem) => {
@@ -120,7 +126,9 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     };
 
     React.useEffect(() => {
+        console.log('HERE: ', trade_types);
         const formatted_items = createArrayFromCategories(trade_types);
+        console.log('HERE: 1: ', formatted_items);
         const default_pinned_trade_types = [
             {
                 id: 'pinned',
@@ -134,11 +142,13 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                 items: formatted_items
                     .filter(item => !pinned_trade_types[0]?.items.some(pinned_item => pinned_item.id === item.id))
                     .filter(
-                        item => !default_pinned_trade_types[0]?.items.some(pinned_item => pinned_item.id === item.id)
+                        item => saved_pinned_trade_types.length < 1 ? !default_pinned_trade_types[0]?.items.some(pinned_item => pinned_item.id === item.id) : item
                     )
                     .sort((a, b) => a.title?.localeCompare(b.title)),
             },
         ];
+
+        console.log('HERE: 2: ', default_pinned_trade_types, default_other_trade_types);
 
         if (saved_pinned_trade_types.length < 1) {
             setPinnedTradeTypes(default_pinned_trade_types);
@@ -175,7 +185,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         setPinnedTradeTypes(categories);
     };
 
-    const handleOnTradeTypeSelect = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const handleOnTradeTypeSelect = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
         onTradeTypeSelect(e);
         setIsOpen(false);
     };
@@ -223,7 +233,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                         ) : (
                             <TradeTypeList
                                 categories={saved_pinned_trade_types}
-                                onAction={() => setIsEditing(true)}
+                                onAction={handleCustomizeTradeTypes}
                                 onTradeTypeClick={handleOnTradeTypeSelect}
                                 selected_item={contract_type}
                                 should_show_title={false}

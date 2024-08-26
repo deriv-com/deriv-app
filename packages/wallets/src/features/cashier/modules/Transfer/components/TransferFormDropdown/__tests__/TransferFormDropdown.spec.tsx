@@ -1,8 +1,10 @@
 import React, { createRef } from 'react';
 import { useFormikContext } from 'formik';
 import { useHistory } from 'react-router-dom';
+import { APIProvider } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen } from '@testing-library/react';
+import WalletsAuthProvider from '../../../../../../../AuthProvider';
 import { useModal } from '../../../../../../../components/ModalProvider';
 import { useTransfer } from '../../../provider';
 import TransferFormDropdown from '../TransferFormDropdown';
@@ -87,8 +89,14 @@ describe('TransferFormDropdown', () => {
         });
     });
 
+    const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => (
+        <APIProvider>
+            <WalletsAuthProvider>{children}</WalletsAuthProvider>
+        </APIProvider>
+    );
+
     it('renders default content correctly', () => {
-        render(<TransferFormDropdown fieldName='toAccount' mobileAccountsListRef={createRef()} />);
+        render(<TransferFormDropdown fieldName='toAccount' mobileAccountsListRef={createRef()} />, { wrapper });
 
         expect(screen.getByText('Transfer to')).toBeInTheDocument();
         expect(screen.getByText('Select a trading account or a Wallet')).toBeInTheDocument();
@@ -107,7 +115,7 @@ describe('TransferFormDropdown', () => {
             isMobile: true,
         });
 
-        render(<TransferFormDropdown fieldName='fromAccount' mobileAccountsListRef={createRef()} />);
+        render(<TransferFormDropdown fieldName='fromAccount' mobileAccountsListRef={createRef()} />, { wrapper });
 
         expect(screen.getByText('Transfer from')).toBeInTheDocument();
         expect(screen.getByText('Select a trading account')).toBeInTheDocument();
@@ -137,14 +145,14 @@ describe('TransferFormDropdown', () => {
                 loginid: 'CR1234',
             },
         });
-        render(<TransferFormDropdown fieldName='fromAccount' mobileAccountsListRef={createRef()} />);
+        render(<TransferFormDropdown fieldName='fromAccount' mobileAccountsListRef={createRef()} />, { wrapper });
 
         expect(screen.getByText('Transfer from')).toBeInTheDocument();
         expect(screen.getByText('Balance: 1000 USD')).toBeInTheDocument();
     });
 
     it('shows modal on button click', () => {
-        render(<TransferFormDropdown fieldName='fromAccount' mobileAccountsListRef={createRef()} />);
+        render(<TransferFormDropdown fieldName='fromAccount' mobileAccountsListRef={createRef()} />, { wrapper });
 
         fireEvent.click(screen.getByRole('button'));
 
@@ -152,7 +160,7 @@ describe('TransferFormDropdown', () => {
     });
 
     it('handles account selection correctly for fromAccount', () => {
-        render(<TransferFormDropdown fieldName='fromAccount' mobileAccountsListRef={createRef()} />);
+        render(<TransferFormDropdown fieldName='fromAccount' mobileAccountsListRef={createRef()} />, { wrapper });
 
         fireEvent.click(screen.getByRole('button'));
 
@@ -167,7 +175,7 @@ describe('TransferFormDropdown', () => {
     });
 
     it('handles account selection correctly for toAccount', () => {
-        render(<TransferFormDropdown fieldName='toAccount' mobileAccountsListRef={createRef()} />);
+        render(<TransferFormDropdown fieldName='toAccount' mobileAccountsListRef={createRef()} />, { wrapper });
 
         fireEvent.click(screen.getByRole('button'));
 
@@ -207,7 +215,7 @@ describe('TransferFormDropdown', () => {
             },
         });
 
-        render(<TransferFormDropdown fieldName='toAccount' mobileAccountsListRef={createRef()} />);
+        render(<TransferFormDropdown fieldName='toAccount' mobileAccountsListRef={createRef()} />, { wrapper });
 
         expect(setValuesMock).toHaveBeenCalledWith(expect.any(Function));
         const setValuesCallback = setValuesMock.mock.calls[0][0];
@@ -240,7 +248,7 @@ describe('TransferFormDropdown', () => {
             },
         });
 
-        render(<TransferFormDropdown fieldName='toAccount' mobileAccountsListRef={createRef()} />);
+        render(<TransferFormDropdown fieldName='toAccount' mobileAccountsListRef={createRef()} />, { wrapper });
 
         expect(setValuesMock).toHaveBeenCalledWith(expect.any(Function));
         const setValuesCallback = setValuesMock.mock.calls[0][0];
@@ -260,7 +268,7 @@ describe('TransferFormDropdown', () => {
             },
         });
 
-        render(<TransferFormDropdown fieldName='fromAccount' mobileAccountsListRef={createRef()} />);
+        render(<TransferFormDropdown fieldName='fromAccount' mobileAccountsListRef={createRef()} />, { wrapper });
 
         fireEvent.click(screen.getByRole('button'));
         const handleSelect = showModalMock.mock.calls[0][0].props.onSelect;

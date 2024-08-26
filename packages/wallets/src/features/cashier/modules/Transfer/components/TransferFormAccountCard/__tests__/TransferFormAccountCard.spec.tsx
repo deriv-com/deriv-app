@@ -1,9 +1,16 @@
 import React from 'react';
+import { APIProvider } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
-import useDevice from '../../../../../../../hooks/useDevice';
+import WalletsAuthProvider from '../../../../../../../AuthProvider';
 import TransferFormAccountCard from '../TransferFormAccountCard';
 
 jest.mock('../../../../../../../hooks/useDevice', () => jest.fn());
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: false })),
+}));
 
 describe('TransferFormAccountCard', () => {
     const mockAccount = {
@@ -22,8 +29,14 @@ describe('TransferFormAccountCard', () => {
         jest.clearAllMocks();
     });
 
+    const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => (
+        <APIProvider>
+            <WalletsAuthProvider>{children}</WalletsAuthProvider>
+        </APIProvider>
+    );
+
     it('should render without crashing', () => {
-        render(<TransferFormAccountCard account={undefined} type={undefined} />);
+        render(<TransferFormAccountCard account={undefined} type={undefined} />, { wrapper });
 
         expect(screen.queryByText('Test Account')).not.toBeInTheDocument();
         expect(screen.queryByText('Balance: 1000 USD')).not.toBeInTheDocument();
@@ -37,7 +50,8 @@ describe('TransferFormAccountCard', () => {
                 // @ts-expect-error - since this is a mock, we only need partial properties of the hook
                 account={mockNewAccount}
                 type='modal'
-            />
+            />,
+            { wrapper }
         );
 
         expect(screen.getByText('Test Account')).toBeInTheDocument();
@@ -54,7 +68,8 @@ describe('TransferFormAccountCard', () => {
                 // @ts-expect-error - since this is a mock, we only need partial properties of the hook
                 account={mockNewAccount}
                 type='modal'
-            />
+            />,
+            { wrapper }
         );
 
         expect(screen.getByText('Test Account')).toBeInTheDocument();
@@ -73,7 +88,8 @@ describe('TransferFormAccountCard', () => {
                 // @ts-expect-error - since this is a mock, we only need partial properties of the hook
                 account={mockNewAccount}
                 type='modal'
-            />
+            />,
+            { wrapper }
         );
 
         expect(screen.getByText('Test Account')).toBeInTheDocument();
@@ -90,7 +106,8 @@ describe('TransferFormAccountCard', () => {
                 // @ts-expect-error - since this is a mock, we only need partial properties of the hook
                 account={mockNewAccount}
                 type='input'
-            />
+            />,
+            { wrapper }
         );
 
         expect(screen.getByText('Test Account')).toBeInTheDocument();
@@ -107,7 +124,8 @@ describe('TransferFormAccountCard', () => {
                 // @ts-expect-error - since this is a mock, we only need partial properties of the hook
                 account={mockNewAccount}
                 type='input'
-            />
+            />,
+            { wrapper }
         );
 
         expect(screen.getByText('Test Account')).toBeInTheDocument();
@@ -122,7 +140,8 @@ describe('TransferFormAccountCard', () => {
                 // @ts-expect-error - since this is a mock, we only need partial properties of the hook
                 account={mockNewAccount}
                 type='modal'
-            />
+            />,
+            { wrapper }
         );
 
         expect(screen.getByText('Demo')).toBeInTheDocument();

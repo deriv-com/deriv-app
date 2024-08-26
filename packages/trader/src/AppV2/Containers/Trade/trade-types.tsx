@@ -126,9 +126,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     };
 
     React.useEffect(() => {
-        console.log('HERE: ', trade_types);
         const formatted_items = createArrayFromCategories(trade_types);
-        console.log('HERE: 1: ', formatted_items);
         const default_pinned_trade_types = [
             {
                 id: 'pinned',
@@ -141,14 +139,14 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                 id: 'other',
                 items: formatted_items
                     .filter(item => !pinned_trade_types[0]?.items.some(pinned_item => pinned_item.id === item.id))
-                    .filter(
-                        item => saved_pinned_trade_types.length < 1 ? !default_pinned_trade_types[0]?.items.some(pinned_item => pinned_item.id === item.id) : item
+                    .filter(item =>
+                        saved_pinned_trade_types.length < 1
+                            ? !default_pinned_trade_types[0]?.items.some(pinned_item => pinned_item.id === item.id)
+                            : item
                     )
                     .sort((a, b) => a.title?.localeCompare(b.title)),
             },
         ];
-
-        console.log('HERE: 2: ', default_pinned_trade_types, default_other_trade_types);
 
         if (saved_pinned_trade_types.length < 1) {
             setPinnedTradeTypes(default_pinned_trade_types);

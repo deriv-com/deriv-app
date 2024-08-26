@@ -24,7 +24,7 @@
         }
     }
 
-    &__content {
+    &__main-content {
         width: 100%;
         max-width: 58.8rem;
         display: flex;
@@ -42,7 +42,7 @@
         }
     }
 
-    &__side-panel {
+    &__right-content {
         height: fit-content;
         display: flex;
         flex: 1 1 0;

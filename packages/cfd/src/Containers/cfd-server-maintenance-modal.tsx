@@ -21,7 +21,7 @@ const CFDServerMaintenanceModal = observer(() => {
         >
             <Modal.Body>
                 <Localize
-                    i18n_default_text='We’re currently performing server maintenance. Service maybe affected.'
+                    i18n_default_text='We’re currently performing server maintenance. Service may be affected.'
                     components={[<strong key={0} />]}
                 />
             </Modal.Body>

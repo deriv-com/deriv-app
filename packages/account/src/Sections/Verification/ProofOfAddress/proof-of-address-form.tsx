@@ -34,7 +34,7 @@ type TFormInitialValues = Record<
     'address_line_1' | 'address_line_2' | 'address_city' | 'address_state' | 'address_postcode',
     string
 > & {
-    document_type?: string;
+    document_type?: Record<'text' | 'value', string>;
 };
 
 type TFormState = Record<'is_btn_loading' | 'is_submit_success' | 'should_allow_submit' | 'should_show_form', boolean>;
@@ -166,6 +166,7 @@ const ProofOfAddressForm = observer(
             if (values.address_state && states_list.length) {
                 settings_values.address_state = getLocation(states_list, values.address_state, 'value') || '';
             }
+            delete settings_values?.document_type;
 
             const data = await WS.setSettings(settings_values);
 
@@ -198,7 +199,7 @@ const ProofOfAddressForm = observer(
             // upload files
             try {
                 const api_response = await upload(document_files, {
-                    document_type: values.document_type as DocumentUploadRequest['document_type'],
+                    document_type: values.document_type?.value as DocumentUploadRequest['document_type'],
                 });
 
                 if (api_response?.warning) {

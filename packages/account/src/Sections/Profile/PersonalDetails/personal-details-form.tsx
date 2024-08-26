@@ -121,21 +121,25 @@ const PersonalDetailsForm = observer(() => {
     }, [invalidate, is_language_changing]);
 
     const hintMessage = ({ is_phone_number_editted, is_phone_number_empty }: THintMessage) => {
-        if (account_settings?.phone_number_verification?.verified) {
-            return (
-                <Localize
-                    i18n_default_text='To change your verified phone number, contact us via <0></0>.'
-                    components={[
-                        <OpenLiveChatLink
-                            text_size='xxs'
-                            key={0}
-                            className='account-form__fieldset--phone-verification-livechat-link'
-                        />,
-                    ]}
-                />
-            );
-        } else if (is_phone_number_editted || is_phone_number_empty) {
-            return <Localize i18n_default_text='Save changes to enable verification.' />;
+        if (isPhoneNumberVerificationEnabled) {
+            if (account_settings?.phone_number_verification?.verified) {
+                return (
+                    <Localize
+                        i18n_default_text='To change your verified phone number, contact us via <0></0>.'
+                        components={[
+                            <OpenLiveChatLink
+                                text_size='xxs'
+                                key={0}
+                                className='account-form__fieldset--phone-verification-livechat-link'
+                            />,
+                        ]}
+                    />
+                );
+            } else if (is_phone_number_editted || is_phone_number_empty) {
+                return <Localize i18n_default_text='Save changes to enable verification.' />;
+            }
+        } else {
+            return null;
         }
     };
 

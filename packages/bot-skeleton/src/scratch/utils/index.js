@@ -11,6 +11,29 @@ import { error_message_map } from '../../utils/error-config';
 import { botNotification } from '../../../../bot-web-ui/src/components/bot-notification/bot-notification';
 import { notification_message } from '../../../../bot-web-ui/src/components/bot-notification/bot-notification-utils';
 
+export const inject_workspace_options = {
+    media: `${__webpack_public_path__}media/`,
+    zoom: {
+        wheel: true,
+        startScale: config.workspaces.previewWorkspaceStartScale,
+    },
+    readOnly: true,
+    scrollbars: true,
+    renderer: 'zelos',
+};
+
+export const updateXmlValues = blockly_options => {
+    if (!window.Blockly) return;
+    const { strategy_id, convertedDom, file_name, from } = blockly_options;
+    window.Blockly.xmlValues = {
+        ...window.Blockly.xmlValues,
+        strategy_id,
+        convertedDom,
+        file_name,
+        from,
+    };
+};
+
 export const getSelectedTradeType = (workspace = Blockly.derivWorkspace) => {
     const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
     const selected_trade_type = trade_type_block?.getFieldValue('TRADETYPE_LIST');
@@ -122,9 +145,9 @@ export const load = async ({
     showIncompatibleStrategyDialog,
 }) => {
     if (!DBotStore?.instance || !workspace) return;
-    const { setLoading } = DBotStore.instance;
-    const { load_modal } = DBotStore.instance;
-    const { setLoadedLocalFile } = load_modal;
+    const { setLoading, load_modal } = DBotStore.instance;
+    const { setOpenButtonDisabled, setLoadedLocalFile } = load_modal;
+
     setLoading(true);
     // Delay execution to allow fully previewing previous strategy if users quickly switch between strategies.
     await delayExecution(100);
@@ -185,7 +208,7 @@ export const load = async ({
             workspace,
             Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type'))
         );
-
+        updateXmlValues({ strategy_id, convertedDom: xml, file_name, from });
         if (is_collection) {
             loadBlocks(xml, drop_event, event_group, workspace);
         } else {
@@ -218,6 +241,7 @@ export const load = async ({
         return showInvalidStrategyError();
     } finally {
         setLoading(false);
+        setOpenButtonDisabled(false);
     }
 };
 

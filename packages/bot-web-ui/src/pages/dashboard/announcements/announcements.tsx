@@ -23,6 +23,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
     const [stored_notifications, setStoredNotifications] = React.useState({} as Record<string, boolean>);
     const history = useHistory();
     const [notifications, setNotifications] = useState([] as TNotifications[]);
+    const action_button_class_name = 'announcements__label';
 
     const storeDataInLocalStorage = (temp_data: Record<string, boolean>) => {
         localStorage?.setItem('bot-announcements', JSON.stringify(temp_data));
@@ -126,7 +127,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
             >
                 <StandaloneBullhornRegularIcon fill='var(--icon-black-plus)' iconSize='sm' />
                 {!is_mobile && (
-                    <Text size='xs' line_height='s' className='announcements__label'>
+                    <Text size='xs' line_height='s' className={action_button_class_name}>
                         {localize('Announcements')}
                     </Text>
                 )}
@@ -150,11 +151,9 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                         noNotificationsTitle: '',
                     }}
                     isOpen={is_open_announce_list}
-                    // eslint-disable-next-line no-empty-function
-                    setIsOpen={() => {
-                        /* Need to be fixed from the UI library*/
-                    }}
+                    setIsOpen={setIsOpenAnnounceList}
                     notifications={notifications}
+                    actionButtonClassName={action_button_class_name}
                 />
             </div>
             {selected_announcement?.announcement && (

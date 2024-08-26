@@ -72,7 +72,7 @@ const MT5CreatePassword = ({
                         className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'
                         data-testid='dt_create_password'
                     >
-                        <div className='cfd-password-modal__create-password-body mt5-migration-modal__mobile-container'>
+                        <div className='cfd-password-modal__create-password-body'>
                             <div className='cfd-password-modal__create-password-content'>
                                 <Icon icon='IcMt5OnePassword' width='150' height='150' />
                             </div>
@@ -136,7 +136,6 @@ const MT5CreatePassword = ({
                                 is_disabled={!values.password || !checked || Object.keys(errors).length > 0}
                                 is_loading={isSubmitting}
                                 label={localize('Create account')}
-                                // class='mt5-password-submit-button'
                             />
                         </div>
                     </div>

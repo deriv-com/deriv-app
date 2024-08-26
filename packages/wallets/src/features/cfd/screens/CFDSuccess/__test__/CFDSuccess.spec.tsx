@@ -2,7 +2,6 @@ import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { render, screen, within } from '@testing-library/react';
 import useDevice from '../../../../../hooks/useDevice';
-import { MARKET_TYPE, PlatformDetails } from '../../../constants';
 import CFDSuccess from '../CFDSuccess';
 
 jest.mock('@deriv/api-v2', () => ({
@@ -47,12 +46,12 @@ describe('CFDSuccess', () => {
     const mockProps = {
         description: 'Test description',
         displayBalance: '1000 USD',
-        marketType: MARKET_TYPE.FINANCIAL,
-        platform: PlatformDetails.mt5.platform,
+        marketType: 'financial' as const,
+        platform: 'mt5' as const,
         title: 'Test Title',
     };
 
-    it('renders correctly with all props', () => {
+    it('renders default CFD success content', () => {
         render(<CFDSuccess {...mockProps} />);
 
         expect(screen.getByTestId('dt_wallet_success')).toBeInTheDocument();
@@ -83,7 +82,7 @@ describe('CFDSuccess', () => {
         expect(screen.getByText('Real')).toBeInTheDocument();
     });
 
-    it('renders skeleton loader when displayBalance is not provided', () => {
+    it('renders skeleton loader when display balance is not provided', () => {
         render(<CFDSuccess {...mockProps} displayBalance='' />);
 
         expect(screen.getByTestId('dt_wallet_success')).toBeInTheDocument();
@@ -93,13 +92,13 @@ describe('CFDSuccess', () => {
     });
 
     it('renders correct market type for Deriv X', () => {
-        render(<CFDSuccess {...mockProps} marketType={MARKET_TYPE.ALL} platform={PlatformDetails.dxtrade.platform} />);
+        render(<CFDSuccess {...mockProps} marketType='all' platform='dxtrade' />);
 
         expect(screen.getByText('Deriv X')).toBeInTheDocument();
     });
 
     it('renders correct market type for Deriv cTrader', () => {
-        render(<CFDSuccess {...mockProps} marketType={MARKET_TYPE.ALL} platform={PlatformDetails.ctrader.platform} />);
+        render(<CFDSuccess {...mockProps} marketType='all' platform='ctrader' />);
 
         expect(screen.getByText('Deriv cTrader')).toBeInTheDocument();
     });

@@ -98,12 +98,12 @@
         }
     }
     @media all and (max-width: 1279px) and (orientation: landscape) {
-        .cfd-password-modal__content {
-            max-height: 100%;
-        }
         .cfd-password-change__content {
             overflow-y: auto;
             display: block;
+            .cfd-password-modal__content {
+                max-height: 100%;
+            }
         }
     }
 }

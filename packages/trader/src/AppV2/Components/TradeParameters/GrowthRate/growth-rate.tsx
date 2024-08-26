@@ -26,9 +26,9 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
         maximum_ticks,
         onChange,
         proposal_info,
-        setWheelPickerInitialValues,
+        setV2ParamsInitialValues,
         tick_size_barrier_percentage,
-        wheel_picker_initial_values,
+        v2_params_initial_values,
     } = useTraderStore();
 
     const [is_open, setIsOpen] = React.useState(false);
@@ -54,7 +54,7 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
                     maximum_ticks={maximum_ticks}
                     growth_rate={growth_rate}
                     setGrowthRate={handleGrowthRateChange}
-                    setWheelPickerInitialValues={setWheelPickerInitialValues}
+                    setV2ParamsInitialValues={setV2ParamsInitialValues}
                     should_show_details={is_proposal_data_available}
                     tick_size_barrier_percentage={tick_size_barrier_percentage}
                 />
@@ -79,7 +79,7 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
     ];
 
     React.useEffect(() => {
-        const initial_growth_rate = wheel_picker_initial_values?.growth_rate;
+        const initial_growth_rate = v2_params_initial_values?.growth_rate;
         if (initial_growth_rate && growth_rate !== initial_growth_rate) handleGrowthRateChange(initial_growth_rate);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

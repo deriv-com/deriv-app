@@ -140,8 +140,9 @@ export type TChartStateChangeOption = {
     symbol_category?: string;
     time_interval_name?: string;
 };
-export type TWheelPickerInitialValues = {
+export type TV2ParamsInitialValues = {
     growth_rate?: number;
+    stake?: string | number;
     strike?: string | number;
     multiplier?: number;
 };
@@ -317,7 +318,7 @@ export default class TradeStore extends BaseStore {
 
     // Mobile
     is_trade_params_expanded = true;
-    wheel_picker_initial_values: TWheelPickerInitialValues = {};
+    v2_params_initial_values: TV2ParamsInitialValues = {};
 
     debouncedSendTradeParamsAnalytics = debounce((payload: TEvents['ce_contracts_set_up_form']) => {
         if (payload.action === 'change_parameter_value') {
@@ -367,7 +368,7 @@ export default class TradeStore extends BaseStore {
             'stop_loss',
             'take_profit',
             'is_trade_params_expanded',
-            'wheel_picker_initial_values',
+            'v2_params_initial_values',
         ];
         const session_storage_properties = ['contract_type', 'symbol'];
 
@@ -471,7 +472,7 @@ export default class TradeStore extends BaseStore {
             ticks_history_stats: observable,
             trade_type_tab: observable,
             trade_types: observable,
-            wheel_picker_initial_values: observable,
+            v2_params_initial_values: observable,
             accountSwitcherListener: action.bound,
             barrier_pipsize: computed,
             barriers_flattened: computed,
@@ -481,7 +482,7 @@ export default class TradeStore extends BaseStore {
             clearLimitOrderBarriers: action.bound,
             clearPurchaseInfo: action.bound,
             clientInitListener: action.bound,
-            clearWheelPickerInitialValues: action.bound,
+            clearV2ParamsInitialValues: action.bound,
             enablePurchase: action.bound,
             exportLayout: action.bound,
             forgetAllProposal: action.bound,
@@ -533,7 +534,7 @@ export default class TradeStore extends BaseStore {
             setStakeBoundary: action.bound,
             setTradeTypeTab: action.bound,
             setTradeStatus: action.bound,
-            setWheelPickerInitialValues: action.bound,
+            setV2ParamsInitialValues: action.bound,
             show_digits_stats: computed,
             updateStore: action.bound,
             updateSymbol: action.bound,
@@ -646,18 +647,18 @@ export default class TradeStore extends BaseStore {
         }
     }
 
-    setWheelPickerInitialValues({
+    setV2ParamsInitialValues({
         value,
         name,
     }: {
         value: number | string | boolean;
-        name: keyof TWheelPickerInitialValues;
+        name: keyof TV2ParamsInitialValues;
     }) {
-        this.wheel_picker_initial_values = { ...this.wheel_picker_initial_values, ...{ [name]: value } };
+        this.v2_params_initial_values = { ...this.v2_params_initial_values, ...{ [name]: value } };
     }
 
-    clearWheelPickerInitialValues() {
-        this.wheel_picker_initial_values = {};
+    clearV2ParamsInitialValues() {
+        this.v2_params_initial_values = {};
     }
 
     setDefaultGrowthRate() {
@@ -693,12 +694,15 @@ export default class TradeStore extends BaseStore {
     };
 
     async loadActiveSymbols(should_set_default_symbol = true, should_show_loading = true) {
+        if (this.is_dtrader_v2_enabled) {
+            await when(() => this.has_symbols_for_v2);
+            return;
+        }
+
         this.should_show_active_symbols_loading = should_show_loading;
 
-        if (!this.is_dtrader_v2_enabled) {
-            await this.setActiveSymbols();
-            await this.root_store.active_symbols.setActiveSymbols();
-        }
+        await this.setActiveSymbols();
+        await this.root_store.active_symbols.setActiveSymbols();
 
         const { symbol, showModal } = getTradeURLParams({ active_symbols: this.active_symbols });
         if (showModal && should_show_loading && !this.root_store.client.is_logging_in) {
@@ -1457,6 +1461,7 @@ export default class TradeStore extends BaseStore {
             [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
         };
         this.validation_params[contract_type] = this.proposal_info[contract_type].validation_params;
+
         if (this.is_multiplier && this.proposal_info && this.proposal_info.MULTUP) {
             const { commission, cancellation, limit_order } = this.proposal_info.MULTUP;
             // commission and cancellation.ask_price is the same for MULTUP/MULTDOWN
@@ -1750,7 +1755,7 @@ export default class TradeStore extends BaseStore {
         this.disposeNetworkStatusChange();
         this.disposeThemeChange();
         this.is_trade_component_mounted = false;
-        this.clearWheelPickerInitialValues();
+        this.clearV2ParamsInitialValues();
         // TODO: Find a more elegant solution to unmount contract-trade-store
         this.root_store.contract_trade.onUnmount();
         this.refresh();
@@ -1857,7 +1862,6 @@ export default class TradeStore extends BaseStore {
             });
         }
         if ('active_symbols' in req) {
-            if (this.is_dtrader_v2_enabled) return;
             if (this.root_store.client.is_logged_in) {
                 return WS.authorized.activeSymbols('brief');
             }

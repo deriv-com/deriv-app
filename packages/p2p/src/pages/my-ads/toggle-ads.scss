@@ -6,4 +6,10 @@
     &__message {
         margin-inline-end: 1.6rem;
     }
+
+    @include mobile-or-tablet-screen {
+        & .dc-toggle-switch__label {
+            cursor: unset;
+        }
+    }
 }

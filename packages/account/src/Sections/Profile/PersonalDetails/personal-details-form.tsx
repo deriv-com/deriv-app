@@ -124,8 +124,14 @@ const PersonalDetailsForm = observer(() => {
         if (account_settings?.phone_number_verification?.verified) {
             return (
                 <Localize
-                    i18n_default_text='To change your verified phone number, contact us via <0></0>'
-                    components={[<OpenLiveChatLink text_size='xxs' key={0} />]}
+                    i18n_default_text='To change your verified phone number, contact us via <0></0>.'
+                    components={[
+                        <OpenLiveChatLink
+                            text_size='xxs'
+                            key={0}
+                            className='account-form__fieldset--phone-verification-livechat-link'
+                        />,
+                    ]}
                 />
             );
         } else if (is_phone_number_editted || is_phone_number_empty) {

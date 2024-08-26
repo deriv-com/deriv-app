@@ -34,11 +34,7 @@ describe('SessionTimeoutModal', () => {
     it('should show SessionTimeoutModal content', () => {
         renderComponent();
         expect(screen.getByText(/Session Expired/)).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                /Your session has expired because the phone number verification was not completed within the allotted 10 minutes. You will be redirected to the email verification page to restart the process./
-            )
-        ).toBeInTheDocument();
+        expect(screen.getByText(/Restart your phone number verification./)).toBeInTheDocument();
         const ok_button = screen.getByRole('button', { name: 'OK' });
         expect(ok_button).toBeInTheDocument();
     });

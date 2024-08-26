@@ -26,7 +26,7 @@ const SessionTimeoutModal = () => {
             <Modal.Header title={<Localize i18n_default_text='Session Expired' />} />
             <Modal.Body>
                 <Text>
-                    <Localize i18n_default_text='Your session has expired because the phone number verification was not completed within the allotted 10 minutes. You will be redirected to the email verification page to restart the process.' />
+                    <Localize i18n_default_text='Restart your phone number verification.' />
                 </Text>
             </Modal.Body>
         </Modal>

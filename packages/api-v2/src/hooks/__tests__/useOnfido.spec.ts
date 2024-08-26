@@ -52,7 +52,7 @@ describe('useOnfido', () => {
 
         // Assert that the necessary data is returned
         expect(result.current.isOnfidoInitialized).toBe(true);
-        expect(result.current.isServiceTokenLoading).toBe(false);
+        expect(result.current.isLoading).toBe(false);
         expect(result.current.serviceTokenError).toBeNull();
         expect(result.current.onfidoInitializationError).toBeNull();
         expect(result.current.data.onfidoRef.current).not.toBeNull();

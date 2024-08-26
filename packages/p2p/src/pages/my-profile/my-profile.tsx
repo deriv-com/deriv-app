@@ -1,8 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { DesktopWrapper, Loading, Text } from '@deriv/components';
+import { Loading, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import Verification from 'Components/verification';
 import { document_status_codes, identity_status_codes } from 'Constants/account-status-codes';
@@ -13,6 +14,7 @@ import MyProfileDetailsContainer from './my-profile-stats/my-profile-details-con
 import MyProfileHeader from './my-profile-header';
 
 const MyProfile = () => {
+    const { isDesktop } = useDevice();
     const { general_store, my_profile_store } = useStores();
     const { showModal } = useModalManagerContext();
     const history = useHistory();
@@ -34,7 +36,12 @@ const MyProfile = () => {
     }, []);
 
     React.useEffect(() => {
-        if (is_poi_poa_verified && !general_store.is_advertiser && !general_store.is_loading) {
+        if (
+            is_poi_poa_verified &&
+            !general_store.is_advertiser &&
+            !general_store.is_loading &&
+            general_store.is_p2p_user === false
+        ) {
             showModal({
                 key: 'NicknameModal',
                 props: {
@@ -44,7 +51,7 @@ const MyProfile = () => {
                 },
             });
         }
-    }, [is_poi_poa_verified, general_store.is_advertiser, general_store.is_loading]);
+    }, [is_poi_poa_verified, general_store.is_advertiser, general_store.is_loading, general_store.is_p2p_user]);
 
     if (general_store.is_p2p_user === null) {
         return <Loading is_fullscreen={false} />;
@@ -65,9 +72,7 @@ const MyProfile = () => {
             <div className='my-profile'>
                 <div className='my-profile__content'>
                     <MyProfileDetailsContainer />
-                    <DesktopWrapper>
-                        <MyProfileHeader />
-                    </DesktopWrapper>
+                    {isDesktop && <MyProfileHeader />}
                     <MyProfileContent />
                 </div>
             </div>

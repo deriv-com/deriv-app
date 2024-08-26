@@ -5,6 +5,7 @@ import { Localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TDescription } from '../tutorials.types';
+import parse from 'html-react-parser';
 
 type TFAQContent = {
     faq_list: TFAQList[];
@@ -19,7 +20,7 @@ type TFAQList = {
 
 const FAQ = ({ type, content = '', src, imageclass, is_mobile }: TDescription) => {
     if (type === 'image') return <img src={src} className={imageclass} />;
-
+    const parsed_content = parse(content);
     return (
         <Text
             as='p'
@@ -28,8 +29,9 @@ const FAQ = ({ type, content = '', src, imageclass, is_mobile }: TDescription) =
             className='faq__description'
             weight='normal'
             key={content}
-            dangerouslySetInnerHTML={{ __html: content }}
-        />
+        >
+            {parsed_content}
+        </Text>
     );
 };
 

@@ -370,4 +370,34 @@ describe('TradeStore', () => {
             expect(mockedTradeStore.trade_type_tab).toEqual('');
         });
     });
+    describe('setV2ParamsInitialValues', () => {
+        beforeEach(() => {
+            mockedTradeStore.clearV2ParamsInitialValues();
+        });
+        it('should set growth rate into a v2_params_initial_values', () => {
+            expect(mockedTradeStore.v2_params_initial_values).toEqual({});
+
+            mockedTradeStore.setV2ParamsInitialValues({ name: 'growth_rate', value: 0.03 });
+
+            expect(mockedTradeStore.v2_params_initial_values.growth_rate).toEqual(0.03);
+        });
+        it('should set strike into a v2_params_initial_values', () => {
+            expect(mockedTradeStore.v2_params_initial_values).toEqual({});
+
+            mockedTradeStore.setV2ParamsInitialValues({ name: 'strike', value: '+1.30' });
+
+            expect(mockedTradeStore.v2_params_initial_values.strike).toEqual('+1.30');
+        });
+        it('should clear all values when clearV2ParamsInitialValues is called', () => {
+            mockedTradeStore.setV2ParamsInitialValues({ name: 'strike', value: '+1.00' });
+            mockedTradeStore.setV2ParamsInitialValues({ name: 'growth_rate', value: 0.05 });
+
+            expect(mockedTradeStore.v2_params_initial_values.strike).toEqual('+1.00');
+            expect(mockedTradeStore.v2_params_initial_values.growth_rate).toEqual(0.05);
+
+            mockedTradeStore.clearV2ParamsInitialValues();
+
+            expect(mockedTradeStore.v2_params_initial_values).toEqual({});
+        });
+    });
 });

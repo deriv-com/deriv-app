@@ -40,8 +40,9 @@
     .timer {
         background-color: var(--core-color-opacity-black-75);
 
+        &,
         .dc-remaining-time {
-            font-size: unset;
+            font-size: var(--core-fontSize-50);
         }
     }
     .status-and-profit {
@@ -137,7 +138,7 @@
     }
     &.lost {
         .profit {
-            color: var(--core-color-solid-red-600);
+            color: var(--core-color-solid-red-700);
         }
         button:not(:disabled),
         button.loading {
@@ -150,7 +151,7 @@
     }
     &.won {
         .profit {
-            color: var(--core-color-solid-green-600);
+            color: var(--core-color-solid-green-700);
         }
         button:not(:disabled),
         button.loading {

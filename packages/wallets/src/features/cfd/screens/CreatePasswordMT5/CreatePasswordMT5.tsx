@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { DerivLightDmt5PasswordIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
-import { WalletButton, WalletPasswordFieldLazy } from '../../../../components/Base';
-import useDevice from '../../../../hooks/useDevice';
+import { Button, Text, useDevice } from '@deriv-com/ui';
+import { WalletPasswordFieldLazy } from '../../../../components/Base';
 import { THooks, TPlatforms } from '../../../../types';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
 import { CFDPasswordModalTnc } from '../../components/CFDPasswordModalTnc';
@@ -70,14 +69,14 @@ const CreatePasswordMT5: React.FC<TProps> = ({
 
             {isDesktop && (
                 <div className='wallets-create-password-mt5__footer'>
-                    <WalletButton
+                    <Button
                         disabled={!password || isLoading || disableButton || !checked}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'
                     >
                         <Localize i18n_default_text='Create {{title}} password' values={{ title }} />
-                    </WalletButton>
+                    </Button>
                 </div>
             )}
         </div>

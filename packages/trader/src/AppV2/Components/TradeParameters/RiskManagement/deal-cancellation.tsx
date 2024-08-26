@@ -1,8 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { Button, Text, ToggleSwitch, WheelPicker, useSnackbar } from '@deriv-com/quill-ui';
-import { Skeleton } from '@deriv/components';
+import { Button, Skeleton, Text, ToggleSwitch, WheelPicker, useSnackbar } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { addUnit, getSnackBarText } from 'AppV2/Utils/trade-params-utils';
 
@@ -38,7 +37,7 @@ const DealCancellation = observer(({ closeActionSheet }: TDealCancellationProps)
                     has_cancellation: is_enabled,
                     has_stop_loss,
                     has_take_profit,
-                    switching_DC: true,
+                    switching_cancellation: true,
                 }),
                 hasCloseButton: true,
                 delay: 100,
@@ -73,7 +72,7 @@ const DealCancellation = observer(({ closeActionSheet }: TDealCancellationProps)
                             }
                         />
                     ) : (
-                        <Skeleton />
+                        <Skeleton.Square />
                     )}
                 </div>
             </div>

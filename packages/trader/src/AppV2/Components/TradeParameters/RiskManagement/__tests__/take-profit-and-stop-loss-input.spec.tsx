@@ -15,8 +15,9 @@ type TResponse = {
     error?: Record<string, never> | { details: { field: string }; message: string };
 };
 
-const data_testid = 'dt_input_with_steppers';
-const acc_content = 'Note: Cannot be adjusted for ongoing accumulator contracts.';
+const tp_data_testid = 'dt_tp_input';
+const sl_data_testid = 'dt_sl_input';
+const accu_content = 'Note: Cannot be adjusted for ongoing accumulator contracts.';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -72,9 +73,9 @@ describe('TakeProfitAndStopLossInput', () => {
         mockTakeProfitAndStopLossInput();
 
         expect(screen.getByText('Take profit')).toBeInTheDocument();
-        expect(screen.getByTestId(data_testid)).toBeInTheDocument();
+        expect(screen.getByTestId(tp_data_testid)).toBeInTheDocument();
         expect(screen.getByText('Save')).toBeInTheDocument();
-        expect(screen.queryByText(acc_content)).not.toBeInTheDocument();
+        expect(screen.queryByText(accu_content)).not.toBeInTheDocument();
     });
 
     it('should render component with correct data for stop_loss type', () => {
@@ -82,16 +83,16 @@ describe('TakeProfitAndStopLossInput', () => {
         mockTakeProfitAndStopLossInput();
 
         expect(screen.getByText('Stop loss')).toBeInTheDocument();
-        expect(screen.getByTestId(data_testid)).toBeInTheDocument();
+        expect(screen.getByTestId(sl_data_testid)).toBeInTheDocument();
         expect(screen.getByText('Save')).toBeInTheDocument();
-        expect(screen.queryByText(acc_content)).not.toBeInTheDocument();
+        expect(screen.queryByText(accu_content)).not.toBeInTheDocument();
     });
 
     it('should render specific text content for cases with is_accumulator  === true', () => {
         default_mock_store.modules.trade.is_accumulator = true;
         mockTakeProfitAndStopLossInput();
 
-        expect(screen.getByText(acc_content)).toBeInTheDocument();
+        expect(screen.getByText(accu_content)).toBeInTheDocument();
     });
 
     it('should call focusAndOpenKeyboard, when ToggleSwitch is switched to true.', () => {
@@ -130,8 +131,8 @@ describe('TakeProfitAndStopLossInput', () => {
         default_mock_store.modules.trade.take_profit = '5';
         mockTakeProfitAndStopLossInput();
 
-        userEvent.clear(screen.getByTestId(data_testid));
-        userEvent.type(screen.getByTestId(data_testid), '2');
+        userEvent.clear(screen.getByTestId(tp_data_testid));
+        userEvent.type(screen.getByTestId(tp_data_testid), '2');
 
         const save_button = screen.getByText('Save');
         userEvent.click(save_button);

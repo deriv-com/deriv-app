@@ -17,7 +17,7 @@ const TRADE_PARAMS = {
     ACCUMULATORS_INFORMATION: 'AccumulatorsInformation',
     MULTIPLIER: 'Multiplier',
     RISK_MANAGEMENT: 'RiskManagement',
-    MULTIPLIERS_DEAL_CANCELLATION_INFORMATION: 'MultipliersDealCancellationInfo',
+    MULTIPLIERS_CANCELLATION_INFO: 'MultipliersDealCancellationInfo',
     TRADE_TYPE_TABS: 'TradeTypeTabs',
     STRIKE: 'Strike',
     PAYOUT_PER_POINT: 'PayoutPerPoint',
@@ -37,7 +37,7 @@ jest.mock('../AccumulatorsInformation', () =>
 jest.mock('../Multiplier', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.MULTIPLIER}</div>));
 jest.mock('../RiskManagement', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.RISK_MANAGEMENT}</div>));
 jest.mock('../MultipliersDealCancellationInfo', () =>
-    jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.MULTIPLIERS_DEAL_CANCELLATION_INFORMATION}</div>)
+    jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.MULTIPLIERS_CANCELLATION_INFO}</div>)
 );
 jest.mock('../TradeTypeTabs', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.TRADE_TYPE_TABS}</div>));
 jest.mock('../Strike', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.STRIKE}</div>));
@@ -106,7 +106,7 @@ describe('TradeParameters', () => {
         expect(screen.getByText(TRADE_PARAMS.MULTIPLIER)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.STAKE)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.RISK_MANAGEMENT)).toBeInTheDocument();
-        expect(screen.queryByText(TRADE_PARAMS.MULTIPLIERS_DEAL_CANCELLATION_INFORMATION)).not.toBeInTheDocument();
+        expect(screen.queryByText(TRADE_PARAMS.MULTIPLIERS_CANCELLATION_INFO)).not.toBeInTheDocument();
         expect(screen.getAllByTestId(data_test)).toHaveLength(3);
     });
 
@@ -118,7 +118,7 @@ describe('TradeParameters', () => {
         expect(screen.getByText(TRADE_PARAMS.MULTIPLIER)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.STAKE)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.RISK_MANAGEMENT)).toBeInTheDocument();
-        expect(screen.getByText(TRADE_PARAMS.MULTIPLIERS_DEAL_CANCELLATION_INFORMATION)).toBeInTheDocument();
+        expect(screen.getByText(TRADE_PARAMS.MULTIPLIERS_CANCELLATION_INFO)).toBeInTheDocument();
         expect(screen.getAllByTestId(data_test)).toHaveLength(4);
     });
 

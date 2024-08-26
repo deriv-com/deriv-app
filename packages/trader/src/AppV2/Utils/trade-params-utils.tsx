@@ -131,20 +131,20 @@ export const getSnackBarText = ({
     has_cancellation,
     has_take_profit,
     has_stop_loss,
-    switching_DC,
-    switching_TP_SL,
+    switching_cancellation,
+    switching_tp_sl,
 }: {
     has_cancellation?: boolean;
     has_take_profit?: boolean;
     has_stop_loss?: boolean;
-    switching_DC?: boolean;
-    switching_TP_SL?: boolean;
+    switching_cancellation?: boolean;
+    switching_tp_sl?: boolean;
 }) => {
-    if (switching_DC && has_cancellation) {
+    if (switching_cancellation && has_cancellation) {
         if (has_take_profit && has_stop_loss) return <Localize i18n_default_text='TP and SL have been turned off.' />;
         if (has_take_profit) return <Localize i18n_default_text='TP has been turned off.' />;
         if (has_stop_loss) return <Localize i18n_default_text='SL has been turned off.' />;
     }
-    if (switching_TP_SL && (has_take_profit || has_stop_loss) && has_cancellation)
+    if (switching_tp_sl && (has_take_profit || has_stop_loss) && has_cancellation)
         return <Localize i18n_default_text='DC has been turned off.' />;
 };

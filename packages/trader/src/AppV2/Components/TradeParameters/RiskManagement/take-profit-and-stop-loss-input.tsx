@@ -14,6 +14,7 @@ import { ExpandedProposal } from 'Stores/Modules/Trading/Helpers/proposal';
 type TTakeProfitAndStopLossInputProps = {
     classname?: string;
     has_save_button?: boolean;
+    has_actionsheet_wrapper?: boolean;
     initial_error_text?: string;
     onActionSheetClose: () => void;
     parent_subscription_id_ref?: React.MutableRefObject<string | undefined>;
@@ -25,21 +26,20 @@ type TTakeProfitAndStopLossInputProps = {
         stop_loss?: string;
         sl_error_text?: string;
     }>;
-    parent_is_be_response_received_ref?: React.MutableRefObject<boolean>;
+    parent_is_api_response_received_ref?: React.MutableRefObject<boolean>;
     type?: 'take_profit' | 'stop_loss';
-    should_wrap_with_actionsheet?: boolean;
 };
 
 const TakeProfitAndStopLossInput = ({
     classname,
     has_save_button = true,
+    has_actionsheet_wrapper = true,
     initial_error_text,
     onActionSheetClose,
     parent_subscription_id_ref,
     parent_ref,
-    parent_is_be_response_received_ref,
+    parent_is_api_response_received_ref,
     type = 'take_profit',
-    should_wrap_with_actionsheet = true,
 }: TTakeProfitAndStopLossInputProps) => {
     const trade_store = useTraderStore();
     const {
@@ -63,9 +63,9 @@ const TakeProfitAndStopLossInput = ({
     const subscription_id = React.useRef<string>();
     const subscription_id_ref = parent_subscription_id_ref || subscription_id;
 
-    // For handling cases when user clicks on Save btn before we got response from BE
-    const is_be_response_received = React.useRef(false);
-    const is_be_response_received_ref = parent_is_be_response_received_ref || is_be_response_received;
+    // For handling cases when user clicks on Save btn before we got response from API
+    const is_api_response_received = React.useRef(false);
+    const is_api_response_received_ref = parent_is_api_response_received_ref || is_api_response_received;
 
     const [is_enabled, setIsEnabled] = React.useState(is_take_profit_input ? has_take_profit : has_stop_loss);
     const [new_input_value, setNewInputValue] = React.useState(is_take_profit_input ? take_profit : stop_loss);
@@ -79,12 +79,12 @@ const TakeProfitAndStopLossInput = ({
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     const decimals = getDecimalPlaces(currency);
     const currency_display_code = getCurrencyDisplayCode(currency);
-    const Component = should_wrap_with_actionsheet ? ActionSheet.Content : 'div';
+    const Component = has_actionsheet_wrapper ? ActionSheet.Content : 'div';
     const should_set_validation_params = is_multiplier && is_enabled && new_input_value === '';
 
     const min_value = validation_params[contract_types[0]]?.[type]?.min;
     const max_value = validation_params[contract_types[0]]?.[type]?.max;
-    // Storing data from validation params (proposal) in state in case if we got a validation error from BE and proposal stop streaming
+    // Storing data from validation params (proposal) in state in case if we got a validation error from API and proposal stop streaming
     const [info, setInfo] = React.useState<Record<string, string | undefined>>({ min_value, max_value });
 
     const input_message =
@@ -107,7 +107,7 @@ const TakeProfitAndStopLossInput = ({
     };
 
     const onToggleSwitch = (new_value: boolean) => {
-        is_be_response_received_ref.current = false;
+        is_api_response_received_ref.current = false;
         setIsEnabled(new_value);
         updateParentRef({ field_name: is_take_profit_input ? 'has_take_profit' : 'has_stop_loss', new_value });
 
@@ -133,12 +133,12 @@ const TakeProfitAndStopLossInput = ({
             // For multipliers we got 2 responses (Up and Down); the 2d one is not needed as it will be difficult to clean it when user clicks on Save btn
             if (echo_req.contract_type === CONTRACT_TYPES.MULTIPLIER.DOWN) {
                 WS.forget(subscription?.id);
-                is_be_response_received_ref.current = true;
+                is_api_response_received_ref.current = true;
                 return;
             }
             if (!is_enabled) {
                 WS.forget(subscription?.id);
-                is_be_response_received_ref.current = true;
+                is_api_response_received_ref.current = true;
                 return;
             }
             if (subscription?.id) subscription_id_ref.current = subscription?.id;
@@ -152,7 +152,7 @@ const TakeProfitAndStopLossInput = ({
             if (error?.message) WS.forget(subscription?.id);
 
             /* For Multipliers, validation parameters come in proposal response only if TP or SL are switched on and their value is not empty.
-            Here we set them into the state in order to show further even if we got a validation error from BE.*/
+            Here we set them into the state in order to show further even if we got a validation error from API.*/
             if (
                 isMounted() &&
                 proposal &&
@@ -173,7 +173,7 @@ const TakeProfitAndStopLossInput = ({
                     return info;
                 });
             }
-            is_be_response_received_ref.current = true;
+            is_api_response_received_ref.current = true;
         };
 
         /* In order to get validation params for Multipliers when TP and SL are empty, 
@@ -202,7 +202,7 @@ const TakeProfitAndStopLossInput = ({
 
     // TODO: remove all regex replacement, when comma will be supported by quill component with type number
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        is_be_response_received_ref.current = false;
+        is_api_response_received_ref.current = false;
         let value = String(e.target.value)
             .replace(',', '.')
             .replace(/[.](?!\d*$)/g, '');
@@ -219,7 +219,7 @@ const TakeProfitAndStopLossInput = ({
 
     const onSave = () => {
         // Prevent from saving if user clicks before BE validation
-        if (!is_be_response_received_ref.current && is_enabled) return;
+        if (!is_api_response_received_ref.current && is_enabled) return;
         WS.forget(subscription_id_ref.current);
 
         if (error_text && is_enabled) return;
@@ -281,7 +281,7 @@ const TakeProfitAndStopLossInput = ({
                     allowDecimals
                     disabled={!is_enabled}
                     decimals={decimals}
-                    data-testid='dt_input_with_steppers'
+                    data-testid={is_take_profit_input ? 'dt_tp_input' : 'dt_sl_input'}
                     inputMode='decimal'
                     message={error_text || input_message}
                     minusDisabled={Number(new_input_value) - 1 <= 0}

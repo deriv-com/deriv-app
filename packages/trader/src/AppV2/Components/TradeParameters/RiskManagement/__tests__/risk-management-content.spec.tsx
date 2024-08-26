@@ -11,7 +11,7 @@ describe('RiskManagementContent', () => {
         expect(screen.queryByText('Deal cancellation')).not.toBeInTheDocument();
     });
 
-    it('should render correct description if should_show_deal_cancellation === false', () => {
+    it('should render correct description if should_show_deal_cancellation === true', () => {
         render(<RiskManagementContent should_show_deal_cancellation />);
 
         expect(screen.getByText('Take Profit')).toBeInTheDocument();

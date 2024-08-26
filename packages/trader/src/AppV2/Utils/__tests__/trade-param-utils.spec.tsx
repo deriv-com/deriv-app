@@ -197,7 +197,7 @@ describe('isSmallScreen', () => {
         expect(isSmallScreen()).toBe(true);
     });
 
-    it('should return false if window.innerHeight is more to 640', () => {
+    it('should return false if window.innerHeight is more than 640', () => {
         window.innerHeight = 700;
         expect(isSmallScreen()).toBe(false);
     });
@@ -215,14 +215,14 @@ describe('addUnit', () => {
 });
 
 describe('getSnackBarText', () => {
-    it('should return correct string if switching_DC, has_cancellation, has_take_profit and has_stop_loss are true', () => {
+    it('should return correct string if switching_cancellation, has_cancellation, has_take_profit and has_stop_loss are true', () => {
         render(
             <div>
                 {getSnackBarText({
                     has_cancellation: true,
                     has_take_profit: true,
                     has_stop_loss: true,
-                    switching_DC: true,
+                    switching_cancellation: true,
                 })}
             </div>
         );
@@ -230,14 +230,14 @@ describe('getSnackBarText', () => {
         expect(screen.getByText('TP and SL have been turned off.')).toBeInTheDocument();
     });
 
-    it('should return correct string if switching_DC === true, has_cancellation === true, has_take_profit === true and has_stop_loss === false', () => {
+    it('should return correct string if switching_cancellation === true, has_cancellation === true, has_take_profit === true and has_stop_loss === false', () => {
         render(
             <div>
                 {getSnackBarText({
                     has_cancellation: true,
                     has_take_profit: true,
                     has_stop_loss: false,
-                    switching_DC: true,
+                    switching_cancellation: true,
                 })}
             </div>
         );
@@ -245,14 +245,14 @@ describe('getSnackBarText', () => {
         expect(screen.getByText('TP has been turned off.')).toBeInTheDocument();
     });
 
-    it('should return correct string if switching_DC === true,has_cancellation === true, has_take_profit === false and has_stop_loss === true', () => {
+    it('should return correct string if switching_cancellation === true, has_cancellation === true, has_take_profit === false and has_stop_loss === true', () => {
         render(
             <div>
                 {getSnackBarText({
                     has_cancellation: true,
                     has_take_profit: false,
                     has_stop_loss: true,
-                    switching_DC: true,
+                    switching_cancellation: true,
                 })}
             </div>
         );
@@ -260,14 +260,14 @@ describe('getSnackBarText', () => {
         expect(screen.getByText('SL has been turned off.')).toBeInTheDocument();
     });
 
-    it('should return correct string if switching_TP_SL === true, has_cancellation === true, has_take_profit === true and has_stop_loss === false', () => {
+    it('should return correct string if switching_tp_sl === true, has_cancellation === true, has_take_profit === true and has_stop_loss === false', () => {
         render(
             <div>
                 {getSnackBarText({
                     has_cancellation: true,
                     has_take_profit: true,
                     has_stop_loss: false,
-                    switching_TP_SL: true,
+                    switching_tp_sl: true,
                 })}
             </div>
         );
@@ -275,14 +275,14 @@ describe('getSnackBarText', () => {
         expect(screen.getByText('DC has been turned off.')).toBeInTheDocument();
     });
 
-    it('should return correct string if switching_TP_SL === true, has_cancellation === true, has_take_profit === false and has_stop_loss === true', () => {
+    it('should return correct string if switching_tp_sl === true, has_cancellation === true, has_take_profit === false and has_stop_loss === true', () => {
         render(
             <div>
                 {getSnackBarText({
                     has_cancellation: true,
                     has_take_profit: false,
                     has_stop_loss: true,
-                    switching_TP_SL: true,
+                    switching_tp_sl: true,
                 })}
             </div>
         );

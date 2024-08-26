@@ -63,14 +63,14 @@ describe('DealCancellation', () => {
         expect(screen.getByText(deal_cancellation)).toBeInTheDocument();
         expect(screen.getByText(wheel_picker)).toBeInTheDocument();
         expect(screen.getByText(save_button)).toBeInTheDocument();
-        expect(screen.queryByTestId('dt_skeleton')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('square-skeleton')).not.toBeInTheDocument();
     });
 
     it('should render Skeleton loader instead of Wheel Picker if cancellation_range_list is empty', () => {
         default_mock_store.modules.trade.cancellation_range_list = [];
         mockDealCancellation();
 
-        expect(screen.getByTestId('dt_skeleton')).toBeInTheDocument();
+        expect(screen.getByTestId('square-skeleton')).toBeInTheDocument();
         expect(screen.queryByText(wheel_picker)).not.toBeInTheDocument();
     });
 

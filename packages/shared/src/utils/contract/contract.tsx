@@ -301,7 +301,7 @@ export const getContractUpdateConfig = ({ contract_update, limit_order }: TContr
 
     return {
         // convert stop_loss, take_profit value to string for validation to work
-        contract_update_stop_loss: stop_loss ? Math.abs(stop_loss).toString() : '',
+        contract_update_stop_loss: stop_loss ? Math.abs(Number(stop_loss)).toString() : '',
         contract_update_take_profit: take_profit ? take_profit.toString() : '',
         has_contract_update_stop_loss: !!stop_loss,
         has_contract_update_take_profit: !!take_profit,

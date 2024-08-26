@@ -114,8 +114,10 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
     const is_multiplier = isMultiplierContract(contract_info.contract_type || '');
     const is_take_profit_valid = has_contract_update_take_profit
         ? +contract_update_take_profit > 0
-        : isValid(is_multiplier ? stop_loss : take_profit);
-    const is_stop_loss_valid = has_contract_update_stop_loss ? +contract_update_stop_loss > 0 : isValid(take_profit);
+        : isValid(is_multiplier ? Number(stop_loss) : Number(take_profit));
+    const is_stop_loss_valid = has_contract_update_stop_loss
+        ? +contract_update_stop_loss > 0
+        : isValid(Number(take_profit));
     const is_valid_multiplier_contract_update = is_valid_to_cancel
         ? false
         : !!(is_take_profit_valid || is_stop_loss_valid);

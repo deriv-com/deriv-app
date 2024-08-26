@@ -179,7 +179,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                 <InputGroupButton
                     status={phone_otp_error_message ? 'error' : 'neutral'}
                     buttonLabel={localize('Verify')}
-                    label={localize('OTP code')}
+                    label={should_show_phone_number_otp ? localize('OTP code') : localize('Verification code')}
                     buttonCallback={handleVerifyOTP}
                     onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                         if (e.key === 'Enter') {

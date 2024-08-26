@@ -1,1 +1,3 @@
-export { default as PageContainer } from './page-container';
+import PageContainer from './page-container';
+
+export default PageContainer;

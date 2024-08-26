@@ -286,6 +286,8 @@ const ProofOfAddressForm = observer(
         return (
             <Formik
                 initialValues={form_initial_values}
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 onSubmit={onSubmitValues}
                 validate={validateFields}
                 enableReinitialize

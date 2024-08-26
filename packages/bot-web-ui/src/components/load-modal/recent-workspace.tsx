@@ -21,21 +21,20 @@ const RecentWorkspace = observer(({ workspace }: TRecentWorkspaceProps) => {
         updateXmlValuesOnStrategySelection,
     } = load_modal;
 
+    const onRecentWorkspaceClick = () => {
+        if (selected_strategy_id === workspace.id) return;
+        setLoading(true);
+        loadStrategyOnModalRecentPreview(workspace.id);
+        updateXmlValuesOnStrategySelection();
+    };
+
     return (
         <div
             className={classnames('load-strategy__recent-item', {
                 'load-strategy__recent-item--selected': selected_strategy_id === workspace.id,
             })}
             key={workspace.id}
-            onClick={
-                selected_strategy_id === workspace.id
-                    ? undefined
-                    : () => {
-                          setLoading(true);
-                          loadStrategyOnModalRecentPreview(workspace.id);
-                          updateXmlValuesOnStrategySelection();
-                      }
-            }
+            onClick={onRecentWorkspaceClick}
             data-testid='dt_recent_workspace_item'
         >
             <div className='load-strategy__recent-item-text'>

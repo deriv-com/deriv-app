@@ -30,14 +30,14 @@ describe('CooldownPeriodModal', () => {
     };
     it('should show CooldownPeriodModal when show_cool_down_period_modal is true', () => {
         renderComponent();
-        expect(screen.getByText(/Cool down period/)).toBeInTheDocument();
-        expect(screen.getByText(/Maximum OTP limit reached. Request a new OTP after 10 minutes./)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /Ok/ })).toBeInTheDocument();
+        expect(screen.getByText(/OTP limit reached/)).toBeInTheDocument();
+        expect(screen.getByText(/Request a new OTP after 10 minutes./)).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /OK/ })).toBeInTheDocument();
     });
 
     it('should call history.push, setIsForcedToExitPnv, mockSetShowCoolDownPeriodModal with value of personal details', () => {
         renderComponent();
-        const ok_button = screen.getByRole('button', { name: /Ok/ });
+        const ok_button = screen.getByRole('button', { name: /OK/ });
         userEvent.click(ok_button);
         expect(mock_push_function).toBeCalledWith(routes.personal_details);
         expect(mockSetShowCoolDownPeriodModal).toBeCalledWith(false);

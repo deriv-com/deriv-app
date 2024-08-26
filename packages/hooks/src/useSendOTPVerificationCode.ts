@@ -23,16 +23,15 @@ const useSendOTPVerificationCode = () => {
 
     const formatPhoneOtpError = (error: TSocketError<'phone_number_verify'>['error']) => {
         switch (error.code) {
-            case 'ExpiredCode':
-                setPhoneOtpErrorMessage(localize('Code expired. Please get a new one.'));
+            case 'PhoneCodeExpired':
+                setPhoneOtpErrorMessage(localize('Code expired. Get a new one.'));
                 break;
             case 'InvalidOTP':
-                setPhoneOtpErrorMessage(localize('Invalid code. Please try again.'));
+                setPhoneOtpErrorMessage(localize('Invalid code. Try again.'));
                 break;
             case 'NoAttemptsLeft':
                 setIsForcedToExitPnv(true);
                 setShowCoolDownPeriodModal(true);
-                setPhoneOtpErrorMessage(localize('Invalid code. OTP limit reached.'));
                 break;
             default:
                 setPhoneOtpErrorMessage(error.message);
@@ -42,16 +41,15 @@ const useSendOTPVerificationCode = () => {
 
     const formatEmailOtpError = (error: TSocketError<'phone_number_challenge'>['error']) => {
         switch (error.code) {
-            case 'ExpiredCode':
-                setPhoneOtpErrorMessage(localize('Code expired.'));
+            case 'EmailCodeExpired':
+                setPhoneOtpErrorMessage(localize('Code expired. Get a new code.'));
                 break;
             case 'InvalidToken':
-                setPhoneOtpErrorMessage(localize('Invalid code. Press the link below to get a new code.'));
+                setPhoneOtpErrorMessage(localize('Invalid code. Try again or get a new code.'));
                 break;
             case 'NoAttemptsLeft':
                 setIsForcedToExitPnv(true);
                 setShowCoolDownPeriodModal(true);
-                setPhoneOtpErrorMessage(localize('Invalid code. OTP limit reached.'));
                 break;
             default:
                 setPhoneOtpErrorMessage(error.message);

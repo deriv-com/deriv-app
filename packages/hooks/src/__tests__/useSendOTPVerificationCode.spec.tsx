@@ -72,12 +72,12 @@ describe('useSendOTPVerificationCode', () => {
         expect(result.current.is_phone_number_verified).toBe(true);
     });
 
-    it('should handle ExpiredCode for phone_otp_error', () => {
-        mock_response.error = { code: 'ExpiredCode', message: 'Code expired.' };
+    it('should handle PhoneCodeExpired for phone_otp_error', () => {
+        mock_response.error = { code: 'PhoneCodeExpired', message: 'Code expired.' };
 
         const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
 
-        expect(result.current.phone_otp_error_message).toBe('Code expired. Please get a new one.');
+        expect(result.current.phone_otp_error_message).toBe('Code expired. Get a new one.');
     });
 
     it('should handle InvalidOTP for phone_otp_error', () => {
@@ -85,7 +85,7 @@ describe('useSendOTPVerificationCode', () => {
 
         const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
 
-        expect(result.current.phone_otp_error_message).toBe('Invalid code. Please try again.');
+        expect(result.current.phone_otp_error_message).toBe('Invalid code. Try again.');
     });
 
     it('should handle NoAttemptsLeft for phone_otp_error', () => {
@@ -93,23 +93,26 @@ describe('useSendOTPVerificationCode', () => {
 
         const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
 
-        expect(result.current.phone_otp_error_message).toBe('Invalid code. OTP limit reached.');
+        expect(result.current.show_cool_down_period_modal).toBe(true);
     });
 
-    it('should handle ExpiredCode for email_otp_error', () => {
-        mock_request_phone_number_otp_response.email_otp_error = { code: 'ExpiredCode', message: 'ExpiredCode' };
+    it('should handle EmailCodeExpired for email_otp_error', () => {
+        mock_request_phone_number_otp_response.email_otp_error = {
+            code: 'EmailCodeExpired',
+            message: 'Code expired.',
+        };
 
         const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
 
-        expect(result.current.phone_otp_error_message).toBe('Code expired.');
+        expect(result.current.phone_otp_error_message).toBe('Code expired. Get a new code.');
     });
 
-    it('should handle InvalidOTP for email_top_error', () => {
+    it('should handle InvalidToken for email_top_error', () => {
         mock_request_phone_number_otp_response.email_otp_error = { code: 'InvalidToken', message: 'InvalidToken' };
 
         const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
 
-        expect(result.current.phone_otp_error_message).toBe('Invalid code. Press the link below to get a new code.');
+        expect(result.current.phone_otp_error_message).toBe('Invalid code. Try again or get a new code.');
     });
 
     it('should handle NoAttemptsLeft for email_top_error', () => {
@@ -117,6 +120,6 @@ describe('useSendOTPVerificationCode', () => {
 
         const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
 
-        expect(result.current.phone_otp_error_message).toBe('Invalid code. OTP limit reached.');
+        expect(result.current.show_cool_down_period_modal).toBe(true);
     });
 });

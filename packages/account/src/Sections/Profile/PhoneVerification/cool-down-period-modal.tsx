@@ -22,13 +22,13 @@ const CoolDownPeriodModal = observer(
         return (
             <Modal
                 isOpened={show_cool_down_period_modal}
-                primaryButtonLabel={<Localize i18n_default_text='Ok' />}
+                primaryButtonLabel={<Localize i18n_default_text='OK' />}
                 primaryButtonCallback={handleCloseCoolDownPeriodModal}
             >
-                <Modal.Header title={<Localize i18n_default_text='Cool down period' />} />
+                <Modal.Header title={<Localize i18n_default_text='OTP limit reached' />} />
                 <Modal.Body>
                     <Text>
-                        <Localize i18n_default_text='Maximum OTP limit reached. Request a new OTP after 10 minutes.' />
+                        <Localize i18n_default_text='Request a new OTP after 10 minutes.' />
                     </Text>
                 </Modal.Body>
             </Modal>

@@ -278,6 +278,7 @@ export default class UIStore extends BaseStore {
             is_trading_disabled_by_residence_modal_visible: observable,
             is_mobile_language_menu_open: observable,
             is_nativepicker_visible: observable,
+
             is_positions_drawer_on: observable,
             is_real_acc_signup_on: observable,
             is_real_tab_enabled: observable,

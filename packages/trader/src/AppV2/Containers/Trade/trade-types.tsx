@@ -8,7 +8,7 @@ import { Localize, localize } from '@deriv/translations';
 import Guide from '../../Components/Guide';
 
 type TTradeTypesProps = {
-    onTradeTypeSelect: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+    onTradeTypeSelect: (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
     trade_types: ReturnType<typeof getTradeTypesList>;
     contract_type: string;
 } & Pick<ReturnType<typeof useTraderStore>, 'contract_type'>;
@@ -183,7 +183,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         setPinnedTradeTypes(categories);
     };
 
-    const handleOnTradeTypeSelect = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const handleOnTradeTypeSelect = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         onTradeTypeSelect(e);
         setIsOpen(false);
     };

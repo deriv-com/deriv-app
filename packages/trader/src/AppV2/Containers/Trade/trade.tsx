@@ -43,7 +43,7 @@ const Trade = observer(() => {
         window.innerHeight - HEIGHT.HEADER - HEIGHT.BOTTOM_NAV - HEIGHT.ADVANCED_FOOTER - HEIGHT.PADDING;
 
     const onTradeTypeSelect = React.useCallback(
-        (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+        (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
             const value = trade_types.find(({ text }) => text === (e.target as HTMLButtonElement).textContent)?.value;
             onChange({
                 target: {

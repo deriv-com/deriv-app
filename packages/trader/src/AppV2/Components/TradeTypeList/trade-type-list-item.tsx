@@ -9,7 +9,7 @@ type TTradeTypeListItemProps = {
     rightIcon?: React.ReactNode;
     onLeftIconClick?: () => void;
     onRightIconClick?: () => void;
-    onTradeTypeClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+    onTradeTypeClick?: (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
 };
 
 const TradeTypeListItem: React.FC<TTradeTypeListItemProps> = ({
@@ -27,6 +27,7 @@ const TradeTypeListItem: React.FC<TTradeTypeListItemProps> = ({
         <div
             className={clsx('trade-type-list-item', { 'trade-type-list-item--selected': selected })}
             onClick={onTradeTypeClick}
+            onKeyDown={onTradeTypeClick}
         >
             {leftIcon && (
                 <button

@@ -23,7 +23,7 @@ type TTradeTypeListProps = {
     selected_item?: string;
     selectable?: boolean;
     onRightIconClick?: (item: TTradeTypeItem) => void;
-    onTradeTypeClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+    onTradeTypeClick?: (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
     onAction?: () => void;
     should_show_title?: boolean;
 };

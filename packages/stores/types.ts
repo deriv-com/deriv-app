@@ -144,6 +144,7 @@ type AvailableAccount = {
     currency?: string;
     display_balance?: string;
     display_login?: string;
+    product?: TProduct;
 };
 
 type BrandConfig = {
@@ -480,6 +481,7 @@ type TClientStore = {
     is_virtual: boolean;
     is_withdrawal_lock: boolean;
     landing_company_shortcode: string;
+    is_tradershub_tracking: boolean;
     is_populating_account_list: boolean;
     local_currency_config: {
         currency: string;
@@ -615,6 +617,9 @@ type TClientStore = {
     virtual_account_loginid?: string;
     is_cr_account: boolean;
     is_mf_account: boolean;
+    setTradersHubTracking: (value: boolean) => void;
+    account_time_of_closure?: number;
+    is_account_to_be_closed_by_residence: boolean;
 };
 
 type TCommonStoreError = {
@@ -641,6 +646,7 @@ type TCommonStore = {
     error: TCommonStoreError;
     has_error: boolean;
     is_from_derivgo: boolean;
+    is_from_outside_cashier: boolean;
     is_network_online: boolean;
     platform: 'dxtrade' | 'mt5' | 'ctrader' | '';
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
@@ -823,6 +829,8 @@ type TUiStore = {
     setShouldShowDepositNowOrLaterModal: (value: boolean) => void;
     should_show_crypto_transaction_processing_modal: boolean;
     setShouldShowCryptoTransactionProcessingModal: (value: boolean) => void;
+    is_trading_disabled_by_residence_modal_visible: boolean;
+    setIsTradingDisabledByResidenceModal: (value: boolean) => void;
 };
 
 type TPortfolioStore = {
@@ -847,6 +855,9 @@ type TPortfolioStore = {
     positions: TPortfolioPosition[];
     removePositionById: (contract_id?: number) => void;
     setContractType: (contract_type: string) => void;
+    setAddNotificationBannerCallback: (
+        cb?: (params: { message: string; redirectTo: string; timestamp: number; title: string }, status: string) => void
+    ) => void;
 };
 
 type TAccumulatorBarriersData = {
@@ -985,6 +996,10 @@ type TNotificationStore = {
     is_notifications_empty: boolean;
     is_notifications_visible: boolean;
     filterNotificationMessages: () => void;
+    handleCurrencyRemovalNotification: (
+        account_currency_closure_status: Record<string, unknown>,
+        currency: string
+    ) => void;
     notifications: TNotificationMessage[];
     p2p_advertiser_info: P2PAdvertiserInformationResponse['p2p_advertiser_info'];
     p2p_completed_orders: NonNullable<P2POrderListResponse['p2p_order_list']>['list'];
@@ -1107,6 +1122,10 @@ type TTradersHubStore = {
     showTopUpModal: (existing_account?: DetailsOfEachMT5Loginid) => void;
     is_regulators_compare_modal_visible: boolean;
     is_setup_real_account_or_go_to_demo_modal_visible: boolean;
+    is_cfd_restricted_country: boolean;
+    is_financial_restricted_country: boolean;
+    setIsCFDRestrictedCountry: (value: boolean) => void;
+    setIsFinancialRestrictedCountry: (value: boolean) => void;
     setIsSetupRealAccountOrGoToDemoModalVisible: (value: boolean) => void;
 };
 

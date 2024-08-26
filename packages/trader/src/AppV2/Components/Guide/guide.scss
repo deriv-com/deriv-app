@@ -184,8 +184,11 @@
     }
 
     &__wrapper {
+        width: 32rem;
+        height: 18rem;
+
         .player__controls__wrapper {
-            bottom: 0;
+            bottom: -1px;
         }
     }
 }

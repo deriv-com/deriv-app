@@ -8,6 +8,7 @@ import {
     getUrlBinaryBot,
     getUrlSmartTrader,
     initMoment,
+    setLocale,
     isMobile,
     platforms,
     routes,
@@ -136,6 +137,7 @@ export default class CommonStore extends BaseStore {
                 window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
                 try {
                     await initMoment(key);
+                    await setLocale(key);
                     await changeLanguage(key, () => {
                         this.changeCurrentLanguage(key);
                         BinarySocket.closeAndOpenNewConnection(key);
@@ -167,6 +169,11 @@ export default class CommonStore extends BaseStore {
 
     get is_from_derivgo() {
         return platforms[this.platform]?.platform_name === platforms.derivgo.platform_name;
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    get is_from_outside_cashier() {
+        return !window.location.pathname.startsWith(routes.cashier);
     }
 
     setInitialRouteHistoryItem(location) {

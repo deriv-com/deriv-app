@@ -32,9 +32,11 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@deriv-com/analytics": "1.12.1",
+        "@deriv-com/ui": "1.29.10",
         "@deriv-com/utils": "^0.0.25",
         "@deriv/api": "^1.0.0",
-        "@deriv/api-types": "1.0.1441",
+        "@deriv/api-types": "1.0.1747",
         "@deriv/components": "^1.0.0",
         "@deriv/hooks": "^1.0.0",
         "@deriv/shared": "^1.0.0",

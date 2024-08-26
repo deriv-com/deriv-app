@@ -20,7 +20,6 @@ jest.mock('@deriv/shared', () => ({
     })),
     redirectToLogin: jest.fn(),
 }));
-
 const mock = {
     ui: {
         is_reset_password_modal_visible: true,
@@ -80,9 +79,7 @@ describe('ResetPasswordModal', () => {
 
     it('should change input of password and trigger change password button', async () => {
         WS.resetPassword.mockReturnValue(Promise.resolve({ reset_password: 1 }));
-
         renderComponent(store);
-
         await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
 
         const new_password = screen.getByLabelText('Create a password', { selector: 'input' });

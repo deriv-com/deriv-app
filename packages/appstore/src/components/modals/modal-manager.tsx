@@ -8,6 +8,7 @@ import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import CFDResetPasswordModal from '@deriv/cfd/src/Containers/cfd-reset-password-modal';
 
 const FailedVerificationModal = makeLazyLoader(
     () =>
@@ -82,23 +83,34 @@ const CFDPasswordModal = makeLazyLoader(
     () => <Loading />
 )();
 
+const CFDServerMaintenanceModal = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "modal_cfd_cfd-server-maintenance-modal" */ '@deriv/cfd/src/Containers/cfd-server-maintenance-modal'
+                )
+        ),
+    () => <Loading />
+)();
+
+const MT5AccountUnavailableModal = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "modal_cfd_mt5-account-unavailable-modal" */ '@deriv/cfd/src/Containers/mt5-account-unavailable-modal'
+                )
+        ),
+    () => <Loading />
+)();
+
 const CFDDbviOnBoarding = makeLazyLoader(
     () =>
         moduleLoader(
             () =>
                 import(
                     /* webpackChunkName: "modal_cfd_cfd-dbvi-onboarding" */ '@deriv/cfd/src/Containers/cfd-dbvi-onboarding'
-                )
-        ),
-    () => <Loading />
-)();
-
-const CFDResetPasswordModal = makeLazyLoader(
-    () =>
-        moduleLoader(
-            () =>
-                import(
-                    /* webpackChunkName: "modal_cfd_cfd-reset-password-modal" */ '@deriv/cfd/src/Containers/cfd-reset-password-modal'
                 )
         ),
     () => <Loading />
@@ -207,6 +219,8 @@ const ModalManager = () => {
         is_cfd_success_dialog_enabled,
         is_sent_email_modal_enabled,
         is_ctrader_transfer_modal_visible,
+        is_server_maintenance_modal_visible,
+        is_account_unavailable_modal_visible,
     } = modules.cfd;
     const {
         enableApp,
@@ -273,7 +287,7 @@ const ModalManager = () => {
         const acc = current_list_keys.some(
             key => key.startsWith(`${platform}.real.${acc_type}`) && should_be_enabled(current_list[key])
         )
-            ? Object.keys(current_list)
+            ? current_list_keys
                   .filter(key => key.startsWith(`${platform}.real.${acc_type}`))
                   .reduce((_acc, cur) => {
                       _acc.push(current_list[cur]);
@@ -297,10 +311,12 @@ const ModalManager = () => {
 
     return (
         <React.Fragment>
+            {is_server_maintenance_modal_visible && <CFDServerMaintenanceModal />}
+            {is_account_unavailable_modal_visible && <MT5AccountUnavailableModal />}
             {is_jurisdiction_modal_visible && <JurisdictionModal openPasswordModal={openRealPasswordModal} />}
             {should_show_cfd_password_modal && <CFDPasswordModal platform={platform} />}
             {is_cfd_verification_modal_visible && <CFDDbviOnBoarding />}
-            <CFDResetPasswordModal platform={platform} /> {/* a new condition for this hotfix needs to be found */}
+            <CFDResetPasswordModal platform={platform} />
             {is_ctrader_transfer_modal_visible && <CTraderTransferModal />}
             {has_cfd_error && <CFDServerErrorDialog />}
             {(is_top_up_virtual_open || is_top_up_virtual_success) && <CFDTopUpDemoModal platform={platform} />}

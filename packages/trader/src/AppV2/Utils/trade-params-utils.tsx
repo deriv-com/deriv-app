@@ -8,25 +8,84 @@ import {
 } from '@deriv/shared';
 
 export const getTradeParams = (symbol?: string) => ({
-    [TRADE_TYPES.RISE_FALL]: ['duration', 'stake', 'allow_equals'],
-    [TRADE_TYPES.RISE_FALL_EQUAL]: ['duration', 'stake', 'allow_equals'],
-    [TRADE_TYPES.HIGH_LOW]: ['trade_type_tabs', 'duration', 'barrier', 'stake'],
-    [TRADE_TYPES.TOUCH]: ['trade_type_tabs', 'duration', 'barrier', 'stake'],
-    [TRADE_TYPES.MATCH_DIFF]: ['last_digit', 'duration', 'stake'],
-    [TRADE_TYPES.EVEN_ODD]: ['duration', 'stake'],
-    [TRADE_TYPES.OVER_UNDER]: ['last_digit', 'duration', 'stake'],
-    [TRADE_TYPES.ACCUMULATOR]: ['growth_rate', 'stake', 'take_profit', 'accu_info_display'],
-    [TRADE_TYPES.MULTIPLIER]: [
-        'multiplier',
-        'stake',
-        'risk_management',
-        ...(shouldShowExpiration(symbol) ? ['expiration'] : []),
-        'mult_info_display',
-    ],
-    [TRADE_TYPES.TURBOS.LONG]: ['trade_type_tabs', 'duration', 'payout_per_point', 'stake', 'take_profit'],
-    [TRADE_TYPES.TURBOS.SHORT]: ['trade_type_tabs', 'duration', 'payout_per_point', 'stake', 'take_profit'],
-    [TRADE_TYPES.VANILLA.CALL]: ['trade_type_tabs', 'duration', 'strike', 'stake'],
-    [TRADE_TYPES.VANILLA.PUT]: ['trade_type_tabs', 'duration', 'strike', 'stake'],
+    [TRADE_TYPES.RISE_FALL]: {
+        duration: true,
+        stake: true,
+        allow_equals: true,
+    },
+    [TRADE_TYPES.RISE_FALL_EQUAL]: {
+        duration: true,
+        stake: true,
+        allow_equals: true,
+    },
+    [TRADE_TYPES.HIGH_LOW]: {
+        trade_type_tabs: true,
+        duration: true,
+        barrier: true,
+        stake: true,
+    },
+    [TRADE_TYPES.TOUCH]: {
+        trade_type_tabs: true,
+        duration: true,
+        barrier: true,
+        stake: true,
+    },
+    [TRADE_TYPES.MATCH_DIFF]: {
+        last_digit: true,
+        duration: true,
+        stake: true,
+    },
+    [TRADE_TYPES.EVEN_ODD]: {
+        duration: true,
+        stake: true,
+    },
+    [TRADE_TYPES.OVER_UNDER]: {
+        last_digit: true,
+        duration: true,
+        stake: true,
+    },
+    [TRADE_TYPES.ACCUMULATOR]: {
+        growth_rate: true,
+        stake: true,
+        take_profit: true,
+        accu_info_display: true,
+    },
+    [TRADE_TYPES.MULTIPLIER]: {
+        multiplier: true,
+        stake: true,
+        risk_management: true,
+        ...(shouldShowExpiration(symbol) ? { expiration: true } : {}),
+    },
+    [TRADE_TYPES.TURBOS.LONG]: {
+        trade_type_tabs: true,
+        duration: true,
+        payout_per_point: true,
+        stake: true,
+        take_profit: true,
+        barrier_info: true,
+    },
+    [TRADE_TYPES.TURBOS.SHORT]: {
+        trade_type_tabs: true,
+        duration: true,
+        payout_per_point: true,
+        stake: true,
+        take_profit: true,
+        barrier_info: true,
+    },
+    [TRADE_TYPES.VANILLA.CALL]: {
+        trade_type_tabs: true,
+        duration: true,
+        strike: true,
+        stake: true,
+        payout_per_point_info: true,
+    },
+    [TRADE_TYPES.VANILLA.PUT]: {
+        trade_type_tabs: true,
+        duration: true,
+        strike: true,
+        stake: true,
+        payout_per_point_info: true,
+    },
 });
 
 export const isDigitContractWinning = (
@@ -48,6 +107,21 @@ export const isDigitContractWinning = (
     } as { [key: string]: boolean };
     if (!contract_type || !win_conditions[contract_type]) return false;
     return win_conditions[contract_type];
+};
+
+export const focusAndOpenKeyboard = (focused_input?: HTMLInputElement | null, main_input?: HTMLInputElement | null) => {
+    if (main_input && focused_input) {
+        // Reveal a temporary input element and put focus on it
+        focused_input.style.display = 'block';
+        focused_input.focus({ preventScroll: true });
+
+        // The keyboard is open, so now adding a delayed focus on the target element and hide the temporary input element
+        return setTimeout(() => {
+            main_input.focus();
+            main_input.click();
+            focused_input.style.display = 'none';
+        }, 300);
+    }
 };
 
 export const getTradeTypeTabsList = (contract_type = '') => {

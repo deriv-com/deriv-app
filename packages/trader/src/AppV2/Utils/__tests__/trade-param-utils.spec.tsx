@@ -1,28 +1,38 @@
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
-import { getTradeParams, getTradeTypeTabsList, isDigitContractWinning } from '../trade-params-utils';
+import {
+    getTradeParams,
+    getTradeTypeTabsList,
+    isDigitContractWinning,
+    focusAndOpenKeyboard,
+} from '../trade-params-utils';
 
 describe('getTradeParams', () => {
-    it('should return correct array with keys for Rise/Fall', () => {
-        expect(getTradeParams()[TRADE_TYPES.RISE_FALL]).toEqual(['duration', 'stake', 'allow_equals']);
+    it('should return correct object with keys for Rise/Fall', () => {
+        expect(getTradeParams()[TRADE_TYPES.RISE_FALL]).toEqual({
+            duration: true,
+            stake: true,
+            allow_equals: true,
+        });
     });
 
-    it('should return correct array with keys for Multipliers if symbol does not start with "cry"', () => {
-        expect(getTradeParams()[TRADE_TYPES.MULTIPLIER]).toEqual([
-            'multiplier',
-            'stake',
-            'risk_management',
-            'mult_info_display',
-        ]);
+    it('should return correct object with keys for Multipliers if symbol does not start with "cry"', () => {
+        expect(getTradeParams()[TRADE_TYPES.MULTIPLIER]).toEqual({
+            multiplier: true,
+            stake: true,
+            risk_management: true,
+        });
     });
 
-    it('should return correct array with keys for Multipliers if symbol starts with "cry"', () => {
-        expect(getTradeParams('crypto')[TRADE_TYPES.MULTIPLIER]).toEqual([
-            'multiplier',
-            'stake',
-            'risk_management',
-            'expiration',
-            'mult_info_display',
-        ]);
+    it('should return correct object with keys for Multipliers if symbol starts with "cry"', () => {
+        expect(getTradeParams('crypto')[TRADE_TYPES.MULTIPLIER]).toEqual({
+            multiplier: true,
+            stake: true,
+            risk_management: true,
+            expiration: true,
+        });
     });
 });
 
@@ -73,6 +83,38 @@ describe('isDigitContractWinning', () => {
         expect(isDigitContractWinning(CONTRACT_TYPES.EVEN_ODD.EVEN, null, 0)).toBeTruthy();
         expect(isDigitContractWinning(CONTRACT_TYPES.EVEN_ODD.EVEN, null, null)).toBeFalsy();
         expect(isDigitContractWinning(CONTRACT_TYPES.EVEN_ODD.EVEN, null, 1)).toBeFalsy();
+    });
+});
+
+describe('focusAndOpenKeyboard', () => {
+    it('should apply focus to the passed ReactElement', () => {
+        jest.useFakeTimers();
+
+        const MockComponent = () => {
+            const input_ref = React.useRef<HTMLInputElement>(null);
+            const focused_input_ref = React.useRef<HTMLInputElement>(null);
+
+            return (
+                <React.Fragment>
+                    <input type='number' ref={input_ref} />
+                    <button onClick={() => focusAndOpenKeyboard(focused_input_ref.current, input_ref.current)}>
+                        Focus
+                    </button>
+                    <input ref={focused_input_ref} style={{ height: 0, opacity: 0, display: 'none' }} />
+                </React.Fragment>
+            );
+        };
+
+        render(<MockComponent />);
+
+        const input = screen.getByRole('spinbutton');
+        expect(input).not.toHaveFocus();
+
+        userEvent.click(screen.getByText('Focus'));
+
+        jest.runAllTimers();
+
+        expect(input).toHaveFocus();
     });
 });
 

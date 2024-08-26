@@ -429,6 +429,8 @@ export const getMarketNamesMap = () =>
         RDBULL: localize('Bull Market Index'),
         STPRNG: localize('Step 100 Index'),
         STPRNG2: localize('Step 200 Index'),
+        STPRNG3: localize('Step 300 Index'),
+        STPRNG4: localize('Step 400 Index'),
         STPRNG5: localize('Step 500 Index'),
         WLDAUD: localize('AUD Basket'),
         WLDEUR: localize('EUR Basket'),

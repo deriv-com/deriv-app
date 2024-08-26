@@ -1,7 +1,7 @@
-import React from 'react';
+import { useContext, Fragment } from 'react';
 import { Text } from '@deriv/components';
 import { formatDate } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import ApiTokenContext from './api-token-context';
 import ApiTokenDeleteButton from './api-token-delete-button';
@@ -12,8 +12,9 @@ import ApiTokenTableRowTokenCell from './api-token-table-row-token-cell';
 import { TApiContext, TToken } from '../../Types';
 
 const ApiTokenTable = () => {
-    const { api_tokens } = React.useContext<TApiContext>(ApiTokenContext);
+    const { api_tokens } = useContext<TApiContext>(ApiTokenContext);
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
 
     const formatTokenScopes = (str: string) => {
         const replace_filter = str.replace(/[-_]/g, ' ');
@@ -51,7 +52,7 @@ const ApiTokenTable = () => {
     };
     if (!isDesktop) {
         return (
-            <React.Fragment>
+            <Fragment>
                 {api_tokens?.map((token_data: TToken) => {
                     const token = getScopeValue(token_data);
                     return (
@@ -102,7 +103,7 @@ const ApiTokenTable = () => {
                         </div>
                     );
                 })}
-            </React.Fragment>
+            </Fragment>
         );
     }
 

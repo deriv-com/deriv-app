@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { CaptionText, Text } from '@deriv-com/quill-ui';
 import { useSwipeable } from 'react-swipeable';
-import { IconTradeTypes, Money } from '@deriv/components';
+import { IconTradeTypes, Money, RemainingTime } from '@deriv/components';
 import {
     TContractInfo,
     getCardLabels,
@@ -66,6 +66,7 @@ const ContractCard = ({
         isHighLow: isHighLow({ shortcode }),
         showMainTitle: true,
     });
+    const cancellation_date_expiry = 'cancellation' in contractInfo ? contractInfo.cancellation?.date_expiry : null;
     const currentTick = 'tick_count' in contractInfo && contractInfo.tick_count ? getCurrentTick(contractInfo) : null;
     const tradeTypeName = `${contract_main_title} ${getTradeTypeName(contract_type ?? '', {
         isHighLow: isHighLow({ shortcode }),
@@ -165,9 +166,21 @@ const ContractCard = ({
                                 {isCancelButtonPressed ? (
                                     <div className='circle-loader' data-testid='dt_button_loader' />
                                 ) : (
-                                    <CaptionText bold as='div' className='label'>
-                                        {getCardLabels().CANCEL}
-                                    </CaptionText>
+                                    <>
+                                        <CaptionText bold as='div' className='label'>
+                                            {getCardLabels().CANCEL}
+                                        </CaptionText>
+                                        {cancellation_date_expiry && (
+                                            <CaptionText bold as='div' className='label'>
+                                                <RemainingTime
+                                                    end_time={cancellation_date_expiry}
+                                                    format='mm:ss'
+                                                    getCardLabels={getCardLabels}
+                                                    start_time={serverTime as moment.Moment}
+                                                />
+                                            </CaptionText>
+                                        )}
+                                    </>
                                 )}
                             </button>
                         )}

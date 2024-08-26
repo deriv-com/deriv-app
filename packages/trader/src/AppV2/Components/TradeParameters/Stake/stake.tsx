@@ -145,12 +145,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
 
     const handleOnChange = (e: { target: { name: string; value: string } }) => {
         setShouldShowError(e.target.value !== '');
-        // TODO: this value modifications will no longer be needed after quill-ui TextFieldWithSteppers is improved to accept and replace commas with dots:
-        let value = e.target.value.replaceAll(',', '.').replaceAll(/\.{2,}/g, '.');
-        if (Number(value.match(/\./g)?.length) > 1) {
-            value = parseFloat(value).toString();
-        }
-        onChange({ target: { name: 'amount', value } });
+        onChange({ target: { name: 'amount', value: e.target.value } });
     };
 
     const onClose = (is_saved = false) => {
@@ -182,11 +177,13 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                         <TextFieldWithSteppers
                             allowDecimals
                             allowSign={false}
+                            customType='commaRemoval'
                             decimals={getDecimalPlaces(currency)}
                             data-testid='dt_input_with_steppers'
                             message={getInputMessage()}
                             minusDisabled={Number(amount) - 1 <= 0}
                             name='amount'
+                            noStatusIcon
                             onChange={handleOnChange}
                             placeholder={localize('Amount')}
                             regex={/[^0-9.,]/g}

@@ -87,14 +87,17 @@
         button {
             all: unset;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             width: var(--core-size-3600);
             height: 100%;
             cursor: pointer;
 
-            .label {
+            .label,
+            .dc-remaining-time {
                 color: var(--core-color-solid-slate-50);
+                font-size: var(--core-fontSize-50);
             }
             &:disabled:not(.loading) {
                 background-color: var(--core-color-opacity-black-200);

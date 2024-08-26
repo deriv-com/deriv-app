@@ -19,6 +19,7 @@ import PersonalDetailsForm from '../../../Components/forms/personal-details-form
 import { isServerError, validate } from '../../../Helpers/utils';
 import { getFileUploaderDescriptions } from '../../../Constants/file-uploader';
 import { API_ERROR_CODES } from '../../../Constants/api-error-codes';
+import { DocumentUploadRequest } from '@deriv/api-types';
 
 type TProofOfAddressForm = {
     className: string;
@@ -32,7 +33,9 @@ type TProofOfAddressForm = {
 type TFormInitialValues = Record<
     'address_line_1' | 'address_line_2' | 'address_city' | 'address_state' | 'address_postcode',
     string
->;
+> & {
+    document_type?: string;
+};
 
 type TFormState = Record<'is_btn_loading' | 'is_submit_success' | 'should_allow_submit' | 'should_show_form', boolean>;
 
@@ -194,7 +197,9 @@ const ProofOfAddressForm = observer(
 
             // upload files
             try {
-                const api_response = await upload(document_files);
+                const api_response = await upload(document_files, {
+                    document_type: values.document_type as DocumentUploadRequest['document_type'],
+                });
 
                 if (api_response?.warning) {
                     setFormState({ ...form_state, ...{ is_btn_loading: false } });
@@ -259,6 +264,7 @@ const ProofOfAddressForm = observer(
             address_city,
             address_state,
             address_postcode,
+            document_type: { text: '', value: '' },
         };
 
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
@@ -310,13 +316,13 @@ const ProofOfAddressForm = observer(
                                                 id='dt_poa_submit-error'
                                             />
                                         )}
-                                        <FormSubHeader title={localize('Address')} title_text_size='s' />
+                                        <FormSubHeader title={localize('Enter your address')} title_text_size='s' />
                                         <PersonalDetailsForm
                                             is_qualified_for_poa
                                             editable_fields={changeable_fields}
                                             states_list={states_list}
                                         />
-                                        <FormSubHeader title={localize('Document submission')} title_text_size='s' />
+                                        <FormSubHeader title={localize('Submit your document')} title_text_size='s' />
                                         <FormBodySection>
                                             <FileUploaderContainer
                                                 onFileDrop={files => {
@@ -330,6 +336,7 @@ const ProofOfAddressForm = observer(
                                                     />
                                                 }
                                                 examples={<CommonMistakeExamples />}
+                                                country_of_residence={account_settings?.country_code as string}
                                             />
                                         </FormBodySection>
                                     </FormBody>

@@ -102,7 +102,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 <div className='wallets-added-mt5__details-title'>
                     <WalletText size='sm'>{title}</WalletText>
                     {!activeWallet?.is_virtual && (
-                        <div className='wallets-added-mt5__details-title-landing-company'>
+                        <div className='wallets-added-mt5__details-landing-company'>
                             <WalletText color='black' size={isMobile ? 'sm' : 'xs'}>
                                 {account.landing_company_short?.toUpperCase()}
                             </WalletText>
@@ -120,10 +120,10 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 </WalletText>
                 {jurisdictionStatus.is_pending && (
                     <InlineMessage
-                        className='wallets-added-mt5__details-badge--warning'
+                        className='wallets-added-mt5__badge--warning'
                         icon={
                             <LabelPairedCircleExclamationLgBoldIcon
-                                className='wallets-added-mt5__details-badge-icon'
+                                className='wallets-added-mt5__badge-icon'
                                 fill='var(--du-text-warning)'
                             />
                         }
@@ -136,10 +136,10 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
 
                 {jurisdictionStatus.is_failed && (
                     <InlineMessage
-                        className='wallets-added-mt5__details-badge--error'
+                        className='wallets-added-mt5__badge--error'
                         icon={
                             <LabelPairedTriangleExclamationMdBoldIcon
-                                className='wallets-added-mt5__details-badge-icon'
+                                className='wallets-added-mt5__badge-icon'
                                 fill='var(--du-text-loss-danger)'
                             />
                         }
@@ -148,7 +148,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                             <Localize
                                 components={[
                                     <a
-                                        className='wallets-added-mt5__details-badge--error-link'
+                                        className='wallets-added-mt5__badge--error-link'
                                         key={0}
                                         onClick={() =>
                                             show(
@@ -162,7 +162,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                                         }
                                     />,
                                 ]}
-                                i18n_default_text='Verification failed <0>Why?></0>'
+                                i18n_default_text='Verification failed <0>Why?</0>'
                             />
                         </WalletText>
                     </InlineMessage>

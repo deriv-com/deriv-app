@@ -331,7 +331,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
 
             &--phone-verification-livechat-link {
-                color: $color-black-1;
+                color: var(--text-general);
             }
 
             &--2-cols {

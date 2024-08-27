@@ -29,10 +29,9 @@ const SelectedManualDocument: React.FC<TSelectedManualDocumentProps> = ({
 }) => {
     const { localize } = useTranslations();
     const { data: poiData } = usePOI();
-    const SelectedDocument =
-        poiData?.current.onfido_supported && poiData?.current.onfido_supported.includes(selection)
-            ? Onfido
-            : getManualDocumentsMapper(localize)[selection].component;
+    const SelectedDocument = poiData?.current.onfido_supported?.includes(selection)
+        ? Onfido
+        : getManualDocumentsMapper(localize)[selection].component;
 
     return (
         <SelectedDocument

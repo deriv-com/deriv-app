@@ -13,6 +13,10 @@ jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
 jest.useFakeTimers();
 
+const what_is_deriv_bot = 'What is Deriv Bot?';
+const deriv_bot_content =
+    "Deriv Bot is a web-based strategy builder for trading digital options. It’s a platform where you can build your own automated trading bot using drag-and-drop 'blocks'.";
+
 describe('<FAQContent />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element;
     const mock_store = mockStore({});
@@ -37,14 +41,14 @@ describe('<FAQContent />', () => {
         render(<FAQContent faq_list={faq_content} />, { wrapper });
         const accordion = screen.getByTestId('dt_accordion_test');
         userEvent.click(accordion);
-        expect(accordion).toHaveTextContent('Deriv Bot is a web-based strategy builder for trading digital options.');
+        expect(accordion).toHaveTextContent(deriv_bot_content);
     });
 
     it('should show faq content in text size-s on desktop', () => {
         mock_store.ui.is_desktop = true;
 
         render(<FAQContent faq_list={faq_content} />, { wrapper });
-        const faq = screen.getByText('What is Deriv Bot?');
+        const faq = screen.getByText(what_is_deriv_bot);
         expect(faq).toHaveStyle('--text-size: var(--text-size-s);');
     });
 
@@ -52,7 +56,7 @@ describe('<FAQContent />', () => {
         mock_store.ui.is_desktop = false;
 
         render(<FAQContent faq_list={faq_content} />, { wrapper });
-        const faq = screen.getByText('What is Deriv Bot?');
+        const faq = screen.getByText(what_is_deriv_bot);
         expect(faq).toHaveStyle('--text-size: var(--text-size-xs);');
     });
 
@@ -63,14 +67,10 @@ describe('<FAQContent />', () => {
         const accordion = screen.getByTestId('dt_accordion_test');
         expect(accordion).toBeInTheDocument();
 
-        const faq = screen.getByText('What is Deriv Bot?');
+        const faq = screen.getByText(what_is_deriv_bot);
         userEvent.click(faq);
         jest.advanceTimersByTime(5);
-        expect(
-            screen.getByText(
-                "Deriv Bot is a web-based strategy builder for trading digital options. It’s a platform where you can build your own automated trading bot using drag-and-drop 'blocks'."
-            )
-        ).toBeInTheDocument();
+        expect(screen.getByText(deriv_bot_content)).toBeInTheDocument();
     });
 
     it('should call handleAccordionOpen and accordion item should open on mobile', () => {
@@ -80,14 +80,10 @@ describe('<FAQContent />', () => {
         const accordion = screen.getByTestId('dt_accordion_test');
         expect(accordion).toBeInTheDocument();
 
-        const faq = screen.getByText('What is Deriv Bot?');
+        const faq = screen.getByText(what_is_deriv_bot);
         userEvent.click(faq);
         jest.advanceTimersByTime(5);
-        expect(
-            screen.getByText(
-                "Deriv Bot is a web-based strategy builder for trading digital options. It’s a platform where you can build your own automated trading bot using drag-and-drop 'blocks'."
-            )
-        ).toBeInTheDocument();
+        expect(screen.getByText(deriv_bot_content)).toBeInTheDocument();
     });
 
     it('should call handleAccordionOpen and accordion item should close', () => {
@@ -98,6 +94,6 @@ describe('<FAQContent />', () => {
 
         userEvent.click(accordion);
         jest.advanceTimersByTime(5);
-        expect(screen.getByText('What is Deriv Bot?')).toBeInTheDocument();
+        expect(screen.getByText(what_is_deriv_bot)).toBeInTheDocument();
     });
 });

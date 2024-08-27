@@ -89,3 +89,5 @@ export { default as useGrowthbookIsOn } from './useGrowthbookIsOn';
 export { default as useResidenceList } from './useResidenceList';
 export { default as usePhoneNumberVerificationSetTimer } from './usePhoneNumberVerificationSetTimer';
 export { default as usePhoneVerificationAnalytics } from './usePhoneVerificationAnalytics';
+export { default as useTradingPlatformStatus } from './useTradingPlatformStatus';
+export type { TradingPlatformStatus } from './useTradingPlatformStatus';

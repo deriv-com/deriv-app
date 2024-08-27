@@ -71,10 +71,6 @@ export const MT5MarketTypeDetails: Record<TMarketTypes.All, TMT5MarketTypeDetail
 } as const;
 
 export const PlatformDetails = {
-    binary: {
-        name: 'binary',
-        title: 'BinaryBot',
-    },
     ctrader: {
         name: 'ctrader',
         title: 'Deriv cTrader',

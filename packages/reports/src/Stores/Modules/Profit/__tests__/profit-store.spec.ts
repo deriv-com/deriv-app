@@ -118,6 +118,8 @@ describe('ProfitTableStore', () => {
                 modules: {
                     positions: {
                         filteredContractTypes: filtered_contract_types,
+                        setDateFrom: jest.fn(),
+                        setDateTo: jest.fn(),
                     },
                 },
             }) as TCoreStores,
@@ -210,7 +212,6 @@ describe('ProfitTableStore', () => {
 
             expect(spyWSProfitTable).toBeCalledWith(50, 0, {
                 contract_type: filtered_contract_types,
-                date_to: default_date_to,
             });
         });
     });

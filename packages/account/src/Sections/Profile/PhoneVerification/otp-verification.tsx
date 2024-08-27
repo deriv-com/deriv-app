@@ -8,6 +8,7 @@ import { convertPhoneTypeDisplay } from '../../../Helpers/utils';
 import ResendCodeTimer from './resend-code-timer';
 import DidntGetTheCodeModal from './didnt-get-the-code-modal';
 import PhoneNumberVerifiedModal from './phone-number-verified-modal';
+import CoolDownPeriodModal from './cool-down-period-modal';
 
 type TOTPVerification = {
     phone_verification_type: string;
@@ -30,6 +31,8 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
         setPhoneOtpErrorMessage,
         is_phone_number_verified,
         is_email_verified,
+        show_cool_down_period_modal,
+        setShowCoolDownPeriodModal,
         sendEmailOTPVerification,
         requestOnSMS,
         requestOnWhatsApp,
@@ -103,6 +106,11 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
 
     return (
         <PhoneVerificationCard is_small_card>
+            <CoolDownPeriodModal
+                show_cool_down_period_modal={show_cool_down_period_modal}
+                setShowCoolDownPeriodModal={setShowCoolDownPeriodModal}
+                reInitializeGetSettings={reInitializeGetSettings}
+            />
             <PhoneNumberVerifiedModal
                 should_show_phone_number_verified_modal={should_show_phone_number_verified_modal}
                 setShouldShowPhoneNumberVerifiedModal={setShouldShowPhoneNumberVerifiedModal}

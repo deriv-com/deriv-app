@@ -13,6 +13,7 @@ jest.mock('@deriv/hooks', () => ({
 
 jest.mock('../phone-number-verified-modal', () => jest.fn(() => <div>Phone Number Verified Modal</div>));
 jest.mock('../resend-code-timer', () => jest.fn(() => <div>Resend Code Timer</div>));
+jest.mock('../cool-down-period-modal', () => jest.fn(() => <div>Cooldown Period Modal</div>));
 
 describe('OTPVerification', () => {
     const store = mockStore({
@@ -181,5 +182,14 @@ describe('OTPVerification', () => {
         userEvent.click(verify_button);
         expect(store.client.setVerificationCode).toBeCalled();
         expect(mockSetOtpVerification).toBeCalledWith({ phone_verification_type: '', show_otp_verification: false });
+    });
+
+    it('should display cooldown period modal when show_cool_down_period_modal is true', () => {
+        store.ui.should_show_phone_number_otp = false;
+        (useSendOTPVerificationCode as jest.Mock).mockReturnValue({
+            show_cool_down_period_modal: true,
+        });
+        renderComponent();
+        expect(screen.getByText(/Cooldown Period Modal/)).toBeInTheDocument();
     });
 });

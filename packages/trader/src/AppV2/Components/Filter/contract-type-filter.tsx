@@ -29,9 +29,8 @@ const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: T
 
     const getChipLabel = () => {
         const arrayLength = contractTypeFilter.length;
-        if (!arrayLength) return <Localize i18n_default_text='All trade types' key='All trade types' />;
-        if (arrayLength === 1) return AVAILABLE_CONTRACTS.find(type => type.id === contractTypeFilter[0])?.tradeType;
-        return <Localize i18n_default_text='{{amount}} trade types' values={{ amount: arrayLength }} key='Amount' />;
+        if (!arrayLength) return <Localize i18n_default_text='Trade types' key='all' />;
+        return <Localize i18n_default_text='Trade types ({{count}})' values={{ count: arrayLength }} key='selected' />;
     };
 
     return (

@@ -166,9 +166,11 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 variant='fill'
                 readOnly
                 label={<Localize i18n_default_text='Stake' key={`stake${is_minimized ? '-minimized' : ''}`} />}
+                noStatusIcon
                 onClick={() => setIsOpen(true)}
                 value={`${v2_params_initial_values?.stake ?? amount} ${getCurrencyDisplayCode(currency)}`}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
+                status={stake_error && !is_open ? 'error' : undefined}
             />
             <ActionSheet.Root isOpen={is_open} onClose={() => onClose(false)} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>

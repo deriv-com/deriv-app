@@ -74,6 +74,7 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                             }
                             disabled={Number(profit) >= 0}
                             isOpaque
+                            variant='secondary'
                             {...buttonProps}
                         />
                     )}

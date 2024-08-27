@@ -423,6 +423,7 @@ const PersonalDetailsForm = observer(() => {
                                         {isPhoneNumberVerificationEnabled && (
                                             <VerifyButton
                                                 is_verify_button_disabled={
+                                                    isFieldDisabled('phone') ||
                                                     is_request_button_disabled ||
                                                     account_settings.phone !== values.phone ||
                                                     !account_settings.phone

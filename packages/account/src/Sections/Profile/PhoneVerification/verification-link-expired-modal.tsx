@@ -71,7 +71,7 @@ const VerificationLinkExpiredModal = ({
             <Modal.Body>
                 <div className='phone-verification__cancel-modal--contents'>
                     <Text>
-                        <Localize i18n_default_text='Request a new link to verify your phone number.' />
+                        <Localize i18n_default_text='Request a new verification link via email.' />
                     </Text>
                 </div>
             </Modal.Body>

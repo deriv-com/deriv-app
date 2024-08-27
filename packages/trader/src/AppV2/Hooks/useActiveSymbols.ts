@@ -93,11 +93,10 @@ const useActiveSymbols = () => {
                 const { symbol: urlSymbol, showModal: showSymbolModal } = getTradeURLParams({
                     active_symbols,
                 });
-                const has_symbol_changed_via_url = urlSymbol !== default_symbol_ref.current;
+                const has_symbol_changed_via_url = urlSymbol && urlSymbol !== default_symbol_ref.current;
 
-                await onChangeSymbolAsync(
-                    has_symbol_changed_via_url && !showSymbolModal ? (urlSymbol as string) : default_symbol_ref.current
-                );
+                if (showSymbolModal) toggleUrlUnavailableModal(true);
+
                 onChange({
                     target: {
                         name: 'symbol',
@@ -105,14 +104,18 @@ const useActiveSymbols = () => {
                     },
                 });
 
+                await onChangeSymbolAsync(
+                    has_symbol_changed_via_url && !showSymbolModal ? (urlSymbol as string) : default_symbol_ref.current
+                );
+
                 const contract_categories = ContractType.getContractCategories();
                 const { contractType: urlContractType, showModal } = getTradeURLParams({
                     contract_types_list: contract_categories.contract_types_list,
                 });
 
-                const has_contract_type_changed_via_url = urlContractType !== contract_type && contract_type !== '';
-                if (showModal || showSymbolModal) toggleUrlUnavailableModal(true);
+                if (showModal) toggleUrlUnavailableModal(true);
 
+                const has_contract_type_changed_via_url = urlContractType !== contract_type && contract_type !== '';
                 if (has_contract_type_changed_via_url && !showModal) {
                     onChange({
                         target: {

@@ -1068,28 +1068,26 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     />
                 </Modal>
             </DesktopWrapper>
-            <MobileWrapper>
-                <MobileDialog
-                    has_full_height
-                    portal_element_id='modal_root'
-                    title={localize('Deriv MT5 latest password requirements')}
-                    visible={is_mt5_password_invalid_format_modal_visible}
-                    onClose={closeModal}
-                    wrapper_classname='cfd-password-modal'
-                >
-                    <CFDPasswordChange
-                        error_type={error_type}
-                        error_message={error_message}
-                        form_error={form_error}
-                        should_set_trading_password={should_set_trading_password}
-                        setNewPasswordValue={setNewPasswordValue}
-                        validatePassword={validatePassword}
-                        onForgotPassword={handleForgotPassword}
-                        platform={CFD_PLATFORMS.MT5}
-                        onCancel={closeModal}
-                    />
-                </MobileDialog>
-            </MobileWrapper>
+            <MobileDialog
+                has_full_height
+                portal_element_id='modal_root'
+                visible={is_mt5_password_invalid_format_modal_visible}
+                onClose={closeModal}
+                wrapper_classname='cfd-password-modal'
+                renderTitle={() => localize('Deriv MT5 latest password requirements')}
+            >
+                <CFDPasswordChange
+                    error_type={error_type}
+                    error_message={error_message}
+                    form_error={form_error}
+                    should_set_trading_password={should_set_trading_password}
+                    setNewPasswordValue={setNewPasswordValue}
+                    validatePassword={validatePassword}
+                    onForgotPassword={handleForgotPassword}
+                    platform={CFD_PLATFORMS.MT5}
+                    onCancel={closeModal}
+                />
+            </MobileDialog>
         </React.Fragment>
     );
 

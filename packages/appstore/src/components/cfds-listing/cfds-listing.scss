@@ -2468,6 +2468,15 @@
     @include mobile-or-tablet-screen {
         &__footer-button {
             padding: 1rem;
+            // width: 100%;
+            // .dc-form-submit-button {
+            //     gap: 0.8rem;
+            //     flex-wrap: wrap;
+            //     .dc-btn {
+            //         margin: 0;
+            //         flex: 1 0 auto;
+            //     }
+            // }
         }
     }
 }

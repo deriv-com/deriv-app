@@ -4,6 +4,7 @@ import { observer, useStore } from '@deriv/stores';
 import { FormSubmitButton, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { isDesktop, WS, getErrorMessages } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import { CATEGORY, CFD_PLATFORMS, PRODUCT } from '../Helpers/cfd-config';
 import { validatePassword } from '../Helpers/constants';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
@@ -42,6 +43,7 @@ const CFDPasswordChange = observer(
         should_set_trading_password,
         platform,
     }: TCFDPasswordChangeProps) => {
+        const { isDesktop: isDesktopDevice } = useDevice();
         const { ui, modules } = useStore();
         const { product, account_type } = useCfdStore();
         const { cfd } = modules;
@@ -204,7 +206,7 @@ const CFDPasswordChange = observer(
                                 <FormSubmitButton
                                     is_disabled={!values.old_password || !values.new_password || !isValid || !checked}
                                     has_cancel={has_cancel_button}
-                                    is_absolute={is_mobile}
+                                    is_absolute={!isDesktopDevice}
                                     cancel_label={localize('Forgot password?')}
                                     onCancel={handleCancel}
                                     is_loading={isSubmitting}

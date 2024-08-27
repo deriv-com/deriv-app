@@ -67,7 +67,7 @@
     border-radius: 0;
 }
 
-.get-started-trading-banner-ct {
+.get-started-trading-banner-ct > *:first-child {
     margin-block-end: 3.2rem;
 
     @include desktop-screen {

@@ -34,6 +34,16 @@ jest.mock('@deriv/bot-skeleton', () => ({
                         icon: ['CALLE', 'PUTE'],
                     },
                 ],
+                getContractTypes: () => [
+                    {
+                        text: 'Up/Down',
+                        value: 'CALL',
+                    },
+                    {
+                        text: 'Up/Down',
+                        value: 'PUT',
+                    },
+                ],
             },
             active_symbols: {
                 getSymbolsForBot: () => [
@@ -221,7 +231,7 @@ describe('<QuickStrategyForm />', () => {
         expect(container).toBeInTheDocument();
     });
 
-    it('on press of enter handleEnter should run', async () => {
+    it('should handleEnter be called on press of enter ', async () => {
         const mockEventListener = jest.fn();
         document.addEventListener('keydown', mockEventListener);
         render(<QuickStrategyForm />, {

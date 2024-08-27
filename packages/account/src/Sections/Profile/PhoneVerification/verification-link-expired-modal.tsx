@@ -55,6 +55,7 @@ const VerificationLinkExpiredModal = ({
             showHandleBar
             isOpened={should_show_verification_link_expired_modal}
             isPrimaryButtonDisabled={!!next_email_otp_request_timer}
+            buttonColor='coral'
             primaryButtonCallback={handleSendNewLinkButton}
             primaryButtonLabel={
                 <Localize

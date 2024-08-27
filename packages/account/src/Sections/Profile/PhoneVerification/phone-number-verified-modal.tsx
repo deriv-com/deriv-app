@@ -37,6 +37,7 @@ const PhoneNumberVerifiedModal = ({
             isMobile={isMobile}
             showHandleBar
             isOpened={should_show_phone_number_verified_modal}
+            buttonColor='coral'
             primaryButtonCallback={handleDoneButton}
             primaryButtonLabel={<Localize i18n_default_text='OK' />}
             disableCloseOnOverlay

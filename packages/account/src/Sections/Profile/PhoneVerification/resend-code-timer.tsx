@@ -68,16 +68,22 @@ const ResendCodeTimer = ({
     };
 
     const isButtonDisabled = useCallback(() => {
-        return should_show_resend_code_button ? !!next_email_otp_request_timer : !!next_phone_otp_request_timer;
-    }, [should_show_resend_code_button, next_email_otp_request_timer, next_phone_otp_request_timer]);
+        const disable_resend_code_button =
+            !!next_email_otp_request_timer || is_button_disabled || is_request_button_disabled;
+        const disable_didnt_get_a_code_button =
+            !!next_phone_otp_request_timer || is_button_disabled || is_request_button_disabled;
+
+        return should_show_resend_code_button ? disable_resend_code_button : disable_didnt_get_a_code_button;
+    }, [
+        should_show_resend_code_button,
+        next_email_otp_request_timer,
+        next_phone_otp_request_timer,
+        is_button_disabled,
+        is_request_button_disabled,
+    ]);
 
     return (
-        <Button
-            variant='tertiary'
-            onClick={resendCode}
-            disabled={isButtonDisabled() || is_button_disabled || is_request_button_disabled}
-            color='black'
-        >
+        <Button variant='tertiary' onClick={resendCode} disabled={isButtonDisabled()} color='black'>
             <CaptionText bold underlined>
                 {should_show_resend_code_button ? (
                     <Localize

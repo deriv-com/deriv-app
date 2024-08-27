@@ -42,13 +42,13 @@ describe('PhoneNumberVerifiedModal', () => {
 
     it('it should render PhoneNumberVerifiedModal', () => {
         renderModal();
-        expect(screen.getByText(/Verification successful/)).toBeInTheDocument();
-        expect(screen.getByText(/That's it! Your number is verified./)).toBeInTheDocument();
+        expect(screen.getByText(/Success/)).toBeInTheDocument();
+        expect(screen.getByText(/Your phone number is verified./)).toBeInTheDocument();
     });
 
     it('it should close PhoneNumberVerifiedModal and navigate to PersonalDetails section when done is clicked', () => {
         renderModal();
-        const doneButton = screen.getByRole('button', { name: /Done/ });
+        const doneButton = screen.getByRole('button', { name: /OK/ });
         userEvent.click(doneButton);
         expect(mockSetShouldShowPhoneNumberVerifiedModal).toHaveBeenCalledTimes(1);
         expect(mockHistoryPush).toHaveBeenCalledWith(routes.personal_details);

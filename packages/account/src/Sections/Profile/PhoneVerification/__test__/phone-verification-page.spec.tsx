@@ -59,7 +59,7 @@ describe('ConfirmPhoneNumber', () => {
 
     it('should render ConfirmPhoneNumber', () => {
         renderComponent();
-        expect(screen.getByText(/Phone number verification/)).toBeInTheDocument();
+        expect(screen.getByText(/Back to personal details/)).toBeInTheDocument();
         expect(screen.getByText(/Confirm Your Email/)).toBeInTheDocument();
     });
 

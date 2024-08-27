@@ -1,10 +1,10 @@
-import { Button, Modal, Text } from '@deriv-com/quill-ui';
-import { Localize, localize } from '@deriv/translations';
-import { VERIFICATION_SERVICES } from '@deriv/shared';
-import { convertPhoneTypeDisplay } from '../../../Helpers/utils';
-import { TSocketError } from '@deriv/api/types';
-import { useDevice } from '@deriv-com/ui';
 import { useEffect } from 'react';
+import { TSocketError } from '@deriv/api/types';
+import { VERIFICATION_SERVICES } from '@deriv/shared';
+import { useTranslations, Localize } from '@deriv-com/translations';
+import { Modal, Text } from '@deriv-com/quill-ui';
+import { useDevice } from '@deriv-com/ui';
+import { convertPhoneTypeDisplay } from '../../../Helpers/utils';
 
 type TDidntGetTheCodeModal = {
     phone_verification_type: string;
@@ -34,6 +34,7 @@ const DidntGetTheCodeModal = ({
     setOtpVerification,
 }: TDidntGetTheCodeModal) => {
     const { isMobile } = useDevice();
+    const { localize } = useTranslations();
 
     useEffect(() => {
         if (is_email_verified || email_otp_error) reInitializeGetSettings();
@@ -68,70 +69,50 @@ const DidntGetTheCodeModal = ({
         setShouldShowDidntGetTheCodeModal(false);
     };
 
-    const handleChangePhoneNumber = () => {
-        clearOtpValue();
-        setShouldShowDidntGetTheCodeModal(false);
-        setOtpVerification({ show_otp_verification: false, phone_verification_type });
-    };
-
     return (
         <Modal
             isMobile={isMobile}
             showHandleBar
             isOpened={should_show_didnt_get_the_code_modal}
+            showSecondaryButton
+            primaryButtonCallback={handleResendCode}
+            secondaryButtonCallback={handleChangeOTPVerification}
+            primaryButtonLabel={<Localize i18n_default_text='Resend code' />}
+            secondaryButtonLabel={
+                <Localize
+                    i18n_default_text='Send code via {{phone_verification_type}}'
+                    values={{
+                        phone_verification_type: localize(
+                            convertPhoneTypeDisplay(
+                                phone_verification_type === VERIFICATION_SERVICES.SMS
+                                    ? VERIFICATION_SERVICES.WHATSAPP
+                                    : VERIFICATION_SERVICES.SMS
+                            )
+                        ),
+                    }}
+                />
+            }
             disableCloseOnOverlay
             showCrossIcon
             toggleModal={() => setShouldShowDidntGetTheCodeModal(false)}
-            hasFooter={false}
         >
+            <Modal.Header title={<Localize i18n_default_text="Didn't receive a code?" />} />
             <Modal.Body>
                 <div className='phone-verification__get-code-modal--contents'>
-                    <Text bold>
-                        <Localize i18n_default_text='Get a new code' />
+                    <Text>
+                        <Localize
+                            i18n_default_text='Request a new one or get one via {{phone_verification_type}}.'
+                            values={{
+                                phone_verification_type: localize(
+                                    convertPhoneTypeDisplay(
+                                        phone_verification_type === VERIFICATION_SERVICES.SMS
+                                            ? VERIFICATION_SERVICES.WHATSAPP
+                                            : VERIFICATION_SERVICES.SMS
+                                    )
+                                ),
+                            }}
+                        />
                     </Text>
-                    <div className='phone-verification__get-code-modal--contents__buttons'>
-                        <Button fullWidth color='black-white' size='lg' onClick={handleResendCode}>
-                            <Text color='white' bold>
-                                <Localize i18n_default_text='Resend code' />
-                            </Text>
-                        </Button>
-                        <Button
-                            fullWidth
-                            color='black-white'
-                            variant='secondary'
-                            size='lg'
-                            onClick={handleChangeOTPVerification}
-                        >
-                            <Text color='white' bold>
-                                <Localize
-                                    i18n_default_text='Send code via {{phone_verification_type}}'
-                                    values={{
-                                        phone_verification_type: localize(
-                                            convertPhoneTypeDisplay(
-                                                phone_verification_type === VERIFICATION_SERVICES.SMS
-                                                    ? VERIFICATION_SERVICES.WHATSAPP
-                                                    : VERIFICATION_SERVICES.SMS
-                                            )
-                                        ),
-                                    }}
-                                />
-                            </Text>
-                        </Button>
-                        <Text>
-                            <Localize i18n_default_text='or' />
-                        </Text>
-                        <Button
-                            fullWidth
-                            variant='tertiary'
-                            size='lg'
-                            onClick={handleChangePhoneNumber}
-                            color='black-white'
-                        >
-                            <Text bold>
-                                <Localize i18n_default_text='Change phone number' />
-                            </Text>
-                        </Button>
-                    </div>
                 </div>
             </Modal.Body>
         </Modal>

@@ -41,7 +41,7 @@ describe('CancelPhoneVerificationModal', () => {
 
     const mock_store = mockStore({});
 
-    const buttons = [/Go back/, /Yes, cancel/];
+    const buttons = [/Continue verification/, /Cancel/];
 
     const renderComponent = () => {
         render(
@@ -57,17 +57,17 @@ describe('CancelPhoneVerificationModal', () => {
             expect(screen.getByRole('button', { name: value })).toBeInTheDocument();
         });
         expect(screen.getByText(/Cancel phone number verification?/)).toBeInTheDocument();
-        expect(screen.getByText(/All details entered will be lost./)).toBeInTheDocument();
+        expect(screen.getByText(/If you cancel, you'll lose all progress./)).toBeInTheDocument();
     });
 
-    it('it should render only mockSetShowCancelModal when Go back is clicked', () => {
+    it('it should render only mockSetShowCancelModal when Continue verification is clicked', () => {
         renderComponent();
         const cancelButton = screen.getByRole('button', { name: buttons[0] });
         userEvent.click(cancelButton);
         expect(mock_push).not.toBeCalled();
     });
 
-    it('it should render mockSetShowCancelModal and mock_back_router when Yes, cancel is clicked', () => {
+    it('it should render mockSetShowCancelModal and mock_back_router when Cancel is clicked', () => {
         renderComponent();
         const cancelButton = screen.getByRole('button', { name: buttons[1] });
         userEvent.click(cancelButton);

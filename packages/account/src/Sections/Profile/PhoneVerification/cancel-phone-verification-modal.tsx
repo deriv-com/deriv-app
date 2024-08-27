@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Modal, Text } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv/translations';
 import { useHistory, useLocation } from 'react-router';
 import { observer, useStore } from '@deriv/stores';
-import { LabelPairedCircleXmarkLgRegularIcon } from '@deriv/quill-icons';
-import { useDevice } from '@deriv-com/ui';
 import { usePhoneNumberVerificationSessionTimer, usePhoneVerificationAnalytics } from '@deriv/hooks';
+import { Modal, Text } from '@deriv-com/quill-ui';
+import { Localize } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 
 const CancelPhoneVerificationModal = observer(() => {
     const history = useHistory();
@@ -14,14 +13,20 @@ const CancelPhoneVerificationModal = observer(() => {
     const [next_location, setNextLocation] = useState(location.pathname);
     const { ui, client } = useStore();
     const { setShouldShowPhoneNumberOTP, is_forced_to_exit_pnv } = ui;
-    const { setVerificationCode, is_virtual } = client;
+    const { setVerificationCode, is_virtual, account_settings } = client;
     const { isMobile } = useDevice();
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
     const { should_show_session_timeout_modal: is_session_expired } = usePhoneNumberVerificationSessionTimer();
 
     useEffect(() => {
         const unblock = history.block((location: Location) => {
-            if (!show_modal && !is_virtual && !is_session_expired && !is_forced_to_exit_pnv) {
+            if (
+                !show_modal &&
+                !is_virtual &&
+                !is_forced_to_exit_pnv &&
+                !is_session_expired &&
+                !account_settings.phone_number_verification?.verified
+            ) {
                 setShowModal(true);
                 setNextLocation(location.pathname);
                 return false;
@@ -30,7 +35,14 @@ const CancelPhoneVerificationModal = observer(() => {
         });
 
         return () => unblock();
-    }, [history, show_modal, is_virtual, is_session_expired, is_forced_to_exit_pnv]);
+    }, [
+        history,
+        show_modal,
+        is_virtual,
+        is_forced_to_exit_pnv,
+        is_session_expired,
+        account_settings.phone_number_verification?.verified,
+    ]);
 
     const handleStayAtPhoneVerificationPage = () => {
         setShowModal(false);
@@ -54,24 +66,19 @@ const CancelPhoneVerificationModal = observer(() => {
             isMobile={isMobile}
             showHandleBar
             isOpened={show_modal}
-            primaryButtonCallback={handleStayAtPhoneVerificationPage}
-            primaryButtonLabel={<Localize i18n_default_text='Go back' />}
-            disableCloseOnOverlay
+            shouldCloseOnPrimaryButtonClick
+            primaryButtonLabel={<Localize i18n_default_text='Continue verification' />}
             showSecondaryButton
-            secondaryButtonLabel={<Localize i18n_default_text='Yes, cancel' />}
+            showCrossIcon
+            toggleModal={handleStayAtPhoneVerificationPage}
+            secondaryButtonLabel={<Localize i18n_default_text='Cancel' />}
             secondaryButtonCallback={handleLeavePhoneVerificationPage}
         >
-            <Modal.Header
-                className='phone-verification__cancel-modal--header'
-                image={<LabelPairedCircleXmarkLgRegularIcon fill='#C40000' height={96} width={96} />}
-            />
+            <Modal.Header title={<Localize i18n_default_text='Cancel phone number verification?' />} />
             <Modal.Body>
                 <div className='phone-verification__cancel-modal--contents'>
-                    <Text bold>
-                        <Localize i18n_default_text='Cancel phone number verification?' />
-                    </Text>
                     <Text>
-                        <Localize i18n_default_text='All details entered will be lost.' />
+                        <Localize i18n_default_text="If you cancel, you'll lose all progress." />
                     </Text>
                 </div>
             </Modal.Body>

@@ -1,12 +1,12 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { VerifyButton } from '../verify-button';
-import { StoreProvider, mockStore } from '@deriv/stores';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { routes } from '@deriv/shared';
+import { screen, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { usePhoneNumberVerificationSetTimer, useVerifyEmail } from '@deriv/hooks';
+import { routes } from '@deriv/shared';
+import { StoreProvider, mockStore } from '@deriv/stores';
+import { VerifyButton } from '../verify-button';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -31,27 +31,28 @@ describe('VerifyButton', () => {
             },
         },
     });
+    let mock_next_email_otp_request_timer = 0;
 
     const renderWithRouter = () => {
         return render(
             <Router history={history}>
                 <StoreProvider store={mock_store}>
-                    <VerifyButton setIsPhoneFieldDisable={jest.fn()} />
+                    <VerifyButton
+                        is_verify_button_disabled={false}
+                        next_email_otp_request_timer={mock_next_email_otp_request_timer}
+                    />
                 </StoreProvider>
             </Router>
         );
     };
 
+    beforeEach(() => {
+        mock_next_email_otp_request_timer = 0;
+    });
+
     it('should render Verify Button', () => {
         renderWithRouter();
         expect(screen.getByText('Verify')).toBeInTheDocument();
-    });
-
-    it('should render Verify Button with countdown timer return from usePhoneNumberSetTimer and should have disabled class', () => {
-        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_otp_request: 'in 60s' });
-        renderWithRouter();
-        expect(screen.getByText('Verify in 60s')).toBeInTheDocument();
-        expect(screen.getByText('Verify in 60s')).toHaveClass('phone-verification-btn--not-verified--disabled');
     });
 
     it('should redirect user to phone-verification page when clicked on Verify Button', () => {
@@ -67,37 +68,17 @@ describe('VerifyButton', () => {
         expect(history.location.pathname).toBe(routes.phone_verification);
     });
 
+    it('should render Verify Button with timer if next_otp_request has value', () => {
+        mock_next_email_otp_request_timer = 2;
+        renderWithRouter();
+        expect(screen.getByText('Verify in 2s')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Verify in 2s' })).toBeDisabled();
+    });
+
     it('should render Verified text', () => {
         if (mock_store.client.account_settings.phone_number_verification)
             mock_store.client.account_settings.phone_number_verification.verified = 1;
         renderWithRouter();
         expect(screen.getByText('Verified')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_phone_verification_popover')).toBeInTheDocument();
-    });
-
-    it('should render popover text when popover is clicked', () => {
-        if (mock_store.client.account_settings.phone_number_verification)
-            mock_store.client.account_settings.phone_number_verification.verified = 1;
-        renderWithRouter();
-        const popover = screen.getByTestId('dt_phone_verification_popover');
-        userEvent.click(popover);
-        expect(screen.getByText(/To change your verified phone number, contact us via/)).toBeInTheDocument();
-        expect(screen.getByText(/live chat/)).toBeInTheDocument();
-    });
-
-    it('should render live chat window when live chat is clicked', () => {
-        if (mock_store.client.account_settings.phone_number_verification)
-            mock_store.client.account_settings.phone_number_verification.verified = 1;
-        window.LC_API = {
-            open_chat_window: jest.fn(),
-            on_chat_ended: jest.fn(),
-        };
-
-        renderWithRouter();
-        const popover = screen.getByTestId('dt_phone_verification_popover');
-        userEvent.click(popover);
-        const livechat = screen.getByText(/live chat/);
-        userEvent.click(livechat);
-        expect(window.LC_API.open_chat_window).toHaveBeenCalled();
     });
 });

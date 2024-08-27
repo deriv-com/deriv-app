@@ -155,6 +155,7 @@ const PurchaseButton = observer(() => {
                                         is_single_button && 'purchase-button--single'
                                     )}
                                     isLoading={is_loading}
+                                    isOpaque
                                     disabled={is_disabled && !is_loading}
                                     onClick={() => {
                                         setLoadingButtonIndex(index);
@@ -170,14 +171,6 @@ const PurchaseButton = observer(() => {
                                         />
                                     )}
                                 </Button>
-                                {is_disabled && !is_loading && (
-                                    <div
-                                        className={clsx(
-                                            'purchase-button--disabled-background',
-                                            is_single_button && 'single'
-                                        )}
-                                    />
-                                )}
                             </React.Fragment>
                         );
                     })}
@@ -201,11 +194,11 @@ const PurchaseButton = observer(() => {
                                 : `${cardLabels.CLOSE} ${current_stake} ${currency}`
                         }
                         fullWidth
+                        isOpaque
                         className='purchase-button purchase-button--single'
                         disabled={is_accu_sell_disabled}
                         onClick={() => onClickSell(active_accu_contract?.contract_info.contract_id)}
                     />
-                    {is_accu_sell_disabled && <div className='purchase-button--disabled-background single' />}
                 </div>
             </CSSTransition>
         </React.Fragment>

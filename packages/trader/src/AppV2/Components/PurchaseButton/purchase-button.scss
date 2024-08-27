@@ -3,7 +3,7 @@
     padding-block: var(--core-spacing-400);
     align-items: flex-end;
     height: var(--core-size-2800);
-    gap: 0px;
+    gap: 0;
 
     &:not(:first-child):not(.purchase-button--loading) {
         align-items: flex-start;
@@ -65,24 +65,6 @@
                 transform: translateY(100%);
                 transition: transform 150ms ease-in-out 300ms;
             }
-        }
-    }
-    &--disabled-background {
-        position: absolute;
-        background-color: var(--core-color-solid-slate-50);
-        top: 0;
-        inset-inline-start: var(--core-spacing-400);
-        width: calc((100% - var(--core-spacing-800) - var(--core-spacing-400)) / 2);
-        height: calc(100% - var(--core-spacing-400));
-        border-radius: var(--component-button-border-radius-lg);
-        z-index: -1;
-
-        &:last-child:not(.single) {
-            inset-inline-start: unset;
-            inset-inline-end: var(--core-spacing-400);
-        }
-        &.single {
-            width: calc(100% - var(--core-spacing-800));
         }
     }
 }

@@ -51,6 +51,7 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                     <Button
                         label={label}
                         isLoading={is_sell_requested}
+                        isOpaque
                         disabled={Number(profit) < 0 && is_valid_to_cancel}
                         onClick={() => onClickSell(contract_id)}
                         {...buttonProps}
@@ -72,6 +73,7 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                                 </>
                             }
                             disabled={Number(profit) >= 0}
+                            isOpaque
                             {...buttonProps}
                         />
                     )}
@@ -86,6 +88,7 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                             : cardLabels.RESALE_NOT_OFFERED
                     }
                     isLoading={is_sell_requested && is_valid_to_sell}
+                    isOpaque
                     onClick={is_valid_to_sell ? () => onClickSell(contract_id) : undefined}
                     disabled={!is_valid_to_sell}
                     {...buttonProps}

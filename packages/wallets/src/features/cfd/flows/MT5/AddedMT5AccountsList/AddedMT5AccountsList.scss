@@ -1,6 +1,14 @@
 .wallets-added-mt5 {
-    &__icon--pending {
-        opacity: 0.5;
+    &__icon {
+        width: fit-content;
+
+        &--badge {
+            border: 1px solid var(--status-warning, #ffad3a);
+            border-radius: 1rem;
+        }
+        &--pending {
+            opacity: 0.5;
+        }
     }
 
     &__actions {
@@ -35,7 +43,9 @@
 
         &-badge {
             width: fit-content;
-
+            span {
+                color: var(--status-warning, #ffad3a);
+            }
             & a {
                 cursor: pointer;
                 text-decoration: underline;
@@ -50,7 +60,7 @@
             font-size: 1.2rem;
             line-height: 1.4rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 font-size: 1.4rem;
                 line-height: 2rem;
             }

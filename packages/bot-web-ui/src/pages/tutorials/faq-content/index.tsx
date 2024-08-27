@@ -35,7 +35,7 @@ const FAQ = ({ type, content = '', src, imageclass, is_mobile }: TDescription) =
     );
 };
 
-const scrollToElement = (wrapper_element: HTMLElement, offset: number) => {
+export const scrollToElement = (wrapper_element: HTMLElement, offset: number) => {
     if (wrapper_element) {
         wrapper_element.scrollTo({
             top: offset,
@@ -137,6 +137,7 @@ const FAQContent = ({ faq_list, handleTabChange }: TFAQContent) => {
                             data-testid='dt_accordion_test'
                             onClick={handleAccordionClick}
                             onKeyDown={handleKeyboardEvent}
+                            tabIndex={0}
                         >
                             <Accordion className='faq__wrapper__content' list={getList()} icon_close='' icon_open='' />
                         </div>

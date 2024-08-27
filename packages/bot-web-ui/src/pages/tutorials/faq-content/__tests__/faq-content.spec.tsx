@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import { faq_content } from '../../constants';
-import FAQContent from '..';
+import FAQContent, { scrollToElement } from '..';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
@@ -60,7 +60,7 @@ describe('<FAQContent />', () => {
         expect(faq).toHaveStyle('--text-size: var(--text-size-xs);');
     });
 
-    it('should call handleAccordionOpen and accordion item should open on dektop', () => {
+    it('should call handleAccordionOpen and accordion item should open on desktop', () => {
         mock_store.ui.is_desktop = true;
         render(<FAQContent faq_list={faq_content} />, { wrapper });
 
@@ -95,5 +95,48 @@ describe('<FAQContent />', () => {
         userEvent.click(accordion);
         jest.advanceTimersByTime(5);
         expect(screen.getByText(what_is_deriv_bot)).toBeInTheDocument();
+    });
+
+    it('should trigger the keyDown event upon clicking "Enter"', () => {
+        render(<FAQContent faq_list={faq_content} />, { wrapper });
+
+        const accordion = screen.getByTestId('dt_accordion_test');
+        userEvent.type(accordion, '{enter}');
+        expect(screen.getByText(deriv_bot_content)).toBeInTheDocument();
+    });
+    it('should not trigger the keyDown event upon clicking "esc"', () => {
+        render(<FAQContent faq_list={faq_content} />, { wrapper });
+
+        const accordion = screen.getByTestId('dt_accordion_test');
+        userEvent.type(accordion, '{esc}');
+        expect(screen.getByText(what_is_deriv_bot)).toBeInTheDocument();
+    });
+
+    it('should call handleAccordionOpen and click the correct accordion item when faq_title matches search_id', () => {
+        const mockHandleTabChange = jest.fn();
+        mock_DBot_store.dashboard.faq_title = 'faq-1';
+        render(<FAQContent faq_list={faq_content} handleTabChange={mockHandleTabChange} />, { wrapper });
+
+        const faq_title = screen.getAllByText(what_is_deriv_bot);
+        faq_title.forEach(element => {
+            element.click = jest.fn();
+        });
+
+        jest.advanceTimersByTime(5);
+        expect(screen.getByText(deriv_bot_content)).toBeInTheDocument();
+    });
+
+    it('should call scrollTo with the correct parameters when wrapper_element is valid', () => {
+        const mockWrapperElement = {
+            scrollTo: jest.fn(),
+        } as unknown as HTMLElement;
+
+        const offset = 100;
+        scrollToElement(mockWrapperElement, offset);
+
+        expect(mockWrapperElement.scrollTo).toHaveBeenCalledWith({
+            top: offset,
+            behavior: 'smooth',
+        });
     });
 });

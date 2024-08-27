@@ -31,6 +31,7 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
         deleteBot,
         active_bot,
         setActiveBotId,
+        should_subscribe,
     } = server_bot;
 
     const [menu_open, setMenuOpen] = React.useState({ visible: false, y: 0, bot_id: '' });
@@ -40,7 +41,7 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
     const { is_logged_in } = client;
 
     useEffect(() => {
-        getBotList(true);
+        if (should_subscribe) getBotList();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -80,8 +81,7 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
                 stopBot(bot_id);
                 break;
             case 'OPEN':
-                // eslint-disable-next-line no-console
-                console.log('OPEN');
+                setActiveBotId(bot_id);
                 closeMenu();
                 break;
             case 'DELETE':
@@ -110,6 +110,7 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
 
     useOnClickOutside(menu_ref, closeMenu, event => menu_open.visible && !menu_ref?.current.contains(event.target));
     const has_list = !!bot_list?.length;
+    const should_disable_delete = menu_open.bot_id === active_bot.bot_id && active_bot.status === 'running';
 
     return (
         <>
@@ -122,6 +123,7 @@ const BotList: React.FC<TBotList> = observer(({ setFormVisibility }) => {
                     bot_id={menu_open.bot_id}
                     botAction={botAction}
                     is_mobile={is_mobile}
+                    disable_delete={should_disable_delete}
                 />
 
                 <div className='ssb-list__header'>

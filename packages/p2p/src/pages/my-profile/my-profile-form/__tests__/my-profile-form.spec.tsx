@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useDevice } from '@deriv-com/ui';
 import { useStores } from 'Stores/index';
 import MyProfileForm from '../my-profile-form';
 
@@ -13,8 +14,6 @@ jest.mock('Stores', () => ({
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
-    DesktopWrapper: jest.fn(({ children }) => children),
-    MobileWrapper: jest.fn(({ children }) => children),
     MobileFullPageModal: ({
         children,
         pageHeaderReturnFn = mock_store.setActiveTab,
@@ -26,6 +25,11 @@ jest.mock('@deriv/components', () => ({
             {children}
         </div>
     ),
+}));
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn().mockReturnValue({ isDesktop: true }),
 }));
 
 describe('<MyProfileForm />', () => {
@@ -45,8 +49,8 @@ describe('<MyProfileForm />', () => {
     it('should render MyProfileForm component', () => {
         render(<MyProfileForm />);
 
-        expect(screen.getAllByText('Contact details')).toHaveLength(2);
-        expect(screen.getAllByText('Instructions')).toHaveLength(2);
+        expect(screen.getByText('Contact details')).toBeInTheDocument();
+        expect(screen.getByText('Instructions')).toBeInTheDocument();
     });
 
     it('should render the Loading component when my_profile_store.is_loading is set to true', () => {
@@ -58,6 +62,7 @@ describe('<MyProfileForm />', () => {
     });
 
     it('expects the setActiveTab function to be called when return function is clicked', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
         render(<MyProfileForm />);
 
         const returnButton = screen.getByRole('button', { name: 'Return' });

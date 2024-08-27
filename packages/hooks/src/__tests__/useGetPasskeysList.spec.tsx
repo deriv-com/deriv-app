@@ -19,6 +19,7 @@ describe('useGetPasskeysList', () => {
 
     const mock = mockStore({
         client: { is_passkey_supported: true },
+        common: { network_status: { class: 'online' } },
     });
 
     const wrapper = ({ children }: { children: JSX.Element }) => <StoreProvider store={mock}>{children}</StoreProvider>;

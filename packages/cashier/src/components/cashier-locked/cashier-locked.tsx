@@ -20,6 +20,8 @@ const CashierLocked = observer(() => {
         is_withdrawal_lock: is_withdrawal_locked,
         loginid,
         is_identity_verification_needed,
+        is_account_to_be_closed_by_residence,
+        account_time_of_closure,
     } = client;
     const mf_account_status = useMFAccountStatus();
     const is_cashier_locked = useCashierLocked();
@@ -40,6 +42,8 @@ const CashierLocked = observer(() => {
         is_withdrawal_locked,
         is_identity_verification_needed,
         is_pending_verification: mf_account_status === MT5_ACCOUNT_STATUS.PENDING,
+        is_account_to_be_closed_by_residence,
+        account_time_of_closure,
     });
 
     return (

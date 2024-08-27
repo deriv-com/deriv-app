@@ -4,6 +4,7 @@ import { useCryptoConfig, useCurrentCurrencyConfig } from '@deriv/hooks';
 import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import './deposit-crypto-disclaimers.scss';
 
 // Check with BE to see if we can get the network name from the API.
@@ -18,10 +19,11 @@ const crypto_currency_to_network_mapper: Record<string, string> = {
 };
 
 const DepositCryptoDisclaimers: React.FC = observer(() => {
-    const { client, ui } = useStore();
+    const { client } = useStore();
     const { currency } = client;
-    const { is_mobile } = ui;
+    const { isMobile } = useDevice();
     const { data: crypto_config } = useCryptoConfig(currency);
+
     const currency_config = useCurrentCurrencyConfig();
 
     const minimum_deposit_disclaimer = currency_config?.is_tUSDT ? (
@@ -63,10 +65,10 @@ const DepositCryptoDisclaimers: React.FC = observer(() => {
                     </li>
                 </ul>
             </InlineMessage>
-            <Text align='center' size={is_mobile ? 'xxxs' : 'xxs'}>
+            <Text align='center' size={isMobile ? 'xxxs' : 'xxs'}>
                 <Localize
                     i18n_default_text='<0>Note:</0> You’ll receive an email when your deposit starts being processed.'
-                    components={[<Text key={0} size={is_mobile ? 'xxxs' : 'xxs'} weight='bold' />]}
+                    components={[<Text key={0} size={isMobile ? 'xxxs' : 'xxs'} weight='bold' />]}
                 />
             </Text>
         </div>

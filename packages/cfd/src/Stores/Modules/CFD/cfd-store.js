@@ -41,6 +41,8 @@ export default class CFDStore extends BaseStore {
     is_mt5_password_invalid_format_modal_visible = false;
     is_mt5_password_changed_modal_visible = false;
     is_from_mt5_migration_modal = false;
+    is_server_maintenance_modal_visible = false;
+    is_account_unavailable_modal_visible = false;
     mt5_migration_error = '';
     current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
 
@@ -95,6 +97,8 @@ export default class CFDStore extends BaseStore {
             is_mt5_password_invalid_format_modal_visible: observable,
             is_mt5_password_changed_modal_visible: observable,
             is_from_mt5_migration_modal: observable,
+            is_server_maintenance_modal_visible: observable,
+            is_account_unavailable_modal_visible: observable,
             account_title: computed,
             current_list: computed,
             has_created_account_for_selected_jurisdiction: computed,
@@ -126,6 +130,8 @@ export default class CFDStore extends BaseStore {
             setMigratedMT5Accounts: action.bound,
             setSentEmailModalStatus: action.bound,
             setIsFromMt5MigrationModal: action.bound,
+            setServerMaintenanceModal: action.bound,
+            setAccountUnavailableModal: action.bound,
             getAccountStatus: action.bound,
             creatMT5Password: action.bound,
             submitMt5Password: action.bound,
@@ -284,6 +290,7 @@ export default class CFDStore extends BaseStore {
             }
         } else if (platform === CFD_PLATFORMS.CTRADER) {
             startPerformanceEventTimer('create_ctrader_account_time');
+            this.root_store.client.setIsLandingCompanyLoaded(false);
 
             this.setJurisdictionSelectedShortcode('svg');
             if (this.account_type.category === 'demo') {
@@ -300,10 +307,14 @@ export default class CFDStore extends BaseStore {
             if (!response.error) {
                 this.setError(false);
 
-                const trading_platform_accounts_list_response = await WS.tradingPlatformAccountsList(
-                    CFD_PLATFORMS.CTRADER
-                );
-                this.root_store.client.responseTradingPlatformAccountsList(trading_platform_accounts_list_response);
+                const account_list = {
+                    echo_req: response.echo_req,
+                    trading_platform_accounts: [
+                        ...this.root_store.client.ctrader_accounts_list,
+                        response.trading_platform_new_account,
+                    ],
+                };
+                this.root_store.client.responseTradingPlatformAccountsList(account_list);
                 WS.transferBetweenAccounts();
                 const trading_platform_available_accounts_list_response = await WS.tradingPlatformAvailableAccounts(
                     CFD_PLATFORMS.CTRADER
@@ -313,11 +324,13 @@ export default class CFDStore extends BaseStore {
                 );
                 this.setCFDSuccessDialog(true);
                 this.setIsAccountBeingCreated(false);
+                WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER);
                 setPerformanceValue('create_ctrader_account_time');
             } else {
                 this.setError(true, response.error);
                 this.setIsAccountBeingCreated(false);
             }
+            this.root_store.client.setIsLandingCompanyLoaded(true);
         } else if (platform === CFD_PLATFORMS.MT5) {
             if (category === 'real') {
                 this.toggleJurisdictionModal();
@@ -877,5 +890,13 @@ export default class CFDStore extends BaseStore {
 
     setIsFromMt5MigrationModal(is_from_mt5_migration_modal) {
         this.is_from_mt5_migration_modal = is_from_mt5_migration_modal;
+    }
+
+    setServerMaintenanceModal(is_server_maintenance_modal_visible) {
+        this.is_server_maintenance_modal_visible = is_server_maintenance_modal_visible;
+    }
+
+    setAccountUnavailableModal(is_account_unavailable_modal_visible) {
+        this.is_account_unavailable_modal_visible = is_account_unavailable_modal_visible;
     }
 }

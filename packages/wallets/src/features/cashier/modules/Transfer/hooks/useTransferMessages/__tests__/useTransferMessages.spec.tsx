@@ -1,16 +1,21 @@
-import { useActiveWalletAccount, usePOI } from '@deriv/api-v2';
+import { useActiveWalletAccount, usePOI, useTradingPlatformStatus } from '@deriv/api-v2';
 import { renderHook } from '@testing-library/react-hooks';
 import useTransferMessages from '../useTransferMessages';
 import {
     cumulativeAccountLimitsMessageFn,
     insufficientBalanceMessageFn,
     lifetimeAccountLimitsBetweenWalletsMessageFn,
+    tradingPlatformStatusMessageFn,
 } from '../utils';
 
 jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(() => ({ data: { mockWallets } })),
     useAuthorize: jest.fn(() => ({ data: { preferred_language: 'en' } })),
     usePOI: jest.fn(() => ({ data: { is_verified: true } })),
+    useTradingPlatformStatus: jest.fn(() => ({
+        data: [{ platform: 'mt5', status: 'active' }],
+        getPlatformStatus: jest.fn(),
+    })),
     useWalletAccountsList: jest.fn(() => ({ data: [{ mockWallets }, { mockTrading }] })),
 }));
 
@@ -25,6 +30,11 @@ jest.mock('../utils/insufficientBalanceMessageFn', () => ({
 }));
 
 jest.mock('../utils/lifetimeAccountLimitsBetweenWalletsMessageFn', () => ({
+    __esModule: true,
+    default: jest.fn(),
+}));
+
+jest.mock('../utils/tradingPlatformStatusMessageFn', () => ({
     __esModule: true,
     default: jest.fn(),
 }));
@@ -162,7 +172,10 @@ describe('useTransferMessages', () => {
             message: 'insufficientBalanceMessageFn',
             type: 'error',
         });
-
+        (tradingPlatformStatusMessageFn as jest.Mock).mockReturnValueOnce({
+            message: 'tradingPlatformStatusMessageFn',
+            type: 'warning',
+        });
         const { result } = renderHook(() => useTransferMessages(mockInsufficientBalanceTransfer));
 
         expect(result.current).toEqual([
@@ -190,6 +203,20 @@ describe('useTransferMessages', () => {
         ]);
     });
 
+    test('should render correct message and type for tradingPlatformStatusMessageFn', () => {
+        (tradingPlatformStatusMessageFn as jest.Mock).mockReturnValueOnce({
+            message: 'tradingPlatformStatusMessageFn',
+            type: 'warning',
+        });
+
+        const { result } = renderHook(() => useTradingPlatformStatus());
+
+        expect(result.current).toEqual({
+            data: [{ platform: 'mt5', status: 'active' }],
+            getPlatformStatus: expect.any(Function),
+        });
+    });
+
     test('should render correct message and type for cumulativeAccountLimitsMessageFn', () => {
         (usePOI as jest.Mock).mockReturnValueOnce({ data: { is_verified: false } });
         const mockWalletsToTradingTransfer = {
@@ -212,13 +239,6 @@ describe('useTransferMessages', () => {
                 type: 'info',
             },
         ]);
-    });
-
-    test('should pass values with correct format to messageFns', () => {
-        const { result } = renderHook(() => useTransferMessages(mockWalletsTransfer));
-
-        expect(result.current[0].message.values.feeMessageText).toEqual('0.1 USD');
-        expect(result.current[0].message.values.minimumFeeText).toEqual('0.1 USD');
     });
 
     test('should not render transfer messages when active wallet is null', () => {

@@ -139,6 +139,11 @@ html,
     &--prominent {
         color: var(--text-prominent);
     }
+    &--no-underline {
+        &:hover {
+            text-decoration: none;
+        }
+    }
 }
 
 .link--no-bold {

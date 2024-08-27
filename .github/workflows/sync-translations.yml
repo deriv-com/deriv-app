@@ -15,7 +15,7 @@ jobs:
     environment: Staging
     steps:
       - name: Sync accounts translations
-        uses: deriv-com/translations/.github/actions/extract_and_sync_translations@main
+        uses: deriv-com/translations/.github/actions/extract_and_sync_translations@master
         with:
           PROJECT_NAME: ${{ vars.ACC_R2_PROJECT_NAME }}
           CROWDIN_BRANCH_NAME: staging
@@ -27,7 +27,7 @@ jobs:
           R2_BUCKET_NAME: ${{ secrets.ACC_R2_BUCKET_NAME }}
           PROJECT_SOURCE_DIRECTORY: "packages/account/src"
       - name: Sync wallets translations
-        uses: deriv-com/translations/.github/actions/extract_and_sync_translations@main
+        uses: deriv-com/translations/.github/actions/extract_and_sync_translations@master
         with:
           PROJECT_NAME: ${{ vars.WALLETS_PROJECT_NAME }}
           CROWDIN_BRANCH_NAME: staging

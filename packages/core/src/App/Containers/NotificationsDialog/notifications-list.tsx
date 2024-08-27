@@ -5,6 +5,7 @@ import { isEmptyObject, toTitleCase } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Analytics } from '@deriv-com/analytics';
 import { BinaryLink } from 'App/Components/Routes';
+import EmptyNotification from 'App/Components/Elements/Notifications/empty-notification';
 
 type TActionProps = ReturnType<typeof useStore>['notifications']['notifications'][0]['action'];
 type TNotificationMessage = ReturnType<typeof useStore>['notifications']['notifications'][0];
@@ -48,62 +49,69 @@ const NotificationsList = observer(() => {
             notification_key: key,
         });
     };
-
+    const filtered_notifications = notifications_array.filter(item => !item.only_toast_message);
     return (
         <React.Fragment>
-            {notifications_array.map(item => (
-                <div className='notifications-item' key={item.key}>
-                    <Text as='h2' className='notifications-item__title' weight='bold' size='xs' color='prominent'>
-                        {item.type && (
-                            <Icon
-                                icon={getNotificationItemIcon(item)}
-                                className={classNames('notifications-item__title-icon', {
-                                    [`notifications-item__title-icon--${item.type}`]: item.type,
-                                })}
-                            />
-                        )}
-                        {item.header}
-                    </Text>
-                    <div className='notifications-item__message'>{item.message}</div>
-                    <div className='notifications-item__action'>
-                        {!!getButtonSettings(item) && (
-                            <React.Fragment>
-                                {getButtonSettings(item)?.route ? (
-                                    <BinaryLink
-                                        onClick={() => {
-                                            toggleNotificationsModal();
-                                            onActionTrackEvent(item.key);
-                                        }}
-                                        active_class='notifications-item'
-                                        className={classNames(
-                                            'dc-btn',
-                                            'dc-btn--secondary',
-                                            'notifications-item__cta-button'
-                                        )}
-                                        to={getButtonSettings(item)?.route}
-                                    >
-                                        <Text weight='bold' size='xxs'>
-                                            {getButtonSettings(item)?.text}
-                                        </Text>
-                                    </BinaryLink>
-                                ) : (
-                                    <Button
-                                        className={classNames('dc-btn--secondary', 'notifications-item__cta-button')}
-                                        onClick={() => {
-                                            getButtonSettings(item)?.onClick();
-                                            onActionTrackEvent(item.key);
-                                        }}
-                                    >
-                                        <Text weight='bold' size='xxs'>
-                                            {getButtonSettings(item)?.text}
-                                        </Text>
-                                    </Button>
-                                )}
-                            </React.Fragment>
-                        )}
+            {filtered_notifications.length > 0 ? (
+                filtered_notifications.map(item => (
+                    <div className='notifications-item' key={item.key}>
+                        <Text as='h2' className='notifications-item__title' weight='bold' size='xs' color='prominent'>
+                            {item.type && (
+                                <Icon
+                                    icon={getNotificationItemIcon(item)}
+                                    className={classNames('notifications-item__title-icon', {
+                                        [`notifications-item__title-icon--${item.type}`]: item.type,
+                                    })}
+                                />
+                            )}
+                            {item.header}
+                        </Text>
+                        <div className='notifications-item__message'>{item.message}</div>
+                        <div className='notifications-item__action'>
+                            {!!getButtonSettings(item) && (
+                                <React.Fragment>
+                                    {getButtonSettings(item)?.route ? (
+                                        <BinaryLink
+                                            onClick={() => {
+                                                toggleNotificationsModal();
+                                                onActionTrackEvent(item.key);
+                                            }}
+                                            active_class='notifications-item'
+                                            className={classNames(
+                                                'dc-btn',
+                                                'dc-btn--secondary',
+                                                'notifications-item__cta-button'
+                                            )}
+                                            to={getButtonSettings(item)?.route}
+                                        >
+                                            <Text weight='bold' size='xxs'>
+                                                {getButtonSettings(item)?.text}
+                                            </Text>
+                                        </BinaryLink>
+                                    ) : (
+                                        <Button
+                                            className={classNames(
+                                                'dc-btn--secondary',
+                                                'notifications-item__cta-button'
+                                            )}
+                                            onClick={() => {
+                                                getButtonSettings(item)?.onClick();
+                                                onActionTrackEvent(item.key);
+                                            }}
+                                        >
+                                            <Text weight='bold' size='xxs'>
+                                                {getButtonSettings(item)?.text}
+                                            </Text>
+                                        </Button>
+                                    )}
+                                </React.Fragment>
+                            )}
+                        </div>
                     </div>
-                </div>
-            ))}
+                ))
+            ) : (
+                <EmptyNotification />
+            )}
         </React.Fragment>
     );
 });

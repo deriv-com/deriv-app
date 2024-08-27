@@ -9,12 +9,11 @@ import LastDigitSelector from './last-digit-selector';
 
 type TLastDigitSelectorProps = {
     is_minimized?: boolean;
-    is_stats_mode?: boolean;
 };
 
 const displayed_digits = [...Array(10).keys()]; // digits array [0 - 9]
 
-const LastDigitPrediction = observer(({ is_minimized, is_stats_mode }: TLastDigitSelectorProps) => {
+const LastDigitPrediction = observer(({ is_minimized }: TLastDigitSelectorProps) => {
     const { digit_stats = [], last_digit, onChange } = useTraderStore();
     const [is_open, setIsOpen] = React.useState(false);
     const [selected_digit, setSelectedDigit] = React.useState(last_digit);
@@ -59,7 +58,6 @@ const LastDigitPrediction = observer(({ is_minimized, is_stats_mode }: TLastDigi
                                 digit_stats={digit_stats}
                                 onDigitSelect={setSelectedDigit}
                                 selected_digit={selected_digit}
-                                is_stats_mode={is_stats_mode}
                             />
                         </ActionSheet.Content>
                         <ActionSheet.Footer
@@ -75,18 +73,15 @@ const LastDigitPrediction = observer(({ is_minimized, is_stats_mode }: TLastDigi
         );
     if (!digit_stats.length) return <Skeleton height={182} />;
     return (
-        <div className={clsx('last-digit-prediction', is_stats_mode && 'last-digit-prediction--stats-mode')}>
-            {!is_stats_mode && (
-                <CaptionText size='sm' className='last-digit-prediction__title'>
-                    <Localize i18n_default_text='Last digit prediction' />
-                </CaptionText>
-            )}
+        <div className='last-digit-prediction'>
+            <CaptionText size='sm' className='last-digit-prediction__title'>
+                <Localize i18n_default_text='Last digit prediction' />
+            </CaptionText>
             <LastDigitSelector
                 digits={displayed_digits}
                 digit_stats={digit_stats}
                 onDigitSelect={handleLastDigitChange}
                 selected_digit={last_digit}
-                is_stats_mode={is_stats_mode}
             />
         </div>
     );

@@ -1,10 +1,12 @@
 import React from 'react';
 import { useDepositLocked, useCurrentCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import TransactionsCryptoHistory from '../../components/transactions-crypto-history';
-import { PageContainer } from '../../components/page-container';
-import { CashierOnboardingModule, DepositCryptoModule, DepositFiatModule } from '../../modules';
 import { useCashierStore } from '../../stores/useCashierStores';
+import { CashierOnboardingModule } from '../../modules/cashier-onboarding';
+import PageContainer from '../../components/page-container';
+import DepositFiatModule from '../../modules/deposit-fiat/deposit-fiat';
+import DepositCryptoModule from '../../modules/deposit-crypto/deposit-crypto';
+import TransactionsCryptoHistory from '../../components/transactions-crypto-history';
 import DepositLocked from './deposit-locked';
 
 const Deposit = observer(() => {
@@ -18,12 +20,17 @@ const Deposit = observer(() => {
 
     if (is_deposit_locked)
         return (
-            <PageContainer hide_breadcrumb>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <DepositLocked />
             </PageContainer>
         );
 
-    if (is_transactions_crypto_visible) return <TransactionsCryptoHistory />;
+    if (is_transactions_crypto_visible)
+        return (
+            <PageContainer hide_breadcrumb>
+                <TransactionsCryptoHistory />
+            </PageContainer>
+        );
 
     if (currency_config && (is_deposit || is_low_risk_cr_eu_real)) {
         const is_crypto_provider = currency_config.platform.cashier.includes('crypto');

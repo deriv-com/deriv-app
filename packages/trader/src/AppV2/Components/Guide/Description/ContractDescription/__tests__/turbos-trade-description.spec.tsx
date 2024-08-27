@@ -1,8 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { TERM } from 'AppV2/Utils/contract-description-utils';
+import { getTerm } from 'AppV2/Utils/contract-description-utils';
 import TurbosTradeDescription from '../turbos-trade-description';
+
+jest.mock('@lottiefiles/dotlottie-react', () => ({
+    DotLottieReact: jest.fn(() => <div>DotLottieReact</div>),
+}));
 
 describe('TurbosTradeDescription', () => {
     it('should render a proper content', () => {
@@ -15,7 +19,7 @@ describe('TurbosTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<TurbosTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: TERM.PAYOUT.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().PAYOUT.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -24,7 +28,7 @@ describe('TurbosTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<TurbosTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: TERM.EXPIRY.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().EXPIRY.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -33,7 +37,7 @@ describe('TurbosTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<TurbosTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: TERM.BARRIER.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().BARRIER.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -42,7 +46,7 @@ describe('TurbosTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<TurbosTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: TERM.PAYOUT_PER_POINT.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().PAYOUT_PER_POINT.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -51,7 +55,7 @@ describe('TurbosTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<TurbosTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: TERM.FINAL_PRICE.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().FINAL_PRICE.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -60,7 +64,7 @@ describe('TurbosTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<TurbosTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: TERM.CONTRACT_VALUE.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().CONTRACT_VALUE.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });

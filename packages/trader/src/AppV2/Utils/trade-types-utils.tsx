@@ -1,5 +1,17 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
+import { getAvailableContractTypes, getCategoriesSortedByKey } from 'Modules/Trading/Helpers/contract-type';
+import {
+    getContractTypePosition,
+    getSupportedContracts,
+    TRADE_TYPES,
+    unsupported_contract_types_list,
+} from '@deriv/shared';
+import { useTraderStore } from 'Stores/useTraderStores';
+import { getTradeTypeTabsList } from './trade-params-utils';
+
+const getSortedIndex = (type: string) =>
+    getContractTypePosition(type as keyof ReturnType<typeof getSupportedContracts>) === 'bottom' ? 1 : 0;
 
 export const CONTRACT_LIST = {
     ACCUMULATORS: 'Accumulators',
@@ -26,3 +38,31 @@ export const AVAILABLE_CONTRACTS = [
     { tradeType: <Localize i18n_default_text='Even/Odd' />, id: CONTRACT_LIST.EVEN_ODD },
     { tradeType: <Localize i18n_default_text='Over/Under' />, id: CONTRACT_LIST.OVER_UNDER },
 ];
+
+export const getTradeTypesList = (contract_types_list: ReturnType<typeof useTraderStore>['contract_types_list']) => {
+    const available_trade_types = getAvailableContractTypes(
+        contract_types_list as unknown as Parameters<typeof getAvailableContractTypes>[0],
+        unsupported_contract_types_list
+    );
+    return Object.values(getCategoriesSortedByKey(available_trade_types))
+        .map(({ contract_types }) =>
+            contract_types[0].value.startsWith('vanilla')
+                ? contract_types.map(type => ({ ...type, text: 'Vanillas' }))
+                : contract_types
+        )
+        .flat()
+        .filter(
+            ({ value }) =>
+                ![TRADE_TYPES.VANILLA.PUT, TRADE_TYPES.TURBOS.SHORT, TRADE_TYPES.RISE_FALL_EQUAL].includes(value)
+        );
+};
+
+/* Gets the array of sorted contract types that are used to display purchased buttons and other info based on a selected trade type tab if applicable. */
+export const getDisplayedContractTypes = (
+    trade_types: ReturnType<typeof useTraderStore>['trade_types'],
+    contract_type: string,
+    trade_type_tab: string
+) =>
+    Object.keys(trade_types)
+        .filter(type => !getTradeTypeTabsList(contract_type).length || type === trade_type_tab)
+        .sort((a, b) => getSortedIndex(a) - getSortedIndex(b));

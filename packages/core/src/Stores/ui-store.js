@@ -46,6 +46,7 @@ export default class UIStore extends BaseStore {
     is_update_email_modal_visible = false;
     is_reset_trading_password_modal_visible = false;
     is_mf_verification_pending_modal_visible = false;
+    is_trading_disabled_by_residence_modal_visible = false;
     // @observable is_purchase_lock_on       = false;
     // SmartCharts Controls
     // TODO: enable asset information
@@ -129,9 +130,6 @@ export default class UIStore extends BaseStore {
     prompt_when = false;
     promptFn = () => {};
 
-    //phone number verification
-    should_show_phone_number_otp = false;
-
     //warn user if they want to close create real account modal
     is_closing_create_real_account_modal = false;
 
@@ -155,6 +153,8 @@ export default class UIStore extends BaseStore {
     // add crypto accounts
     should_show_cancel = false;
 
+    should_show_deposit_now_or_later_modal = false;
+    should_show_crypto_transaction_processing_modal = false;
     should_show_risk_warning_modal = false;
     should_show_appropriateness_warning_modal = false;
     should_show_risk_accept_modal = false;
@@ -170,7 +170,6 @@ export default class UIStore extends BaseStore {
     should_show_assessment_complete_modal = false;
     app_contents_scroll_ref = null;
     is_deriv_account_needed_modal_visible = false;
-    is_redirected_from_email = false;
     is_wallet_modal_visible = false;
     is_ready_to_deposit_modal_visible = false;
     is_need_real_account_for_cashier_modal_visible = false;
@@ -263,13 +262,13 @@ export default class UIStore extends BaseStore {
             is_dark_mode_on: observable,
             is_deriv_account_needed_modal_visible: observable,
             is_from_signup_account: observable,
-            is_redirected_from_email: observable,
             is_wallet_modal_visible: observable,
 
             is_history_tab_active: observable,
             is_landscape: observable,
             is_language_settings_modal_on: observable,
             is_mf_verification_pending_modal_visible: observable,
+            is_trading_disabled_by_residence_modal_visible: observable,
             is_mobile_language_menu_open: observable,
             is_nativepicker_visible: observable,
 
@@ -301,7 +300,8 @@ export default class UIStore extends BaseStore {
             real_account_signup: observable,
             reports_route_tab_index: observable,
             settings_extension: observable,
-            should_show_phone_number_otp: observable,
+            should_show_deposit_now_or_later_modal: observable,
+            should_show_crypto_transaction_processing_modal: observable,
             should_show_appropriateness_warning_modal: observable,
             should_show_assessment_complete_modal: observable,
             should_show_cancel: observable,
@@ -352,7 +352,6 @@ export default class UIStore extends BaseStore {
             resetPurchaseStates: action.bound,
             resetRealAccountSignupParams: action.bound,
             resetRealAccountSignupTarget: action.bound,
-            setShouldShowPhoneNumberOTP: action.bound,
             setAccountSwitcherDisabledMessage: action.bound,
             setAppContentsScrollRef: action.bound,
             setCFDPasswordResetModal: action.bound,
@@ -374,7 +373,6 @@ export default class UIStore extends BaseStore {
             shouldNavigateAfterChooseCrypto: action.bound,
             setIsMT5VerificationFailedModal: action.bound,
             setShouldShowRiskWarningModal: action.bound,
-            setRedirectFromEmail: action.bound,
             setIsWalletModalVisible: action.bound,
             setIsRealTabEnabled: action.bound,
             setIsTradingAssessmentForExistingUserEnabled: action.bound,
@@ -401,6 +399,7 @@ export default class UIStore extends BaseStore {
             setSubSectionIndex: action.bound,
             setTopUpInProgress: action.bound,
             setIsMFVericationPendingModal: action.bound,
+            setIsTradingDisabledByResidenceModal: action.bound,
             setMT5MigrationModalEnabled: action.bound,
             setMobileLanguageMenuOpen: action.bound,
             toggleAccountsDialog: action.bound,
@@ -426,6 +425,8 @@ export default class UIStore extends BaseStore {
             toggleKycInformationSubmittedModal: action.bound,
             toggleMT5MigrationModal: action.bound,
             toggleUrlUnavailableModal: action.bound,
+            setShouldShowDepositNowOrLaterModal: action.bound,
+            setShouldShowCryptoTransactionProcessingModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -449,10 +450,6 @@ export default class UIStore extends BaseStore {
 
     setIsRealTabEnabled(is_real_tab_enabled) {
         this.is_real_tab_enabled = is_real_tab_enabled;
-    }
-
-    setShouldShowPhoneNumberOTP(should_show_phone_number_otp) {
-        this.should_show_phone_number_otp = should_show_phone_number_otp;
     }
 
     setHashedValue(url_hashed_values) {
@@ -873,10 +870,6 @@ export default class UIStore extends BaseStore {
         this.is_deriv_account_needed_modal_visible = !this.is_deriv_account_needed_modal_visible;
     }
 
-    setRedirectFromEmail(value) {
-        this.is_redirected_from_email = value;
-    }
-
     setIsWalletModalVisible(value) {
         this.is_wallet_modal_visible = value;
     }
@@ -966,6 +959,10 @@ export default class UIStore extends BaseStore {
         this.is_mf_verification_pending_modal_visible = value;
     }
 
+    setIsTradingDisabledByResidenceModal(value) {
+        this.is_trading_disabled_by_residence_modal_visible = value;
+    }
+
     toggleAdditionalKycInfoModal() {
         this.is_additional_kyc_info_modal_open = !this.is_additional_kyc_info_modal_open;
     }
@@ -984,5 +981,13 @@ export default class UIStore extends BaseStore {
 
     toggleUrlUnavailableModal(value) {
         this.isUrlUnavailableModalVisible = value;
+    }
+
+    setShouldShowDepositNowOrLaterModal(value) {
+        this.should_show_deposit_now_or_later_modal = value;
+    }
+
+    setShouldShowCryptoTransactionProcessingModal(value) {
+        this.should_show_crypto_transaction_processing_modal = value;
     }
 }

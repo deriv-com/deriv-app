@@ -8,6 +8,31 @@ import { saveWorkspaceToRecent } from '../../utils/local-storage';
 import DBotStore from '../dbot-store';
 import { LogTypes } from '../../constants/messages';
 import { error_message_map } from '../../utils/error-config';
+import { botNotification } from '../../../../bot-web-ui/src/components/bot-notification/bot-notification';
+import { notification_message } from '../../../../bot-web-ui/src/components/bot-notification/bot-notification-utils';
+
+export const inject_workspace_options = {
+    media: `${__webpack_public_path__}media/`,
+    zoom: {
+        wheel: true,
+        startScale: config.workspaces.previewWorkspaceStartScale,
+    },
+    readOnly: true,
+    scrollbars: true,
+    renderer: 'zelos',
+};
+
+export const updateXmlValues = blockly_options => {
+    if (!window.Blockly) return;
+    const { strategy_id, convertedDom, file_name, from } = blockly_options;
+    window.Blockly.xmlValues = {
+        ...window.Blockly.xmlValues,
+        strategy_id,
+        convertedDom,
+        file_name,
+        from,
+    };
+};
 
 export const getSelectedTradeType = (workspace = Blockly.derivWorkspace) => {
     const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
@@ -19,7 +44,7 @@ export const getSelectedTradeType = (workspace = Blockly.derivWorkspace) => {
 };
 
 export const matchTranslateAttribute = translateString => {
-    const match = translateString.match(/translate\((-?\d*\.?\d+),(-?\d*\.?\d+)\)/);
+    const match = translateString.match(/translate\((-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)\)/);
     if (match && match.length > 2) {
         const x = parseFloat(match[1]);
         const y = parseFloat(match[2]);
@@ -29,7 +54,7 @@ export const matchTranslateAttribute = translateString => {
 };
 
 export const extractTranslateValues = () => {
-    const transform_value = Blockly?.derivWorkspace?.trashcan?.svgGroup_.getAttribute('transform');
+    const transform_value = Blockly?.derivWorkspace?.trashcan?.svgGroup.getAttribute('transform');
     const translate_xy = matchTranslateAttribute(transform_value);
 
     if (!translate_xy) {
@@ -45,21 +70,21 @@ export const extractTranslateValues = () => {
 export const validateErrorOnBlockDelete = () => {
     // Get the bounding rectangle of the selected block
     const { translate_X, translate_Y } = extractTranslateValues();
-    const blockRect = Blockly.selected?.getSvgRoot().getBoundingClientRect();
+    const blockRect = Blockly.getSelected()?.getSvgRoot().getBoundingClientRect();
     const translate_offset = 200;
     // Extract coordinates from the bounding rectangles
     const blockX = blockRect?.left || 0;
     const blockY = blockRect?.top || 0;
     const mandatory_trade_option_block = getSelectedTradeType();
     const required_block_types = [mandatory_trade_option_block, 'trade_definition', 'purchase', 'before_purchase'];
-    if (required_block_types?.includes(Blockly?.selected?.type)) {
+    if (required_block_types?.includes(Blockly?.getSelected()?.type)) {
         if (
             blockY >= translate_Y - translate_offset &&
             blockY <= translate_Y + translate_offset &&
             blockX >= translate_X - translate_offset &&
             blockX <= translate_X + translate_offset
         ) {
-            globalObserver.emit('ui.log.error', error_message_map[Blockly.selected.category_]?.default);
+            globalObserver.emit('ui.log.error', error_message_map[Blockly?.getSelected()?.type]?.default);
         }
     }
 };
@@ -120,11 +145,15 @@ export const load = async ({
     showIncompatibleStrategyDialog,
 }) => {
     if (!DBotStore?.instance || !workspace) return;
-    const { setLoading } = DBotStore.instance;
+    const { setLoading, load_modal } = DBotStore.instance;
+    const { setOpenButtonDisabled, setLoadedLocalFile } = load_modal;
+
     setLoading(true);
     // Delay execution to allow fully previewing previous strategy if users quickly switch between strategies.
     await delayExecution(100);
     const showInvalidStrategyError = () => {
+        setLoadedLocalFile(null);
+        botNotification(notification_message.invalid_xml);
         setLoading(false);
         const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
         globalObserver.emit('ui.log.error', error_message);
@@ -136,7 +165,6 @@ export const load = async ({
     // Check if XML can be parsed correctly.
     try {
         const xmlDoc = new DOMParser().parseFromString(block_string, 'application/xml');
-
         if (xmlDoc.getElementsByTagName('parsererror').length) {
             return showInvalidStrategyError();
         }
@@ -147,7 +175,7 @@ export const load = async ({
     let xml;
     // Check if XML can be parsed into a strategy.
     try {
-        xml = Blockly.Xml.textToDom(block_string);
+        xml = Blockly.utils.xml.textToDom(block_string);
     } catch (e) {
         return showInvalidStrategyError();
     }
@@ -180,7 +208,7 @@ export const load = async ({
             workspace,
             Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type'))
         );
-
+        updateXmlValues({ strategy_id, convertedDom: xml, file_name, from });
         if (is_collection) {
             loadBlocks(xml, drop_event, event_group, workspace);
         } else {
@@ -192,7 +220,7 @@ export const load = async ({
 
                 save_modal.updateBotName(file_name);
                 workspace.clearUndo();
-                workspace.current_strategy_id = strategy_id || Blockly.utils.genUid();
+                workspace.current_strategy_id = strategy_id || Blockly.utils.idGenerator.genUid();
                 await saveWorkspaceToRecent(xml, from);
             }
         }
@@ -213,6 +241,7 @@ export const load = async ({
         return showInvalidStrategyError();
     } finally {
         setLoading(false);
+        setOpenButtonDisabled(false);
     }
 };
 
@@ -233,6 +262,7 @@ export const loadWorkspace = async (xml, event_group, workspace) => {
     Blockly.Events.setGroup(event_group);
     await workspace.asyncClear();
     Blockly.Xml.domToWorkspace(xml, workspace);
+    workspace.cleanUp();
 };
 
 const loadBlocksFromHeader = (xml_string, block) => {
@@ -241,7 +271,7 @@ const loadBlocksFromHeader = (xml_string, block) => {
         let xml;
 
         try {
-            xml = Blockly.Xml.textToDom(xml_string);
+            xml = Blockly.utils.xml.textToDom(xml_string);
         } catch (error) {
             return reject(localize('Unrecognized file format'));
         }
@@ -427,8 +457,8 @@ export const isAllRequiredBlocksEnabled = workspace => {
 
 export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chronological) => {
     const ws_metrics = workspace.getMetrics();
-    let scroll_x = ws_metrics.viewLeft - ws_metrics.contentLeft;
-    const delta_y = ws_metrics.viewTop - ws_metrics.contentTop;
+    let scroll_x = ws_metrics.viewLeft - ws_metrics.scrollLeft;
+    const delta_y = ws_metrics.viewTop - ws_metrics.scrollTop;
     let scroll_y = delta_y;
     if (is_horizontal) {
         scroll_x += is_chronological ? scroll_amount : -scroll_amount;
@@ -439,7 +469,7 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
         scroll_x += -20;
         scroll_y += is_chronological ? scroll_amount : -scroll_amount;
     }
-    const is_RTL = Blockly.derivWorkspace.RTL;
+    const is_RTL = workspace.RTL;
     if (is_RTL) {
         // For RTL scroll we need to adjust the scroll amount
         scroll_x = scroll_amount;
@@ -458,16 +488,16 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
         */
 
         if (window.innerWidth < 768) {
-            workspace.scrollbar.set(0, scroll_y);
+            workspace?.scrollbar?.set(0, scroll_y);
             const calc_scroll =
-                Blockly.derivWorkspace.svgBlockCanvas_?.getBoundingClientRect().width -
-                Blockly.derivWorkspace.svgBlockCanvas_?.getBoundingClientRect().left +
+                workspace.svgBlockCanvas_?.getBoundingClientRect().width -
+                workspace.svgBlockCanvas_?.getBoundingClientRect().left +
                 60;
-            workspace.scrollbar.set(calc_scroll, scroll_y);
+            workspace?.scrollbar?.set(calc_scroll, scroll_y);
             return;
         }
     }
-    workspace.scrollbar.set(scroll_x, scroll_y);
+    workspace?.scrollbar?.set(scroll_x, scroll_y);
 };
 
 /**
@@ -494,11 +524,11 @@ export const runGroupedEvents = (use_existing_group, callbackFn, opt_group_name)
  */
 export const runIrreversibleEvents = callbackFn => {
     const { recordUndo } = Blockly.Events;
-    Blockly.Events.recordUndo = false;
+    Blockly.Events.setRecordUndo(false);
 
     callbackFn();
 
-    Blockly.Events.recordUndo = recordUndo;
+    Blockly.Events.setRecordUndo(recordUndo ?? true);
 };
 
 /**
@@ -513,7 +543,7 @@ export const runInvisibleEvents = callbackFn => {
 };
 
 export const updateDisabledBlocks = (workspace, event) => {
-    if (event.type === Blockly.Events.END_DRAG) {
+    if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
         workspace.getAllBlocks().forEach(block => {
             if (!block.getParent() || block.is_user_disabled_state) {
                 return;
@@ -556,3 +586,100 @@ export const isDarkRgbColour = string_rgb => {
     return luma < 160;
 };
 /* eslint-enable */
+
+export const removeExtraInput = instance => {
+    const collapsed_input = instance.getInput('_TEMP_COLLAPSED_INPUT');
+    const procedures_array = ['procedures_defreturn', 'procedures_defnoreturn'];
+    if (collapsed_input && instance.collapsed_ && !collapsed_input.icon_added) {
+        collapsed_input.icon_added = true;
+        const dropdown_path = `${instance.workspace.options.pathToMedia}dropdown-arrow.svg`;
+        const field_expand_icon = new Blockly.FieldImage(dropdown_path, 16, 16, localize('Collapsed'), () =>
+            instance.setCollapsed(false)
+        );
+        const function_name = instance.getFieldValue('NAME');
+        const args = ` (${instance?.arguments?.join(', ')})`;
+
+        if (procedures_array.includes(instance.type)) {
+            collapsed_input
+                .appendField(new Blockly.FieldLabel(localize('function'), ''))
+                .appendField(new Blockly.FieldLabel(function_name + args, 'header__title'))
+                .appendField(field_expand_icon);
+        } else {
+            collapsed_input.appendField(field_expand_icon);
+        }
+
+        const remove_last_input = dummy_input => {
+            const tmp_array = dummy_input.fieldRow;
+
+            const value_input = procedures_array.includes(instance.type) ? 0 : 2;
+            if (!procedures_array.includes(instance.type)) {
+                tmp_array[0]?.setClass('blocklyTextRootBlockHeader');
+            }
+            tmp_array[value_input]?.setVisible(false);
+            tmp_array[value_input]?.forceRerender();
+        };
+        remove_last_input(collapsed_input);
+    }
+};
+
+const downloadBlock = () => {
+    const xml_block = Blockly?.getSelected()?.svgGroup_;
+    const xml_text = Blockly.Xml.domToPrettyText(xml_block);
+    saveAs({ data: xml_text, type: 'text/xml;charset=utf-8', filename: 'block.xml' });
+};
+
+const download_option = {
+    text: localize('Download Block'),
+    enabled: true,
+    callback: downloadBlock,
+};
+
+export const excludeOptionFromContextMenu = (menu, exclude_items) => {
+    if (exclude_items && exclude_items.length > 0) {
+        for (let i = menu.length - 1; i >= 0; i--) {
+            const menu_text = localize(menu[i].text);
+            if (exclude_items.includes(menu_text)) {
+                menu.splice(i, 1);
+            } else {
+                menu[i].text = menu_text;
+            }
+        }
+    }
+};
+
+const common_included_items = [download_option];
+
+const all_context_menu_options = [
+    localize('Duplicate'),
+    localize('Add Comment'),
+    localize('Remove Comment'),
+    localize('Collapse Block'),
+    localize('Expand Block'),
+    localize('Disable Block'),
+    localize('Enable Block'),
+    localize('Download Block'),
+];
+
+// Need for later
+// const deleteLocaleText = localize("Delete");
+// const blocksLocaleText = localize("Blocks");
+// const deleteBlocksLocaleText = localize("Delete Blocks");
+// const deleteBlocksLocalePattern = new RegExp(`^${deleteLocaleText} \\d+ ${blocksLocaleText}$`);
+
+export const modifyContextMenu = (menu, add_new_items = []) => {
+    const include_items = [...common_included_items, ...add_new_items];
+    include_items.forEach(item => {
+        menu.push({
+            text: item.text,
+            enabled: item.enabled,
+            callback: item.callback,
+        });
+    });
+
+    for (let i = 0; i < menu.length; i++) {
+        const localized_text = localize(menu[i].text);
+        if (all_context_menu_options.includes(localized_text)) {
+            menu[i].text = localized_text;
+        }
+    }
+};

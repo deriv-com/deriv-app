@@ -2150,6 +2150,50 @@ type TPrivateSocketEndpoints = {
             [k: string]: unknown;
         };
     };
+    reset_password: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            reset_password: 1;
+            /**
+             * New password. For validation (Accepts any printable ASCII character. Must be within 8-25 characters, and include numbers, lowercase and uppercase letters. Must not be the same as the user's email address).
+             */
+            new_password: string;
+            /**
+             * Email verification code (received from a `verify_email` call, which must be done first)
+             */
+            verification_code: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            reset_password?: 0 | 1;
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'reset_password';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
 };
 
 // TODO: remove these mock passkeys types after implementing them inside api-types
@@ -2256,89 +2300,6 @@ type PasskeysRenameResponse = {
     [k: string]: unknown;
 };
 
-// TODO: remove these mock phone number challenge types after implementing them inside api-types
-type PhoneNumberChallengeRequest = {
-    /**
-     * Must be `1`
-     */
-    phone_number_challenge: 1;
-    /**
-     * The carrier sending the email code.
-     */
-    email_code: string;
-    /**
-     * The carrier sending the OTP.
-     */
-    carrier?: 'whatsapp' | 'sms';
-    /**
-     * [Optional] The login id of the user. If left unspecified, it defaults to the initial authorized token's login id.
-     */
-    loginid?: string;
-    /**
-     * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
-     */
-    passthrough?: {
-        [k: string]: unknown;
-    };
-    /**
-     * [Optional] Used to map request to response.
-     */
-    req_id?: number;
-};
-
-type PhoneNumberChallengeResponse = {
-    phone_number_challenge?: number;
-    /**
-     * Echo of the request made.
-     */
-    echo_req: {
-        [k: string]: unknown;
-    };
-    /**
-     * Action name of the request made.
-     */
-    msg_type: 'phone_number_challenge';
-    /**
-     * Optional field sent in request to map to response, present only when request contains `req_id`.
-     */
-    req_id?: number;
-    [k: string]: unknown;
-};
-
-// TODO: remove these mock phone number challenge types after implementing them inside api-types
-type PhoneNumberVerifyRequest = {
-    /**
-     * Must be `1`
-     */
-    phone_number_verify: 1;
-    /**
-     * The carrier sending the OTP.
-     */
-    otp: string;
-    /**
-     * [Optional] Used to map request to response.
-     */
-    req_id?: number;
-};
-
-type PhoneNumberVerifyResponse = {
-    /**
-     * Echo of the request made.
-     */
-    echo_req: {
-        [k: string]: unknown;
-    };
-    /**
-     * Action name of the request made.
-     */
-    msg_type: 'phone_number_verify';
-    /**
-     * Optional field sent in request to map to response, present only when request contains `req_id`.
-     */
-    req_id?: number;
-    [k: string]: unknown;
-};
-
 type ChangeEmailRequest = {
     change_email: 'verify' | 'update';
     new_email: string;
@@ -2358,7 +2319,30 @@ type ChangeEmailResponse = {
     msg_type: 'change_email';
     req_id?: number;
 };
-
+/**
+ * Get list of platform and their server status
+ */
+type TradingPlatformStatusRequest = {
+    /**
+     * Must be 1
+     */
+    trading_platform_status: 1;
+};
+/**
+ * response containing platform and their server status.
+ */
+type TradingPlatformStatusResponse = {
+    trading_platform_status: {
+        /**
+         * types of cfd platforms
+         */
+        platform: 'mt5' | 'ctrader' | 'dxtrade';
+        /**
+         * possible server statuses
+         */
+        status: 'active' | 'maintenance' | 'unavailable';
+    }[];
+};
 type TSocketEndpoints = {
     active_symbols: {
         request: ActiveSymbolsRequest;
@@ -2712,14 +2696,6 @@ type TSocketEndpoints = {
         request: PayoutCurrenciesRequest;
         response: PayoutCurrenciesResponse;
     };
-    phone_number_challenge: {
-        request: PhoneNumberChallengeRequest;
-        response: PhoneNumberChallengeResponse;
-    };
-    phone_number_verify: {
-        request: PhoneNumberVerifyRequest;
-        response: PhoneNumberVerifyResponse;
-    };
     ping: {
         request: PingRequest;
         response: PingResponse;
@@ -2819,6 +2795,10 @@ type TSocketEndpoints = {
     trading_platform_password_reset: {
         request: TradingPlatformPasswordResetRequest;
         response: TradingPlatformPasswordResetResponse;
+    };
+    trading_platform_status: {
+        request: TradingPlatformStatusRequest;
+        response: TradingPlatformStatusResponse;
     };
     trading_servers: {
         request: ServerListRequest;

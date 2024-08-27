@@ -1,4 +1,4 @@
-import { getUrlSmartTrader, getUrlBinaryBot } from '../url/helpers';
+import { getUrlSmartTrader } from '../url/helpers';
 
 export const routes = {
     reset_password: '/',
@@ -18,7 +18,6 @@ export const routes = {
     trader_positions: '/dtrader/positions',
     trader_menu: '/dtrader/menu',
     smarttrader: getUrlSmartTrader(),
-    binarybot: getUrlBinaryBot(),
 
     // account
     account: '/account',
@@ -32,7 +31,6 @@ export const routes = {
     proof_of_income: '/account/proof-of-income',
     passwords: '/account/passwords',
     passkeys: '/account/passkeys',
-    phone_verification: '/account/personal-details/phone-verification',
     closing_account: '/account/closing-account',
     deactivate_account: '/account/deactivate-account', // TODO: Remove once mobile team has changed this link
     account_closed: '/account-closed',
@@ -109,6 +107,7 @@ export const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [
     routes.bot,
     routes.account,
     routes.endpoint,
+    routes.cashier,
     /** because contract route has dynamic id */
     '/contract',
 ];

@@ -6,22 +6,20 @@ import { useStore } from '@deriv/stores';
 import useAuthorize from './useAuthorize';
 
 const useGetPasskeysList = () => {
-    const { client } = useStore();
-    const { isSuccess } = useAuthorize();
+    const { client, common } = useStore();
+    const { isSuccess, isFetching: isAuthorizeFetching } = useAuthorize();
     const { is_passkey_supported } = client;
+    const { network_status } = common;
 
     const { data, error, isLoading, isFetching, refetch, ...rest } = useQuery('passkeys_list', {
         options: {
-            enabled: is_passkey_supported && isSuccess,
+            enabled: is_passkey_supported && isSuccess && !isAuthorizeFetching && network_status.class === 'online',
             retry: 0,
         },
     });
 
     useEffect(() => {
         if (error) {
-            // TODO: remove ts ignore after adding types to Analytics
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
             Analytics.trackEvent('ce_passkey_account_settings_form', {
                 action: 'error',
                 form_name: 'ce_passkey_account_settings_form',

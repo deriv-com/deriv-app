@@ -11,13 +11,6 @@ const mockProps = {
     setCustomTimeRangeFilter: jest.fn(),
     setNoMatchesFound: jest.fn(),
 };
-const mediaQueryList = {
-    matches: true,
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-};
-
-window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
 
 describe('TimeFilter', () => {
     it('should change data-state of the dropdown if user clicks on the filter', () => {
@@ -33,12 +26,13 @@ describe('TimeFilter', () => {
     it('should render correct chip name if user have not chosen anything else', () => {
         render(<TimeFilter {...mockProps} />);
 
-        expect(screen.getAllByText(defaultFilterName)).toHaveLength(2);
+        expect(screen.getByText(defaultFilterName)).toBeInTheDocument();
     });
 
     it('should call setTimeFilter with corresponding value if user clicks on "Today"', () => {
         render(<TimeFilter {...mockProps} />);
 
+        userEvent.click(screen.getByRole('button'));
         userEvent.click(screen.getByText('Today'));
 
         expect(mockProps.setTimeFilter).toHaveBeenCalledWith('Today');
@@ -47,6 +41,7 @@ describe('TimeFilter', () => {
     it('should call setTimeFilter with corresponding value if user clicks on "Yesterday"', () => {
         render(<TimeFilter {...mockProps} />);
 
+        userEvent.click(screen.getByRole('button'));
         userEvent.click(screen.getByText('Yesterday'));
 
         expect(mockProps.setTimeFilter).toHaveBeenCalledWith('Yesterday');
@@ -55,6 +50,7 @@ describe('TimeFilter', () => {
     it('should call setTimeFilter with corresponding value if user clicks on "Last 60 days"', () => {
         render(<TimeFilter {...mockProps} />);
 
+        userEvent.click(screen.getByRole('button'));
         userEvent.click(screen.getByText('Last 60 days'));
 
         expect(mockProps.setTimeFilter).toHaveBeenCalledWith('60');
@@ -63,6 +59,7 @@ describe('TimeFilter', () => {
     it('should call setTimeFilter and setCustomTimeRangeFilter with empty string if user clicks on "All time"', () => {
         render(<TimeFilter {...mockProps} timeFilter='30' />);
 
+        userEvent.click(screen.getByRole('button'));
         userEvent.click(screen.getByText('All time'));
 
         expect(mockProps.setTimeFilter).toHaveBeenCalledWith('');
@@ -71,8 +68,8 @@ describe('TimeFilter', () => {
     it('should show Date Picker if user clicks on "Custom" button', () => {
         render(<TimeFilter {...mockProps} />);
 
+        userEvent.click(screen.getByRole('button'));
         expect(screen.queryByText(datePickerComponentText)).not.toBeInTheDocument();
-
         userEvent.click(screen.getByText('Custom'));
 
         expect(screen.getByText(datePickerComponentText)).toBeInTheDocument();
@@ -81,6 +78,7 @@ describe('TimeFilter', () => {
     it('should close Date Picker if it was shown after user clicks on overlay', () => {
         render(<TimeFilter {...mockProps} />);
 
+        userEvent.click(screen.getByRole('button'));
         userEvent.click(screen.getByText('Custom'));
         expect(screen.getByText(datePickerComponentText)).toBeInTheDocument();
 

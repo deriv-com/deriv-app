@@ -6,11 +6,15 @@ import {
     useInvalidateQuery,
     useSettings,
 } from '@deriv/api-v2';
+import { displayMoney } from '@deriv/api-v2/src/utils';
 import { toMoment } from '@deriv/utils';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
+import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
-import { ModalStepWrapper, WalletButton, WalletText } from '../Base';
+import { ModalStepWrapper, WalletButton } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletMarketIcon } from '../WalletMarketIcon';
 import { DerivAppsSuccessFooter } from './DerivAppsSuccessFooter';
@@ -30,10 +34,11 @@ const DerivAppsGetAccount: React.FC = () => {
     const { addTradingAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
     const invalidate = useInvalidateQuery();
 
-    const { data: activeLinkedToTradingAccount, isLoading: isActiveLinkedToTradingAccountLoading } =
-        useActiveLinkedToTradingAccount();
+    const { isLoading: isActiveLinkedToTradingAccountLoading } = useActiveLinkedToTradingAccount();
 
-    const landingCompanyName = activeWallet?.landing_company_name?.toLocaleUpperCase();
+    const { data: balanceData } = useAllBalanceSubscription();
+
+    const { localize } = useTranslations();
 
     const createTradingAccount = async () => {
         if (!activeWallet?.is_virtual) {
@@ -59,6 +64,14 @@ const DerivAppsGetAccount: React.FC = () => {
 
     useEffect(() => {
         if (isAccountCreationSuccess) {
+            const displayBalance = displayMoney(
+                balanceData?.[activeWallet?.loginid ?? '']?.balance,
+                activeWallet?.currency,
+                {
+                    fractional_digits: activeWallet?.currency_config?.fractional_digits,
+                }
+            );
+
             show(
                 <ModalStepWrapper
                     renderFooter={isDesktop ? undefined : () => <DerivAppsSuccessFooter />}
@@ -66,10 +79,13 @@ const DerivAppsGetAccount: React.FC = () => {
                     shouldHideHeader={isDesktop}
                 >
                     <CFDSuccess
-                        description={`Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your Options (${landingCompanyName}) account to start trading.`}
-                        displayBalance={activeLinkedToTradingAccount?.display_balance ?? '0.00'}
+                        description={localize(
+                            'Transfer funds from your {{walletCurrencyType}} Wallet to your Options account to start trading.',
+                            { walletCurrencyType: activeWallet?.wallet_currency_type }
+                        )}
+                        displayBalance={displayBalance}
                         renderButton={() => <DerivAppsSuccessFooter />}
-                        title={`Your Options (${landingCompanyName}) account is ready`}
+                        title={localize('Your Options account is ready')}
                     />
                 </ModalStepWrapper>,
                 {
@@ -87,17 +103,19 @@ const DerivAppsGetAccount: React.FC = () => {
             </div>
             <div className='wallets-deriv-apps-section__get-content'>
                 <div className='wallets-deriv-apps-section__details'>
-                    <WalletText size='sm' weight='bold'>
-                        Options
-                    </WalletText>
-                    <WalletText size={isDesktop ? '2xs' : 'xs'}>One options account for all platforms.</WalletText>
+                    <Text size='sm' weight='bold'>
+                        <Localize i18n_default_text='Options' />
+                    </Text>
+                    <Text size={isDesktop ? '2xs' : 'xs'}>
+                        <Localize i18n_default_text='One options account for all platforms.' />
+                    </Text>
                 </div>
                 <WalletButton
                     color='primary-light'
                     disabled={isAccountCreationLoading || isActiveLinkedToTradingAccountLoading}
                     onClick={createTradingAccount}
                 >
-                    Get
+                    <Localize i18n_default_text='Get' />
                 </WalletButton>
             </div>
         </div>

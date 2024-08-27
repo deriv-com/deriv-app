@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.trade_definition_tradetype = {
     init() {
@@ -28,7 +29,10 @@ Blockly.Blocks.trade_definition_tradetype = {
         this.setMovable(false);
         this.setDeletable(false);
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
 };
 
-Blockly.JavaScript.trade_definition_tradetype = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_tradetype = () => {};

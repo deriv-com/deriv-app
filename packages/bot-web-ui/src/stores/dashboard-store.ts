@@ -4,7 +4,6 @@ import { setColors } from '@deriv/bot-skeleton';
 import { TStores } from '@deriv/stores/types';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import { notification_message, NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
-import { clearInjectionDiv } from 'Constants/load-modal';
 import * as strategy_description from '../constants/quick-strategies';
 import { TDescriptionItem } from '../pages/bot-builder/quick-strategy/types';
 import {
@@ -168,14 +167,10 @@ export default class DashboardStore implements IDashboardStore {
             ...getQuickStrategyContent,
         ];
 
-        const {
-            load_modal: { previewRecentStrategy, current_workspace_id },
-        } = this.root_store;
-
         const refreshBotBuilderTheme = () => {
             Blockly.derivWorkspace.asyncClear();
             Blockly.Xml.domToWorkspace(
-                Blockly.Xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
+                Blockly.utils.xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
                 Blockly.derivWorkspace
             );
         };
@@ -191,12 +186,7 @@ export default class DashboardStore implements IDashboardStore {
             () => {
                 if (Blockly) setCurrentXML();
                 setColors(this.is_dark_mode);
-                if (this.active_tab === 1) {
-                    refreshBotBuilderTheme();
-                } else {
-                    refreshBotBuilderTheme();
-                    previewRecentStrategy(current_workspace_id);
-                }
+                refreshBotBuilderTheme();
             }
         );
         reaction(
@@ -360,9 +350,7 @@ export default class DashboardStore implements IDashboardStore {
         if (!el_ref) {
             // eslint-disable-next-line no-console
             console.warn('Could not find preview workspace element.');
-            return;
         }
-        clearInjectionDiv(el_ref);
     };
 
     onCloseDialog = (): void => {
@@ -402,7 +390,7 @@ export default class DashboardStore implements IDashboardStore {
     };
 
     onZoomInOutClick = (is_zoom_in: boolean): void => {
-        const workspace = Blockly.mainWorkspace;
+        const workspace = Blockly.getMainWorkspace();
         const metrics = workspace.getMetrics();
         const addition = is_zoom_in ? 1 : -1;
 

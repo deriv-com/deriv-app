@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Formik, FormikValues } from 'formik';
 import { useOnfido } from '@deriv/api-v2';
 import { LegacyArrowLeft2pxIcon } from '@deriv/quill-icons';
-import { useTranslations } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Loader, Text } from '@deriv-com/ui';
 import { InlineMessage, ModalStepWrapper } from '../../../../../../components';
 import { useVerifyPersonalDetails, VerifyPersonalDetails } from '../VerifyPersonalDetails';
@@ -45,7 +45,9 @@ const Onfido: React.FC<TOnfidoProps> = ({ onClickBack, onCompletion }) => {
             {onClickBack && (
                 <button className='wallets-onfido__back-button' onClick={onClickBack}>
                     <LegacyArrowLeft2pxIcon iconSize='xs' />
-                    <Text weight='bold'>Back</Text>
+                    <Text weight='bold'>
+                        <Localize i18n_default_text='Back' />
+                    </Text>
                 </button>
             )}
             <div className='wallets-onfido'>

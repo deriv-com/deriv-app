@@ -5,7 +5,6 @@ import { Button, Text, Modal, VideoPlayer } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useWalletMigration } from '@deriv/hooks';
-import { useTranslations } from '@deriv-com/translations';
 import { getWalletMigrationVideoTranslations } from 'Constants/wallet-migration-video-translations';
 import './wallets-upgrade-modal.scss';
 
@@ -23,8 +22,8 @@ const trackAnalyticsEvent = (
 };
 
 const WalletsUpgradeModal = observer(() => {
-    const { traders_hub, ui } = useStore();
-    const { currentLang } = useTranslations();
+    const { traders_hub, ui, common } = useStore();
+    const { current_language } = common;
     const { is_demo, is_real_wallets_upgrade_on, toggleWalletsUpgrade } = traders_hub;
     const { is_desktop, is_mobile } = ui;
     const { is_eligible, startMigration } = useWalletMigration();
@@ -71,7 +70,7 @@ const WalletsUpgradeModal = observer(() => {
                             height={is_desktop ? '311px' : '157px'}
                             is_mobile={is_mobile}
                             muted
-                            src={getWalletMigrationVideoTranslations(currentLang)}
+                            src={getWalletMigrationVideoTranslations(current_language)}
                         />
                     </div>
                     <div className='wallets-upgrade-modal__text'>

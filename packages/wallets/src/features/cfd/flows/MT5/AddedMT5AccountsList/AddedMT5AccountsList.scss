@@ -43,9 +43,6 @@
 
         &-badge {
             width: fit-content;
-            span {
-                color: var(--status-warning, #ffad3a);
-            }
             & a {
                 cursor: pointer;
                 text-decoration: underline;

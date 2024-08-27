@@ -18,13 +18,13 @@ import {
 import PurchaseButtonContent from './purchase-button-content';
 import { getTradeTypeTabsList } from 'AppV2/Utils/trade-params-utils';
 import { StandaloneStopwatchRegularIcon } from '@deriv/quill-icons';
+import { CSSTransition } from 'react-transition-group';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 
 const PurchaseButton = observer(() => {
     const [loading_button_index, setLoadingButtonIndex] = React.useState<number | null>(null);
     const { isMobile } = useDevice();
     const { addBanner } = useNotifications();
-
     const {
         portfolio: { all_positions, onClickSell },
     } = useStore();
@@ -46,6 +46,8 @@ const PurchaseButton = observer(() => {
         trade_type_tab,
         trade_types,
     } = useTraderStore();
+
+    const [is_sell_button_visible, setIsSellButtonVisibile] = React.useState(is_accumulator && has_open_accu_contract);
 
     /*TODO: add error handling when design will be ready. validation_errors can be taken from useTraderStore
     const hasError = (info: TTradeStore['proposal_info'][string]) => {
@@ -80,6 +82,8 @@ const PurchaseButton = observer(() => {
         (is_valid_to_sell && active_accu_contract && getIndicativePrice(active_accu_contract.contract_info)) || null;
     const cardLabels = getCardLabelsV2();
 
+    const is_accu_sell_disabled = !is_valid_to_sell || active_accu_contract?.is_sell_requested;
+
     const getButtonType = (index: number, trade_type: string) => {
         const tab_index = getTradeTypeTabsList(contract_type).findIndex(tab => tab.contract_type === trade_type);
         const button_index = tab_index < 0 ? index : tab_index;
@@ -102,79 +106,109 @@ const PurchaseButton = observer(() => {
         if (is_purchase_enabled) setLoadingButtonIndex(null);
     }, [is_purchase_enabled]);
 
-    if (is_accumulator && has_open_accu_contract) {
-        const is_accu_sell_disabled = !is_valid_to_sell || active_accu_contract?.is_sell_requested;
-        return (
-            <div className='purchase-button__wrapper'>
-                <Button
-                    color='black'
-                    size='lg'
-                    label={
-                        is_accu_sell_disabled
-                            ? `${cardLabels.CLOSE}`
-                            : `${cardLabels.CLOSE} ${current_stake} ${currency}`
-                    }
-                    fullWidth
-                    className='purchase-button purchase-button--single'
-                    disabled={is_accu_sell_disabled}
-                    onClick={() => onClickSell(active_accu_contract?.contract_info.contract_id)}
-                />
-                {is_accu_sell_disabled && <div className='purchase-button--disabled-background single' />}
-            </div>
-        );
-    }
+    React.useEffect(() => {
+        if (is_accumulator) {
+            setIsSellButtonVisibile(has_open_accu_contract);
+        }
+    }, [is_accumulator, has_open_accu_contract]);
 
     return (
-        <div className='purchase-button__wrapper'>
-            {contract_types.map((trade_type, index) => {
-                const info = proposal_info?.[trade_type] || {};
-                const is_single_button = contract_types.length === 1;
-                const is_loading = loading_button_index === index;
-                const is_disabled = !is_trade_enabled_v2 || info.has_error;
-                /* TODO: stop using error text for is_max_payout_exceeded after validation_params are added to proposal API (both success & error response):
+        <React.Fragment>
+            <CSSTransition
+                in={!is_sell_button_visible}
+                timeout={450}
+                classNames='slide'
+                key='purchase-button'
+                unmountOnExit
+                mountOnEnter
+            >
+                <div className='purchase-button__wrapper'>
+                    {contract_types.map((trade_type, index) => {
+                        const info = proposal_info?.[trade_type] || {};
+                        const is_single_button = contract_types.length === 1;
+                        const is_loading = loading_button_index === index;
+                        const is_disabled = !is_trade_enabled_v2;
+                        /* TODO: stop using error text for is_max_payout_exceeded after validation_params are added to proposal API (both success & error response):
                 E.g., for is_max_payout_exceeded, we have to temporarily check the error text: Max payout error always contains 3 numbers, the check will work for any languages: */
-                const float_number_search_regex = /\d+(\.\d+)?/g;
-                const is_max_payout_exceeded =
-                    info.has_error && info.message?.match(float_number_search_regex)?.length === 3;
-                const error_message = is_max_payout_exceeded ? <Localize i18n_default_text='Exceeds max payout' /> : '';
+                        const float_number_search_regex = /\d+(\.\d+)?/g;
+                        const is_max_payout_exceeded =
+                            info.has_error && info.message?.match(float_number_search_regex)?.length === 3;
+                        const error_message = is_max_payout_exceeded ? (
+                            <Localize i18n_default_text='Exceeds max payout' />
+                        ) : (
+                            ''
+                        );
 
-                return (
-                    <React.Fragment key={trade_type}>
-                        <Button
-                            color={getButtonType(index, trade_type)}
-                            size='lg'
-                            label={getContractTypeDisplay(trade_type, { isHighLow: is_high_low, showButtonName: true })}
-                            fullWidth
-                            className={clsx(
-                                'purchase-button',
-                                is_loading && 'purchase-button--loading',
-                                is_single_button && 'purchase-button--single'
-                            )}
-                            isLoading={is_loading}
-                            disabled={is_disabled && !is_loading}
-                            onClick={() => {
-                                setLoadingButtonIndex(index);
-                                onPurchaseV2(trade_type, isMobile, addNotificationBannerCallback);
-                            }}
-                        >
-                            {!is_loading && !is_accumulator && (
-                                <PurchaseButtonContent
-                                    {...purchase_button_content_props}
-                                    error={error_message}
-                                    info={info}
-                                    is_reverse={!!index}
-                                />
-                            )}
-                        </Button>
-                        {is_disabled && !is_loading && (
-                            <div
-                                className={clsx('purchase-button--disabled-background', is_single_button && 'single')}
-                            />
-                        )}
-                    </React.Fragment>
-                );
-            })}
-        </div>
+                        return (
+                            <React.Fragment key={trade_type}>
+                                <Button
+                                    color={getButtonType(index, trade_type)}
+                                    size='lg'
+                                    label={getContractTypeDisplay(trade_type, {
+                                        isHighLow: is_high_low,
+                                        showButtonName: true,
+                                    })}
+                                    fullWidth
+                                    className={clsx(
+                                        'purchase-button',
+                                        is_loading && 'purchase-button--loading',
+                                        is_single_button && 'purchase-button--single'
+                                    )}
+                                    isLoading={is_loading}
+                                    disabled={is_disabled && !is_loading}
+                                    onClick={() => {
+                                        setLoadingButtonIndex(index);
+                                        onPurchaseV2(trade_type, isMobile, addNotificationBannerCallback);
+                                    }}
+                                >
+                                    {!is_loading && !is_accumulator && (
+                                        <PurchaseButtonContent
+                                            {...purchase_button_content_props}
+                                            error={error_message}
+                                            info={info}
+                                            is_reverse={!!index}
+                                        />
+                                    )}
+                                </Button>
+                                {is_disabled && !is_loading && (
+                                    <div
+                                        className={clsx(
+                                            'purchase-button--disabled-background',
+                                            is_single_button && 'single'
+                                        )}
+                                    />
+                                )}
+                            </React.Fragment>
+                        );
+                    })}
+                </div>
+            </CSSTransition>
+            <CSSTransition
+                in={is_sell_button_visible}
+                timeout={450}
+                classNames='slide'
+                key='sell-button'
+                unmountOnExit
+                mountOnEnter
+            >
+                <div className='purchase-button__wrapper'>
+                    <Button
+                        color='black'
+                        size='lg'
+                        label={
+                            is_accu_sell_disabled
+                                ? `${cardLabels.CLOSE}`
+                                : `${cardLabels.CLOSE} ${current_stake} ${currency}`
+                        }
+                        fullWidth
+                        className='purchase-button purchase-button--single'
+                        disabled={is_accu_sell_disabled}
+                        onClick={() => onClickSell(active_accu_contract?.contract_info.contract_id)}
+                    />
+                    {is_accu_sell_disabled && <div className='purchase-button--disabled-background single' />}
+                </div>
+            </CSSTransition>
+        </React.Fragment>
     );
 });
 

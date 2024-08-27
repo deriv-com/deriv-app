@@ -49,6 +49,23 @@
         position: sticky;
         z-index: 2; // chart has z-index: 1, it should not push purchase buttons down
         bottom: 0;
+
+        &.slide {
+            &-enter {
+                transform: translateY(100%);
+            }
+            &-enter-active {
+                transform: translateY(0);
+                transition: transform 150ms ease-in-out 300ms;
+            }
+            &-exit {
+                transform: translateY(0);
+            }
+            &-exit-active {
+                transform: translateY(100%);
+                transition: transform 150ms ease-in-out 300ms;
+            }
+        }
     }
     &--disabled-background {
         position: absolute;

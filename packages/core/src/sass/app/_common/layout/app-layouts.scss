@@ -142,6 +142,23 @@
         &--is-hidden {
             margin-top: 0;
         }
+        &--is-dtrader-v2 {
+            height: calc(100% - #{$MOBILE_HEADER_DTRADER_V2_HEIGHT});
+            margin-block-start: $MOBILE_HEADER_DTRADER_V2_HEIGHT;
+
+            &:has(.trade-notification) {
+                position: unset;
+            }
+
+            &--with-banner {
+                height: calc(100% - #{$MOBILE_HEADER_DTRADER_V2_WITH_BANNER_HEIGHT});
+                margin-block-start: $MOBILE_HEADER_DTRADER_V2_WITH_BANNER_HEIGHT;
+
+                &:has(.trade-notification) {
+                    position: unset;
+                }
+            }
+        }
 
         .cq-symbol-select-btn {
             padding: 0.3rem 0.9rem;

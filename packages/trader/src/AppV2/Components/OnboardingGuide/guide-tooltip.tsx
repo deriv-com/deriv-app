@@ -6,12 +6,12 @@ import { TooltipRenderProps } from 'react-joyride';
 
 const GuideTooltip = ({
     // backProps,
-    closeProps,
+    // closeProps,
     // continuous,
     // index,
     isLastStep,
     primaryProps,
-    // skipProps,
+    skipProps,
     step,
     tooltipProps,
 }: TooltipRenderProps) => {
@@ -28,7 +28,7 @@ const GuideTooltip = ({
                             {step.title}
                         </CaptionText>
                         <IconButton
-                            {...closeProps}
+                            {...skipProps}
                             icon={<LabelPairedXmarkSmBoldIcon fill='var(--component-textIcon-inverse-prominent)' />}
                             className='guide-tooltip__close'
                             size='sm'
@@ -42,7 +42,7 @@ const GuideTooltip = ({
                 )}
             </div>
             <Button
-                {...(isLastStep ? closeProps : primaryProps)}
+                {...primaryProps}
                 color='white-black'
                 className='guide-tooltip__button'
                 variant='secondary'

@@ -41,11 +41,24 @@ const GuideContainer = ({ should_run, onFinishGuide }: TGuideContainerProps) => 
             disableCloseOnEsc
             disableOverlayClose
             disableScrolling
+            floaterProps={{
+                styles: {
+                    arrow: {
+                        length: 4,
+                        spread: 8,
+                    },
+                },
+            }}
             showSkipButton
             tooltipComponent={GuideTooltip}
             steps={steps}
             spotlightPadding={0}
             scrollToFirstStep
+            styles={{
+                options: {
+                    arrowColor: 'var(--component-textIcon-normal-prominent)',
+                },
+            }}
             run={should_run}
         />
     );

@@ -4,7 +4,6 @@ import { useLocalStorageData } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
 import GuideContainer from './guide-container';
 
-// TODO: add second button for Skip. Add handlebar?
 const OnboardingGuide = () => {
     const [should_show_onboarding_guide, setShouldShowOnboardingGuide] = React.useState(false);
     const [should_run_onboarding_guide, setShouldRunOnboardingGuide] = React.useState(false);
@@ -22,10 +21,20 @@ const OnboardingGuide = () => {
         setOnboardingGuideDtraderV2(true);
     }, [setOnboardingGuideDtraderV2]);
 
+    const onGuideSkip = () => {
+        onFinishGuide();
+        setShouldShowOnboardingGuide(false);
+    };
+
+    const onGuideStart = () => {
+        setShouldRunOnboardingGuide(true);
+        setShouldShowOnboardingGuide(false);
+    };
+
     React.useEffect(() => {
-        if (!onboarding_guide_dtrader_v2) {
+        if (!onboarding_guide_dtrader_v2)
             onboarding_guide_timeout_ref.current = setTimeout(() => setShouldShowOnboardingGuide(true), 800);
-        }
+
         return () => clearTimeout(onboarding_guide_timeout_ref.current);
     }, [onboarding_guide_dtrader_v2]);
 
@@ -35,10 +44,12 @@ const OnboardingGuide = () => {
                 isOpened={should_show_onboarding_guide}
                 isMobile
                 showHandleBar={false}
-                shouldCloseOnPrimaryButtonClick
-                toggleModal={setShouldShowOnboardingGuide}
+                showSecondaryButton
+                secondaryButtonLabel={<Localize i18n_default_text='Skip' />}
+                secondaryButtonCallback={onGuideSkip}
+                toggleModal={onGuideSkip}
                 primaryButtonLabel={<Localize i18n_default_text="Let's begin" />}
-                primaryButtonCallback={() => setShouldRunOnboardingGuide(true)}
+                primaryButtonCallback={onGuideStart}
             >
                 <Modal.Header
                     className='onboarding-guide__video'

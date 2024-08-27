@@ -39,7 +39,7 @@ export const SuccessModalFooter = ({ isDemo }: Pick<TProps, 'isDemo'>) => {
             <Button onClick={hide} size={isMobile ? 'lg' : 'md'} variant='outlined'>
                 <Localize i18n_default_text='Maybe later' />
             </Button>
-            <Button onClick={() => handleOnClickReal()} size={isMobile ? 'lg' : 'md'}>
+            <Button onClick={handleOnClickReal} size={isMobile ? 'lg' : 'md'}>
                 <Localize i18n_default_text='Transfer funds' />
             </Button>
         </WalletButtonGroup>

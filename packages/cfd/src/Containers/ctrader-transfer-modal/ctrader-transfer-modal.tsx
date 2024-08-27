@@ -1,7 +1,8 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { Modal, Text, Money, Icon } from '@deriv/components';
+import { Modal, Text, Money } from '@deriv/components';
+import { LabelPairedChevronRightSmBoldIcon } from '@deriv/quill-icons';
 
 const CTraderTransferModal = observer(() => {
     const {
@@ -49,7 +50,7 @@ const CTraderTransferModal = observer(() => {
                                         has_sign={!!ctrader_account.balance && ctrader_account.balance < 0}
                                         show_currency
                                     />
-                                    <Icon icon='IcChevronRight' />
+                                    <LabelPairedChevronRightSmBoldIcon height={20} width={16} fill='#333333' />
                                 </Text>
                             </button>
                         );

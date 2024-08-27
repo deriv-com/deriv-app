@@ -111,6 +111,7 @@ describe('<Deposit />', () => {
                     },
                     general_store: {
                         is_deposit: true,
+                        setIsDeposit: jest.fn(),
                     },
                 },
             },

@@ -8,7 +8,6 @@ import {
     excludeParamsFromUrlQuery,
     filterUrlQuery,
     getPropertyValue,
-    getUrlBinaryBot,
     getUrlSmartTrader,
     isCryptocurrency,
     isDesktopOs,
@@ -421,6 +420,8 @@ export default class ClientStore extends BaseStore {
             is_mf_account: computed,
             is_tradershub_tracking: observable,
             setTradersHubTracking: action.bound,
+            account_time_of_closure: computed,
+            is_account_to_be_closed_by_residence: computed,
         });
 
         reaction(
@@ -2533,17 +2534,14 @@ export default class ClientStore extends BaseStore {
 
     syncWithLegacyPlatforms(active_loginid, client_accounts) {
         const smartTrader = {};
-        const binaryBot = {};
         const p2p = {};
 
         smartTrader.iframe = document.getElementById('localstorage-sync');
-        binaryBot.iframe = document.getElementById('localstorage-sync__bot');
         p2p.iframe = document.getElementById('localstorage-sync__p2p');
         smartTrader.origin = getUrlSmartTrader();
-        binaryBot.origin = getUrlBinaryBot(false);
         p2p.origin = getUrlP2P(false);
 
-        [smartTrader, binaryBot, p2p].forEach(platform => {
+        [smartTrader, p2p].forEach(platform => {
             if (platform.iframe) {
                 // Keep client.accounts in sync (in case user wasn't logged in).
                 platform.iframe.contentWindow.postMessage(
@@ -2880,5 +2878,15 @@ export default class ClientStore extends BaseStore {
 
     get is_mf_account() {
         return this.loginid?.startsWith('MF');
+    }
+
+    get account_time_of_closure() {
+        return this.account_status?.account_closure?.find(
+            item => item?.status_codes?.includes('residence_closure') && item?.type === 'residence'
+        )?.time_of_closure;
+    }
+
+    get is_account_to_be_closed_by_residence() {
+        return this.account_time_of_closure && this.residence && this.residence === 'sn';
     }
 }

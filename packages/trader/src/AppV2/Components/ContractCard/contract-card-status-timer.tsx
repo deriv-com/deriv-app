@@ -23,7 +23,7 @@ export const ContractCardStatusTimer = ({
     tick_count,
 }: TContractCardStatusTimerProps) => {
     const getDisplayedDuration = () => {
-        if (hasNoAutoExpiry) return <Localize i18n_default_text='Ongoing' />;
+        if (hasNoAutoExpiry) return <Localize i18n_default_text='Ongoing' key='ongoing' />;
         if (tick_count) {
             return `${currentTick ?? 0}/${tick_count} ${getCardLabels().TICKS.toLowerCase()}`;
         }
@@ -34,6 +34,7 @@ export const ContractCardStatusTimer = ({
                     end_time={date_expiry}
                     getCardLabels={getCardLabels}
                     start_time={serverTime as moment.Moment}
+                    key='remaining-time'
                 />
             );
         }
@@ -47,7 +48,7 @@ export const ContractCardStatusTimer = ({
     return displayedDuration ? (
         <Tag
             className='timer'
-            icon={<LabelPairedStopwatchCaptionRegularIcon />}
+            icon={<LabelPairedStopwatchCaptionRegularIcon key='open-contract-card' />}
             label={displayedDuration}
             variant='custom'
             size='sm'

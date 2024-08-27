@@ -1,0 +1,9 @@
+.network-status {
+    &__container {
+        .snackbar {
+            //center fixed element with dynamic width
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+}

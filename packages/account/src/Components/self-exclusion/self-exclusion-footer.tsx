@@ -1,17 +1,17 @@
-import React from 'react';
+import { useContext, Fragment } from 'react';
 import { createPortal } from 'react-dom';
 import { FormikValues, useFormikContext } from 'formik';
 import { Button, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
 import SelfExclusionContext from './self-exclusion-context';
 
 const SelfExclusionFooter = () => {
-    const { footer_ref, goToConfirm, toggleArticle } = React.useContext(SelfExclusionContext);
+    const { footer_ref, goToConfirm, toggleArticle } = useContext(SelfExclusionContext);
     const { dirty, isSubmitting, isValid, values } = useFormikContext<FormikValues>();
 
     if (footer_ref) {
         return createPortal(
-            <>
+            <Fragment>
                 <a className='link link--prominent' onClick={toggleArticle}>
                     <Text size='xxs' line_height='m' weight='bold'>
                         <Localize i18n_default_text='Learn more about trading limits' />
@@ -27,7 +27,7 @@ const SelfExclusionFooter = () => {
                 >
                     <Localize i18n_default_text='Next' />
                 </Button>
-            </>,
+            </Fragment>,
             footer_ref
         );
     }

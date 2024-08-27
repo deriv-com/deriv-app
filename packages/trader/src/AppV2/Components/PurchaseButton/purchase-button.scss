@@ -5,10 +5,9 @@
     height: var(--core-size-2800);
     gap: 0px;
 
-    &:nth-child(2):not(.purchase-button--loading) {
+    &:not(:first-child):not(.purchase-button--loading) {
         align-items: flex-start;
     }
-
     &--single {
         align-items: center;
         justify-content: center;
@@ -18,11 +17,9 @@
             gap: var(--core-spacing-400);
         }
     }
-
     &--loading {
         align-items: center;
     }
-
     &__information {
         &__wrapper {
             width: 100%;
@@ -43,15 +40,49 @@
             color: var(--core-color-solid-slate-50);
         }
     }
-
     &__wrapper {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0px var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-400);
+        padding: 0 var(--core-spacing-400) var(--core-spacing-400);
         gap: var(--core-spacing-400);
         position: sticky;
         z-index: 2; // chart has z-index: 1, it should not push purchase buttons down
         bottom: 0;
+
+        &.slide {
+            &-enter {
+                transform: translateY(100%);
+            }
+            &-enter-active {
+                transform: translateY(0);
+                transition: transform 150ms ease-in-out 300ms;
+            }
+            &-exit {
+                transform: translateY(0);
+            }
+            &-exit-active {
+                transform: translateY(100%);
+                transition: transform 150ms ease-in-out 300ms;
+            }
+        }
+    }
+    &--disabled-background {
+        position: absolute;
+        background-color: var(--core-color-solid-slate-50);
+        top: 0;
+        inset-inline-start: var(--core-spacing-400);
+        width: calc((100% - var(--core-spacing-800) - var(--core-spacing-400)) / 2);
+        height: calc(100% - var(--core-spacing-400));
+        border-radius: var(--component-button-border-radius-lg);
+        z-index: -1;
+
+        &:last-child:not(.single) {
+            inset-inline-start: unset;
+            inset-inline-end: var(--core-spacing-400);
+        }
+        &.single {
+            width: calc(100% - var(--core-spacing-800));
+        }
     }
 }

@@ -19,7 +19,6 @@ import {
     DerivProductDerivBotBrandLightLogoHorizontalIcon,
     DerivProductDerivGoBrandLightLogoHorizontalIcon,
     DerivProductDerivTraderBrandLightLogoHorizontalIcon,
-    PartnersProductBinaryBotBrandLightLogoHorizontalIcon,
     PartnersProductSmarttraderBrandLightLogoIcon,
     PaymentMethodBitcoinBrandIcon,
     PaymentMethodDerivDemoBrandDarkIcon,
@@ -32,7 +31,6 @@ import {
 import { TCurrencyIconTypes, TIconTypes } from '../types';
 
 export const AppIcons: TIconTypes = {
-    binarybot: PartnersProductBinaryBotBrandLightLogoHorizontalIcon,
     bot: DerivProductDerivBotBrandLightLogoHorizontalIcon,
     derivgo: DerivProductDerivGoBrandLightLogoHorizontalIcon,
     smarttrader: PartnersProductSmarttraderBrandLightLogoIcon,

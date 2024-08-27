@@ -1,5 +1,4 @@
-import { isMobile } from '@deriv/shared';
-import { getErrorMessage, getErrorModalTitle, getWidth } from 'Utils/block-user';
+import { getErrorMessage, getErrorModalTitle } from 'Utils/block-user';
 
 jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(() => false),
@@ -24,16 +23,5 @@ describe('getErrorModalTitle', () => {
 
     it('should return error title if is_invalid_advertiser_id is true', () => {
         expect(getErrorModalTitle(true, 'name')).toEqual('name is no longer on Deriv P2P');
-    });
-});
-
-describe('getWidth', () => {
-    it('should return 40rem if isMobile is false', () => {
-        expect(getWidth()).toEqual('40rem');
-    });
-
-    it('should return 90rem if isMobile is true', () => {
-        (isMobile as jest.Mock).mockImplementation(() => true);
-        expect(getWidth()).toEqual('90rem');
     });
 });

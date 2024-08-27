@@ -35,6 +35,16 @@ jest.mock('@deriv/bot-skeleton', () => ({
                         icon: ['CALLE', 'PUTE'],
                     },
                 ],
+                getContractTypes: () => [
+                    {
+                        text: 'Up/Down',
+                        value: 'CALL',
+                    },
+                    {
+                        text: 'Up/Down',
+                        value: 'PUT',
+                    },
+                ],
             },
             active_symbols: {
                 getSymbolsForBot: () => [

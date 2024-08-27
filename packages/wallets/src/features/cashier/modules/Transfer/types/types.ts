@@ -15,20 +15,15 @@ export type TInitialTransferFormValues = {
 };
 
 type TAction = {
-    buttonLabel?: string;
+    buttonLabel?: JSX.Element;
     navigateTo?: string;
     shouldOpenInNewTab?: boolean;
 };
 
-type TMessage = {
-    text: string;
-    values: Record<string, boolean | number | string | undefined>;
-};
-
 export type TTransferMessage = {
     action?: TAction;
-    message: TMessage;
-    type: 'error' | 'info' | 'success';
+    message: JSX.Element;
+    type: 'error' | 'info' | 'success' | 'warning';
 };
 
 export type TMessageFnProps = {
@@ -38,6 +33,7 @@ export type TMessageFnProps = {
     displayMoney?: (amount: number, currency: string, fractionalDigits: number) => string;
     fiatAccount?: THooks.WalletAccountsList;
     limits?: THooks.AccountLimits;
+    platformStatus?: string;
     sourceAccount: NonNullable<TAccount>;
     sourceAmount: number;
     targetAccount: TAccount;

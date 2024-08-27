@@ -128,7 +128,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                     </Text>
                 </Button>
                 <Button
-                    color='black-white'
+                    color='coral'
                     fullWidth
                     size='lg'
                     onClick={() => handleSubmit(VERIFICATION_SERVICES.WHATSAPP)}

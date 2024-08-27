@@ -25,6 +25,13 @@ const GuideContainer = ({ should_run, onFinishGuide }: TGuideContainerProps) => 
             offset: 0,
             placement: 'bottom-start' as Step['placement'],
         },
+        {
+            target: '.trade-params',
+            title: <Localize i18n_default_text='Open your trade (3/6)' />,
+            content: <Localize i18n_default_text='Specify your trade parameters.' />,
+            disableBeacon: true,
+            offset: 0,
+        },
     ];
 
     const callbackHandle = (data: CallBackProps) => {

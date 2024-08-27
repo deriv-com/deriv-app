@@ -1,11 +1,3 @@
-.onboarding-guide {
-    // TODO: remove temporary style after we get a real video
-    &__video img {
-        height: 218.5px;
-        width: 100%;
-    }
-}
-
 .guide-tooltip {
     &__wrapper {
         background-color: var(--component-textIcon-normal-prominent);
@@ -26,6 +18,10 @@
     &__header {
         display: flex;
         justify-content: space-between;
+    }
+
+    &__content {
+        margin-inline-end: var(--core-spacing-1200);
     }
 
     &__close {

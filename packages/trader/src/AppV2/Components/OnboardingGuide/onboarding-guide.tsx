@@ -51,7 +51,6 @@ const OnboardingGuide = () => {
                 primaryButtonCallback={onGuideStart}
             >
                 <Modal.Header
-                    className='onboarding-guide__video'
                     image={<OnboardingVideo />}
                     title={<Localize i18n_default_text='Welcome to the new Deriv Trader' />}
                 />

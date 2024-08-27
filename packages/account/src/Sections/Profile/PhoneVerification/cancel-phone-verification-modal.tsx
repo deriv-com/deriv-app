@@ -68,6 +68,7 @@ const CancelPhoneVerificationModal = observer(() => {
             isOpened={show_modal}
             shouldCloseOnPrimaryButtonClick
             primaryButtonLabel={<Localize i18n_default_text='Continue verification' />}
+            buttonColor='coral'
             showSecondaryButton
             showCrossIcon
             toggleModal={handleStayAtPhoneVerificationPage}

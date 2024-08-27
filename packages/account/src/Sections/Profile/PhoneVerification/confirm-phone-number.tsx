@@ -74,6 +74,10 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
         if (!error) {
             trackPhoneVerificationEvents({
                 action: 'click_cta',
+                cta_name:
+                    phone_verification_type === VERIFICATION_SERVICES.SMS
+                        ? 'Get code via SMS'
+                        : 'Get code via WhatsApp',
                 subform_name: 'verify_phone_screen',
             });
             phone_verification_type === VERIFICATION_SERVICES.SMS ? requestOnSMS() : requestOnWhatsApp();
@@ -124,7 +128,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                     </Text>
                 </Button>
                 <Button
-                    color='black-white'
+                    color='coral'
                     fullWidth
                     size='lg'
                     onClick={() => handleSubmit(VERIFICATION_SERVICES.WHATSAPP)}

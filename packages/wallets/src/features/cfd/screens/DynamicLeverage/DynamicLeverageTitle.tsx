@@ -15,7 +15,7 @@ export const DynamicLeverageTitle: FC = () => {
         <div className='wallets-dynamic-leverage-screen__title'>
             <LegacyArrowLeft2pxIcon
                 className='wallets-dynamic-leverage-screen__title-back'
-                data-testid='back_icon'
+                data-testid='dt_dynamic_leverage_title_back_icon'
                 iconSize='xs'
                 onClick={toggleDynamicLeverage}
             />

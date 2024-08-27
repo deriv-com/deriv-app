@@ -4,6 +4,7 @@ import { useCallback } from 'react';
 type TTrackPhoneVerificationEventsPayload = {
     //@ts-expect-error will remove this error when Analytics package types are being updated
     action: TEvents['ce_phone_verification_form']['action'];
+    cta_name?: string;
     subform_name?: string;
 };
 

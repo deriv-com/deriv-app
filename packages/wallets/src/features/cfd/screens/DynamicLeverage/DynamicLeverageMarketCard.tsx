@@ -21,15 +21,20 @@ export const DynamicLeverageMarketCard: FC<TDynamicLeverageMarketCardProps> = ({
 }) => (
     <div className='wallets-dynamic-leverage-modal__market'>
         <div className='wallets-dynamic-leverage-modal__market-title'>
-            <WalletText align='center' data-testid='market_title' size='sm' weight='bold'>
+            <WalletText align='center' data-testid='dt_dynamic_leverage_market_title' size='sm' weight='bold'>
                 {displayName}
             </WalletText>
             {!!instruments.length && (
-                <WalletText align='center' data-testid='description_title' fontStyle='italic' size='2xs'>
+                <WalletText
+                    align='center'
+                    data-testid='dt_dynamic_leverage_description_title'
+                    fontStyle='italic'
+                    size='2xs'
+                >
                     {`(${instruments.join(', ')})`}
                 </WalletText>
             )}
-            <WalletText align='center' color='error' data-testid='leverage_title' size='xs'>
+            <WalletText align='center' color='error' data-testid='dt_dynamic_leverage_title' size='xs'>
                 {`Up to ${min}:${max}`}
             </WalletText>
         </div>

@@ -78,6 +78,7 @@ const DidntGetTheCodeModal = ({
             primaryButtonCallback={handleResendCode}
             secondaryButtonCallback={handleChangeOTPVerification}
             primaryButtonLabel={<Localize i18n_default_text='Resend code' />}
+            buttonColor='coral'
             secondaryButtonLabel={
                 <Localize
                     i18n_default_text='Send code via {{phone_verification_type}}'

@@ -195,7 +195,7 @@ export const ContractType = (() => {
             short_barriers,
             long_barriers,
             strike_price_choices,
-            wheel_picker_initial_values,
+            v2_params_initial_values,
         } = store;
 
         if (!contract_type) return {};
@@ -211,10 +211,10 @@ export const ContractType = (() => {
             case 'Call':
             case 'Put':
                 stored_barriers_data =
-                    wheel_picker_initial_values?.strike && isDTraderV2()
+                    v2_params_initial_values?.strike && isDTraderV2()
                         ? ({
                               ...strike_price_choices,
-                              barrier: wheel_picker_initial_values.strike,
+                              barrier: v2_params_initial_values.strike,
                           } as TTradeStore['strike_price_choices'])
                         : strike_price_choices;
                 break;

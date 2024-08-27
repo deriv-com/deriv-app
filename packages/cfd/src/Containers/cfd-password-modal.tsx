@@ -1043,7 +1043,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         </MobileDialog>
     );
 
-    const is_mt5_password_format_invalid = (
+    const is_mt5_password_format_invalid_desktop = (
         <React.Fragment>
             <DesktopWrapper>
                 <Modal
@@ -1068,27 +1068,31 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     />
                 </Modal>
             </DesktopWrapper>
-            <MobileDialog
-                has_full_height
-                portal_element_id='modal_root'
-                visible={is_mt5_password_invalid_format_modal_visible}
-                onClose={closeModal}
-                wrapper_classname='cfd-password-modal'
-                renderTitle={() => localize('Deriv MT5 latest password requirements')}
-            >
-                <CFDPasswordChange
-                    error_type={error_type}
-                    error_message={error_message}
-                    form_error={form_error}
-                    should_set_trading_password={should_set_trading_password}
-                    setNewPasswordValue={setNewPasswordValue}
-                    validatePassword={validatePassword}
-                    onForgotPassword={handleForgotPassword}
-                    platform={CFD_PLATFORMS.MT5}
-                    onCancel={closeModal}
-                />
-            </MobileDialog>
         </React.Fragment>
+    );
+
+    const is_mt5_password_format_invalid = (
+        <MobileDialog
+            has_full_height
+            portal_element_id='modal_root'
+            visible={is_mt5_password_invalid_format_modal_visible}
+            onClose={closeModal}
+            wrapper_classname='cfd-password-modal cfd-password-change__wrapper'
+            header_classname='cfd-password-change__header'
+            renderTitle={() => localize('Deriv MT5 latest password requirements')}
+        >
+            <CFDPasswordChange
+                error_type={error_type}
+                error_message={error_message}
+                form_error={form_error}
+                should_set_trading_password={should_set_trading_password}
+                setNewPasswordValue={setNewPasswordValue}
+                validatePassword={validatePassword}
+                onForgotPassword={handleForgotPassword}
+                platform={CFD_PLATFORMS.MT5}
+                onCancel={closeModal}
+            />
+        </MobileDialog>
     );
 
     return (
@@ -1134,7 +1138,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 onClose={() => setSentEmailModalStatus(false)}
                 onClickSendEmail={handleForgotPassword}
             />
-            {is_incorrect_mt5_password_format_error && is_mt5_password_format_invalid}
+            {is_incorrect_mt5_password_format_error && isDesktop && is_mt5_password_format_invalid_desktop}
+            {is_incorrect_mt5_password_format_error && !isDesktop && is_mt5_password_format_invalid}
             {is_mt5_password_changed_modal_visible && (
                 <CFDPasswordChangeContent closeModal={closeModal} password_value={new_password_value} />
             )}

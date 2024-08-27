@@ -43,7 +43,7 @@ const CFDPasswordChange = observer(
         should_set_trading_password,
         platform,
     }: TCFDPasswordChangeProps) => {
-        const { isDesktop: isDesktopDevice } = useDevice();
+        const { isMobile } = useDevice();
         const { ui, modules } = useStore();
         const { product, account_type } = useCfdStore();
         const { cfd } = modules;
@@ -206,7 +206,7 @@ const CFDPasswordChange = observer(
                                 <FormSubmitButton
                                     is_disabled={!values.old_password || !values.new_password || !isValid || !checked}
                                     has_cancel={has_cancel_button}
-                                    is_absolute={!isDesktopDevice}
+                                    is_absolute={isMobile}
                                     cancel_label={localize('Forgot password?')}
                                     onCancel={handleCancel}
                                     is_loading={isSubmitting}

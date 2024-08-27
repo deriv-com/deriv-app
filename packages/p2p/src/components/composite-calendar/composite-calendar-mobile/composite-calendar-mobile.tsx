@@ -138,6 +138,7 @@ const CompositeCalendarMobile = ({
                 title={localize('Please select duration')}
                 visible={is_open}
                 has_content_scroll
+                header_classname='composite-calendar-mobile__header'
                 onClose={closeDialog}
                 content_height_offset='94px'
                 footer={

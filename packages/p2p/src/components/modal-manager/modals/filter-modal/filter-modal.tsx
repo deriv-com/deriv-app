@@ -1,6 +1,7 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
-import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal } from '@deriv/components';
+import { observer } from '@deriv/stores';
+import { MobileFullPageModal, Modal } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
 import { getListDifference } from 'Utils/helper';
@@ -15,9 +16,7 @@ export type TPaymentMethod = {
 
 const FilterModal = () => {
     const { buy_sell_store, my_profile_store } = useStores();
-    const {
-        ui: { is_mobile },
-    } = useStore();
+    const { isDesktop } = useDevice();
     const { hideModal, is_modal_open, showModal, useSavedState } = useModalManagerContext();
     const {
         onClickApply: onClickApplyFilter,
@@ -82,7 +81,7 @@ const FilterModal = () => {
                 key: 'LeavePageModal',
                 props: {
                     onLeavePage: () => {
-                        if (is_mobile) {
+                        if (!isDesktop) {
                             setSelectedMethods(
                                 selected_methods.filter((selected_method: string) =>
                                     selected_payment_method_value.includes(selected_method)
@@ -169,72 +168,71 @@ const FilterModal = () => {
         }
     };
 
-    return (
-        <React.Fragment>
-            <DesktopWrapper>
-                <Modal
-                    className='payment-methods'
-                    has_close_icon
-                    height='56rem'
-                    title={<FilterModalHeader pageHeaderReturnFn={pageHeaderReturnFn} />}
-                    is_open={is_modal_open}
-                    toggleModal={onClose}
-                    width='44rem'
-                >
-                    <Modal.Body>
-                        <FilterModalBody
-                            handleToggle={onToggle}
-                            onChange={onChange}
-                            selected_methods={selected_methods}
-                            selected_methods_text={selected_methods_text}
-                        />
-                    </Modal.Body>
-                    <Modal.Footer has_separator>
-                        <FilterModalFooter
-                            class_name='filter-modal__footer-button-group'
-                            has_made_changes={has_made_changes}
-                            has_selected_payment_methods={has_selected_payment_methods}
-                            onClickApply={onClickApply}
-                            onClickClearPaymentMethods={onClickClearPaymentMethods}
-                            onClickConfirmPaymentMethods={onClickConfirmPaymentMethods}
-                            onClickReset={onClickReset}
-                            selected_methods={selected_methods}
-                        />
-                    </Modal.Footer>
-                </Modal>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <MobileFullPageModal
-                    body_className='filter-modal__body'
-                    is_modal_open={is_modal_open}
-                    height_offset='80px'
-                    is_flex
-                    header={<FilterModalHeader pageHeaderReturnFn={pageHeaderReturnFn} />}
-                    onClickClose={onClose}
-                    renderPageFooterChildren={() => {
-                        return (
-                            <FilterModalFooter
-                                class_name='filter-modal__footer-button-group'
-                                has_made_changes={has_made_changes}
-                                has_selected_payment_methods={has_selected_payment_methods}
-                                onClickApply={onClickApply}
-                                onClickClearPaymentMethods={onClickClearPaymentMethods}
-                                onClickConfirmPaymentMethods={onClickConfirmPaymentMethods}
-                                onClickReset={onClickReset}
-                                selected_methods={selected_methods}
-                            />
-                        );
-                    }}
-                >
+    if (isDesktop) {
+        return (
+            <Modal
+                className='payment-methods'
+                has_close_icon
+                height='56rem'
+                title={<FilterModalHeader pageHeaderReturnFn={pageHeaderReturnFn} />}
+                is_open={is_modal_open}
+                toggleModal={onClose}
+                width='44rem'
+            >
+                <Modal.Body>
                     <FilterModalBody
                         handleToggle={onToggle}
                         onChange={onChange}
                         selected_methods={selected_methods}
                         selected_methods_text={selected_methods_text}
                     />
-                </MobileFullPageModal>
-            </MobileWrapper>
-        </React.Fragment>
+                </Modal.Body>
+                <Modal.Footer has_separator>
+                    <FilterModalFooter
+                        class_name='filter-modal__footer-button-group'
+                        has_made_changes={has_made_changes}
+                        has_selected_payment_methods={has_selected_payment_methods}
+                        onClickApply={onClickApply}
+                        onClickClearPaymentMethods={onClickClearPaymentMethods}
+                        onClickConfirmPaymentMethods={onClickConfirmPaymentMethods}
+                        onClickReset={onClickReset}
+                        selected_methods={selected_methods}
+                    />
+                </Modal.Footer>
+            </Modal>
+        );
+    }
+
+    return (
+        <MobileFullPageModal
+            body_className='filter-modal__body'
+            is_modal_open={is_modal_open}
+            height_offset='80px'
+            is_flex
+            header={<FilterModalHeader pageHeaderReturnFn={pageHeaderReturnFn} />}
+            onClickClose={onClose}
+            renderPageFooterChildren={() => {
+                return (
+                    <FilterModalFooter
+                        class_name='filter-modal__footer-button-group'
+                        has_made_changes={has_made_changes}
+                        has_selected_payment_methods={has_selected_payment_methods}
+                        onClickApply={onClickApply}
+                        onClickClearPaymentMethods={onClickClearPaymentMethods}
+                        onClickConfirmPaymentMethods={onClickConfirmPaymentMethods}
+                        onClickReset={onClickReset}
+                        selected_methods={selected_methods}
+                    />
+                );
+            }}
+        >
+            <FilterModalBody
+                handleToggle={onToggle}
+                onChange={onChange}
+                selected_methods={selected_methods}
+                selected_methods_text={selected_methods_text}
+            />
+        </MobileFullPageModal>
     );
 };
 

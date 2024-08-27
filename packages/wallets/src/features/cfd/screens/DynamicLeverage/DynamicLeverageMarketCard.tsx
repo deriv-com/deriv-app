@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Localize } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { THooks } from '../../../../types';
 import { DynamicLeverageTableColumnHeader } from './DynamicLeverageTableColumnHeader';
@@ -19,43 +19,47 @@ export const DynamicLeverageMarketCard: FC<TDynamicLeverageMarketCardProps> = ({
     instruments,
     max,
     min,
-}) => (
-    <div className='wallets-dynamic-leverage-modal__market'>
-        <div className='wallets-dynamic-leverage-modal__market-title'>
-            <Text align='center' data-testid='market_title' size='sm' weight='bold'>
-                {displayName}
-            </Text>
-            {!!instruments.length && (
-                <Text align='center' data-testid='description_title' fontStyle='italic' size='2xs'>
-                    {`(${instruments.join(', ')})`}
+}) => {
+    const { localize } = useTranslations();
+
+    return (
+        <div className='wallets-dynamic-leverage-modal__market'>
+            <div className='wallets-dynamic-leverage-modal__market-title'>
+                <Text align='center' data-testid='market_title' size='sm' weight='bold'>
+                    {displayName}
                 </Text>
-            )}
-            <Text align='center' color='error' data-testid='leverage_title' size='xs'>
-                <Localize i18n_default_text='Up to {{min}}:{{max}}' values={{ max, min }} />
-            </Text>
-        </div>
-        <div className='wallets-dynamic-leverage-modal__market-table'>
-            <div className='wallets-dynamic-leverage-modal__market-table-header-row'>
-                <DynamicLeverageTableColumnHeader subtitle='(lots)' title='From' />
-                <DynamicLeverageTableColumnHeader subtitle='(lots)' title='to' />
-                <DynamicLeverageTableColumnHeader subtitle='(1:x)' title='Leverage' />
+                {!!instruments.length && (
+                    <Text align='center' data-testid='description_title' fontStyle='italic' size='2xs'>
+                        {`(${instruments.join(', ')})`}
+                    </Text>
+                )}
+                <Text align='center' color='error' data-testid='leverage_title' size='xs'>
+                    <Localize i18n_default_text='Up to {{min}}:{{max}}' values={{ max, min }} />
+                </Text>
             </div>
-            <div>
-                {data?.map(columns => (
-                    <div
-                        className='wallets-dynamic-leverage-modal__market-table-row'
-                        key={`${columns.from}-${columns.to}-${columns.leverage}`}
-                    >
-                        {Object.entries(columns).map(([columnKey, value]) => (
-                            <div key={`${displayName}_${columnKey}_${value}`}>
-                                <Text align='center' size='sm'>
-                                    {value}
-                                </Text>
-                            </div>
-                        ))}
-                    </div>
-                ))}
+            <div className='wallets-dynamic-leverage-modal__market-table'>
+                <div className='wallets-dynamic-leverage-modal__market-table-header-row'>
+                    <DynamicLeverageTableColumnHeader subtitle={localize('(lots)')} title={localize('From')} />
+                    <DynamicLeverageTableColumnHeader subtitle={localize('(lots)')} title={localize('to')} />
+                    <DynamicLeverageTableColumnHeader subtitle={localize('(1:x)')} title={localize('Leverage')} />
+                </div>
+                <div>
+                    {data?.map(columns => (
+                        <div
+                            className='wallets-dynamic-leverage-modal__market-table-row'
+                            key={`${columns.from}-${columns.to}-${columns.leverage}`}
+                        >
+                            {Object.entries(columns).map(([columnKey, value]) => (
+                                <div key={`${displayName}_${columnKey}_${value}`}>
+                                    <Text align='center' size='sm'>
+                                        {value}
+                                    </Text>
+                                </div>
+                            ))}
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
-    </div>
-);
+    );
+};

@@ -35,7 +35,10 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
     const is_multiplier = isMultiplierContract(contract_type);
 
     const cardLabels = getCardLabelsV2();
-    const bidDetails = !is_valid_to_cancel ? `${bid_price} ${currency}` : '';
+    const formatted_bid_price = FormatUtils.formatMoney(bid_price || 0, {
+        currency: currency as 'USD', // currency types mismatched between utils and shared
+    });
+    const bidDetails = !is_valid_to_cancel ? `${formatted_bid_price} ${currency}` : '';
     const label = `${cardLabels.CLOSE} ${bidDetails}`;
 
     const buttonProps: ButtonProps = {
@@ -83,9 +86,7 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                 <Button
                     label={
                         is_valid_to_sell
-                            ? `${cardLabels.CLOSE} ${FormatUtils.formatMoney(bid_price || 0, {
-                                  currency: currency as 'USD', // currency types mismatched between utils and shared
-                              })} ${currency}`
+                            ? `${cardLabels.CLOSE} ${formatted_bid_price} ${currency}`
                             : cardLabels.RESALE_NOT_OFFERED
                     }
                     isLoading={is_sell_requested && is_valid_to_sell}

@@ -22,5 +22,10 @@
     .deal-cancellation-badge {
         background-color: var(--semantic-color-monochrome-surface-normal-lowest);
         border-radius: var(--semantic-borderRadius-sm);
+
+        .dc-remaining-time {
+            color: var(--semantic-color-monochrome-textIcon-normal-high);
+            font-size: var(--core-fontSize-50);
+        }
     }
 }

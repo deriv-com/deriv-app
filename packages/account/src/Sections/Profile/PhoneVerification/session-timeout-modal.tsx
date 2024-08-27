@@ -21,6 +21,7 @@ const SessionTimeoutModal = () => {
             isOpened={should_show_session_timeout_modal}
             primaryButtonCallback={redirectBackToPersonalDetails}
             primaryButtonLabel={<Localize i18n_default_text='OK' />}
+            buttonColor='coral'
             title={localize('Session Expired')}
             disableCloseOnOverlay
         >

@@ -54,6 +54,7 @@ const VideoPlayer = ({ className, data_testid, height, is_mobile, muted = false,
             | TouchEvent
             | MouseEvent
     ) => {
+        const full_width = 100;
         const progress_bar = progress_bar_ref.current;
         const client_X =
             e.type === 'mousemove' || e.type === 'click'
@@ -63,9 +64,9 @@ const VideoPlayer = ({ className, data_testid, height, is_mobile, muted = false,
         let new_width =
             ((client_X - shift_X - (progress_bar?.getBoundingClientRect().left ?? 0)) /
                 (progress_bar?.getBoundingClientRect().width ?? 0)) *
-            100;
-        if (is_rtl) new_width = 100 - new_width;
-        if (new_width >= 100) new_width = 100;
+            full_width;
+        if (is_rtl) new_width = full_width - new_width;
+        if (new_width >= full_width) new_width = full_width;
         if (new_width <= 0) new_width = 0;
         return parseFloat(new_width.toFixed(3));
     };

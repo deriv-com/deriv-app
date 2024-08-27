@@ -191,11 +191,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
     if (isLoading) return null;
 
     if (!isDesktop) {
-        return (
-            <ModalStepWrapper renderFooter={() => renderAccountSuccessButton(!isDemo)}>
-                {renderMainContent}
-            </ModalStepWrapper>
-        );
+        return <ModalStepWrapper renderFooter={renderAccountSuccessButton}>{renderMainContent}</ModalStepWrapper>;
     }
 
     return <ModalWrapper hideCloseButton>{renderMainContent}</ModalWrapper>;

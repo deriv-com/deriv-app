@@ -25,7 +25,13 @@ const WalletError: React.FC<TProps> = ({ buttonText, buttonVariant = 'contained'
                     description={errorMessage}
                     icon={<LegacyWarningIcon fill='#FF444F' iconSize='2xl' />}
                     renderButtons={() => (
-                        <Button isFullWidth={!isDesktop} onClick={onClick} size='lg' variant={buttonVariant}>
+                        <Button
+                            isFullWidth={!isDesktop}
+                            onClick={onClick}
+                            size='lg'
+                            textSize='md'
+                            variant={buttonVariant}
+                        >
                             {buttonText ?? <Localize i18n_default_text='Try again' />}
                         </Button>
                     )}

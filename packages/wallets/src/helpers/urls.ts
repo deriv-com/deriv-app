@@ -9,8 +9,6 @@ const domainUrlInitial = (isBrowser() && window.location.hostname.split('app.')[
 const domainUrl = supportedDomains.includes(domainUrlInitial) ? domainUrlInitial : derivComUrl;
 
 export const derivUrls = Object.freeze({
-    BINARYBOT_PRODUCTION: `https://bot.${domainUrl}`,
-    BINARYBOT_STAGING: `https://staging-bot.${domainUrl}`,
     DERIV_APP_PRODUCTION: `https://app.${domainUrl}`,
     DERIV_APP_STAGING: `https://staging-app.${domainUrl}`,
     DERIV_COM_PRODUCTION: `https://${domainUrl}`,
@@ -67,17 +65,6 @@ export const getUrlSmartTrader = () => {
     }
 
     return `${baseLink}/${i18NLanguage.toLowerCase()}/trading.html`;
-};
-
-export const getUrlBinaryBot = (isLanguageRequired = true) => {
-    const { isStagingDerivApp } = getPlatformFromUrl();
-
-    const urlLang = getlangFromUrl();
-    const i18NLanguage = window.localStorage.getItem('i18n_language') || urlLang || 'en';
-
-    const baseLink = isStagingDerivApp ? derivUrls.BINARYBOT_STAGING : derivUrls.BINARYBOT_PRODUCTION;
-
-    return isLanguageRequired ? `${baseLink}/?l=${i18NLanguage.toLowerCase()}` : baseLink;
 };
 
 export const getPlatformFromUrl = (domain = window.location.hostname) => {

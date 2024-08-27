@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Button, Checkbox, Icon, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import ErrorDialog from 'Components/error-dialog';
 import { TError } from '../../types';
 import './transfer-confirm.scss';
@@ -77,6 +77,8 @@ const TransferConfirm = ({
     onClickBack,
     onClickConfirm,
 }: TTransferConfirmProps) => {
+    const { isMobile } = useDevice();
+
     const [is_transfer_consent_checked, setIsTransferConsentChecked] = React.useState(false);
 
     const warning_messages = [
@@ -109,7 +111,7 @@ const TransferConfirm = ({
                 weight='bold'
                 align='center'
                 className='transfer-confirm__warning-icon__description'
-                size={isMobile() ? 'xs' : 's'}
+                size={!isMobile ? 's' : 'xs'}
             >
                 {is_payment_agent_withdraw
                     ? localize('Funds transfer information')

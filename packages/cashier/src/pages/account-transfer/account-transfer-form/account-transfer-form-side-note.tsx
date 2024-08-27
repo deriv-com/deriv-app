@@ -1,42 +1,45 @@
 import React, { useCallback } from 'react';
-
-import { GetLimits } from '@deriv/api-types';
-import { Text } from '@deriv/components';
+import { SideNote, Text } from '@deriv/components';
 import { getCurrencyDisplayCode, getPlatformSettings } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { useCashierStore } from '../../../stores/useCashierStores';
+import { observer, useStore } from '@deriv/stores';
 
-type TAccountTransferNoteProps = {
-    allowed_transfers_count: GetLimits['daily_transfers'];
-    currency: string;
-    is_crypto_to_crypto_transfer?: boolean;
-    is_ctrader_transfer?: boolean;
-    is_dxtrade_allowed: boolean;
-    is_dxtrade_transfer?: boolean;
-    is_mt_transfer?: boolean;
-    minimum_fee: string | null;
-    transfer_fee?: number | null;
-};
-
-const AccountTransferBullet = ({ children }: React.PropsWithChildren) => (
+const AccountTransferFormSideNoteBullet = ({ children }: React.PropsWithChildren) => (
     <div className='account-transfer-form__bullet-wrapper'>
         <div className='account-transfer-form__bullet' />
         <Text size='xxs'>{children}</Text>
     </div>
 );
 
-const AccountTransferNote = ({
-    allowed_transfers_count,
-    currency,
-    is_crypto_to_crypto_transfer,
-    is_dxtrade_allowed,
-    is_dxtrade_transfer,
-    is_mt_transfer,
-    minimum_fee,
-    transfer_fee,
-}: TAccountTransferNoteProps) => {
+const AccountTransferFormSideNote = observer(() => {
     const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
     const platform_name_mt5 = getPlatformSettings('mt5').name;
     const platform_name_ctrader = getPlatformSettings('ctrader').name;
+
+    const { client } = useStore();
+    const { account_limits, is_dxtrade_allowed } = client;
+
+    const { account_transfer } = useCashierStore();
+
+    const { minimum_fee, selected_from, selected_to, transfer_fee } = account_transfer;
+
+    const { daily_transfers } = account_limits;
+    const mt5_remaining_transfers = daily_transfers?.mt5;
+    const ctrader_remaining_transfers = daily_transfers?.ctrader;
+    const dxtrade_remaining_transfers = daily_transfers?.dxtrade;
+    const internal_remaining_transfers = daily_transfers?.internal;
+
+    const allowed_transfers_count = {
+        internal: internal_remaining_transfers?.allowed,
+        mt5: mt5_remaining_transfers?.allowed,
+        ctrader: ctrader_remaining_transfers?.allowed,
+        dxtrade: dxtrade_remaining_transfers?.allowed,
+    };
+    const currency = selected_from.currency || '';
+    const is_crypto_to_crypto_transfer = selected_from.is_crypto && selected_to.is_crypto;
+    const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
+    const is_mt_transfer = selected_to.is_mt || selected_from.is_mt;
 
     const getTransferFeeNote = useCallback(() => {
         if (transfer_fee === 0) {
@@ -115,19 +118,21 @@ const AccountTransferNote = ({
         platform_name_mt5,
         platform_name_ctrader,
         transfer_fee,
+        selected_from.value,
+        selected_to.value,
     ]);
 
     const getDxtradeAllowedNotes = useCallback(() => {
         if (is_dxtrade_allowed) {
             return (
                 <React.Fragment>
-                    <AccountTransferBullet>
+                    <AccountTransferFormSideNoteBullet>
                         <Localize
                             i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, {{platform_name_mt5}}, {{platform_name_ctrader}}, and {{platform_name_dxtrade}} accounts.'
                             values={{ platform_name_dxtrade, platform_name_mt5, platform_name_ctrader }}
                         />
-                    </AccountTransferBullet>
-                    <AccountTransferBullet>
+                    </AccountTransferFormSideNoteBullet>
+                    <AccountTransferFormSideNoteBullet>
                         <Localize
                             i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts, up to {{ allowed_mt5 }} transfers between your Deriv and {{platform_name_mt5}} accounts, up to {{ allowed_ctrader }} transfers between your Deriv and {{platform_name_ctrader}} accounts, and up to {{ allowed_dxtrade }} transfers between your Deriv and {{platform_name_dxtrade}} accounts.'
                             values={{
@@ -140,19 +145,19 @@ const AccountTransferNote = ({
                                 platform_name_ctrader,
                             }}
                         />
-                    </AccountTransferBullet>
+                    </AccountTransferFormSideNoteBullet>
                 </React.Fragment>
             );
         }
         return (
             <React.Fragment>
-                <AccountTransferBullet>
+                <AccountTransferFormSideNoteBullet>
                     <Localize
                         i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, and {{platform_name_mt5}} accounts.'
                         values={{ platform_name_mt5 }}
                     />
-                </AccountTransferBullet>
-                <AccountTransferBullet>
+                </AccountTransferFormSideNoteBullet>
+                <AccountTransferFormSideNoteBullet>
                     <Localize
                         i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts and up to {{ allowed_mt5 }} transfers between your Deriv and {{platform_name_mt5}} accounts.'
                         values={{
@@ -161,7 +166,7 @@ const AccountTransferNote = ({
                             platform_name_mt5,
                         }}
                     />
-                </AccountTransferBullet>
+                </AccountTransferFormSideNoteBullet>
             </React.Fragment>
         );
     }, [
@@ -173,23 +178,25 @@ const AccountTransferNote = ({
         platform_name_dxtrade,
         platform_name_mt5,
         platform_name_ctrader,
+        selected_from.value,
+        selected_to.value,
     ]);
 
     return (
-        <div className='account-transfer-form__notes'>
+        <SideNote title={<Localize i18n_default_text='Notes' />}>
             {getDxtradeAllowedNotes()}
-            <AccountTransferBullet>
+            <AccountTransferFormSideNoteBullet>
                 <Localize i18n_default_text='Transfer limits may vary depending on the exchange rates.' />
-            </AccountTransferBullet>
-            <AccountTransferBullet>
+            </AccountTransferFormSideNoteBullet>
+            <AccountTransferFormSideNoteBullet>
                 {getTransferFeeNote()}{' '}
                 <Localize i18n_default_text='Please bear in mind that some transfers may not be possible.' />
-            </AccountTransferBullet>
-            <AccountTransferBullet>
+            </AccountTransferFormSideNoteBullet>
+            <AccountTransferFormSideNoteBullet>
                 <Localize i18n_default_text='Transfers may be unavailable due to high volatility or technical issues and when the exchange markets are closed.' />
-            </AccountTransferBullet>
-        </div>
+            </AccountTransferFormSideNoteBullet>
+        </SideNote>
     );
-};
+});
 
-export default AccountTransferNote;
+export default AccountTransferFormSideNote;

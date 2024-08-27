@@ -7,6 +7,7 @@ import { Money } from '@deriv/components';
 
 type TPurchaseButtonContent = {
     current_stake?: number | null;
+    error?: React.ReactNode;
     info: ReturnType<typeof useTraderStore>['proposal_info'][0] | Record<string, never>;
     is_reverse?: boolean;
     is_high_low?: boolean;
@@ -25,6 +26,7 @@ type TPurchaseButtonContent = {
 const PurchaseButtonContent = ({
     currency,
     current_stake,
+    error,
     has_open_accu_contract,
     info,
     is_accumulator,
@@ -68,26 +70,28 @@ const PurchaseButtonContent = ({
             )}
             data-testid='dt_purchase_button_wrapper'
         >
-            {!is_content_empty && (
+            {(!is_content_empty || error) && (
                 <React.Fragment>
                     <CaptionText
                         as='span'
                         size='sm'
                         className={clsx(!has_open_accu_contract && 'purchase-button__information__item')}
                     >
-                        {text_basis}
+                        {!error && text_basis}
                     </CaptionText>
                     <CaptionText
                         as='span'
                         size='sm'
                         className={clsx(!has_open_accu_contract && 'purchase-button__information__item')}
                     >
-                        <Money
-                            amount={amount}
-                            currency={currency}
-                            should_format={!is_turbos && !is_vanilla}
-                            show_currency
-                        />
+                        {error || (
+                            <Money
+                                amount={amount}
+                                currency={currency}
+                                should_format={!is_turbos && !is_vanilla}
+                                show_currency
+                            />
+                        )}
                     </CaptionText>
                 </React.Fragment>
             )}

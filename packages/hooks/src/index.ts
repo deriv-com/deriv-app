@@ -9,6 +9,7 @@ export { default as useCFDRealAccounts } from './useCFDRealAccounts';
 export { default as useCashierLocked } from './useCashierLocked';
 export { default as useContentFlag } from './useContentFlag';
 export { default as useCountdown } from './useCountdown';
+export { default as useCryptoConfig } from './useCryptoConfig';
 export { default as useCryptoTransactions } from './useCryptoTransactions';
 export { default as useCurrencyConfig } from './useCurrencyConfig';
 export { default as useCurrentAccountDetails } from './useCurrentAccountDetails';
@@ -84,3 +85,5 @@ export { default as useResidenceSelfDeclaration } from './useResidenceSelfDeclar
 export { default as useTotalAssetCurrency } from './useTotalAssetCurrency';
 export { default as useGrowthbookIsOn } from './useGrowthbookIsOn';
 export { default as useResidenceList } from './useResidenceList';
+export { default as useTradingPlatformStatus } from './useTradingPlatformStatus';
+export type { TradingPlatformStatus } from './useTradingPlatformStatus';

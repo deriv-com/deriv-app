@@ -28,7 +28,6 @@ type TPlatforms = {
     mt5: TPlatform;
     dxtrade: TPlatform;
     smarttrader: TPlatform;
-    bbot: TPlatform;
     go: TPlatform;
 };
 
@@ -37,7 +36,6 @@ type TPlatformsAppstore = {
     trader: TPlatformAppstore;
     dbot: TPlatformAppstore;
     smarttrader: TPlatformAppstore;
-    bbot: TPlatformAppstore;
     go: TPlatformAppstore;
 };
 

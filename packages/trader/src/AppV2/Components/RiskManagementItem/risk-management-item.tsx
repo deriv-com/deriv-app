@@ -5,7 +5,7 @@ import RiskManagementInfoModal from '../RiskManagementInfoModal';
 import DealCancellationRemainingTime from '../DealCancellationRemainingTime/deal-cancellation-remaining-time';
 import { observer } from '@deriv/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
-import { CONTRACT_TYPES, isAccumulatorContract, isValidToCancel } from '@deriv/shared';
+import { CONTRACT_TYPES, formatMoney, isAccumulatorContract, isValidToCancel, getDecimalPlaces } from '@deriv/shared';
 
 type RiskManagementItemProps = {
     label: React.ReactNode;
@@ -103,9 +103,9 @@ const RiskManagementItem = observer(
                         />
                     </span>
                     {!is_deal_cancellation &&
-                        (is_accumulator ? (
+                        (is_accumulator && currency ? (
                             <Text size='sm'>
-                                {finalValue} {currency}
+                                {formatMoney(currency, finalValue, true)} {currency}
                             </Text>
                         ) : (
                             <ToggleSwitch
@@ -116,13 +116,17 @@ const RiskManagementItem = observer(
                         ))}
                     {is_valid_to_cancel && is_deal_cancellation && <DealCancellationRemainingTime />}
                 </div>
-                {!is_accumulator && isToggleOn && (
+                {!is_accumulator && isToggleOn && currency && (
                     <TextField
                         variant='fill'
                         inputSize='md'
                         disabled={isSheetOpen}
                         textAlignment='center'
-                        value={`${finalValue.toFixed(2)} ${currency}`}
+                        value={`${formatMoney(
+                            currency,
+                            type == 'stop_loss' ? -finalValue : finalValue,
+                            true
+                        )} ${currency}`}
                         onClick={() => {
                             clearContractUpdateConfigValues();
                             setStepperValue(finalValue);
@@ -151,9 +155,9 @@ const RiskManagementItem = observer(
                                     status={errorMessage ? 'error' : 'neutral'}
                                     name={type}
                                     unitRight={currency}
-                                    value={Math.abs(stepperValue)}
+                                    value={stepperValue}
+                                    decimals={getDecimalPlaces(currency)}
                                     onChange={onChange}
-                                    decimals={0}
                                     message={errorMessage}
                                 />
                             )}

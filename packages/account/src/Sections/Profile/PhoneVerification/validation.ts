@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import { ValidationConstants } from '@deriv-com/utils';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-com/translations';
 
 const phoneNumberSchema = Yup.string().matches(
     ValidationConstants.patterns.phoneNumber,

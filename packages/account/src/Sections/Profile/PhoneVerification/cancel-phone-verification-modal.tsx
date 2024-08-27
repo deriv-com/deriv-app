@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Modal, Text } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv/translations';
 import { useHistory, useLocation } from 'react-router';
 import { observer, useStore } from '@deriv/stores';
-import { useDevice } from '@deriv-com/ui';
 import { usePhoneVerificationAnalytics } from '@deriv/hooks';
+import { Modal, Text } from '@deriv-com/quill-ui';
+import { Localize } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 
 const CancelPhoneVerificationModal = observer(() => {
     const history = useHistory();

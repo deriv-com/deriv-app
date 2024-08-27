@@ -1,11 +1,10 @@
-import { Modal, Text } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv/translations';
+import { useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { usePhoneNumberVerificationSetTimer, useSettings, useVerifyEmail } from '@deriv/hooks';
+import { Modal, Text } from '@deriv-com/quill-ui';
 import { routes } from '@deriv/shared';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
-import { useEffect } from 'react';
-import { localize } from '@deriv-com/translations';
 
 type TVerificationLinkExpiredModal = {
     should_show_verification_link_expired_modal: boolean;
@@ -19,9 +18,10 @@ const VerificationLinkExpiredModal = ({
     const history = useHistory();
     //@ts-expect-error ignore this until we add it in GetSettings api types
     const { sendPhoneNumberVerifyEmail, WS } = useVerifyEmail('phone_number_verification');
-    const { next_request_time } = usePhoneNumberVerificationSetTimer();
+    const { next_email_otp_request_timer } = usePhoneNumberVerificationSetTimer();
     const { invalidate } = useSettings();
     const { isMobile } = useDevice();
+    const { localize } = useTranslations();
 
     const handleCancelButton = () => {
         setShouldShowVerificationLinkExpiredModal(false);
@@ -34,10 +34,10 @@ const VerificationLinkExpiredModal = ({
 
     const sendNewLinkTimer = () => {
         let sendNewLinkTimer = '';
-        if (next_request_time) {
-            next_request_time < 60
-                ? (sendNewLinkTimer = `${localize(' in ')}${next_request_time}s`)
-                : (sendNewLinkTimer = `${localize(' in ')}${Math.round(next_request_time / 60)}m`);
+        if (next_email_otp_request_timer) {
+            next_email_otp_request_timer < 60
+                ? (sendNewLinkTimer = `${localize(' in ')}${next_email_otp_request_timer}s`)
+                : (sendNewLinkTimer = `${localize(' in ')}${Math.round(next_email_otp_request_timer / 60)}m`);
         } else {
             sendNewLinkTimer = '';
         }
@@ -54,7 +54,7 @@ const VerificationLinkExpiredModal = ({
             isMobile={isMobile}
             showHandleBar
             isOpened={should_show_verification_link_expired_modal}
-            isPrimaryButtonDisabled={!!next_request_time}
+            isPrimaryButtonDisabled={!!next_email_otp_request_timer}
             primaryButtonCallback={handleSendNewLinkButton}
             primaryButtonLabel={
                 <Localize

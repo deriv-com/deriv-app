@@ -1,10 +1,10 @@
-import { Modal, Text } from '@deriv-com/quill-ui';
-import { Localize, localize } from '@deriv/translations';
-import { VERIFICATION_SERVICES } from '@deriv/shared';
-import { convertPhoneTypeDisplay } from '../../../Helpers/utils';
-import { TSocketError } from '@deriv/api/types';
-import { useDevice } from '@deriv-com/ui';
 import { useEffect } from 'react';
+import { TSocketError } from '@deriv/api/types';
+import { VERIFICATION_SERVICES } from '@deriv/shared';
+import { useTranslations, Localize } from '@deriv-com/translations';
+import { Modal, Text } from '@deriv-com/quill-ui';
+import { useDevice } from '@deriv-com/ui';
+import { convertPhoneTypeDisplay } from '../../../Helpers/utils';
 
 type TDidntGetTheCodeModal = {
     phone_verification_type: string;
@@ -34,6 +34,7 @@ const DidntGetTheCodeModal = ({
     setOtpVerification,
 }: TDidntGetTheCodeModal) => {
     const { isMobile } = useDevice();
+    const { localize } = useTranslations();
 
     useEffect(() => {
         if (is_email_verified || email_otp_error) reInitializeGetSettings();

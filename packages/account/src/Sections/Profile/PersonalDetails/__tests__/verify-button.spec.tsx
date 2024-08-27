@@ -1,12 +1,12 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { VerifyButton } from '../verify-button';
-import { StoreProvider, mockStore } from '@deriv/stores';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { routes } from '@deriv/shared';
+import { screen, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { usePhoneNumberVerificationSetTimer, useVerifyEmail } from '@deriv/hooks';
+import { routes } from '@deriv/shared';
+import { StoreProvider, mockStore } from '@deriv/stores';
+import { VerifyButton } from '../verify-button';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -31,20 +31,23 @@ describe('VerifyButton', () => {
             },
         },
     });
-    let mock_next_request_time = 0;
+    let mock_next_email_otp_request_timer = 0;
 
     const renderWithRouter = () => {
         return render(
             <Router history={history}>
                 <StoreProvider store={mock_store}>
-                    <VerifyButton is_verify_button_disabled={false} next_request_time={mock_next_request_time} />
+                    <VerifyButton
+                        is_verify_button_disabled={false}
+                        next_email_otp_request_timer={mock_next_email_otp_request_timer}
+                    />
                 </StoreProvider>
             </Router>
         );
     };
 
     beforeEach(() => {
-        mock_next_request_time = 0;
+        mock_next_email_otp_request_timer = 0;
     });
 
     it('should render Verify Button', () => {
@@ -66,7 +69,7 @@ describe('VerifyButton', () => {
     });
 
     it('should render Verify Button with timer if next_otp_request has value', () => {
-        mock_next_request_time = 2;
+        mock_next_email_otp_request_timer = 2;
         renderWithRouter();
         expect(screen.getByText('Verify in 2s')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Verify in 2s' })).toBeDisabled();

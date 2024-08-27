@@ -1,9 +1,9 @@
 import { useEffect, useState, useCallback, Fragment } from 'react';
-import PhoneVerificationCard from './phone-verification-card';
-import { Text, InputGroupButton, Button } from '@deriv-com/quill-ui';
-import { Localize, localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
 import { usePhoneVerificationAnalytics, useSendOTPVerificationCode, useSettings } from '@deriv/hooks';
+import { Text, InputGroupButton, Button } from '@deriv-com/quill-ui';
+import { observer, useStore } from '@deriv/stores';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import PhoneVerificationCard from './phone-verification-card';
 import { convertPhoneTypeDisplay } from '../../../Helpers/utils';
 import ResendCodeTimer from './resend-code-timer';
 import DidntGetTheCodeModal from './didnt-get-the-code-modal';
@@ -24,6 +24,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     const [otp, setOtp] = useState('');
     const [is_button_disabled, setIsButtonDisabled] = useState(false);
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
+    const { localize } = useTranslations();
 
     const {
         sendPhoneOTPVerification,

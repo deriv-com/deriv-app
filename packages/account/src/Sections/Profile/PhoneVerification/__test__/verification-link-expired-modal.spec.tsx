@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import VerificationLinkExpiredModal from '../verification-link-expired-modal';
+import { APIProvider } from '@deriv/api';
+import { usePhoneNumberVerificationSetTimer } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { routes } from '@deriv/shared';
-import { usePhoneNumberVerificationSetTimer } from '@deriv/hooks';
-import { APIProvider } from '@deriv/api';
+import VerificationLinkExpiredModal from '../verification-link-expired-modal';
 
 const mock_push_function = jest.fn();
 jest.mock('react-router', () => ({
@@ -18,7 +18,7 @@ jest.mock('react-router', () => ({
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     usePhoneNumberVerificationSetTimer: jest.fn(() => ({
-        next_request_time: '',
+        next_email_otp_request_timer: '',
     })),
 }));
 
@@ -76,7 +76,7 @@ describe('VerificationLinkExpiredModal', () => {
     });
 
     it('should show in 60s which is coming from usePhoneNumberVerificationSetTimer', () => {
-        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_request_time: 60 });
+        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_email_otp_request_timer: 60 });
         renderComponent();
         expect(screen.getByText(/in 1m/)).toBeInTheDocument();
     });

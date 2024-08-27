@@ -1,8 +1,7 @@
-import React from 'react';
-import { Button, CaptionText } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv/translations';
+import React, { useCallback } from 'react';
 import { usePhoneNumberVerificationSetTimer, useVerifyEmail } from '@deriv/hooks';
-import { localize } from '@deriv-com/translations';
+import { Button, CaptionText } from '@deriv-com/quill-ui';
+import { Localize, useTranslations } from '@deriv-com/translations';
 
 type TResendCodeTimer = {
     is_button_disabled: boolean;
@@ -22,7 +21,9 @@ const ResendCodeTimer = ({
 }: TResendCodeTimer) => {
     // @ts-expect-error this for now
     const { sendPhoneNumberVerifyEmail, WS, error } = useVerifyEmail('phone_number_verification');
-    const { is_request_button_disabled, next_request_time } = usePhoneNumberVerificationSetTimer();
+    const { is_request_button_disabled, next_email_otp_request_timer, next_phone_otp_request_timer } =
+        usePhoneNumberVerificationSetTimer();
+    const { localize } = useTranslations();
 
     React.useEffect(() => {
         if (WS.isSuccess || error) reInitializeGetSettings();
@@ -40,10 +41,10 @@ const ResendCodeTimer = ({
 
     const resendCodeTimer = () => {
         let resendCodeTimer = '';
-        if (next_request_time) {
-            next_request_time < 60
-                ? (resendCodeTimer = `${localize(' in ')}${next_request_time}s`)
-                : (resendCodeTimer = `${localize(' in ')}${Math.round(next_request_time / 60)}m`);
+        if (next_email_otp_request_timer) {
+            next_email_otp_request_timer < 60
+                ? (resendCodeTimer = `${localize(' in ')}${next_email_otp_request_timer}s`)
+                : (resendCodeTimer = `${localize(' in ')}${Math.round(next_email_otp_request_timer / 60)}m`);
         } else {
             resendCodeTimer = '';
         }
@@ -53,10 +54,12 @@ const ResendCodeTimer = ({
 
     const didntGetACodeTimer = () => {
         let didntGetACodeTimer = '';
-        if (next_request_time) {
-            next_request_time < 60
-                ? (didntGetACodeTimer = ` (${next_request_time}s)`)
-                : (didntGetACodeTimer = ` (${next_request_time && Math.round(next_request_time / 60)}m)`);
+        if (next_phone_otp_request_timer) {
+            next_phone_otp_request_timer < 60
+                ? (didntGetACodeTimer = ` (${next_phone_otp_request_timer}s)`)
+                : (didntGetACodeTimer = ` (${
+                      next_phone_otp_request_timer && Math.round(next_phone_otp_request_timer / 60)
+                  }m)`);
         } else {
             didntGetACodeTimer = '';
         }
@@ -64,11 +67,15 @@ const ResendCodeTimer = ({
         return didntGetACodeTimer;
     };
 
+    const isButtonDisabled = useCallback(() => {
+        return should_show_resend_code_button ? !!next_email_otp_request_timer : !!next_phone_otp_request_timer;
+    }, [should_show_resend_code_button, next_email_otp_request_timer, next_phone_otp_request_timer]);
+
     return (
         <Button
             variant='tertiary'
             onClick={resendCode}
-            disabled={!!next_request_time || is_button_disabled || is_request_button_disabled}
+            disabled={isButtonDisabled() || is_button_disabled || is_request_button_disabled}
             color='black'
         >
             <CaptionText bold underlined>

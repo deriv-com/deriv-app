@@ -56,8 +56,8 @@ describe('usePhoneNumberVerificationSetTimer', () => {
 
         await waitForNextUpdate();
 
-        if (typeof result.current.next_request_time === 'number') {
-            expect(result.current.next_request_time).toBe(3);
+        if (typeof result.current.next_email_otp_request_timer === 'number') {
+            expect(result.current.next_email_otp_request_timer).toBe(3);
         }
         expect(result.current.is_request_button_disabled).toBe(false);
     });
@@ -69,8 +69,8 @@ describe('usePhoneNumberVerificationSetTimer', () => {
 
         await waitForNextUpdate();
 
-        if (typeof result.current.next_request_time === 'number') {
-            expect(result.current.next_request_time).toBe(5);
+        if (typeof result.current.next_phone_otp_request_timer === 'number') {
+            expect(result.current.next_phone_otp_request_timer).toBe(5);
         }
         expect(result.current.is_request_button_disabled).toBe(false);
     });

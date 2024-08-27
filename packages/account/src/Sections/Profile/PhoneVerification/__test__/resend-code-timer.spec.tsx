@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import ResendCodeTimer from '../resend-code-timer';
-import { StoreProvider, mockStore } from '@deriv/stores';
 import { usePhoneNumberVerificationSetTimer, useVerifyEmail } from '@deriv/hooks';
+import { StoreProvider, mockStore } from '@deriv/stores';
+import ResendCodeTimer from '../resend-code-timer';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -22,7 +22,8 @@ jest.mock('@deriv/hooks', () => ({
         },
     })),
     usePhoneNumberVerificationSetTimer: jest.fn(() => ({
-        next_request_time: '',
+        next_phone_otp_request_timer: '',
+        next_email_otp_request_timer: '',
     })),
 }));
 
@@ -36,7 +37,10 @@ describe('ConfirmPhoneNumber', () => {
 
     afterEach(() => {
         jest.clearAllMocks();
-        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_request_time: '' });
+        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({
+            next_phone_otp_request_timer: '',
+            next_email_otp_request_timer: '',
+        });
     });
 
     const mockSetShouldShowDidntGetTheCodeModal = jest.fn();
@@ -67,7 +71,7 @@ describe('ConfirmPhoneNumber', () => {
     });
 
     it('should disable button if usePhoneNumberVerificationSetTimer returns next_otp_request', async () => {
-        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_request_time: 59 });
+        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_email_otp_request_timer: 59 });
         renderComponent();
 
         expect(screen.queryByRole('button', { name: 'Resend code in 59s' })).toBeDisabled;
@@ -94,7 +98,7 @@ describe('ConfirmPhoneNumber', () => {
     });
 
     it('should display Didn’t get the code? (60s) when usePhoneNumberSetTimer returns (60s)', () => {
-        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_request_time: 60 });
+        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_phone_otp_request_timer: 60 });
         renderComponent(false, false);
         const resend_button = screen.getByRole('button', { name: "Didn't get the code? (1m)" });
         expect(resend_button).toBeInTheDocument();

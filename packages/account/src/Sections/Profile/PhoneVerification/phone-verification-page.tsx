@@ -1,18 +1,18 @@
-import './phone-verification.scss';
-import { LabelPairedArrowLeftCaptionFillIcon } from '@deriv/quill-icons';
-import { Text, IconButton } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv/translations';
-import ConfirmPhoneNumber from './confirm-phone-number';
-import OTPVerification from './otp-verification';
-import CancelPhoneVerificationModal from './cancel-phone-verification-modal';
-import VerificationLinkExpiredModal from './verification-link-expired-modal';
-import { observer, useStore } from '@deriv/stores';
-import { useGrowthbookGetFeatureValue, useSendOTPVerificationCode } from '@deriv/hooks';
-import { Loading } from '@deriv/components';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Loading } from '@deriv/components';
+import { useGrowthbookGetFeatureValue, useSendOTPVerificationCode } from '@deriv/hooks';
+import { LabelPairedArrowLeftCaptionFillIcon } from '@deriv/quill-icons';
 import { routes } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Text, IconButton } from '@deriv-com/quill-ui';
 import { useDevice } from '@deriv-com/ui';
+import { Localize } from '@deriv-com/translations';
+import ConfirmPhoneNumber from './confirm-phone-number';
+import CancelPhoneVerificationModal from './cancel-phone-verification-modal';
+import OTPVerification from './otp-verification';
+import VerificationLinkExpiredModal from './verification-link-expired-modal';
+import './phone-verification.scss';
 
 const PhoneVerificationPage = observer(() => {
     const history = useHistory();

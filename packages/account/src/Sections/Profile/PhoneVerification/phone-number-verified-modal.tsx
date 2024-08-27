@@ -1,10 +1,10 @@
-import { useHistory } from 'react-router';
-import { Modal, Text } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv/translations';
-import { routes } from '@deriv/shared';
-import { useDevice } from '@deriv-com/ui';
 import { useEffect } from 'react';
+import { useHistory } from 'react-router';
 import { usePhoneVerificationAnalytics } from '@deriv/hooks';
+import { routes } from '@deriv/shared';
+import { Modal, Text } from '@deriv-com/quill-ui';
+import { Localize } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 
 type TPhoneNumberVerifiedModal = {
     should_show_phone_number_verified_modal: boolean;

@@ -1,26 +1,26 @@
-import React, { useEffect, useRef } from 'react';
-import { observer, useStore } from '@deriv/stores';
+import { useEffect, useRef } from 'react';
 import { useHistory } from 'react-router';
-import { routes } from '@deriv/shared';
 import { Button } from '@deriv/components';
-import { Localize } from '@deriv/translations';
 import { useVerifyEmail } from '@deriv/hooks';
+import { routes } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { useTranslations, Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import './verify-button.scss';
-import { localize } from '@deriv-com/translations';
 
 type TVerifyButton = {
     is_verify_button_disabled: boolean;
-    next_request_time?: number;
+    next_email_otp_request_timer?: number;
 };
 
-export const VerifyButton = observer(({ is_verify_button_disabled, next_request_time }: TVerifyButton) => {
+export const VerifyButton = observer(({ is_verify_button_disabled, next_email_otp_request_timer }: TVerifyButton) => {
     const { client, ui } = useStore();
     const { setShouldShowPhoneNumberOTP, is_scroll_to_verify_button, setIsScrollToVerifyButton } = ui;
     const { account_settings, setVerificationCode } = client;
     const { phone_number_verification } = account_settings;
-    const phone_number_verified = !!phone_number_verification?.verified;
+    const is_phone_number_verified = !!phone_number_verification?.verified;
     const history = useHistory();
+    const { localize } = useTranslations();
     //@ts-expect-error remove this when phone_number_verification is added to api calls
     const { sendPhoneNumberVerifyEmail, WS, is_loading } = useVerifyEmail('phone_number_verification');
     const { isDesktop } = useDevice();
@@ -58,10 +58,10 @@ export const VerifyButton = observer(({ is_verify_button_disabled, next_request_
 
     const verifyTimer = () => {
         let resendCodeTimer = '';
-        if (next_request_time) {
-            next_request_time < 60
-                ? (resendCodeTimer = `${localize(' in ')}${next_request_time}s`)
-                : (resendCodeTimer = `${localize(' in ')}${Math.round(next_request_time / 60)}m`);
+        if (next_email_otp_request_timer) {
+            next_email_otp_request_timer < 60
+                ? (resendCodeTimer = `${localize(' in ')}${next_email_otp_request_timer}s`)
+                : (resendCodeTimer = `${localize(' in ')}${Math.round(next_email_otp_request_timer / 60)}m`);
         } else {
             resendCodeTimer = '';
         }
@@ -73,14 +73,19 @@ export const VerifyButton = observer(({ is_verify_button_disabled, next_request_
         <div ref={ref}>
             <Button
                 className='phone-verification-button'
-                is_disabled={phone_number_verified || is_verify_button_disabled || is_loading || !!next_request_time}
+                is_disabled={
+                    is_phone_number_verified ||
+                    is_verify_button_disabled ||
+                    is_loading ||
+                    !!next_email_otp_request_timer
+                }
                 onClick={redirectToPhoneVerification}
                 has_effect
-                green={phone_number_verified}
+                green={is_phone_number_verified}
                 primary
                 large
             >
-                {phone_number_verified ? (
+                {is_phone_number_verified ? (
                     <Localize i18n_default_text='Verified' />
                 ) : (
                     <Localize

@@ -1,7 +1,7 @@
-import { useStore } from '@deriv/stores';
-import dayjs from 'dayjs';
 import React from 'react';
+import dayjs from 'dayjs';
 import { WS } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 
 /** A hook for calculating email verification otp and phone number otp timer */
 const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = false) => {
@@ -9,7 +9,8 @@ const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = f
     const { account_settings } = client;
     const { should_show_phone_number_otp } = ui;
     const { phone_number_verification } = account_settings;
-    const [timer, setTimer] = React.useState<number | undefined>();
+    const [next_email_otp_request_timer, setNextEmailOtpRequestTimer] = React.useState<number | undefined>();
+    const [next_phone_otp_request_timer, setNextPhoneOtpRequestTimer] = React.useState<number | undefined>();
     const [is_request_button_disabled, setIsRequestButtonDisabled] = React.useState(false);
 
     React.useEffect(() => {
@@ -29,18 +30,18 @@ const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = f
                     const next_request = Math.round(request_in_milliseconds.diff(response.time * 1000) / 1000);
 
                     if (next_request > 0) {
-                        setTimer(next_request);
+                        setNextEmailOtpRequestTimer(next_request);
                     } else {
-                        setTimer(0);
+                        setNextEmailOtpRequestTimer(0);
                     }
                 } else if (response.time && phone_number_verification?.next_attempt) {
                     const request_in_milliseconds = dayjs(phone_number_verification.next_attempt * 1000);
                     const next_request = Math.round(request_in_milliseconds.diff(response.time * 1000) / 1000);
 
                     if (next_request > 0) {
-                        setTimer(next_request);
+                        setNextPhoneOtpRequestTimer(next_request);
                     } else {
-                        setTimer(0);
+                        setNextPhoneOtpRequestTimer(0);
                     }
                 }
             });
@@ -55,17 +56,29 @@ const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = f
 
     React.useEffect(() => {
         let countdown: ReturnType<typeof setInterval>;
-        if (timer && timer > 0) {
+        if (next_email_otp_request_timer && next_email_otp_request_timer > 0) {
             countdown = setInterval(() => {
-                setTimer(timer - 1);
+                setNextEmailOtpRequestTimer(next_email_otp_request_timer - 1);
             }, 1000);
         }
 
         return () => clearInterval(countdown);
-    }, [timer]);
+    }, [next_email_otp_request_timer]);
+
+    React.useEffect(() => {
+        let countdown: ReturnType<typeof setInterval>;
+        if (next_phone_otp_request_timer && next_phone_otp_request_timer > 0) {
+            countdown = setInterval(() => {
+                setNextPhoneOtpRequestTimer(next_phone_otp_request_timer - 1);
+            }, 1000);
+        }
+
+        return () => clearInterval(countdown);
+    }, [next_phone_otp_request_timer]);
 
     return {
-        next_request_time: timer,
+        next_email_otp_request_timer,
+        next_phone_otp_request_timer,
         is_request_button_disabled,
     };
 };

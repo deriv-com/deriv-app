@@ -59,7 +59,7 @@ const PersonalDetailsForm = observer(() => {
     const [isPhoneNumberVerificationEnabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
-    const { next_request_time, is_request_button_disabled } = usePhoneNumberVerificationSetTimer();
+    const { is_request_button_disabled, next_email_otp_request_timer } = usePhoneNumberVerificationSetTimer();
 
     const {
         client,
@@ -416,7 +416,7 @@ const PersonalDetailsForm = observer(() => {
                                             disabled={
                                                 isFieldDisabled('phone') ||
                                                 is_request_button_disabled ||
-                                                !!next_request_time
+                                                !!next_email_otp_request_timer
                                             }
                                             data-testid='dt_phone'
                                         />
@@ -427,7 +427,7 @@ const PersonalDetailsForm = observer(() => {
                                                     account_settings.phone !== values.phone ||
                                                     !account_settings.phone
                                                 }
-                                                next_request_time={next_request_time}
+                                                next_email_otp_request_timer={next_email_otp_request_timer}
                                             />
                                         )}
                                     </fieldset>

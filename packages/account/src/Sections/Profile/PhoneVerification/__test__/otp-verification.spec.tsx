@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react';
 import React from 'react';
+import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import OTPVerification from '../otp-verification';
 import { useSendOTPVerificationCode, useSettings } from '@deriv/hooks';
@@ -57,7 +57,7 @@ describe('OTPVerification', () => {
         expect(screen.getByText(/We've sent a verification code to/)).toBeInTheDocument();
         expect(screen.getByText('johndoe@regentmarkets.com')).toBeInTheDocument();
         expect(screen.getByText(/Enter the code below so we know the request has come from you./)).toBeInTheDocument();
-        expect(screen.getByRole('textbox', { name: /OTP code/ })).toBeInTheDocument();
+        expect(screen.getByRole('textbox', { name: /Verification code/ })).toBeInTheDocument();
         expect(screen.getByText(/Resend Code Timer/)).toBeInTheDocument();
     });
 

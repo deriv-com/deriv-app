@@ -188,6 +188,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                         }
                     }}
                     inputMode='numeric'
+                    buttonColor='coral'
                     onChange={handleGetOtpValue}
                     message={phone_otp_error_message}
                     value={otp}

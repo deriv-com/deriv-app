@@ -1081,4 +1081,16 @@
     .portfolio-empty {
         height: calc(100svw - 250px);
     }
+
+    .dc-mobile-dialog {
+        width: 100vh !important;
+        height: 100vw !important;
+
+        @include tablet-screen {
+            .add-crypto-currency .dc-form-submit-button,
+            .change-currency .dc-form-submit-button {
+                bottom: calc(100vh - 100vw);
+            }
+        }
+    }
 }

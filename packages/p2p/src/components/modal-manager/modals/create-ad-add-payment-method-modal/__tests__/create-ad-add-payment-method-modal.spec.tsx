@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { APIProvider } from '@deriv/api';
-import { isDesktop, isMobile } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { useStores } from 'Stores';
 import { TModalManagerContext } from 'Types';
 import CreateAdAddPaymentMethodModal from '../create-ad-add-payment-method-modal';
@@ -30,10 +30,9 @@ jest.mock('Stores', () => ({
     useStores: () => mock_store,
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isDesktop: jest.fn(() => true),
-    isMobile: jest.fn(() => false),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn().mockReturnValue({ isDesktop: true }),
 }));
 
 describe('<CreateAdAddPaymentMethodModal />', () => {
@@ -65,13 +64,13 @@ describe('<CreateAdAddPaymentMethodModal />', () => {
     });
 
     it('should render CreateAdAddPaymentMethodModal component in desktop view', () => {
-        render(<CreateAdAddPaymentMethodModal />, { wrapper });
+        render(<CreateAdAddPaymentMethodModal />);
         expect(screen.getByText('Add payment method')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
     });
 
     it('should close CreateAdAddPaymentMethodModal component when clicking Cancel button', () => {
-        render(<CreateAdAddPaymentMethodModal />, { wrapper });
+        render(<CreateAdAddPaymentMethodModal />);
         const cancel_button = screen.getByRole('button', { name: 'Cancel' });
         expect(cancel_button).toBeInTheDocument();
         userEvent.click(cancel_button);
@@ -80,7 +79,7 @@ describe('<CreateAdAddPaymentMethodModal />', () => {
 
     it('should show CancelAddPaymentMethod modal if is_form_modified is true', () => {
         mock_store.general_store.is_form_modified = true;
-        render(<CreateAdAddPaymentMethodModal />, { wrapper });
+        render(<CreateAdAddPaymentMethodModal />);
         const cancel_button = screen.getByRole('button', { name: 'Cancel' });
         expect(cancel_button).toBeInTheDocument();
         userEvent.click(cancel_button);
@@ -99,9 +98,8 @@ describe('<CreateAdAddPaymentMethodModal />', () => {
     });
 
     it('should render CreateAdAddPaymentMethodModal component in mobile view', () => {
-        (isDesktop as jest.Mock).mockReturnValue(false);
-        (isMobile as jest.Mock).mockReturnValue(true);
-        render(<CreateAdAddPaymentMethodModal />, { wrapper });
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
+        render(<CreateAdAddPaymentMethodModal />);
         expect(screen.getByTestId('dt_div_100_vh')).toBeInTheDocument();
         expect(screen.getByText('Add payment method')).toBeInTheDocument();
     });

@@ -45,9 +45,7 @@ describe('<LeavePageModal/>', () => {
 
         render(<LeavePageModal {...props} />);
 
-        expect(
-            screen.getByText('Are you sure you want to leave this page? Changes made will not be saved.')
-        ).toBeInTheDocument();
+        expect(screen.getByText('If you leave this page, your unsaved changes will be lost.')).toBeInTheDocument();
     });
 
     it('should call onLeavePage and close the modal on click of Leave page button', () => {

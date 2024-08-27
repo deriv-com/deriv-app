@@ -1,11 +1,11 @@
-import React from 'react';
+import { useContext } from 'react';
 import { Form, Formik } from 'formik';
 import SelfExclusionContext from './self-exclusion-context';
 import SelfExclusionConfirmPage from './self-exclusion-confirm-page';
 import SelfExclusionInputs from './self-exclusion-inputs';
 
 const SelfExclusionForm = () => {
-    const { handleSubmit, state, validateFields } = React.useContext(SelfExclusionContext);
+    const { handleSubmit, state, validateFields } = useContext(SelfExclusionContext);
 
     return (
         <Formik initialValues={state?.self_exclusions} onSubmit={handleSubmit} validate={validateFields}>

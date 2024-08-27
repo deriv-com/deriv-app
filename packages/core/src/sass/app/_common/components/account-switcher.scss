@@ -575,6 +575,8 @@
 
 .dc-modal__container_accounts-switcher {
     @include tablet-screen {
-        inset-inline-start: 1.6rem;
+        inset-inline: 0;
+        max-width: 60rem;
+        margin: auto;
     }
 }

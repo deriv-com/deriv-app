@@ -2,7 +2,6 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { Loading } from '@deriv/components';
 import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
-import { TRADE_TYPES } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 import BottomNav from 'AppV2/Components/BottomNav';
 import PurchaseButton from 'AppV2/Components/PurchaseButton';
@@ -13,8 +12,9 @@ import CurrentSpot from 'AppV2/Components/CurrentSpot';
 import { TradeChart } from '../Chart';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import TemporaryTradeTypes from './trade-types';
-import LastDigitPrediction from 'AppV2/Components/TradeParameters/LastDigitPrediction';
 import MarketSelector from 'AppV2/Components/MarketSelector';
+import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
+import { isAccumulatorContract } from '@deriv/shared';
 
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
@@ -75,13 +75,13 @@ const Trade = observer(() => {
                         />
                         <MarketSelector />
                         {isDigitTradeType(contract_type) && <CurrentSpot />}
-                        {contract_type === TRADE_TYPES.EVEN_ODD && <LastDigitPrediction is_stats_mode />}
                         <TradeParametersContainer>
                             <TradeParameters />
                         </TradeParametersContainer>
                         <section className='trade__chart' style={{ height: dynamic_chart_height }} ref={chart_ref}>
                             <TradeChart />
                         </section>
+                        {isAccumulatorContract(contract_type) && <AccumulatorStats />}
                     </div>
                     <TradeParametersContainer is_minimized_visible={is_minimized_params_visible} is_minimized>
                         <TradeParameters is_minimized />

@@ -22,6 +22,7 @@ jest.mock('@deriv/api-v2', () => ({
 }));
 
 jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
     Loader: jest.fn(() => <div>Loading...</div>),
 }));
 
@@ -31,7 +32,10 @@ jest.mock('../WithdrawalLockedContent', () => ({
     getWithdrawalLimitReachedDesc: jest.fn(() => 'Locked Description'),
 }));
 
-const mockActiveWalletData = { currency: 'USD', currency_config: { is_crypto: false } };
+const mockActiveWalletData = {
+    currency: 'USD',
+    currency_config: { is_crypto: false, platform: { cashier: ['dougflow'] } },
+};
 const mockCryptoConfigData = { minimum_withdrawal: 10 };
 const mockAuthenticationData = {
     is_poa_needed: false,

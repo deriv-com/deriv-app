@@ -20,6 +20,9 @@ describe('<MarketCategories />', () => {
         setSelectedSymbol: jest.fn(),
         setIsOpen: jest.fn(),
         isOpen: false,
+        marketCategoriesRef: {
+            current: document.createElement('div'),
+        },
     };
     beforeEach(() => {
         jest.clearAllMocks();

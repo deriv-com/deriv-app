@@ -64,7 +64,20 @@ const Redirect = observer(() => {
             break;
         }
         case 'request_email': {
-            toggleResetEmailModal(true);
+            if (!is_logging_in && !is_logged_in) {
+                if (verification_code[action_param]) {
+                    sessionStorage.setItem('request_email_code', verification_code[action_param]);
+                }
+                redirectToLogin(is_logged_in, getLanguage(), true);
+                redirected_to_route = true;
+            } else {
+                if (!verification_code[action_param]) {
+                    const request_email_code = sessionStorage.getItem('request_email_code');
+                    setVerificationCode(request_email_code, action_param);
+                    sessionStorage.removeItem('request_email_code');
+                }
+                toggleResetEmailModal(true);
+            }
             break;
         }
         case 'social_email_change': {

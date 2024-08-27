@@ -76,8 +76,7 @@ Blockly.Blocks.text_charAt = {
 
         this.isAt = isAt;
         this.initSvg();
-        //commented this line breaks the backward compatibility
-        //this.render(false);
+        this.renderEfficiently();
     },
     getRequiredValueInputs() {
         return {

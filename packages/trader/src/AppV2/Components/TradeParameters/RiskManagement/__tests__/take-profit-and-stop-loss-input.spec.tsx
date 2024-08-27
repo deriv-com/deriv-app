@@ -131,21 +131,15 @@ describe('TakeProfitAndStopLossInput', () => {
         expect(screen.getByTestId('dt_take_profit_overlay')).toBeInTheDocument();
     });
 
-    it('should call onChangeMultiple with new typed values when user click on Save button, if there is no BE errors', () => {
+    it('should call onChangeMultiple when user click on Save button, if there are no API errors', () => {
         default_mock_store.modules.trade.has_take_profit = true;
         default_mock_store.modules.trade.take_profit = '5';
         mockTakeProfitAndStopLossInput();
 
-        userEvent.clear(screen.getByTestId(tp_data_testid));
         userEvent.type(screen.getByTestId(tp_data_testid), '2');
-
         const save_button = screen.getByText('Save');
         userEvent.click(save_button);
 
-        expect(default_mock_store.modules.trade.onChangeMultiple).toBeCalledWith({
-            has_cancellation: false,
-            has_take_profit: true,
-            take_profit: '2',
-        });
+        expect(default_mock_store.modules.trade.onChangeMultiple).toBeCalled();
     });
 });

@@ -18,7 +18,6 @@ type TTakeProfitAndStopLossInputProps = {
     has_actionsheet_wrapper?: boolean;
     initial_error_text?: string;
     onActionSheetClose: () => void;
-    parent_subscription_id_ref?: React.MutableRefObject<string | undefined>;
     parent_ref?: React.MutableRefObject<{
         has_take_profit?: boolean;
         has_stop_loss?: boolean;
@@ -37,7 +36,6 @@ const TakeProfitAndStopLossInput = ({
     has_actionsheet_wrapper = true,
     initial_error_text,
     onActionSheetClose,
-    parent_subscription_id_ref,
     parent_ref,
     parent_is_api_response_received_ref,
     type = 'take_profit',
@@ -60,9 +58,7 @@ const TakeProfitAndStopLossInput = ({
     const isMounted = useIsMounted();
 
     const is_take_profit_input = type === 'take_profit';
-
-    const subscription_id = React.useRef<string>();
-    const subscription_id_ref = parent_subscription_id_ref || subscription_id;
+    const subscription_id_ref = React.useRef<string>();
 
     // For handling cases when user clicks on Save btn before we got response from API
     const is_api_response_received = React.useRef(false);
@@ -70,7 +66,8 @@ const TakeProfitAndStopLossInput = ({
 
     const [is_enabled, setIsEnabled] = React.useState(is_take_profit_input ? has_take_profit : has_stop_loss);
     const [new_input_value, setNewInputValue] = React.useState(is_take_profit_input ? take_profit : stop_loss);
-    const [error_text, setErrorText] = React.useState(initial_error_text ?? '');
+    const [error_text, setErrorText] = React.useState('');
+    const [fe_error_text, setFEErrorText] = React.useState(initial_error_text ?? '');
 
     // Refs for handling focusing and bluring input
     const input_ref = React.useRef<HTMLInputElement>(null);
@@ -116,6 +113,7 @@ const TakeProfitAndStopLossInput = ({
             clearTimeout(focus_timeout.current);
             focus_timeout.current = focusAndOpenKeyboard(focused_input_ref.current, input_ref.current);
         } else {
+            setFEErrorText('');
             setErrorText('');
             updateParentRef({ field_name: is_take_profit_input ? 'tp_error_text' : 'sl_error_text', new_value: '' });
             input_ref.current?.blur();
@@ -124,10 +122,7 @@ const TakeProfitAndStopLossInput = ({
 
     // We are using requestPreviewProposal in useEffect in order to validate both fields independently
     React.useEffect(() => {
-        if (!is_enabled) {
-            if (subscription_id_ref.current) WS.forget(subscription_id_ref.current);
-            return;
-        }
+        if (!is_enabled) return;
 
         const onProposalResponse: TTradeStore['onProposalResponse'] = response => {
             const { proposal, echo_req, error, subscription } = response;
@@ -137,20 +132,15 @@ const TakeProfitAndStopLossInput = ({
                 is_api_response_received_ref.current = true;
                 return;
             }
-            if (!is_enabled) {
-                if (subscription?.id) WS.forget(subscription.id);
-                is_api_response_received_ref.current = true;
-                return;
-            }
             if (subscription?.id) subscription_id_ref.current = subscription?.id;
 
-            const new_error = error?.details?.field === type ? error?.message : '';
+            const new_error = error?.message ?? '';
+            if (error?.message && subscription?.id) WS.forget(subscription.id);
             setErrorText(new_error);
             updateParentRef({
                 field_name: is_take_profit_input ? 'tp_error_text' : 'sl_error_text',
                 new_value: new_error,
             });
-            if (error?.message && subscription?.id) WS.forget(subscription.id);
 
             /* For Multipliers, validation parameters come in proposal response only if TP or SL are switched on and their value is not empty.
             Here we set them into the state in order to show further even if we got a validation error from API.*/
@@ -209,6 +199,7 @@ const TakeProfitAndStopLossInput = ({
         let value = String(e.target.value);
         if (value.length > 1) value = /^[0-]+$/.test(value) ? '0' : value.replace(/^0*/, '').replace(/^\./, '0.');
 
+        setFEErrorText('');
         setNewInputValue(value);
         updateParentRef({ field_name: type, new_value: value });
     };
@@ -216,11 +207,10 @@ const TakeProfitAndStopLossInput = ({
     const onSave = () => {
         // Prevent from saving if user clicks before BE validation
         if (!is_api_response_received_ref.current && is_enabled) return;
-        if (subscription_id_ref.current) WS.forget(subscription_id_ref.current);
 
         if (error_text && is_enabled) return;
         if (new_input_value === '' && is_enabled) {
-            setErrorText(
+            setFEErrorText(
                 is_take_profit_input
                     ? localize('Please enter a take profit amount.')
                     : localize('Please enter a stop loss amount.')
@@ -244,7 +234,7 @@ const TakeProfitAndStopLossInput = ({
     };
 
     React.useEffect(() => {
-        setErrorText(initial_error_text ?? '');
+        setFEErrorText(initial_error_text ?? '');
         updateParentRef({
             field_name: is_take_profit_input ? 'tp_error_text' : 'sl_error_text',
             new_value: initial_error_text ?? '',
@@ -280,15 +270,15 @@ const TakeProfitAndStopLossInput = ({
                     decimals={decimals}
                     data-testid={is_take_profit_input ? 'dt_tp_input' : 'dt_sl_input'}
                     inputMode='decimal'
-                    message={error_text || input_message}
+                    message={fe_error_text || error_text || input_message}
                     minusDisabled={Number(new_input_value) - 1 <= 0}
                     name={type}
                     noStatusIcon
-                    onChange={onInputChange}
+                    onChange={debounce(onInputChange, 300)}
                     placeholder={localize('Amount')}
                     ref={input_ref}
                     regex={/[^0-9.,]/g}
-                    status={error_text ? 'error' : 'neutral'}
+                    status={fe_error_text || error_text ? 'error' : 'neutral'}
                     textAlignment='center'
                     unitLeft={currency_display_code}
                     variant='fill'

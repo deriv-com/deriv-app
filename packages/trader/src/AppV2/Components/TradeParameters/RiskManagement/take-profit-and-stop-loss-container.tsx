@@ -26,12 +26,10 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
     const { addSnackbar } = useSnackbar();
 
     const [tp_error_text, setTPErrorText] = React.useState(validation_errors?.take_profit?.[0] ?? '');
-    const tp_subscription_id_ref = React.useRef<string>();
     const tp_ref = React.useRef({ has_take_profit, take_profit, tp_error_text: validation_errors?.take_profit?.[0] });
     const is_api_response_tp_received_ref = React.useRef(false);
 
     const [sl_error_text, setSLErrorText] = React.useState(validation_errors?.stop_loss?.[0] ?? '');
-    const sl_subscription_id_ref = React.useRef<string>();
     const sl_ref = React.useRef({ has_stop_loss, stop_loss, sl_error_text: validation_errors?.stop_loss?.[0] });
     const is_api_response_sl_received_ref = React.useRef(false);
 
@@ -39,9 +37,6 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
         // Prevent from saving if user clicks before we got response from API
         if (!is_api_response_tp_received_ref.current && tp_ref.current.has_take_profit) return;
         if (!is_api_response_sl_received_ref.current && sl_ref.current.has_stop_loss) return;
-
-        if (tp_subscription_id_ref.current) WS.forget(tp_subscription_id_ref.current);
-        if (sl_subscription_id_ref.current) WS.forget(sl_subscription_id_ref.current);
 
         const {
             has_take_profit: has_take_profit_current,
@@ -97,7 +92,6 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
                 has_actionsheet_wrapper={false}
                 initial_error_text={tp_error_text}
                 onActionSheetClose={closeActionSheet}
-                parent_subscription_id_ref={tp_subscription_id_ref}
                 parent_ref={tp_ref}
                 parent_is_api_response_received_ref={is_api_response_tp_received_ref}
             />
@@ -107,7 +101,6 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
                 has_actionsheet_wrapper={false}
                 initial_error_text={sl_error_text}
                 onActionSheetClose={closeActionSheet}
-                parent_subscription_id_ref={sl_subscription_id_ref}
                 parent_ref={sl_ref}
                 parent_is_api_response_received_ref={is_api_response_sl_received_ref}
                 type='stop_loss'

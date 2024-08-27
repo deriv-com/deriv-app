@@ -295,5 +295,5 @@ export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
             platform?: string;
         };
 
-    openFailedVerificationModal?: (from_account: string) => void;
+    openFailedVerificationModal?: () => void;
 };

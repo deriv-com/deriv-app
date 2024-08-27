@@ -20,8 +20,6 @@ export default class TradersHubStore extends BaseStore {
     is_regulators_compare_modal_visible = false;
     account_type_card = '';
     selected_platform_type = 'options';
-    mt5_existing_account = {};
-    open_failed_verification_for = '';
     modal_data = {
         active_modal: '',
         data: {},
@@ -66,8 +64,6 @@ export default class TradersHubStore extends BaseStore {
             active_modal_tab: observable,
             active_modal_wallet_id: observable,
             selected_region: observable,
-            mt5_existing_account: observable,
-            open_failed_verification_for: observable,
             is_real_wallets_upgrade_on: observable,
             is_wallet_migration_failed: observable,
             is_cfd_restricted_country: observable,
@@ -111,7 +107,6 @@ export default class TradersHubStore extends BaseStore {
             setIsOnboardingVisited: action.bound,
             setIsFirstTimeVisit: action.bound,
             toggleFailedVerificationModalVisibility: action.bound,
-            setMT5ExistingAccount: action.bound,
             openFailedVerificationModal: action.bound,
             toggleRegulatorsCompareModal: action.bound,
             showTopUpModal: action.bound,
@@ -772,31 +767,13 @@ export default class TradersHubStore extends BaseStore {
         this.is_failed_verification_modal_visible = !this.is_failed_verification_modal_visible;
     }
 
-    setMT5ExistingAccount(existing_account) {
-        this.mt5_existing_account = existing_account;
-    }
-
-    openFailedVerificationModal(selected_account_type) {
+    openFailedVerificationModal() {
         const {
-            common,
             modules: { cfd },
         } = this.root_store;
-        const { setJurisdictionSelectedShortcode, setAccountType } = cfd;
-        const { setAppstorePlatform } = common;
+        const { setJurisdictionSelectedShortcode } = cfd;
 
-        if (selected_account_type?.platform === CFD_PLATFORMS.MT5) {
-            setAppstorePlatform(selected_account_type.platform);
-            setAccountType({
-                category: selected_account_type.category,
-                type: selected_account_type.type,
-            });
-            this.setMT5ExistingAccount(selected_account_type);
-            setJurisdictionSelectedShortcode(selected_account_type.jurisdiction);
-        } else {
-            setJurisdictionSelectedShortcode('');
-        }
-        this.open_failed_verification_for =
-            selected_account_type?.platform === CFD_PLATFORMS.MT5 ? selected_account_type?.jurisdiction : 'multipliers';
+        setJurisdictionSelectedShortcode('');
         this.toggleFailedVerificationModalVisibility();
     }
 

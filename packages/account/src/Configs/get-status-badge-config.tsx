@@ -1,21 +1,18 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { AUTH_STATUS_CODES, MT5_ACCOUNT_STATUS, TRADING_PLATFORM_STATUS, routes } from '@deriv/shared';
+import { AUTH_STATUS_CODES, ACCOUNT_BADGE_STATUS, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { TAuthStatusCodes, TMT5AccountStatus } from '../Types/common.type';
+import { TAuthStatusCodes, TAccountBadgeStatus } from '../Types/common.type';
 import { Link } from 'react-router-dom';
 
 const getStatusBadgeConfig = (
-    mt5_account_status: TMT5AccountStatus,
-    openFailedVerificationModal?: (selected_account_type: string) => void,
-    selected_account_type?: string,
+    account_status: TAccountBadgeStatus,
+    openFailedVerificationModal: () => void,
     setIsVerificationModalVisible?: (value: boolean) => void,
-    user_account_status?: { poi_status: TAuthStatusCodes; poa_status: TAuthStatusCodes }
+    kyc_account_status?: { poi_status?: TAuthStatusCodes; poa_status?: TAuthStatusCodes }
 ) => {
-    const BadgeTextComponent = <Text key={0} weight='bold' size='xxxs' color='warning' />;
-
-    switch (mt5_account_status) {
-        case MT5_ACCOUNT_STATUS.PENDING:
+    switch (account_status) {
+        case ACCOUNT_BADGE_STATUS.PENDING:
             return {
                 text: (
                     <Localize
@@ -25,7 +22,7 @@ const getStatusBadgeConfig = (
                 ),
                 icon: 'IcAlertWarning',
             };
-        case MT5_ACCOUNT_STATUS.FAILED:
+        case ACCOUNT_BADGE_STATUS.FAILED:
             return {
                 text: (
                     <Localize
@@ -36,7 +33,7 @@ const getStatusBadgeConfig = (
                                 key={1}
                                 className='link-verification-failed'
                                 onClick={() => {
-                                    openFailedVerificationModal?.(selected_account_type ?? '');
+                                    openFailedVerificationModal();
                                 }}
                             />,
                         ]}
@@ -44,9 +41,9 @@ const getStatusBadgeConfig = (
                 ),
                 icon: 'IcRedWarning',
             };
-        case MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION: {
+        case ACCOUNT_BADGE_STATUS.NEEDS_VERIFICATION: {
             const redirect_url =
-                user_account_status?.poi_status === AUTH_STATUS_CODES.NONE
+                kyc_account_status?.poi_status === AUTH_STATUS_CODES.NONE
                     ? routes.proof_of_identity
                     : routes.proof_of_address;
             return {
@@ -70,26 +67,6 @@ const getStatusBadgeConfig = (
                 icon: 'IcAlertInfo',
             };
         }
-        case MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION:
-            return {
-                text: <Localize i18n_default_text='<0>No new positions</0>' components={[BadgeTextComponent]} />,
-                icon: 'IcAlertWarning',
-            };
-        case MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION:
-            return {
-                text: <Localize i18n_default_text='<0>Account closed</0>' components={[BadgeTextComponent]} />,
-                icon: 'IcAlertWarning',
-            };
-        case MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE:
-            return {
-                text: <Localize i18n_default_text='<0>Server maintenance</0>' components={[BadgeTextComponent]} />,
-                icon: 'IcAlertWarning',
-            };
-        case TRADING_PLATFORM_STATUS.UNAVAILABLE:
-            return {
-                text: <Localize i18n_default_text='<0>Unavailable</0>' components={[BadgeTextComponent]} />,
-                icon: 'IcAlertWarning',
-            };
         default:
             return {
                 text: '',

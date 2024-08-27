@@ -91,7 +91,7 @@ const CFDsListing = observer(() => {
         ctrader_total_balance,
     } = client;
     const { setAppstorePlatform } = common;
-    const { openDerivRealAccountNeededModal, setShouldShowCooldownModal, setIsMT5VerificationFailedModal } = ui;
+    const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;
     const has_no_real_account = !has_any_real_account;
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
@@ -350,12 +350,6 @@ const CFDsListing = observer(() => {
                                                     account_mode: selected_account_type,
                                                     account_name: track_account_subtitle,
                                                 });
-                                            }
-
-                                            if (has_mt5_account_status === MT5_ACCOUNT_STATUS.FAILED && is_eu_user) {
-                                                setIsMT5VerificationFailedModal(true);
-                                                openFailedVerificationModal(existing_account);
-                                                return;
                                             }
 
                                             startTrade(existing_account.platform, existing_account);

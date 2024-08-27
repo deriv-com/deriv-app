@@ -19,6 +19,7 @@ import {
     MT5_ACCOUNT_STATUS,
     Platforms,
     TRADING_PLATFORM_STATUS,
+    ACCOUNT_BADGE_STATUS,
 } from '@deriv/shared';
 
 export type TToken = NonNullable<ApiToken['tokens']>[0];
@@ -280,6 +281,8 @@ export type TProofOfOwnershipErrors = Record<
 export type TFinancialInformationForm = Omit<SetFinancialAssessmentRequest, 'set_financial_assessment'>;
 
 export type TAuthStatusCodes = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+
+export type TAccountBadgeStatus = typeof ACCOUNT_BADGE_STATUS[keyof typeof ACCOUNT_BADGE_STATUS] | null;
 
 export type TMT5AccountStatus =
     | typeof MT5_ACCOUNT_STATUS[keyof typeof MT5_ACCOUNT_STATUS]

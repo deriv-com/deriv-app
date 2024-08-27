@@ -22,9 +22,12 @@ export const DESCRIPTION_VIDEO_ID: TDtraderVideoUrl = {
         light: 'f528c662c377601908a741ae2aedaec6',
         dark: '4c05445e1bd28f3f9f95b0ab566c4f9b',
     },
+    turbos: {
+        light: '63f8b8f93e83e98481f20aa971ef7723',
+        dark: 'ce0158579fcee186de1ddeb97646f892',
+    },
     match_diff: {
         light: '8693a02397d284ffcf0608e4fda702d9',
-
         dark: '2e56ad7ea67bf3f9a869de6336df1796',
     },
     multiplier: {

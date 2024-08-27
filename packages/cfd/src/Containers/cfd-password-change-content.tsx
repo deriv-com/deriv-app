@@ -1,7 +1,8 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
-import { DesktopWrapper, Modal, Button, Icon, Text, MobileDialog, MobileWrapper } from '@deriv/components';
+import { DesktopWrapper, Modal, Button, Text, MobileDialog, MobileWrapper } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { DerivLightMt5SuccessPasswordResetIcon } from '@deriv/quill-icons';
 
 type TCFDPasswordChangeContentProps = {
     closeModal: () => void;
@@ -25,7 +26,7 @@ const CFDPasswordChangeContent = observer(({ closeModal, password_value }: TCFDP
 
     const password_changed_success__body = (
         <div className='cfd-password-change__password-success'>
-            <Icon className='cfd-password-change__icon' icon='IcSuccessResetTradingPassword' size={128} />
+            <DerivLightMt5SuccessPasswordResetIcon className='cfd-password-change__icon' height={128} width={128} />
             <Text as='p' weight='bold' className='cfd-password-change__heading'>
                 <Localize i18n_default_text='Success' />
             </Text>

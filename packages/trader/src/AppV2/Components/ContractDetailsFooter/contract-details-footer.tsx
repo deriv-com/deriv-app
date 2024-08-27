@@ -80,7 +80,9 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                 <Button
                     label={
                         is_valid_to_sell
-                            ? `${cardLabels.CLOSE} ${FormatUtils.formatMoney(bid_price || 0)} ${currency}`
+                            ? `${cardLabels.CLOSE} ${FormatUtils.formatMoney(bid_price || 0, {
+                                  currency: currency as 'USD', // currency types mismatched between utils and shared
+                              })} ${currency}`
                             : cardLabels.RESALE_NOT_OFFERED
                     }
                     isLoading={is_sell_requested && is_valid_to_sell}

@@ -1051,6 +1051,8 @@ import './underlying/ic-underlying-RDBEAR.svg';
 import './underlying/ic-underlying-RDBULL.svg';
 import './underlying/ic-underlying-STPRNG.svg';
 import './underlying/ic-underlying-STPRNG2.svg';
+import './underlying/ic-underlying-STPRNG3.svg';
+import './underlying/ic-underlying-STPRNG4.svg';
 import './underlying/ic-underlying-STPRNG5.svg';
 import './underlying/ic-underlying-WLDAUD.svg';
 import './underlying/ic-underlying-WLDEUR.svg';

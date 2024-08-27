@@ -1,0 +1,11 @@
+.missing-payment-method-note {
+    &__title {
+        margin-bottom: 0.8rem;
+    }
+    @include mobile-or-tablet-screen {
+        background-color: var(--general-section-1);
+        border-radius: $BORDER_RADIUS * 2;
+        color: var(--text-general);
+        line-height: 1.5;
+    }
+}

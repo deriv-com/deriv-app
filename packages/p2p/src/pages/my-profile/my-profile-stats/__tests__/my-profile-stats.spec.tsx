@@ -1,17 +1,16 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { isMobile } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores/index';
 import MyProfileStats from '../my-profile-stats';
+import { useDevice } from '@deriv-com/ui';
 
 let mock_store: DeepPartial<ReturnType<typeof useStores>>;
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
-    MobileWrapper: jest.fn(({ children }) => children),
     MobileFullPageModal: ({ children, pageHeaderReturnFn = mock_store.setActiveTab }) => (
         <div>
             <button onClick={pageHeaderReturnFn}>Return</button>
@@ -20,14 +19,14 @@ jest.mock('@deriv/components', () => ({
     ),
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => true),
-}));
-
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
     useStores: jest.fn(() => mock_store),
+}));
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn().mockReturnValue({ isDesktop: true }),
 }));
 
 describe('<MyProfileStats />', () => {
@@ -52,10 +51,10 @@ describe('<MyProfileStats />', () => {
                 setActiveTab: jest.fn(),
             },
         };
-        (isMobile as jest.Mock).mockReturnValue(true);
     });
 
     it('should render MyProfileStats component showing all 4 tabs if isMobile is true', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         render(<MyProfileStats />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
         });
@@ -81,6 +80,7 @@ describe('<MyProfileStats />', () => {
     });
 
     it('should allow a user to click on each different tab, which should call setShouldShowStatsAndRatings and setActiveTab', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         const setShouldShowStatsAndRatingsMock = jest.spyOn(React, 'useState');
         (setShouldShowStatsAndRatingsMock as jest.Mock).mockImplementation(initialValue => [initialValue, jest.fn()]);
 

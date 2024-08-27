@@ -40,8 +40,8 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
         if (!is_api_response_tp_received_ref.current && tp_ref.current.has_take_profit) return;
         if (!is_api_response_sl_received_ref.current && sl_ref.current.has_stop_loss) return;
 
-        WS.forget(tp_subscription_id_ref.current);
-        WS.forget(sl_subscription_id_ref.current);
+        if (tp_subscription_id_ref.current) WS.forget(tp_subscription_id_ref.current);
+        if (sl_subscription_id_ref.current) WS.forget(sl_subscription_id_ref.current);
 
         const {
             has_take_profit: has_take_profit_current,
@@ -100,7 +100,6 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
                 parent_subscription_id_ref={tp_subscription_id_ref}
                 parent_ref={tp_ref}
                 parent_is_api_response_received_ref={is_api_response_tp_received_ref}
-                key='take_profit'
             />
             <TakeProfitAndStopLossInput
                 classname='risk-management__tp-sl'
@@ -112,7 +111,6 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
                 parent_ref={sl_ref}
                 parent_is_api_response_received_ref={is_api_response_sl_received_ref}
                 type='stop_loss'
-                key='stop_loss'
             />
             <Button
                 color='black'

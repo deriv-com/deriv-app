@@ -125,7 +125,7 @@ const TakeProfitAndStopLossInput = ({
     // We are using requestPreviewProposal in useEffect in order to validate both fields independently
     React.useEffect(() => {
         if (!is_enabled) {
-            WS.forget(subscription_id_ref.current);
+            if (subscription_id_ref.current) WS.forget(subscription_id_ref.current);
             return;
         }
 
@@ -133,12 +133,12 @@ const TakeProfitAndStopLossInput = ({
             const { proposal, echo_req, error, subscription } = response;
             // For multipliers we got 2 responses (Up and Down); the 2d one is not needed as it will be difficult to clean it when user clicks on Save btn
             if (echo_req.contract_type === CONTRACT_TYPES.MULTIPLIER.DOWN) {
-                WS.forget(subscription?.id);
+                if (subscription?.id) WS.forget(subscription.id);
                 is_api_response_received_ref.current = true;
                 return;
             }
             if (!is_enabled) {
-                WS.forget(subscription?.id);
+                if (subscription?.id) WS.forget(subscription.id);
                 is_api_response_received_ref.current = true;
                 return;
             }
@@ -150,7 +150,7 @@ const TakeProfitAndStopLossInput = ({
                 field_name: is_take_profit_input ? 'tp_error_text' : 'sl_error_text',
                 new_value: new_error,
             });
-            if (error?.message) WS.forget(subscription?.id);
+            if (error?.message && subscription?.id) WS.forget(subscription.id);
 
             /* For Multipliers, validation parameters come in proposal response only if TP or SL are switched on and their value is not empty.
             Here we set them into the state in order to show further even if we got a validation error from API.*/
@@ -216,7 +216,7 @@ const TakeProfitAndStopLossInput = ({
     const onSave = () => {
         // Prevent from saving if user clicks before BE validation
         if (!is_api_response_received_ref.current && is_enabled) return;
-        WS.forget(subscription_id_ref.current);
+        if (subscription_id_ref.current) WS.forget(subscription_id_ref.current);
 
         if (error_text && is_enabled) return;
         if (new_input_value === '' && is_enabled) {
@@ -283,6 +283,7 @@ const TakeProfitAndStopLossInput = ({
                     message={error_text || input_message}
                     minusDisabled={Number(new_input_value) - 1 <= 0}
                     name={type}
+                    noStatusIcon
                     onChange={onInputChange}
                     placeholder={localize('Amount')}
                     ref={input_ref}

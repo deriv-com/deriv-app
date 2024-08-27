@@ -924,7 +924,6 @@ export default class UIStore extends BaseStore {
 
     setCFDPasswordResetModal(val) {
         this.is_cfd_reset_password_modal_enabled = !!val;
-        this.is_reset_trading_password_modal_visible = !!val;
     }
 
     setSubSectionIndex(index) {

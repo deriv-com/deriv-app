@@ -69,17 +69,16 @@ const MT5CreatePassword = ({
             }) => (
                 <form onSubmit={handleSubmit}>
                     <div
-                        className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'
-                        data-testid='dt_create_password'
+                        className='mt5-password-modal__content dc-modal__container_mt5-password-modal__body form'
+                        data-testid='dt_mt5_create_password'
                     >
-                        <div className='cfd-password-modal__create-password-body'>
-                            <div className='cfd-password-modal__create-password-content'>
-                                <Icon icon='IcMt5OnePassword' width='150' height='150' />
-                            </div>
+                        <div className='mt5-password-modal__create-password-content'>
+                            <Icon icon='IcMt5OnePassword' width='150' height='150' />
+
                             <Text
                                 size='xs'
                                 align='left'
-                                className='cfd-password-modal__create-password-description'
+                                className='mt5-password-modal__create-password-description'
                                 color='var(--text-prominent)'
                             >
                                 <Localize
@@ -87,7 +86,7 @@ const MT5CreatePassword = ({
                                     values={{ platform: getCFDPlatformNames(platform) }}
                                 />
                             </Text>
-                            <div className='input-element'>
+                            <div className='mt5-password-modal__mt5-input-element'>
                                 <PasswordMeter
                                     input={values.password}
                                     has_error={!!(touched.password && errors.password)}
@@ -131,7 +130,7 @@ const MT5CreatePassword = ({
                                 need_tnc={need_tnc}
                             />
                         </div>
-                        <div className='mt5-password-submit-button'>
+                        <div className='mt5-password-modal__submit-button'>
                             <FormSubmitButton
                                 is_disabled={!values.password || !checked || Object.keys(errors).length > 0}
                                 is_loading={isSubmitting}

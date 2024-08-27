@@ -23,15 +23,20 @@ jest.mock('@deriv/api', () => ({
 }));
 
 describe('DepositCryptoDisclaimers', () => {
+    const createWrapper =
+        (mock: ReturnType<typeof mockStore>) =>
+        // eslint-disable-next-line react/display-name
+        ({ children }: { children: JSX.Element }) =>
+            (
+                <StoreProvider store={mock}>
+                    <APIProvider>{children}</APIProvider>
+                </StoreProvider>
+            );
+
     test('should show correct message for BTC', () => {
         const mock = mockStore({ client: { currency: 'BTC' } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>
-                <APIProvider>{children}</APIProvider>
-            </StoreProvider>
-        );
-        render(<DepositCryptoDisclaimers />, { wrapper });
+        render(<DepositCryptoDisclaimers />, { wrapper: createWrapper(mock) });
 
         expect(screen.getByText(/Bitcoin \(BTC\)/)).toBeInTheDocument();
     });
@@ -39,12 +44,7 @@ describe('DepositCryptoDisclaimers', () => {
     test('should show correct message for ETH', () => {
         const mock = mockStore({ client: { currency: 'ETH' } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>
-                <APIProvider>{children}</APIProvider>
-            </StoreProvider>
-        );
-        render(<DepositCryptoDisclaimers />, { wrapper });
+        render(<DepositCryptoDisclaimers />, { wrapper: createWrapper(mock) });
 
         expect(screen.getByText(/Ethereum \(ETH\)/)).toBeInTheDocument();
     });
@@ -52,12 +52,7 @@ describe('DepositCryptoDisclaimers', () => {
     test('should show correct message for LTC', () => {
         const mock = mockStore({ client: { currency: 'LTC' } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>
-                <APIProvider>{children}</APIProvider>
-            </StoreProvider>
-        );
-        render(<DepositCryptoDisclaimers />, { wrapper });
+        render(<DepositCryptoDisclaimers />, { wrapper: createWrapper(mock) });
 
         expect(screen.getByText(/Litecoin \(LTC\)/)).toBeInTheDocument();
     });
@@ -65,12 +60,7 @@ describe('DepositCryptoDisclaimers', () => {
     test('should show correct message for USDC', () => {
         const mock = mockStore({ client: { currency: 'USDC' } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>
-                <APIProvider>{children}</APIProvider>
-            </StoreProvider>
-        );
-        render(<DepositCryptoDisclaimers />, { wrapper });
+        render(<DepositCryptoDisclaimers />, { wrapper: createWrapper(mock) });
 
         expect(screen.getByText(/Ethereum \(ERC20\)/)).toBeInTheDocument();
     });
@@ -78,12 +68,7 @@ describe('DepositCryptoDisclaimers', () => {
     test('should show correct message for UST', () => {
         const mock = mockStore({ client: { currency: 'UST' } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>
-                <APIProvider>{children}</APIProvider>
-            </StoreProvider>
-        );
-        render(<DepositCryptoDisclaimers />, { wrapper });
+        render(<DepositCryptoDisclaimers />, { wrapper: createWrapper(mock) });
 
         expect(screen.getByText(/Omnicore/)).toBeInTheDocument();
     });
@@ -91,12 +76,7 @@ describe('DepositCryptoDisclaimers', () => {
     test('should show correct message for eUSDT', () => {
         const mock = mockStore({ client: { currency: 'eUSDT' } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>
-                <APIProvider>{children}</APIProvider>
-            </StoreProvider>
-        );
-        render(<DepositCryptoDisclaimers />, { wrapper });
+        render(<DepositCryptoDisclaimers />, { wrapper: createWrapper(mock) });
 
         expect(screen.getByText(/Ethereum \(ERC20\)/)).toBeInTheDocument();
     });

@@ -569,7 +569,8 @@ export default class LoadModalStore implements ILoadModalStore {
         const { strategy_id = window.Blockly.utils.idGenerator.genUid(), convertedDom } = window.Blockly.xmlValues;
         const derivWorkspace = window.Blockly.derivWorkspace;
 
-        window.Blockly.Xml.clearWorkspaceAndLoadFromXml(convertedDom, derivWorkspace);
+        window.Blockly.derivWorkspace.asyncClear();
+        window.Blockly.Xml.domToWorkspace(convertedDom, derivWorkspace);
         derivWorkspace.cleanUp();
         derivWorkspace.clearUndo();
         derivWorkspace.current_strategy_id = strategy_id;
@@ -606,7 +607,8 @@ export default class LoadModalStore implements ILoadModalStore {
         const convertedDom = window.Blockly?.utils?.xml?.textToDom(this.selected_strategy?.xml);
         const mainWorkspace = window.Blockly?.getMainWorkspace();
 
-        window.Blockly?.Xml?.clearWorkspaceAndLoadFromXml(convertedDom, mainWorkspace);
+        window.Blockly.getMainWorkspace().asyncClear();
+        window.Blockly.Xml.domToWorkspace(convertedDom, mainWorkspace);
 
         setLoading(false);
         this.setOpenButtonDisabled(false);

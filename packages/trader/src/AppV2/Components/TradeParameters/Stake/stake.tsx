@@ -52,7 +52,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         message: message_2 = '',
         payout: payout_2 = 0,
     } = proposal_info[contract_types[1]] ?? {};
-    const is_loading_proposal = !id_1 || (!!contract_types[1] && !id_2);
+    const is_loading_proposal = !has_error_1 && !has_error_2 && (!id_1 || (!!contract_types[1] && !id_2));
     const proposal_error_message_1 = has_error_1 ? message_1 : '';
     const proposal_error_message_2 = has_error_2 ? message_2 : '';
     const proposal_error_message = proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount[0];

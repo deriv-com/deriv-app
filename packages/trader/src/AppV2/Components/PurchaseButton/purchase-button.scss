@@ -5,7 +5,7 @@
     height: var(--core-size-2800);
     gap: 0;
 
-    &:not(:first-child):not(.purchase-button--loading) {
+    &:not(.quill-button:first-child .purchase-button):not(.purchase-button--loading) {
         align-items: flex-start;
     }
     &--single {

@@ -7,6 +7,7 @@ import { useP2PCompletedOrdersNotification, useP2PSettings, useGrowthbookGetFeat
 import { isEmptyObject, routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import { URLConstants } from '@deriv-com/utils';
 import { init } from 'Utils/server_time';
 import { waitWS } from 'Utils/websocket';
@@ -26,7 +27,7 @@ const App = () => {
     const { balance, currency, is_logging_in, loginid } = client;
     const { setOnRemount } = modules?.cashier?.general_store;
 
-    const { is_mobile } = ui;
+    const { isDesktop } = useDevice();
     const { setP2POrderProps, setP2PRedirectTo } = notifications;
 
     const history = useHistory();
@@ -45,6 +46,7 @@ const App = () => {
 
     React.useEffect(() => {
         init();
+        general_store.setListItemLimit(isDesktop ? 10 : 50);
 
         general_store.setExternalStores({ client, common, modules, notifications, ui });
         general_store.setWebsocketInit(WS);
@@ -167,7 +169,7 @@ const App = () => {
 
         setActionParam(url_params.get('action'));
 
-        if (is_mobile) {
+        if (!isDesktop) {
             setCodeParam(localStorage.getItem('verification_code.p2p_order_confirm'));
         } else if (!code_param) {
             if (url_params.has('code')) {
@@ -210,7 +212,7 @@ const App = () => {
         input_order_id => {
             const current_query_params = new URLSearchParams(location.search);
 
-            if (is_mobile) {
+            if (!isDesktop) {
                 current_query_params.delete('action');
                 current_query_params.delete('code');
             }

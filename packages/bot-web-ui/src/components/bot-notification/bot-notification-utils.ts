@@ -39,6 +39,7 @@ export const notification_message = {
     bot_stop: localize('You’ve just stopped the bot. Any open contracts can be viewed on the Reports page.'),
     workspace_change: localize('Changes you make will not affect your running bot.'),
     block_delete: localize('You’ve just deleted a block.'),
+    invalid_xml: localize('Your import failed due to an invalid file. Upload a complete file in XML format.'),
     [NOTIFICATION_TYPE.BOT_IMPORT]: localize('You’ve successfully imported a bot.'),
     [NOTIFICATION_TYPE.BOT_DELETE]: localize('You’ve successfully deleted a bot.'),
     strategy_conversion: localize('Save this strategy as an XML file from Deriv Bot for faster re-imports.'),

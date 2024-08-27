@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
 import { useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
+import { Loading } from '@deriv/components';
 import Page404 from 'Components/page-404';
 import getRoutesConfig from 'Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes';
@@ -11,14 +11,6 @@ type TBinaryRoutesProps = {
     is_logging_in: boolean;
 };
 
-const Loading = () => {
-    return (
-        <div>
-            <Localize i18n_default_text='Loading...' />
-        </div>
-    );
-};
-
 const BinaryRoutes = (props: TBinaryRoutesProps) => {
     const { client } = useStore();
     const { has_wallet } = client;
@@ -26,7 +18,7 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
     if (has_wallet) return <Page404 />;
 
     return (
-        <React.Suspense fallback={<Loading />}>
+        <React.Suspense fallback={<Loading className='cashier__loader' is_fullscreen={false} />}>
             <Switch>
                 {getRoutesConfig().map((route, idx) => (
                     <RouteWithSubRoutes key={idx} {...route} {...props} />

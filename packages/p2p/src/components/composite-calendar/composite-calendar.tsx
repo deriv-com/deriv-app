@@ -1,9 +1,10 @@
 import React from 'react';
 import moment from 'moment';
 import Loadable from 'react-loadable';
-import { DesktopWrapper, InputField, MobileWrapper, useOnClickOutside } from '@deriv/components';
+import { InputField, useOnClickOutside } from '@deriv/components';
 import { daysFromTodayTo, toMoment } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { localize } from 'Components/i18next';
 import CalendarIcon from './calendar-icon';
 import CalendarSideList from './calendar-side-list';
@@ -58,6 +59,7 @@ const DateFieldComponent = ({ label, placeholder, showCalendar, value }: TDateFi
 };
 
 const CompositeCalendar = (props: TCompositeCalendarProps) => {
+    const { isDesktop } = useDevice();
     const { ui } = useStore();
     const { current_focus, setCurrentFocus } = ui;
     const { from, to, onChange } = props;
@@ -180,9 +182,9 @@ const CompositeCalendar = (props: TCompositeCalendarProps) => {
         return date.unix() < from || date.unix() > toMoment().endOf('day').unix();
     };
 
-    return (
-        <React.Fragment>
-            <DesktopWrapper>
+    if (isDesktop) {
+        return (
+            <React.Fragment>
                 <div className='composite-calendar__input-fields'>
                     <DateFieldComponent
                         label='from'
@@ -212,16 +214,17 @@ const CompositeCalendar = (props: TCompositeCalendarProps) => {
                         />
                     </div>
                 )}
-            </DesktopWrapper>
-            <MobileWrapper>
-                <CompositeCalendarMobile
-                    duration_list={days_duration_list}
-                    current_focus={current_focus}
-                    setCurrentFocus={setCurrentFocus}
-                    {...props}
-                />
-            </MobileWrapper>
-        </React.Fragment>
+            </React.Fragment>
+        );
+    }
+
+    return (
+        <CompositeCalendarMobile
+            duration_list={days_duration_list}
+            current_focus={current_focus}
+            setCurrentFocus={setCurrentFocus}
+            {...props}
+        />
     );
 };
 

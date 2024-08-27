@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { Loading } from '@deriv/components';
 import { isAccumulatorContract } from '@deriv/shared';
+import { useLocalStorageData } from '@deriv/hooks';
 import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
 import { useTraderStore } from 'Stores/useTraderStores';
 import BottomNav from 'AppV2/Components/BottomNav';
@@ -22,6 +23,7 @@ const Trade = observer(() => {
     const chart_ref = React.useRef<HTMLDivElement>(null);
 
     const { active_symbols, contract_type, contract_types_list, onMount, onChange, onUnmount } = useTraderStore();
+    const [onboarding_guide_dtrader_v2] = useLocalStorageData<boolean>('onboarding_guide_dtrader_v2', false);
 
     const trade_types = React.useMemo(() => getTradeTypesList(contract_types_list), [contract_types_list]);
     const symbols = React.useMemo(
@@ -88,7 +90,7 @@ const Trade = observer(() => {
                         <TradeParameters is_minimized />
                     </TradeParametersContainer>
                     <PurchaseButton />
-                    <OnboardingGuide />
+                    {!onboarding_guide_dtrader_v2 && <OnboardingGuide />}
                 </React.Fragment>
             ) : (
                 <Loading.DTraderV2 />

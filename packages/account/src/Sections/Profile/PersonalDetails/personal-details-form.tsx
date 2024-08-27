@@ -46,7 +46,6 @@ type TRestState = {
 
 type THintMessage = {
     is_phone_number_editted: boolean;
-    is_phone_number_empty: boolean;
 };
 
 const PersonalDetailsForm = observer(() => {
@@ -120,7 +119,7 @@ const PersonalDetailsForm = observer(() => {
         }
     }, [invalidate, is_language_changing]);
 
-    const hintMessage = ({ is_phone_number_editted, is_phone_number_empty }: THintMessage) => {
+    const hintMessage = ({ is_phone_number_editted }: THintMessage) => {
         if (isPhoneNumberVerificationEnabled) {
             if (account_settings?.phone_number_verification?.verified) {
                 return (
@@ -135,7 +134,7 @@ const PersonalDetailsForm = observer(() => {
                         ]}
                     />
                 );
-            } else if (is_phone_number_editted || is_phone_number_empty) {
+            } else if (is_phone_number_editted) {
                 return <Localize i18n_default_text='Save changes to enable verification.' />;
             }
         } else {
@@ -404,7 +403,6 @@ const PersonalDetailsForm = observer(() => {
                                             value={values.phone}
                                             hint={hintMessage({
                                                 is_phone_number_editted: account_settings.phone !== values.phone,
-                                                is_phone_number_empty: !account_settings.phone,
                                             })}
                                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                                 handleChange(e);

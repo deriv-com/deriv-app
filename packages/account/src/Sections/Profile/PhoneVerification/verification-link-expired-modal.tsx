@@ -1,11 +1,10 @@
-import { Modal, Text } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv/translations';
-import { useHistory } from 'react-router';
-import { LabelPairedCircleXmarkLgRegularIcon } from '@deriv/quill-icons';
-import { usePhoneNumberVerificationSetTimer, useSettings, useVerifyEmail } from '@deriv/hooks';
-import { routes } from '@deriv/shared';
-import { useDevice } from '@deriv-com/ui';
 import { useEffect } from 'react';
+import { useHistory } from 'react-router';
+import { usePhoneNumberVerificationSetTimer, useSettings, useVerifyEmail } from '@deriv/hooks';
+import { Modal, Text } from '@deriv-com/quill-ui';
+import { routes } from '@deriv/shared';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 
 type TVerificationLinkExpiredModal = {
     should_show_verification_link_expired_modal: boolean;
@@ -19,9 +18,10 @@ const VerificationLinkExpiredModal = ({
     const history = useHistory();
     //@ts-expect-error ignore this until we add it in GetSettings api types
     const { sendPhoneNumberVerifyEmail, WS } = useVerifyEmail('phone_number_verification');
-    const { next_otp_request } = usePhoneNumberVerificationSetTimer();
+    const { next_email_otp_request_timer } = usePhoneNumberVerificationSetTimer();
     const { invalidate } = useSettings();
     const { isMobile } = useDevice();
+    const { localize } = useTranslations();
 
     const handleCancelButton = () => {
         setShouldShowVerificationLinkExpiredModal(false);
@@ -30,6 +30,19 @@ const VerificationLinkExpiredModal = ({
 
     const handleSendNewLinkButton = () => {
         sendPhoneNumberVerifyEmail();
+    };
+
+    const sendNewLinkTimer = () => {
+        let sendNewLinkTimer = '';
+        if (next_email_otp_request_timer) {
+            next_email_otp_request_timer < 60
+                ? (sendNewLinkTimer = `${localize(' in ')}${next_email_otp_request_timer}s`)
+                : (sendNewLinkTimer = `${localize(' in ')}${Math.round(next_email_otp_request_timer / 60)}m`);
+        } else {
+            sendNewLinkTimer = '';
+        }
+
+        return sendNewLinkTimer;
     };
 
     useEffect(() => {
@@ -41,12 +54,12 @@ const VerificationLinkExpiredModal = ({
             isMobile={isMobile}
             showHandleBar
             isOpened={should_show_verification_link_expired_modal}
-            isPrimaryButtonDisabled={!!next_otp_request}
+            isPrimaryButtonDisabled={!!next_email_otp_request_timer}
             primaryButtonCallback={handleSendNewLinkButton}
             primaryButtonLabel={
                 <Localize
-                    i18n_default_text='Send new link {{next_email_attempt_timestamp}}'
-                    values={{ next_email_attempt_timestamp: next_otp_request }}
+                    i18n_default_text='Send new link{{next_email_attempt_timestamp}}'
+                    values={{ next_email_attempt_timestamp: sendNewLinkTimer() }}
                 />
             }
             disableCloseOnOverlay
@@ -54,17 +67,11 @@ const VerificationLinkExpiredModal = ({
             secondaryButtonLabel={<Localize i18n_default_text='Cancel' />}
             secondaryButtonCallback={handleCancelButton}
         >
-            <Modal.Header
-                className='phone-verification__cancel-modal--header'
-                image={<LabelPairedCircleXmarkLgRegularIcon fill='#C40000' height={96} width={96} />}
-            />
+            <Modal.Header title={<Localize i18n_default_text='Link expired' />} />
             <Modal.Body>
                 <div className='phone-verification__cancel-modal--contents'>
-                    <Text bold>
-                        <Localize i18n_default_text='Verification link expired' />
-                    </Text>
                     <Text>
-                        <Localize i18n_default_text='Get another link to verify your number.' />
+                        <Localize i18n_default_text='Request a new verification link via email.' />
                     </Text>
                 </div>
             </Modal.Body>

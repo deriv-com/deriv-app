@@ -384,6 +384,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             should_show_phone_number_otp: false,
             is_trading_assessment_for_existing_user_enabled: false,
             setIsForcedToExitPnv: jest.fn(),
+            is_scroll_to_verify_button: false,
+            setIsScrollToVerifyButton: jest.fn(),
             setRedirectFromEmail: jest.fn(),
             setShouldShowPhoneNumberOTP: jest.fn(),
             disableApp: jest.fn(),

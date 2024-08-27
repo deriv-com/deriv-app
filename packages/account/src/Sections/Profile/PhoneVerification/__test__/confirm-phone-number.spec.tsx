@@ -1,8 +1,8 @@
 import React from 'react';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { StoreProvider, mockStore } from '@deriv/stores';
 import { usePhoneNumberVerificationSetTimer, useRequestPhoneNumberOTP, useSettings } from '@deriv/hooks';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import ConfirmPhoneNumber from '../confirm-phone-number';
 
 jest.mock('@deriv/hooks', () => ({
@@ -19,7 +19,7 @@ jest.mock('@deriv/hooks', () => ({
         invalidate: jest.fn(),
     })),
     usePhoneNumberVerificationSetTimer: jest.fn(() => ({
-        next_otp_request: undefined,
+        next_phone_otp_request_timer: undefined,
     })),
 }));
 
@@ -141,7 +141,7 @@ describe('ConfirmPhoneNumber', () => {
     });
 
     it('should make both buttons disabled if next_otp_request text is provided', async () => {
-        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_otp_request: '60 seconds' });
+        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_phone_otp_request_timer: 60 });
         render(
             <StoreProvider store={store}>
                 <ConfirmPhoneNumber setOtpVerification={mockSetOtp} />
@@ -154,12 +154,12 @@ describe('ConfirmPhoneNumber', () => {
     });
 
     it('should get snackbar text when next_otp_request text is provided', async () => {
-        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_otp_request: '60 seconds' });
+        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_phone_otp_request_timer: 60 });
         render(
             <StoreProvider store={store}>
                 <ConfirmPhoneNumber setOtpVerification={mockSetOtp} />
             </StoreProvider>
         );
-        expect(screen.getByText(/An error occurred. Request a new OTP in 60 seconds./));
+        expect(screen.getByText(/An error occurred. Request a new OTP in 1 minutes./));
     });
 });

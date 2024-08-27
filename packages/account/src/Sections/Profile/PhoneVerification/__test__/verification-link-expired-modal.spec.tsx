@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import VerificationLinkExpiredModal from '../verification-link-expired-modal';
+import { APIProvider } from '@deriv/api';
+import { usePhoneNumberVerificationSetTimer } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { routes } from '@deriv/shared';
-import { usePhoneNumberVerificationSetTimer } from '@deriv/hooks';
-import { APIProvider } from '@deriv/api';
+import VerificationLinkExpiredModal from '../verification-link-expired-modal';
 
 const mock_push_function = jest.fn();
 jest.mock('react-router', () => ({
@@ -18,7 +18,7 @@ jest.mock('react-router', () => ({
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     usePhoneNumberVerificationSetTimer: jest.fn(() => ({
-        next_otp_request: '',
+        next_email_otp_request_timer: '',
     })),
 }));
 
@@ -63,8 +63,8 @@ describe('VerificationLinkExpiredModal', () => {
         buttons.forEach(value => {
             expect(screen.getByRole('button', { name: value })).toBeInTheDocument();
         });
-        expect(screen.getByText(/Verification link expired/)).toBeInTheDocument();
-        expect(screen.getByText(/Get another link to verify your number./)).toBeInTheDocument();
+        expect(screen.getByText(/Link expired/)).toBeInTheDocument();
+        expect(screen.getByText(/Request a new verification link via email./)).toBeInTheDocument();
     });
 
     it('should render mockSetShowVerificationLinkExpiredModal and mock_back_router when Cancel is clicked', () => {
@@ -76,8 +76,8 @@ describe('VerificationLinkExpiredModal', () => {
     });
 
     it('should show in 60s which is coming from usePhoneNumberVerificationSetTimer', () => {
-        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_otp_request: ' in 60s' });
+        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_email_otp_request_timer: 60 });
         renderComponent();
-        expect(screen.getByText(/in 60s/)).toBeInTheDocument();
+        expect(screen.getByText(/in 1m/)).toBeInTheDocument();
     });
 });

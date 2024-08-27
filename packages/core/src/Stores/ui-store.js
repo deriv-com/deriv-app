@@ -87,6 +87,7 @@ export default class UIStore extends BaseStore {
 
     // verification modal
     is_verification_modal_visible = false;
+    is_scroll_to_verify_button = false;
 
     //verification document submitted modal
     is_verification_submitted = false;
@@ -284,6 +285,7 @@ export default class UIStore extends BaseStore {
             is_real_tab_enabled: observable,
             is_reports_visible: observable,
             is_route_modal_on: observable,
+            is_scroll_to_verify_button: observable,
             is_set_currency_modal_visible: observable,
             is_settings_modal_on: observable,
             is_switch_to_deriv_account_modal_visible: observable,
@@ -379,6 +381,7 @@ export default class UIStore extends BaseStore {
             setReportsTabIndex: action.bound,
             toggleReadyToDepositModal: action.bound,
             toggleNeedRealAccountForCashierModal: action.bound,
+            setIsScrollToVerifyButton: action.bound,
             toggleShouldShowRealAccountsList: action.bound,
             shouldNavigateAfterChooseCrypto: action.bound,
             setIsMT5VerificationFailedModal: action.bound,
@@ -899,6 +902,10 @@ export default class UIStore extends BaseStore {
 
     setShouldShowRiskWarningModal(value) {
         this.should_show_risk_warning_modal = value;
+    }
+
+    setIsScrollToVerifyButton(is_scroll_to_verify_button) {
+        this.is_scroll_to_verify_button = is_scroll_to_verify_button;
     }
 
     setIsTradingAssessmentForExistingUserEnabled(value) {

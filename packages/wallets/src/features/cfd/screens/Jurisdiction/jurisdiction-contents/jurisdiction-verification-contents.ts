@@ -1,3 +1,4 @@
+import { localize } from '@deriv-com/translations';
 import { TJurisdictionVerificationItems, TJurisdictionVerificationStatus } from './props.types';
 
 type TJurisdictionVerificationContents = {
@@ -9,15 +10,17 @@ export const jurisdictionVerificationContents = (): TJurisdictionVerificationCon
     requiredVerificationDocs: {
         documentNumber: {
             icon: 'IcDocumentNumberVerification',
-            text: `Document number (eg. identity card, passport, driver's license)`,
+            text: localize("Document number (eg. identity card, passport, driver's license)"),
         },
         identityDocument: {
             icon: 'IcIdentityDocumentVerification',
-            text: `A copy of your identity document (eg. identity card, passport, driver's license)`,
+            text: localize("A copy of your identity document (eg. identity card, passport, driver's license)"),
         },
         nameAndAddress: {
             icon: 'IcNameAndAddressVerification',
-            text: 'A recent utility bill (eg. electricity, water or gas) or recent bank statement or government-issued letter with your name and address.',
+            text: localize(
+                'A recent utility bill (eg. electricity, water or gas) or recent bank statement or government-issued letter with your name and address.'
+            ),
         },
         notApplicable: {
             icon: 'IcNotApplicableVerification',
@@ -25,25 +28,25 @@ export const jurisdictionVerificationContents = (): TJurisdictionVerificationCon
         },
         selfie: {
             icon: 'IcSelfieVerification',
-            text: 'A selfie of yourself.',
+            text: localize('A selfie of yourself.'),
         },
     },
-    shortDescription: 'We need you to submit these in order to get this account:',
+    shortDescription: localize('We need you to submit these in order to get this account:'),
     statusReferences: [
         {
             color: 'yellow',
             icon: 'verificationPendingStatusIcon',
-            text: 'Verification in review.',
+            text: localize('Verification in review.'),
         },
         {
             color: 'red',
             icon: 'verificationFailedStatusIcon',
-            text: 'Verification failed. Resubmit your details.',
+            text: localize('Verification failed. Resubmit your details.'),
         },
         {
             color: 'green',
             icon: 'verificationSuccessStatusIcon',
-            text: 'Verification successful.',
+            text: localize('Verification successful.'),
         },
     ],
 });

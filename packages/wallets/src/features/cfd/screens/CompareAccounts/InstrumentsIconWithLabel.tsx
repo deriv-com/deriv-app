@@ -1,6 +1,6 @@
 import React from 'react';
-import useDevice from '../../../../hooks/useDevice';
 import { WalletText } from '../../../../components';
+import useDevice from '../../../../hooks/useDevice';
 import getInstrumentsIcons from '../../../../public/images/tradingInstruments';
 import './InstrumentsIconWithLabel.scss';
 

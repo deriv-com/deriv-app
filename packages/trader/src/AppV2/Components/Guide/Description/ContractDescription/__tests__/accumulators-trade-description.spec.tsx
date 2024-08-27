@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { TERM } from 'AppV2/Utils/contract-description-utils';
+import { getTerm } from 'AppV2/Utils/contract-description-utils';
 import AccumulatorsTradeDescription from '../accumulators-trade-description';
 
 jest.mock('@lottiefiles/dotlottie-react', () => ({
@@ -24,7 +24,7 @@ describe('AccumulatorsTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<AccumulatorsTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: TERM.GROWTH_RATE.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().GROWTH_RATE.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -33,7 +33,7 @@ describe('AccumulatorsTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<AccumulatorsTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: TERM.RANGE.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().RANGE.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -42,7 +42,7 @@ describe('AccumulatorsTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<AccumulatorsTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: TERM.PREVIOUS_SPOT_PRICE.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().PREVIOUS_SPOT_PRICE.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -51,7 +51,7 @@ describe('AccumulatorsTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<AccumulatorsTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: TERM.PAYOUT.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().PAYOUT.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -60,7 +60,7 @@ describe('AccumulatorsTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<AccumulatorsTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: TERM.TAKE_PROFIT }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().TAKE_PROFIT }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
@@ -69,7 +69,7 @@ describe('AccumulatorsTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<AccumulatorsTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: TERM.SLIPPAGE_RISK.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().SLIPPAGE_RISK.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });

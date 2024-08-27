@@ -3,7 +3,11 @@ import { ActionSheet, Heading, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { getTermDefinition } from 'AppV2/Utils/contract-description-utils';
 
-type TGuideDefinitionModal = { contract_type: string; term: string; onClose: () => void };
+type TGuideDefinitionModal = {
+    contract_type: string;
+    term: string;
+    onClose: () => void;
+};
 
 const GuideDefinitionModal = ({ contract_type, term, onClose }: TGuideDefinitionModal) => (
     <ActionSheet.Root isOpen={!!term} onClose={onClose} position='left' expandable={false}>

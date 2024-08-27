@@ -53,8 +53,11 @@
             & .dc-icon {
                 --fill-color1: var(--text-prominent);
             }
-            @include mobile-or-tablet-screen {
-                right: 1.2rem;
+            @include mobile-screen {
+                right: 1.6rem;
+            }
+            @include tablet-screen {
+                right: 2.4rem;
             }
         }
         &-wrapper {

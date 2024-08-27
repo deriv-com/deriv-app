@@ -5,9 +5,9 @@ import { getAllowedLanguages } from '@deriv-com/translations';
 import {
     UNSUPPORTED_LANGUAGES,
     getAppId,
-    getUrlBinaryBot,
     getUrlSmartTrader,
     initMoment,
+    setLocale,
     isMobile,
     platforms,
     routes,
@@ -136,6 +136,7 @@ export default class CommonStore extends BaseStore {
                 window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
                 try {
                     await initMoment(key);
+                    await setLocale(key);
                     await changeLanguage(key, () => {
                         this.changeCurrentLanguage(key);
                         BinarySocket.closeAndOpenNewConnection(key);
@@ -169,6 +170,11 @@ export default class CommonStore extends BaseStore {
         return platforms[this.platform]?.platform_name === platforms.derivgo.platform_name;
     }
 
+    // eslint-disable-next-line class-methods-use-this
+    get is_from_outside_cashier() {
+        return !window.location.pathname.startsWith(routes.cashier);
+    }
+
     setInitialRouteHistoryItem(location) {
         if (window.location.href.indexOf('?ext_platform_url=') !== -1) {
             const ext_url = decodeURI(new URL(window.location.href).searchParams.get('ext_platform_url'));
@@ -181,8 +187,6 @@ export default class CommonStore extends BaseStore {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });
             } else if (ext_url?.indexOf(routes.cashier_p2p) === 0) {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH' });
-            } else if (ext_url?.indexOf(getUrlBinaryBot()) === 0) {
-                this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });
             } else {
                 this.addRouteHistoryItem({ ...location, action: 'PUSH' });
             }

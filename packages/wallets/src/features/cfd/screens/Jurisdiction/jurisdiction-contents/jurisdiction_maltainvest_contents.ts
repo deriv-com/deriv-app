@@ -1,32 +1,35 @@
+import { localize } from '@deriv-com/translations';
 import { TJurisdictionCardItems } from './props.types';
 
 export const getJurisdictionMaltainvestContents = (): TJurisdictionCardItems => ({
     contents: {
         financial: [
             {
-                description: 'Forex, stocks, stock indices, commodities, cryptocurrencies and synthetic indices',
+                description: localize(
+                    'Forex, stocks, stock indices, commodities, cryptocurrencies and synthetic indices'
+                ),
                 key: 'assets',
-                title: 'Assets',
+                title: localize('Assets'),
                 titleIndicators: {
-                    displayText: '140+',
+                    displayText: localize('140+'),
                     displayTextSkinColor: 'red-light',
                     type: 'displayText',
                 },
             },
             {
                 key: 'leverage',
-                title: 'Leverage up to',
+                title: localize('Leverage up to'),
                 titleIndicators: {
-                    displayText: '1:30',
+                    displayText: localize('1:30'),
                     displayTextSkinColor: 'brown-dark',
                     type: 'displayText',
                 },
             },
             {
                 key: 'spreads-from',
-                title: 'Spreads from',
+                title: localize('Spreads from'),
                 titleIndicators: {
-                    displayText: '0.5 pips',
+                    displayText: localize('0.5 pips'),
                     displayTextSkinColor: 'violet-dark',
                     type: 'displayText',
                 },
@@ -34,51 +37,51 @@ export const getJurisdictionMaltainvestContents = (): TJurisdictionCardItems => 
             {
                 clickableDescription: [
                     {
-                        text: 'Learn more',
+                        text: localize('Learn more'),
                         type: 'link',
                     },
                     {
-                        text: 'about verifications needed.',
+                        text: localize('about verifications needed.'),
                         type: 'text',
                     },
                 ],
                 key: 'verifications',
-                title: 'Verifications',
+                title: localize('Verifications'),
                 titleIndicators: {
                     type: 'displayIcons',
                 },
             },
             {
-                description: 'Malta Financial Services Authority (MFSA) (licence no. IS/70156)',
+                description: localize('Malta Financial Services Authority (MFSA) (licence no. IS/70156)'),
                 key: 'regulator',
-                title: 'Regulator/EDR',
+                title: localize('Regulator/EDR'),
             },
         ],
         synthetic: [
             {
-                description: 'Synthetics, Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies',
+                description: localize('Synthetics, Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies'),
                 key: 'assets',
-                title: 'Assets',
+                title: localize('Assets'),
                 titleIndicators: {
-                    displayText: '210+',
+                    displayText: localize('210+'),
                     displayTextSkinColor: 'red-light',
                     type: 'displayText',
                 },
             },
             {
                 key: 'leverage',
-                title: 'Leverage up to',
+                title: localize('Leverage up to'),
                 titleIndicators: {
-                    displayText: '1:30',
+                    displayText: localize('1:30'),
                     displayTextSkinColor: 'brown-dark',
                     type: 'displayText',
                 },
             },
             {
                 key: 'spreads-from',
-                title: 'Spreads from',
+                title: localize('Spreads from'),
                 titleIndicators: {
-                    displayText: '0.5 pips',
+                    displayText: localize('0.5 pips'),
                     displayTextSkinColor: 'violet-dark',
                     type: 'displayText',
                 },
@@ -86,25 +89,25 @@ export const getJurisdictionMaltainvestContents = (): TJurisdictionCardItems => 
             {
                 clickableDescription: [
                     {
-                        text: 'Learn more',
+                        text: localize('Learn more'),
                         type: 'link',
                     },
                     {
-                        text: 'about verifications needed.',
+                        text: localize('about verifications needed.'),
                         type: 'text',
                     },
                 ],
                 key: 'verifications',
-                title: 'Verifications',
+                title: localize('Verifications'),
             },
             {
-                description: 'Malta Financial Services Authority (MFSA) (licence no. IS/70156)',
+                description: localize('Malta Financial Services Authority (MFSA) (licence no. IS/70156)'),
                 key: 'regulator',
-                title: 'Regulator/EDR',
+                title: localize('Regulator/EDR'),
             },
         ],
     },
-    header: 'Malta',
+    header: localize('Malta'),
     isOverHeaderAvailable: false,
     verificationDocs: {
         financial: ['selfie', 'identityDocument', 'nameAndAddress'],

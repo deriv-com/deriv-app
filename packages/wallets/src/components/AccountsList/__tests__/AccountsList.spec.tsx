@@ -68,7 +68,6 @@ describe('AccountsList', () => {
         expect(screen.getByText('Deriv Trader')).toBeInTheDocument();
         expect(screen.getByText('Deriv Bot')).toBeInTheDocument();
         expect(screen.getByText('SmartTrader')).toBeInTheDocument();
-        expect(screen.getByText('Binary Bot')).toBeInTheDocument();
         expect(screen.getByText('Deriv GO')).toBeInTheDocument();
     });
 

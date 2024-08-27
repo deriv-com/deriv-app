@@ -2,8 +2,7 @@ import 'Sass/app/_common/components/platform-switcher.scss';
 
 import { useDevice } from '@deriv-com/ui';
 import { Icon } from '@deriv/components';
-import { getPlatformInformation, getUrlBinaryBot } from '@deriv/shared';
-
+import { getPlatformInformation } from '@deriv/shared';
 import { CSSTransition } from 'react-transition-group';
 import { PlatformDropdown } from './platform-dropdown.jsx';
 import { PlatformSwitcherLoader } from './Components/Preloader/platform-switcher.jsx';
@@ -27,15 +26,6 @@ const PlatformSwitcher = ({
     const is_close_drawer_fired_ref = React.useRef(false);
 
     const { isDesktop } = useDevice();
-
-    React.useEffect(() => {
-        platform_config.forEach(data => {
-            const { name } = data;
-            if (name === 'Binary Bot') {
-                data.href = getUrlBinaryBot();
-            }
-        });
-    }, [current_language, platform_config]);
 
     React.useEffect(() => {
         if (is_close_drawer_fired_ref.current) {

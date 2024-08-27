@@ -162,7 +162,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                                         }
                                     />,
                                 ]}
-                                i18n_default_text='Verification failed <0>Why</0>'
+                                i18n_default_text='Verification failed <0>Why?></0>'
                             />
                         </WalletText>
                     </InlineMessage>

@@ -109,6 +109,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
             <CoolDownPeriodModal
                 show_cool_down_period_modal={show_cool_down_period_modal}
                 setShowCoolDownPeriodModal={setShowCoolDownPeriodModal}
+                reInitializeGetSettings={reInitializeGetSettings}
             />
             <PhoneNumberVerifiedModal
                 should_show_phone_number_verified_modal={should_show_phone_number_verified_modal}

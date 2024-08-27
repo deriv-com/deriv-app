@@ -7,16 +7,18 @@ import { useHistory } from 'react-router';
 type TCoolDownPeriodModal = {
     show_cool_down_period_modal: boolean;
     setShowCoolDownPeriodModal: (value: boolean) => void;
+    reInitializeGetSettings: () => void;
 };
 
 const CoolDownPeriodModal = observer(
-    ({ show_cool_down_period_modal, setShowCoolDownPeriodModal }: TCoolDownPeriodModal) => {
+    ({ show_cool_down_period_modal, setShowCoolDownPeriodModal, reInitializeGetSettings }: TCoolDownPeriodModal) => {
         const { ui } = useStore();
         const history = useHistory();
         const { setIsForcedToExitPnv } = ui;
         const handleCloseCoolDownPeriodModal = () => {
             setIsForcedToExitPnv(false);
             setShowCoolDownPeriodModal(false);
+            reInitializeGetSettings();
             history.push(routes.personal_details);
         };
         return (

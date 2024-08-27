@@ -17,6 +17,7 @@ describe('CooldownPeriodModal', () => {
     const mock_store = mockStore({});
     const show_cool_down_period_modal = true;
     const mockSetShowCoolDownPeriodModal = jest.fn();
+    const mockReInitializeGetSettings = jest.fn();
 
     const renderComponent = () => {
         render(
@@ -24,6 +25,7 @@ describe('CooldownPeriodModal', () => {
                 <CoolDownPeriodModal
                     show_cool_down_period_modal={show_cool_down_period_modal}
                     setShowCoolDownPeriodModal={mockSetShowCoolDownPeriodModal}
+                    reInitializeGetSettings={mockReInitializeGetSettings}
                 />
             </StoreProvider>
         );

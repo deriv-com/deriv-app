@@ -8,6 +8,8 @@ describe('validatePhoneNumber', () => {
         setErrorMessage = jest.fn();
     });
 
+    const error_message = 'Enter a valid phone number.';
+
     it('should set an empty error message for a valid phone number', async () => {
         const validPhoneNumber = '+1234567890';
         await act(async () => {
@@ -21,7 +23,7 @@ describe('validatePhoneNumber', () => {
         await act(async () => {
             validatePhoneNumber(invalidPhoneNumber, setErrorMessage);
         });
-        expect(setErrorMessage).toHaveBeenCalledWith(['Please enter a valid phone number.']);
+        expect(setErrorMessage).toHaveBeenCalledWith([error_message]);
     });
 
     it('should set an error message for an empty phone number', async () => {
@@ -29,7 +31,7 @@ describe('validatePhoneNumber', () => {
         await act(async () => {
             validatePhoneNumber(invalidPhoneNumber, setErrorMessage);
         });
-        expect(setErrorMessage).toHaveBeenCalledWith(['Please enter a valid phone number.']);
+        expect(setErrorMessage).toHaveBeenCalledWith([error_message]);
     });
 
     it('should set an error message for an phone number more than 36 characters', async () => {
@@ -37,7 +39,7 @@ describe('validatePhoneNumber', () => {
         await act(async () => {
             validatePhoneNumber(invalidPhoneNumber, setErrorMessage);
         });
-        expect(setErrorMessage).toHaveBeenCalledWith(['Please enter a valid phone number.']);
+        expect(setErrorMessage).toHaveBeenCalledWith([error_message]);
     });
 
     it('should set an error message for an phone number less than 8 characters', async () => {
@@ -45,7 +47,7 @@ describe('validatePhoneNumber', () => {
         await act(async () => {
             validatePhoneNumber(invalidPhoneNumber, setErrorMessage);
         });
-        expect(setErrorMessage).toHaveBeenCalledWith(['Please enter a valid phone number.']);
+        expect(setErrorMessage).toHaveBeenCalledWith([error_message]);
     });
 
     it('should set an error message for phone number without including + sign', async () => {
@@ -53,6 +55,6 @@ describe('validatePhoneNumber', () => {
         await act(async () => {
             validatePhoneNumber(invalidPhoneNumber, setErrorMessage);
         });
-        expect(setErrorMessage).toHaveBeenCalledWith(['Please enter a valid phone number.']);
+        expect(setErrorMessage).toHaveBeenCalledWith([error_message]);
     });
 });

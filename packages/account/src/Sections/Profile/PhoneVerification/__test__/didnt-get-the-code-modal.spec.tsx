@@ -41,24 +41,14 @@ describe('DidntGetTheCodeModal', () => {
 
     it('should render DidntGetTheCodeModal', () => {
         renderComponent(VERIFICATION_SERVICES.SMS);
-        expect(screen.getByText(/Get a new code/)).toBeInTheDocument();
+        expect(screen.getByText(/Didn't receive a code/)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: resend_code_text })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Send code via WhatsApp/ })).toBeInTheDocument();
-        expect(screen.getByText(/or/)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /Change phone number/ })).toBeInTheDocument();
     });
 
     it('should show Send code via SMS if phone_verification_type is whatsapp', () => {
         renderComponent(VERIFICATION_SERVICES.WHATSAPP);
         expect(screen.getByRole('button', { name: /Send code via SMS/ })).toBeInTheDocument();
-    });
-
-    it('should render setOtpVerification and setShouldShowDidintGetTheCodeModal when Change phone number is clicked, should not render mockSetTimer', () => {
-        renderComponent(VERIFICATION_SERVICES.SMS);
-        const change_phone_number_button = screen.getByRole('button', { name: /Change phone number/ });
-        userEvent.click(change_phone_number_button);
-        expect(mockSetShouldShowDidntGetTheCodeModal).toHaveBeenCalledTimes(1);
-        expect(mockSetOtpVerification).toHaveBeenCalledTimes(1);
     });
 
     it('should render setShouldShowDidintGetTheCodeModal when Resend code is clicked', () => {

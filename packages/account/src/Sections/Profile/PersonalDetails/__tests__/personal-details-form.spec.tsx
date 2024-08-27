@@ -73,11 +73,7 @@ describe('<PersonalDetailsForm />', () => {
         renderComponent();
         expect(screen.queryByText(/Loading/)).not.toBeInTheDocument();
         await waitFor(() => {
-            expect(
-                screen.getByText(
-                    /Please make sure your information is correct or it may affect your trading experience./i
-                )
-            ).toBeInTheDocument();
+            expect(screen.getByText(/Ensure your information is correct./i)).toBeInTheDocument();
         });
     });
 
@@ -185,14 +181,14 @@ describe('<PersonalDetailsForm />', () => {
         ).toBeInTheDocument();
     });
 
-    it('should update user profile after clicking on submit', () => {
+    it('should update user profile after clicking on Save changes', () => {
         renderComponent();
         const first_name = screen.getByTestId('dt_first_name') as HTMLInputElement;
         expect(first_name.value).toBe('John');
         userEvent.clear(first_name);
         userEvent.type(first_name, 'James');
-        const submit_button = screen.getByRole('button', { name: /Submit/ });
-        userEvent.click(submit_button);
+        const save_changes_button = screen.getByRole('button', { name: /Save changes/ });
+        userEvent.click(save_changes_button);
         expect(first_name.value).toBe('James');
     });
 

@@ -11,6 +11,7 @@ import {
     HintBox,
     Input,
     Loading,
+    OpenLiveChatLink,
     SelectNative,
     Text,
 } from '@deriv/components';
@@ -31,11 +32,20 @@ import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, ma
 import FormSelectField from 'Components/forms/form-select-field';
 import { VerifyButton } from './verify-button';
 import { useInvalidateQuery } from '@deriv/api';
-import { useStatesList, useResidenceList, useGrowthbookGetFeatureValue } from '@deriv/hooks';
+import {
+    useStatesList,
+    useResidenceList,
+    useGrowthbookGetFeatureValue,
+    usePhoneNumberVerificationSetTimer,
+} from '@deriv/hooks';
 
 type TRestState = {
     show_form: boolean;
     api_error?: string;
+};
+
+type THintMessage = {
+    is_phone_number_editted: boolean;
 };
 
 const PersonalDetailsForm = observer(() => {
@@ -43,12 +53,12 @@ const PersonalDetailsForm = observer(() => {
     const [is_loading, setIsLoading] = useState(false);
     const [is_btn_loading, setIsBtnLoading] = useState(false);
     const [is_submit_success, setIsSubmitSuccess] = useState(false);
-    const [is_phone_field_disable, setIsPhoneFieldDisable] = useState(false);
     const invalidate = useInvalidateQuery();
     const history = useHistory();
     const [isPhoneNumberVerificationEnabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
+    const { is_request_button_disabled, next_email_otp_request_timer } = usePhoneNumberVerificationSetTimer();
 
     const {
         client,
@@ -108,6 +118,29 @@ const PersonalDetailsForm = observer(() => {
             init();
         }
     }, [invalidate, is_language_changing]);
+
+    const hintMessage = ({ is_phone_number_editted }: THintMessage) => {
+        if (isPhoneNumberVerificationEnabled) {
+            if (account_settings?.phone_number_verification?.verified) {
+                return (
+                    <Localize
+                        i18n_default_text='To change your verified phone number, contact us via <0></0>.'
+                        components={[
+                            <OpenLiveChatLink
+                                text_size='xxs'
+                                key={0}
+                                className='account-form__fieldset--phone-verification-livechat-link'
+                            />,
+                        ]}
+                    />
+                );
+            } else if (is_phone_number_editted) {
+                return <Localize i18n_default_text='Save changes to enable verification.' />;
+            }
+        } else {
+            return null;
+        }
+    };
 
     const onSubmit = async (values: GetSettings, { setStatus, setSubmitting }: FormikHelpers<GetSettings>) => {
         setStatus({ msg: '' });
@@ -366,12 +399,11 @@ const PersonalDetailsForm = observer(() => {
                                             name='phone'
                                             id={'phone'}
                                             label={localize('Phone number*')}
-                                            className={clsx({
-                                                'account-form__fieldset--phone':
-                                                    account_settings?.phone_number_verification?.verified,
-                                            })}
                                             //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
                                             value={values.phone}
+                                            hint={hintMessage({
+                                                is_phone_number_editted: account_settings.phone !== values.phone,
+                                            })}
                                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                                 handleChange(e);
                                                 setStatus('');
@@ -379,14 +411,24 @@ const PersonalDetailsForm = observer(() => {
                                             onBlur={handleBlur}
                                             required
                                             error={errors.phone}
-                                            disabled={isFieldDisabled('phone') || is_phone_field_disable}
+                                            disabled={
+                                                isFieldDisabled('phone') ||
+                                                is_request_button_disabled ||
+                                                !!next_email_otp_request_timer
+                                            }
                                             data-testid='dt_phone'
                                         />
-                                        {isPhoneNumberVerificationEnabled &&
-                                            account_settings.phone &&
-                                            account_settings.phone === values.phone && (
-                                                <VerifyButton setIsPhoneFieldDisable={setIsPhoneFieldDisable} />
-                                            )}
+                                        {isPhoneNumberVerificationEnabled && (
+                                            <VerifyButton
+                                                is_verify_button_disabled={
+                                                    isFieldDisabled('phone') ||
+                                                    is_request_button_disabled ||
+                                                    account_settings.phone !== values.phone ||
+                                                    !account_settings.phone
+                                                }
+                                                next_email_otp_request_timer={next_email_otp_request_timer}
+                                            />
+                                        )}
                                     </fieldset>
                                 )}
                                 <Fragment>
@@ -668,9 +710,7 @@ const PersonalDetailsForm = observer(() => {
                                         color='prominent'
                                         align={isDesktop ? 'right' : 'center'}
                                     >
-                                        {localize(
-                                            'Please make sure your information is correct or it may affect your trading experience.'
-                                        )}
+                                        <Localize i18n_default_text='Ensure your information is correct.' />
                                     </Text>
                                 )}
                                 <Button
@@ -684,7 +724,7 @@ const PersonalDetailsForm = observer(() => {
                                     has_effect
                                     is_loading={is_btn_loading}
                                     is_submit_success={is_submit_success}
-                                    text={localize('Submit')}
+                                    text={localize('Save changes')}
                                     large
                                     primary
                                 />

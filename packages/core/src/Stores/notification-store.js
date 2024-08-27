@@ -789,7 +789,7 @@ export default class NotificationStore extends BaseStore {
 
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
-        const { has_enabled_two_fa, setTwoFAChangedStatus, logout, email } = this.root_store.client;
+        const { has_enabled_two_fa, setTwoFAChangedStatus, logout } = this.root_store.client;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
 
         const platform_name_trader = getPlatformSettings('trader').name;
@@ -1103,15 +1103,15 @@ export default class NotificationStore extends BaseStore {
             },
             phone_number_verification: {
                 key: 'phone_number_verification',
-                header: localize('Verify your phone number'),
-                message: <Localize i18n_default_text='Keep your account safe. Verify your phone number now.' />,
+                header: localize('Complete verification'),
+                message: <Localize i18n_default_text='Secure your Deriv account by verifying your phone number.' />,
                 type: 'warning',
                 action: {
                     onClick: () => {
-                        WS.verifyEmail(email, 'phone_number_verification');
+                        this.root_store.ui.setIsScrollToVerifyButton(true);
                     },
-                    route: routes.phone_verification,
-                    text: localize('Get started'),
+                    route: routes.personal_details,
+                    text: localize('Verify now'),
                 },
                 should_show_again: true,
             },

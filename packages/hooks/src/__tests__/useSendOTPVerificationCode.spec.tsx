@@ -1,7 +1,9 @@
+import React from 'react';
 import { renderHook, act } from '@testing-library/react-hooks';
 import { useMutation } from '@deriv/api';
 import useSendOTPVerificationCode from '../useSendOTPVerificationCode';
 import useRequestPhoneNumberOTP from '../useRequestPhoneNumberOTP';
+import { mockStore, StoreProvider } from '@deriv/stores';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -19,6 +21,7 @@ type TMockResponse = {
 
 describe('useSendOTPVerificationCode', () => {
     const mockMutate = jest.fn();
+    const mock_store = mockStore({});
     const mock_response: TMockResponse = {
         data: null,
         mutate: mockMutate,
@@ -32,6 +35,10 @@ describe('useSendOTPVerificationCode', () => {
         is_email_verified: false,
     };
 
+    const wrapper = ({ children }: { children: JSX.Element }) => (
+        <StoreProvider store={mock_store}>{children}</StoreProvider>
+    );
+
     beforeEach(() => {
         (useMutation as jest.Mock).mockReturnValue(mock_response);
         (useRequestPhoneNumberOTP as jest.Mock).mockReturnValue(mock_request_phone_number_otp_response);
@@ -43,7 +50,7 @@ describe('useSendOTPVerificationCode', () => {
     });
 
     it('should return initial state correctly', () => {
-        const { result } = renderHook(() => useSendOTPVerificationCode());
+        const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
 
         expect(result.current.data).toBe(null);
         expect(result.current.phone_otp_error).toBe(undefined);
@@ -54,7 +61,7 @@ describe('useSendOTPVerificationCode', () => {
     it('should handle successful OTP submission', () => {
         mock_response.isSuccess = true;
 
-        const { result } = renderHook(() => useSendOTPVerificationCode());
+        const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
 
         act(() => {
             result.current.sendPhoneOTPVerification('123456');
@@ -65,51 +72,54 @@ describe('useSendOTPVerificationCode', () => {
         expect(result.current.is_phone_number_verified).toBe(true);
     });
 
-    it('should handle ExpiredCode for phone_otp_error', () => {
-        mock_response.error = { code: 'ExpiredCode', message: 'Code expired.' };
+    it('should handle PhoneCodeExpired for phone_otp_error', () => {
+        mock_response.error = { code: 'PhoneCodeExpired', message: 'Code expired.' };
 
-        const { result } = renderHook(() => useSendOTPVerificationCode());
+        const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
 
-        expect(result.current.phone_otp_error_message).toBe('Code expired. Please get a new one.');
+        expect(result.current.phone_otp_error_message).toBe('Code expired. Get a new one.');
     });
 
     it('should handle InvalidOTP for phone_otp_error', () => {
         mock_response.error = { code: 'InvalidOTP', message: 'Invalid code.' };
 
-        const { result } = renderHook(() => useSendOTPVerificationCode());
+        const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
 
-        expect(result.current.phone_otp_error_message).toBe('Invalid code. Please try again.');
+        expect(result.current.phone_otp_error_message).toBe('Invalid code. Try again.');
     });
 
     it('should handle NoAttemptsLeft for phone_otp_error', () => {
         mock_response.error = { code: 'NoAttemptsLeft', message: 'OTP limit reached.' };
 
-        const { result } = renderHook(() => useSendOTPVerificationCode());
+        const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
 
-        expect(result.current.phone_otp_error_message).toBe('Invalid code. OTP limit reached.');
+        expect(result.current.show_cool_down_period_modal).toBe(true);
     });
 
-    it('should handle ExpiredCode for email_otp_error', () => {
-        mock_request_phone_number_otp_response.email_otp_error = { code: 'ExpiredCode', message: 'ExpiredCode' };
+    it('should handle EmailCodeExpired for email_otp_error', () => {
+        mock_request_phone_number_otp_response.email_otp_error = {
+            code: 'EmailCodeExpired',
+            message: 'Code expired.',
+        };
 
-        const { result } = renderHook(() => useSendOTPVerificationCode());
+        const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
 
-        expect(result.current.phone_otp_error_message).toBe('Code expired.');
+        expect(result.current.phone_otp_error_message).toBe('Code expired. Get a new code.');
     });
 
-    it('should handle InvalidOTP for email_top_error', () => {
+    it('should handle InvalidToken for email_top_error', () => {
         mock_request_phone_number_otp_response.email_otp_error = { code: 'InvalidToken', message: 'InvalidToken' };
 
-        const { result } = renderHook(() => useSendOTPVerificationCode());
+        const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
 
-        expect(result.current.phone_otp_error_message).toBe('Invalid code. Press the link below to get a new code.');
+        expect(result.current.phone_otp_error_message).toBe('Invalid code. Try again or get a new code.');
     });
 
     it('should handle NoAttemptsLeft for email_top_error', () => {
         mock_request_phone_number_otp_response.email_otp_error = { code: 'NoAttemptsLeft', message: 'NoAttemptsLeft' };
 
-        const { result } = renderHook(() => useSendOTPVerificationCode());
+        const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
 
-        expect(result.current.phone_otp_error_message).toBe('Invalid code. OTP limit reached.');
+        expect(result.current.show_cool_down_period_modal).toBe(true);
     });
 });

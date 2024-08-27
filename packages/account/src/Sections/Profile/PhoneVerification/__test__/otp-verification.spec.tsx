@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react';
 import React from 'react';
+import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import OTPVerification from '../otp-verification';
 import { useSendOTPVerificationCode, useSettings } from '@deriv/hooks';
@@ -13,6 +13,7 @@ jest.mock('@deriv/hooks', () => ({
 
 jest.mock('../phone-number-verified-modal', () => jest.fn(() => <div>Phone Number Verified Modal</div>));
 jest.mock('../resend-code-timer', () => jest.fn(() => <div>Resend Code Timer</div>));
+jest.mock('../cool-down-period-modal', () => jest.fn(() => <div>Cooldown Period Modal</div>));
 
 describe('OTPVerification', () => {
     const store = mockStore({
@@ -52,13 +53,11 @@ describe('OTPVerification', () => {
 
     it('should render ConfirmYourEmail in OTP Verification', () => {
         renderComponent();
-        expect(screen.getByText(/Confirm it's you/)).toBeInTheDocument();
+        expect(screen.getByText(/Verify access/)).toBeInTheDocument();
         expect(screen.getByText(/We've sent a verification code to/)).toBeInTheDocument();
         expect(screen.getByText('johndoe@regentmarkets.com')).toBeInTheDocument();
-        expect(
-            screen.getByText(/Enter the code or click the link in the email to verify that the account belongs to you./)
-        ).toBeInTheDocument();
-        expect(screen.getByRole('textbox', { name: /OTP code/ })).toBeInTheDocument();
+        expect(screen.getByText(/Enter the code below so we know the request has come from you./)).toBeInTheDocument();
+        expect(screen.getByRole('textbox', { name: /Verification code/ })).toBeInTheDocument();
         expect(screen.getByText(/Resend Code Timer/)).toBeInTheDocument();
     });
 
@@ -66,7 +65,8 @@ describe('OTPVerification', () => {
         store.ui.should_show_phone_number_otp = true;
         renderComponent();
         expect(screen.getByText(/Verify your number/)).toBeInTheDocument();
-        expect(screen.getByText(/Enter the 6-digit code sent to you via SMS at :/)).toBeInTheDocument();
+        expect(screen.getByText(/Enter the 6-digit code sent to you via SMS at ./)).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Change/ })).toBeInTheDocument();
     });
 
     it('should render whatsapp when phone_verification_type is whatsapp', () => {
@@ -181,5 +181,14 @@ describe('OTPVerification', () => {
         userEvent.click(verify_button);
         expect(store.client.setVerificationCode).toBeCalled();
         expect(mockSetOtpVerification).toBeCalledWith({ phone_verification_type: '', show_otp_verification: false });
+    });
+
+    it('should display cooldown period modal when show_cool_down_period_modal is true', () => {
+        store.ui.should_show_phone_number_otp = false;
+        (useSendOTPVerificationCode as jest.Mock).mockReturnValue({
+            show_cool_down_period_modal: true,
+        });
+        renderComponent();
+        expect(screen.getByText(/Cooldown Period Modal/)).toBeInTheDocument();
     });
 });

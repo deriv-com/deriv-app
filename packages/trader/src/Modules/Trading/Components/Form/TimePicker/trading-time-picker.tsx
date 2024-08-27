@@ -28,14 +28,11 @@ const TradingTimePicker = observer(() => {
 
     React.useEffect(() => {
         if (expiry_time !== selected_time && !is_market_closed) {
-            console.log('in useEffect', expiry_time);
             onChange({
                 target: { name: 'expiry_time', value: selected_time },
             });
         }
     }, [expiry_time, selected_time, onChange, is_market_closed]);
-
-    console.log(expiry_time);
 
     return (
         <TimePicker

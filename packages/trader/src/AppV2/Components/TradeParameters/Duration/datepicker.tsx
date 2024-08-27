@@ -2,7 +2,8 @@ import { ActionSheet, DatePicker, Text } from '@deriv-com/quill-ui';
 import { LabelPairedCalendarLgBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import React, { useState } from 'react';
-const options = {
+
+const options: Intl.DateTimeFormatOptions = {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
@@ -47,9 +48,10 @@ const DurationEndTimePicker = ({
                         <DatePicker
                             minDate={new Date()}
                             onChange={date => {
-                                // console.log(date);
-                                setExpiryDate(date);
-                                setOpenDatePicker(false);
+                                if (date && date instanceof Date) {
+                                    setExpiryDate(date);
+                                    setOpenDatePicker(false);
+                                }
                             }}
                             wrapperClassName='duration-container__date-picker__sheet'
                         />

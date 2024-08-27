@@ -12,7 +12,7 @@ type TDurationProps = {
 };
 
 const Duration = observer(({ is_minimized }: TDurationProps) => {
-    const { duration, duration_unit, expiry_time } = useTraderStore();
+    const { duration, duration_unit, expiry_time, expiry_type } = useTraderStore();
     const { name_plural, name } = getUnitMap()[duration_unit] ?? {};
     const duration_unit_text = name_plural ?? name;
     const [selected_hour, setSelectedHour] = useState<number[]>([]);
@@ -26,10 +26,15 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
         }
     }, [duration, duration_unit]);
 
-    const onClose = () => {
-        setOpen(false);
+    const getInputValues = () => {
+        if (expiry_type == 'duration') {
+            if (selected_hour.length > 0) {
+                return `${selected_hour[0]} ${localize('hours')} ${selected_hour[1]} ${localize('minutes')} `;
+            }
+            return `${duration} ${duration_unit_text}`;
+        }
+        return `${localize('Ends at')} ${expiry_time} GMT`;
     };
-    console.log('expiry_time', expiry_time);
 
     return (
         <>
@@ -37,15 +42,18 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
                 variant='fill'
                 readOnly
                 label={<Localize i18n_default_text='Duration' key={`duration${is_minimized ? '-minimized' : ''}`} />}
-                value={`${
-                    selected_hour.length > 0
-                        ? `${selected_hour[0]} ${localize('hours')} ${selected_hour[1]} ${localize('minutes')} `
-                        : `${duration} ${duration_unit_text}`
-                }`}
+                value={getInputValues()}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 onClick={() => setOpen(true)}
             />
-            <ActionSheet.Root isOpen={is_open} onClose={onClose} position='left' expandable={false}>
+            <ActionSheet.Root
+                isOpen={is_open}
+                onClose={() => {
+                    setOpen(false);
+                }}
+                position='left'
+                expandable={false}
+            >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <DurationActionSheetContainer selected_hour={selected_hour} setSelectedHour={setSelectedHour} />
                 </ActionSheet.Portal>

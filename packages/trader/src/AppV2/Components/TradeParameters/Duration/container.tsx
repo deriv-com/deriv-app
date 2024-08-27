@@ -1,72 +1,49 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import {
-    ActionSheet,
-    Chip,
-    DatePicker,
-    Text,
-    TimeWheelPickerContainer,
-    WheelPickerContainer,
-} from '@deriv-com/quill-ui';
+import { ActionSheet, CaptionText, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { getOptionPerUnit } from './util';
 import DurationEndTimePicker from './datepicker';
-import { observer } from '@deriv/stores';
-
-const chips_options = [
-    {
-        name: <Localize i18n_default_text='Ticks' />,
-        value: 't',
-    },
-    {
-        name: <Localize i18n_default_text='Seconds' />,
-        value: 's',
-    },
-    {
-        name: <Localize i18n_default_text='Minutes' />,
-        value: 'm',
-    },
-    {
-        name: <Localize i18n_default_text='Hours' />,
-        value: 'h',
-    },
-    {
-        name: <Localize i18n_default_text='Days' />,
-        value: 'd',
-    },
-    {
-        name: <Localize i18n_default_text='End time' />,
-        value: 'et',
-    },
-];
-
-function convertToLocalTime(timeString: string) {
-    const today = new Date();
-    const [hours, minutes] = timeString.split(':').map(Number);
-    today.setHours(hours);
-    today.setMinutes(minutes);
-    today.setSeconds(0);
-
-    const localHours = today.getHours().toString().padStart(2, '0');
-    const localMinutes = today.getMinutes().toString().padStart(2, '0');
-
-    return `${localHours}:${localMinutes}`;
-}
-
-function get24HourTime() {
-    const now = new Date();
-    const hours = now.getHours();
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
-}
+import { observer, useStore } from '@deriv/stores';
+import { setTime, toMoment } from '@deriv/shared';
+import { getSelectedTime } from 'Stores/Modules/Trading/Helpers/end-time';
+import DurationChips from './chips';
+import DurationWheelPicker from './wheelpicker';
 
 const DurationActionSheetContainer = observer(
     ({ selected_hour, setSelectedHour }: { selected_hour: number[]; setSelectedHour: (arg: number[]) => void }) => {
-        const { duration, duration_unit, onChangeMultiple, onChange, expiry_time, setExpiryTime } = useTraderStore();
+        const {
+            duration,
+            duration_unit,
+            duration_units_list,
+            onChangeMultiple,
+            expiry_date,
+            market_close_times,
+            market_open_times,
+        } = useTraderStore();
+
         const [unit, setUnit] = useState(duration_unit);
         const [selected_time, setSelectedTime] = useState([duration]);
-        const [expiry_date, setExpiryDate] = useState<Date>(new Date());
+        const [expiry_date_data, setExpiryDate] = useState<Date>(new Date());
         const [end_time, setEndTime] = useState<string>('');
+
+        const { common } = useStore();
+        const { server_time } = common;
+        const moment_expiry_date = toMoment(expiry_date);
+        const market_open_datetimes = market_open_times.map(open_time =>
+            setTime(moment_expiry_date.clone(), open_time)
+        );
+        const expiry_datetime = setTime(moment_expiry_date.clone(), end_time);
+        const market_close_datetimes = market_close_times.map(close_time =>
+            setTime(moment_expiry_date.clone(), close_time)
+        );
+        const server_datetime = toMoment(server_time);
+
+        const time = getSelectedTime(
+            server_datetime.clone(),
+            expiry_datetime,
+            market_open_datetimes,
+            market_close_datetimes
+        );
 
         const onChangeUnit = (value: string) => {
             if (unit !== 'h') {
@@ -74,12 +51,11 @@ const DurationActionSheetContainer = observer(
             }
             setUnit(value);
         };
-        const options = useMemo(() => getOptionPerUnit(unit), [unit]);
 
         const handleSelectExpiryDate = (date: Date) => {
             setExpiryDate(date);
             const current_date = new Date();
-            const timeDifference = date - current_date;
+            const timeDifference = +date - +current_date;
             const dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
             setSelectedTime([dayDifference]);
         };
@@ -108,8 +84,6 @@ const DurationActionSheetContainer = observer(
             }
         };
 
-        console.log('Whole Store ::::', expiry_time);
-
         return (
             <div className='duration-container'>
                 <div className='duration-container__header'>
@@ -117,56 +91,23 @@ const DurationActionSheetContainer = observer(
                         <Localize i18n_default_text='Duration' />
                     </Text>
                 </div>
-                <div className='duration-container__chips'>
-                    {chips_options.map((item, index) => (
-                        <Chip.Selectable
-                            key={index}
-                            selected={unit == item.value}
-                            className='duration-container__chips__chip'
-                            onClick={() => onChangeUnit(item.value)}
-                        >
-                            <Text size='sm'>{item.name}</Text>
-                        </Chip.Selectable>
-                    ))}
-                </div>
-                <div className='duration-container__wheel-picker'>
-                    {unit !== 'et' ? (
-                        <WheelPickerContainer
-                            data={unit == 'h' ? options : [options]}
-                            defaultValue={[String(selected_time)]}
-                            inputValues={unit == 'h' ? selected_hour : selected_time}
-                            setInputValues={setWheelPickerValue}
-                        />
-                    ) : (
-                        <TimeWheelPickerContainer
-                            is12Hour={false}
-                            startTimeIn24Format={get24HourTime()}
-                            minutesInterval={5}
-                            setSelectedValue={val => setEndTime(val as string)}
-                            containerHeight='300'
-                            hoursInterval={1}
-                        />
-                    )}
-                </div>
+                <DurationChips duration_units_list={duration_units_list} onChangeUnit={onChangeUnit} unit={unit} />
+                <DurationWheelPicker
+                    unit={unit}
+                    setEndTime={setEndTime}
+                    setWheelPickerValue={setWheelPickerValue}
+                    selected_hour={selected_hour}
+                    selected_time={selected_time}
+                />
                 {unit == 'd' && (
-                    <DurationEndTimePicker setExpiryDate={handleSelectExpiryDate} expiry_date={expiry_date} />
+                    <DurationEndTimePicker setExpiryDate={handleSelectExpiryDate} expiry_date={expiry_date_data} />
                 )}
                 {unit == 'et' && (
-                    <div
-                        style={{ textAlign: 'center' }}
-                        onClick={() => {
-                            const time = convertToLocalTime(end_time);
-                            console.log('time', time);
-                            onChangeMultiple({
-                                expiry_time: time,
-                                expiry_type: 'endtime',
-                            });
-                        }}
-                    >
-                        <Text>
+                    <div style={{ textAlign: 'center' }}>
+                        <CaptionText>
                             <Localize i18n_default_text='Current time' />
-                        </Text>
-                        <Text>{convertToLocalTime(end_time)}</Text>
+                        </CaptionText>
+                        <Text>{`${time} GMT`}</Text>
                     </div>
                 )}
                 <ActionSheet.Footer
@@ -179,23 +120,22 @@ const DurationActionSheetContainer = observer(
                                 onChangeMultiple({
                                     duration_unit: 'm',
                                     duration: Number(minutes),
+                                    expiry_time: null,
+                                    expiry_type: 'duration',
                                 });
                             } else if (unit == 'et') {
                                 setSelectedHour([]);
-                                if (convertToLocalTime(end_time)) {
-                                    // console.log(convertToLocalTime(end_time));
-                                    const time = convertToLocalTime(end_time);
-                                    onChangeMultiple({
-                                        expiry_time: time,
-                                        expiry_type: 'endtime',
-                                    });
-                                    // onChange({ target: { name: 'expiry_time', value: time } });
-                                }
+                                onChangeMultiple({
+                                    expiry_time: end_time,
+                                    expiry_type: 'endtime',
+                                });
                             } else {
                                 setSelectedHour([]);
                                 onChangeMultiple({
                                     duration_unit: unit,
                                     duration: Number(selected_time),
+                                    expiry_time: null,
+                                    expiry_type: 'duration',
                                 });
                             }
                         },

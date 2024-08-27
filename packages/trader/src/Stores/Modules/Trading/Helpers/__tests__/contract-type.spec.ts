@@ -299,10 +299,10 @@ describe('ContractType.getContractValues', () => {
             has_cancellation: false,
         });
     });
-    it('should use strike value from wheel_picker_initial_values for Vanillas contract as barrier_1 if isDTraderV2 === true', async () => {
+    it('should use strike value from v2_params_initial_values for Vanillas contract as barrier_1 if isDTraderV2 === true', async () => {
         const symbol = '1HZ100V';
         trade_store.contract_type = 'vanillalongcall';
-        trade_store.wheel_picker_initial_values = { strike: '+1.80' };
+        trade_store.v2_params_initial_values = { strike: '+1.80' };
         await ContractType.buildContractTypesConfig(symbol);
 
         const result = ContractType.getContractValues(trade_store);

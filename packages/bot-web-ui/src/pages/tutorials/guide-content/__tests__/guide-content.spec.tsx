@@ -1,11 +1,11 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { DBOT_TABS } from 'Constants/bot-contents';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import GuideContent from '..';
-import userEvent from '@testing-library/user-event';
-import { DBOT_TABS } from 'Constants/bot-contents';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 
@@ -22,7 +22,7 @@ const mock_guide_tab_content = [
         id: 2,
         type: 'Tour',
         subtype: 'BotBuilder',
-        content: 'Let’s build a bot!',
+        content: "Let's build a bot!",
         src: 'bot-builder-tour.png',
         search_id: 'ugc-1',
     },
@@ -53,7 +53,7 @@ describe('<GuideContent />', () => {
     });
     const mock_DBot_store = mockDBotStore(mock_store, mock_ws);
 
-    beforeAll(() => {
+    beforeEach(() => {
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
                 <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
@@ -70,7 +70,7 @@ describe('<GuideContent />', () => {
         expect(screen.getByText('Videos on Deriv Bot')).toBeInTheDocument();
     });
 
-    it('should not define the active tour with function the setActiveTour() when it is the desktop version.', async () => {
+    it('should render with active tour as empty string in desktop.', async () => {
         mock_store.ui.is_desktop = true;
         render(<GuideContent {...mocked_props} />, {
             wrapper,
@@ -96,7 +96,22 @@ describe('<GuideContent />', () => {
         });
     });
 
-    it('should open the tab dashboard upon clicking tutorial card button.', async () => {
+    it('should open dashboard tab upon clicking tutorial card button in desktop.', async () => {
+        mock_store.ui.is_desktop = true;
+        render(<GuideContent {...mocked_props} />, {
+            wrapper,
+        });
+
+        const tutorial_card_button = screen.getAllByTestId('tutorials-wrap--tour')[0];
+        userEvent.click(tutorial_card_button);
+
+        await waitFor(() => {
+            expect(mock_DBot_store?.dashboard.setActiveTab(DBOT_TABS.DASHBOARD));
+            expect(mock_DBot_store?.dashboard.active_tour).not.toBe('onboarding');
+        });
+    });
+
+    it('should open dashboard tab and active_tour to onboarding upon clicking tutorial card button in mobile.', async () => {
         mock_store.ui.is_desktop = false;
         render(<GuideContent {...mocked_props} />, {
             wrapper,
@@ -107,6 +122,7 @@ describe('<GuideContent />', () => {
 
         await waitFor(() => {
             expect(mock_DBot_store?.dashboard.setActiveTab(DBOT_TABS.DASHBOARD));
+            expect(mock_DBot_store?.dashboard.active_tour).toBe('onboarding');
         });
     });
 
@@ -126,7 +142,26 @@ describe('<GuideContent />', () => {
         });
     });
 
-    it('should set active tab of bot builder when subtype is a "BotBuilder" and trigger tour button was clicked.', async () => {
+    it('should not trigger the keyDown event upon clicking "Backspace"', async () => {
+        const mockEventListener = jest.fn();
+        render(<GuideContent {...mocked_props} />, {
+            wrapper,
+        });
+
+        document.addEventListener('keydown', mockEventListener);
+        const button_cancel = screen.getAllByTestId('tutorials-wrap--tour')[1];
+        // use fireEvent since userEvent doesn't handle the case: userEvent.type(button_cancel, '{Enter}');
+        fireEvent.keyDown(button_cancel, { key: 'Backspace', code: 'Backspace', keyCode: 13 });
+
+        await waitFor(() => {
+            expect(mockEventListener).not.toHaveBeenCalledWith(
+                expect.objectContaining({ key: 'Enter', code: 'Enter' })
+            );
+        });
+    });
+
+    it('should open bot builder tab when subtype is a "BotBuilder" upon clickng trigger tour button.', async () => {
+        mock_store.ui.is_desktop = true;
         render(<GuideContent {...mocked_props} />, {
             wrapper,
         });
@@ -134,6 +169,21 @@ describe('<GuideContent />', () => {
         userEvent.click(button_trigger_tour);
         await waitFor(() => {
             expect(mock_DBot_store?.dashboard.setActiveTab(DBOT_TABS.BOT_BUILDER));
+            expect(mock_DBot_store?.dashboard.active_tour).not.toBe('bot_builder');
+        });
+    });
+
+    it('should open bot builder when subtype is a "BotBuilder" and active_tour bot_builder upon clickng trigger tour button in mobile.', async () => {
+        mock_store.ui.is_desktop = false;
+        render(<GuideContent {...mocked_props} />, {
+            wrapper,
+        });
+        const button_trigger_tour = screen.getAllByTestId('tutorials-wrap--tour')[1];
+        userEvent.click(button_trigger_tour);
+        await waitFor(() => {
+            expect(mock_DBot_store?.dashboard.active_tour).toBe('bot_builder');
+            expect(mock_DBot_store.dashboard.is_tour_dialog_visible).toBeTruthy();
+            expect(mock_DBot_store.dashboard.show_mobile_tour_dialog).toBeTruthy();
         });
     });
 

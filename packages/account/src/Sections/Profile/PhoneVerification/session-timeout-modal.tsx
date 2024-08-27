@@ -23,10 +23,10 @@ const SessionTimeoutModal = () => {
             title='Session Expired'
             disableCloseOnOverlay
         >
-            <Modal.Header title={<Localize i18n_default_text='Session Expired' />} />
+            <Modal.Header title={<Localize i18n_default_text='Session expired' />} />
             <Modal.Body>
                 <Text>
-                    <Localize i18n_default_text='Your phone verification is incomplete. The process will now restart.' />
+                    <Localize i18n_default_text='Restart your phone number verification.' />
                 </Text>
             </Modal.Body>
         </Modal>

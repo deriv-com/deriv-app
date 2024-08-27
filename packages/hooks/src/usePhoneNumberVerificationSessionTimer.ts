@@ -15,7 +15,9 @@ const usePhoneNumberVerificationSessionTimer = () => {
             if (response.error) return;
 
             if (response.time && phone_number_verification?.session_timestamp) {
+                // request_in_miliseconds is to convert session_timestamp from get_settings * it with 1000 to make it into miliseconds and convert the time using dayjs package
                 const request_in_milliseconds = dayjs(phone_number_verification?.session_timestamp * 1000);
+                // next_request is to compare request_in_miliseconds with server's response time
                 const next_request = Math.round(request_in_milliseconds.diff(response.time * 1000) / 1000);
 
                 if (next_request > 0) {

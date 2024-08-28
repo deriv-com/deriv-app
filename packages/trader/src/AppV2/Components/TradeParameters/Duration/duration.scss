@@ -21,18 +21,18 @@
             width: 100%;
             text-align: center;
             p {
-                margin-left: 26px;
+                margin-left: var(--core-spacing-1300);
             }
         }
         &__icon {
-            width: 32px;
-            height: 32px;
-            border: 1px solid var(--text-general);
-            border-radius: 12px;
+            width: var(--core-spacing-1600);
+            height: var(--core-spacing-1600);
+            border: var(--core-spacing-75) solid var(--text-general);
+            border-radius: var(--core-spacing-600);
         }
 
         &__sheet {
-            font-size: 16px;
+            font-size: var(--core-spacing-800);
         }
     }
 }

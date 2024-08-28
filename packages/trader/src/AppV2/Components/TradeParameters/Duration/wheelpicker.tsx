@@ -30,13 +30,12 @@ const DurationWheelPicker = ({
     toggle_picker: boolean;
 }) => {
     const options = React.useMemo(() => getOptionPerUnit(unit), [unit]);
-
     return (
         <>
             {unit !== 'et' ? (
                 <WheelPickerContainer
                     key={`${unit}-${toggle_picker}`}
-                    data={unit == 'h' ? options : [options]}
+                    data={options}
                     defaultValue={[String(selected_time)]}
                     containerHeight={unit == 'd' ? '224px' : '268px'}
                     inputValues={unit == 'h' ? selected_hour : selected_time}

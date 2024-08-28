@@ -1,4 +1,4 @@
-export const getOptionPerUnit = (unit: string) => {
+export const getOptionPerUnit = (unit: string): { value: number; label: string }[][] => {
     let start = 0;
     let end = 0;
     let label = '';
@@ -34,11 +34,11 @@ export const getOptionPerUnit = (unit: string) => {
         case 'h': {
             const hourOptions = generateOptions(1, 23, 'h');
             const minuteOptions = generateOptions(1, 59, 'min');
-            return [hourOptions, minuteOptions];
+            return [hourOptions, minuteOptions]; // Return an array of arrays
         }
         default:
-            return [];
+            return [[]];
     }
 
-    return generateOptions(start, end, label);
+    return [generateOptions(start, end, label)];
 };

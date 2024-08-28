@@ -451,6 +451,12 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
 
+            .dc-form-submit-error-message {
+                &__phone-number-taken {
+                    color: $color-red-1;
+                }
+            }
+
             @include tablet-screen {
                 .dc-form-submit-error-message {
                     width: 100%;

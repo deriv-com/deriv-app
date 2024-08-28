@@ -143,13 +143,13 @@ const PersonalDetailsForm = observer(() => {
     };
 
     const onSubmit = async (values: GetSettings, { setStatus, setSubmitting }: FormikHelpers<GetSettings>) => {
-        setStatus({ msg: '' });
+        setStatus({ msg: '', code: '' });
         const request = makeSettingsRequest({ ...values }, residence_list, states_list, is_virtual);
         setIsBtnLoading(true);
         const data = await WS.authorized.setSettings(request);
 
         if (data.error) {
-            setStatus({ msg: data.error.message });
+            setStatus({ msg: data.error.message, code: data.error.code });
             setIsBtnLoading(false);
             setSubmitting(false);
         } else {
@@ -702,7 +702,9 @@ const PersonalDetailsForm = observer(() => {
                                 </Fragment>
                             </FormBody>
                             <FormFooter>
-                                {status?.msg && <FormSubmitErrorMessage message={status?.msg} />}
+                                {status?.msg && (
+                                    <FormSubmitErrorMessage message={status?.msg} error_code={status?.code} />
+                                )}
                                 {!is_virtual && !(isSubmitting || is_submit_success || status?.msg) && (
                                     <Text
                                         className='account-form__footer-note'

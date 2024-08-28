@@ -1,7 +1,7 @@
 import React from 'react';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 
-import { isEmptyObject, isMobile, routes, toMoment } from '@deriv/shared';
+import { isEmptyObject, routes, toMoment } from '@deriv/shared';
 
 import { Localize, localize } from 'Components/i18next';
 import { api_error_codes } from 'Constants/api-error-codes';
@@ -47,6 +47,7 @@ export default class GeneralStore extends BaseStore {
     is_p2p_user = null;
     is_restricted = false;
     is_schedule_available = true;
+    list_item_limit = 50;
     nickname = null;
     nickname_error = '';
     order_table_type = order_list.ACTIVE;
@@ -63,7 +64,6 @@ export default class GeneralStore extends BaseStore {
     user_blocked_count = 0;
     user_blocked_until = null;
 
-    list_item_limit = isMobile() ? 10 : 50;
     path = {
         buy_sell: 0,
         orders: 1,
@@ -114,6 +114,7 @@ export default class GeneralStore extends BaseStore {
             is_p2p_blocked_for_pa: observable,
             is_restricted: observable,
             is_schedule_available: observable,
+            list_item_limit: observable,
             nickname: observable,
             nickname_error: observable,
             order_table_type: observable,
@@ -169,6 +170,7 @@ export default class GeneralStore extends BaseStore {
             setIsP2PUser: action.bound,
             setIsRestricted: action.bound,
             setIsScheduleAvailable: action.bound,
+            setListItemLimit: action.bound,
             setNickname: action.bound,
             setNicknameError: action.bound,
             setOrderTableType: action.bound,
@@ -522,6 +524,8 @@ export default class GeneralStore extends BaseStore {
                 ),
             };
         });
+
+        this.setIsLoading(false);
     }
 
     onUnmount() {
@@ -672,6 +676,10 @@ export default class GeneralStore extends BaseStore {
 
     setIsScheduleAvailable(is_schedule_available) {
         this.is_schedule_available = is_schedule_available;
+    }
+    
+    setListItemLimit(list_item_limit) {
+        this.list_item_limit = list_item_limit;
     }
 
     setNickname(nickname) {

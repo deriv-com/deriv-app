@@ -1,5 +1,5 @@
 import React, { ComponentProps } from 'react';
-import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../helpers/urls';
+import { getStaticUrl, getUrlSmartTrader } from '../../helpers/urls';
 import { WalletMarketIcon } from '../WalletMarketIcon';
 
 const LinkTitle: React.FC<{ platform: ComponentProps<typeof WalletMarketIcon>['icon'] }> = ({ platform }) => {
@@ -14,9 +14,6 @@ const LinkTitle: React.FC<{ platform: ComponentProps<typeof WalletMarketIcon>['i
                 break;
             case 'smarttrader':
                 window.open(getUrlSmartTrader());
-                break;
-            case 'binarybot':
-                window.open(getUrlBinaryBot());
                 break;
             case 'derivgo':
                 window.open(getStaticUrl('/deriv-go'));

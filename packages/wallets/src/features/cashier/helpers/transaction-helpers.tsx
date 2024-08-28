@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSubscription } from '@deriv/api-v2';
-import { Localize } from '@deriv-com/translations';
+import { Localize, localize } from '@deriv-com/translations';
 
 type TTransaction = NonNullable<
     NonNullable<ReturnType<typeof useSubscription<'cashier_payments'>>['data']>['cashier_payments']
@@ -14,7 +14,7 @@ type TWithdrawalStatus = Exclude<TStatus, TDepositStatus>;
 
 // Since BE sends the `status_code` for both `deposit` and `withdrawal` in the same field,
 // Here we modify the BE type to make `status_code` type more specific to the `transaction_type` field.
-type TModifiedTransaction = Omit<TTransaction, 'status_code' | 'transaction_type'> &
+export type TModifiedTransaction = Omit<TTransaction, 'status_code' | 'transaction_type'> &
     (
         | { statusCode: TDepositStatus; transactionType: 'deposit' }
         | { statusCode: TWithdrawalStatus; transactionType: 'withdrawal' }
@@ -101,10 +101,10 @@ export const getFormattedConfirmations = (
 ) => {
     switch (statusCode) {
         case 'CONFIRMED':
-            return <Localize i18n_default_text='Confirmed' />;
+            return localize('Confirmed');
         case 'ERROR':
-            return <Localize i18n_default_text='NA' />;
+            return localize('NA');
         default:
-            return confirmations?.toString() ?? <Localize i18n_default_text='Pending' />;
+            return confirmations?.toString() ?? localize('Pending');
     }
 };

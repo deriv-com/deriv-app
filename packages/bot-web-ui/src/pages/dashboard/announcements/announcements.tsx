@@ -153,7 +153,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                     isOpen={is_open_announce_list}
                     setIsOpen={setIsOpenAnnounceList}
                     notifications={notifications}
-                    actionButtonClassName={action_button_class_name}
+                    excludedClickOutsideClass={action_button_class_name}
                 />
             </div>
             {selected_announcement?.announcement && (

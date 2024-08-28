@@ -90,7 +90,10 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
                                     {data?.currency} Wallet
                                 </Text>
                                 {!displayBalance ? (
-                                    <div className='wallets-skeleton wallets-cfd-success__balance-loader' />
+                                    <div
+                                        className='wallets-skeleton wallets-cfd-success__balance-loader'
+                                        data-testid='dt_wallets_cfd_success_skeleton_loader'
+                                    />
                                 ) : (
                                     <Text size='sm' weight='bold'>
                                         {displayBalance}

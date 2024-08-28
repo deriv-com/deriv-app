@@ -43,25 +43,25 @@ const OptionsAndMultipliersListing = () => {
                             {...account}
                             disabled={!activeLinkedToTradingAccount?.loginid}
                             key={`trading-account-card-${title}`}
-                            leading={<LinkTitle platform={key} />}
                             onClick={() => {
                                 account.isExternal ? window.open(redirect, '_blank') : history.push(redirect as TRoute);
                             }}
-                            trailing={
-                                activeLinkedToTradingAccount?.loginid ? (
-                                    <div className='wallets-options-and-multipliers-listing__icon'>
-                                        <LabelPairedChevronRightCaptionRegularIcon
-                                            data-testid='dt_label_paired_chevron'
-                                            width={16}
-                                        />
-                                    </div>
-                                ) : null
-                            }
                         >
-                            <div className='wallets-options-and-multipliers-listing__content__details'>
+                            <TradingAccountCard.Icon>
+                                <LinkTitle platform={key} />
+                            </TradingAccountCard.Icon>
+                            <TradingAccountCard.Content>
                                 <Text size='sm'>{title}</Text>
                                 <Text size='xs'>{description}</Text>
-                            </div>
+                            </TradingAccountCard.Content>
+                            {activeLinkedToTradingAccount?.loginid && (
+                                <TradingAccountCard.Button>
+                                    <LabelPairedChevronRightCaptionRegularIcon
+                                        data-testid='dt_label_paired_chevron'
+                                        width={16}
+                                    />
+                                </TradingAccountCard.Button>
+                            )}
                         </TradingAccountCard>
                     );
                 })}

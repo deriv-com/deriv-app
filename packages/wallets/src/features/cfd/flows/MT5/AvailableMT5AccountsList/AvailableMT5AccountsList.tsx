@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
 import { useActiveWalletAccount, useMT5AccountsList, useTradingPlatformStatus } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
-import { TradingAccountCard, WalletText } from '../../../../../components';
+import { Text } from '@deriv-com/ui';
+import { TradingAccountCard } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
 import { getMarketTypeDetails, MARKET_TYPE, TRADING_PLATFORM_STATUS } from '../../../constants';
@@ -53,23 +54,17 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     ]);
 
     return (
-        <TradingAccountCard
-            leading={
-                <div className='wallets-available-mt5__icon'>
-                    {getMarketTypeDetails()[account.market_type || MARKET_TYPE.ALL].icon}
-                </div>
-            }
-            onClick={onButtonClick}
-            trailing={
-                <div className='wallets-available-mt5__icon'>
-                    <LabelPairedChevronRightCaptionRegularIcon width={16} />
-                </div>
-            }
-        >
-            <div className='wallets-available-mt5__details'>
-                <WalletText size='sm'>{title}</WalletText>
-                <WalletText size='xs'>{description}</WalletText>
-            </div>
+        <TradingAccountCard onClick={onButtonClick}>
+            <TradingAccountCard.Icon className='wallets-available-mt5__icon'>
+                {getMarketTypeDetails()[account.market_type || MARKET_TYPE.ALL].icon}
+            </TradingAccountCard.Icon>
+            <TradingAccountCard.Content className='wallets-available-mt5__details'>
+                <Text size='sm'>{title}</Text>
+                <Text size='xs'>{description}</Text>
+            </TradingAccountCard.Content>
+            <TradingAccountCard.Button className='wallets-available-mt5__icon'>
+                <LabelPairedChevronRightCaptionRegularIcon width={16} />
+            </TradingAccountCard.Button>
         </TradingAccountCard>
     );
 };

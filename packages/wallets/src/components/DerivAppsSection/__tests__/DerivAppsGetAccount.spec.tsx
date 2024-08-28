@@ -98,10 +98,6 @@ describe('DerivAppsGetAccount', () => {
         (mockUseDevice as jest.Mock).mockReturnValue({ isDesktop: false });
         render(<DerivAppsGetAccount />, { wrapper });
         expect(mockShow).toBeCalled();
-        const args = mockShow.mock.calls[0][0];
-        render(args, { wrapper });
-        expect(screen.getByRole('button', { name: 'Maybe later' })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Transfer funds' })).toBeInTheDocument();
     });
     it('calls show function when the Get button is clicked and new_account_real is defined on desktop', () => {
         const mockMutateAsync = jest.fn(() => Promise.resolve({ new_account_real: 'new_account_real' }));

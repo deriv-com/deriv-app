@@ -10,9 +10,10 @@ type TContractCardsSections = {
     isLoadingMore?: boolean;
     hasBottomMargin?: boolean;
     positions?: TClosedPosition[];
+    currency?: string;
 };
 
-const ContractCardsSections = ({ isLoadingMore, hasBottomMargin, positions }: TContractCardsSections) => {
+const ContractCardsSections = ({ isLoadingMore, hasBottomMargin, positions, currency }: TContractCardsSections) => {
     const formatTime = (time: number) => toMoment(time).format('DD MMM YYYY');
 
     const dates = positions?.map(element => {
@@ -41,6 +42,7 @@ const ContractCardsSections = ({ isLoadingMore, hasBottomMargin, positions }: TC
                                 const purchaseTime = position.contract_info.purchase_time_unix;
                                 return purchaseTime && formatTime(purchaseTime) === date;
                             })}
+                            currency={currency}
                         />
                     </div>
                 ))}

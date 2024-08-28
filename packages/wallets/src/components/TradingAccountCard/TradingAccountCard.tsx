@@ -1,34 +1,37 @@
-import React, { ComponentProps } from 'react';
+import React, { ComponentProps, PropsWithChildren } from 'react';
+import classNames from 'classnames';
+import TradingAccountCardButton from './TradingAccountCardButton';
+import TradingAccountCardContent from './TradingAccountCardContent';
+import TradingAccountCardIcon from './TradingAccountCardIcon';
 import './TradingAccountCard.scss';
 
-type TProps = {
-    disabled?: ComponentProps<'button'>['disabled'];
-    leading?: React.ReactNode;
-    onClick?: ComponentProps<'button'>['onClick'];
-    trailing?: React.ReactNode;
+export type TCommonProps = {
+    children: React.ReactNode;
+    className?: string;
+    'data-testid'?: string;
 };
 
-const TradingAccountCard: React.FC<React.PropsWithChildren<TProps>> = ({
-    children,
-    disabled,
-    leading,
-    onClick,
-    trailing,
-}) => {
+type TProps = {
+    className?: string;
+    disabled?: ComponentProps<'button'>['disabled'];
+    onClick?: ComponentProps<'button'>['onClick'];
+};
+
+const TradingAccountCard = ({ children, className, disabled, onClick }: PropsWithChildren<TProps>) => {
     return (
         <button
-            className='wallets-trading-account-card'
+            className={classNames('wallets-trading-account-card', className)}
             data-testid='dt_wallets_trading_account_card'
             disabled={disabled}
             onClick={onClick}
         >
-            {leading}
-            <div className='wallets-trading-account-card__content'>
-                {children}
-                {trailing}
-            </div>
+            {children}
         </button>
     );
 };
+
+TradingAccountCard.Icon = TradingAccountCardIcon;
+TradingAccountCard.Content = TradingAccountCardContent;
+TradingAccountCard.Button = TradingAccountCardButton;
 
 export default TradingAccountCard;

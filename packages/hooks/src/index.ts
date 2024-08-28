@@ -9,6 +9,7 @@ export { default as useCFDRealAccounts } from './useCFDRealAccounts';
 export { default as useCashierLocked } from './useCashierLocked';
 export { default as useContentFlag } from './useContentFlag';
 export { default as useCountdown } from './useCountdown';
+export { default as useCryptoConfig } from './useCryptoConfig';
 export { default as useCryptoTransactions } from './useCryptoTransactions';
 export { default as useCurrencyConfig } from './useCurrencyConfig';
 export { default as useCurrentAccountDetails } from './useCurrentAccountDetails';
@@ -16,6 +17,7 @@ export { default as useCurrentCurrencyConfig } from './useCurrentCurrencyConfig'
 export { default as useDepositCryptoAddress } from './useDepositCryptoAddress';
 export { default as useDepositFiatAddress } from './useDepositFiatAddress';
 export { default as useDepositLocked } from './useDepositLocked';
+export { default as useDuplicateDOBPhone } from './useDuplicateDOBPhone';
 export { default as useExchangeRate } from './useExchangeRate';
 export { default as useExistingCFDAccounts } from './useExistingCFDAccounts';
 export { default as useFeatureFlags } from './useFeatureFlags';

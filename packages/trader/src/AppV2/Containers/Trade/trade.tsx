@@ -13,8 +13,9 @@ import { TradeParametersContainer, TradeParameters } from 'AppV2/Components/Trad
 import CurrentSpot from 'AppV2/Components/CurrentSpot';
 import { TradeChart } from '../Chart';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
-import TemporaryTradeTypes from './trade-types';
+import TradeTypes from './trade-types';
 import MarketSelector from 'AppV2/Components/MarketSelector';
+import useContractsForCompany, { TContractTypesList } from 'AppV2/Hooks/useContractsForCompany';
 import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
 import OnboardingGuide from 'AppV2/Components/OnboardingGuide';
 
@@ -22,10 +23,16 @@ const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
     const chart_ref = React.useRef<HTMLDivElement>(null);
 
-    const { active_symbols, contract_type, contract_types_list, onMount, onChange, onUnmount } = useTraderStore();
+    const { active_symbols, contract_type, onMount, onChange, onUnmount } = useTraderStore();
+    const { contract_types_list } = useContractsForCompany();
     const [guide_dtrader_v2] = useLocalStorageData<boolean>('guide_dtrader_v2_trade_page', false);
 
-    const trade_types = React.useMemo(() => getTradeTypesList(contract_types_list), [contract_types_list]);
+    const trade_types = React.useMemo(() => {
+        return Array.isArray(contract_types_list) && contract_types_list.length === 0
+            ? []
+            : getTradeTypesList(contract_types_list as TContractTypesList);
+    }, [contract_types_list]);
+
     const symbols = React.useMemo(
         () =>
             active_symbols.map(({ display_name, symbol: underlying }) => ({
@@ -39,7 +46,7 @@ const Trade = observer(() => {
         window.innerHeight - HEIGHT.HEADER - HEIGHT.BOTTOM_NAV - HEIGHT.ADVANCED_FOOTER - HEIGHT.PADDING;
 
     const onTradeTypeSelect = React.useCallback(
-        (e: React.MouseEvent<HTMLButtonElement>) => {
+        (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
             const value = trade_types.find(({ text }) => text === (e.target as HTMLButtonElement).textContent)?.value;
             onChange({
                 target: {
@@ -71,7 +78,7 @@ const Trade = observer(() => {
             {symbols.length && trade_types.length ? (
                 <React.Fragment>
                     <div className='trade'>
-                        <TemporaryTradeTypes
+                        <TradeTypes
                             contract_type={contract_type}
                             onTradeTypeSelect={onTradeTypeSelect}
                             trade_types={trade_types}

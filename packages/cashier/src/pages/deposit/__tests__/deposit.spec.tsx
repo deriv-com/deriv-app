@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useDepositLocked } from '@deriv/hooks';
+import { useDepositLocked, useCurrentCurrencyConfig } from '@deriv/hooks';
 import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 import Deposit from '../deposit';
@@ -10,6 +10,17 @@ import { Router } from 'react-router';
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useDepositLocked: jest.fn(() => false),
+    useCashierLocked: jest.fn(() => false),
+    useIsSystemMaintenance: jest.fn(() => false),
+    useCurrentCurrencyConfig: jest.fn(() => ({
+        platform: { cashier: ['doughflow'] },
+    })),
+}));
+
+jest.mock('../../../modules', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    DepositFiatModule: () => <div>DepositFiatModule</div>,
+    DepositCryptoModule: () => <div>DepositCryptoModule</div>,
 }));
 
 jest.mock('Components/transactions-crypto-history', () => {
@@ -70,5 +81,48 @@ describe('<Deposit />', () => {
         renderDeposit();
 
         expect(screen.getByText('TransactionsCryptoHistory')).toBeInTheDocument();
+    });
+
+    it('renders `DepositFiatModule` if cashier platform provider equals to `doughflow`', () => {
+        const mock_root_store = mockStore({
+            modules: {
+                cashier: {
+                    transaction_history: {
+                        is_transactions_crypto_visible: false,
+                    },
+                    general_store: {
+                        is_deposit: true,
+                    },
+                },
+            },
+        });
+
+        render(<Deposit />, {
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+        });
+    });
+
+    it('renders `DepositCryptoModule` if cashier platform provider equals to `crypto`', () => {
+        const mock_root_store = mockStore({
+            modules: {
+                cashier: {
+                    transaction_history: {
+                        is_transactions_crypto_visible: false,
+                    },
+                    general_store: {
+                        is_deposit: true,
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        });
+
+        (useCurrentCurrencyConfig as jest.Mock).mockReturnValue({
+            platform: { cashier: ['crypto'] },
+        });
+
+        render(<Deposit />, {
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+        });
     });
 });

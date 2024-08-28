@@ -133,13 +133,15 @@ const MyProfileName = () => {
                                 </div>
                             )}
                             {isDesktop && (
-                                <div className='my-profile-name__rating__row'>
-                                    <BlockUserCount />
-                                </div>
+                                <>
+                                    <div className='my-profile-name__rating__row'>
+                                        <BlockUserCount />
+                                    </div>
+                                    <div className='my-profile-name__rating__row'>
+                                        <MyProfileNameBusinessHours />
+                                    </div>
+                                </>
                             )}
-                            <div className='my-profile-name__rating__row'>
-                                <MyProfileNameBusinessHours />
-                            </div>
                         </div>
                         {!isDesktop && (
                             <div className='my-profile-name__row'>

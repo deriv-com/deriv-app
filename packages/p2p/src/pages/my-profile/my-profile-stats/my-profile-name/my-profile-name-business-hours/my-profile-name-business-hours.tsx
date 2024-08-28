@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon, Text, Tooltip } from '@deriv/components';
 import { observer } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
@@ -11,6 +12,7 @@ const MyProfileNameBusinessHours = () => {
     const { showModal } = useModalManagerContext();
     const { general_store } = useStores();
     const { is_schedule_available } = general_store;
+    const { isMobile } = useDevice();
 
     return (
         <div className='my-profile-name-business-hours'>
@@ -24,7 +26,7 @@ const MyProfileNameBusinessHours = () => {
                     className='my-profile-name-business-hours__tooltip-text'
                     line_height='xxs'
                     onClick={() => showModal({ key: 'BusinessHourModal', props: {} })}
-                    size={getTextSize('xxxs', 'xs')}
+                    size={getTextSize('xxxs', 'xs', isMobile)}
                     weight='bold'
                 >
                     {is_schedule_available ? (

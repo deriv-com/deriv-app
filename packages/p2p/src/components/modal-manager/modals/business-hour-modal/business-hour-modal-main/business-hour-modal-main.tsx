@@ -21,7 +21,7 @@ const BusinessHourModalMain = ({ business_days }: TBusinessHourModalMain) => {
     return (
         <>
             <Text as='p' size='xs'>
-                <Localize i18n_default_text='Set the hours you’re available to accept orders. Your ads will only be visible to others during these times.' />
+                <Localize i18n_default_text='Choose when you’re available to accept orders. Your ads will only be visible during these times.' />
             </Text>
             <SeparatorContainerLine />
             <div className='business-hour-modal-main__days'>
@@ -45,9 +45,13 @@ const BusinessHourModalMain = ({ business_days }: TBusinessHourModalMain) => {
                     );
                 })}
             </div>
-            <Text as='p' className='business-hour-modal-main__hint' size='xxs'>
-                <Localize i18n_default_text='* You can only place orders on other ads during your set business hours.' />
-                <Localize i18n_default_text='* Some ads may have a delay before becoming visible to potential buyers.*Some ads may not be immediately visible to potential buyers due to order processing times.' />
+            <Text as='div' className='business-hour-modal-main__hint' size='xxs'>
+                <div>
+                    <Localize i18n_default_text='* You can only place orders on other ads during your set business hours.' />
+                </div>
+                <div>
+                    <Localize i18n_default_text='* Some ads may have a delay before becoming visible to potential buyers.' />
+                </div>
             </Text>
         </>
     );

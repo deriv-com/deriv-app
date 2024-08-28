@@ -51,13 +51,11 @@ describe('<BusinessHourModal />', () => {
         expect(screen.getByText('Business hours')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Set the hours you’re available to accept orders. Your ads will only be visible to others during these times.'
+                'Choose when you’re available to accept orders. Your ads will only be visible during these times.'
             )
         ).toBeInTheDocument();
         expect(
-            screen.getByText(
-                '*Some ads may not be immediately visible to potential buyers due to order processing times.'
-            )
+            screen.getByText('* Some ads may have a delay before becoming visible to potential buyers.')
         ).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Edit business hours' })).toBeInTheDocument();
     });
@@ -91,13 +89,11 @@ describe('<BusinessHourModal />', () => {
         expect(screen.getByText('Business hours')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Set the hours you’re available to accept orders. Your ads will only be visible to others during these times.'
+                'Choose when you’re available to accept orders. Your ads will only be visible during these times.'
             )
         ).toBeInTheDocument();
         expect(
-            screen.getByText(
-                '*Some ads may not be immediately visible to potential buyers due to order processing times.'
-            )
+            screen.getByText('* Some ads may have a delay before becoming visible to potential buyers.')
         ).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Edit business hours' })).toBeInTheDocument();
         expect(screen.getByTestId('dt_mobile_full_page_return_icon')).toBeInTheDocument();

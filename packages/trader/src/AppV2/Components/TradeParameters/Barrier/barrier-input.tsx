@@ -26,10 +26,8 @@ const BarrierInput = observer(
         isDays: boolean;
         onClose: (val: boolean) => void;
     }) => {
-        const { barrier_1, onChange, validation_errors, proposal_info } = useTraderStore();
+        const { barrier_1, onChange, validation_errors, tick_data } = useTraderStore();
         const [option, setOption] = React.useState(0);
-        const proposal = Object.values(proposal_info);
-        const spotPrice = proposal[1]?.spot ?? '';
 
         React.useEffect(() => {
             setInitialBarrierValue(barrier_1);
@@ -125,7 +123,7 @@ const BarrierInput = observer(
                             <Text size='sm'>
                                 <Localize i18n_default_text='Current spot' />
                             </Text>
-                            <Text size='sm'>{spotPrice}</Text>
+                            <Text size='sm'>{tick_data?.quote}</Text>
                         </div>
                     </div>
                 </ActionSheet.Content>

@@ -1,49 +1,21 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActionSheet, CaptionText, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import DurationEndTimePicker from './datepicker';
-import { observer, useStore } from '@deriv/stores';
-import { setTime, toMoment } from '@deriv/shared';
-import { getSelectedTime } from 'Stores/Modules/Trading/Helpers/end-time';
+import { observer } from '@deriv/stores';
 import DurationChips from './chips';
 import DurationWheelPicker from './wheelpicker';
 
 const DurationActionSheetContainer = observer(
     ({ selected_hour, setSelectedHour }: { selected_hour: number[]; setSelectedHour: (arg: number[]) => void }) => {
-        const {
-            duration,
-            duration_unit,
-            duration_units_list,
-            onChangeMultiple,
-            expiry_date,
-            market_close_times,
-            market_open_times,
-        } = useTraderStore();
-
-        const [unit, setUnit] = useState(duration_unit);
+        const { duration, duration_unit, duration_units_list, onChangeMultiple, expiry_time, contract_type } =
+            useTraderStore();
+        const [unit, setUnit] = useState(expiry_time ? 'et' : duration_unit);
         const [selected_time, setSelectedTime] = useState([duration]);
         const [expiry_date_data, setExpiryDate] = useState<Date>(new Date());
         const [end_time, setEndTime] = useState<string>('');
-
-        const { common } = useStore();
-        const { server_time } = common;
-        const moment_expiry_date = toMoment(expiry_date);
-        const market_open_datetimes = market_open_times.map(open_time =>
-            setTime(moment_expiry_date.clone(), open_time)
-        );
-        const expiry_datetime = setTime(moment_expiry_date.clone(), end_time);
-        const market_close_datetimes = market_close_times.map(close_time =>
-            setTime(moment_expiry_date.clone(), close_time)
-        );
-        const server_datetime = toMoment(server_time);
-
-        const time = getSelectedTime(
-            server_datetime.clone(),
-            expiry_datetime,
-            market_open_datetimes,
-            market_close_datetimes
-        );
+        const [toggle_picker, setTogglePicker] = useState<boolean>(false);
 
         const onChangeUnit = (value: string) => {
             if (unit !== 'h') {
@@ -86,28 +58,34 @@ const DurationActionSheetContainer = observer(
 
         return (
             <div className='duration-container'>
-                <div className='duration-container__header'>
-                    <Text bold>
-                        <Localize i18n_default_text='Duration' />
-                    </Text>
-                </div>
+                <ActionSheet.Header title={<Localize i18n_default_text='Duration' />} />
                 <DurationChips duration_units_list={duration_units_list} onChangeUnit={onChangeUnit} unit={unit} />
                 <DurationWheelPicker
                     unit={unit}
-                    setEndTime={setEndTime}
+                    setEndTime={val => {
+                        setEndTime(val);
+                    }}
                     setWheelPickerValue={setWheelPickerValue}
                     selected_hour={selected_hour}
                     selected_time={selected_time}
+                    toggle_picker={toggle_picker}
                 />
                 {unit == 'd' && (
-                    <DurationEndTimePicker setExpiryDate={handleSelectExpiryDate} expiry_date={expiry_date_data} />
+                    <DurationEndTimePicker
+                        setExpiryDate={handleSelectExpiryDate}
+                        setSelectedTime={val => {
+                            setSelectedTime(val);
+                            setTogglePicker(!toggle_picker);
+                        }}
+                        expiry_date={expiry_date_data}
+                    />
                 )}
                 {unit == 'et' && (
                     <div style={{ textAlign: 'center' }}>
-                        <CaptionText>
+                        <CaptionText color='quill-typography__color--subtle'>
                             <Localize i18n_default_text='Current time' />
                         </CaptionText>
-                        <Text>{`${time} GMT`}</Text>
+                        <Text>{`${end_time} GMT`}</Text>
                     </div>
                 )}
                 <ActionSheet.Footer

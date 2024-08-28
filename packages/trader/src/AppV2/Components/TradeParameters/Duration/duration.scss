@@ -1,8 +1,4 @@
 .duration-container {
-    &__header {
-        margin: 24px auto;
-        text-align: center;
-    }
     &__chips {
         display: flex;
         width: 100vw;
@@ -10,17 +6,11 @@
         position: relative;
         inset-inline-start: calc(-1 * var(--core-spacing-400));
         padding: var(--core-spacing-400) var(--core-spacing-800);
-        display: flex;
         gap: var(--core-spacing-400);
         overflow-x: auto;
         min-height: var(--core-spacing-1600);
         white-space: nowrap;
         scrollbar-width: none;
-    }
-    &__wheel-picker {
-        padding-left: var(--core-spacing-800);
-        padding-right: var(--core-spacing-800);
-        height: 270px;
     }
     &__date-picker {
         padding-left: var(--core-spacing-800);
@@ -37,7 +27,7 @@
         &__icon {
             width: 32px;
             height: 32px;
-            border: 1px solid black;
+            border: 1px solid var(--text-general);
             border-radius: 12px;
         }
 

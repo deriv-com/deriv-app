@@ -1,5 +1,5 @@
 import { Chip, Text } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import React from 'react';
 
 const DurationChips = ({
@@ -11,9 +11,14 @@ const DurationChips = ({
     onChangeUnit: (arg: string) => void;
     unit: string;
 }) => {
+    const list =
+        duration_units_list.length == 1 && duration_units_list[0].value == 't'
+            ? duration_units_list
+            : duration_units_list.concat({ value: 'et', text: localize('End Time') });
+
     return (
         <div className='duration-container__chips'>
-            {duration_units_list.concat({ value: 'et', text: 'EndTime' }).map((item, index: number) => (
+            {list.map((item, index: number) => (
                 <Chip.Selectable
                     key={index}
                     selected={unit == item.value}

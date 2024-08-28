@@ -1,30 +1,9 @@
 .wallets-available-mt5 {
-    &__icon {
-        width: fit-content;
-    }
-
-    &__text {
-        color: var(--brand-coral, #ff444f);
-        text-align: center;
-
-        /* desktop/paragraph/P2 - bold */
-        font-size: 1.4rem;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 2rem; /* 142.857% */
-    }
-
-    &__details {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        flex-grow: 1;
-    }
     &__title {
         display: flex;
         gap: 8px;
+        align-items: center;
     }
-
     &__badge {
         border-radius: 4px;
         max-height: 22px;

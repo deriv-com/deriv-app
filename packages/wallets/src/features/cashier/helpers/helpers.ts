@@ -41,7 +41,6 @@ export const getAccountName = ({
             return `${displayCurrencyCode} Wallet`;
         case 'trading': {
             switch (accountType) {
-                case PlatformDetails.binary.name:
                 case PlatformDetails.standard.name:
                     return PlatformDetails.standard.title;
                 case PlatformDetails.dxtrade.name:

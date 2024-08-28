@@ -2,7 +2,7 @@ import React, { lazy, useCallback, useEffect, useState } from 'react';
 import { useActiveWalletAccount, useMT5AccountsList, useTradingPlatformStatus } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
-import { TradingAccountCard, WalletText } from '../../../../../components';
+import { TradingAccountCard } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
 import { getMarketTypeDetails, MARKET_TYPE, PRODUCT, TRADING_PLATFORM_STATUS } from '../../../constants';
@@ -89,22 +89,15 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     }, [showMt5PasswordModal]);
 
     return (
-        <TradingAccountCard
-            leading={
-                <div className='wallets-available-mt5__icon'>
-                    {getMarketTypeDetails(account.product)[account.market_type || MARKET_TYPE.ALL].icon}
-                </div>
-            }
-            onClick={onButtonClick}
-            trailing={
-                <div className='wallets-available-mt5__icon'>
-                    <LabelPairedChevronRightCaptionRegularIcon width={16} />
-                </div>
-            }
-        >
-            <div className='wallets-available-mt5__details'>
+        <TradingAccountCard onClick={onButtonClick}>
+            <TradingAccountCard.Icon className='wallets-available-mt5__icon'>
+                {getMarketTypeDetails(account.product)[account.market_type || MARKET_TYPE.ALL].icon}
+            </TradingAccountCard.Icon>
+            <TradingAccountCard.Content className='wallets-available-mt5__details'>
                 <div className='wallets-available-mt5__title'>
-                    <WalletText size='sm'>{title}</WalletText>
+                    <Text className='' size='sm'>
+                        {title}
+                    </Text>
                     {account.product === PRODUCT.ZEROSPREAD && (
                         <div className='wallets-available-mt5__badge'>
                             <Text size='xs' weight='bold'>
@@ -113,8 +106,11 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         </div>
                     )}
                 </div>
-                <WalletText size='xs'>{description}</WalletText>
-            </div>
+                <Text size='xs'>{description}</Text>
+            </TradingAccountCard.Content>
+            <TradingAccountCard.Button className='wallets-available-mt5__icon'>
+                <LabelPairedChevronRightCaptionRegularIcon width={16} />
+            </TradingAccountCard.Button>
         </TradingAccountCard>
     );
 };

@@ -4,20 +4,14 @@ import { ActionSheet, Text, WheelPicker } from '@deriv-com/quill-ui';
 import { localize, Localize } from '@deriv/translations';
 import { getGrowthRatePercentage } from '@deriv/shared';
 import { Skeleton } from '@deriv/components';
-import type { TWheelPickerInitialValues } from 'Stores/Modules/Trading/trade-store';
+import type { TV2ParamsInitialValues } from 'Stores/Modules/Trading/trade-store';
 
 type TGrowthRatePickerProps = {
     accumulator_range_list?: number[];
     growth_rate: number;
     maximum_ticks: number;
     setGrowthRate: (growth_rate: number) => void;
-    setWheelPickerInitialValues: ({
-        value,
-        name,
-    }: {
-        value: number | string;
-        name: keyof TWheelPickerInitialValues;
-    }) => void;
+    setV2ParamsInitialValues: ({ value, name }: { value: number | string; name: keyof TV2ParamsInitialValues }) => void;
     should_show_details?: boolean;
     tick_size_barrier_percentage: string;
 };
@@ -31,7 +25,7 @@ const GrowthRatePicker = ({
     growth_rate,
     maximum_ticks,
     setGrowthRate,
-    setWheelPickerInitialValues,
+    setV2ParamsInitialValues,
     should_show_details,
     tick_size_barrier_percentage,
 }: TGrowthRatePickerProps) => {
@@ -52,7 +46,7 @@ const GrowthRatePicker = ({
     React.useEffect(() => {
         if (!initial_growth_rate.current && growth_rate) {
             initial_growth_rate.current = growth_rate;
-            setWheelPickerInitialValues({ value: growth_rate, name: 'growth_rate' });
+            setV2ParamsInitialValues({ value: growth_rate, name: 'growth_rate' });
         }
         return () => {
             if (initial_growth_rate.current && initial_growth_rate.current !== selected_growth_rate.current) {
@@ -65,7 +59,7 @@ const GrowthRatePicker = ({
 
     const handleSave = () => {
         initial_growth_rate.current = selected_growth_rate.current;
-        setWheelPickerInitialValues({ value: selected_growth_rate.current, name: 'growth_rate' });
+        setV2ParamsInitialValues({ value: selected_growth_rate.current, name: 'growth_rate' });
     };
 
     const handlePickerValuesChange = (value: string | number) => {

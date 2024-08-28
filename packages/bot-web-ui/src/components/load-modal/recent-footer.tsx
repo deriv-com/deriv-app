@@ -7,14 +7,14 @@ import { useDBotStore } from 'Stores/useDBotStore';
 
 const RecentFooter = observer(() => {
     const { load_modal, dashboard } = useDBotStore();
-    const { is_open_button_loading, loadFileFromRecent, toggleLoadModal } = load_modal;
+    const { is_open_button_loading, is_open_button_disabled, loadStrategyOnBotBuilder, toggleLoadModal } = load_modal;
     const { setOpenSettings } = dashboard;
 
     return (
         <Button
             text={localize('Open')}
             onClick={() => {
-                loadFileFromRecent();
+                loadStrategyOnBotBuilder();
                 toggleLoadModal();
                 setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);
             }}
@@ -22,6 +22,7 @@ const RecentFooter = observer(() => {
             has_effect
             primary
             large
+            disabled={is_open_button_disabled}
         />
     );
 });

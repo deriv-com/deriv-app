@@ -111,8 +111,6 @@ type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 type TIconTypes =
     | 'Derived'
     | 'Financial'
-    | 'BinaryBot'
-    | 'BinaryBotBlue'
     | 'DBot'
     | 'Demo'
     | 'DerivGo'
@@ -351,6 +349,7 @@ export type TNotificationMessage = {
     timeout?: number;
     timeoutMessage?: (remaining: number | string) => string;
     type: string;
+    only_toast_message?: boolean;
 };
 
 type TNotification =

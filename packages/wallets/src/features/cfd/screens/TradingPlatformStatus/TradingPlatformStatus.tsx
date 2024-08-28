@@ -15,7 +15,7 @@ const TradingPlatformStatus: React.FC<TradingPlatformStatusModalProps> = ({ isSe
 
     const title = isServerMaintenance ? localize('Server Maintenance') : localize('Account Unavailable');
     const content = isServerMaintenance
-        ? localize('We’re currently performing server maintenance. Service maybe affected.')
+        ? localize('We’re currently performing server maintenance. Service may be affected.')
         : localize('The server is temporarily unavailable for this account. We’re working to resolve this.');
 
     return (

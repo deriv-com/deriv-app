@@ -19,7 +19,7 @@ const HeaderAccountActions = observer(({ onClickDeposit }: THeaderAccountActions
         toggleAccountsDialog,
     } = ui;
     const { is_notifications_visible, notifications: notifications_array, toggleNotificationsModal } = notifications;
-
+    const filtered_notifications = notifications_array.filter(item => !item.only_toast_message);
     return (
         <div id='dt_core_header_acc-info-container' className='acc-info__container'>
             <AccountActions
@@ -36,7 +36,7 @@ const HeaderAccountActions = observer(({ onClickDeposit }: THeaderAccountActions
                 is_logged_in={is_logged_in}
                 is_virtual={is_virtual}
                 onClickDeposit={onClickDeposit}
-                notifications_count={notifications_array.length}
+                notifications_count={filtered_notifications.length}
                 toggleAccountsDialog={toggleAccountsDialog}
                 toggleNotifications={toggleNotificationsModal}
                 openRealAccountSignup={openRealAccountSignup}

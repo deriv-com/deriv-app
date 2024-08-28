@@ -5,6 +5,7 @@ import { getCFDPlatformLabel, getCFDPlatformNames, getErrorMessages } from '@der
 import { Localize, localize } from '@deriv/translations';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import { CATEGORY, CFD_PLATFORMS } from '../../Helpers/cfd-config';
+import { DerivLightDmt5PasswordIcon } from '@deriv/quill-icons';
 import './mt5-create-password.scss';
 import '../../sass/cfd.scss';
 import CfdPasswordModalTnc from '../cfd-password-modal-tnc';
@@ -74,7 +75,7 @@ const MT5CreatePassword = ({
                         data-testid='dt_mt5_create_password'
                     >
                         <div className='mt5-password-modal__create-password-content'>
-                            <Icon icon='IcMt5OnePassword' width='150' height='150' />
+                            <DerivLightDmt5PasswordIcon height='150px' width='150px' />
 
                             <Text
                                 size='xs'

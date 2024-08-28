@@ -58,7 +58,6 @@ const TakeProfitAndStopLossInput = ({
     const isMounted = useIsMounted();
 
     const is_take_profit_input = type === 'take_profit';
-    const subscription_id_ref = React.useRef<string>();
 
     // For handling cases when user clicks on Save btn before we got response from API
     const is_api_response_received = React.useRef(false);
@@ -132,7 +131,6 @@ const TakeProfitAndStopLossInput = ({
                 is_api_response_received_ref.current = true;
                 return;
             }
-            if (subscription?.id) subscription_id_ref.current = subscription?.id;
 
             const new_error = error?.message ?? '';
             if (error?.message && subscription?.id) WS.forget(subscription.id);

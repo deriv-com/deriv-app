@@ -6,12 +6,27 @@ import { mockStore } from '@deriv/stores';
 import CFDPOA from '../cfd-poa';
 import CFDProviders from '../../cfd-providers';
 
+const mock_kyc_auth_status_response = {
+    kyc_auth_status: {
+        address: {
+            supported_documents: ['utility_bill', 'affidavit', 'poa_others'],
+        },
+    },
+    isLoading: false,
+    isSuccess: false,
+};
+
 jest.mock('@deriv/account/src/Components/forms/personal-details-form.jsx', () =>
     jest.fn(() => <div>PersonalDetailsForm</div>)
 );
 jest.mock('@deriv/account/src/Components/poa/common-mistakes/common-mistake-examples', () =>
     jest.fn(() => <div>CommonMistakeExamples</div>)
 );
+
+jest.mock('@deriv/account/src/Hooks', () => ({
+    useKycAuthStatus: jest.fn(() => mock_kyc_auth_status_response),
+}));
+
 jest.mock('@deriv/account/src/Components/leave-confirm', () => jest.fn(() => <div>LeaveConfirm</div>));
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),

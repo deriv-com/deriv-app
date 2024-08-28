@@ -35,8 +35,7 @@ const ProofOfAddressForm = observer(
     ({ is_resubmit, is_for_cfd_modal, onSubmit, onSubmitForCFDModal, className }: Partial<TProofOfAddressForm>) => {
         const { isMobile, isDesktop } = useDevice();
         const { client, notifications } = useStore();
-        const { account_settings, fetchResidenceList, fetchStatesList, getChangeableFields, states_list, is_eu } =
-            client;
+        const { account_settings, fetchResidenceList, fetchStatesList, states_list } = client;
         const {
             addNotificationMessageByKey: addNotificationByKey,
             removeNotificationMessage,

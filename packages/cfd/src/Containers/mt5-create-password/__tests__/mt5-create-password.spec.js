@@ -5,7 +5,6 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import MT5CreatePassword from '../mt5-create-password';
 import { mockStore } from '@deriv/stores';
 import CFDProviders from '../../../cfd-providers';
-import { getErrorMessages, validPassword } from '@deriv/shared';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),

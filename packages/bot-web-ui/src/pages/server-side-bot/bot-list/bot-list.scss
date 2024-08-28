@@ -93,8 +93,17 @@
                 margin-right: 8px;
             }
 
-            &:hover {
+            &:not(&--disabled):hover {
+                cursor: pointer;
                 background-color: var(--state-hover);
+            }
+            &--disabled {
+                background-color: var(--state-hover);
+                opacity: 0.5;
+                cursor: not-allowed;
+                &:hover {
+                    background-color: var(--state-hover);
+                }
             }
         }
     }

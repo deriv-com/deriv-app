@@ -3,12 +3,7 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react';
 import { Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
-import {
-    LegacyMarketBasketIndicesIcon,
-    StandaloneBarsRegularIcon,
-    StandaloneChartCandlestickRegularIcon,
-    StandaloneClockThreeRegularIcon,
-} from '@deriv/quill-icons';
+import { StandaloneChartCandlestickRegularIcon, StandaloneClockThreeRegularIcon } from '@deriv/quill-icons';
 import { Badge } from '@deriv-com/quill-ui';
 import { useStore } from '@deriv/stores';
 import BottomNavItem from './bottom-nav-item';
@@ -23,7 +18,7 @@ type BottomNavProps = {
 const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) => {
     const history = useHistory();
     const location = useLocation();
-    const { active_positions_count, onMount, onUnmount } = useStore().portfolio;
+    const { active_positions_count } = useStore().portfolio;
 
     const bottomNavItems = [
         {
@@ -35,16 +30,6 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
             ),
             label: <Localize i18n_default_text='Trade' />,
             path: routes.trade,
-        },
-        {
-            icon: (
-                <LegacyMarketBasketIndicesIcon
-                    iconSize='sm'
-                    fill='var(--semantic-color-monochrome-textIcon-normal-high)'
-                />
-            ),
-            label: <Localize i18n_default_text='Markets' />,
-            path: routes.markets,
         },
         {
             icon:
@@ -71,13 +56,6 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
             label: <Localize i18n_default_text='Positions' />,
             path: routes.trader_positions,
         },
-        {
-            icon: (
-                <StandaloneBarsRegularIcon iconSize='sm' fill='var(--semantic-color-monochrome-textIcon-normal-high)' />
-            ),
-            label: <Localize i18n_default_text='Menu' />,
-            path: routes.trader_menu,
-        },
     ];
     const navIndex = bottomNavItems.findIndex(item => item.path === location.pathname);
     const [selectedIndex, setSelectedIndex] = React.useState(navIndex > -1 ? navIndex : 0);
@@ -86,11 +64,6 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
         setSelectedIndex(index);
         history.push(bottomNavItems[index].path);
     };
-    React.useEffect(() => {
-        onMount();
-        return onUnmount;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
     return (
         <div className={classNames('bottom-nav', className)}>
             <div className='bottom-nav-selection' onScroll={onScroll}>

@@ -16,11 +16,17 @@ jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
 window.Blockly = {
-    derivWorkspace: { asyncClear: () => ({}) },
+    derivWorkspace: { asyncClear: () => ({}), cleanUp: () => ({}), clearUndo: () => ({}) },
     utils: {
         xml: { textToDom: jest.fn() },
     },
-    Xml: { domToWorkspace: () => ({}), textToDom: () => ({}) },
+    Xml: { domToWorkspace: () => ({}), textToDom: () => ({}), clearWorkspaceAndLoadFromXml: () => ({}) },
+    xmlValues: {
+        strategy_id: 'strategy_id',
+        file_name: 'strategy_name',
+        from: 'xml',
+        convertedDom: 'convertedDom',
+    },
 };
 
 describe('RecentFooter', () => {

@@ -27,6 +27,7 @@
         align-items: center;
         flex: 1 0 0;
         height: var(--core-size-2100);
+        position: relative;
 
         &--active {
             .bottom-nav-item-label {
@@ -40,6 +41,16 @@
         &-label {
             font-size: var(--core-fontSize-50);
             line-height: var(--core-lineHeight-100);
+        }
+
+        // TODO: remove after Vinu's PR will be merged
+        .user__guide__anchor {
+            position: absolute;
+            height: 50px;
+            width: 92px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
         }
     }
 }

@@ -42,10 +42,7 @@ const OnboardingGuide = () => {
             <Modal
                 isOpened={should_show_onboarding_guide}
                 isMobile
-                showHandleBar={false}
-                showSecondaryButton
-                secondaryButtonLabel={<Localize i18n_default_text='Skip' />}
-                secondaryButtonCallback={onGuideSkip}
+                showHandleBar
                 toggleModal={onGuideSkip}
                 primaryButtonLabel={<Localize i18n_default_text="Let's begin" />}
                 primaryButtonCallback={onGuideStart}

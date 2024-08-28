@@ -27,7 +27,7 @@ const OnboardingVideo = () => {
             >
                 {/* a browser will select a source with extension it recognizes */}
                 <source src={mp4_src} type='video/mp4' />
-                {<Localize i18n_default_text='Unfortunately, your browser does not support the video.' />}
+                <Localize i18n_default_text='Unfortunately, your browser does not support the video.' />
             </video>
         </React.Fragment>
     );

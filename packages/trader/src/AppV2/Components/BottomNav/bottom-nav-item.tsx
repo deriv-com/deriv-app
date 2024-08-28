@@ -17,6 +17,8 @@ const BottomNavItem = ({ icon, selectedIndex, label, index, setSelectedIndex }: 
             className={classNames('bottom-nav-item', isActive ? 'bottom-nav-item--active' : '')}
             onClick={() => setSelectedIndex(index)}
         >
+            {/* TODO: remove after Vinu's PR will be merged */}
+            {index === 1 && <span className='user__guide__anchor' />}
             <span>{icon}</span>
             <Text size='sm' className='bottom-nav-item-label'>
                 {label}

@@ -9,5 +9,6 @@
         width: 100%;
         position: fixed;
         bottom: 0;
+        z-index: 2; // chart has z-index: 1, it should not overlap buttons if screen height is small
     }
 }

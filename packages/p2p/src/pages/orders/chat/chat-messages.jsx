@@ -17,7 +17,7 @@ const AdminMessage = () => (
         <ChatMessageText color='general' type='admin'>
             <div className='chat-messages-item--admin-text'>
                 <Localize
-                    i18n_default_text='<0>Important:</0> Deriv will never contact you via WhatsApp to ask for your personal information. Always ignore any messages from numbers claiming to be from Deriv.<br />'
+                    i18n_default_text='<0>Important:</0> Deriv will never contact you via WhatsApp to ask for your personal information. Always ignore any messages from numbers claiming to be from Deriv.'
                     components={[<strong key={0} />]}
                 />
             </div>

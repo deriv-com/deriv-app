@@ -128,8 +128,11 @@ const PurchaseButton = observer(() => {
                         const is_single_button = contract_types.length === 1;
                         const is_loading = loading_button_index === index;
                         const is_disabled = !is_trade_enabled_v2 || info.has_error;
-                        const error_message =
-                            info.error_field === 'amount' ? <Localize i18n_default_text='Invalid stake' /> : '';
+                        const error_message = ['amount', 'stake'].includes(info.error_field ?? '') ? (
+                            <Localize i18n_default_text='Invalid stake' />
+                        ) : (
+                            ''
+                        );
 
                         return (
                             <React.Fragment key={trade_type}>
@@ -154,7 +157,7 @@ const PurchaseButton = observer(() => {
                                         onPurchaseV2(trade_type, isMobile, addNotificationBannerCallback);
                                     }}
                                 >
-                                    {!is_loading && !is_accumulator && (
+                                    {!is_loading && (
                                         <PurchaseButtonContent
                                             {...purchase_button_content_props}
                                             error={error_message}

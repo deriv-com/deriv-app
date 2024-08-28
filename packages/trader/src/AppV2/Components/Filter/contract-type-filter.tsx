@@ -27,23 +27,18 @@ const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: T
         }
     };
 
-    const getChipLabel = () => {
-        const arrayLength = contractTypeFilter.length;
-        if (!arrayLength) return <Localize i18n_default_text='Trade types' key='all' />;
-        return <Localize i18n_default_text='Trade types ({{count}})' values={{ count: arrayLength }} key='selected' />;
-    };
-
     return (
         <React.Fragment>
             <Chip.Standard
                 className='filter__chip'
                 dropdown
                 isDropdownOpen={isDropdownOpen}
+                label='Trade types'
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 selected={!!changedOptions.length}
                 size='md'
             >
-                <Text size='sm'>{getChipLabel()}</Text>
+                {!!changedOptions.length && <Text>({changedOptions.length})</Text>}
             </Chip.Standard>
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={onActionSheetClose} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>

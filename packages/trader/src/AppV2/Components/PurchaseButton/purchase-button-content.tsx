@@ -53,8 +53,14 @@ const PurchaseButtonContent = ({
         return payout;
     };
 
-    if (is_vanilla || is_vanilla_fx || is_turbos || is_high_low || is_touch) return null;
-    if (is_accumulator && !has_open_accu_contract) return null;
+    const has_no_button_content =
+        is_vanilla ||
+        is_vanilla_fx ||
+        is_turbos ||
+        is_high_low ||
+        is_touch ||
+        (is_accumulator && !has_open_accu_contract);
+    if (has_no_button_content && !error) return null;
 
     const text_basis = getTextBasis();
     const amount = getAmount();

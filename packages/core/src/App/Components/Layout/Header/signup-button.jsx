@@ -14,8 +14,6 @@ const SignupButton = ({ className }) => {
 
     useEffect(() => {
         if (isGBLoaded) {
-            console.log('trigger_os_signup: ', trigger_os_signup);
-
             setRedirectToOSSignup(trigger_os_signup);
         }
     }, [isGBLoaded, trigger_os_signup]);
@@ -32,8 +30,6 @@ const SignupButton = ({ className }) => {
     };
 
     const handleSignup = async () => {
-        console.log('redirect_to_os_signup: ', redirect_to_os_signup);
-
         const os = await mobileOSDetectAsync();
 
         if (redirect_to_os_signup) {

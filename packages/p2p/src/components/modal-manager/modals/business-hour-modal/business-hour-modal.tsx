@@ -138,6 +138,7 @@ const BusinessHourModal = () => {
     if (isMobile) {
         return (
             <MobileFullPageModal
+                className='business-hour-modal'
                 body_className='business-hour-modal__body'
                 is_modal_open={is_modal_open}
                 renderPageFooterChildren={() => (

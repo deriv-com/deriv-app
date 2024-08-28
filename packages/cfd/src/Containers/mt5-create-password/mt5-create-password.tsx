@@ -71,7 +71,7 @@ const MT5CreatePassword = ({
             }) => (
                 <form onSubmit={handleSubmit}>
                     <div
-                        className='mt5-password-modal__content dc-modal__container_mt5-password-modal__body form'
+                        className='mt5-password-modal__content dc-modal__container_mt5-password-modal__body'
                         data-testid='dt_mt5_create_password'
                     >
                         <div className='mt5-password-modal__create-password-content'>

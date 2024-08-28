@@ -9,11 +9,13 @@ import { useDevice } from '@deriv-com/ui';
 type TVerificationLinkExpiredModal = {
     should_show_verification_link_expired_modal: boolean;
     setShouldShowVerificationLinkExpiredModal: (value: boolean) => void;
+    setIsForcedToExitPnv: (value: boolean) => void;
 };
 
 const VerificationLinkExpiredModal = ({
     should_show_verification_link_expired_modal,
     setShouldShowVerificationLinkExpiredModal,
+    setIsForcedToExitPnv,
 }: TVerificationLinkExpiredModal) => {
     const history = useHistory();
     //@ts-expect-error ignore this until we add it in GetSettings api types
@@ -24,12 +26,14 @@ const VerificationLinkExpiredModal = ({
     const { localize } = useTranslations();
 
     const handleCancelButton = () => {
+        setIsForcedToExitPnv(false);
         setShouldShowVerificationLinkExpiredModal(false);
         history.push(routes.personal_details);
     };
 
     const handleSendNewLinkButton = () => {
         sendPhoneNumberVerifyEmail();
+        setIsForcedToExitPnv(false);
     };
 
     const sendNewLinkTimer = () => {
@@ -52,7 +56,6 @@ const VerificationLinkExpiredModal = ({
     return (
         <Modal
             isMobile={isMobile}
-            showHandleBar
             isOpened={should_show_verification_link_expired_modal}
             isPrimaryButtonDisabled={!!next_email_otp_request_timer}
             buttonColor='coral'

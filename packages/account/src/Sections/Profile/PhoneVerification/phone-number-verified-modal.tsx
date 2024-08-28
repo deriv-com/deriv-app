@@ -35,7 +35,6 @@ const PhoneNumberVerifiedModal = ({
     return (
         <Modal
             isMobile={isMobile}
-            showHandleBar
             isOpened={should_show_phone_number_verified_modal}
             buttonColor='coral'
             primaryButtonCallback={handleDoneButton}

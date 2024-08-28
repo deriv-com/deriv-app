@@ -1,5 +1,6 @@
 import { Modal, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useHistory } from 'react-router';
@@ -13,6 +14,7 @@ const CoolDownPeriodModal = observer(
     ({ show_cool_down_period_modal, setShowCoolDownPeriodModal }: TCoolDownPeriodModal) => {
         const { ui } = useStore();
         const history = useHistory();
+        const { isMobile } = useDevice();
         const { setIsForcedToExitPnv, setShouldShowPhoneNumberOTP } = ui;
         const handleCloseCoolDownPeriodModal = () => {
             setShouldShowPhoneNumberOTP(false);
@@ -23,8 +25,10 @@ const CoolDownPeriodModal = observer(
         return (
             <Modal
                 isOpened={show_cool_down_period_modal}
+                isMobile={isMobile}
                 primaryButtonLabel={<Localize i18n_default_text='OK' />}
                 primaryButtonCallback={handleCloseCoolDownPeriodModal}
+                disableCloseOnOverlay
                 buttonColor='coral'
             >
                 <Modal.Header title={<Localize i18n_default_text='OTP limit reached' />} />

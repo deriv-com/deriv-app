@@ -32,7 +32,7 @@ const PhoneVerificationPage = observer(() => {
     });
     const { isDesktop } = useDevice();
     const { client, ui } = useStore();
-    const { is_redirected_from_email, setRedirectFromEmail } = ui;
+    const { is_redirected_from_email, setRedirectFromEmail, setIsForcedToExitPnv } = ui;
     const {
         verification_code: { phone_number_verification: phone_number_verification_code },
         is_authorize,
@@ -61,6 +61,7 @@ const PhoneVerificationPage = observer(() => {
             setIsLoading(true);
             if (email_otp_error) {
                 setIsLoading(false);
+                setIsForcedToExitPnv(true);
                 setShouldShowVerificationLinkExpiredModal(true);
                 setRedirectFromEmail(false);
             } else if (is_email_verified) {
@@ -85,6 +86,7 @@ const PhoneVerificationPage = observer(() => {
             <VerificationLinkExpiredModal
                 should_show_verification_link_expired_modal={should_show_verification_link_expired_modal}
                 setShouldShowVerificationLinkExpiredModal={setShouldShowVerificationLinkExpiredModal}
+                setIsForcedToExitPnv={setIsForcedToExitPnv}
             />
             <SessionTimeoutModal />
             <CancelPhoneVerificationModal />

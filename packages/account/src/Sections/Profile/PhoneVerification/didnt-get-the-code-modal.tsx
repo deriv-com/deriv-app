@@ -93,7 +93,6 @@ const DidntGetTheCodeModal = ({
                     }}
                 />
             }
-            disableCloseOnOverlay
             showCrossIcon
             toggleModal={() => setShouldShowDidntGetTheCodeModal(false)}
         >

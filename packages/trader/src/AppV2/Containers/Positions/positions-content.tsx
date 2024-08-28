@@ -70,6 +70,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
 
     const contractCards = isClosedTab ? (
         <ContractCardsSections
+            currency={currency}
             positions={filteredPositions as TClosedPosition[]}
             isLoadingMore={isFetchingClosedPositions}
             hasBottomMargin={shouldShowTakeProfit}
@@ -111,7 +112,10 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
         isClosedTab ? onClosedTabMount(true) : onOpenTabMount();
 
         return () => {
-            isClosedTab && onClosedTabUnmount();
+            if (isClosedTab) {
+                clearTable();
+                onClosedTabUnmount();
+            }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

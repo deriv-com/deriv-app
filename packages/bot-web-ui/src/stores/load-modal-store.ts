@@ -8,6 +8,7 @@ import {
     save_types,
     saveWorkspaceToRecent,
 } from '@deriv/bot-skeleton';
+import { inject_workspace_options, updateXmlValues } from '@deriv/bot-skeleton/src/scratch/utils';
 import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
@@ -19,10 +20,8 @@ import {
     rudderStackSendUploadStrategyStartEvent,
 } from '../analytics/rudderstack-common-events';
 import { getStrategyType } from '../analytics/utils';
-
-import RootStore from './root-store';
 import { waitForDomElement } from '../utils/dom-observer';
-import { inject_workspace_options, updateXmlValues } from '@deriv/bot-skeleton/src/scratch/utils';
+import RootStore from './root-store';
 
 interface ILoadModalStore {
     active_index: number;

@@ -6,6 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
+import { SERVER_BOT_LOSS_THRESHOLD_WARNING } from '../../constants';
 import LossThresholdWarningDialog from '../loss-threshold-warning-dialog';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
@@ -88,6 +89,6 @@ describe('LossThresholdWarningDialog', () => {
         });
         const checkbox = screen.getByRole('checkbox', { name: /Do not show this message again./i });
         userEvent.click(checkbox);
-        expect(localStorage.getItem('SERVER_BOT_LOSS_THRESHOLD_WARNING')).toEqual('true');
+        expect(localStorage.getItem(SERVER_BOT_LOSS_THRESHOLD_WARNING)).toEqual('true');
     });
 });

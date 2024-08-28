@@ -43,14 +43,16 @@ describe('CreatePassword', () => {
     });
 
     it('calls onPrimaryClick when the button is clicked', async () => {
-        renderComponent({ password: 'ValidPassword123' });
+        const validPassword = 'Abcd1234';
+        renderComponent({ password: validPassword });
         const button = screen.getByRole('button', { name: `Create ${DxtradeTitle} password` });
         await userEvent.click(button);
         expect(mockOnPrimaryClick).toHaveBeenCalled();
     });
 
     it('disables the button when the password is invalid or loading', () => {
-        renderComponent({ password: 'short' });
+        const shortPassword = 'Abcd';
+        renderComponent({ password: shortPassword });
         const button = screen.getByRole('button', { name: `Create ${DxtradeTitle} password` });
         expect(button).toBeDisabled();
 

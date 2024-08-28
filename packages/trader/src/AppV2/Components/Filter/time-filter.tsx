@@ -137,7 +137,7 @@ const TimeFilter = ({
                 expandable={false}
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
-                    <ActionSheet.Header title={<Localize i18n_default_text='Filter by trade types' />} />
+                    <ActionSheet.Header title={<Localize i18n_default_text='Filter by time' />} />
                     <ActionSheet.Content className='filter__item__wrapper'>
                         <RadioGroup
                             className='filter__item--radio'

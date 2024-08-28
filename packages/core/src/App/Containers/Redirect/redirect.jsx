@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, useHistory } from 'react-router-dom';
-import { loginUrl, routes, redirectToLogin, SessionStore } from '@deriv/shared';
+import { loginUrl, routes, redirectToLogin, SessionStore, getDomainName } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
 import { Analytics } from '@deriv-com/analytics';
+import Cookies from 'js-cookie';
 
 const Redirect = observer(() => {
     const history = useHistory();
@@ -23,6 +24,24 @@ const Redirect = observer(() => {
         toggleUpdateEmailModal,
         is_mobile,
     } = ui;
+
+    // TODO: remove this after oauth2 migration
+    // get data from cookies and populate local storage for clients
+    // to be logged in coming from OS subdomains
+    const client_accounts = Cookies.get('client.accounts');
+    const active_loginid = Cookies.get('active_loginid');
+
+    if (client_accounts && active_loginid) {
+        localStorage.setItem('client.accounts', client_accounts);
+        localStorage.setItem('active_loginid', active_loginid);
+
+        const domain = getDomainName();
+
+        // remove cookies after populating local storage
+        Cookies.remove('client.accounts', { domain, secure: true });
+        Cookies.remove('active_loginid', { domain, secure: true });
+        window.location.reload();
+    }
 
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);

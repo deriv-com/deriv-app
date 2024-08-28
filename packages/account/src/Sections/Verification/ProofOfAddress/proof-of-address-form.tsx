@@ -1,25 +1,19 @@
 import React from 'react';
 import { Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
 import { useDevice } from '@deriv-com/ui';
-import { Loading, Button, Text, ThemedScrollbars, FormSubmitButton, Modal, HintBox } from '@deriv/components';
+import { Loading } from '@deriv/components';
 import { useFileUploader } from '@deriv/hooks';
 import { validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
-import FilesDescription from '../../../Components/file-uploader-container/files-descriptions';
-import FormFooter from '../../../Components/form-footer';
-import FormBody from '../../../Components/form-body';
-import FormBodySection from '../../../Components/form-body-section';
-import FormSubHeader from '../../../Components/form-sub-header';
 import LoadErrorMessage from '../../../Components/load-error-message';
 import LeaveConfirm from '../../../Components/leave-confirm';
-import FileUploaderContainer from '../../../Components/file-uploader-container';
-import CommonMistakeExamples from '../../../Components/poa/common-mistakes/common-mistake-examples';
-import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
 import { isServerError, validate } from '../../../Helpers/utils';
-import { getFileUploaderDescriptions } from '../../../Constants/file-uploader';
 import { API_ERROR_CODES } from '../../../Constants/api-error-codes';
 import { DocumentUploadRequest } from '@deriv/api-types';
+import POADesktopLayout from './poa-desktop-layout';
+import { TPOAFormState } from '../../../Types';
+import { useTranslations } from '@deriv-com/translations';
+import POAMobileLayout from './poa-mobile-layout';
 
 type TProofOfAddressForm = {
     className: string;
@@ -37,11 +31,9 @@ type TFormInitialValues = Record<
     document_type?: Record<'text' | 'value', string>;
 };
 
-type TFormState = Record<'is_btn_loading' | 'is_submit_success' | 'should_allow_submit' | 'should_show_form', boolean>;
-
 const ProofOfAddressForm = observer(
     ({ is_resubmit, is_for_cfd_modal, onSubmit, onSubmitForCFDModal, className }: Partial<TProofOfAddressForm>) => {
-        const { isDesktop } = useDevice();
+        const { isMobile, isDesktop } = useDevice();
         const { client, notifications } = useStore();
         const { account_settings, fetchResidenceList, fetchStatesList, getChangeableFields, states_list, is_eu } =
             client;
@@ -51,7 +43,6 @@ const ProofOfAddressForm = observer(
             removeNotificationByKey,
         } = notifications;
         const [document_files, setDocumentFiles] = React.useState<File[]>([]);
-        const [file_selection_error, setFileSelectionError] = React.useState<string | null>(null);
         const [is_loading, setIsLoading] = React.useState(true);
         const [form_values, setFormValues] = React.useState<TFormInitialValues>({
             address_line_1: '',
@@ -61,7 +52,7 @@ const ProofOfAddressForm = observer(
             address_postcode: '',
         });
         const [api_initial_load_error, setAPIInitialLoadError] = React.useState(null);
-        const [form_state, setFormState] = React.useState<TFormState>({
+        const [form_state, setFormState] = React.useState<TPOAFormState>({
             is_btn_loading: false,
             is_submit_success: false,
             should_allow_submit: true,
@@ -70,9 +61,8 @@ const ProofOfAddressForm = observer(
 
         const [should_scroll_to_top, setShouldScrollToTop] = React.useState(false);
 
-        const poa_uploader_files_descriptions = React.useMemo(() => getFileUploaderDescriptions('poa', is_eu), []);
-
         const { upload } = useFileUploader();
+        const { localize } = useTranslations();
 
         React.useEffect(() => {
             fetchResidenceList?.().then(() => {
@@ -102,8 +92,6 @@ const ProofOfAddressForm = observer(
                 setShouldScrollToTop(false);
             }
         }, [should_scroll_to_top]);
-
-        const changeable_fields = getChangeableFields();
 
         const validateFields = (values: TFormInitialValues) => {
             setFormState({ ...form_state, ...{ should_allow_submit: false } });
@@ -278,7 +266,7 @@ const ProofOfAddressForm = observer(
         } else {
             form_initial_values.address_state = '';
         }
-        const setOffset = (status: { msg: string }) => {
+        const setOffset = (status: { msg: string }): string => {
             const mobile_scroll_offset = status?.msg ? '200px' : '154px';
             return !isDesktop && !is_for_cfd_modal ? mobile_scroll_offset : '80px';
         };
@@ -292,94 +280,32 @@ const ProofOfAddressForm = observer(
                 validate={validateFields}
                 enableReinitialize
             >
-                {({ status, handleSubmit, isSubmitting, isValid }) => (
-                    <>
+                {() => (
+                    <React.Fragment>
                         <LeaveConfirm onDirty={!isDesktop ? showForm : undefined} />
-                        {form_state.should_show_form && (
-                            <form noValidate className='account-form account-form_poa' onSubmit={handleSubmit}>
-                                <ThemedScrollbars
-                                    height='572px'
-                                    is_bypassed={!is_for_cfd_modal || !isDesktop}
+                        {form_state.should_show_form &&
+                            (isMobile ? (
+                                <POAMobileLayout
                                     className={className}
-                                >
-                                    <FormBody scroll_offset={setOffset(status)} isFullHeight={!isDesktop}>
-                                        {(status?.msg || is_resubmit) && (
-                                            <HintBox
-                                                className='account-form_poa-submit-error'
-                                                icon='IcAlertDanger'
-                                                message={
-                                                    <Text as='p' size={!isDesktop ? 'xxxs' : 'xs'}>
-                                                        {!status?.msg && is_resubmit && (
-                                                            <Localize i18n_default_text='We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.' />
-                                                        )}
-                                                        {status?.msg}
-                                                    </Text>
-                                                }
-                                                is_danger
-                                                id='dt_poa_submit-error'
-                                            />
-                                        )}
-                                        <FormSubHeader title={localize('Enter your address')} title_text_size='s' />
-                                        <PersonalDetailsForm
-                                            is_qualified_for_poa
-                                            editable_fields={changeable_fields}
-                                            states_list={states_list}
-                                        />
-                                        <FormSubHeader title={localize('Submit your document')} title_text_size='s' />
-                                        <FormBodySection>
-                                            <FileUploaderContainer
-                                                onFileDrop={files => {
-                                                    setDocumentFiles(files);
-                                                }}
-                                                onError={setFileSelectionError}
-                                                files_description={
-                                                    <FilesDescription
-                                                        title={poa_uploader_files_descriptions.title}
-                                                        descriptions={poa_uploader_files_descriptions.descriptions}
-                                                    />
-                                                }
-                                                examples={<CommonMistakeExamples />}
-                                                country_of_residence={account_settings?.country_code as string}
-                                            />
-                                        </FormBodySection>
-                                    </FormBody>
-                                </ThemedScrollbars>
-                                {is_for_cfd_modal ? (
-                                    <Modal.Footer has_separator>
-                                        <FormSubmitButton
-                                            is_disabled={
-                                                isSubmitting ||
-                                                !isValid ||
-                                                (document_files && document_files.length < 1) ||
-                                                !!file_selection_error
-                                            }
-                                            label={localize('Continue')}
-                                            is_absolute={!isDesktop}
-                                            is_loading={isSubmitting}
-                                        />
-                                    </Modal.Footer>
-                                ) : (
-                                    <FormFooter className='account-form__footer-poa'>
-                                        <Button
-                                            className='account-form__footer-btn'
-                                            type='submit'
-                                            is_disabled={
-                                                isSubmitting ||
-                                                !isValid ||
-                                                (document_files && document_files.length < 1) ||
-                                                !!file_selection_error
-                                            }
-                                            has_effect
-                                            is_loading={form_state.is_btn_loading}
-                                            is_submit_success={form_state.is_submit_success}
-                                            text={localize('Save and submit')}
-                                            primary
-                                        />
-                                    </FormFooter>
-                                )}
-                            </form>
-                        )}
-                    </>
+                                    setOffset={setOffset}
+                                    is_for_cfd_modal={is_for_cfd_modal}
+                                    is_resubmit={is_resubmit}
+                                    setDocumentFiles={setDocumentFiles}
+                                    document_files={document_files}
+                                    form_state={form_state}
+                                />
+                            ) : (
+                                <POADesktopLayout
+                                    className={className}
+                                    setOffset={setOffset}
+                                    is_for_cfd_modal={is_for_cfd_modal}
+                                    is_resubmit={is_resubmit}
+                                    setDocumentFiles={setDocumentFiles}
+                                    document_files={document_files}
+                                    form_state={form_state}
+                                />
+                            ))}
+                    </React.Fragment>
                 )}
             </Formik>
         );

@@ -14,6 +14,7 @@ type TPageOverlay = {
     header_classname?: string;
     has_return_icon?: boolean;
     onReturn?: () => void;
+    hide_header?: boolean;
 };
 
 const PageOverlay = ({
@@ -26,6 +27,7 @@ const PageOverlay = ({
     portal_id,
     header_classname,
     has_return_icon,
+    hide_header,
     onReturn,
 }: React.PropsWithChildren<TPageOverlay>) => {
     const page_overlay_ref = React.useRef<HTMLDivElement>(null);
@@ -38,7 +40,7 @@ const PageOverlay = ({
                 'dc-page-overlay-portal': !!portal_id,
             })}
         >
-            {header && (
+            {!hide_header && header && (
                 <div className={classNames('dc-page-overlay__header', { 'dc-page-app__header ': is_from_app })}>
                     <div className='dc-page-overlay__header-wrapper'>
                         <div className={classNames('dc-page-overlay__header-title', header_classname)}>

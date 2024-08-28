@@ -65,6 +65,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
                 header={selected_route?.getTitle?.()}
                 onClickClose={onClickClose}
                 is_from_app={is_from_derivgo}
+                hide_header={selected_route?.hide_header}
             >
                 <RouteComponent component_icon={selected_route.icon_component} />
             </PageOverlay>

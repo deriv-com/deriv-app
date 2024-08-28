@@ -19,6 +19,7 @@ export type TRoute = Partial<{
     is_disabled: boolean;
     subroutes: TRoute[];
     routes: TRoute[];
+    hide_header?: boolean;
 }>;
 
 type TGetSelectedRoute = {

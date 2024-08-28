@@ -1,3 +1,4 @@
+import React from 'react';
 import { TFilesDescription, TListItem } from '../Types';
 import { localize, Localize } from '@deriv-com/translations';
 

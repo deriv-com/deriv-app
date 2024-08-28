@@ -677,7 +677,7 @@ export default class GeneralStore extends BaseStore {
     setIsScheduleAvailable(is_schedule_available) {
         this.is_schedule_available = is_schedule_available;
     }
-    
+
     setListItemLimit(list_item_limit) {
         this.list_item_limit = list_item_limit;
     }

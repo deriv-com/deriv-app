@@ -46,7 +46,8 @@ const BusinessHourModalMain = ({ business_days }: TBusinessHourModalMain) => {
                 })}
             </div>
             <Text as='p' className='business-hour-modal-main__hint' size='xxs'>
-                <Localize i18n_default_text='*Some ads may not be immediately visible to potential buyers due to order processing times.' />
+                <Localize i18n_default_text='* You can only place orders on other ads during your set business hours.' />
+                <Localize i18n_default_text='* Some ads may have a delay before becoming visible to potential buyers.*Some ads may not be immediately visible to potential buyers due to order processing times.' />
             </Text>
         </>
     );

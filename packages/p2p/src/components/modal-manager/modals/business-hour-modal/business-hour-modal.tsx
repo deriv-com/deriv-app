@@ -37,7 +37,7 @@ const HeaderRenderer = ({ show_edit }: { show_edit: boolean }) => (
         {show_edit ? (
             <Localize i18n_default_text='Edit business hour' />
         ) : (
-            <Localize i18n_default_text='Set your business hours' />
+            <Localize i18n_default_text='Business hours' />
         )}
     </Text>
 );

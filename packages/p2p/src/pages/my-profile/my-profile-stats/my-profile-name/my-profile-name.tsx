@@ -138,8 +138,8 @@ const MyProfileName = () => {
                                 </div>
                             )}
                             <div className='my-profile-name__rating__row'>
-                                    <MyProfileNameBusinessHours />
-                                </div>
+                                <MyProfileNameBusinessHours />
+                            </div>
                         </div>
                         {!isDesktop && (
                             <div className='my-profile-name__row'>

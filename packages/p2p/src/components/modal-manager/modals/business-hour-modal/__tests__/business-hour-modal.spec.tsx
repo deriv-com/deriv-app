@@ -48,7 +48,7 @@ describe('<BusinessHourModal />', () => {
     it('it should render the Main screen for business hour modal', () => {
         render(<BusinessHourModal />);
 
-        expect(screen.getByText('Set your business hours')).toBeInTheDocument();
+        expect(screen.getByText('Business hours')).toBeInTheDocument();
         expect(
             screen.getByText(
                 'Set the hours you’re available to accept orders. Your ads will only be visible to others during these times.'
@@ -88,7 +88,7 @@ describe('<BusinessHourModal />', () => {
 
         render(<BusinessHourModal />);
 
-        expect(screen.getByText('Set your business hours')).toBeInTheDocument();
+        expect(screen.getByText('Business hours')).toBeInTheDocument();
         expect(
             screen.getByText(
                 'Set the hours you’re available to accept orders. Your ads will only be visible to others during these times.'

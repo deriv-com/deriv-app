@@ -13,6 +13,11 @@ jest.mock('@deriv/components', () => ({
     useDevice: () => ({ isMobile: false }),
 }));
 
+jest.mock('@deriv/quill-icons', () => ({
+    ...jest.requireActual('@deriv/quill-icons'),
+    DerivLightDmt5PasswordIcon: () => 'DerivLightDmt5PasswordIcon',
+}));
+
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     getErrorMessages: jest.fn().mockReturnValue({
@@ -31,27 +36,11 @@ describe('<MT5CreatePassword/>', () => {
     const mockFn = jest.fn();
     const mockSubmitMt5Password = jest.fn();
     const history = createBrowserHistory();
-    let modal_root_el;
+    let modalRoot;
 
     let mockRootStore = {
-        client: {
-            email: '',
-            account_status: {},
-            updateAccountStatus: jest.fn(),
-            landing_companies: {},
-            mt5_login_list: [],
-            is_dxtrade_allowed: false,
-        },
-        traders_hub: {
-            show_eu_related_content: false,
-        },
         modules: {
             cfd: {
-                is_cfd_password_modal_enabled: true,
-                submitMt5Password: mockSubmitMt5Password,
-                setError: jest.fn(),
-                setCFDSuccessDialog: jest.fn(),
-                has_cfd_error: false,
                 error_message: '',
                 account_title: '',
                 account_type: {},
@@ -73,13 +62,13 @@ describe('<MT5CreatePassword/>', () => {
     };
 
     beforeAll(() => {
-        modal_root_el = document.createElement('div');
-        modal_root_el.setAttribute('id', 'modal_root');
-        document.body.appendChild(modal_root_el);
+        modalRoot = document.createElement('div');
+        modalRoot.setAttribute('id', 'modal_root');
+        document.body.appendChild(modalRoot);
     });
 
     afterAll(() => {
-        document.body.removeChild(modal_root_el);
+        document.body.removeChild(modalRoot);
     });
 
     it('should render MT5CreatePassword component', async () => {
@@ -92,27 +81,19 @@ describe('<MT5CreatePassword/>', () => {
             }
         );
 
-        expect(await screen.findByTestId('dt_create_password')).toBeInTheDocument();
+        expect(await screen.findByTestId('dt_mt5_create_password')).toBeInTheDocument();
     });
 
     it('should display IcMt5OnePassword icon in the component', async () => {
-        const store = mockStore(mockRootStore);
-
-        store.client.account_status = { status: ['mt5_password_not_set'] };
-        store.traders_hub.show_eu_related_content = true;
-        store.modules.cfd.account_type = { category: 'real' };
-        store.modules.cfd.error_type = 'PasswordError';
-        store.modules.cfd.is_cfd_success_dialog_enabled = true;
-
         render(
             <Router history={history}>
                 <MT5CreatePassword {...default_props} />
             </Router>,
             {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+                wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
             }
         );
-        expect(await screen.findByText('IcMt5OnePassword')).toBeInTheDocument();
+        expect(await screen.findByText('DerivLightDmt5PasswordIcon')).toBeInTheDocument();
     });
 
     it('should display password field for user to enter the password and hold the entered value', async () => {

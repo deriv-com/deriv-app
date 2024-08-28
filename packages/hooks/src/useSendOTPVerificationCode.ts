@@ -4,6 +4,7 @@ import { TSocketError } from '@deriv/api/types';
 import { localize } from '@deriv/translations';
 import useRequestPhoneNumberOTP from './useRequestPhoneNumberOTP';
 import { useStore } from '@deriv/stores';
+import useSettings from './useSettings';
 
 /** A hook for verifying Phone Number OTP and Email OTP */
 const useSendOTPVerificationCode = () => {
@@ -18,6 +19,7 @@ const useSendOTPVerificationCode = () => {
         isSuccess: is_phone_number_verified,
         ...rest
     } = useMutation('phone_number_verify');
+    const { refetch } = useSettings();
     const { sendEmailOTPVerification, email_otp_error, is_email_verified, requestOnSMS, requestOnWhatsApp } =
         useRequestPhoneNumberOTP();
 
@@ -30,6 +32,7 @@ const useSendOTPVerificationCode = () => {
                 setPhoneOtpErrorMessage(localize('Invalid code. Try again.'));
                 break;
             case 'NoAttemptsLeft':
+                refetch();
                 setIsForcedToExitPnv(true);
                 setShowCoolDownPeriodModal(true);
                 break;
@@ -48,6 +51,7 @@ const useSendOTPVerificationCode = () => {
                 setPhoneOtpErrorMessage(localize('Invalid code. Try again or get a new code.'));
                 break;
             case 'NoAttemptsLeft':
+                refetch();
                 setIsForcedToExitPnv(true);
                 setShowCoolDownPeriodModal(true);
                 break;

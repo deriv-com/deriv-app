@@ -4,6 +4,7 @@ import { useMutation } from '@deriv/api';
 import useSendOTPVerificationCode from '../useSendOTPVerificationCode';
 import useRequestPhoneNumberOTP from '../useRequestPhoneNumberOTP';
 import { mockStore, StoreProvider } from '@deriv/stores';
+import useSettings from '../useSettings';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -11,6 +12,7 @@ jest.mock('@deriv/api', () => ({
 }));
 
 jest.mock('../useRequestPhoneNumberOTP');
+jest.mock('../useSettings');
 
 type TMockResponse = {
     data: null;
@@ -35,6 +37,10 @@ describe('useSendOTPVerificationCode', () => {
         is_email_verified: false,
     };
 
+    const mock_use_settings_value = {
+        refetch: jest.fn(),
+    };
+
     const wrapper = ({ children }: { children: JSX.Element }) => (
         <StoreProvider store={mock_store}>{children}</StoreProvider>
     );
@@ -42,6 +48,7 @@ describe('useSendOTPVerificationCode', () => {
     beforeEach(() => {
         (useMutation as jest.Mock).mockReturnValue(mock_response);
         (useRequestPhoneNumberOTP as jest.Mock).mockReturnValue(mock_request_phone_number_otp_response);
+        (useSettings as jest.Mock).mockReturnValue(mock_use_settings_value);
     });
 
     afterEach(() => {

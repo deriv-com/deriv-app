@@ -2,6 +2,11 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+
+    .submit-your-document,
+    .enter-your-address {
+        padding-top: unset !important;
+    }
 }
 
 .poa-header {

@@ -51,10 +51,9 @@ const POADesktopLayout = observer(
                     <FormBody scroll_offset={setOffset(status)} isFullHeight={!isDesktop}>
                         {(status?.msg || is_resubmit) && (
                             <InlineMessage
-                                // className='account-form_poa-submit-error'
                                 type='error'
                                 message={
-                                    <Text as='p' size={!isDesktop ? 'xxxs' : 'xs'}>
+                                    <Text as='p' size='xs'>
                                         {!status?.msg && is_resubmit && (
                                             <Localize i18n_default_text='We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.' />
                                         )}
@@ -101,7 +100,6 @@ const POADesktopLayout = observer(
                                 !!file_selection_error
                             }
                             label={localize('Continue')}
-                            is_absolute={!isDesktop}
                             is_loading={isSubmitting}
                         />
                     </Modal.Footer>

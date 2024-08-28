@@ -12,7 +12,7 @@ import { Field, FieldProps } from 'formik';
 
 type TFileUploaderContainer = {
     onFileDrop: (files: File[]) => void;
-    country_of_residence: string;
+    country_of_residence?: string;
     files_description?: React.ReactNode;
     examples?: React.ReactNode;
     onError?: (error_message: string) => void;
@@ -49,26 +49,30 @@ const FileUploaderContainer = ({
         <div className='file-uploader__container' data-testid='dt_file_uploader_container'>
             {files_description}
             {examples}
-            <Text size={isMobile ? 'xxs' : 'xs'} as='div' className='file-uploader__file-title' weight='bold'>
-                <Localize i18n_default_text='Select the type of document:' />
-            </Text>
-            <Field name='document_type'>
-                {({ field, form: { setFieldValue } }: FieldProps<string>) => (
-                    <Autocomplete
-                        {...field}
-                        data-lpignore='true'
-                        autoComplete='off'
-                        list_items={document_list}
-                        type='text'
-                        value={field.value?.text}
-                        placeholder={localize('Select a document')}
-                        onItemSelection={(item: TListItem) => {
-                            setFieldValue('document_type', item, true);
-                        }}
-                        required
-                    />
-                )}
-            </Field>
+            {country_of_residence && (
+                <React.Fragment>
+                    <Text size={isMobile ? 'xxs' : 'xs'} as='div' className='file-uploader__file-title' weight='bold'>
+                        <Localize i18n_default_text='Select the type of document:' />
+                    </Text>
+                    <Field name='document_type'>
+                        {({ field, form: { setFieldValue } }: FieldProps<string>) => (
+                            <Autocomplete
+                                {...field}
+                                data-lpignore='true'
+                                autoComplete='off'
+                                list_items={document_list}
+                                type='text'
+                                value={field.value?.text}
+                                placeholder={localize('Select a document')}
+                                onItemSelection={(item: TListItem) => {
+                                    setFieldValue('document_type', item, true);
+                                }}
+                                required
+                            />
+                        )}
+                    </Field>
+                </React.Fragment>
+            )}
             <Text size={isMobile ? 'xxs' : 'xs'} as='div' className='file-uploader__file-title' weight='bold'>
                 <Localize i18n_default_text='Upload file' />
             </Text>

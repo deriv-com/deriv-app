@@ -267,8 +267,8 @@ const ProofOfAddressForm = observer(
             form_initial_values.address_state = '';
         }
         const setOffset = (status: { msg: string }): string => {
-            const mobile_scroll_offset = status?.msg ? '200px' : '154px';
-            return !isDesktop && !is_for_cfd_modal ? mobile_scroll_offset : '80px';
+            const mobile_scroll_offset = status?.msg ? '200px' : '166px';
+            return !isDesktop && !is_for_cfd_modal ? mobile_scroll_offset : '94px';
         };
 
         return (
@@ -286,7 +286,6 @@ const ProofOfAddressForm = observer(
                         {form_state.should_show_form &&
                             (isMobile ? (
                                 <POAMobileLayout
-                                    className={className}
                                     setOffset={setOffset}
                                     is_for_cfd_modal={is_for_cfd_modal}
                                     is_resubmit={is_resubmit}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
-import { Text, InlineMessage, ThemedScrollbars, Button } from '@deriv/components';
+import { Text, InlineMessage, Button } from '@deriv/components';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import clsx from 'clsx';
@@ -14,7 +14,6 @@ import FormSubHeader from '../../../Components/form-sub-header';
 import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
 import { TPOAFormState } from '../../../Types';
 import FormFooter from '../../../Components/form-footer';
-import FormBodySection from '../../../Components/form-body-section';
 import FileUploaderContainer from '../../../Components/file-uploader-container';
 import FilesDescription from '../../../Components/file-uploader-container/files-descriptions';
 import CommonMistakeExamples from '../../../Components/poa/common-mistakes/common-mistake-examples';
@@ -44,15 +43,7 @@ const ProgressBar = ({ is_active }: { is_active: boolean }) => (
 );
 
 const POAMobileLayout = observer(
-    ({
-        is_for_cfd_modal,
-        className,
-        setOffset,
-        is_resubmit,
-        form_state,
-        document_files,
-        setDocumentFiles,
-    }: TPOAMobileLayout) => {
+    ({ is_for_cfd_modal, setOffset, is_resubmit, form_state, document_files, setDocumentFiles }: TPOAMobileLayout) => {
         const history = useHistory();
         const { localize } = useTranslations();
         const { isDesktop } = useDevice();
@@ -92,10 +83,15 @@ const POAMobileLayout = observer(
                                 components={[<strong key={0} />]}
                             />
                         </Text>
-                        <StandaloneXmarkBoldIcon
-                            iconSize='md'
-                            onClick={() => history.push(shared_routes.traders_hub)}
-                        />
+                        {!is_for_cfd_modal && (
+                            <StandaloneXmarkBoldIcon
+                                iconSize='md'
+                                onClick={() => {
+                                    console.log('Close clicked');
+                                    history.push(shared_routes.traders_hub);
+                                }}
+                            />
+                        )}
                     </div>
                     <div className='timeline-item'>
                         <ProgressBar is_active={step <= 2} />
@@ -103,89 +99,82 @@ const POAMobileLayout = observer(
                     </div>
                 </div>
                 <Form noValidate className='account-form account-form_poa' onSubmit={handleSubmit}>
-                    <ThemedScrollbars
-                        height='572px'
-                        is_bypassed={!is_for_cfd_modal || !isDesktop}
-                        className={className}
-                    >
-                        <FormBody scroll_offset={setOffset(status)} isFullHeight={!isDesktop}>
-                            {(status?.msg || is_resubmit) && (
-                                <InlineMessage
-                                    type='error'
-                                    message={
-                                        <Text as='p' size={!isDesktop ? 'xxxs' : 'xs'}>
-                                            {!status?.msg && is_resubmit && (
-                                                <Localize i18n_default_text='We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.' />
-                                            )}
-                                            {status?.msg}
-                                        </Text>
-                                    }
-                                    className='poa-error-banner'
+                    <FormBody scroll_offset={setOffset(status)}>
+                        {(status?.msg || is_resubmit) && (
+                            <InlineMessage
+                                type='error'
+                                message={
+                                    <Text as='p' size='xxxs'>
+                                        {!status?.msg && is_resubmit && (
+                                            <Localize i18n_default_text='We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.' />
+                                        )}
+                                        {status?.msg}
+                                    </Text>
+                                }
+                                className='poa-error-banner'
+                                id='dt_poa_submit-error'
+                            />
+                        )}
+                        {step === 1 && (
+                            <React.Fragment>
+                                <FormSubHeader title={localize('Enter your address')} title_text_size='s' />
+                                <PersonalDetailsForm
+                                    /* eslint-disable @typescript-eslint/ban-ts-comment */
+                                    // @ts-nocheck This needs to fixed in PersonalDetailsForm
+                                    is_qualified_for_poa
+                                    editable_fields={changeable_fields}
+                                    states_list={states_list}
                                 />
-                            )}
-                            {step === 1 && (
-                                <React.Fragment>
-                                    <FormSubHeader title={localize('Enter your address')} title_text_size='s' />
-                                    <PersonalDetailsForm
-                                        /* eslint-disable @typescript-eslint/ban-ts-comment */
-                                        // @ts-nocheck This needs to fixed in PersonalDetailsForm
-                                        is_qualified_for_poa
-                                        editable_fields={changeable_fields}
-                                        states_list={states_list}
+                                <FormFooter className='account-form__footer-poa'>
+                                    <Button
+                                        className='account-form__footer-btn'
+                                        type='button'
+                                        has_effect
+                                        text={localize('Next')}
+                                        primary
+                                        is_disabled={isNextBtnDisabled}
+                                        onClick={() => setStep(prev_step => prev_step + 1)}
                                     />
-                                    <FormFooter className='account-form__footer-poa'>
-                                        <Button
-                                            className='account-form__footer-btn'
-                                            type='button'
-                                            has_effect
-                                            text={localize('Next')}
-                                            primary
-                                            is_disabled={isNextBtnDisabled}
-                                            onClick={() => setStep(prev_step => prev_step + 1)}
+                                </FormFooter>
+                            </React.Fragment>
+                        )}
+                        {step === 2 && (
+                            <React.Fragment>
+                                <FormSubHeader title={localize('Submit your document')} title_text_size='s' />
+                                <FileUploaderContainer
+                                    onFileDrop={files => {
+                                        setDocumentFiles(files);
+                                    }}
+                                    onError={setFileSelectionError}
+                                    files_description={
+                                        <FilesDescription
+                                            title={poa_uploader_files_descriptions.title}
+                                            descriptions={poa_uploader_files_descriptions.descriptions}
                                         />
-                                    </FormFooter>
-                                </React.Fragment>
-                            )}
-                            {step === 2 && (
-                                <React.Fragment>
-                                    <FormSubHeader title={localize('Submit your document')} title_text_size='s' />
-                                    <FormBodySection>
-                                        <FileUploaderContainer
-                                            onFileDrop={files => {
-                                                setDocumentFiles(files);
-                                            }}
-                                            onError={setFileSelectionError}
-                                            files_description={
-                                                <FilesDescription
-                                                    title={poa_uploader_files_descriptions.title}
-                                                    descriptions={poa_uploader_files_descriptions.descriptions}
-                                                />
-                                            }
-                                            examples={<CommonMistakeExamples />}
-                                            country_of_residence={account_settings?.country_code as string}
-                                        />
-                                    </FormBodySection>
-                                    <FormFooter className='account-form__footer-poa'>
-                                        <Button
-                                            className='account-form__footer-btn'
-                                            type='submit'
-                                            has_effect
-                                            text={localize('Submit')}
-                                            primary
-                                            is_disabled={
-                                                isSubmitting ||
-                                                !isValid ||
-                                                (document_files && document_files.length < 1) ||
-                                                !!file_selection_error
-                                            }
-                                            is_loading={form_state.is_btn_loading}
-                                            is_submit_success={form_state.is_submit_success}
-                                        />
-                                    </FormFooter>
-                                </React.Fragment>
-                            )}
-                        </FormBody>
-                    </ThemedScrollbars>
+                                    }
+                                    examples={<CommonMistakeExamples />}
+                                    country_of_residence={account_settings?.country_code as string}
+                                />
+                                <FormFooter className='account-form__footer-poa'>
+                                    <Button
+                                        className='account-form__footer-btn'
+                                        type='submit'
+                                        has_effect
+                                        text={localize('Submit')}
+                                        primary
+                                        is_disabled={
+                                            isSubmitting ||
+                                            !isValid ||
+                                            (document_files && document_files.length < 1) ||
+                                            !!file_selection_error
+                                        }
+                                        is_loading={form_state.is_btn_loading}
+                                        is_submit_success={form_state.is_submit_success}
+                                    />
+                                </FormFooter>
+                            </React.Fragment>
+                        )}
+                    </FormBody>
                 </Form>
             </div>
         );

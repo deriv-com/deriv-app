@@ -11,6 +11,7 @@ import { Localize } from '@deriv-com/translations';
 import ConfirmPhoneNumber from './confirm-phone-number';
 import CancelPhoneVerificationModal from './cancel-phone-verification-modal';
 import OTPVerification from './otp-verification';
+import SessionTimeoutModal from './session-timeout-modal';
 import VerificationLinkExpiredModal from './verification-link-expired-modal';
 import './phone-verification.scss';
 
@@ -85,6 +86,7 @@ const PhoneVerificationPage = observer(() => {
                 should_show_verification_link_expired_modal={should_show_verification_link_expired_modal}
                 setShouldShowVerificationLinkExpiredModal={setShouldShowVerificationLinkExpiredModal}
             />
+            <SessionTimeoutModal />
             <CancelPhoneVerificationModal />
             {isDesktop && (
                 <div className='phone-verification__redirect_button'>

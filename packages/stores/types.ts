@@ -546,6 +546,7 @@ type TClientStore = {
             next_attempt?: number;
             next_email_attempt?: number;
             next_verify_attempt?: number;
+            session_timestamp?: number;
         };
     };
     residence_list: ResidenceList;

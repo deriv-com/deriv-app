@@ -19,6 +19,12 @@ jest.mock('react-router', () => ({
         pathname: '/phone-verification',
     }),
 }));
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    usePhoneNumberVerificationSessionTimer: jest.fn(() => ({
+        should_show_session_timeout_modal: false,
+    })),
+}));
 
 describe('CancelPhoneVerificationModal', () => {
     let modal_root_el: HTMLElement;

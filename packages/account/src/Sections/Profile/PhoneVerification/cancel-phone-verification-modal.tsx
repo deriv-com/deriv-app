@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import { observer, useStore } from '@deriv/stores';
-import { usePhoneVerificationAnalytics } from '@deriv/hooks';
+import { usePhoneNumberVerificationSessionTimer, usePhoneVerificationAnalytics } from '@deriv/hooks';
 import { Modal, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
@@ -16,6 +16,7 @@ const CancelPhoneVerificationModal = observer(() => {
     const { setVerificationCode, is_virtual, account_settings } = client;
     const { isMobile } = useDevice();
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
+    const { should_show_session_timeout_modal: is_session_expired } = usePhoneNumberVerificationSessionTimer();
 
     useEffect(() => {
         const unblock = history.block((location: Location) => {
@@ -23,6 +24,7 @@ const CancelPhoneVerificationModal = observer(() => {
                 !show_modal &&
                 !is_virtual &&
                 !is_forced_to_exit_pnv &&
+                !is_session_expired &&
                 !account_settings.phone_number_verification?.verified
             ) {
                 setShowModal(true);
@@ -33,7 +35,14 @@ const CancelPhoneVerificationModal = observer(() => {
         });
 
         return () => unblock();
-    }, [history, show_modal, is_virtual, is_forced_to_exit_pnv, account_settings.phone_number_verification?.verified]);
+    }, [
+        history,
+        show_modal,
+        is_virtual,
+        is_forced_to_exit_pnv,
+        is_session_expired,
+        account_settings.phone_number_verification?.verified,
+    ]);
 
     const handleStayAtPhoneVerificationPage = () => {
         setShowModal(false);

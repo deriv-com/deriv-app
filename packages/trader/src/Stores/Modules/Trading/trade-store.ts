@@ -1,46 +1,47 @@
 import * as Symbol from './Actions/symbol';
 import {
-    WS,
+    BARRIER_COLORS,
+    BARRIER_LINE_STYLES,
     ChartBarrierStore,
     cloneObject,
+    CONTRACT_TYPES,
     convertDurationLimit,
     extractInfoFromShortcode,
     findFirstOpenMarket,
+    formatMoney,
     getBarrierPipSize,
+    getCardLabelsV2,
+    getContractPath,
+    getContractSubtype,
+    getContractTypesConfig,
+    getCurrencyDisplayCode,
     getMinPayout,
     getPlatformSettings,
     getPropertyValue,
-    getContractSubtype,
     getTradeNotificationMessage,
-    isBarrierSupported,
+    getTradeURLParams,
+    hasBarrier,
     isAccumulatorContract,
+    isBarrierSupported,
     isCryptocurrency,
     isEmptyObject,
+    isHighLow,
     isMarketClosed,
     isMultiplierContract,
+    isTouchContract,
     isTurbosContract,
-    isVanillaFxContract,
+    isUpDownContract,
     isVanillaContract,
+    isVanillaFxContract,
     pickDefaultSymbol,
     resetEndTimeOnVolatilityIndices,
+    routes,
     setLimitOrderBarriers,
+    setTradeURLParams,
     showDigitalOptionsUnavailableError,
     showUnavailableLocationError,
-    getCurrencyDisplayCode,
-    BARRIER_COLORS,
-    BARRIER_LINE_STYLES,
     TRADE_TYPES,
-    hasBarrier,
-    isHighLow,
-    CONTRACT_TYPES,
-    getContractTypesConfig,
-    setTradeURLParams,
-    getTradeURLParams,
-    isTouchContract,
-    getCardLabelsV2,
-    formatMoney,
-    getContractPath,
-    routes,
+    WS,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -1237,19 +1238,24 @@ export default class TradeStore extends BaseStore {
             updateChartType,
             updateGranularity,
         } = this.root_store.contract_trade || {};
-        if (isAccumulatorContract(obj_new_values.contract_type) || isDigitTradeType(obj_new_values.contract_type)) {
+        const has_line_chart =
+            isAccumulatorContract(obj_new_values.contract_type) ||
+            isDigitTradeType(obj_new_values.contract_type) ||
+            isUpDownContract(obj_new_values.contract_type);
+        if ((chart_type !== 'line' || granularity !== 0) && has_line_chart) {
             savePreviousChartMode(chart_type, granularity);
             updateGranularity(0);
             updateChartType('line');
         } else if (
-            (obj_new_values.contract_type || obj_new_values.symbol) &&
+            !has_line_chart &&
+            obj_new_values.contract_type &&
             prev_chart_type &&
             prev_granularity &&
             (prev_chart_type !== chart_type || prev_granularity !== granularity)
         ) {
             updateGranularity(prev_granularity);
             updateChartType(prev_chart_type);
-            savePreviousChartMode('', null);
+            savePreviousChartMode(chart_type, granularity);
         }
         if (/\bduration\b/.test(Object.keys(obj_new_values) as unknown as string)) {
             // TODO: fix this in input-field.jsx

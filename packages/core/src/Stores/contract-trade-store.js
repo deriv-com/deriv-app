@@ -32,7 +32,7 @@ export default class ContractTradeStore extends BaseStore {
 
     // Chart specific observables
     granularity = +LocalStore.get('contract_trade.granularity') || 0;
-    chart_type = LocalStore.get('contract_trade.chart_style') || 'line';
+    chart_type = LocalStore.get('contract_trade.chart_style') || 'candles';
     prev_chart_type = '';
     prev_granularity = null;
 

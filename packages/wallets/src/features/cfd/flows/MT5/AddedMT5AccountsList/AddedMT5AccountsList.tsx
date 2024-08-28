@@ -3,11 +3,10 @@ import classNames from 'classnames';
 import { useAuthorize, useJurisdictionStatus, useTradingPlatformStatus } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { InlineMessage } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
-import useDevice from '../../../../../hooks/useDevice';
 import { THooks } from '../../../../../types';
 import { PlatformStatusBadge } from '../../../components/PlatformStatusBadge';
 import {
@@ -51,11 +50,6 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     return (
         <TradingAccountCard
             disabled={jurisdictionStatus.is_pending}
-            leading={
-                <div className='wallets-added-mt5__icon'>
-                    {getMarketTypeDetails()[account.market_type || MARKET_TYPE.ALL].icon}
-                </div>
-            }
             onClick={() => {
                 if (hasPlatformStatus)
                     return show(<TradingPlatformStatusModal isServerMaintenance={isServerMaintenance} />, {
@@ -75,32 +69,16 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                           );
                 }
             }}
-            trailing={
-                <div
-                    className={classNames('wallets-added-mt5__icon', {
-                        'wallets-added-mt5__icon--pending': jurisdictionStatus.is_pending,
-                    })}
-                >
-                    {showPlatformStatus ? (
-                        <PlatformStatusBadge
-                            badgeSize='md'
-                            className='wallets-added-mt5__icon--badge'
-                            mt5Account={account}
-                        />
-                    ) : (
-                        <div className='wallets-available-mt5__icon'>
-                            <LabelPairedChevronRightCaptionRegularIcon width={16} />
-                        </div>
-                    )}
-                </div>
-            }
         >
-            <div className='wallets-added-mt5__details'>
+            <TradingAccountCard.Icon className='wallets-added-mt5__icon'>
+                {getMarketTypeDetails()[account.market_type || MARKET_TYPE.ALL].icon}
+            </TradingAccountCard.Icon>
+            <TradingAccountCard.Content className='wallets-added-mt5__details'>
                 <div className='wallets-added-mt5__details-title'>
                     <Text size='sm'>{title}</Text>
                     {!activeWallet?.is_virtual && (
                         <div className='wallets-added-mt5__details-title-landing-company'>
-                            <Text color='black' size={isMobile ? 'sm' : 'xs'}>
+                            <Text color='prominent' size={isMobile ? 'sm' : 'xs'}>
                                 {account.landing_company_short?.toUpperCase()}
                             </Text>
                         </div>
@@ -129,26 +107,47 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     <div className='wallets-added-mt5__details-badge'>
                         <InlineMessage size='xs' type='error' variant='outlined'>
                             <Text color='error' size='2xs' weight='bold'>
-                                Verification failed.{' '}
-                                <a
-                                    onClick={() =>
-                                        show(
-                                            <VerificationFailedModal
-                                                selectedJurisdiction={account.landing_company_short}
-                                            />,
-                                            {
-                                                defaultRootId: 'wallets_modal_root',
+                                <Localize
+                                    components={[
+                                        <a
+                                            className='wallets-added-mt5__badge--error-link'
+                                            key={0}
+                                            onClick={() =>
+                                                show(
+                                                    <VerificationFailedModal
+                                                        selectedJurisdiction={account.landing_company_short}
+                                                    />,
+                                                    {
+                                                        defaultRootId: 'wallets_modal_root',
+                                                    }
+                                                )
                                             }
-                                        )
-                                    }
-                                >
-                                    <Localize i18n_default_text='Why?' />
-                                </a>
+                                        />,
+                                    ]}
+                                    i18n_default_text='Verification failed <0>Why?</0>'
+                                />
                             </Text>
                         </InlineMessage>
                     </div>
                 )}
-            </div>
+            </TradingAccountCard.Content>
+            <TradingAccountCard.Button
+                className={classNames('wallets-added-mt5__icon', {
+                    'wallets-added-mt5__icon--pending': jurisdictionStatus.is_pending,
+                })}
+            >
+                {showPlatformStatus ? (
+                    <PlatformStatusBadge
+                        badgeSize='md'
+                        className='wallets-added-mt5__icon--badge'
+                        mt5Account={account}
+                    />
+                ) : (
+                    <div className='wallets-available-mt5__icon'>
+                        <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                    </div>
+                )}
+            </TradingAccountCard.Button>
         </TradingAccountCard>
     );
 };

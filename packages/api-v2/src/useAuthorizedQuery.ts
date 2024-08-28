@@ -50,9 +50,11 @@ const useAuthorizedQuery = <T extends TSocketEndpointNames>(
         keys.push(loginid);
     }
 
+    const isEnabled = typeof options?.enabled === 'boolean' ? options.enabled : true;
+
     return _useQuery<TSocketResponseData<T>, TSocketError<T>>(keys, () => send(name, payload), {
         ...options,
-        enabled: !!(isSuccess && !isLoading && loginid),
+        enabled: !!(isSuccess && !isLoading && loginid && isEnabled),
     });
 };
 

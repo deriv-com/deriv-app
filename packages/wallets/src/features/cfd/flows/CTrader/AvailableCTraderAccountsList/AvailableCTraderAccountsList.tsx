@@ -7,7 +7,6 @@ import { TradingAccountCard, WalletError } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import { CFD_PLATFORMS, PlatformDetails } from '../../../constants';
 import { CTraderSuccessModal } from '../../../modals/CTraderSuccessModal';
-import './AvailableCTraderAccountsList.scss';
 
 const AvailableCTraderAccountsList: React.FC = () => {
     const { hide, show } = useModal();
@@ -56,17 +55,9 @@ const AvailableCTraderAccountsList: React.FC = () => {
     }, [accountType, activeWallet?.wallet_currency_type, error?.error?.message, status]);
 
     return (
-        <TradingAccountCard
-            disabled={isCFDAccountCreationLoading || isCFDAccountCreationSuccess}
-            leading={<div className='wallets-available-ctrader__icon'>{PlatformDetails.ctrader.icon}</div>}
-            onClick={onSubmit}
-            trailing={
-                <div className='wallets-available-ctrader__icon'>
-                    <LabelPairedChevronRightCaptionRegularIcon width={16} />
-                </div>
-            }
-        >
-            <div className='wallets-available-ctrader__details'>
+        <TradingAccountCard disabled={isCFDAccountCreationLoading || isCFDAccountCreationSuccess} onClick={onSubmit}>
+            <TradingAccountCard.Icon>{PlatformDetails.ctrader.icon}</TradingAccountCard.Icon>
+            <TradingAccountCard.Content>
                 <Text size='sm'>{PlatformDetails.ctrader.title}</Text>
                 <Text size='xs'>
                     <Localize
@@ -74,7 +65,10 @@ const AvailableCTraderAccountsList: React.FC = () => {
                         values={{ platform: CFD_PLATFORMS.CFDS }}
                     />
                 </Text>
-            </div>
+            </TradingAccountCard.Content>
+            <TradingAccountCard.Button>
+                <LabelPairedChevronRightCaptionRegularIcon width={16} />
+            </TradingAccountCard.Button>
         </TradingAccountCard>
     );
 };

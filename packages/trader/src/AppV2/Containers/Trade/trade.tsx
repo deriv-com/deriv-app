@@ -23,7 +23,7 @@ const Trade = observer(() => {
     const chart_ref = React.useRef<HTMLDivElement>(null);
 
     const { active_symbols, contract_type, contract_types_list, onMount, onChange, onUnmount } = useTraderStore();
-    const [onboarding_guide_dtrader_v2] = useLocalStorageData<boolean>('onboarding_guide_dtrader_v2', false);
+    const [guide_dtrader_v2] = useLocalStorageData<boolean>('guide_dtrader_v2_trade_page', false);
 
     const trade_types = React.useMemo(() => getTradeTypesList(contract_types_list), [contract_types_list]);
     const symbols = React.useMemo(
@@ -92,7 +92,7 @@ const Trade = observer(() => {
                         </TradeParametersContainer>
                         <PurchaseButton />
                     </div>
-                    {!onboarding_guide_dtrader_v2 && <OnboardingGuide />}
+                    {!guide_dtrader_v2 && <OnboardingGuide type='trade_page' />}
                 </React.Fragment>
             ) : (
                 <Loading.DTraderV2 />

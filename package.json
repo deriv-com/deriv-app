@@ -67,7 +67,7 @@
         "bootstrap:ci": "f () { lerna link && lerna bootstrap --ci --hoist --strict && lerna link ;}; f",
         "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --hoist --strict && lerna link ;}; f",
         "bootstrap:dev": "f () { npm ci && lerna link && lerna bootstrap --hoist --strict && lerna link ;}; f",
-        "build:publish": "f () { lerna exec --scope=@deƒriv/${1:-'*'} -- npm run build:publish $2 ;}; f",
+        "build:publish": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run build:publish $2 ;}; f",
         "build:local": "f () { nx run-many --target=build --projects=@deriv/bot-web-ui,@deriv/trader --parallel=2 ;}; f",
         "build:travis": "nx run-many --projects=@deriv/shared,@deriv/components,@deriv/translations,@deriv/cashier,@deriv/account,@deriv/p2p,@deriv/cfd,@deriv/reports --target=build:travis",
         "build:prod": "export NODE_ENV=staging && npm run build:all && export NODE_ENV=",

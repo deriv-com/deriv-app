@@ -27,13 +27,7 @@ type TTradeParametersProps = {
 const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
     const { contract_type, symbol } = useTraderStore();
     const isVisible = (component_key: string) => {
-        const tradeParams = getTradeParams(symbol);
-
-        if (!tradeParams || !tradeParams[contract_type]) {
-            return false;
-        }
-
-        const params = tradeParams[contract_type];
+        const params = getTradeParams(symbol)?.[contract_type] ?? {};
         return component_key in params;
     };
 

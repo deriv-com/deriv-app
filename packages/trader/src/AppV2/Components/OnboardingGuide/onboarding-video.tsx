@@ -18,6 +18,7 @@ const OnboardingVideo = () => {
             {is_loading && <Skeleton.Square height={218.5} />}
             <video
                 autoPlay
+                data-testid='dt_onboarding_guide_video'
                 muted
                 loop
                 onLoadedData={() => setIsLoading(false)}

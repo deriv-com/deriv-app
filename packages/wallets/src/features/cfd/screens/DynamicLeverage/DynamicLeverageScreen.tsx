@@ -23,6 +23,7 @@ const DynamicLeverageScreen = () => {
                 'wallets-dynamic-leverage-screen__container--hidden':
                     !isDynamicLeverageVisible && isDynamicLeverageHidden,
             })}
+            data-testid='dt_dynamic_leverage_container'
         >
             <Text>
                 <Localize

@@ -5,22 +5,16 @@ import Loadable from 'react-loadable';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { TRADE_TYPES } from '@deriv/shared';
 import { CONTRACT_LIST, AVAILABLE_CONTRACTS } from 'AppV2/Utils/trade-types-utils';
-import { TERM } from 'AppV2/Utils/contract-description-utils';
+import { getTerm } from 'AppV2/Utils/contract-description-utils';
 import TraderProviders from '../../../../trader-providers';
 import Guide from '../guide';
 
-const mediaQueryList = {
-    matches: true,
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-};
 const trade_types = 'Trade types';
 
 jest.mock('@lottiefiles/dotlottie-react', () => ({
     DotLottieReact: jest.fn(() => <div>DotLottieReact</div>),
 }));
 
-window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
 Loadable.preloadAll();
 
 describe('Guide', () => {
@@ -110,7 +104,7 @@ describe('Guide', () => {
 
         userEvent.click(screen.getByText('Guide'));
         userEvent.click(screen.getByText(CONTRACT_LIST.ACCUMULATORS));
-        userEvent.click(screen.getByRole('button', { name: TERM.GROWTH_RATE.toLowerCase() }));
+        userEvent.click(screen.getByRole('button', { name: getTerm().GROWTH_RATE.toLowerCase() }));
 
         expect(screen.getByText(term_definition)).toBeInTheDocument();
     });

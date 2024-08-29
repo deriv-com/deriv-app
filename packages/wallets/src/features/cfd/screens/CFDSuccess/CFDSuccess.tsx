@@ -1,7 +1,9 @@
 import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { WalletMarketCurrencyIcon, WalletSuccess, WalletText } from '../../../../components';
+import { useTranslations } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
+import { WalletMarketCurrencyIcon, WalletSuccess } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import useDevice from '../../../../hooks/useDevice';
 import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../../../types';
@@ -9,7 +11,7 @@ import { CFD_PLATFORMS, getMarketTypeDetails, MARKET_TYPE, PlatformDetails } fro
 import './CFDSuccess.scss';
 
 type TSuccessProps = {
-    description: string;
+    description: React.ReactNode;
     displayBalance:
         | TDisplayBalance.CtraderAccountsList
         | TDisplayBalance.DxtradeAccountsList
@@ -17,7 +19,7 @@ type TSuccessProps = {
     marketType?: TMarketTypes.SortedMT5Accounts;
     platform?: TPlatforms.All;
     renderButton?: ComponentProps<typeof WalletSuccess>['renderButtons'];
-    title: string;
+    title: React.ReactNode;
 };
 
 const CFDSuccess: React.FC<TSuccessProps> = ({
@@ -30,13 +32,14 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
 }) => {
     const { data } = useActiveWalletAccount();
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
     const isDemo = data?.is_virtual;
 
     const isDxtradeOrCtrader =
         marketType === MARKET_TYPE.ALL &&
         (platform === PlatformDetails.dxtrade.platform || platform === PlatformDetails.ctrader.platform);
 
-    let marketTypeTitle = 'Options';
+    let marketTypeTitle = localize('Options');
 
     if (marketType && platform) {
         const isPlatformValid = Object.keys(PlatformDetails).includes(platform);
@@ -68,9 +71,9 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
                                     `wallets-cfd-success__badge--${isDemo ? 'demo' : 'real'}`
                                 )}
                             >
-                                <WalletText color='white' size='2xs' weight='bold'>
-                                    {isDemo ? 'Demo' : 'Real'}
-                                </WalletText>
+                                <Text color='white' size='2xs' weight='bold'>
+                                    {isDemo ? localize('Demo') : localize('Real')}
+                                </Text>
                             </div>
                             <div className='wallets-cfd-success__market-icon'>
                                 <WalletMarketCurrencyIcon
@@ -81,18 +84,21 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
                                 />
                             </div>
                             <div className='wallets-cfd-success__info'>
-                                <WalletText size='2xs'>
+                                <Text size='2xs'>
                                     {platformTitlePrefix} {marketTypeTitle}
-                                </WalletText>
-                                <WalletText color='primary' size='2xs'>
+                                </Text>
+                                <Text color='primary' size='2xs'>
                                     {data?.currency} Wallet
-                                </WalletText>
+                                </Text>
                                 {!displayBalance ? (
-                                    <div className='wallets-skeleton wallets-cfd-success__balance-loader' />
+                                    <div
+                                        className='wallets-skeleton wallets-cfd-success__balance-loader'
+                                        data-testid='dt_wallets_cfd_success_skeleton_loader'
+                                    />
                                 ) : (
-                                    <WalletText size='sm' weight='bold'>
+                                    <Text size='sm' weight='bold'>
                                         {displayBalance}
-                                    </WalletText>
+                                    </Text>
                                 )}
                             </div>
                         </div>

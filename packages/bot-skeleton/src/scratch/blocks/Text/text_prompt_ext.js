@@ -12,8 +12,7 @@ Blockly.Blocks.text_prompt_ext = {
                 this.setOutput(true, 'Number');
             }
             this.initSvg();
-            //commented this line breaks the backward compatibility
-            //this.render(false);
+            this.renderEfficiently();
             return undefined;
         });
     },

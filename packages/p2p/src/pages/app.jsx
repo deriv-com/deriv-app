@@ -1,11 +1,13 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { reaction } from 'mobx';
+import { Analytics } from '@deriv-com/analytics';
 import { Loading } from '@deriv/components';
 import { useP2PCompletedOrdersNotification, useP2PSettings, useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { isEmptyObject, routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import { URLConstants } from '@deriv-com/utils';
 import { init } from 'Utils/server_time';
 import { waitWS } from 'Utils/websocket';
@@ -22,10 +24,10 @@ const App = () => {
         defaultValue: false,
     });
     const { notifications, client, ui, common, modules } = useStore();
-    const { balance, is_logging_in } = client;
+    const { balance, currency, is_logging_in, loginid } = client;
     const { setOnRemount } = modules?.cashier?.general_store;
 
-    const { is_mobile } = ui;
+    const { isDesktop } = useDevice();
     const { setP2POrderProps, setP2PRedirectTo } = notifications;
 
     const history = useHistory();
@@ -44,6 +46,7 @@ const App = () => {
 
     React.useEffect(() => {
         init();
+        general_store.setListItemLimit(isDesktop ? 10 : 50);
 
         general_store.setExternalStores({ client, common, modules, notifications, ui });
         general_store.setWebsocketInit(WS);
@@ -166,7 +169,7 @@ const App = () => {
 
         setActionParam(url_params.get('action'));
 
-        if (is_mobile) {
+        if (!isDesktop) {
             setCodeParam(localStorage.getItem('verification_code.p2p_order_confirm'));
         } else if (!code_param) {
             if (url_params.has('code')) {
@@ -193,11 +196,23 @@ const App = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setQueryOrder]);
 
+    React.useEffect(() => {
+        if (loginid && currency) {
+            Analytics.trackEvent('ce_cashier_deposit_onboarding_form', {
+                action: 'open_deposit_subpage',
+                form_name: 'ce_cashier_deposit_onboarding_form',
+                deposit_category: 'p2p',
+                currency,
+                login_id: loginid,
+            });
+        }
+    }, [currency, loginid]);
+
     const setQueryOrder = React.useCallback(
         input_order_id => {
             const current_query_params = new URLSearchParams(location.search);
 
-            if (is_mobile) {
+            if (!isDesktop) {
                 current_query_params.delete('action');
                 current_query_params.delete('code');
             }

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import BinaryBot from 'Assets/svgs/trading-platform/branding/ic-branding-binarybot-dashboard.svg';
 import CTrader from 'Assets/svgs/trading-platform/branding/ic-branding-ctrader.svg';
 import DBot from 'Assets/svgs/trading-platform/branding/ic-branding-dbot-dashboard.svg';
 import DerivLogo from 'Assets/svgs/trading-platform/branding/ic-branding-deriv-logo.svg';
@@ -13,7 +12,6 @@ import Financial from 'Assets/svgs/trading-platform/branding/ic-branding-mt5-fin
 import SmartTrader from 'Assets/svgs/trading-platform/branding/ic-branding-smarttrader-dashboard.svg';
 import Standard from 'Assets/svgs/trading-platform/branding/ic-branding-standard-dashboard.svg';
 import DropDown from 'Assets/svgs/trading-platform/drop-down.svg';
-import BinaryBotBlue from 'Assets/svgs/trading-platform/ic-appstore-binarybot-blue.svg';
 import DerivTradingLogo from 'Assets/svgs/trading-platform/ic-appstore-deriv-trading-logo.svg';
 import DerivGoBlack from 'Assets/svgs/trading-platform/ic-appstore-derivgo-black.svg';
 import Options from 'Assets/svgs/trading-platform/ic-appstore-options.svg';
@@ -25,8 +23,6 @@ import Demo from 'Assets/svgs/trading-platform/ic-brand-demo.svg';
 import { IconProps } from '../icon-types';
 
 export const PlatformIcons = {
-    BinaryBot,
-    BinaryBotBlue,
     CFDs,
     CTrader,
     DBot,

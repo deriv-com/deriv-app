@@ -3,7 +3,12 @@ import { render, screen } from '@testing-library/react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import SideNoteFAQ from '../side-note-faq';
 
-const mock = mockStore({ ui: { is_desktop: true } });
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
+
+const mock = mockStore({});
 const wrapper = ({ children }: { children: JSX.Element }) => <StoreProvider store={mock}>{children}</StoreProvider>;
 
 describe('SideNoteFAQ', () => {

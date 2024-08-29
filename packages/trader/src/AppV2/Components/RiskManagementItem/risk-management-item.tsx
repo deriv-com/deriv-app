@@ -41,10 +41,9 @@ const RiskManagementItem = observer(
         const errorKey = `contract_update_${type}` as 'contract_update_stop_loss' | 'contract_update_take_profit';
         const errorMessage = validation_errors[errorKey]?.[0] ?? '';
 
-        const messageForMultiplier =
-            is_valid_to_cancel && !is_deal_cancellation ? (
-                <Localize i18n_default_text='Take profit and stop loss are unavailable while deal cancellation is enabled.' />
-            ) : null;
+        const messageForMultiplier = is_valid_to_cancel ? (
+            <Localize i18n_default_text='Take profit and/or stop loss are not available while deal cancellation is active.' />
+        ) : null;
 
         const info_message = {
             [CONTRACT_TYPES.ACCUMULATOR]: (

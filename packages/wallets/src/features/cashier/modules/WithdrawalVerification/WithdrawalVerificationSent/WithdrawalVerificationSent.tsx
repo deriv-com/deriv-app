@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Localize, useTranslations } from '@deriv-com/translations';
+import { Localize } from '@deriv-com/translations';
 import { Button } from '@deriv-com/ui';
 import { WalletsActionScreen } from '../../../../../components';
 import EmailSent from '../../../../../public/images/email-sent.svg';

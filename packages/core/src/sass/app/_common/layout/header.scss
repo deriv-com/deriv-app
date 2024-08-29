@@ -465,9 +465,8 @@
 .contract-details-header-v2 {
     display: flex;
     justify-content: center;
-    height: var(--core-size-2000);
-    align-items: center;
-
+    height: var(--core-spacing-2000);
+    padding: var(--core-spacing-400) var(--core-spacing-50);
     .arrow {
         position: absolute;
         cursor: pointer;

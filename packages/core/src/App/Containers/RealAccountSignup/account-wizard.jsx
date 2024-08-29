@@ -427,7 +427,7 @@ const AccountWizard = observer(props => {
                         }
                         modifiedProps.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                     }
-                
+
                 const country_code = modifiedProps.account_settings.citizen || modifiedProps.residence;
                 /**
                  * If IDV details are present, then submit IDV details

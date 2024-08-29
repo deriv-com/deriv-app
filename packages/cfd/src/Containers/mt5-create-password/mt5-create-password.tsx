@@ -3,10 +3,12 @@ import { Formik, FormikErrors, FormikHelpers } from 'formik';
 import { FormSubmitButton, Icon, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { getCFDPlatformLabel, getCFDPlatformNames, getErrorMessages } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
-import { CATEGORY, CFD_PLATFORMS } from '../Helpers/cfd-config';
-import '../sass/cfd.scss';
-import CfdPasswordModalTnc from './cfd-password-modal-tnc';
+import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
+import { CATEGORY, CFD_PLATFORMS } from '../../Helpers/cfd-config';
+import { DerivLightDmt5PasswordIcon } from '@deriv/quill-icons';
+import './mt5-create-password.scss';
+import '../../sass/cfd.scss';
+import CfdPasswordModalTnc from '../cfd-password-modal-tnc';
 // first MT5 password
 
 export type TCFDPasswordFormValues = { password: string };
@@ -68,21 +70,25 @@ const MT5CreatePassword = ({
                 validateForm,
             }) => (
                 <form onSubmit={handleSubmit}>
-                    <div className='mt5_password'>
-                        <div
-                            className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'
-                            data-testid='dt_create_password'
-                        >
-                            <div className='cfd-password-modal__create-password-content'>
-                                <Icon icon='IcMt5OnePassword' width='100' height='100' />
-                            </div>
-                            <Text size='xs' align='left' className='cfd-password-modal__create-password-description'>
+                    <div
+                        className='mt5-password-modal__content dc-modal__container_mt5-password-modal__body'
+                        data-testid='dt_mt5_create_password'
+                    >
+                        <div className='mt5-password-modal__create-password-content'>
+                            <DerivLightDmt5PasswordIcon height='150px' width='150px' />
+
+                            <Text
+                                size='xs'
+                                align='left'
+                                className='mt5-password-modal__create-password-description'
+                                color='var(--text-prominent)'
+                            >
                                 <Localize
                                     i18n_default_text='Create a password for your {{platform}} account:'
                                     values={{ platform: getCFDPlatformNames(platform) }}
                                 />
                             </Text>
-                            <div className='input-element'>
+                            <div className='mt5-password-modal__mt5-input-element'>
                                 <PasswordMeter
                                     input={values.password}
                                     has_error={!!(touched.password && errors.password)}
@@ -125,6 +131,8 @@ const MT5CreatePassword = ({
                                 onCheck={() => setChecked(prev => !prev)}
                                 need_tnc={need_tnc}
                             />
+                        </div>
+                        <div className='mt5-password-modal__submit-button'>
                             <FormSubmitButton
                                 is_disabled={!values.password || !checked || Object.keys(errors).length > 0}
                                 is_loading={isSubmitting}

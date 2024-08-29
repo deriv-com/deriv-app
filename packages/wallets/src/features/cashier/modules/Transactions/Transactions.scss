@@ -24,6 +24,36 @@
         .deriv-dropdown__items--xs {
             max-height: unset;
         }
+
+        /* stylelint-disable-next-line selector-class-pattern */
+        .deriv-input {
+            &__field {
+                @include rtl {
+                    text-align: right;
+                }
+            }
+
+            &__left-content {
+                @include rtl {
+                    margin-right: unset;
+                    margin-left: 0.8rem;
+                }
+            }
+
+            &__right-content {
+                @include rtl {
+                    margin-left: unset;
+                    margin-right: 1.6rem;
+                }
+            }
+
+            &__label {
+                @include rtl {
+                    left: unset;
+                    right: 1.6rem;
+                }
+            }
+        }
     }
 
     &__header {

@@ -16,10 +16,20 @@
 
     &--prev {
         left: 1.6rem;
+
+        @include rtl {
+            left: unset;
+            right: 1.6rem;
+        }
     }
 
     &--next {
         right: 1.6rem;
+
+        @include rtl {
+            right: unset;
+            left: 1.6rem;
+        }
     }
 
     &:disabled {

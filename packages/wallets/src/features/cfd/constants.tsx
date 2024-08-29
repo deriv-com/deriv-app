@@ -12,11 +12,11 @@ import {
     PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon,
     PartnersProductDerivMt5BrandLightLogoHorizontalIcon,
 } from '@deriv/quill-icons';
-import { localize } from '@deriv-com/translations';
+import { useTranslations } from '@deriv-com/translations';
 import { TPlatforms } from '../../types';
 import { ctraderLinks, whiteLabelLinks } from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 
-export const getMarketTypeDetails = () =>
+export const getMarketTypeDetails = (localize: ReturnType<typeof useTranslations>['localize']) =>
     ({
         all: {
             description: localize('Swap-free CFDs on selected financial and derived instruments'),
@@ -74,7 +74,7 @@ export const companyNamesAndUrls = {
     vanuatu: { name: 'Deriv (V) Ltd', shortcode: 'Vanuatu', tncUrl: 'tnc/general-terms.pdf' },
 } as const;
 
-export const getAppToContentMapper = () =>
+export const getAppToContentMapper = (localize: ReturnType<typeof useTranslations>['localize']) =>
     ({
         ctrader: {
             icon: <LabelPairedWindowsXlIcon />,
@@ -113,7 +113,7 @@ export const PlatformToLabelIconMapper = {
     dxtrade: <DerivProductDerivXBrandDarkWordmarkIcon height={10} width={35} />,
 } as const;
 
-export const getServiceMaintenanceMessages = () =>
+export const getServiceMaintenanceMessages = (localize: ReturnType<typeof useTranslations>['localize']) =>
     ({
         ctrader: localize(
             'Server maintenance occurs every first Saturday of the month from 7 to 10 GMT time. You may experience service disruption during this time.'

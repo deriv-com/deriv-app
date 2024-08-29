@@ -15,6 +15,11 @@
         z-index: 1;
         pointer-events: none;
 
+        @include rtl {
+            margin-left: 0;
+            margin-right: 2rem;
+        }
+
         &-item {
             width: 5.6rem;
             display: flex;
@@ -27,7 +32,7 @@
         display: flex;
         width: 12rem;
         height: 4rem;
-        margin-left: 1.6rem;
+        margin: 0 1.6rem;
         background-color: var(--header-footer-bg-color, #0000000a);
         border-radius: 0.8rem;
 
@@ -74,4 +79,11 @@
     -ms-transform: translateX(6rem);
     transform: translateX(6rem);
     margin-left: 0;
+
+    @include rtl {
+        -webkit-transform: translateX(-6rem);
+        -ms-transform: translateX(-6rem);
+        transform: translateX(-6rem);
+        margin: 0.4rem 0;
+    }
 }

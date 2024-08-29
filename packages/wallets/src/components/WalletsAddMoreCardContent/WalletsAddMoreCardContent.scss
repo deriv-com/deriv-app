@@ -4,4 +4,10 @@
         flex-direction: column;
         gap: 0.8rem;
     }
+
+    &__description {
+        @include rtl {
+            text-align: right;
+        }
+    }
 }

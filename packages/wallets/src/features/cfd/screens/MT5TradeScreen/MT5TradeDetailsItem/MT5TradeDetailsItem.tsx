@@ -55,7 +55,7 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value = '',
                             size={textSize}
                             weight='bold'
                         >
-                            <Localize i18n_default_text=' Forgot Password?' />
+                            <Localize i18n_default_text='Forgot Password?' />
                         </Text>
                     </div>
                 </React.Fragment>

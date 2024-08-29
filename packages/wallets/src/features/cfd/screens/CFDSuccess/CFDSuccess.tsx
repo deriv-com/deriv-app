@@ -46,7 +46,7 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
         if (isDxtradeOrCtrader && isPlatformValid) {
             marketTypeTitle = PlatformDetails[platform].title;
         } else {
-            marketTypeTitle = getMarketTypeDetails()[marketType].title;
+            marketTypeTitle = getMarketTypeDetails(localize)[marketType].title;
         }
     }
 

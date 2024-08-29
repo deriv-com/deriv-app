@@ -37,6 +37,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { data } = useRemoteConfig(isMounted());
     const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();
+    const wallets_allowed_languages = store.common.current_language === 'EN' || store.common.current_language === 'AR';
 
     React.useEffect(() => {
         switchLanguage(current_language);
@@ -60,11 +61,11 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             if (store.ui.is_dark_mode_on) {
                 store.ui.setDarkMode(false);
             }
-            if (store.common.current_language !== 'EN') {
+            if (!wallets_allowed_languages) {
                 store.common.changeSelectedLanguage('EN');
             }
         }
-    }, [has_wallet, store.common, store.ui]);
+    }, [has_wallet, store.common, store.ui, wallets_allowed_languages]);
 
     return (
         <ThemeProvider theme={store.ui.is_dark_mode_on ? 'dark' : 'light'}>

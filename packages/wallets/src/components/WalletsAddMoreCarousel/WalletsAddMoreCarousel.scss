@@ -13,10 +13,11 @@
         margin-bottom: 1.6rem;
 
         @include mobile {
-            padding-left: 1.6rem;
+            padding: 0 1.6rem;
             margin-bottom: 0;
         }
     }
+
     &__carousel {
         overflow: hidden;
         background-color: #fff;
@@ -42,14 +43,27 @@
             position: absolute;
             top: 45%;
             box-shadow: 0px 24px 24px 0px rgba(0, 0, 0, 0.08), 0px 0px 24px 0px rgba(0, 0, 0, 0.08);
+
             &:disabled {
                 display: none;
             }
+
             &--prev {
                 left: 1.6rem;
+
+                @include rtl {
+                    left: unset;
+                    right: 1.6rem;
+                }
             }
+
             &--next {
                 right: 1.6rem;
+
+                @include rtl {
+                    right: unset;
+                    left: 1.6rem;
+                }
             }
         }
     }

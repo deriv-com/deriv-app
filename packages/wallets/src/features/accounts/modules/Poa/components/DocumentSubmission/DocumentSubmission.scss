@@ -58,11 +58,18 @@
             gap: 1.6rem;
             align-self: stretch;
 
-            &__list {
+            &-title {
+                @include rtl {
+                    text-align: right;
+                }
+            }
+
+            &-list {
                 list-style-type: disc;
                 padding-left: 2rem;
             }
         }
+
         &__upload {
             display: flex;
             flex-direction: column;
@@ -111,6 +118,7 @@
         &__common-mistakes {
             display: flex;
             flex-direction: column;
+            align-items: flex-start;
             gap: 1.6rem;
             width: 100%;
         }

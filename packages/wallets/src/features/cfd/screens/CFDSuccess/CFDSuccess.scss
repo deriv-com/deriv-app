@@ -25,6 +25,12 @@
         height: 2.5rem;
         width: 5rem;
 
+        @include rtl {
+            right: unset;
+            left: 0;
+            border-radius: 1rem 0;
+        }
+
         &--demo {
             background-color: #377cfc;
         }
@@ -37,6 +43,7 @@
     &__info {
         display: flex;
         flex-direction: column;
+        align-items: flex-start;
     }
 
     &__gradient {

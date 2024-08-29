@@ -37,7 +37,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     const platform = getModalState('platform') ?? mt5Platform;
 
     const { icon: platformIcon, title: platformTitle } = PlatformDetails[platform as keyof typeof PlatformDetails];
-    const { icon: marketTypeIcon, title: marketTypeTitle } = getMarketTypeDetails()[marketType ?? 'all'];
+    const { icon: marketTypeIcon, title: marketTypeTitle } = getMarketTypeDetails(localize)[marketType ?? 'all'];
 
     const platformToAccountsListMapper = useMemo(
         () => ({
@@ -132,7 +132,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                                 </Text>
                                 {activeWalletData?.is_virtual && <WalletListCardBadge />}
                             </div>
-                            <Text color='less-prominent' size='xs'>
+                            <Text className='wallets-mt5-trade-screen__loginid' color='less-prominent' size='xs'>
                                 {platform !== ctraderPlatform && loginId}
                             </Text>
                         </div>
@@ -180,7 +180,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                     {getModalState('platform') === ctraderPlatform && (
                         <MT5TradeDetailsItem
                             value={localize(
-                                ' Use your Deriv account email and password to login into the cTrader platform.'
+                                'Use your Deriv account email and password to login into the cTrader platform.'
                             )}
                             variant='info'
                         />
@@ -189,9 +189,13 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
 
                 <div className='wallets-mt5-trade-screen__content-maintenance'>
                     <LabelPairedCircleExclamationMdFillIcon fill='#FFAD3A' />
-                    <Text color='less-prominent' size={isDesktop ? '2xs' : 'xs'}>
+                    <Text
+                        className='wallets-mt5-trade-screen__content-text'
+                        color='less-prominent'
+                        size={isDesktop ? '2xs' : 'xs'}
+                    >
                         {
-                            getServiceMaintenanceMessages()[
+                            getServiceMaintenanceMessages(localize)[
                                 (platform as keyof ReturnType<typeof getServiceMaintenanceMessages>) ??
                                     PlatformDetails.mt5.platform
                             ]

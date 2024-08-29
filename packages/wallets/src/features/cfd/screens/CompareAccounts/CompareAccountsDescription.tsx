@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { useTranslations } from '@deriv-com/translations';
 import { WalletText } from '../../../../components';
 import { THooks } from '../../../../types';
 import { getJurisdictionDescription } from './compareAccountsConfig';
@@ -13,8 +14,9 @@ type TCompareAccountsDescription = {
 };
 
 const CompareAccountsDescription = ({ isDemo, isEuRegion, marketType, shortCode }: TCompareAccountsDescription) => {
+    const { localize } = useTranslations();
     const marketTypeShortCode = marketType?.concat('_', shortCode ?? '');
-    const jurisdictionData = getJurisdictionDescription(marketTypeShortCode ?? '');
+    const jurisdictionData = getJurisdictionDescription(localize, marketTypeShortCode ?? '');
 
     return (
         <div

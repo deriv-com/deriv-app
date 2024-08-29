@@ -43,7 +43,7 @@ const EnterPassword: React.FC<TProps> = ({
     const accountType = data?.is_virtual ? localize('Demo') : localize('Real');
     const title = PlatformDetails[platform].title;
     const marketTypeTitle =
-        platform === PlatformDetails.dxtrade.platform ? accountType : getMarketTypeDetails()[marketType].title;
+        platform === PlatformDetails.dxtrade.platform ? accountType : getMarketTypeDetails(localize)[marketType].title;
     const passwordErrorHints = localize(
         'Hint: You may have entered your Deriv password, which is different from your {{title}} password.',
         { title }
@@ -64,7 +64,7 @@ const EnterPassword: React.FC<TProps> = ({
                     </Text>
                 )}
                 <div className='wallets-enter-password__content'>
-                    <Text size='sm'>
+                    <Text align='center' size='sm'>
                         <Localize
                             i18n_default_text='Enter your {{title}} password to add a {{accountTitle}} {{marketTypeTitle}} account'
                             values={{

@@ -20,7 +20,7 @@ const AddedCTraderAccountsList: React.FC = () => {
                     leading={<div className='wallets-added-ctrader__icon'>{PlatformDetails.ctrader.icon}</div>}
                     onClick={() => show(<MT5TradeModal platform={PlatformDetails.ctrader.platform} />)}
                     trailing={
-                        <div className='wallets-added-ctrader__icon'>
+                        <div className='wallets-added-ctrader__chevron'>
                             <LabelPairedChevronRightCaptionRegularIcon width={16} />
                         </div>
                     }

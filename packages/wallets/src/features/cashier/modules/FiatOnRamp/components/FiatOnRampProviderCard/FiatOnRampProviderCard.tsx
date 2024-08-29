@@ -26,7 +26,9 @@ const FiatOnRampProviderCard: React.FC<TFiatOnRampProvider> = ({
                 <Text color='prominent' size='md' weight='bold'>
                     {name}
                 </Text>
-                <Text size='sm'>{description}</Text>
+                <Text className='wallets-fiat-onramp-provider__description' size='sm'>
+                    {description}
+                </Text>
                 <div className='wallets-fiat-onramp-provider__icons'>
                     {paymentIcons.map(paymentIcon => (
                         <div

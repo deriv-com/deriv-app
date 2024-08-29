@@ -2,12 +2,22 @@
     &__icon {
         width: fit-content;
         color: #ffad3a;
+
         &--badge {
             border: 1px solid var(--status-warning, #ffad3a);
             border-radius: 1rem;
         }
+
         &--pending {
             opacity: 0.5;
+        }
+    }
+
+    &__chevron {
+        width: fit-content;
+
+        @include rtl {
+            transform: rotate(180deg);
         }
     }
 

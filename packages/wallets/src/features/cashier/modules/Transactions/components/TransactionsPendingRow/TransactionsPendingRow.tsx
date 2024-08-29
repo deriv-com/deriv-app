@@ -96,7 +96,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                     <WalletCurrencyCard currency={data?.currency || 'USD'} isDemo={data?.is_virtual} size='md' />
                     <div className='wallets-transactions-pending-row__column'>
                         <Text color='primary' size='xs'>
-                            {getTransactionLabels()[transaction.transaction_type]}
+                            {getTransactionLabels(localize)[transaction.transaction_type]}
                         </Text>
                         <Text color='general' size='xs' weight='bold'>
                             {displayCode} Wallet

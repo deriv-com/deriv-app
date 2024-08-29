@@ -11,6 +11,11 @@
         position: relative;
         margin-right: 0.4rem;
 
+        @include rtl {
+            margin-right: 0;
+            margin-left: 0.4rem;
+        }
+
         &__line {
             border: 1px solid var(--light-5-active-background, #d6dadb);
             position: absolute;
@@ -27,10 +32,18 @@
         }
     }
 
-    &__message-container {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        padding: 0.8rem 0;
+    &__message {
+        &-text {
+            @include rtl {
+                text-align: right;
+            }
+        }
+
+        &-container {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 0.8rem 0;
+        }
     }
 }

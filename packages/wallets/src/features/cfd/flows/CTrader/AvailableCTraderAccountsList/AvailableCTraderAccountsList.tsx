@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
+import { Text } from '@deriv-com/ui';
 import { TradingAccountCard, WalletError } from '../../../../../components';
-import { WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { PlatformDetails } from '../../../constants';
 import { CTraderSuccessModal } from '../../../modals/CTraderSuccessModal';
@@ -60,14 +60,18 @@ const AvailableCTraderAccountsList: React.FC = () => {
             leading={<div className='wallets-available-ctrader__icon'>{PlatformDetails.ctrader.icon}</div>}
             onClick={onSubmit}
             trailing={
-                <div className='wallets-available-ctrader__icon'>
+                <div className='wallets-available-ctrader__chevron'>
                     <LabelPairedChevronRightCaptionRegularIcon width={16} />
                 </div>
             }
         >
             <div className='wallets-available-ctrader__details'>
-                <WalletText size='sm'>{PlatformDetails.ctrader.title}</WalletText>
-                <WalletText size='xs'>CFDs on financial and derived instruments with copy trading.</WalletText>
+                <Text className='wallets-available-ctrader__description' size='sm'>
+                    {PlatformDetails.ctrader.title}
+                </Text>
+                <Text className='wallets-available-ctrader__description' size='xs'>
+                    CFDs on financial and derived instruments with copy trading.
+                </Text>
             </div>
         </TradingAccountCard>
     );

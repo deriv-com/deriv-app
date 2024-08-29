@@ -9,6 +9,12 @@
         gap: 0.8rem;
     }
 
+    &__description {
+        @include rtl {
+            text-align: right;
+        }
+    }
+
     &__buttons {
         display: flex;
         gap: 0.8rem;

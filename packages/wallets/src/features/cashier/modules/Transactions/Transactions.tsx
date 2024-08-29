@@ -56,12 +56,12 @@ const Transactions = () => {
                 .map(key => ({
                     text:
                         key === 'deposit' && wallet?.is_virtual
-                            ? getTransactionLabels().reset_balance
+                            ? getTransactionLabels(localize).reset_balance
                             : //@ts-expect-error we only need partial filter values
-                              getTransactionLabels()[key],
+                              getTransactionLabels(localize)[key],
                     value: key,
                 })),
-        [isPendingActive, wallet?.is_virtual]
+        [isPendingActive, wallet?.is_virtual, localize]
     );
 
     useEffect(() => {

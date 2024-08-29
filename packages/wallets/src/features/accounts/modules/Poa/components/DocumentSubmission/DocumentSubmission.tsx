@@ -9,6 +9,7 @@ import { TDocumentSubmission } from '../../types';
 import { getExampleImagesConfig } from '../../utils';
 import { CommonMistakesExamples } from '../CommonMistakesExamples';
 import './DocumentSubmission.scss';
+import { Text } from '@deriv-com/ui';
 
 const DocumentSubmission: React.FC = () => {
     const { localize } = useTranslations();
@@ -34,14 +35,14 @@ const DocumentSubmission: React.FC = () => {
             </div>
             <div className='wallets-poa__document__container'>
                 <div className='wallets-poa__document__container__disclaimer'>
-                    <WalletText size='sm' weight='bold'>
+                    <Text className='wallets-poa__document__container__disclaimer-title' size='sm' weight='bold'>
                         {localize(
                             'We accept only these types of documents as proof of address. The document must be recent (issued within last {{timePeriod}} months) and include your name and address:',
                             { timePeriod: isEuRegion ? '6' : '12' }
                         )}
-                    </WalletText>
+                    </Text>
 
-                    <ul className='wallets-poa__document__container__disclaimer__list'>
+                    <ul className='wallets-poa__document__container__disclaimer-list'>
                         {listItems.map(item => (
                             <li key={`list-item-${item}`}>
                                 <WalletText size='sm'>{item}</WalletText>

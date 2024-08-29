@@ -2,11 +2,13 @@
     position: relative;
     --slide-spacing: 1rem;
     overflow: hidden;
+
     &__viewport {
         overflow: hidden;
         width: 100%;
         height: 100%;
     }
+
     &__container {
         backface-visibility: hidden;
         display: flex;

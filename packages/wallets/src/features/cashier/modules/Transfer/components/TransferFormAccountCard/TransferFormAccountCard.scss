@@ -25,6 +25,11 @@
         .wallets-transfer-form-account-card__icon {
             margin-right: 1.6rem;
 
+            @include rtl {
+                margin-right: unset;
+                margin-left: 1.6rem;
+            }
+
             .wallets-market-currency-icon {
                 margin-bottom: 0.4rem;
 
@@ -65,6 +70,7 @@
         display: flex;
         flex-direction: column;
         flex-grow: 1;
+        align-items: flex-start;
     }
 
     &__modal-badge {

@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveLinkedToTradingAccount } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { getOptionsAndMultipliersContent } from '../../constants/constants';
 import useDevice from '../../hooks/useDevice';
@@ -15,6 +15,7 @@ import './OptionsAndMultipliersListing.scss';
 
 const OptionsAndMultipliersListing = () => {
     const { isMobile } = useDevice();
+    const { localize } = useTranslations();
     const history = useHistory();
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
 
@@ -37,7 +38,7 @@ const OptionsAndMultipliersListing = () => {
                 <DerivAppsSection />
             </section>
             <div className='wallets-options-and-multipliers-listing__content'>
-                {getOptionsAndMultipliersContent().map(account => {
+                {getOptionsAndMultipliersContent(localize).map(account => {
                     const { description, key, redirect, title } = account;
                     return (
                         <TradingAccountCard

@@ -18,9 +18,16 @@
         padding: 1.6rem;
     }
 
+    &__description {
+        @include rtl {
+            text-align: right;
+        }
+    }
+
     &__content {
         display: flex;
         flex-direction: column;
+        align-items: flex-start;
         gap: 0.8rem;
 
         @include mobile {

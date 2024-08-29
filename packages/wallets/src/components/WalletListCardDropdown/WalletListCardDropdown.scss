@@ -20,6 +20,10 @@
         &-content {
             display: flex;
             flex-direction: column;
+
+            @include rtl {
+                align-items: flex-start;
+            }
         }
     }
 

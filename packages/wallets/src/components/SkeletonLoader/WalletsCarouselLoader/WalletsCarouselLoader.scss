@@ -49,6 +49,10 @@
             overflow: hidden;
             transform: translateX(calc(50% - 14.4rem));
             height: 18rem;
+
+            @include rtl {
+                transform: translateX(calc(-50% + 14.4rem));
+            }
         }
     }
 

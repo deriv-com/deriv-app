@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { useAuthorize, useJurisdictionStatus, useTradingPlatformStatus } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
+import { useTranslations } from '@deriv-com/translations';
 import { InlineMessage, WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
@@ -26,11 +27,12 @@ type TProps = {
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useAuthorize();
     const { getVerificationStatus } = useJurisdictionStatus();
+    const { localize } = useTranslations();
     const jurisdictionStatus = useMemo(
         () => getVerificationStatus(account.landing_company_short || JURISDICTION.SVG, account.status),
         [account.landing_company_short, account.status, getVerificationStatus]
     );
-    const { title } = getMarketTypeDetails()[account.market_type ?? MARKET_TYPE.ALL];
+    const { title } = getMarketTypeDetails(localize)[account.market_type ?? MARKET_TYPE.ALL];
     const { isMobile } = useDevice();
     const { show } = useModal();
 
@@ -51,7 +53,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
             disabled={jurisdictionStatus.is_pending}
             leading={
                 <div className='wallets-added-mt5__icon'>
-                    {getMarketTypeDetails()[account.market_type || MARKET_TYPE.ALL].icon}
+                    {getMarketTypeDetails(localize)[account.market_type || MARKET_TYPE.ALL].icon}
                 </div>
             }
             onClick={() => {
@@ -86,7 +88,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                             mt5Account={account}
                         />
                     ) : (
-                        <div className='wallets-available-mt5__icon'>
+                        <div className='wallets-added-mt5__chevron'>
                             <LabelPairedChevronRightCaptionRegularIcon width={16} />
                         </div>
                     )}

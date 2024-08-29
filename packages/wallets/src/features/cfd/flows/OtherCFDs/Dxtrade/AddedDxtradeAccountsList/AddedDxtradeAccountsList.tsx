@@ -20,7 +20,7 @@ const AddedDxtradeAccountsList: React.FC = () => {
                     leading={<div className='wallets-added-dxtrade__icon'>{PlatformDetails.dxtrade.icon}</div>}
                     onClick={() => show(<MT5TradeModal platform={PlatformDetails.dxtrade.platform} />)}
                     trailing={
-                        <div className='wallets-added-dxtrade__icon'>
+                        <div className='wallets-added-dxtrade__chevron'>
                             <LabelPairedChevronRightCaptionRegularIcon width={16} />
                         </div>
                     }

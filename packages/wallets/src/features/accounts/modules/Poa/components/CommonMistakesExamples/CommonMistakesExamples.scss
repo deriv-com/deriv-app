@@ -30,10 +30,17 @@
                 margin-inline: auto;
             }
         }
+
         &-description {
             display: grid;
             grid-column-gap: 0.7rem;
             grid-template-columns: 1fr auto;
+        }
+
+        &-text {
+            @include rtl {
+                text-align: right;
+            }
         }
     }
 }

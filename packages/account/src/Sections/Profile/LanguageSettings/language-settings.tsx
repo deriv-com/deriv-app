@@ -7,14 +7,13 @@ import LanguageRadioButton from '../../../Components/language-settings';
 import { useDevice } from '@deriv-com/ui';
 
 const LanguageSettings = observer(() => {
-    const { client, common } = useStore();
+    const { common } = useStore();
     const { switchLanguage, currentLang, localize } = useTranslations();
-    const { has_wallet } = client;
     // [TODO]: Remove changeSelectedLanguage() when whole app starts to use @deriv-com/translations
     const { changeSelectedLanguage } = common;
     const { isDesktop } = useDevice();
 
-    if (!isDesktop || has_wallet) {
+    if (!isDesktop) {
         return <Redirect to={routes.traders_hub} />;
     }
 

@@ -96,6 +96,10 @@
         transition: border-color 0.2s;
         flex: 1;
 
+        @include rtl {
+            direction: rtl;
+        }
+
         &--listcard {
             font-size: 1.6rem;
             background: transparent;
@@ -130,6 +134,11 @@
         -webkit-user-select: none;
         -ms-user-select: none;
         user-select: none;
+
+        @include rtl {
+            left: unset;
+            right: 1.6rem;
+        }
     }
 
     &__field:focus ~ &__label {
@@ -143,13 +152,23 @@
     &__icon {
         &-left {
             margin-right: 0.8rem;
+
+            @include rtl {
+                margin-right: unset;
+                margin-left: 0.8rem;
+            }
         }
 
         &-right {
             margin-left: 1.6rem;
 
+            @include rtl {
+                margin-left: unset;
+                margin-right: 1.6rem;
+            }
+
             &--listcard {
-                margin-left: 0.8rem;
+                margin: 0 0.8rem;
             }
         }
     }
@@ -166,6 +185,11 @@
         &--msg {
             float: left;
             text-align: left;
+
+            @include rtl {
+                float: right;
+                text-align: right;
+            }
         }
     }
 }

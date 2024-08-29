@@ -1,4 +1,12 @@
 .wallets-added-ctrader {
+    &__chevron {
+        width: fit-content;
+
+        @include rtl {
+            transform: rotate(180deg);
+        }
+    }
+
     &__icon {
         width: fit-content;
     }

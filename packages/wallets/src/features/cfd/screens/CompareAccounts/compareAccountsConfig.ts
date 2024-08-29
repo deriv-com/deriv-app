@@ -1,4 +1,4 @@
-import { localize } from '@deriv-com/translations';
+import { useTranslations } from '@deriv-com/translations';
 import getInstrumentsIcons from '../../../../public/images/tradingInstruments';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS, MARKET_TYPE } from '../../constants';
@@ -17,6 +17,7 @@ type TShortCode = THooks.AvailableMT5Accounts['shortcode'];
 const getHighlightedIconLabel = (
     platform: TPlatforms.All,
     isEuRegion: boolean,
+    localize: ReturnType<typeof useTranslations>['localize'],
     marketType: TMarketTypes,
     shortCode: TShortCode
 ): THighlightedIconLabel[] => {
@@ -134,7 +135,7 @@ const getPlatformType = (platform: TPlatforms.All) => {
     }
 };
 
-const cfdConfig = {
+const cfdConfig = (localize: ReturnType<typeof useTranslations>['localize']) => ({
     counterparty_company: localize('Deriv (SVG) LLC'),
     counterparty_company_description: localize('Counterparty company'),
     jurisdiction: localize('St. Vincent & Grenadines'),
@@ -146,14 +147,14 @@ const cfdConfig = {
     regulator_license: '',
     spread: localize('0.5 pips'),
     spread_description: localize('Spreads from'),
-};
+});
 
-const getJurisdictionDescription = (shortcode?: string) => {
+const getJurisdictionDescription = (localize: ReturnType<typeof useTranslations>['localize'], shortcode?: string) => {
     switch (shortcode) {
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_BVI:
         case MARKET_TYPE_SHORTCODE.FINANCIAL_BVI:
             return {
-                ...cfdConfig,
+                ...cfdConfig(localize),
                 counterparty_company: localize('Deriv (BVI) Ltd'),
                 jurisdiction: localize('British Virgin Islands'),
                 regulator: localize('British Virgin Islands Financial Services Commission'),
@@ -163,7 +164,7 @@ const getJurisdictionDescription = (shortcode?: string) => {
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_VANUATU:
         case MARKET_TYPE_SHORTCODE.FINANCIAL_VANUATU:
             return {
-                ...cfdConfig,
+                ...cfdConfig(localize),
                 counterparty_company: localize('Deriv (V) Ltd'),
                 jurisdiction: localize('Vanuatu'),
                 regulator: localize('Vanuatu Financial Services Commission'),
@@ -172,7 +173,7 @@ const getJurisdictionDescription = (shortcode?: string) => {
             };
         case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
             return {
-                ...cfdConfig,
+                ...cfdConfig(localize),
                 counterparty_company: localize('Deriv (FX) Ltd'),
                 jurisdiction: localize('Labuan'),
                 leverage: localize('1:100'),
@@ -183,7 +184,7 @@ const getJurisdictionDescription = (shortcode?: string) => {
             };
         case MARKET_TYPE_SHORTCODE.FINANCIAL_MALTAINVEST:
             return {
-                ...cfdConfig,
+                ...cfdConfig(localize),
                 counterparty_company: localize('Deriv Investments (Europe) Limited'),
                 jurisdiction: localize('Malta'),
                 leverage: localize('1:30'),
@@ -198,7 +199,7 @@ const getJurisdictionDescription = (shortcode?: string) => {
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_SVG:
         case MARKET_TYPE_SHORTCODE.FINANCIAL_SVG:
         default:
-            return cfdConfig;
+            return cfdConfig(localize);
     }
 };
 

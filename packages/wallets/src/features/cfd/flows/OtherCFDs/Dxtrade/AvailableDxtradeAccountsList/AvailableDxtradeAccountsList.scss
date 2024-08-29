@@ -1,4 +1,12 @@
 .wallets-available-dxtrade {
+    &__chevron {
+        width: fit-content;
+
+        @include rtl {
+            transform: rotate(180deg);
+        }
+    }
+
     &__icon {
         width: fit-content;
     }
@@ -8,5 +16,11 @@
         flex-direction: column;
         align-items: flex-start;
         flex-grow: 1;
+    }
+
+    &__description {
+        @include rtl {
+            text-align: right;
+        }
     }
 }

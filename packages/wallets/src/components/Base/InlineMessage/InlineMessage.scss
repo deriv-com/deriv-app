@@ -57,6 +57,7 @@
 
     &__messages {
         display: inline-flex;
+        align-items: flex-start;
         align-self: center;
         flex-direction: column;
         flex: 1;

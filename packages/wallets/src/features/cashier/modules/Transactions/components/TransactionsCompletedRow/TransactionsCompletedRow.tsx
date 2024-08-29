@@ -21,9 +21,9 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
     const displayWalletName = `${displayCurrency} Wallet`;
     const displayNonTransferActionType =
         wallet.is_virtual && ['deposit', 'withdrawal'].includes(transaction.action_type)
-            ? getTransactionLabels().reset_balance
+            ? getTransactionLabels(localize).reset_balance
             : //@ts-expect-error we only need partial action types
-              getTransactionLabels()[transaction.action_type];
+              getTransactionLabels(localize)[transaction.action_type];
     const displayTransferActionType =
         transaction.from?.loginid === wallet?.loginid ? localize('Transfer to') : localize('Transfer from');
 

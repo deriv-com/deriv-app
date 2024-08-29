@@ -2,17 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentUnlistedWithdrawForm from '../payment-agent-unlisted-withdraw-form';
-import { isMobile, validNumber } from '@deriv/shared';
+import { validNumber } from '@deriv/shared';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     validNumber: jest.fn(() => ({ is_ok: true, message: '' })),
-    isMobile: jest.fn(() => false),
 }));
-
-jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => jest.fn(() => 'PaymentAgentDisclaimer'));
 
 describe('<PaymentAgentUnlistedWithdrawForm />', () => {
     let mockRootStore: ReturnType<typeof mockStore>, setIsUnlistedWithdraw: (value: boolean) => void;
@@ -131,12 +133,5 @@ describe('<PaymentAgentUnlistedWithdrawForm />', () => {
                 verification_code: 'ABCdef',
             });
         });
-    });
-
-    it('should show PaymentAgentDisclaimer in mobile view', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        render(mockPaymentAgentUnlistedWithdrawForm());
-
-        expect(screen.getByText('PaymentAgentDisclaimer')).toBeInTheDocument();
     });
 });

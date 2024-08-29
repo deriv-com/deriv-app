@@ -13,7 +13,10 @@ import { MT5PasswordModal } from '..';
 import './JurisdictionModal.scss';
 
 const LazyVerification = lazy(
-    () => import(/* webpackChunkName: "wallets-verification-flow" */ '../../flows/Verification/Verification')
+    () =>
+        import(
+            /* webpackChunkName: "wallets-client-verification" */ '../../flows/ClientVerification/ClientVerification'
+        )
 );
 
 const JurisdictionModal = () => {
@@ -23,7 +26,7 @@ const JurisdictionModal = () => {
 
     const { getModalState, setModalState, show } = useModal();
     const { isLoading } = useAvailableMT5Accounts();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { localize } = useTranslations();
 
     const marketType = getModalState('marketType') ?? 'all';
@@ -34,13 +37,19 @@ const JurisdictionModal = () => {
     }, [isDynamicLeverageVisible, setIsDynamicLeverageVisible]);
 
     const JurisdictionFlow = () => {
-        if (selectedJurisdiction === 'svg') {
+        const [showMt5PasswordModal, setShowMt5PasswordModal] = useState(false);
+        if (selectedJurisdiction === 'svg' || showMt5PasswordModal) {
             return <MT5PasswordModal marketType={marketType} platform={platform} />;
         }
 
         return (
             <Suspense fallback={<Loader />}>
-                <LazyVerification selectedJurisdiction={selectedJurisdiction} />
+                <LazyVerification
+                    onCompletion={() => {
+                        setShowMt5PasswordModal(true);
+                    }}
+                    selectedJurisdiction={selectedJurisdiction}
+                />
             </Suspense>
         );
     };
@@ -50,7 +59,7 @@ const JurisdictionModal = () => {
         : () => (
               <WalletButton
                   disabled={!selectedJurisdiction || (selectedJurisdiction !== 'svg' && !isCheckBoxChecked)}
-                  isFullWidth={isMobile}
+                  isFullWidth={!isDesktop}
                   onClick={() => show(<JurisdictionFlow />)}
               >
                   <Localize i18n_default_text='Next' />

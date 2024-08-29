@@ -24,6 +24,8 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
         currency,
         onChange,
         proposal_info,
+        setV2ParamsInitialValues,
+        v2_params_initial_values,
     } = useTraderStore();
 
     const is_small_screen = window.innerHeight <= 640;
@@ -31,6 +33,10 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
     const payout_per_point: string | number = isEmptyObject(proposal_info)
         ? ''
         : proposal_info[contract_type.toUpperCase()]?.obj_contract_basis?.value;
+
+    const handleStrikeChange = (new_value: number | string) =>
+        onChange({ target: { name: 'barrier_1', value: new_value } });
+
     const action_sheet_content = [
         {
             id: 1,
@@ -38,9 +44,10 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
                 <StrikeWheel
                     current_strike={barrier_1}
                     currency={getCurrencyDisplayCode(currency)}
-                    onStrikePriceSelect={onChange}
+                    onStrikePriceSelect={handleStrikeChange}
                     payout_per_point={payout_per_point}
                     strike_price_list={strike_price_list}
+                    setV2ParamsInitialValues={setV2ParamsInitialValues}
                 />
             ),
         },
@@ -50,6 +57,14 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
         },
     ];
     const classname = clsx('trade-params__option', is_minimized && 'trade-params__option--minimized');
+
+    React.useEffect(() => {
+        const initial_strike = v2_params_initial_values?.strike;
+        if (initial_strike && barrier_1 !== initial_strike) {
+            handleStrikeChange(initial_strike);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     if (!barrier_1)
         return (

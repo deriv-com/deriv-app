@@ -1,7 +1,7 @@
 import React, { MouseEventHandler, useCallback, useEffect } from 'react';
 import { useMutation } from '@deriv/api-v2';
-import { Button } from '@deriv-com/ui';
-import { WalletText } from '../../../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Button, Text } from '@deriv-com/ui';
 import './FiatOnRampDisclaimer.scss';
 
 type TFiatOnRampDisclaimer = {
@@ -24,20 +24,23 @@ const FiatOnRampDisclaimer: React.FC<TFiatOnRampDisclaimer> = ({ handleDisclaime
 
     return (
         <div className='wallets-fiat-onramp-disclaimer'>
-            <WalletText color='prominent' size='xs' weight='bold'>
-                Disclaimer
-            </WalletText>
-            <WalletText size='xs'>
-                By clicking <strong>Continue</strong>, you&apos;ll be redirected to Banxa, a third-party payment service
+            <Text color='prominent' size='xs' weight='bold'>
+                <Localize i18n_default_text='Disclaimer' />
+            </Text>
+            <Text size='xs'>
+                <Localize
+                    components={[<strong key={0} />]}
+                    i18n_default_text="By clicking <0>Continue</0>, you'll be redirected to Banxa, a third-party payment service
                 provider. Please note that Deriv is not responsible for the content or services provided by Banxa. If
-                you encounter any issues related to Banxa services, you should contact Banxa directly.
-            </WalletText>
+                you encounter any issues related to Banxa services, you should contact Banxa directly."
+                />
+            </Text>
             <div className='wallets-fiat-onramp-disclaimer__buttons'>
                 <Button borderWidth='sm' color='black' onClick={handleDisclaimer} size='md' variant='outlined'>
-                    Back
+                    <Localize i18n_default_text='Back' />
                 </Button>
-                <Button borderWidth='sm' isLoading={isLoading} onClick={() => redirectToBanxa()} size='md'>
-                    Continue
+                <Button isLoading={isLoading} onClick={() => redirectToBanxa()} size='md'>
+                    <Localize i18n_default_text='Continue' />
                 </Button>
             </div>
         </div>

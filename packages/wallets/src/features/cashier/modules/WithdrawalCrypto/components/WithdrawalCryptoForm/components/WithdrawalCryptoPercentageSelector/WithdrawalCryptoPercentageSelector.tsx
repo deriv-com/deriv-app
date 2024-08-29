@@ -1,7 +1,9 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
 import { displayMoney } from '@deriv/api-v2/src/utils';
-import { WalletsPercentageSelector, WalletText } from '../../../../../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
+import { WalletsPercentageSelector } from '../../../../../../../../components';
 import useAllBalanceSubscription from '../../../../../../../../hooks/useAllBalanceSubscription';
 import { useWithdrawalCryptoContext } from '../../../../provider';
 import { TWithdrawalForm } from '../../../../types';
@@ -29,7 +31,12 @@ const WithdrawalCryptoPercentageSelector: React.FC = () => {
 
         if (amount <= activeWalletBalance) {
             const percentage = Math.round((amount * 100) / activeWalletBalance);
-            return `${percentage}% of available balance (${activeWalletDisplayBalance})`;
+            return (
+                <Localize
+                    i18n_default_text='{{percentage}}% of available balance ({{activeWalletDisplayBalance}})'
+                    values={{ activeWalletDisplayBalance, percentage }}
+                />
+            );
         }
     };
 
@@ -86,9 +93,9 @@ const WithdrawalCryptoPercentageSelector: React.FC = () => {
                 }}
             />
             <div className='wallets-withdrawal-crypto-percentage__message'>
-                <WalletText color='less-prominent' size='xs'>
+                <Text color='less-prominent' size='xs'>
                     {isValidInput && getPercentageMessage(values.cryptoAmount)}
-                </WalletText>
+                </Text>
             </div>
         </div>
     );

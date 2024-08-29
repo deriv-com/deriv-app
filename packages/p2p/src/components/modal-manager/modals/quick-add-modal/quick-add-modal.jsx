@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { Button, Icon, MobileFullPageModal, Modal, Text } from '@deriv/components';
 import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
-import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AddPaymentMethod from 'Components/add-payment-method';
@@ -13,6 +13,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 
 const QuickAddModal = ({ advert }) => {
+    const { isDesktop } = useDevice();
     const { is_modal_open, showModal, useSavedState } = useModalManagerContext();
     const { my_ads_store, my_profile_store } = useStores();
     const { data: p2p_advertiser_payment_methods } = useP2PAdvertiserPaymentMethods();
@@ -70,7 +71,7 @@ const QuickAddModal = ({ advert }) => {
         }
     };
 
-    if (isMobile()) {
+    if (!isDesktop) {
         if (is_buy_advert) {
             return (
                 <MobileFullPageModal
@@ -264,8 +265,8 @@ const QuickAddModal = ({ advert }) => {
                             <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
                         </Text>
                         <SellAdPaymentMethodsList
-                            is_only_horizontal
-                            is_scrollable
+                            is_only_horizontal={!isDesktop}
+                            is_scrollable={!isDesktop}
                             onClickPaymentMethodCard={onClickPaymentMethodCard}
                             onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethod(true)}
                             p2p_advertiser_payment_methods={p2p_advertiser_payment_methods}

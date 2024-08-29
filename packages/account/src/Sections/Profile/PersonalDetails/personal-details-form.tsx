@@ -427,6 +427,7 @@ const PersonalDetailsForm = observer(() => {
                                                     !account_settings.phone
                                                 }
                                                 next_email_otp_request_timer={next_email_otp_request_timer}
+                                                setStatus={setStatus}
                                             />
                                         )}
                                     </fieldset>

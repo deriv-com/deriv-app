@@ -37,7 +37,7 @@ const DurationWheelPicker = ({
                     key={`${unit}-${toggle_picker}`}
                     data={options}
                     defaultValue={[String(selected_time)]}
-                    containerHeight={unit == 'd' ? '224px' : '268px'}
+                    containerHeight={unit == 'd' ? '228px' : '268px'}
                     inputValues={unit == 'h' ? selected_hour : selected_time}
                     setInputValues={setWheelPickerValue}
                 />
@@ -48,7 +48,7 @@ const DurationWheelPicker = ({
                     startTimeIn24Format={formatCurrentGMTDate()}
                     minutesInterval={5}
                     setSelectedValue={val => setEndTime(val as string)}
-                    containerHeight='224px'
+                    containerHeight='226px'
                     hoursInterval={1}
                 />
             )}

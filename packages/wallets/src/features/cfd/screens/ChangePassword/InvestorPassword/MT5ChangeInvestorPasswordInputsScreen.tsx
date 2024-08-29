@@ -59,16 +59,10 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
             description={
                 <>
                     <Text size='sm'>
-                        <Localize
-                            i18n_default_text='Use this password to grant viewing access to another user. While they may view your trading
-                        account, they will not be able to trade or take any other actions.'
-                        />
+                        <Localize i18n_default_text='Use this password to grant viewing access to another user. While they may view your trading account, they will not be able to trade or take any other actions.' />
                     </Text>
                     <Text size='sm'>
-                        <Localize
-                            i18n_default_text='If this is the first time you try to create a password, or you have forgotten your password,
-                        please reset it.'
-                        />
+                        <Localize i18n_default_text='If this is the first time you try to create a password, or you have forgotten your password, please reset it.' />
                     </Text>
                     {changeInvestorPasswordError && (
                         <Text align='center' color='error' size='sm'>

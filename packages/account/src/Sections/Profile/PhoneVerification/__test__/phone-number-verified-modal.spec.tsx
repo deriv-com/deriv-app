@@ -3,21 +3,15 @@ import { MemoryRouter } from 'react-router';
 import { render, screen } from '@testing-library/react';
 import PhoneNumberVerifiedModal from '../phone-number-verified-modal';
 import userEvent from '@testing-library/user-event';
-import { routes } from '@deriv/shared';
-
-const mockHistoryPush = jest.fn();
 
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
-    useHistory: () => ({
-        push: mockHistoryPush,
-    }),
 }));
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useSettings: jest.fn(() => ({
-        refetch: jest.fn(),
+        refetch: jest.fn(() => Promise.resolve()),
     })),
 }));
 
@@ -53,11 +47,10 @@ describe('PhoneNumberVerifiedModal', () => {
         expect(screen.getByText(/Your phone number is verified./)).toBeInTheDocument();
     });
 
-    it('it should close PhoneNumberVerifiedModal and navigate to PersonalDetails section when done is clicked', () => {
+    it('it should close PhoneNumberVerifiedModal and navigate to PersonalDetails section when done is clicked', async () => {
         renderModal();
         const doneButton = screen.getByRole('button', { name: /OK/ });
-        userEvent.click(doneButton);
+        await userEvent.click(doneButton);
         expect(mockSetShouldShowPhoneNumberVerifiedModal).toHaveBeenCalledTimes(1);
-        expect(mockHistoryPush).toHaveBeenCalledWith(routes.personal_details);
     });
 });

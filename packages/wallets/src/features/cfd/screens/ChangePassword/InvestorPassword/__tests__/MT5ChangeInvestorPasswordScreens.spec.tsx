@@ -4,7 +4,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useModal } from '../../../../../../components/ModalProvider';
 import MT5ChangeInvestorPasswordScreens from '../MT5ChangeInvestorPasswordScreens';
-import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
@@ -12,10 +11,12 @@ jest.mock('@deriv/api-v2', () => ({
     useSettings: jest.fn(),
     useVerifyEmail: jest.fn(),
 }));
+
 jest.mock('../../../../../../components/ModalProvider', () => ({
     ...jest.requireActual('../../../../../../components/ModalProvider'),
     useModal: jest.fn(),
 }));
+
 jest.mock('../MT5ChangeInvestorPasswordInputsScreen', () =>
     jest.fn(({ sendEmail, setNextScreen }) => (
         <div>
@@ -24,6 +25,7 @@ jest.mock('../MT5ChangeInvestorPasswordInputsScreen', () =>
         </div>
     ))
 );
+
 jest.mock('../MT5ChangeInvestorPasswordSavedScreen', () =>
     jest.fn(({ setNextScreen }) => (
         <div>
@@ -45,8 +47,9 @@ describe('MT5ChangeInvestorPasswordScreens', () => {
 
     it('renders intro screen by default', () => {
         render(<MT5ChangeInvestorPasswordScreens />);
-        expect(screen.getByText('Send Email')).toBeInTheDocument();
-        expect(screen.getByText('Next Screen')).toBeInTheDocument();
+
+        expect(screen.getByRole('button', { name: 'Send Email' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Next Screen' })).toBeInTheDocument();
     });
 
     it('handles send email button click', async () => {
@@ -55,7 +58,7 @@ describe('MT5ChangeInvestorPasswordScreens', () => {
 
         render(<MT5ChangeInvestorPasswordScreens setShowEmailSentScreen={setShowEmailSentScreen} />);
 
-        userEvent.click(screen.getByText('Send Email'));
+        userEvent.click(screen.getByRole('button', { name: 'Send Email' }));
 
         await waitFor(() => {
             expect(mutate).toHaveBeenCalled();
@@ -67,9 +70,9 @@ describe('MT5ChangeInvestorPasswordScreens', () => {
     it('switches to saved screen on next screen button click', () => {
         render(<MT5ChangeInvestorPasswordScreens />);
 
-        userEvent.click(screen.getByText('Next Screen'));
+        userEvent.click(screen.getByRole('button', { name: 'Next Screen' }));
 
-        expect(screen.getByText('Close')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument();
     });
 
     it('calls hide modal on close button click in saved screen', () => {
@@ -77,8 +80,8 @@ describe('MT5ChangeInvestorPasswordScreens', () => {
 
         render(<MT5ChangeInvestorPasswordScreens />);
 
-        userEvent.click(screen.getByText('Next Screen'));
-        userEvent.click(screen.getByText('Close'));
+        userEvent.click(screen.getByRole('button', { name: 'Next Screen' }));
+        userEvent.click(screen.getByRole('button', { name: 'Close' }));
 
         expect(hide).toHaveBeenCalled();
     });

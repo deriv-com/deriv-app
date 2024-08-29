@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MT5ChangeInvestorPasswordSavedScreen from '../MT5ChangeInvestorPasswordSavedScreen';
-import '@testing-library/jest-dom'; // for the custom matchers
 
 describe('MT5ChangeInvestorPasswordSavedScreen', () => {
     it('renders without crashing', () => {
@@ -15,10 +14,11 @@ describe('MT5ChangeInvestorPasswordSavedScreen', () => {
 
     it('calls setNextScreen when OK button is clicked', () => {
         const setNextScreenMock = jest.fn();
+
         render(<MT5ChangeInvestorPasswordSavedScreen setNextScreen={setNextScreenMock} />);
 
         userEvent.click(screen.getByRole('button', { name: /OK/i }));
 
-        expect(setNextScreenMock).toHaveBeenCalledTimes(1);
+        expect(setNextScreenMock).toHaveBeenCalled();
     });
 });

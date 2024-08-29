@@ -44,6 +44,7 @@ jest.mock('../../../../../components/ModalProvider', () => ({
 }));
 
 jest.mock('../MT5ChangePasswordScreens', () => jest.fn(() => <div>MT5 Change Password</div>));
+
 jest.mock('../TradingPlatformChangePasswordScreens', () =>
     jest.fn(({ platform }) => <div>Trading Platform Change Password: {platform}</div>)
 );
@@ -54,7 +55,8 @@ describe('ChangePassword', () => {
 
         expect(screen.getByText('MT5 Change Password')).toBeInTheDocument();
     });
-    it('renders the MT5ChangePasswordScreens component when the paltform is mt5', () => {
+
+    it('renders the MT5ChangePasswordScreens component when the platform is mt5', () => {
         (useModal as jest.Mock).mockReturnValue({
             getModalState: jest.fn(() => 'mt5'),
             setModalOptions: jest.fn(),

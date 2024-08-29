@@ -8,7 +8,9 @@ import MT5ChangePasswordScreens from '../MT5ChangePasswordScreens';
 jest.mock('@deriv-com/translations', () => ({
     useTranslations: jest.fn(),
 }));
+
 jest.mock('../../../../../hooks/useDevice', () => jest.fn(() => ({ isMobile: false })));
+
 jest.mock('../../../../../components', () => ({
     SentEmailContent: () => <div>Sent Email Content</div>,
 }));
@@ -32,6 +34,7 @@ jest.mock('../InvestorPassword/MT5ChangeInvestorPasswordScreens', () =>
         </div>
     ))
 );
+
 jest.mock('../TradingPlatformChangePasswordScreens', () =>
     jest.fn(({ platform }) => <div>Trading Platform Change Password: {platform}</div>)
 );
@@ -70,22 +73,31 @@ describe('MT5ChangePasswordScreens', () => {
 
     it('renders Tabs by default', () => {
         render(<MT5ChangePasswordScreens />);
+
         expect(screen.getByText('Deriv MT5 Password')).toBeInTheDocument();
         expect(screen.getByText('Investor Password')).toBeInTheDocument();
     });
 
     it('renders SentEmailContent when create or reset investor password button is clicked', () => {
         render(<MT5ChangePasswordScreens />);
+
         userEvent.click(screen.getByText('Investor Password'));
-        const createOrResetInvestorPasswordButton = screen.getByText('Create or reset investor password');
+
+        const createOrResetInvestorPasswordButton = screen.getByRole('button', {
+            name: 'Create or reset investor password',
+        });
+
         expect(createOrResetInvestorPasswordButton).toBeInTheDocument();
+
         userEvent.click(createOrResetInvestorPasswordButton);
+
         expect(screen.getByText('Sent Email Content')).toBeInTheDocument();
         expect(screen.getByTestId('dt_change_password_sent_email_content_wrapper')).toBeInTheDocument();
     });
 
     it('calls localize when rendering tab titles', () => {
         render(<MT5ChangePasswordScreens />);
+
         expect(mockLocalize).toHaveBeenCalledWith('{{title}} Password', { title: 'Deriv MT5' });
         expect(mockLocalize).toHaveBeenCalledWith('Investor Password');
         expect(screen.getByText('Deriv MT5 Password')).toBeInTheDocument();
@@ -94,6 +106,7 @@ describe('MT5ChangePasswordScreens', () => {
 
     it('renders tabs with fontSize of sm for non-mobile', () => {
         render(<MT5ChangePasswordScreens />);
+
         expect(Tabs).toHaveBeenCalledWith(expect.objectContaining({ fontSize: 'sm' }), {});
         expect(screen.getByText('MT5 Change Investor Password')).toBeInTheDocument();
     });

@@ -6,8 +6,7 @@ import { WalletButton } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../hooks/useDevice';
 import { validPasswordMT5 } from '../../../../../../utils/password-validation';
-import MT5ChangeInvestorPasswordInputsScreen from '../MT5ChangeInvestorPasswordInputsScreen'; // Adjust the import path accordingly
-import '@testing-library/jest-dom/extend-expect';
+import MT5ChangeInvestorPasswordInputsScreen from '../MT5ChangeInvestorPasswordInputsScreen';
 
 jest.mock('@deriv/api-v2', () => ({
     useTradingPlatformInvestorPasswordChange: jest.fn(),
@@ -69,7 +68,6 @@ jest.mock('../../../../../../utils/password-validation', () => ({
 
 describe('MT5ChangeInvestorPasswordInputsScreen', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
         (useTradingPlatformInvestorPasswordChange as jest.Mock).mockReturnValue({
             mutateAsync: jest.fn(),
             status: 'idle',
@@ -83,8 +81,9 @@ describe('MT5ChangeInvestorPasswordInputsScreen', () => {
         (validPasswordMT5 as jest.Mock).mockReturnValue(true);
     });
 
-    it('renders the component correctly', async () => {
+    it('renders the component correctly', () => {
         render(<MT5ChangeInvestorPasswordInputsScreen />);
+
         expect(screen.getByText(/Use this password to grant viewing access to another user/)).toBeInTheDocument();
         expect(screen.getByText(/Change investor password/)).toBeInTheDocument();
         expect(screen.getByText(/Create or reset investor password/)).toBeInTheDocument();
@@ -92,6 +91,7 @@ describe('MT5ChangeInvestorPasswordInputsScreen', () => {
 
     it('validates current password field', async () => {
         render(<MT5ChangeInvestorPasswordInputsScreen />);
+
         userEvent.click(screen.getByText('Current investor password'));
         userEvent.tab();
         userEvent.click(screen.getByText(/Change investor password/));
@@ -132,30 +132,40 @@ describe('MT5ChangeInvestorPasswordInputsScreen', () => {
         });
 
         render(<MT5ChangeInvestorPasswordInputsScreen />);
+
         expect(screen.getByText('Error changing password')).toBeInTheDocument();
     });
+
     it('shows the loader when the change investor password mutation is loading', () => {
         (useTradingPlatformInvestorPasswordChange as jest.Mock).mockReturnValue({
             status: 'loading',
         });
 
         render(<MT5ChangeInvestorPasswordInputsScreen />);
+
         expect(
             screen.getByRole('button', {
                 name: 'Loading...',
             })
         ).toBeInTheDocument();
     });
+
     it('displays the password when the viewer icon is clicked', () => {
         render(<MT5ChangeInvestorPasswordInputsScreen />);
+
         const currentPasswordInput = screen.getByPlaceholderText('Current investor password');
         expect(currentPasswordInput).toHaveAttribute('type', 'password');
+
         userEvent.click(screen.getAllByRole('button', { name: 'PasswordViewerIcon' })[0]);
+
         expect(currentPasswordInput).toHaveAttribute('type', 'text');
     });
-    it('renders button with correct text size', () => {
+
+    it('renders button with correct text size for mobile', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
+
         render(<MT5ChangeInvestorPasswordInputsScreen />);
+
         expect(WalletButton).toHaveBeenCalledWith(expect.objectContaining({ textSize: 'md' }), {});
     });
 });

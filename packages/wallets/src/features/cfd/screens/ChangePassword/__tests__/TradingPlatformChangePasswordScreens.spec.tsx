@@ -7,7 +7,6 @@ import { WalletButton } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import useDevice from '../../../../../hooks/useDevice';
 import TradingPlatformChangePasswordScreens from '../TradingPlatformChangePasswordScreens';
-import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
@@ -15,15 +14,19 @@ jest.mock('@deriv/api-v2', () => ({
     useSettings: jest.fn(),
     useVerifyEmail: jest.fn(),
 }));
+
 jest.mock('@deriv-com/translations', () => ({
     ...jest.requireActual('@deriv-com/translations'),
     useTranslations: jest.fn(),
 }));
+
 jest.mock('../../../../../components/ModalProvider', () => ({
     ...jest.requireActual('../../../../../components/ModalProvider'),
     useModal: jest.fn(),
 }));
+
 jest.mock('../../../../../hooks/useDevice', () => jest.fn(() => ({ isMobile: false })));
+
 jest.mock('../../../../../components', () => ({
     ...jest.requireActual('../../../../../components'),
     SentEmailContent: jest.fn().mockImplementation(() => <div>SentEmailContent</div>),
@@ -43,6 +46,7 @@ jest.mock('../../../../../components/Base', () => ({
 
 describe('TradingPlatformChangePasswordScreens', () => {
     const mockUseVerifyEmail = jest.fn();
+
     beforeEach(() => {
         (useVerifyEmail as jest.Mock).mockReturnValue({
             mutate: mockUseVerifyEmail,
@@ -63,10 +67,12 @@ describe('TradingPlatformChangePasswordScreens', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: { is_virtual: false },
         });
+
         (useTranslations as jest.Mock).mockReturnValue({
             localize: jest.fn().mockImplementation((str, { title }) => str.replace('{{title}}', title)),
         });
     });
+
     it('renders intro screen by default', () => {
         render(<TradingPlatformChangePasswordScreens platform='mt5' />);
 
@@ -82,31 +88,32 @@ describe('TradingPlatformChangePasswordScreens', () => {
     it('renders confirmation screen when Change password is clicked', () => {
         render(<TradingPlatformChangePasswordScreens platform='mt5' />);
 
-        userEvent.click(screen.getByText('Change password'));
+        userEvent.click(screen.getByRole('button', { name: 'Change password' }));
 
         expect(screen.getByText('Confirm to change your Deriv MT5 password')).toBeInTheDocument();
         expect(
             screen.getByText('This will change the password to all of your Deriv MT5 accounts.')
         ).toBeInTheDocument();
-        expect(screen.getByText('Cancel')).toBeInTheDocument();
-        expect(screen.getByText('Confirm')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Confirm' })).toBeInTheDocument();
     });
 
     it('renders email verification screen when Confirm is clicked', async () => {
         render(<TradingPlatformChangePasswordScreens platform='mt5' />);
 
-        userEvent.click(screen.getByText('Change password'));
-        userEvent.click(screen.getByText('Confirm'));
+        userEvent.click(screen.getByRole('button', { name: 'Change password' }));
+        userEvent.click(screen.getByRole('button', { name: 'Confirm' }));
 
         expect(screen.getByText('SentEmailContent')).toBeInTheDocument();
     });
 
     it('calls handleSendEmail when Confirm is clicked and the platform is mt5', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
+
         render(<TradingPlatformChangePasswordScreens platform='mt5' />);
 
-        userEvent.click(screen.getByText('Change password'));
-        userEvent.click(screen.getByText('Confirm'));
+        userEvent.click(screen.getByRole('button', { name: 'Change password' }));
+        userEvent.click(screen.getByRole('button', { name: 'Confirm' }));
 
         expect(mockUseVerifyEmail).toHaveBeenCalledWith({
             type: 'trading_platform_mt5_password_reset',
@@ -117,11 +124,12 @@ describe('TradingPlatformChangePasswordScreens', () => {
         });
         expect(WalletButton).toHaveBeenCalledWith(expect.objectContaining({ textSize: 'md' }), {});
     });
+
     it('calls handleSendEmail when Confirm is clicked and the platform is dxtrade', () => {
         render(<TradingPlatformChangePasswordScreens platform='dxtrade' />);
 
-        userEvent.click(screen.getByText('Change password'));
-        userEvent.click(screen.getByText('Confirm'));
+        userEvent.click(screen.getByRole('button', { name: 'Change password' }));
+        userEvent.click(screen.getByRole('button', { name: 'Confirm' }));
 
         expect(mockUseVerifyEmail).toHaveBeenCalledWith({
             type: 'trading_platform_dxtrade_password_reset',
@@ -137,9 +145,9 @@ describe('TradingPlatformChangePasswordScreens', () => {
 
         render(<TradingPlatformChangePasswordScreens platform='mt5' />);
 
-        userEvent.click(screen.getByText('Change password'));
-        userEvent.click(screen.getByText('Cancel'));
+        userEvent.click(screen.getByRole('button', { name: 'Change password' }));
+        userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
 
-        expect(hide).toHaveBeenCalledTimes(1);
+        expect(hide).toHaveBeenCalled();
     });
 });

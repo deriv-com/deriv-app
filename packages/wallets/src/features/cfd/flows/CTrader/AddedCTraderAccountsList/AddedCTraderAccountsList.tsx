@@ -6,7 +6,6 @@ import { WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { PlatformDetails } from '../../../constants';
 import { MT5TradeModal } from '../../../modals';
-import './AddedCTraderAccountsList.scss';
 
 const AddedCTraderAccountsList: React.FC = () => {
     const { data: cTraderAccounts } = useCtraderAccountsList();
@@ -17,21 +16,19 @@ const AddedCTraderAccountsList: React.FC = () => {
             {cTraderAccounts?.map(account => (
                 <TradingAccountCard
                     key={`added-ctrader-${account.login}`}
-                    leading={<div className='wallets-added-ctrader__icon'>{PlatformDetails.ctrader.icon}</div>}
                     onClick={() => show(<MT5TradeModal platform={PlatformDetails.ctrader.platform} />)}
-                    trailing={
-                        <div className='wallets-added-ctrader__chevron'>
-                            <LabelPairedChevronRightCaptionRegularIcon width={16} />
-                        </div>
-                    }
                 >
-                    <div className='wallets-added-ctrader__details'>
+                    <TradingAccountCard.Icon>{PlatformDetails.ctrader.icon}</TradingAccountCard.Icon>
+                    <TradingAccountCard.Content>
                         <WalletText size='sm'>{PlatformDetails.ctrader.title}</WalletText>
                         <WalletText size='sm' weight='bold'>
                             {account?.display_balance}
                         </WalletText>
                         <WalletText size='xs'>{account.login}</WalletText>
-                    </div>
+                    </TradingAccountCard.Content>
+                    <TradingAccountCard.Button>
+                        <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                    </TradingAccountCard.Button>
                 </TradingAccountCard>
             ))}
         </React.Fragment>

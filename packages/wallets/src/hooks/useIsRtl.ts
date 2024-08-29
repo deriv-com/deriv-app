@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 const useIsRtl = () => {
     const i18nLanguage = localStorage.getItem('i18n_language');
@@ -7,13 +7,13 @@ const useIsRtl = () => {
         return i18nLanguage === 'AR';
     }, [i18nLanguage]);
 
-    const [is_rtl, setIsRtl] = useState<boolean>(() => checkRtl());
+    const [isRtl, setIsRtl] = useState<boolean>(() => checkRtl());
 
     useEffect(() => {
         setIsRtl(checkRtl());
     }, [checkRtl]);
 
-    return is_rtl;
+    return isRtl;
 };
 
 export default useIsRtl;

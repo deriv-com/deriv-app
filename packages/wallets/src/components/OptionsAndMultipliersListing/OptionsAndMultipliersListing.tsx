@@ -3,9 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { useActiveLinkedToTradingAccount } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { getOptionsAndMultipliersContent } from '../../constants/constants';
-import useDevice from '../../hooks/useDevice';
 import { TRoute } from '../../routes/Router';
 import { WalletLink } from '../Base';
 import { DerivAppsSection } from '../DerivAppsSection';
@@ -45,25 +44,25 @@ const OptionsAndMultipliersListing = () => {
                             {...account}
                             disabled={!activeLinkedToTradingAccount?.loginid}
                             key={`trading-account-card-${title}`}
-                            leading={<LinkTitle platform={key} />}
                             onClick={() => {
                                 account.isExternal ? window.open(redirect, '_blank') : history.push(redirect as TRoute);
                             }}
-                            trailing={
-                                activeLinkedToTradingAccount?.loginid ? (
-                                    <div className='wallets-options-and-multipliers-listing__icon'>
-                                        <LabelPairedChevronRightCaptionRegularIcon
-                                            data-testid='dt_label_paired_chevron'
-                                            width={16}
-                                        />
-                                    </div>
-                                ) : null
-                            }
                         >
-                            <div className='wallets-options-and-multipliers-listing__content__details'>
+                            <TradingAccountCard.Icon>
+                                <LinkTitle platform={key} />
+                            </TradingAccountCard.Icon>
+                            <TradingAccountCard.Content>
                                 <Text size='sm'>{title}</Text>
                                 <Text size='xs'>{description}</Text>
-                            </div>
+                            </TradingAccountCard.Content>
+                            {activeLinkedToTradingAccount?.loginid && (
+                                <TradingAccountCard.Button>
+                                    <LabelPairedChevronRightCaptionRegularIcon
+                                        data-testid='dt_label_paired_chevron'
+                                        width={16}
+                                    />
+                                </TradingAccountCard.Button>
+                            )}
                         </TradingAccountCard>
                     );
                 })}

@@ -59,6 +59,12 @@
         padding: 4rem 1.6rem 3.6rem;
         position: relative;
 
+        span {
+            @include rtl {
+                text-align: right;
+            }
+        }
+
         &__tag {
             background-color: #661b20;
             border-radius: 0.4rem;

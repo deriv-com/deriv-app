@@ -132,8 +132,8 @@ describe('<GuideContent />', () => {
             wrapper,
         });
 
-        const tour_second = screen.getAllByTestId('tutorials-wrap--tour')[1];
-        userEvent.type(tour_second, '{enter}');
+        const button_cancel = screen.getAllByTestId('tutorials-wrap--tour')[1];
+        userEvent.type(button_cancel, '{enter}');
 
         await waitFor(() => {
             expect(mock_DBot_store.dashboard.is_tour_dialog_visible).toBeTruthy();

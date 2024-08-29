@@ -140,21 +140,17 @@ describe('<GuideContent />', () => {
         });
     });
 
-    it('should not trigger the keyDown event upon clicking "Backspace"', async () => {
-        const mockEventListener = jest.fn();
+    it('should not trigger the keyDown event upon clicking "Esc"', async () => {
+        mock_store.ui.is_desktop = true;
         render(<GuideContent {...mocked_props} />, {
             wrapper,
         });
 
-        document.addEventListener('keydown', mockEventListener);
         const button_cancel = screen.getAllByTestId('tutorials-wrap--tour')[1];
-        // use fireEvent since userEvent doesn't handle the case: userEvent.type(button_cancel, '{Enter}');
-        fireEvent.keyDown(button_cancel, { key: 'Backspace', code: 'Backspace', keyCode: 13 });
+        userEvent.type(button_cancel, '{esc}');
 
         await waitFor(() => {
-            expect(mockEventListener).not.toHaveBeenCalledWith(
-                expect.objectContaining({ key: 'Enter', code: 'Enter' })
-            );
+            expect(mock_DBot_store.dashboard.is_tour_dialog_visible).toBeTruthy();
         });
     });
 

@@ -34,7 +34,7 @@ export default function QsTextInput({ name, field }: { name: string; field: any 
                         {...field}
                         onChange={e => {
                             setFieldValue(name, e.target.value, true);
-                            setFieldTouched(name, true, true);
+                            setFieldTouched(name, true, false);
                         }}
                         value={values[name]}
                     />

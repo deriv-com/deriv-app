@@ -88,9 +88,7 @@ describe('ProofOfAddressForm', () => {
 
         renderComponent({});
 
-        await waitFor(() => {
-            expect(screen.getByText('mockedPOADesktopForm')).toBeInTheDocument();
-        });
+        expect(await screen.findByText('mockedPOADesktopForm')).toBeInTheDocument();
     });
 
     it('should render Mobile layout of the form', async () => {
@@ -98,8 +96,6 @@ describe('ProofOfAddressForm', () => {
 
         renderComponent({});
 
-        await waitFor(() => {
-            expect(screen.getByText('mockedPOAMobileForm')).toBeInTheDocument();
-        });
+        expect(await screen.findByText('mockedPOAMobileForm')).toBeInTheDocument();
     });
 });

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 //@ts-nocheck [TODO] - Need to fix typescript errors in this file
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Autocomplete, Loading, Text } from '@deriv/components';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import FileUploader from './file-uploader';
@@ -28,9 +28,9 @@ const FileUploaderContainer = ({
     const { isMobile } = useDevice();
     const { localize } = useTranslations();
     const { kyc_auth_status, isLoading } = useKycAuthStatus({ country: country_of_residence });
-    const [document_list, setDocumentList] = useState<Required<TListItem>[]>([]);
+    const [document_list, setDocumentList] = React.useState<Required<TListItem>[]>([]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (kyc_auth_status) {
             const { address } = kyc_auth_status;
             const { supported_documents } = address;

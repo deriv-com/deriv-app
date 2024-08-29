@@ -1,10 +1,13 @@
 .on-ramp {
-    &__page-header {
-        margin-bottom: 1.7rem;
+    @include desktop-screen {
+        padding: 0 0.8rem;
+    }
 
-        // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
-        @media (max-width: 926px) {
-            margin: 1.7rem;
+    &__page-header {
+        margin-bottom: 1.6rem;
+
+        @include mobile-or-tablet-screen {
+            margin: 1.6rem;
         }
     }
     &__info {
@@ -29,13 +32,12 @@
         border-radius: 0.8rem;
         display: grid;
         width: 100%;
-        grid-column-gap: 2.4rem;
+        grid-column-gap: 1.6rem;
         grid-template-areas: (
             'logo name name' 'logo description buy' 'logo description buy' 'logo payment-icons payment-icons'
         );
 
-        // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
-        @media (max-width: 926px) {
+        @include mobile-or-tablet-screen {
             grid-template-areas: (
                 'logo name name name' 'logo description description description'
                     'logo description description description' 'payment-icons payment-icons payment-icons buy'
@@ -49,8 +51,7 @@
             align-self: center;
             grid-area: logo;
 
-            // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
-            @media (max-width: 926px) {
+            @include mobile-or-tablet-screen {
                 align-self: start;
             }
         }
@@ -60,11 +61,10 @@
         }
         &-description {
             grid-area: description;
-            width: 390px;
-            min-height: 60px;
+            width: 34.2rem;
+            min-height: 6rem;
 
-            // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
-            @media (max-width: 926px) {
+            @include mobile-or-tablet-screen {
                 width: auto;
                 height: auto;
             }
@@ -80,8 +80,8 @@
             &-shadow {
                 right: 0;
                 top: 0;
-                height: 40px;
-                width: 40px;
+                height: 4rem;
+                width: 4rem;
                 z-index: 1;
                 position: absolute;
                 background-image: var(--gradient-right-edge);
@@ -112,7 +112,7 @@
                 padding: 1.2rem;
                 margin: 1.6rem;
                 background-color: var(--general-section-2);
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     margin: 1.6rem 0.8rem;
                     width: calc(100% - 1.6rem);
                     display: flex;
@@ -129,7 +129,7 @@
                     cursor: pointer;
                     width: 26.5rem;
                     background: unset;
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         width: calc(100% - 2rem);
                         overflow-x: scroll !important;
                         &::-webkit-scrollbar {
@@ -156,7 +156,7 @@
             }
         }
         &-divider {
-            height: 2px;
+            height: 0.2rem;
             width: 100%;
             background-color: var(--general-section-2);
             margin: 2.4rem 0;
@@ -176,8 +176,8 @@
             justify-content: flex-end;
             margin-top: 2.4rem;
 
-            @include mobile {
-                margin-bottom: 4rem;
+            @include mobile-screen {
+                margin-bottom: 2.4rem;
             }
         }
         &-no-deposit-address {
@@ -192,7 +192,7 @@
             }
         }
         & .dc-hint-box {
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 &__icon {
                     align-self: start;
                 }
@@ -214,10 +214,13 @@
             }
         }
     }
+    &__selector {
+        padding: 0 0 1.6rem;
+    }
 }
 .dc-modal__container {
     &_on-ramp__modal {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             max-width: calc(100vw - 6rem) !important;
             max-height: calc(100vh - 6rem) !important;
         }
@@ -228,7 +231,7 @@
             }
         }
         > .dc-modal-body {
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 overflow: scroll;
             }
         }

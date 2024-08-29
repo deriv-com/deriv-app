@@ -9,13 +9,13 @@ import {
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { toMoment } from '@deriv/utils';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
 import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
-import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import { ModalStepWrapper, WalletButton } from '../Base';
 import { useModal } from '../ModalProvider';
+import { TradingAccountCard } from '../TradingAccountCard';
 import { WalletMarketIcon } from '../WalletMarketIcon';
 import { DerivAppsSuccessFooter } from './DerivAppsSuccessFooter';
 
@@ -97,19 +97,17 @@ const DerivAppsGetAccount: React.FC = () => {
     }, [addTradingAccountToLocalStorage, isAccountCreationSuccess]);
 
     return (
-        <div className='wallets-deriv-apps-section wallets-deriv-apps-section__get-account'>
-            <div className='wallets-deriv-apps-section__icon'>
-                <WalletMarketIcon icon='standard' size='lg' />
-            </div>
-            <div className='wallets-deriv-apps-section__get-content'>
-                <div className='wallets-deriv-apps-section__details'>
-                    <Text size='sm' weight='bold'>
-                        <Localize i18n_default_text='Options' />
-                    </Text>
-                    <Text size={isDesktop ? '2xs' : 'xs'}>
-                        <Localize i18n_default_text='One options account for all platforms.' />
-                    </Text>
-                </div>
+        <TradingAccountCard className='wallets-deriv-apps-section wallets-deriv-apps-section__border'>
+            <TradingAccountCard.Icon>
+                <WalletMarketIcon icon='standard' size={isDesktop ? 'lg' : 'md'} />
+            </TradingAccountCard.Icon>
+            <TradingAccountCard.Content>
+                <Text size='sm'>Options</Text>
+                <Text size={isDesktop ? '2xs' : 'xs'}>
+                    <Localize i18n_default_text='One options account for all platforms.' />
+                </Text>
+            </TradingAccountCard.Content>
+            <TradingAccountCard.Button>
                 <WalletButton
                     color='primary-light'
                     disabled={isAccountCreationLoading || isActiveLinkedToTradingAccountLoading}
@@ -117,8 +115,8 @@ const DerivAppsGetAccount: React.FC = () => {
                 >
                     <Localize i18n_default_text='Get' />
                 </WalletButton>
-            </div>
-        </div>
+            </TradingAccountCard.Button>
+        </TradingAccountCard>
     );
 };
 

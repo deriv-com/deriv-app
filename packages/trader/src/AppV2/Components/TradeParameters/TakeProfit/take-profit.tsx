@@ -10,6 +10,7 @@ import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TakeProfitInput from './take-profit-input';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
+import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 
 type TTakeProfitProps = {
     is_minimized?: boolean;
@@ -17,11 +18,14 @@ type TTakeProfitProps = {
 
 const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     const {
+        contract_type,
         currency,
         has_open_accu_contract,
         has_take_profit,
         is_accumulator,
         take_profit,
+        trade_types,
+        trade_type_tab,
         onChangeMultiple,
         onChange,
         validation_params,
@@ -36,8 +40,9 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
     const focused_input_ref = React.useRef<HTMLInputElement>(null);
     const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
 
-    const min_take_profit = validation_params?.take_profit?.min;
-    const max_take_profit = validation_params?.take_profit?.max;
+    const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
+    const min_take_profit = validation_params[contract_types[0]]?.take_profit?.min;
+    const max_take_profit = validation_params[contract_types[0]]?.take_profit?.max;
     const decimals = getDecimalPlaces(currency);
 
     const getInputMessage = () =>

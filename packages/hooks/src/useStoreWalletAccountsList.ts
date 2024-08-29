@@ -54,6 +54,10 @@ const currency_to_icon_mapper: Record<string, Record<'light' | 'dark', string>> 
         dark: 'IcWalletUsdCoinDark',
         light: 'IcWalletUsdCoinLight',
     },
+    XRP: {
+        dark: 'IcWalletXrpDark',
+        light: 'IcWalletXrpLight',
+    },
 };
 
 /** A custom hook to get the list of wallets for the current user. */

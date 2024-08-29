@@ -94,3 +94,9 @@ $min-desktop-width: 1280px;
         @content;
     }
 }
+
+@mixin tablet-portrait-screen {
+    @media (min-width: #{$max-mobile-width + 1}) and (max-width: #{$min-desktop-width - 1}) and (orientation: portrait) {
+        @content;
+    }
+}

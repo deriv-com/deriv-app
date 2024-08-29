@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import { observer, useStore } from '@deriv/stores';
-import { usePhoneNumberVerificationSessionTimer, usePhoneVerificationAnalytics } from '@deriv/hooks';
+import {
+    useIsPhoneNumberVerified,
+    usePhoneNumberVerificationSessionTimer,
+    usePhoneVerificationAnalytics,
+} from '@deriv/hooks';
 import { Modal, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
@@ -13,10 +17,11 @@ const CancelPhoneVerificationModal = observer(() => {
     const [next_location, setNextLocation] = useState(location.pathname);
     const { ui, client } = useStore();
     const { setShouldShowPhoneNumberOTP, is_forced_to_exit_pnv } = ui;
-    const { setVerificationCode, is_virtual, account_settings } = client;
+    const { setVerificationCode, is_virtual } = client;
     const { isMobile } = useDevice();
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
     const { should_show_session_timeout_modal: is_session_expired } = usePhoneNumberVerificationSessionTimer();
+    const { is_phone_number_verified } = useIsPhoneNumberVerified();
 
     useEffect(() => {
         const unblock = history.block((location: Location) => {
@@ -25,7 +30,7 @@ const CancelPhoneVerificationModal = observer(() => {
                 !is_virtual &&
                 !is_forced_to_exit_pnv &&
                 !is_session_expired &&
-                !account_settings.phone_number_verification?.verified
+                !is_phone_number_verified
             ) {
                 setShowModal(true);
                 setNextLocation(location.pathname);
@@ -35,14 +40,7 @@ const CancelPhoneVerificationModal = observer(() => {
         });
 
         return () => unblock();
-    }, [
-        history,
-        show_modal,
-        is_virtual,
-        is_forced_to_exit_pnv,
-        is_session_expired,
-        account_settings.phone_number_verification?.verified,
-    ]);
+    }, [history, show_modal, is_virtual, is_forced_to_exit_pnv, is_session_expired, is_phone_number_verified]);
 
     const handleStayAtPhoneVerificationPage = () => {
         setShowModal(false);

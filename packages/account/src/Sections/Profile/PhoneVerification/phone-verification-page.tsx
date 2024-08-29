@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Loading } from '@deriv/components';
-import { useGrowthbookGetFeatureValue, useSendOTPVerificationCode } from '@deriv/hooks';
+import { useGrowthbookGetFeatureValue, useIsPhoneNumberVerified, useSendOTPVerificationCode } from '@deriv/hooks';
 import { LabelPairedArrowLeftCaptionFillIcon } from '@deriv/quill-icons';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -27,6 +27,7 @@ const PhoneVerificationPage = observer(() => {
         history.push(routes.personal_details);
     };
     const { sendEmailOTPVerification, email_otp_error, is_email_verified } = useSendOTPVerificationCode();
+    const { is_phone_number_verified } = useIsPhoneNumberVerified();
     const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
@@ -37,14 +38,13 @@ const PhoneVerificationPage = observer(() => {
         verification_code: { phone_number_verification: phone_number_verification_code },
         is_authorize,
         is_virtual,
-        account_settings,
     } = client;
 
     useEffect(() => {
         if (
             (isPhoneNumberVerificationGBLoaded && !isPhoneNumberVerificationEnabled) ||
             is_virtual ||
-            account_settings.phone_number_verification?.verified
+            is_phone_number_verified
         ) {
             history.push(routes.personal_details);
         }
@@ -53,7 +53,7 @@ const PhoneVerificationPage = observer(() => {
         isPhoneNumberVerificationEnabled,
         is_virtual,
         history,
-        account_settings.phone_number_verification?.verified,
+        is_phone_number_verified,
     ]);
 
     useEffect(() => {

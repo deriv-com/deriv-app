@@ -2,6 +2,7 @@ import React from 'react';
 import dayjs from 'dayjs';
 import { WS } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
+import useIsPhoneNumberVerified from './useIsPhoneNumberVerified';
 
 /** A hook for calculating email verification otp and phone number otp timer */
 const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = false) => {
@@ -12,9 +13,10 @@ const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = f
     const [next_email_otp_request_timer, setNextEmailOtpRequestTimer] = React.useState<number | undefined>();
     const [next_phone_otp_request_timer, setNextPhoneOtpRequestTimer] = React.useState<number | undefined>();
     const [is_request_button_disabled, setIsRequestButtonDisabled] = React.useState(false);
+    const { is_phone_number_verified } = useIsPhoneNumberVerified();
 
     React.useEffect(() => {
-        if (!phone_number_verification?.verified) {
+        if (!is_phone_number_verified) {
             setIsRequestButtonDisabled(true);
             WS.send({ time: 1 }).then((response: { error?: Error; time: number }) => {
                 setIsRequestButtonDisabled(false);
@@ -47,7 +49,7 @@ const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = f
             });
         }
     }, [
-        phone_number_verification?.verified,
+        is_phone_number_verified,
         phone_number_verification?.next_email_attempt,
         phone_number_verification?.next_attempt,
         is_from_request_phone_number_otp,

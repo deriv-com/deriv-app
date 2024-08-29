@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useHistory } from 'react-router';
 import { Button } from '@deriv/components';
-import { useVerifyEmail } from '@deriv/hooks';
+import { useIsPhoneNumberVerified, useVerifyEmail } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTranslations, Localize } from '@deriv-com/translations';
@@ -18,9 +18,8 @@ export const VerifyButton = observer(
     ({ is_verify_button_disabled, next_email_otp_request_timer, setStatus }: TVerifyButton) => {
         const { client, ui } = useStore();
         const { setShouldShowPhoneNumberOTP, is_scroll_to_verify_button, setIsScrollToVerifyButton } = ui;
-        const { account_settings, setVerificationCode } = client;
-        const { phone_number_verification } = account_settings;
-        const is_phone_number_verified = !!phone_number_verification?.verified;
+        const { setVerificationCode } = client;
+        const { is_phone_number_verified } = useIsPhoneNumberVerified();
         const history = useHistory();
         const { localize } = useTranslations();
         //@ts-expect-error remove this when phone_number_verification is added to api calls

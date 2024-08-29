@@ -37,6 +37,7 @@ import {
     useResidenceList,
     useGrowthbookGetFeatureValue,
     usePhoneNumberVerificationSetTimer,
+    useIsPhoneNumberVerified,
 } from '@deriv/hooks';
 
 type TRestState = {
@@ -65,6 +66,7 @@ const PersonalDetailsForm = observer(() => {
         notifications,
         common: { is_language_changing },
     } = useStore();
+    const { is_phone_number_verified } = useIsPhoneNumberVerified();
 
     const {
         account_settings,
@@ -121,7 +123,7 @@ const PersonalDetailsForm = observer(() => {
 
     const hintMessage = ({ is_phone_number_editted }: THintMessage) => {
         if (isPhoneNumberVerificationEnabled) {
-            if (account_settings?.phone_number_verification?.verified) {
+            if (is_phone_number_verified) {
                 return (
                     <Localize
                         i18n_default_text='To change your verified phone number, contact us via <0></0>.'

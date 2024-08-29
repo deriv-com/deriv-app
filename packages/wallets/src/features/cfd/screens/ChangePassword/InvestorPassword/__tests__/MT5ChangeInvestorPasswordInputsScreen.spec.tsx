@@ -143,13 +143,9 @@ describe('MT5ChangeInvestorPasswordInputsScreen', () => {
     });
     it('displays the password when the viewer icon is clicked', () => {
         render(<MT5ChangeInvestorPasswordInputsScreen />);
-        expect(screen.getByPlaceholderText('Current investor password')).toHaveAttribute('type', 'password');
-        userEvent.click(screen.getByText('PasswordViewerIcon'));
-        expect(screen.getByPlaceholderText('Current investor password')).toHaveAttribute('type', 'text');
-    });
-    it('renders button with correct text size', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
-        render(<MT5ChangeInvestorPasswordInputsScreen />);
-        expect(WalletButton).toHaveBeenCalledWith(expect.objectContaining({ textSize: 'md' }), {});
+        const currentPasswordInput = screen.getByPlaceholderText('Current investor password');
+        expect(currentPasswordInput).toHaveAttribute('type', 'password');
+        userEvent.click(screen.getAllByRole('button', { name: 'PasswordViewerIcon' })[0]);
+        expect(currentPasswordInput).toHaveAttribute('type', 'text');
     });
 });

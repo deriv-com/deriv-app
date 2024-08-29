@@ -48,7 +48,7 @@ jest.mock('../TradingPlatformChangePasswordScreens', () =>
     jest.fn(({ platform }) => <div>Trading Platform Change Password: {platform}</div>)
 );
 
-describe('ChangePassword Component', () => {
+describe('ChangePassword', () => {
     it('renders the MT5ChangePasswordScreens component by default', () => {
         render(<ChangePassword />, { wrapper });
 

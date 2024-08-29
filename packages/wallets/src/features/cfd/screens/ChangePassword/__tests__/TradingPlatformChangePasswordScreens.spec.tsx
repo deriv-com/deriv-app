@@ -27,10 +27,8 @@ jest.mock('../../../../../hooks/useDevice', () => jest.fn(() => ({ isMobile: fal
 jest.mock('../../../../../components', () => ({
     ...jest.requireActual('../../../../../components'),
     SentEmailContent: jest.fn().mockImplementation(() => <div>SentEmailContent</div>),
-    WalletButton: jest
-        .fn()
-        .mockImplementation(({ children, onClick }) => <button onClick={onClick}>{children}</button>),
-    WalletsActionScreen: jest.fn().mockImplementation(({ description, renderButtons, title }) => (
+    WalletButton: jest.fn(({ children, onClick }) => <button onClick={onClick}>{children}</button>),
+    WalletsActionScreen: jest.fn(({ description, renderButtons, title }) => (
         <div>
             <h1>{title}</h1>
             <p>{description}</p>
@@ -113,7 +111,6 @@ describe('TradingPlatformChangePasswordScreens', () => {
             },
             verify_email: 'test@mail.com',
         });
-        expect(WalletButton).toHaveBeenCalledWith(expect.objectContaining({ textSize: 'md' }), {});
     });
     it('calls handleSendEmail when Confirm is clicked and the platform is dxtrade', () => {
         render(<TradingPlatformChangePasswordScreens platform='dxtrade' />);

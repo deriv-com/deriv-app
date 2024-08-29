@@ -130,9 +130,14 @@ const TimeFilter = ({
             >
                 <Text size='sm'>{getChipLabel()}</Text>
             </Chip.Standard>
-            <ActionSheet.Root isOpen={isDropdownOpen} onClose={() => setIsDropdownOpen(false)} position='left'>
+            <ActionSheet.Root
+                isOpen={isDropdownOpen}
+                onClose={() => setIsDropdownOpen(false)}
+                position='left'
+                expandable={false}
+            >
                 <ActionSheet.Portal shouldCloseOnDrag>
-                    <ActionSheet.Header title={<Localize i18n_default_text='Filter by trade types' />} />
+                    <ActionSheet.Header title={<Localize i18n_default_text='Filter by time' />} />
                     <ActionSheet.Content className='filter__item__wrapper'>
                         <RadioGroup
                             className='filter__item--radio'

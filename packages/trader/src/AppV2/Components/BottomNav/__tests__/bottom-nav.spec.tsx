@@ -37,15 +37,15 @@ describe('BottomNav', () => {
     });
     it('should render the correct number of BottomNavItem components', () => {
         render(renderedBottomNav);
-        expect(screen.getAllByText(/MockedBottomNavItem/i)).toHaveLength(4);
+        expect(screen.getAllByText(/MockedBottomNavItem/i)).toHaveLength(2);
     });
     it('should render MockedTrade by default since selected index is 0', () => {
         render(renderedBottomNav);
         expect(screen.getByText('MockedTrade')).toBeInTheDocument();
     });
-    it('should render MockedPositions if 3rd MockedBottomNavItem is selected', () => {
+    it('should render MockedPositions if 2nd MockedBottomNavItem is selected', () => {
         render(renderedBottomNav);
-        userEvent.click(screen.getAllByText('MockedBottomNavItem')[2]);
+        userEvent.click(screen.getAllByText('MockedBottomNavItem')[1]);
         expect(screen.getByText('MockedPositions')).toBeInTheDocument();
     });
 });

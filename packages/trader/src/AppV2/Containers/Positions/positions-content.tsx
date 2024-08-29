@@ -1,7 +1,7 @@
 import React from 'react';
 import { TContractInfo } from '@deriv/shared';
-import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+import { Loading } from '@deriv/components';
 import { EmptyPositions, TEmptyPositionsProps } from 'AppV2/Components/EmptyPositions';
 import { TPortfolioPosition } from '@deriv/stores/types';
 import { ContractCardList, ContractCardsSections } from 'AppV2/Components/ContractCard';
@@ -70,6 +70,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
 
     const contractCards = isClosedTab ? (
         <ContractCardsSections
+            currency={currency}
             positions={filteredPositions as TClosedPosition[]}
             isLoadingMore={isFetchingClosedPositions}
             hasBottomMargin={shouldShowTakeProfit}
@@ -95,8 +96,8 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     };
 
     React.useEffect(() => {
+        const result = filterPositions(positions, contractTypeFilter);
         if (contractTypeFilter.length) {
-            const result = filterPositions(positions, contractTypeFilter);
             setFilteredPositions(result);
             if (!isClosedTab) setNoMatchesFound(!result.length);
         } else {
@@ -104,21 +105,23 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
             setFilteredPositions(positions);
         }
         if (isClosedTab)
-            setNoMatchesFound(
-                !positions.length && !!(timeFilter || customTimeRangeFilter || contractTypeFilter.length)
-            );
+            setNoMatchesFound(!result.length && !!(timeFilter || customTimeRangeFilter || contractTypeFilter.length));
     }, [isClosedTab, positions, contractTypeFilter, timeFilter, customTimeRangeFilter]);
 
     React.useEffect(() => {
         isClosedTab ? onClosedTabMount(true) : onOpenTabMount();
 
         return () => {
-            isClosedTab && onClosedTabUnmount();
+            if (isClosedTab) {
+                clearTable();
+                onClosedTabUnmount();
+            }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (shouldShowLoading || (!shouldShowContractCards && !shouldShowEmptyMessage)) return <Loading />;
+    if (shouldShowLoading || (!shouldShowContractCards && !shouldShowEmptyMessage))
+        return <Loading.DTraderV2 is_positions is_closed_tab={isClosedTab} />;
     return (
         <div
             className={`positions-page__${isClosedTab ? TAB_NAME.CLOSED.toLowerCase() : TAB_NAME.OPEN.toLowerCase()}`}

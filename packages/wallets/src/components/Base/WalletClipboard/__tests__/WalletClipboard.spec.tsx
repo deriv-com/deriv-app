@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCopyToClipboard, useHover } from 'usehooks-ts';
+import { useCopyToClipboard } from 'usehooks-ts';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import useDevice from '../../../../hooks/useDevice';
@@ -7,7 +7,6 @@ import WalletClipboard from '../WalletClipboard';
 
 jest.mock('usehooks-ts', () => ({
     useCopyToClipboard: jest.fn(),
-    useHover: jest.fn(),
 }));
 
 jest.mock('../../../../hooks/useDevice', () => ({
@@ -18,14 +17,12 @@ jest.mock('../../../../hooks/useDevice', () => ({
 describe('WalletClipboard', () => {
     let mockCopy: jest.Mock;
     const mockUseDevice = useDevice as jest.Mock;
-    const mockUseHover = useHover as jest.Mock;
     const mockUseCopyToClipboard = useCopyToClipboard as jest.Mock;
     const renderComponent = () => render(<WalletClipboard textCopy='Sample text to copy' />);
 
     beforeEach(() => {
         mockCopy = jest.fn();
         mockUseCopyToClipboard.mockReturnValue([null, mockCopy]);
-        mockUseHover.mockReturnValue(false);
         mockUseDevice.mockReturnValue({ isMobile: false });
     });
 
@@ -53,8 +50,8 @@ describe('WalletClipboard', () => {
 
     describe('when hovered', () => {
         it('shows tooltip with "Copy" message', async () => {
-            mockUseHover.mockReturnValue(true);
             renderComponent();
+            userEvent.hover(screen.getByRole('button'));
 
             await waitFor(() => {
                 expect(screen.queryByText('Copy')).toBeInTheDocument();
@@ -64,9 +61,9 @@ describe('WalletClipboard', () => {
 
     describe('when hovered and clicked', () => {
         const renderScenario = async () => {
-            mockUseHover.mockReturnValue(true);
             const { unmount } = renderComponent();
             const button = await screen.findByRole('button');
+            userEvent.hover(button);
             await userEvent.click(button);
 
             return { unmount };
@@ -89,15 +86,6 @@ describe('WalletClipboard', () => {
 
             await waitFor(() => {
                 expect(screen.queryByText('Copied!')).toBeInTheDocument();
-            });
-        });
-        it("doesn't show tooltip on mobile", async () => {
-            mockUseDevice.mockReturnValue({ isMobile: true });
-            await renderScenario();
-
-            await waitFor(() => {
-                expect(screen.queryByText('Copy')).not.toBeInTheDocument();
-                expect(screen.queryByText('Copied!')).not.toBeInTheDocument();
             });
         });
         it('resets the icon and message after 2 seconds', async () => {

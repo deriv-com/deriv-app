@@ -1,89 +1,79 @@
 import React from 'react';
-import {
-    Button,
-    DesktopWrapper,
-    Icon,
-    InlineMessage,
-    MobileFullPageModal,
-    MobileWrapper,
-    Modal,
-    Text,
-} from '@deriv/components';
-import { useHasMFAccountDeposited } from '@deriv/hooks';
+import { Analytics } from '@deriv-com/analytics';
+import { useDevice } from '@deriv-com/ui';
+import { MobileFullPageModal, Modal } from '@deriv/components';
+import { useCryptoTransactions, useCurrentCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
-import DepositFiatIframe from '@deriv/cashier/src/modules/deposit-fiat/components/deposit-fiat-iframe/deposit-fiat-iframe';
-import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
+import DepositNowOrLaterModal from '../Modals/deposit-now-or-later-modal';
+import { OneTimeDepositModalContent } from './one-time-deposit-modal-content';
+import CryptoTransactionProcessingModal from '../Modals/crypto-transaction-processing-modal';
+import './one-time-deposit-modal.scss';
 
 const OneTimeDepositModal = observer(() => {
+    const { isDesktop } = useDevice();
     const { client, ui } = useStore();
-    const { loginid } = client;
+    const { is_logged_in, balance, currency } = client;
     const {
-        is_mobile,
         should_show_one_time_deposit_modal,
         setShouldShowOneTimeDepositModal,
-        toggleAccountSuccessModal,
+        setShouldShowDepositNowOrLaterModal,
+        setShouldShowCryptoTransactionProcessingModal,
     } = ui;
-    const liveChat = useLiveChat(false, loginid);
-    const { has_mf_account_deposited } = useHasMFAccountDeposited();
 
-    React.useEffect(() => {
-        if (has_mf_account_deposited) {
-            onCloseModal();
-        }
-    }, [has_mf_account_deposited]);
-
-    const onLiveChatClick = () => {
-        liveChat.widget?.call('maximize');
-    };
+    const currency_config = useCurrentCurrencyConfig();
+    const is_crypto_provider = currency_config?.platform.cashier.includes('crypto');
+    const { data: crypto_transactions, has_transactions } = useCryptoTransactions(is_logged_in && is_crypto_provider);
+    const [is_account_deposited, setIsAccountDeposited] = React.useState(false);
 
     const onCloseModal = () => {
-        setShouldShowOneTimeDepositModal(false);
-        toggleAccountSuccessModal();
+        if (is_account_deposited) setShouldShowOneTimeDepositModal(false);
+        else setShouldShowDepositNowOrLaterModal(true);
     };
 
-    const getModalContent = () => (
-        <div className='one-time-deposit-modal__content'>
-            <div className='one-time-deposit-modal__title'>
-                <Text as='h1' size={is_mobile ? 'm' : 'l'} weight='bold'>
-                    <Localize i18n_default_text='Deposit' />
-                </Text>
-                <Text as='p' size={is_mobile ? 'xs' : 's'} align='center'>
-                    <Localize i18n_default_text='Account created. Select payment method for deposit.' />
-                </Text>
-            </div>
-            <div className='one-time-deposit-modal__description'>
-                <InlineMessage
-                    type='information'
-                    size='sm'
-                    message={
-                        <Localize i18n_default_text='We don’t charge deposit fees! Once your account is verified, you will be able to trade, make additional deposits, or withdraw funds.' />
-                    }
-                />
-                <Button
-                    className='one-time-deposit-modal__description--livechat'
-                    data-testid='dt_live_chat'
-                    onClick={onLiveChatClick}
-                    transparent
-                    type='button'
-                >
-                    <Icon
-                        color='red'
-                        icon='IcLiveChat'
-                        className='one-time-deposit-modal__description--livechat-icon'
-                    />
-                    <Text color='loss-danger' size='xs' weight='bold'>
-                        <Localize i18n_default_text='Live Chat' />
-                    </Text>
-                </Button>
-            </div>
-            <DepositFiatIframe />
-        </div>
-    );
+    // check the user already made a deposit
+    React.useEffect(() => {
+        if (balance && Number(balance) > 0) {
+            setIsAccountDeposited(true);
+        }
+
+        // check crypto transactions
+        if (is_crypto_provider && crypto_transactions && has_transactions) {
+            if (crypto_transactions?.some(tx => tx.is_deposit)) {
+                setIsAccountDeposited(true);
+            }
+
+            if (crypto_transactions?.some(tx => tx.is_deposit && tx.status_code === 'PENDING')) {
+                setShouldShowOneTimeDepositModal(false);
+                setShouldShowCryptoTransactionProcessingModal(true);
+            }
+        }
+    }, [
+        balance,
+        crypto_transactions,
+        currency_config,
+        is_crypto_provider,
+        has_transactions,
+        setIsAccountDeposited,
+        setShouldShowOneTimeDepositModal,
+        setShouldShowCryptoTransactionProcessingModal,
+    ]);
+
+    React.useEffect(() => {
+        if (should_show_one_time_deposit_modal) {
+            Analytics.trackEvent('ce_tradershub_popup', {
+                action: 'open',
+                form_name: 'traders_hub_default',
+                account_mode: 'real',
+                popup_name: 'direct_deposit',
+                // @ts-expect-error currency propery will be added later
+                currency,
+            });
+        }
+    }, [should_show_one_time_deposit_modal]);
 
     return (
         <React.Fragment>
-            <DesktopWrapper>
+            {isDesktop ? (
                 <Modal
                     className='one-time-deposit-modal'
                     is_open={should_show_one_time_deposit_modal}
@@ -91,11 +81,13 @@ const OneTimeDepositModal = observer(() => {
                     toggleModal={onCloseModal}
                     height='auto'
                     has_close_icon
+                    should_header_stick_body={false}
                 >
-                    <Modal.Body className='one-time-deposit-modal__body'>{getModalContent()}</Modal.Body>
+                    <Modal.Body className='one-time-deposit-modal__body'>
+                        <OneTimeDepositModalContent is_crypto_provider={is_crypto_provider} />
+                    </Modal.Body>
                 </Modal>
-            </DesktopWrapper>
-            <MobileWrapper>
+            ) : (
                 <MobileFullPageModal
                     className='one-time-deposit-modal'
                     body_className='one-time-deposit-modal__body'
@@ -104,9 +96,11 @@ const OneTimeDepositModal = observer(() => {
                     is_modal_open={should_show_one_time_deposit_modal}
                     onClickClose={onCloseModal}
                 >
-                    {getModalContent()}
+                    <OneTimeDepositModalContent is_crypto_provider={is_crypto_provider} />
                 </MobileFullPageModal>
-            </MobileWrapper>
+            )}
+            <DepositNowOrLaterModal />
+            <CryptoTransactionProcessingModal />
         </React.Fragment>
     );
 });

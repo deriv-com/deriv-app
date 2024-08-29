@@ -32,10 +32,6 @@ const WarningMessageModal = observer(
             if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) {
                 window.location = routes.smarttrader;
             }
-
-            if (isNavigationFromExternalPlatform(routing_history, routes.binarybot)) {
-                window.location = routes.binarybot;
-            }
         };
 
         return (

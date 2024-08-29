@@ -1,18 +1,19 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Text } from '@deriv-com/quill-ui';
-import { Loading } from '@deriv/components';
 import { toMoment } from '@deriv/shared';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 import ContractCardList from './contract-card-list';
+import { StandaloneLoaderBoldIcon } from '@deriv/quill-icons';
 
 type TContractCardsSections = {
     isLoadingMore?: boolean;
     hasBottomMargin?: boolean;
     positions?: TClosedPosition[];
+    currency?: string;
 };
 
-const ContractCardsSections = ({ isLoadingMore, hasBottomMargin, positions }: TContractCardsSections) => {
+const ContractCardsSections = ({ isLoadingMore, hasBottomMargin, positions, currency }: TContractCardsSections) => {
     const formatTime = (time: number) => toMoment(time).format('DD MMM YYYY');
 
     const dates = positions?.map(element => {
@@ -41,11 +42,16 @@ const ContractCardsSections = ({ isLoadingMore, hasBottomMargin, positions }: TC
                                 const purchaseTime = position.contract_info.purchase_time_unix;
                                 return purchaseTime && formatTime(purchaseTime) === date;
                             })}
+                            currency={currency}
                         />
                     </div>
                 ))}
             </div>
-            {isLoadingMore && <Loading is_fullscreen={false} />}
+            {isLoadingMore && (
+                <div className='load-more-spinner' data-testid='dt_load_more_spinner'>
+                    <StandaloneLoaderBoldIcon iconSize='md' />
+                </div>
+            )}
         </React.Fragment>
     );
 };

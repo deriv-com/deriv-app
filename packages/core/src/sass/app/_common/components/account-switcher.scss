@@ -53,10 +53,6 @@
         z-index: 2;
         background: var(--general-main-1);
 
-        &--wallets {
-            width: 47rem;
-        }
-
         &:before {
             content: '';
             position: absolute;
@@ -80,6 +76,13 @@
             }
             &--is-crypto {
                 width: 100%;
+            }
+        }
+
+        &--wallets {
+            width: 47rem;
+            @include mobile {
+                width: auto;
             }
         }
     }
@@ -572,6 +575,8 @@
 
 .dc-modal__container_accounts-switcher {
     @include tablet-screen {
-        inset-inline-start: 1.6rem;
+        inset-inline: 0;
+        max-width: 60rem;
+        margin: auto;
     }
 }

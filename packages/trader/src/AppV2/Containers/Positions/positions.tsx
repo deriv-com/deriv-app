@@ -1,13 +1,22 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
+import { getPositionsV2TabIndexFromURL } from '@deriv/shared';
 import { Tab } from '@deriv-com/quill-ui';
-import { getTabIndexFromURL, setPositionURLParams, TAB_NAME } from 'AppV2/Utils/positions-utils';
+import { observer } from 'mobx-react';
+import { useModulesStore } from 'Stores/useModulesStores';
+import { setPositionURLParams, TAB_NAME } from 'AppV2/Utils/positions-utils';
 import BottomNav from 'AppV2/Components/BottomNav';
 import PositionsContent from './positions-content';
+import { useHistory } from 'react-router-dom';
 
-const Positions = () => {
+const Positions = observer(() => {
     const [hasButtonsDemo, setHasButtonsDemo] = React.useState(true);
-    const [activeTab, setActiveTab] = React.useState(getTabIndexFromURL());
+    const [activeTab, setActiveTab] = React.useState(getPositionsV2TabIndexFromURL());
+    const history = useHistory();
+
+    const {
+        positions: { onUnmount },
+    } = useModulesStore();
 
     const tabs = [
         {
@@ -29,6 +38,11 @@ const Positions = () => {
 
     React.useEffect(() => {
         setPositionURLParams(tabs[activeTab].id);
+
+        return () => {
+            const is_contract_details = history.location.pathname.startsWith('/contract/');
+            if (!is_contract_details) onUnmount();
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -56,6 +70,6 @@ const Positions = () => {
             </div>
         </BottomNav>
     );
-};
+});
 
 export default Positions;

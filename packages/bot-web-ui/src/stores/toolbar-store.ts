@@ -76,7 +76,7 @@ export default class ToolbarStore implements IToolbarStore {
 
     resetDefaultStrategy = async () => {
         const workspace = window.Blockly.derivWorkspace;
-        workspace.current_strategy_id = window.Blockly.utils.genUid();
+        workspace.current_strategy_id = window?.Blockly?.utils?.idGenerator?.genUid();
         await load({
             block_string: workspace.cached_xml.main,
             file_name: config.default_file_name,
@@ -87,7 +87,6 @@ export default class ToolbarStore implements IToolbarStore {
             showIncompatibleStrategyDialog: null,
         });
         workspace.strategy_to_load = workspace.cached_xml.main;
-        this.setResetButtonState(false);
     };
 
     onSortClick = () => {
@@ -117,10 +116,10 @@ export default class ToolbarStore implements IToolbarStore {
     };
 
     setHasUndoStack = (): void => {
-        this.has_undo_stack = window.Blockly.derivWorkspace?.hasUndoStack();
+        this.has_undo_stack = window.Blockly.derivWorkspace?.undoStack_?.length > 0;
     };
 
     setHasRedoStack = (): void => {
-        this.has_redo_stack = window.Blockly.derivWorkspace?.hasRedoStack();
+        this.has_redo_stack = window.Blockly.derivWorkspace?.redoStack_?.length > 0;
     };
 }

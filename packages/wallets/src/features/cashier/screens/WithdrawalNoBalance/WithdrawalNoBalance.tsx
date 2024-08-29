@@ -1,7 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { DerivLightCashierNoBalanceIcon } from '@deriv/quill-icons';
-import { WalletButton, WalletsActionScreen } from '../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Button } from '@deriv-com/ui';
+import { WalletsActionScreen } from '../../../../components';
 import { THooks } from '../../../../types';
 
 type TWithdrawalNoBalanceProps = {
@@ -13,15 +15,25 @@ const WithdrawalNoBalance: React.FC<TWithdrawalNoBalanceProps> = ({ activeWallet
 
     return (
         <WalletsActionScreen
-            description={`You don't have funds in your ${activeWallet.currency} Wallet to complete a withdrawal.`}
+            description={
+                <Localize
+                    i18n_default_text="You don't have funds in your {{currency}} Wallet to complete a withdrawal."
+                    values={{ currency: activeWallet.currency }}
+                />
+            }
             descriptionSize='md'
             icon={<DerivLightCashierNoBalanceIcon height='128px' width='128px' />}
             renderButtons={() => (
-                <WalletButton onClick={() => history.push('/wallet/deposit')} size='lg'>
-                    Add funds
-                </WalletButton>
+                <Button onClick={() => history.push('/wallet/deposit')} size='lg' textSize='md'>
+                    <Localize i18n_default_text='Add funds' />
+                </Button>
             )}
-            title={`No funds in ${activeWallet.currency} Wallet`}
+            title={
+                <Localize
+                    i18n_default_text='No funds in {{currency}} Wallet'
+                    values={{ currency: activeWallet.currency }}
+                />
+            }
         />
     );
 };

@@ -4,7 +4,6 @@ import { useDevice } from '@deriv-com/ui';
 import { useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
-import BinaryBotIFrame from 'Modules/BinaryBotIFrame';
 import P2PIFrame from 'Modules/P2PIFrame';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
@@ -19,11 +18,14 @@ import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 import initDatadog from '../Utils/Datadog';
 import { ThemeProvider } from '@deriv-com/quill-ui';
 import { useGrowthbookIsOn } from '@deriv/hooks';
+import { useTranslations } from '@deriv-com/translations';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
     const { has_wallet } = store.client;
+    const { current_language } = store.common;
     const { isMobile } = useDevice();
+    const { switchLanguage } = useTranslations();
 
     const [isWebPasskeysFFEnabled, isGBLoaded] = useGrowthbookIsOn({
         featureFlag: 'web_passkeys',
@@ -35,6 +37,10 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { data } = useRemoteConfig(isMounted());
     const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();
+
+    React.useEffect(() => {
+        switchLanguage(current_language);
+    }, [current_language, switchLanguage]);
 
     React.useEffect(() => {
         if (isGBLoaded && isWebPasskeysFFEnabled && isServicePasskeysFFEnabled) {
@@ -75,7 +81,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
                 <AppModals />
             </ErrorBoundary>
             <SmartTraderIFrame />
-            <BinaryBotIFrame />
             <P2PIFrame />
             <AppToastMessages />
             <Devtools />

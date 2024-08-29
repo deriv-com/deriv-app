@@ -1,4 +1,4 @@
-import { getUrlSmartTrader, getUrlBinaryBot } from '../url/helpers';
+import { getUrlSmartTrader } from '../url/helpers';
 
 export const routes = {
     reset_password: '/',
@@ -18,7 +18,6 @@ export const routes = {
     trader_positions: '/dtrader/positions',
     trader_menu: '/dtrader/menu',
     smarttrader: getUrlSmartTrader(),
-    binarybot: getUrlBinaryBot(),
 
     // account
     account: '/account',
@@ -95,9 +94,6 @@ export const routes = {
     wallets_compare_accounts: '/compare-accounts',
     wallets_on_ramp: '/wallet/on-ramp',
     wallets_reset_balance: '/wallet/reset-balance',
-
-    // Cashier V2
-    cashier_v2: '/cashier-v2',
 };
 
 export const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [
@@ -108,6 +104,7 @@ export const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [
     routes.bot,
     routes.account,
     routes.endpoint,
+    routes.cashier,
     /** because contract route has dynamic id */
     '/contract',
 ];

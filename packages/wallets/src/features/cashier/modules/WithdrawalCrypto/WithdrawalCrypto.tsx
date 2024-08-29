@@ -1,5 +1,6 @@
 import React from 'react';
-import { Loader, WalletText } from '../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Loader, Text } from '@deriv-com/ui';
 import { isServerError } from '../../../../utils/utils';
 import { WithdrawalErrorScreen } from '../../screens';
 import { TransactionStatus } from '../TransactionStatus';
@@ -21,6 +22,7 @@ const WithdrawalCrypto: React.FC<Pick<TWithdrawalCryptoProps, 'setResendEmail' |
         useWithdrawalCryptoContext();
 
     const onCloseHandler = () => setVerificationCode('');
+    const currency = activeWallet?.currency;
 
     const resetError = () => {
         onCloseHandler();
@@ -41,10 +43,12 @@ const WithdrawalCrypto: React.FC<Pick<TWithdrawalCryptoProps, 'setResendEmail' |
         <div className='wallets-withdrawal-crypto'>
             <div className='wallets-withdrawal-crypto__side-pane' />
             <div className='wallets-withdrawal-crypto__content'>
-                <WalletText weight='bold'>
-                    Withdraw {activeWallet?.currency ? getCurrencyConfig(activeWallet?.currency)?.name : ''} (
-                    {activeWallet?.currency}) to your wallet
-                </WalletText>
+                <Text weight='bold'>
+                    <Localize
+                        i18n_default_text='Withdraw {{currencyName}} ({{currency}}) to your wallet'
+                        values={{ currency, currencyName: currency ? getCurrencyConfig(currency)?.name : '' }}
+                    />
+                </Text>
                 <WithdrawalCryptoDisclaimer />
                 <WithdrawalCryptoForm />
             </div>

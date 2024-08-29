@@ -2,7 +2,9 @@ import React, { ComponentProps } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { TSocketError } from '@deriv/api-v2/types';
-import { WalletButton, WalletsErrorScreen } from '../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { Button } from '@deriv-com/ui';
+import { WalletsErrorScreen } from '../../../../components';
 import { CryptoWithdrawalErrorCodes } from '../../../../constants/errorCodes';
 
 type TProps = {
@@ -12,11 +14,11 @@ type TProps = {
 };
 
 type TErrorContent = {
-    buttonText?: string;
-    buttonVariant?: ComponentProps<typeof WalletButton>['variant'];
-    message?: string;
+    buttonText?: React.ReactNode;
+    buttonVariant?: ComponentProps<typeof Button>['variant'];
+    message: React.ReactNode;
     onClick?: () => void;
-    title?: string;
+    title: React.ReactNode;
 };
 
 type TErrorCodeHandlers = Record<string, TErrorContent>;
@@ -27,55 +29,78 @@ const WithdrawalErrorScreen: React.FC<TProps> = ({ error, resetError, setResendE
     const currency = data?.currency;
 
     const defaultContent: TErrorContent = {
-        buttonText: 'Try again',
+        buttonText: <Localize i18n_default_text='Try again' />,
         buttonVariant: 'ghost',
         message: error.message,
         onClick: () => window.location.reload(),
+        title: <Localize i18n_default_text='Oops, something went wrong!' />,
     };
 
     const withdrawalErrorCodeHandlers: TErrorCodeHandlers = {
         [CryptoWithdrawalErrorCodes.InvalidToken]: {
             ...defaultContent,
-            buttonText: 'Resend email',
+            buttonText: <Localize i18n_default_text='Resend email' />,
             buttonVariant: 'contained',
-            message: 'The verification link you used is invalid or expired. Please request for a new one.',
+            message: (
+                <Localize i18n_default_text='The verification link you used is invalid or expired. Please request for a new one.' />
+            ),
             onClick: () => {
                 resetError?.();
                 setResendEmail?.(true);
             },
-            title: 'Email verification failed',
+            title: <Localize i18n_default_text='Email verification failed' />,
         },
         [CryptoWithdrawalErrorCodes.CryptoInvalidAddress]: {
             ...defaultContent,
             onClick: resetError,
-            title: 'Error',
+            title: <Localize i18n_default_text='Error' />,
         },
         [CryptoWithdrawalErrorCodes.CryptoLimitAgeVerified]: {
             ...defaultContent,
-            buttonText: 'Verify identity',
+            buttonText: <Localize i18n_default_text='Verify identity' />,
             buttonVariant: 'contained',
             onClick: () => {
                 // @ts-expect-error the following link is not part of wallets routes config
                 history.push('/account/proof-of-identity');
             },
-            title: 'Error',
+            title: <Localize i18n_default_text='Error' />,
         },
         [CryptoWithdrawalErrorCodes.SuspendedCurrency]: {
             ...defaultContent,
             buttonText: undefined,
-            message: `Due to system maintenance, withdrawals with your ${currency} Wallet are unavailable at the moment. Please try again later.`,
-            title: `${currency} Wallet withdrawals are temporarily unavailable`,
+            message: (
+                <Localize
+                    i18n_default_text='Due to system maintenance, withdrawals with your {{currency}} Wallet are unavailable at the moment. Please try again later.'
+                    values={{ currency }}
+                />
+            ),
+            title: (
+                <Localize
+                    i18n_default_text='{{currency}} Wallet withdrawals are temporarily unavailable'
+                    values={{ currency }}
+                />
+            ),
         },
         [CryptoWithdrawalErrorCodes.SuspendedWithdrawal]: {
             ...defaultContent,
             buttonText: undefined,
-            message: `Due to system maintenance, withdrawals with your ${currency} Wallet are unavailable at the moment. Please try again later.`,
-            title: `${currency} Wallet withdrawals are temporarily unavailable`,
+            message: (
+                <Localize
+                    i18n_default_text='Due to system maintenance, withdrawals with your {{currency}} Wallet are unavailable at the moment. Please try again later.'
+                    values={{ currency }}
+                />
+            ),
+            title: (
+                <Localize
+                    i18n_default_text='{{currency}} Wallet withdrawals are temporarily unavailable'
+                    values={{ currency }}
+                />
+            ),
         },
         [CryptoWithdrawalErrorCodes.CryptoConnectionError]: {
             ...defaultContent,
             buttonText: undefined,
-            title: 'Maintenance in progress',
+            title: <Localize i18n_default_text='Maintenance in progress' />,
         },
     };
 

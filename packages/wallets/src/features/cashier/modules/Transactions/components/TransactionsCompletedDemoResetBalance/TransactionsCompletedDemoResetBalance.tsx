@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
 import { useActiveWalletAccount, useAllAccountsList, useTransactions } from '@deriv/api-v2';
-import { Loader } from '../../../../../../components';
-import { WalletText } from '../../../../../../components/Base';
+import { Loader, Text } from '@deriv-com/ui';
 import { TransactionsCompletedRow } from '../TransactionsCompletedRow';
 import { TransactionsNoDataState } from '../TransactionsNoDataState';
 import { TransactionsTable } from '../TransactionsTable';
@@ -51,10 +50,10 @@ const TransactionsCompletedDemoResetBalance: React.FC = () => {
             groupBy={['date']}
             rowGroupRender={transaction => (
                 <div className='wallets-transactions-completed-demo-reset-balance__group-title'>
-                    <WalletText color='primary' size='2xs'>
+                    <Text color='primary' size='2xs'>
                         {transaction.transaction_time &&
                             moment.unix(transaction.transaction_time).format('DD MMM YYYY')}
-                    </WalletText>
+                    </Text>
                 </div>
             )}
             rowRender={transaction => (

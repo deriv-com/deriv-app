@@ -29,8 +29,7 @@ const BotBuilder = observer(() => {
     const el_ref = React.useRef<HTMLInputElement | null>(null);
     const isMounted = useIsMounted();
     const { data: remote_config_data } = useRemoteConfig(isMounted());
-    let end_drag_id: null | string = null;
-    let selection_id: null | string = null;
+    let deleted_block_id: null | string = null;
 
     React.useEffect(() => {
         initDatadogLogs(remote_config_data.tracking_datadog);
@@ -61,7 +60,7 @@ const BotBuilder = observer(() => {
 
     const handleBlockChangeOnBotRun = (e: Event) => {
         const { is_reset_button_clicked } = toolbar;
-        if (e.type !== 'ui' && !is_reset_button_clicked) {
+        if (e.type !== 'selected' && !is_reset_button_clicked) {
             botNotification(notification_message.workspace_change);
             removeBlockChangeListener();
         } else if (is_reset_button_clicked) {
@@ -85,15 +84,20 @@ const BotBuilder = observer(() => {
     }, [is_loading]);
 
     const handleBlockDelete = (e: TBlocklyEvents) => {
-        if (e.type === 'ui' && e.element === 'selected' && !e.group?.includes('dbot-')) {
-            selection_id = e.oldValue;
+        const { is_reset_button_clicked, setResetButtonState } = toolbar;
+        if (e.type === 'delete' && !is_reset_button_clicked) {
+            deleted_block_id = e.blockId;
         }
-        if (e.type === 'endDrag' && !e.group?.includes('dbot-')) {
-            end_drag_id = e.group;
-        }
-        if (e.type === 'delete' && (end_drag_id === e.group || selection_id === e.blockId)) {
+        if (e.type === 'selected' && deleted_block_id === e.oldElementId) {
             handleBlockDeleteNotification();
-            end_drag_id = null;
+        }
+        if (
+            e.type === 'change' &&
+            e.name === 'AMOUNT_LIMITS' &&
+            e.newValue === '(min: 0.35 - max: 50000)' &&
+            is_reset_button_clicked
+        ) {
+            setResetButtonState(false);
         }
     };
 

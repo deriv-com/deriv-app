@@ -19,7 +19,6 @@ export const platform_name = Object.freeze({
     DXtrade: getPlatformSettings('dxtrade').name,
     DMT5: getPlatformSettings('mt5').name,
     SmartTrader: getPlatformSettings('smarttrader').name,
-    BinaryBot: getPlatformSettings('bbot').name,
     DerivGO: getPlatformSettings('go').name,
 });
 
@@ -86,7 +85,6 @@ export const getActivePlatform = (routing_history: TRoutingHistory) => {
     if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return platform_name.DMT5;
     if (isDXtrade() || isNavigationFromPlatform(routing_history, routes.dxtrade)) return platform_name.DXtrade;
     if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) return platform_name.SmartTrader;
-    if (isNavigationFromExternalPlatform(routing_history, routes.binarybot)) return platform_name.BinaryBot;
     return platform_name.DTrader;
 };
 
@@ -99,9 +97,9 @@ export const getPlatformRedirect = (routing_history: TRoutingHistory) => {
         return { name: platform_name.DXtrade, route: routes.dxtrade };
     if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader))
         return { name: platform_name.SmartTrader, route: routes.smarttrader };
+    if (isNavigationFromExternalPlatform(routing_history, routes.cashier_p2p))
+        return { name: 'P2P', route: routes.cashier_p2p };
     if (isNavigationFromP2P()) return { name: 'P2P', route: routes.cashier_p2p, ref: 'p2p' };
-    if (isNavigationFromExternalPlatform(routing_history, routes.binarybot))
-        return { name: platform_name.BinaryBot, route: routes.binarybot };
     return { name: platform_name.DTrader, route: routes.trade };
 };
 
@@ -149,7 +147,7 @@ export const isNavigationFromPlatform = (
 
 export const isNavigationFromExternalPlatform = (routing_history: TRoutingHistory, platform_route: string) => {
     /*
-     *  Check if the client is navigating from external platform(SmartTrader or BinaryBot)
+     *  Check if the client is navigating from external platform(SmartTrader)
      *  and has not visited Dtrader after it.
      */
 

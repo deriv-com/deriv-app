@@ -1,8 +1,8 @@
-import React from 'react';
+import { Fragment } from 'react';
 import QRCodeSVG from 'qrcode.react';
 import { ThemedScrollbars, Text, Timeline, Loading, Clipboard } from '@deriv/components';
 import TwoFactorAuthenticationArticle from './two-factor-authentication-article';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import DigitForm from './digit-form';
 
@@ -14,8 +14,9 @@ type TTwoFactorDisabled = {
 
 const TwoFactorDisabled = ({ secret_key, qr_secret_key, is_qr_loading }: TTwoFactorDisabled) => {
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
     return (
-        <React.Fragment>
+        <Fragment>
             <ThemedScrollbars is_bypassed={!isDesktop} autohide className='two-factor__scrollbars'>
                 {!isDesktop && <TwoFactorAuthenticationArticle />}
                 <Text as='h2' color='prominent' weight='bold' className='two-factor__title'>
@@ -51,7 +52,7 @@ const TwoFactorDisabled = ({ secret_key, qr_secret_key, is_qr_loading }: TTwoFac
                             {is_qr_loading ? (
                                 <Loading is_fullscreen={false} />
                             ) : (
-                                <React.Fragment>
+                                <Fragment>
                                     {qr_secret_key && (
                                         <div className='two-factor__qr--wrapper'>
                                             <QRCodeSVG value={qr_secret_key} />
@@ -59,7 +60,7 @@ const TwoFactorDisabled = ({ secret_key, qr_secret_key, is_qr_loading }: TTwoFac
                                     )}
 
                                     {secret_key && (
-                                        <React.Fragment>
+                                        <Fragment>
                                             <Text as='h4' size='xs' align='center' className='two-factor__qr--message'>
                                                 <Localize i18n_default_text='If you are unable to scan the QR code, you can manually enter this code instead:' />
                                             </Text>
@@ -72,9 +73,9 @@ const TwoFactorDisabled = ({ secret_key, qr_secret_key, is_qr_loading }: TTwoFac
                                                     className='two-factor__qr--clipboard'
                                                 />
                                             </div>
-                                        </React.Fragment>
+                                        </Fragment>
                                     )}
-                                </React.Fragment>
+                                </Fragment>
                             )}
                         </div>
                     </Timeline.Item>
@@ -88,7 +89,7 @@ const TwoFactorDisabled = ({ secret_key, qr_secret_key, is_qr_loading }: TTwoFac
                 </Timeline>
             </ThemedScrollbars>
             {isDesktop && <TwoFactorAuthenticationArticle />}
-        </React.Fragment>
+        </Fragment>
     );
 };
 

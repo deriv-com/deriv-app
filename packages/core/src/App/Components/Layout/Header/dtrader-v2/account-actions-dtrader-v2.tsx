@@ -1,14 +1,16 @@
 import React from 'react';
 import 'Sass/app/_common/components/account-switcher-dtrader-v2.scss';
-import { LabelPairedBellLgRegularIcon } from '@deriv/quill-icons';
-import { formatMoney, moduleLoader } from '@deriv/shared';
+import { formatMoney } from '@deriv/shared';
 import { Badge } from '@deriv-com/quill-ui';
+import NotificationsIconDTraderV2 from './notifications-icon-dtrader-v2';
+import AccountInfoDTraderV2 from 'App/Components/Layout/Header/dtrader-v2/account-info-dtrader-v2';
 
 type TAccountActionsDTraderV2 = {
     acc_switcher_disabled_message?: string;
     account_type?: string;
     balance?: number | string;
     currency: string;
+    has_notifications_icon?: boolean;
     is_acc_switcher_disabled?: boolean;
     is_eu?: boolean;
     is_acc_switcher_on?: boolean;
@@ -26,17 +28,6 @@ export type TAccountInfoDTraderV2 = Omit<
     is_disabled?: boolean;
     toggleDialog: (value?: boolean | undefined) => void;
 };
-const AccountInfoDTraderV2 = React.lazy(
-    () =>
-        moduleLoader(
-            () =>
-                import(
-                    /* webpackChunkName: "account-info-dtrader-v2", webpackPreload: true */ 'App/Components/Layout/Header/dtrader-v2/account-info-dtrader-v2'
-                )
-        ) as Promise<{
-            default: React.ComponentType<TAccountInfoDTraderV2>;
-        }>
-);
 
 const AccountActionsDTraderV2 = ({
     acc_switcher_disabled_message,
@@ -44,6 +35,7 @@ const AccountActionsDTraderV2 = ({
     account_type,
     balance,
     currency,
+    has_notifications_icon = true,
     is_acc_switcher_on,
     is_acc_switcher_disabled,
     is_eu,
@@ -64,22 +56,24 @@ const AccountActionsDTraderV2 = ({
             is_dialog_on={is_acc_switcher_on}
             toggleDialog={toggleAccountsDialog}
         />
-        <div className='notifications__wrapper'>
-            {notifications_count ? (
-                <Badge
-                    color='danger'
-                    contentSize='sm'
-                    label={notifications_count.toString()}
-                    position='top-right'
-                    size='sm'
-                    variant='notification'
-                >
-                    <LabelPairedBellLgRegularIcon className='notifications__icon' />
-                </Badge>
-            ) : (
-                <LabelPairedBellLgRegularIcon className='notifications__icon' />
-            )}
-        </div>
+        {has_notifications_icon && (
+            <div className='notifications__wrapper'>
+                {notifications_count ? (
+                    <Badge
+                        color='danger'
+                        contentSize='sm'
+                        label={notifications_count.toString()}
+                        position='top-right'
+                        size='sm'
+                        variant='notification'
+                    >
+                        <NotificationsIconDTraderV2 />
+                    </Badge>
+                ) : (
+                    <NotificationsIconDTraderV2 is_loading={!account_switcher_title} />
+                )}
+            </div>
+        )}
     </React.Suspense>
 );
 

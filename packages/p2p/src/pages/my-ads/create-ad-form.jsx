@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Formik, Form } from 'formik';
 import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
 import { useP2PSettings } from '@deriv/hooks';
-import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
@@ -13,18 +13,21 @@ import AdWizard from './ad-wizard';
 import './create-ad-form.scss';
 
 const CreateAdFormWrapper = ({ children }) => {
-    if (isMobile()) {
+    const { isDesktop } = useDevice();
+    if (!isDesktop) {
         return <Div100vhContainer height_offset='auto'>{children}</Div100vhContainer>;
     }
     return children;
 };
 
 const CreateAdForm = ({ country_list }) => {
+    const { isDesktop } = useDevice();
     const { buy_sell_store, general_store, my_ads_store, my_profile_store } = useStores();
     const {
         p2p_settings: {
             adverts_archive_period,
             float_rate_offset_limit_string,
+            order_expiry_options,
             order_payment_period_string,
             rate_type,
         },
@@ -70,6 +73,13 @@ const CreateAdForm = ({ country_list }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const getOrderExpiryOption = () => {
+        if (order_expiry_options?.includes(Number(order_payment_period_string))) {
+            return order_payment_period_string;
+        }
+        return `${Math.max(...order_expiry_options)}`;
+    };
+
     return (
         <React.Fragment>
             <Formik
@@ -82,7 +92,7 @@ const CreateAdForm = ({ country_list }) => {
                     max_transaction: '',
                     min_transaction: '',
                     offer_amount: '',
-                    order_completion_time: order_payment_period_string,
+                    order_completion_time: getOrderExpiryOption(),
                     payment_info: my_ads_store.payment_info,
                     rate_type_string: rate_type,
                     rate_type: rate_type === ad_type.FLOAT ? '-0.01' : '',
@@ -97,7 +107,7 @@ const CreateAdForm = ({ country_list }) => {
                             <Form noValidate>
                                 <ThemedScrollbars
                                     className='create-ad-form__scrollbar'
-                                    is_scrollbar_hidden={isMobile()}
+                                    is_scrollbar_hidden={!isDesktop}
                                 >
                                     <CreateAdFormWrapper>
                                         <AdWizard

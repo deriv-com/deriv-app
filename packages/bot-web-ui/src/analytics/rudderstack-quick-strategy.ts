@@ -1,6 +1,6 @@
 import { Analytics, TEvents } from '@deriv-com/analytics';
 import { ACTION, form_name, type TFormStrategy } from './constants';
-import { getRsStrategyType, getSubpageName, getTradeParameterData } from './utils';
+import { getRsStrategyType, getTradeParameterData } from './utils';
 
 export const rudderStackSendQsRunStrategyEvent = ({
     form_values,

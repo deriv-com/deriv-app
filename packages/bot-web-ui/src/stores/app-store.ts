@@ -6,7 +6,6 @@ import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
 import RootStore from './root-store';
 
-const Blockly = window.Blockly;
 export default class AppStore {
     root_store: RootStore;
     core: TStores;
@@ -65,8 +64,6 @@ export default class AppStore {
 
         const not_allowed_clients_country: { [key: string]: string } = {
             au: 'Australian',
-            no: 'Norwegian',
-            jp: 'Japanese',
             sg: 'Singaporean',
         };
 
@@ -145,6 +142,7 @@ export default class AppStore {
     onMount = () => {
         const { blockly_store, run_panel } = this.root_store;
         const { client, ui, traders_hub } = this.core;
+        const { is_dark_mode_on } = ui;
         this.showDigitalOptionsMaltainvestError();
 
         let timer_counter = 1;
@@ -162,7 +160,13 @@ export default class AppStore {
         }, 10000);
 
         blockly_store.setLoading(true);
-        DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store, ui.is_mobile).then(() => {
+        DBot.initWorkspace(
+            __webpack_public_path__,
+            this.dbot_store,
+            this.api_helpers_store,
+            ui.is_mobile,
+            is_dark_mode_on
+        ).then(() => {
             blockly_store.setContainerSize();
             blockly_store.setLoading(false);
         });
@@ -191,9 +195,9 @@ export default class AppStore {
     onUnmount = () => {
         DBot.terminateBot();
         DBot.terminateConnection();
-        if (Blockly.derivWorkspace) {
-            clearInterval(Blockly.derivWorkspace.save_workspace_interval);
-            Blockly.derivWorkspace.dispose();
+        if (window.Blockly.derivWorkspace) {
+            clearInterval(window.Blockly.derivWorkspace.save_workspace_interval);
+            window.Blockly.derivWorkspace.dispose();
         }
         if (typeof this.disposeReloadOnLanguageChangeReaction === 'function') {
             this.disposeReloadOnLanguageChangeReaction();
@@ -251,9 +255,9 @@ export default class AppStore {
         this.disposeCurrencyReaction = reaction(
             () => this.core.client.currency,
             currency => {
-                if (!Blockly.derivWorkspace) return;
+                if (!window.Blockly.derivWorkspace) return;
 
-                const trade_options_blocks = Blockly.derivWorkspace
+                const trade_options_blocks = window.Blockly.derivWorkspace
                     .getAllBlocks()
                     .filter(
                         b =>
@@ -280,16 +284,16 @@ export default class AppStore {
                 if (ApiHelpers.instance) {
                     const { active_symbols, contracts_for } = ApiHelpers.instance;
 
-                    if (Blockly.derivWorkspace) {
+                    if (window.Blockly.derivWorkspace) {
                         active_symbols.retrieveActiveSymbols(true).then(() => {
                             contracts_for.disposeCache();
-                            Blockly.derivWorkspace
+                            window.Blockly.derivWorkspace
                                 .getAllBlocks()
                                 .filter(block => block.type === 'trade_definition_market')
                                 .forEach(block => {
                                     runIrreversibleEvents(() => {
-                                        const fake_create_event = new Blockly.Events.Create(block);
-                                        Blockly.Events.fire(fake_create_event);
+                                        const fake_create_event = new window.Blockly.Events.BlockCreate(block);
+                                        window.Blockly.Events.fire(fake_create_event);
                                     });
                                 });
                         });
@@ -358,7 +362,7 @@ export default class AppStore {
             );
 
             if (is_click_outside_blockly) {
-                Blockly?.hideChaff(/* allowToolbox */ false);
+                window.Blockly?.hideChaff(/* allowToolbox */ false);
             }
         }
     };

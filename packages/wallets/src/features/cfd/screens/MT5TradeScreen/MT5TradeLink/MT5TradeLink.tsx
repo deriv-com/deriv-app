@@ -82,16 +82,9 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
                     </WalletButton>
                 )}
                 {platform !== CFD_PLATFORMS.MT5 && app !== CFD_PLATFORMS.CTRADER && (
-                    <button className='wallets-mt5-trade-link__platform' onClick={onClickWebTerminal}>
-                        {
-                            PlatformToLabelIconMapper[
-                                (platform as keyof typeof PlatformToLabelIconMapper) ?? CFD_PLATFORMS.DXTRADE
-                            ]
-                        }
-                        <Text color='white' size='xs' weight='bold'>
-                            <Localize i18n_default_text='Web terminal' />
-                        </Text>
-                    </button>
+                    <WalletButton onClick={onClickWebTerminal} size='sm' variant='outlined'>
+                        <Localize i18n_default_text='Web terminal' />
+                    </WalletButton>
                 )}
             </div>
         </React.Fragment>

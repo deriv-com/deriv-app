@@ -593,24 +593,15 @@
     &__dxtrade-button,
     &__platform-button {
         display: flex;
-        background: var(--brand-dark-grey);
         align-items: center;
         text-decoration: none;
         border-radius: $BORDER_RADIUS;
-        padding: 0;
+        padding: 0 1.6rem;
+        border: 1px solid var(--border-normal-2);
 
         &-icon {
             margin-left: 0.6rem;
             margin-top: 0.1rem;
-        }
-
-        &-text {
-            padding: 0.5rem;
-
-            @include mobile-or-tablet-screen {
-                padding-right: 0.5rem;
-                white-space: nowrap;
-            }
         }
     }
     &__specs {

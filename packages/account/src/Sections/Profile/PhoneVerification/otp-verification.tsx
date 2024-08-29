@@ -70,7 +70,6 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
 
     useEffect(() => {
         if (is_phone_number_verified) {
-            reInitializeGetSettings();
             setIsForcedToExitPnv(true);
             setShouldShowPhoneNumberVerifiedModal(true);
         } else if (is_email_verified && !should_show_phone_number_otp) {

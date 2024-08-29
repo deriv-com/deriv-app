@@ -14,6 +14,13 @@ jest.mock('react-router', () => ({
     }),
 }));
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useSettings: jest.fn(() => ({
+        refetch: jest.fn(),
+    })),
+}));
+
 describe('PhoneNumberVerifiedModal', () => {
     let modal_root_el: HTMLElement;
 

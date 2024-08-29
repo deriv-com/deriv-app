@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useHistory } from 'react-router';
-import { usePhoneVerificationAnalytics } from '@deriv/hooks';
+import { usePhoneVerificationAnalytics, useSettings } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { Modal, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv-com/translations';
@@ -15,10 +15,12 @@ const PhoneNumberVerifiedModal = ({
     should_show_phone_number_verified_modal,
     setShouldShowPhoneNumberVerifiedModal,
 }: TPhoneNumberVerifiedModal) => {
+    const { refetch } = useSettings();
     const history = useHistory();
     const handleDoneButton = () => {
-        setShouldShowPhoneNumberVerifiedModal(false);
-        history.push(routes.personal_details);
+        refetch().then(() => {
+            setShouldShowPhoneNumberVerifiedModal(false);
+        });
     };
     const { isMobile } = useDevice();
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();

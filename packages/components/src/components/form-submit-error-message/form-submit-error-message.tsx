@@ -12,21 +12,21 @@ type TFormSubmitErrorMessage = {
 
 const FormSubmitErrorMessage = ({ className, message, error_code }: TFormSubmitErrorMessage) => {
     const getErrorMessage = () => {
-        switch (error_code) {
-            case 'PhoneNumberTaken':
-                return (
-                    <Text as='p' size='xxs' className='dc-form-submit-error-message__phone-number-taken'>
-                        <Localize
-                            i18n_default_text='Number already exists in our system. Enter a new one or contact us via <0></0> for help'
-                            components={[<OpenLiveChatLink text_size='xxs' key={0} />]}
-                        />
-                    </Text>
-                );
-            default:
-                <Text as='p' size='xxs' weight='bold' color='prominent'>
-                    {message}
-                </Text>;
+        if (error_code === 'PhoneNumberTaken') {
+            return (
+                <Text as='p' size='xxs' color='loss-danger'>
+                    <Localize
+                        i18n_default_text='Number already exists in our system. Enter a new one or contact us via <0></0> for help'
+                        components={[<OpenLiveChatLink text_size='xxs' key={0} />]}
+                    />
+                </Text>
+            );
         }
+        return (
+            <Text as='p' size='xxs' weight='bold' color='prominent'>
+                {message}
+            </Text>
+        );
     };
 
     return (

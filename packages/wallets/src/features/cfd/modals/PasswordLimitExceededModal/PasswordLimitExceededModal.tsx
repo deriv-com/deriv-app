@@ -32,6 +32,7 @@ const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecond
                     <div className='wallets-password-limit-exceeded-modal__buttons'>
                         <Button
                             borderWidth='md'
+                            color='black'
                             onClick={onSecondaryClick}
                             size='lg'
                             textSize={textSize}
@@ -53,7 +54,14 @@ const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecond
             renderFooter={() => {
                 return (
                     <WalletButtonGroup isFullWidth>
-                        <Button isFullWidth onClick={onSecondaryClick} size='lg' textSize='md' variant='outlined'>
+                        <Button
+                            color='black'
+                            isFullWidth
+                            onClick={onSecondaryClick}
+                            size='lg'
+                            textSize='md'
+                            variant='outlined'
+                        >
                             <Localize i18n_default_text='Forgot password?' />
                         </Button>
                         <Button isFullWidth onClick={onPrimaryClick} size='lg' textSize='md'>

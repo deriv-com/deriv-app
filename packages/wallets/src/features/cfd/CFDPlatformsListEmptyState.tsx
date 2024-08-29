@@ -2,14 +2,13 @@ import React, { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
-import { Button, Text, useDevice } from '@deriv-com/ui';
+import { Button, Text } from '@deriv-com/ui';
 import './CFDPlatformsList.scss';
 
 const CFDPlatformsListEmptyState = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: walletAccountsList } = useWalletAccountsList();
     const history = useHistory();
-    const { isDesktop } = useDevice();
 
     const fiatAccount = useMemo(
         () => walletAccountsList?.find(account => account.account_type === 'doughflow'),
@@ -33,7 +32,7 @@ const CFDPlatformsListEmptyState = () => {
                     })
                 }
                 size='lg'
-                textSize={isDesktop ? 'sm' : 'md'}
+                textSize='md'
             >
                 <Localize i18n_default_text='Transfer' />
             </Button>

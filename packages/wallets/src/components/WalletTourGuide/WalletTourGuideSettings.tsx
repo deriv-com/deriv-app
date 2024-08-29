@@ -32,7 +32,7 @@ export const TooltipComponent = ({
             {<div className='wallets-tour-guide__content'>{step.content as React.ReactNode}</div>}
             <div className='wallets-tour-guide__footer'>
                 {index > 0 && (
-                    <Button {...backProps} color='white' variant='outlined'>
+                    <Button {...backProps} borderWidth='sm' color='black' variant='outlined'>
                         <Localize i18n_default_text='Back' />
                     </Button>
                 )}

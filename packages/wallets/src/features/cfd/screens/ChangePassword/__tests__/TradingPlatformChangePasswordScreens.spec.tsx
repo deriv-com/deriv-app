@@ -3,7 +3,7 @@ import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api-
 import { useTranslations } from '@deriv-com/translations';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { WalletButton } from '../../../../../components';
+import { WalletButton } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import useDevice from '../../../../../hooks/useDevice';
 import TradingPlatformChangePasswordScreens from '../TradingPlatformChangePasswordScreens';
@@ -27,7 +27,6 @@ jest.mock('../../../../../hooks/useDevice', () => jest.fn(() => ({ isMobile: fal
 jest.mock('../../../../../components', () => ({
     ...jest.requireActual('../../../../../components'),
     SentEmailContent: jest.fn().mockImplementation(() => <div>SentEmailContent</div>),
-    WalletButton: jest.fn(({ children, onClick }) => <button onClick={onClick}>{children}</button>),
     WalletsActionScreen: jest.fn(({ description, renderButtons, title }) => (
         <div>
             <h1>{title}</h1>
@@ -35,6 +34,11 @@ jest.mock('../../../../../components', () => ({
             {renderButtons()}
         </div>
     )),
+}));
+
+jest.mock('../../../../../components/Base', () => ({
+    ...jest.requireActual('../../../../../components/Base'),
+    WalletButton: jest.fn(({ children, onClick }) => <button onClick={onClick}>{children}</button>),
 }));
 
 describe('TradingPlatformChangePasswordScreens', () => {
@@ -111,6 +115,7 @@ describe('TradingPlatformChangePasswordScreens', () => {
             },
             verify_email: 'test@mail.com',
         });
+        expect(WalletButton).toHaveBeenCalledWith(expect.objectContaining({ textSize: 'md' }), {});
     });
     it('calls handleSendEmail when Confirm is clicked and the platform is dxtrade', () => {
         render(<TradingPlatformChangePasswordScreens platform='dxtrade' />);

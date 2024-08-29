@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import { useTradingPlatformInvestorPasswordChange } from '@deriv/api-v2';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { WalletButton } from '../../../../../../components';
+import { WalletButton } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../hooks/useDevice';
 import { validPasswordMT5 } from '../../../../../../utils/password-validation';
@@ -15,6 +15,16 @@ jest.mock('@deriv/api-v2', () => ({
 
 jest.mock('../../../../../../components', () => ({
     ...jest.requireActual('../../../../../../components'),
+    WalletsActionScreen: jest.fn(({ description, renderButtons }) => (
+        <div>
+            {description}
+            {renderButtons()}
+        </div>
+    )),
+}));
+
+jest.mock('../../../../../../components/Base', () => ({
+    ...jest.requireActual('../../../../../../components/Base'),
     WalletButton: jest.fn(
         ({
             children,
@@ -37,12 +47,6 @@ jest.mock('../../../../../../components', () => ({
             );
         }
     ),
-    WalletsActionScreen: jest.fn(({ description, renderButtons }) => (
-        <div>
-            {description}
-            {renderButtons()}
-        </div>
-    )),
 }));
 
 jest.mock('../../../../../../components/ModalProvider', () => ({
@@ -65,6 +69,7 @@ jest.mock('../../../../../../utils/password-validation', () => ({
 
 describe('MT5ChangeInvestorPasswordInputsScreen', () => {
     beforeEach(() => {
+        jest.clearAllMocks();
         (useTradingPlatformInvestorPasswordChange as jest.Mock).mockReturnValue({
             mutateAsync: jest.fn(),
             status: 'idle',
@@ -147,5 +152,10 @@ describe('MT5ChangeInvestorPasswordInputsScreen', () => {
         expect(currentPasswordInput).toHaveAttribute('type', 'password');
         userEvent.click(screen.getAllByRole('button', { name: 'PasswordViewerIcon' })[0]);
         expect(currentPasswordInput).toHaveAttribute('type', 'text');
+    });
+    it('renders button with correct text size', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
+        render(<MT5ChangeInvestorPasswordInputsScreen />);
+        expect(WalletButton).toHaveBeenCalledWith(expect.objectContaining({ textSize: 'md' }), {});
     });
 });

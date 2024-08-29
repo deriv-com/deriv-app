@@ -229,7 +229,6 @@ export default class BuySellStore extends BaseStore {
                     key: 'ErrorModal',
                     props: {
                         error_message: message,
-                        error_modal_button_text: localize('OK'),
                         error_modal_title: (
                             <Text weight='bold'>
                                 <Localize i18n_default_text='Ad not available' />
@@ -247,7 +246,6 @@ export default class BuySellStore extends BaseStore {
                     key: 'ErrorModal',
                     props: {
                         error_message: message,
-                        error_modal_button_text: localize('OK'),
                         error_modal_title: (
                             <Text weight='bold'>
                                 <Localize i18n_default_text='Outside business hours' />

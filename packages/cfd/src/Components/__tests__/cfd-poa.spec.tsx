@@ -23,7 +23,7 @@ jest.mock('@deriv/account/src/Components/poa/common-mistakes/common-mistake-exam
     jest.fn(() => <div>CommonMistakeExamples</div>)
 );
 
-jest.mock('@deriv/account/src/Hooks', () => ({
+jest.mock('@deriv/account/src/hooks', () => ({
     useKycAuthStatus: jest.fn(() => mock_kyc_auth_status_response),
 }));
 

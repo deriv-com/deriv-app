@@ -102,6 +102,8 @@ describe('MT5ChangeInvestorPasswordInputsScreen', () => {
     });
 
     it('submits the form with valid data', async () => {
+        const newPassword = 'newPassword123';
+        const oldPassword = 'oldPassword123';
         const mockChangePassword = jest.fn().mockResolvedValue({});
         (useTradingPlatformInvestorPasswordChange as jest.Mock).mockReturnValue({
             mutateAsync: mockChangePassword,
@@ -109,17 +111,17 @@ describe('MT5ChangeInvestorPasswordInputsScreen', () => {
 
         render(<MT5ChangeInvestorPasswordInputsScreen setNextScreen={jest.fn()} />);
 
-        userEvent.type(screen.getByLabelText(/Current investor password/), 'currentPassword123');
+        userEvent.type(screen.getByLabelText(/Current investor password/), oldPassword);
         const newInvestorPasswordInput = await screen.findByText('New investor password');
-        userEvent.type(newInvestorPasswordInput, 'newPassword123');
+        userEvent.type(newInvestorPasswordInput, newPassword);
 
         userEvent.click(screen.getByText(/Change investor password/));
 
         await waitFor(() => {
             expect(mockChangePassword).toHaveBeenCalledWith({
                 account_id: 'test-account-id',
-                new_password: 'newPassword123',
-                old_password: 'currentPassword123',
+                new_password: newPassword,
+                old_password: oldPassword,
                 platform: 'mt5',
             });
         });

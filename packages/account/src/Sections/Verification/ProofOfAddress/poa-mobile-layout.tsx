@@ -87,7 +87,6 @@ const POAMobileLayout = observer(
                             <StandaloneXmarkBoldIcon
                                 iconSize='md'
                                 onClick={() => {
-                                    console.log('Close clicked');
                                     history.push(shared_routes.traders_hub);
                                 }}
                             />

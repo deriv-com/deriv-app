@@ -9,8 +9,7 @@ import DurationWheelPicker from './wheelpicker';
 
 const DurationActionSheetContainer = observer(
     ({ selected_hour, setSelectedHour }: { selected_hour: number[]; setSelectedHour: (arg: number[]) => void }) => {
-        const { duration, duration_unit, duration_units_list, onChangeMultiple, expiry_time, contract_type } =
-            useTraderStore();
+        const { duration, duration_unit, duration_units_list, onChangeMultiple, expiry_time } = useTraderStore();
         const [unit, setUnit] = useState(expiry_time ? 'et' : duration_unit);
         const [selected_time, setSelectedTime] = useState([duration]);
         const [expiry_date_data, setExpiryDate] = useState<Date>(new Date());

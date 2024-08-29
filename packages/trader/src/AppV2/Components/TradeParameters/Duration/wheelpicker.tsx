@@ -26,7 +26,7 @@ const DurationWheelPicker = ({
     setEndTime: (arg: string) => void;
     setWheelPickerValue: (index: number, value: string | number) => void;
     selected_hour: number[];
-    selected_time: any;
+    selected_time: number[];
     toggle_picker: boolean;
 }) => {
     const options = React.useMemo(() => getOptionPerUnit(unit), [unit]);

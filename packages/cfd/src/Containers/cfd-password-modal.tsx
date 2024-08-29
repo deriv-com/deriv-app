@@ -3,6 +3,7 @@ import { useHistory } from 'react-router';
 import { Formik, FormikErrors, FormikHelpers } from 'formik';
 import { useDevice } from '@deriv-com/ui';
 import { SentEmailModal } from '@deriv/account';
+import '../sass/cfd.scss';
 import {
     FormSubmitButton,
     Icon,

@@ -81,7 +81,7 @@ const DurationActionSheetContainer = observer(
                     />
                 )}
                 {unit == 'et' && (
-                    <div style={{ textAlign: 'center' }}>
+                    <div className='duration-container__endtime'>
                         <CaptionText color='quill-typography__color--subtle'>
                             <Localize i18n_default_text='Current time' />
                         </CaptionText>

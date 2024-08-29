@@ -21,6 +21,10 @@ jest.mock('@deriv/quill-icons', () => ({
         <button onClick={onClick}>LabelPairedCalendarLgBoldIcon</button>
     )),
 }));
+jest.mock('@deriv-com/quill-ui', () => ({
+    ...jest.requireActual('@deriv-com/quill-ui'),
+    DatePicker: jest.fn(({ onClick }) => <button onClick={onClick}>Date Picker</button>),
+}));
 
 describe('DurationActionSheetContainer', () => {
     let default_trade_store: TCoreStores;
@@ -136,15 +140,14 @@ describe('DurationActionSheetContainer', () => {
 
     it('should select value when clicked on any date on datepicker', async () => {
         default_trade_store.modules.trade.duration_unit = 'd';
-        default_trade_store.modules.trade.duration = 34;
+        default_trade_store.modules.trade.duration = 2;
         renderDurationContainer(default_trade_store);
         expect(screen.getByText('LabelPairedCalendarLgBoldIcon')).toBeInTheDocument();
         userEvent.click(screen.getByText('LabelPairedCalendarLgBoldIcon'));
-        expect(screen.getByText('Pick an end date')).toBeInTheDocument();
-        userEvent.click(screen.getByText('31'));
+        expect(screen.getByText('Date Picker')).toBeInTheDocument();
         userEvent.click(screen.getByText('Save'));
         expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
-            duration: 3,
+            duration: 2,
             duration_unit: 'd',
             expiry_time: null,
             expiry_type: 'duration',

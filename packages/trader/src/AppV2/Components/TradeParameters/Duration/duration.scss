@@ -12,6 +12,9 @@
         white-space: nowrap;
         scrollbar-width: none;
     }
+    &__endtime {
+        text-align: center;
+    }
     &__date-picker {
         padding-left: var(--core-spacing-800);
         padding-right: var(--core-spacing-800);

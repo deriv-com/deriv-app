@@ -291,7 +291,6 @@ export default class CommonStore extends BaseStore {
                     content: error.message,
                     type: 'error',
                 });
-                // TODO: after snackbar requirements are clarified, proceed with preventing the toast from showing for dtrader v2
             }
         } else {
             this.root_store.ui.toggleServicesErrorModal(true);

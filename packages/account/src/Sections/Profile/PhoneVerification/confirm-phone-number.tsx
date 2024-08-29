@@ -121,7 +121,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                     fullWidth
                     size='lg'
                     onClick={() => handleSubmit(VERIFICATION_SERVICES.SMS)}
-                    disabled={is_button_loading || !!next_phone_otp_request_timer}
+                    disabled={is_button_loading || !!next_phone_otp_request_timer || !!error_message}
                 >
                     <Text bold>
                         <Localize i18n_default_text='Get code via SMS' />
@@ -132,7 +132,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                     fullWidth
                     size='lg'
                     onClick={() => handleSubmit(VERIFICATION_SERVICES.WHATSAPP)}
-                    disabled={is_button_loading || !!next_phone_otp_request_timer}
+                    disabled={is_button_loading || !!next_phone_otp_request_timer || !!error_message}
                 >
                     <Text color='white' bold>
                         <Localize i18n_default_text='Get code via WhatsApp' />

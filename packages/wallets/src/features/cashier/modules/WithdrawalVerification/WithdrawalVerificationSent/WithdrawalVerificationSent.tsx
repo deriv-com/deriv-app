@@ -11,7 +11,6 @@ type TProps = {
 };
 
 const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) => {
-    const { localize } = useTranslations();
     const [showResend, setShowResend] = useState(false);
 
     return (

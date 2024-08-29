@@ -19,7 +19,6 @@ import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import getRoutesConfig from 'App/Constants/routes-config';
 import LiveChat from 'App/Components/Elements/LiveChat';
-import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 import { MenuTitle, MobileLanguageMenu } from './Components/ToggleMenu';
 import MenuLink from './menu-link';
 import PlatformSwitcher from './platform-switcher';
@@ -42,7 +41,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_logged_in,
         is_logging_in,
         is_virtual,
-        loginid,
         logout: logoutClient,
         should_allow_authentication,
         should_allow_poinc_authentication,
@@ -76,7 +74,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { data } = useRemoteConfig(isMounted());
     const { cs_chat_livechat, cs_chat_whatsapp } = data;
 
-    const liveChat = useLiveChat(false, loginid);
     const [is_open, setIsOpen] = React.useState(false);
     const [transitionExit, setTransitionExit] = React.useState(false);
     const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
@@ -428,7 +425,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         />
                                     </MobileDrawer.Item>
                                 )}
-                                {liveChat.isReady && cs_chat_whatsapp && (
+                                {cs_chat_whatsapp && (
                                     <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
                                         <Icon icon='IcWhatsApp' className='drawer-icon' />
                                         <a

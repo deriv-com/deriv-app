@@ -8,15 +8,10 @@ import { useTranslations, Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import './verify-button.scss';
 
-type TSetStatus = {
-    msg: string;
-    code: string;
-};
-
 type TVerifyButton = {
     is_verify_button_disabled: boolean;
     next_email_otp_request_timer?: number;
-    setStatus: ({ msg, code }: TSetStatus) => void;
+    setStatus: (status: any) => void;
 };
 
 export const VerifyButton = observer(

@@ -237,6 +237,24 @@ const PersonalDetailsForm = observer(() => {
         return undefined;
     };
 
+    const displayErrorMessage = (status: any) => {
+        if (status?.code === 'PhoneNumberTaken') {
+            return (
+                <FormSubmitErrorMessage
+                    message={
+                        <Localize
+                            i18n_default_text='Number already exists in our system. Enter a new one or contact us via <0></0> for help'
+                            components={[<OpenLiveChatLink text_size='xxs' key={0} />]}
+                        />
+                    }
+                    text_color='loss-danger'
+                    weight='none'
+                />
+            );
+        }
+        return <FormSubmitErrorMessage message={status?.msg} />;
+    };
+
     const PersonalDetailSchema = getPersonalDetailsValidationSchema(is_eu, is_virtual);
 
     const initialValues = getPersonalDetailsInitialValues(account_settings, residence_list, states_list, is_virtual);
@@ -703,9 +721,7 @@ const PersonalDetailsForm = observer(() => {
                                 </Fragment>
                             </FormBody>
                             <FormFooter>
-                                {status?.msg && (
-                                    <FormSubmitErrorMessage message={status?.msg} error_code={status?.code} />
-                                )}
+                                {status?.msg && displayErrorMessage(status)}
                                 {!is_virtual && !(isSubmitting || is_submit_success || status?.msg) && (
                                     <Text
                                         className='account-form__footer-note'

@@ -111,8 +111,6 @@ type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 type TIconTypes =
     | 'Derived'
     | 'Financial'
-    | 'BinaryBot'
-    | 'BinaryBotBlue'
     | 'DBot'
     | 'Demo'
     | 'DerivGo'
@@ -351,6 +349,7 @@ export type TNotificationMessage = {
     timeout?: number;
     timeoutMessage?: (remaining: number | string) => string;
     type: string;
+    only_toast_message?: boolean;
 };
 
 type TNotification =
@@ -449,6 +448,7 @@ type TClientStore = {
     initialized_broadcast: boolean;
     is_account_setting_loaded: boolean;
     is_deposit_lock: boolean;
+    is_duplicate_dob_phone: boolean;
     is_dxtrade_allowed: boolean;
     is_eu_country: boolean;
     is_eu: boolean;
@@ -831,6 +831,8 @@ type TUiStore = {
     setShouldShowCryptoTransactionProcessingModal: (value: boolean) => void;
     is_trading_disabled_by_residence_modal_visible: boolean;
     setIsTradingDisabledByResidenceModal: (value: boolean) => void;
+    should_show_same_dob_phone_modal: boolean;
+    setShouldShowSameDOBPhoneModal: (value: boolean) => void;
 };
 
 type TPortfolioStore = {

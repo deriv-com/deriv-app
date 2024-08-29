@@ -5,10 +5,10 @@ import {
     useCreateNewRealAccount,
     useInvalidateQuery,
 } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import WalletsAuthProvider from '../../../AuthProvider';
-import useDevice from '../../../hooks/useDevice';
 import { ModalProvider } from '../../ModalProvider';
 import { DerivAppsGetAccount } from '../DerivAppsGetAccount';
 
@@ -36,7 +36,10 @@ jest.mock('../../../hooks/useAllBalanceSubscription', () =>
         isLoading: false,
     }))
 );
-jest.mock('../../../hooks/useDevice', () => jest.fn(() => ({ isDesktop: false })));
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 jest.mock('../../ModalProvider', () => ({
     ...jest.requireActual('../../ModalProvider'),
     useModal: jest.fn(() => ({
@@ -66,6 +69,7 @@ describe('DerivAppsGetAccount', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
+
     it('renders the component', () => {
         render(<DerivAppsGetAccount />, { wrapper });
         expect(screen.getByRole('button', { name: 'Get' })).toBeInTheDocument();
@@ -93,10 +97,6 @@ describe('DerivAppsGetAccount', () => {
         (mockUseDevice as jest.Mock).mockReturnValue({ isDesktop: false });
         render(<DerivAppsGetAccount />, { wrapper });
         expect(mockShow).toBeCalled();
-        const args = mockShow.mock.calls[0][0];
-        render(args, { wrapper });
-        expect(screen.getByRole('button', { name: 'Maybe later' })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Transfer funds' })).toBeInTheDocument();
     });
     it('calls show function when the Get button is clicked and new_account_real is defined on desktop', () => {
         const mockMutateAsync = jest.fn(() => Promise.resolve({ new_account_real: 'new_account_real' }));

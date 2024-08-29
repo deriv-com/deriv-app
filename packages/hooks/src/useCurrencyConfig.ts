@@ -1,10 +1,14 @@
 import { useCallback, useMemo } from 'react';
 import { useFetch } from '@deriv/api';
 
+type TPlatform = {
+    cashier: ('doughflow' | 'crypto')[];
+    ramp: string[] | [];
+};
+
 /** @deprecated Use `useCurrencyConfig` from `@deriv/api` package instead. */
 const useCurrencyConfig = () => {
-    const { data: website_status_data } = useFetch('website_status');
-    const { data: crypto_config_data, ...rest } = useFetch('crypto_config');
+    const { data: website_status_data, ...rest } = useFetch('website_status');
 
     const currencies_config = useMemo(() => {
         if (!website_status_data?.website_status?.currencies_config) return undefined;
@@ -13,11 +17,9 @@ const useCurrencyConfig = () => {
 
         const modified_currencies_config = Object.keys(website_status_currencies_config).map(currency => {
             const currency_config = website_status_currencies_config[currency];
-            const crypto_config = crypto_config_data?.crypto_config?.currencies_config[currency];
 
             return {
                 ...currency_config,
-                ...crypto_config,
                 /** determine if the currency is a `crypto` currency */
                 is_crypto: currency_config?.type === 'crypto',
                 /** determine if the currency is a `fiat` currency */
@@ -66,6 +68,10 @@ const useCurrencyConfig = () => {
                 display_code: currency === 'UST' ? 'USDT' : currency,
                 /** Local asset name for the currency icon. ex: `IcCurrencyUsd` for `USD` */
                 icon: `IcCurrency${currency[0].toUpperCase() + currency.slice(1).toLowerCase()}`,
+                /** Platforms with providers */
+                //TODO: Remove `as TPlatform` after updating `@deriv/api-types` library
+                //@ts-expect-error need to update `@deriv/api-types` library to the latest version
+                platform: currency_config?.platform as TPlatform,
             };
         });
 
@@ -73,7 +79,7 @@ const useCurrencyConfig = () => {
             (previous, current) => ({ ...previous, [current.code]: current }),
             {}
         );
-    }, [crypto_config_data?.crypto_config?.currencies_config, website_status_data?.website_status?.currencies_config]);
+    }, [website_status_data?.website_status?.currencies_config]);
 
     const getConfig = useCallback((currency: string) => currencies_config?.[currency], [currencies_config]);
 

@@ -14,6 +14,7 @@ jest.mock('@deriv/hooks', () => ({
     useVerifyEmail: jest.fn(() => ({
         sendPhoneNumberVerifyEmail: jest.fn(),
         WS: {},
+        error: null,
     })),
 }));
 
@@ -32,6 +33,7 @@ describe('VerifyButton', () => {
         },
     });
     let mock_next_email_otp_request_timer = 0;
+    const mock_set_status = jest.fn();
 
     const renderWithRouter = () => {
         return render(
@@ -40,6 +42,7 @@ describe('VerifyButton', () => {
                     <VerifyButton
                         is_verify_button_disabled={false}
                         next_email_otp_request_timer={mock_next_email_otp_request_timer}
+                        setStatus={mock_set_status}
                     />
                 </StoreProvider>
             </Router>
@@ -66,6 +69,23 @@ describe('VerifyButton', () => {
         const verifyButton = screen.getByText('Verify');
         userEvent.click(verifyButton);
         expect(history.location.pathname).toBe(routes.phone_verification);
+    });
+
+    it('should setStatus with error returned by WS', () => {
+        (useVerifyEmail as jest.Mock).mockReturnValue({
+            sendPhoneNumberVerifyEmail: jest.fn(),
+            WS: {
+                isSuccess: false,
+            },
+            error: {
+                message: 'Phone Taken',
+                code: 'PhoneNumberTaken',
+            },
+        });
+        renderWithRouter();
+        const verifyButton = screen.getByText('Verify');
+        userEvent.click(verifyButton);
+        expect(mock_set_status).toBeCalledWith({ msg: 'Phone Taken', code: 'PhoneNumberTaken' });
     });
 
     it('should render Verify Button with timer if next_otp_request has value', () => {

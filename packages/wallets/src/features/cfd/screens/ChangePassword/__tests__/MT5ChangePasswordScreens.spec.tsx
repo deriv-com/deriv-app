@@ -3,7 +3,6 @@ import { useTranslations } from '@deriv-com/translations';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Tabs } from '../../../../../components/Base';
-import useDevice from '../../../../../hooks/useDevice';
 import MT5ChangePasswordScreens from '../MT5ChangePasswordScreens';
 
 jest.mock('@deriv-com/translations', () => ({

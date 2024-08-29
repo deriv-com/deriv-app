@@ -19,8 +19,8 @@ const BottomNavItem = ({ icon, selectedIndex, label, index, setSelectedIndex }: 
         >
             {/* TODO: remove after Vinu's PR will be merged */}
             {index === 1 && <span className='user__guide__anchor' />}
-            <span>{icon}</span>
-            <Text size='sm' className='bottom-nav-item-label'>
+            <span className='bottom-nav-item__icon'>{icon}</span>
+            <Text size='sm' className='bottom-nav-item__label'>
                 {label}
             </Text>
         </button>

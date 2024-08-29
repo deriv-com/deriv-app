@@ -79,7 +79,7 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
                         icon={item.icon}
                         label={item.label}
                         selected={index === selectedIndex}
-                        showLabel={true}
+                        showLabel
                         className={clsx('bottom-nav-item', index === selectedIndex && 'bottom-nav-item--active')}
                     />
                 ))}

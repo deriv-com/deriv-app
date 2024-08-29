@@ -2,7 +2,7 @@ import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { PlatformDetails } from '../../../constants';
+import { MARKET_TYPE, PlatformDetails } from '../../../constants';
 import EnterPassword from '../EnterPassword';
 
 jest.mock('@deriv/api-v2');
@@ -21,7 +21,7 @@ describe('EnterPassword', () => {
     const defaultProps = {
         isForgotPasswordLoading: false,
         isLoading: false,
-        marketType: 'financial',
+        marketType: MARKET_TYPE.FINANCIAL,
         modalTitle: title,
         onPasswordChange: jest.fn(),
         onPrimaryClick: jest.fn(),

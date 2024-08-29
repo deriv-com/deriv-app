@@ -2,10 +2,11 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveLinkedToTradingAccount } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
-import { optionsAndMultipliersContent } from '../../constants/constants';
-import useDevice from '../../hooks/useDevice';
+import { Localize } from '@deriv-com/translations';
+import { Text, useDevice } from '@deriv-com/ui';
+import { getOptionsAndMultipliersContent } from '../../constants/constants';
 import { TRoute } from '../../routes/Router';
-import { WalletLink, WalletText } from '../Base';
+import { WalletLink } from '../Base';
 import { DerivAppsSection } from '../DerivAppsSection';
 import { TradingAccountCard } from '../TradingAccountCard';
 import LinkTitle from './LinkTitle';
@@ -21,46 +22,46 @@ const OptionsAndMultipliersListing = () => {
             <section className='wallets-options-and-multipliers-listing__header'>
                 <div className='wallets-options-and-multipliers-listing__header-title'>
                     {!isMobile && (
-                        <WalletText align='center' size='xl' weight='bold'>
-                            Options
-                        </WalletText>
+                        <Text align='center' size='xl' weight='bold'>
+                            <Localize i18n_default_text='Options' />
+                        </Text>
                     )}
-                    <WalletText size={isMobile ? 'sm' : 'md'}>
-                        Predict the market, profit if you’re right, risk only what you put in.{' '}
+                    <Text size={isMobile ? 'sm' : 'md'}>
+                        <Localize i18n_default_text='Predict the market, profit if you’re right, risk only what you put in. ' />
                         <WalletLink staticUrl='/trade-types/options/digital-options/up-and-down/'>
-                            Learn more
+                            <Localize i18n_default_text='Learn more' />
                         </WalletLink>
-                    </WalletText>
+                    </Text>
                 </div>
                 <DerivAppsSection />
             </section>
             <div className='wallets-options-and-multipliers-listing__content'>
-                {optionsAndMultipliersContent.map(account => {
+                {getOptionsAndMultipliersContent().map(account => {
                     const { description, key, redirect, title } = account;
                     return (
                         <TradingAccountCard
                             {...account}
                             disabled={!activeLinkedToTradingAccount?.loginid}
                             key={`trading-account-card-${title}`}
-                            leading={<LinkTitle platform={key} />}
                             onClick={() => {
                                 account.isExternal ? window.open(redirect, '_blank') : history.push(redirect as TRoute);
                             }}
-                            trailing={
-                                activeLinkedToTradingAccount?.loginid ? (
-                                    <div className='wallets-options-and-multipliers-listing__icon'>
-                                        <LabelPairedChevronRightCaptionRegularIcon
-                                            data-testid='dt_label_paired_chevron'
-                                            width={16}
-                                        />
-                                    </div>
-                                ) : null
-                            }
                         >
-                            <div className='wallets-options-and-multipliers-listing__content__details'>
-                                <WalletText size='sm'>{title}</WalletText>
-                                <WalletText size='xs'>{description}</WalletText>
-                            </div>
+                            <TradingAccountCard.Icon>
+                                <LinkTitle platform={key} />
+                            </TradingAccountCard.Icon>
+                            <TradingAccountCard.Content>
+                                <Text size='sm'>{title}</Text>
+                                <Text size='xs'>{description}</Text>
+                            </TradingAccountCard.Content>
+                            {activeLinkedToTradingAccount?.loginid && (
+                                <TradingAccountCard.Button>
+                                    <LabelPairedChevronRightCaptionRegularIcon
+                                        data-testid='dt_label_paired_chevron'
+                                        width={16}
+                                    />
+                                </TradingAccountCard.Button>
+                            )}
                         </TradingAccountCard>
                     );
                 })}

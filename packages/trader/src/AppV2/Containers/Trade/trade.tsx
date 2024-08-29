@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { Loading } from '@deriv/components';
-import { TRADE_TYPES } from '@deriv/shared';
+import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
 import { useTraderStore } from 'Stores/useTraderStores';
 import BottomNav from 'AppV2/Components/BottomNav';
 import PurchaseButton from 'AppV2/Components/PurchaseButton';
@@ -11,17 +11,25 @@ import { TradeParametersContainer, TradeParameters } from 'AppV2/Components/Trad
 import CurrentSpot from 'AppV2/Components/CurrentSpot';
 import { TradeChart } from '../Chart';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
-import TemporaryTradeTypes from './trade-types';
-import LastDigitPrediction from 'AppV2/Components/TradeParameters/LastDigitPrediction';
+import TradeTypes from './trade-types';
 import MarketSelector from 'AppV2/Components/MarketSelector';
+import useContractsForCompany, { TContractTypesList } from 'AppV2/Hooks/useContractsForCompany';
+import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
+import { isAccumulatorContract } from '@deriv/shared';
 
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
     const chart_ref = React.useRef<HTMLDivElement>(null);
 
-    const { active_symbols, contract_type, contract_types_list, onMount, onChange, onUnmount } = useTraderStore();
+    const { active_symbols, contract_type, onMount, onChange, onUnmount } = useTraderStore();
+    const { contract_types_list } = useContractsForCompany();
 
-    const trade_types = React.useMemo(() => getTradeTypesList(contract_types_list), [contract_types_list]);
+    const trade_types = React.useMemo(() => {
+        return Array.isArray(contract_types_list) && contract_types_list.length === 0
+            ? []
+            : getTradeTypesList(contract_types_list as TContractTypesList);
+    }, [contract_types_list]);
+
     const symbols = React.useMemo(
         () =>
             active_symbols.map(({ display_name, symbol: underlying }) => ({
@@ -35,7 +43,7 @@ const Trade = observer(() => {
         window.innerHeight - HEIGHT.HEADER - HEIGHT.BOTTOM_NAV - HEIGHT.ADVANCED_FOOTER - HEIGHT.PADDING;
 
     const onTradeTypeSelect = React.useCallback(
-        (e: React.MouseEvent<HTMLButtonElement>) => {
+        (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
             const value = trade_types.find(({ text }) => text === (e.target as HTMLButtonElement).textContent)?.value;
             onChange({
                 target: {
@@ -67,20 +75,20 @@ const Trade = observer(() => {
             {symbols.length && trade_types.length ? (
                 <React.Fragment>
                     <div className='trade'>
-                        <TemporaryTradeTypes
+                        <TradeTypes
                             contract_type={contract_type}
                             onTradeTypeSelect={onTradeTypeSelect}
                             trade_types={trade_types}
                         />
                         <MarketSelector />
                         {isDigitTradeType(contract_type) && <CurrentSpot />}
-                        {contract_type === TRADE_TYPES.EVEN_ODD && <LastDigitPrediction is_stats_mode />}
                         <TradeParametersContainer>
                             <TradeParameters />
                         </TradeParametersContainer>
                         <section className='trade__chart' style={{ height: dynamic_chart_height }} ref={chart_ref}>
                             <TradeChart />
                         </section>
+                        {isAccumulatorContract(contract_type) && <AccumulatorStats />}
                     </div>
                     <TradeParametersContainer is_minimized_visible={is_minimized_params_visible} is_minimized>
                         <TradeParameters is_minimized />
@@ -90,6 +98,7 @@ const Trade = observer(() => {
             ) : (
                 <Loading.DTraderV2 />
             )}
+            <ClosedMarketMessage />
         </BottomNav>
     );
 });

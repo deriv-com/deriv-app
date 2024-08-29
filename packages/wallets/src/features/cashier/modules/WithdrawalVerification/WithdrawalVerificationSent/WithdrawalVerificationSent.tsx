@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button } from '@deriv-com/ui';
 import { WalletsActionScreen } from '../../../../../components';
 import EmailSent from '../../../../../public/images/email-sent.svg';
@@ -10,12 +11,15 @@ type TProps = {
 };
 
 const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) => {
+    const { localize } = useTranslations();
     const [showResend, setShowResend] = useState(false);
 
     return (
         <div className='wallets-withdrawal-verification-sent'>
             <WalletsActionScreen
-                description='Please check your email for the verification link to complete the process.'
+                description={
+                    <Localize i18n_default_text='Please check your email for the verification link to complete the process.' />
+                }
                 icon={
                     <div
                         className='wallets-withdrawal-verification-sent__icon'
@@ -38,23 +42,28 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
                                   textSize='md'
                                   variant='ghost'
                               >
-                                  Didn&apos;t receive the email?
+                                  <Localize i18n_default_text="Didn't receive the email?" />
                               </Button>
                           )
                         : undefined
                 }
-                title="We've sent you an email."
+                title={<Localize i18n_default_text="We've sent you an email." />}
             />
             <div className='wallets-withdrawal-verification-sent__resend'>
                 {showResend && (
                     <WalletsActionScreen
-                        description="Check your spam or junk folder. If it's not there, try resending the email."
+                        description={
+                            <Localize i18n_default_text="Check your spam or junk folder. If it's not there, try resending the email." />
+                        }
                         renderButtons={() => (
-                            <Button borderWidth='sm' disabled={!!counter} onClick={sendEmail} size='lg' textSize='md'>
-                                {`Resend email${counter ? ` in ${counter}s` : ''}`}
+                            <Button disabled={!!counter} onClick={sendEmail} size='lg' textSize='md'>
+                                <Localize
+                                    i18n_default_text='Resend email{{counter}}'
+                                    values={{ counter: counter ? localize(' in {{counter}}s', { counter }) : '' }}
+                                />
                             </Button>
                         )}
-                        title="Didn't receive the email?"
+                        title={<Localize i18n_default_text="Didn't receive the email?" />}
                     />
                 )}
             </div>

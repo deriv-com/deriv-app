@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { TStrategyDescription } from '../types';
+import parse from 'html-react-parser';
 
 const StrategyDescription = observer(({ item, font_size }: TStrategyDescription) => {
     const { ui } = useStore();
@@ -13,11 +14,14 @@ const StrategyDescription = observer(({ item, font_size }: TStrategyDescription)
             const class_names = classNames(`qs__description__content ${class_name}`);
             return (
                 <>
-                    {item?.content?.map((text: string) => (
-                        <div className={class_names} key={text}>
-                            <Text size={font_size} dangerouslySetInnerHTML={{ __html: text }} />
-                        </div>
-                    ))}
+                    {item?.content?.map((text: string) => {
+                        const parsed_text = parse(text);
+                        return (
+                            <div className={class_names} key={text}>
+                                <Text size={font_size}>{parsed_text}</Text>
+                            </div>
+                        );
+                    })}
                 </>
             );
         }
@@ -25,11 +29,14 @@ const StrategyDescription = observer(({ item, font_size }: TStrategyDescription)
             const class_names = classNames(`qs__description__content italic ${class_name}`);
             return (
                 <>
-                    {item?.content?.map((text: string) => (
-                        <div className={class_names} key={text}>
-                            <Text size={font_size} dangerouslySetInnerHTML={{ __html: text }} />
-                        </div>
-                    ))}
+                    {item?.content?.map((text: string) => {
+                        const parsed_text = parse(text);
+                        return (
+                            <div className={class_names} key={text}>
+                                <Text size={font_size}>{parsed_text}</Text>
+                            </div>
+                        );
+                    })}
                 </>
             );
         }

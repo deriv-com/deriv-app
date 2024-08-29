@@ -17,7 +17,6 @@ const TRADE_PARAMS = {
     ACCUMULATORS_INFORMATION: 'AccumulatorsInformation',
     MULTIPLIER: 'Multiplier',
     RISK_MANAGEMENT: 'RiskManagement',
-    MULTIPLIERS_INFORMATION: 'MultipliersInformation',
     TRADE_TYPE_TABS: 'TradeTypeTabs',
     STRIKE: 'Strike',
     PAYOUT_PER_POINT: 'PayoutPerPoint',
@@ -36,9 +35,6 @@ jest.mock('../AccumulatorsInformation', () =>
 );
 jest.mock('../Multiplier', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.MULTIPLIER}</div>));
 jest.mock('../RiskManagement', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.RISK_MANAGEMENT}</div>));
-jest.mock('../MultipliersInformation', () =>
-    jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.MULTIPLIERS_INFORMATION}</div>)
-);
 jest.mock('../TradeTypeTabs', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.TRADE_TYPE_TABS}</div>));
 jest.mock('../Strike', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.STRIKE}</div>));
 jest.mock('../PayoutPerPoint', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.PAYOUT_PER_POINT}</div>));
@@ -106,8 +102,7 @@ describe('TradeParameters', () => {
         expect(screen.getByText(TRADE_PARAMS.MULTIPLIER)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.STAKE)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.RISK_MANAGEMENT)).toBeInTheDocument();
-        expect(screen.getByText(TRADE_PARAMS.MULTIPLIERS_INFORMATION)).toBeInTheDocument();
-        expect(screen.getAllByTestId(data_test)).toHaveLength(4);
+        expect(screen.getAllByTestId(data_test)).toHaveLength(3);
     });
 
     it('should render correct trade params for Rise/Fall', () => {
@@ -124,20 +119,22 @@ describe('TradeParameters', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.HIGH_LOW;
         render(mockTradeParameters());
 
+        expect(screen.getByText(TRADE_PARAMS.TRADE_TYPE_TABS)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.DURATION)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.BARRIER)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.STAKE)).toBeInTheDocument();
-        expect(screen.getAllByTestId(data_test)).toHaveLength(3);
+        expect(screen.getAllByTestId(data_test)).toHaveLength(4);
     });
 
     it('should render correct trade params for Touch/No Touch', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.TOUCH;
         render(mockTradeParameters());
 
+        expect(screen.getByText(TRADE_PARAMS.TRADE_TYPE_TABS)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.DURATION)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.BARRIER)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.STAKE)).toBeInTheDocument();
-        expect(screen.getAllByTestId(data_test)).toHaveLength(3);
+        expect(screen.getAllByTestId(data_test)).toHaveLength(4);
     });
 
     it('should render correct trade params for Matches/Differs', () => {

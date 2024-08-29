@@ -1,34 +1,28 @@
-import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../helpers/urls';
+import { localize } from '@deriv-com/translations';
+import { getStaticUrl, getUrlSmartTrader } from '../helpers/urls';
 
-export const optionsAndMultipliersContent = [
+export const getOptionsAndMultipliersContent = () => [
     {
-        description: 'The options and multipliers trading platform.',
+        description: localize('The options and multipliers trading platform.'),
         key: 'trader',
         redirect: '/dtrader',
         title: 'Deriv Trader',
     },
     {
-        description: 'The ultimate bot trading platform.',
+        description: localize('The ultimate bot trading platform.'),
         key: 'bot',
         redirect: '/bot',
         title: 'Deriv Bot',
     },
     {
-        description: 'The legacy options trading platform.',
+        description: localize('The legacy options trading platform.'),
         isExternal: true,
         key: 'smarttrader',
         redirect: getUrlSmartTrader(),
         title: 'SmartTrader',
     },
     {
-        description: 'The legacy bot trading platform.',
-        isExternal: true,
-        key: 'binarybot',
-        redirect: getUrlBinaryBot(),
-        title: 'Binary Bot',
-    },
-    {
-        description: 'The mobile app for trading multipliers and accumulators.',
+        description: localize('The mobile app for trading multipliers and accumulators.'),
         isExternal: true,
         key: 'derivgo',
         redirect: getStaticUrl('/deriv-go'),

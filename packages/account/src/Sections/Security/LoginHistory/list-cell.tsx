@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 import clsx from 'clsx';
 import { Text } from '@deriv/components';
 
@@ -10,7 +10,7 @@ type TListCell = {
 };
 
 const ListCell = ({ title, text, className, align = 'left' }: TListCell) => (
-    <React.Fragment>
+    <Fragment>
         <Text as='h3' align={align} weight='bold' className='login-history__list__row__cell--title'>
             {title}
         </Text>
@@ -22,7 +22,7 @@ const ListCell = ({ title, text, className, align = 'left' }: TListCell) => (
         >
             {text}
         </Text>
-    </React.Fragment>
+    </Fragment>
 );
 
 export default ListCell;

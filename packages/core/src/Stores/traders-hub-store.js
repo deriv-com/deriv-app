@@ -16,7 +16,7 @@ export default class TradersHubStore extends BaseStore {
     selected_region;
     is_onboarding_visited = false;
     is_first_time_visit = true;
-    is_failed_verification_modal_visible = false;
+    is_verification_docs_list_modal_visible = false;
     is_regulators_compare_modal_visible = false;
     account_type_card = '';
     selected_platform_type = 'options';
@@ -54,7 +54,7 @@ export default class TradersHubStore extends BaseStore {
             combined_cfd_mt5_accounts: observable,
             is_account_transfer_modal_open: observable,
             is_regulators_compare_modal_visible: observable,
-            is_failed_verification_modal_visible: observable,
+            is_verification_docs_list_modal_visible: observable,
             modal_data: observable,
             is_onboarding_visited: observable,
             is_first_time_visit: observable,
@@ -106,8 +106,8 @@ export default class TradersHubStore extends BaseStore {
             closeAccountTransferModal: action.bound,
             setIsOnboardingVisited: action.bound,
             setIsFirstTimeVisit: action.bound,
-            toggleFailedVerificationModalVisibility: action.bound,
-            openFailedVerificationModal: action.bound,
+            toggleVerificationModal: action.bound,
+            openVerificationDocsListModalal: action.bound,
             toggleRegulatorsCompareModal: action.bound,
             showTopUpModal: action.bound,
             toggleWalletsUpgrade: action.bound,
@@ -763,18 +763,18 @@ export default class TradersHubStore extends BaseStore {
         this.is_account_transfer_modal_open = !this.is_account_transfer_modal_open;
     }
 
-    toggleFailedVerificationModalVisibility() {
-        this.is_failed_verification_modal_visible = !this.is_failed_verification_modal_visible;
+    toggleVerificationModal() {
+        this.is_verification_docs_list_modal_visible = !this.is_verification_docs_list_modal_visible;
     }
 
-    openFailedVerificationModal() {
+    openVerificationDocsListModalal() {
         const {
             modules: { cfd },
         } = this.root_store;
         const { setJurisdictionSelectedShortcode } = cfd;
 
         setJurisdictionSelectedShortcode('');
-        this.toggleFailedVerificationModalVisibility();
+        this.toggleVerificationModal();
     }
 
     showTopUpModal(data) {

@@ -36,7 +36,7 @@ describe('<TradingAppCard/>', () => {
             type: 'synthetic',
             jurisdiction: 'svg',
         },
-        openFailedVerificationModal: jest.fn(),
+        openVerificationDocsListModal: jest.fn(),
         market_type: 'synthetic',
     };
 

@@ -43,7 +43,7 @@ const TradingAppCard = ({
     short_code_and_region,
     mt5_acc_auth_status,
     selected_mt5_jurisdiction,
-    openFailedVerificationModal,
+    openVerificationDocsListModal,
     market_type,
     is_new = false,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
@@ -54,7 +54,6 @@ const TradingAppCard = ({
         modules: { cfd },
         client,
     } = useStore();
-    const { setIsVerificationModalVisible } = ui;
     const { is_eu_user, is_demo_low_risk, content_flag, is_real, selected_account_type } = traders_hub;
     const { current_language, setAppstorePlatform } = common;
     const { is_account_being_created, setAccountUnavailableModal, setServerMaintenanceModal } = cfd;

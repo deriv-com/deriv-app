@@ -1083,12 +1083,12 @@ type TTradersHubStore = {
     setTogglePlatformType: (platform_type: string) => void;
     is_demo: boolean;
     is_real: boolean;
-    is_failed_verification_modal_visible: boolean;
+    is_verification_docs_list_modal_visible: boolean;
     selectRegion: (region: string) => void;
     closeAccountTransferModal: () => void;
     toggleRegulatorsCompareModal: () => void;
-    openFailedVerificationModal: () => void;
-    toggleFailedVerificationModalVisibility: () => void;
+    openVerificationDocsListModalal: () => void;
+    toggleVerificationModal: () => void;
     modal_data: TModalData;
     financial_restricted_countries: boolean;
     selected_account_type: string;

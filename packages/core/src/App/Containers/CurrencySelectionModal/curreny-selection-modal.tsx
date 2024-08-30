@@ -23,7 +23,7 @@ const CurrencySelectionModal = observer(({ is_visible }: CurrencySelectionModalP
         account_status,
         loginid: current_loginid,
     } = client;
-    const { closeModal, selected_region, openFailedVerificationModal } = traders_hub;
+    const { closeModal, selected_region, openVerificationDocsListModal } = traders_hub;
     const { openRealAccountSignup, toggleSetCurrencyModal } = ui;
     const { authentication } = account_status || {};
 
@@ -31,7 +31,7 @@ const CurrencySelectionModal = observer(({ is_visible }: CurrencySelectionModalP
 
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         mf_account_status,
-        openFailedVerificationModal,
+        openVerificationDocsListModal,
         undefined,
         { poi_status: authentication?.identity?.status, poa_status: authentication?.document?.status }
     );

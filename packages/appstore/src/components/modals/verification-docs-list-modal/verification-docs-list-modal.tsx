@@ -5,14 +5,15 @@ import { localize, Localize } from '@deriv/translations';
 import { Text, Dialog } from '@deriv/components';
 import { getAuthenticationStatusInfo, routes } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
-import './failed-verification-modal.scss';
+import './verification-docs-list-modal.scss';
 
-type TFailedVerificationModal = {
-    should_resubmit_poi: boolean;
-    should_resubmit_poa: boolean;
+type TFailedVerificationModalProps = {
+    identity: string;
+    address: string;
+    tax: string;
 };
 
-const FailedVerificationModalContent = ({ should_resubmit_poi, should_resubmit_poa }: TFailedVerificationModal) => {
+const VerificationDocsListModalContent = ({ identity, address, tax }: TFailedVerificationModalProps) => {
     const { isMobile } = useDevice();
     return (
         <React.Fragment>
@@ -20,7 +21,7 @@ const FailedVerificationModalContent = ({ should_resubmit_poi, should_resubmit_p
                 <Localize i18n_default_text='The following documents you submitted did not pass our checks:' />
             </Text>
             <div className='failed-verification-modal__failed_list'>
-                {should_resubmit_poi && (
+                {identity && (
                     <Text
                         size={isMobile ? 'xxs' : 'xs'}
                         line_height='xl'
@@ -29,13 +30,22 @@ const FailedVerificationModalContent = ({ should_resubmit_poi, should_resubmit_p
                         <Localize i18n_default_text='Proof of identity' />
                     </Text>
                 )}
-                {should_resubmit_poa && (
+                {address && (
                     <Text
                         size={isMobile ? 'xxs' : 'xs'}
                         line_height='xl'
                         className='failed-verification-modal__failed_list-item'
                     >
                         <Localize i18n_default_text='Proof of address.' />
+                    </Text>
+                )}
+                {tax && (
+                    <Text
+                        size={isMobile ? 'xxs' : 'xs'}
+                        line_height='xl'
+                        className='failed-verification-modal__failed_list-item'
+                    >
+                        <Localize i18n_default_text='Tax residence.' />
                     </Text>
                 )}
             </div>
@@ -46,23 +56,22 @@ const FailedVerificationModalContent = ({ should_resubmit_poi, should_resubmit_p
     );
 };
 
-const FailedVerificationModal = observer(() => {
+const VerificationDocsListModal = observer(({ identity, address, tax }: TFailedVerificationModalProps) => {
     const { traders_hub, ui, client } = useStore();
-    const { is_failed_verification_modal_visible, toggleFailedVerificationModalVisibility } = traders_hub;
+    const { is_verification_docs_list_modal_visible, toggleVerificationModal } = traders_hub;
     const { account_status } = client;
     const { disableApp, enableApp } = ui;
 
-    const { poi_resubmit_for_maltainvest: should_resubmit_poi, need_poa_resubmission: should_resubmit_poa } =
-        getAuthenticationStatusInfo(account_status);
+    const { need_poi_submission, need_poa_submission } = useGetMFAccountStatus();
     const history = useHistory();
 
     const closeModal = () => {
-        toggleFailedVerificationModalVisibility();
+        toggleVerificationModal();
     };
 
     const onConfirmModal = () => {
-        toggleFailedVerificationModalVisibility();
-        if (should_resubmit_poi) {
+        toggleVerificationModal();
+        if (identity) {
             history.push(routes.proof_of_identity);
         } else {
             history.push(routes.proof_of_address);
@@ -78,17 +87,14 @@ const FailedVerificationModal = observer(() => {
             disableApp={disableApp}
             enableApp={enableApp}
             is_closed_on_confirm
-            is_visible={is_failed_verification_modal_visible}
+            is_visible={is_verification_docs_list_modal_visible}
             onCancel={closeModal}
             onConfirm={onConfirmModal}
             className='failed-verification-modal'
         >
-            <FailedVerificationModalContent
-                should_resubmit_poi={should_resubmit_poi}
-                should_resubmit_poa={should_resubmit_poa}
-            />
+            <VerificationDocsListModalContent identity={identity} address={address} tax={tax} />
         </Dialog>
     );
 });
 
-export default observer(FailedVerificationModal);
+export default observer(VerificationDocsListModal);

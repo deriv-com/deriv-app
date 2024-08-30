@@ -8,10 +8,10 @@ import { useStores } from 'Stores';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import CFDResetPasswordModal from '@deriv/cfd/src/Containers/cfd-reset-password-modal';
 
-const FailedVerificationModal = makeLazyLoader(
+const VerificationDocsListModal = makeLazyLoader(
     () =>
         moduleLoader(
-            () => import(/* webpackChunkName: "modal_failed-veriification-modal" */ './failed-veriification-modal')
+            () => import(/* webpackChunkName: "modal_failed-veriification-modal" */ './verification-docs-list-modal')
         ),
     () => <Loading />
 )();
@@ -208,7 +208,7 @@ const ModalManager = () => {
         is_account_transfer_modal_open,
         toggleAccountTransferModal,
         is_real_wallets_upgrade_on,
-        is_failed_verification_modal_visible,
+        is_verification_docs_list_modal_visible,
         is_regulators_compare_modal_visible,
         is_wallet_migration_failed,
         is_setup_real_account_or_go_to_demo_modal_visible,
@@ -324,7 +324,7 @@ const ModalManager = () => {
                     toggleModal={toggleAccountTransferModal}
                 />
             )}
-            {is_failed_verification_modal_visible && <FailedVerificationModal />}
+            {is_verification_docs_list_modal_visible && <VerificationDocsListModal />}
             <React.Fragment>
                 {is_wallet_migration_failed && <WalletsMigrationFailed />}
                 {(is_eligible || is_real_wallets_upgrade_on || is_in_progress) && <WalletsUpgradeModal />}

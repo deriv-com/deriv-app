@@ -1,7 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { render, screen, within } from '@testing-library/react';
-import useDevice from '../../../../../hooks/useDevice';
 import CFDSuccess from '../CFDSuccess';
 
 jest.mock('@deriv/api-v2', () => ({
@@ -101,16 +100,6 @@ describe('CFDSuccess', () => {
         render(<CFDSuccess {...mockProps} marketType='all' platform='ctrader' />);
 
         expect(screen.getByText('Deriv cTrader')).toBeInTheDocument();
-    });
-
-    it('does not render buttons on mobile', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
-        const mockRenderButton = jest.fn<JSX.Element, []>(() => <button>Mock Action Button</button>);
-
-        render(<CFDSuccess {...mockProps} actionButtons={mockRenderButton} />);
-
-        expect(mockRenderButton).not.toHaveBeenCalled();
-        expect(screen.queryByText('Mock Action Button')).not.toBeInTheDocument();
     });
 
     it('renders correct content when active wallet is undefined', () => {

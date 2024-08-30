@@ -20,7 +20,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
     const [is_announce_dialog_open, setIsAnnounceDialogOpen] = React.useState(false);
     const [is_open_announce_list, setIsOpenAnnounceList] = React.useState(false);
     const [selected_announcement, setSelectedAnnouncement] = React.useState<TAnnouncement | null>(null);
-    const [stored_notifications, setStoredNotifications] = React.useState({} as Record<string, boolean>);
+    const [read_announcements_map, setReadAnnouncementsMap] = React.useState({} as Record<string, boolean>);
     const history = useHistory();
     const [notifications, setNotifications] = React.useState([] as TNotifications[]);
     const action_button_class_name = 'announcements__label';
@@ -39,7 +39,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
 
         storeDataInLocalStorage({ ...data, [announce_id]: false });
         const temp_notifications = updateNotifications();
-        setStoredNotifications(temp_notifications);
+        setReadAnnouncementsMap(temp_notifications);
     };
 
     const handleRedirect = (url: string) => {
@@ -75,11 +75,11 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
     React.useEffect(() => {
         const temp_localstorage_data = updateNotifications();
         storeDataInLocalStorage(temp_localstorage_data);
-        setStoredNotifications(temp_localstorage_data);
+        setReadAnnouncementsMap(temp_localstorage_data);
     }, []);
 
     const countActiveAnnouncements = (): number => {
-        return Object.values(stored_notifications as Record<string, boolean>).reduce(
+        return Object.values(read_announcements_map as Record<string, boolean>).reduce(
             (count: number, value: boolean) => {
                 return value === true ? count + 1 : count;
             },
@@ -89,7 +89,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
 
     React.useEffect(() => {
         countActiveAnnouncements();
-    }, [stored_notifications]);
+    }, [read_announcements_map]);
 
     const number_ammount_announce = countActiveAnnouncements();
 
@@ -110,12 +110,12 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
     };
 
     const clearNotificationsCallback = () => {
-        const temp_stored_notifications = Object.fromEntries(
-            Object.keys(stored_notifications).map(key => [key, false])
+        const temp_read_announcements_map = Object.fromEntries(
+            Object.keys(read_announcements_map).map(key => [key, false])
         );
-        storeDataInLocalStorage(temp_stored_notifications);
+        storeDataInLocalStorage(temp_read_announcements_map);
         const temp_notifications = updateNotifications();
-        setStoredNotifications(temp_notifications);
+        setReadAnnouncementsMap(temp_notifications);
     };
 
     return (

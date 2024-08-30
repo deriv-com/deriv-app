@@ -39,7 +39,8 @@
         height: 100%;
         border-bottom: 1px solid var(--system-light-6-hover-background, #e6e9e9);
 
-        span {
+        span,
+        p {
             @include rtl {
                 text-align: right;
             }

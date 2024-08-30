@@ -37,7 +37,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { data } = useRemoteConfig(isMounted());
     const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();
-    const wallets_allowed_languages = store.common.current_language === 'EN' || store.common.current_language === 'AR';
+    const wallets_allowed_languages = current_language === 'EN' || current_language === 'AR';
 
     React.useEffect(() => {
         switchLanguage(current_language);

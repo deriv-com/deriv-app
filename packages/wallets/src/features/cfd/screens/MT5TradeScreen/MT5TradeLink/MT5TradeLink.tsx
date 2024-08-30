@@ -5,7 +5,7 @@ import { Divider, Text } from '@deriv-com/ui';
 import { WalletButton } from '../../../../../components/Base';
 import { getPlatformFromUrl } from '../../../../../helpers/urls';
 import { THooks, TPlatforms } from '../../../../../types';
-import { CFD_PLATFORMS, getAppToContentMapper, PlatformDetails, PlatformToLabelIconMapper } from '../../../constants';
+import { CFD_PLATFORMS, getAppToContentMapper, PlatformDetails } from '../../../constants';
 import { ctraderLinks, dxtradeLinks } from './urlConfig';
 import './MT5TradeLink.scss';
 

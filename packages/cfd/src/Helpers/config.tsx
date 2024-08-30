@@ -83,7 +83,7 @@ export const PlatformsDesktopDownload = ({
                 );
             case CFD_PLATFORMS.DXTRADE:
                 return getDXTradeWebTerminalLink(
-                    is_demo ? 'demo' : 'real',
+                    is_demo ? CATEGORY.DEMO : CATEGORY.REAL,
                     dxtrade_tokens[is_demo ? CATEGORY.DEMO : CATEGORY.REAL]
                 );
             default:

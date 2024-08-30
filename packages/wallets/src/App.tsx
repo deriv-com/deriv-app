@@ -12,10 +12,10 @@ const i18nInstance = initializeI18n({
     cdnUrl: `${process.env.CROWDIN_URL}/${process.env.WALLETS_TRANSLATION_PATH}`, // 'https://translations.deriv.com/deriv-app-wallets/staging'
     useSuspense: false,
 });
-const i18nLanguage = localStorage.getItem('i18n_language') ?? getInitialLanguage();
-const defaultLanguage = i18nLanguage === 'AR' ? 'AR' : 'EN';
 
 const App: React.FC = () => {
+    const i18nLanguage = localStorage.getItem('i18n_language') ?? getInitialLanguage();
+    const defaultLanguage = i18nLanguage === 'AR' ? 'AR' : 'EN';
     return (
         <APIProvider standalone>
             <WalletsAuthProvider>

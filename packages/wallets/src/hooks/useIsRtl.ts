@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const useIsRtl = () => {
     const i18nLanguage = localStorage.getItem('i18n_language');

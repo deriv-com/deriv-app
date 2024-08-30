@@ -1,10 +1,14 @@
 import React, { useCallback } from 'react';
 import { useActiveWalletAccount, useMT5AccountsList, useTradingPlatformStatus } from '@deriv/api-v2';
-import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
+import {
+    LabelPairedChevronLeftCaptionRegularIcon,
+    LabelPairedChevronRightCaptionRegularIcon,
+} from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { TradingAccountCard } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
+import useIsRtl from '../../../../../hooks/useIsRtl';
 import { THooks } from '../../../../../types';
 import { getMarketTypeDetails, MARKET_TYPE, TRADING_PLATFORM_STATUS } from '../../../constants';
 import { JurisdictionModal, MT5PasswordModal, TradingPlatformStatusModal } from '../../../modals';
@@ -18,6 +22,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { getPlatformStatus } = useTradingPlatformStatus();
     const { localize } = useTranslations();
+    const isRtl = useIsRtl();
     const { setModalState, show } = useModal();
     const { description, title } = getMarketTypeDetails(localize)[account.market_type || MARKET_TYPE.ALL];
     const { data: mt5Accounts } = useMT5AccountsList();
@@ -65,7 +70,11 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 <Text size='xs'>{description}</Text>
             </TradingAccountCard.Content>
             <TradingAccountCard.Button className='wallets-available-mt5__icon'>
-                <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                {isRtl ? (
+                    <LabelPairedChevronLeftCaptionRegularIcon width={16} />
+                ) : (
+                    <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                )}
             </TradingAccountCard.Button>
         </TradingAccountCard>
     );

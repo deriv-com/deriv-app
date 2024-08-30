@@ -1,10 +1,14 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveLinkedToTradingAccount } from '@deriv/api-v2';
-import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
+import {
+    LabelPairedChevronLeftCaptionRegularIcon,
+    LabelPairedChevronRightCaptionRegularIcon,
+} from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text, useDevice } from '@deriv-com/ui';
 import { getOptionsAndMultipliersContent } from '../../constants/constants';
+import useIsRtl from '../../hooks/useIsRtl';
 import { TRoute } from '../../routes/Router';
 import { WalletLink } from '../Base';
 import { DerivAppsSection } from '../DerivAppsSection';
@@ -16,6 +20,7 @@ const OptionsAndMultipliersListing = () => {
     const { isMobile } = useDevice();
     const { localize } = useTranslations();
     const history = useHistory();
+    const isRtl = useIsRtl();
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
 
     return (
@@ -57,10 +62,17 @@ const OptionsAndMultipliersListing = () => {
                             </TradingAccountCard.Content>
                             {activeLinkedToTradingAccount?.loginid && (
                                 <TradingAccountCard.Button>
-                                    <LabelPairedChevronRightCaptionRegularIcon
-                                        data-testid='dt_label_paired_chevron'
-                                        width={16}
-                                    />
+                                    {isRtl ? (
+                                        <LabelPairedChevronLeftCaptionRegularIcon
+                                            data-testid='dt_label_paired_chevron'
+                                            width={16}
+                                        />
+                                    ) : (
+                                        <LabelPairedChevronRightCaptionRegularIcon
+                                            data-testid='dt_label_paired_chevron'
+                                            width={16}
+                                        />
+                                    )}
                                 </TradingAccountCard.Button>
                             )}
                         </TradingAccountCard>

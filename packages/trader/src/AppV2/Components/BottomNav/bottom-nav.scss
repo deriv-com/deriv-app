@@ -10,14 +10,12 @@ $BOTTOM_NAV_HEIGHT: var(--core-spacing-2800);
         border-top: 1px solid var(--core-color-opacity-black-100);
         height: $BOTTOM_NAV_HEIGHT;
     }
-
     &-selection {
         flex: 1;
         overflow: auto;
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
-
     &-item {
         font-size: var(--core-fontSize-50);
         &__position-badge {

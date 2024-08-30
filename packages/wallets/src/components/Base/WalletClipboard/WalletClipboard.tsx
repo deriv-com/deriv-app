@@ -1,6 +1,7 @@
 import React, { ComponentProps, useEffect, useState } from 'react';
 import { useCopyToClipboard } from 'usehooks-ts';
 import { LegacyCopy1pxIcon, LegacyWonIcon } from '@deriv/quill-icons';
+import { useTranslations } from '@deriv-com/translations';
 import { Tooltip } from '@deriv-com/ui';
 import useDevice from '../../../hooks/useDevice';
 
@@ -12,6 +13,7 @@ type TProps = {
 const WalletClipboard = ({ popoverAlignment = 'right', textCopy }: TProps) => {
     const [, copy] = useCopyToClipboard();
     const { isMobile } = useDevice();
+    const { localize } = useTranslations();
     const [isCopied, setIsCopied] = useState(false);
     let timeoutClipboard: ReturnType<typeof setTimeout>;
 
@@ -34,7 +36,7 @@ const WalletClipboard = ({ popoverAlignment = 'right', textCopy }: TProps) => {
             className='wallets-clipboard'
             hideTooltip={isMobile}
             onClick={onClick}
-            tooltipContent={isCopied ? 'Copied!' : 'Copy'}
+            tooltipContent={isCopied ? localize('Copied!') : localize('Copy')}
             tooltipPosition={popoverAlignment}
         >
             {isCopied ? (

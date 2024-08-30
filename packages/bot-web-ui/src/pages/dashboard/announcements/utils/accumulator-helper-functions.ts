@@ -33,7 +33,7 @@ export const handleOnConfirmAccumulator = () => {
         });
 };
 
-export const getButtonAction = (
+export const performButtonAction = (
     item: TAnnouncementItem,
     modalButtonAction: (announce_id: string, announcement: TAnnouncement) => void,
     handleRedirect: (url: string) => void

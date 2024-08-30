@@ -9,7 +9,7 @@ import AnnouncementDialog from './announcement-dialog';
 import { BOT_ANNOUNCEMENTS_LIST, TAnnouncement, TNotifications } from './config';
 import './announcements.scss';
 import { MessageAnnounce, TitleAnnounce } from './announcement-components';
-import { getButtonAction } from './utils/accumulator-helper-functions';
+import { performButtonAction } from './utils/accumulator-helper-functions';
 
 type TAnnouncements = {
     is_mobile?: boolean;
@@ -63,7 +63,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                 icon: <item.icon announce={is_not_read} />,
                 title: <TitleAnnounce title={item.title} announce={is_not_read} />,
                 message: <MessageAnnounce message={item.message} date={item.date} announce={is_not_read} />,
-                buttonAction: getButtonAction(item, modalButtonAction, handleRedirect),
+                buttonAction: performButtonAction(item, modalButtonAction, handleRedirect),
                 actionText: item.actionText,
             });
             temp_localstorage_data[item.id] = is_not_read;

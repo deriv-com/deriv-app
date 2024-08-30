@@ -1,10 +1,10 @@
 import React, { PropsWithChildren } from 'react';
 import { useTradingPlatformInvestorPasswordChange } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { WalletButton } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
-import useDevice from '../../../../../../hooks/useDevice';
 import { validPasswordMT5 } from '../../../../../../utils/password-validation';
 import MT5ChangeInvestorPasswordInputsScreen from '../MT5ChangeInvestorPasswordInputsScreen';
 
@@ -59,7 +59,10 @@ jest.mock('../../../../../../components/Base/WalletPasswordField/PasswordViewerI
     ))
 );
 
-jest.mock('../../../../../../hooks/useDevice', () => jest.fn());
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 
 jest.mock('../../../../../../utils/password-validation', () => ({
     ...jest.requireActual('../../../../../../utils/password-validation'),
@@ -75,9 +78,7 @@ describe('MT5ChangeInvestorPasswordInputsScreen', () => {
         (useModal as jest.Mock).mockReturnValue({
             getModalState: jest.fn().mockReturnValue('test-account-id'),
         });
-        (useDevice as jest.Mock).mockReturnValue({
-            isMobile: false,
-        });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
         (validPasswordMT5 as jest.Mock).mockReturnValue(true);
     });
 

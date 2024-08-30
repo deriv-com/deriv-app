@@ -19,7 +19,7 @@ jest.mock('@deriv/stores', () => ({
 jest.mock('AppV2/Hooks/useContractDetails', () => jest.fn());
 
 describe('DealCancellationRemainingTime component', () => {
-    const cancellation_badge_testid = 'deal_cancellation_badge';
+    const cancellation_badge_testid = 'dt_deal_cancellation_badge';
     const mockCommon = {
         server_time: {
             unix: () => 1623441000,

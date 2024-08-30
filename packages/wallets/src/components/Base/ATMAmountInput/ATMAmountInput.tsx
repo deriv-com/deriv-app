@@ -63,7 +63,9 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
 
     return (
         <div className='wallets-atm-amount-input'>
-            <Text size='sm'>{label}</Text>
+            <Text className='wallets-atm-amount-input__input-text' size='sm'>
+                {label}
+            </Text>
             <div className='wallets-atm-amount-input__input-container'>
                 <Text size='lg' weight='bold'>
                     <input

@@ -7,6 +7,15 @@
     }
     &__text {
         margin-left: 0.8rem;
+
+        @include rtl {
+            margin-left: unset;
+            margin-right: 0.8rem;
+
+            p {
+                text-align: right;
+            }
+        }
     }
 }
 

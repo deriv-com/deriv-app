@@ -15,6 +15,11 @@
         top: -2.4rem;
         left: 0.4rem;
 
+        @include rtl {
+            left: unset;
+            right: 0.4rem;
+        }
+
         @include mobile {
             top: -0.8rem;
         }

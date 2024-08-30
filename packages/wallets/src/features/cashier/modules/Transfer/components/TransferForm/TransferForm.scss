@@ -28,10 +28,6 @@
             min-height: 9rem;
             grid-template-columns: 60% 40%;
         }
-
-        @include rtl {
-            direction: ltr;
-        }
     }
 
     &__submit-button {

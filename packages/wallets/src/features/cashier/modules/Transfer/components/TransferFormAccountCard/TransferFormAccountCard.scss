@@ -3,13 +3,20 @@
     align-items: center;
     justify-content: flex-start;
     flex-grow: 1;
+
     &--badge {
         border: 1px solid var(--status-warning, #ffad3a);
         border-radius: 1rem;
     }
+
     &--is-input {
         .wallets-transfer-form-account-card__icon {
             margin-right: 0.8rem;
+
+            @include rtl {
+                margin-right: unset;
+                margin-left: 0.8rem;
+            }
 
             .wallets-market-currency-icon {
                 margin-bottom: 0.4rem;

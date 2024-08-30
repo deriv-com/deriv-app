@@ -34,6 +34,11 @@
                 padding: 1rem;
                 border-left: 1px solid #e6e6e6;
                 box-sizing: border-box;
+
+                @include rtl {
+                    border-right: 1px solid #e6e6e6;
+                    border-left: unset;
+                }
             }
         }
     }

@@ -5,6 +5,12 @@
         width: 28.2rem;
     }
 
+    @include rtl {
+        span {
+            text-align: right;
+        }
+    }
+
     display: flex;
     align-self: stretch;
     flex-direction: column;

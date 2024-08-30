@@ -158,8 +158,6 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     }, [trade_types]);
 
     React.useEffect(() => {
-        onMount();
-
         if (saved_pinned_trade_types.length > 0) {
             setPinnedTradeTypes(saved_pinned_trade_types);
         }
@@ -167,10 +165,6 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         if (saved_other_trade_types.length > 0) {
             setOtherTradeTypes(saved_other_trade_types);
         }
-
-        return () => {
-            onUnmount();
-        };
     }, []);
 
     const savePinnedToLocalStorage = () => {

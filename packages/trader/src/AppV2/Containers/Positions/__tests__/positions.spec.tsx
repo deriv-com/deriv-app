@@ -13,6 +13,7 @@ const defaultMockStore = mockStore({
     modules: {
         positions: { onUnmount: jest.fn() },
     },
+    client: { is_logged_in: true },
 });
 
 jest.mock('../positions-content', () => jest.fn(() => 'mockPositionsContent'));
@@ -71,6 +72,13 @@ describe('Positions', () => {
     it('should not render OnboardingGuide if localStorage flag is equal to true', () => {
         const key = 'guide_dtrader_v2_positions_page';
         localStorage.setItem(key, 'true');
+        render(mockPositions());
+
+        expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();
+    });
+
+    it('should not render OnboardingGuide if client is not logged in', () => {
+        defaultMockStore.client.is_logged_in = false;
         render(mockPositions());
 
         expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();

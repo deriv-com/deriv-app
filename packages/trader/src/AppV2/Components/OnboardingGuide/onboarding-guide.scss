@@ -8,7 +8,6 @@
         flex-direction: column;
         align-items: flex-start;
         min-width: var(--core-size-4300);
-        color: var(--component-textIcon-inverse-prominent);
 
         &-scroll {
             display: flex;
@@ -28,10 +27,15 @@
     &__header {
         display: flex;
         justify-content: space-between;
+
+        &__title {
+            color: var(--component-textIcon-inverse-prominent);
+        }
     }
 
     &__content {
         margin-inline-end: var(--core-spacing-1200);
+        color: var(--component-textIcon-inverse-prominent);
     }
 
     &__close {

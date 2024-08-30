@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
+import { useStore } from '@deriv/stores';
 import { Loading } from '@deriv/components';
 import { isAccumulatorContract } from '@deriv/shared';
 import { useLocalStorageData } from '@deriv/hooks';
@@ -22,7 +23,9 @@ import OnboardingGuide from 'AppV2/Components/OnboardingGuide';
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
     const chart_ref = React.useRef<HTMLDivElement>(null);
-
+    const {
+        client: { is_logged_in },
+    } = useStore();
     const { active_symbols, contract_type, onMount, onChange, onUnmount } = useTraderStore();
     const { contract_types_list } = useContractsForCompany();
     const [guide_dtrader_v2] = useLocalStorageData<boolean>('guide_dtrader_v2_trade_page', false);
@@ -101,7 +104,7 @@ const Trade = observer(() => {
                         </TradeParametersContainer>
                         <PurchaseButton />
                     </div>
-                    {!guide_dtrader_v2 && <OnboardingGuide type='trade_page' />}
+                    {!guide_dtrader_v2 && is_logged_in && <OnboardingGuide type='trade_page' />}
                 </React.Fragment>
             ) : (
                 <Loading.DTraderV2 />

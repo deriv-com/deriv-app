@@ -37,7 +37,7 @@ const GuideTooltip = ({ isLastStep, primaryProps, skipProps, step, tooltipProps,
             <div>
                 {step.title && (
                     <div className='guide-tooltip__header'>
-                        <CaptionText bold color='var(--component-textIcon-inverse-prominent)'>
+                        <CaptionText bold className='guide-tooltip__header__title'>
                             {step.title}
                         </CaptionText>
                         <IconButton
@@ -50,11 +50,7 @@ const GuideTooltip = ({ isLastStep, primaryProps, skipProps, step, tooltipProps,
                         />
                     </div>
                 )}
-                {step.content && (
-                    <CaptionText color='var(--component-textIcon-inverse-prominent)' className='guide-tooltip__content'>
-                        {step.content}
-                    </CaptionText>
-                )}
+                {step.content && <CaptionText className='guide-tooltip__content'>{step.content}</CaptionText>}
             </div>
             <Button
                 {...primaryProps}

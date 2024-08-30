@@ -21,9 +21,7 @@ describe('OnboardingGuide', () => {
         jest.useFakeTimers();
         render(<OnboardingGuide />);
 
-        await waitFor(() => {
-            jest.advanceTimersByTime(800);
-        });
+        await waitFor(() => jest.advanceTimersByTime(800));
 
         expect(screen.getByText('OnboardingVideo')).toBeInTheDocument();
         expect(screen.getByText(trading_modal_text)).toBeInTheDocument();
@@ -36,9 +34,7 @@ describe('OnboardingGuide', () => {
         jest.useFakeTimers();
         render(<OnboardingGuide type='positions_page' />);
 
-        await waitFor(() => {
-            jest.advanceTimersByTime(800);
-        });
+        await waitFor(() => jest.advanceTimersByTime(800));
 
         expect(screen.queryByText('OnboardingVideo')).not.toBeInTheDocument();
         expect(screen.getByText(positions_modal_text)).toBeInTheDocument();
@@ -51,14 +47,13 @@ describe('OnboardingGuide', () => {
         jest.useFakeTimers();
         render(<OnboardingGuide />);
 
-        await waitFor(() => {
-            jest.advanceTimersByTime(800);
-        });
+        await waitFor(() => jest.advanceTimersByTime(800));
 
         expect(screen.getByText(trading_modal_text)).toBeInTheDocument();
         expect(screen.queryByText(guide_container)).not.toBeInTheDocument();
 
         userEvent.click(screen.getByRole('button'));
+        await waitFor(() => jest.advanceTimersByTime(300));
 
         expect(screen.queryByText(trading_modal_text)).not.toBeInTheDocument();
         expect(screen.getByText(guide_container)).toBeInTheDocument();
@@ -71,15 +66,14 @@ describe('OnboardingGuide', () => {
         jest.useFakeTimers();
         render(<OnboardingGuide type='positions_page' />);
 
-        await waitFor(() => {
-            jest.advanceTimersByTime(800);
-        });
+        await waitFor(() => jest.advanceTimersByTime(800));
 
         expect(screen.getByText(positions_modal_text)).toBeInTheDocument();
         expect(screen.queryByText(guide_container)).not.toBeInTheDocument();
         expect(localStorage.getItem(key)).toBe('false');
 
         userEvent.click(screen.getByRole('button'));
+        await waitFor(() => jest.advanceTimersByTime(300));
 
         expect(screen.queryByText(positions_modal_text)).not.toBeInTheDocument();
         expect(screen.queryByText(guide_container)).not.toBeInTheDocument();
@@ -93,18 +87,14 @@ describe('OnboardingGuide', () => {
         jest.useFakeTimers();
         render(<OnboardingGuide />);
 
-        await waitFor(() => {
-            jest.advanceTimersByTime(800);
-        });
+        await waitFor(() => jest.advanceTimersByTime(800));
 
         expect(screen.getByText(trading_modal_text)).toBeInTheDocument();
         expect(screen.queryByText(guide_container)).not.toBeInTheDocument();
         expect(localStorage.getItem(key)).toBe('false');
 
-        userEvent.click(screen.getByTestId('dt_overlay'));
-        await waitFor(() => {
-            jest.advanceTimersByTime(800);
-        });
+        userEvent.click(screen.getByTestId('dt-actionsheet-overlay'));
+        await waitFor(() => jest.advanceTimersByTime(300));
 
         expect(screen.queryByText(trading_modal_text)).not.toBeInTheDocument();
         expect(screen.queryByText(guide_container)).not.toBeInTheDocument();

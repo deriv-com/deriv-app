@@ -13,6 +13,7 @@ const OnboardingGuide = ({ type = 'trade_page' }: TOnboardingGuideProps) => {
     const [is_modal_open, setIsModalOpen] = React.useState(false);
     const [should_run_guide, setShouldRunGuide] = React.useState(false);
     const guide_timeout_ref = React.useRef<ReturnType<typeof setTimeout>>();
+    const is_button_clicked_ref = React.useRef(false);
 
     const [guide_dtrader_v2, setGuideDtraderV2] = useLocalStorageData<boolean>(`guide_dtrader_v2_${type}`, false);
     const is_trade_page_guide = type === 'trade_page';
@@ -23,11 +24,13 @@ const OnboardingGuide = ({ type = 'trade_page' }: TOnboardingGuideProps) => {
     }, [setGuideDtraderV2]);
 
     const onGuideSkip = () => {
+        if (is_button_clicked_ref.current) return;
         onFinishGuide();
         setIsModalOpen(false);
     };
 
     const onGuideStart = () => {
+        is_button_clicked_ref.current = true;
         setShouldRunGuide(true);
         setIsModalOpen(false);
     };
@@ -61,9 +64,12 @@ const OnboardingGuide = ({ type = 'trade_page' }: TOnboardingGuideProps) => {
     return (
         <React.Fragment>
             <Modal
+                handleBarIndex={2}
                 isOpened={is_modal_open}
+                isNonExpandable
                 isMobile
                 showHandleBar
+                shouldCloseModalOnSwipeDown
                 toggleModal={onGuideSkip}
                 primaryButtonLabel={modal_content.button_label}
                 primaryButtonCallback={modal_content.primaryButtonCallback}

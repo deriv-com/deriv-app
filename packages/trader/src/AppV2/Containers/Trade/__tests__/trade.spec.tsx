@@ -92,6 +92,7 @@ describe('Trade', () => {
                     ],
                 },
             },
+            client: { is_logged_in: true },
         });
         localStorage.clear();
     });
@@ -148,6 +149,13 @@ describe('Trade', () => {
     it('should not render OnboardingGuide if localStorage flag is equal to true', () => {
         const key = 'guide_dtrader_v2_trade_page';
         localStorage.setItem(key, 'true');
+        render(mockTrade());
+
+        expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();
+    });
+
+    it('should not render OnboardingGuide if client is not logged in', () => {
+        default_mock_store.client.is_logged_in = false;
         render(mockTrade());
 
         expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();

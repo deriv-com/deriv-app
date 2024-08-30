@@ -1,6 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { useCashierLocked } from '@deriv/hooks';
+import { useCashierLocked, useTradingPlatformStatus } from '@deriv/hooks';
 import { WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
@@ -37,12 +37,13 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose }: TAc
     } = account_transfer;
     const { is_loading } = general_store;
     const is_cashier_locked = useCashierLocked();
+    const { data: TradingPlatformStatusData } = useTradingPlatformStatus();
+
     const { is_switching, is_virtual } = client;
     const [is_loading_status, setIsLoadingStatus] = React.useState(true);
 
     React.useEffect(() => {
         onMount();
-
         WS.wait('authorize', 'website_status', 'get_settings', 'paymentagent_list').then(() => {
             setIsLoadingStatus(false);
         });
@@ -61,7 +62,7 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose }: TAc
             </PageContainer>
         );
     }
-    if (is_loading || is_switching || is_loading_status) {
+    if (is_loading || is_switching || is_loading_status || !TradingPlatformStatusData) {
         return (
             <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <Loading className='cashier__loader' is_fullscreen={false} />
@@ -114,6 +115,7 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose }: TAc
                 error={error}
                 onClickDeposit={onClickDeposit}
                 onClickNotes={onClickNotes}
+                TradingPlatformStatusData={TradingPlatformStatusData}
             />
         </PageContainer>
     );

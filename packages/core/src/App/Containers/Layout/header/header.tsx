@@ -2,24 +2,13 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { useFeatureFlags } from '@deriv/hooks';
 import { useReadLocalStorage } from 'usehooks-ts';
-import { isDTraderV2, makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
+import { makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import classNames from 'classnames';
-import DTraderV2HeaderLoader from './dtrader-v2-header-loader';
 
 const HeaderFallback = () => {
-    const location = useLocation();
-    const is_contract_details = location.pathname.startsWith('/contract/');
-    const is_positions = location.pathname === routes.trader_positions;
-
-    return (
-        <div className={classNames('header', { 'header-v2': isDTraderV2() })}>
-            {isDTraderV2() && !is_contract_details && (
-                <DTraderV2HeaderLoader show_notifications_skeleton={!is_positions} />
-            )}
-        </div>
-    );
+    return <div className={classNames('header')} />;
 };
 
 const DefaultHeader = makeLazyLoader(
@@ -50,11 +39,6 @@ const TradersHubHeader = makeLazyLoader(
 const TradersHubHeaderWallets = makeLazyLoader(
     () =>
         moduleLoader(() => import(/* webpackChunkName: "traders-hub-header-wallets" */ './traders-hub-header-wallets')),
-    () => <HeaderFallback />
-)();
-
-const DTraderV2Header = makeLazyLoader(
-    () => moduleLoader(() => import(/* webpackChunkName: "dtrader-v2-header" */ './dtrader-v2-header')),
     () => <HeaderFallback />
 )();
 
@@ -102,9 +86,6 @@ const Header = observer(() => {
         switch (true) {
             case pathname === routes.onboarding:
                 result = null;
-                break;
-            case is_dtrader_v2_enabled && isMobile && pathname.startsWith(routes.trade):
-                result = <DTraderV2Header />;
                 break;
             case is_dtrader_v2_enabled &&
                 isMobile &&

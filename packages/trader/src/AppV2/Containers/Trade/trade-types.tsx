@@ -10,8 +10,8 @@ import Guide from '../../Components/Guide';
 type TTradeTypesProps = {
     onTradeTypeSelect: (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
     trade_types: ReturnType<typeof getTradeTypesList>;
-    contract_type: string;
-} & Pick<ReturnType<typeof useTraderStore>, 'contract_type'>;
+    contract_type: ReturnType<typeof useTraderStore>['contract_type'];
+};
 
 type TItem = {
     id: string;
@@ -31,19 +31,11 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     const [is_open, setIsOpen] = React.useState<boolean>(false);
     const [is_editing, setIsEditing] = React.useState<boolean>(false);
 
-    const { onMount, onUnmount } = useTraderStore();
-
-    const createArrayFromCategories = (data: any): TItem[] => {
-        const result: TItem[] = [];
-
-        data.forEach((category: { value: string; text: string }) => {
-            result.push({
-                id: category.value,
-                title: category.text,
-            });
-        });
-
-        return result;
+    const createArrayFromCategories = (data: TTradeTypesProps['trade_types']): TItem[] => {
+        return data.map(category => ({
+            id: category.value,
+            title: category.text ?? '',
+        }));
     };
 
     const saved_other_trade_types = JSON.parse(localStorage.getItem('other_trade_types') ?? '[]');

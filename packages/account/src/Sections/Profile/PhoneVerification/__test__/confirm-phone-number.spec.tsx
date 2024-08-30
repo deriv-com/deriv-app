@@ -20,6 +20,7 @@ jest.mock('@deriv/hooks', () => ({
     })),
     usePhoneNumberVerificationSetTimer: jest.fn(() => ({
         next_phone_otp_request_timer: undefined,
+        is_request_button_disabled: false,
     })),
 }));
 

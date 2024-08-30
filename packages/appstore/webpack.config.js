@@ -1,5 +1,10 @@
+const CircularDependencyPlugin = require('circular-dependency-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const IgnorePlugin = require('webpack').IgnorePlugin;
 const TerserPlugin = require('terser-webpack-plugin');
+const DefinePlugin = require('webpack').DefinePlugin;
+const Dotenv = require('dotenv-webpack');
 // const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
@@ -32,6 +37,27 @@ const svg_loaders = [
         },
     },
 ];
+
+// TODO: Uncomment this line when type script migrations on all packages done
+// const default_plugins = [new CleanWebpackPlugin(), new ForkTsCheckerWebpackPlugin()];
+const default_plugins = [
+    // new BundleAnalyzerPlugin(),
+    new Dotenv(),
+    new DefinePlugin({
+        'process.env.TRUSTPILOT_API_KEY': JSON.stringify(process.env.TRUSTPILOT_API_KEY),
+    }),
+    new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
+    new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
+];
+const prod_plugins = [
+    ...default_plugins,
+    new MiniCssExtractPlugin({
+        filename: 'appstore/css/[name].[contenthash].css',
+        chunkFilename: 'appstore/css/[name].[contenthash].css',
+    }),
+];
+const dev_plugins = [...default_plugins];
+const plugins = is_release ? prod_plugins : dev_plugins;
 
 module.exports = function (env) {
     const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
@@ -107,7 +133,7 @@ module.exports = function (env) {
                 {
                     test: /\.(sc|sa|c)ss$/,
                     use: [
-                        'style-loader',
+                        is_release ? MiniCssExtractPlugin.loader : 'style-loader',
                         {
                             loader: 'css-loader',
                         },
@@ -183,9 +209,9 @@ module.exports = function (env) {
                 '@deriv/cashier': true,
                 '@deriv/cfd': true,
                 '@deriv-com/analytics': `@deriv-com/analytics`,
+                '@deriv-com/translations': '@deriv-com/translations',
             },
         ],
-        //TODO: Uncomment this line when type script migrations on all packages done
-        // plugins: [new CleanWebpackPlugin(), new ForkTsCheckerWebpackPlugin()],
+        plugins,
     };
 };

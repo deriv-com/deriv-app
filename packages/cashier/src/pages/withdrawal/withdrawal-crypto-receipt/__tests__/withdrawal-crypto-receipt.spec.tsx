@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import WithdrawalCryptoReceipt from '../withdrawal-crypto-receipt';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
+import { APIProvider } from '@deriv/api';
 
 let mock_last_transaction = {
     address_hash: 'test_hash',
@@ -16,7 +17,13 @@ let mock_last_transaction = {
     transaction_type: 'withdrawal',
     is_deposit: false,
     is_withdrawal: true,
+    transaction_fee: '',
 };
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true, isMobile: false })),
+}));
 
 jest.mock('@deriv/hooks', () => {
     return {
@@ -58,21 +65,20 @@ describe('<WithdrawalCryptoReceipt />', () => {
                         resetWithdrawForm: jest.fn(),
                         setIsWithdrawConfirmed: jest.fn(),
                         withdraw_amount: 0.0002,
+                        crypto_estimations_fee: 0.001,
                     },
                 },
-            },
-            ui: {
-                is_desktop: true,
-                is_mobile: false,
             },
         });
     });
 
     const renderWithdrawalCryptoReceipt = () => {
         return render(
-            <CashierProviders store={mockRootStore}>
-                <WithdrawalCryptoReceipt />
-            </CashierProviders>
+            <APIProvider>
+                <CashierProviders store={mockRootStore}>
+                    <WithdrawalCryptoReceipt />
+                </CashierProviders>
+            </APIProvider>
         );
     };
 
@@ -136,5 +142,11 @@ describe('<WithdrawalCryptoReceipt />', () => {
         renderWithdrawalCryptoReceipt();
 
         expect(screen.getByText('Successful')).toBeInTheDocument();
+    });
+
+    it('should show transaction fee when transaction fee is available', () => {
+        renderWithdrawalCryptoReceipt();
+
+        expect(screen.getByText(/Transaction fee/)).toBeInTheDocument();
     });
 });

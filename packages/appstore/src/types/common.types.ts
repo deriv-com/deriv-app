@@ -13,7 +13,7 @@ export type RequiredAndNotNull<T> = {
 
 export type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 export type TAccountCategory = 'real' | 'demo';
-export type TPlatform = 'dxtrade' | 'mt5' | 'trader' | 'dbot' | 'smarttrader' | 'bbot' | 'go' | 'ctrader';
+export type TPlatform = 'dxtrade' | 'mt5' | 'trader' | 'dbot' | 'smarttrader' | 'go' | 'ctrader';
 
 export type TBrandData = {
     name: string;
@@ -62,6 +62,7 @@ export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
             platform?: string;
         };
     platform?: TPlatform;
+    product?: 'swap_free' | 'zero_spread' | 'derivx' | 'ctrader';
     openFailedVerificationModal?: (from_account: string) => void;
     market_type: NonNullable<TTradingPlatformAvailableAccount['market_type']> | TMarketType;
 };
@@ -108,8 +109,6 @@ export type TStaticAccountProps = {
 export type TIconTypes =
     | 'Standard'
     | 'Financial'
-    | 'BinaryBot'
-    | 'BinaryBotBlue'
     | 'DBot'
     | 'Demo'
     | 'DerivGo'

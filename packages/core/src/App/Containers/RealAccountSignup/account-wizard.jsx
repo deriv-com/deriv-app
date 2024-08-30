@@ -10,7 +10,7 @@ import { observer, useStore } from '@deriv/stores';
 import AcceptRiskForm from './accept-risk-form.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
-import { useResidenceSelfDeclaration } from '@deriv/hooks';
+import { useResidenceSelfDeclaration, useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import 'Sass/details-form.scss';
 import { Analytics } from '@deriv-com/analytics';
 
@@ -95,6 +95,7 @@ const AccountWizard = observer(props => {
         real_account_signup_form_step,
         setRealAccountSignupFormStep,
     } = client;
+    const { closeRealAccountSignup, setShouldShowSameDOBPhoneModal } = ui;
 
     const [finished] = React.useState(undefined);
     const [mounted, setMounted] = React.useState(false);
@@ -103,6 +104,11 @@ const AccountWizard = observer(props => {
     const [state_items, setStateItems] = React.useState(real_account_signup_form_data ?? []);
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
     const { is_residence_self_declaration_required } = useResidenceSelfDeclaration();
+
+    const [direct_deposit_flow] = useGrowthbookGetFeatureValue({
+        featureFlag: 'direct-deposit-flow',
+        defaultValue: false,
+    });
 
     const trackEvent = React.useCallback(
         payload => {
@@ -400,14 +406,28 @@ const AccountWizard = observer(props => {
                     action: 'real_signup_finished',
                     user_choice: JSON.stringify(response?.echo_req),
                 });
+
+                const status = await WS.wait('get_account_status');
+                const { get_account_status } = status;
+
                 modifiedProps.setIsRiskWarningVisible(false);
-                if (modifiedProps.real_account_signup_target === 'maltainvest') {
+
+                // check for duplicate DOB (day of birthday) and phone number
+                const is_duplicate_dob_phone = get_account_status?.status?.includes('duplicate_dob_phone');
+                if (is_duplicate_dob_phone) {
+                    closeRealAccountSignup();
+                    setShouldShowSameDOBPhoneModal(true);
+                } else if (modifiedProps.real_account_signup_target === 'maltainvest') {
                     modifiedProps.onOpenDepositModal();
                 } else if (modifiedProps.real_account_signup_target === 'samoa') {
                     modifiedProps.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
                 } else {
+                    if (direct_deposit_flow) {
+                        modifiedProps.onOpenDepositModal();
+                    }
                     modifiedProps.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
+
                 const country_code = modifiedProps.account_settings.citizen || modifiedProps.residence;
                 /**
                  * If IDV details are present, then submit IDV details
@@ -537,6 +557,7 @@ AccountWizard.propTypes = {
     onClose: PropTypes.func,
     onError: PropTypes.func,
     onFinishSuccess: PropTypes.func,
+    onNewFinishSuccess: PropTypes.func,
     onLoading: PropTypes.func,
     onOpenWelcomeModal: PropTypes.func,
     real_account_signup_target: PropTypes.string,

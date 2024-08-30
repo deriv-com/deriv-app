@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
 import { useCryptoTransactions } from '@deriv/api-v2';
-import { Loader } from '../../../../../../components';
-import { WalletText } from '../../../../../../components/Base';
+import { Loader, Text } from '@deriv-com/ui';
 import { TransactionsNoDataState } from '../TransactionsNoDataState';
 import { TransactionsPendingRow } from '../TransactionsPendingRow';
 import { TransactionsTable } from '../TransactionsTable';
@@ -42,9 +41,9 @@ const TransactionsPending: React.FC<TProps> = ({ filter = 'all' }) => {
                 groupBy={['date']}
                 rowGroupRender={transaction => (
                     <div className='wallets-transactions-pending__group-title'>
-                        <WalletText color='primary' size='2xs'>
+                        <Text color='primary' size='2xs'>
                             {transaction.submit_date && moment.unix(transaction.submit_date).format('DD MMM YYYY')}
-                        </WalletText>
+                        </Text>
                     </div>
                 )}
                 rowRender={transaction => <TransactionsPendingRow transaction={transaction} />}

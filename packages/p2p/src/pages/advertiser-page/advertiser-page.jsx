@@ -3,10 +3,11 @@ import classNames from 'classnames';
 import { reaction } from 'mobx';
 import { useP2PAdvertiserAdverts } from 'Hooks';
 import { useHistory, useLocation } from 'react-router-dom';
-import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
+import { Loading, Text } from '@deriv/components';
 import { useP2PAdvertInfo } from '@deriv/hooks';
-import { daysSince, isEmptyObject, isMobile, routes } from '@deriv/shared';
+import { daysSince, isEmptyObject, routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -20,13 +21,14 @@ import { api_error_codes } from 'Constants/api-error-codes';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
 import { getEligibilityMessage } from 'Utils/adverts';
-import { getErrorMessage, getErrorModalTitle, getWidth } from 'Utils/block-user';
+import { getErrorMessage, getErrorModalTitle } from 'Utils/block-user';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import BlockUserOverlay from './block-user/block-user-overlay';
 
 const AdvertiserPage = () => {
+    const { isDesktop, isMobile } = useDevice();
     const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
     const {
         advertiser_id,
@@ -72,8 +74,9 @@ const AdvertiserPage = () => {
     const nickname = advertiser_details_name ?? name;
     // rating_average_decimal converts rating_average to 1 d.p number
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
+    const mobileTextSize = isMobile ? 'xxxs' : 'xs';
 
-    const { data: p2p_advert_info } = useP2PAdvertInfo(counterparty_advert_id);
+    const { data: p2p_advert_info, isLoading, isSubscribed } = useP2PAdvertInfo(counterparty_advert_id);
 
     const showErrorModal = eligibility_status => {
         let error_message = localize("It's either deleted or no longer active.");
@@ -94,15 +97,15 @@ const AdvertiserPage = () => {
                 onClose: () => {
                     hideModal({ should_hide_all_modals: true });
                 },
-                width: isMobile() ? '90vw' : '',
+                width: !isDesktop ? '90vw' : '',
             },
         });
     };
 
     const setShowAdvertInfo = React.useCallback(
         () => {
-            if (p2p_advert_info) {
-                const { eligibility_status, is_active, is_buy, is_eligible, is_visible } = p2p_advert_info || {};
+            const { eligibility_status, is_active, is_buy, is_eligible, is_visible } = p2p_advert_info || {};
+            if (isSubscribed && p2p_advert_info) {
                 const advert_type = is_buy ? 1 : 0;
 
                 if (is_active && is_visible && is_eligible) {
@@ -113,16 +116,31 @@ const AdvertiserPage = () => {
                 } else {
                     showErrorModal(eligibility_status);
                 }
+            } else {
+                showErrorModal();
             }
         },
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [p2p_advert_info]
+        [isSubscribed, p2p_advert_info]
     );
 
     React.useEffect(() => {
-        if (is_advertiser && !is_barred && is_my_advert !== null && !is_my_advert) setShowAdvertInfo();
-    }, [counterparty_advert_id, setShowAdvertInfo, is_my_advert]);
+        if (is_advertiser && !is_barred && is_my_advert !== null && !is_my_advert) {
+            if (isLoading && isDesktop) {
+                showModal({ key: 'LoadingModal' });
+            } else if (counterparty_advert_id) {
+                setShowAdvertInfo();
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [counterparty_advert_id, isLoading, setShowAdvertInfo, is_my_advert]);
+
+    // Update the selected advert state when the advert info is updated through subscription.
+    React.useEffect(() => {
+        if (p2p_advert_info) buy_sell_store.setSelectedAdState(p2p_advert_info);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [p2p_advert_info]);
 
     React.useEffect(() => {
         if (location.search || counterparty_advertiser_id) {
@@ -188,7 +206,6 @@ const AdvertiserPage = () => {
                                 general_store.setBlockUnblockUserError('');
                                 hideModal();
                             },
-                            width: getWidth(),
                         },
                     });
                 }
@@ -200,6 +217,7 @@ const AdvertiserPage = () => {
             disposeBlockUnblockUserErrorReaction();
             advertiser_page_store.onUnmount();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [advertiser_details_name, counterparty_advertiser_info]);
 
     useRegisterModalProps({
@@ -246,11 +264,7 @@ const AdvertiserPage = () => {
                     }}
                     page_title={localize("Advertiser's page")}
                 />
-                {!is_my_advert && (
-                    <MobileWrapper>
-                        <AdvertiserPageDropdownMenu />
-                    </MobileWrapper>
-                )}
+                {!is_my_advert && !isDesktop && <AdvertiserPageDropdownMenu />}
             </div>
             <BlockUserOverlay
                 is_visible={!!advertiser_page_store.is_counterparty_advertiser_blocked && !is_my_advert}
@@ -262,11 +276,7 @@ const AdvertiserPage = () => {
             >
                 <div className='advertiser-page-details-container'>
                     <div className='advertiser-page__header-details'>
-                        <UserAvatar
-                            nickname={nickname}
-                            size={isMobile() ? 32 : 64}
-                            text_size={isMobile() ? 's' : 'sm'}
-                        />
+                        <UserAvatar nickname={nickname} size={isMobile ? 32 : 64} text_size={isMobile ? 's' : 'sm'} />
                         <div className='advertiser-page__header-name--column'>
                             <div className='advertiser-page__header-name'>
                                 <Text color='prominent' weight='bold'>
@@ -280,7 +290,7 @@ const AdvertiserPage = () => {
                                     </div>
                                 )}
                             </div>
-                            <MobileWrapper>
+                            {!isDesktop && (
                                 <div className='advertiser-page__row'>
                                     <div className='advertiser-page__rating--row'>
                                         <OnlineStatusIcon is_online={is_online} />
@@ -290,7 +300,7 @@ const AdvertiserPage = () => {
                                         <Text
                                             className='advertiser-page__joined-since'
                                             color='less-prominent'
-                                            size='xxxs'
+                                            size={mobileTextSize}
                                         >
                                             {joined_since ? (
                                                 <Localize
@@ -303,38 +313,40 @@ const AdvertiserPage = () => {
                                         </Text>
                                     </div>
                                 </div>
-                            </MobileWrapper>
+                            )}
                             {!isEmptyObject(info) && (
                                 <div className='advertiser-page__rating'>
-                                    <DesktopWrapper>
-                                        <div className='advertiser-page__rating--row'>
-                                            <OnlineStatusIcon is_online={is_online} />
-                                            <OnlineStatusLabel
-                                                is_online={is_online}
-                                                last_online_time={last_online_time}
-                                            />
-                                        </div>
-                                        <div className='advertiser-page__rating--row'>
-                                            <Text
-                                                className='advertiser-page__joined-since'
-                                                color='less-prominent'
-                                                size='xs'
-                                            >
-                                                {joined_since ? (
-                                                    <Localize
-                                                        i18n_default_text='Joined {{days_since_joined}}d'
-                                                        values={{ days_since_joined: joined_since }}
-                                                    />
-                                                ) : (
-                                                    <Localize i18n_default_text='Joined today' />
-                                                )}
-                                            </Text>
-                                        </div>
-                                    </DesktopWrapper>
+                                    {isDesktop && (
+                                        <React.Fragment>
+                                            <div className='advertiser-page__rating--row'>
+                                                <OnlineStatusIcon is_online={is_online} />
+                                                <OnlineStatusLabel
+                                                    is_online={is_online}
+                                                    last_online_time={last_online_time}
+                                                />
+                                            </div>
+                                            <div className='advertiser-page__rating--row'>
+                                                <Text
+                                                    className='advertiser-page__joined-since'
+                                                    color='less-prominent'
+                                                    size='xs'
+                                                >
+                                                    {joined_since ? (
+                                                        <Localize
+                                                            i18n_default_text='Joined {{days_since_joined}}d'
+                                                            values={{ days_since_joined: joined_since }}
+                                                        />
+                                                    ) : (
+                                                        <Localize i18n_default_text='Joined today' />
+                                                    )}
+                                                </Text>
+                                            </div>
+                                        </React.Fragment>
+                                    )}
                                     {rating_average ? (
                                         <React.Fragment>
                                             <div className='advertiser-page__rating--row'>
-                                                <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                <Text color='prominent' size={mobileTextSize}>
                                                     {rating_average_decimal}
                                                 </Text>
                                                 <StarRating
@@ -346,10 +358,10 @@ const AdvertiserPage = () => {
                                                     is_readonly
                                                     number_of_stars={5}
                                                     should_allow_hover_effect={false}
-                                                    star_size={isMobile() ? 17 : 20}
+                                                    star_size={isMobile ? 17 : 20}
                                                 />
                                                 <div className='advertiser-page__rating--text'>
-                                                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                    <Text color='less-prominent' size={mobileTextSize}>
                                                         {rating_count === 1 ? (
                                                             <Localize
                                                                 i18n_default_text='({{number_of_ratings}} rating)'
@@ -373,7 +385,7 @@ const AdvertiserPage = () => {
                                         </React.Fragment>
                                     ) : (
                                         <div className='advertiser-page__rating--row'>
-                                            <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                            <Text color='less-prominent' size={mobileTextSize}>
                                                 <Localize i18n_default_text='Not rated yet' />
                                             </Text>
                                         </div>
@@ -389,11 +401,7 @@ const AdvertiserPage = () => {
                                 />
                             </div>
                         </div>
-                        {!is_my_advert && (
-                            <DesktopWrapper>
-                                <AdvertiserPageDropdownMenu />
-                            </DesktopWrapper>
-                        )}
+                        {!is_my_advert && isDesktop && <AdvertiserPageDropdownMenu />}
                     </div>
                     <AdvertiserPageStats />
                 </div>

@@ -2,6 +2,7 @@
     width: 100%;
     max-width: 60rem;
     min-width: 51.2rem;
+
     @include mobile {
         width: 100%;
         min-width: 100%;
@@ -14,42 +15,43 @@
         gap: 0.6rem;
     }
 
-    &__title {
+    &__description {
         display: flex;
         align-items: center;
-        flex-direction: row;
-        gap: 0.6rem;
+        width: 100%;
+
+        &-balance {
+            margin-left: auto;
+        }
+
+        &-details {
+            display: flex;
+            flex-direction: column;
+            padding-left: 0.8rem;
+        }
+
+        &-icon {
+            & > svg {
+                width: 2.4rem;
+                height: 2.4rem;
+            }
+        }
     }
 
-    &__details {
+    &__content {
         display: flex;
         flex-direction: column;
         padding: 2.4rem;
         gap: 1.6rem;
 
-        &-description {
+        &-header {
             display: flex;
-            align-items: center;
-            width: 100%;
+            flex-direction: column;
+            gap: 0.8rem;
 
-            &__icon {
-                & > svg {
-                    width: 2.4rem;
-                    height: 2.4rem;
-                }
-            }
-
-            &__details {
+            &-btn {
                 display: flex;
-                flex-direction: column;
-                padding-left: 0.8rem;
-            }
-
-            &__balance {
-                margin-left: auto;
-                &-total {
-                    text-align: end;
-                }
+                justify-content: flex-end;
             }
         }
 

@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react';
-import { AppToContentMapper, CFD_PLATFORMS } from '../../../constants';
+import { CFD_PLATFORMS, getAppToContentMapper } from '../../../constants';
 import MT5TradeLink from './MT5TradeLink';
 import './MT5TradeLink.scss';
 
 const MT5DesktopRedirectOption = () => {
-    const apps: (keyof typeof AppToContentMapper)[] = ['web', 'windows', 'macos', 'linux'];
+    const apps: (keyof ReturnType<typeof getAppToContentMapper>)[] = ['web', 'windows', 'macos', 'linux'];
     return (
         <Fragment>
             {apps.map(app => (

@@ -297,7 +297,7 @@ const BinarySocketBase = (() => {
             verification_code,
         });
 
-    const cryptoWithdraw = ({ address, amount, verification_code, dry_run = 0 }) =>
+    const cryptoWithdraw = ({ address, amount, verification_code, estimated_fee_unique_id, dry_run = 0 }) =>
         deriv_api.send({
             cashier: 'withdraw',
             provider: 'crypto',
@@ -305,6 +305,7 @@ const BinarySocketBase = (() => {
             address,
             amount,
             verification_code,
+            estimated_fee_unique_id,
             dry_run,
         });
 
@@ -324,6 +325,12 @@ const BinarySocketBase = (() => {
         });
 
     const activeSymbols = (mode = 'brief') => deriv_api.activeSymbols(mode);
+
+    const contractsForCompany = ({ landing_company }) =>
+        deriv_api.send({
+            landing_company,
+            contracts_for_company: 1,
+        });
 
     const transferBetweenAccounts = (account_from, account_to, currency, amount) =>
         deriv_api.send({
@@ -481,6 +488,7 @@ const BinarySocketBase = (() => {
         tradingPlatformInvestorPasswordChange,
         tradingPlatformInvestorPasswordReset,
         activeSymbols,
+        contractsForCompany,
         paymentAgentList,
         allPaymentAgentList,
         paymentAgentDetails,

@@ -8,7 +8,6 @@ import { useModal } from '../../../../../components/ModalProvider';
 import { calculateTotalByKey } from '../../../../../utils/calculate-total-by-key';
 import { PlatformDetails } from '../../../constants';
 import { MT5TradeModal } from '../../../modals';
-import './AddedCTraderAccountsList.scss';
 
 const AddedCTraderAccountsList: React.FC = () => {
     const { data: cTraderAccounts } = useCtraderAccountsList();
@@ -30,25 +29,25 @@ const AddedCTraderAccountsList: React.FC = () => {
         <React.Fragment>
             {account && (
                 <TradingAccountCard
-                    leading={<div className='wallets-added-ctrader__icon'>{PlatformDetails.ctrader.icon}</div>}
+                    key={`added-ctrader-${account.login}`}
                     onClick={() => show(<MT5TradeModal platform={PlatformDetails.ctrader.platform} />)}
-                    trailing={
-                        <div className='wallets-added-ctrader__icon'>
-                            <LabelPairedChevronRightCaptionRegularIcon
-                                data-testid='dt_wallets_trading_account_chevron_icon'
-                                width={16}
-                            />
-                        </div>
-                    }
                 >
-                    <div className='wallets-added-ctrader__details'>
+                    <TradingAccountCard.Icon>{PlatformDetails.ctrader.icon}</TradingAccountCard.Icon>
+                    <TradingAccountCard.Content>
                         <WalletText size='sm'>{PlatformDetails.ctrader.title}</WalletText>
                         {totalBalance !== undefined && (
                             <WalletText size='sm' weight='bold'>
                                 {displayBalance}
                             </WalletText>
                         )}
-                    </div>
+                        <WalletText size='xs'>{account.login}</WalletText>
+                    </TradingAccountCard.Content>
+                    <TradingAccountCard.Button>
+                        <LabelPairedChevronRightCaptionRegularIcon
+                            data-testid='dt_wallets_trading_account_chevron_icon'
+                            width={16}
+                        />
+                    </TradingAccountCard.Button>
                 </TradingAccountCard>
             )}
         </React.Fragment>

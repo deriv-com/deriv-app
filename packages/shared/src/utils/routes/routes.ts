@@ -1,4 +1,4 @@
-import { getUrlSmartTrader, getUrlBinaryBot } from '../url/helpers';
+import { getUrlSmartTrader } from '../url/helpers';
 
 export const routes = {
     reset_password: '/',
@@ -18,7 +18,6 @@ export const routes = {
     trader_positions: '/dtrader/positions',
     trader_menu: '/dtrader/menu',
     smarttrader: getUrlSmartTrader(),
-    binarybot: getUrlBinaryBot(),
 
     // account
     account: '/account',
@@ -70,7 +69,6 @@ export const routes = {
     // cashier_offramp: '/cashier/off-ramp',
     cashier_onramp: '/cashier/on-ramp',
     cashier_p2p: '/cashier/p2p',
-    cashier_p2p_v2: '/cashier/p2p-v2',
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
 
     // P2P
@@ -80,7 +78,6 @@ export const routes = {
     p2p_my_ads: '/cashier/p2p/my-ads',
     p2p_my_profile: '/cashier/p2p/my-profile',
     p2p_advertiser_page: '/cashier/p2p/advertiser',
-    p2p_v2_inner: '/cashier/p2p-v2/inner',
 
     // Appstore
     old_traders_hub: '/appstore/traders-hub',
@@ -97,7 +94,23 @@ export const routes = {
     wallets_compare_accounts: '/compare-accounts',
     wallets_on_ramp: '/wallet/on-ramp',
     wallets_reset_balance: '/wallet/reset-balance',
+};
 
-    // Cashier V2
-    cashier_v2: '/cashier-v2',
+export const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [
+    routes.trade,
+    routes.onboarding,
+    routes.compare_cfds,
+    routes.reports,
+    routes.bot,
+    routes.account,
+    routes.endpoint,
+    routes.cashier,
+    /** because contract route has dynamic id */
+    '/contract',
+];
+
+export const isDisabledLandscapeBlockerRoute = (path: string) => {
+    // can't use routes.traders_hub for the next check because all routes starts with '/'
+    if (path === routes.traders_hub) return true;
+    return DISABLE_LANDSCAPE_BLOCKER_ROUTES.some(route => path.startsWith(route));
 };

@@ -1,13 +1,14 @@
 import * as PropTypes from 'prop-types';
 import React from 'react';
-import { Button, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
-import { routes, formatMoney, moduleLoader } from '@deriv/shared';
+import { Button, Icon, Popover } from '@deriv/components';
+import { routes, formatMoney, moduleLoader, isTabletOs } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
 import ToggleNotifications from './toggle-notifications.jsx';
 import { BinaryLink } from '../../Routes';
 import 'Sass/app/_common/components/account-switcher.scss';
+import { useDevice } from '@deriv-com/ui';
 
 const AccountInfo = React.lazy(() =>
     moduleLoader(() =>
@@ -37,53 +38,38 @@ const AccountActions = React.memo(
         toggleAccountsDialog,
         toggleNotifications,
     }) => {
+        const { isDesktop } = useDevice();
+        const accountSettings = (
+            <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
+                <Icon icon='IcUserOutline' />
+            </BinaryLink>
+        );
+
         if (is_logged_in) {
-            return (
-                <React.Fragment>
-                    <MobileWrapper>
-                        <ToggleNotifications
-                            count={notifications_count}
-                            is_visible={is_notifications_visible}
-                            toggleDialog={toggleNotifications}
-                        />
-                        <React.Suspense fallback={<div />}>
-                            <AccountInfo
-                                acc_switcher_disabled_message={acc_switcher_disabled_message}
-                                account_type={account_type}
-                                balance={
-                                    typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
-                                }
-                                is_disabled={is_acc_switcher_disabled}
-                                disableApp={disableApp}
-                                enableApp={enableApp}
-                                is_eu={is_eu}
-                                is_virtual={is_virtual}
-                                is_mobile
-                                currency={currency}
-                                is_dialog_on={is_acc_switcher_on}
-                                toggleDialog={toggleAccountsDialog}
-                            />
-                        </React.Suspense>
-                    </MobileWrapper>
-                    <DesktopWrapper>
+            if (isDesktop) {
+                return (
+                    <React.Fragment>
                         <ToggleNotifications
                             count={notifications_count}
                             is_visible={is_notifications_visible}
                             toggleDialog={toggleNotifications}
                             tooltip_message={<Localize i18n_default_text='View notifications' />}
                             should_disable_pointer_events
+                            showPopover={!isTabletOs}
                         />
-                        <Popover
-                            classNameBubble='account-settings-toggle__tooltip'
-                            alignment='bottom'
-                            message={<Localize i18n_default_text='Manage account settings' />}
-                            should_disable_pointer_events
-                            zIndex={9999}
-                        >
-                            <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
-                                <Icon icon='IcUserOutline' />
-                            </BinaryLink>
-                        </Popover>
+                        {isTabletOs ? (
+                            accountSettings
+                        ) : (
+                            <Popover
+                                classNameBubble='account-settings-toggle__tooltip'
+                                alignment='bottom'
+                                message={<Localize i18n_default_text='Manage account settings' />}
+                                should_disable_pointer_events
+                                zIndex={9999}
+                            >
+                                {accountSettings}
+                            </Popover>
+                        )}
                         <React.Suspense fallback={<div />}>
                             <AccountInfo
                                 acc_switcher_disabled_message={acc_switcher_disabled_message}
@@ -119,10 +105,37 @@ const AccountActions = React.memo(
                                 primary
                             />
                         )}
-                    </DesktopWrapper>
+                    </React.Fragment>
+                );
+            }
+
+            return (
+                <React.Fragment>
+                    <ToggleNotifications
+                        count={notifications_count}
+                        is_visible={is_notifications_visible}
+                        toggleDialog={toggleNotifications}
+                    />
+                    <React.Suspense fallback={<div />}>
+                        <AccountInfo
+                            acc_switcher_disabled_message={acc_switcher_disabled_message}
+                            account_type={account_type}
+                            balance={typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)}
+                            is_disabled={is_acc_switcher_disabled}
+                            disableApp={disableApp}
+                            enableApp={enableApp}
+                            is_eu={is_eu}
+                            is_virtual={is_virtual}
+                            is_mobile
+                            currency={currency}
+                            is_dialog_on={is_acc_switcher_on}
+                            toggleDialog={toggleAccountsDialog}
+                        />
+                    </React.Suspense>
                 </React.Fragment>
             );
         }
+
         return (
             <React.Fragment>
                 <LoginButton className='acc-info__button' />

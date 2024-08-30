@@ -1,0 +1,7 @@
+.market-categories {
+    &__list {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+    }
+}

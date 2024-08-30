@@ -1,5 +1,6 @@
 import { localize } from '@deriv/translations';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.trade_definition_candleinterval = {
     init() {
@@ -23,12 +24,15 @@ Blockly.Blocks.trade_definition_candleinterval = {
         this.setDeletable(false);
     },
     onchange(/* event */) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
         this.enforceLimitations();
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
 };
-Blockly.JavaScript.trade_definition_candleinterval = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_candleinterval = () => {};

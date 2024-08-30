@@ -1,5 +1,6 @@
 import React from 'react';
-import { Divider, WalletButton, WalletText } from '../../../../../../components/Base';
+import { Localize } from '@deriv-com/translations';
+import { Button, Divider, Text } from '@deriv-com/ui';
 
 type TTransactionStatusError = {
     refresh: VoidFunction;
@@ -7,13 +8,13 @@ type TTransactionStatusError = {
 
 const TransactionStatusError: React.FC<TTransactionStatusError> = ({ refresh }) => (
     <React.Fragment>
-        <WalletText lineHeight='sm' size='xs'>
-            Unfortunately, we cannot retrieve the information at this time.
-        </WalletText>
-        <Divider color='#d6dadb' /> {/* --color-grey-5 */}
-        <WalletButton isFullWidth={true} onClick={refresh} size='sm' variant='outlined'>
-            Refresh
-        </WalletButton>
+        <Text lineHeight='sm' size='xs'>
+            <Localize i18n_default_text='Unfortunately, we cannot retrieve the information at this time.' />
+        </Text>
+        <Divider color='var(--general-active)' />
+        <Button borderWidth='sm' color='black' isFullWidth={true} onClick={refresh} size='sm' variant='outlined'>
+            <Localize i18n_default_text='Refresh' />
+        </Button>
     </React.Fragment>
 );
 

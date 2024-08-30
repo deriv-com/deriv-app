@@ -16,7 +16,7 @@ import {
     isValidToSell,
 } from '@deriv/shared';
 import { ContractCardStatusTimer, TContractCardStatusTimerProps } from './contract-card-status-timer';
-import { BinaryLink } from 'App/Components/Routes';
+import { NavLink } from 'react-router-dom';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 import { TRootStore } from 'Types';
 import { getProfit } from 'AppV2/Utils/positions-utils';
@@ -30,7 +30,7 @@ type TContractCardProps = TContractCardStatusTimerProps & {
     onClick?: (e?: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>) => void;
     onCancel?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
     onClose?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
-    redirectTo?: string;
+    redirectTo?: string | React.ComponentProps<typeof NavLink>['to'];
     serverTime?: TRootStore['common']['server_time'];
 };
 
@@ -61,13 +61,14 @@ const ContractCard = ({
     const [isCanceling, setIsCanceling] = React.useState(false);
     const [shouldShowButtons, setShouldShowButtons] = React.useState(false);
     const { buy_price, contract_type, display_name, sell_time, shortcode } = contractInfo;
+    const is_high_low = isHighLow({ shortcode });
     const contract_main_title = getTradeTypeName(contract_type ?? '', {
-        isHighLow: isHighLow({ shortcode }),
+        isHighLow: is_high_low,
         showMainTitle: true,
     });
     const currentTick = 'tick_count' in contractInfo && contractInfo.tick_count ? getCurrentTick(contractInfo) : null;
     const tradeTypeName = `${contract_main_title} ${getTradeTypeName(contract_type ?? '', {
-        isHighLow: isHighLow({ shortcode }),
+        isHighLow: is_high_low,
     })}`.trim();
     const symbolName =
         'underlying_symbol' in contractInfo ? getMarketName(contractInfo.underlying_symbol ?? '') : display_name;
@@ -78,7 +79,7 @@ const ContractCard = ({
     const validToSell = isValidToSell(contractInfo as TContractInfo) && !isSellRequested;
     const isCancelButtonPressed = isSellRequested && isCanceling;
     const isCloseButtonPressed = isSellRequested && isClosing;
-    const Component = redirectTo ? BinaryLink : 'div';
+    const Component = redirectTo ? NavLink : 'div';
 
     const handleSwipe = (direction: string) => {
         const isLeft = direction === DIRECTION.LEFT;
@@ -126,7 +127,11 @@ const ContractCard = ({
             >
                 <div className={`${className}__body`}>
                     <div className={`${className}__details`}>
-                        <IconTradeTypes className='trade-type-icon' type={contract_type ?? ''} size={32} />
+                        <IconTradeTypes
+                            className='trade-type-icon'
+                            type={is_high_low ? `${contract_type}_barrier` : contract_type}
+                            size={32}
+                        />
                         <div className={`${className}__title`}>
                             <Text className='trade-type' size='sm'>
                                 {tradeTypeName}

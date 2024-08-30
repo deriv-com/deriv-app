@@ -1,14 +1,15 @@
+import { localize } from '@deriv-com/translations';
 import { TJurisdictionCardItems } from './props.types';
 
 export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
     contents: {
         financial: [
             {
-                description: 'Forex and Cryptocurrencies',
+                description: localize('Forex (standard/exotic) and cryptocurrencies'),
                 key: 'assets',
-                title: 'Assets',
+                title: localize('Assets'),
                 titleIndicators: {
-                    displayText: '80+',
+                    displayText: localize('80+'),
                     displayTextSkinColor: 'red-dark',
                     type: 'displayText',
                 },
@@ -17,23 +18,23 @@ export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
                 clickableDescription: [
                     {
                         tag: 'dynamicLeverage',
-                        text: 'Dynamic Leverage',
+                        text: localize('Dynamic Leverage'),
                         type: 'link',
                     },
                 ],
                 key: 'leverage',
-                title: 'Leverage',
+                title: localize('Leverage up to'),
                 titleIndicators: {
-                    displayText: '1:100',
+                    displayText: localize('1:100'),
                     displayTextSkinColor: 'yellow-dark',
                     type: 'displayText',
                 },
             },
             {
                 key: 'spreads-from',
-                title: 'Spreads from',
+                title: localize('Spreads from'),
                 titleIndicators: {
-                    displayText: '0.6 pips',
+                    displayText: localize('0.6 pips'),
                     displayTextSkinColor: 'violet-dark',
                     type: 'displayText',
                 },
@@ -41,67 +42,67 @@ export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
             {
                 clickableDescription: [
                     {
-                        text: 'Learn more',
+                        text: localize('Learn more'),
                         type: 'link',
                     },
                     {
-                        text: 'about verifications needed.',
+                        text: localize('about verifications needed.'),
                         type: 'text',
                     },
                 ],
                 key: 'verifications',
-                title: 'Verifications',
+                title: localize('Verifications'),
                 titleIndicators: {
                     type: 'displayIcons',
                 },
             },
             {
-                description: 'Labuan Financial Services Authority (licence no. MB/18/0024)',
+                description: localize('Labuan Financial Services Authority (licence no. MB/18/0024)'),
                 key: 'regulator',
-                title: 'Regulator/EDR',
+                title: localize('Regulator/EDR'),
             },
         ],
         synthetic: [
             {
-                description: 'Forex and Cryptocurrencies',
+                description: localize('Forex and Cryptocurrencies'),
                 key: 'assets',
-                title: 'Assets',
+                title: localize('Assets'),
             },
             {
                 key: 'leverage',
-                title: 'Leverage',
+                title: localize('Leverage up to'),
             },
             {
                 key: 'spreads-from',
-                title: 'Spreads from',
+                title: localize('Spreads from'),
             },
             {
                 clickableDescription: [
                     {
-                        text: 'Learn more',
+                        text: localize('Learn more'),
                         type: 'link',
                     },
                     {
-                        text: 'about verifications needed.',
+                        text: localize('about verifications needed.'),
                         type: 'text',
                     },
                 ],
                 key: 'verifications',
-                title: 'Verifications',
+                title: localize('Verifications'),
                 titleIndicators: {
                     type: 'displayIcons',
                 },
             },
             {
-                description: 'Labuan Financial Services Authority (licence no. MB/18/0024)',
+                description: localize('Labuan Financial Services Authority (licence no. MB/18/0024)'),
                 key: 'regulator',
-                title: 'Regulator/EDR',
+                title: localize('Regulator/EDR'),
             },
         ],
     },
-    header: 'Labuan',
+    header: localize('Labuan'),
     isOverHeaderAvailable: true,
-    overHeader: 'Straight-through processing',
+    overHeader: localize('Straight-through processing'),
     verificationDocs: {
         financial: ['documentNumber', 'nameAndAddress'],
         synthetic: ['documentNumber', 'nameAndAddress'],

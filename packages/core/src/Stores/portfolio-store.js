@@ -3,22 +3,26 @@ import { action, computed, observable, reaction, makeObservable, override } from
 import { computedFn } from 'mobx-utils';
 import {
     ChartBarrierStore,
+    contractCancelled,
+    contractSold,
+    filterDisabledPositions,
+    formatMoney,
+    formatPortfolioPosition,
+    getContractPath,
+    getCurrentTick,
+    getTotalProfit,
+    getDisplayStatus,
+    getDurationPeriod,
+    getDurationTime,
+    getDurationUnitText,
+    getEndTime,
+    getTradeNotificationMessage,
     isAccumulatorContract,
     isEmptyObject,
     isEnded,
     isValidToSell,
     isMultiplierContract,
-    getCurrentTick,
-    getDisplayStatus,
     WS,
-    filterDisabledPositions,
-    formatPortfolioPosition,
-    contractCancelled,
-    contractSold,
-    getDurationPeriod,
-    getDurationTime,
-    getDurationUnitText,
-    getEndTime,
     TRADE_TYPES,
     removeBarrier,
     routes,
@@ -26,15 +30,17 @@ import {
 } from '@deriv/shared';
 import { Money } from '@deriv/components';
 import { Analytics } from '@deriv-com/analytics';
-
+import { localize } from '@deriv/translations';
 import BaseStore from './base-store';
 
 export default class PortfolioStore extends BaseStore {
     positions = [];
     all_positions = [];
     positions_map = {};
-    is_loading = false;
+    is_loading = true;
     error = '';
+    addNotificationBannerCallback;
+    sell_notifications = [];
 
     //accumulators
     open_accu_contract = null;
@@ -85,6 +91,8 @@ export default class PortfolioStore extends BaseStore {
             onUnmount: override,
             totals: computed,
             setActivePositions: action.bound,
+            setAddNotificationBannerCallback: action.bound,
+            sell_notifications: observable,
             is_active_empty: computed,
             active_positions_count: computed,
             is_empty: computed,
@@ -121,6 +129,10 @@ export default class PortfolioStore extends BaseStore {
             WS.forgetAll('proposal_open_contract', 'transaction');
         }
         this.has_subscribed_to_poc_and_transaction = false;
+    }
+
+    setAddNotificationBannerCallback(callback) {
+        this.addNotificationBannerCallback = callback;
     }
 
     portfolioHandler(response) {
@@ -408,12 +420,35 @@ export default class PortfolioStore extends BaseStore {
 
         this.positions[i].is_loading = false;
 
-        if (
-            this.root_store.ui.is_mobile &&
-            getEndTime(contract_response) &&
-            window.location.pathname === routes.trade
-        ) {
-            this.root_store.notifications.addTradeNotification(this.positions[i].contract_info);
+        if (this.root_store.ui.is_mobile && getEndTime(contract_response)) {
+            const contract_info = this.positions[i].contract_info;
+
+            if (window.location.pathname === routes.trade)
+                this.root_store.notifications.addTradeNotification(contract_info);
+
+            const { contract_id, contract_type: trade_type, currency, profit, shortcode, status } = contract_info;
+
+            const new_notification_id = `${contract_id}_${status}`;
+            if (this.sell_notifications.some(({ id }) => id === new_notification_id)) return;
+
+            this.sell_notifications.push({ id: new_notification_id });
+
+            const calculated_profit =
+                isMultiplierContract(trade_type) && !isNaN(profit) ? getTotalProfit(contract_info) : profit;
+            const is_won = status === 'won' || calculated_profit >= 0;
+            const formatted_profit = `${is_won ? localize('Profit') : localize('Loss')}: ${
+                is_won ? '+' : ''
+            }${formatMoney(currency, calculated_profit, true, 0, 0)} ${currency}`;
+
+            this.addNotificationBannerCallback?.(
+                {
+                    message: getTradeNotificationMessage(shortcode),
+                    redirectTo: getContractPath(contract_id),
+                    title: formatted_profit,
+                    type: is_won ? 'success' : 'error',
+                },
+                is_won ? 'success' : 'error'
+            );
         }
     };
 
@@ -472,7 +507,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     networkStatusChangeListener(is_online) {
-        this.is_loading = !is_online;
+        this.is_loading = this.is_loading || !is_online;
     }
 
     onMount() {

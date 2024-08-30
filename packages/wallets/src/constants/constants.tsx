@@ -1,51 +1,31 @@
-import React from 'react';
-import {
-    DerivProductDerivBotBrandLightLogoHorizontalIcon,
-    DerivProductDerivGoBrandLightLogoHorizontalIcon,
-    DerivProductDerivTraderBrandLightLogoHorizontalIcon,
-    PartnersProductBinaryBotBrandLightLogoHorizontalIcon,
-    PartnersProductSmarttraderBrandLightLogoIcon,
-} from '@deriv/quill-icons';
-import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../helpers/urls';
-import i18n from '../translations/i18n';
+import { localize } from '@deriv-com/translations';
+import { getStaticUrl, getUrlSmartTrader } from '../helpers/urls';
 
-export const optionsAndMultipliersContent = [
+export const getOptionsAndMultipliersContent = () => [
     {
-        description: i18n.t('The options and multipliers trading platform.'),
-        icon: <DerivProductDerivTraderBrandLightLogoHorizontalIcon height='48' width='48' />,
+        description: localize('The options and multipliers trading platform.'),
+        key: 'trader',
         redirect: '/dtrader',
-        smallIcon: <DerivProductDerivTraderBrandLightLogoHorizontalIcon height='32' width='32' />,
-        title: i18n.t('Deriv Trader'),
+        title: 'Deriv Trader',
     },
     {
-        description: i18n.t('The ultimate bot trading platform.'),
-        icon: <DerivProductDerivBotBrandLightLogoHorizontalIcon height='48' width='48' />,
+        description: localize('The ultimate bot trading platform.'),
+        key: 'bot',
         redirect: '/bot',
-        smallIcon: <DerivProductDerivBotBrandLightLogoHorizontalIcon height='32' width='32' />,
-        title: i18n.t('Deriv Bot'),
+        title: 'Deriv Bot',
     },
     {
-        description: i18n.t('The legacy options trading platform.'),
-        icon: <PartnersProductSmarttraderBrandLightLogoIcon height='48' width='48' />,
+        description: localize('The legacy options trading platform.'),
         isExternal: true,
+        key: 'smarttrader',
         redirect: getUrlSmartTrader(),
-        smallIcon: <PartnersProductSmarttraderBrandLightLogoIcon height='32' width='32' />,
-        title: i18n.t('SmartTrader'),
+        title: 'SmartTrader',
     },
     {
-        description: i18n.t('The legacy bot trading platform.'),
-        icon: <PartnersProductBinaryBotBrandLightLogoHorizontalIcon height='48' width='48' />,
+        description: localize('The mobile app for trading multipliers and accumulators.'),
         isExternal: true,
-        redirect: getUrlBinaryBot(),
-        smallIcon: <PartnersProductBinaryBotBrandLightLogoHorizontalIcon height='32' width='32' />,
-        title: i18n.t('Binary Bot'),
-    },
-    {
-        description: i18n.t('The mobile app for trading multipliers and accumulators.'),
-        icon: <DerivProductDerivGoBrandLightLogoHorizontalIcon height='48' width='48' />,
-        isExternal: true,
+        key: 'derivgo',
         redirect: getStaticUrl('/deriv-go'),
-        smallIcon: <DerivProductDerivGoBrandLightLogoHorizontalIcon height='32' width='32' />,
-        title: i18n.t('Deriv GO'),
+        title: 'Deriv GO',
     },
 ];

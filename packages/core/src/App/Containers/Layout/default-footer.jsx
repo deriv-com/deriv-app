@@ -4,7 +4,6 @@ import { withRouter } from 'react-router';
 import NetworkStatus, {
     AccountLimits as AccountLimitsFooter,
     EndpointNote,
-    GoToDeriv,
     HelpCentre,
     RegulatoryInformation,
     ResponsibleTrading,
@@ -79,7 +78,6 @@ const Footer = observer(() => {
                 {cs_chat_whatsapp && <WhatsApp />}
                 {cs_chat_livechat && <LiveChat />}
                 <FooterIconSeparator />
-                <GoToDeriv />
                 <ResponsibleTrading />
                 {is_logged_in && <AccountLimitsFooter />}
                 {is_logged_in && !is_virtual && (

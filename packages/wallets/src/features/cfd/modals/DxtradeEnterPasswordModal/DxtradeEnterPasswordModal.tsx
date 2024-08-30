@@ -6,8 +6,9 @@ import {
     useCreateOtherCFDAccount,
     useDxtradeAccountsList,
 } from '@deriv/api-v2';
+import { useTranslations } from '@deriv-com/translations';
 import { SentEmailContent, WalletError } from '../../../../components';
-import { ModalStepWrapper, ModalWrapper } from '../../../../components/Base';
+import { ModalWrapper } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import useSendPasswordResetEmail from '../../../../hooks/useSendPasswordResetEmail';
@@ -40,6 +41,7 @@ const DxtradeEnterPasswordModal = () => {
         sendEmail,
     } = useSendPasswordResetEmail();
     const { hide, show } = useModal();
+    const { localize } = useTranslations();
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
     const dxtradePlatform = PlatformDetails.dxtrade.platform;
 
@@ -62,22 +64,19 @@ const DxtradeEnterPasswordModal = () => {
 
     const successDescription = useMemo(() => {
         return accountType === 'demo'
-            ? `Let's practise trading with ${dxtradeBalance} virtual funds.`
-            : `Transfer funds from your ${activeWallet?.currency} Wallet to your ${PlatformDetails.dxtrade.title} account to start trading.`;
-    }, [accountType, activeWallet?.currency, dxtradeBalance]);
+            ? localize("Let's practise trading with {{dxtradeBalance}} virtual funds.", { dxtradeBalance })
+            : localize(
+                  'Transfer funds from your {{currency}} Wallet to your {{dxtradeTitle}} account to start trading.',
+                  { currency: activeWallet?.currency, dxtradeTitle: PlatformDetails.dxtrade.title }
+              );
+    }, [accountType, activeWallet?.currency, dxtradeBalance, localize]);
 
     useEffect(() => {
         if (!isResetPasswordSuccessful) return;
-        if (!isDxtradePasswordNotSet && isMobile) {
+        if (!isDxtradePasswordNotSet) {
             show(
-                <ModalStepWrapper>
-                    <SentEmailContent onErrorButtonClick={hide} platform={dxtradePlatform} />
-                </ModalStepWrapper>
-            );
-        } else if (!isDxtradePasswordNotSet) {
-            show(
-                <ModalWrapper>
-                    <SentEmailContent onErrorButtonClick={hide} platform={dxtradePlatform} />
+                <ModalWrapper isFullscreen={isMobile}>
+                    <SentEmailContent isForgottenPassword onErrorButtonClick={hide} platform={dxtradePlatform} />
                 </ModalWrapper>
             );
         }

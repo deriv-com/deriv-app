@@ -12,6 +12,7 @@ import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.js
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import TradersHubHomeButton from './traders-hub-home-button';
 import HeaderAccountActions from './header-account-actions';
+import { useDevice } from '@deriv-com/ui';
 import DerivShortLogo from './deriv-short-logo';
 
 const DTraderHeader = observer(() => {
@@ -28,18 +29,13 @@ const DTraderHeader = observer(() => {
         is_switching,
     } = client;
     const { app_routing_history, platform, current_language } = common;
-    const {
-        header_extension,
-        is_app_disabled,
-        is_mobile,
-        is_route_modal_on,
-        toggleReadyToDepositModal,
-        is_real_acc_signup_on,
-    } = ui;
+    const { header_extension, is_app_disabled, is_route_modal_on, toggleReadyToDepositModal, is_real_acc_signup_on } =
+        ui;
     const { addNotificationMessage, client_notifications, removeNotificationMessage } = notifications;
     const { setTogglePlatformType } = traders_hub;
 
     const history = useHistory();
+    const { isDesktop, isMobile } = useDevice();
 
     const addUpdateNotification = () => addNotificationMessage(client_notifications?.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -68,11 +64,7 @@ const DTraderHeader = observer(() => {
             if (config.link_to === routes.dxtrade) {
                 return is_dxtrade_allowed;
             }
-            if (
-                config.link_to === routes.bot ||
-                config.href === routes.binarybot ||
-                config.href === routes.smarttrader
-            ) {
+            if (config.link_to === routes.bot || config.href === routes.smarttrader) {
                 return is_bot_allowed;
             }
             return true;
@@ -87,7 +79,7 @@ const DTraderHeader = observer(() => {
         >
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
-                    {is_mobile ? (
+                    {!isDesktop ? (
                         <React.Fragment>
                             <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
                             {header_extension && is_logged_in && (
@@ -112,10 +104,10 @@ const DTraderHeader = observer(() => {
 
                 <div
                     className={classNames('header__menu-right', {
-                        'header__menu-right--hidden': is_mobile && is_logging_in,
+                        'header__menu-right--hidden': !isDesktop && is_logging_in,
                     })}
                 >
-                    {!is_mobile && (
+                    {isDesktop && (
                         <div className='header__menu--dtrader--separator--account'>
                             <div className='header__menu--dtrader--separator' />
                         </div>
@@ -128,7 +120,7 @@ const DTraderHeader = observer(() => {
                                 'acc-info__preloader__dtrader--is-crypto': getDecimalPlaces(currency) > 2,
                             })}
                         >
-                            <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />
+                            <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={!isDesktop} speed={3} />
                         </div>
                     )}
                     <HeaderAccountActions onClickDeposit={handleClickCashier} />

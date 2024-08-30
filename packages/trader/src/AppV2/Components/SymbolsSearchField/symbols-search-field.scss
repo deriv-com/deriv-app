@@ -1,0 +1,10 @@
+.symbols-search-field {
+    &__container {
+        display: flex;
+        align-items: center;
+        padding: var(--core-spacing-400) var(--core-spacing-800);
+    }
+    &--is-focused {
+        padding: var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-800);
+    }
+}

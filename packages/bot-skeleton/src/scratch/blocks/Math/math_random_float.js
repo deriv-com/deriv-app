@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../utils';
 
 Blockly.Blocks.math_random_float = {
     init() {
@@ -22,6 +23,12 @@ Blockly.Blocks.math_random_float = {
             description: localize('This block gives you a random fraction between 0.0 to 1.0.'),
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-Blockly.JavaScript.math_random_float = () => ['Math.random()', Blockly.JavaScript.ORDER_FUNCTION_CALL];
+Blockly.JavaScript.javascriptGenerator.forBlock.math_random_float = () => [
+    'Math.random()',
+    Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL,
+];

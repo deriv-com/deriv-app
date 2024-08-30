@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect } from 'react';
 import { useActiveWalletAccount, useCryptoTransactions } from '@deriv/api-v2';
 import { LegacyWarningIcon } from '@deriv/quill-icons';
-import { Loader } from '../../../../components';
-import { Divider, WalletText } from '../../../../components/Base';
+import { Localize } from '@deriv-com/translations';
+import { Divider, Loader, Text } from '@deriv-com/ui';
 import { THooks } from '../../../../types';
 import { TransactionStatusError } from './components/TransactionStatusError';
 import { TransactionStatusSuccess } from './components/TransactionStatusSuccess';
@@ -47,12 +47,12 @@ const TransactionStatus: React.FC<TTransactionStatus> = ({ transactionType }) =>
     return (
         <div className='wallets-transaction-status'>
             <div className='wallets-transaction-status__header'>
-                <WalletText size='sm' weight='bold'>
-                    Transaction status
-                </WalletText>
+                <Text size='sm' weight='bold'>
+                    <Localize i18n_default_text='Transaction status' />
+                </Text>
                 {isError && <LegacyWarningIcon iconSize='xs' />}
             </div>
-            <Divider color='#d6dadb' /> {/* --color-grey-5 */}
+            <Divider color='var(--general-active)' />
             <div className='wallets-transaction-status__body'>
                 {isLoading && (
                     <div className='wallets-transaction-status__loader'>

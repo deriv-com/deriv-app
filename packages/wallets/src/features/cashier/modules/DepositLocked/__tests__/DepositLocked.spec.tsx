@@ -20,8 +20,8 @@ jest.mock('@deriv/api-v2', () => ({
     useWebsiteStatus: jest.fn(),
 }));
 
-jest.mock('../../../../../components', () => ({
-    ...jest.requireActual('../../../../../components'),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
     Loader: jest.fn(() => <div>Loading...</div>),
 }));
 

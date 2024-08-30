@@ -4,17 +4,16 @@
     margin-bottom: 2.4rem;
     display: flex;
 
+    @include mobile-or-tablet-screen {
+        align-items: center;
+    }
+
     img {
         width: 100%;
         object-fit: contain;
     }
 
     &__content {
-        @include mobile {
-            padding: 1.4rem 1.6rem;
-            width: 25rem;
-        }
-
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -25,5 +24,17 @@
         z-index: 1;
         padding: 3rem 4.8rem;
         width: 50rem;
+
+        @include mobile-screen {
+            padding: 1.4rem 1.6rem;
+            width: 25rem;
+            top: auto;
+        }
+
+        @include tablet-screen {
+            padding: 2.4rem 1.6rem;
+            width: 27rem;
+            top: auto;
+        }
     }
 }

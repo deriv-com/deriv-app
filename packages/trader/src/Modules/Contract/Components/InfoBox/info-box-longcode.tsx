@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Icon, Text, Modal, Button } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { TContractInfo } from '@deriv/shared';
+import { TContractInfo, isTabletOs } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 type TInfoBoxLongcode = { contract_info: TContractInfo };
@@ -37,6 +37,7 @@ const InfoBoxLongcode = observer(({ contract_info }: TInfoBoxLongcode) => {
                     size='xs'
                     className={classNames('info-box-longcode-text', {
                         'info-box-longcode-text--collapsed': is_collapsed || is_mobile,
+                        'info-box-longcode-text--collapsed--fixed-height': !isTabletOs && (is_collapsed || is_mobile),
                     })}
                 >
                     {contract_info.longcode}

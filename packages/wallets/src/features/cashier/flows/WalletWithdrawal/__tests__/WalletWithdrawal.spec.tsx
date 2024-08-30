@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from 'react';
-import { useActiveWalletAccount, useBalance } from '@deriv/api-v2';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
+import useAllBalanceSubscription from '../../../../../hooks/useAllBalanceSubscription';
 import { CashierLocked, WithdrawalLocked } from '../../../modules';
 import WalletWithdrawal from '../WalletWithdrawal';
 
@@ -31,9 +32,8 @@ jest.mock('../../../screens', () => ({
     WithdrawalNoBalance: jest.fn(() => <div>WithdrawalNoBalance</div>),
 }));
 
-jest.mock('../../../../../components', () => ({
-    ...jest.requireActual('../../../../../components'),
-    Loader: jest.fn(() => <div>Loading</div>),
+jest.mock('@deriv-com/ui', () => ({
+    Loader: jest.fn(() => <div>Loading...</div>),
 }));
 
 const mockSwitchAccount = jest.fn();
@@ -44,8 +44,35 @@ jest.mock('@deriv/api-v2', () => ({
     useBalance: jest.fn(),
 }));
 
+jest.mock('../../../../../hooks/useAllBalanceSubscription', () =>
+    jest.fn(() => ({
+        data: {
+            CR42069: {
+                balance: 100,
+                converted_amount: 100,
+                currency: 'USD',
+                demo_account: 0,
+                status: 1,
+                type: 'deriv',
+            },
+            CR69420: {
+                balance: 50,
+                converted_amount: 50,
+                currency: 'USD',
+                demo_account: 0,
+                status: 1,
+                type: 'deriv',
+            },
+        },
+        isLoading: false,
+        setBalanceData: jest.fn(),
+    }))
+);
+
 const mockUseActiveWalletAccount = useActiveWalletAccount as jest.MockedFunction<typeof useActiveWalletAccount>;
-const mockUseBalance = useBalance as jest.Mock;
+const mockUseAllBalanceSubscription = useAllBalanceSubscription as jest.MockedFunction<
+    typeof useAllBalanceSubscription
+>;
 
 const wrapper = ({ children }: PropsWithChildren) => (
     <CashierLocked>
@@ -61,17 +88,6 @@ describe('WalletWithdrawal', () => {
             value: new URL('http://localhost/redirect?verification=1234&loginid=CR42069'),
             writable: true,
         });
-        mockUseBalance.mockReturnValue({
-            data: {
-                accounts: {
-                    CR42069: { balance: 100 },
-                    CR69420: { balance: 50 },
-                },
-            },
-            isLoading: false,
-            isRefetching: false,
-            refetch: jest.fn(),
-        });
     });
 
     afterEach(() => {
@@ -81,11 +97,10 @@ describe('WalletWithdrawal', () => {
         });
     });
 
-    it('should call switch account for the loginid in url params', () => {
+    it('calls switch account for the loginid in url params', () => {
         mockUseActiveWalletAccount.mockReturnValue({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
-                balance: 100,
                 currency: 'USD',
                 loginid: 'CR69420',
             },
@@ -97,12 +112,11 @@ describe('WalletWithdrawal', () => {
         expect(mockSwitchAccount).toHaveBeenCalledWith('CR42069');
     });
 
-    it('should remove the `verification` param from the window url', () => {
+    it('removes the `verification` param from the window url', () => {
         const replaceStateSpy = jest.spyOn(window.history, 'replaceState');
         mockUseActiveWalletAccount.mockReturnValue({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
-                balance: 100,
                 currency: 'USD',
                 loginid: 'CR42069',
             },
@@ -113,7 +127,7 @@ describe('WalletWithdrawal', () => {
         expect(replaceStateSpy).toBeCalledWith({}, '', 'http://localhost/redirect');
     });
 
-    it('should render withdrawal email verification page if no verification code found', () => {
+    it('renders withdrawal email verification page if no verification code found', () => {
         Object.defineProperty(window, 'location', {
             value: new URL('http://localhost/redirect'),
             writable: true,
@@ -122,7 +136,6 @@ describe('WalletWithdrawal', () => {
         mockUseActiveWalletAccount.mockReturnValue({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
-                balance: 100,
                 currency: 'USD',
                 loginid: 'CR42069',
             },
@@ -132,12 +145,14 @@ describe('WalletWithdrawal', () => {
         expect(screen.getByText('WithdrawalVerificationModule')).toBeInTheDocument();
     });
 
-    it('should render withdrawal fiat module if withdrawal is for fiat wallet', () => {
+    it('renders withdrawal fiat module if withdrawal is for `doughflow` provider', () => {
         mockUseActiveWalletAccount.mockReturnValue({
-            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
-                balance: 100,
                 currency: 'USD',
+                // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+                currency_config: {
+                    platform: { cashier: ['doughflow'], ramp: [] },
+                },
                 loginid: 'CR42069',
             },
         });
@@ -147,13 +162,12 @@ describe('WalletWithdrawal', () => {
         expect(screen.getByText('verificationCode=1234')).toBeInTheDocument();
     });
 
-    it('should render withdrawal crypto module if withdrawal is for crypto wallet', async () => {
+    it('renders withdrawal crypto module if withdrawal is for `crypto` provider', async () => {
         mockUseActiveWalletAccount.mockReturnValue({
             data: {
-                balance: 100,
                 currency: 'BTC',
                 // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-                currency_config: { is_crypto: true },
+                currency_config: { platform: { cashier: ['crypto'], ramp: [] } },
                 loginid: 'CR42069',
             },
         });
@@ -163,21 +177,18 @@ describe('WalletWithdrawal', () => {
         expect(screen.getByText('verificationCode=1234')).toBeInTheDocument();
     });
 
-    it('should show loader if verification code is activeWallet data has not been received yet', () => {
+    it('shows loader if verification code is activeWallet data has not been received yet', () => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the hook
         mockUseActiveWalletAccount.mockReturnValue({});
-        mockUseBalance.mockReturnValue({
-            refetch: jest.fn(),
-        });
+        (mockUseAllBalanceSubscription as jest.Mock).mockReturnValue({ data: undefined, isLoading: true });
 
         render(<WalletWithdrawal />, { wrapper });
-        expect(screen.getByText('Loading')).toBeInTheDocument();
+        expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
-    it('should test if WithdrawalNoBalance screen is rendered if the wallet balance has zero balance', () => {
+    it('renders WithdrawalNoBalance screen if the wallet balance has zero balance', () => {
         mockUseActiveWalletAccount.mockReturnValue({
             data: {
-                balance: 0,
                 currency: 'BTC',
                 // @ts-expect-error - since this is a mock, we only need partial properties of the hook
                 currency_config: { is_crypto: true },
@@ -185,15 +196,17 @@ describe('WalletWithdrawal', () => {
             },
         });
 
-        mockUseBalance.mockReturnValue({
+        (mockUseAllBalanceSubscription as jest.Mock).mockReturnValue({
             data: {
-                accounts: {
-                    CR42069: { balance: 0 },
+                CR42069: {
+                    balance: 0,
+                    converted_amount: 0,
+                    currency: 'BTC',
+                    demo_account: 0,
+                    status: 1,
+                    type: 'deriv',
                 },
             },
-            isLoading: false,
-            isRefetching: false,
-            refetch: jest.fn(),
         });
 
         render(<WalletWithdrawal />, { wrapper });

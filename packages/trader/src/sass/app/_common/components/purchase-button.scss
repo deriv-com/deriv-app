@@ -19,7 +19,7 @@
     outline: 0;
     font-size: 1rem;
 
-    @include mobile {
+    @include mobile-screen {
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
@@ -82,7 +82,7 @@
         .color2-fill {
             fill: var(--text-colored-background);
         }
-        @include mobile {
+        @include mobile-screen {
             margin-right: 0.5rem;
         }
     }
@@ -210,7 +210,7 @@
             }
         }
 
-        @include mobile {
+        @include mobile-screen {
             background: var(--purchase-section-1);
             background: linear-gradient(
                 0deg,
@@ -247,7 +247,7 @@
     }
 
     &--has-bottom-gradient {
-        @include mobile {
+        @include mobile-screen {
             &-1 {
                 background: var(--purchase-section-1);
                 background: linear-gradient(
@@ -347,11 +347,11 @@
             }
         }
         .trade-container__price-info {
-            @include mobile {
+            @include mobile-screen {
                 justify-content: center;
             }
         }
-        @include mobile {
+        @include mobile-screen {
             &-deal-cancel {
                 height: 64px;
             }
@@ -386,7 +386,7 @@
                 }
             }
         }
-        @include mobile {
+        @include mobile-screen {
             .btn-purchase {
                 &__bottom,
                 &__top {
@@ -409,7 +409,7 @@
                     inset-inline-start: 12rem;
                 }
             }
-            @include mobile {
+            @include mobile-screen {
                 &__top {
                     align-items: center;
                     width: auto;

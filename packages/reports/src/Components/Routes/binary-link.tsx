@@ -17,7 +17,13 @@ const BinaryLink = ({ active_class, to, children, ...props }: React.PropsWithChi
     }
 
     return to ? (
-        <NavLink to={path} activeClassName={active_class || 'active'} exact={route.exact} {...props}>
+        <NavLink
+            to={path}
+            activeClassName={active_class || 'active'}
+            exact={route.exact}
+            {...props}
+            data-testid='dt_binary_link'
+        >
             {children}
         </NavLink>
     ) : (

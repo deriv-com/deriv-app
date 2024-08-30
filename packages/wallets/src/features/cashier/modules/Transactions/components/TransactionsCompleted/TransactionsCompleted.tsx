@@ -2,8 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import moment from 'moment';
 import { useActiveWalletAccount, useAllAccountsList, useInfiniteTransactions } from '@deriv/api-v2';
 import { TSocketRequestPayload } from '@deriv/api-v2/types';
-import { Loader } from '../../../../../../components';
-import { WalletText } from '../../../../../../components/Base';
+import { Loader, Text } from '@deriv-com/ui';
 import { useCashierScroll } from '../../../../context';
 import { TransactionsCompletedRow } from '../TransactionsCompletedRow';
 import { TransactionsNoDataState } from '../TransactionsNoDataState';
@@ -70,10 +69,10 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
             groupBy={['date']}
             rowGroupRender={transaction => (
                 <div className='wallets-transactions-completed__group-title'>
-                    <WalletText color='primary' size='2xs'>
+                    <Text color='primary' size='2xs'>
                         {transaction.transaction_time &&
                             moment.unix(transaction.transaction_time).format('DD MMM YYYY')}
-                    </WalletText>
+                    </Text>
                 </div>
             )}
             rowRender={transaction => (

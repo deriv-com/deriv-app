@@ -4,7 +4,6 @@ import { localize } from 'Components/i18next';
 import { textValidator } from 'Utils/validations';
 import BaseStore from 'Stores/base_store';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
-import { isMobile } from '@deriv/shared';
 
 export default class MyProfileStore extends BaseStore {
     active_tab = my_profile_tabs.MY_STATS;
@@ -90,7 +89,6 @@ export default class MyProfileStore extends BaseStore {
             rendered_trade_partners_list: computed,
             trade_partner_dropdown_list: computed,
             getAdvertiserPaymentMethods: action.bound,
-            getCounterpartyAdvertiserInfo: action.bound,
             getPaymentMethodsList: action.bound,
             getPaymentMethodDisplayName: action.bound,
             getPaymentMethodValue: action.bound,
@@ -275,30 +273,6 @@ export default class MyProfileStore extends BaseStore {
         });
     }
 
-    getCounterpartyAdvertiserInfo(advertiser_id) {
-        const { advertiser_page_store, buy_sell_store, general_store } = this.root_store;
-        requestWS({
-            p2p_advertiser_info: 1,
-            id: advertiser_id,
-        }).then(response => {
-            if (response) {
-                if (!response.error) {
-                    advertiser_page_store.setCounterpartyAdvertiserInfo(response.p2p_advertiser_info);
-                    buy_sell_store.setShowAdvertiserPage(true);
-                } else if (!general_store.is_barred) {
-                    general_store.showModal({
-                        key: 'ErrorModal',
-                        props: {
-                            error_message: response.error.message,
-                            error_modal_title: 'Unable to block advertiser',
-                            has_close_icon: false,
-                        },
-                    });
-                }
-            }
-        });
-    }
-
     getPaymentMethodsList() {
         const { buy_sell_store } = this.root_store;
         requestWS({
@@ -436,10 +410,6 @@ export default class MyProfileStore extends BaseStore {
     handleChange(e) {
         this.setSelectedSortValue(e.target.value);
         this.getTradePartnersList({ startIndex: 0 }, true);
-
-        if (isMobile()) {
-            this.root_store.general_store.hideModal();
-        }
     }
 
     handleSubmit(values) {

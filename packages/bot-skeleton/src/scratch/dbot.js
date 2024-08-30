@@ -11,7 +11,7 @@ import main_xml from './xml/main.xml';
 import DBotStore from './dbot-store';
 import { isAllRequiredBlocksEnabled, updateDisabledBlocks, validateErrorOnBlockDelete } from './utils';
 
-import './blockly';
+import { loadBlockly } from './blockly';
 
 class DBot {
     constructor() {
@@ -25,14 +25,14 @@ class DBot {
     /**
      * Initialises the workspace and mounts it to a container element (app_contents).
      */
-    async initWorkspace(public_path, store, api_helpers_store, is_mobile) {
+    async initWorkspace(public_path, store, api_helpers_store, is_mobile, is_dark_mode) {
+        await loadBlockly(is_dark_mode);
         const recent_files = await getSavedWorkspaces();
-
         api_base.init();
         this.interpreter = Interpreter();
         const that = this;
         Blockly.Blocks.trade_definition_tradetype.onchange = function (event) {
-            if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+            if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
                 return;
             }
 
@@ -41,7 +41,10 @@ class DBot {
             const { name, type } = event;
 
             if (type === Blockly.Events.BLOCK_CHANGE) {
-                if (name === 'SYMBOL_LIST' || name === 'TRADETYPECAT_LIST') {
+                const is_symbol_list_change = name === 'SYMBOL_LIST';
+                const is_trade_type_cat_list_change = name === 'TRADETYPECAT_LIST';
+
+                if (is_symbol_list_change || is_trade_type_cat_list_change) {
                     const { contracts_for } = ApiHelpers.instance;
                     const top_parent_block = this.getTopParent();
                     const market_block = top_parent_block.getChildByType('trade_definition_market');
@@ -51,7 +54,7 @@ class DBot {
                     const category = this.getFieldValue('TRADETYPECAT_LIST');
                     const trade_type = this.getFieldValue('TRADETYPE_LIST');
 
-                    if (name === 'SYMBOL_LIST') {
+                    if (is_symbol_list_change) {
                         contracts_for.getTradeTypeCategories(market, submarket, symbol).then(categories => {
                             const category_field = this.getField('TRADETYPECAT_LIST');
                             if (category_field) {
@@ -76,10 +79,9 @@ class DBot {
                                 await that.interpreter?.bot.tradeEngine.watchTicks(symbol);
                             });
                         }
-                    } else if (name === 'TRADETYPECAT_LIST' && event.blockId === this.id) {
+                    } else if (is_trade_type_cat_list_change && event.blockId === this.id) {
                         contracts_for.getTradeTypes(market, submarket, symbol, category).then(trade_types => {
                             const trade_type_field = this.getField('TRADETYPE_LIST');
-
                             trade_type_field.updateOptions(trade_types, {
                                 default_value: trade_type,
                                 should_pretend_empty: true,
@@ -113,11 +115,14 @@ class DBot {
                 if (!el_scratch_div) {
                     return;
                 }
+
                 this.workspace = Blockly.inject(el_scratch_div, {
                     media: `${__webpack_public_path__}media/`,
+                    renderer: 'zelos',
                     trashcan: !is_mobile,
                     zoom: { wheel: true, startScale: workspaceScale },
                     scrollbars: true,
+                    theme: Blockly.Themes.zelos_renderer,
                 });
 
                 this.workspace.RTL = isDbotRTL();
@@ -128,10 +133,10 @@ class DBot {
                 this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
                 this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
                 this.workspace.addChangeListener(event => {
-                    if (event.type === 'endDrag' && !is_mobile) validateErrorOnBlockDelete();
+                    if (event.type === 'drag' && !event.isStart && !is_mobile) validateErrorOnBlockDelete();
                     if (event.type == Blockly.Events.BLOCK_CHANGE) {
                         const block = this.workspace.getBlockById(event.blockId);
-                        if (block && event.element == 'collapsed') {
+                        if (is_mobile && block && event.element == 'collapsed') {
                             block.contextMenu = false;
                         }
                     }
@@ -140,7 +145,7 @@ class DBot {
                 Blockly.derivWorkspace = this.workspace;
 
                 const varDB = new Blockly.Names('window');
-                varDB.variableMap_ = Blockly.derivWorkspace.getVariableMap();
+                varDB.variableMap = Blockly.derivWorkspace.getVariableMap();
 
                 Blockly.JavaScript.variableDB_ = varDB;
 
@@ -150,24 +155,26 @@ class DBot {
                 this.addBeforeRunFunction(this.checkForRequiredBlocks.bind(this));
 
                 // Push main.xml to workspace and reset the undo stack.
-                this.workspace.current_strategy_id = Blockly.utils.genUid();
+                this.workspace.current_strategy_id = Blockly.utils.idGenerator.genUid();
+
                 Blockly.derivWorkspace.strategy_to_load = main_xml;
-                Blockly.mainWorkspace.strategy_to_load = main_xml;
-                Blockly.mainWorkspace.RTL = isDbotRTL();
+                Blockly.getMainWorkspace().strategy_to_load = main_xml;
+                Blockly.getMainWorkspace().RTL = isDbotRTL();
+
                 let file_name = config.default_file_name;
                 if (recent_files && recent_files.length) {
                     const latest_file = recent_files[0];
                     Blockly.derivWorkspace.strategy_to_load = latest_file.xml;
-                    Blockly.mainWorkspace.strategy_to_load = latest_file.xml;
+                    Blockly.getMainWorkspace().strategy_to_load = latest_file.xml;
                     file_name = latest_file.name;
                     Blockly.derivWorkspace.current_strategy_id = latest_file.id;
-                    Blockly.mainWorkspace.current_strategy_id = latest_file.id;
+                    Blockly.getMainWorkspace().current_strategy_id = latest_file.id;
                 }
 
                 const event_group = `dbot-load${Date.now()}`;
                 Blockly.Events.setGroup(event_group);
                 Blockly.Xml.domToWorkspace(
-                    Blockly.Xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
+                    Blockly.utils.xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
                     this.workspace
                 );
                 const { save_modal } = DBotStore.instance;
@@ -294,7 +301,7 @@ class DBot {
                     }
                     if(typeof(list[i]) == 'number'){
                         final_list.push(list[i]);   
-                                  	
+                                  
                     }
                 }
                 return final_list;
@@ -320,7 +327,7 @@ class DBot {
                 }
             }
             var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
-            ${Blockly.JavaScript.workspaceToCode(this.workspace)}
+            ${Blockly.JavaScript.javascriptGenerator.workspaceToCode(this.workspace)}
             BinaryBotPrivateRun(BinaryBotPrivateInit);
             while (true) {
                 BinaryBotPrivateTickAnalysis();
@@ -341,7 +348,9 @@ class DBot {
                 if (!BinaryBotPrivateRun(BinaryBotPrivateAfterPurchase)) {
                     break;
                 }
-            }`;
+            }
+            
+            `;
     }
 
     /**
@@ -381,8 +390,8 @@ class DBot {
      */
     // eslint-disable-next-line class-methods-use-this
     unselectBlocks() {
-        if (Blockly.selected) {
-            Blockly.selected.unselect();
+        if (Blockly.getSelected()) {
+            Blockly.getSelected().unselect();
         }
         return true;
     }
@@ -391,10 +400,11 @@ class DBot {
      * Disable blocks outside of any main or independent blocks.
      */
     disableStrayBlocks() {
+        const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
         const top_blocks = this.workspace.getTopBlocks();
 
         top_blocks.forEach(block => {
-            if (!block.isMainBlock() && !block.isIndependentBlock()) {
+            if (!isMainBlock() && !block.isIndependentBlock()) {
                 this.disableBlocksRecursively(block);
             }
         });
@@ -406,7 +416,6 @@ class DBot {
      * Disable blocks and their optional children.
      */
     disableBlocksRecursively(block) {
-        block.setDisabled(true);
         if (block.nextConnection?.targetConnection) {
             this.disableBlocksRecursively(block.nextConnection.targetConnection.sourceBlock_);
         }
@@ -478,13 +487,13 @@ class DBot {
             return;
         }
 
-        Blockly.JavaScript.init(this.workspace);
+        Blockly.JavaScript.javascriptGenerator.init(this.workspace);
 
         if (force_check) {
             Blockly.hideChaff(false);
         }
 
-        const isGlobalEndDragEvent = () => event.type === Blockly.Events.END_DRAG;
+        const isGlobalEndDragEvent = () => event.type === Blockly.Events.BLOCK_DRAG && !event.isStart;
         const isGlobalDeleteEvent = () => event.type === Blockly.Events.BLOCK_DELETE;
         const isGlobalCreateEvent = () => event.type === Blockly.Events.BLOCK_CREATE;
         const isClickEvent = () =>
@@ -549,7 +558,7 @@ class DBot {
                 const required_inputs_object = block.getRequiredValueInputs();
                 const required_input_names = Object.keys(required_inputs_object);
                 const should_highlight = required_input_names.some(input_name => {
-                    const is_selected = Blockly.selected === block; // Don't highlight selected blocks.
+                    const is_selected = Blockly.getSelected() === block; // Don't highlight selected blocks.
                     const is_disabled = block.disabled || block.getInheritedDisabled(); // Don't highlight disabled blocks.
 
                     if (is_selected || is_disabled) {
@@ -570,8 +579,8 @@ class DBot {
                             type: block.type,
                         });
                     } else if (input.connection) {
-                        const order = Blockly.JavaScript.ORDER_ATOMIC;
-                        const value = Blockly.JavaScript.valueToCode(block, input_name, order);
+                        const order = Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC;
+                        const value = Blockly.JavaScript.javascriptGenerator.valueToCode(block, input_name, order);
                         const inputValidatorFn = required_inputs_object[input_name];
 
                         // If a custom validator was supplied, use this to determine whether

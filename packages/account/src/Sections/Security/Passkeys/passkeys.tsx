@@ -1,8 +1,9 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import { InlineMessage, Loading } from '@deriv/components';
 import { useGetPasskeysList, useRegisterPasskey, useRenamePasskey } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { PasskeyErrorModal } from './components/passkey-error-modal';
@@ -30,18 +31,19 @@ export type TCurrentManagedPasskey = {
 };
 
 const Passkeys = observer(() => {
-    const { client, ui, common } = useStore();
-    const { is_passkey_supported } = client;
-    const { is_mobile } = ui;
+    const { client, common, notifications } = useStore();
+    const { is_passkey_supported, setShouldShowPasskeyNotification, setPasskeysStatusToCookie } = client;
+    const { isMobile } = useDevice();
+    const { removeNotificationByKey } = notifications;
     const is_network_on = common.network_status.class === 'online';
 
     const error_modal_timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
     const snackbar_timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const prev_passkey_status = React.useRef<TPasskeysStatus>(PASSKEY_STATUS_CODES.LIST);
+    const prev_passkey_status = useRef<TPasskeysStatus>(PASSKEY_STATUS_CODES.LIST);
 
     const history = useHistory();
 
-    const { passkeys_list, is_passkeys_list_loading, passkeys_list_error, reloadPasskeysList } = useGetPasskeysList();
+    const { passkeys_list, is_passkeys_list_loading, passkeys_list_error } = useGetPasskeysList();
     const {
         createPasskey,
         clearPasskeyRegistrationError,
@@ -60,7 +62,7 @@ const Passkeys = observer(() => {
         name: '',
     });
 
-    const should_show_passkeys = is_passkey_supported && is_mobile;
+    const should_show_passkeys = is_passkey_supported && isMobile;
     const error = passkeys_list_error || passkey_registration_error || passkey_renaming_error;
 
     useEffect(() => {
@@ -70,12 +72,15 @@ const Passkeys = observer(() => {
         } else {
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_passkeys_list_loading, passkeys_list?.length]);
 
     useEffect(() => {
         if (is_passkey_renamed) {
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
             setIsSnackbarOpen(true);
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             passkeysMenuActionEventTrack('passkey_rename_success');
             clearTimeOut(snackbar_timeout);
             snackbar_timeout.current = setTimeout(() => {
@@ -89,10 +94,13 @@ const Passkeys = observer(() => {
 
     useEffect(() => {
         if (is_passkey_registered) {
+            setShouldShowPasskeyNotification(false);
+            removeNotificationByKey({ key: 'enable_passkey' });
             passkeysMenuActionEventTrack('create_passkey_finished');
             setPasskeyStatus(PASSKEY_STATUS_CODES.CREATED);
+            setPasskeysStatusToCookie('available');
         }
-    }, [is_passkey_registered]);
+    }, [is_passkey_registered, setPasskeysStatusToCookie]);
 
     useEffect(() => {
         if (error) {
@@ -172,6 +180,8 @@ const Passkeys = observer(() => {
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
         }
         if (passkey_status === PASSKEY_STATUS_CODES.RENAMING) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             passkeysMenuActionEventTrack('passkey_rename_back');
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
         }

@@ -10,7 +10,7 @@ type TGetTradeURLParamsArgs = {
 type TTradeUrlParams = {
     contractType?: string;
     chartType?: string;
-    granularity?: number;
+    granularity?: number | null;
     symbol?: string;
 };
 

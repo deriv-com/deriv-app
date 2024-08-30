@@ -1,11 +1,17 @@
 import { action, makeObservable, observable } from 'mobx';
-import { config, importExternal } from '@deriv/bot-skeleton';
+import { config, importExternal, observer as globalObserver } from '@deriv/bot-skeleton';
 import { getLanguage, localize } from '@deriv/translations';
-import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
+import { notification_message, NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { button_status } from 'Constants/button-status';
+import {
+    rudderStackSendUploadStrategyCompletedEvent,
+    rudderStackSendUploadStrategyFailedEvent,
+} from '../analytics/rudderstack-common-events';
+import { getStrategyType } from '../analytics/utils';
 import RootStore from './root-store';
+import { botNotification } from 'Components/bot-notification/bot-notification';
 
-export type TErrorWithStatus = Error & { status?: number };
+export type TErrorWithStatus = Error & { status?: number; result?: { error: { message: string } } };
 
 export type TFileOptions = {
     content: string;
@@ -15,7 +21,7 @@ export type TFileOptions = {
 
 export type TPickerCallbackResponse = {
     action: string;
-    docs: { id: string; name: string }[];
+    docs: { id: string; name: string; driveError?: string }[];
 };
 
 export interface IGoogleDriveStore {
@@ -41,6 +47,8 @@ export interface IGoogleDriveStore {
         title: string,
         callback: (data: TPickerCallbackResponse) => void
     ) => void;
+    is_google_drive_token_valid: boolean;
+    setGoogleDriveTokenValid: (is_authenticated: boolean) => void;
 }
 
 export default class GoogleDriveStore implements IGoogleDriveStore {
@@ -54,10 +62,13 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     client: any;
     access_token: string;
+    upload_id?: string;
 
     constructor(root_store: RootStore) {
         makeObservable(this, {
             is_authorised: observable,
+            upload_id: observable,
+            is_google_drive_token_valid: observable,
             updateSigninStatus: action.bound,
             saveFile: action.bound,
             loadFile: action.bound,
@@ -70,6 +81,8 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
             createSaveFilePicker: action.bound,
             createLoadFilePicker: action.bound,
             showGoogleDriveFilePicker: action.bound,
+            setGoogleDriveTokenValid: action.bound,
+            verifyGoogleDriveAccessToken: action.bound,
         });
 
         this.root_store = root_store;
@@ -81,7 +94,12 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
         importExternal('https://apis.google.com/js/api.js').then(() => this.initialise());
     }
 
+    is_google_drive_token_valid = true;
     is_authorised = !!localStorage.getItem('google_access_token');
+
+    setGoogleDriveTokenValid = (is_google_drive_token_valid: boolean) => {
+        this.is_google_drive_token_valid = is_google_drive_token_valid;
+    };
 
     setKey = () => {
         const { SCOPE, DISCOVERY_DOCS } = config.GOOGLE_DRIVE;
@@ -96,15 +114,22 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
         gapi.load('client:picker', () => gapi.client.load(this.discovery_docs));
     };
 
+    setGoogleDriveTokenExpiry = (seconds: number) => {
+        const currentEpochTime = Math.floor(Date.now() / 1000);
+        const expiry_time = currentEpochTime + seconds;
+        localStorage.setItem('google_access_token_expiry', expiry_time.toString());
+    };
+
     initialiseClient = () => {
         this.client = google.accounts.oauth2.initTokenClient({
             client_id: this.client_id,
             scope: this.scope,
-            callback: (response: { access_token: string; error?: TErrorWithStatus }) => {
+            callback: (response: { expires_in: number; access_token: string; error?: TErrorWithStatus }) => {
                 if (response?.access_token && !response?.error) {
                     this.access_token = response.access_token;
                     this.updateSigninStatus(true);
                     localStorage.setItem('google_access_token', response.access_token);
+                    this.setGoogleDriveTokenExpiry(response?.expires_in);
                 }
             },
         });
@@ -114,6 +139,28 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
         this.is_authorised = is_signed_in;
     }
 
+    verifyGoogleDriveAccessToken = async () => {
+        const expiry_time = localStorage?.getItem('google_access_token_expiry');
+        if (expiry_time) {
+            const current_epoch_time = Math.floor(Date.now() / 1000);
+            if (current_epoch_time > Number(expiry_time)) {
+                try {
+                    //request new access token if invalid
+                    await this.client.requestAccessToken({ prompt: '' });
+                } catch (error) {
+                    this.signOut();
+                    this.setGoogleDriveTokenValid(false);
+                    localStorage.removeItem('google_access_token_expiry');
+                    botNotification(notification_message.google_drive_error, undefined, {
+                        closeButton: false,
+                    });
+                    return 'not_verified';
+                }
+            }
+        }
+        return 'verified';
+    };
+
     async signIn() {
         if (!this.is_authorised) {
             await this.client.requestAccessToken();
@@ -122,9 +169,9 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
 
     async signOut() {
         if (this.access_token) {
-            await gapi.client.setToken({ access_token: '' });
-            await google.accounts.oauth2.revoke(this.access_token);
-            localStorage.removeItem('google_access_token');
+            await window?.gapi?.client?.setToken({ access_token: '' });
+            await window?.google?.accounts?.oauth2?.revoke(this.access_token);
+            localStorage?.removeItem('google_access_token');
             this.access_token = '';
         }
         this.updateSigninStatus(false);
@@ -156,6 +203,7 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
     }
 
     async loadFile() {
+        if (!this.is_google_drive_token_valid) return;
         await this.signIn();
 
         if (this.access_token) gapi.client.setToken({ access_token: this.access_token });
@@ -179,6 +227,13 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
                     }
                 }
             }
+            rudderStackSendUploadStrategyFailedEvent({
+                upload_provider: 'google_drive',
+                upload_id: this.upload_id,
+                upload_type: 'not_found',
+                error_message: (err as TErrorWithStatus)?.result?.error?.message,
+                error_code: (err as TErrorWithStatus)?.status?.toString(),
+            });
         }
 
         const xml_doc = await this.createLoadFilePicker(
@@ -252,6 +307,16 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
             const loadPickerCallback = async (data: TPickerCallbackResponse) => {
                 if (data.action === google.picker.Action.PICKED) {
                     const file = data.docs[0];
+                    if (file?.driveError === 'NETWORK') {
+                        rudderStackSendUploadStrategyFailedEvent({
+                            upload_provider: 'google_drive',
+                            upload_id: this.upload_id,
+                            upload_type: 'not_found',
+                            error_message: 'File not found',
+                            error_code: '404',
+                        });
+                    }
+
                     const file_name = file.name;
                     const fileId = file.id;
                     const { files } = gapi.client.drive;
@@ -264,6 +329,12 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
 
                     resolve({ xml_doc: response.body, file_name });
                     setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);
+                    const upload_type = getStrategyType(response.body);
+                    rudderStackSendUploadStrategyCompletedEvent({
+                        upload_provider: 'google_drive',
+                        upload_type,
+                        upload_id: this.upload_id,
+                    });
                 }
             };
 

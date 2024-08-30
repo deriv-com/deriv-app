@@ -1,15 +1,12 @@
-import React from 'react';
-
+import { Fragment, useState } from 'react';
 import { useVerifyEmail } from '@deriv/api';
 import { Button, Icon, Popover, Text } from '@deriv/components';
 import { getBrandWebsiteName, getPlatformSettings, toTitleCase } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
-
-import DerivComLogo from 'Assets/ic-brand-deriv-red.svg';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { BrandDerivLogoCoralIcon } from '@deriv/quill-icons';
 import FormSubHeader from '../../../Components/form-sub-header';
 import SentEmailModal from '../../../Components/sent-email-modal';
-
 import PlatformDescription from './platform-description';
 
 /**
@@ -18,13 +15,14 @@ import PlatformDescription from './platform-description';
  * @returns {React.ReactNode}
  */
 const DerivPassword = observer(() => {
+    const { localize } = useTranslations();
     const {
         traders_hub: { is_eu_user, financial_restricted_countries },
         client: { social_identity_provider, is_social_signup, email },
     } = useStore();
     const { mutate } = useVerifyEmail();
 
-    const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
+    const [is_sent_email_modal_open, setIsSentEmailModalOpen] = useState(false);
 
     const onClickSendEmail = () => {
         if (social_identity_provider === 'apple') {
@@ -51,10 +49,10 @@ const DerivPassword = observer(() => {
     };
 
     return (
-        <React.Fragment>
+        <Fragment>
             <FormSubHeader title={localize('Deriv password')} />
             <div className='account__passwords-wrapper'>
-                <React.Fragment>
+                <Fragment>
                     <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
                         <PlatformDescription
                             brand_website_name={brand_website_name}
@@ -70,7 +68,7 @@ const DerivPassword = observer(() => {
                         />
                     </Text>
                     <div className='passwords-platform__logo-container'>
-                        <DerivComLogo />
+                        <BrandDerivLogoCoralIcon height='23px' width='23px' />
                         <Text line_height='l' size='xs' weight='bold'>
                             {brand_website_name}
                         </Text>
@@ -88,7 +86,7 @@ const DerivPassword = observer(() => {
                             />
                         </Popover>
                         {!is_eu_user && !financial_restricted_countries && (
-                            <React.Fragment>
+                            <Fragment>
                                 <Popover alignment='bottom' message={platform_name_dbot}>
                                     <Icon
                                         icon={`${getPlatformSettings('dbot').icon}-dashboard`}
@@ -103,10 +101,10 @@ const DerivPassword = observer(() => {
                                         description='smarttrader'
                                     />
                                 </Popover>
-                            </React.Fragment>
+                            </Fragment>
                         )}
                         {(!is_eu_user || financial_restricted_countries) && (
-                            <React.Fragment>
+                            <Fragment>
                                 <Popover alignment='bottom' message={platform_name_go}>
                                     <Icon
                                         icon={`${getPlatformSettings('go').icon}-dashboard`}
@@ -121,16 +119,16 @@ const DerivPassword = observer(() => {
                                         description='ctrader'
                                     />
                                 </Popover>
-                            </React.Fragment>
+                            </Fragment>
                         )}
                     </div>
-                </React.Fragment>
+                </Fragment>
                 {is_social_signup ? (
-                    <React.Fragment>
+                    <Fragment>
                         <div className='account__passwords-item passwords-social-buttons'>
                             <div className='account__passwords-linked' onClick={onClickSendEmail}>
                                 {social_identity_provider ? (
-                                    <React.Fragment>
+                                    <Fragment>
                                         <Icon icon={`IcStock${capitalized_identifier}`} size={16} />
                                         <Text size='xs'>
                                             <Localize
@@ -139,13 +137,13 @@ const DerivPassword = observer(() => {
                                             />
                                         </Text>
                                         <Icon icon='IcChevronRight' size={16} />
-                                    </React.Fragment>
+                                    </Fragment>
                                 ) : (
                                     ''
                                 )}
                             </div>
                         </div>
-                    </React.Fragment>
+                    </Fragment>
                 ) : (
                     <div>
                         <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
@@ -173,7 +171,7 @@ const DerivPassword = observer(() => {
                     is_modal_when_mobile={true}
                 />
             </div>
-        </React.Fragment>
+        </Fragment>
     );
 });
 

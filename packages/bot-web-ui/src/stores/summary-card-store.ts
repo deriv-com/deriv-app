@@ -1,6 +1,12 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { ProposalOpenContract, UpdateContractResponse } from '@deriv/api-types';
-import { getIndicativePrice, isEqualObject, isMultiplierContract, Validator } from '@deriv/shared';
+import {
+    getIndicativePrice,
+    isAccumulatorContract,
+    isEqualObject,
+    isMultiplierContract,
+    Validator,
+} from '@deriv/shared';
 import { TStores } from '@deriv/stores/types';
 import { TContractInfo } from 'Components/summary/summary-card.types';
 import { getValidationRules, TValidationRuleIndex, TValidationRules } from 'Constants/contract';
@@ -41,6 +47,7 @@ export default class SummaryCardStore {
     contract_id?: string | null = null;
     profit?: number = 0;
     indicative?: number = 0;
+    is_bot_running?: boolean = false;
 
     constructor(root_store: RootStore, core: TStores) {
         makeObservable(this, {
@@ -53,6 +60,7 @@ export default class SummaryCardStore {
             contract_update_stop_loss: observable,
             has_contract_update_take_profit: observable,
             has_contract_update_stop_loss: observable,
+            is_bot_running: observable,
             contract_update_config: observable,
             contract_id: observable,
             profit: observable,
@@ -68,6 +76,7 @@ export default class SummaryCardStore {
             onChange: action.bound,
             populateContractUpdateConfig: action.bound,
             setContractUpdateConfig: action.bound,
+            setIsBotRunning: action.bound,
             updateLimitOrder: action.bound,
             setValidationErrorMessages: action,
             validateProperty: action,
@@ -102,6 +111,10 @@ export default class SummaryCardStore {
         return isMultiplierContract(this.contract_info?.contract_type);
     }
 
+    get is_accumulator() {
+        return isAccumulatorContract(this.contract_info?.contract_type);
+    }
+
     clear(should_unset_contract = true) {
         if (should_unset_contract) {
             this.contract_info = null;
@@ -132,10 +145,8 @@ export default class SummaryCardStore {
 
     getLimitOrder() {
         const limit_order: TLimitOrder = {};
-
         // send positive take_profit to update or null to cancel
         limit_order.take_profit = this.has_contract_update_take_profit ? +(this.contract_update_take_profit ?? 0) : 0;
-
         // send positive stop_loss to update or null to cancel
         limit_order.stop_loss = this.has_contract_update_stop_loss ? +(this.contract_update_stop_loss ?? 0) : 0;
 
@@ -202,6 +213,26 @@ export default class SummaryCardStore {
                 : null;
             this.contract_update_stop_loss = this.has_contract_update_stop_loss ? +contract_update_stop_loss : null;
         }
+    }
+
+    /**
+     * Sets the bot's running state based on whether the contract is still loading
+     */
+    setIsBotRunning() {
+        if (!this.is_contract_loading) {
+            this.is_bot_running = false;
+            return;
+        }
+
+        const onTimeout = () => {
+            if (this.is_contract_loading) {
+                this.is_bot_running = true;
+                this.root_store.run_panel.setContractStage(contract_stages.RUNNING);
+            }
+        };
+
+        const timeout = setTimeout(onTimeout, 5000);
+        return () => clearTimeout(timeout);
     }
 
     updateLimitOrder() {

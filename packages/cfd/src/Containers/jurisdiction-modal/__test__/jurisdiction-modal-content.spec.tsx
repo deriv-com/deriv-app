@@ -203,7 +203,7 @@ describe('JurisdictionModalContent', () => {
         expect(screen.getAllByText('Assets')).toHaveLength(3);
         expect(
             screen.getAllByText(
-                'Forex (standard), stock indices, commodities, cryptocurrencies, synthetic indices, basket indices and derived FX'
+                'Forex (standard), stock indices, commodities, cryptocurrencies, stocks, ETFs, synthetic indices, basket indices and derived FX'
             )
         ).toHaveLength(3);
         expect(screen.getAllByText('210+')).toHaveLength(3);
@@ -248,8 +248,8 @@ describe('JurisdictionModalContent', () => {
         expect(screen.getAllByText('1:1000')).toHaveLength(3);
         expect(screen.getByText('1:100')).toBeInTheDocument();
         expect(screen.getAllByText('Spreads from')).toHaveLength(4);
-        expect(screen.getByText('1.4 pips')).toBeInTheDocument();
-        expect(screen.getAllByText('0.5 pips')).toHaveLength(3);
+        expect(screen.getByText('0.6 pips')).toBeInTheDocument();
+        expect(screen.getAllByText('0.2 pips')).toHaveLength(3);
         expect(screen.getAllByText('Verifications')).toHaveLength(4);
         expect(
             screen.getByText('You will need to submit proof of identity and address once you reach certain thresholds.')
@@ -326,7 +326,7 @@ describe('JurisdictionModalContent', () => {
             screen.getByText('Forex (standard/micro), stocks, stock indices, commodities, cryptocurrencies and ETFs')
         ).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
-        expect(screen.getByText('0.5 pips')).toBeInTheDocument();
+        expect(screen.getByText('0.2 pips')).toBeInTheDocument();
     });
 
     it('should display only synthetic svg for highrisk clients', () => {
@@ -356,7 +356,7 @@ describe('JurisdictionModalContent', () => {
         expect(screen.getByText('210+')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Forex (standard), stock indices, commodities, cryptocurrencies, synthetic indices, basket indices and derived FX'
+                'Forex (standard), stock indices, commodities, cryptocurrencies, stocks, ETFs, synthetic indices, basket indices and derived FX'
             )
         ).toBeInTheDocument();
     });

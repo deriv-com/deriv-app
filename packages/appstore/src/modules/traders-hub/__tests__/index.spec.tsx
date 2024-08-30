@@ -8,6 +8,15 @@ jest.mock('Components/main-title-bar', () => jest.fn(() => 'mockedMainTitleBar')
 jest.mock('Components/cfds-listing', () => jest.fn(() => 'mockedCFDsListing'));
 jest.mock('Components/options-multipliers-listing', () => jest.fn(() => 'mocked<OptionsAndMultipliersListing>'));
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({
+        isDesktop: true,
+        isMobile: false,
+        isTablet: false,
+    })),
+}));
+
 describe('TradersHub', () => {
     const render_container = (mock_store_override = {}) => {
         const mock_store = mockStore(mock_store_override);
@@ -32,8 +41,8 @@ describe('TradersHub', () => {
         expect(dashboard_sections?.textContent?.match(/CFDs/)).not.toBeNull();
     });
 
-    it('should display Multipliers section if there is no MT5 accounts availble for country of residence', () => {
-        render_container({ client: { is_logged_in: true, is_mt5_allowed: false } });
+    it('should display Multipliers section if there is no MT5 accounts available for country of residence', () => {
+        render_container({ client: { is_logged_in: true, is_mt5_allowed: false, is_landing_company_loaded: true } });
         const dashboard_sections = screen.getByTestId('dt_traders_hub');
         expect(dashboard_sections?.textContent?.match(/Multipliers/)).not.toBeNull();
         expect(dashboard_sections?.textContent?.match(/CFDs/)).toBeNull();

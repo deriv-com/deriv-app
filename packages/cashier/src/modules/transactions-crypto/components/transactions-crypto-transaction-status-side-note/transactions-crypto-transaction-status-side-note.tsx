@@ -1,16 +1,16 @@
 import React, { useCallback } from 'react';
+import classNames from 'classnames';
 import { Button, Loading, SideNote, Text } from '@deriv/components';
 import { useCryptoTransactions, useCurrentCurrencyConfig } from '@deriv/hooks';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import classNames from 'classnames';
+import { useDevice } from '@deriv-com/ui';
 import { useCashierStore } from '../../../../stores/useCashierStores';
 import { cryptoTransactionMapper } from '../../helpers';
 import './transactions-crypto-transaction-status-side-note.scss';
 
 const TransactionsCryptoTransactionStatusSideNote: React.FC = observer(() => {
-    const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { isMobile } = useDevice();
     const { transaction_history } = useCashierStore();
     const { setIsTransactionsCryptoVisible } = transaction_history;
     const { last_transaction, has_transactions, isLoading, error, subscribe } = useCryptoTransactions();
@@ -28,6 +28,7 @@ const TransactionsCryptoTransactionStatusSideNote: React.FC = observer(() => {
             address_url_display,
             confirmation_display,
             transaction_hash_display,
+            transaction_fee = '',
         } = cryptoTransactionMapper(last_transaction);
 
         return (
@@ -49,6 +50,18 @@ const TransactionsCryptoTransactionStatusSideNote: React.FC = observer(() => {
                             date: submit_date_display,
                         })}
                     </Text>
+                    {transaction_fee && (
+                        <Text
+                            size='xxxs'
+                            color='less-prominent'
+                            className='transactions-crypto-transaction-status-side-note__transaction-fee'
+                        >
+                            {localize('Transaction fee: {{amount}} {{currency}}', {
+                                amount: Number(transaction_fee).toFixed(currency_config?.fractional_digits),
+                                currency: currency_config?.display_code,
+                            })}
+                        </Text>
+                    )}
                     <Text size={'xxxs'}>
                         <Localize
                             i18n_default_text='Address: <0>{{value}}</0>'
@@ -99,7 +112,7 @@ const TransactionsCryptoTransactionStatusSideNote: React.FC = observer(() => {
     const ErrorState = useCallback(
         () => (
             <>
-                <Text size={is_mobile ? 'xxs' : 'xs'}>
+                <Text size={isMobile ? 'xxs' : 'xs'}>
                     {localize('Unfortunately, we cannot retrieve the information at this time. ')}
                 </Text>
                 <div className='transactions-crypto-transaction-status-side-note__divider' />
@@ -112,17 +125,17 @@ const TransactionsCryptoTransactionStatusSideNote: React.FC = observer(() => {
                 />
             </>
         ),
-        [is_mobile, subscribe]
+        [isMobile, subscribe]
     );
 
     const NoTransactionState = useCallback(
         () => (
             <>
-                <Text size={is_mobile ? 'xxs' : 'xs'}>{localize('No recent transactions.')}</Text>
+                <Text size={isMobile ? 'xxs' : 'xs'}>{localize('No recent transactions.')}</Text>
                 <div className='transactions-crypto-transaction-status-side-note__divider' />
             </>
         ),
-        [is_mobile]
+        [isMobile]
     );
 
     return (

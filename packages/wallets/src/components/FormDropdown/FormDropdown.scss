@@ -1,0 +1,7 @@
+.wallets-form-dropdown {
+    height: 6.25rem; // 4.05rem (field) + 2.2rem (message)
+    /* stylelint-disable-next-line selector-class-pattern */
+    & .deriv-input__helper-message {
+        min-height: 2.2rem;
+    }
+}

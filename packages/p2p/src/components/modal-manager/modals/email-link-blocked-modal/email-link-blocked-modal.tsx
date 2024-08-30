@@ -21,7 +21,7 @@ const EmailLinkBlockedModal = ({
             is_open={is_modal_open}
             renderTitle={() => <></>}
             toggleModal={() => {
-                hideModal();
+                hideModal({ should_hide_all_modals: true });
                 order_store.setIsVerifyingEmail(false);
             }}
             width='440px'

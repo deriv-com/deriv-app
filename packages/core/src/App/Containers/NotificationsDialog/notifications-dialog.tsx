@@ -1,9 +1,11 @@
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { DesktopWrapper, MobileDialog, MobileWrapper, useOnClickOutside } from '@deriv/components';
+import { MobileDialog, useOnClickOutside } from '@deriv/components';
+import { Analytics } from '@deriv-com/analytics';
 import { LocalStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import NotificationListWrapper from './notification-list-wrapper';
 
 const NotificationsDialog = observer(() => {
@@ -19,6 +21,7 @@ const NotificationsDialog = observer(() => {
     } = notifications;
 
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
+    const { isMobile } = useDevice();
 
     const handleClickOutside = (event: MouseEvent) => {
         const notifications_toggle_btn = !(event?.target as Element)?.classList.contains(
@@ -40,6 +43,12 @@ const NotificationsDialog = observer(() => {
         }
         LocalStore.setObject('p2p_settings', p2p_settings);
 
+        Analytics.trackEvent('ce_notification_form', {
+            action: 'clear_all',
+            form_name: 'ce_notification_form',
+            notification_num: notifications_array.length,
+        });
+
         notifications_array.forEach(({ key, should_show_again }) => {
             removeNotificationMessageByKey({ key });
             removeNotificationMessage({
@@ -52,34 +61,33 @@ const NotificationsDialog = observer(() => {
 
     useOnClickOutside(wrapper_ref, handleClickOutside);
 
+    if (isMobile) {
+        return (
+            <MobileDialog
+                portal_element_id='modal_root'
+                title={<Localize i18n_default_text='Notifications' />}
+                wrapper_classname='notifications-mobile-dialog'
+                visible={is_notifications_visible}
+                onClose={toggleNotificationsModal}
+            >
+                <NotificationListWrapper clearNotifications={clearNotifications} ref={wrapper_ref} />
+            </MobileDialog>
+        );
+    }
+
     return (
-        <React.Fragment>
-            <MobileWrapper>
-                <MobileDialog
-                    portal_element_id='modal_root'
-                    title={<Localize i18n_default_text='Notifications' />}
-                    wrapper_classname='notifications-mobile-dialog'
-                    visible={is_notifications_visible}
-                    onClose={toggleNotificationsModal}
-                >
-                    <NotificationListWrapper clearNotifications={clearNotifications} ref={wrapper_ref} />
-                </MobileDialog>
-            </MobileWrapper>
-            <DesktopWrapper>
-                <CSSTransition
-                    in={is_notifications_visible}
-                    classNames={{
-                        enter: 'notifications-dialog--enter',
-                        enterDone: 'notifications-dialog--enter-done',
-                        exit: 'notifications-dialog--exit',
-                    }}
-                    timeout={150}
-                    unmountOnExit
-                >
-                    <NotificationListWrapper clearNotifications={clearNotifications} ref={wrapper_ref} />
-                </CSSTransition>
-            </DesktopWrapper>
-        </React.Fragment>
+        <CSSTransition
+            in={is_notifications_visible}
+            classNames={{
+                enter: 'notifications-dialog--enter',
+                enterDone: 'notifications-dialog--enter-done',
+                exit: 'notifications-dialog--exit',
+            }}
+            timeout={150}
+            unmountOnExit
+        >
+            <NotificationListWrapper clearNotifications={clearNotifications} ref={wrapper_ref} />
+        </CSSTransition>
     );
 });
 

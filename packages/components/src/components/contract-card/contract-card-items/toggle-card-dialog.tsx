@@ -1,14 +1,12 @@
 import React from 'react';
-import { isDesktop, isMobile } from '@deriv/shared';
 import ContractCardDialog from './contract-card-dialog';
 import ContractUpdateForm, { TGeneralContractCardBodyProps } from './contract-update-form';
 import Icon from '../../icon';
-import DesktopWrapper from '../../desktop-wrapper';
 import MobileDialog from '../../mobile-dialog';
-import MobileWrapper from '../../mobile-wrapper';
 import Popover from '../../popover';
 import Div100vhContainer from '../../div100vh-container';
 import './sass/contract-card-dialog.scss';
+import { useDevice } from '@deriv-com/ui';
 import classNames from 'classnames';
 
 export type TToggleCardDialogProps = Pick<
@@ -45,7 +43,7 @@ const ToggleCardDialog = ({
     const [is_visible, setIsVisible] = React.useState(false);
     const [top, setTop] = React.useState(0);
     const [left, setLeft] = React.useState(0);
-
+    const { isDesktop } = useDevice();
     const toggle_ref = React.useRef<HTMLButtonElement>(null);
     const dialog_ref = React.useRef<HTMLDivElement>(null);
     const contract = getContractById(Number(contract_id));
@@ -89,7 +87,7 @@ const ToggleCardDialog = ({
         e.preventDefault();
         e.stopPropagation();
 
-        if (isMobile() && is_risk_management_disabled) {
+        if (!isDesktop && is_risk_management_disabled) {
             addToast({
                 key: 'risk_management_is_disabled',
                 content: notificationText,
@@ -115,7 +113,7 @@ const ToggleCardDialog = ({
 
     return (
         <div onClick={handleClick}>
-            {is_risk_management_disabled && isDesktop() ? (
+            {is_risk_management_disabled && isDesktop ? (
                 <Popover
                     alignment='right'
                     classNameBubble='dc-contract-card-dialog__popover-bubble'
@@ -148,7 +146,25 @@ const ToggleCardDialog = ({
                     {edit_icon}
                 </button>
             )}
-            <MobileWrapper>
+            {isDesktop ? (
+                <ContractCardDialog
+                    ref={dialog_ref}
+                    is_visible={is_visible}
+                    left={left}
+                    top={top}
+                    toggle_ref={toggle_ref}
+                    toggleDialog={toggleDialogWrapper}
+                >
+                    <ContractUpdateForm
+                        addToast={addToast}
+                        contract={contract}
+                        getCardLabels={getCardLabels}
+                        getContractById={getContractById}
+                        toggleDialog={toggleDialogWrapper}
+                        {...passthrough_props}
+                    />
+                </ContractCardDialog>
+            ) : (
                 <MobileDialog
                     portal_element_id='modal_root'
                     visible={is_visible}
@@ -167,26 +183,7 @@ const ToggleCardDialog = ({
                         />
                     </Div100vhContainer>
                 </MobileDialog>
-            </MobileWrapper>
-            <DesktopWrapper>
-                <ContractCardDialog
-                    ref={dialog_ref}
-                    is_visible={is_visible}
-                    left={left}
-                    top={top}
-                    toggle_ref={toggle_ref}
-                    toggleDialog={toggleDialogWrapper}
-                >
-                    <ContractUpdateForm
-                        addToast={addToast}
-                        contract={contract}
-                        getCardLabels={getCardLabels}
-                        getContractById={getContractById}
-                        toggleDialog={toggleDialogWrapper}
-                        {...passthrough_props}
-                    />
-                </ContractCardDialog>
-            </DesktopWrapper>
+            )}
         </div>
     );
 };

@@ -1,4 +1,5 @@
 import React, { FC, Fragment, useEffect, useMemo } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
     useActiveWalletAccount,
     useAvailableCTraderAccounts,
@@ -7,10 +8,15 @@ import {
     useDxtradeAccountsList,
 } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
-import { LabelPairedCircleExclamationMdFillIcon, LabelPairedPlusMdFillIcon } from '@deriv/quill-icons';
-import { Accordion } from '@deriv-com/ui';
+import {
+    LabelPairedArrowUpArrowDownMdBoldIcon,
+    LabelPairedCircleExclamationMdFillIcon,
+    LabelPairedPlusMdFillIcon,
+} from '@deriv/quill-icons';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { Accordion, Text } from '@deriv-com/ui';
 import { WalletListCardBadge } from '../../../../components';
-import { InlineMessage, WalletText } from '../../../../components/Base';
+import { InlineMessage, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
@@ -18,10 +24,10 @@ import { calculateTotalByKey } from '../../../../utils/calculate-total-by-key';
 import { sortArrayByKey } from '../../../../utils/sort-array-by-key';
 import {
     CFD_PLATFORMS,
+    getMarketTypeDetails,
+    getServiceMaintenanceMessages,
     MARKET_TYPE,
-    MarketTypeDetails,
     PlatformDetails,
-    serviceMaintenanceMessages,
 } from '../../constants';
 import { CTraderAddAccountSuccessModal } from '../../modals/CTraderAddAccountSuccessModal';
 import MT5DesktopRedirectOption from './MT5TradeLink/MT5DesktopRedirectOption';
@@ -36,7 +42,9 @@ type MT5TradeScreenProps = {
 
 const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     const { isDesktop } = useDevice();
-    const { getModalState, show } = useModal();
+    const { getModalState, hide, show } = useModal();
+    const { localize } = useTranslations();
+    const history = useHistory();
     const { data: dxtradeAccountsList } = useDxtradeAccountsList();
     const { data: ctraderAccountsList } = useCtraderAccountsList();
     const { data: activeWalletData } = useActiveWalletAccount();
@@ -47,12 +55,11 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     const dxtradePlatform = CFD_PLATFORMS.DXTRADE;
     const ctraderPlatform = CFD_PLATFORMS.CTRADER;
 
-    const marketType = getModalState('marketType');
+    const marketType: keyof ReturnType<typeof getMarketTypeDetails> | undefined = getModalState('marketType');
     const platform = getModalState('platform') ?? mt5Platform;
 
     const { icon: platformIcon, title: platformTitle } = PlatformDetails[platform as keyof typeof PlatformDetails];
-    const { icon: marketTypeIcon, title: marketTypeTitle } =
-        MarketTypeDetails[(marketType as keyof typeof MarketTypeDetails) ?? 'all'];
+    const { icon: marketTypeIcon, title: marketTypeTitle } = getMarketTypeDetails()[marketType ?? 'all'];
 
     const platformToAccountsListMapper = useMemo(
         () => ({
@@ -150,17 +157,17 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                 case 'migrated_with_position':
                     return (
                         <InlineMessage size='sm' type='warning' variant='outlined'>
-                            <WalletText color='warning' size='2xs' weight='bold'>
-                                No new positions
-                            </WalletText>
+                            <Text color='warning' size='2xs' weight='bold'>
+                                <Localize i18n_default_text='No new positions' />
+                            </Text>
                         </InlineMessage>
                     );
                 case 'migrated_without_position':
                     return (
                         <InlineMessage size='sm' type='warning' variant='outlined'>
-                            <WalletText color='warning' size='2xs' weight='bold'>
-                                Account closed
-                            </WalletText>
+                            <Text color='warning' size='2xs' weight='bold'>
+                                <Localize i18n_default_text='Account closed' />
+                            </Text>
                         </InlineMessage>
                     );
                 default:
@@ -171,35 +178,53 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
 
     return (
         <div className='wallets-mt5-trade-screen'>
-            <div className='wallets-mt5-trade-screen__details'>
-                <div className='wallets-mt5-trade-screen__details-description'>
-                    <div className='wallets-mt5-trade-screen__details-description__icon'>
-                        {platform === mt5Platform ? marketTypeIcon : platformIcon}
-                    </div>
-                    <div className='wallets-mt5-trade-screen__details-description__details'>
-                        <div className='wallets-mt5-trade-screen__label'>
-                            <WalletText lineHeight='3xs' size={isDesktop ? 'sm' : 'md'}>
-                                {platform === mt5Platform ? marketTypeTitle : platformTitle}{' '}
-                                {!activeWalletData?.is_virtual && details?.landing_company_short?.toUpperCase()}
-                            </WalletText>
-                            {activeWalletData?.is_virtual && <WalletListCardBadge isDemo label='virtual' />}
+            <div className='wallets-mt5-trade-screen__content'>
+                <div className='wallets-mt5-trade-screen__content-header'>
+                    <div className='wallets-mt5-trade-screen__description'>
+                        <div className='wallets-mt5-trade-screen__description-icon'>
+                            {platform === mt5Platform ? marketTypeIcon : platformIcon}
                         </div>
-                        <WalletText color='less-prominent' size='xs'>
-                            {platform !== ctraderPlatform && loginId}
-                        </WalletText>
-                    </div>
-                    <div className='wallets-mt5-trade-screen__details-description__balance'>
-                        {platform !== ctraderPlatform && shouldShowAccountBalance ? (
-                            <WalletText weight='bold'>{details?.display_balance}</WalletText>
-                        ) : (
-                            <div className='wallets-mt5-trade-screen__details-description__balance-total'>
-                                <WalletText as='p' lineHeight='3xs' size={isDesktop ? 'sm' : 'md'}>
-                                    Total balance:
-                                </WalletText>
-                                <WalletText weight='bold'>{cTraderDisplayBalance}</WalletText>
+                        <div className='wallets-mt5-trade-screen__description-details'>
+                            <div className='wallets-mt5-trade-screen__label'>
+                                <Text lineHeight='3xs' size={isDesktop ? 'sm' : 'md'}>
+                                    {platform === mt5Platform ? marketTypeTitle : platformTitle}{' '}
+                                    {!activeWalletData?.is_virtual && details?.landing_company_short?.toUpperCase()}
+                                </Text>
+                                {activeWalletData?.is_virtual && <WalletListCardBadge />}
                             </div>
-                        )}
-                        {migrationMessage}
+                            <Text color='less-prominent' size='xs'>
+                                {platform !== ctraderPlatform && loginId}
+                            </Text>
+                        </div>
+                        <div className='wallets-mt5-trade-screen__description-balance'>
+                            {platform !== ctraderPlatform && shouldShowAccountBalance ? (
+                                <Text weight='bold'>{details?.display_balance}</Text>
+                            ) : (
+                                <div className='wallets-mt5-trade-screen__details-description__balance-total'>
+                                    <Text as='p' lineHeight='3xs' size={isDesktop ? 'sm' : 'md'}>
+                                        Total balance:
+                                    </Text>
+                                    <Text weight='bold'>{cTraderDisplayBalance}</Text>
+                                </div>
+                            )}
+                            {migrationMessage}
+                        </div>
+                    </div>
+                    <div className='wallets-mt5-trade-screen__content-header-btn'>
+                        <WalletButton
+                            ariaLabel='account-transfer'
+                            icon={<LabelPairedArrowUpArrowDownMdBoldIcon fill='#FFF' height={18} width={14} />}
+                            key='account-transfer'
+                            onClick={() => {
+                                hide();
+                                history.push('/wallet/account-transfer', { toAccountLoginId: details?.loginid });
+                            }}
+                            rounded='md'
+                            size='sm'
+                            textSize={isDesktop ? 'xs' : 'sm'}
+                        >
+                            <Localize i18n_default_text='Transfer' />
+                        </WalletButton>
                     </div>
                 </div>
 
@@ -211,10 +236,10 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                                     className='wallets-mt5-trade-screen__ctrader-account-list__item'
                                     key={account.login}
                                 >
-                                    <WalletText size='sm'>{account.login}</WalletText>
-                                    <WalletText size='sm' weight='bold'>
+                                    <Text size='sm'>{account.login}</Text>
+                                    <Text size='sm' weight='bold'>
                                         {account.display_balance}
-                                    </WalletText>
+                                    </Text>
                                 </li>
                             ))}
                         </ul>
@@ -228,7 +253,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                                     <span className='wallets-mt5-trade-screen__ctrader-get-more-button__icon'>
                                         <LabelPairedPlusMdFillIcon fill='#000000' />
                                     </span>
-                                    <WalletText size='xs'>Get another cTrader account</WalletText>
+                                    <Text size='xs'>Get another cTrader account</Text>
                                 </button>
                             )}
                         <Accordion
@@ -278,42 +303,44 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                         </Accordion>
                     </Fragment>
                 )}
-
-                <div className='wallets-mt5-trade-screen__details-clipboards'>
+                <div className='wallets-mt5-trade-screen__content-clipboards'>
                     {getModalState('platform') === mt5Platform && details?.platform === mt5Platform && (
                         <Fragment>
-                            <MT5TradeDetailsItem label='Broker' value={details?.landing_company ?? ''} />
+                            <MT5TradeDetailsItem label={localize('Broker')} value={details?.landing_company ?? ''} />
                             <MT5TradeDetailsItem
-                                label='Server'
-                                value={details?.server_info?.environment ?? 'Deriv-Server'}
+                                label={localize('Server')}
+                                value={details?.server_info?.environment ?? localize('Deriv-Server')}
                             />
-                            <MT5TradeDetailsItem label='Login ID' value={loginId ?? '12345678'} />
-                            <MT5TradeDetailsItem label='Password' value='********' variant='password' />
+                            <MT5TradeDetailsItem label={localize('Login ID')} value={loginId ?? '12345678'} />
+                            <MT5TradeDetailsItem label={localize('Password')} variant='password' />
                         </Fragment>
                     )}
                     {getModalState('platform') === dxtradePlatform && (
                         <Fragment>
-                            <MT5TradeDetailsItem label='Username' value={details?.login ?? '12345678'} />
-                            <MT5TradeDetailsItem label='Password' value='********' variant='password' />
+                            <MT5TradeDetailsItem label={localize('Username')} value={details?.login ?? '12345678'} />
+                            <MT5TradeDetailsItem label={localize('Password')} variant='password' />
                         </Fragment>
                     )}
                     {getModalState('platform') === ctraderPlatform && (
                         <MT5TradeDetailsItem
-                            value=' Use your Deriv account email and password to login into the cTrader platform.'
+                            value={localize(
+                                ' Use your Deriv account email and password to login into the cTrader platform.'
+                            )}
                             variant='info'
                         />
                     )}
                 </div>
 
-                <div className='wallets-mt5-trade-screen__details-maintenance'>
+                <div className='wallets-mt5-trade-screen__content-maintenance'>
                     <LabelPairedCircleExclamationMdFillIcon fill='#FFAD3A' />
-                    <WalletText color='less-prominent' size={isDesktop ? '2xs' : 'xs'}>
+                    <Text color='less-prominent' size={isDesktop ? '2xs' : 'xs'}>
                         {
-                            serviceMaintenanceMessages[
-                                (platform as keyof typeof serviceMaintenanceMessages) ?? PlatformDetails.mt5.platform
+                            getServiceMaintenanceMessages()[
+                                (platform as keyof ReturnType<typeof getServiceMaintenanceMessages>) ??
+                                    PlatformDetails.mt5.platform
                             ]
                         }
-                    </WalletText>
+                    </Text>
                 </div>
             </div>
             <div className='wallets-mt5-trade-screen__links'>

@@ -11,7 +11,7 @@ export const getJurisdictionVanuatuContents = ({
             key: 'assets',
             title: localize('Assets'),
             description: localize(
-                'Forex (standard), stock indices, commodities, cryptocurrencies, synthetic indices, basket indices and derived FX'
+                'Forex (standard), stock indices, commodities, cryptocurrencies, stocks, ETFs, synthetic indices, basket indices and derived FX'
             ),
             title_indicators: {
                 type: 'displayText',
@@ -77,7 +77,7 @@ export const getJurisdictionVanuatuContents = ({
             title: localize('Spreads from'),
             title_indicators: {
                 type: 'displayText',
-                display_text: localize('0.5 pips'),
+                display_text: localize('0.2 pips'),
                 display_text_skin_color: 'violet-dark',
             },
         },

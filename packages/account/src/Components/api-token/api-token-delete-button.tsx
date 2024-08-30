@@ -1,9 +1,10 @@
-import React from 'react';
+import { useContext, useState, Fragment } from 'react';
 import { Button, Icon, Modal, Text, Popover } from '@deriv/components';
-import { isDesktop, useIsMounted } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
+import { useIsMounted } from '@deriv/shared';
+import { Localize } from '@deriv-com/translations';
 import ApiTokenContext from './api-token-context';
-import { TPopoverAlignment, TFormattedToken, TApiContext } from 'Types';
+import { TPopoverAlignment, TFormattedToken, TApiContext } from '../../Types';
+import { useDevice } from '@deriv-com/ui';
 
 type TApiTokenDeleteButton = {
     popover_alignment?: TPopoverAlignment;
@@ -11,23 +12,24 @@ type TApiTokenDeleteButton = {
 };
 
 const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDeleteButton) => {
-    const { deleteToken } = React.useContext<TApiContext>(ApiTokenContext);
-    const [is_deleting, setIsDeleting] = React.useState(false);
-    const [is_loading, setIsLoading] = React.useState(false);
-    const [is_popover_open, setIsPopoverOpen] = React.useState(false);
+    const { isDesktop } = useDevice();
+    const { deleteToken } = useContext<TApiContext>(ApiTokenContext);
+    const [is_deleting, setIsDeleting] = useState(false);
+    const [is_loading, setIsLoading] = useState(false);
+    const [is_popover_open, setIsPopoverOpen] = useState(false);
     const isMounted = useIsMounted();
 
     const getConfirmationBeforeDelete = () => {
-        if (isDesktop()) setIsPopoverOpen(false);
+        if (isDesktop) setIsPopoverOpen(false);
         setIsDeleting(true);
     };
 
     const onMouseEnterHandler = () => {
-        if (!is_deleting && isDesktop()) setIsPopoverOpen(true);
+        if (!is_deleting && isDesktop) setIsPopoverOpen(true);
     };
 
     const onMouseLeaveHandler = () => {
-        if (!is_deleting && isDesktop()) setIsPopoverOpen(false);
+        if (!is_deleting && isDesktop) setIsPopoverOpen(false);
     };
 
     const onCancel = () => setIsDeleting(false);
@@ -42,7 +44,7 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDe
     };
 
     return (
-        <React.Fragment>
+        <Fragment>
             <Modal is_open={is_deleting} small>
                 <Modal.Body>
                     <Text as='h1' color='prominent' weight='bold' className='da-api-token__modal-title'>
@@ -87,7 +89,7 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDe
                     onMouseLeave={onMouseLeaveHandler}
                 />
             </Popover>
-        </React.Fragment>
+        </Fragment>
     );
 };
 

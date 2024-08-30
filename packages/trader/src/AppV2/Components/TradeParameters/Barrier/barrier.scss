@@ -1,0 +1,42 @@
+.barrier-params {
+    margin-bottom: var(--core-spacing-2800);
+
+    &__description {
+        &-header {
+            display: flex;
+            flex-direction: row;
+            padding-left: var(--core-spacing-400);
+            height: var(--core-size-1800);
+            div {
+                margin: 0px var(--core-spacing-800);
+            }
+        }
+        &-content {
+            padding: var(--core-spacing-1200);
+            .content-section {
+                margin-bottom: var(--core-spacing-400);
+            }
+        }
+    }
+
+    &__chips {
+        background-color: var(--core-color-solid-slate-50);
+        display: flex;
+        gap: var(--core-spacing-400);
+        margin-bottom: var(--core-spacing-800);
+
+        button {
+            background-color: transparent;
+        }
+    }
+
+    &__error-area {
+        height: var(--core-spacing-1100);
+    }
+
+    &__current-spot-wrapper {
+        margin-top: var(--core-spacing-400);
+        display: flex;
+        justify-content: space-between;
+    }
+}

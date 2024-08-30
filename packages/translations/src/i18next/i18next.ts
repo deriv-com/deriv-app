@@ -2,6 +2,7 @@ import { str as crc32 } from 'crc-32';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { isProduction } from '../../../shared/src/utils/config/config';
+import { UNSUPPORTED_LANGUAGES } from '../../../shared/src/utils/constants/default-options';
 import withI18n from '../components';
 
 const LANGUAGE_KEY = 'i18n_language';
@@ -16,6 +17,7 @@ const ALL_LANGUAGES = Object.freeze({
     FR: 'Français',
     ID: 'Indonesian',
     IT: 'Italiano',
+    KM: 'ខ្មែរ',
     KO: '한국어',
     PL: 'Polish',
     PT: 'Português',
@@ -36,6 +38,7 @@ export const getAllowedLanguages = () => {
         ES: 'Español',
         BN: 'বাংলা',
         DE: 'Deutsch',
+        KM: 'ខ្មែរ',
         KO: '한국어',
         PT: 'Português',
         PL: 'Polish',
@@ -50,7 +53,7 @@ export const getAllowedLanguages = () => {
         ZH_CN: '简体中文',
         ZH_TW: '繁體中文',
     };
-    const exclude_languages = ['ACH'];
+    const exclude_languages = ['ACH', ...UNSUPPORTED_LANGUAGES];
     // TODO Change language_list to const when languages are available in prod.
     type Key = keyof typeof ALL_LANGUAGES;
     let language_list = Object.keys(getAllLanguages())
@@ -81,10 +84,10 @@ const isLanguageAvailable = (lang: string) => {
     return Object.keys(getAllowedLanguages()).includes(selected_language);
 };
 
-export const getRedirectionLanguage = (preferred_language: string) => {
+export const getRedirectionLanguage = (preferred_language: string, is_new_session = false) => {
     const language_query = new URLSearchParams(window.location.search).get('lang');
     const is_language_query_valid = language_query && isLanguageAvailable(language_query);
-    return is_language_query_valid ? language_query : preferred_language ?? DEFAULT_LANGUAGE;
+    return (is_language_query_valid && !is_new_session ? language_query : preferred_language) ?? DEFAULT_LANGUAGE;
 };
 
 export const getAllLanguages = () => ALL_LANGUAGES;

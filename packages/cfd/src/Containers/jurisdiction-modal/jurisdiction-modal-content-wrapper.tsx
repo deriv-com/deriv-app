@@ -102,6 +102,7 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
     const swapfree_available_accounts = trading_platform_available_accounts.filter(
         available_account =>
             available_account.market_type === MARKET_TYPE.ALL &&
+            available_account.product === 'swap_free' &&
             (show_eu_related_content
                 ? available_account.shortcode === JURISDICTION.MALTA_INVEST
                 : available_account.shortcode !== JURISDICTION.MALTA_INVEST)

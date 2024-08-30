@@ -321,7 +321,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                         <div className='acc-switcher__separator' />
                     </React.Fragment>
                 ) : null}
-                {(!is_high_risk || is_eu) && has_maltainvest_account ? (
+                {(!is_high_risk && has_maltainvest_account) || is_eu ? (
                     <AccountWrapper
                         header={
                             is_low_risk && has_maltainvest_account

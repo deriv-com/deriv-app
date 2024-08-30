@@ -20,7 +20,7 @@
         transform: translate3d(-20px, 0, 0);
     }
     &__input {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             border-bottom: 1px solid var(--border-disabled);
             padding: 1rem 1.6rem;
 
@@ -88,7 +88,7 @@
     &__form {
         display: grid;
         flex: 1;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             grid-template-rows: auto auto 1fr;
             margin: 0 0 1.6rem;
 
@@ -96,7 +96,7 @@
                 grid-template-rows: auto 1fr;
             }
         }
-        @include desktop {
+        @include desktop-screen {
             grid-gap: 0.8rem;
         }
 
@@ -130,7 +130,7 @@
     border: 1px solid var(--general-section-1);
     border-radius: 4px;
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         width: 100%;
     }
 
@@ -143,5 +143,12 @@
     &:hover:not(:disabled):not(:is(.dc-contract-card-dialog-toggle--disabled)) {
         cursor: pointer;
         border-color: var(--button-secondary-default);
+    }
+}
+
+.dc-mobile-dialog__contract-update {
+    @include tablet-screen {
+        max-width: 568px;
+        margin: 0 auto;
     }
 }

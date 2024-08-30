@@ -104,13 +104,13 @@ type TPopulateSettingsExtensionsMenuItem = {
     value: <T extends object>(props: T) => JSX.Element;
 };
 
+type TProduct = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx';
+
 type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 
 type TIconTypes =
     | 'Derived'
     | 'Financial'
-    | 'BinaryBot'
-    | 'BinaryBotBlue'
     | 'DBot'
     | 'Demo'
     | 'DerivGo'
@@ -142,6 +142,7 @@ type AvailableAccount = {
     currency?: string;
     display_balance?: string;
     display_login?: string;
+    product?: TProduct;
 };
 
 type BrandConfig = {
@@ -157,11 +158,14 @@ export type TPortfolioPosition = {
         Portfolio1 & {
             contract_update?: ContractUpdate;
         };
+    current_tick?: number;
     details?: string;
     display_name: string;
     entry_spot?: number;
+    high_barrier?: number;
     id?: number;
     indicative: number;
+    low_barrier?: number;
     payout?: number;
     purchase?: number;
     reference: number;
@@ -218,6 +222,7 @@ type TAccountsList = {
     idx?: string | number;
     is_dark_mode_on?: boolean;
     is_virtual?: boolean | number;
+    is_disabled?: boolean | number;
     loginid?: string;
     trader_accounts_list?: DetailsOfEachMT5Loginid[];
     mt5_login_list?: DetailsOfEachMT5Loginid[];
@@ -225,7 +230,7 @@ type TAccountsList = {
 }[];
 
 // balance is missing in @deriv/api-types
-type TActiveAccount = TAccount & {
+export type TActiveAccount = TAccount & {
     balance?: string | number;
     landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest';
     is_virtual: number;
@@ -251,6 +256,7 @@ type TTradingPlatformAvailableAccount = {
     sub_account_type: string;
     max_count?: number;
     available_count?: number;
+    product: TProduct;
 };
 
 type TAvailableCFDAccounts = {
@@ -343,6 +349,7 @@ export type TNotificationMessage = {
     timeout?: number;
     timeoutMessage?: (remaining: number | string) => string;
     type: string;
+    only_toast_message?: boolean;
 };
 
 type TNotification =
@@ -441,6 +448,7 @@ type TClientStore = {
     initialized_broadcast: boolean;
     is_account_setting_loaded: boolean;
     is_deposit_lock: boolean;
+    is_duplicate_dob_phone: boolean;
     is_dxtrade_allowed: boolean;
     is_eu_country: boolean;
     is_eu: boolean;
@@ -465,6 +473,7 @@ type TClientStore = {
     is_proof_of_ownership_enabled: boolean;
     is_poa_expired: boolean;
     is_populating_dxtrade_account_list: boolean;
+    is_populating_ctrader_account_list: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
     is_high_risk: boolean;
@@ -472,6 +481,7 @@ type TClientStore = {
     is_virtual: boolean;
     is_withdrawal_lock: boolean;
     landing_company_shortcode: string;
+    is_tradershub_tracking: boolean;
     is_populating_account_list: boolean;
     local_currency_config: {
         currency: string;
@@ -538,7 +548,7 @@ type TClientStore = {
     updateMT5Status: () => Promise<void>;
     fetchAccountSettings: () => Promise<void>;
     setAccountSettings: (get_settings_response: GetSettings) => void;
-    upgradeable_landing_companies: unknown[];
+    upgradeable_landing_companies: string[];
     is_populating_mt5_account_list: boolean;
     landing_companies: LandingCompany;
     getChangeableFields: () => string[];
@@ -595,14 +605,21 @@ type TClientStore = {
     is_wallet_migration_request_is_in_progress: boolean;
     is_passkey_supported: boolean;
     setIsPasskeySupported: (value: boolean) => void;
-    should_show_effortless_login_modal: boolean;
-    setShouldShowEffortlessLoginModal: (value: boolean) => void;
-    fetchShouldShowEffortlessLoginModal: () => void;
+    setPasskeysStatusToCookie: (status: 'available' | 'not_available') => void;
+    should_show_passkey_notification: boolean;
+    setShouldShowPasskeyNotification: (value: boolean) => void;
+    fetchShouldShowPasskeyNotification: () => void;
     exchange_rates: Record<string, Record<string, number>>;
     getExchangeRate: (base_currency: string, target_currency: string) => number;
     subscribeToExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
     unsubscribeFromExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
     unsubscribeFromAllExchangeRates: () => void;
+    virtual_account_loginid?: string;
+    is_cr_account: boolean;
+    is_mf_account: boolean;
+    setTradersHubTracking: (value: boolean) => void;
+    account_time_of_closure?: number;
+    is_account_to_be_closed_by_residence: boolean;
 };
 
 type TCommonStoreError = {
@@ -614,6 +631,7 @@ type TCommonStoreError = {
     should_clear_error_on_click?: boolean;
     should_redirect?: boolean;
     should_show_refresh?: boolean;
+    setError?: (has_error: boolean, error: React.ReactNode | null) => void;
     type?: string;
 };
 
@@ -628,6 +646,7 @@ type TCommonStore = {
     error: TCommonStoreError;
     has_error: boolean;
     is_from_derivgo: boolean;
+    is_from_outside_cashier: boolean;
     is_network_online: boolean;
     platform: 'dxtrade' | 'mt5' | 'ctrader' | '';
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
@@ -680,6 +699,7 @@ type TUiStore = {
     is_dark_mode_on: boolean;
     is_loading: boolean;
     is_reports_visible: boolean;
+    is_reset_password_modal_visible: boolean;
     is_route_modal_on: boolean;
     is_language_settings_modal_on: boolean;
     is_verification_modal_visible: boolean;
@@ -691,6 +711,7 @@ type TUiStore = {
     is_tablet: boolean;
     is_mobile_language_menu_open: boolean;
     is_positions_drawer_on: boolean;
+    is_reset_email_modal_visible: boolean;
     is_services_error_visible: boolean;
     is_trading_assessment_for_existing_user_enabled: boolean;
     isUrlUnavailableModalVisible: boolean;
@@ -699,7 +720,12 @@ type TUiStore = {
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
-    notification_messages_ui: React.ElementType;
+    notification_messages_ui: (props?: {
+        is_notification_loaded?: boolean;
+        is_mt5?: boolean;
+        stopNotificationLoading?: () => void;
+        show_trade_notifications?: boolean;
+    }) => JSX.Element;
     setChartCountdown: (value: boolean) => void;
     populateFooterExtensions: (
         footer_extensions:
@@ -736,6 +762,7 @@ type TUiStore = {
     ) => void;
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: Omit<string, TRoutes> | TRoutes) => void;
+    should_show_real_accounts_list?: boolean;
     toggleAccountsDialog: (value?: boolean) => void;
     toggleAccountSettings: (props?: boolean) => void;
     toggleCashier: () => void;
@@ -744,6 +771,8 @@ type TUiStore = {
     toggleLinkExpiredModal: (state_change: boolean) => void;
     togglePositionsDrawer: () => void;
     toggleReadyToDepositModal: () => void;
+    toggleResetEmailModal: (state_change: boolean) => void;
+    toggleResetPasswordModal: (state_change: boolean) => void;
     toggleServicesErrorModal: (is_visible: boolean) => void;
     toggleSetCurrencyModal: () => void;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
@@ -796,6 +825,14 @@ type TUiStore = {
     toggleKycInformationSubmittedModal: () => void;
     setAccountSwitcherDisabledMessage: (message?: string) => void;
     is_set_currency_modal_visible: boolean;
+    should_show_deposit_now_or_later_modal: boolean;
+    setShouldShowDepositNowOrLaterModal: (value: boolean) => void;
+    should_show_crypto_transaction_processing_modal: boolean;
+    setShouldShowCryptoTransactionProcessingModal: (value: boolean) => void;
+    is_trading_disabled_by_residence_modal_visible: boolean;
+    setIsTradingDisabledByResidenceModal: (value: boolean) => void;
+    should_show_same_dob_phone_modal: boolean;
+    setShouldShowSameDOBPhoneModal: (value: boolean) => void;
 };
 
 type TPortfolioStore = {
@@ -820,6 +857,9 @@ type TPortfolioStore = {
     positions: TPortfolioPosition[];
     removePositionById: (contract_id?: number) => void;
     setContractType: (contract_type: string) => void;
+    setAddNotificationBannerCallback: (
+        cb?: (params: { message: string; redirectTo: string; timestamp: number; title: string }, status: string) => void
+    ) => void;
 };
 
 type TAccumulatorBarriersData = {
@@ -911,6 +951,7 @@ type TContractTradeStore = {
     }>;
     onUnmount: () => void;
     prev_chart_type: string;
+    prev_contract: TContractStore | Record<string, never>;
     prev_granularity: number | null;
     removeContract: (data: { contract_id: string }) => void;
     savePreviousChartMode: (chart_type: string, granularity: number | null) => void;
@@ -957,6 +998,10 @@ type TNotificationStore = {
     is_notifications_empty: boolean;
     is_notifications_visible: boolean;
     filterNotificationMessages: () => void;
+    handleCurrencyRemovalNotification: (
+        account_currency_closure_status: Record<string, unknown>,
+        currency: string
+    ) => void;
     notifications: TNotificationMessage[];
     p2p_advertiser_info: P2PAdvertiserInformationResponse['p2p_advertiser_info'];
     p2p_completed_orders: NonNullable<P2POrderListResponse['p2p_order_list']>['list'];
@@ -1023,6 +1068,7 @@ type TTradersHubStore = {
             availability?: TRegionAvailability;
             description?: string;
             market_type?: 'all' | 'financial' | 'synthetic';
+            product: TProduct;
         }[];
     openModal: (modal_id: string, props?: unknown) => void;
     selected_account: {
@@ -1072,12 +1118,17 @@ type TTradersHubStore = {
     available_dxtrade_accounts: TAvailableCFDAccounts[];
     available_ctrader_accounts: TAvailableCFDAccounts[];
     is_demo_low_risk: boolean;
-    is_mt5_notification_modal_visible: boolean;
-    setMT5NotificationModal: (value: boolean) => void;
     has_any_real_account: boolean;
     startTrade: (platform?: TPlatform, existing_account?: DetailsOfEachMT5Loginid) => void;
     getAccount: () => void;
     showTopUpModal: (existing_account?: DetailsOfEachMT5Loginid) => void;
+    is_regulators_compare_modal_visible: boolean;
+    is_setup_real_account_or_go_to_demo_modal_visible: boolean;
+    is_cfd_restricted_country: boolean;
+    is_financial_restricted_country: boolean;
+    setIsCFDRestrictedCountry: (value: boolean) => void;
+    setIsFinancialRestrictedCountry: (value: boolean) => void;
+    setIsSetupRealAccountOrGoToDemoModalVisible: (value: boolean) => void;
 };
 
 type TContractReplay = {

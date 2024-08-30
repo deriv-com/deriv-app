@@ -51,6 +51,8 @@ import type {
     CountriesListResponse,
     CryptocurrencyConfigurationsRequest,
     CryptocurrencyConfigurationsResponse,
+    CryptocurrencyEstimationsRequest,
+    CryptocurrencyEstimationsResponse,
     DocumentUploadRequest,
     DocumentUploadResponse,
     EconomicCalendarRequest,
@@ -1627,6 +1629,10 @@ type TPrivateSocketEndpoints = {
                        */
                       name?: string;
                       /**
+                       * This needs to be removed after updating api-types version
+                       */
+                      product?: 'zero_spread' | 'swap_free' | 'standard';
+                      /**
                        * Legal requirements for the Landing Company
                        */
                       requirements?: {
@@ -2244,6 +2250,22 @@ type MT5AccountListResponse = {
 
 type TAccountList = NonNullable<AccountListResponse['account_list']>[number] & { excluded_until: Date };
 
+type TradingPlatformStatusRequest = {
+    trading_platform_status: 1;
+};
+
+type TradingPlatformStatusResponse = {
+    trading_platform_status: {
+        platform: Exclude<
+            NonNullable<
+                TSocketEndpoints['trading_platform_accounts']['response']['trading_platform_accounts']
+            >[0]['platform'],
+            undefined
+        >;
+        status: 'active' | 'maintenance' | 'unavailable';
+    }[];
+};
+
 interface IExtendedAccountListResponse extends AccountListResponse {
     account_list?: TAccountList[];
 }
@@ -2348,6 +2370,10 @@ type TSocketEndpoints = {
     crypto_config: {
         request: CryptocurrencyConfigurationsRequest;
         response: CryptocurrencyConfigurationsResponse;
+    };
+    crypto_estimations: {
+        request: CryptocurrencyEstimationsRequest;
+        response: CryptocurrencyEstimationsResponse;
     };
     document_upload: {
         request: DocumentUploadRequest;
@@ -2680,6 +2706,10 @@ type TSocketEndpoints = {
     trading_platform_password_reset: {
         request: TradingPlatformPasswordResetRequest;
         response: TradingPlatformPasswordResetResponse;
+    };
+    trading_platform_status: {
+        request: TradingPlatformStatusRequest;
+        response: TradingPlatformStatusResponse;
     };
     trading_servers: {
         request: ServerListRequest;

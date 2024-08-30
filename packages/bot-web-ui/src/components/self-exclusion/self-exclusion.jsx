@@ -2,12 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
-import { Button, Div100vhContainer, FadeWrapper, Input, MobileWrapper, Modal, PageOverlay } from '@deriv/components';
+import { Button, Div100vhContainer, FadeWrapper, Input, Modal, PageOverlay } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 
-const SelfExclusionForm = props => {
+export const SelfExclusionForm = props => {
     const [max_losses_error, setMaxLossesError] = React.useState('');
     const {
         is_onscreen_keyboard_active,
@@ -85,8 +85,8 @@ const SelfExclusionForm = props => {
         });
 
         decimal_limit.forEach(item => {
-            const amount_decimal_array = values[item].toString().split('.')[1];
-            const amount_decimal_places = amount_decimal_array ? amount_decimal_array.length || 0 : 0;
+            const amount_decimal_array = values[item]?.toString().split('.')[1];
+            const amount_decimal_places = amount_decimal_array ? amount_decimal_array.length : 0;
             if (amount_decimal_places > 2) {
                 errors[item] = max_decimal_message;
             }
@@ -103,7 +103,7 @@ const SelfExclusionForm = props => {
     };
 
     return (
-        <div className='db-self-exclusion'>
+        <div className='db-self-exclusion' data-testid='self-exclusion'>
             <div className='db-self-exclusion__content'>
                 <div className='db-self-exclusion__info'>
                     {localize('Enter limits to stop your bot from trading when any of these conditions are met.')}
@@ -111,7 +111,7 @@ const SelfExclusionForm = props => {
                 <Formik initialValues={initial_values} validate={validateFields} onSubmit={onSubmitLimits}>
                     {({ values, touched, errors, isValid, handleChange }) => {
                         return (
-                            <Form>
+                            <Form role='form'>
                                 <div className='db-self-exclusion__form-group'>
                                     <Field name='form_max_losses'>
                                         {({ field }) => (
@@ -126,6 +126,7 @@ const SelfExclusionForm = props => {
                                                 hint={localize(
                                                     'Limits your potential losses for the day across all Deriv platforms.'
                                                 )}
+                                                data_testId={field.name}
                                             />
                                         )}
                                     </Field>
@@ -145,6 +146,7 @@ const SelfExclusionForm = props => {
                                                     hint={localize(
                                                         'Maximum number of trades your bot will execute for this run.'
                                                     )}
+                                                    data_testId={field.name}
                                                 />
                                             );
                                         }}
@@ -191,7 +193,7 @@ const SelfExclusion = observer(({ onRunButtonClick }) => {
     const { ui, client } = useStore();
     const { is_restricted, resetSelfExclusion, initial_values, api_max_losses, run_limit, setRunLimit } =
         self_exclusion;
-    const { is_onscreen_keyboard_active, is_mobile } = ui;
+    const { is_onscreen_keyboard_active, is_desktop } = ui;
     const { is_logged_in, updateSelfExclusion, virtual_account_loginid } = client;
 
     const self_exclusion_form_props = {
@@ -205,19 +207,17 @@ const SelfExclusion = observer(({ onRunButtonClick }) => {
         setRunLimit,
         virtual_account_loginid,
         run_limit,
-        is_mobile,
+        is_desktop,
     };
 
     return (
         <>
-            {is_mobile ? (
+            {!is_desktop ? (
                 <FadeWrapper is_visible={is_restricted} className='limits__wrapper' keyname='limitis__wrapper'>
                     <PageOverlay header={localize('Limits')} onClickClose={resetSelfExclusion}>
-                        <MobileWrapper>
-                            <Div100vhContainer className='limits__wrapper--is-mobile'>
-                                <SelfExclusionForm {...self_exclusion_form_props} />
-                            </Div100vhContainer>
-                        </MobileWrapper>
+                        <Div100vhContainer className='limits__wrapper--is-mobile'>
+                            <SelfExclusionForm {...self_exclusion_form_props} />
+                        </Div100vhContainer>
                     </PageOverlay>
                 </FadeWrapper>
             ) : (

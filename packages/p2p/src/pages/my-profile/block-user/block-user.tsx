@@ -1,16 +1,18 @@
 import React from 'react';
 import { reaction } from 'mobx';
-import { DesktopWrapper, MobileFullPageModal, MobileWrapper } from '@deriv/components';
+import { MobileFullPageModal } from '@deriv/components';
 import { observer } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
-import { getErrorMessage, getErrorModalTitle, getWidth } from 'Utils/block-user';
+import { getErrorMessage, getErrorModalTitle } from 'Utils/block-user';
 import BlockUserList from './block-user-list';
 
 const BlockUser = () => {
+    const { isDesktop } = useDevice();
     const { buy_sell_store, general_store, my_profile_store } = useStores();
     const { block_unblock_user_error, error_code } = general_store;
     const { is_blocked, name } = my_profile_store.selected_trade_partner;
@@ -43,7 +45,6 @@ const BlockUser = () => {
                             general_store.setBlockUnblockUserError('');
                             hideModal();
                         },
-                        width: getWidth(),
                     },
                 });
                 general_store.setBlockUnblockUserError(null);
@@ -62,28 +63,25 @@ const BlockUser = () => {
         },
     });
 
+    if (isDesktop) {
+        return <BlockUserList />;
+    }
+
     return (
-        <React.Fragment>
-            <DesktopWrapper>
-                <BlockUserList />
-            </DesktopWrapper>
-            <MobileWrapper>
-                <MobileFullPageModal
-                    body_className='block-user__modal'
-                    height_offset='80px'
-                    is_flex
-                    is_modal_open={my_profile_store.active_tab === my_profile_tabs.MY_COUNTERPARTIES}
-                    onClickClose={() => {
-                        // do nothing
-                    }}
-                    page_header_className='buy-sell__modal-header'
-                    page_header_text={localize('My counterparties')}
-                    pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
-                >
-                    <BlockUserList />
-                </MobileFullPageModal>
-            </MobileWrapper>
-        </React.Fragment>
+        <MobileFullPageModal
+            body_className='block-user__modal'
+            height_offset='80px'
+            is_flex
+            is_modal_open={my_profile_store.active_tab === my_profile_tabs.MY_COUNTERPARTIES}
+            onClickClose={() => {
+                // do nothing
+            }}
+            page_header_className='buy-sell__modal-header'
+            page_header_text={localize('My counterparties')}
+            pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
+        >
+            <BlockUserList />
+        </MobileFullPageModal>
     );
 };
 

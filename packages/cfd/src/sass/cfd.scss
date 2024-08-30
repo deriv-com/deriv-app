@@ -13,7 +13,7 @@
         justify-content: space-between;
         padding: 0 2.4rem 1.2rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 0;
         }
     }
@@ -39,7 +39,7 @@
     .dc-input {
         &__label {
             top: 1.2rem;
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 top: 0.9rem;
                 background-color: var(--fill-normal);
             }
@@ -48,7 +48,7 @@
     .dc-password-meter {
         &__bg {
             background: var(--general-section-2);
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 background: var(--fill-disabled);
             }
         }
@@ -57,7 +57,7 @@
         margin-top: 3em;
     }
     .cfd-password-reset {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             flex: 1;
         }
     }
@@ -65,9 +65,8 @@
         flex-grow: 1;
         margin: auto;
 
-        @include mobile {
-            width: calc(100vw - 4.8rem);
-            max-width: 30rem;
+        @include mobile-or-tablet-screen {
+            max-width: 100%;
         }
     }
     & .mt5-password-field {
@@ -77,12 +76,12 @@
     .input-element {
         width: 100%;
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         .cfd-password-modal__content {
             overflow-y: auto;
             overflow-x: hidden;
             height: 100%;
-            max-height: calc(100% - 6.4rem);
+            max-height: calc(100vh - 6.4rem);
             padding: 1rem;
         }
     }
@@ -146,6 +145,12 @@
                 flex: none;
             }
         }
+        &-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
         &-title {
             margin-top: 2.4rem;
             margin-bottom: 0.8rem;
@@ -161,7 +166,7 @@
         flex-direction: column;
         max-width: 30rem;
 
-        @include desktop {
+        @include desktop-screen {
             margin-top: -2.5rem;
         }
 
@@ -172,6 +177,38 @@
         }
         .dc-form-submit-button {
             margin-bottom: 2.2rem;
+        }
+    }
+    &-tnc {
+        &--bottom {
+            @include mobile-or-tablet-screen {
+                margin-top: auto;
+                margin-bottom: 7.5rem;
+            }
+        }
+    }
+    &-info {
+        border-radius: 0.4rem;
+        background: $color-status-information;
+        display: flex;
+        padding: 0.8rem;
+        align-items: flex-start;
+        gap: 0.8rem;
+        margin-block-end: 0.8rem;
+        &__icon {
+            flex-basis: 1.6rem;
+            max-width: 1.6rem;
+        }
+    }
+    &__checkbox {
+        display: flex;
+        align-self: baseline;
+        margin-inline-start: -0.8rem;
+    }
+    &-info,
+    &__checkbox {
+        .dc-icon {
+            margin-inline-start: 0;
         }
     }
 }
@@ -274,7 +311,7 @@
         gap: 4rem;
         padding: 2.4rem 0;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             min-height: 24rem;
             width: calc(100vw - 3.2rem);
         }
@@ -296,10 +333,10 @@
         }
     }
     &__password-area {
-        @include desktop {
+        @include desktop-screen {
             width: calc(min(34rem, 100vw));
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 100%;
             max-width: calc(100% - 2.4rem);
         }
@@ -335,12 +372,12 @@
         justify-content: space-around;
         padding: 2.4rem 0 2rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: calc(100vw - 3.2rem);
             height: 100%;
         }
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         & .dc-form-submit-button {
             all: unset;
         }
@@ -369,7 +406,7 @@
             margin-top: 8px;
             font-weight: bold;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             &:not(:first-child):not(:last-child) {
                 margin: 0;
             }
@@ -387,7 +424,7 @@
             }
         }
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         display: grid;
         grid-gap: 2.4rem;
         grid-template-columns: 1fr 1fr 1fr;
@@ -429,6 +466,76 @@
         margin: 1.6rem 0;
         .dc-btn {
             margin: 0.5rem;
+        }
+    }
+}
+
+.cfd-password-modal__mt5 {
+    form {
+        @include mobile-or-tablet-screen {
+            height: 100%;
+        }
+    }
+    .dc-password-meter__container {
+        @include mobile-or-tablet-screen {
+            width: 100%;
+            max-width: 100%;
+        }
+    }
+    .cfd-password-modal__content {
+        @include mobile-or-tablet-screen {
+            max-height: 100%;
+            padding: 0;
+            justify-content: space-between;
+        }
+        @include tablet-up {
+            margin-bottom: 0;
+        }
+    }
+
+    .dc-form-submit-button {
+        box-shadow: 0px 2px 0px 0px #f2f3f4 inset;
+        width: 100%;
+        padding-inline: 1.6rem;
+        padding-block-start: 1.6rem;
+        padding-block-end: 0.8rem;
+        @include mobile-or-tablet-screen {
+            & > .dc-btn {
+                width: 100%;
+            }
+        }
+    }
+    .cfd-password-modal {
+        &__create-password {
+            &-content {
+                margin-top: 0;
+            }
+            &-body {
+                padding-block: 3.2rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                @include mobile-or-tablet-screen {
+                    height: 100%;
+                    padding-inline: 1.6rem;
+                    padding-block-start: 4rem;
+                    padding-block-end: 1.6rem;
+                }
+            }
+            &-description {
+                max-width: 100%;
+                margin-block: 1.6rem;
+            }
+        }
+        &-tnc {
+            @include mobile-or-tablet-screen {
+                margin-top: auto;
+            }
+        }
+    }
+    .dc-modal-header {
+        &--cfd-password-modal {
+            box-shadow: 0px -2px 0px 0px #f2f3f4 inset;
         }
     }
 }

@@ -2,6 +2,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const IgnorePlugin = require('webpack').IgnorePlugin;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const DefinePlugin = require('webpack').DefinePlugin;
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 
@@ -17,6 +18,7 @@ const {
 } = require('./loaders-config');
 
 const ALIASES = {
+    'react/jsx-runtime': 'react/jsx-runtime.js',
     Assets: path.resolve(__dirname, '../src/assets'),
     Components: path.resolve(__dirname, '../src/components'),
     Config: path.resolve(__dirname, '../src/config'),
@@ -99,6 +101,9 @@ const plugins = () => [
     new CleanWebpackPlugin(),
     new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
     new MiniCssExtractPlugin(cssConfig()),
+    new DefinePlugin({
+        'process.env.REMOTE_CONFIG_URL': JSON.stringify(process.env.REMOTE_CONFIG_URL),
+    }),
 ];
 
 module.exports = {

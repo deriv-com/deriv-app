@@ -12,11 +12,13 @@ import TakeProfit from './TakeProfit';
 import AccumulatorsInformation from './AccumulatorsInformation';
 import Multiplier from './Multiplier';
 import RiskManagement from './RiskManagement';
-import MultipliersInformation from './MultipliersInformation';
 import TradeTypeTabs from './TradeTypeTabs';
 import Strike from './Strike';
 import PayoutPerPoint from './PayoutPerPoint';
 import LastDigitPrediction from './LastDigitPrediction';
+import MultipliersExpirationInfo from './MultipliersExpirationInfo';
+import BarrierInfo from './BarrierInfo';
+import PayoutPerPointInfo from './PayoutPerPointInfo';
 
 type TTradeParametersProps = {
     is_minimized?: boolean;
@@ -25,32 +27,46 @@ type TTradeParametersProps = {
 const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
     const { contract_type, symbol } = useTraderStore();
     const isVisible = (component_key: string) => {
-        return getTradeParams(symbol)[contract_type].includes(component_key);
+        const params = getTradeParams(symbol)?.[contract_type] ?? {};
+        return component_key in params;
     };
 
     return (
-        <div
-            className={clsx(
-                'trade-params__options__wrapper',
-                is_minimized && 'trade-params__options__wrapper--minimized'
+        <React.Fragment>
+            <div
+                className={clsx(
+                    'trade-params__options__wrapper',
+                    is_minimized && 'trade-params__options__wrapper--minimized'
+                )}
+            >
+                {isVisible('trade_type_tabs') && <TradeTypeTabs is_minimized={is_minimized} />}
+                {isVisible('last_digit') && <LastDigitPrediction is_minimized={is_minimized} />}
+                {isVisible('duration') && <Duration is_minimized={is_minimized} />}
+                {isVisible('strike') && <Strike is_minimized={is_minimized} />}
+                {isVisible('payout_per_point') && <PayoutPerPoint is_minimized={is_minimized} />}
+                {isVisible('barrier') && <Barrier is_minimized={is_minimized} />}
+                {isVisible('growth_rate') && <GrowthRate is_minimized={is_minimized} />}
+                {isVisible('multiplier') && <Multiplier is_minimized={is_minimized} />}
+                {isVisible('stake') && <Stake is_minimized={is_minimized} />}
+                {isVisible('allow_equals') && <AllowEquals is_minimized={is_minimized} />}
+                {isVisible('take_profit') && <TakeProfit is_minimized={is_minimized} />}
+                {isVisible('risk_management') && <RiskManagement is_minimized={is_minimized} />}
+                {isVisible('expiration') && !is_minimized && <MultipliersExpirationInfo />}
+                {isVisible('accu_info_display') && <AccumulatorsInformation is_minimized={is_minimized} />}
+                {isVisible('barrier_info') && !is_minimized && <BarrierInfo />}
+                {isVisible('payout_per_point_info') && !is_minimized && <PayoutPerPointInfo />}
+            </div>
+            {is_minimized && isVisible('expiration') && (
+                <div className='trade-params__options-info-standalone'>
+                    <MultipliersExpirationInfo />
+                </div>
             )}
-        >
-            {isVisible('trade_type_tabs') && <TradeTypeTabs is_minimized={is_minimized} />}
-            {isVisible('last_digit') && <LastDigitPrediction is_minimized={is_minimized} />}
-            {isVisible('duration') && <Duration is_minimized={is_minimized} />}
-            {isVisible('strike') && <Strike is_minimized={is_minimized} />}
-            {isVisible('payout_per_point') && <PayoutPerPoint is_minimized={is_minimized} />}
-            {isVisible('barrier') && <Barrier is_minimized={is_minimized} />}
-            {isVisible('growth_rate') && <GrowthRate is_minimized={is_minimized} />}
-            {isVisible('multiplier') && <Multiplier is_minimized={is_minimized} />}
-            {isVisible('stake') && <Stake is_minimized={is_minimized} />}
-            {isVisible('allow_equals') && <AllowEquals is_minimized={is_minimized} />}
-            {isVisible('take_profit') && <TakeProfit is_minimized={is_minimized} />}
-            {isVisible('risk_management') && <RiskManagement is_minimized={is_minimized} />}
-            {/* {isVisible('expiration') && <MultipliersExpirationInfo />} */}
-            {isVisible('accu_info_display') && <AccumulatorsInformation is_minimized={is_minimized} />}
-            {isVisible('mult_info_display') && <MultipliersInformation is_minimized={is_minimized} />}
-        </div>
+            {is_minimized && isVisible('payout_per_point_info') && (
+                <div className='trade-params__options-info-standalone'>
+                    <PayoutPerPointInfo />
+                </div>
+            )}
+        </React.Fragment>
     );
 });
 

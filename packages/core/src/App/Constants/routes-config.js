@@ -61,13 +61,6 @@ const P2P = React.lazy(() =>
     })
 );
 
-const Cashier_V2 = React.lazy(() =>
-    moduleLoader(() => {
-        // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "cashier-v2" */ '@deriv/cashier-v2');
-    })
-);
-
 const RedirectToNewTradersHub = () => {
     return <Redirect to={routes.traders_hub} />;
 };
@@ -252,12 +245,6 @@ const getModules = () => {
                     ],
                 },
             ],
-        },
-        {
-            path: routes.cashier_v2,
-            component: Cashier_V2,
-            is_authenticated: true,
-            getTitle: () => localize('Cashier'),
         },
         {
             path: routes.cashier,

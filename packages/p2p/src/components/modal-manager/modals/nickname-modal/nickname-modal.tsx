@@ -34,6 +34,7 @@ const NicknameModal = ({ onCancel, onConfirm, should_hide_close_btn = false }: T
                                 platform: 'P2P',
                                 should_hide_close_btn,
                                 type: 'announce',
+                                only_toast_message: true,
                             });
                             hideModal();
                             onConfirm?.();

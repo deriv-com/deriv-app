@@ -32,7 +32,10 @@ jest.mock('../WithdrawalLockedContent', () => ({
     getWithdrawalLimitReachedDesc: jest.fn(() => 'Withdrawal Limit Reached Description'),
 }));
 
-const mockActiveWalletData = { currency: 'USD', currency_config: { is_crypto: false } };
+const mockActiveWalletData = {
+    currency: 'USD',
+    currency_config: { is_crypto: false, platform: { cashier: ['dougflow'] } },
+};
 const mockCryptoConfigData = { minimum_withdrawal: 10 };
 const mockAuthenticationData = {
     is_poa_needed: false,
@@ -142,7 +145,10 @@ describe('WithdrawalLocked', () => {
     });
 
     it('should render locked screen for crypto withdrawal limit reached when in a locked state', () => {
-        const mockCryptoWalletData = { currency: 'BTC', currency_config: { is_crypto: true } };
+        const mockCryptoWalletData = {
+            currency: 'BTC',
+            currency_config: { is_crypto: true, platform: { cashier: ['crypto'] } },
+        };
         const mockStatusData = { is_withdrawal_locked: false };
         const mockLockedAccountLimitsData = { remainder: 5 };
 

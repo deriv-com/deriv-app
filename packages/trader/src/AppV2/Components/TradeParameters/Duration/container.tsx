@@ -16,6 +16,31 @@ const DurationActionSheetContainer = observer(
         const [end_time, setEndTime] = useState<string>('');
         const [toggle_picker, setTogglePicker] = useState<boolean>(false);
 
+        const onAction = () => {
+            if (unit == 'h') {
+                const minutes = selected_hour[0] * 60 + selected_hour[1];
+                onChangeMultiple({
+                    duration_unit: 'm',
+                    duration: Number(minutes),
+                    expiry_time: null,
+                    expiry_type: 'duration',
+                });
+            } else if (unit == 'et') {
+                setSelectedHour([]);
+                onChangeMultiple({
+                    expiry_time: end_time,
+                    expiry_type: 'endtime',
+                });
+            } else {
+                setSelectedHour([]);
+                onChangeMultiple({
+                    duration_unit: unit,
+                    duration: Number(selected_time),
+                    expiry_time: null,
+                    expiry_type: 'duration',
+                });
+            }
+        };
         const onChangeUnit = (value: string) => {
             if (unit !== 'h') {
                 setSelectedHour([]);
@@ -41,17 +66,18 @@ const DurationActionSheetContainer = observer(
         }, [duration, duration_unit, setSelectedHour]);
 
         const setWheelPickerValue = (index: number, value: string | number) => {
+            const num_value = Number(value);
             if (unit === 'h') {
                 const arr = selected_hour;
-                arr[index] = Number(value);
+                arr[index] = num_value;
                 setSelectedHour(arr);
             } else if (unit == 'd') {
-                setSelectedTime([Number(value)]);
+                setSelectedTime([num_value]);
                 const updated_date = new Date();
-                updated_date.setDate(updated_date.getDate() + Number(value));
+                updated_date.setDate(updated_date.getDate() + num_value);
                 setExpiryDate(updated_date);
             } else {
-                setSelectedTime([Number(value)]);
+                setSelectedTime([num_value]);
             }
         };
 
@@ -89,31 +115,7 @@ const DurationActionSheetContainer = observer(
                     alignment='vertical'
                     primaryAction={{
                         content: <Localize i18n_default_text='Save' />,
-                        onAction: () => {
-                            if (unit == 'h') {
-                                const minutes = selected_hour[0] * 60 + selected_hour[1];
-                                onChangeMultiple({
-                                    duration_unit: 'm',
-                                    duration: Number(minutes),
-                                    expiry_time: null,
-                                    expiry_type: 'duration',
-                                });
-                            } else if (unit == 'et') {
-                                setSelectedHour([]);
-                                onChangeMultiple({
-                                    expiry_time: end_time,
-                                    expiry_type: 'endtime',
-                                });
-                            } else {
-                                setSelectedHour([]);
-                                onChangeMultiple({
-                                    duration_unit: unit,
-                                    duration: Number(selected_time),
-                                    expiry_time: null,
-                                    expiry_type: 'duration',
-                                });
-                            }
-                        },
+                        onAction,
                     }}
                 />
             </div>

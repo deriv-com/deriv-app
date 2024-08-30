@@ -173,9 +173,20 @@ export const getTradeTypeTabsList = (contract_type = '') => {
 };
 
 export const getOptionPerUnit = (unit: string): { value: number; label: string }[][] => {
-    let start = 0;
-    let end = 0;
-    let label = '';
+    const unitConfig: Record<
+        string,
+        { start: number; end: number; label: string } | (() => { value: number; label: string }[][])
+    > = {
+        m: { start: 1, end: 59, label: 'min' },
+        s: { start: 15, end: 59, label: 'sec' },
+        d: { start: 1, end: 365, label: 'days' },
+        t: { start: 1, end: 10, label: 'tick' },
+        h: () => {
+            const hour_options = generateOptions(1, 23, 'h');
+            const minute_options = generateOptions(1, 59, 'min');
+            return [hour_options, minute_options];
+        },
+    };
 
     const generateOptions = (start: number, end: number, label: string) => {
         return Array.from({ length: end - start + 1 }, (_, i) => ({
@@ -184,35 +195,16 @@ export const getOptionPerUnit = (unit: string): { value: number; label: string }
         }));
     };
 
-    switch (unit) {
-        case 'm':
-            start = 1;
-            end = 59;
-            label = 'min';
-            break;
-        case 's':
-            start = 15;
-            end = 59;
-            label = 'sec';
-            break;
-        case 'd':
-            start = 1;
-            end = 365;
-            label = 'days';
-            break;
-        case 't':
-            start = 1;
-            end = 10;
-            label = 'tick';
-            break;
-        case 'h': {
-            const housr_options = generateOptions(1, 23, 'h');
-            const minute_options = generateOptions(1, 59, 'min');
-            return [housr_options, minute_options];
-        }
-        default:
-            return [[]];
+    const config = unitConfig[unit];
+
+    if (typeof config === 'function') {
+        return config();
     }
 
-    return [generateOptions(start, end, label)];
+    if (config) {
+        const { start, end, label } = config;
+        return [generateOptions(start, end, label)];
+    }
+
+    return [[]];
 };

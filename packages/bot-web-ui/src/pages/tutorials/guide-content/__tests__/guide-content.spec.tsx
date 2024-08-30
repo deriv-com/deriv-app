@@ -132,12 +132,10 @@ describe('<GuideContent />', () => {
             wrapper,
         });
 
-        const button_cancel = screen.getAllByTestId('tutorials-wrap--tour')[1];
-        userEvent.type(button_cancel, '{enter}');
+        const tour = screen.getAllByTestId('tutorials-wrap--tour')[1];
+        userEvent.type(tour, '{enter}');
 
-        await waitFor(() => {
-            expect(mock_DBot_store.dashboard.is_tour_dialog_visible).toBeTruthy();
-        });
+        expect(mock_DBot_store.dashboard.is_tour_dialog_visible).toBeTruthy();
     });
 
     it('should not trigger the keyDown event upon clicking "Esc"', async () => {
@@ -146,12 +144,10 @@ describe('<GuideContent />', () => {
             wrapper,
         });
 
-        const button_cancel = screen.getAllByTestId('tutorials-wrap--tour')[1];
-        userEvent.type(button_cancel, '{esc}');
+        const tour = screen.getAllByTestId('tutorials-wrap--tour')[1];
+        userEvent.type(tour, '{esc}');
 
-        await waitFor(() => {
-            expect(mock_DBot_store.dashboard.is_tour_dialog_visible).toBeTruthy();
-        });
+        expect(mock_DBot_store.dashboard.is_tour_dialog_visible).toBeTruthy();
     });
 
     it('should open bot builder tab when subtype is a "BotBuilder" upon clickng trigger tour button.', async () => {

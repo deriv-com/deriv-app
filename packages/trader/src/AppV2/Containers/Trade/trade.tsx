@@ -11,8 +11,9 @@ import { TradeParametersContainer, TradeParameters } from 'AppV2/Components/Trad
 import CurrentSpot from 'AppV2/Components/CurrentSpot';
 import { TradeChart } from '../Chart';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
-import TemporaryTradeTypes from './trade-types';
+import TradeTypes from './trade-types';
 import MarketSelector from 'AppV2/Components/MarketSelector';
+import useContractsForCompany, { TContractTypesList } from 'AppV2/Hooks/useContractsForCompany';
 import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
 import { isAccumulatorContract } from '@deriv/shared';
 
@@ -20,9 +21,15 @@ const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
     const chart_ref = React.useRef<HTMLDivElement>(null);
 
-    const { active_symbols, contract_type, contract_types_list, onMount, onChange, onUnmount } = useTraderStore();
+    const { active_symbols, contract_type, onMount, onChange, onUnmount } = useTraderStore();
+    const { contract_types_list } = useContractsForCompany();
 
-    const trade_types = React.useMemo(() => getTradeTypesList(contract_types_list), [contract_types_list]);
+    const trade_types = React.useMemo(() => {
+        return Array.isArray(contract_types_list) && contract_types_list.length === 0
+            ? []
+            : getTradeTypesList(contract_types_list as TContractTypesList);
+    }, [contract_types_list]);
+
     const symbols = React.useMemo(
         () =>
             active_symbols.map(({ display_name, symbol: underlying }) => ({
@@ -36,7 +43,7 @@ const Trade = observer(() => {
         window.innerHeight - HEIGHT.HEADER - HEIGHT.BOTTOM_NAV - HEIGHT.ADVANCED_FOOTER - HEIGHT.PADDING;
 
     const onTradeTypeSelect = React.useCallback(
-        (e: React.MouseEvent<HTMLButtonElement>) => {
+        (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
             const value = trade_types.find(({ text }) => text === (e.target as HTMLButtonElement).textContent)?.value;
             onChange({
                 target: {
@@ -53,7 +60,7 @@ const Trade = observer(() => {
         if (current_chart_ref) {
             const chart_bottom_Y = current_chart_ref.getBoundingClientRect().bottom;
             const container_bottom_Y = window.innerHeight - HEIGHT.BOTTOM_NAV;
-            setIsMinimizedParamsVisible(chart_bottom_Y < container_bottom_Y);
+            setIsMinimizedParamsVisible(chart_bottom_Y <= container_bottom_Y);
         }
     }, []);
 
@@ -68,7 +75,7 @@ const Trade = observer(() => {
             {symbols.length && trade_types.length ? (
                 <React.Fragment>
                     <div className='trade'>
-                        <TemporaryTradeTypes
+                        <TradeTypes
                             contract_type={contract_type}
                             onTradeTypeSelect={onTradeTypeSelect}
                             trade_types={trade_types}

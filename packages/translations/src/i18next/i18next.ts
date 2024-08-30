@@ -2,6 +2,7 @@ import { str as crc32 } from 'crc-32';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { isProduction } from '../../../shared/src/utils/config/config';
+import { UNSUPPORTED_LANGUAGES } from '../../../shared/src/utils/constants/default-options';
 import withI18n from '../components';
 
 const LANGUAGE_KEY = 'i18n_language';
@@ -18,7 +19,6 @@ const ALL_LANGUAGES = Object.freeze({
     IT: 'Italiano',
     KM: 'ខ្មែរ',
     KO: '한국어',
-    MN: 'Монгол',
     PL: 'Polish',
     PT: 'Português',
     SW: 'Kiswahili',
@@ -41,7 +41,6 @@ export const getAllowedLanguages = () => {
         DE: 'Deutsch',
         KM: 'ខ្មែរ',
         KO: '한국어',
-        MN: 'Монгол',
         PT: 'Português',
         PL: 'Polish',
         SW: 'Kiswahili',
@@ -56,7 +55,7 @@ export const getAllowedLanguages = () => {
         ZH_CN: '简体中文',
         ZH_TW: '繁體中文',
     };
-    const exclude_languages = ['ACH'];
+    const exclude_languages = ['ACH', ...UNSUPPORTED_LANGUAGES];
     // TODO Change language_list to const when languages are available in prod.
     type Key = keyof typeof ALL_LANGUAGES;
     let language_list = Object.keys(getAllLanguages())

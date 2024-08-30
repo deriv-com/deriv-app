@@ -44,7 +44,6 @@ describe('getPositionsV2TabIndexFromURL', () => {
 describe('isDTraderV2', () => {
     const data = {
         dtrader_v2: true,
-        next_cashier: false,
         p2p_v2: false,
         sharkfin: false,
         wallet: false,

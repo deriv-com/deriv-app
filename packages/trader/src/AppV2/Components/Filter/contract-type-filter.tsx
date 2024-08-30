@@ -38,7 +38,12 @@ const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: T
                 selected={!!changedOptions.length}
                 size='md'
             >
-                {!!changedOptions.length && <Text>({changedOptions.length})</Text>}
+                {!!changedOptions.length && (
+                    <Text>
+                        {/* Chip component throws a missing unique "key" prop error in quill-ui on test links, hence added a key */}
+                        <React.Fragment key='trade_types_count'>({changedOptions.length})</React.Fragment>
+                    </Text>
+                )}
             </Chip.Standard>
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={onActionSheetClose} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>

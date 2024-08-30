@@ -26,9 +26,9 @@ const DurationActionSheetContainer = observer(
         const handleSelectExpiryDate = (date: Date) => {
             setExpiryDate(date);
             const current_date = new Date();
-            const timeDifference = +date - +current_date;
-            const dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-            setSelectedTime([dayDifference]);
+            const time_difference = +date - +current_date;
+            const day_difference = Math.ceil(time_difference / (1000 * 60 * 60 * 24));
+            setSelectedTime([day_difference]);
         };
 
         useEffect(() => {
@@ -61,9 +61,7 @@ const DurationActionSheetContainer = observer(
                 <DurationChips duration_units_list={duration_units_list} onChangeUnit={onChangeUnit} unit={unit} />
                 <DurationWheelPicker
                     unit={unit}
-                    setEndTime={val => {
-                        setEndTime(val);
-                    }}
+                    setEndTime={setEndTime}
                     setWheelPickerValue={setWheelPickerValue}
                     selected_hour={selected_hour}
                     selected_time={selected_time}

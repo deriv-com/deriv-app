@@ -53,7 +53,7 @@ describe('DurationActionSheetContainer', () => {
             setSelectedHour: jest.fn(),
         }
     ) => {
-        return render(
+        render(
             <TraderProviders store={mocked_store}>
                 <DurationActionSheetContainer {...hours} />
             </TraderProviders>
@@ -76,7 +76,7 @@ describe('DurationActionSheetContainer', () => {
         expect(default_trade_store.modules.trade.onChangeMultiple).not.toHaveBeenCalled();
     });
 
-    it('should call onChangeMultiple with correct data with hours', async () => {
+    it('should call onChangeMultiple with correct data with hours', () => {
         default_trade_store.modules.trade.duration = 130;
         renderDurationContainer(default_trade_store, { selected_hour: [2, 10], setSelectedHour: jest.fn() });
 
@@ -129,7 +129,7 @@ describe('DurationActionSheetContainer', () => {
         expect(screen.getByText('Expiry')).toBeInTheDocument();
     });
 
-    it('should open datepicker on clicking on calendar icon in the days wheelpicker', async () => {
+    it('should open datepicker on clicking on calendar icon in the days wheelpicker', () => {
         default_trade_store.modules.trade.duration_unit = 'd';
         default_trade_store.modules.trade.duration = 34;
         renderDurationContainer(default_trade_store);
@@ -138,7 +138,7 @@ describe('DurationActionSheetContainer', () => {
         expect(screen.getByText('Pick an end date')).toBeInTheDocument();
     });
 
-    it('should select value when clicked on any date on datepicker', async () => {
+    it('should select value when clicked on any date on datepicker', () => {
         default_trade_store.modules.trade.duration_unit = 'd';
         default_trade_store.modules.trade.duration = 2;
         renderDurationContainer(default_trade_store);

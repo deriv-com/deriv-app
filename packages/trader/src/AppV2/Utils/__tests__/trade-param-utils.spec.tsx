@@ -7,6 +7,7 @@ import {
     getTradeTypeTabsList,
     isDigitContractWinning,
     focusAndOpenKeyboard,
+    getOptionPerUnit,
 } from '../trade-params-utils';
 
 describe('getTradeParams', () => {
@@ -185,5 +186,49 @@ describe('getTradeTypeTabsList', () => {
                 is_displayed: true,
             },
         ]);
+    });
+});
+
+describe('getOptionPerUnit', () => {
+    test('should return options for minutes when unit is "m"', () => {
+        const result = getOptionPerUnit('m');
+        expect(result).toHaveLength(1);
+        expect(result[0][0]).toEqual({ value: 1, label: '1 min' });
+        expect(result[0][result[0].length - 1]).toEqual({ value: 59, label: '59 min' });
+    });
+
+    test('should return options for seconds when unit is "s"', () => {
+        const result = getOptionPerUnit('s');
+        expect(result).toHaveLength(1);
+        expect(result[0][0]).toEqual({ value: 15, label: '15 sec' });
+        expect(result[0][result[0].length - 1]).toEqual({ value: 59, label: '59 sec' });
+    });
+
+    test('should return options for days when unit is "d"', () => {
+        const result = getOptionPerUnit('d');
+        expect(result).toHaveLength(1);
+        expect(result[0][0]).toEqual({ value: 1, label: '1 days' });
+        expect(result[0][result[0].length - 1]).toEqual({ value: 365, label: '365 days' });
+    });
+
+    test('should return options for ticks when unit is "t"', () => {
+        const result = getOptionPerUnit('t');
+        expect(result).toHaveLength(1);
+        expect(result[0][0]).toEqual({ value: 1, label: '1 tick' });
+        expect(result[0][result[0].length - 1]).toEqual({ value: 10, label: '10 tick' });
+    });
+
+    test('should return options for hours and minutes when unit is "h"', () => {
+        const result = getOptionPerUnit('h');
+        expect(result).toHaveLength(2);
+        expect(result[0][0]).toEqual({ value: 1, label: '1 h' });
+        expect(result[0][result[0].length - 1]).toEqual({ value: 23, label: '23 h' });
+        expect(result[1][0]).toEqual({ value: 1, label: '1 min' });
+        expect(result[1][result[1].length - 1]).toEqual({ value: 59, label: '59 min' });
+    });
+
+    test('should return an empty array for unknown units', () => {
+        const result = getOptionPerUnit('unknown');
+        expect(result).toEqual([[]]);
     });
 });

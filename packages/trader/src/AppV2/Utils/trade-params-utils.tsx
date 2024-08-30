@@ -171,3 +171,48 @@ export const getTradeTypeTabsList = (contract_type = '') => {
     ];
     return tab_list.filter(({ is_displayed }) => is_displayed);
 };
+
+export const getOptionPerUnit = (unit: string): { value: number; label: string }[][] => {
+    let start = 0;
+    let end = 0;
+    let label = '';
+
+    const generateOptions = (start: number, end: number, label: string) => {
+        return Array.from({ length: end - start + 1 }, (_, i) => ({
+            value: start + i,
+            label: `${start + i} ${label}`,
+        }));
+    };
+
+    switch (unit) {
+        case 'm':
+            start = 1;
+            end = 59;
+            label = 'min';
+            break;
+        case 's':
+            start = 15;
+            end = 59;
+            label = 'sec';
+            break;
+        case 'd':
+            start = 1;
+            end = 365;
+            label = 'days';
+            break;
+        case 't':
+            start = 1;
+            end = 10;
+            label = 'tick';
+            break;
+        case 'h': {
+            const housr_options = generateOptions(1, 23, 'h');
+            const minute_options = generateOptions(1, 59, 'min');
+            return [housr_options, minute_options];
+        }
+        default:
+            return [[]];
+    }
+
+    return [generateOptions(start, end, label)];
+};

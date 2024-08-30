@@ -1,5 +1,5 @@
 import { TimeWheelPickerContainer, WheelPickerContainer } from '@deriv-com/quill-ui';
-import { getOptionPerUnit } from './util';
+import { getOptionPerUnit } from 'AppV2/Utils/trade-params-utils';
 import React from 'react';
 
 const formatCurrentGMTDate = () => {

@@ -4,11 +4,11 @@ import { Localize } from '@deriv/translations';
 import React, { useState } from 'react';
 
 const formatDate = (date: Date) => {
-    const utcYear = date.getFullYear();
-    const utcMonth = date.getMonth();
-    const utcDay = date.getDate();
+    const utc_year = date.getFullYear();
+    const utc_month = date.getMonth();
+    const utc_day = date.getDate();
 
-    const utcDate = new Date(Date.UTC(utcYear, utcMonth, utcDay, 23, 59, 59));
+    const utc_date = new Date(Date.UTC(utc_year, utc_month, utc_day, 23, 59, 59));
     const options: Intl.DateTimeFormatOptions = {
         day: '2-digit',
         month: 'short',
@@ -19,15 +19,15 @@ const formatDate = (date: Date) => {
         second: '2-digit',
         hour12: false,
     };
-    const formattedDate = new Intl.DateTimeFormat('en-GB', options).format(utcDate);
-    return `${formattedDate} GMT`;
+    const formatted_date = new Intl.DateTimeFormat('en-GB', options).format(utc_date);
+    return `${formatted_date} GMT`;
 };
 
-const calculateTotalDays = (expiryDate: Date) => {
+const calculateTotalDays = (expiry_date: Date) => {
     const today = new Date();
-    const timeDifference = expiryDate.getTime() - today.getTime();
-    const dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-    return dayDifference;
+    const time_difference = expiry_date.getTime() - today.getTime();
+    const day_difference = Math.ceil(time_difference / (1000 * 60 * 60 * 24));
+    return day_difference;
 };
 
 const DurationEndTimePicker = ({

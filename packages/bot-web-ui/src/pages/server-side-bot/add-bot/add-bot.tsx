@@ -162,7 +162,11 @@ export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children, set
                         }
                         sub_schema[field.name] = schema;
                     } else if (field.validation.includes('required') && field?.type === 'text') {
-                        const schema = Yup.string().required(localize('Field cannot be empty'));
+                        const schema = Yup.string()
+                            .required(localize('Field cannot be empty'))
+                            .test('not-only-spaces', localize('Field cannot be empty'), (value: string | undefined) => {
+                                return Boolean(value && value.trim().length > 0);
+                            });
                         sub_schema[field.name] = schema;
                     }
                 }

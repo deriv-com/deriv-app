@@ -105,11 +105,12 @@ describe('CFDSuccess', () => {
 
     it('does not render buttons on mobile', () => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
-        const mockRenderButton = jest.fn();
+        const mockRenderButton = jest.fn<JSX.Element, []>(() => <button>Mock Action Button</button>);
 
         render(<CFDSuccess {...mockProps} actionButtons={mockRenderButton} />);
 
         expect(mockRenderButton).not.toHaveBeenCalled();
+        expect(screen.queryByText('Mock Action Button')).not.toBeInTheDocument();
     });
 
     it('renders correct content when active wallet is undefined', () => {

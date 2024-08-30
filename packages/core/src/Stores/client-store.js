@@ -455,9 +455,8 @@ export default class ClientStore extends BaseStore {
                 const should_update_preferred_language =
                     language !== this.account_settings?.preferred_language &&
                     this.preferred_language !== this.account_settings?.preferred_language;
-
+                window.history.replaceState({}, document.title, urlForLanguage(language));
                 if (should_update_preferred_language) {
-                    window.history.replaceState({}, document.title, urlForLanguage(language));
                     this.setPreferredLanguage(language);
                     await WS.setSettings({
                         set_settings: 1,

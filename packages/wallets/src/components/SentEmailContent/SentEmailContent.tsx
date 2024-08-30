@@ -114,6 +114,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
             <ActionScreen
                 actionButtons={
                     <Button
+                        color='primary-transparent'
                         disabled={shouldShowResendEmailReasons}
                         onClick={() => {
                             setShouldShowResendEmailReasons(true);

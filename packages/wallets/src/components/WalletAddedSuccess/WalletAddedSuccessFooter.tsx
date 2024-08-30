@@ -12,7 +12,7 @@ const WalletAddedSuccessFooter = ({ onPrimaryButtonClick, onSecondaryButtonClick
     return (
         <div className='wallets-add-more__success-footer'>
             <WalletButtonGroup isFlex isFullWidth>
-                <Button onClick={onSecondaryButtonClick} variant='outlined'>
+                <Button borderWidth='sm' color='black' onClick={onSecondaryButtonClick} variant='outlined'>
                     <Localize i18n_default_text='Maybe later' />
                 </Button>
                 <Button onClick={onPrimaryButtonClick}>

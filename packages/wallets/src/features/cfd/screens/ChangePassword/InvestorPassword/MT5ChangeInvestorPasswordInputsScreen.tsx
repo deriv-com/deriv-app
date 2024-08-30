@@ -111,7 +111,13 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                 >
                                     <Localize i18n_default_text='Change investor password' />
                                 </Button>
-                                <Button onClick={sendEmail} size='lg' textSize={buttonTextSize} variant='ghost'>
+                                <Button
+                                    color='primary-transparent'
+                                    onClick={sendEmail}
+                                    size='lg'
+                                    textSize={buttonTextSize}
+                                    variant='ghost'
+                                >
                                     <Localize i18n_default_text='Create or reset investor password' />
                                 </Button>
                             </div>

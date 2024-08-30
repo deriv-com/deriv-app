@@ -17,8 +17,6 @@ export const deriv_urls = Object.freeze({
     DERIV_APP_STAGING: `https://staging-app.${domain_url}`,
     SMARTTRADER_PRODUCTION: `https://smarttrader.${domain_url}`,
     SMARTTRADER_STAGING: `https://staging-smarttrader.${domain_url}`,
-    BINARYBOT_PRODUCTION: `https://bot.${domain_url}`,
-    BINARYBOT_STAGING: `https://staging-bot.${domain_url}`,
     P2P_PRODUCTION: `https://p2p.${domain_url}`,
     P2P_STAGING: `https://staging-p2p.${domain_url}`,
 });

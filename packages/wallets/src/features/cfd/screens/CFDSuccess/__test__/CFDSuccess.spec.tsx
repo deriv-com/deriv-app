@@ -107,7 +107,7 @@ describe('CFDSuccess', () => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
         const mockRenderButton = jest.fn();
 
-        render(<CFDSuccess {...mockProps} renderButton={mockRenderButton} />);
+        render(<CFDSuccess {...mockProps} actionButtons={mockRenderButton} />);
 
         expect(mockRenderButton).not.toHaveBeenCalled();
     });

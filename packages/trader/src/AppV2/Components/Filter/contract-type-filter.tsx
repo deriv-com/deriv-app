@@ -33,7 +33,7 @@ const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: T
                 className='filter__chip'
                 dropdown
                 isDropdownOpen={isDropdownOpen}
-                label='Trade types'
+                label={<Localize i18n_default_text='Trade types' key='trade_types_label' />}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 selected={!!changedOptions.length}
                 size='md'

@@ -1,17 +1,22 @@
 import React from 'react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { useStore } from '@deriv/stores';
-import { cloneObject, getContractCategoriesConfig, getContractTypesConfig, WS } from '@deriv/shared';
+import { cloneObject, getContractCategoriesConfig, getContractTypesConfig } from '@deriv/shared';
+import { TConfig, TContractTypesList } from 'Types';
+import { useDtraderQuery } from './useDtraderQuery';
 
-type TContractType = {
-    text?: string;
-    value: string;
-};
-
-export type TContractTypesList = {
-    [key: string]: {
-        name: string;
-        categories: DeepRequired<TContractType[]>;
+type TContractsForCompanyResponse = {
+    contracts_for_company: {
+        available: {
+            barrier_category: string;
+            contract_category: string;
+            contract_category_display: string;
+            contract_display: string;
+            contract_type: string;
+            default_stake: number;
+            sentiment: string;
+        }[];
+        hit_count: number;
     };
 };
 
@@ -20,22 +25,29 @@ const useContractsForCompany = () => {
     const { setContractTypesListV2 } = useTraderStore();
     const { client } = useStore();
     const { landing_company_shortcode } = client;
+    const { data: response, error } = useDtraderQuery<TContractsForCompanyResponse>(
+        'contracts_for_company',
+        {
+            contracts_for_company: 1,
+            landing_company: landing_company_shortcode,
+        },
+        {
+            enabled: !!landing_company_shortcode,
+        }
+    );
+
     const contract_categories = getContractCategoriesConfig();
     const available_categories = cloneObject(contract_categories);
     const contract_types = getContractTypesConfig();
-    let available_contract_types: ReturnType<typeof getContractTypesConfig> = {};
+    const [available_contract_types, setAvailableContractTypes] = React.useState<
+        ReturnType<typeof getContractTypesConfig> | undefined
+    >();
 
-    const fetchContractForCompany = React.useCallback(async () => {
-        let response;
-
-        const request = {
-            landing_company: landing_company_shortcode,
-        };
-
+    React.useEffect(() => {
         try {
-            response = await WS.contractsForCompany(request);
-            const { contracts_for_company = [], error } = response;
-            available_contract_types = {};
+            const { contracts_for_company } = response || {};
+
+            const available_contract_types: ReturnType<typeof getContractTypesConfig> = {};
 
             if (!error && contracts_for_company?.available.length) {
                 contracts_for_company.available.forEach((contract: any) => {
@@ -49,38 +61,40 @@ const useContractsForCompany = () => {
 
                     if (!available_contract_types[type]) {
                         // extend contract_categories to include what is needed to create the contract list
-                        const sub_cats =
-                            available_categories[
-                                Object.keys(available_categories).find(
-                                    key => available_categories[key].categories.indexOf(type) !== -1
-                                ) ?? ''
-                            ].categories;
+                        const category =
+                            Object.keys(available_categories).find(
+                                key => available_categories[key].categories.indexOf(type) !== -1
+                            ) ?? '';
+
+                        const sub_cats = available_categories[category]?.categories;
 
                         if (!sub_cats) return;
 
                         sub_cats[(sub_cats as string[]).indexOf(type)] = {
                             value: type,
                             text: contract_types[type].title,
+                            barrier_category: contract.barrier_category,
                         };
 
                         available_contract_types[type] = cloneObject(contract_types[type]);
                     }
+                    const config: TConfig = available_contract_types[type].config || {};
+                    config.barrier_category = contract.barrier_category as TConfig['barrier_category'];
+
+                    available_contract_types[type].config = config;
                 });
 
                 setContractTypesListV2(available_categories);
                 setContractTypesList(available_categories);
+                setAvailableContractTypes(available_contract_types);
             }
         } catch (err) {
             /* eslint-disable no-console */
             console.error(err);
         }
-    }, [setContractTypesListV2]);
+    }, [response]);
 
-    React.useEffect(() => {
-        fetchContractForCompany();
-    }, [fetchContractForCompany]);
-
-    return { contract_types_list };
+    return { contract_types_list, available_contract_types };
 };
 
 export default useContractsForCompany;

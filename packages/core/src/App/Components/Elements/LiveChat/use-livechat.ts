@@ -35,8 +35,6 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
             client_first_name = first_name ?? ' ';
             client_last_name = last_name ?? ' ';
 
-            /* the session variables are sent to CS team dashboard to notify user has logged in
-                and also acts as custom variables to trigger targeted engagement */
             const session_variables = {
                 is_logged_in: !!is_logged_in,
                 loginid: loginid ?? ' ',
@@ -51,12 +49,9 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
             window.LiveChatWidget?.call('set_session_variables', session_variables);
 
             if (is_logged_in) {
-                // client logged in
-                // prepfill name and email
                 window.LiveChatWidget?.call('set_customer_email', session_variables.email);
                 window.LiveChatWidget?.call('set_customer_name', `${client_first_name} ${client_last_name}`);
 
-                // prefill name and email fields after chat has ended
                 if (window.LC_API?.on_chat_ended) {
                     window.LC_API.on_chat_ended = () => {
                         window.LiveChatWidget?.call('set_customer_email', session_variables.email);
@@ -64,11 +59,9 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
                     };
                 }
             } else {
-                // client not logged in
-                // clear name and email fields
                 window.LiveChatWidget?.call('set_customer_email', ' ');
                 window.LiveChatWidget?.call('set_customer_name', ' ');
-                // clear name and email fields after chat has ended
+
                 if (window.LC_API?.on_chat_ended) {
                     window.LC_API.on_chat_ended = () => {
                         window.LiveChatWidget?.call('set_customer_email', ' ');

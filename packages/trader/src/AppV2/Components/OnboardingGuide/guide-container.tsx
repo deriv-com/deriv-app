@@ -48,8 +48,7 @@ const GuideContainer = ({ should_run, onFinishGuide }: TGuideContainerProps) => 
             content: <Localize i18n_default_text='View your positions here.' />,
             disableBeacon: true,
             offset: -4,
-            // TODO: change selector to a className when Vinu's changes of Bottom Nav will be merged
-            target: '.user__guide__anchor',
+            target: '.user-guide__anchor',
             title: <Localize i18n_default_text='Check your positions (6/6)' />,
         },
     ];

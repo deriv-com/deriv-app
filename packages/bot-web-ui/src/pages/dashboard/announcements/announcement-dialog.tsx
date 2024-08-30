@@ -51,14 +51,14 @@ const AnnouncementDialog = ({
                         <Localize i18n_default_text={title} />
                     </Text>
                     {Array.isArray(content) &&
-                        content.map((content: TContentItem) => {
+                        content.map((content_item: TContentItem) => {
                             return (
-                                <div className={`${base_classname}__body-item`} key={content?.id}>
+                                <div className={`${base_classname}__body-item`} key={content_item?.id}>
                                     <div>
                                         <LabelPairedCheckCaptionFillIcon fill='var(--icon-black-plus)' />
                                     </div>
                                     <Text as='p' line_height='xl' size='xs'>
-                                        <Localize i18n_default_text={content?.text} />
+                                        <Localize i18n_default_text={content_item?.text} />
                                     </Text>
                                 </div>
                             );

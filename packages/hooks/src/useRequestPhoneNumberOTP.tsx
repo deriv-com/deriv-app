@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useMutation } from '@deriv/api';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import useSettings from './useSettings';
 import { useStore } from '@deriv/stores';
 
@@ -20,6 +20,7 @@ const useRequestPhoneNumberOTP = () => {
         ...rest
     } = useMutation('phone_number_challenge');
     const [error_message, setErrorMessage] = React.useState<React.ReactNode>('');
+    const [carrier, setCarrier] = useState('');
     const { client } = useStore();
     const { verification_code } = client;
     const { phone_number_verification: phone_number_verification_code } = verification_code;
@@ -32,6 +33,10 @@ const useRequestPhoneNumberOTP = () => {
         if (email_otp_error) formatError(email_otp_error);
     }, [email_otp_error]);
 
+    const getOtherCarrier = () => {
+        return carrier === VERIFICATION_SERVICES.SMS ? localize('WhatsApp') : localize('SMS');
+    };
+
     const requestOnSMS = () => {
         mutate({
             payload: {
@@ -39,6 +44,7 @@ const useRequestPhoneNumberOTP = () => {
                 email_code: phone_number_verification_code || '',
             },
         });
+        setCarrier(VERIFICATION_SERVICES.SMS);
     };
 
     const requestOnWhatsApp = () => {
@@ -48,6 +54,7 @@ const useRequestPhoneNumberOTP = () => {
                 email_code: phone_number_verification_code || '',
             },
         });
+        setCarrier(VERIFICATION_SERVICES.WHATSAPP);
     };
 
     const sendEmailOTPVerification = (value: string) => {
@@ -83,6 +90,14 @@ const useRequestPhoneNumberOTP = () => {
                                 onClick={() => window.LC_API.open_chat_window()}
                             />,
                         ]}
+                    />
+                );
+                break;
+            case 'PhoneNumberVerificationSuspended':
+                setErrorMessage(
+                    <Localize
+                        i18n_default_text='An error occurred. Get new code via {{other_carriers}}.'
+                        values={{ other_carriers: getOtherCarrier() }}
                     />
                 );
                 break;

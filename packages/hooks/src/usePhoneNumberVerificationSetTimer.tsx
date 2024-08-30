@@ -79,6 +79,8 @@ const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = f
     }, [next_phone_otp_request_timer]);
 
     return {
+        is_email_otp_timer_loading: typeof next_email_otp_request_timer !== 'number',
+        is_phone_otp_timer_loading: typeof next_phone_otp_request_timer !== 'number',
         next_email_otp_request_timer,
         next_phone_otp_request_timer,
         is_request_button_disabled,

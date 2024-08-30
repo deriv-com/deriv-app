@@ -59,7 +59,7 @@ const PersonalDetailsForm = observer(() => {
     const [isPhoneNumberVerificationEnabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
-    const { is_request_button_disabled, next_email_otp_request_timer } = usePhoneNumberVerificationSetTimer();
+    const { next_email_otp_request_timer, is_email_otp_timer_loading } = usePhoneNumberVerificationSetTimer();
 
     const {
         client,
@@ -433,8 +433,8 @@ const PersonalDetailsForm = observer(() => {
                                             error={errors.phone}
                                             disabled={
                                                 isFieldDisabled('phone') ||
-                                                is_request_button_disabled ||
-                                                !!next_email_otp_request_timer
+                                                !!next_email_otp_request_timer ||
+                                                is_email_otp_timer_loading
                                             }
                                             data-testid='dt_phone'
                                         />
@@ -442,9 +442,9 @@ const PersonalDetailsForm = observer(() => {
                                             <VerifyButton
                                                 is_verify_button_disabled={
                                                     isFieldDisabled('phone') ||
-                                                    is_request_button_disabled ||
                                                     account_settings.phone !== values.phone ||
-                                                    !account_settings.phone
+                                                    !account_settings.phone ||
+                                                    is_email_otp_timer_loading
                                                 }
                                                 next_email_otp_request_timer={next_email_otp_request_timer}
                                                 setStatus={setStatus}

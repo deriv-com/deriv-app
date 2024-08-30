@@ -33,7 +33,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
     const { data: account_settings, invalidate } = useSettings();
     const { ui } = useStore();
     const { setShouldShowPhoneNumberOTP } = ui;
-    const { next_phone_otp_request_timer, is_request_button_disabled } = usePhoneNumberVerificationSetTimer(true);
+    const { next_phone_otp_request_timer, is_phone_otp_timer_loading } = usePhoneNumberVerificationSetTimer(true);
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
     const { localize } = useTranslations();
 
@@ -106,6 +106,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
             </Text>
             <div className='phone-verification__card--inputfield'>
                 <TextFieldAddon
+                    type='number'
                     label={localize('Phone number')}
                     value={phone_number}
                     status={error_message ? 'error' : 'neutral'}
@@ -125,7 +126,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                         is_button_loading ||
                         !!next_phone_otp_request_timer ||
                         !!error_message ||
-                        is_request_button_disabled
+                        is_phone_otp_timer_loading
                     }
                 >
                     <Text bold>
@@ -141,7 +142,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                         is_button_loading ||
                         !!next_phone_otp_request_timer ||
                         !!error_message ||
-                        is_request_button_disabled
+                        is_phone_otp_timer_loading
                     }
                 >
                     <Text color='white' bold>

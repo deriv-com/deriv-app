@@ -62,39 +62,39 @@
     }
 }
 
-.notifications__wrapper {
-    padding-inline-start: 0.5rem;
-    border-inline-start: 1px solid var(--general-section-1);
-    border-width: 1px;
-    margin-inline-end: 1rem;
-
-    &--desktop {
-        z-index: 10;
-        top: 5rem;
-        right: 0;
-        position: absolute;
-        width: 40rem;
-
-        @include rtl {
-            right: -24rem;
-        }
-    }
-
-    .deriv-text {
-        font-weight: bold;
-    }
-
-    .deriv-context-menu {
-        box-shadow: 0 3.2rem 6.4rem 0 #0e0e0e24;
-    }
-}
-
 .notifications {
     min-height: 53.6rem !important;
     background-color: var(--general-main-2);
 
     @include mobile-or-tablet-screen {
         height: 100svh;
+    }
+
+    &__wrapper {
+        padding-inline-start: 0.5rem;
+        border-inline-start: 1px solid var(--general-section-1);
+        border-width: 1px;
+        margin-inline-end: 1rem;
+
+        &--desktop {
+            z-index: 10;
+            top: 5rem;
+            right: 0;
+            position: absolute;
+            width: 40rem;
+
+            @include rtl {
+                right: -24rem;
+            }
+        }
+
+        .deriv-text {
+            font-weight: bold;
+        }
+
+        .deriv-context-menu {
+            box-shadow: 0 3.2rem 6.4rem 0 #0e0e0e24;
+        }
     }
 
     .deriv-text {

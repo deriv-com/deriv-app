@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Text } from '@deriv/components';
 import { Notifications as Announcement } from '@deriv-com/ui';
 import { StandaloneBullhornRegularIcon } from '@deriv/quill-icons';
@@ -17,12 +17,12 @@ type TAnnouncements = {
 };
 
 const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
-    const [is_announce_dialog_open, setIsAnnounceDialogOpen] = useState(false);
+    const [is_announce_dialog_open, setIsAnnounceDialogOpen] = React.useState(false);
     const [is_open_announce_list, setIsOpenAnnounceList] = React.useState(false);
     const [selected_announcement, setSelectedAnnouncement] = React.useState<TAnnouncement | null>(null);
     const [stored_notifications, setStoredNotifications] = React.useState({} as Record<string, boolean>);
     const history = useHistory();
-    const [notifications, setNotifications] = useState([] as TNotifications[]);
+    const [notifications, setNotifications] = React.useState([] as TNotifications[]);
     const action_button_class_name = 'announcements__label';
 
     const storeDataInLocalStorage = (temp_data: Record<string, boolean>) => {
@@ -72,7 +72,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
         return temp_localstorage_data;
     };
 
-    useEffect(() => {
+    React.useEffect(() => {
         const temp_localstorage_data = updateNotifications();
         storeDataInLocalStorage(temp_localstorage_data);
         setStoredNotifications(temp_localstorage_data);
@@ -87,7 +87,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
         );
     };
 
-    useEffect(() => {
+    React.useEffect(() => {
         countActiveAnnouncements();
     }, [stored_notifications]);
 

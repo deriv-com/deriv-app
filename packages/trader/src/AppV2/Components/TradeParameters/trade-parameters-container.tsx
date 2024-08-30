@@ -15,19 +15,21 @@ const TradeParametersContainer = ({
     is_minimized_visible,
 }: React.PropsWithChildren<TTradeParametersContainer>) =>
     is_minimized ? (
-        <CSSTransition
-            in={is_minimized_visible}
-            timeout={0}
-            classNames={{
-                appear: 'trade-params__options__wrapper--minimized--enter',
-                enter: 'trade-params__options__wrapper--minimized--enter',
-                enterDone: 'trade-params__options__wrapper--minimized--enter-done',
-                exit: 'trade-params__options__wrapper--minimized--exit',
-            }}
-            unmountOnExit
-        >
-            {children}
-        </CSSTransition>
+        <div className='trade-params--minimized'>
+            <CSSTransition
+                in={is_minimized_visible}
+                timeout={0}
+                classNames={{
+                    appear: 'trade-params__options__wrapper--minimized--enter',
+                    enter: 'trade-params__options__wrapper--minimized--enter',
+                    enterDone: 'trade-params__options__wrapper--minimized--enter-done',
+                    exit: 'trade-params__options__wrapper--minimized--exit',
+                }}
+                unmountOnExit
+            >
+                {children}
+            </CSSTransition>
+        </div>
     ) : (
         <section className='trade-params'>
             <div className='trade-params__title'>

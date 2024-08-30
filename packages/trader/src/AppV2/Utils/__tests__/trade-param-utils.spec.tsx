@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
@@ -190,45 +190,58 @@ describe('getTradeTypeTabsList', () => {
 });
 
 describe('getOptionPerUnit', () => {
-    test('should return options for minutes when unit is "m"', () => {
+    const renderOptions = (options: { value: number; label: ReactNode }[]) => {
+        return options.map(option => {
+            if (React.isValidElement(option.label)) {
+                const { container } = render(option.label as ReactElement);
+                return container.textContent;
+            }
+            return '';
+        });
+    };
+
+    test('returns correct options for minutes (m)', () => {
         const result = getOptionPerUnit('m');
+        const view = renderOptions(result[0]);
         expect(result).toHaveLength(1);
-        expect(result[0][0]).toEqual({ value: 1, label: '1 min' });
-        expect(result[0][result[0].length - 1]).toEqual({ value: 59, label: '59 min' });
+        expect(view).toEqual([...Array(59)].map((_, i) => `${i + 1} min`));
     });
 
-    test('should return options for seconds when unit is "s"', () => {
+    test('returns correct options for seconds (s)', () => {
         const result = getOptionPerUnit('s');
+        const view = renderOptions(result[0]);
         expect(result).toHaveLength(1);
-        expect(result[0][0]).toEqual({ value: 15, label: '15 sec' });
-        expect(result[0][result[0].length - 1]).toEqual({ value: 59, label: '59 sec' });
+        expect(view).toEqual([...Array(45)].map((_, i) => `${i + 15} sec`));
     });
 
-    test('should return options for days when unit is "d"', () => {
+    test('returns correct options for days (d)', () => {
         const result = getOptionPerUnit('d');
+        const view = renderOptions(result[0]);
         expect(result).toHaveLength(1);
-        expect(result[0][0]).toEqual({ value: 1, label: '1 days' });
-        expect(result[0][result[0].length - 1]).toEqual({ value: 365, label: '365 days' });
+        expect(view).toEqual([...Array(365)].map((_, i) => `${i + 1} days`));
     });
 
-    test('should return options for ticks when unit is "t"', () => {
+    test('returns correct options for ticks (t)', () => {
         const result = getOptionPerUnit('t');
+        const view = renderOptions(result[0]);
         expect(result).toHaveLength(1);
-        expect(result[0][0]).toEqual({ value: 1, label: '1 tick' });
-        expect(result[0][result[0].length - 1]).toEqual({ value: 10, label: '10 tick' });
+        expect(view).toEqual([...Array(10)].map((_, i) => `${i + 1} tick`));
     });
 
-    test('should return options for hours and minutes when unit is "h"', () => {
+    test('returns correct options for hours (h)', () => {
         const result = getOptionPerUnit('h');
+        // eslint-disable-next-line testing-library/render-result-naming-convention
+        const hourView = renderOptions(result[0]);
+        // eslint-disable-next-line testing-library/render-result-naming-convention
+        const minuteView = renderOptions(result[1]);
+
         expect(result).toHaveLength(2);
-        expect(result[0][0]).toEqual({ value: 1, label: '1 h' });
-        expect(result[0][result[0].length - 1]).toEqual({ value: 23, label: '23 h' });
-        expect(result[1][0]).toEqual({ value: 1, label: '1 min' });
-        expect(result[1][result[1].length - 1]).toEqual({ value: 59, label: '59 min' });
+        expect(hourView).toEqual([...Array(23)].map((_, i) => `${i + 1} h`));
+        expect(minuteView).toEqual([...Array(59)].map((_, i) => `${i + 1} min`));
     });
 
-    test('should return an empty array for unknown units', () => {
-        const result = getOptionPerUnit('unknown');
+    test('returns empty array for invalid unit', () => {
+        const result = getOptionPerUnit('invalid');
         expect(result).toEqual([[]]);
     });
 });

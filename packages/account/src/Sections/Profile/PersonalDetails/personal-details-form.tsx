@@ -29,7 +29,7 @@ import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
-import { useInvalidateQuery } from '@deriv/api';
+import { StatesList, useInvalidateQuery } from '@deriv/api';
 import { useStatesList, useResidenceList } from '@deriv/hooks';
 
 type TRestState = {
@@ -106,7 +106,7 @@ const PersonalDetailsForm = observer(() => {
 
     const onSubmit = async (values: GetSettings, { setStatus, setSubmitting }: FormikHelpers<GetSettings>) => {
         setStatus({ msg: '' });
-        const request = makeSettingsRequest({ ...values }, residence_list, states_list, is_virtual);
+        const request = makeSettingsRequest({ ...values }, residence_list, states_list as StatesList, is_virtual);
         setIsBtnLoading(true);
         const data = await WS.authorized.setSettings(request);
 
@@ -201,7 +201,12 @@ const PersonalDetailsForm = observer(() => {
 
     const PersonalDetailSchema = getPersonalDetailsValidationSchema(is_eu, is_virtual);
 
-    const initialValues = getPersonalDetailsInitialValues(account_settings, residence_list, states_list, is_virtual);
+    const initialValues = getPersonalDetailsInitialValues(
+        account_settings,
+        residence_list,
+        states_list as StatesList,
+        is_virtual
+    );
 
     return (
         <Formik
@@ -505,7 +510,7 @@ const PersonalDetailsForm = observer(() => {
                                                         <FormSelectField
                                                             label={localize('State/Province (optional)')}
                                                             name='address_state'
-                                                            list_items={states_list}
+                                                            list_items={states_list as StatesList}
                                                             disabled={isFieldDisabled('address_state')}
                                                         />
                                                     ) : (

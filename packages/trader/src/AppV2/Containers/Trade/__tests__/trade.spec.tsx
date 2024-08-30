@@ -7,6 +7,12 @@ import ModulesProvider from 'Stores/Providers/modules-providers';
 import Trade from '../trade';
 import { TRADE_TYPES } from '@deriv/shared';
 
+const mock_contract_data = {
+    contracts_for_company: {
+        available: [{ contract_type: 'type_1' }, { contract_type: 'type_2' }, { contract_type: 'unsupported_type' }],
+    },
+};
+
 jest.mock('AppV2/Components/BottomNav', () =>
     jest.fn(({ children, onScroll }) => (
         <div onScroll={onScroll} data-testid='dt_bottom_nav'>
@@ -34,6 +40,13 @@ jest.mock('AppV2/Utils/trade-types-utils', () => ({
 }));
 jest.mock('@lottiefiles/dotlottie-react', () => ({
     DotLottieReact: jest.fn(() => <div>DotLottieReact</div>),
+}));
+jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
+    ...jest.requireActual('AppV2/Hooks/useContractsForCompany'),
+    __esModule: true,
+    default: jest.fn(() => ({
+        contracts_for_company: mock_contract_data,
+    })),
 }));
 
 describe('Trade', () => {

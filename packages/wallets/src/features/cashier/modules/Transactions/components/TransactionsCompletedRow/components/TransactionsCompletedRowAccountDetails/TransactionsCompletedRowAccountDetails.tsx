@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text } from '@deriv-com/ui';
+import { Localize } from '@deriv-com/translations';
+import { Text, useDevice } from '@deriv-com/ui';
 import { WalletCurrencyCard, WalletMarketCurrencyIcon } from '../../../../../../../../components';
 import { THooks, TPlatforms } from '../../../../../../../../types';
 import { MARKET_TYPE } from '../../../../../../../cfd/constants';
@@ -15,6 +16,7 @@ type TProps = {
     isDemo: boolean;
     isInterWallet?: boolean;
     mt5Group?: string;
+    transactionID?: number;
 };
 
 const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
@@ -26,7 +28,9 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
     isDemo,
     isInterWallet = false,
     mt5Group,
+    transactionID,
 }) => {
+    const { isDesktop } = useDevice();
     const marketType = getMarketType(mt5Group);
 
     return (
@@ -46,7 +50,10 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
                     platform={accountType as TPlatforms.All}
                 />
             )}
-            <div className='wallets-transactions-completed-row-account-details__type-and-wallet-name'>
+            <div
+                className='wallets-transactions-completed-row-account-details__type-and-wallet-name 
+            wallets-transactions-completed-row-account-details__column'
+            >
                 <Text color='primary' size='xs'>
                     {displayActionType}
                 </Text>
@@ -55,7 +62,27 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
                         {displayAccountName}
                     </Text>
                 </div>
+                {!isDesktop && (
+                    <Text
+                        as='div'
+                        className='wallets-transactions-completed-row-account-details__transaction-id'
+                        color='less-prominent'
+                        size='xs'
+                    >
+                        <Localize i18n_default_text='Ref. ID: {{transactionID}}' values={{ transactionID }} />
+                    </Text>
+                )}
             </div>
+            {isDesktop && (
+                <div className='wallets-transactions-completed-row-account-details__column'>
+                    <Text as='div' color='less-prominent' size='2xs'>
+                        <Localize i18n_default_text='Ref. ID' />
+                    </Text>
+                    <Text as='div' color='general' size='2xs'>
+                        {transactionID}
+                    </Text>
+                </div>
+            )}
         </div>
     );
 };

@@ -279,6 +279,7 @@ export default class ClientStore extends BaseStore {
             is_dxtrade_password_not_set: computed,
             is_financial_information_incomplete: computed,
             is_deposit_lock: computed,
+            is_duplicate_dob_phone: computed,
             is_withdrawal_lock: computed,
             is_trading_experience_incomplete: computed,
             authentication_status: computed,
@@ -450,9 +451,8 @@ export default class ClientStore extends BaseStore {
                 const should_update_preferred_language =
                     language !== this.account_settings?.preferred_language &&
                     this.preferred_language !== this.account_settings?.preferred_language;
-
+                window.history.replaceState({}, document.title, urlForLanguage(language));
                 if (should_update_preferred_language) {
-                    window.history.replaceState({}, document.title, urlForLanguage(language));
                     this.setPreferredLanguage(language);
                     await WS.setSettings({
                         set_settings: 1,
@@ -744,6 +744,10 @@ export default class ClientStore extends BaseStore {
 
     get is_deposit_lock() {
         return this.account_status?.status?.some(status_name => status_name === 'deposit_locked');
+    }
+
+    get is_duplicate_dob_phone() {
+        return this.account_status?.status?.some(status_name => status_name === 'duplicate_dob_phone');
     }
 
     get is_withdrawal_lock() {

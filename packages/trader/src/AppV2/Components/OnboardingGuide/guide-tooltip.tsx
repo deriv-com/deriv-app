@@ -42,7 +42,12 @@ const GuideTooltip = ({ isLastStep, primaryProps, skipProps, step, tooltipProps,
                         </CaptionText>
                         <IconButton
                             {...skipProps}
-                            icon={<LabelPairedXmarkSmBoldIcon fill='var(--component-textIcon-inverse-prominent)' />}
+                            icon={
+                                <LabelPairedXmarkSmBoldIcon
+                                    fill='var(--component-textIcon-inverse-prominent)'
+                                    key='close-button'
+                                />
+                            }
                             className='guide-tooltip__close'
                             size='sm'
                             color='white-black'

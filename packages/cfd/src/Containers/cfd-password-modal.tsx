@@ -1134,7 +1134,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 onClose={() => setSentEmailModalStatus(false)}
                 onClickSendEmail={handleForgotPassword}
             />
-            {}
             {is_incorrect_mt5_password_format_error && isDesktopOrLandscape && is_mt5_password_format_invalid_desktop}
             {is_incorrect_mt5_password_format_error && isMobileOrTabletPotrait && is_mt5_password_format_invalid}
             {is_mt5_password_changed_modal_visible && (

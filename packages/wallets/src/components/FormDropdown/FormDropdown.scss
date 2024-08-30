@@ -8,25 +8,20 @@
 
     /* stylelint-disable-next-line selector-class-pattern */
     .deriv-input {
-        @include rtl {
-            &__field {
-                text-align: right;
-            }
+        &__field {
+            text-align: start;
+        }
 
-            &__left-content {
-                margin-right: unset;
-                margin-left: 0.8rem;
-            }
+        &__left-content {
+            margin-inline-end: 0.8rem;
+        }
 
-            &__right-content {
-                margin-left: unset;
-                margin-right: 1.6rem;
-            }
+        &__right-content {
+            margin-inline-start: 1.6rem;
+        }
 
-            &__label {
-                left: unset;
-                right: 1.6rem;
-            }
+        &__label {
+            inset-inline-start: 1.6rem;
         }
     }
 }

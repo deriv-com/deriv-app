@@ -130,15 +130,10 @@
         color: var(--text-general, #333);
         background: var(--system-light-8-primary-background, #fff);
         padding-inline: 0.4rem;
-        left: 1.6rem;
         -webkit-user-select: none;
         -ms-user-select: none;
         user-select: none;
-
-        @include rtl {
-            left: unset;
-            right: 1.6rem;
-        }
+        inset-inline-start: 1.6rem;
     }
 
     &__field:focus ~ &__label {
@@ -151,21 +146,11 @@
 
     &__icon {
         &-left {
-            margin-right: 0.8rem;
-
-            @include rtl {
-                margin-right: unset;
-                margin-left: 0.8rem;
-            }
+            margin-inline-end: 0.8rem;
         }
 
         &-right {
-            margin-left: 1.6rem;
-
-            @include rtl {
-                margin-left: unset;
-                margin-right: 1.6rem;
-            }
+            margin-inline-start: 1.6rem;
 
             &--listcard {
                 margin: 0 0.8rem;
@@ -179,17 +164,12 @@
         width: 100%;
 
         &--maxchar {
-            float: right;
+            float: inline-end;
         }
 
         &--msg {
-            float: left;
-            text-align: left;
-
-            @include rtl {
-                float: right;
-                text-align: right;
-            }
+            float: inline-start;
+            text-align: start;
         }
     }
 }

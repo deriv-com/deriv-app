@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { APIProvider } from '@deriv/api-v2';
 import { getInitialLanguage, initializeI18n, TranslationProvider } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
@@ -8,13 +8,18 @@ import WalletsAuthProvider from './AuthProvider';
 import './styles/fonts.scss';
 import './index.scss';
 
-const i18nInstance = initializeI18n({
-    cdnUrl: `${process.env.CROWDIN_URL}/${process.env.WALLETS_TRANSLATION_PATH}`, // 'https://translations.deriv.com/deriv-app-wallets/staging'
-});
-
 const App: React.FC = () => {
     const i18nLanguage = localStorage.getItem('i18n_language') ?? getInitialLanguage();
     const defaultLanguage = i18nLanguage === 'AR' ? 'AR' : 'EN';
+
+    const i18nInstance = useMemo(
+        () =>
+            initializeI18n({
+                cdnUrl: `${process.env.CROWDIN_URL}/${process.env.WALLETS_TRANSLATION_PATH}`, // 'https://translations.deriv.com/deriv-app-wallets/staging'
+            }),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [defaultLanguage]
+    );
 
     return (
         <APIProvider standalone>

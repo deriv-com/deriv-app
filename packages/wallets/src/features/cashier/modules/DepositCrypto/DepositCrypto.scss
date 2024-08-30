@@ -33,12 +33,7 @@
         .wallets-transaction-status {
             @include desktop {
                 margin-top: -2.4rem;
-                margin-right: 2.4rem;
-
-                @include rtl {
-                    margin-right: unset;
-                    margin-left: 2.4rem;
-                }
+                margin-inline-end: 2.4rem;
             }
         }
     }

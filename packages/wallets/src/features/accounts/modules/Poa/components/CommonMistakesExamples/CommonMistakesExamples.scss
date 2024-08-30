@@ -38,9 +38,7 @@
         }
 
         &-text {
-            @include rtl {
-                text-align: right;
-            }
+            text-align: start;
         }
     }
 }

@@ -11,12 +11,7 @@
 
     &--is-input {
         .wallets-transfer-form-account-card__icon {
-            margin-right: 0.8rem;
-
-            @include rtl {
-                margin-right: unset;
-                margin-left: 0.8rem;
-            }
+            margin-inline-end: 0.8rem;
 
             .wallets-market-currency-icon {
                 margin-bottom: 0.4rem;
@@ -30,12 +25,7 @@
 
     &--is-modal {
         .wallets-transfer-form-account-card__icon {
-            margin-right: 1.6rem;
-
-            @include rtl {
-                margin-right: unset;
-                margin-left: 1.6rem;
-            }
+            margin-inline-end: 1.6rem;
 
             .wallets-market-currency-icon {
                 margin-bottom: 0.4rem;

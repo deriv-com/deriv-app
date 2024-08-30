@@ -16,7 +16,7 @@
     &__badge {
         position: absolute;
         top: 0;
-        right: 0;
+        inset-inline-end: 0;
         font-weight: 700;
         border-radius: 0 1rem 0rem;
         display: grid;
@@ -26,8 +26,6 @@
         width: 5rem;
 
         @include rtl {
-            right: unset;
-            left: 0;
             border-radius: 1rem 0;
         }
 

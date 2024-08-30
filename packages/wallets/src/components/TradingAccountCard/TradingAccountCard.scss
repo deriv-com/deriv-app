@@ -12,6 +12,7 @@
         padding-inline: 1.6rem;
         $columns: 3;
         $grid-last-row-children: '&:nth-last-child(-n+#{$columns})';
+
         #{$grid-last-row-children} > &__content,
         #{$grid-last-row-children} ~ & > &__content {
             border-bottom: none;
@@ -26,6 +27,7 @@
 
     @include mobile {
         height: 8rem;
+
         &:last-child > &__content,
         &:last-child ~ & > &__content {
             border-bottom: none;
@@ -41,9 +43,7 @@
 
         span,
         p {
-            @include rtl {
-                text-align: right;
-            }
+            text-align: start;
         }
     }
 }

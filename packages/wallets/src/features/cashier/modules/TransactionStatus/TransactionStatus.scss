@@ -5,10 +5,8 @@
         width: 28.2rem;
     }
 
-    @include rtl {
-        span {
-            text-align: right;
-        }
+    span {
+        text-align: start;
     }
 
     display: flex;

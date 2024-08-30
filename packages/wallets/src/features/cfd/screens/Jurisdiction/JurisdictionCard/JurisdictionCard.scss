@@ -60,9 +60,7 @@
         position: relative;
 
         span {
-            @include rtl {
-                text-align: right;
-            }
+            text-align: start;
         }
 
         &__tag {

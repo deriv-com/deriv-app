@@ -3,15 +3,8 @@
     display: flex;
     align-items: center;
     cursor: pointer;
-    padding-left: 0.8rem;
-    border-left: 0.1rem solid var(--light-5-active-background, #d6dadb);
-
-    @include rtl {
-        border-left: unset;
-        border-right: 0.1rem solid var(--light-5-active-background, #d6dadb);
-        padding-right: 0.8rem;
-        padding-left: unset;
-    }
+    padding-inline-start: 0.8rem;
+    border-inline-start: 0.1rem solid var(--light-5-active-background, #d6dadb);
 
     @include mobile {
         flex-direction: column;

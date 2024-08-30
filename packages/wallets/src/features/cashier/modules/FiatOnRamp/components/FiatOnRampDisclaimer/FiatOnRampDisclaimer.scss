@@ -10,9 +10,7 @@
     }
 
     &__description {
-        @include rtl {
-            text-align: right;
-        }
+        text-align: start;
     }
 
     &__buttons {

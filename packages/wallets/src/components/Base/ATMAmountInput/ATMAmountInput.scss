@@ -1,26 +1,18 @@
 .wallets-atm-amount-input {
     display: flex;
     flex-direction: column;
-    padding-right: 0.8rem;
+    padding-inline-end: 0.8rem;
     width: 100%;
-
-    @include rtl {
-        padding-right: unset;
-        padding-left: 0.8rem;
-    }
 
     &__input {
         all: unset;
         position: absolute;
         inset: 0;
+        text-align: start;
         color: var(--system-light-2-general-text, #333);
 
         @include mobile {
             inset: auto 0 0;
-        }
-
-        @include rtl {
-            text-align: right;
         }
 
         &:disabled {
@@ -39,8 +31,6 @@
     }
 
     &__input-text {
-        @include rtl {
-            text-align: right;
-        }
+        text-align: start;
     }
 }

@@ -59,9 +59,7 @@
             align-self: stretch;
 
             &-title {
-                @include rtl {
-                    text-align: right;
-                }
+                text-align: start;
             }
 
             &-list {

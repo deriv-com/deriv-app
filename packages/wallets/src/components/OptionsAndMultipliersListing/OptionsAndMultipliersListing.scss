@@ -66,9 +66,5 @@
 
     &__icon {
         width: fit-content;
-
-        @include rtl {
-            transform: rotate(180deg);
-        }
     }
 }

@@ -16,9 +16,7 @@
     }
 
     &__loginid {
-        @include rtl {
-            text-align: right;
-        }
+        text-align: start;
     }
 
     &__description {
@@ -27,12 +25,7 @@
         width: 100%;
 
         &-balance {
-            margin-left: auto;
-
-            @include rtl {
-                margin-left: unset;
-                margin-right: auto;
-            }
+            margin-inline-start: auto;
         }
 
         &-details {
@@ -92,9 +85,7 @@
         }
 
         &-text {
-            @include rtl {
-                text-align: right;
-            }
+            text-align: start;
         }
     }
 

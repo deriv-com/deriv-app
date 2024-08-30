@@ -13,10 +13,7 @@
 
     @include mobile {
         width: 18rem;
-
-        @include rtl {
-            height: 66.6rem;
-        }
+        height: 66.6rem;
     }
 
     &__eu-clients {

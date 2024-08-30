@@ -7,6 +7,10 @@
     background-color: var(--system-light-8-primary-background, #fff);
     width: 44rem;
 
+    span {
+        text-align: right;
+    }
+
     @include mobile {
         width: 32rem;
         padding: 1.6rem;
@@ -20,6 +24,10 @@
 
         @include mobile {
             gap: 0.4rem;
+        }
+
+        @include rtl {
+            padding-right: 2.4rem;
         }
     }
 

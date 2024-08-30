@@ -25,6 +25,10 @@
         button {
             background-color: transparent;
         }
+
+        &-header {
+            margin: auto 0;
+        }
     }
     &__assets {
         padding: 0 var(--core-spacing-800);

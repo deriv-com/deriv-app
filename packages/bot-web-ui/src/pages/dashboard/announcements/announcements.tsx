@@ -25,8 +25,8 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
     const [notifications, setNotifications] = React.useState([] as TNotifications[]);
     const action_button_class_name = 'announcements__label';
 
-    const storeDataInLocalStorage = (temp_data: Record<string, boolean>) => {
-        localStorage?.setItem('bot-announcements', JSON.stringify(temp_data));
+    const storeDataInLocalStorage = (updated_local_storage_data: Record<string, boolean>) => {
+        localStorage?.setItem('bot-announcements', JSON.stringify(updated_local_storage_data));
     };
 
     const modalButtonAction = (announce_id: string, announcement: TAnnouncement) => () => {

@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { TooltipRenderProps } from 'react-joyride';
-import GuideTooltip from '../guide-tooltip';
+import GuideTooltip, { GuideTooltipProps } from '../guide-tooltip';
 
 jest.mock('react-joyride', () => jest.fn(() => <div>Joyride</div>));
 
@@ -17,8 +16,9 @@ const mock_props = {
         title: 'Title',
         content: 'Step content',
     },
+    setStepIndex: jest.fn(),
     tooltipProps: {},
-} as unknown as TooltipRenderProps;
+} as unknown as GuideTooltipProps;
 
 describe('GuideTooltip', () => {
     it('should render correct content for tooltip if isLastStep === false', () => {
@@ -37,5 +37,11 @@ describe('GuideTooltip', () => {
         expect(screen.getByText('Step content')).toBeInTheDocument();
         expect(screen.getByText('Done')).toBeInTheDocument();
         expect(screen.queryByText('Next')).not.toBeInTheDocument();
+    });
+
+    it('should render scroll icon if title of the step is scroll-icon', () => {
+        mock_props.step.title = 'scroll-icon';
+        render(<GuideTooltip {...mock_props} isLastStep={true} />);
+        expect(screen.getByText('Swipe up to see the chart')).toBeInTheDocument();
     });
 });

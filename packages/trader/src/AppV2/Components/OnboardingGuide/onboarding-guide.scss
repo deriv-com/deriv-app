@@ -9,6 +9,16 @@
         align-items: flex-start;
         min-width: var(--core-size-4300);
         color: var(--component-textIcon-inverse-prominent);
+
+        &-scroll {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            &-text {
+                color: var(--core-color-solid-slate-50);
+            }
+        }
     }
 
     &__button {
@@ -28,6 +38,23 @@
         position: relative;
         inset-inline-start: var(--core-spacing-500);
         inset-block-end: var(--core-spacing-500);
+    }
+
+    @keyframes bounce {
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    &--bounce {
+        height: var(--core-spacing-3200);
+        width: var(--core-spacing-2400);
+        fill: var(--core-color-solid-slate-50);
+        animation: bounce var(--core-motion-duration-400) ease-in-out var(--core-motion-duration-100) infinite;
     }
 }
 

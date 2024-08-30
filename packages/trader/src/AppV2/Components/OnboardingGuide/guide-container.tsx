@@ -9,6 +9,7 @@ type TGuideContainerProps = {
 };
 
 const GuideContainer = ({ should_run, onFinishGuide }: TGuideContainerProps) => {
+    const [step_index, setStepIndex] = React.useState(0);
     const steps = [
         {
             content: <Localize i18n_default_text='Scroll left or right to explore trade types.' />,
@@ -36,12 +37,36 @@ const GuideContainer = ({ should_run, onFinishGuide }: TGuideContainerProps) => 
             title: <Localize i18n_default_text='Open your trade (3/6)' />,
         },
         {
+            content: '',
+            disableBeacon: false,
+            offset: 0,
+            spotlightPadding: 0,
+            styles: {
+                spotlight: {
+                    display: 'none',
+                },
+                arrow: {
+                    display: 'none',
+                },
+            },
+            target: '.purchase-button__wrapper',
+            title: 'scroll-icon',
+        },
+        {
+            content: <Localize i18n_default_text='Track market trends with our interactive charts.' />,
+            disableBeacon: true,
+            spotlightPadding: 8,
+            offset: 4,
+            target: '.trade__chart-tooltip',
+            title: <Localize i18n_default_text='Analyse with charts (4/6)' />,
+            placement: 'bottom' as Step['placement'],
+        },
+        {
             content: <Localize i18n_default_text='Scroll left or right to adjust your trade parameters.' />,
             disableBeacon: true,
-            // TODO: remove disableScrolling after 4 step wil be added
             disableScrolling: false,
             offset: -4,
-            target: '.trade__bottom',
+            target: '.trade__parameter',
             title: <Localize i18n_default_text='Make quick adjustments (5/6)' />,
         },
         {
@@ -72,11 +97,12 @@ const GuideContainer = ({ should_run, onFinishGuide }: TGuideContainerProps) => 
                     arrow: {
                         length: 4,
                         spread: 8,
+                        display: step_index === 3 ? 'none' : 'inline-flex',
                     },
                 },
             }}
+            run={should_run}
             showSkipButton
-            tooltipComponent={GuideTooltip}
             steps={steps}
             spotlightPadding={0}
             scrollToFirstStep
@@ -89,7 +115,8 @@ const GuideContainer = ({ should_run, onFinishGuide }: TGuideContainerProps) => 
                     borderRadius: 'unset',
                 },
             }}
-            run={should_run}
+            stepIndex={step_index}
+            tooltipComponent={props => <GuideTooltip {...props} setStepIndex={setStepIndex} />}
         />
     );
 };

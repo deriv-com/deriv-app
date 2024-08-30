@@ -88,12 +88,14 @@ const Trade = observer(() => {
                         <TradeParametersContainer>
                             <TradeParameters />
                         </TradeParametersContainer>
-                        <section className='trade__chart' style={{ height: dynamic_chart_height }} ref={chart_ref}>
-                            <TradeChart />
-                        </section>
+                        <div className='trade__chart-tooltip'>
+                            <section className='trade__chart' style={{ height: dynamic_chart_height }} ref={chart_ref}>
+                                <TradeChart />
+                            </section>
+                        </div>
                         {isAccumulatorContract(contract_type) && <AccumulatorStats />}
                     </div>
-                    <div className='trade__bottom'>
+                    <div className='trade__parameter'>
                         <TradeParametersContainer is_minimized_visible={is_minimized_params_visible} is_minimized>
                             <TradeParameters is_minimized />
                         </TradeParametersContainer>

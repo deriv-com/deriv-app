@@ -2,8 +2,6 @@ import { renderHook } from '@testing-library/react-hooks';
 import useQuery from '../../useQuery';
 import useStatesList from '../useStatesList';
 import { StatesList } from '../../types/api-types-overrides';
-import { UseQueryResult } from '@tanstack/react-query';
-import { TSocketError, TSocketResponseData } from '../../../types';
 
 jest.mock('../../useQuery');
 
@@ -15,7 +13,7 @@ describe('useStatesList', () => {
             data: {
                 states_list: [] as StatesList,
             },
-        } as UseQueryResult<TSocketResponseData<'states_list'>, TSocketError<'states_list'>>);
+        } as ReturnType<typeof useQuery<'states_list'>>);
         const { result } = renderHook(() => useStatesList('in'));
 
         expect(result.current.data).toHaveLength(0);
@@ -30,7 +28,7 @@ describe('useStatesList', () => {
                 ] as StatesList,
             },
             isFetched: true,
-        } as UseQueryResult<TSocketResponseData<'states_list'>, TSocketError<'states_list'>>);
+        } as ReturnType<typeof useQuery<'states_list'>>);
         const { result } = renderHook(() => useStatesList('in'));
         expect(result.current.isFetched).toBeTruthy();
     });

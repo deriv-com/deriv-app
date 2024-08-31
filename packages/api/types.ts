@@ -72,7 +72,6 @@ import type {
     LandingCompanyDetailsRequest,
     LandingCompanyDetailsResponse,
     LandingCompanyRequest,
-    LandingCompanyResponse,
     LoginHistoryRequest,
     LoginHistoryResponse,
     LogOutRequest,
@@ -198,7 +197,6 @@ import type {
     StatementRequest,
     StatementResponse,
     StatesListRequest,
-    StatesListResponse,
     TermsAndConditionsApprovalRequest,
     TermsAndConditionsApprovalResponse,
     TicksHistoryRequest,
@@ -229,6 +227,7 @@ import type {
     VerifyEmailResponse,
 } from '@deriv/api-types';
 import type { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import type { LandingCompanyResponse, StatesListResponse } from './src/types/api-types-overrides';
 
 /**
  * Proof of Identity (POI) and Proof of Address (POA) authentication status details.

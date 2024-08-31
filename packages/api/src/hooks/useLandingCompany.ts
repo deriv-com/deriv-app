@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import useQuery from '../useQuery';
 import useSettings from './useSettings';
-import type { LandingCompany } from '../types/api-types-overrides';
 
 /** A custom hook that returns the available landing companies of the user's country. */
 const useLandingCompany = () => {
@@ -15,7 +14,7 @@ const useLandingCompany = () => {
     const modified_landing_company = useMemo(() => {
         if (!data?.landing_company) return;
 
-        return { ...(data.landing_company as LandingCompany) };
+        return { ...data.landing_company };
     }, [data?.landing_company]);
 
     return {

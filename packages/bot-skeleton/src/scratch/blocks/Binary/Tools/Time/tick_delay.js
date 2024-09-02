@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { modifyContextMenu } from '../../../../utils';
+import { modifyContextMenu, evaluateExpression } from '../../../../utils';
 
 Blockly.Blocks.tick_delay = {
     init() {
@@ -43,7 +43,13 @@ Blockly.Blocks.tick_delay = {
     },
     getRequiredValueInputs() {
         return {
-            TICKDELAYVALUE: null,
+            TICKDELAYVALUE: input_value => {
+                const evaluated_result = evaluateExpression(input_value);
+                if (isNaN(evaluated_result) || evaluated_result <= 0) {
+                    this.error_message = localize('Invalid Input {{ input_value }}.', { input_value });
+                    return true;
+                }
+            },
         };
     },
 };

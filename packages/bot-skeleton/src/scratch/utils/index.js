@@ -267,6 +267,14 @@ const loadBlocksFromHeader = (xml_string, block) => {
     });
 };
 
+export const evaluateExpression = value => {
+    if (!value) return;
+    // eslint-disable-next-line  no-param-reassign
+    value = value?.trim();
+    // eslint-disable-next-line no-new-func
+    return new Function(`return ${  value}`)();
+};
+
 export const loadBlocksFromRemote = block => {
     // eslint-disable-next-line consistent-return
     return new Promise((resolve, reject) => {

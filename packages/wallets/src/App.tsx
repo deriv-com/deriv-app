@@ -8,9 +8,11 @@ import WalletsAuthProvider from './AuthProvider';
 import './styles/fonts.scss';
 import './index.scss';
 
+type LanguageType = 'AR' | 'EN';
+
 const App: React.FC = () => {
-    const i18nLanguage = localStorage.getItem('i18n_language') ?? getInitialLanguage();
-    const defaultLanguage = i18nLanguage === 'AR' ? 'AR' : 'EN';
+    const defaultLanguage: LanguageType =
+        (localStorage.getItem('i18n_language') as LanguageType) ?? getInitialLanguage();
 
     const i18nInstance = useMemo(
         () =>

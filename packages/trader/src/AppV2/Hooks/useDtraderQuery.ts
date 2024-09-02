@@ -20,6 +20,7 @@ type QueryOptions = QueryOptionsBase & {
 
 // Cache object to store the results
 const cache: Record<string, any> = {};
+const ongoing_requests: Record<string, Promise<any> | undefined> = {};
 
 const useDtraderQueryBase = <Response>(
     key: string,
@@ -35,8 +36,17 @@ const useDtraderQueryBase = <Response>(
 
     const fetchData = useCallback(() => {
         setIsLoading(true);
-        const sendPromise = wait_for_authorize ? WS.authorized.send(request) : WS.send(request);
-        sendPromise
+
+        let send_promise;
+
+        if (ongoing_requests[key]) {
+            send_promise = ongoing_requests[key];
+        } else {
+            send_promise = wait_for_authorize ? WS.authorized.send(request) : WS.send(request);
+            ongoing_requests[key] = send_promise;
+        }
+
+        send_promise
             .then((result: Response) => {
                 cache[key] = result;
                 setData(result);
@@ -45,6 +55,9 @@ const useDtraderQueryBase = <Response>(
             .catch((err: TServerError) => {
                 setError(err);
                 setIsLoading(false);
+            })
+            .finally(() => {
+                delete ongoing_requests[key];
             });
     }, [key, wait_for_authorize, request]);
 

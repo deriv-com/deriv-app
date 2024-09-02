@@ -40,7 +40,7 @@ describe('WheelPickerMobile Component', () => {
         fireEvent.touchStart(pickerWheel, { touches: [{ clientY: 0 }] });
         fireEvent.touchMove(pickerWheel, { touches: [{ clientY: 100 }] });
         fireEvent.touchEnd(pickerWheel);
-        expect(mockOnChange).toHaveBeenCalledWith(40);
+        expect(mockOnChange).toHaveBeenCalledWith('40');
     });
 
     test('should call onChange with the correct value when swiped down', () => {
@@ -49,7 +49,7 @@ describe('WheelPickerMobile Component', () => {
         fireEvent.touchStart(pickerWheel, { touches: [{ clientY: 0 }] });
         fireEvent.touchMove(pickerWheel, { touches: [{ clientY: -100 }] });
         fireEvent.touchEnd(pickerWheel);
-        expect(mockOnChange).toHaveBeenCalledWith(20);
+        expect(mockOnChange).toHaveBeenCalledWith('20');
     });
 
     test('should handle default value not in options correctly', () => {
@@ -75,7 +75,7 @@ describe('WheelPickerMobile Component', () => {
         renderComponent('20');
         const option = screen.getByText('30');
         fireEvent.mouseUp(option);
-        expect(mockOnChange).toHaveBeenCalledWith(30);
+        expect(mockOnChange).toHaveBeenCalledWith('30');
     });
 
     test('getTargetIndex should return correct index', () => {

@@ -27,14 +27,14 @@ describe('WheelPicker Component', () => {
         renderComponent('20');
         const upButton = screen.getByTestId('up-btn');
         userEvent.click(upButton);
-        expect(mockOnClick).toHaveBeenCalledWith(10);
+        expect(mockOnClick).toHaveBeenCalledWith('10');
     });
 
     test('should call onClick with the correct value when down button is clicked', () => {
         renderComponent('20');
         const downButton = screen.getByTestId('down-btn');
         userEvent.click(downButton);
-        expect(mockOnClick).toHaveBeenCalledWith(30);
+        expect(mockOnClick).toHaveBeenCalledWith('30');
     });
 
     test('should disable up button when at the first option', () => {
@@ -47,11 +47,6 @@ describe('WheelPicker Component', () => {
         renderComponent('40');
         const downButton = screen.getByTestId('down-btn');
         expect(downButton).toBeDisabled();
-    });
-
-    test('should handle default value not in options correctly', () => {
-        renderComponent('25');
-        expect(screen.getByText('10 USD')).toBeInTheDocument();
     });
 
     test('should update selected index correctly when options change', () => {

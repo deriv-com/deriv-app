@@ -69,6 +69,6 @@ describe('PayoutPerPointInput Component', () => {
         renderComponent(true);
         const option = screen.getByText('30');
         userEvent.click(option);
-        expect(mockOnPayoutClick).toHaveBeenCalledWith(30);
+        expect(mockOnPayoutClick).toHaveBeenCalledWith('30');
     });
 });

@@ -141,7 +141,7 @@ const PurchaseButton = observer(() => {
                         const error_message = is_max_payout_exceeded ? (
                             <Localize i18n_default_text='Exceeds max payout' />
                         ) : (
-                            ''
+                            api_error
                         );
 
                         return (
@@ -149,14 +149,10 @@ const PurchaseButton = observer(() => {
                                 <Button
                                     color={getButtonType(index, trade_type)}
                                     size='lg'
-                                    label={
-                                        has_no_button_content && !!api_error
-                                            ? api_error
-                                            : getContractTypeDisplay(trade_type, {
-                                                  isHighLow: is_high_low,
-                                                  showButtonName: true,
-                                              })
-                                    }
+                                    label={getContractTypeDisplay(trade_type, {
+                                        isHighLow: is_high_low,
+                                        showButtonName: true,
+                                    })}
                                     fullWidth
                                     className={clsx(
                                         'purchase-button',

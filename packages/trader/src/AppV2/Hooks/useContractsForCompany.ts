@@ -24,12 +24,12 @@ const useContractsForCompany = () => {
     const [contract_types_list, setContractTypesList] = React.useState<TContractTypesList | []>([]);
     const { setContractTypesListV2 } = useTraderStore();
     const { client } = useStore();
-    const { landing_company_shortcode } = client;
+    const { loginid, is_switching, landing_company_shortcode } = client;
     const {
         data: response,
         refetch,
         error,
-        is_loading_ref,
+        is_loading,
     } = useDtraderQuery<TContractsForCompanyResponse>(
         'contracts_for_company',
         {
@@ -48,13 +48,15 @@ const useContractsForCompany = () => {
         ReturnType<typeof getContractTypesConfig> | undefined
     >();
 
-    const prev_loginid = useRef(client.loginid);
+    const prev_loginid = useRef(loginid);
+    const is_loading_ref = useRef(is_loading);
 
     React.useEffect(() => {
         try {
             const { contracts_for_company } = response || {};
-
             const available_contract_types: ReturnType<typeof getContractTypesConfig> = {};
+
+            is_loading_ref.current = false;
 
             if (!error && contracts_for_company?.available.length) {
                 contracts_for_company.available.forEach((contract: any) => {
@@ -102,14 +104,14 @@ const useContractsForCompany = () => {
     }, [response]);
 
     useEffect(() => {
-        if (prev_loginid.current && prev_loginid.current !== client.loginid && !client.is_switching) {
+        if (prev_loginid.current && prev_loginid.current !== loginid && !is_switching) {
             console.log('refetch cfc');
             setContractTypesList([]);
             setAvailableContractTypes(undefined);
             refetch();
-            console.log('refetch cfc is_loading', is_loading_ref.current);
+            is_loading_ref.current = true;
         }
-    }, [client.loginid, client.is_switching, refetch, is_loading_ref]);
+    }, [loginid, is_switching, refetch]);
 
     return { contract_types_list, available_contract_types, is_loading_ref };
 };

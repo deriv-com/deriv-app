@@ -1,12 +1,11 @@
 import { WS } from '@deriv/shared';
-import { useState, useEffect, useCallback, useRef, MutableRefObject } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { TServerError } from 'Types';
-import useStateWithRef from './useStateWithRef';
 
 type QueryResult<T> = {
     data: null | T;
     error: TServerError | null;
-    is_loading_ref: MutableRefObject<boolean>;
+    is_loading: boolean;
     refetch: () => void;
 };
 
@@ -29,7 +28,7 @@ const useDtraderQueryBase = <Response>(
     const { enabled = false } = options;
     const [data, setData] = useState<Response | null>(cache[key] || null);
     const [error, setError] = useState<TServerError | null>(null);
-    const [is_loading_ref, setIsLoading] = useStateWithRef(!cache[key] && enabled);
+    const [is_loading, setIsLoading] = useState(!cache[key] && enabled);
     const is_mounted = useRef(false);
     const request_string = JSON.stringify(request);
 
@@ -44,7 +43,6 @@ const useDtraderQueryBase = <Response>(
     }, []);
 
     const fetchData = useCallback(() => {
-        is_loading_ref.current = true;
         setIsLoading(true);
 
         let send_promise;
@@ -74,7 +72,7 @@ const useDtraderQueryBase = <Response>(
             .finally(() => {
                 delete ongoing_requests[key];
             });
-    }, [is_loading_ref, setIsLoading, key, request_string, wait_for_authorize]);
+    }, [setIsLoading, key, request_string, wait_for_authorize]);
 
     useEffect(() => {
         if (enabled && !cache[key]) {
@@ -89,7 +87,7 @@ const useDtraderQueryBase = <Response>(
         }
     }, [enabled, fetchData, key]);
 
-    return { data, error, is_loading_ref, refetch };
+    return { data, error, is_loading, refetch };
 };
 
 export const useDtraderQuery = <Response>(

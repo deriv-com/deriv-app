@@ -19,7 +19,7 @@ import { useDtraderQuery } from './useDtraderQuery';
 const useActiveSymbols = () => {
     const [activeSymbols, setActiveSymbols] = useState<ActiveSymbols | []>([]);
     const { client, common } = useStore();
-    const { is_logged_in } = client;
+    const { loginid, is_switching, is_logged_in } = client;
     const { showError } = common;
     const {
         active_symbols: symbols_from_store,
@@ -33,11 +33,11 @@ const useActiveSymbols = () => {
         is_trade_component_mounted,
     } = useTraderStore();
 
-    const { available_contract_types, is_loading_ref: is_contracts_for_company_loading } = useContractsForCompany();
+    const { available_contract_types, is_loading_ref: is_contracts_loading_ref } = useContractsForCompany();
 
     const default_symbol_ref = useRef('');
     const previous_contract_type = usePrevious(contract_type);
-    const prev_loginid = useRef(client.loginid);
+    const prev_loginid = useRef(loginid);
 
     const trade_types_with_barrier_category = [
         TRADE_TYPES.RISE_FALL,
@@ -54,15 +54,10 @@ const useActiveSymbols = () => {
     const { barrier_category } = (available_contract_types?.[contract_type]?.config || {}) as any;
 
     const isQueryEnabled = useCallback(() => {
-        console.log(
-            'active symbols query enabled check',
-            !available_contract_types,
-            is_contracts_for_company_loading.current
-        );
         if (!available_contract_types) return false;
-        if (is_contracts_for_company_loading.current) return false;
+        if (is_contracts_loading_ref.current) return false;
         return true;
-    }, [available_contract_types, is_contracts_for_company_loading]);
+    }, [available_contract_types, is_contracts_loading_ref]);
 
     const { data: response, refetch } = useDtraderQuery<ActiveSymbolsResponse>(
         'active_symbols',
@@ -137,17 +132,11 @@ const useActiveSymbols = () => {
     ]);
 
     useEffect(() => {
-        if (
-            isQueryEnabled() &&
-            prev_loginid.current &&
-            prev_loginid.current !== client.loginid &&
-            !client.is_switching
-        ) {
-            console.log('refetch as');
+        if (isQueryEnabled() && prev_loginid.current && prev_loginid.current !== loginid && !is_switching) {
             setActiveSymbols([]);
             refetch();
         }
-    }, [client.loginid, client.is_switching, refetch, isQueryEnabled]);
+    }, [loginid, is_switching, refetch, isQueryEnabled]);
 
     return { default_symbol: default_symbol_ref.current, activeSymbols, fetchActiveSymbols };
 };

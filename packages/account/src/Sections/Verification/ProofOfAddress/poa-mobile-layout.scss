@@ -2,16 +2,15 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-
-    .submit-your-document,
-    .enter-your-address {
-        padding-top: unset !important;
-    }
 }
 
 .poa-header {
     display: flex;
     flex-direction: column;
+
+    &--non-modal {
+        margin-bottom: 1.6rem;
+    }
 }
 
 .timeline {
@@ -20,7 +19,6 @@
     align-items: center;
     height: 5.2rem;
     display: flex;
-    justify-content: space-between;
     &-item {
         display: flex;
     }

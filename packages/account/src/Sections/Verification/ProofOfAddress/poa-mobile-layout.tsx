@@ -43,14 +43,13 @@ const ProgressBar = ({ is_active }: { is_active: boolean }) => (
 );
 
 const POAMobileLayout = observer(
-    ({ is_for_cfd_modal, setOffset, is_resubmit, form_state, document_files, setDocumentFiles }: TPOAMobileLayout) => {
+    ({ setOffset, is_resubmit, form_state, document_files, setDocumentFiles, is_for_cfd_modal }: TPOAMobileLayout) => {
         const history = useHistory();
         const { localize } = useTranslations();
-        const { isDesktop } = useDevice();
         const { status, handleSubmit, isSubmitting, isValid, values, errors } = useFormikContext<TFormInitialValues>();
         const { client } = useStore();
         const [file_selection_error, setFileSelectionError] = React.useState<string | null>(null);
-        const [step, setStep] = React.useState(1);
+        const [step, setStep] = React.useState({ id: 1, text: localize('Enter your address') });
 
         const { states_list, account_settings, is_eu, getChangeableFields } = client;
 
@@ -58,7 +57,7 @@ const POAMobileLayout = observer(
         const poa_uploader_files_descriptions = React.useMemo(() => getFileUploaderDescriptions('poa', is_eu), []);
 
         const isNextBtnDisabled = React.useMemo(() => {
-            if (step === 2) {
+            if (step.id === 2) {
                 return false;
             }
             return (
@@ -74,27 +73,17 @@ const POAMobileLayout = observer(
 
         return (
             <div className='poa-mobile-layout'>
-                <div className='poa-header'>
-                    <div className='timeline'>
-                        <Text as='p' size='xxs'>
-                            <Localize
-                                i18n_default_text='<0>Proof of address:</0> Step {{step}}/2 '
-                                values={{ step }}
-                                components={[<strong key={0} />]}
-                            />
-                        </Text>
-                        {!is_for_cfd_modal && (
-                            <StandaloneXmarkBoldIcon
-                                iconSize='md'
-                                onClick={() => {
-                                    history.push(shared_routes.traders_hub);
-                                }}
-                            />
-                        )}
-                    </div>
+                <div className={clsx('poa-header', { 'poa-header--non-modal': !is_for_cfd_modal })}>
+                    <Text as='p' size='xxs' className='timeline'>
+                        <Localize
+                            i18n_default_text='<0>Step {{step}}/2:&nbsp;</0> {{title}}'
+                            values={{ step: step.id, title: step.text }}
+                            components={[<strong key={0} />]}
+                        />
+                    </Text>
                     <div className='timeline-item'>
-                        <ProgressBar is_active={step <= 2} />
-                        <ProgressBar is_active={step === 2} />
+                        <ProgressBar is_active={step.id <= 2} />
+                        <ProgressBar is_active={step.id === 2} />
                     </div>
                 </div>
                 <Form noValidate className='account-form account-form_poa' onSubmit={handleSubmit}>
@@ -114,9 +103,8 @@ const POAMobileLayout = observer(
                                 id='dt_poa_submit-error'
                             />
                         )}
-                        {step === 1 && (
+                        {step.id === 1 && (
                             <React.Fragment>
-                                <FormSubHeader title={localize('Enter your address')} title_text_size='s' />
                                 <PersonalDetailsForm
                                     /* eslint-disable @typescript-eslint/ban-ts-comment */
                                     // @ts-nocheck This needs to fixed in PersonalDetailsForm
@@ -132,14 +120,19 @@ const POAMobileLayout = observer(
                                         text={localize('Next')}
                                         primary
                                         is_disabled={isNextBtnDisabled}
-                                        onClick={() => setStep(prev_step => prev_step + 1)}
+                                        onClick={() =>
+                                            setStep(prev_step => ({
+                                                ...prev_step,
+                                                id: 2,
+                                                text: localize(' Document submission'),
+                                            }))
+                                        }
                                     />
                                 </FormFooter>
                             </React.Fragment>
                         )}
-                        {step === 2 && (
+                        {step.id === 2 && (
                             <React.Fragment>
-                                <FormSubHeader title={localize('Submit your document')} title_text_size='s' />
                                 <FileUploaderContainer
                                     onFileDrop={files => {
                                         setDocumentFiles(files);

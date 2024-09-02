@@ -146,7 +146,6 @@ const initRoutesConfig = () => [
                     {
                         path: routes.proof_of_address,
                         component: ProofOfAddress,
-                        hide_header: true,
                         getTitle: () => localize('Proof of address'),
                     },
                     {

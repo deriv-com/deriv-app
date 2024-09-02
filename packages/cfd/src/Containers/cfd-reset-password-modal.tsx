@@ -212,7 +212,7 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
                                                         align='center'
                                                         className='cfd-reset-password__description2'
                                                     >
-                                                        <Localize i18n_default_text='Password must have at least one of these special characters: !&amp;‘’*-“%+.#&amp;(),:;?=@&lt;&gt;\[\]^_{}|~' />{' '}
+                                                        <Localize i18n_default_text='Your password must contain between 8-16 characters that include uppercase and lowercase letters, and at least one number and special character such as ( _ @ ? ! / # ).' />
                                                     </Text>
                                                 </div>
                                             )}

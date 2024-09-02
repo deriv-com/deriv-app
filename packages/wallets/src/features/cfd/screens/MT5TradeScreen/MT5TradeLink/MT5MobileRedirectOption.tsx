@@ -68,7 +68,11 @@ const MT5MobileRedirectOption: FC<TMT5MobileRedirectOptionProps> = ({ mt5TradeAc
                         <Localize i18n_default_text='Trade with MT5 mobile app' />
                     </Text>
                 </div>
-                {isRtl ? <LabelPairedChevronLeftLgFillIcon /> : <LabelPairedChevronRightLgFillIcon />}
+                {isRtl ? (
+                    <LabelPairedChevronLeftLgFillIcon fill='#FFF' />
+                ) : (
+                    <LabelPairedChevronRightLgFillIcon fill='#FFF' />
+                )}
             </button>
             <Text as='p' size='xs'>
                 <Localize

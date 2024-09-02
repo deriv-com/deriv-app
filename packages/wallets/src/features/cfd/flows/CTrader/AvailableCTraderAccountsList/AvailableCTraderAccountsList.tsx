@@ -4,7 +4,7 @@ import {
     LabelPairedChevronLeftCaptionRegularIcon,
     LabelPairedChevronRightCaptionRegularIcon,
 } from '@deriv/quill-icons';
-import { Localize } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { TradingAccountCard, WalletError } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
@@ -24,6 +24,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
     } = useCreateOtherCFDAccount();
     const { data: activeWallet } = useActiveWalletAccount();
     const isRtl = useIsRtl();
+    const { localize } = useTranslations();
 
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
 
@@ -50,9 +51,9 @@ const AvailableCTraderAccountsList: React.FC = () => {
         if (status === 'error') {
             show(
                 <WalletError
-                    errorMessage={error?.error?.message ?? 'Something went wrong. Please try again'}
+                    errorMessage={error?.error?.message ?? localize('Something went wrong. Please try again')}
                     onClick={() => hide()}
-                    title={error?.error?.message ?? 'Error'}
+                    title={error?.error?.message ?? localize('Error')}
                 />
             );
         }

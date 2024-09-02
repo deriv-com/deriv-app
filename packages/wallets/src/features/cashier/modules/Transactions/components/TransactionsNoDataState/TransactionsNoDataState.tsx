@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslations } from '@deriv-com/translations';
-import { WalletsActionScreen } from '../../../../../../components';
+import { ActionScreen } from '@deriv-com/ui';
 //TODO: replace with quill-icons
 import NoRecentTransactions from '../../../../../../public/images/no-recent-transactions.svg';
 import './TransactionsNoDataState.scss';
@@ -10,7 +10,7 @@ const TransactionsNoDataState = () => {
 
     return (
         <div className='wallets-transactions-no-data-state'>
-            <WalletsActionScreen icon={<NoRecentTransactions />} title={localize('No transactions found')} />
+            <ActionScreen icon={<NoRecentTransactions />} title={localize('No transactions found')} />
         </div>
     );
 };

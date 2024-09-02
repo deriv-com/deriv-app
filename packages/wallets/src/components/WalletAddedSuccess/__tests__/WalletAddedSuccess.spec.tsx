@@ -24,8 +24,8 @@ const wrapper = ({ children }: PropsWithChildren) => (
 
 jest.mock('../../../hooks/useDevice', () => jest.fn());
 
-describe('<WalletAddedSuccess />', () => {
-    it('should render success modal', () => {
+describe('WalletAddedSuccess', () => {
+    it('renders success modal content', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
 
         render(<WalletAddedSuccess {...props} />, { wrapper });
@@ -34,7 +34,7 @@ describe('<WalletAddedSuccess />', () => {
         expect(screen.getByRole('button', { name: 'Maybe later' })).toBeInTheDocument();
     });
 
-    it('should render WalletCard', () => {
+    it('renders WalletCard', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
 
         render(<WalletAddedSuccess {...props} />, { wrapper });
@@ -43,7 +43,7 @@ describe('<WalletAddedSuccess />', () => {
         expect(screen.getByTestId('dt_wallet_currency_icon')).toBeInTheDocument();
     });
 
-    it('should run function on button click', () => {
+    it('runs function on button click', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
 
         render(<WalletAddedSuccess {...props} />, { wrapper });
@@ -57,7 +57,7 @@ describe('<WalletAddedSuccess />', () => {
         expect(props.onSecondaryButtonClick).toHaveBeenCalled();
     });
 
-    it('should render mobile modal', () => {
+    it('renders modal in mobile', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
         render(<WalletAddedSuccess {...props} />, { wrapper });

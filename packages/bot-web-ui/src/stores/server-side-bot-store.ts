@@ -446,10 +446,11 @@ export default class ServerBotStore {
                         amount: data.stake,
                         basis: 'stake',
                         contract_type: data.type,
-                        currency: 'USD',
+                        currency: this.root_store?.app?.core?.client?.currency || 'USD',
                         duration: data.duration,
                         duration_unit: data.durationtype,
                         symbol: data.symbol,
+                        barrier: data.last_digit_prediction,
                     },
                     parameters: {
                         initial_stake: data.stake,

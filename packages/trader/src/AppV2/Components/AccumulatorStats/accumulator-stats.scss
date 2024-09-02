@@ -126,7 +126,7 @@
         &__stats {
             display: flex;
             padding: var(--core-spacing-600) var(--core-spacing-75);
-            justify-content: space-between;
+            justify-content: space-around;
             border-bottom: var(--core-spacing-75) solid var(--core-color-opacity-black-100);
             &__moving {
                 display: flex;

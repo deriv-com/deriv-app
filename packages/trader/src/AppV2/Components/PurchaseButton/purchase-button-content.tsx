@@ -6,24 +6,21 @@ import { getLocalizedBasis } from '@deriv/shared';
 import { Money } from '@deriv/components';
 
 type TPurchaseButtonContent = {
-    current_stake?: number | null;
     error?: React.ReactNode;
     has_no_button_content?: boolean;
     info: ReturnType<typeof useTraderStore>['proposal_info'][0] | Record<string, never>;
     is_reverse?: boolean;
 } & Pick<
     ReturnType<typeof useTraderStore>,
-    'currency' | 'has_open_accu_contract' | 'is_accumulator' | 'is_multiplier' | 'is_vanilla' | 'is_turbos'
+    'currency' | 'has_open_accu_contract' | 'is_multiplier' | 'is_vanilla' | 'is_turbos'
 >;
 
 const PurchaseButtonContent = ({
     currency,
-    current_stake,
     error,
     has_open_accu_contract,
     has_no_button_content,
     info,
-    is_accumulator,
     is_multiplier,
     is_turbos,
     is_vanilla,
@@ -31,20 +28,13 @@ const PurchaseButtonContent = ({
 }: TPurchaseButtonContent) => {
     if (has_no_button_content && !error) return null;
 
-    const { current_stake: localized_current_stake, payout, stake } = getLocalizedBasis();
+    const { payout, stake } = getLocalizedBasis();
 
     const getAmount = () => {
         const { stake, obj_contract_basis } = info;
-
-        if (is_multiplier) return stake;
-        if (is_accumulator) return Number(current_stake);
-        return obj_contract_basis?.value;
+        return is_multiplier ? stake : obj_contract_basis?.value;
     };
-    const getTextBasis = () => {
-        if (is_multiplier) return stake;
-        if (is_accumulator) return localized_current_stake;
-        return payout;
-    };
+    const getTextBasis = () => (is_multiplier ? stake : payout);
 
     const text_basis = getTextBasis();
     const amount = getAmount();

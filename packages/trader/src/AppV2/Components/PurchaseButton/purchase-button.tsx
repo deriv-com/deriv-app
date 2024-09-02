@@ -59,7 +59,6 @@ const PurchaseButton = observer(() => {
     const purchase_button_content_props = {
         currency,
         has_open_accu_contract,
-        is_accumulator,
         is_multiplier,
         is_turbos,
         is_vanilla,

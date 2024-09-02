@@ -217,6 +217,23 @@ export default class ServerBotStore {
 
                     if (msg_type === 'poc') {
                         this.setTransaction(msg, bot_id);
+                        this.subscribeToBotNotification(bot_id);
+
+                        if (!this.active_bot.bot_id) {
+                            const active_bot = this.bot_list.find(bot => bot.bot_id === bot_id);
+                            this.active_bot_id = bot_id;
+                            this.active_bot = {
+                                ...active_bot,
+                                status: 'running',
+                            };
+                        }
+
+                        const bot_list = [...this.bot_list];
+                        const index = bot_list.findIndex(bot => bot.bot_id === bot_id);
+                        if (index !== -1 && bot_list[index].status !== 'running') {
+                            bot_list[index].status = 'running';
+                            this.setBotList(bot_list);
+                        }
                     }
 
                     if (msg_type === 'transaction' && msg?.action === 'buy') {
@@ -225,6 +242,7 @@ export default class ServerBotStore {
                             msg: localize('Contract purchased ({{contract_id}})', { contract_id: msg.contract_id }),
                             bot_id,
                         });
+                        this.subscribeToBotNotification(bot_id);
                     }
 
                     if (msg_type === 'transaction' && msg?.action === 'sell') {
@@ -303,7 +321,7 @@ export default class ServerBotStore {
             }
             default:
                 // eslint-disable-next-line no-console
-                console.log(options, bot_id, 'onJournalMessage');
+                console.log(options, bot_id, 'Uncaught: DEFAULT journal message');
         }
     };
 
@@ -390,13 +408,10 @@ export default class ServerBotStore {
             // Updated the bot_list after running the bot
             const list = [...bot_list.bot_list];
             this.setBotList(list);
-            const running_bot = list.find(bot => bot.status === 'running');
 
-            // Setting the active_bot object with the running bot details
-            if (running_bot?.bot_id) {
-                this.active_bot = running_bot;
-                this.subscribeToBotNotification(running_bot?.bot_id);
-            }
+            list?.forEach(bot => {
+                this.subscribeToBotNotification(bot.bot_id);
+            });
 
             if (this.should_subscribe && !!list.length) {
                 this.onJournalMessage(JOURNAL_TYPE.INFO, {
@@ -423,6 +438,7 @@ export default class ServerBotStore {
 
     subscribeToBotNotification = async (bot_id: string) => {
         try {
+            if (this.subscriptions[bot_id]) return;
             const { subscription } = await api_base.api.send({ bot_notification: 1, bot_id, subscribe: 1 });
 
             this.subscriptions = {
@@ -495,6 +511,9 @@ export default class ServerBotStore {
                 msg: bot_remove.message || localize('Bot deleted successfully'),
                 bot_id,
             });
+            // unsubscribe from the bot notification
+            delete this.subscriptions[bot_id];
+            await api_base.api?.forget(this.subscriptions[bot_id]);
         } catch (error) {
             // eslint-disable-next-line no-console
             console.dir(error);

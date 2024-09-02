@@ -4,7 +4,6 @@ import { LabelPairedChevronsUpXlBoldIcon, LabelPairedXmarkSmBoldIcon } from '@de
 import { Localize } from '@deriv/translations';
 import { TooltipRenderProps } from 'react-joyride';
 import { useSwipeable } from 'react-swipeable';
-import { setTime } from '@deriv/shared';
 
 export interface GuideTooltipProps extends TooltipRenderProps {
     setStepIndex: React.Dispatch<React.SetStateAction<number>>;

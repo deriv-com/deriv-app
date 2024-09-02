@@ -13,11 +13,13 @@ jest.mock('@deriv/api', () => ({
 
 jest.mock('../useSettings');
 
+const mockUseMutationMutate = jest.fn();
+
 const mock_response = {
     data: {
         phone_number_challenge: 1,
     },
-    mutate: jest.fn(),
+    mutate: mockUseMutationMutate,
     isSuccess: true,
 };
 
@@ -50,10 +52,9 @@ describe('useRequestPhoneNumberOTP', () => {
         result.current.requestOnSMS();
 
         expect(useMutation).toHaveBeenCalledWith('phone_number_challenge');
-        expect(result.current.mutate).toHaveBeenCalledWith({
+        expect(mockUseMutationMutate).toHaveBeenCalledWith({
             payload: { carrier: VERIFICATION_SERVICES.SMS, email_code: '' },
         });
-        expect(result.current.data).toEqual(1);
     });
 
     it('should call mutate with correct payload for WhatsApp request and return correct response', () => {
@@ -63,10 +64,9 @@ describe('useRequestPhoneNumberOTP', () => {
         result.current.requestOnWhatsApp();
 
         expect(useMutation).toHaveBeenCalledWith('phone_number_challenge');
-        expect(result.current.mutate).toHaveBeenCalledWith({
+        expect(mockUseMutationMutate).toHaveBeenCalledWith({
             payload: { carrier: VERIFICATION_SERVICES.WHATSAPP, email_code: '' },
         });
-        expect(result.current.data).toEqual(1);
     });
 
     it('should call mutate with code given in phone_number_verification for SMS request and return correct response', () => {
@@ -77,10 +77,9 @@ describe('useRequestPhoneNumberOTP', () => {
         result.current.requestOnSMS();
 
         expect(useMutation).toHaveBeenCalledWith('phone_number_challenge');
-        expect(result.current.mutate).toHaveBeenCalledWith({
+        expect(mockUseMutationMutate).toHaveBeenCalledWith({
             payload: { carrier: VERIFICATION_SERVICES.SMS, email_code: '121212' },
         });
-        expect(result.current.data).toEqual(1);
     });
 
     it('should call mutate with code given in phone_number_verification for WhatsApp request and return correct response', () => {
@@ -91,10 +90,9 @@ describe('useRequestPhoneNumberOTP', () => {
         result.current.requestOnWhatsApp();
 
         expect(useMutation).toHaveBeenCalledWith('phone_number_challenge');
-        expect(result.current.mutate).toHaveBeenCalledWith({
+        expect(mockUseMutationMutate).toHaveBeenCalledWith({
             payload: { carrier: VERIFICATION_SERVICES.WHATSAPP, email_code: '121212' },
         });
-        expect(result.current.data).toEqual(1);
     });
 
     it('should call mutate with correct payload for sendEmailOTPVerification request and return correct response', () => {

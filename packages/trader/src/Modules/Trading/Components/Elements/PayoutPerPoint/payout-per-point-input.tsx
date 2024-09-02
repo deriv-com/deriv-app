@@ -14,10 +14,10 @@ const PayoutPerPointInput = ({
     currency,
     tooltipText,
 }: {
-    payoutOptions: number[];
-    onPayoutClick: (option: number) => void;
+    payoutOptions: string[];
+    onPayoutClick: (option: string) => void;
     selectedBarrier: string;
-    defaultPayout: number;
+    defaultPayout: string;
     currency: string;
     tooltipText?: React.ReactNode;
 }) => {
@@ -69,12 +69,14 @@ const PayoutPerPointInput = ({
                                 <LabelPairedChevronsDownCaptionRegularIcon
                                     width={12}
                                     height={12}
+                                    stroke='var(--text-prominent)'
                                     className='indicator-icon'
                                 />
                             ) : (
                                 <LabelPairedChevronsUpCaptionRegularIcon
                                     width={12}
                                     height={12}
+                                    stroke='var(--text-prominent)'
                                     className='indicator-icon'
                                 />
                             )}

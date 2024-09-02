@@ -29,9 +29,9 @@ const variants = {
 };
 
 type WheelPickerType = {
-    onClick: (id: number) => Promise<void> | void;
-    options: number[];
-    defaultValue?: number;
+    onClick: (id: string) => Promise<void> | void;
+    options: string[];
+    defaultValue?: string;
     currency?: string;
 };
 
@@ -67,11 +67,13 @@ const WheelPicker = ({ options, onClick, defaultValue, currency }: WheelPickerTy
         const values = [options[selectedIndex - 1] || '', options[selectedIndex], options[selectedIndex + 1] || ''];
         return values;
     };
+    const hasUndefinedValues = visibleValues().some(option => option === undefined);
 
     return (
         <div className='wheel-picker'>
             <div className='wheel-picker__wheel' key={selectedIndex}>
                 {options.length > 0 &&
+                    !hasUndefinedValues &&
                     visibleValues().map((value: string | number, index: number) => (
                         <motion.div
                             key={index}
@@ -90,7 +92,7 @@ const WheelPicker = ({ options, onClick, defaultValue, currency }: WheelPickerTy
                                 as='p'
                                 className={index === 1 ? '' : 'wheel-picker__wheel__placeholder'}
                             >
-                                {value} {value !== '' && currency}
+                                {value} {value !== '' ? currency : ''}
                             </Text>
                         </motion.div>
                     ))}

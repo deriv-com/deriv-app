@@ -17,7 +17,7 @@ const PayoutSelector = observer(() => {
         togglePayoutWheelPicker();
     };
 
-    const onPayoutClick = (value: number) => {
+    const onPayoutClick = (value: string) => {
         setPayoutPerPoint(value);
     };
 
@@ -32,9 +32,15 @@ const PayoutSelector = observer(() => {
                 <Text size='xs' color='prominent' align='center' className='payout-field'>
                     {barrier_1}
                     {Number(barrier_1) < 0 ? (
-                        <LabelPairedChevronsDownCaptionRegularIcon className='indicator-icon' />
+                        <LabelPairedChevronsDownCaptionRegularIcon
+                            className='indicator-icon'
+                            stroke='var(--text-prominent)'
+                        />
                     ) : (
-                        <LabelPairedChevronsUpCaptionRegularIcon className='indicator-icon' />
+                        <LabelPairedChevronsUpCaptionRegularIcon
+                            className='indicator-icon'
+                            stroke='var(--text-prominent)'
+                        />
                     )}
                 </Text>
                 <Text size='xs' className='payout-value' color='prominent' align='center' weight='bold'>

@@ -12,10 +12,10 @@ jest.mock('react-swipeable', () => ({
     }),
 }));
 
-const options = [10, 20, 30, 40];
+const options = ['10', '20', '30', '40'];
 const mockOnChange = jest.fn();
 
-const renderComponent = (defaultValue: number) => {
+const renderComponent = (defaultValue: string) => {
     return render(
         <WheelPickerMobile options={options} onChange={mockOnChange} defaultValue={defaultValue} currency='USD' />
     );
@@ -27,7 +27,7 @@ describe('WheelPickerMobile Component', () => {
     });
 
     test('should render component with default value', () => {
-        renderComponent(20);
+        renderComponent('20');
         expect(screen.getByText('USD')).toBeInTheDocument();
         expect(screen.getByText('20')).toBeInTheDocument();
         expect(screen.getByText('10')).toBeInTheDocument();
@@ -35,7 +35,7 @@ describe('WheelPickerMobile Component', () => {
     });
 
     test('should call onChange with the correct value when swiped up', () => {
-        renderComponent(20);
+        renderComponent('20');
         const pickerWheel = screen.getByTestId('picker-wheel');
         fireEvent.touchStart(pickerWheel, { touches: [{ clientY: 0 }] });
         fireEvent.touchMove(pickerWheel, { touches: [{ clientY: 100 }] });
@@ -44,7 +44,7 @@ describe('WheelPickerMobile Component', () => {
     });
 
     test('should call onChange with the correct value when swiped down', () => {
-        renderComponent(20);
+        renderComponent('20');
         const pickerWheel = screen.getByTestId('picker-wheel');
         fireEvent.touchStart(pickerWheel, { touches: [{ clientY: 0 }] });
         fireEvent.touchMove(pickerWheel, { touches: [{ clientY: -100 }] });
@@ -53,24 +53,26 @@ describe('WheelPickerMobile Component', () => {
     });
 
     test('should handle default value not in options correctly', () => {
-        renderComponent(25);
+        renderComponent('25');
         expect(screen.getByText('40')).toBeInTheDocument(); // default to last value if defaultValue is not in options
     });
 
     test('should update selected index correctly when options change', () => {
-        const { rerender } = renderComponent(20);
+        const { rerender } = renderComponent('20');
         expect(screen.getByText('20')).toBeInTheDocument();
-        rerender(<WheelPickerMobile options={[50, 60, 70]} onChange={mockOnChange} defaultValue={60} currency='USD' />);
+        rerender(
+            <WheelPickerMobile options={['50', '60', '70']} onChange={mockOnChange} defaultValue='60' currency='USD' />
+        );
         expect(screen.getByText('60')).toBeInTheDocument();
     });
 
     test('should render without crashing when no options are provided', () => {
-        render(<WheelPickerMobile options={[]} onChange={mockOnChange} currency='USD' />);
+        render(<WheelPickerMobile options={[] as string[]} onChange={mockOnChange} currency='USD' />);
         expect(screen.getByText('USD')).toBeInTheDocument();
     });
 
     test('should call onChange when an option is clicked', () => {
-        renderComponent(20);
+        renderComponent('20');
         const option = screen.getByText('30');
         fireEvent.mouseUp(option);
         expect(mockOnChange).toHaveBeenCalledWith(30);

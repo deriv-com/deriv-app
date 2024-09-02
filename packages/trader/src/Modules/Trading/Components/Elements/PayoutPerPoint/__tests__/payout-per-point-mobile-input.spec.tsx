@@ -22,10 +22,10 @@ jest.mock('../../../Form/WheelPicker/wheel-picker-mobile', () =>
 describe('PayoutPerPointMobileInput', () => {
     const defaultProps = {
         togglePayoutWheelPicker: jest.fn(),
-        payoutChoices: [10, 20, 30],
+        payoutChoices: ['10', '20', '30'],
         onPayoutClick: jest.fn(),
         selectedBarrier: '5',
-        payout_per_point: 20,
+        payout_per_point: '20',
         currency: 'USD',
     };
 

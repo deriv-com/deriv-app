@@ -15,13 +15,13 @@ const PayoutPerPointMobileInput = ({
     currency,
 }: {
     togglePayoutWheelPicker: () => void;
-    payoutChoices: number[];
+    payoutChoices: string[];
     selectedBarrier: string;
-    onPayoutClick: (val: number) => void;
+    onPayoutClick: (val: string) => void;
     currency: string;
-    payout_per_point?: number;
+    payout_per_point?: string;
 }) => {
-    const [initialPayout, setInitialPayout] = useState<number | null>(null);
+    const [initialPayout, setInitialPayout] = useState<string | null>(null);
 
     const [payoutValue, setPayoutValue] = useState(payoutChoices[2] || payoutChoices[0]);
 
@@ -59,7 +59,7 @@ const PayoutPerPointMobileInput = ({
             <div className='payout-per-point-mobile'>
                 <Fieldset className='payout-per-point-mobile__header'>
                     <div className='payout-per-point-mobile__header__title'>
-                        <Text size='xs' weight='bold' color='default' as='h1'>
+                        <Text size='xs' weight='bold' color='prominent' as='h1'>
                             <Localize i18n_default_text='Payout per Point' />
                         </Text>
                         <Popover
@@ -89,7 +89,7 @@ const PayoutPerPointMobileInput = ({
                     <Text
                         size='xxs'
                         line_height='l'
-                        color='default'
+                        color='prominent'
                         align='center'
                         as='p'
                         className='distance-to-current-spot'
@@ -106,18 +106,20 @@ const PayoutPerPointMobileInput = ({
                         message={distance_tooltip_text}
                     >
                         <div className='distance-to-current-spot__value'>
-                            <Text size='xxs' line_height='xs' color='default' align='center' as='p'>
+                            <Text size='xxs' line_height='xs' color='prominent' align='center' as='p'>
                                 {selectedBarrier}
                             </Text>
                             {Number(selectedBarrier) < 0 ? (
                                 <LabelPairedChevronsDownCaptionRegularIcon
                                     width={12}
                                     height={12}
+                                    stroke='var(--text-prominent)'
                                     className='indicator-icon'
                                 />
                             ) : (
                                 <LabelPairedChevronsUpCaptionRegularIcon
                                     width={12}
+                                    stroke='var(--text-prominent)'
                                     height={12}
                                     className='indicator-icon'
                                 />

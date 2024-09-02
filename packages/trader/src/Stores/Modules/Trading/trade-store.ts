@@ -84,7 +84,8 @@ type TBarriers = Array<
 
 export type ProposalResponse = PriceProposalResponse & {
     proposal: PriceProposalResponse['proposal'] & {
-        payout_choices: number[];
+        payout_choices: string[];
+        barrier_spot_distance: string;
         contract_details: {
             barrier: string;
         };
@@ -93,7 +94,7 @@ export type ProposalResponse = PriceProposalResponse & {
         code: string;
         message: string;
         details?: {
-            payout_per_point_choices?: number[];
+            payout_per_point_choices?: string[];
             [k: string]: unknown;
         };
     };
@@ -263,7 +264,7 @@ export default class TradeStore extends BaseStore {
     barriers: TBarriers = [];
     hovered_barrier = '';
     barrier_choices: string[] = [];
-    payout_choices: number[] = [];
+    payout_choices: string[] = [];
     // Start Time
     start_date = 0; // 0 refers to 'now'
     start_dates_list: Array<{ text: string; value: number }> = [];
@@ -332,7 +333,7 @@ export default class TradeStore extends BaseStore {
     // Turbos trade params
     long_barriers: TBarriersData = {};
     short_barriers: TBarriersData = {};
-    payout_per_point = 0;
+    payout_per_point = '';
 
     // Vanilla trade params
     strike_price_choices: TBarriersData = {};
@@ -1539,7 +1540,7 @@ export default class TradeStore extends BaseStore {
         if (!this.main_barrier || this.main_barrier?.shade) {
             if (this.is_turbos) {
                 if (response.proposal) {
-                    let chart_barrier = this.getTurbosChartBarrier(response);
+                    let chart_barrier = response.proposal.barrier_spot_distance;
 
                     if (Number(chart_barrier) > 0) {
                         chart_barrier = `+${chart_barrier}`;
@@ -1623,7 +1624,7 @@ export default class TradeStore extends BaseStore {
                 this.onChange({
                     target: {
                         name: 'payout_per_point',
-                        value: payout_per_point_choices[payoutIndex],
+                        value: String(payout_per_point_choices[payoutIndex]),
                     },
                 });
                 this.barrier_1 = String(this.getTurbosChartBarrier(response));
@@ -1637,19 +1638,17 @@ export default class TradeStore extends BaseStore {
             } else if (this.is_turbos) {
                 const { max_stake, min_stake, payout_choices } = response.proposal ?? {};
                 if (payout_choices) {
-                    if (this.payout_per_point == 0) {
+                    if (this.payout_per_point == '') {
                         this.onChange({
                             target: {
                                 name: 'payout_per_point',
-                                value: Math.floor(payout_choices.length / 2),
+                                value: String(Math.floor(payout_choices.length / 2)),
                             },
                         });
                     }
-                    this.setPayoutChoices(payout_choices as number[]);
+                    this.setPayoutChoices(payout_choices as string[]);
                     this.setStakeBoundary(contract_type, min_stake, max_stake);
-                    if (this.barrier_1 !== String(this.getTurbosChartBarrier(response))) {
-                        this.barrier_1 = String(this.getTurbosChartBarrier(response));
-                    }
+                    this.barrier_1 = response.proposal.barrier_spot_distance;
                 }
             }
         }
@@ -2040,7 +2039,7 @@ export default class TradeStore extends BaseStore {
         }
     }
 
-    setPayoutChoices(payout_choices: number[]) {
+    setPayoutChoices(payout_choices: string[]) {
         this.payout_choices = payout_choices ?? [];
         const stored_barriers_data = { barrier: this.barrier_1, payout_choices };
         if (getContractSubtype(this.contract_type) === 'Long') {
@@ -2053,13 +2052,13 @@ export default class TradeStore extends BaseStore {
     togglePayoutWheelPicker() {
         this.open_payout_wheelpicker = !this.open_payout_wheelpicker;
     }
-    setPayoutPerPoint(val: number) {
+    setPayoutPerPoint(val: string) {
         if (val && val !== this.payout_per_point) {
             this.payout_per_point = val;
             this.onChange({
                 target: {
                     name: 'payout_per_point',
-                    value: this.payout_per_point,
+                    value: String(this.payout_per_point),
                 },
             });
         }

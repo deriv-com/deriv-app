@@ -26,10 +26,10 @@ jest.mock('../../../Form/WheelPicker', () => (props: { options: number[]; onClic
     </div>
 ));
 
-const payoutOptions = [10, 20, 30, 40];
+const payoutOptions = ['10', '20', '30', '40'];
 const mockOnPayoutClick = jest.fn();
 const selectedBarrier = '1.2345';
-const defaultPayout = 20;
+const defaultPayout = '20';
 const currency = 'USD';
 const tooltipText = 'Sample tooltip text';
 

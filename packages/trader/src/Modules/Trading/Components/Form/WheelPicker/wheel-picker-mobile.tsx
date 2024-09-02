@@ -4,9 +4,9 @@ import { Text } from '@deriv/components';
 import { motion } from 'framer-motion';
 
 type WheelPickerMobileProps = {
-    defaultValue?: number;
-    onChange?: (val: number) => void;
-    options: number[];
+    defaultValue?: string;
+    onChange?: (val: string) => void;
+    options: string[];
     currency: string;
     optionHeight?: number;
 };
@@ -27,7 +27,7 @@ export function getTargetIndex({
     deltaY: number;
     snapTolerance: number;
     optionHeight: number;
-    options: number[];
+    options: string[];
     selectedIndex: number;
 }) {
     const absDeltaY = Math.abs(deltaY);
@@ -61,7 +61,7 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
     optionHeight = 28,
 }) => {
     const [selectedIndex, setSelectedIndex] = useState<number>(options.length - 1);
-    const [optionWidth, setOptionWidth] = useState<number>(0);
+    // const [optionWidth, setOptionWidth] = useState<number>(0);
 
     const [swipe, setSwipe] = useState<SwipeState>({ startY: 0, deltaY: 0, translateY: 0 });
     const optionRef = useRef<HTMLDivElement | null>(null);
@@ -105,9 +105,6 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
 
     useEffect(() => {
         onChange?.(options[selectedIndex]);
-        if (optionRef.current) {
-            setOptionWidth(optionRef.current.offsetWidth);
-        }
     }, [selectedIndex, onChange, options]);
 
     const handleClick = (index: number) => {
@@ -134,12 +131,12 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
                     <Text
                         size='l'
                         weight='bolder'
-                        color='default'
+                        color='prominent'
                         align='center'
                         as='h1'
                         className='currency-label'
                         style={{
-                            paddingLeft: String(Math.abs(Math.max(...options))).length * 15 + 40,
+                            paddingLeft: String(Math.abs(Math.max(Number(...options)))).length * 15 + 40,
                         }}
                     >
                         {currency}
@@ -160,7 +157,7 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
                             <Text
                                 size={getFontSize(index)}
                                 weight={index === selectedIndex ? 'bolder' : 'bold'}
-                                color={index === selectedIndex ? '' : 'disabled-1'}
+                                color={index === selectedIndex ? 'prominent' : 'disabled-1'}
                                 align='center'
                                 as='p'
                             >

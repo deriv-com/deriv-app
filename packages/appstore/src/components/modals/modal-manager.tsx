@@ -226,6 +226,7 @@ const ModalManager = () => {
         enableApp,
         disableApp,
         is_reset_trading_password_modal_visible,
+        setResetTradingPasswordModalOpen,
         setCFDPasswordResetModal,
         is_top_up_virtual_open,
         is_top_up_virtual_success,
@@ -345,7 +346,10 @@ const ModalManager = () => {
                     platform={trading_platform_dxtrade_password_reset ? 'dxtrade' : 'mt5'}
                     enableApp={enableApp}
                     disableApp={disableApp}
-                    toggleResetTradingPasswordModal={setCFDPasswordResetModal}
+                    toggleResetTradingPasswordModal={() => {
+                        setResetTradingPasswordModalOpen(false);
+                        setCFDPasswordResetModal(false);
+                    }}
                     is_visible={is_reset_trading_password_modal_visible}
                     is_loading={is_populating_mt5_account_list}
                     verification_code={trading_platform_dxtrade_password_reset || trading_platform_mt5_password_reset}

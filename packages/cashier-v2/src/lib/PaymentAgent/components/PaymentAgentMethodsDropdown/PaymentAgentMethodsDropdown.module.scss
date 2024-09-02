@@ -1,8 +1,0 @@
-.container {
-    max-width: 18rem;
-    width: 100%;
-
-    @include mobile-cashier-v2 {
-        max-width: 100%;
-    }
-}

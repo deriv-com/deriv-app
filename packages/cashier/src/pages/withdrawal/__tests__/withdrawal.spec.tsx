@@ -13,9 +13,9 @@ jest.mock('@deriv/api', () => ({
         data: {
             website_status: {
                 currencies_config: {
-                    USD: { type: 'fiat', name: 'US Dollar' },
-                    AUD: { type: 'fiat', name: 'Australian Dollar' },
-                    BTC: { type: 'crypto', name: 'Bitcoin' },
+                    USD: { type: 'fiat', name: 'US Dollar', platform: { cashier: ['doughflow'] } },
+                    AUD: { type: 'fiat', name: 'Australian Dollar', platform: { cashier: ['crypto'] } },
+                    BTC: { type: 'crypto', name: 'Bitcoin', platform: { cashier: ['crypto'] } },
                 },
             },
         },

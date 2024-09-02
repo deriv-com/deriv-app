@@ -3,6 +3,7 @@ import { Checkbox, Dialog } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { SERVER_BOT_LOSS_THRESHOLD_WARNING } from '../constants';
 import useQsSubmitHandler from '../form-wrappers/useQsSubmitHandler';
 import './loss-threshold-warning-dialog.scss';
 
@@ -27,9 +28,9 @@ const LossThresholdWarningDialog = observer(() => {
     };
 
     const handleDontShowAgain = () => {
-        const stored_dont_show_warning_value = localStorage?.getItem('qs-dont-show-loss-threshold-warning');
+        const stored_dont_show_warning_value = localStorage?.getItem(SERVER_BOT_LOSS_THRESHOLD_WARNING);
         const dont_show_warning = JSON.parse(stored_dont_show_warning_value ?? 'false');
-        localStorage.setItem('ssb-dont-show-loss-threshold-warning', `${!dont_show_warning}`);
+        localStorage.setItem(SERVER_BOT_LOSS_THRESHOLD_WARNING, `${!dont_show_warning}`);
     };
 
     return (

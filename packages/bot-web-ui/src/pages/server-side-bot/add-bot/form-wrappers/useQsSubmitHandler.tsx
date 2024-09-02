@@ -2,6 +2,7 @@ import { useFormikContext } from 'formik';
 import { useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendQsRunStrategyEvent } from '../../../../analytics/rudderstack-quick-strategy';
+import { SERVER_BOT_LOSS_THRESHOLD_WARNING } from '../constants';
 import { TFormValues } from '../types';
 
 const useQsSubmitHandler = () => {
@@ -20,7 +21,7 @@ const useQsSubmitHandler = () => {
     const handleSubmit = async () => {
         const loss_amount = Number(values?.loss ?? 0);
         const profit_threshold = Number(values?.profit ?? 0);
-        const stored_dont_show_warning_value = localStorage?.getItem('qs-dont-show-loss-threshold-warning');
+        const stored_dont_show_warning_value = localStorage?.getItem(SERVER_BOT_LOSS_THRESHOLD_WARNING);
         const dont_show_warning = JSON.parse(stored_dont_show_warning_value ?? 'false');
         if (
             !loss_threshold_warning_data.already_shown &&

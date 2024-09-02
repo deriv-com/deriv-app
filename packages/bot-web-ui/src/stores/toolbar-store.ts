@@ -87,7 +87,6 @@ export default class ToolbarStore implements IToolbarStore {
             showIncompatibleStrategyDialog: null,
         });
         workspace.strategy_to_load = workspace.cached_xml.main;
-        this.setResetButtonState(false);
     };
 
     onSortClick = () => {

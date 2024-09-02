@@ -56,7 +56,7 @@ import { action, computed, makeObservable, observable, override, reaction, runIn
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
 import { getHoveredColor } from './Helpers/barrier-utils';
 import BaseStore from '../../base-store';
-import { TRootStore, TTextValueNumber, TTextValueStrings } from 'Types';
+import { TContractTypesList, TRootStore, TTextValueNumber, TTextValueStrings } from 'Types';
 import debounce from 'lodash.debounce';
 import {
     ActiveSymbols,
@@ -156,12 +156,7 @@ type TPrevChartLayout =
           is_used?: boolean;
       })
     | null;
-type TContractTypesList = {
-    [key: string]: {
-        name: string;
-        categories: TTextValueStrings[];
-    };
-};
+
 type TDurationMinMax = {
     [key: string]: { min: number; max: number };
 };

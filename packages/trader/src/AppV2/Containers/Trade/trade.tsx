@@ -13,9 +13,10 @@ import { TradeChart } from '../Chart';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import TradeTypes from './trade-types';
 import MarketSelector from 'AppV2/Components/MarketSelector';
-import useContractsForCompany, { TContractTypesList } from 'AppV2/Hooks/useContractsForCompany';
+import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
 import { isAccumulatorContract } from '@deriv/shared';
+import { TContractTypesList } from 'Types';
 
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);

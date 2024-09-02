@@ -178,6 +178,9 @@
             width: 100%;
             background-color: var(--core-color-opacity-black-100);
         }
+        &__player {
+            height: 220px;
+        }
         &__content {
             margin: var(--core-spacing-1200);
             &__title {

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslations } from '@deriv-com/translations';
 import { SentEmailContent } from '../../../../components';
 import { Tab, Tabs } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
@@ -9,23 +10,27 @@ import TradingPlatformChangePasswordScreens from './TradingPlatformChangePasswor
 const MT5ChangePasswordScreens = () => {
     const [showSentEmailContentWithoutTabs, setShowSentEmailContentWithoutTabs] = useState(false);
     const { isMobile } = useDevice();
+    const { localize } = useTranslations();
 
     const platform = PlatformDetails.mt5.platform;
     const { title } = PlatformDetails[platform];
 
     return showSentEmailContentWithoutTabs ? (
-        <div className='wallets-change-password__sent-email-content-wrapper--mt5-investor'>
+        <div
+            className='wallets-change-password__sent-email-content-wrapper--mt5-investor'
+            data-testid='dt_change_password_sent_email_content_wrapper'
+        >
             <SentEmailContent
-                description='Please click on the link in the email to reset your password.'
+                description={localize('Please click on the link in the email to reset your password.')}
                 isInvestorPassword
             />
         </div>
     ) : (
         <Tabs fontSize={isMobile ? 'md' : 'sm'} preSelectedTab={0} wrapperClassName='wallets-change-password__tab'>
-            <Tab title={`${title} Password`}>
+            <Tab title={localize('{{title}} Password', { title })}>
                 <TradingPlatformChangePasswordScreens platform={platform} />
             </Tab>
-            <Tab title='Investor Password'>
+            <Tab title={localize('Investor Password')}>
                 <MT5ChangeInvestorPasswordScreens setShowEmailSentScreen={setShowSentEmailContentWithoutTabs} />
             </Tab>
         </Tabs>

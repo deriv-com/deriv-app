@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 import { Text } from '@deriv/components';
 
 type TDataListTemplateEntry = {
@@ -7,12 +7,12 @@ type TDataListTemplateEntry = {
 };
 
 const DataListTemplateEntry = ({ title, content }: TDataListTemplateEntry) => (
-    <React.Fragment>
+    <Fragment>
         <Text size='xxs' weight='bold'>
             {title}
         </Text>
         <Text size='xxs'>{content}</Text>
-    </React.Fragment>
+    </Fragment>
 );
 
 export default DataListTemplateEntry;

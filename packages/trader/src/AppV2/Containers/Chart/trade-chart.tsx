@@ -148,6 +148,7 @@ const TradeChart = observer(() => {
             enabledChartFooter={false}
             id='trade'
             isMobile={isMobile}
+            isVerticalScrollEnabled={false}
             maxTick={isMobile ? max_ticks : undefined}
             granularity={show_digits_stats || is_accumulator ? 0 : granularity}
             requestAPI={wsSendRequest}

@@ -8,6 +8,7 @@ import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import CFDResetPasswordModal from '@deriv/cfd/src/Containers/cfd-reset-password-modal';
 
 const FailedVerificationModal = makeLazyLoader(
     () =>
@@ -82,23 +83,34 @@ const CFDPasswordModal = makeLazyLoader(
     () => <Loading />
 )();
 
+const CFDServerMaintenanceModal = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "modal_cfd_cfd-server-maintenance-modal" */ '@deriv/cfd/src/Containers/cfd-server-maintenance-modal'
+                )
+        ),
+    () => <Loading />
+)();
+
+const MT5AccountUnavailableModal = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "modal_cfd_mt5-account-unavailable-modal" */ '@deriv/cfd/src/Containers/mt5-account-unavailable-modal'
+                )
+        ),
+    () => <Loading />
+)();
+
 const CFDDbviOnBoarding = makeLazyLoader(
     () =>
         moduleLoader(
             () =>
                 import(
                     /* webpackChunkName: "modal_cfd_cfd-dbvi-onboarding" */ '@deriv/cfd/src/Containers/cfd-dbvi-onboarding'
-                )
-        ),
-    () => <Loading />
-)();
-
-const CFDResetPasswordModal = makeLazyLoader(
-    () =>
-        moduleLoader(
-            () =>
-                import(
-                    /* webpackChunkName: "modal_cfd_cfd-reset-password-modal" */ '@deriv/cfd/src/Containers/cfd-reset-password-modal'
                 )
         ),
     () => <Loading />
@@ -207,16 +219,18 @@ const ModalManager = () => {
         is_cfd_success_dialog_enabled,
         is_sent_email_modal_enabled,
         is_ctrader_transfer_modal_visible,
+        is_server_maintenance_modal_visible,
+        is_account_unavailable_modal_visible,
     } = modules.cfd;
     const {
         enableApp,
         disableApp,
         is_reset_trading_password_modal_visible,
+        setResetTradingPasswordModalOpen,
         setCFDPasswordResetModal,
         is_top_up_virtual_open,
         is_top_up_virtual_success,
         is_mt5_migration_modal_open,
-        is_cfd_reset_password_modal_enabled,
     } = ui;
     const {
         is_demo,
@@ -296,16 +310,14 @@ const ModalManager = () => {
         is_mt5_password_invalid_format_modal_visible ||
         is_sent_email_modal_enabled;
 
-    const is_invalid_investor_token =
-        Object.keys(current_list).length === 0 && localStorage.getItem('cfd_reset_password_code');
-    const should_show_cfd_reset_password_modal = is_cfd_reset_password_modal_enabled && !is_invalid_investor_token;
-
     return (
         <React.Fragment>
+            {is_server_maintenance_modal_visible && <CFDServerMaintenanceModal />}
+            {is_account_unavailable_modal_visible && <MT5AccountUnavailableModal />}
             {is_jurisdiction_modal_visible && <JurisdictionModal openPasswordModal={openRealPasswordModal} />}
             {should_show_cfd_password_modal && <CFDPasswordModal platform={platform} />}
             {is_cfd_verification_modal_visible && <CFDDbviOnBoarding />}
-            {should_show_cfd_reset_password_modal && <CFDResetPasswordModal platform={platform} />}
+            <CFDResetPasswordModal platform={platform} />
             {is_ctrader_transfer_modal_visible && <CTraderTransferModal />}
             {has_cfd_error && <CFDServerErrorDialog />}
             {(is_top_up_virtual_open || is_top_up_virtual_success) && <CFDTopUpDemoModal platform={platform} />}
@@ -334,7 +346,10 @@ const ModalManager = () => {
                     platform={trading_platform_dxtrade_password_reset ? 'dxtrade' : 'mt5'}
                     enableApp={enableApp}
                     disableApp={disableApp}
-                    toggleResetTradingPasswordModal={setCFDPasswordResetModal}
+                    toggleResetTradingPasswordModal={() => {
+                        setResetTradingPasswordModalOpen(false);
+                        setCFDPasswordResetModal(false);
+                    }}
                     is_visible={is_reset_trading_password_modal_visible}
                     is_loading={is_populating_mt5_account_list}
                     verification_code={trading_platform_dxtrade_password_reset || trading_platform_mt5_password_reset}

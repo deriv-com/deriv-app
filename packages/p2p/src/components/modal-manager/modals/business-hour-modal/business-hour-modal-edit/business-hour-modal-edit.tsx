@@ -281,7 +281,7 @@ const BusinessHourModalEdit = React.forwardRef(
                                         </div>
                                     )}
                                 </div>
-                                <Popover alignment='top' message={localize('Reset to default hours')}>
+                                <Popover alignment='top' message={localize('Reset to default hours')} zIndex='9999'>
                                     <Icon
                                         className={classNames('business-hour-modal-edit__selector-item__icon', {
                                             'business-hour-modal-edit__selector-item__icon--disabled': is_disabled,

@@ -100,7 +100,12 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({
     }
 
     if (shouldSubmitTaxInformation) {
-        return <TaxInformation onCompletion={onTaxInformationCompletion} />;
+        return (
+            <TaxInformation
+                onCompletion={onTaxInformationCompletion}
+                selectedJurisdiction={selectedJurisdiction ?? 'svg'}
+            />
+        );
     }
 
     if (hasResubmittedDocuments) {

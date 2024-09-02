@@ -1,34 +1,42 @@
 import { WS } from '@deriv/shared';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { TServerError } from 'Types';
 
 type QueryResult<T> = {
     data: null | T;
     error: TServerError | null;
-    isLoading: boolean;
+    is_loading: boolean;
     refetch: () => void;
 };
 
-type QueryOptions = {
+type QueryOptionsBase = {
+    wait_for_authorize?: boolean;
     enabled?: boolean;
+};
+
+type QueryOptions = QueryOptionsBase & {
+    refresh_on_account_switch?: boolean;
 };
 
 // Cache object to store the results
 const cache: Record<string, any> = {};
 
-export const useDtraderQuery = <Response>(
+const useDtraderQueryBase = <Response>(
     key: string,
     request: Record<string, any>,
-    options: QueryOptions = {}
+    options: QueryOptionsBase = {}
 ): QueryResult<Response> => {
     const { enabled = true } = options;
     const [data, setData] = useState<Response | null>(cache[key] || null);
     const [error, setError] = useState<TServerError | null>(null);
-    const [isLoading, setIsLoading] = useState(!cache[key] && enabled);
+    const [is_loading, setIsLoading] = useState(!cache[key] && enabled);
+
+    const { wait_for_authorize = true } = options;
 
     const fetchData = useCallback(() => {
         setIsLoading(true);
-        WS.send(request) // Use the generic type parameter here
+        const sendPromise = wait_for_authorize ? WS.authorized.send(request) : WS.send(request);
+        sendPromise
             .then((result: Response) => {
                 cache[key] = result;
                 setData(result);
@@ -38,7 +46,7 @@ export const useDtraderQuery = <Response>(
                 setError(err);
                 setIsLoading(false);
             });
-    }, [key, request]);
+    }, [key, wait_for_authorize, request]);
 
     useEffect(() => {
         let isSubscribed = true;
@@ -52,10 +60,22 @@ export const useDtraderQuery = <Response>(
 
     const refetch = () => {
         if (enabled) {
-            cache[key] = null; // Clear the cache for the specific key
-            fetchData(); // Re-fetch the data
+            cache[key] = null;
+            fetchData();
         }
     };
 
-    return { data, error, isLoading, refetch };
+    return { data, error, is_loading, refetch };
+};
+
+export const useDtraderQuery = <Response>(
+    key: string,
+    request: Record<string, any>,
+    options: QueryOptions = {}
+): QueryResult<Response> => {
+    return useDtraderQueryBase<Response>(key, request, options);
+};
+
+export const invalidateDTraderCache = (key: string) => {
+    cache[key] = null;
 };

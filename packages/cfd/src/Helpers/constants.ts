@@ -142,7 +142,9 @@ const validatePassword = (password: string): string | undefined => {
     } else if (!validPassword(password)) {
         return getErrorMessages().password();
     } else if (!validMT5Password(password)) {
-        return localize('Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.');
+        return localize(
+            'Password must have at least one of these special characters: !&‘’*-“%+.#&(),:;?=@<>\\[]^_{}|~'
+        );
     }
 };
 

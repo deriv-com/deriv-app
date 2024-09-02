@@ -747,7 +747,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             !validMT5Password(values.password)
         ) {
             errors.password = localize(
-                'Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.'
+                'Password must have at least one of these special characters: !&‘’*-“%+.#&(),:;?=@<>\\[]^_{}|~'
             );
         }
         if (values.password?.toLowerCase() === email.toLowerCase()) {

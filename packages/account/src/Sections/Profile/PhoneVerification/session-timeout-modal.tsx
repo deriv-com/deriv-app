@@ -12,9 +12,10 @@ const SessionTimeoutModal = observer(() => {
     const { localize } = useTranslations();
     const { should_show_session_timeout_modal } = usePhoneNumberVerificationSessionTimer();
     const { ui } = useStore();
-    const { is_phone_verification_completed } = ui;
+    const { is_phone_verification_completed, setShouldShowPhoneNumberOTP } = ui;
 
     const redirectBackToPersonalDetails = () => {
+        setShouldShowPhoneNumberOTP(false);
         history.push(routes.personal_details);
     };
 

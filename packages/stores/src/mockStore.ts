@@ -385,7 +385,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleCashier: jest.fn(),
             setDarkMode: jest.fn(),
             setReportsTabIndex: jest.fn(),
-            setIsMT5VerificationFailedModal: jest.fn(),
             has_real_account_signup_ended: false,
             real_account_signup_target: '',
             real_account_signup: {
@@ -510,6 +509,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setSelectedAccount: jest.fn(),
             is_low_risk_cr_eu_real: false,
             is_real_wallets_upgrade_on: false,
+            is_verification_docs_list_modal_visible: false,
             toggleWalletsUpgrade: jest.fn(),
             show_eu_related_content: false,
             platform_real_balance: {
@@ -539,7 +539,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 active_modal: '',
                 data: {},
             },
-            openFailedVerificationModal: jest.fn(),
+            openVerificationDocsListModal: jest.fn(),
             setTogglePlatformType: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
             selectAccountType: jest.fn(),
@@ -565,6 +565,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setIsFinancialRestrictedCountry: jest.fn(),
             is_setup_real_account_or_go_to_demo_modal_visible: false,
             setIsSetupRealAccountOrGoToDemoModalVisible: jest.fn(),
+            toggleVerificationModal: jest.fn(),
         },
         notifications: {
             addNotificationMessage: jest.fn(),

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
+import getMT5StatusBadgeConfig from '@deriv/account/src/Configs/get-mt5-status-badge-config';
 import { Text, StatusBadge } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
@@ -43,7 +43,7 @@ const TradingAppCard = ({
     short_code_and_region,
     mt5_acc_auth_status,
     selected_mt5_jurisdiction,
-    openFailedVerificationModal,
+    openVerificationDocsListModal,
     market_type,
     is_new = false,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
@@ -54,7 +54,6 @@ const TradingAppCard = ({
         modules: { cfd },
         client,
     } = useStore();
-    const { setIsVerificationModalVisible } = ui;
     const { is_eu_user, is_demo_low_risk, content_flag, is_real, selected_account_type } = traders_hub;
     const { current_language, setAppstorePlatform } = common;
     const { is_account_being_created, setAccountUnavailableModal, setServerMaintenanceModal } = cfd;
@@ -77,13 +76,7 @@ const TradingAppCard = ({
         link_to: '',
     };
 
-    const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
-        mt5_acc_auth_status,
-        openFailedVerificationModal,
-        selected_mt5_jurisdiction,
-        setIsVerificationModalVisible,
-        { poi_status: authentication?.identity?.status, poa_status: authentication?.document?.status }
-    );
+    const { text: badge_text, icon: badge_icon } = getMT5StatusBadgeConfig(mt5_acc_auth_status);
 
     const handleStatusBadgeClick = (mt5_acc_auth_status: string) => {
         switch (mt5_acc_auth_status) {

@@ -883,6 +883,28 @@ export interface LandingCompany {
 }
 
 /**
+ * Returns the Landing Company for clients of a given country.
+ */
+export interface LandingCompanyResponse {
+    landing_company?: LandingCompany;
+    /**
+     * Echo of the request made.
+     */
+    echo_req: {
+        [k: string]: unknown;
+    };
+    /**
+     * Action name of the request made.
+     */
+    msg_type: 'landing_company';
+    /**
+     * Optional field sent in request to map to response, present only when request contains `req_id`.
+     */
+    req_id?: number;
+    [k: string]: unknown;
+}
+
+/**
  * List of states.
  */
 export type StatesList = {
@@ -895,3 +917,25 @@ export type StatesList = {
      */
     value?: string;
 }[];
+
+/**
+ * A message with States List
+ */
+export interface StatesListResponse {
+    states_list?: StatesList;
+    /**
+     * Echo of the request made.
+     */
+    echo_req: {
+        [k: string]: unknown;
+    };
+    /**
+     * Action name of the request made.
+     */
+    msg_type: 'states_list';
+    /**
+     * Optional field sent in request to map to response, present only when request contains `req_id`.
+     */
+    req_id?: number;
+    [k: string]: unknown;
+}

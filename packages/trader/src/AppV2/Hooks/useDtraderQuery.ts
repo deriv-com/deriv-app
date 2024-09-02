@@ -1,4 +1,4 @@
-import { WS } from '@deriv/shared';
+import { useIsMounted, WS } from '@deriv/shared';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { TServerError } from 'Types';
 
@@ -31,8 +31,17 @@ const useDtraderQueryBase = <Response>(
     const [data, setData] = useState<Response | null>(cache[key] || null);
     const [error, setError] = useState<TServerError | null>(null);
     const [is_loading, setIsLoading] = useState(!cache[key] && enabled);
+    const is_mounted = React.useRef(false);
 
     const { wait_for_authorize = true } = options;
+
+    useEffect(() => {
+        is_mounted.current = true;
+
+        return () => {
+            is_mounted.current = false;
+        };
+    }, []);
 
     const fetchData = useCallback(() => {
         setIsLoading(true);
@@ -48,11 +57,15 @@ const useDtraderQueryBase = <Response>(
 
         send_promise
             .then((result: Response) => {
+                if (!is_mounted.current) return;
+
                 cache[key] = result;
                 setData(result);
                 setIsLoading(false);
             })
             .catch((err: TServerError) => {
+                if (!is_mounted.current) return;
+
                 setError(err);
                 setIsLoading(false);
             })

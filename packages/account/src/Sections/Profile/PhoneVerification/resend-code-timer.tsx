@@ -68,8 +68,7 @@ const ResendCodeTimer = ({
     };
 
     const isButtonDisabled = useCallback(() => {
-        const disable_resend_code_button =
-            !!next_email_otp_request_timer || is_button_disabled || is_request_button_disabled;
+        const disable_resend_code_button = !!next_email_otp_request_timer || is_button_disabled;
         const disable_didnt_get_a_code_button =
             !!next_phone_otp_request_timer || is_button_disabled || is_request_button_disabled;
 

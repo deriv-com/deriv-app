@@ -9,6 +9,12 @@ jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useSettings: jest.fn(),
     useSendOTPVerificationCode: jest.fn(),
+    usePhoneNumberVerificationSetTimer: jest.fn(() => ({
+        setNextEmailOtpRequestTimer: jest.fn(),
+        setNextPhoneOtpRequestTimer: jest.fn(),
+        is_email_otp_timer_loading: false,
+        is_phone_otp_timer_loading: false,
+    })),
 }));
 
 jest.mock('../phone-number-verified-modal', () => jest.fn(() => <div>Phone Number Verified Modal</div>));

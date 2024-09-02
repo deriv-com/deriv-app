@@ -1,5 +1,10 @@
 import { useEffect, useState, useCallback, Fragment } from 'react';
-import { usePhoneVerificationAnalytics, useSendOTPVerificationCode, useSettings } from '@deriv/hooks';
+import {
+    usePhoneNumberVerificationSetTimer,
+    usePhoneVerificationAnalytics,
+    useSendOTPVerificationCode,
+    useSettings,
+} from '@deriv/hooks';
 import { Text, InputGroupButton, Button } from '@deriv-com/quill-ui';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, useTranslations } from '@deriv-com/translations';
@@ -39,6 +44,12 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
         requestOnWhatsApp,
         email_otp_error,
     } = useSendOTPVerificationCode();
+    const {
+        setNextEmailOtpRequestTimer,
+        is_email_otp_timer_loading,
+        setNextPhoneOtpRequestTimer,
+        is_phone_otp_timer_loading,
+    } = usePhoneNumberVerificationSetTimer();
     const { should_show_phone_number_otp, setIsForcedToExitPnv } = ui;
 
     const reInitializeGetSettings = useCallback(() => {
@@ -81,6 +92,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     const clearOtpValue = () => {
         setOtp('');
         setPhoneOtpErrorMessage('');
+        should_show_phone_number_otp ? setNextPhoneOtpRequestTimer(undefined) : setNextEmailOtpRequestTimer(undefined);
     };
 
     const handleGetOtpValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,6 +114,10 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
             });
             sendEmailOTPVerification(otp);
         }
+    };
+
+    const isTimerLoading = () => {
+        return should_show_phone_number_otp ? is_phone_otp_timer_loading : is_email_otp_timer_loading;
     };
 
     return (
@@ -196,7 +212,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                 />
                 <ResendCodeTimer
                     clearOtpValue={clearOtpValue}
-                    is_button_disabled={is_button_disabled}
+                    is_button_disabled={is_button_disabled || isTimerLoading()}
                     setIsButtonDisabled={setIsButtonDisabled}
                     should_show_resend_code_button={!should_show_phone_number_otp}
                     setShouldShowDidntGetTheCodeModal={setShouldShowDidntGetTheCodeModal}

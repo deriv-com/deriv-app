@@ -145,6 +145,7 @@ export type TV2ParamsInitialValues = {
     stake?: string | number;
     strike?: string | number;
     multiplier?: number;
+    barrier_1?: number;
 };
 type TContractDataForGTM = Omit<Partial<PriceProposalRequest>, 'cancellation' | 'limit_order'> &
     ReturnType<typeof getProposalInfo> & {

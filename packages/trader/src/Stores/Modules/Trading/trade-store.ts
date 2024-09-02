@@ -373,13 +373,6 @@ export default class TradeStore extends BaseStore {
         ];
         const session_storage_properties = ['contract_type', 'symbol'];
 
-        // const tradeStore = {
-        //     contract_type: 'accumulator',
-        //     symbol: '1HZ100V',
-        // };
-        // const tradeStoreString = JSON.stringify(tradeStore);
-        // sessionStorage.setItem('trade_store', tradeStoreString)
-
         super({
             root_store,
             local_storage_properties,

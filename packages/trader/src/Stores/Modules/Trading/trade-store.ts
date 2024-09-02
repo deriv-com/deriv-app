@@ -373,6 +373,13 @@ export default class TradeStore extends BaseStore {
         ];
         const session_storage_properties = ['contract_type', 'symbol'];
 
+        // const tradeStore = {
+        //     contract_type: 'accumulator',
+        //     symbol: '1HZ100V',
+        // };
+        // const tradeStoreString = JSON.stringify(tradeStore);
+        // sessionStorage.setItem('trade_store', tradeStoreString)
+
         super({
             root_store,
             local_storage_properties,
@@ -543,6 +550,20 @@ export default class TradeStore extends BaseStore {
             updateSymbol: action.bound,
         });
 
+        setTimeout(() => {
+            if (!this.is_dtrader_v2_enabled) return;
+            const searchParams = new URLSearchParams(window.location.search);
+            const urlSymbol = searchParams.get('symbol');
+            const urlContractType = searchParams.get('trade_type');
+            const isValidContractType = Object.keys(getContractTypesConfig()[urlContractType ?? ''] ?? {}).length;
+
+            if (urlSymbol) this.symbol = urlSymbol ?? '1HZ100V';
+            if (urlContractType && isValidContractType) {
+                this.contract_type = urlContractType;
+            } else {
+                this.contract_type = 'accumulator';
+            }
+        }, 0);
         // Adds intercept to change min_max value of duration validation
         reaction(
             () => [this.contract_expiry_type, this.duration_min_max, this.duration_unit, this.expiry_type],

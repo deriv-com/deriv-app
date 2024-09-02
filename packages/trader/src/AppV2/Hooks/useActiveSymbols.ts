@@ -4,7 +4,6 @@ import {
     TRADE_TYPES,
     WS,
     getContractTypesConfig,
-    getTradeURLParams,
     isTurbosContract,
     isVanillaContract,
     pickDefaultSymbol,
@@ -16,14 +15,12 @@ import { ActiveSymbols } from '@deriv/api-types';
 import { usePrevious } from '@deriv/components';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
-import { onChangeSymbolAsync } from 'Stores/Modules/Trading/Actions/symbol';
 
 const useActiveSymbols = () => {
     const [activeSymbols, setActiveSymbols] = useState<ActiveSymbols | []>([]);
-    const { client, common, ui } = useStore();
+    const { client, common } = useStore();
     const { is_logged_in } = client;
     const { showError } = common;
-    const { toggleUrlUnavailableModal } = ui;
     const {
         active_symbols: symbols_from_store,
         contract_type,
@@ -33,7 +30,6 @@ const useActiveSymbols = () => {
         onChange,
         setActiveSymbolsV2,
         symbol,
-        is_trade_component_mounted,
     } = useTraderStore();
 
     const default_symbol_ref = useRef('');
@@ -87,46 +83,8 @@ const useActiveSymbols = () => {
                 setActiveSymbols(active_symbols);
                 setActiveSymbolsV2(active_symbols);
                 default_symbol_ref.current = symbol || (await pickDefaultSymbol(active_symbols)) || '1HZ100V';
-
-                const { symbol: urlSymbol, showModal: showSymbolModal } = getTradeURLParams({
-                    active_symbols,
-                });
-                const has_symbol_changed_via_url = urlSymbol && urlSymbol !== default_symbol_ref.current;
-
-                if (showSymbolModal) toggleUrlUnavailableModal(true);
-
-                onChange({
-                    target: {
-                        name: 'symbol',
-                        value: has_symbol_changed_via_url && !showSymbolModal ? urlSymbol : default_symbol_ref.current,
-                    },
-                });
-
-                await onChangeSymbolAsync(
-                    has_symbol_changed_via_url && !showSymbolModal ? (urlSymbol as string) : default_symbol_ref.current
-                );
-
-                const contract_categories = ContractType.getContractCategories();
-                const { contractType: urlContractType, showModal } = getTradeURLParams({
-                    contract_types_list: contract_categories.contract_types_list,
-                });
-
-                if (showModal) toggleUrlUnavailableModal(true);
-
-                const has_contract_type_changed_via_url = urlContractType !== contract_type && contract_type !== '';
-                if (has_contract_type_changed_via_url && !showModal) {
-                    onChange({
-                        target: {
-                            name: 'contract_type',
-                            value: urlContractType,
-                        },
-                    });
-                }
-
-                setTradeURLParams({
-                    symbol: has_symbol_changed_via_url && !showSymbolModal ? urlSymbol : default_symbol_ref.current,
-                    contractType: has_contract_type_changed_via_url && !showModal ? urlContractType : contract_type,
-                });
+                onChange({ target: { name: 'symbol', value: default_symbol_ref.current } });
+                setTradeURLParams({ symbol: default_symbol_ref.current, contractType: contract_type });
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps

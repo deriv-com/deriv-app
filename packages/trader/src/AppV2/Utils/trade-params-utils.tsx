@@ -6,6 +6,8 @@ import {
     shouldShowExpiration,
     TRADE_TYPES,
 } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
+import React, { ReactNode } from 'react';
 
 export const getTradeParams = (symbol?: string) => ({
     [TRADE_TYPES.RISE_FALL]: {
@@ -170,4 +172,45 @@ export const getTradeTypeTabsList = (contract_type = '') => {
         },
     ];
     return tab_list.filter(({ is_displayed }) => is_displayed);
+};
+
+export const getOptionPerUnit = (unit: string): { value: number; label: ReactNode }[][] => {
+    const unitConfig: Record<
+        string,
+        { start: number; end: number; label: ReactNode } | (() => { value: number; label: ReactNode }[][])
+    > = {
+        m: { start: 1, end: 59, label: <Localize i18n_default_text='min' /> },
+        s: { start: 15, end: 59, label: <Localize i18n_default_text='sec' /> },
+        d: { start: 1, end: 365, label: <Localize i18n_default_text='days' /> },
+        t: { start: 1, end: 10, label: <Localize i18n_default_text='tick' /> },
+        h: () => {
+            const hour_options = generateOptions(1, 23, 'h');
+            const minute_options = generateOptions(1, 59, 'min');
+            return [hour_options, minute_options];
+        },
+    };
+
+    const generateOptions = (start: number, end: number, label: ReactNode) => {
+        return Array.from({ length: end - start + 1 }, (_, i) => ({
+            value: start + i,
+            label: (
+                <React.Fragment>
+                    {start + i} {label}
+                </React.Fragment>
+            ),
+        }));
+    };
+
+    const config = unitConfig[unit];
+
+    if (typeof config === 'function') {
+        return config();
+    }
+
+    if (config) {
+        const { start, end, label } = config;
+        return [generateOptions(start, end, label)];
+    }
+
+    return [[]];
 };

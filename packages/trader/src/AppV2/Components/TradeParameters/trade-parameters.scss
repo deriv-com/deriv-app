@@ -12,7 +12,6 @@
         align-items: center;
         justify-content: space-between;
     }
-
     &__options {
         &__wrapper {
             display: flex;
@@ -66,7 +65,6 @@
             padding: 0 var(--core-spacing-400) var(--core-spacing-400);
         }
     }
-
     &__option {
         &--minimized {
             width: 16rem;
@@ -78,5 +76,9 @@
         .input {
             padding-inline-start: 0;
         }
+    }
+    &--minimized {
+        height: var(--core-size-3600);
+        width: 100%;
     }
 }

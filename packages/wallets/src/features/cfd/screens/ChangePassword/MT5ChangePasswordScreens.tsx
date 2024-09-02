@@ -16,7 +16,10 @@ const MT5ChangePasswordScreens = () => {
     const { title } = PlatformDetails[platform];
 
     return showSentEmailContentWithoutTabs ? (
-        <div className='wallets-change-password__sent-email-content-wrapper--mt5-investor'>
+        <div
+            className='wallets-change-password__sent-email-content-wrapper--mt5-investor'
+            data-testid='dt_change_password_sent_email_content_wrapper'
+        >
             <SentEmailContent
                 description={localize('Please click on the link in the email to reset your password.')}
                 isInvestorPassword

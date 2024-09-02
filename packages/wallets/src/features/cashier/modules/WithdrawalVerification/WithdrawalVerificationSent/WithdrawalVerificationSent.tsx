@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Localize } from '@deriv-com/translations';
-import { Button } from '@deriv-com/ui';
-import { WalletsActionScreen } from '../../../../../components';
+import { ActionScreen, Button } from '@deriv-com/ui';
 import EmailSent from '../../../../../public/images/email-sent.svg';
 import './WithdrawalVerificationSent.scss';
 
@@ -15,10 +14,25 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
 
     return (
         <div className='wallets-withdrawal-verification-sent'>
-            <WalletsActionScreen
-                description={
-                    <Localize i18n_default_text='Please check your email for the verification link to complete the process.' />
+            <ActionScreen
+                actionButtons={
+                    !showResend ? (
+                        <Button
+                            borderWidth='sm'
+                            color='primary-transparent'
+                            onClick={() => {
+                                sendEmail();
+                                setShowResend(!showResend);
+                            }}
+                            size='lg'
+                            textSize='md'
+                            variant='ghost'
+                        >
+                            <Localize i18n_default_text="Didn't receive the email?" />
+                        </Button>
+                    ) : undefined
                 }
+                description={localize('Please check your email for the verification link to complete the process.')}
                 icon={
                     <div
                         className='wallets-withdrawal-verification-sent__icon'
@@ -27,34 +41,12 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
                         <EmailSent />
                     </div>
                 }
-                renderButtons={
-                    !showResend
-                        ? () => (
-                              <Button
-                                  borderWidth='sm'
-                                  color='primary-transparent'
-                                  onClick={() => {
-                                      sendEmail();
-                                      setShowResend(!showResend);
-                                  }}
-                                  size='lg'
-                                  textSize='md'
-                                  variant='ghost'
-                              >
-                                  <Localize i18n_default_text="Didn't receive the email?" />
-                              </Button>
-                          )
-                        : undefined
-                }
                 title={<Localize i18n_default_text="We've sent you an email." />}
             />
             <div className='wallets-withdrawal-verification-sent__resend'>
                 {showResend && (
-                    <WalletsActionScreen
-                        description={
-                            <Localize i18n_default_text="Check your spam or junk folder. If it's not there, try resending the email." />
-                        }
-                        renderButtons={() => (
+                    <ActionScreen
+                        actionButtons={
                             <Button disabled={!!counter} onClick={sendEmail} size='lg' textSize='md'>
                                 {counter ? (
                                     <Localize i18n_default_text='Resend email in {{counter}}s' values={{ counter }} />
@@ -62,7 +54,10 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
                                     <Localize i18n_default_text='Resend email' />
                                 )}
                             </Button>
-                        )}
+                        }
+                        description={
+                            <Localize i18n_default_text="Check your spam or junk folder. If it's not there, try resending the email." />
+                        }
                         title={<Localize i18n_default_text="Didn't receive the email?" />}
                     />
                 )}

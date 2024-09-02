@@ -37,6 +37,7 @@ jest.mock('../JurisdictionTncSection', () => ({
 }));
 
 jest.mock('usehooks-ts', () => ({
+    ...jest.requireActual('usehooks-ts'),
     useDebounceValue: jest.fn(value => [value]),
 }));
 
@@ -51,10 +52,6 @@ const wrapper = ({ children }: PropsWithChildren) => (
 describe('JurisdictionScreen', () => {
     const setIsCheckBoxChecked = jest.fn();
     const setSelectedJurisdiction = jest.fn();
-
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
 
     it('renders the loader when data is being fetched', () => {
         (useMT5AccountsList as jest.Mock).mockReturnValue({ data: null });

@@ -21,6 +21,7 @@ const PhoneVerificationPage = observer(() => {
         show_otp_verification: true,
         phone_verification_type: '',
     });
+    const phone_verification_code = sessionStorage.getItem('phone_number_verification_code');
     const [is_loading, setIsLoading] = useState(false);
     const [should_show_verification_link_expired_modal, setShouldShowVerificationLinkExpiredModal] = useState(false);
     const handleBackButton = () => {
@@ -57,13 +58,14 @@ const PhoneVerificationPage = observer(() => {
     ]);
 
     useEffect(() => {
-        if (is_redirected_from_email) {
+        if (is_redirected_from_email || phone_verification_code) {
             setIsLoading(true);
             if (email_otp_error) {
                 setIsLoading(false);
                 setIsForcedToExitPnv(true);
                 setShouldShowVerificationLinkExpiredModal(true);
                 setRedirectFromEmail(false);
+                sessionStorage.removeItem('phone_number_verification_code');
             } else if (is_email_verified) {
                 setIsLoading(false);
                 setOtpVerification({
@@ -71,11 +73,19 @@ const PhoneVerificationPage = observer(() => {
                     phone_verification_type: '',
                 });
                 setRedirectFromEmail(false);
-            } else if (phone_number_verification_code && is_authorize) {
-                sendEmailOTPVerification(phone_number_verification_code);
+                sessionStorage.removeItem('phone_number_verification_code');
+            } else if ((phone_number_verification_code || phone_verification_code) && is_authorize) {
+                sendEmailOTPVerification(phone_verification_code || phone_number_verification_code);
             }
         }
-    }, [email_otp_error, is_email_verified, phone_number_verification_code, is_authorize, is_redirected_from_email]);
+    }, [
+        email_otp_error,
+        is_email_verified,
+        phone_number_verification_code,
+        is_authorize,
+        is_redirected_from_email,
+        phone_verification_code,
+    ]);
 
     if (is_loading || !isPhoneNumberVerificationGBLoaded) {
         return <Loading is_fullscreen={false} />;

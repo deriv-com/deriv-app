@@ -164,6 +164,10 @@ const Redirect = observer(() => {
             break;
         }
         case 'phone_number_verification': {
+            const phone_number_verification_code = `${action_param}_code`;
+            if (!is_logging_in && !is_logged_in) {
+                sessionStorage.setItem(phone_number_verification_code, code_param);
+            }
             setRedirectFromEmail(true);
             history.push(routes.phone_verification);
             redirected_to_route = true;

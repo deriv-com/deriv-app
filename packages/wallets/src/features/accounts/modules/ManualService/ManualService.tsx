@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useSettings } from '@deriv/api-v2';
+import { usePOI, useSettings } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../../../../components';
 import { THooks } from '../../../../types';
+import { Onfido } from '../DocumentService/components';
 import { DocumentSelection } from './components';
 import { getManualDocumentsMapper, TManualDocumentType } from './utils';
 
@@ -27,7 +28,10 @@ const SelectedManualDocument: React.FC<TSelectedManualDocumentProps> = ({
     selection,
 }) => {
     const { localize } = useTranslations();
-    const SelectedDocument = getManualDocumentsMapper(localize)[selection].component;
+    const { data: poiData } = usePOI();
+    const SelectedDocument = poiData?.current.onfido_supported?.includes(selection)
+        ? Onfido
+        : getManualDocumentsMapper(localize)[selection].component;
 
     return (
         <SelectedDocument

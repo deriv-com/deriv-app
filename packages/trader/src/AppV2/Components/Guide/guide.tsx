@@ -19,7 +19,7 @@ const Guide = observer(({ has_label, show_guide_for_selected_contract }: TGuide)
         ui: { is_dark_mode_on },
     } = useStore();
     const { contract_type, is_vanilla } = useTraderStore();
-    const contract_type_title = is_vanilla ? CONTRACT_LIST.VANILLAS : getContractTypesConfig()[contract_type].title;
+    const contract_type_title = is_vanilla ? CONTRACT_LIST.VANILLAS : getContractTypesConfig()[contract_type]?.title;
 
     const [is_description_opened, setIsDescriptionOpened] = React.useState(false);
     const [selected_contract_type, setSelectedContractType] = React.useState(

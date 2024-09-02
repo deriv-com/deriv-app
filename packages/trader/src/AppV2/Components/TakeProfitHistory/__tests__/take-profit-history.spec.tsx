@@ -1,18 +1,12 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import TakeProfitHistory from '../take-profit-history';
-import { formatDate, formatTime, TContractStore } from '@deriv/shared';
-import { FormatUtils } from '@deriv-com/utils';
+import { formatDate, formatMoney, formatTime, TContractStore } from '@deriv/shared';
 
 jest.mock('@deriv/shared', () => ({
     formatDate: jest.fn(),
     formatTime: jest.fn(),
-}));
-
-jest.mock('@deriv-com/utils', () => ({
-    FormatUtils: {
-        formatMoney: jest.fn(),
-    },
+    formatMoney: jest.fn(),
 }));
 
 describe('TakeProfitHistory component', () => {
@@ -27,7 +21,7 @@ describe('TakeProfitHistory component', () => {
     beforeEach(() => {
         (formatDate as jest.Mock).mockImplementation(date => new Date(date * 1000).toDateString());
         (formatTime as jest.Mock).mockImplementation(time => new Date(time * 1000).toLocaleTimeString());
-        (FormatUtils.formatMoney as jest.Mock).mockImplementation(amount => `$${amount}`);
+        (formatMoney as jest.Mock).mockImplementation((currency, amount) => `${amount}`);
     });
 
     it('renders without crashing', () => {
@@ -59,7 +53,7 @@ describe('TakeProfitHistory component', () => {
 
     it('formats money correctly', () => {
         render(<TakeProfitHistory history={mockHistory.slice(0, 1)} currency='USD' />);
-        expect(FormatUtils.formatMoney).toHaveBeenCalledWith(Number('100'));
-        expect(screen.getByText('$100 USD')).toBeInTheDocument();
+        expect(formatMoney).toHaveBeenCalledWith('USD', '100', true);
+        expect(screen.getByText('100 USD')).toBeInTheDocument();
     });
 });

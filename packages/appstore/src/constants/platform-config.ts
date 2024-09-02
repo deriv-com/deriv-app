@@ -1,4 +1,4 @@
-import { getUrlBinaryBot, getUrlSmartTrader, getPlatformSettingsAppstore, routes, getStaticUrl } from '@deriv/shared';
+import { getUrlSmartTrader, getPlatformSettingsAppstore, routes, getStaticUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { TAccountCategory, TRegionAvailability } from 'Types';
@@ -50,12 +50,6 @@ export const getAppstorePlatforms = (): PlatformConfig[] => [
         is_external: true,
     },
     {
-        name: getPlatformSettingsAppstore('bbot').name,
-        app_desc: localize('The legacy bot trading platform.'),
-        link_to: getUrlBinaryBot(),
-        is_external: true,
-    },
-    {
         name: getPlatformSettingsAppstore('go').name,
         app_desc: localize('The mobile app for trading multipliers and accumulators.'),
         link_to: getStaticUrl('/deriv-go'),
@@ -79,6 +73,5 @@ export const DERIV_PLATFORM_NAMES = {
     TRADER: 'Deriv Trader',
     DBOT: 'Deriv Bot',
     SMARTTRADER: 'SmartTrader',
-    BBOT: 'Binary Bot',
     GO: 'Deriv GO',
 } as const;

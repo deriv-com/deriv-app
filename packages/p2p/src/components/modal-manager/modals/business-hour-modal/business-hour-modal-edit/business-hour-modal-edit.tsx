@@ -218,6 +218,7 @@ const BusinessHourModalEdit = React.forwardRef(({ data, saved_details }: TBusine
                     const includes_day = selected_days.includes(day.value);
                     const are_times_null = day.start_time === null && day.end_time === null;
                     const is_full_day = day.start_time === day.end_time;
+                    const is_disabled = !includes_day || is_full_day;
 
                     return (
                         <div className='business-hour-modal-edit__selector-item' key={`${day.value}_${day.start_time}`}>
@@ -272,11 +273,10 @@ const BusinessHourModalEdit = React.forwardRef(({ data, saved_details }: TBusine
                             <Tooltip alignment='top' message={localize('Reset to default hours')}>
                                 <Icon
                                     className={classNames('business-hour-modal-edit__selector-item__icon', {
-                                        'business-hour-modal-edit__selector-item__icon--disabled':
-                                            !includes_day || is_full_day,
+                                        'business-hour-modal-edit__selector-item__icon--disabled': is_disabled,
                                     })}
                                     icon='IcResetTime'
-                                    onClick={() => onReset(day.value)}
+                                    onClick={() => (is_disabled ? undefined : onReset(day.value))}
                                 />
                             </Tooltip>
                         </div>

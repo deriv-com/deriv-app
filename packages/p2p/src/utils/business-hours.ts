@@ -180,6 +180,7 @@ const adjustTimeRangesWithOffset = (timeRanges: TTimeRange[], offset: number) =>
 const addNullObjectsForGaps = (splitRanges: TTimeRange[]) => {
     const finalRanges = [];
     const MINUTES_IN_DAY = 1440;
+    const MINUTES_IN_WEEK = MINUTES_IN_DAY * 7;
 
     for (let i = 0; i < splitRanges.length; i++) {
         finalRanges.push(splitRanges[i]);
@@ -194,6 +195,21 @@ const addNullObjectsForGaps = (splitRanges: TTimeRange[]) => {
                 for (let j = 0; j < nullObjectsCount; j++) {
                     finalRanges.push({ start_min: null, end_min: null });
                 }
+            }
+        }
+    }
+
+    // Check for wrap-around gap (last to first)
+    if (splitRanges.length > 1) {
+        const lastEnd = splitRanges[splitRanges.length - 1].end_min ?? 0;
+        const firstStart = splitRanges[0].start_min ?? 0;
+        const wrapAroundGap = MINUTES_IN_WEEK - lastEnd + firstStart;
+
+        if (wrapAroundGap >= MINUTES_IN_DAY) {
+            const nullObjectsCount = Math.floor(wrapAroundGap / MINUTES_IN_DAY);
+            for (let j = 0; j < nullObjectsCount; j++) {
+                // Instead of adding null objects at the end, add them at the beginning
+                finalRanges.unshift({ start_min: null, end_min: null });
             }
         }
     }

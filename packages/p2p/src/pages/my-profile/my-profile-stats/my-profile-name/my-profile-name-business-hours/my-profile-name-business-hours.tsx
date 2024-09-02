@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Text, Tooltip } from '@deriv/components';
+import { Icon, Popover, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import { Localize, localize } from 'Components/i18next';
@@ -16,9 +16,9 @@ const MyProfileNameBusinessHours = () => {
 
     return (
         <div className='my-profile-name-business-hours'>
-            <Tooltip
+            <Popover
                 alignment='top'
-                className='my-profile-name-business-hours__tooltip'
+                classNameTarget='my-profile-name-business-hours__tooltip'
                 message={localize('Business hours')}
             >
                 <Icon icon='IcClockOutline' />
@@ -35,7 +35,7 @@ const MyProfileNameBusinessHours = () => {
                         <Localize i18n_default_text='Closed' />
                     )}
                 </Text>
-            </Tooltip>
+            </Popover>
         </div>
     );
 };

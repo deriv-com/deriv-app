@@ -169,6 +169,7 @@ const BusinessHourModal = () => {
         <Modal
             className='business-hour-modal'
             is_open={is_modal_open}
+            has_close_icon={!show_edit}
             should_close_on_click_outside={false}
             title={<HeaderRenderer show_edit={show_edit} />}
             toggleModal={onClickCancel}

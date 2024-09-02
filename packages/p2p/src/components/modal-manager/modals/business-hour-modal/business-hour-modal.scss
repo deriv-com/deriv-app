@@ -14,7 +14,7 @@
     &__footer {
         padding: 0 2.4rem 2.4rem;
     }
-    .separator-container-line {
+    & .separator-container-line {
         flex: unset;
         margin: 0;
     }
@@ -26,4 +26,9 @@
 
 .dc-modal__container {
     overflow: unset;
+
+    & .separator-container-line {
+        flex: unset;
+        margin: 0;
+    }
 }

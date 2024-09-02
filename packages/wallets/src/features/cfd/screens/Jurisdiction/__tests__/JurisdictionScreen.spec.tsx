@@ -72,7 +72,7 @@ describe('JurisdictionScreen', () => {
     });
 
     it('renders JurisdictionCard components correctly', () => {
-        (useAvailableMT5Accounts as jest.Mock as jest.Mock).mockReturnValue({
+        (useAvailableMT5Accounts as jest.Mock).mockReturnValue({
             data: [{ market_type: 'forex', product: 'standard', shortcode: 'bvi' }],
             isLoading: false,
         });

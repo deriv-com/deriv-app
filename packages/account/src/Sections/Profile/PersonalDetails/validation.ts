@@ -70,9 +70,8 @@ export const getPersonalDetailsInitialValues = (
         initialValues.request_professional_status = account_settings.request_professional_status;
     }
 
-    if (!account_settings.tax_residence || !account_settings.tax_identification_number) {
-        initialValues.tax_identification_confirm = false;
-    }
+    // Setting default value of `I confirm that my tax information is accurate and complete.` checkbox
+    initialValues.tax_identification_confirm = false;
 
     return initialValues;
 };

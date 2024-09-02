@@ -55,10 +55,9 @@ describe('AddedCTraderAccountsList', () => {
         mockCalculateTotalBalance.mockReturnValue('2000.00');
 
         render(<AddedCTraderAccountsList />, { wrapper });
-
         expect(screen.getByTestId('dt_wallets_trading_account_card')).toBeInTheDocument();
         expect(screen.getByText(PlatformDetails.ctrader.title)).toBeInTheDocument();
-        expect(screen.getByText('2000.00 USD')).toBeInTheDocument();
+        expect(screen.getByText('2,000.00 USD')).toBeInTheDocument();
         expect(screen.getByTestId('dt_wallets_trading_account_chevron_icon')).toBeInTheDocument();
     });
 

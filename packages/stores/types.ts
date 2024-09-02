@@ -699,6 +699,7 @@ type TUiStore = {
     is_cashier_visible: boolean;
     is_history_tab_active: boolean;
     is_forced_to_exit_pnv: boolean;
+    is_phone_verification_completed: boolean;
     is_redirected_from_email: boolean;
     is_wallet_modal_visible: boolean;
     is_chart_asset_info_visible?: boolean;
@@ -758,6 +759,7 @@ type TUiStore = {
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setIsWalletModalVisible: (value: boolean) => void;
     setIsForcedToExitPnv: (value: boolean) => void;
+    setIsPhoneVerificationCompleted: (value: boolean) => void;
     setRedirectFromEmail: (value: boolean) => void;
     setHasOnlyForwardingContracts: (has_only_forward_starting_contracts?: boolean) => void;
     setMobileLanguageMenuOpen: (is_mobile_language_menu_open: boolean) => void;

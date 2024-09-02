@@ -4,12 +4,15 @@ import { routes } from '@deriv/shared';
 import { Modal, Text } from '@deriv-com/quill-ui';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
+import { observer, useStore } from '@deriv/stores';
 
-const SessionTimeoutModal = () => {
+const SessionTimeoutModal = observer(() => {
     const { isMobile } = useDevice();
     const history = useHistory();
     const { localize } = useTranslations();
     const { should_show_session_timeout_modal } = usePhoneNumberVerificationSessionTimer();
+    const { ui } = useStore();
+    const { is_phone_verification_completed } = ui;
 
     const redirectBackToPersonalDetails = () => {
         history.push(routes.personal_details);
@@ -18,7 +21,7 @@ const SessionTimeoutModal = () => {
     return (
         <Modal
             isMobile={isMobile}
-            isOpened={should_show_session_timeout_modal}
+            isOpened={should_show_session_timeout_modal && !is_phone_verification_completed}
             primaryButtonCallback={redirectBackToPersonalDetails}
             primaryButtonLabel={<Localize i18n_default_text='OK' />}
             buttonColor='coral'
@@ -33,6 +36,6 @@ const SessionTimeoutModal = () => {
             </Modal.Body>
         </Modal>
     );
-};
+});
 
 export default SessionTimeoutModal;

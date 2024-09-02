@@ -1,5 +1,5 @@
-import { useIsMounted, WS } from '@deriv/shared';
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { WS } from '@deriv/shared';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { TServerError } from 'Types';
 
 type QueryResult<T> = {
@@ -27,11 +27,11 @@ const useDtraderQueryBase = <Response>(
     request: Record<string, any>,
     options: QueryOptionsBase = {}
 ): QueryResult<Response> => {
-    const { enabled = true } = options;
+    const { enabled = false } = options;
     const [data, setData] = useState<Response | null>(cache[key] || null);
     const [error, setError] = useState<TServerError | null>(null);
     const [is_loading, setIsLoading] = useState(!cache[key] && enabled);
-    const is_mounted = React.useRef(false);
+    const is_mounted = useRef(false);
 
     const { wait_for_authorize = true } = options;
 

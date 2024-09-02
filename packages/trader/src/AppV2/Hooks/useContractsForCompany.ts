@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { useStore } from '@deriv/stores';
 import { cloneObject, getContractCategoriesConfig, getContractTypesConfig } from '@deriv/shared';
@@ -25,7 +25,12 @@ const useContractsForCompany = () => {
     const { setContractTypesListV2 } = useTraderStore();
     const { client } = useStore();
     const { landing_company_shortcode } = client;
-    const { data: response, error } = useDtraderQuery<TContractsForCompanyResponse>(
+    const {
+        data: response,
+        refetch,
+        error,
+        is_loading,
+    } = useDtraderQuery<TContractsForCompanyResponse>(
         'contracts_for_company',
         {
             contracts_for_company: 1,
@@ -42,6 +47,8 @@ const useContractsForCompany = () => {
     const [available_contract_types, setAvailableContractTypes] = React.useState<
         ReturnType<typeof getContractTypesConfig> | undefined
     >();
+
+    const prev_loginid = useRef(client.loginid);
 
     React.useEffect(() => {
         try {
@@ -94,7 +101,15 @@ const useContractsForCompany = () => {
         }
     }, [response]);
 
-    return { contract_types_list, available_contract_types };
+    useEffect(() => {
+        if (prev_loginid.current && prev_loginid.current !== client.loginid && !client.is_switching) {
+            setContractTypesList([]);
+            setAvailableContractTypes(undefined);
+            refetch();
+        }
+    }, [client.loginid, client.is_switching]);
+
+    return { contract_types_list, available_contract_types, is_loading };
 };
 
 export default useContractsForCompany;

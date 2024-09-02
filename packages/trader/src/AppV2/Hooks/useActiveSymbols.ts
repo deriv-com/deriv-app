@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import {
     CONTRACT_TYPES,
     TRADE_TYPES,
-    WS,
     getContractTypesConfig,
     isTurbosContract,
     isVanillaContract,
@@ -11,10 +10,11 @@ import {
 } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { ActiveSymbols } from '@deriv/api-types';
+import { ActiveSymbols, ActiveSymbolsResponse } from '@deriv/api-types';
 import { usePrevious } from '@deriv/components';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
+import useContractsForCompany from './useContractsForCompany';
+import { useDtraderQuery } from './useDtraderQuery';
 
 const useActiveSymbols = () => {
     const [activeSymbols, setActiveSymbols] = useState<ActiveSymbols | []>([]);
@@ -33,9 +33,17 @@ const useActiveSymbols = () => {
         is_trade_component_mounted,
     } = useTraderStore();
 
+    const { available_contract_types, is_loading: is_contracts_for_company_loading } = useContractsForCompany();
+
     const default_symbol_ref = useRef('');
-    const previous_logged_in = usePrevious(is_logged_in);
     const previous_contract_type = usePrevious(contract_type);
+    const prev_loginid = useRef(client.loginid);
+
+    const trade_types_with_barrier_category = [
+        TRADE_TYPES.RISE_FALL,
+        TRADE_TYPES.RISE_FALL_EQUAL,
+        TRADE_TYPES.HIGH_LOW,
+    ] as string[];
 
     const getContractTypesList = () => {
         if (is_turbos) return [CONTRACT_TYPES.TURBOS.LONG, CONTRACT_TYPES.TURBOS.SHORT];
@@ -43,24 +51,31 @@ const useActiveSymbols = () => {
         return getContractTypesConfig()[contract_type]?.trade_types ?? [];
     };
 
+    const { barrier_category } = (available_contract_types?.[contract_type]?.config || {}) as any;
+
+    const isQueryEnabled = () => {
+        if (!available_contract_types) return false;
+        if (is_contracts_for_company_loading) return false;
+        return true;
+    };
+
+    const { data: response, refetch } = useDtraderQuery<ActiveSymbolsResponse>(
+        'active_symbols',
+        {
+            active_symbols: 'brief',
+            contract_type: getContractTypesList(),
+            ...(trade_types_with_barrier_category.includes(contract_type) && barrier_category
+                ? { barrier_category: [barrier_category] }
+                : {}),
+        },
+        {
+            enabled: isQueryEnabled(),
+        }
+    );
+
     const fetchActiveSymbols = useCallback(
         async () => {
-            let response;
-
-            const trade_types_with_barrier_category = [
-                TRADE_TYPES.RISE_FALL,
-                TRADE_TYPES.RISE_FALL_EQUAL,
-                TRADE_TYPES.HIGH_LOW,
-            ] as string[];
-            const barrier_category = ContractType.getBarrierCategory(contract_type).barrier_category;
-
-            const request = {
-                active_symbols: 'brief',
-                contract_type: getContractTypesList(),
-                ...(trade_types_with_barrier_category.includes(contract_type) && barrier_category
-                    ? { barrier_category: [barrier_category] }
-                    : {}),
-            };
+            if (!response) return;
 
             if (
                 (isVanillaContract(previous_contract_type) && is_vanilla) ||
@@ -70,11 +85,6 @@ const useActiveSymbols = () => {
                 (getContractTypesList().length === 0 && !is_trade_component_mounted)
             ) {
                 return;
-            }
-            if (is_logged_in) {
-                response = await WS.authorized.activeSymbols(request);
-            } else {
-                response = await WS.activeSymbols(request);
             }
 
             const { active_symbols = [], error } = response;
@@ -91,26 +101,42 @@ const useActiveSymbols = () => {
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [contract_type, is_logged_in, is_turbos, is_vanilla, previous_contract_type, symbol]
+        [
+            response,
+            available_contract_types,
+            contract_type,
+            is_logged_in,
+            is_turbos,
+            is_vanilla,
+            previous_contract_type,
+            symbol,
+        ]
     );
     useEffect(() => {
-        const is_logged_in_changed = previous_logged_in !== undefined && previous_logged_in !== is_logged_in;
         const has_contract_type_changed =
             previous_contract_type && contract_type && previous_contract_type !== contract_type;
-        if (!symbols_from_store.length || !has_symbols_for_v2 || is_logged_in_changed || has_contract_type_changed) {
+        if (!symbols_from_store.length || !has_symbols_for_v2 || has_contract_type_changed) {
             fetchActiveSymbols();
         } else {
             setActiveSymbols(symbols_from_store);
         }
     }, [
+        response,
+        available_contract_types,
         contract_type,
         fetchActiveSymbols,
         has_symbols_for_v2,
         is_logged_in,
         previous_contract_type,
-        previous_logged_in,
         symbols_from_store,
     ]);
+
+    useEffect(() => {
+        if (prev_loginid.current && prev_loginid.current !== client.loginid && !client.is_switching) {
+            setActiveSymbols([]);
+            refetch();
+        }
+    }, [client.loginid, client.is_switching]);
 
     return { default_symbol: default_symbol_ref.current, activeSymbols, fetchActiveSymbols };
 };

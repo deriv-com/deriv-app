@@ -12,7 +12,7 @@ type TProps = {
 
 const DocumentSelection: React.FC<TProps> = ({ onSelectDocument }) => {
     const { localize } = useTranslations();
-    const { data } = useSettings();
+    const { data: settings } = useSettings();
 
     const documents = getManualDocumentsMapper(localize);
 
@@ -24,7 +24,7 @@ const DocumentSelection: React.FC<TProps> = ({ onSelectDocument }) => {
                 </Text>
                 {Object.keys(documents).map(document => {
                     const { countries, description, icon, title } = documents[document];
-                    if (countries && !countries.includes(data?.country_code ?? '')) {
+                    if (countries && !countries.includes(settings?.country_code ?? '')) {
                         return null;
                     }
                     return (

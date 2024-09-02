@@ -174,12 +174,14 @@
     .stats-description {
         text-align: left;
         &__placeholder {
-            height: 220px;
+            // height: 220px;
             width: 100%;
             background-color: var(--core-color-opacity-black-100);
         }
+
         &__player {
-            height: 220px;
+            min-height: 220px;
+            width: 100%;
         }
         &__content {
             margin: var(--core-spacing-1200);

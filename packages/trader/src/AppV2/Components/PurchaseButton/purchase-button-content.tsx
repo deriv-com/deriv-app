@@ -8,19 +8,12 @@ import { Money } from '@deriv/components';
 type TPurchaseButtonContent = {
     current_stake?: number | null;
     error?: React.ReactNode;
+    has_no_button_content?: boolean;
     info: ReturnType<typeof useTraderStore>['proposal_info'][0] | Record<string, never>;
     is_reverse?: boolean;
-    is_high_low?: boolean;
 } & Pick<
     ReturnType<typeof useTraderStore>,
-    | 'currency'
-    | 'has_open_accu_contract'
-    | 'is_accumulator'
-    | 'is_multiplier'
-    | 'is_vanilla_fx'
-    | 'is_vanilla'
-    | 'is_turbos'
-    | 'is_touch'
+    'currency' | 'has_open_accu_contract' | 'is_accumulator' | 'is_multiplier' | 'is_vanilla' | 'is_turbos'
 >;
 
 const PurchaseButtonContent = ({
@@ -28,16 +21,16 @@ const PurchaseButtonContent = ({
     current_stake,
     error,
     has_open_accu_contract,
+    has_no_button_content,
     info,
     is_accumulator,
-    is_high_low,
     is_multiplier,
     is_turbos,
     is_vanilla,
-    is_vanilla_fx,
     is_reverse,
-    is_touch,
 }: TPurchaseButtonContent) => {
+    if (has_no_button_content && !error) return null;
+
     const { current_stake: localized_current_stake, payout, stake } = getLocalizedBasis();
 
     const getAmount = () => {
@@ -52,9 +45,6 @@ const PurchaseButtonContent = ({
         if (is_accumulator) return localized_current_stake;
         return payout;
     };
-
-    if (is_vanilla || is_vanilla_fx || is_turbos || is_high_low || is_touch) return null;
-    if (is_accumulator && !has_open_accu_contract) return null;
 
     const text_basis = getTextBasis();
     const amount = getAmount();

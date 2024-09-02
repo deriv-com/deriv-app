@@ -26,6 +26,7 @@ const PurchaseButton = observer(() => {
     const { isMobile } = useDevice();
     const { addBanner } = useNotifications();
     const {
+        contract_replay: { is_market_closed },
         portfolio: { all_positions, onClickSell },
     } = useStore();
     const {
@@ -59,13 +60,17 @@ const PurchaseButton = observer(() => {
         currency,
         has_open_accu_contract,
         is_accumulator,
-        is_high_low,
         is_multiplier,
-        is_touch,
         is_turbos,
-        is_vanilla_fx,
         is_vanilla,
     };
+    const has_no_button_content =
+        is_vanilla ||
+        is_vanilla_fx ||
+        is_turbos ||
+        is_high_low ||
+        is_touch ||
+        (is_accumulator && !has_open_accu_contract);
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     const active_accu_contract = is_accumulator
         ? all_positions.find(
@@ -127,12 +132,13 @@ const PurchaseButton = observer(() => {
                         const info = proposal_info?.[trade_type] || {};
                         const is_single_button = contract_types.length === 1;
                         const is_loading = loading_button_index === index;
-                        const is_disabled = !is_trade_enabled_v2;
+                        const is_disabled = !is_trade_enabled_v2 || info.has_error;
                         /* TODO: stop using error text for is_max_payout_exceeded after validation_params are added to proposal API (both success & error response):
                 E.g., for is_max_payout_exceeded, we have to temporarily check the error text: Max payout error always contains 3 numbers, the check will work for any languages: */
                         const float_number_search_regex = /\d+(\.\d+)?/g;
                         const is_max_payout_exceeded =
                             info.has_error && info.message?.match(float_number_search_regex)?.length === 3;
+                        const api_error = info.has_error && !is_market_closed && !!info.message ? info.message : '';
                         const error_message = is_max_payout_exceeded ? (
                             <Localize i18n_default_text='Exceeds max payout' />
                         ) : (
@@ -144,10 +150,14 @@ const PurchaseButton = observer(() => {
                                 <Button
                                     color={getButtonType(index, trade_type)}
                                     size='lg'
-                                    label={getContractTypeDisplay(trade_type, {
-                                        isHighLow: is_high_low,
-                                        showButtonName: true,
-                                    })}
+                                    label={
+                                        has_no_button_content && !!api_error
+                                            ? api_error
+                                            : getContractTypeDisplay(trade_type, {
+                                                  isHighLow: is_high_low,
+                                                  showButtonName: true,
+                                              })
+                                    }
                                     fullWidth
                                     className={clsx(
                                         'purchase-button',
@@ -165,6 +175,7 @@ const PurchaseButton = observer(() => {
                                         <PurchaseButtonContent
                                             {...purchase_button_content_props}
                                             error={error_message}
+                                            has_no_button_content={has_no_button_content}
                                             info={info}
                                             is_reverse={!!index}
                                         />

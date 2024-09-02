@@ -411,8 +411,15 @@ export const convertToMinutesRange = (edited_data: TBusinessDay[]) => {
         let end_min = getMinutesFromAMPM(day.value, day.end_time);
 
         // Adjust end_min if it's 12 AM to be 1440 minutes (24 hours)
-        if (start_min !== null && end_min !== null && end_min == start_min) {
-            end_min = start_min + 1440;
+        if (start_min !== null && end_min !== null) {
+            if (end_min === start_min) {
+                end_min = start_min + 1440;
+            }
+
+            // Handle the case where the end time is 12 AM then set it to end of the particular day in minutes => 1440 * (day + 1)
+            if (end_min === MINUTES_IN_DAY * DAYS_OF_WEEK[day.value]) {
+                end_min = (DAYS_OF_WEEK[day.value] + 1) * MINUTES_IN_DAY;
+            }
         }
 
         return {
@@ -473,7 +480,7 @@ export const convertToGMTWithOverflow = (times: TTimeRange[], offsetMinutes: num
  * @returns
  */
 export const isTimeEdited = (data: TBusinessDay[], edited_data: TBusinessDay[]): boolean => {
-    if (data.length !== edited_data.length) {
+    if (data.length !== edited_data?.length) {
         return true;
     }
 

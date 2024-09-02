@@ -414,7 +414,7 @@ export default class MyProfileStore extends BaseStore {
         });
     }
 
-    handleBusinessHoursSubmit(values) {
+    handleBusinessHoursSubmit(values, onClickSave) {
         const { general_store } = this.root_store;
         this.setEditedBusinessHours([]);
         requestWS({
@@ -422,7 +422,7 @@ export default class MyProfileStore extends BaseStore {
             schedule: values,
         }).then(response => {
             if (!response.error) {
-                general_store.hideModal();
+                onClickSave();
             } else {
                 general_store.showModal({
                     key: 'ErrorModal',

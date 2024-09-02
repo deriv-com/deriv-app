@@ -49,6 +49,7 @@ const BusinessHourModal = () => {
     const { business_hours, setEditedBusinessHours, edited_business_hours } = my_profile_store;
 
     const [show_edit, setShowEdit] = useSavedState('show_edit', false);
+    const [is_disabled, setIsDisabled] = React.useState(true);
     const ref = React.useRef<{ getEditedData: () => void } | null>(null);
 
     const formatBusinessDays = (intervals: TTimeRange[]): TBusinessDay[] => {
@@ -99,7 +100,7 @@ const BusinessHourModal = () => {
             ({ start_min, end_min }) => !(start_min === 0 && end_min === 0)
         );
 
-        my_profile_store.handleBusinessHoursSubmit(converted_result);
+        my_profile_store.handleBusinessHoursSubmit(converted_result, () => setShowEdit(false));
     };
 
     const getTimezoneOffset = () => {
@@ -155,8 +156,10 @@ const BusinessHourModal = () => {
                 {show_edit ? (
                     <BusinessHourModalEdit
                         data={business_hours_input}
+                        is_disabled={is_disabled}
                         ref={ref}
                         saved_details={edited_business_hours}
+                        setIsDisabled={setIsDisabled}
                     />
                 ) : (
                     <BusinessHourModalMain business_days={business_hours_input} />
@@ -179,8 +182,10 @@ const BusinessHourModal = () => {
                 {show_edit ? (
                     <BusinessHourModalEdit
                         data={business_hours_input}
+                        is_disabled={is_disabled}
                         ref={ref}
                         saved_details={edited_business_hours}
+                        setIsDisabled={setIsDisabled}
                     />
                 ) : (
                     <BusinessHourModalMain business_days={business_hours_input} />
@@ -188,6 +193,7 @@ const BusinessHourModal = () => {
             </Modal.Body>
             <Modal.Footer className='business-hour-modal__footer'>
                 <BusinessHourModalFooter
+                    is_disabled={is_disabled}
                     onClickSave={onClickSave}
                     onClickCancel={onClickCancel}
                     setShowEdit={setShowEdit}

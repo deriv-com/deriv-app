@@ -40,7 +40,10 @@
             }
 
             &__dropdown {
-                background-color: var(--general-section-1);
+                background-color: var(--general-section-2);
+                @include mobile-screen {
+                    background-color: var(--general-section-1);
+                }
                 padding: 0.8rem 1.6rem;
                 border-radius: 4px;
                 width: 22rem;
@@ -134,15 +137,6 @@
                 &--disabled {
                     opacity: 0.4;
                     cursor: not-allowed;
-                }
-            }
-
-            .dc-tooltip[data-tooltip] {
-                position: relative;
-
-                &:before {
-                    width: fit-content;
-                    color: var(--text-general);
                 }
             }
         }

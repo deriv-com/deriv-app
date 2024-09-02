@@ -105,7 +105,7 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
             errors.new_password = getErrorMessages().password();
         } else if (platform !== CFD_PLATFORMS.DXTRADE && !validMT5Password(values.new_password)) {
             errors.new_password = localize(
-                'Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.'
+                'Password must have at least one of these special characters: !&‘’*-“%+.#&(),:;?=@<>\\[]^_{}|~'
             );
         }
         if (values.new_password.toLowerCase() === email.toLowerCase()) {
@@ -212,7 +212,8 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
                                                         align='center'
                                                         className='cfd-reset-password__description2'
                                                     >
-                                                        <Localize i18n_default_text='Your password must contain between 8-16 characters that include uppercase and lowercase letters, and at least one number and special character ( _ @ ? ! / # ).' />
+                                                        \
+                                                        <Localize i18n_default_text='Password must have at least one of these special characters: !&amp;‘’*-“%+.#&amp;(),:;?=@&lt;&gt;\[\]^_{}|~' />{' '}
                                                     </Text>
                                                 </div>
                                             )}

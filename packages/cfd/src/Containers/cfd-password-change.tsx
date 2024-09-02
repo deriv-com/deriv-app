@@ -96,7 +96,7 @@ const CFDPasswordChange = observer(
                         'new_password',
                         // Localize is employed to convert the customized error message since the backend error lacks clarity.
                         localize(
-                            'Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.'
+                            'Password must have at least one of these special characters: !&‘’*-“%+.#&(),:;?=@<>\\[]^_{}|~'
                         )
                     );
             }

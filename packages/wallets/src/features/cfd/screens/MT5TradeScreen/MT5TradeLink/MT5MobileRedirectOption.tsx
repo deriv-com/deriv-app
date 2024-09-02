@@ -1,11 +1,13 @@
 import React, { FC } from 'react';
 import {
+    LabelPairedChevronLeftLgFillIcon,
     LabelPairedChevronRightLgFillIcon,
     LegacyMonitorIcon,
     StandaloneMobileNotchRegularIcon,
 } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
+import useIsRtl from '../../../../../hooks/useIsRtl';
 import { THooks } from '../../../../../types';
 import { getDeeplinkUrl, getMobileAppInstallerUrl, getWebtraderUrl } from './constants';
 import './MT5MobileRedirectOption.scss';
@@ -15,6 +17,8 @@ type TMT5MobileRedirectOptionProps = {
 };
 
 const MT5MobileRedirectOption: FC<TMT5MobileRedirectOptionProps> = ({ mt5TradeAccount }) => {
+    const isRtl = useIsRtl();
+
     const mobileURLSet = async () => {
         window.location.replace(getDeeplinkUrl({ mt5TradeAccount }));
         const mobileAppURL = await getMobileAppInstallerUrl({ mt5TradeAccount });
@@ -52,7 +56,7 @@ const MT5MobileRedirectOption: FC<TMT5MobileRedirectOptionProps> = ({ mt5TradeAc
                         <Localize i18n_default_text='MetaTrader5 web terminal' />
                     </Text>
                 </div>
-                <LabelPairedChevronRightLgFillIcon />
+                {isRtl ? <LabelPairedChevronLeftLgFillIcon /> : <LabelPairedChevronRightLgFillIcon />}
             </a>
             <button
                 className='wallets-mobile-redirect-option__button wallets-mobile-redirect-option__button--blue'
@@ -64,7 +68,7 @@ const MT5MobileRedirectOption: FC<TMT5MobileRedirectOptionProps> = ({ mt5TradeAc
                         <Localize i18n_default_text='Trade with MT5 mobile app' />
                     </Text>
                 </div>
-                <LabelPairedChevronRightLgFillIcon fill='#FFF' />
+                {isRtl ? <LabelPairedChevronLeftLgFillIcon /> : <LabelPairedChevronRightLgFillIcon />}
             </button>
             <Text as='p' size='xs'>
                 <Localize

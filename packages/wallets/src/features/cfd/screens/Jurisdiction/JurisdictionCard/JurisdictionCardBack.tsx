@@ -1,8 +1,9 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
-import { LegacyArrowLeft2pxIcon } from '@deriv/quill-icons';
+import { LegacyArrowLeft2pxIcon, LegacyArrowRight2pxIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
 import { Divider } from '@deriv-com/ui';
 import { WalletText } from '../../../../../components/Base/WalletText';
+import useIsRtl from '../../../../../hooks/useIsRtl';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
 import DocumentIcon from '../../../../../public/images/ic-id-number.svg';
 import NameAndAddressIcon from '../../../../../public/images/ic-name-and-address.svg';
@@ -39,18 +40,30 @@ type TJurisdictionCardBackProps = {
 
 const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, verificationDocs }) => {
     const { localize } = useTranslations();
+    const isRtl = useIsRtl();
     const verificationContents = jurisdictionVerificationContents(localize);
     if (verificationDocs)
         return (
             <div className='wallets-jurisdiction-card-back'>
-                <LegacyArrowLeft2pxIcon
-                    className='wallets-jurisdiction-card-back__icon'
-                    iconSize='xs'
-                    onClick={e => {
-                        e.stopPropagation();
-                        setIsFlipped(false);
-                    }}
-                />
+                {isRtl ? (
+                    <LegacyArrowRight2pxIcon
+                        className='wallets-jurisdiction-card-back__icon'
+                        iconSize='xs'
+                        onClick={e => {
+                            e.stopPropagation();
+                            setIsFlipped(false);
+                        }}
+                    />
+                ) : (
+                    <LegacyArrowLeft2pxIcon
+                        className='wallets-jurisdiction-card-back__icon'
+                        iconSize='xs'
+                        onClick={e => {
+                            e.stopPropagation();
+                            setIsFlipped(false);
+                        }}
+                    />
+                )}
                 <WalletText size='xs'>{verificationContents.shortDescription}</WalletText>
                 {verificationDocs.map((verificationDocument: TJurisdictionCardItemVerificationItem, i) => {
                     return (

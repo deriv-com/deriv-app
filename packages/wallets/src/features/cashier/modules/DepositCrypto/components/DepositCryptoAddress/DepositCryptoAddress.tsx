@@ -2,6 +2,7 @@ import React from 'react';
 import QRCode from 'qrcode.react';
 import { WalletClipboard, WalletText } from '../../../../../../components/Base';
 import useDevice from '../../../../../../hooks/useDevice';
+import useIsRtl from '../../../../../../hooks/useIsRtl';
 import './DepositCryptoAddress.scss';
 
 type TProps = {
@@ -10,6 +11,8 @@ type TProps = {
 
 const DepositCryptoAddress: React.FC<TProps> = ({ depositCryptoAddress }) => {
     const { isMobile } = useDevice();
+    const isRtl = useIsRtl();
+    const mobileAlignment = isRtl ? 'right' : 'left';
 
     return (
         <div className='wallets-deposit-crypto-address'>
@@ -22,7 +25,7 @@ const DepositCryptoAddress: React.FC<TProps> = ({ depositCryptoAddress }) => {
                 </div>
                 <div className='wallets-deposit-crypto-address__hash-clipboard'>
                     <WalletClipboard
-                        popoverAlignment={isMobile ? 'left' : 'bottom'}
+                        popoverAlignment={isMobile ? mobileAlignment : 'bottom'}
                         textCopy={depositCryptoAddress || ''}
                     />
                 </div>

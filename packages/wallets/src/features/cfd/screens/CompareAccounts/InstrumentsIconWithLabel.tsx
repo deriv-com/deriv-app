@@ -24,7 +24,7 @@ const InstrumentsIconWithLabel = ({ highlighted, icon, isAsterisk, text }: TInst
         >
             {getInstrumentsIcons(isMobile)[icon]}
             <div className='wallets-compare-accounts-trading-instruments__text'>
-                <WalletText align='left' as='p' lineHeight='xs' size='xs' weight={isMobile ? 'normal' : 'bold'}>
+                <WalletText as='p' lineHeight='xs' size='xs' weight={isMobile ? 'normal' : 'bold'}>
                     {text}
                 </WalletText>
             </div>

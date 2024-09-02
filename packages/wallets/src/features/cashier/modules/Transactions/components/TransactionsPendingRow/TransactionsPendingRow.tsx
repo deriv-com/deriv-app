@@ -9,6 +9,7 @@ import { Button, Divider, Text, Tooltip } from '@deriv-com/ui';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
 import useDevice from '../../../../../../hooks/useDevice';
+import useIsRtl from '../../../../../../hooks/useIsRtl';
 import { THooks } from '../../../../../../types';
 import { WalletActionModal } from '../../../../components/WalletActionModal';
 import {
@@ -30,6 +31,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
     const { localize } = useTranslations();
     const displayCode = useMemo(() => data?.currency_config?.display_code || 'USD', [data]);
     const modal = useModal();
+    const isRtl = useIsRtl();
     const formattedTransactionHash = transaction.transaction_hash
         ? getTruncatedString(transaction.transaction_hash, { type: 'middle' })
         : localize('Pending');
@@ -111,7 +113,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                                 ? {
                                       link: transaction.transaction_url,
                                       text: localize('View transaction hash on Blockchain'),
-                                      tooltipAlignment: 'right',
+                                      tooltipAlignment: isRtl ? 'left' : 'right',
                                   }
                                 : undefined
                         }
@@ -123,7 +125,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                         hint={{
                             link: transaction.address_url,
                             text: localize('View address on Blockchain'),
-                            tooltipAlignment: 'right',
+                            tooltipAlignment: isRtl ? 'left' : 'right',
                         }}
                         name={localize('Address')}
                         value={formattedAddressHash}
@@ -186,7 +188,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                         hideTooltip={isMobile}
                         onClick={onMobileStatusClick}
                         tooltipContent={statusDescription}
-                        tooltipPosition='left'
+                        tooltipPosition={isRtl ? 'right' : 'left'}
                     >
                         <div
                             className={classNames(

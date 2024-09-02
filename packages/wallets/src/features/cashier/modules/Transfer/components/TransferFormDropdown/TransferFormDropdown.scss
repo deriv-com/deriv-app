@@ -38,14 +38,14 @@
     }
 
     &__icon-dropdown {
-        margin-left: 1rem;
+        margin-inline-start: 1rem;
 
         @include mobile {
-            margin-right: 0;
+            margin-inline-end: 0;
         }
     }
 
     &__badge {
-        margin-left: 1rem;
+        margin-inline-start: 1rem;
     }
 }

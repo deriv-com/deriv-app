@@ -44,7 +44,7 @@
             gap: 0.4rem;
 
             .wallets-transfer-form-account-card__icon {
-                margin-right: 0.4rem;
+                margin-inline-end: 0.4rem;
             }
         }
 
@@ -53,7 +53,7 @@
             align-items: center;
 
             .wallets-transfer-form-account-card__icon {
-                margin-right: 0.8rem;
+                margin-inline-end: 0.8rem;
             }
         }
     }
@@ -71,7 +71,7 @@
     }
 
     &__modal-badge {
-        margin-left: 1rem;
+        margin-inline-start: 1rem;
     }
 
     .wallets-market-currency-icon {

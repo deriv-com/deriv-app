@@ -11,14 +11,14 @@ const stepProps = {
     spotlightPadding: 0,
 };
 
-export const desktopStepTourGuide = (allWalletsAreAdded: boolean): Step[] => [
+export const desktopStepTourGuide = (allWalletsAreAdded: boolean, isRtl: boolean): Step[] => [
     {
         content: (
             <Text size='sm'>
                 <Localize i18n_default_text='Manage your funds with Wallets.' />
             </Text>
         ),
-        placement: 'bottom-start',
+        placement: isRtl ? 'bottom-end' : 'bottom-start',
         styles: { spotlight: { borderRadius: '1.6rem' } },
         target: '.wallets-container__header',
         title: (
@@ -71,7 +71,7 @@ export const desktopStepTourGuide = (allWalletsAreAdded: boolean): Step[] => [
             </Text>
         ),
         disableScrolling: false,
-        placement: 'right',
+        placement: isRtl ? 'left' : 'right',
         styles: { spotlight: { borderRadius: '1.6rem' } },
         target: allWalletsAreAdded ? 'null' : '.wallets-add-more__card',
         title: (

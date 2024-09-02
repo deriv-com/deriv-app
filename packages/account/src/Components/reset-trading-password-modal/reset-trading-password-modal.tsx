@@ -215,7 +215,7 @@ const ResetTradingPassword = ({
                                     </fieldset>
                                     <Text as='p' size='xs' className='reset-trading-password__hint'>
                                         {platform === CFD_PLATFORMS.MT5 ? (
-                                            <Localize i18n_default_text='Your password must contain between 8-16 characters that include uppercase and lowercase letters, and at least one number and special character such as ( _ @ ? ! / # ).' />
+                                            <Localize i18n_default_text='Password must have at least one of these special characters: !&‘’*-“%+.#&(),:;?=@<>\[]^_{}|~' />
                                         ) : (
                                             <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
                                         )}

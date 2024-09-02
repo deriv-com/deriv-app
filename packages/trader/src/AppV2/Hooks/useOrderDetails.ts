@@ -185,11 +185,20 @@ const transformFunctionMap: Record<string, (data: TContractInfo) => Record<strin
     [CONTRACT_TYPES.ACCUMULATOR]: transformAccumulatorData,
     [CONTRACT_TYPES.VANILLA.CALL]: transformVanillaData,
     [CONTRACT_TYPES.VANILLA.PUT]: transformVanillaData,
+    //SMARTTRADER CONSTRACT
+    [CONTRACT_TYPES.END.IN]: transformVanillaData,
+    [CONTRACT_TYPES.END.OUT]: transformVanillaData,
+    [CONTRACT_TYPES.STAY.IN]: transformVanillaData,
+    [CONTRACT_TYPES.STAY.OUT]: transformVanillaData,
+    [CONTRACT_TYPES.LB_HIGH_LOW]: transformVanillaData,
+    [CONTRACT_TYPES.LB_CALL]: transformVanillaData,
+    [CONTRACT_TYPES.LB_PUT]: transformVanillaData,
 };
 
 const useOrderDetails = (contract_info: TContractInfo) => {
     const contractInfo = contract_info;
     if (!contractInfo.contract_type) return;
+    console.log('contractInfo.contract_type', contractInfo.contract_type);
     const transformFunction = transformFunctionMap[contractInfo.contract_type];
     const details = transformFunction ? transformFunction(contractInfo) : {};
 

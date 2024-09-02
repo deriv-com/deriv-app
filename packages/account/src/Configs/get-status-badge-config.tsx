@@ -52,7 +52,7 @@ const getStatusBadgeConfig = (
             return {
                 text: (
                     <Localize
-                        i18n_default_text='<0>Needs verification.</0><1>Verify now</1>'
+                        i18n_default_text='<1>Needs verification.</1>'
                         components={[
                             <Text key={0} weight='bold' size='xxxs' color='var(--status-info)' />,
                             setIsVerificationModalVisible ? (

@@ -618,7 +618,6 @@ const CFDPasswordForm = observer(
 const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalProps) => {
     const { isDesktop, isMobileOrTabletLandscape } = useDevice();
     const isMobileOrTabletPortrait = !isDesktop && !isMobileOrTabletLandscape;
-    const isDesktopOrLandscape = isDesktop || isMobileOrTabletLandscape;
     const { client, traders_hub, ui } = useStore();
 
     const {
@@ -1091,6 +1090,10 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         </MobileDialog>
     );
 
+    const invalid_mt5_password_modal = isMobileOrTabletPortrait
+        ? is_mt5_password_format_invalid
+        : is_mt5_password_format_invalid_desktop;
+
     return (
         <React.Fragment>
             {platform === CFD_PLATFORMS.MT5 && !isDesktop && password_modal_mobile}
@@ -1134,8 +1137,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 onClose={() => setSentEmailModalStatus(false)}
                 onClickSendEmail={handleForgotPassword}
             />
-            {is_incorrect_mt5_password_format_error && isDesktopOrLandscape && is_mt5_password_format_invalid_desktop}
-            {is_incorrect_mt5_password_format_error && isMobileOrTabletPortrait && is_mt5_password_format_invalid}
+            {is_incorrect_mt5_password_format_error && invalid_mt5_password_modal}
             {is_mt5_password_changed_modal_visible && (
                 <CFDPasswordChangeContent closeModal={closeModal} password_value={new_password_value} />
             )}

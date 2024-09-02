@@ -23,7 +23,7 @@ const WalletListCardBalance = () => {
                     data-testid='dt_wallet_list_card_balance_loader'
                 />
             ) : (
-                <WalletText align='right' data-testid='dt_wallets_list_card_balance' size='xl' weight='bold'>
+                <WalletText data-testid='dt_wallets_list_card_balance' size='xl' weight='bold'>
                     {displayMoney(balance, activeWallet?.currency, {
                         fractional_digits: activeWallet?.currency_config?.fractional_digits,
                     })}

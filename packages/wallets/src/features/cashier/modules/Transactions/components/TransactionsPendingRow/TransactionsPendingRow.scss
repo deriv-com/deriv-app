@@ -55,6 +55,10 @@
             width: 13.2rem;
             align-self: center;
             white-space: nowrap;
+
+            span {
+                text-align: end;
+            }
         }
 
         &-confirmations {

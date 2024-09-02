@@ -168,12 +168,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                     />
                     {!isMobile && (
                         <div className='wallets-transactions-pending-row__transaction-amount'>
-                            <Text
-                                align='right'
-                                color={transaction.is_deposit ? 'success' : 'red'}
-                                size='sm'
-                                weight='bold'
-                            >
+                            <Text color={transaction.is_deposit ? 'success' : 'red'} size='sm' weight='bold'>
                                 {transaction.is_deposit ? '+' : '-'}
                                 {transaction.formatted_amount}
                             </Text>

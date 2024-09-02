@@ -165,6 +165,10 @@
 
         &--maxchar {
             float: inline-end;
+
+            span {
+                text-align: end;
+            }
         }
 
         &--msg {

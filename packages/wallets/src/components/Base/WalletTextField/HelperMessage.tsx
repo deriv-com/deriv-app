@@ -31,7 +31,7 @@ const HelperMessage: React.FC<HelperMessageProps> = memo(
                 )}
                 {maxLength && (
                     <div className='wallets-textfield__message-container--maxchar'>
-                        <WalletText align='right' color='less-prominent' size='xs'>
+                        <WalletText color='less-prominent' size='xs'>
                             {inputValue?.toString().length || 0} / {maxLength}
                         </WalletText>
                     </div>

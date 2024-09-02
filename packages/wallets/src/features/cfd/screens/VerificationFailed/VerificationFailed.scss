@@ -25,10 +25,6 @@
         @include mobile {
             gap: 0.4rem;
         }
-
-        @include rtl {
-            padding-right: 2.4rem;
-        }
     }
 
     & li {

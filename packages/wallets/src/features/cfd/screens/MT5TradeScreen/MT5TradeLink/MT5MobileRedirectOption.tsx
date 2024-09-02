@@ -52,7 +52,7 @@ const MT5MobileRedirectOption: FC<TMT5MobileRedirectOptionProps> = ({ mt5TradeAc
             >
                 <LegacyMonitorIcon iconSize='sm' />
                 <div className='wallets-mobile-redirect-option__button__content'>
-                    <Text align='left' size='xs' weight='bold'>
+                    <Text size='xs' weight='bold'>
                         <Localize i18n_default_text='MetaTrader5 web terminal' />
                     </Text>
                 </div>
@@ -64,7 +64,7 @@ const MT5MobileRedirectOption: FC<TMT5MobileRedirectOptionProps> = ({ mt5TradeAc
             >
                 <StandaloneMobileNotchRegularIcon fill='#FFF' />
                 <div className='wallets-mobile-redirect-option__button__content'>
-                    <Text align='left' color='white' size='xs' weight='bold'>
+                    <Text color='white' size='xs' weight='bold'>
                         <Localize i18n_default_text='Trade with MT5 mobile app' />
                     </Text>
                 </div>

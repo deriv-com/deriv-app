@@ -100,7 +100,7 @@
 
     &__label {
         @include mobile {
-            padding-left: 0.8rem;
+            padding-inline-start: 0.8rem;
         }
     }
 
@@ -128,7 +128,7 @@
         flex-grow: 1;
         border-bottom: 1px solid var(--general-section-1, #f2f3f4);
         margin-block: 0.9rem;
-        margin-left: 1rem;
+        margin-inline-start: 1rem;
     }
 
     &__transfer-to-hint {

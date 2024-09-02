@@ -1,11 +1,12 @@
 import { WS } from '@deriv/shared';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, MutableRefObject } from 'react';
 import { TServerError } from 'Types';
+import useStateWithRef from './useStateWithRef';
 
 type QueryResult<T> = {
     data: null | T;
     error: TServerError | null;
-    is_loading: boolean;
+    is_loading_ref: MutableRefObject<boolean>;
     refetch: () => void;
 };
 
@@ -14,9 +15,7 @@ type QueryOptionsBase = {
     enabled?: boolean;
 };
 
-type QueryOptions = QueryOptionsBase & {
-    refresh_on_account_switch?: boolean;
-};
+type QueryOptions = QueryOptionsBase;
 
 // Cache object to store the results
 const cache: Record<string, any> = {};
@@ -30,8 +29,9 @@ const useDtraderQueryBase = <Response>(
     const { enabled = false } = options;
     const [data, setData] = useState<Response | null>(cache[key] || null);
     const [error, setError] = useState<TServerError | null>(null);
-    const [is_loading, setIsLoading] = useState(!cache[key] && enabled);
+    const [is_loading_ref, setIsLoading] = useStateWithRef(!cache[key] && enabled);
     const is_mounted = useRef(false);
+    const request_string = JSON.stringify(request);
 
     const { wait_for_authorize = true } = options;
 
@@ -44,6 +44,7 @@ const useDtraderQueryBase = <Response>(
     }, []);
 
     const fetchData = useCallback(() => {
+        is_loading_ref.current = true;
         setIsLoading(true);
 
         let send_promise;
@@ -51,6 +52,7 @@ const useDtraderQueryBase = <Response>(
         if (ongoing_requests[key]) {
             send_promise = ongoing_requests[key];
         } else {
+            const request = JSON.parse(request_string);
             send_promise = wait_for_authorize ? WS.authorized.send(request) : WS.send(request);
             ongoing_requests[key] = send_promise;
         }
@@ -72,26 +74,22 @@ const useDtraderQueryBase = <Response>(
             .finally(() => {
                 delete ongoing_requests[key];
             });
-    }, [key, wait_for_authorize, request]);
+    }, [is_loading_ref, setIsLoading, key, request_string, wait_for_authorize]);
 
     useEffect(() => {
-        let isSubscribed = true;
-        if (enabled && !cache[key] && isSubscribed) {
+        if (enabled && !cache[key]) {
             fetchData();
         }
-        return () => {
-            isSubscribed = false;
-        };
     }, [key, fetchData, enabled]);
 
-    const refetch = () => {
+    const refetch = useCallback(() => {
         if (enabled) {
             cache[key] = null;
             fetchData();
         }
-    };
+    }, [enabled, fetchData, key]);
 
-    return { data, error, is_loading, refetch };
+    return { data, error, is_loading_ref, refetch };
 };
 
 export const useDtraderQuery = <Response>(

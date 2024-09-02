@@ -29,7 +29,7 @@ const useContractsForCompany = () => {
         data: response,
         refetch,
         error,
-        is_loading,
+        is_loading_ref,
     } = useDtraderQuery<TContractsForCompanyResponse>(
         'contracts_for_company',
         {
@@ -103,13 +103,15 @@ const useContractsForCompany = () => {
 
     useEffect(() => {
         if (prev_loginid.current && prev_loginid.current !== client.loginid && !client.is_switching) {
+            console.log('refetch cfc');
             setContractTypesList([]);
             setAvailableContractTypes(undefined);
             refetch();
+            console.log('refetch cfc is_loading', is_loading_ref.current);
         }
-    }, [client.loginid, client.is_switching]);
+    }, [client.loginid, client.is_switching, refetch, is_loading_ref]);
 
-    return { contract_types_list, available_contract_types, is_loading };
+    return { contract_types_list, available_contract_types, is_loading_ref };
 };
 
 export default useContractsForCompany;

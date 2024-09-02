@@ -33,7 +33,7 @@ const useActiveSymbols = () => {
         is_trade_component_mounted,
     } = useTraderStore();
 
-    const { available_contract_types, is_loading: is_contracts_for_company_loading } = useContractsForCompany();
+    const { available_contract_types, is_loading_ref: is_contracts_for_company_loading } = useContractsForCompany();
 
     const default_symbol_ref = useRef('');
     const previous_contract_type = usePrevious(contract_type);
@@ -53,11 +53,16 @@ const useActiveSymbols = () => {
 
     const { barrier_category } = (available_contract_types?.[contract_type]?.config || {}) as any;
 
-    const isQueryEnabled = () => {
+    const isQueryEnabled = useCallback(() => {
+        console.log(
+            'active symbols query enabled check',
+            !available_contract_types,
+            is_contracts_for_company_loading.current
+        );
         if (!available_contract_types) return false;
-        if (is_contracts_for_company_loading) return false;
+        if (is_contracts_for_company_loading.current) return false;
         return true;
-    };
+    }, [available_contract_types, is_contracts_for_company_loading]);
 
     const { data: response, refetch } = useDtraderQuery<ActiveSymbolsResponse>(
         'active_symbols',
@@ -132,11 +137,17 @@ const useActiveSymbols = () => {
     ]);
 
     useEffect(() => {
-        if (prev_loginid.current && prev_loginid.current !== client.loginid && !client.is_switching) {
+        if (
+            isQueryEnabled() &&
+            prev_loginid.current &&
+            prev_loginid.current !== client.loginid &&
+            !client.is_switching
+        ) {
+            console.log('refetch as');
             setActiveSymbols([]);
             refetch();
         }
-    }, [client.loginid, client.is_switching]);
+    }, [client.loginid, client.is_switching, refetch, isQueryEnabled]);
 
     return { default_symbol: default_symbol_ref.current, activeSymbols, fetchActiveSymbols };
 };

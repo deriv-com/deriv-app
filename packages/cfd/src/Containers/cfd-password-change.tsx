@@ -48,7 +48,7 @@ const CFDPasswordChange = observer(
         const { product, account_type } = useCfdStore();
         const { cfd } = modules;
         const { setIsMt5PasswordChangedModalVisible, setIsFromMt5MigrationModal } = cfd;
-        const { is_mobile, is_mt5_migration_modal_enabled } = ui;
+        const { is_mt5_migration_modal_enabled } = ui;
         const has_cancel_button = (isDesktop() ? !should_set_trading_password : true) || error_type === 'PasswordReset';
         const [checked, setChecked] = React.useState(
             !(product === PRODUCT.ZEROSPREAD && account_type.category === CATEGORY.REAL)

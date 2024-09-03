@@ -154,8 +154,6 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                     setIsOpen={setIsOpenAnnounceList}
                     notifications={notifications}
                     excludedClickOutsideClass={action_button_class_name}
-                    /* eslint-disable-next-line @typescript-eslint/no-empty-function */
-                    loadMoreFunction={() => {}}
                 />
             </div>
             {selected_announcement?.announcement && (

@@ -509,7 +509,7 @@ export const getDropdownList = (hoursList: TTimeOption[], type: string, value: s
         let disabled = false;
         if (
             should_disable &&
-            ((type === 'start' && index > referenceIndex) || (type === 'end' && index < referenceIndex))
+            ((type === 'start' && index >= referenceIndex) || (type === 'end' && index <= referenceIndex))
         ) {
             disabled = true;
         }

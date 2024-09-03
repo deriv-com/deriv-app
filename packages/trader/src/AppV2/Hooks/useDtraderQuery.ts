@@ -5,7 +5,7 @@ import { TServerError } from 'Types';
 type QueryResult<T> = {
     data: null | T;
     error: TServerError | null;
-    is_loading: boolean;
+    is_fetching: boolean;
     refetch: () => void;
 };
 
@@ -29,7 +29,7 @@ const useDtraderQueryBase = <Response>(
     const { enabled = true } = options;
     const [data, setData] = useState<Response | null>(cache[key] || null);
     const [error, setError] = useState<TServerError | null>(null);
-    const [is_loading, setIsLoading] = useState(!cache[key] && enabled);
+    const [is_fetching, setIsLoading] = useState(!cache[key] && enabled);
     const is_mounted = useRef(false);
     const request_string = JSON.stringify(request);
 
@@ -88,7 +88,7 @@ const useDtraderQueryBase = <Response>(
         }
     }, [enabled, fetchData, key]);
 
-    return { data, error, is_loading, refetch };
+    return { data, error, is_fetching, refetch };
 };
 
 export const useDtraderQuery = <Response>(

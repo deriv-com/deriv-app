@@ -33,7 +33,7 @@ const useActiveSymbols = () => {
     } = useTraderStore();
     const [activeSymbols, setActiveSymbols] = useState<ActiveSymbols | []>(symbols_from_store);
 
-    const { available_contract_types, is_loading_ref: is_contracts_loading_ref } = useContractsForCompany();
+    const { available_contract_types, is_fetching_ref: is_contracts_loading_ref } = useContractsForCompany();
 
     const default_symbol_ref = useRef('');
     const previous_contract_type = usePrevious(contract_type);

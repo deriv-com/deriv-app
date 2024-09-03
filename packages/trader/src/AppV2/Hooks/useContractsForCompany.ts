@@ -36,7 +36,7 @@ const useContractsForCompany = () => {
         data: response,
         refetch,
         error,
-        is_loading,
+        is_fetching,
     } = useDtraderQuery<TContractsForCompanyResponse>(
         ['contracts_for_company'],
         {
@@ -56,14 +56,14 @@ const useContractsForCompany = () => {
     >();
 
     const prev_loginid = useRef(loginid);
-    const is_loading_ref = useRef(is_loading);
+    const is_fetching_ref = useRef(is_fetching);
 
     React.useEffect(() => {
         try {
             const { contracts_for_company } = response || {};
             const available_contract_types: ReturnType<typeof getContractTypesConfig> = {};
 
-            is_loading_ref.current = false;
+            is_fetching_ref.current = false;
 
             if (!error && contracts_for_company?.available.length) {
                 contracts_for_company.available.forEach(contract => {
@@ -115,11 +115,11 @@ const useContractsForCompany = () => {
             setContractTypesList([]);
             setAvailableContractTypes(undefined);
             refetch();
-            is_loading_ref.current = true;
+            is_fetching_ref.current = true;
         }
     }, [loginid, is_switching, refetch]);
 
-    return { contract_types_list, available_contract_types, is_loading_ref };
+    return { contract_types_list, available_contract_types, is_fetching_ref };
 };
 
 export default useContractsForCompany;

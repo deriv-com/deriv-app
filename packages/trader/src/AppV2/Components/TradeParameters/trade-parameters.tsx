@@ -48,11 +48,11 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
                 {isVisible('growth_rate') && <GrowthRate is_minimized={is_minimized} />}
                 {isVisible('multiplier') && <Multiplier is_minimized={is_minimized} />}
                 {isVisible('stake') && <Stake is_minimized={is_minimized} />}
-                {isVisible('allow_equals') && <AllowEquals is_minimized={is_minimized} />}
+                {isVisible('allow_equals') && !is_minimized && <AllowEquals />}
                 {isVisible('take_profit') && <TakeProfit is_minimized={is_minimized} />}
                 {isVisible('risk_management') && <RiskManagement is_minimized={is_minimized} />}
                 {isVisible('expiration') && !is_minimized && <MultipliersExpirationInfo />}
-                {isVisible('accu_info_display') && <AccumulatorsInformation is_minimized={is_minimized} />}
+                {isVisible('accu_info_display') && !is_minimized && <AccumulatorsInformation />}
                 {isVisible('barrier_info') && !is_minimized && <BarrierInfo />}
                 {isVisible('payout_per_point_info') && !is_minimized && <PayoutPerPointInfo />}
             </div>

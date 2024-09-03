@@ -46,7 +46,7 @@ const useDtraderQueryBase = <Response>(
     const fetchData = useCallback(() => {
         setIsLoading(true);
 
-        let send_promise;
+        let send_promise: Promise<any> | undefined;
 
         if (ongoing_requests[key]) {
             send_promise = ongoing_requests[key];
@@ -57,7 +57,7 @@ const useDtraderQueryBase = <Response>(
         }
 
         send_promise
-            .then((result: Response) => {
+            ?.then((result: Response) => {
                 if (!is_mounted.current) return;
 
                 cache[key] = result;

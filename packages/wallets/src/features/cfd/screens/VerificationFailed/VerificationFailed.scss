@@ -7,10 +7,6 @@
     background-color: var(--system-light-8-primary-background, #fff);
     width: 44rem;
 
-    span {
-        text-align: start;
-    }
-
     @include mobile {
         width: 32rem;
         padding: 1.6rem;

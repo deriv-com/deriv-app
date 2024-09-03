@@ -1,8 +1,7 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { LegacyArrowLeft2pxIcon, LegacyArrowRight2pxIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
-import { Divider } from '@deriv-com/ui';
-import { WalletText } from '../../../../../components/Base/WalletText';
+import { Divider, Text } from '@deriv-com/ui';
 import useIsRtl from '../../../../../hooks/useIsRtl';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
 import DocumentIcon from '../../../../../public/images/ic-id-number.svg';
@@ -64,14 +63,16 @@ const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, ve
                         }}
                     />
                 )}
-                <WalletText size='xs'>{verificationContents.shortDescription}</WalletText>
+                <Text align='start' size='xs'>
+                    {verificationContents.shortDescription}
+                </Text>
                 {verificationDocs.map((verificationDocument: TJurisdictionCardItemVerificationItem, i) => {
                     return (
                         <div className='wallets-jurisdiction-card-back__row' key={`${verificationDocument}-${i}`}>
                             {verificationIconsMapper[verificationDocument]}
-                            <WalletText size='xs'>
+                            <Text align='start' size='xs'>
                                 {verificationContents.requiredVerificationDocs[verificationDocument]?.text}
-                            </WalletText>
+                            </Text>
                         </div>
                     );
                 })}
@@ -81,7 +82,9 @@ const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, ve
                     return (
                         <div className='wallets-jurisdiction-card-back__row' key={`${statusReference}-${i}`}>
                             {verificationStatusIconsMapper[statusReference.icon]}
-                            <WalletText size='xs'>{statusReference.text}</WalletText>
+                            <Text align='start' size='xs'>
+                                {statusReference.text}
+                            </Text>
                         </div>
                     );
                 })}

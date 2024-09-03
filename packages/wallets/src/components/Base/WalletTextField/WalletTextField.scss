@@ -165,15 +165,10 @@
 
         &--maxchar {
             float: inline-end;
-
-            span {
-                text-align: end;
-            }
         }
 
         &--msg {
             float: inline-start;
-            text-align: start;
         }
     }
 }

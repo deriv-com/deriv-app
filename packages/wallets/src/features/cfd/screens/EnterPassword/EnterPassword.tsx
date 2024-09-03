@@ -59,7 +59,7 @@ const EnterPassword: React.FC<TProps> = ({
         <div className='wallets-enter-password'>
             <div className='wallets-enter-password__container'>
                 {isDesktop && (
-                    <Text lineHeight='xl' weight='bold'>
+                    <Text align='start' lineHeight='xl' weight='bold'>
                         {modalTitle}
                     </Text>
                 )}
@@ -84,7 +84,11 @@ const EnterPassword: React.FC<TProps> = ({
                         passwordError={passwordError}
                         shouldDisablePasswordMeter
                     />
-                    {passwordError && <Text size='sm'>{passwordErrorHints}</Text>}
+                    {passwordError && (
+                        <Text align='start' size='sm'>
+                            {passwordErrorHints}
+                        </Text>
+                    )}
                 </div>
             </div>
             {isDesktop && (

@@ -88,7 +88,7 @@ const Transactions = () => {
             <div className='wallets-transactions__header'>
                 {wallet?.is_crypto && (
                     <div className='wallets-transactions__toggle'>
-                        <Text size='sm'>
+                        <Text align='start' size='sm'>
                             <Localize i18n_default_text='Pending Transactions' />
                         </Text>
                         <ToggleSwitch onChange={() => setIsPendingActive(!isPendingActive)} value={isPendingActive} />

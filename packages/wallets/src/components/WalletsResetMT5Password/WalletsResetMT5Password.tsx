@@ -139,14 +139,14 @@ const WalletsResetMT5Password = ({
             renderFooter={isMobile ? renderButtons : undefined}
             shouldHideFooter={!isMobile}
             shouldHideHeader={!isMobile}
-            title={localize('Manage {{title}} password', { localize })}
+            title={localize('Manage {{title}} password', { title })}
         >
             <div className='wallets-reset-mt5-password'>
-                <Text align={isMobile ? 'center' : 'left'} weight='bold'>
+                <Text align={isMobile ? 'center' : 'start'} weight='bold'>
                     <Localize i18n_default_text='Create a new {{title}} password' values={{ title }} />
                 </Text>
                 {isMT5 && !isInvestorPassword && (
-                    <Text size='sm'>
+                    <Text align='start' size='sm'>
                         <Localize
                             i18n_default_text='You can use this password for all your {{title}} accounts.'
                             values={{ title }}
@@ -163,7 +163,9 @@ const WalletsResetMT5Password = ({
                     onChange={e => setPassword(e.target.value)}
                     password={password}
                 />
-                <Text size='sm'>{modalDescription[platform]}</Text>
+                <Text align='start' size='sm'>
+                    {modalDescription[platform]}
+                </Text>
                 {!isMobile && renderButtons()}
             </div>
         </ModalStepWrapper>

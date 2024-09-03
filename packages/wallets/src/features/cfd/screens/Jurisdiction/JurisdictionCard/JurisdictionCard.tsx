@@ -155,7 +155,7 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
                                                             row.titleIndicators?.displayTextSkinColor || ''
                                                         }`}
                                                     >
-                                                        <Text color='white' size='xs' weight='bold'>
+                                                        <Text align='start' color='white' size='xs' weight='bold'>
                                                             {row.titleIndicators.displayText}
                                                         </Text>
                                                     </div>

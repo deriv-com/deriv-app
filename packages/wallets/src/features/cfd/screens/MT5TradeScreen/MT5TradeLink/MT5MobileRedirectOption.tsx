@@ -52,7 +52,7 @@ const MT5MobileRedirectOption: FC<TMT5MobileRedirectOptionProps> = ({ mt5TradeAc
             >
                 <LegacyMonitorIcon iconSize='sm' />
                 <div className='wallets-mobile-redirect-option__button__content'>
-                    <Text size='xs' weight='bold'>
+                    <Text align='start' size='xs' weight='bold'>
                         <Localize i18n_default_text='MetaTrader5 web terminal' />
                     </Text>
                 </div>
@@ -64,7 +64,7 @@ const MT5MobileRedirectOption: FC<TMT5MobileRedirectOptionProps> = ({ mt5TradeAc
             >
                 <StandaloneMobileNotchRegularIcon fill='#FFF' />
                 <div className='wallets-mobile-redirect-option__button__content'>
-                    <Text color='white' size='xs' weight='bold'>
+                    <Text align='start' color='white' size='xs' weight='bold'>
                         <Localize i18n_default_text='Trade with MT5 mobile app' />
                     </Text>
                 </div>
@@ -74,7 +74,7 @@ const MT5MobileRedirectOption: FC<TMT5MobileRedirectOptionProps> = ({ mt5TradeAc
                     <LabelPairedChevronRightLgFillIcon fill='#FFF' />
                 )}
             </button>
-            <Text as='p' size='xs'>
+            <Text align='start' as='p' size='xs'>
                 <Localize
                     components={[<strong key={0} />]}
                     i18n_default_text="Note: Don't have the MT5 app? Tap the <0>Trade with MT5 mobile app</0> button to download. Once you have installed the app, return to this screen and hit the same button to log in."

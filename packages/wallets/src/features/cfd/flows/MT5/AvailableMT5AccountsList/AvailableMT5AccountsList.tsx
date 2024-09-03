@@ -66,8 +66,12 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 {getMarketTypeDetails(localize)[account.market_type || MARKET_TYPE.ALL].icon}
             </TradingAccountCard.Icon>
             <TradingAccountCard.Content className='wallets-available-mt5__details'>
-                <Text size='sm'>{title}</Text>
-                <Text size='xs'>{description}</Text>
+                <Text align='start' size='sm'>
+                    {title}
+                </Text>
+                <Text align='start' size='xs'>
+                    {description}
+                </Text>
             </TradingAccountCard.Content>
             <TradingAccountCard.Button className='wallets-available-mt5__icon'>
                 {isRtl ? (

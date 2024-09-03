@@ -4,8 +4,8 @@ import {
     LabelPairedChevronLeftCaptionRegularIcon,
     LabelPairedChevronRightCaptionRegularIcon,
 } from '@deriv/quill-icons';
+import { Text } from '@deriv-com/ui';
 import { TradingAccountCard } from '../../../../../components';
-import { WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import useIsRtl from '../../../../../hooks/useIsRtl';
 import { PlatformDetails } from '../../../constants';
@@ -25,11 +25,15 @@ const AddedCTraderAccountsList: React.FC = () => {
                 >
                     <TradingAccountCard.Icon>{PlatformDetails.ctrader.icon}</TradingAccountCard.Icon>
                     <TradingAccountCard.Content>
-                        <WalletText size='sm'>{PlatformDetails.ctrader.title}</WalletText>
-                        <WalletText size='sm' weight='bold'>
+                        <Text align='start' size='sm'>
+                            {PlatformDetails.ctrader.title}
+                        </Text>
+                        <Text align='start' size='sm' weight='bold'>
                             {account?.display_balance}
-                        </WalletText>
-                        <WalletText size='xs'>{account.login}</WalletText>
+                        </Text>
+                        <Text align='start' size='xs'>
+                            {account.login}
+                        </Text>
                     </TradingAccountCard.Content>
                     <TradingAccountCard.Button>
                         {isRtl ? (

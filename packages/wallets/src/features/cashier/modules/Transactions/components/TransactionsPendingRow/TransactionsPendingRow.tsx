@@ -97,10 +97,10 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                 <div className='wallets-transactions-pending-row__wallet-info'>
                     <WalletCurrencyCard currency={data?.currency || 'USD'} isDemo={data?.is_virtual} size='md' />
                     <div className='wallets-transactions-pending-row__column'>
-                        <Text color='primary' size='xs'>
+                        <Text align='start' color='primary' size='xs'>
                             {getTransactionLabels(localize)[transaction.transaction_type]}
                         </Text>
-                        <Text color='general' size='xs' weight='bold'>
+                        <Text align='start' color='general' size='xs' weight='bold'>
                             {displayCode} Wallet
                         </Text>
                     </div>
@@ -168,7 +168,12 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                     />
                     {!isMobile && (
                         <div className='wallets-transactions-pending-row__transaction-amount'>
-                            <Text color={transaction.is_deposit ? 'success' : 'red'} size='sm' weight='bold'>
+                            <Text
+                                align='end'
+                                color={transaction.is_deposit ? 'success' : 'red'}
+                                size='sm'
+                                weight='bold'
+                            >
                                 {transaction.is_deposit ? '+' : '-'}
                                 {transaction.formatted_amount}
                             </Text>
@@ -193,7 +198,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                                     .replace('_', '-')}`
                             )}
                         />
-                        <Text color='general' size='sm'>
+                        <Text align='start' color='general' size='sm'>
                             {getStatusName(transaction.status_code)}
                         </Text>
                     </Tooltip>

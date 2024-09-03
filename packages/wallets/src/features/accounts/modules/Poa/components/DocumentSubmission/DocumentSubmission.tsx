@@ -3,13 +3,13 @@ import { useFormikContext } from 'formik';
 import { useIsEuRegion } from '@deriv/api-v2';
 import { LabelPairedArrowUpFromBracketXlFillIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import { Dropzone, WalletText } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
 import { TDocumentSubmission } from '../../types';
 import { getExampleImagesConfig } from '../../utils';
 import { CommonMistakesExamples } from '../CommonMistakesExamples';
 import './DocumentSubmission.scss';
-import { Text } from '@deriv-com/ui';
 
 const DocumentSubmission: React.FC = () => {
     const { localize } = useTranslations();
@@ -35,7 +35,7 @@ const DocumentSubmission: React.FC = () => {
             </div>
             <div className='wallets-poa__document__container'>
                 <div className='wallets-poa__document__container__disclaimer'>
-                    <Text className='wallets-poa__document__container__disclaimer-title' size='sm' weight='bold'>
+                    <Text align='start' size='sm' weight='bold'>
                         {localize(
                             'We accept only these types of documents as proof of address. The document must be recent (issued within last {{timePeriod}} months) and include your name and address:',
                             { timePeriod: isEuRegion ? '6' : '12' }

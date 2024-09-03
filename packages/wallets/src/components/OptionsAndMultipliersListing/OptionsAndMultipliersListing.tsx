@@ -28,11 +28,11 @@ const OptionsAndMultipliersListing = () => {
             <section className='wallets-options-and-multipliers-listing__header'>
                 <div className='wallets-options-and-multipliers-listing__header-title'>
                     {!isMobile && (
-                        <Text align='center' size='xl' weight='bold'>
+                        <Text align='start' size='xl' weight='bold'>
                             <Localize i18n_default_text='Options' />
                         </Text>
                     )}
-                    <Text size={isMobile ? 'sm' : 'md'}>
+                    <Text align='start' size={isMobile ? 'sm' : 'md'}>
                         <Localize i18n_default_text='Predict the market, profit if you’re right, risk only what you put in. ' />
                         <WalletLink staticUrl='/trade-types/options/digital-options/up-and-down/'>
                             <Localize i18n_default_text='Learn more' />
@@ -57,8 +57,12 @@ const OptionsAndMultipliersListing = () => {
                                 <LinkTitle platform={key} />
                             </TradingAccountCard.Icon>
                             <TradingAccountCard.Content>
-                                <Text size='sm'>{title}</Text>
-                                <Text size='xs'>{description}</Text>
+                                <Text align='start' size='sm'>
+                                    {title}
+                                </Text>
+                                <Text align='start' size='xs'>
+                                    {description}
+                                </Text>
                             </TradingAccountCard.Content>
                             {activeLinkedToTradingAccount?.loginid && (
                                 <TradingAccountCard.Button>

@@ -27,7 +27,8 @@
         height: 100%;
 
         @include mobile {
-            padding: 1.6rem 0 2.4rem 1.6rem;
+            padding-block: 1.6rem 2.4rem;
+            padding-inline-start: 1.6rem;
             border-radius: unset;
         }
 

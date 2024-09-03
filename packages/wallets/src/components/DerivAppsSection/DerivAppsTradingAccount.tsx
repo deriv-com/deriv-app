@@ -26,7 +26,7 @@ const DerivAppsTradingAccount = () => {
             </TradingAccountCard.Icon>
             <TradingAccountCard.Content>
                 <div className='wallets-deriv-apps-section__title-and-badge'>
-                    <Text size='sm'>
+                    <Text align='start' size='sm'>
                         <Localize i18n_default_text='Options' />
                     </Text>
                     {activeWallet?.is_virtual && <WalletListCardBadge />}
@@ -37,14 +37,14 @@ const DerivAppsTradingAccount = () => {
                         data-testid='dt_deriv-apps-balance-loader'
                     />
                 ) : (
-                    <Text size='sm' weight='bold'>
+                    <Text align='start' size='sm' weight='bold'>
                         {displayMoney(balance, activeLinkedToTradingAccount?.currency_config?.display_code, {
                             fractional_digits: activeLinkedToTradingAccount?.currency_config?.fractional_digits,
                             preferred_language: authorizeData?.preferred_language,
                         })}
                     </Text>
                 )}
-                <Text color='less-prominent' lineHeight='sm' size='xs' weight='bold'>
+                <Text align='start' color='less-prominent' lineHeight='sm' size='xs' weight='bold'>
                     {activeLinkedToTradingAccount?.loginid}
                 </Text>
             </TradingAccountCard.Content>

@@ -4,8 +4,8 @@ import {
     LabelPairedChevronRightCaptionRegularIcon,
 } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import { TradingAccountCard } from '../../../../../../components';
-import { WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import useIsRtl from '../../../../../../hooks/useIsRtl';
 import { PlatformDetails } from '../../../../constants';
@@ -22,11 +22,13 @@ const AvailableDxtradeAccountsList: React.FC = () => {
             </TradingAccountCard.Icon>
             <TradingAccountCard.Content>
                 <p className='wallets-available-dxtrade__details-title'>
-                    <WalletText size='sm'>Deriv X</WalletText>
+                    <Text align='start' size='sm'>
+                        Deriv X
+                    </Text>
                 </p>
-                <WalletText size='xs'>
+                <Text align='start' size='xs'>
                     <Localize i18n_default_text='CFDs on financial and derived instruments via a customisable platform.' />
-                </WalletText>
+                </Text>
             </TradingAccountCard.Content>
             <TradingAccountCard.Button>
                 {isRtl ? (

@@ -81,28 +81,30 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
             </TradingAccountCard.Icon>
             <TradingAccountCard.Content className='wallets-added-mt5__details'>
                 <div className='wallets-added-mt5__details-title'>
-                    <Text size='sm'>{title}</Text>
+                    <Text align='start' size='sm'>
+                        {title}
+                    </Text>
                     {!activeWallet?.is_virtual && (
                         <div className='wallets-added-mt5__details-title-landing-company'>
-                            <Text color='prominent' size={isMobile ? 'sm' : 'xs'}>
+                            <Text align='start' color='prominent' size={isMobile ? 'sm' : 'xs'}>
                                 {account.landing_company_short?.toUpperCase()}
                             </Text>
                         </div>
                     )}
                 </div>
                 {!(jurisdictionStatus.is_failed || jurisdictionStatus.is_pending) && (
-                    <Text size='sm' weight='bold'>
+                    <Text align='start' size='sm' weight='bold'>
                         {account.display_balance}
                     </Text>
                 )}
 
-                <Text as='p' size='xs'>
+                <Text align='start' as='p' size='xs'>
                     {account.display_login}
                 </Text>
                 {jurisdictionStatus.is_pending && (
                     <div className='wallets-added-mt5__details-badge'>
                         <InlineMessage size='xs' type='warning' variant='outlined'>
-                            <Text color='warning' size='2xs' weight='bold'>
+                            <Text align='start' color='warning' size='2xs' weight='bold'>
                                 <Localize i18n_default_text='Pending verification' />
                             </Text>
                         </InlineMessage>
@@ -112,7 +114,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 {jurisdictionStatus.is_failed && (
                     <div className='wallets-added-mt5__details-badge'>
                         <InlineMessage size='xs' type='error' variant='outlined'>
-                            <Text color='error' size='2xs' weight='bold'>
+                            <Text align='start' color='error' size='2xs' weight='bold'>
                                 <Localize
                                     components={[
                                         <a

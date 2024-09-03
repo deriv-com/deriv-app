@@ -13,7 +13,7 @@ const CommonMistakesExamples = ({ description, image }: TCommonMistakeExamplePar
         {image}
         <div className='wallets-common-mistakes__content-description'>
             <StatusLoss />
-            <Text className='wallets-common-mistakes__content-text' size='xs'>
+            <Text align='start' size='xs'>
                 {description}
             </Text>
         </div>

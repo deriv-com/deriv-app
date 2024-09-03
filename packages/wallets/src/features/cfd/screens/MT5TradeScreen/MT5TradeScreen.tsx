@@ -97,7 +97,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                 case 'migrated_with_position':
                     return (
                         <InlineMessage size='sm' type='warning' variant='outlined'>
-                            <Text color='warning' size='2xs' weight='bold'>
+                            <Text align='start' color='warning' size='2xs' weight='bold'>
                                 <Localize i18n_default_text='No new positions' />
                             </Text>
                         </InlineMessage>
@@ -105,7 +105,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                 case 'migrated_without_position':
                     return (
                         <InlineMessage size='sm' type='warning' variant='outlined'>
-                            <Text color='warning' size='2xs' weight='bold'>
+                            <Text align='start' color='warning' size='2xs' weight='bold'>
                                 <Localize i18n_default_text='Account closed' />
                             </Text>
                         </InlineMessage>
@@ -126,13 +126,13 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                         </div>
                         <div className='wallets-mt5-trade-screen__description-details'>
                             <div className='wallets-mt5-trade-screen__label'>
-                                <Text lineHeight='3xs' size={isDesktop ? 'sm' : 'md'}>
+                                <Text align='start' lineHeight='3xs' size={isDesktop ? 'sm' : 'md'}>
                                     {platform === mt5Platform ? marketTypeTitle : platformTitle}{' '}
                                     {!activeWalletData?.is_virtual && details?.landing_company_short?.toUpperCase()}
                                 </Text>
                                 {activeWalletData?.is_virtual && <WalletListCardBadge />}
                             </div>
-                            <Text className='wallets-mt5-trade-screen__loginid' color='less-prominent' size='xs'>
+                            <Text align='start' color='less-prominent' size='xs'>
                                 {platform !== ctraderPlatform && loginId}
                             </Text>
                         </div>
@@ -190,6 +190,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                 <div className='wallets-mt5-trade-screen__content-maintenance'>
                     <LabelPairedCircleExclamationMdFillIcon fill='#FFAD3A' />
                     <Text
+                        align='start'
                         className='wallets-mt5-trade-screen__content-text'
                         color='less-prominent'
                         size={isDesktop ? '2xs' : 'xs'}

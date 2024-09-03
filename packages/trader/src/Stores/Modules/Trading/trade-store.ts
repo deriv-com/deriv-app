@@ -1540,11 +1540,7 @@ export default class TradeStore extends BaseStore {
         if (!this.main_barrier || this.main_barrier?.shade) {
             if (this.is_turbos) {
                 if (response.proposal) {
-                    let chart_barrier = response.proposal.barrier_spot_distance;
-
-                    if (Number(chart_barrier) > 0) {
-                        chart_barrier = `+${chart_barrier}`;
-                    }
+                    const chart_barrier = response.proposal.barrier_spot_distance;
                     this.setMainBarrier({
                         ...response.echo_req,
                         barrier: String(chart_barrier),

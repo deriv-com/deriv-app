@@ -191,7 +191,6 @@ const transformAsian = (data: TContractInfo) => {
 const transformLooksback = (data: TContractInfo) => {
     const commonFields = getCommonFields(data);
     const is_call_contract = data.contract_type == CONTRACT_TYPES.LB_CALL;
-    console.log(data);
     return {
         [CARD_LABELS.REFERENCE_ID]: commonFields[CARD_LABELS.REFERENCE_ID],
         [CARD_LABELS.DURATION]: commonFields[CARD_LABELS.DURATION],
@@ -225,12 +224,12 @@ const transformHighLowLookback = (data: TContractInfo) => {
         ...{
             ...(data.transaction_ids?.sell
                 ? {
-                      [CARD_LABELS.LOW_SPOT]: data.low_barrier ?? '',
                       [CARD_LABELS.HIGH_SPOT]: data.high_barrier ?? '',
+                      [CARD_LABELS.LOW_SPOT]: data.low_barrier ?? '',
                   }
                 : {
-                      [CARD_LABELS.INDICATIVE_LOW_SPOT]: data.low_barrier ?? '',
                       [CARD_LABELS.INDICATIVE_HIGH_SPOT]: data.high_barrier ?? '',
+                      [CARD_LABELS.INDICATIVE_LOW_SPOT]: data.low_barrier ?? '',
                   }),
         },
         [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
@@ -249,7 +248,6 @@ const transformFunctionMap: Record<string, (data: TContractInfo) => Record<strin
     [CONTRACT_TYPES.EVEN_ODD.ODD]: transformDigitsData,
     [CONTRACT_TYPES.OVER_UNDER.OVER]: transformDigitsData,
     [CONTRACT_TYPES.OVER_UNDER.UNDER]: transformDigitsData,
-    [CONTRACT_TYPES.RESET.CALL]: transformCallPutData,
     [CONTRACT_TYPES.PUT]: transformCallPutData,
     [CONTRACT_TYPES.PUTE]: transformCallPutData,
     [CONTRACT_TYPES.CALLE]: transformCallPutData,
@@ -269,6 +267,12 @@ const transformFunctionMap: Record<string, (data: TContractInfo) => Record<strin
     [CONTRACT_TYPES.LB_HIGH_LOW]: transformHighLowLookback,
     [CONTRACT_TYPES.LB_CALL]: transformLooksback,
     [CONTRACT_TYPES.LB_PUT]: transformLooksback,
+
+    [CONTRACT_TYPES.RESET.CALL]: transformCallPutData,
+    [CONTRACT_TYPES.RESET.PUT]: transformCallPutData,
+
+    [CONTRACT_TYPES.TICK_HIGH_LOW.HIGH]: transformLooksback,
+    [CONTRACT_TYPES.TICK_HIGH_LOW.LOW]: transformLooksback,
 
     [CONTRACT_TYPES.FALL]: transformEndsBetween,
 };

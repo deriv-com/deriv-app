@@ -30,6 +30,7 @@ type TResultItem = {
 const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTypesProps) => {
     const [is_open, setIsOpen] = React.useState<boolean>(false);
     const [is_editing, setIsEditing] = React.useState<boolean>(false);
+    const trade_types_ref = React.useRef<HTMLDivElement>(null);
 
     const { onMount, onUnmount } = useTraderStore();
 
@@ -160,6 +161,13 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     React.useEffect(() => {
         onMount();
 
+        if (trade_types_ref?.current) {
+            const selected_chip = trade_types_ref?.current.querySelector(
+                'button[data-state="selected"]'
+            ) as HTMLButtonElement;
+            trade_types_ref.current.scrollBy(selected_chip?.offsetLeft - 16 ?? 0, window.scrollY);
+        }
+
         if (saved_pinned_trade_types.length > 0) {
             setPinnedTradeTypes(saved_pinned_trade_types);
         }
@@ -194,7 +202,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         [contract_type, value].every(type => type.startsWith('rise_fall')) ||
         contract_type === value;
     return (
-        <div className='trade__trade-types'>
+        <div className='trade__trade-types' ref={trade_types_ref}>
             {saved_pinned_trade_types.length > 0 &&
                 saved_pinned_trade_types[0].items.map(({ title, id }: TItem) => (
                     <Chip.Selectable key={id} onChipSelect={onTradeTypeSelect} selected={isTradeTypeSelected(id)}>

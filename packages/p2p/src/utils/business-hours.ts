@@ -177,10 +177,19 @@ const adjustTimeRangesWithOffset = (timeRanges: TTimeRange[], offset: number) =>
  * @param splitRanges
  * @returns
  */
-const addNullObjectsForGaps = (splitRanges: TTimeRange[]) => {
+const addNullObjectsForGaps = (splitRanges: TTimeRange[], offset = 0) => {
     const finalRanges = [];
     const MINUTES_IN_DAY = 1440;
     const MINUTES_IN_WEEK = MINUTES_IN_DAY * 7;
+
+    // Check for gap at the start of the week
+    const firstStart = splitRanges.length > 0 ? splitRanges[0].start_min ?? 0 : MINUTES_IN_WEEK;
+    if (firstStart > 0) {
+        const nullObjectsCount = Math.floor((firstStart - offset) / MINUTES_IN_DAY);
+        for (let i = 0; i < nullObjectsCount; i++) {
+            finalRanges.push({ start_min: null, end_min: null });
+        }
+    }
 
     for (let i = 0; i < splitRanges.length; i++) {
         finalRanges.push(splitRanges[i]);
@@ -199,21 +208,14 @@ const addNullObjectsForGaps = (splitRanges: TTimeRange[]) => {
         }
     }
 
-    // Check for wrap-around gap (last to first)
-    if (splitRanges.length > 1) {
-        const lastEnd = splitRanges[splitRanges.length - 1].end_min ?? 0;
-        const firstStart = splitRanges[0].start_min ?? 0;
-        const wrapAroundGap = MINUTES_IN_WEEK - lastEnd + firstStart;
-
-        if (wrapAroundGap >= MINUTES_IN_DAY) {
-            const nullObjectsCount = Math.floor(wrapAroundGap / MINUTES_IN_DAY);
-            for (let j = 0; j < nullObjectsCount; j++) {
-                // Instead of adding null objects at the end, add them at the beginning
-                finalRanges.unshift({ start_min: null, end_min: null });
-            }
+    // Check for gap at the end of the week
+    const lastEnd = splitRanges.length > 0 ? splitRanges[splitRanges.length - 1].end_min ?? 0 : 0;
+    if (lastEnd < MINUTES_IN_WEEK) {
+        const nullObjectsCount = Math.floor((MINUTES_IN_WEEK - (lastEnd - offset)) / MINUTES_IN_DAY);
+        for (let i = 0; i < nullObjectsCount; i++) {
+            finalRanges.push({ start_min: null, end_min: null });
         }
     }
-
     return finalRanges;
 };
 
@@ -285,7 +287,7 @@ export const splitTimeRange = (timeRanges: TRange[] = [], offset = 0): TTimeRang
     // Sort the split ranges
     splitRanges.sort((a, b) => a.start_min - b.start_min);
 
-    const resultWithGaps = addNullObjectsForGaps(splitRanges);
+    const resultWithGaps = addNullObjectsForGaps(splitRanges, offset);
 
     const resultWithOffset = adjustTimeRangesWithOffset(resultWithGaps, offset);
     return resultWithOffset;

@@ -95,8 +95,12 @@ const getDropdownOpenStates = (data: TBusinessHourModalEditProps['data']): TDayS
 
     data.forEach(item => {
         // Check if the item contains a valid day and has non-null start_time or end_time
-        if (item.day in day_states && (item.start_time !== null || item.end_time !== null)) {
-            day_states[item.day] = true;
+        if (
+            item.value in day_states &&
+            (item.start_time !== null || item.end_time !== null) &&
+            item.start_time !== item.end_time
+        ) {
+            day_states[item.value] = true;
         }
     });
 

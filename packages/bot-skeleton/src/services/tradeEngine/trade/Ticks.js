@@ -76,12 +76,12 @@ export default Engine =>
         async fetchStatData() {
             let ticksStayedIn = [];
             this.called = false;
-
             const handleMessage = ({ data }) => {
                 if (data.msg_type === 'proposal') {
                     try {
                         this.subscription_accu = data.subscription.id;
-                        ticksStayedIn = [...(data.proposal.contract_details.ticks_stayed_in || [])].reverse();
+                        const stat_list = [...(data.proposal.contract_details.ticks_stayed_in || [])].reverse();
+                        ticksStayedIn = [...stat_list, ...ticksStayedIn];
                     } catch (error) {
                         // eslint-disable-next-line no-console
                         console.error('Unexpected message type or no proposal found:', error);
@@ -134,7 +134,7 @@ export default Engine =>
         async getStatList() {
             try {
                 const ticksStayedIn = await this.fetchStatData();
-                return ticksStayedIn;
+                return ticksStayedIn.slice(0, 100);
             } catch (error) {
                 // eslint-disable-next-line no-console
                 console.log('Error fetching current stat:', error);

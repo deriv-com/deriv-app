@@ -66,10 +66,6 @@ class DBot {
                     subscribe: 1,
                 };
                 window.Blockly.selected_accumulators_amount = request;
-                const response = await api_base?.api?.send(request);
-                this.interpreter.bot.tradeEngine.subscription_accu = response.proposal.id;
-                this.proposal_requested = false;
-                return response;
             }
             if (!this.is_bot_running) {
                 await api_base?.api?.send({ forget_all: 'proposal' });

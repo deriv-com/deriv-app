@@ -11,6 +11,7 @@ import { CFD_PLATFORMS, getMarketTypeDetails, MARKET_TYPE, PlatformDetails } fro
 import './CFDSuccess.scss';
 
 type TSuccessProps = {
+    actionButtons?: ComponentProps<typeof WalletSuccess>['actionButtons'];
     description: React.ReactNode;
     displayBalance:
         | TDisplayBalance.CtraderAccountsList
@@ -20,18 +21,17 @@ type TSuccessProps = {
     marketType?: TMarketTypes.SortedMT5Accounts;
     platform?: TPlatforms.All;
     product?: THooks.AvailableMT5Accounts['product'];
-    renderButton?: ComponentProps<typeof WalletSuccess>['renderButtons'];
     title: React.ReactNode;
 };
 
 const CFDSuccess: React.FC<TSuccessProps> = ({
+    actionButtons,
     description,
     displayBalance,
     landingCompanyName,
     marketType,
     platform,
     product,
-    renderButton,
     title,
 }) => {
     const { data } = useActiveWalletAccount();
@@ -58,8 +58,8 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
 
     return (
         <WalletSuccess
+            actionButtons={isDesktop ? actionButtons : undefined}
             description={description}
-            renderButtons={isDesktop ? renderButton : undefined}
             renderIcon={() => (
                 <WalletGradientBackground
                     bodyClassName='wallets-cfd-success__gradient'

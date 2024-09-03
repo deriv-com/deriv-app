@@ -30,7 +30,6 @@ export * from './WalletListCardDropdown';
 export * from './WalletListHeader';
 export * from './WalletMarketCurrencyIcon';
 export * from './WalletMarketIcon';
-export * from './WalletsActionScreen';
 export * from './WalletsAddMoreCarousel';
 export * from './WalletsCarousel';
 export * from './WalletsCarouselContent';

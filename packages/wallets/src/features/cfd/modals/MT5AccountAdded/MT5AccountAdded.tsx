@@ -2,9 +2,9 @@ import React, { FC, useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useJurisdictionStatus, useMT5AccountsList, usePOA, usePOI } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
-import useDevice from '../../../../hooks/useDevice';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import {
     CFD_PLATFORMS,
@@ -118,21 +118,19 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
             if (poiService === 'idv') {
                 return (
                     <CFDSuccess
-                        description={
-                            <Localize
-                                i18n_default_text="We need a few minutes to review your documents before you can start trading with your {{marketTypeTitle}} {{demoTitle}} account. You'll get an in-app notification as soon as this is done."
-                                values={{
-                                    demoTitle: isDemo ? 'demo' : landingCompanyName,
-                                    marketTypeTitle,
-                                }}
-                            />
-                        }
+                        actionButtons={renderAccountSuccessButton()}
+                        description={localize(
+                            "We need a few minutes to review your documents before you can start trading with your {{marketTypeTitle}} {{demoTitle}} account. You'll get an in-app notification as soon as this is done.",
+                            {
+                                demoTitle: isDemo ? localize('demo') : landingCompanyName,
+                                marketTypeTitle,
+                            }
+                        )}
                         displayBalance={addedAccount?.display_balance}
                         landingCompanyName={landingCompanyName}
                         marketType={marketType}
                         platform={platform}
                         product={product}
-                        renderButton={renderAccountSuccessButton}
                         title={localize('Almost there')}
                     />
                 );
@@ -141,21 +139,19 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
             if (poiService === 'onfido') {
                 return (
                     <CFDSuccess
-                        description={
-                            <Localize
-                                i18n_default_text="We need 1-3 days to review your documents before you can start trading with your {{marketTypeTitle}} {{demoTitle}} account. You'll get an email as soon as this is done."
-                                values={{
-                                    demoTitle: isDemo ? 'demo' : landingCompanyName,
-                                    marketTypeTitle,
-                                }}
-                            />
-                        }
+                        actionButtons={renderAccountSuccessButton()}
+                        description={localize(
+                            "We need 1-3 days to review your documents before you can start trading with your {{marketTypeTitle}} {{demoTitle}} account. You'll get an email as soon as this is done.",
+                            {
+                                demoTitle: isDemo ? localize('demo') : landingCompanyName,
+                                marketTypeTitle,
+                            }
+                        )}
                         displayBalance={addedAccount?.display_balance}
                         landingCompanyName={landingCompanyName}
                         marketType={marketType}
                         platform={platform}
                         product={product}
-                        renderButton={renderAccountSuccessButton}
                         title={localize('Almost there')}
                     />
                 );
@@ -164,13 +160,13 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
 
         return (
             <CFDSuccess
+                actionButtons={renderAccountSuccessButton(!isDemo)}
                 description={renderSuccessDescription}
                 displayBalance={addedAccount?.display_balance}
                 landingCompanyName={landingCompanyName}
                 marketType={marketType}
                 platform={platform}
                 product={product}
-                renderButton={() => renderAccountSuccessButton(!isDemo)}
                 title={
                     <Localize
                         i18n_default_text='Your {{marketTypeTitle}} {{demoTitle}} account is ready'

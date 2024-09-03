@@ -45,6 +45,7 @@ jest.mock('@deriv-com/ui', () => ({
             );
         }
     ),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
 jest.mock('../../../../../../components/ModalProvider', () => ({
@@ -57,11 +58,6 @@ jest.mock('../../../../../../components/Base/WalletPasswordField/PasswordViewerI
         <button onClick={() => setViewPassword(!viewPassword)}>PasswordViewerIcon</button>
     ))
 );
-
-jest.mock('@deriv-com/ui', () => ({
-    ...jest.requireActual('@deriv-com/ui'),
-    useDevice: jest.fn(() => ({})),
-}));
 
 jest.mock('../../../../../../utils/password-validation', () => ({
     ...jest.requireActual('../../../../../../utils/password-validation'),
@@ -138,14 +134,14 @@ describe('MT5ChangeInvestorPasswordInputsScreen', () => {
         expect(screen.getByText('Error changing password')).toBeInTheDocument();
     });
 
-    it('shows the loader when the change investor password mutation is loading', () => {
+    it('shows the loader when the change investor password mutation is loading', async () => {
         (useTradingPlatformInvestorPasswordChange as jest.Mock).mockReturnValue({
             status: 'loading',
         });
 
         render(<MT5ChangeInvestorPasswordInputsScreen />);
 
-        expect(
+        await expect(
             screen.getByRole('button', {
                 name: 'Loading...',
             })

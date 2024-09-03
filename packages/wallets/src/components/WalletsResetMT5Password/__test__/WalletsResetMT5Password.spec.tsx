@@ -9,7 +9,7 @@ import WalletsResetMT5Password from '../WalletsResetMT5Password';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
-    useDevice: jest.fn(() => ({})),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
 const mockShow = jest.fn();
@@ -186,12 +186,6 @@ describe('WalletsResetMT5Password', () => {
     });
 
     it('should disable the Create button for invalid MT5 password', async () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: true,
-            isMobile: false,
-            isTablet: false,
-        });
-
         render(<WalletsResetMT5Password {...defaultProps} />);
         const inputBox = await screen.findByLabelText(/Deriv MT5 password/);
         const createButton = await screen.findByRole('button', { name: /Create/ });
@@ -200,12 +194,6 @@ describe('WalletsResetMT5Password', () => {
     });
 
     it('should cancel reset on click of Cancel button', async () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: true,
-            isMobile: false,
-            isTablet: false,
-        });
-
         render(<WalletsResetMT5Password {...defaultProps} />);
         const cancelButton = await screen.findByRole('button', { name: /Cancel/ });
         await fireEvent.click(cancelButton);

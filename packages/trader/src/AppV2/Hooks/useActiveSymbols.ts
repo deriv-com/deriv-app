@@ -15,9 +15,9 @@ import { usePrevious } from '@deriv/components';
 import { useTraderStore } from 'Stores/useTraderStores';
 import useContractsForCompany from './useContractsForCompany';
 import { useDtraderQuery } from './useDtraderQuery';
+import { isLoginidDefined } from 'AppV2/Utils/client';
 
 const useActiveSymbols = () => {
-    const [activeSymbols, setActiveSymbols] = useState<ActiveSymbols | []>([]);
     const { client, common } = useStore();
     const { loginid, is_switching, is_logged_in } = client;
     const { showError } = common;
@@ -30,8 +30,8 @@ const useActiveSymbols = () => {
         onChange,
         setActiveSymbolsV2,
         symbol,
-        is_trade_component_mounted,
     } = useTraderStore();
+    const [activeSymbols, setActiveSymbols] = useState<ActiveSymbols | []>(symbols_from_store);
 
     const { available_contract_types, is_loading_ref: is_contracts_loading_ref } = useContractsForCompany();
 
@@ -60,7 +60,7 @@ const useActiveSymbols = () => {
     }, [available_contract_types, is_contracts_loading_ref]);
 
     const { data: response, refetch } = useDtraderQuery<ActiveSymbolsResponse>(
-        'active_symbols',
+        ['active_symbols', contract_type],
         {
             active_symbols: 'brief',
             contract_type: getContractTypesList(),
@@ -73,32 +73,34 @@ const useActiveSymbols = () => {
         }
     );
 
-    const fetchActiveSymbols = useCallback(
-        async () => {
-            if (!response) return;
+    const isSymbolAvailable = (active_symbols: ActiveSymbols) => {
+        return active_symbols.some(symbol_info => symbol_info.symbol === symbol);
+    };
 
-            if (
-                (isVanillaContract(previous_contract_type) && is_vanilla) ||
-                (isTurbosContract(previous_contract_type) && is_turbos) ||
-                // TODO: remove is_trade_component_mounted from check condition once akmals contracts_for_company changes are merged
-                // this will also solve the issue of populating unavailable active_symbols for a given trade_type in assets dropdown
-                (getContractTypesList().length === 0 && !is_trade_component_mounted)
-            ) {
-                return;
-            }
+    useEffect(
+        () => {
+            const process = async () => {
+                if (!response) return;
 
-            const { active_symbols = [], error } = response;
-            if (error) {
-                showError({ message: localize('Trading is unavailable at this time.') });
-            } else if (!active_symbols?.length) {
-                setActiveSymbols([]);
-            } else {
-                setActiveSymbols(active_symbols);
-                setActiveSymbolsV2(active_symbols);
-                default_symbol_ref.current = symbol || (await pickDefaultSymbol(active_symbols)) || '1HZ100V';
-                onChange({ target: { name: 'symbol', value: default_symbol_ref.current } });
-                setTradeURLParams({ symbol: default_symbol_ref.current, contractType: contract_type });
-            }
+                const { active_symbols = [], error } = response;
+                if (error) {
+                    showError({ message: localize('Trading is unavailable at this time.') });
+                } else if (!active_symbols?.length) {
+                    setActiveSymbols([]);
+                } else {
+                    setActiveSymbols(active_symbols);
+                    setActiveSymbolsV2(active_symbols);
+                    default_symbol_ref.current = isSymbolAvailable(active_symbols)
+                        ? symbol
+                        : (await pickDefaultSymbol(active_symbols)) || '1HZ100V';
+
+                    if (symbol !== default_symbol_ref.current) {
+                        onChange({ target: { name: 'symbol', value: default_symbol_ref.current } });
+                    }
+                    setTradeURLParams({ symbol: default_symbol_ref.current, contractType: contract_type });
+                }
+            };
+            process();
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [
@@ -115,8 +117,16 @@ const useActiveSymbols = () => {
     useEffect(() => {
         const has_contract_type_changed =
             previous_contract_type && contract_type && previous_contract_type !== contract_type;
+
+        if (
+            (isVanillaContract(previous_contract_type) && is_vanilla) ||
+            (isTurbosContract(previous_contract_type) && is_turbos)
+        ) {
+            return;
+        }
+
         if (!symbols_from_store.length || !has_symbols_for_v2 || has_contract_type_changed) {
-            fetchActiveSymbols();
+            refetch();
         } else {
             setActiveSymbols(symbols_from_store);
         }
@@ -124,21 +134,28 @@ const useActiveSymbols = () => {
         response,
         available_contract_types,
         contract_type,
-        fetchActiveSymbols,
+        refetch,
         has_symbols_for_v2,
         is_logged_in,
         previous_contract_type,
         symbols_from_store,
+        is_vanilla,
+        is_turbos,
     ]);
 
     useEffect(() => {
-        if (isQueryEnabled() && prev_loginid.current && prev_loginid.current !== loginid && !is_switching) {
+        if (
+            isQueryEnabled() &&
+            isLoginidDefined(prev_loginid.current) &&
+            prev_loginid.current !== loginid &&
+            !is_switching
+        ) {
             setActiveSymbols([]);
             refetch();
         }
     }, [loginid, is_switching, refetch, isQueryEnabled]);
 
-    return { default_symbol: default_symbol_ref.current, activeSymbols, fetchActiveSymbols };
+    return { default_symbol: default_symbol_ref.current, activeSymbols };
 };
 
 export default useActiveSymbols;

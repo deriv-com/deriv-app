@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { useStore } from '@deriv/stores';
 import { cloneObject, getContractCategoriesConfig, getContractTypesConfig } from '@deriv/shared';
 import { TConfig, TContractTypesList } from 'Types';
 import { useDtraderQuery } from './useDtraderQuery';
+import { isLoginidDefined } from 'AppV2/Utils/client';
 
 type TContractsForCompanyResponse = {
     contracts_for_company: {
@@ -25,19 +26,25 @@ const useContractsForCompany = () => {
     const { setContractTypesListV2 } = useTraderStore();
     const { client } = useStore();
     const { loginid, is_switching, landing_company_shortcode } = client;
+
+    const isQueryEnabled = useCallback(() => {
+        if (isLoginidDefined(loginid) && !landing_company_shortcode) return false;
+        return true;
+    }, [loginid, landing_company_shortcode]);
+
     const {
         data: response,
         refetch,
         error,
         is_loading,
     } = useDtraderQuery<TContractsForCompanyResponse>(
-        'contracts_for_company',
+        ['contracts_for_company'],
         {
             contracts_for_company: 1,
             landing_company: landing_company_shortcode,
         },
         {
-            enabled: !!landing_company_shortcode,
+            enabled: isQueryEnabled(),
         }
     );
 
@@ -59,7 +66,7 @@ const useContractsForCompany = () => {
             is_loading_ref.current = false;
 
             if (!error && contracts_for_company?.available.length) {
-                contracts_for_company.available.forEach((contract: any) => {
+                contracts_for_company.available.forEach(contract => {
                     const type = Object.keys(contract_types).find(
                         key =>
                             contract_types[key].trade_types.indexOf(contract.contract_type) !== -1 &&
@@ -104,8 +111,7 @@ const useContractsForCompany = () => {
     }, [response]);
 
     useEffect(() => {
-        if (prev_loginid.current && prev_loginid.current !== loginid && !is_switching) {
-            console.log('refetch cfc');
+        if (isLoginidDefined(prev_loginid.current) && prev_loginid.current !== loginid && !is_switching) {
             setContractTypesList([]);
             setAvailableContractTypes(undefined);
             refetch();

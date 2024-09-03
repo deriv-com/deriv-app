@@ -21,11 +21,12 @@ const cache: Record<string, any> = {};
 const ongoing_requests: Record<string, Promise<any> | undefined> = {};
 
 const useDtraderQueryBase = <Response>(
-    key: string,
+    keys: string[],
     request: Record<string, any>,
     options: QueryOptionsBase = {}
 ): QueryResult<Response> => {
-    const { enabled = false } = options;
+    const key = keys.join('-');
+    const { enabled = true } = options;
     const [data, setData] = useState<Response | null>(cache[key] || null);
     const [error, setError] = useState<TServerError | null>(null);
     const [is_loading, setIsLoading] = useState(!cache[key] && enabled);
@@ -91,11 +92,11 @@ const useDtraderQueryBase = <Response>(
 };
 
 export const useDtraderQuery = <Response>(
-    key: string,
+    keys: string[],
     request: Record<string, any>,
     options: QueryOptions = {}
 ): QueryResult<Response> => {
-    return useDtraderQueryBase<Response>(key, request, options);
+    return useDtraderQueryBase<Response>(keys, request, options);
 };
 
 export const invalidateDTraderCache = (key: string) => {

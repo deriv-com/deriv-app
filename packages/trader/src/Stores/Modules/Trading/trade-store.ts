@@ -41,6 +41,7 @@ import {
     formatMoney,
     getContractPath,
     routes,
+    isDtraderV2Enabled,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -1327,13 +1328,7 @@ export default class TradeStore extends BaseStore {
     }
 
     get is_dtrader_v2_enabled() {
-        const is_dtrader_v2 = JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2;
-
-        return (
-            is_dtrader_v2 &&
-            this.root_store.ui.is_mobile &&
-            (window.location.pathname.startsWith(routes.trade) || window.location.pathname.startsWith('/contract/'))
-        );
+        return isDtraderV2Enabled(this.root_store.ui.is_mobile);
     }
 
     get is_synthetics_available() {

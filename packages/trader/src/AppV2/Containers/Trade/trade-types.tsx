@@ -31,8 +31,6 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     const [is_open, setIsOpen] = React.useState<boolean>(false);
     const [is_editing, setIsEditing] = React.useState<boolean>(false);
 
-    const { onMount, onUnmount } = useTraderStore();
-
     const createArrayFromCategories = (data: any): TItem[] => {
         const result: TItem[] = [];
 
@@ -46,8 +44,8 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         return result;
     };
 
-    const saved_other_trade_types = JSON.parse(localStorage.getItem('other_trade_types') ?? '[]');
-    const saved_pinned_trade_types = JSON.parse(localStorage.getItem('pinned_trade_types') ?? '[]');
+    const saved_other_trade_types: TResultItem[] = JSON.parse(localStorage.getItem('other_trade_types') ?? '[]');
+    const saved_pinned_trade_types: TResultItem[] = JSON.parse(localStorage.getItem('pinned_trade_types') ?? '[]');
 
     const [other_trade_types, setOtherTradeTypes] = React.useState<TResultItem[]>(saved_other_trade_types);
     const [pinned_trade_types, setPinnedTradeTypes] = React.useState<TResultItem[]>(saved_pinned_trade_types);
@@ -131,7 +129,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
             {
                 id: 'pinned',
                 title: localize('Pinned'),
-                items: formatted_items.slice(0, 1),
+                items: formatted_items.slice(0, 5),
             },
         ];
         const default_other_trade_types = [
@@ -148,18 +146,14 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
             },
         ];
 
-        if (saved_pinned_trade_types.length < 1) {
-            setPinnedTradeTypes(default_pinned_trade_types);
-            localStorage.setItem('pinned_trade_types', JSON.stringify(default_pinned_trade_types));
-        }
+        setPinnedTradeTypes(default_pinned_trade_types);
+        localStorage.setItem('pinned_trade_types', JSON.stringify(default_pinned_trade_types));
 
         setOtherTradeTypes(default_other_trade_types);
         localStorage.setItem('other_trade_types', JSON.stringify(default_other_trade_types));
     }, [trade_types]);
 
     React.useEffect(() => {
-        onMount();
-
         if (saved_pinned_trade_types.length > 0) {
             setPinnedTradeTypes(saved_pinned_trade_types);
         }
@@ -167,10 +161,6 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         if (saved_other_trade_types.length > 0) {
             setOtherTradeTypes(saved_other_trade_types);
         }
-
-        return () => {
-            onUnmount();
-        };
     }, []);
 
     const savePinnedToLocalStorage = () => {

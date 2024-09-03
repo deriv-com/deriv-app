@@ -20,7 +20,8 @@ const VerificationLinkExpiredModal = ({
     const history = useHistory();
     //@ts-expect-error ignore this until we add it in GetSettings api types
     const { sendPhoneNumberVerifyEmail, WS } = useVerifyEmail('phone_number_verification');
-    const { next_email_otp_request_timer } = usePhoneNumberVerificationSetTimer();
+    const { next_email_otp_request_timer, is_email_otp_timer_loading, setNextEmailOtpRequestTimer } =
+        usePhoneNumberVerificationSetTimer();
     const { invalidate } = useSettings();
     const { isMobile } = useDevice();
     const { localize } = useTranslations();
@@ -33,6 +34,7 @@ const VerificationLinkExpiredModal = ({
 
     const handleSendNewLinkButton = () => {
         sendPhoneNumberVerifyEmail();
+        setNextEmailOtpRequestTimer(undefined);
         setIsForcedToExitPnv(false);
     };
 
@@ -57,7 +59,7 @@ const VerificationLinkExpiredModal = ({
         <Modal
             isMobile={isMobile}
             isOpened={should_show_verification_link_expired_modal}
-            isPrimaryButtonDisabled={!!next_email_otp_request_timer}
+            isPrimaryButtonDisabled={!!next_email_otp_request_timer || is_email_otp_timer_loading}
             buttonColor='coral'
             primaryButtonCallback={handleSendNewLinkButton}
             primaryButtonLabel={
@@ -66,7 +68,7 @@ const VerificationLinkExpiredModal = ({
                     values={{ next_email_attempt_timestamp: sendNewLinkTimer() }}
                 />
             }
-            disableCloseOnOverlay
+            toggleModal={() => setShouldShowVerificationLinkExpiredModal(false)}
             showSecondaryButton
             secondaryButtonLabel={<Localize i18n_default_text='Cancel' />}
             secondaryButtonCallback={handleCancelButton}

@@ -7,13 +7,22 @@ import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
 import { Analytics } from '@deriv-com/analytics';
 import Cookies from 'js-cookie';
+import useLiveChat from '../../Components/Elements/LiveChat/use-livechat';
 
 const Redirect = observer(() => {
     const history = useHistory();
     const { client, ui } = useStore();
 
-    const { currency, has_wallet, is_logged_in, is_logging_in, setNewEmail, setVerificationCode, verification_code } =
-        client;
+    const {
+        currency,
+        has_wallet,
+        is_logged_in,
+        is_logging_in,
+        setNewEmail,
+        setVerificationCode,
+        verification_code,
+        loginid,
+    } = client;
 
     const {
         openRealAccountSignup,
@@ -42,6 +51,12 @@ const Redirect = observer(() => {
         Cookies.remove('active_loginid', { domain, secure: true });
         window.location.reload();
     }
+
+    const liveChat = useLiveChat(false, loginid);
+
+    const openLivechat = () => {
+        liveChat.widget?.call('maximize');
+    };
 
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
@@ -272,7 +287,10 @@ const Redirect = observer(() => {
             redirected_to_route = true;
             break;
         }
-
+        case 'livechat': {
+            openLivechat();
+            break;
+        }
         default:
             break;
     }

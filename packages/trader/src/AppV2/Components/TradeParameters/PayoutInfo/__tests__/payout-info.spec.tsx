@@ -51,12 +51,12 @@ describe('<PayoutInfo />', () => {
 
         expect(screen.getByText('Payout')).toBeInTheDocument();
         expect(screen.getByTestId('dt_skeleton')).toBeInTheDocument();
-        expect(screen.queryByText('123 USD')).not.toBeInTheDocument();
+        expect(screen.queryByText('123.00 USD')).not.toBeInTheDocument();
     });
     it('displays the correct label, value and currency', () => {
         mockedPayoutInfo();
 
-        expect(screen.getByText('123 USD')).toBeInTheDocument();
+        expect(screen.getByText('123.00 USD')).toBeInTheDocument();
         expect(screen.getByText('Payout')).toBeInTheDocument();
     });
 });

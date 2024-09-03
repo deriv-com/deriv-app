@@ -33,11 +33,20 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
     };
 
     return (
-        <React.Fragment>
+        <div
+            className={clsx(
+                'trade-params__options__wrapper',
+                is_minimized && 'trade-params__options__wrapper--minimized'
+            )}
+        >
+            {is_minimized && isVisible('expiration') && <MultipliersExpirationInfo />}
+            {is_minimized && isVisible('payout_per_point_info') && <PayoutPerPointInfo />}
+            {is_minimized && isVisible('allow_equals') && <AllowEquals />}
+            {is_minimized && isVisible('payout') && <PayoutInfo />}
             <div
                 className={clsx(
                     'trade-params__options__wrapper',
-                    is_minimized && 'trade-params__options__wrapper--minimized'
+                    is_minimized && 'trade-params__options__wrapper--horizontal'
                 )}
             >
                 {isVisible('trade_type_tabs') && <TradeTypeTabs is_minimized={is_minimized} />}
@@ -58,27 +67,7 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
                 {isVisible('payout_per_point_info') && !is_minimized && <PayoutPerPointInfo />}
                 {isVisible('payout') && !is_minimized && <PayoutInfo />}
             </div>
-            {is_minimized && isVisible('expiration') && (
-                <div className='trade-params__options-info-standalone'>
-                    <MultipliersExpirationInfo />
-                </div>
-            )}
-            {is_minimized && isVisible('payout_per_point_info') && (
-                <div className='trade-params__options-info-standalone'>
-                    <PayoutPerPointInfo />
-                </div>
-            )}
-            {is_minimized && isVisible('allow_equals') && (
-                <div className='trade-params__options-info-standalone'>
-                    <AllowEquals />
-                </div>
-            )}
-            {is_minimized && isVisible('payout') && (
-                <div className='trade-params__options-info-standalone'>
-                    <PayoutInfo />
-                </div>
-            )}
-        </React.Fragment>
+        </div>
     );
 });
 

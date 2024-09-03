@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Text } from '@deriv-com/quill-ui';
-import { Skeleton } from '@deriv/components';
+import { Money, Skeleton } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
 const PayoutInfo = observer(() => {
@@ -19,7 +19,7 @@ const PayoutInfo = observer(() => {
             </Text>
             {payout ? (
                 <Text size='sm' bold>
-                    {payout} {currency}
+                    <Money amount={payout} show_currency currency={currency} />
                 </Text>
             ) : (
                 <Skeleton width={60} height={14} />

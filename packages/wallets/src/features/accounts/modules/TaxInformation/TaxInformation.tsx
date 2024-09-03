@@ -57,10 +57,7 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                             <Localize i18n_default_text='Complete your personal details' />
                                         </WalletText>
                                         <WalletText align='center' size='xs'>
-                                            <Localize
-                                                i18n_default_text='Any information you provide is confidential and will be used for
-                                            verification purposes only.'
-                                            />
+                                            <Localize i18n_default_text='Any information you provide is confidential and will be used for verification purposes only.' />
                                         </WalletText>
                                     </div>
                                     <NeedHelpMessage />

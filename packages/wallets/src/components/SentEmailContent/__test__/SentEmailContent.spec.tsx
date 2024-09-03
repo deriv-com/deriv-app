@@ -36,13 +36,20 @@ describe('SentEmailContent', () => {
         jest.clearAllMocks();
     });
 
-    it('renders component', () => {
+    it('renders default sent email content for mt5', () => {
         render(<SentEmailContent platform='mt5' />, { wrapper });
 
         expect(screen.getByText("We've sent you an email")).toBeInTheDocument();
         expect(
             screen.getByText('Please click on the link in the email to change your Deriv MT5 password.')
         ).toBeInTheDocument();
+    });
+
+    it('renders custom description when provided', () => {
+        const customDescription = 'Example custom description';
+        render(<SentEmailContent description={customDescription} platform='mt5' />, { wrapper });
+
+        expect(screen.getByText(customDescription)).toBeInTheDocument();
     });
 
     it('shows additional content when button is clicked', () => {

@@ -5,6 +5,10 @@ import { Button, Text, Modal, VideoPlayer } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useWalletMigration } from '@deriv/hooks';
+import {
+    getWalletMigrationVideoTranslations,
+    WALLET_MIGRATION_VIDEO_TRANSLATIONS,
+} from 'Constants/wallet-migration-video-translations';
 import './wallets-upgrade-modal.scss';
 
 const trackAnalyticsEvent = (
@@ -21,7 +25,8 @@ const trackAnalyticsEvent = (
 };
 
 const WalletsUpgradeModal = observer(() => {
-    const { traders_hub, ui } = useStore();
+    const { traders_hub, ui, common } = useStore();
+    const { current_language } = common;
     const { is_demo, is_real_wallets_upgrade_on, toggleWalletsUpgrade } = traders_hub;
     const { is_desktop, is_mobile } = ui;
     const { is_eligible, startMigration } = useWalletMigration();
@@ -29,6 +34,10 @@ const WalletsUpgradeModal = observer(() => {
     const isWalletMigrationModalClosed = localStorage.getItem('is_wallet_migration_modal_closed');
     const [modalOpen, setModalOpen] = React.useState(!isWalletMigrationModalClosed);
     const is_open = (is_eligible && modalOpen) || is_real_wallets_upgrade_on;
+
+    const video_src = getWalletMigrationVideoTranslations(
+        current_language as keyof typeof WALLET_MIGRATION_VIDEO_TRANSLATIONS
+    );
 
     React.useEffect(() => {
         if (is_open) {
@@ -68,7 +77,7 @@ const WalletsUpgradeModal = observer(() => {
                             height={is_desktop ? '311px' : '157px'}
                             is_mobile={is_mobile}
                             muted
-                            src='25df7df0d0af48090b086cd6f103d8f3'
+                            src={video_src}
                         />
                     </div>
                     <div className='wallets-upgrade-modal__text'>

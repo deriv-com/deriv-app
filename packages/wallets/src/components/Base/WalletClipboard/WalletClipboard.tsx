@@ -2,6 +2,7 @@ import React, { ComponentProps, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useCopyToClipboard } from 'usehooks-ts';
 import { LegacyCopy1pxIcon, LegacyWonIcon } from '@deriv/quill-icons';
+import { useTranslations } from '@deriv-com/translations';
 import { Tooltip, useDevice } from '@deriv-com/ui';
 
 type TProps = {
@@ -13,6 +14,7 @@ type TProps = {
 const WalletClipboard = ({ className, popoverAlignment = 'right', textCopy }: TProps) => {
     const [, copy] = useCopyToClipboard();
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
     const [isCopied, setIsCopied] = useState(false);
     let timeoutClipboard: ReturnType<typeof setTimeout>;
 
@@ -35,7 +37,7 @@ const WalletClipboard = ({ className, popoverAlignment = 'right', textCopy }: TP
             className={classNames('wallets-clipboard', className)}
             hideTooltip={!isDesktop}
             onClick={onClick}
-            tooltipContent={isCopied ? 'Copied!' : 'Copy'}
+            tooltipContent={isCopied ? localize('Copied!') : localize('Copy')}
             tooltipPosition={popoverAlignment}
         >
             {isCopied ? (

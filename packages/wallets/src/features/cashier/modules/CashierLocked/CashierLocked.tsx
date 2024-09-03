@@ -1,8 +1,7 @@
 import React from 'react';
 import { useAccountStatus, useActiveWalletAccount, useAuthentication, useCashierValidation } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
-import { Loader } from '@deriv-com/ui';
-import { WalletsActionScreen } from '../../../../components';
+import { ActionScreen, Loader } from '@deriv-com/ui';
 import getCashierLockedDesc, { getSystemMaintenanceContent } from './CashierLockedContent';
 import './CashierLocked.scss';
 
@@ -73,7 +72,7 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
     if (isSystemMaintenance && systemMaintenanceContent) {
         return (
             <div className='wallets-cashier-locked'>
-                <WalletsActionScreen
+                <ActionScreen
                     description={systemMaintenanceContent?.description}
                     title={systemMaintenanceContent?.title}
                 />
@@ -84,7 +83,7 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
     if (isCashierLocked) {
         return (
             <div className='wallets-cashier-locked'>
-                <WalletsActionScreen
+                <ActionScreen
                     description={cashierLockedDescription}
                     title={
                         <Localize

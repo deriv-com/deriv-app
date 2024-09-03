@@ -103,12 +103,12 @@ const WalletsResetMT5Password = ({
         } else if (isChangeInvestorPasswordError) {
             show(
                 <WalletsErrorMT5InvestorPassword
-                    errorMessage={changeInvestorPasswordError?.error?.message}
-                    renderButtons={() => (
+                    actionButtons={
                         <WalletButton isFullWidth={isMobile} onClick={hide}>
                             <Localize i18n_default_text='Ok' />
                         </WalletButton>
-                    )}
+                    }
+                    errorMessage={changeInvestorPasswordError?.error?.message}
                     title={title}
                 />
             );

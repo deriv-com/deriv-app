@@ -1,7 +1,7 @@
 import React from 'react';
 import { DerivLightEmailVerificationIcon } from '@deriv/quill-icons';
-import { Button } from '@deriv-com/ui';
-import { WalletsActionScreen, WalletText } from '../../../../../components';
+import { Localize } from '@deriv-com/translations';
+import { ActionScreen, Button, Text } from '@deriv-com/ui';
 import './WithdrawalVerificationRequest.scss';
 
 type TProps = {
@@ -11,15 +11,20 @@ type TProps = {
 const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
     return (
         <div className='wallets-withdrawal-verification-request'>
-            <WalletsActionScreen
+            <ActionScreen
+                actionButtons={
+                    <Button onClick={sendEmail} size='lg' textSize='md'>
+                        <Localize i18n_default_text='Send email' />
+                    </Button>
+                }
                 description={
                     <div className='wallets-withdrawal-verification-request__description'>
-                        <WalletText align='center'>
-                            Press the button below, and we&apos;ll email you a verification link.
-                        </WalletText>
-                        <WalletText align='center'>
-                            This is to confirm that it&apos;s you making the withdrawal request.
-                        </WalletText>
+                        <Text align='center'>
+                            <Localize i18n_default_text="Press the button below, and we'll email you a verification link." />
+                        </Text>
+                        <Text align='center'>
+                            <Localize i18n_default_text="This is to confirm that it's you making the withdrawal request." />
+                        </Text>
                     </div>
                 }
                 icon={
@@ -30,12 +35,7 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
                         <DerivLightEmailVerificationIcon height={102} width={102} />
                     </div>
                 }
-                renderButtons={() => (
-                    <Button borderWidth='sm' onClick={sendEmail} size='lg' textSize='md'>
-                        Send email
-                    </Button>
-                )}
-                title='Confirm your identity to make a withdrawal.'
+                title={<Localize i18n_default_text='Confirm your identity to make a withdrawal.' />}
             />
         </div>
     );

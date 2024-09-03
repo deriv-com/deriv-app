@@ -19,6 +19,7 @@ import {
     getLocalizedBasis,
     TTradeTypesCategories,
     TRADE_TYPES,
+    isDTraderV2,
 } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
@@ -194,6 +195,7 @@ export const ContractType = (() => {
             short_barriers,
             long_barriers,
             strike_price_choices,
+            v2_params_initial_values,
         } = store;
 
         if (!contract_type) return {};
@@ -208,7 +210,13 @@ export const ContractType = (() => {
                 break;
             case 'Call':
             case 'Put':
-                stored_barriers_data = strike_price_choices;
+                stored_barriers_data =
+                    v2_params_initial_values?.strike && isDTraderV2()
+                        ? ({
+                              ...strike_price_choices,
+                              barrier: v2_params_initial_values.strike,
+                          } as TTradeStore['strike_price_choices'])
+                        : strike_price_choices;
                 break;
             default:
                 stored_barriers_data = {};

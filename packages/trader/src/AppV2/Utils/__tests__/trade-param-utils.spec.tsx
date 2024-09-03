@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
@@ -7,30 +7,33 @@ import {
     getTradeTypeTabsList,
     isDigitContractWinning,
     focusAndOpenKeyboard,
+    getOptionPerUnit,
 } from '../trade-params-utils';
 
 describe('getTradeParams', () => {
-    it('should return correct array with keys for Rise/Fall', () => {
-        expect(getTradeParams()[TRADE_TYPES.RISE_FALL]).toEqual(['duration', 'stake', 'allow_equals']);
+    it('should return correct object with keys for Rise/Fall', () => {
+        expect(getTradeParams()[TRADE_TYPES.RISE_FALL]).toEqual({
+            duration: true,
+            stake: true,
+            allow_equals: true,
+        });
     });
 
-    it('should return correct array with keys for Multipliers if symbol does not start with "cry"', () => {
-        expect(getTradeParams()[TRADE_TYPES.MULTIPLIER]).toEqual([
-            'multiplier',
-            'stake',
-            'risk_management',
-            'mult_info_display',
-        ]);
+    it('should return correct object with keys for Multipliers if symbol does not start with "cry"', () => {
+        expect(getTradeParams()[TRADE_TYPES.MULTIPLIER]).toEqual({
+            multiplier: true,
+            stake: true,
+            risk_management: true,
+        });
     });
 
-    it('should return correct array with keys for Multipliers if symbol starts with "cry"', () => {
-        expect(getTradeParams('crypto')[TRADE_TYPES.MULTIPLIER]).toEqual([
-            'multiplier',
-            'stake',
-            'risk_management',
-            'expiration',
-            'mult_info_display',
-        ]);
+    it('should return correct object with keys for Multipliers if symbol starts with "cry"', () => {
+        expect(getTradeParams('crypto')[TRADE_TYPES.MULTIPLIER]).toEqual({
+            multiplier: true,
+            stake: true,
+            risk_management: true,
+            expiration: true,
+        });
     });
 });
 
@@ -183,5 +186,62 @@ describe('getTradeTypeTabsList', () => {
                 is_displayed: true,
             },
         ]);
+    });
+});
+
+describe('getOptionPerUnit', () => {
+    const renderOptions = (options: { value: number; label: ReactNode }[]) => {
+        return options.map(option => {
+            if (React.isValidElement(option.label)) {
+                const { container } = render(option.label as ReactElement);
+                return container.textContent;
+            }
+            return '';
+        });
+    };
+
+    test('returns correct options for minutes (m)', () => {
+        const result = getOptionPerUnit('m');
+        const view = renderOptions(result[0]);
+        expect(result).toHaveLength(1);
+        expect(view).toEqual([...Array(59)].map((_, i) => `${i + 1} min`));
+    });
+
+    test('returns correct options for seconds (s)', () => {
+        const result = getOptionPerUnit('s');
+        const view = renderOptions(result[0]);
+        expect(result).toHaveLength(1);
+        expect(view).toEqual([...Array(45)].map((_, i) => `${i + 15} sec`));
+    });
+
+    test('returns correct options for days (d)', () => {
+        const result = getOptionPerUnit('d');
+        const view = renderOptions(result[0]);
+        expect(result).toHaveLength(1);
+        expect(view).toEqual([...Array(365)].map((_, i) => `${i + 1} days`));
+    });
+
+    test('returns correct options for ticks (t)', () => {
+        const result = getOptionPerUnit('t');
+        const view = renderOptions(result[0]);
+        expect(result).toHaveLength(1);
+        expect(view).toEqual([...Array(10)].map((_, i) => `${i + 1} tick`));
+    });
+
+    test('returns correct options for hours (h)', () => {
+        const result = getOptionPerUnit('h');
+        // eslint-disable-next-line testing-library/render-result-naming-convention
+        const hourView = renderOptions(result[0]);
+        // eslint-disable-next-line testing-library/render-result-naming-convention
+        const minuteView = renderOptions(result[1]);
+
+        expect(result).toHaveLength(2);
+        expect(hourView).toEqual([...Array(23)].map((_, i) => `${i + 1} h`));
+        expect(minuteView).toEqual([...Array(59)].map((_, i) => `${i + 1} min`));
+    });
+
+    test('returns empty array for invalid unit', () => {
+        const result = getOptionPerUnit('invalid');
+        expect(result).toEqual([[]]);
     });
 });

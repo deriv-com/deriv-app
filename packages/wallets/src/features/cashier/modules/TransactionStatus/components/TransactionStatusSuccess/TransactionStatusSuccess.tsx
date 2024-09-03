@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Divider } from '@deriv-com/ui';
-import { WalletText } from '../../../../../../components/Base';
+import { Localize } from '@deriv-com/translations';
+import { Button, Divider, Text } from '@deriv-com/ui';
 import { THooks } from '../../../../../../types';
 import { CryptoTransaction } from '../CryptoTransaction';
 
@@ -55,13 +55,15 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({ transac
                             size='sm'
                             variant='outlined'
                         >
-                            View more
+                            <Localize i18n_default_text='View more' />
                         </Button>
                     )}
                 </React.Fragment>
             ) : (
                 <React.Fragment>
-                    <WalletText size='sm'>No recent transactions.</WalletText>
+                    <Text size='sm'>
+                        <Localize i18n_default_text='No recent transactions.' />
+                    </Text>
                     <Divider />
                 </React.Fragment>
             )}

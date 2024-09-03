@@ -6,27 +6,88 @@ import {
     shouldShowExpiration,
     TRADE_TYPES,
 } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
+import React, { ReactNode } from 'react';
 
 export const getTradeParams = (symbol?: string) => ({
-    [TRADE_TYPES.RISE_FALL]: ['duration', 'stake', 'allow_equals'],
-    [TRADE_TYPES.RISE_FALL_EQUAL]: ['duration', 'stake', 'allow_equals'],
-    [TRADE_TYPES.HIGH_LOW]: ['trade_type_tabs', 'duration', 'barrier', 'stake'],
-    [TRADE_TYPES.TOUCH]: ['trade_type_tabs', 'duration', 'barrier', 'stake'],
-    [TRADE_TYPES.MATCH_DIFF]: ['last_digit', 'duration', 'stake'],
-    [TRADE_TYPES.EVEN_ODD]: ['duration', 'stake'],
-    [TRADE_TYPES.OVER_UNDER]: ['last_digit', 'duration', 'stake'],
-    [TRADE_TYPES.ACCUMULATOR]: ['growth_rate', 'stake', 'take_profit', 'accu_info_display'],
-    [TRADE_TYPES.MULTIPLIER]: [
-        'multiplier',
-        'stake',
-        'risk_management',
-        ...(shouldShowExpiration(symbol) ? ['expiration'] : []),
-        'mult_info_display',
-    ],
-    [TRADE_TYPES.TURBOS.LONG]: ['trade_type_tabs', 'duration', 'payout_per_point', 'stake', 'take_profit'],
-    [TRADE_TYPES.TURBOS.SHORT]: ['trade_type_tabs', 'duration', 'payout_per_point', 'stake', 'take_profit'],
-    [TRADE_TYPES.VANILLA.CALL]: ['trade_type_tabs', 'duration', 'strike', 'stake'],
-    [TRADE_TYPES.VANILLA.PUT]: ['trade_type_tabs', 'duration', 'strike', 'stake'],
+    [TRADE_TYPES.RISE_FALL]: {
+        duration: true,
+        stake: true,
+        allow_equals: true,
+    },
+    [TRADE_TYPES.RISE_FALL_EQUAL]: {
+        duration: true,
+        stake: true,
+        allow_equals: true,
+    },
+    [TRADE_TYPES.HIGH_LOW]: {
+        trade_type_tabs: true,
+        duration: true,
+        barrier: true,
+        stake: true,
+    },
+    [TRADE_TYPES.TOUCH]: {
+        trade_type_tabs: true,
+        duration: true,
+        barrier: true,
+        stake: true,
+    },
+    [TRADE_TYPES.MATCH_DIFF]: {
+        last_digit: true,
+        duration: true,
+        stake: true,
+    },
+    [TRADE_TYPES.EVEN_ODD]: {
+        duration: true,
+        stake: true,
+    },
+    [TRADE_TYPES.OVER_UNDER]: {
+        last_digit: true,
+        duration: true,
+        stake: true,
+    },
+    [TRADE_TYPES.ACCUMULATOR]: {
+        growth_rate: true,
+        stake: true,
+        take_profit: true,
+        accu_info_display: true,
+    },
+    [TRADE_TYPES.MULTIPLIER]: {
+        multiplier: true,
+        stake: true,
+        risk_management: true,
+        ...(shouldShowExpiration(symbol) ? { expiration: true } : {}),
+    },
+    [TRADE_TYPES.TURBOS.LONG]: {
+        trade_type_tabs: true,
+        duration: true,
+        payout_per_point: true,
+        stake: true,
+        take_profit: true,
+        barrier_info: true,
+    },
+    [TRADE_TYPES.TURBOS.SHORT]: {
+        trade_type_tabs: true,
+        duration: true,
+        payout_per_point: true,
+        stake: true,
+        take_profit: true,
+        barrier_info: true,
+    },
+    [TRADE_TYPES.VANILLA.CALL]: {
+        trade_type_tabs: true,
+        duration: true,
+        strike: true,
+        stake: true,
+        payout_per_point_info: true,
+    },
+    [TRADE_TYPES.VANILLA.PUT]: {
+        trade_type_tabs: true,
+        duration: true,
+        strike: true,
+        stake: true,
+        payout_per_point_info: true,
+    },
 });
 
 export const isDigitContractWinning = (
@@ -111,4 +172,45 @@ export const getTradeTypeTabsList = (contract_type = '') => {
         },
     ];
     return tab_list.filter(({ is_displayed }) => is_displayed);
+};
+
+export const getOptionPerUnit = (unit: string): { value: number; label: ReactNode }[][] => {
+    const unitConfig: Record<
+        string,
+        { start: number; end: number; label: ReactNode } | (() => { value: number; label: ReactNode }[][])
+    > = {
+        m: { start: 1, end: 59, label: <Localize i18n_default_text='min' /> },
+        s: { start: 15, end: 59, label: <Localize i18n_default_text='sec' /> },
+        d: { start: 1, end: 365, label: <Localize i18n_default_text='days' /> },
+        t: { start: 1, end: 10, label: <Localize i18n_default_text='tick' /> },
+        h: () => {
+            const hour_options = generateOptions(1, 23, 'h');
+            const minute_options = generateOptions(1, 59, 'min');
+            return [hour_options, minute_options];
+        },
+    };
+
+    const generateOptions = (start: number, end: number, label: ReactNode) => {
+        return Array.from({ length: end - start + 1 }, (_, i) => ({
+            value: start + i,
+            label: (
+                <React.Fragment>
+                    {start + i} {label}
+                </React.Fragment>
+            ),
+        }));
+    };
+
+    const config = unitConfig[unit];
+
+    if (typeof config === 'function') {
+        return config();
+    }
+
+    if (config) {
+        const { start, end, label } = config;
+        return [generateOptions(start, end, label)];
+    }
+
+    return [[]];
 };

@@ -12,6 +12,7 @@ const Notifications = observer(() => {
     const { pathname } = useLocation();
 
     React.useEffect(() => {
+        if (banners.length > 1) removeBanner(banners[0].id);
         if (pathname === routes.trade) return;
         banners.forEach(({ type, id }) => {
             if (!type) {
@@ -25,7 +26,13 @@ const Notifications = observer(() => {
     React.useEffect(() => {
         const addNotificationBannerCallback = (params: Parameters<typeof addBanner>[0], result: string) =>
             addBanner({
-                icon: <StandaloneFlagCheckeredFillIcon iconSize='sm' className={`trade-notification--${result}`} />,
+                icon: (
+                    <StandaloneFlagCheckeredFillIcon
+                        iconSize='sm'
+                        className={`trade-notification--${result}`}
+                        key='contract-closed'
+                    />
+                ),
                 ...params,
             });
 
@@ -42,6 +49,7 @@ const Notifications = observer(() => {
             className='trade-notification'
             isMobile
             onClose={removeBanner}
+            zIndex={99}
         />
     );
 });

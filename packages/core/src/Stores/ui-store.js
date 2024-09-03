@@ -46,6 +46,7 @@ export default class UIStore extends BaseStore {
     is_update_email_modal_visible = false;
     is_reset_trading_password_modal_visible = false;
     is_mf_verification_pending_modal_visible = false;
+    is_trading_disabled_by_residence_modal_visible = false;
     // @observable is_purchase_lock_on       = false;
     // SmartCharts Controls
     // TODO: enable asset information
@@ -152,6 +153,7 @@ export default class UIStore extends BaseStore {
     // add crypto accounts
     should_show_cancel = false;
 
+    should_show_same_dob_phone_modal = false;
     should_show_deposit_now_or_later_modal = false;
     should_show_crypto_transaction_processing_modal = false;
     should_show_risk_warning_modal = false;
@@ -267,6 +269,7 @@ export default class UIStore extends BaseStore {
             is_landscape: observable,
             is_language_settings_modal_on: observable,
             is_mf_verification_pending_modal_visible: observable,
+            is_trading_disabled_by_residence_modal_visible: observable,
             is_mobile_language_menu_open: observable,
             is_nativepicker_visible: observable,
 
@@ -298,6 +301,7 @@ export default class UIStore extends BaseStore {
             real_account_signup: observable,
             reports_route_tab_index: observable,
             settings_extension: observable,
+            should_show_same_dob_phone_modal: observable,
             should_show_deposit_now_or_later_modal: observable,
             should_show_crypto_transaction_processing_modal: observable,
             should_show_appropriateness_warning_modal: observable,
@@ -397,6 +401,7 @@ export default class UIStore extends BaseStore {
             setSubSectionIndex: action.bound,
             setTopUpInProgress: action.bound,
             setIsMFVericationPendingModal: action.bound,
+            setIsTradingDisabledByResidenceModal: action.bound,
             setMT5MigrationModalEnabled: action.bound,
             setMobileLanguageMenuOpen: action.bound,
             toggleAccountsDialog: action.bound,
@@ -424,6 +429,7 @@ export default class UIStore extends BaseStore {
             toggleUrlUnavailableModal: action.bound,
             setShouldShowDepositNowOrLaterModal: action.bound,
             setShouldShowCryptoTransactionProcessingModal: action.bound,
+            setShouldShowSameDOBPhoneModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -921,7 +927,6 @@ export default class UIStore extends BaseStore {
 
     setCFDPasswordResetModal(val) {
         this.is_cfd_reset_password_modal_enabled = !!val;
-        this.is_reset_trading_password_modal_visible = !!val;
     }
 
     setSubSectionIndex(index) {
@@ -956,6 +961,10 @@ export default class UIStore extends BaseStore {
         this.is_mf_verification_pending_modal_visible = value;
     }
 
+    setIsTradingDisabledByResidenceModal(value) {
+        this.is_trading_disabled_by_residence_modal_visible = value;
+    }
+
     toggleAdditionalKycInfoModal() {
         this.is_additional_kyc_info_modal_open = !this.is_additional_kyc_info_modal_open;
     }
@@ -982,5 +991,9 @@ export default class UIStore extends BaseStore {
 
     setShouldShowCryptoTransactionProcessingModal(value) {
         this.should_show_crypto_transaction_processing_modal = value;
+    }
+
+    setShouldShowSameDOBPhoneModal(value) {
+        this.should_show_same_dob_phone_modal = value;
     }
 }

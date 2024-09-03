@@ -1,27 +1,26 @@
 import React from 'react';
 import { DerivLightIcMt5PasswordUpdatedIcon } from '@deriv/quill-icons';
-import { WalletButton, WalletsActionScreen, WalletText } from '../../../../../components';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { ActionScreen, Button } from '@deriv-com/ui';
 
 type TProps = {
     setNextScreen?: VoidFunction;
 };
 
 const MT5ChangeInvestorPasswordSavedScreen: React.FC<TProps> = ({ setNextScreen }) => {
+    const { localize } = useTranslations();
+
     return (
-        <WalletsActionScreen
-            description={
-                <WalletText align='center' size='sm'>
-                    Your investor password has been changed.
-                </WalletText>
+        <ActionScreen
+            actionButtons={
+                <Button onClick={setNextScreen} size='lg'>
+                    <Localize i18n_default_text='OK' />
+                </Button>
             }
+            description={localize('Your investor password has been changed.')}
             descriptionSize='sm'
             icon={<DerivLightIcMt5PasswordUpdatedIcon height={120} width={120} />}
-            renderButtons={() => (
-                <WalletButton onClick={setNextScreen} size='lg'>
-                    OK
-                </WalletButton>
-            )}
-            title='Password saved'
+            title={<Localize i18n_default_text='Password saved' />}
         />
     );
 };

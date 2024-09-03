@@ -1,14 +1,16 @@
 import React from 'react';
-import { Loading, Modal, SelectNative, ReadMore, Text } from '@deriv/components';
+import { Loading, Modal, SelectNative, ReadMore, SideNote, Text } from '@deriv/components';
 import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
-import { routes, isMobile } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import CashierLocked from '../../components/cashier-locked';
-import SideNote from '../../components/side-note';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
+import { DepositSubPageAnalyticsEventTracker } from '../../components/deposit-sub-page-analytics-event-tracker';
 import { useCashierStore } from '../../stores/useCashierStores';
+import PageContainer from '../../components/page-container';
 import './on-ramp.scss';
 
 type TMenuOption = {
@@ -18,23 +20,21 @@ type TMenuOption = {
     label: string;
     value?: string;
     path: string;
-    has_side_note?: boolean;
 };
 
 export type TOnRampProps = {
     menu_options: TMenuOption[];
-    setSideNotes?: (notes: React.ReactNode[]) => void;
 };
 
 const OnRampSideNote = () => {
-    const notes = [
-        <Localize
-            i18n_default_text='Fiat onramp is a cashier service that allows you to convert fiat currencies to crypto to top up your Deriv crypto accounts. Listed here are third-party crypto exchanges. You’ll need to create an account with them to use their services.'
-            key={0}
-        />,
-    ];
-
-    return <SideNote side_notes={notes} title={<Localize i18n_default_text='What is Fiat onramp?' />} />;
+    return (
+        <SideNote title={<Localize i18n_default_text='What is Fiat onramp?' />}>
+            <Localize
+                i18n_default_text='Fiat onramp is a cashier service that allows you to convert fiat currencies to crypto to top up your Deriv crypto accounts. Listed here are third-party crypto exchanges. You’ll need to create an account with them to use their services.'
+                key={0}
+            />
+        </SideNote>
+    );
 };
 
 const OnRampInfo = () => (
@@ -55,7 +55,7 @@ const OnRampInfo = () => (
     </div>
 );
 
-const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
+const OnRamp = observer(({ menu_options }: TOnRampProps) => {
     const { common, client } = useStore();
     const { onramp, general_store } = useCashierStore();
     const {
@@ -68,7 +68,8 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
         setIsOnRampModalOpen,
         should_show_dialog,
     } = onramp;
-    const { is_cashier_onboarding, is_loading, cashier_route_tab_index } = general_store;
+    const { isDesktop } = useDevice();
+    const { is_loading } = general_store;
     const is_cashier_locked = useCashierLocked();
     const { is_switching } = client;
     const { routeTo } = common;
@@ -84,16 +85,11 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
 
     React.useEffect(() => {
         onMountOnramp();
-        if (!is_switching && !is_loading) {
-            setSideNotes?.([<OnRampSideNote key={0} />]);
-        }
 
         return () => {
             onUnmountOnramp();
-            setSideNotes?.([]);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [onMountOnramp, onUnmountOnramp, is_cashier_onboarding, is_switching, is_loading, cashier_route_tab_index]);
+    }, [onMountOnramp, onUnmountOnramp]);
 
     const getActivePaths = () =>
         (menu_options ?? []).map(menu_option => ({
@@ -101,20 +97,26 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
             value: menu_option.path,
         }));
 
-    if (is_switching || is_loading) return <Loading className='cashier-onboarding__loader' is_fullscreen />;
+    if (is_switching || is_loading)
+        return (
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
+                <Loading className='cashier-onboarding__loader' is_fullscreen />
+            </PageContainer>
+        );
 
     if (is_deposit_locked || is_cashier_locked) {
         return (
-            <div className='cashier-locked-padding'>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <CashierLocked />
-            </div>
+            </PageContainer>
         );
     }
 
     return (
-        <React.Fragment>
+        <PageContainer hide_breadcrumb right={isDesktop ? <OnRampSideNote key={0} /> : undefined}>
             <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>
-                {isMobile() && (
+                <DepositSubPageAnalyticsEventTracker deposit_category='fiat_onramp' />
+                {!isDesktop && (
                     <React.Fragment>
                         <SelectNative
                             data_testid='dt_on_ramp_select_native'
@@ -134,8 +136,8 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
                     </React.Fragment>
                 )}
                 <Text
-                    color={isMobile() ? 'less-prominent' : 'general'}
-                    weight={isMobile() ? 'normal' : 'bold'}
+                    color={isDesktop ? 'general' : 'less-prominent'}
+                    weight={isDesktop ? 'bold' : 'normal'}
                     align='center'
                     line_height='m'
                     className='on-ramp__page-header'
@@ -161,7 +163,7 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
                     </Modal.Body>
                 </Modal>
             </div>
-        </React.Fragment>
+        </PageContainer>
     );
 });
 

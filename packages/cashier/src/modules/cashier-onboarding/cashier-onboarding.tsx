@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
+import { Analytics } from '@deriv-com/analytics';
 import { useHasSetCurrency } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { useHistory } from 'react-router';
-import { PageContainer } from '../../components/page-container';
+import PageContainer from '../../components/page-container';
 import { useCashierStore } from '../../stores/useCashierStores';
 import {
     CashierOnboardingAccountIdentifierMessage,
@@ -16,11 +17,22 @@ import {
 
 const CashierOnboarding: React.FC = observer(() => {
     const history = useHistory();
-    const { ui } = useStore();
+    const { client, ui } = useStore();
+    const { loginid } = client;
     const { general_store } = useCashierStore();
     const { setIsCashierOnboarding } = general_store;
     const { toggleSetCurrencyModal } = ui;
     const has_set_currency = useHasSetCurrency();
+
+    useEffect(() => {
+        if (loginid) {
+            Analytics.trackEvent('ce_cashier_deposit_onboarding_form', {
+                action: 'open',
+                form_name: 'ce_cashier_deposit_onboarding_form',
+                login_id: loginid,
+            });
+        }
+    }, [loginid]);
 
     useEffect(() => {
         setIsCashierOnboarding(true);

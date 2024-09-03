@@ -1,7 +1,7 @@
+import { useContext } from 'react';
 import clsx from 'clsx';
-import React from 'react';
-import { getStaticUrl } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { URLUtils } from '@deriv-com/utils';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Icon, OpenLiveChatLink, Popup, Text } from '@deriv/components';
 import SelfExclusionContext from './self-exclusion-context';
 
@@ -24,7 +24,7 @@ export const selfExclusionArticleItems = ({ is_eu, is_app_settings }: TSelfExclu
                                 className='link'
                                 rel='noopener noreferrer'
                                 target='_blank'
-                                href={getStaticUrl('/responsible')}
+                                href={URLUtils.getDerivStaticURL('/responsible')}
                             />,
                         ]}
                     />
@@ -56,7 +56,7 @@ export const selfExclusionArticleItems = ({ is_eu, is_app_settings }: TSelfExclu
                                 className='link'
                                 rel='noopener noreferrer'
                                 target='_blank'
-                                href={getStaticUrl('/contact_us')}
+                                href={URLUtils.getDerivStaticURL('/contact_us')}
                             />,
                         ]}
                     />
@@ -78,7 +78,7 @@ export const selfExclusionArticleItems = ({ is_eu, is_app_settings }: TSelfExclu
                             className='link'
                             rel='noopener noreferrer'
                             target='_blank'
-                            href={getStaticUrl('/responsible')}
+                            href={URLUtils.getDerivStaticURL('/responsible')}
                         />,
                     ]}
                 />
@@ -119,7 +119,8 @@ export const selfExclusionArticleItems = ({ is_eu, is_app_settings }: TSelfExclu
 };
 
 const SelfExclusionArticleContent = ({ is_in_overlay }: Partial<TSelfExclusionArticleContent>) => {
-    const { is_app_settings, toggleArticle, overlay_ref, is_eu } = React.useContext(SelfExclusionContext);
+    const { is_app_settings, toggleArticle, overlay_ref, is_eu } = useContext(SelfExclusionContext);
+    const { localize } = useTranslations();
 
     const keyed_article_items = selfExclusionArticleItems({ is_eu, is_app_settings });
     if (is_in_overlay) {

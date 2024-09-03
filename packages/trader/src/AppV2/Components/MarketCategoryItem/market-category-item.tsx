@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { useModulesStore } from 'Stores/useModulesStores';
+import { clickAndKeyEventHandler } from '@deriv/shared';
 
 type TMarketCategoryItem = {
     item: ActiveSymbols[0];
@@ -30,15 +31,13 @@ const MarketCategoryItem = forwardRef(
             setIsFavorite(favoriteSymbols.includes(item.symbol));
         }, [favoriteSymbols, item.symbol]);
 
-        const handleSelect = async (e: React.MouseEvent<HTMLSpanElement>) => {
-            const symbol = (e.target as HTMLSpanElement).getAttribute('data-symbol');
-            setSelectedSymbol(symbol ?? '');
+        const handleSelect = async (symbol: string) => {
+            setSelectedSymbol(symbol);
             await onSymbolChange({ target: { name: 'symbol', value: symbol } });
             setIsOpen(false);
         };
 
-        const toggleFavorites = (e: React.MouseEvent<HTMLSpanElement>) => {
-            const symbol = (e.currentTarget as HTMLSpanElement).getAttribute('data-symbol');
+        const toggleFavorites = (symbol: string) => {
             if (!symbol) return;
             const symbolIndex = favoriteSymbols.indexOf(symbol);
 
@@ -69,6 +68,16 @@ const MarketCategoryItem = forwardRef(
             setIsFavorite(favoriteSymbols.includes(symbol));
         };
 
+        const handleSelectDecorator = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+            const symbol = (e?.currentTarget as HTMLElement).getAttribute('data-symbol') || '';
+            clickAndKeyEventHandler(() => handleSelect(symbol), e);
+        };
+
+        const toggleFavoritesDecorator = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+            const symbol = (e?.currentTarget as HTMLElement).getAttribute('data-symbol') || '';
+            clickAndKeyEventHandler(() => toggleFavorites(symbol), e);
+        };
+
         return (
             <div
                 className={clsx('market-category-item', {
@@ -76,26 +85,31 @@ const MarketCategoryItem = forwardRef(
                 })}
                 ref={ref}
             >
-                <SymbolIconsMapper symbol={item.symbol} />
-                <Text
-                    size='sm'
-                    className={clsx('market-category-item-symbol', {
-                        'market-category-item-symbol--selected': selectedSymbol === item.symbol,
-                    })}
+                <span
+                    className='market-category-item-left'
+                    data-symbol={item.symbol}
+                    onClick={handleSelectDecorator}
+                    onKeyDown={handleSelectDecorator}
                 >
-                    <span onClick={handleSelect} data-symbol={item.symbol}>
-                        {item.display_name}
-                    </span>
-                </Text>
-                {!item.exchange_is_open && (
-                    <Tag
-                        label={<Localize key='exchange-closed' i18n_default_text='CLOSED' />}
-                        color='error'
-                        variant={selectedSymbol === item.symbol ? 'outline' : 'fill'}
-                        showIcon={false}
-                    />
-                )}
-                <span onClick={toggleFavorites} data-symbol={item.symbol}>
+                    <SymbolIconsMapper symbol={item.symbol} />
+                    <Text
+                        size='sm'
+                        className={clsx('market-category-item-symbol', {
+                            'market-category-item-symbol--selected': selectedSymbol === item.symbol,
+                        })}
+                    >
+                        <span>{item.display_name}</span>
+                    </Text>
+                    {!item.exchange_is_open && (
+                        <Tag
+                            label={<Localize key='exchange-closed' i18n_default_text='CLOSED' />}
+                            color='error'
+                            variant={selectedSymbol === item.symbol ? 'outline' : 'fill'}
+                            showIcon={false}
+                        />
+                    )}
+                </span>
+                <span onClick={toggleFavoritesDecorator} onKeyDown={toggleFavoritesDecorator} data-symbol={item.symbol}>
                     {isFavorite ? (
                         <StandaloneStarFillIcon fill='var(--core-color-solid-mustard-700)' iconSize='sm' />
                     ) : (

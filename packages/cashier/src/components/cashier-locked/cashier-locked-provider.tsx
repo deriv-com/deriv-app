@@ -16,6 +16,9 @@ type TProps = {
     is_withdrawal_locked: boolean;
     is_identity_verification_needed: boolean;
     is_pending_verification: boolean;
+    is_duplicate_dob_phone: boolean;
+    is_account_to_be_closed_by_residence: boolean;
+    account_time_of_closure?: number;
 };
 
 const getMessage = ({
@@ -31,6 +34,9 @@ const getMessage = ({
     is_withdrawal_locked,
     is_identity_verification_needed,
     is_pending_verification,
+    is_duplicate_dob_phone,
+    is_account_to_be_closed_by_residence,
+    account_time_of_closure,
 }: TProps) => {
     const no_residence = cashier_validation?.includes('no_residence');
     const unwelcome_status = cashier_validation?.includes('unwelcome_status');
@@ -51,6 +57,21 @@ const getMessage = ({
     const ask_fix_details = cashier_validation?.includes('ASK_FIX_DETAILS');
     const pa_commision_withdrawal_limit = cashier_validation?.includes('PACommisionWithdrawalLimit');
     const pathname = history.location.pathname;
+
+    if (is_account_to_be_closed_by_residence && pathname === routes.cashier_deposit) {
+        return {
+            icon: 'IcCashierNoBalance',
+            title: localize('Deposits disabled'),
+            description: (
+                <Localize
+                    i18n_default_text='Due to business changes, client accounts in Senegal are to be closed. Withdraw any remaining funds by {{date}}.'
+                    values={{
+                        date: formatDate(account_time_of_closure, 'DD MMM YYYY'),
+                    }}
+                />
+            ),
+        };
+    }
 
     if (is_system_maintenance) {
         if (is_crypto && is_withdrawal_locked)
@@ -320,6 +341,18 @@ const getMessage = ({
     }
 
     if (is_deposit_locked) {
+        if (is_duplicate_dob_phone) {
+            return {
+                icon: 'IcAccountError',
+                title: localize('Account already exists'),
+                description: (
+                    <Localize
+                        i18n_default_text="Your details match an existing account. You can't <0/>make deposits or trade with a new account. <0/>Need help? Reach out via live chat."
+                        components={[<br key={0} />]}
+                    />
+                ),
+            };
+        }
         if (ask_fix_details)
             return {
                 icon: 'IcCashierDepositLock',

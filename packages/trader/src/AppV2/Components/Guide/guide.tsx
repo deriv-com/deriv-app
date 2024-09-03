@@ -19,13 +19,13 @@ const Guide = observer(({ has_label, show_guide_for_selected_contract }: TGuide)
         ui: { is_dark_mode_on },
     } = useStore();
     const { contract_type, is_vanilla } = useTraderStore();
-    const contract_type_title = is_vanilla ? CONTRACT_LIST.VANILLAS : getContractTypesConfig()[contract_type].title;
+    const contract_type_title = is_vanilla ? CONTRACT_LIST.VANILLAS : getContractTypesConfig()[contract_type]?.title;
 
     const [is_description_opened, setIsDescriptionOpened] = React.useState(false);
     const [selected_contract_type, setSelectedContractType] = React.useState(
         show_guide_for_selected_contract ? contract_type_title : CONTRACT_LIST.RISE_FALL
     );
-    const [selected_term, setSelectedTerm] = React.useState<string>();
+    const [selected_term, setSelectedTerm] = React.useState<string>('');
 
     const onChipSelect = React.useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         setSelectedContractType((e.target as EventTarget & HTMLButtonElement).textContent ?? '');
@@ -62,7 +62,7 @@ const Guide = observer(({ has_label, show_guide_for_selected_contract }: TGuide)
             />
             <GuideDefinitionModal
                 contract_type={selected_contract_type}
-                term={selected_term ?? ''}
+                term={selected_term}
                 onClose={() => setSelectedTerm('')}
             />
         </React.Fragment>

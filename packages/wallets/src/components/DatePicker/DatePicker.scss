@@ -42,6 +42,12 @@
             button {
                 border-radius: 0.5rem;
                 color: var(--text-general, #333333);
+                cursor: pointer;
+
+                &:disabled {
+                    color: #757575;
+                    cursor: not-allowed;
+                }
             }
 
             &__navigation {
@@ -52,14 +58,13 @@
 
                 &__arrow {
                     font-size: 2.4rem;
-                    transform: translateY(-1.2rem);
-                    justify-content: center;
-                    align-items: center;
+                    text-align: center;
                 }
 
                 &__label {
+                    text-align: center;
                     font-weight: bold;
-                    transform: translateY(-0.4rem);
+                    font-size: 1.2rem;
                 }
 
                 button {

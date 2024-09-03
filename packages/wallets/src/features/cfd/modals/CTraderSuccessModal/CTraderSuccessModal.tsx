@@ -1,5 +1,6 @@
 import React from 'react';
 import { useCtraderAccountsList } from '@deriv/api-v2';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import { ModalStepWrapper, ModalWrapper } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
@@ -19,6 +20,7 @@ const CTraderSuccessModal = ({ createdAccount, isDemo, walletCurrencyType }: TCT
     const { data: cTraderAccounts, isLoading: isCtraderAccountsListLoading } = useCtraderAccountsList();
     const { isMobile } = useDevice();
     const { hide } = useModal();
+    const { localize } = useTranslations();
 
     const cTraderAccount = cTraderAccounts?.find(account => account.login);
     const isLoading = !cTraderAccounts || isCtraderAccountsListLoading || !cTraderAccount;
@@ -26,8 +28,16 @@ const CTraderSuccessModal = ({ createdAccount, isDemo, walletCurrencyType }: TCT
     if (isLoading) return <Loader />;
 
     const description = isDemo
-        ? `Let's practise trading with ${cTraderAccount.display_balance} virtual funds.`
-        : `Transfer funds from your ${walletCurrencyType} Wallet to your ${PlatformDetails.ctrader.title} account to start trading.`;
+        ? localize("Let's practise trading with {{ctraderBalance}} virtual funds.", {
+              ctraderBalance: cTraderAccount.display_balance,
+          })
+        : localize(
+              'Transfer funds from your {{walletCurrencyType}} Wallet to your {{ctraderTitle}} account to start trading.',
+              {
+                  ctraderTitle: PlatformDetails.ctrader.title,
+                  walletCurrencyType,
+              }
+          );
 
     if (isMobile) {
         return (
@@ -38,14 +48,22 @@ const CTraderSuccessModal = ({ createdAccount, isDemo, walletCurrencyType }: TCT
                 title={' '}
             >
                 <CFDSuccess
+                    actionButtons={
+                        <CTraderSuccessModalButtons createdAccount={createdAccount} hide={hide} isDemo={isDemo} />
+                    }
                     description={description}
                     displayBalance={cTraderAccount.display_balance}
                     marketType='all'
                     platform='ctrader'
-                    renderButton={() => (
-                        <CTraderSuccessModalButtons createdAccount={createdAccount} hide={hide} isDemo={isDemo} />
-                    )}
-                    title={`Your ${PlatformDetails.ctrader.title} ${isDemo ? 'demo' : ''} account is ready`}
+                    title={
+                        <Localize
+                            i18n_default_text='Your {{ctraderTitle}}{{demoTitle}} account is ready'
+                            values={{
+                                ctraderTitle: PlatformDetails.ctrader.title,
+                                demoTitle: isDemo ? localize(' demo') : '',
+                            }}
+                        />
+                    }
                 />
                 ;
             </ModalStepWrapper>
@@ -54,14 +72,22 @@ const CTraderSuccessModal = ({ createdAccount, isDemo, walletCurrencyType }: TCT
     return (
         <ModalWrapper hideCloseButton>
             <CFDSuccess
+                actionButtons={
+                    <CTraderSuccessModalButtons createdAccount={createdAccount} hide={hide} isDemo={isDemo} />
+                }
                 description={description}
                 displayBalance={cTraderAccount.display_balance}
                 marketType='all'
                 platform={PlatformDetails.ctrader.platform}
-                renderButton={() => (
-                    <CTraderSuccessModalButtons createdAccount={createdAccount} hide={hide} isDemo={isDemo} />
-                )}
-                title={`Your ${PlatformDetails.ctrader.title} ${isDemo ? 'demo' : ''} account is ready`}
+                title={
+                    <Localize
+                        i18n_default_text='Your {{ctraderTitle}}{{demoTitle}} account is ready'
+                        values={{
+                            ctraderTitle: PlatformDetails.ctrader.title,
+                            demoTitle: isDemo ? localize(' demo') : '',
+                        }}
+                    />
+                }
             />
         </ModalWrapper>
     );

@@ -1,7 +1,7 @@
-import React from 'react';
+import { useReducer, useEffect, ChangeEvent, ClipboardEvent } from 'react';
 import { Field, Form, Formik, FormikErrors, FieldProps, FormikValues } from 'formik';
 import { Checkbox, FormSubmitButton, Input, Text } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { useTranslations, Localize } from '@deriv-com/translations';
 import { TClosingAccountFormValues } from '../../../Types';
 import {
     CHARACTER_LIMIT_FOR_CLOSING_ACCOUNT,
@@ -71,11 +71,12 @@ const reducer = (state: TCustomState, action: TAction) => {
 };
 
 const ClosingAccountReasonForm = ({ onBackClick, onConfirmClick }: TClosingAccountReasonFormProps) => {
-    const [state, dispatch] = React.useReducer(reducer, initial_state);
+    const [state, dispatch] = useReducer(reducer, initial_state);
+    const { localize } = useTranslations();
 
     const { is_checkbox_disabled, total_checkbox_checked, remaining_characters, total_accumulated_characters } = state;
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (total_checkbox_checked === MAX_ALLOWED_REASONS_FOR_CLOSING_ACCOUNT) {
             dispatch({ type: SET_CHECKBOX_DISABLED, payload: true });
         } else if (is_checkbox_disabled) dispatch({ type: SET_CHECKBOX_DISABLED, payload: false });
@@ -127,9 +128,9 @@ const ClosingAccountReasonForm = ({ onBackClick, onConfirmClick }: TClosingAccou
     };
 
     const handleInputChange = (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         old_value: string,
-        onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+        onChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
     ) => {
         const value = event.target.value;
         const is_delete_action = old_value.length > value.length;
@@ -144,7 +145,7 @@ const ClosingAccountReasonForm = ({ onBackClick, onConfirmClick }: TClosingAccou
         }
     };
 
-    const handleInputPaste = async (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>): Promise<void> => {
+    const handleInputPaste = async (e: ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>): Promise<void> => {
         const clipboardData = e.clipboardData.getData('text') || (await navigator.clipboard.readText());
 
         if (remaining_characters <= 0 || clipboardData.length > remaining_characters) {
@@ -208,7 +209,7 @@ const ClosingAccountReasonForm = ({ onBackClick, onConfirmClick }: TClosingAccou
                                 name='other_trading_platforms'
                                 value={values.other_trading_platforms}
                                 max_characters={CHARACTER_LIMIT_FOR_CLOSING_ACCOUNT}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                onChange={(e: ChangeEvent<HTMLInputElement>) =>
                                     handleInputChange(e, values.other_trading_platforms, handleChange)
                                 }
                                 onPaste={handleInputPaste}
@@ -227,7 +228,7 @@ const ClosingAccountReasonForm = ({ onBackClick, onConfirmClick }: TClosingAccou
                                 name='do_to_improve'
                                 value={values.do_to_improve}
                                 max_characters={CHARACTER_LIMIT_FOR_CLOSING_ACCOUNT}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                onChange={(e: ChangeEvent<HTMLInputElement>) =>
                                     handleInputChange(e, values.do_to_improve, handleChange)
                                 }
                                 onPaste={handleInputPaste}

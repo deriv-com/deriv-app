@@ -103,16 +103,7 @@ const useActiveSymbols = () => {
             process();
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [
-            response,
-            available_contract_types,
-            contract_type,
-            is_logged_in,
-            is_turbos,
-            is_vanilla,
-            previous_contract_type,
-            symbol,
-        ]
+        [response]
     );
     useEffect(() => {
         const has_contract_type_changed =
@@ -152,6 +143,7 @@ const useActiveSymbols = () => {
         ) {
             setActiveSymbols([]);
             refetch();
+            prev_loginid.current = loginid;
         }
     }, [loginid, is_switching, refetch, isQueryEnabled]);
 

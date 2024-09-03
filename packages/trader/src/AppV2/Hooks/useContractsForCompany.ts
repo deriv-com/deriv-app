@@ -108,6 +108,7 @@ const useContractsForCompany = () => {
             /* eslint-disable no-console */
             console.error(err);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [response]);
 
     useEffect(() => {
@@ -115,6 +116,7 @@ const useContractsForCompany = () => {
             setContractTypesList([]);
             setAvailableContractTypes(undefined);
             refetch();
+            prev_loginid.current = loginid;
             is_fetching_ref.current = true;
         }
     }, [loginid, is_switching, refetch]);

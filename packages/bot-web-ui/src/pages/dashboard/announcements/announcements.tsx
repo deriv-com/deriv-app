@@ -43,7 +43,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
         setReadAnnouncementsMap(temp_notifications);
     };
 
-    const handleRedirect = (url: string) => {
+    const handleRedirect = (url: string) => () => {
         if (history) {
             history.push(url);
         }

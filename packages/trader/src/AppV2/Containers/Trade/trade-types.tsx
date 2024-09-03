@@ -139,7 +139,6 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                 trade_types_ref.current.scrollBy({
                     left: position_x - 16,
                     top: 0,
-                    behavior: 'smooth',
                 });
             }
         }, 0);

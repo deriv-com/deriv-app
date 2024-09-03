@@ -20,6 +20,7 @@ const TRADE_PARAMS = {
     TRADE_TYPE_TABS: 'TradeTypeTabs',
     STRIKE: 'Strike',
     PAYOUT_PER_POINT: 'PayoutPerPoint',
+    PAYOUT: 'payout',
     LAST_DIGIT_PREDICTION: 'LastDigitPrediction',
 };
 const data_test = 'dt_trade_param';
@@ -38,6 +39,7 @@ jest.mock('../RiskManagement', () => jest.fn(() => <div data-testid={data_test}>
 jest.mock('../TradeTypeTabs', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.TRADE_TYPE_TABS}</div>));
 jest.mock('../Strike', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.STRIKE}</div>));
 jest.mock('../PayoutPerPoint', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.PAYOUT_PER_POINT}</div>));
+jest.mock('../PayoutInfo', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.PAYOUT}</div>));
 jest.mock('../LastDigitPrediction', () =>
     jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.LAST_DIGIT_PREDICTION}</div>)
 );
@@ -123,7 +125,8 @@ describe('TradeParameters', () => {
         expect(screen.getByText(TRADE_PARAMS.DURATION)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.BARRIER)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.STAKE)).toBeInTheDocument();
-        expect(screen.getAllByTestId(data_test)).toHaveLength(4);
+        expect(screen.getByText(TRADE_PARAMS.PAYOUT)).toBeInTheDocument();
+        expect(screen.getAllByTestId(data_test)).toHaveLength(5);
     });
 
     it('should render correct trade params for Touch/No Touch', () => {
@@ -134,7 +137,8 @@ describe('TradeParameters', () => {
         expect(screen.getByText(TRADE_PARAMS.DURATION)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.BARRIER)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.STAKE)).toBeInTheDocument();
-        expect(screen.getAllByTestId(data_test)).toHaveLength(4);
+        expect(screen.getByText(TRADE_PARAMS.PAYOUT)).toBeInTheDocument();
+        expect(screen.getAllByTestId(data_test)).toHaveLength(5);
     });
 
     it('should render correct trade params for Matches/Differs', () => {

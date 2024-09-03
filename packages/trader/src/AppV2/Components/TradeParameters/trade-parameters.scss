@@ -24,6 +24,7 @@
                 flex-direction: row;
                 justify-content: unset;
                 flex-wrap: nowrap;
+                order: 2;
                 overflow-x: scroll;
                 white-space: nowrap;
                 -ms-overflow-style: none;
@@ -62,7 +63,8 @@
             }
         }
         &-info-standalone {
-            padding: 0 var(--core-spacing-400) var(--core-spacing-400);
+            order: 1;
+            padding: var(--core-spacing-400) var(--core-spacing-400) 0 var(--core-spacing-400);
         }
     }
     &__option {
@@ -78,7 +80,9 @@
         }
     }
     &--minimized {
-        height: var(--core-size-3600);
+        min-height: var(--core-size-3600);
         width: 100%;
+        display: flex;
+        flex-direction: column;
     }
 }

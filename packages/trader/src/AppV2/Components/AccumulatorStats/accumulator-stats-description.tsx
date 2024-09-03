@@ -8,11 +8,16 @@ const AccumulatorStatsDescription = ({ onActionSheetClose }: { onActionSheetClos
     return (
         <ActionSheet.Portal showHandlebar={false}>
             <div className='stats-description'>
-                <iframe
-                    allowFullScreen={false}
-                    className='stats-description__player'
-                    src={`https://iframe.cloudflarestream.com/${src}?muted=true&controls=false&autoplay=true&loop=true&preload=auto`}
-                />
+                <div className='stats-description__player-wrapper'>
+                    <div className='stats-description__player-wrapper__player'>
+                        <iframe
+                            allowFullScreen={false}
+                            width='100%'
+                            height='100%'
+                            src={`https://iframe.cloudflarestream.com/${src}?muted=true&controls=false&autoplay=true&loop=true&preload=auto`}
+                        />
+                    </div>
+                </div>
 
                 <div className='stats-description__content'>
                     <div className='stats-description__content__title'>

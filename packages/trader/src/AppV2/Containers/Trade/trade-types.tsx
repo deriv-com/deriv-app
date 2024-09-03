@@ -134,9 +134,13 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                     'button[data-state="selected"]'
                 ) as HTMLButtonElement;
                 if (selected_chip) {
-                    position_x = selected_chip?.getBoundingClientRect()?.x;
+                    position_x = selected_chip?.getBoundingClientRect()?.x || 0;
                 }
-                trade_types_ref.current.scrollBy(position_x - 16 ?? 0, window.scrollY);
+                trade_types_ref.current.scrollBy({
+                    left: position_x - 16,
+                    top: 0,
+                    behavior: 'smooth',
+                });
             }
         }, 0);
     };

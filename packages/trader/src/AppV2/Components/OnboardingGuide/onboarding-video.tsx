@@ -14,23 +14,23 @@ const OnboardingVideo = () => {
     const mp4_src = React.useMemo(() => getVideoSource('mp4'), [getVideoSource]);
 
     return (
-        <React.Fragment>
+        <div className='guide__player__wrapper'>
             {is_loading && <Skeleton.Square height={218.5} />}
             <video
                 autoPlay
+                className='guide__player'
                 data-testid='dt_onboarding_guide_video'
                 muted
                 loop
                 onLoadedData={() => setIsLoading(false)}
                 playsInline
                 preload='auto'
-                height={218.5}
             >
                 {/* a browser will select a source with extension it recognizes */}
                 <source src={mp4_src} type='video/mp4' />
                 <Localize i18n_default_text='Unfortunately, your browser does not support the video.' />
             </video>
-        </React.Fragment>
+        </div>
     );
 };
 

@@ -36,23 +36,24 @@ const OnboardingGuide = ({ type = 'trade_page' }: TOnboardingGuideProps) => {
     };
 
     const modal_content = {
-        image: is_trade_page_guide ? <OnboardingVideo /> : <div className='video-placeholder' />,
-        title: is_trade_page_guide ? (
-            <Localize i18n_default_text='Welcome to the new Deriv Trader' />
-        ) : (
-            <Localize i18n_default_text='View your positions' />
-        ),
-        content: is_trade_page_guide ? (
-            <Localize i18n_default_text='Enjoy a smoother, more intuitive trading experience. Here’s a quick tour to get you started.' />
-        ) : (
+        image: <div className='video-placeholder' />,
+        title: <Localize i18n_default_text='View your positions' />,
+        content: (
             <Localize i18n_default_text='You can view your open and closed positions here. Tap an item for more details.' />
         ),
-        button_label: is_trade_page_guide ? (
-            <Localize i18n_default_text="Let's begin" />
-        ) : (
-            <Localize i18n_default_text='Got it' />
-        ),
-        primaryButtonCallback: is_trade_page_guide ? onGuideStart : onGuideSkip,
+        button_label: <Localize i18n_default_text='Got it' />,
+        primaryButtonCallback: onGuideSkip,
+        ...(is_trade_page_guide
+            ? {
+                  image: <OnboardingVideo />,
+                  title: <Localize i18n_default_text='Welcome to the new Deriv Trader' />,
+                  content: (
+                      <Localize i18n_default_text='Enjoy a smoother, more intuitive trading experience. Here’s a quick tour to get you started.' />
+                  ),
+                  button_label: <Localize i18n_default_text="Let's begin" />,
+                  primaryButtonCallback: onGuideStart,
+              }
+            : {}),
     };
 
     React.useEffect(() => {

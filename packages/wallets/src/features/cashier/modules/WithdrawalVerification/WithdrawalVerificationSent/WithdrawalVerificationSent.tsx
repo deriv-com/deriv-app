@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Localize } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { ActionScreen, Button } from '@deriv-com/ui';
 import EmailSent from '../../../../../public/images/email-sent.svg';
 import './WithdrawalVerificationSent.scss';
@@ -11,6 +11,7 @@ type TProps = {
 
 const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) => {
     const [showResend, setShowResend] = useState(false);
+    const { localize } = useTranslations();
 
     return (
         <div className='wallets-withdrawal-verification-sent'>

@@ -18,16 +18,13 @@
         top: 0;
         inset-inline-end: 0;
         font-weight: 700;
-        border-radius: 0 1rem 0rem;
+        border-start-end-radius: 1rem;
+        border-end-start-radius: 1rem;
         display: grid;
         place-items: center;
         color: #ffffff;
         height: 2.5rem;
         width: 5rem;
-
-        @include rtl {
-            border-radius: 1rem 0;
-        }
 
         &--demo {
             background-color: #377cfc;

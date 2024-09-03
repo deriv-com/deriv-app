@@ -17,7 +17,7 @@ type TMT5TradeDetailsItemProps = {
 const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value = '', variant = 'clipboard' }) => {
     const { isDesktop } = useDevice();
     const { show } = useModal();
-    const IsRtl = useIsRtl();
+    const isRtl = useIsRtl();
 
     const textSize = isDesktop ? 'xs' : 'sm';
 
@@ -40,7 +40,7 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value = '',
                         >
                             {value}
                         </Text>
-                        <WalletClipboard popoverAlignment={IsRtl ? 'right' : 'left'} textCopy={value} />
+                        <WalletClipboard popoverAlignment={isRtl ? 'right' : 'left'} textCopy={value} />
                     </div>
                 </React.Fragment>
             )}

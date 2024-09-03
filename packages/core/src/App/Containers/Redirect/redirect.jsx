@@ -22,6 +22,7 @@ const Redirect = observer(() => {
         setVerificationCode,
         verification_code,
         loginid,
+        has_cookie_account,
     } = client;
 
     const {
@@ -52,7 +53,7 @@ const Redirect = observer(() => {
         window.location.reload();
     }
 
-    const liveChat = useLiveChat(false, loginid);
+    const liveChat = useLiveChat(has_cookie_account, loginid);
 
     const openLivechat = () => {
         liveChat.widget?.call('maximize');

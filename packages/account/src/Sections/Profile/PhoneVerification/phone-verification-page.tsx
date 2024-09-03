@@ -39,6 +39,7 @@ const PhoneVerificationPage = observer(() => {
         verification_code: { phone_number_verification: phone_number_verification_code },
         is_authorize,
         is_virtual,
+        setVerificationCode,
     } = client;
 
     useEffect(() => {
@@ -75,6 +76,7 @@ const PhoneVerificationPage = observer(() => {
                 setRedirectFromEmail(false);
                 sessionStorage.removeItem('phone_number_verification_code');
             } else if ((phone_number_verification_code || phone_verification_code) && is_authorize) {
+                if (phone_verification_code) setVerificationCode(phone_verification_code, 'phone_number_verification');
                 sendEmailOTPVerification(phone_verification_code || phone_number_verification_code);
             }
         }

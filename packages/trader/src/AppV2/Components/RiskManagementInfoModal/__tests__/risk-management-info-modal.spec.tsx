@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import RiskManagementInfoModal from '../risk-management-info-modal';
 import userEvent from '@testing-library/user-event';
+import RiskManagementInfoModal from '../risk-management-info-modal';
 
 jest.mock('@deriv/quill-icons', () => ({
     LabelPairedCircleInfoSmRegularIcon: () => <svg />,

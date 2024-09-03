@@ -102,7 +102,7 @@ describe('<VerificationFailed />', () => {
         });
     });
 
-    it('shows the failed verification popup upon clicking `Resubmit documents`', async () => {
+    it('triggers show function which mounts ClientVerification component on clicking `Resubmit documents`', async () => {
         (usePOI as jest.Mock).mockReturnValue({
             data: { is_expired: true, is_rejected: false, is_suspected: false },
         });

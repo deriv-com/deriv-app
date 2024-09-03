@@ -23,6 +23,8 @@ const SessionTimeoutModal = observer(() => {
         <Modal
             isMobile={isMobile}
             isOpened={should_show_session_timeout_modal && !is_phone_verification_completed}
+            showCrossIcon={false}
+            showHandleBar={false}
             primaryButtonCallback={redirectBackToPersonalDetails}
             primaryButtonLabel={<Localize i18n_default_text='OK' />}
             buttonColor='coral'

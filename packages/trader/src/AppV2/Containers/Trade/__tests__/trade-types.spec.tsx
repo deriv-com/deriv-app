@@ -99,4 +99,15 @@ describe('TradeTypes', () => {
         unmount();
         expect(default_mock_store.modules.trade.onUnmount).toHaveBeenCalled();
     });
+
+    it('should scroll to the selected trade type when tradeList is clicked', async () => {
+        render(mockTradeTypes());
+        const scrollByMock = jest.fn();
+        Object.defineProperty(HTMLElement.prototype, 'scrollBy', {
+            value: scrollByMock,
+        });
+        await userEvent.click(screen.getByText('Rise'));
+        await new Promise(resolve => setTimeout(resolve, 0));
+        expect(scrollByMock).toHaveBeenCalled();
+    });
 });

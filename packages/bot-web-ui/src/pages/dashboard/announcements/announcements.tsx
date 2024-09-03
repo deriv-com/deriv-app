@@ -21,6 +21,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
     const [is_open_announce_list, setIsOpenAnnounceList] = React.useState(false);
     const [selected_announcement, setSelectedAnnouncement] = React.useState<TAnnouncement | null>(null);
     const [read_announcements_map, setReadAnnouncementsMap] = React.useState({} as Record<string, boolean>);
+    const [amount_active_announce, setAmountActiveAnnounce] = React.useState(0);
     const history = useHistory();
     const [notifications, setNotifications] = React.useState([] as TNotifications[]);
     const action_button_class_name = 'announcements__label';
@@ -78,20 +79,10 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
         setReadAnnouncementsMap(temp_localstorage_data);
     }, []);
 
-    const countActiveAnnouncements = (): number => {
-        return Object.values(read_announcements_map as Record<string, boolean>).reduce(
-            (count: number, value: boolean) => {
-                return value === true ? count + 1 : count;
-            },
-            0
-        );
-    };
-
     React.useEffect(() => {
-        countActiveAnnouncements();
+        const number_ammount_active_announce = Object.values(read_announcements_map).filter(value => value).length;
+        setAmountActiveAnnounce(number_ammount_active_announce);
     }, [read_announcements_map]);
-
-    const number_ammount_announce = countActiveAnnouncements();
 
     const handleOnCancel = () => {
         if (selected_announcement?.switch_tab_on_cancel) {
@@ -131,9 +122,9 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                         {localize('Announcements')}
                     </Text>
                 )}
-                {number_ammount_announce !== 0 && (
+                {amount_active_announce !== 0 && (
                     <div className='announcements__amount' data-testid='announcements__amount'>
-                        <p>{number_ammount_announce}</p>
+                        <p>{amount_active_announce}</p>
                     </div>
                 )}
             </button>

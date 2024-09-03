@@ -3,11 +3,27 @@ import useAuthentication from './useAuthentication';
 import useResidenceList from './useResidenceList';
 import useSettings from './useSettings';
 
+const acknowledged_statuses = ['pending', 'verified'];
+
 /** A custom hook to get the proof of identity verification info of the current user. */
 const usePOI = () => {
     const { data: authentication_data, isSuccess: isAuthenticationSuccess, ...rest } = useAuthentication();
     const { data: residence_list_data, isSuccess: isResidenceListSuccess } = useResidenceList();
     const { data: get_settings_data, isSuccess: isGetSettingsSuccess } = useSettings();
+
+    const is_poi_required = useMemo(() => {
+        const services = authentication_data?.identity?.services || {};
+        const { idv, onfido, manual } = services;
+
+        if (!idv?.status || !onfido?.status || !manual?.status) {
+            return null;
+        }
+        return !(
+            acknowledged_statuses.includes(idv.status) ||
+            acknowledged_statuses.includes(onfido.status) ||
+            acknowledged_statuses.includes(manual.status)
+        );
+    }, [authentication_data?.identity?.services]);
 
     /**
      * @description Get the previous POI attempts details (if any)
@@ -80,13 +96,14 @@ const usePOI = () => {
             ...authentication_data?.identity,
             previous: previous_service,
             current: current_poi,
+            is_poi_required,
             is_pending: authentication_data?.identity?.status === 'pending',
             is_rejected: authentication_data?.identity?.status === 'rejected',
             is_expired: authentication_data?.identity?.status === 'expired',
             is_suspected: authentication_data?.identity?.status === 'suspected',
             is_verified: authentication_data?.identity?.status === 'verified',
         };
-    }, [authentication_data, current_poi, previous_service]);
+    }, [authentication_data, current_poi, is_poi_required, previous_service]);
 
     return {
         data: modified_verification_data,

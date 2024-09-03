@@ -29,11 +29,8 @@ jest.mock('@deriv-com/ui', () => ({
 
 describe('<WalletAddedSuccess />', () => {
     beforeEach(() => {
-        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
-    });
-
-    afterAll(() => {
         jest.clearAllMocks();
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
     });
 
     it('should render success modal', () => {
@@ -62,7 +59,7 @@ describe('<WalletAddedSuccess />', () => {
         expect(props.onSecondaryButtonClick).toHaveBeenCalled();
     });
 
-    it('should render mobile modal', () => {
+    it('renders modal in mobile', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
         render(<WalletAddedSuccess {...props} />, { wrapper });

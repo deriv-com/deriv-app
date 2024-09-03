@@ -1,9 +1,8 @@
 import React, { PropsWithChildren } from 'react';
 import { useTradingPlatformInvestorPasswordChange } from '@deriv/api-v2';
-import { useDevice } from '@deriv-com/ui';
+import { Button, useDevice } from '@deriv-com/ui';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { WalletButton } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { validPasswordMT5 } from '../../../../../../utils/password-validation';
 import MT5ChangeInvestorPasswordInputsScreen from '../MT5ChangeInvestorPasswordInputsScreen';
@@ -22,9 +21,9 @@ jest.mock('../../../../../../components', () => ({
     )),
 }));
 
-jest.mock('../../../../../../components/Base', () => ({
-    ...jest.requireActual('../../../../../../components/Base'),
-    WalletButton: jest.fn(
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    Button: jest.fn(
         ({
             children,
             disabled,
@@ -169,6 +168,6 @@ describe('MT5ChangeInvestorPasswordInputsScreen', () => {
 
         render(<MT5ChangeInvestorPasswordInputsScreen />);
 
-        expect(WalletButton).toHaveBeenCalledWith(expect.objectContaining({ textSize: 'md' }), {});
+        expect(Button).toHaveBeenCalledWith(expect.objectContaining({ textSize: 'md' }), {});
     });
 });

@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { DerivLightDmt5PasswordIcon, DerivLightIcDxtradePasswordIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Text, useDevice } from '@deriv-com/ui';
-import { SentEmailContent, WalletButton, WalletsActionScreen } from '../../../../components';
+import { ActionScreen, Text, useDevice } from '@deriv-com/ui';
+import { SentEmailContent, WalletButton } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import { TPlatforms } from '../../../../types';
 import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
@@ -104,7 +104,8 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
                 'wallets-change-password__content--dxtrade': platform === 'dxtrade',
             })}
         >
-            <WalletsActionScreen
+            <ActionScreen
+                actionButtons={ChangePasswordScreens[activeScreen].button}
                 description={ChangePasswordScreens[activeScreen].bodyText}
                 descriptionSize='sm'
                 icon={
@@ -114,7 +115,6 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
                         <DerivLightDmt5PasswordIcon height={120} width={120} />
                     )
                 }
-                renderButtons={() => ChangePasswordScreens[activeScreen].button}
                 title={ChangePasswordScreens[activeScreen].headingText}
             />
         </div>

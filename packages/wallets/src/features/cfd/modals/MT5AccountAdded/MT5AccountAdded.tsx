@@ -111,19 +111,17 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
             if (poiService === 'idv') {
                 return (
                     <CFDSuccess
-                        description={
-                            <Localize
-                                i18n_default_text="We need a few minutes to review your documents before you can start trading with your {{marketTypeTitle}} {{demoTitle}} account. You'll get an in-app notification as soon as this is done."
-                                values={{
-                                    demoTitle: isDemo ? 'demo' : landingCompanyName,
-                                    marketTypeTitle,
-                                }}
-                            />
-                        }
+                        actionButtons={renderAccountSuccessButton()}
+                        description={localize(
+                            "We need a few minutes to review your documents before you can start trading with your {{marketTypeTitle}} {{demoTitle}} account. You'll get an in-app notification as soon as this is done.",
+                            {
+                                demoTitle: isDemo ? localize('demo') : landingCompanyName,
+                                marketTypeTitle,
+                            }
+                        )}
                         displayBalance={addedAccount?.display_balance}
                         marketType={marketType}
                         platform={platform}
-                        renderButton={renderAccountSuccessButton}
                         title={localize('Almost there')}
                     />
                 );
@@ -132,19 +130,17 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
             if (poiService === 'onfido') {
                 return (
                     <CFDSuccess
-                        description={
-                            <Localize
-                                i18n_default_text="We need 1-3 days to review your documents before you can start trading with your {{marketTypeTitle}} {{demoTitle}} account. You'll get an email as soon as this is done."
-                                values={{
-                                    demoTitle: isDemo ? 'demo' : landingCompanyName,
-                                    marketTypeTitle,
-                                }}
-                            />
-                        }
+                        actionButtons={renderAccountSuccessButton()}
+                        description={localize(
+                            "We need 1-3 days to review your documents before you can start trading with your {{marketTypeTitle}} {{demoTitle}} account. You'll get an email as soon as this is done.",
+                            {
+                                demoTitle: isDemo ? localize('demo') : landingCompanyName,
+                                marketTypeTitle,
+                            }
+                        )}
                         displayBalance={addedAccount?.display_balance}
                         marketType={marketType}
                         platform={platform}
-                        renderButton={renderAccountSuccessButton}
                         title={localize('Almost there')}
                     />
                 );
@@ -153,11 +149,11 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
 
         return (
             <CFDSuccess
+                actionButtons={renderAccountSuccessButton(!isDemo)}
                 description={renderSuccessDescription}
                 displayBalance={addedAccount?.display_balance}
                 marketType={marketType}
                 platform={platform}
-                renderButton={() => renderAccountSuccessButton(!isDemo)}
                 title={
                     <Localize
                         i18n_default_text='Your {{marketTypeTitle}}{{demoTitle}} account is ready'

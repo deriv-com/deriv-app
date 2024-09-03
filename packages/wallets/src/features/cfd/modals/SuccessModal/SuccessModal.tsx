@@ -27,8 +27,8 @@ const SuccessModal: FC<TProps> = ({
 
     const buttonSize = isDesktop ? 'md' : 'lg';
 
-    const renderButton = () => {
-        return accountType === 'demo' ? (
+    const renderButton =
+        accountType === 'demo' ? (
             <div className='wallets-success-btn'>
                 <WalletButton isFullWidth onClick={onSecondaryClick} size={buttonSize}>
                     <Localize i18n_default_text='OK' />
@@ -44,17 +44,16 @@ const SuccessModal: FC<TProps> = ({
                 </WalletButton>
             </WalletButtonGroup>
         );
-    };
 
     if (isDesktop) {
         return (
             <ModalWrapper hideCloseButton>
                 <CFDSuccess
+                    actionButtons={renderButton}
                     description={description}
                     displayBalance={displayBalance}
                     marketType={marketType}
                     platform={platform}
-                    renderButton={renderButton}
                     title={
                         <Localize
                             i18n_default_text='Your {{platformTitle}}{{demoTitle}} account is ready'
@@ -70,8 +69,9 @@ const SuccessModal: FC<TProps> = ({
     }
 
     return (
-        <ModalStepWrapper renderFooter={renderButton} title={' '}>
+        <ModalStepWrapper renderFooter={() => renderButton} title={' '}>
             <CFDSuccess
+                actionButtons={renderButton}
                 description={description}
                 displayBalance={displayBalance}
                 marketType={marketType}

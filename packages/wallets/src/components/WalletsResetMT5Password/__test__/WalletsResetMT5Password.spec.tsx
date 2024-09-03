@@ -184,4 +184,31 @@ describe('WalletsResetMT5Password', () => {
         expect(mockMutate).toHaveBeenCalledTimes(1);
         expect(mockShow).toBeCalled();
     });
+
+    it('should disable the Create button for invalid MT5 password', async () => {
+        mockUseDevice.mockReturnValue({
+            isDesktop: true,
+            isMobile: false,
+            isTablet: false,
+        });
+
+        render(<WalletsResetMT5Password {...defaultProps} />);
+        const inputBox = await screen.findByLabelText(/Deriv MT5 password/);
+        const createButton = await screen.findByRole('button', { name: /Create/ });
+        fireEvent.change(inputBox, { target: { value: 'invalid' } });
+        expect(createButton).toBeDisabled();
+    });
+
+    it('should cancel reset on click of Cancel button', async () => {
+        mockUseDevice.mockReturnValue({
+            isDesktop: true,
+            isMobile: false,
+            isTablet: false,
+        });
+
+        render(<WalletsResetMT5Password {...defaultProps} />);
+        const cancelButton = await screen.findByRole('button', { name: /Cancel/ });
+        await fireEvent.click(cancelButton);
+        expect(mockHide).toHaveBeenCalledTimes(1);
+    });
 });

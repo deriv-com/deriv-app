@@ -106,15 +106,6 @@ describe('CFDSuccess', () => {
         expect(screen.getByText('Deriv cTrader')).toBeInTheDocument();
     });
 
-    it('does not render buttons on mobile', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
-        const mockRenderButton = jest.fn();
-
-        render(<CFDSuccess {...mockProps} renderButton={mockRenderButton} />);
-
-        expect(mockRenderButton).not.toHaveBeenCalled();
-    });
-
     it('renders correct content when active wallet is undefined', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: undefined,

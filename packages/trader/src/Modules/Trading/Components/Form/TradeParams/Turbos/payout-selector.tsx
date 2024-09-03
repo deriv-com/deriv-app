@@ -9,8 +9,15 @@ import { LabelPairedChevronsDownCaptionRegularIcon, LabelPairedChevronsUpCaption
 import './payout-selector.scss';
 
 const PayoutSelector = observer(() => {
-    const { barrier_1, payout_choices, setPayoutPerPoint, togglePayoutWheelPicker, payout_per_point, currency } =
-        useTraderStore();
+    const {
+        barrier_1,
+        payout_choices,
+        setPayoutPerPoint,
+        togglePayoutWheelPicker,
+        payout_per_point,
+        currency,
+        contract_type,
+    } = useTraderStore();
     const { isMobile } = useDevice();
 
     const header_tooltip_text = (
@@ -18,7 +25,6 @@ const PayoutSelector = observer(() => {
             <Localize i18n_default_text='You will receive a payout at expiry if the spot price never breaches the barrier throughout the contract duration. Otherwise, your contract will be terminated early.' />
         </div>
     );
-
     if (isMobile) {
         return (
             <button role='button' className='mobile-widget payout-selector' onClick={togglePayoutWheelPicker}>
@@ -48,6 +54,7 @@ const PayoutSelector = observer(() => {
 
     return (
         <PayoutPerPointInput
+            contract_type={contract_type}
             currency={currency}
             defaultPayout={payout_per_point}
             payoutOptions={payout_choices}

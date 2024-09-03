@@ -12,6 +12,7 @@ const PayoutPerPointMobileInput = ({
     onPayoutClick,
     selectedBarrier,
     payout_per_point,
+    contract_type,
     currency,
 }: {
     togglePayoutWheelPicker: () => void;
@@ -19,6 +20,7 @@ const PayoutPerPointMobileInput = ({
     selectedBarrier: string;
     onPayoutClick: (val: string) => void;
     currency: string;
+    contract_type: string;
     payout_per_point?: string;
 }) => {
     const [initialPayout, setInitialPayout] = useState<string | null>(null);
@@ -50,7 +52,11 @@ const PayoutPerPointMobileInput = ({
     );
     const header_tooltip_text = (
         <div className='trade-container__barriers-tooltip'>
-            <Localize i18n_default_text='The amount you’ll receive at expiry for every point of change above the barrier' />
+            {contract_type === 'turboslong' ? (
+                <Localize i18n_default_text='The amount you’ll receive at expiry for every point of change above the barrier' />
+            ) : (
+                <Localize i18n_default_text='The amount you’ll receive at expiry for every point of change below the barrier.' />
+            )}
         </div>
     );
 

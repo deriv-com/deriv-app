@@ -163,6 +163,80 @@ const transformVanillaData = (data: TContractInfo) => {
     };
 };
 
+const transformEndsBetween = (data: TContractInfo) => {
+    const commonFields = getCommonFields(data);
+    return {
+        [CARD_LABELS.REFERENCE_ID]: commonFields[`${CARD_LABELS.REFERENCE_ID}`],
+        [CARD_LABELS.DURATION]: `${getDurationTime(data) ?? ''} ${getDurationUnitText(getDurationPeriod(data)) ?? ''}`,
+        [CARD_LABELS.HIGH_BARRIER]: data.high_barrier,
+        [CARD_LABELS.LOW_BARRIER]: data.low_barrier,
+        [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
+        [CARD_LABELS.POTENTIAL_PAYOUT]:
+            data.payout && data.currency ? `${formatMoney(data.currency, data.payout, true)} ${data.currency}` : '',
+    };
+};
+
+const transformAsian = (data: TContractInfo) => {
+    const commonFields = getCommonFields(data);
+    return {
+        [CARD_LABELS.REFERENCE_ID]: commonFields[CARD_LABELS.REFERENCE_ID],
+        [CARD_LABELS.DURATION]: commonFields[CARD_LABELS.DURATION],
+        [CARD_LABELS.BARRIER]: data.barrier ?? '',
+        [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
+        [CARD_LABELS.POTENTIAL_PAYOUT]:
+            data.payout && data.currency ? `${formatMoney(data.currency, data.payout, true)} ${data.currency}` : '',
+    };
+};
+
+const transformLooksback = (data: TContractInfo) => {
+    const commonFields = getCommonFields(data);
+    const is_call_contract = data.contract_type == CONTRACT_TYPES.LB_CALL;
+    console.log(data);
+    return {
+        [CARD_LABELS.REFERENCE_ID]: commonFields[CARD_LABELS.REFERENCE_ID],
+        [CARD_LABELS.DURATION]: commonFields[CARD_LABELS.DURATION],
+        [CARD_LABELS.MULTIPLIER]:
+            data.multiplier && data.currency
+                ? `${formatMoney(data.currency, data.multiplier, true)} ${data.currency}`
+                : '',
+        ...{
+            ...(data.transaction_ids?.sell
+                ? {
+                      [is_call_contract ? CARD_LABELS.LOW_SPOT : CARD_LABELS.HIGH_SPOT]: data.barrier ?? '',
+                  }
+                : {
+                      [is_call_contract ? CARD_LABELS.INDICATIVE_LOW_SPOT : CARD_LABELS.INDICATIVE_HIGH_SPOT]:
+                          data.barrier ?? '',
+                  }),
+        },
+        [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
+    };
+};
+
+const transformHighLowLookback = (data: TContractInfo) => {
+    const commonFields = getCommonFields(data);
+    return {
+        [CARD_LABELS.REFERENCE_ID]: commonFields[CARD_LABELS.REFERENCE_ID],
+        [CARD_LABELS.DURATION]: commonFields[CARD_LABELS.DURATION],
+        [CARD_LABELS.MULTIPLIER]:
+            data.multiplier && data.currency
+                ? `${formatMoney(data.currency, data.multiplier, true)} ${data.currency}`
+                : '',
+        ...{
+            ...(data.transaction_ids?.sell
+                ? {
+                      [CARD_LABELS.LOW_SPOT]: data.low_barrier ?? '',
+                      [CARD_LABELS.HIGH_SPOT]: data.high_barrier ?? '',
+                  }
+                : {
+                      [CARD_LABELS.INDICATIVE_LOW_SPOT]: data.low_barrier ?? '',
+                      [CARD_LABELS.INDICATIVE_HIGH_SPOT]: data.high_barrier ?? '',
+                  }),
+        },
+        [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
+    };
+};
+
 // Map of contract types to their respective transform functions
 const transformFunctionMap: Record<string, (data: TContractInfo) => Record<string, any>> = {
     [CONTRACT_TYPES.TURBOS.LONG]: transformTurbosData,
@@ -186,22 +260,25 @@ const transformFunctionMap: Record<string, (data: TContractInfo) => Record<strin
     [CONTRACT_TYPES.VANILLA.CALL]: transformVanillaData,
     [CONTRACT_TYPES.VANILLA.PUT]: transformVanillaData,
     //SMARTTRADER CONSTRACT
-    [CONTRACT_TYPES.END.IN]: transformVanillaData,
-    [CONTRACT_TYPES.END.OUT]: transformVanillaData,
-    [CONTRACT_TYPES.STAY.IN]: transformVanillaData,
-    [CONTRACT_TYPES.STAY.OUT]: transformVanillaData,
-    [CONTRACT_TYPES.LB_HIGH_LOW]: transformVanillaData,
-    [CONTRACT_TYPES.LB_CALL]: transformVanillaData,
-    [CONTRACT_TYPES.LB_PUT]: transformVanillaData,
+    [CONTRACT_TYPES.END.IN]: transformEndsBetween,
+    [CONTRACT_TYPES.END.OUT]: transformEndsBetween,
+    [CONTRACT_TYPES.STAY.IN]: transformEndsBetween,
+    [CONTRACT_TYPES.STAY.OUT]: transformEndsBetween,
+    [CONTRACT_TYPES.ASIAN.UP]: transformAsian,
+    [CONTRACT_TYPES.ASIAN.DOWN]: transformAsian,
+    [CONTRACT_TYPES.LB_HIGH_LOW]: transformHighLowLookback,
+    [CONTRACT_TYPES.LB_CALL]: transformLooksback,
+    [CONTRACT_TYPES.LB_PUT]: transformLooksback,
+
+    [CONTRACT_TYPES.FALL]: transformEndsBetween,
 };
 
 const useOrderDetails = (contract_info: TContractInfo) => {
     const contractInfo = contract_info;
     if (!contractInfo.contract_type) return;
-    console.log('contractInfo.contract_type', contractInfo.contract_type);
+    // console.log(contractInfo.contract_type);
     const transformFunction = transformFunctionMap[contractInfo.contract_type];
     const details = transformFunction ? transformFunction(contractInfo) : {};
-
     return {
         details,
     };

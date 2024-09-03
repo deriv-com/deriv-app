@@ -25,8 +25,8 @@ const SuccessModal: FC<TProps> = ({
 
     const accountType = activeWallet?.is_virtual ? localize('demo') : 'real';
 
-    const renderButton = () => {
-        return accountType === 'demo' ? (
+    const renderButton =
+        accountType === 'demo' ? (
             <div className='wallets-success-btn'>
                 <Button isFullWidth onClick={onSecondaryClick} size={isDesktop ? 'md' : 'lg'}>
                     <Localize i18n_default_text='OK' />
@@ -42,11 +42,10 @@ const SuccessModal: FC<TProps> = ({
                 </Button>
             </WalletButtonGroup>
         );
-    };
 
     if (!isDesktop) {
         return (
-            <ModalStepWrapper renderFooter={renderButton} title={' '}>
+            <ModalStepWrapper renderFooter={() => renderButton} title={' '}>
                 <CFDSuccess
                     description={description}
                     displayBalance={displayBalance}
@@ -69,11 +68,11 @@ const SuccessModal: FC<TProps> = ({
     return (
         <ModalWrapper hideCloseButton>
             <CFDSuccess
+                actionButtons={renderButton}
                 description={description}
                 displayBalance={displayBalance}
                 marketType={marketType}
                 platform={platform}
-                renderButton={renderButton}
                 title={
                     <Localize
                         i18n_default_text='Your {{platformTitle}}{{demoTitle}} account is ready'

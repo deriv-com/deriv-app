@@ -9,13 +9,12 @@ import {
     DerivLightIcTypoEmailPasskeyIcon,
     DerivLightIcWrongEmailPasskeyIcon,
 } from '@deriv/quill-icons';
-import { Localize } from '@deriv-com/translations';
-import { Button, Text, useDevice } from '@deriv-com/ui';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { ActionScreen, Button, Text, useDevice } from '@deriv-com/ui';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useSendPasswordResetEmail from '../../hooks/useSendPasswordResetEmail';
 import { TPlatforms } from '../../types';
 import { WalletError } from '../WalletError';
-import { WalletsActionScreen } from '../WalletsActionScreen';
 import './SentEmailContent.scss';
 
 type SentEmailContentProps = {
@@ -68,14 +67,15 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
     const [shouldShowResendEmailReasons, setShouldShowResendEmailReasons] = useState(false);
     const [hasCountdownStarted, setHasCountdownStarted] = useState(false);
     const { error: resetPasswordError, sendEmail } = useSendPasswordResetEmail();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
 
     const mt5Platform = PlatformDetails.mt5.platform;
     const { title } = PlatformDetails[platform ?? mt5Platform];
     const titleSize = 'md';
     const descriptionSize = 'sm';
-    const emailButtonTextSize = isMobile ? 'md' : 'sm';
-    const emailReasonsSize = isMobile ? 'sm' : 'xs';
+    const emailButtonTextSize = isDesktop ? 'sm' : 'md';
+    const emailReasonsSize = isDesktop ? 'xs' : 'sm';
     const [count, { resetCountdown, startCountdown }] = useCountdown({
         countStart: 60,
         intervalMs: 1000,
@@ -111,18 +111,8 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
                 'wallets-sent-email-content--scrollable': isForgottenPassword,
             })}
         >
-            <WalletsActionScreen
-                description={
-                    description ?? (
-                        <Localize
-                            i18n_default_text='Please click on the link in the email to change your {{title}} password.'
-                            values={{ title }}
-                        />
-                    )
-                }
-                descriptionSize={descriptionSize}
-                icon={<EmailSentIcon width={133} />}
-                renderButtons={() => (
+            <ActionScreen
+                actionButtons={
                     <Button
                         color='primary-transparent'
                         disabled={shouldShowResendEmailReasons}
@@ -136,7 +126,13 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
                             <Localize i18n_default_text="Didn't receive the email?" />
                         </Text>
                     </Button>
-                )}
+                }
+                description={
+                    description ??
+                    localize('Please click on the link in the email to change your {{title}} password.', { title })
+                }
+                descriptionSize={descriptionSize}
+                icon={<EmailSentIcon width={133} />}
                 title={<Localize i18n_default_text="We've sent you an email" />}
                 titleSize={titleSize}
             />

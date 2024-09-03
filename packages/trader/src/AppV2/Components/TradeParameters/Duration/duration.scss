@@ -1,0 +1,40 @@
+.duration-container {
+    &__chips {
+        display: flex;
+        width: 100vw;
+        overflow: auto;
+        position: relative;
+        inset-inline-start: calc(-1 * var(--core-spacing-400));
+        padding: var(--core-spacing-400) var(--core-spacing-800);
+        gap: var(--core-spacing-400);
+        overflow-x: auto;
+        min-height: var(--core-spacing-1600);
+        white-space: nowrap;
+        scrollbar-width: none;
+    }
+    &__endtime {
+        text-align: center;
+    }
+    &__date-picker {
+        padding-left: var(--core-spacing-800);
+        padding-right: var(--core-spacing-800);
+        display: flex;
+        position: relative;
+        &__heading {
+            width: 100%;
+            text-align: center;
+            p {
+                margin-left: var(--core-spacing-1300);
+            }
+        }
+        &__icon {
+            width: var(--core-spacing-1600);
+            height: var(--core-spacing-1600);
+            border: var(--core-spacing-75) solid var(--text-general);
+            border-radius: var(--core-spacing-600);
+        }
+        &__sheet {
+            font-size: var(--core-spacing-800);
+        }
+    }
+}

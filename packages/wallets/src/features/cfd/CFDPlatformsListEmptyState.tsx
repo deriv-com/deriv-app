@@ -19,8 +19,7 @@ const CFDPlatformsListEmptyState = () => {
         <div className='wallets-cfd-list__cfd-empty-state'>
             <Text align='center' weight='bold'>
                 <Localize
-                    i18n_default_text="To trade CFDs, you'll need to use your {{walletCurrencyType}} Wallet. Click Transfer to
-                move your {{currency}} to your {{walletCurrencyType}} Wallet."
+                    i18n_default_text="To trade CFDs, you'll need to use your {{walletCurrencyType}} Wallet. Click Transfer to move your {{currency}} to your {{walletCurrencyType}} Wallet."
                     values={{ currency: activeWallet?.currency, walletCurrencyType: fiatAccount?.wallet_currency_type }}
                 />
             </Text>

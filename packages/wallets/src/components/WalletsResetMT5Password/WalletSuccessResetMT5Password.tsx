@@ -1,10 +1,9 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC } from 'react';
 import { DerivLightIcMt5PasswordUpdatedIcon, DerivLightMt5SuccessPasswordResetIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
-import { Button } from '@deriv-com/ui';
+import { ActionScreen, Button } from '@deriv-com/ui';
 import useDevice from '../../hooks/useDevice';
 import { ModalStepWrapper } from '../Base';
-import { WalletsActionScreen } from '../WalletsActionScreen';
 
 type WalletSuccessResetMT5PasswordProps = {
     isInvestorPassword?: boolean;
@@ -20,17 +19,15 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
     const { isDesktop } = useDevice();
     const { localize } = useTranslations();
 
-    const renderButtons = useCallback(() => {
-        return (
-            <Button isFullWidth={!isDesktop} onClick={onClick} size='lg' textSize={isDesktop ? 'sm' : 'md'}>
-                {isInvestorPassword ? localize('Ok') : localize('Done')}
-            </Button>
-        );
-    }, [isDesktop, onClick, isInvestorPassword, localize]);
+    const renderButtons = (
+        <Button isFullWidth={!isDesktop} onClick={onClick} size='lg'>
+            {isInvestorPassword ? localize('Ok') : localize('Done')}
+        </Button>
+    );
 
     return (
         <ModalStepWrapper
-            renderFooter={isDesktop ? undefined : renderButtons}
+            renderFooter={isDesktop ? undefined : () => renderButtons}
             shouldHideFooter={isDesktop}
             title={
                 isInvestorPassword
@@ -39,7 +36,8 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
             }
         >
             <div className='wallets-reset-mt5-password'>
-                <WalletsActionScreen
+                <ActionScreen
+                    actionButtons={isDesktop ? renderButtons : undefined}
                     description={
                         isInvestorPassword
                             ? localize('Your investor password has been changed.')
@@ -56,7 +54,6 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
                             <DerivLightMt5SuccessPasswordResetIcon height={100} width={100} />
                         )
                     }
-                    renderButtons={isDesktop ? renderButtons : undefined}
                     title={isInvestorPassword ? localize('Password saved') : localize('Success')}
                 />
             </div>

@@ -1,10 +1,8 @@
 import React, { ComponentProps } from 'react';
 import { LegacyWarningIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Button } from '@deriv-com/ui';
-import useDevice from '../../hooks/useDevice';
+import { ActionScreen, Button, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../Base';
-import { WalletsActionScreen } from '../WalletsActionScreen';
 import './WalletError.scss';
 
 type TProps = {
@@ -21,20 +19,14 @@ const WalletError: React.FC<TProps> = ({ buttonText, buttonVariant = 'contained'
     return (
         <ModalStepWrapper shouldHideHeader={isDesktop}>
             <div className='wallets-error'>
-                <WalletsActionScreen
-                    description={errorMessage}
-                    icon={<LegacyWarningIcon fill='#FF444F' iconSize='2xl' />}
-                    renderButtons={() => (
-                        <Button
-                            isFullWidth={!isDesktop}
-                            onClick={onClick}
-                            size='lg'
-                            textSize='md'
-                            variant={buttonVariant}
-                        >
+                <ActionScreen
+                    actionButtons={
+                        <Button isFullWidth={!isDesktop} onClick={onClick} size='lg' variant={buttonVariant}>
                             {buttonText ?? <Localize i18n_default_text='Try again' />}
                         </Button>
-                    )}
+                    }
+                    description={errorMessage}
+                    icon={<LegacyWarningIcon fill='#FF444F' iconSize='2xl' />}
                     title={title}
                 />
             </div>

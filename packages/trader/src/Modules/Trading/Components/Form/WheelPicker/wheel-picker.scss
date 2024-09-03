@@ -35,6 +35,9 @@
 }
 
 .wheel-picker-mobile {
+    touch-action: none;
+    -webkit-overflow-scrolling: auto;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     width: 100%;

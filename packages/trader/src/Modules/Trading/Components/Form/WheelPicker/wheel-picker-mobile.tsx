@@ -68,11 +68,15 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
 
     const swipeableHandlers = useSwipeable({
         onSwipeStart: eventData => {
+            eventData.event.preventDefault();
+            eventData.event.stopPropagation();
             if (pickerRef.current && pickerRef.current.contains(eventData.event.target as Node)) {
                 setSwipe(swipe => ({ ...swipe, startY: swipe.translateY }));
             }
         },
         onSwiping: ({ deltaY, first, event }) => {
+            event.preventDefault();
+            event.stopPropagation();
             if (first || (pickerRef.current && !pickerRef.current.contains(event.target as Node))) return;
             const { translateY, newIndex } = calculateLimits(swipe.startY, deltaY, optionHeight, options.length);
             setSwipe(swipe => ({
@@ -83,6 +87,8 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
             setSelectedIndex(newIndex);
         },
         onSwiped: ({ deltaY, event }) => {
+            event.preventDefault();
+            event.stopPropagation();
             if (pickerRef.current && !pickerRef.current.contains(event.target as Node)) return;
             const { newIndex } = calculateLimits(swipe.startY, deltaY, optionHeight, options.length);
             setSwipe(swipe => ({ ...swipe, deltaY: 0, translateY: optionHeight * newIndex }));

@@ -94,7 +94,7 @@ export type ProposalResponse = PriceProposalResponse & {
         code: string;
         message: string;
         details?: {
-            payout_per_point_choices?: string[];
+            payout_per_point_choices?: number[];
             [k: string]: unknown;
         };
     };
@@ -1547,9 +1547,7 @@ export default class TradeStore extends BaseStore {
                     }
                     this.setMainBarrier({
                         ...response.echo_req,
-                        ...{
-                            barrier: String(chart_barrier),
-                        },
+                        barrier: String(chart_barrier),
                     });
                 }
             } else {
@@ -1619,7 +1617,7 @@ export default class TradeStore extends BaseStore {
             if (this.is_turbos && response.error.details?.payout_per_point_choices) {
                 const { payout_per_point_choices, min_stake, max_stake } = response.error.details;
                 const payoutIndex = Math.floor(payout_per_point_choices.length / 2);
-                this.setPayoutChoices(payout_per_point_choices);
+                this.setPayoutChoices(payout_per_point_choices.map(item => String(item)));
                 this.setStakeBoundary(contract_type, min_stake, max_stake);
                 this.onChange({
                     target: {

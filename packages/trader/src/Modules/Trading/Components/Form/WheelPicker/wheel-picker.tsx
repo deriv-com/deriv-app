@@ -102,7 +102,7 @@ const WheelPicker = ({ options, onClick, defaultValue, currency }: WheelPickerTy
                     disabled={selectedIndex === 0}
                     small
                     className='wheel-picker__actions__btn'
-                    data-testid='up-btn'
+                    data-testid='dt_up_btn'
                     name='up-btn'
                     onClick={handleIncrease}
                 >
@@ -117,7 +117,7 @@ const WheelPicker = ({ options, onClick, defaultValue, currency }: WheelPickerTy
                     disabled={selectedIndex === options.length - 1}
                     className='wheel-picker__actions__btn  wheel-picker__actions--chevron-up'
                     name='down-btn'
-                    data-testid='down-btn'
+                    data-testid='dt_down_btn'
                     onClick={handleDecrease}
                 >
                     <Icon

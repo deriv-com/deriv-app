@@ -25,27 +25,27 @@ describe('WheelPicker Component', () => {
 
     test('should call onClick with the correct value when up button is clicked', () => {
         renderComponent('20');
-        const upButton = screen.getByTestId('up-btn');
+        const upButton = screen.getByTestId('dt_up_btn');
         userEvent.click(upButton);
         expect(mockOnClick).toHaveBeenCalledWith('10');
     });
 
     test('should call onClick with the correct value when down button is clicked', () => {
         renderComponent('20');
-        const downButton = screen.getByTestId('down-btn');
+        const downButton = screen.getByTestId('dt_down_btn');
         userEvent.click(downButton);
         expect(mockOnClick).toHaveBeenCalledWith('30');
     });
 
     test('should disable up button when at the first option', () => {
         renderComponent('10');
-        const upButton = screen.getByTestId('up-btn');
+        const upButton = screen.getByTestId('dt_up_btn');
         expect(upButton).toBeDisabled();
     });
 
     test('should disable down button when at the last option', () => {
         renderComponent('40');
-        const downButton = screen.getByTestId('down-btn');
+        const downButton = screen.getByTestId('dt_down_btn');
         expect(downButton).toBeDisabled();
     });
 

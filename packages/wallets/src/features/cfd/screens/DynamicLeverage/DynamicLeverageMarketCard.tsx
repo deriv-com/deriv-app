@@ -21,7 +21,6 @@ export const DynamicLeverageMarketCard: FC<TDynamicLeverageMarketCardProps> = ({
     min,
 }) => {
     const { localize } = useTranslations();
-
     return (
         <div className='wallets-dynamic-leverage-modal__market'>
             <div className='wallets-dynamic-leverage-modal__market-title'>

@@ -4,7 +4,7 @@ import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { TradingAccountCard } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
-import { CFD_PLATFORMS, PlatformDetails } from '../../../../constants';
+import { PlatformDetails } from '../../../../constants';
 import { DxtradeEnterPasswordModal } from '../../../../modals';
 
 const AvailableDxtradeAccountsList: React.FC = () => {
@@ -20,10 +20,7 @@ const AvailableDxtradeAccountsList: React.FC = () => {
                     <Text size='sm'>Deriv X</Text>
                 </p>
                 <Text size='xs'>
-                    <Localize
-                        i18n_default_text='{{platform}} on financial and derived instruments via a customisable platform.'
-                        values={{ platform: CFD_PLATFORMS.CFDS }}
-                    />
+                    <Localize i18n_default_text='CFDs on financial and derived instruments via a customisable platform.' />
                 </Text>
             </TradingAccountCard.Content>
             <TradingAccountCard.Button>

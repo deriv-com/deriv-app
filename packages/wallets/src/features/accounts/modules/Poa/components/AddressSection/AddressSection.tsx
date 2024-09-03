@@ -21,10 +21,7 @@ const AddressSection: React.FC = () => {
             <div className='wallets-address-section__inline'>
                 <InlineMessage size='md' type='warning' variant='contained'>
                     <div className='wallets-address-section__inline-message'>
-                        <Localize
-                            i18n_default_text='For faster verification, input the same address here as in your proof of address document (see
-                        section below)'
-                        />
+                        <Localize i18n_default_text='For faster verification, input the same address here as in your proof of address document (see section below)' />
                     </div>
                 </InlineMessage>
             </div>

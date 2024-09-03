@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { TradingAccountCard, WalletError } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
-import { CFD_PLATFORMS, PlatformDetails } from '../../../constants';
+import { PlatformDetails } from '../../../constants';
 import { CTraderSuccessModal } from '../../../modals/CTraderSuccessModal';
 
 const AvailableCTraderAccountsList: React.FC = () => {
@@ -19,6 +19,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
         status,
     } = useCreateOtherCFDAccount();
     const { data: activeWallet } = useActiveWalletAccount();
+    const { localize } = useTranslations();
 
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
 
@@ -45,9 +46,9 @@ const AvailableCTraderAccountsList: React.FC = () => {
         if (status === 'error') {
             show(
                 <WalletError
-                    errorMessage={error?.error?.message ?? 'Something went wrong. Please try again'}
+                    errorMessage={error?.error?.message ?? localize('Something went wrong. Please try again')}
                     onClick={() => hide()}
-                    title={error?.error?.message ?? 'Error'}
+                    title={error?.error?.message ?? localize('Error')}
                 />
             );
         }
@@ -60,10 +61,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
             <TradingAccountCard.Content>
                 <Text size='sm'>{PlatformDetails.ctrader.title}</Text>
                 <Text size='xs'>
-                    <Localize
-                        i18n_default_text='{{platform}} on financial and derived instruments with copy trading.'
-                        values={{ platform: CFD_PLATFORMS.CFDS }}
-                    />
+                    <Localize i18n_default_text='CFDs on financial and derived instruments with copy trading.' />
                 </Text>
             </TradingAccountCard.Content>
             <TradingAccountCard.Button>

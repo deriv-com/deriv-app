@@ -109,8 +109,8 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
                         data-testid='dt_withdrawal_fiat_amount_input'
                         errorMessage={errors.fiatAmount}
                         isInvalid={Boolean(errors.fiatAmount)}
-                        label='Amount (USD)'
-                        message='Approximate value'
+                        label={localize('Amount (USD)')}
+                        message={localize('Approximate value')}
                         onChange={onChangeFiatInput}
                         onFocus={() => setIsCryptoInputActive(false)}
                         showMessage

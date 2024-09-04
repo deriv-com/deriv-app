@@ -1,5 +1,5 @@
 import { Analytics } from '@deriv-com/analytics';
-import Cookies from 'js-cookie';
+import * as Cookies from 'js-cookie';
 import { getLanguage } from '@deriv/translations';
 import { LocalStore, getAppId } from '@deriv/shared';
 import { MAX_MOBILE_WIDTH } from '../../Constants';
@@ -34,6 +34,8 @@ export const AnalyticsInitializer = async () => {
                         device_type: window.innerWidth <= MAX_MOBILE_WIDTH ? 'mobile' : 'desktop',
                         device_language: navigator?.language || 'en-EN',
                         user_language: getLanguage().toLowerCase(),
+                        country:
+                            Cookies.getJSON('clients_country') || Cookies?.getJSON('website_status')?.clients_country,
                         utm_source: ppc_campaign_cookies?.utm_source,
                         utm_medium: ppc_campaign_cookies?.utm_medium,
                         utm_campaign: ppc_campaign_cookies?.utm_campaign,

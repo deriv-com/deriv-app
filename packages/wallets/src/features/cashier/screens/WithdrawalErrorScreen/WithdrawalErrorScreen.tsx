@@ -2,7 +2,7 @@ import React, { ComponentProps } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { TSocketError } from '@deriv/api-v2/types';
-import { Localize } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button } from '@deriv-com/ui';
 import { WalletsErrorScreen } from '../../../../components';
 import { CryptoWithdrawalErrorCodes } from '../../../../constants/errorCodes';
@@ -26,6 +26,7 @@ type TErrorCodeHandlers = Record<string, TErrorContent>;
 const WithdrawalErrorScreen: React.FC<TProps> = ({ error, resetError, setResendEmail }) => {
     const history = useHistory();
     const { data } = useActiveWalletAccount();
+    const { localize } = useTranslations();
     const currency = data?.currency;
 
     const defaultContent: TErrorContent = {
@@ -41,9 +42,7 @@ const WithdrawalErrorScreen: React.FC<TProps> = ({ error, resetError, setResendE
             ...defaultContent,
             buttonText: <Localize i18n_default_text='Resend email' />,
             buttonVariant: 'contained',
-            message: (
-                <Localize i18n_default_text='The verification link you used is invalid or expired. Please request for a new one.' />
-            ),
+            message: localize('The verification link you used is invalid or expired. Please request for a new one.'),
             onClick: () => {
                 resetError?.();
                 setResendEmail?.(true);
@@ -68,11 +67,9 @@ const WithdrawalErrorScreen: React.FC<TProps> = ({ error, resetError, setResendE
         [CryptoWithdrawalErrorCodes.SuspendedCurrency]: {
             ...defaultContent,
             buttonText: undefined,
-            message: (
-                <Localize
-                    i18n_default_text='Due to system maintenance, withdrawals with your {{currency}} Wallet are unavailable at the moment. Please try again later.'
-                    values={{ currency }}
-                />
+            message: localize(
+                'Due to system maintenance, withdrawals with your {{currency}} Wallet are unavailable at the moment. Please try again later.',
+                { currency }
             ),
             title: (
                 <Localize
@@ -84,11 +81,9 @@ const WithdrawalErrorScreen: React.FC<TProps> = ({ error, resetError, setResendE
         [CryptoWithdrawalErrorCodes.SuspendedWithdrawal]: {
             ...defaultContent,
             buttonText: undefined,
-            message: (
-                <Localize
-                    i18n_default_text='Due to system maintenance, withdrawals with your {{currency}} Wallet are unavailable at the moment. Please try again later.'
-                    values={{ currency }}
-                />
+            message: localize(
+                'Due to system maintenance, withdrawals with your {{currency}} Wallet are unavailable at the moment. Please try again later.',
+                { currency }
             ),
             title: (
                 <Localize

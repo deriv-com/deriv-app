@@ -11,7 +11,6 @@ const languages = {
     IT: 'Italiano',
     KM: 'ខ្មែរ',
     KO: '한국어',
-    MN: 'Монгол',
     PL: 'Polish',
     PT: 'Português',
     SW: 'Kiswahili',

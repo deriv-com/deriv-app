@@ -7,7 +7,6 @@ export * from './Tabs';
 export * from './WalletAlertMessage';
 export * from './WalletButton';
 export * from './WalletButtonGroup';
-export * from './WalletCheckbox';
 export * from './WalletClipboard';
 export * from './WalletLink';
 export * from './WalletPasswordFieldLazy';

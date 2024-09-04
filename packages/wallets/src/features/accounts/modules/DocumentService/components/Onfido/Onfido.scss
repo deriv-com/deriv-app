@@ -28,6 +28,15 @@
         }
     }
 
+    &__back-button {
+        width: fit-content;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin: 0.8rem 0 0 0.8rem;
+        cursor: pointer;
+    }
+
     &__wrapper {
         position: relative;
         min-width: 51.2rem;

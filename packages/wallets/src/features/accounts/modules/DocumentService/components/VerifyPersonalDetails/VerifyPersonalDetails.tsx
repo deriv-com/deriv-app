@@ -36,6 +36,12 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
         }
     }, [onVerification, values.arePersonalDetailsVerified]);
 
+    useEffect(() => {
+        if (error) {
+            setFieldValue('arePersonalDetailsVerified', false);
+        }
+    }, [error, setFieldValue]);
+
     const handleTNCChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFieldValue('arePersonalDetailsVerified', event.target.checked);
     };

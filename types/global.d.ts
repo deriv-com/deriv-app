@@ -28,6 +28,9 @@ declare global {
         fcWidgetMessengerConfig: {
             config: Record<string, Record<string, any>>;
         };
+        fcSettings: {
+            [key: string]: any;
+        };
     }
 }
 

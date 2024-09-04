@@ -1,9 +1,9 @@
-import { useLayoutEffect, useEffect, useState } from 'react';
-import { useIsMounted } from 'usehooks-ts';
+import { useLayoutEffect, useState } from 'react';
+import { useScript } from 'usehooks-ts';
 
 const useFreshChat = () => {
+    useScript('//uae.fw-cdn.com/40116340/63296.js');
     const [isReady, setIsReady] = useState(false);
-    const isMounted = useIsMounted();
 
     const setDefaultSettings = () => {
         window.fcWidgetMessengerConfig = {
@@ -13,17 +13,19 @@ const useFreshChat = () => {
                 },
             },
         };
+
+        window.fcSettings = {
+            onInit() {
+                window.fcWidget.on('widget:loaded', () => {
+                    setIsReady(true);
+                });
+            },
+        };
     };
 
     useLayoutEffect(() => {
         setDefaultSettings();
     }, []);
-
-    useEffect(() => {
-        if (isMounted() && window.fcWidget?.isLoaded()) {
-            setIsReady(true);
-        }
-    }, [isMounted, window.fcWidget]);
 
     return {
         isReady,

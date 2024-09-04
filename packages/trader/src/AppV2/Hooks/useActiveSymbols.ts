@@ -122,7 +122,6 @@ const useActiveSymbols = () => {
             setActiveSymbols(symbols_from_store);
         }
     }, [
-        response,
         available_contract_types,
         contract_type,
         refetch,

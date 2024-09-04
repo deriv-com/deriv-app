@@ -1,20 +1,29 @@
+import { useTranslations } from '@deriv-com/translations';
 import { renderHook } from '@testing-library/react-hooks';
 import useIsRtl from '../useIsRtl';
 
+jest.mock('@deriv-com/translations', () => ({
+    ...jest.requireActual('@deriv-com/translations'),
+    useTranslations: jest.fn(),
+}));
+
 describe('useIsRtl', () => {
     beforeEach(() => {
-        localStorage.clear();
+        (useTranslations as jest.Mock).mockReturnValue({
+            currentLang: 'EN',
+        });
     });
 
-    it('returns true when language is set to AR in localStorage', () => {
-        localStorage.setItem('i18n_language', 'AR');
-
+    it('returns true when current language is AR', () => {
+        (useTranslations as jest.Mock).mockReturnValue({
+            currentLang: 'AR',
+        });
         const { result } = renderHook(() => useIsRtl());
 
         expect(result.current).toBe(true);
     });
 
-    it('returns false when language is set to EN in localStorage', () => {
+    it('returns false when current language is EN', () => {
         localStorage.setItem('i18n_language', 'EN');
 
         const { result } = renderHook(() => useIsRtl());
@@ -22,30 +31,37 @@ describe('useIsRtl', () => {
         expect(result.current).toBe(false);
     });
 
-    it('returns false when i18n_language is not set in localStorage', () => {
+    it('returns false when current language is not set', () => {
+        (useTranslations as jest.Mock).mockReturnValue({});
         const { result } = renderHook(() => useIsRtl());
 
         expect(result.current).toBe(false);
     });
 
-    it('updates isRtl when i18n_language changes in localStorage', () => {
+    it('updates isRtl when current language changes', () => {
         const { rerender, result } = renderHook(() => useIsRtl());
 
         expect(result.current).toBe(false);
 
-        localStorage.setItem('i18n_language', 'AR');
+        (useTranslations as jest.Mock).mockReturnValue({
+            currentLang: 'AR',
+        });
         rerender();
 
         expect(result.current).toBe(true);
     });
 
     it('updates isRtl when language changes from AR to EN', () => {
-        localStorage.setItem('i18n_language', 'AR');
+        (useTranslations as jest.Mock).mockReturnValue({
+            currentLang: 'AR',
+        });
         const { rerender, result } = renderHook(() => useIsRtl());
 
         expect(result.current).toBe(true);
 
-        localStorage.setItem('i18n_language', 'EN');
+        (useTranslations as jest.Mock).mockReturnValue({
+            currentLang: 'EN',
+        });
         rerender();
 
         expect(result.current).toBe(false);

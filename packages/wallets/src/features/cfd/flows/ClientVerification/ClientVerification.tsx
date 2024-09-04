@@ -39,7 +39,7 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({
     const [isPoiJustCompleted, setIsPoiJustCompleted] = useState(false);
     const [isTaxInformationJustCompleted, setIsTaxInformationJustCompleted] = useState(false);
 
-    const isLoading = isAccountSettingsLoading || isPoaDataLoading || isPoiDataLoading;
+    const isLoading = isAccountSettingsLoading || isPoaDataLoading || isPoiDataLoading || !selectedJurisdiction;
 
     const isPoaRequired = useMemo(
         () =>
@@ -100,12 +100,7 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({
     }
 
     if (shouldSubmitTaxInformation) {
-        return (
-            <TaxInformation
-                onCompletion={onTaxInformationCompletion}
-                selectedJurisdiction={selectedJurisdiction ?? 'svg'}
-            />
-        );
+        return <TaxInformation onCompletion={onTaxInformationCompletion} selectedJurisdiction={selectedJurisdiction} />;
     }
 
     if (hasResubmittedDocuments) {

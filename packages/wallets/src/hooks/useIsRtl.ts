@@ -1,5 +1,7 @@
+import { getInitialLanguage } from '@deriv-com/translations';
+
 const useIsRtl = () => {
-    const i18nLanguage = localStorage.getItem('i18n_language');
+    const i18nLanguage = getInitialLanguage();
     return i18nLanguage === 'AR';
 };
 

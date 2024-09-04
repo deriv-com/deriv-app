@@ -11,8 +11,7 @@ import './index.scss';
 type LanguageType = 'AR' | 'EN';
 
 const App: React.FC = () => {
-    const defaultLanguage: LanguageType =
-        (localStorage.getItem('i18n_language') as LanguageType) ?? getInitialLanguage();
+    const defaultLanguage = getInitialLanguage() as LanguageType;
 
     const i18nInstance = useMemo(
         () =>

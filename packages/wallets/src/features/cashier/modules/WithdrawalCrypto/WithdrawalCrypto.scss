@@ -6,7 +6,7 @@
     gap: 2.4rem;
 
     @include desktop-screen {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: 1fr 58.8rem 1fr;
     }
 
     @include mobile-or-tablet-screen {

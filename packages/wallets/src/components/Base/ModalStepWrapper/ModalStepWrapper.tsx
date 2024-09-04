@@ -18,6 +18,18 @@ type TModalStepWrapperProps = {
     title?: string;
 };
 
+type TFooterProps = {
+    hasRenderFooter: boolean;
+    renderFooter: TModalStepWrapperProps['renderFooter'];
+};
+
+const Footer: FC<TFooterProps> = ({ hasRenderFooter, renderFooter }) =>
+    hasRenderFooter && renderFooter ? (
+        <div className='wallets-modal-step-wrapper__footer' data-testid='dt_modal_step_wrapper_footer'>
+            {renderFooter()}
+        </div>
+    ) : null;
+
 const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     children,
     disableAnimation = false,
@@ -47,13 +59,6 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shouldHideDerivAppHeader]);
 
-    const Footer = () =>
-        hasRenderFooter ? (
-            <div className='wallets-modal-step-wrapper__footer' data-testid='dt_modal_step_wrapper_footer'>
-                <div className='wallets-modal-step-wrapper__footer-content'>{renderFooter()}</div>
-            </div>
-        ) : null;
-
     return (
         <div
             className={classNames('wallets-modal-step-wrapper', {
@@ -79,10 +84,10 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
                 </div>
             )}
             <div className='wallets-modal-step-wrapper__body' data-testid='dt_modal_step_wrapper_body'>
-                <div className='wallets-modal-step-wrapper__content'>{children}</div>
-                {!shouldFixedFooter && <Footer />}
+                {children}
+                {!shouldFixedFooter && <Footer hasRenderFooter={hasRenderFooter} renderFooter={renderFooter} />}
             </div>
-            {shouldFixedFooter && <Footer />}
+            {shouldFixedFooter && <Footer hasRenderFooter={hasRenderFooter} renderFooter={renderFooter} />}
         </div>
     );
 };

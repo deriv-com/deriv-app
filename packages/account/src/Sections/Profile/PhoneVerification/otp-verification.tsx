@@ -24,7 +24,6 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     const { client, ui } = useStore();
     const { setVerificationCode, is_authorize } = client;
     const { data: account_settings, invalidate } = useSettings();
-    const [should_show_phone_number_verified_modal, setShouldShowPhoneNumberVerifiedModal] = useState(false);
     const [should_show_didnt_get_the_code_modal, setShouldShowDidntGetTheCodeModal] = useState(false);
     const [otp, setOtp] = useState('');
     const [is_button_disabled, setIsButtonDisabled] = useState(false);
@@ -82,7 +81,6 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     useEffect(() => {
         if (is_phone_number_verified) {
             setIsForcedToExitPnv(true);
-            setShouldShowPhoneNumberVerifiedModal(true);
         } else if (is_email_verified && !should_show_phone_number_otp) {
             setVerificationCode(otp, 'phone_number_verification');
             setOtpVerification({ show_otp_verification: false, phone_verification_type: '' });
@@ -126,10 +124,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                 show_cool_down_period_modal={show_cool_down_period_modal}
                 setShowCoolDownPeriodModal={setShowCoolDownPeriodModal}
             />
-            <PhoneNumberVerifiedModal
-                should_show_phone_number_verified_modal={should_show_phone_number_verified_modal}
-                setShouldShowPhoneNumberVerifiedModal={setShouldShowPhoneNumberVerifiedModal}
-            />
+            <PhoneNumberVerifiedModal should_show_phone_number_verified_modal={is_phone_number_verified} />
             {should_show_phone_number_otp && (
                 <DidntGetTheCodeModal
                     clearOtpValue={clearOtpValue}

@@ -19,7 +19,8 @@ const useRequestPhoneNumberOTP = () => {
         isSuccess: is_email_verified,
         ...rest
     } = useMutation('phone_number_challenge');
-    const [error_message, setErrorMessage] = React.useState<React.ReactNode>('');
+    const [error_message, setErrorMessage] = useState<React.ReactNode>('');
+    const [is_disabled_request_button, setIsDisabledRequestButton] = useState(false);
     const [carrier, setCarrier] = useState('');
     const { client } = useStore();
     const { verification_code } = client;
@@ -78,6 +79,7 @@ const useRequestPhoneNumberOTP = () => {
     };
 
     const formatError = ({ code, message }: TFormatError) => {
+        setIsDisabledRequestButton(true);
         switch (code) {
             case 'PhoneNumberTaken':
                 setErrorMessage(
@@ -94,6 +96,7 @@ const useRequestPhoneNumberOTP = () => {
                 );
                 break;
             case 'PhoneNumberVerificationSuspended':
+                setIsDisabledRequestButton(false);
                 setErrorMessage(
                     <Localize
                         i18n_default_text='An error occurred. Get new code via {{other_carriers}}.'
@@ -118,6 +121,8 @@ const useRequestPhoneNumberOTP = () => {
         setErrorMessage,
         setUsersPhoneNumber,
         sendEmailOTPVerification,
+        is_disabled_request_button,
+        setIsDisabledRequestButton,
         mutate,
         ...rest,
     };

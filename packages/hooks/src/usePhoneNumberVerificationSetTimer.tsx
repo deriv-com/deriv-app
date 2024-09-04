@@ -1,6 +1,6 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import { WS } from '@deriv/shared';
+import { useIsMounted, WS } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import useIsPhoneNumberVerified from './useIsPhoneNumberVerified';
 
@@ -14,12 +14,13 @@ const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = f
     const [next_phone_otp_request_timer, setNextPhoneOtpRequestTimer] = React.useState<number | undefined>();
     const [is_request_button_disabled, setIsRequestButtonDisabled] = React.useState(false);
     const { is_phone_number_verified } = useIsPhoneNumberVerified();
+    const isMounted = useIsMounted();
 
     React.useEffect(() => {
         if (!is_phone_number_verified) {
-            setIsRequestButtonDisabled(true);
+            if (isMounted()) setIsRequestButtonDisabled(true);
             WS.send({ time: 1 }).then((response: { error?: Error; time: number }) => {
-                setIsRequestButtonDisabled(false);
+                if (isMounted()) setIsRequestButtonDisabled(false);
                 if (response.error) return;
 
                 if (
@@ -31,20 +32,22 @@ const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = f
                     const request_in_milliseconds = dayjs(phone_number_verification.next_email_attempt * 1000);
                     const next_request = Math.round(request_in_milliseconds.diff(response.time * 1000) / 1000);
 
-                    if (next_request > 0) {
-                        setNextEmailOtpRequestTimer(next_request);
-                    } else {
-                        setNextEmailOtpRequestTimer(0);
-                    }
+                    if (isMounted())
+                        if (next_request > 0) {
+                            setNextEmailOtpRequestTimer(next_request);
+                        } else {
+                            setNextEmailOtpRequestTimer(0);
+                        }
                 } else if (response.time && phone_number_verification?.next_attempt) {
                     const request_in_milliseconds = dayjs(phone_number_verification.next_attempt * 1000);
                     const next_request = Math.round(request_in_milliseconds.diff(response.time * 1000) / 1000);
 
-                    if (next_request > 0) {
-                        setNextPhoneOtpRequestTimer(next_request);
-                    } else {
-                        setNextPhoneOtpRequestTimer(0);
-                    }
+                    if (isMounted())
+                        if (next_request > 0) {
+                            setNextPhoneOtpRequestTimer(next_request);
+                        } else {
+                            setNextPhoneOtpRequestTimer(0);
+                        }
                 }
             });
         }

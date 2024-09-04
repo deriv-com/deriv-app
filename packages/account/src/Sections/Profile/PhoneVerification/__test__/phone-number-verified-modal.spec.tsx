@@ -9,10 +9,12 @@ jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
 }));
 
+const mockRefetch = jest.fn(() => Promise.resolve());
+
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useSettings: jest.fn(() => ({
-        refetch: jest.fn(() => Promise.resolve()),
+        refetch: mockRefetch,
     })),
 }));
 
@@ -30,16 +32,11 @@ describe('PhoneNumberVerifiedModal', () => {
         document.body.removeChild(modal_root_el);
     });
 
-    const mockSetShouldShowPhoneNumberVerifiedModal = jest.fn();
-
     const renderModal = () => {
         render(
             <StoreProvider store={mock_store}>
                 <MemoryRouter>
-                    <PhoneNumberVerifiedModal
-                        should_show_phone_number_verified_modal
-                        setShouldShowPhoneNumberVerifiedModal={mockSetShouldShowPhoneNumberVerifiedModal}
-                    />
+                    <PhoneNumberVerifiedModal should_show_phone_number_verified_modal />
                 </MemoryRouter>
             </StoreProvider>
         );
@@ -51,10 +48,10 @@ describe('PhoneNumberVerifiedModal', () => {
         expect(screen.getByText(/Your phone number is verified./)).toBeInTheDocument();
     });
 
-    it('it should close PhoneNumberVerifiedModal and navigate to PersonalDetails section when done is clicked', async () => {
+    it('it should refetch GetSettings when done is clicked', async () => {
         renderModal();
         const doneButton = screen.getByRole('button', { name: /OK/ });
         await userEvent.click(doneButton);
-        expect(mockSetShouldShowPhoneNumberVerifiedModal).toHaveBeenCalledTimes(1);
+        expect(mockRefetch).toHaveBeenCalledTimes(1);
     });
 });

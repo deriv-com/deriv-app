@@ -29,6 +29,8 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
         setUsersPhoneNumber,
         is_email_verified,
         email_otp_error,
+        is_disabled_request_button,
+        setIsDisabledRequestButton,
     } = useRequestPhoneNumberOTP();
     const { data: account_settings, invalidate } = useSettings();
     const { ui } = useStore();
@@ -64,6 +66,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
     const handleOnChangePhoneNumber = (e: ChangeEvent<HTMLInputElement>) => {
         setPhoneNumber(e.target.value);
         validatePhoneNumber(`+${e.target.value}`, setErrorMessage);
+        setIsDisabledRequestButton(false);
     };
 
     const handleSubmit = async (phone_verification_type: string) => {
@@ -125,7 +128,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                     disabled={
                         is_button_loading ||
                         !!next_phone_otp_request_timer ||
-                        !!error_message ||
+                        is_disabled_request_button ||
                         is_phone_otp_timer_loading
                     }
                 >
@@ -141,7 +144,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                     disabled={
                         is_button_loading ||
                         !!next_phone_otp_request_timer ||
-                        !!error_message ||
+                        is_disabled_request_button ||
                         is_phone_otp_timer_loading
                     }
                 >

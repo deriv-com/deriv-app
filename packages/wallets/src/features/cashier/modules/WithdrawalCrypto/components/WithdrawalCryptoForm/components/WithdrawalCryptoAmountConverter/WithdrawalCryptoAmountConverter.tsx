@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { LegacyArrowRight2pxIcon } from '@deriv/quill-icons';
+import { useTranslations } from '@deriv-com/translations';
 import { WalletTextField } from '../../../../../../../../components';
 import useAllBalanceSubscription from '../../../../../../../../hooks/useAllBalanceSubscription';
 import { useWithdrawalCryptoContext } from '../../../../provider';
@@ -24,6 +25,7 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
     const [isCryptoInputActive, setIsCryptoInputActive] = useState(true);
     const { errors, setValues } = useFormikContext<TWithdrawalForm>();
     const { data: balanceData } = useAllBalanceSubscription();
+    const { localize } = useTranslations();
     const balance = balanceData?.[activeWallet?.loginid ?? '']?.balance ?? 0;
     const displayBalance = displayMoney(balance, activeWallet?.currency, {
         fractional_digits: activeWallet?.currency_config?.fractional_digits,
@@ -81,7 +83,7 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
                         data-testid='dt_withdrawal_crypto_amount_input'
                         errorMessage={errors.cryptoAmount}
                         isInvalid={Boolean(errors.cryptoAmount)}
-                        label={`Amount (${activeWallet?.currency})`}
+                        label={localize('Amount ({{currency}})', { currency: activeWallet?.currency })}
                         onChange={onChangeCryptoInput}
                         onFocus={() => setIsCryptoInputActive(true)}
                         showMessage
@@ -103,8 +105,8 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
                         data-testid='dt_withdrawal_fiat_amount_input'
                         errorMessage={errors.fiatAmount}
                         isInvalid={Boolean(errors.fiatAmount)}
-                        label='Amount (USD)'
-                        message='Approximate value'
+                        label={localize('Amount (USD)')}
+                        message={localize('Approximate value')}
                         onChange={onChangeFiatInput}
                         onFocus={() => setIsCryptoInputActive(false)}
                         showMessage

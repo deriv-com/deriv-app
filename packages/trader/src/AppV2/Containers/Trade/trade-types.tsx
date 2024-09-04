@@ -236,7 +236,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                                 categories={pinned_trade_types}
                                 onAction={handleCustomizeTradeTypes}
                                 onTradeTypeClick={handleOnTradeTypeSelect}
-                                selected_item={contract_type}
+                                isSelected={id => isTradeTypeSelected(id)}
                                 should_show_title={false}
                                 selectable
                             />
@@ -245,7 +245,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                             categories={other_trade_types}
                             onRightIconClick={is_editing ? handleAddPinnedClick : undefined}
                             onTradeTypeClick={!is_editing ? handleOnTradeTypeSelect : undefined}
-                            selected_item={contract_type}
+                            isSelected={id => isTradeTypeSelected(id)}
                             selectable={!is_editing}
                         />
                     </ActionSheet.Content>

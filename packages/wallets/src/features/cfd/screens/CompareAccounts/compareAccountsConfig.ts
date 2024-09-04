@@ -175,7 +175,7 @@ const getJurisdictionDescription = (shortcode?: string) => {
                 ...cfdConfig,
                 counterparty_company: localize('Deriv (FX) Ltd'),
                 jurisdiction: localize('Labuan'),
-                leverage: localize('1:100'),
+                leverage: localize('Up to 1:100'),
                 regulator: localize('Labuan Financial Services Authority'),
                 regulator_description: localize('Regulator/External dispute resolution'),
                 regulator_license: localize('(License no. MB/18/0024)'),
@@ -186,7 +186,7 @@ const getJurisdictionDescription = (shortcode?: string) => {
                 ...cfdConfig,
                 counterparty_company: localize('Deriv Investments (Europe) Limited'),
                 jurisdiction: localize('Malta'),
-                leverage: localize('1:30'),
+                leverage: localize('Up to 1:30'),
                 regulator: localize('Financial Commission'),
                 regulator_description: '',
                 regulator_license: localize(

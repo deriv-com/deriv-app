@@ -28,13 +28,13 @@ describe('CompareAccountsCard', () => {
     it('renders the new banner for Zero Spread platform', () => {
         render(<CompareAccountsCard {...defaultProps} platform={CFD_PLATFORMS.MT5} product={PRODUCT.ZEROSPREAD} />);
 
-        expect(screen.getByText('New!')).toBeInTheDocument();
+        expect(screen.getByText('New')).toBeInTheDocument();
     });
 
     it('does not render the new banner for non Zero Spread platforms', () => {
         render(<CompareAccountsCard {...defaultProps} />);
 
-        expect(screen.queryByText('New!')).not.toBeInTheDocument();
+        expect(screen.queryByText('New')).not.toBeInTheDocument();
     });
 
     it('renders the EU clients disclaimer for EU users', () => {

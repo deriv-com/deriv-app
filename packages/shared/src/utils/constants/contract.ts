@@ -374,6 +374,9 @@ export const getCardLabelsV2 = () =>
         TICKS: localize('Ticks'),
         TOTAL_PROFIT_LOSS: localize('Total profit/loss'),
         WON: localize('Won'),
+        RESET_BARRIER: localize('Reset barrier'),
+        RESET_TIME: localize('Reset time'),
+        SELECTED_TICK: localize('Selected tick'),
     } as const);
 
 export const getMarketNamesMap = () =>

@@ -6,6 +6,7 @@ import { TradeTypeList } from 'AppV2/Components/TradeTypeList';
 import { getTradeTypesList } from 'AppV2/Utils/trade-types-utils';
 import { Localize, localize } from '@deriv/translations';
 import Guide from '../../Components/Guide';
+import { isRiseFallContract, isTurbosContract, isVanillaContract } from '@deriv/shared';
 
 type TTradeTypesProps = {
     onTradeTypeSelect: (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
@@ -169,11 +170,14 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         setIsOpen(false);
     };
 
+    const checkContractTypePrefix = (values: string[]): boolean => {
+        return [isVanillaContract, isTurbosContract, isRiseFallContract].some(contractTypeCheck =>
+            values.every(value => contractTypeCheck(value))
+        );
+    };
+
     const isTradeTypeSelected = (value: string) =>
-        [contract_type, value].every(type => type.startsWith('vanilla')) ||
-        [contract_type, value].every(type => type.startsWith('turbos')) ||
-        [contract_type, value].every(type => type.startsWith('rise_fall')) ||
-        contract_type === value;
+        checkContractTypePrefix([contract_type, value]) || contract_type === value;
 
     const getItems = (trade_types: TResultItem[]) => trade_types.flatMap(type => type.items);
 
@@ -187,7 +191,9 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         const is_contract_type_in_pinned = pinned_items.some(item => item.id === contract_type);
 
         const other_item = !is_contract_type_in_pinned
-            ? getItems(other_trade_types).find(item => item.id === contract_type)
+            ? getItems(other_trade_types).find(
+                  item => item.id === contract_type || checkContractTypePrefix([item.id, contract_type])
+              )
             : null;
 
         return [...pinned_items, other_item].filter(Boolean) as TItem[];

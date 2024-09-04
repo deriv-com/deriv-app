@@ -7,9 +7,14 @@
     width: 100%;
     padding-block-start: 1.6rem;
 
+    &__switcher-container {
+        display: grid;
+    }
+
     &__label {
+        grid-column: 1;
+        grid-row: 1;
         display: flex;
-        position: absolute;
         margin-inline-start: 2rem;
         margin-top: 1rem;
         z-index: 1;
@@ -23,6 +28,8 @@
     }
 
     &__switcher {
+        grid-column: 1;
+        grid-row: 1;
         position: relative;
         display: flex;
         width: 12rem;

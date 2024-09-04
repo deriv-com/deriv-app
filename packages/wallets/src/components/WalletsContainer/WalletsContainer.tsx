@@ -13,6 +13,7 @@ const WalletsContainer: React.FC<React.PropsWithChildren<TProps>> = ({ children,
 
     const isDemo = activeWallet?.is_virtual;
     const isOpen = activeWallet?.is_active;
+    const defaultLanguage = localStorage.getItem('i18n_language');
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -22,7 +23,7 @@ const WalletsContainer: React.FC<React.PropsWithChildren<TProps>> = ({ children,
             }
         }, 300);
         return () => clearTimeout(timeout);
-    }, [isOpen]);
+    }, [isOpen, defaultLanguage]);
 
     return (
         <div

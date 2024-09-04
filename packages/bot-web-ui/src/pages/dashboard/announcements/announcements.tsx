@@ -3,7 +3,7 @@ import { Text } from '@deriv/components';
 import { Notifications as Announcement } from '@deriv-com/ui';
 import { StandaloneBullhornRegularIcon } from '@deriv/quill-icons';
 import { useHistory } from 'react-router-dom';
-import clsx from 'clsx';
+import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import AnnouncementDialog from './announcement-dialog';
 import { BOT_ANNOUNCEMENTS_LIST, TAnnouncement, TNotifications } from './config';
@@ -78,11 +78,13 @@ const Announcements = ({ is_mobile, is_tablet, handleTabChange }: TAnnouncements
         const temp_localstorage_data = updateNotifications();
         storeDataInLocalStorage(temp_localstorage_data);
         setReadAnnouncementsMap(temp_localstorage_data);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
         const number_ammount_active_announce = Object.values(read_announcements_map).filter(value => value).length;
         setAmountActiveAnnounce(number_ammount_active_announce);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [read_announcements_map]);
 
     const handleOnCancel = () => {
@@ -131,7 +133,7 @@ const Announcements = ({ is_mobile, is_tablet, handleTabChange }: TAnnouncements
             </button>
             <div className='notifications__wrapper'>
                 <Announcement
-                    className={clsx('', {
+                    className={classNames('', {
                         'notifications__wrapper--mobile': is_mobile,
                         'notifications__wrapper--desktop': !is_mobile,
                         'notifications__wrapper--tablet': is_tablet,

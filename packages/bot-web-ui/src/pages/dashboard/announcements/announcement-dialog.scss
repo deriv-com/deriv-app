@@ -30,6 +30,13 @@
             padding: 1.5rem;
             max-width: 44rem;
             margin-bottom: 0.5rem;
+
+            .open-livechat__link {
+                .dc-text {
+                    color: var(--general-section-6);
+                    text-decoration: underline;
+                }
+            }
         }
 
         &__footer {

@@ -1,22 +1,27 @@
 import React from 'react';
+import { observer } from '@deriv/stores';
 import { Text } from '@deriv/components';
 import { Notifications as Announcement } from '@deriv-com/ui';
 import { StandaloneBullhornRegularIcon } from '@deriv/quill-icons';
 import { useHistory } from 'react-router-dom';
-import clsx from 'clsx';
+import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import AnnouncementDialog from './announcement-dialog';
 import { BOT_ANNOUNCEMENTS_LIST, TAnnouncement, TNotifications } from './config';
 import './announcements.scss';
 import { MessageAnnounce, TitleAnnounce } from './announcement-components';
 import { performButtonAction } from './utils/accumulator-helper-functions';
+import { useDBotStore } from 'Stores/useDBotStore';
 
 type TAnnouncements = {
     is_mobile?: boolean;
     handleTabChange: (item: number) => void;
 };
 
-const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
+const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) => {
+    const {
+        load_modal: { toggleLoadModal },
+    } = useDBotStore();
     const [is_announce_dialog_open, setIsAnnounceDialogOpen] = React.useState(false);
     const [is_open_announce_list, setIsOpenAnnounceList] = React.useState(false);
     const [selected_announcement, setSelectedAnnouncement] = React.useState<TAnnouncement | null>(null);
@@ -77,6 +82,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
         const temp_localstorage_data = updateNotifications();
         storeDataInLocalStorage(temp_localstorage_data);
         setReadAnnouncementsMap(temp_localstorage_data);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
@@ -95,6 +101,9 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
     const handleOnConfirm = () => {
         if (selected_announcement?.switch_tab_on_confirm) {
             handleTabChange(selected_announcement.switch_tab_on_confirm);
+        }
+        if (selected_announcement?.should_toggle_modal) {
+            toggleLoadModal();
         }
         selected_announcement?.onConfirm?.();
         setSelectedAnnouncement(null);
@@ -130,7 +139,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
             </button>
             <div className='notifications__wrapper'>
                 <Announcement
-                    className={clsx('', {
+                    className={classNames('', {
                         'notifications__wrapper--mobile': is_mobile,
                         'notifications__wrapper--desktop': !is_mobile,
                     })}
@@ -152,12 +161,12 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                     announcement={selected_announcement.announcement}
                     is_announce_dialog_open={is_announce_dialog_open}
                     setIsAnnounceDialogOpen={setIsAnnounceDialogOpen}
-                    handleOnCancel={handleOnCancel}
+                    handleOnCancel={!selected_announcement?.should_not_be_cancel ? handleOnCancel : null}
                     handleOnConfirm={handleOnConfirm}
                 />
             )}
         </div>
     );
-};
+});
 
 export default Announcements;

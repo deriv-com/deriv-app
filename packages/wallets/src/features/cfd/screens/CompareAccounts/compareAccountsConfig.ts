@@ -36,7 +36,10 @@ const getHighlightedIconLabel = (
             platform === CFD_PLATFORMS.CTRADER
         ) {
             return localize('Forex: major/minor');
-        } else if (marketType === MARKET_TYPE.SYNTHETIC) {
+        } else if (
+            marketType === MARKET_TYPE.SYNTHETIC ||
+            (platform === CFD_PLATFORMS.MT5 && marketTypeShortCode === MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI)
+        ) {
             return localize('Forex: standard');
         }
         return localize('Forex: standard/micro');

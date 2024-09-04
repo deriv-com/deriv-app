@@ -1,9 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
+import { localize } from '@deriv-com/translations';
+import { Tooltip } from '@deriv-com/ui';
 import { WalletText } from '../../../../components';
+import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS } from '../../constants';
 import { getJurisdictionDescription } from './compareAccountsConfig';
+import { MARKET_TYPE_SHORTCODE } from './constants';
 import './CompareAccountsDescription.scss';
 
 type TCompareAccountsDescription = {
@@ -50,6 +54,17 @@ const CompareAccountsDescription = ({
                     </WalletText>
                     <WalletText align='center' as='p' size='2xs'>
                         {jurisdictionData.spread_description}
+                        {marketTypeShortCode === MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI && (
+                            <Tooltip
+                                as='div'
+                                data-testid='dt_wallets_compare_accounts_title__tooltip'
+                                tooltipContainerClassName='wallets-compare-accounts-title__tooltip'
+                                tooltipContent={localize('Commissions apply')}
+                                tooltipPosition='bottom-start'
+                            >
+                                <InfoIcon />
+                            </Tooltip>
+                        )}
                     </WalletText>
                 </div>
             )}

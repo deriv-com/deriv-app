@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useRemoteConfig } from '@deriv/api';
-import { useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';
@@ -27,8 +26,7 @@ const BotBuilder = observer(() => {
     const { is_desktop } = ui;
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
-    const isMounted = useIsMounted();
-    const { data: remote_config_data } = useRemoteConfig(isMounted());
+    const { data: remote_config_data } = useRemoteConfig();
     let deleted_block_id: null | string = null;
 
     React.useEffect(() => {

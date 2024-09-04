@@ -113,6 +113,10 @@
             }
         }
 
+        .quill-snackbar {
+            z-index: 1;
+        }
+
         @include mobile {
             width: 100vw;
             border: none;

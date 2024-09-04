@@ -36,7 +36,7 @@ const OrderDetails = ({ contract_info }: ContractInfoProps) => {
                                                 size='sm'
                                                 color='quill-typography__color--subtle'
                                             >
-                                                {val.caption}
+                                                {val?.caption ?? ''}
                                             </CaptionText>
                                         )
                                     )

@@ -13,10 +13,18 @@ const getMT5StatusBadgeConfig = (mt5_account_status: TMT5AccountStatus) => {
                 text: (
                     <Localize
                         i18n_default_text='<1>In review</1>'
-                        components={[<Text key={0} weight='bold' size='xxxs' color='var(--status-warning)' />]}
+                        components={[
+                            <Text
+                                key={0}
+                                weight='bold'
+                                size='xxxs'
+                                color='var(--status-warning)'
+                                className='link-pending'
+                            />,
+                        ]}
                     />
                 ),
-                icon: 'IcAlertWarning',
+                icon: 'IcMt5Pending',
             };
         case MT5_ACCOUNT_STATUS.FAILED:
             return {
@@ -35,7 +43,7 @@ const getMT5StatusBadgeConfig = (mt5_account_status: TMT5AccountStatus) => {
                         ]}
                     />
                 ),
-                icon: 'IcRedWarning',
+                icon: 'IcMt5Failed',
             };
         case MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION: {
             return {
@@ -54,7 +62,7 @@ const getMT5StatusBadgeConfig = (mt5_account_status: TMT5AccountStatus) => {
                         ]}
                     />
                 ),
-                icon: 'IcAlertInfo',
+                icon: 'IcMt5Verification',
             };
         }
         case MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION:

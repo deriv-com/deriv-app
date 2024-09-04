@@ -69,3 +69,12 @@
     font-size: var(--text-size-xxxs);
     cursor: pointer;
 }
+
+.link-pending {
+    color: var(--status-warning);
+    font-weight: bold;
+    cursor: pointer;
+    font-size: var(--text-size-xxxs);
+    padding-left: 0.3rem;
+    text-decoration: underline;
+}

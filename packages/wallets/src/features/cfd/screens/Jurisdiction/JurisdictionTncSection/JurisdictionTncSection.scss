@@ -35,9 +35,16 @@
     }
 
     &__container {
-        max-width: 60rem;
-        margin: 0 auto;
         width: 100%;
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+
+        @include mobile-or-tablet-screen {
+            gap: 0.8rem;
+            max-width: 60rem;
+            margin: 0 auto;
+        }
     }
 }

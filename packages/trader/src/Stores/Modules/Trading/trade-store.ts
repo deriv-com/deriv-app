@@ -543,7 +543,7 @@ export default class TradeStore extends BaseStore {
         reaction(
             () => [this.contract_types_list_v2, this.has_symbols_for_v2],
             async () => {
-                if (!this.has_symbols_for_v2 || !this.contract_types_list_v2) return;
+                if (!this.has_symbols_for_v2 || !this.contract_types_list_v2 || this.is_dtrader_v2_enabled) return;
                 const searchParams = new URLSearchParams(window.location.search);
                 const urlSymbol = searchParams.get('symbol');
                 const urlContractType = searchParams.get('trade_type');
@@ -564,7 +564,7 @@ export default class TradeStore extends BaseStore {
                     this.symbol = urlSymbol;
                 } else {
                     this.root_store.ui.toggleUrlUnavailableModal(true);
-                    this.symbol = (await pickDefaultSymbol(this.active_symbols)) || '1HZ100V';
+                    // this.symbol = (await pickDefaultSymbol(this.active_symbols)) || '1HZ100V';
                 }
                 if (urlContractType && isValidContractType) {
                     tradeStoreObj.contract_type = urlContractType;
@@ -572,10 +572,10 @@ export default class TradeStore extends BaseStore {
                     this.contract_type = urlContractType;
                 } else {
                     this.root_store.ui.toggleUrlUnavailableModal(true);
-                    this.contract_type =
-                        flattedContractTypesV2.find(contract_type => contract_type.value === 'accumulator')?.value ||
-                        flattedContractTypesV2.find(contract_type => contract_type.value === 'multiplier')?.value ||
-                        'accumulator';
+                    // this.contract_type =
+                    //     flattedContractTypesV2.find(contract_type => contract_type.value === 'accumulator')?.value ||
+                    //     flattedContractTypesV2.find(contract_type => contract_type.value === 'multiplier')?.value ||
+                    //     'accumulator';
                 }
             }
         );

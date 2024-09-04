@@ -213,10 +213,7 @@ const transformLooksback = (data: TContractInfo) => {
     return {
         [CARD_LABELS.REFERENCE_ID]: commonFields[CARD_LABELS.REFERENCE_ID],
         [CARD_LABELS.DURATION]: commonFields[CARD_LABELS.DURATION],
-        [CARD_LABELS.MULTIPLIER]:
-            data.multiplier && data.currency
-                ? `${formatMoney(data.currency, data.multiplier, true)} ${data.currency}`
-                : '',
+        [CARD_LABELS.MULTIPLIER]: data.multiplier ?? '',
         ...{
             ...(data.transaction_ids?.sell
                 ? {
@@ -236,10 +233,7 @@ const transformHighLowLookback = (data: TContractInfo) => {
     return {
         [CARD_LABELS.REFERENCE_ID]: commonFields[CARD_LABELS.REFERENCE_ID],
         [CARD_LABELS.DURATION]: commonFields[CARD_LABELS.DURATION],
-        [CARD_LABELS.MULTIPLIER]:
-            data.multiplier && data.currency
-                ? `${formatMoney(data.currency, data.multiplier, true)} ${data.currency}`
-                : '',
+        [CARD_LABELS.MULTIPLIER]: data.multiplier ?? '',
         ...{
             ...(data.transaction_ids?.sell
                 ? {

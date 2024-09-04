@@ -40,11 +40,15 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
                 is_minimized && 'trade-params__options__wrapper--minimized'
             )}
         >
-            {is_minimized && isVisible('expiration') && <MultipliersExpirationInfo />}
-            {is_minimized && isVisible('mult_info_display') && <MultipliersDealCancellationInfo />}
-            {is_minimized && isVisible('payout_per_point_info') && <PayoutPerPointInfo />}
-            {is_minimized && isVisible('allow_equals') && <AllowEquals />}
-            {is_minimized && isVisible('payout') && <PayoutInfo />}
+            {is_minimized && (
+                <React.Fragment>
+                    {isVisible('expiration') && <MultipliersExpirationInfo />}
+                    {isVisible('mult_info_display') && <MultipliersDealCancellationInfo />}
+                    {isVisible('payout_per_point_info') && <PayoutPerPointInfo />}
+                    {isVisible('allow_equals') && <AllowEquals />}
+                    {isVisible('payout') && <PayoutInfo />}
+                </React.Fragment>
+            )}
             <div
                 className={clsx(
                     'trade-params__options__wrapper',

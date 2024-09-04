@@ -145,6 +145,7 @@ export type TV2ParamsInitialValues = {
     stake?: string | number;
     strike?: string | number;
     multiplier?: number;
+    barrier_1?: number;
 };
 type TContractDataForGTM = Omit<Partial<PriceProposalRequest>, 'cancellation' | 'limit_order'> &
     ReturnType<typeof getProposalInfo> & {
@@ -218,6 +219,7 @@ export default class TradeStore extends BaseStore {
     non_available_contract_types_list: TContractTypesList = {};
     trade_type_tab = '';
     trade_types: { [key: string]: string } = {};
+    contract_types_list_v2: TContractTypesList = {};
 
     // Amount
     amount = 10;
@@ -400,6 +402,7 @@ export default class TradeStore extends BaseStore {
             contract_start_type: observable,
             contract_type: observable,
             contract_types_list: observable,
+            contract_types_list_v2: observable,
             currency: observable,
             digit_stats: observable,
             duration_min_max: observable,
@@ -524,6 +527,7 @@ export default class TradeStore extends BaseStore {
             setChartModeFromURL: action.bound,
             setChartStatus: action.bound,
             setContractTypes: action.bound,
+            setContractTypesListV2: action.bound,
             setDefaultSymbol: action.bound,
             setIsTradeParamsExpanded: action.bound,
             setIsDigitsWidgetActive: action.bound,
@@ -647,7 +651,13 @@ export default class TradeStore extends BaseStore {
         }
     }
 
-    setV2ParamsInitialValues({ value, name }: { value: number | string; name: keyof TV2ParamsInitialValues }) {
+    setV2ParamsInitialValues({
+        value,
+        name,
+    }: {
+        value: number | string | boolean;
+        name: keyof TV2ParamsInitialValues;
+    }) {
         this.v2_params_initial_values = { ...this.v2_params_initial_values, ...{ [name]: value } };
     }
 
@@ -1944,6 +1954,10 @@ export default class TradeStore extends BaseStore {
     setActiveSymbolsV2(active_symbols: ActiveSymbols) {
         this.active_symbols = active_symbols;
         this.has_symbols_for_v2 = !!active_symbols.length;
+    }
+
+    setContractTypesListV2(contract_types_list: TContractTypesList) {
+        this.contract_types_list_v2 = contract_types_list;
     }
 
     setBarrierChoices(barrier_choices: string[]) {

@@ -187,6 +187,16 @@ describe('PositionsContent', () => {
         expect(default_mock_store.modules.trade.onPurchase).not.toBeCalled();
     });
 
+    it('should call onPurchaseV2 function if user clicks on purchase button and it is not disabled', () => {
+        mockPurchaseButton();
+        const purchase_button = screen.getAllByRole('button')[0];
+
+        expect(default_mock_store.modules.trade.onPurchaseV2).not.toBeCalled();
+        userEvent.click(purchase_button);
+
+        expect(default_mock_store.modules.trade.onPurchaseV2).toBeCalled();
+    });
+
     it('should render only one button if trade_types have only one field and there are no trade type tabs', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.ACCUMULATOR;
         default_mock_store.modules.trade.trade_types = {

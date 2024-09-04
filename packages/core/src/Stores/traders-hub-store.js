@@ -107,7 +107,7 @@ export default class TradersHubStore extends BaseStore {
             setIsOnboardingVisited: action.bound,
             setIsFirstTimeVisit: action.bound,
             toggleVerificationModal: action.bound,
-            openVerificationDocsListModalal: action.bound,
+            openVerificationDocsListModal: action.bound,
             toggleRegulatorsCompareModal: action.bound,
             showTopUpModal: action.bound,
             toggleWalletsUpgrade: action.bound,
@@ -767,7 +767,7 @@ export default class TradersHubStore extends BaseStore {
         this.is_verification_docs_list_modal_visible = !this.is_verification_docs_list_modal_visible;
     }
 
-    openVerificationDocsListModalal() {
+    openVerificationDocsListModal() {
         const {
             modules: { cfd },
         } = this.root_store;

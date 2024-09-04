@@ -29,7 +29,7 @@ const StatusBadge = ({
         <div
             className={classNames(
                 'switcher-status-badge__container--icon',
-                `switcher-status-badge__container--icon${account_status ?? 'failed'}`
+                `switcher-status-badge__container--icon--${account_status ?? 'failed'}`
             )}
         >
             <Icon icon={icon} size='11' />

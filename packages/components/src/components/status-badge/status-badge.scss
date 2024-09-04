@@ -12,9 +12,23 @@
         align-items: center;
         white-space: nowrap;
 
+        &--pending {
+            font-size: var(--text-size-xxxs);
+            color: var(--status-warning);
+            background-color: var(--status-warning-transparent);
+            border: 1.5px;
+        }
+
+        &--needs_verification {
+            height: 100%;
+            width: 100%;
+            font-size: var(--text-size-xxxs);
+            background-color: var(--status-info-transparent);
+            border: 1.5px;
+        }
+
         &--migrated_with_position,
         &--migrated_without_position,
-        &--pending,
         &--under_maintenance,
         &--unavailable {
             border-color: var(--status-warning);
@@ -25,6 +39,8 @@
         &--failed {
             border-color: var(--status-danger);
             color: var(--status-danger);
+            background-color: var(--status-danger-transparent);
+            border: 1.5px;
         }
 
         &--icon {

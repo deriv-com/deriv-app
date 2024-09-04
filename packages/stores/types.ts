@@ -1087,7 +1087,7 @@ type TTradersHubStore = {
     selectRegion: (region: string) => void;
     closeAccountTransferModal: () => void;
     toggleRegulatorsCompareModal: () => void;
-    openVerificationDocsListModalal: () => void;
+    openVerificationDocsListModal: () => void;
     toggleVerificationModal: () => void;
     modal_data: TModalData;
     financial_restricted_countries: boolean;

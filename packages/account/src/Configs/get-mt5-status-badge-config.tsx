@@ -12,7 +12,7 @@ const getMT5StatusBadgeConfig = (mt5_account_status: TMT5AccountStatus) => {
             return {
                 text: (
                     <Localize
-                        i18n_default_text='<0>Pending verification</0>'
+                        i18n_default_text='<1>In review</1>'
                         components={[<Text key={0} weight='bold' size='xxxs' color='var(--status-warning)' />]}
                     />
                 ),
@@ -22,7 +22,7 @@ const getMT5StatusBadgeConfig = (mt5_account_status: TMT5AccountStatus) => {
             return {
                 text: (
                     <Localize
-                        i18n_default_text='<0>Verification failed.</0> <1>Why?</1>'
+                        i18n_default_text='<1>Failed</1>'
                         components={[
                             <Text key={0} weight='bold' size='xxxs' color='var(--status-danger)' />,
                             <Text
@@ -41,7 +41,7 @@ const getMT5StatusBadgeConfig = (mt5_account_status: TMT5AccountStatus) => {
             return {
                 text: (
                     <Localize
-                        i18n_default_text='<0>Needs verification.</0><1>Verify now</1>'
+                        i18n_default_text='<1>Needs Verification</1>'
                         components={[
                             <Text key={0} weight='bold' size='xxxs' color='var(--status-info)' />,
                             <Text

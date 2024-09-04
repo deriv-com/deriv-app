@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useTranslations } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import { WalletText } from '../../../../../components/Base';
 import { THooks } from '../../../../../types';
 import { getMarketTypeDetails } from '../../../constants';
@@ -12,6 +13,8 @@ type TJurisdictionFootNoteTitle = {
 const JurisdictionFootNoteTitle: FC<TJurisdictionFootNoteTitle> = ({ marketType, selectedJurisdiction }) => {
     const { localize } = useTranslations();
     let footnoteText: string | undefined;
+
+    const { isDesktop } = useDevice();
 
     switch (selectedJurisdiction) {
         case 'svg':
@@ -56,7 +59,7 @@ const JurisdictionFootNoteTitle: FC<TJurisdictionFootNoteTitle> = ({ marketType,
     }
 
     return (
-        <WalletText align='center' size='sm' weight='bold'>
+        <WalletText align='center' size={isDesktop ? 'md' : 'sm'} weight='bold'>
             {footnoteText}
         </WalletText>
     );

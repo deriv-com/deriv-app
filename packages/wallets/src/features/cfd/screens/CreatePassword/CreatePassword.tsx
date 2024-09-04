@@ -33,10 +33,10 @@ const CreatePassword: React.FC<TProps> = ({ isLoading, onPasswordChange, onPrima
         <div className='wallets-create-password'>
             {CreatePasswordIcon[platform as keyof typeof CreatePasswordIcon]}
             <div className='wallets-create-password__text'>
-                <Text align='center' lineHeight='xl' weight='bold'>
+                <Text align='center' lineHeight='xl' size={isDesktop ? 'md' : 'lg'} weight='bold'>
                     <Localize i18n_default_text='Create a {{title}} password' values={{ title }} />
                 </Text>
-                <Text align='center' size='sm'>
+                <Text align='center' size={isDesktop ? 'sm' : 'md'}>
                     <Localize
                         i18n_default_text='You can use this password for all your {{title}} accounts.'
                         values={{ title }}

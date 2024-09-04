@@ -7,7 +7,6 @@ import { useModal } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
 import { getMarketTypeDetails, MARKET_TYPE, TRADING_PLATFORM_STATUS } from '../../../constants';
 import { JurisdictionModal, MT5PasswordModal, TradingPlatformStatusModal } from '../../../modals';
-import './AvailableMT5AccountsList.scss';
 
 type TProps = {
     account: THooks.SortedMT5Accounts;

@@ -36,7 +36,7 @@ const CreatePassword: React.FC<TProps> = ({ isLoading, onPasswordChange, onPrima
                 <Text align='center' lineHeight='xl' weight='bold'>
                     <Localize i18n_default_text='Create a {{title}} password' values={{ title }} />
                 </Text>
-                <Text align='center'>
+                <Text align='center' size='sm'>
                     <Localize
                         i18n_default_text='You can use this password for all your {{title}} accounts.'
                         values={{ title }}

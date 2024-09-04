@@ -193,14 +193,14 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
     if (isDesktop) {
         return (
             <ModalWrapper hideCloseButton>
-                <div className='wallets-mt5-password-modal__body'>{renderMainContent}</div>
+                <div className='wallets-mt5-password-modal wallets-mt5-password-modal__body'>{renderMainContent}</div>
             </ModalWrapper>
         );
     }
 
     return (
         <ModalStepWrapper renderFooter={renderAccountSuccessButton}>
-            <div className='wallets-mt5-password-modal__body'>{renderMainContent}</div>
+            <div className='wallets-mt5-password-modal wallets-mt5-password-modal__body'>{renderMainContent}</div>
         </ModalStepWrapper>
     );
 };

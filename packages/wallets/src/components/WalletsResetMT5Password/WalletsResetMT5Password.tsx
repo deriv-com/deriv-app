@@ -116,7 +116,7 @@ const WalletsResetMT5Password = ({
     }, [platform, title, actionParams, isChangeInvestorPasswordSuccess, isChangeInvestorPasswordError]);
 
     const renderButtons = () => (
-        <div className={'wallets-reset-mt5-password__footer'}>
+        <div className='wallets-reset-mt5-password__footer'>
             <WalletButton isFullWidth={!isDesktop} onClick={() => hide()} size='lg' variant='outlined'>
                 <Localize i18n_default_text='Cancel' />
             </WalletButton>

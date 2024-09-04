@@ -139,7 +139,7 @@ const cfdConfig = {
     counterparty_company_description: localize('Counterparty company'),
     jurisdiction: localize('St. Vincent & Grenadines'),
     jurisdiction_description: localize('Jurisdiction'),
-    leverage: localize('1:1000'),
+    leverage: localize('Up to 1:1000'),
     leverage_description: localize('Maximum leverage'),
     regulator: localize('Financial Commission'),
     regulator_description: localize('Regulator/External dispute resolution'),

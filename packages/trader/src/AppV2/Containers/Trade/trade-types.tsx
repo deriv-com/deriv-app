@@ -4,9 +4,9 @@ import { Chip, Text, ActionSheet } from '@deriv-com/quill-ui';
 import { DraggableList } from 'AppV2/Components/DraggableList';
 import { TradeTypeList } from 'AppV2/Components/TradeTypeList';
 import { getTradeTypesList } from 'AppV2/Utils/trade-types-utils';
+import { checkContractTypePrefix } from 'AppV2/Utils/contract-type';
 import { Localize, localize } from '@deriv/translations';
 import Guide from '../../Components/Guide';
-import { isRiseFallContract, isTurbosContract, isVanillaContract } from '@deriv/shared';
 
 type TTradeTypesProps = {
     onTradeTypeSelect: (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
@@ -168,12 +168,6 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     const handleOnTradeTypeSelect = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         onTradeTypeSelect(e);
         setIsOpen(false);
-    };
-
-    const checkContractTypePrefix = (values: string[]): boolean => {
-        return [isVanillaContract, isTurbosContract, isRiseFallContract].some(contractTypeCheck =>
-            values.every(value => contractTypeCheck(value))
-        );
     };
 
     const isTradeTypeSelected = (value: string) =>

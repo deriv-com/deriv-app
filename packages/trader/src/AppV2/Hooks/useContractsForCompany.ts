@@ -5,6 +5,9 @@ import { cloneObject, getContractCategoriesConfig, getContractTypesConfig } from
 import { TConfig, TContractTypesList } from 'Types';
 import { useDtraderQuery } from './useDtraderQuery';
 import { isLoginidDefined } from 'AppV2/Utils/client';
+import { getTradeTypesList } from 'AppV2/Utils/trade-types-utils';
+import { TContractType } from 'Modules/Trading/Components/Form/ContractType/types';
+import { checkContractTypePrefix } from 'AppV2/Utils/contract-type';
 
 type TContractsForCompanyResponse = {
     contracts_for_company: {
@@ -23,7 +26,9 @@ type TContractsForCompanyResponse = {
 
 const useContractsForCompany = () => {
     const [contract_types_list, setContractTypesList] = React.useState<TContractTypesList | []>([]);
-    const { setContractTypesListV2 } = useTraderStore();
+
+    const [trade_types, setTradeTypes] = React.useState<TContractType[]>([]);
+    const { contract_type, onChange, setContractTypesListV2 } = useTraderStore();
     const { client } = useStore();
     const { loginid, is_switching, landing_company_shortcode } = client;
 
@@ -57,6 +62,36 @@ const useContractsForCompany = () => {
 
     const prev_loginid = useRef(loginid);
     const is_fetching_ref = useRef(is_fetching);
+
+    const isContractTypeAvailable = useCallback(
+        (trade_types: TContractType[]) => {
+            return trade_types.some(
+                type => checkContractTypePrefix([contract_type, type.value]) || contract_type === type.value
+            );
+        },
+        [contract_type]
+    );
+
+    const getTradeTypes = useCallback((categories: TContractTypesList) => {
+        return Array.isArray(categories) && categories.length === 0
+            ? []
+            : getTradeTypesList(categories as TContractTypesList);
+    }, []);
+
+    const validateContractType = useCallback(
+        (trade_types: TContractType[]) => {
+            if (!isContractTypeAvailable(trade_types) && trade_types.length > 0) {
+                const default_contract_type = trade_types[0].value;
+                onChange({
+                    target: {
+                        name: 'contract_type',
+                        value: default_contract_type,
+                    },
+                });
+            }
+        },
+        [isContractTypeAvailable, onChange]
+    );
 
     React.useEffect(() => {
         try {
@@ -103,6 +138,10 @@ const useContractsForCompany = () => {
                 setContractTypesListV2(available_categories);
                 setContractTypesList(available_categories);
                 setAvailableContractTypes(available_contract_types);
+
+                const trade_types = getTradeTypes(available_categories);
+                setTradeTypes(trade_types);
+                validateContractType(trade_types);
             }
         } catch (err) {
             /* eslint-disable no-console */
@@ -121,7 +160,7 @@ const useContractsForCompany = () => {
         }
     }, [loginid, is_switching, refetch]);
 
-    return { contract_types_list, available_contract_types, is_fetching_ref };
+    return { trade_types, contract_types_list, available_contract_types, is_fetching_ref };
 };
 
 export default useContractsForCompany;

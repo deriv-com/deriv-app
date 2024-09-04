@@ -6,7 +6,6 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import BottomNav from 'AppV2/Components/BottomNav';
 import PurchaseButton from 'AppV2/Components/PurchaseButton';
 import { HEIGHT } from 'AppV2/Utils/layout-utils';
-import { getTradeTypesList } from 'AppV2/Utils/trade-types-utils';
 import { TradeParametersContainer, TradeParameters } from 'AppV2/Components/TradeParameters';
 import CurrentSpot from 'AppV2/Components/CurrentSpot';
 import { TradeChart } from '../Chart';
@@ -16,20 +15,13 @@ import MarketSelector from 'AppV2/Components/MarketSelector';
 import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
 import { isAccumulatorContract } from '@deriv/shared';
-import { TContractTypesList } from 'Types';
 
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
     const chart_ref = React.useRef<HTMLDivElement>(null);
 
     const { active_symbols, contract_type, onMount, onChange, onUnmount } = useTraderStore();
-    const { contract_types_list } = useContractsForCompany();
-
-    const trade_types = React.useMemo(() => {
-        return Array.isArray(contract_types_list) && contract_types_list.length === 0
-            ? []
-            : getTradeTypesList(contract_types_list as TContractTypesList);
-    }, [contract_types_list]);
+    const { trade_types } = useContractsForCompany();
 
     const symbols = React.useMemo(
         () =>

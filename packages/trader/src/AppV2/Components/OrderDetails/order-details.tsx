@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { CaptionText, Text } from '@deriv-com/quill-ui';
 import useOrderDetails from 'AppV2/Hooks/useOrderDetails';
 import { TContractInfo } from '@deriv/shared';

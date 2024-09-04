@@ -210,20 +210,19 @@ const transformAsian = (data: TContractInfo) => {
 const transformLooksback = (data: TContractInfo) => {
     const commonFields = getCommonFields(data);
     const is_call_contract = data.contract_type == CONTRACT_TYPES.LB_CALL;
+    let spot_key;
+
+    if (data.transaction_ids?.sell) {
+        spot_key = is_call_contract ? CARD_LABELS.LOW_SPOT : CARD_LABELS.HIGH_SPOT;
+    } else {
+        spot_key = is_call_contract ? CARD_LABELS.INDICATIVE_LOW_SPOT : CARD_LABELS.INDICATIVE_HIGH_SPOT;
+    }
+
     return {
         [CARD_LABELS.REFERENCE_ID]: commonFields[CARD_LABELS.REFERENCE_ID],
         [CARD_LABELS.DURATION]: commonFields[CARD_LABELS.DURATION],
         [CARD_LABELS.MULTIPLIER]: data.multiplier ?? '',
-        ...{
-            ...(data.transaction_ids?.sell
-                ? {
-                      [is_call_contract ? CARD_LABELS.LOW_SPOT : CARD_LABELS.HIGH_SPOT]: data.barrier ?? '',
-                  }
-                : {
-                      [is_call_contract ? CARD_LABELS.INDICATIVE_LOW_SPOT : CARD_LABELS.INDICATIVE_HIGH_SPOT]:
-                          data.barrier ?? '',
-                  }),
-        },
+        [spot_key]: data.barrier ?? '',
         [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
     };
 };
@@ -235,15 +234,10 @@ const transformHighLowLookback = (data: TContractInfo) => {
         [CARD_LABELS.DURATION]: commonFields[CARD_LABELS.DURATION],
         [CARD_LABELS.MULTIPLIER]: data.multiplier ?? '',
         ...{
-            ...(data.transaction_ids?.sell
-                ? {
-                      [CARD_LABELS.HIGH_SPOT]: data.high_barrier ?? '',
-                      [CARD_LABELS.LOW_SPOT]: data.low_barrier ?? '',
-                  }
-                : {
-                      [CARD_LABELS.INDICATIVE_HIGH_SPOT]: data.high_barrier ?? '',
-                      [CARD_LABELS.INDICATIVE_LOW_SPOT]: data.low_barrier ?? '',
-                  }),
+            [data.transaction_ids?.sell ? CARD_LABELS.HIGH_SPOT : CARD_LABELS.INDICATIVE_HIGH_SPOT]:
+                data.high_barrier ?? '',
+            [data.transaction_ids?.sell ? CARD_LABELS.LOW_SPOT : CARD_LABELS.INDICATIVE_LOW_SPOT]:
+                data.low_barrier ?? '',
         },
         [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
     };

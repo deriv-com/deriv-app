@@ -7,11 +7,19 @@ const phoneNumberSchema = Yup.string().matches(
     localize('Enter a valid phone number.')
 );
 
-export const validatePhoneNumber = (phone_number: string, setErrorMessage: (value: string) => void) => {
+export const validatePhoneNumber = (
+    phone_number: string,
+    setErrorMessage: (value: string) => void,
+    setIsDisabledRequestButton: (value: boolean) => void
+) => {
     phoneNumberSchema
         .validate(phone_number)
-        .then(() => setErrorMessage(''))
+        .then(() => {
+            setErrorMessage('');
+            setIsDisabledRequestButton(false);
+        })
         .catch(({ errors }: any) => {
             setErrorMessage(errors);
+            setIsDisabledRequestButton(true);
         });
 };

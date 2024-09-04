@@ -65,8 +65,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
 
     const handleOnChangePhoneNumber = (e: ChangeEvent<HTMLInputElement>) => {
         setPhoneNumber(e.target.value);
-        validatePhoneNumber(`+${e.target.value}`, setErrorMessage);
-        setIsDisabledRequestButton(false);
+        validatePhoneNumber(`+${e.target.value}`, setErrorMessage, setIsDisabledRequestButton);
     };
 
     const handleSubmit = async (phone_verification_type: string) => {

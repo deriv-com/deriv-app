@@ -12,5 +12,7 @@
     @include mobile-or-tablet-screen {
         width: 100%;
         height: calc(100% - 8.5rem);
+        max-width: 60rem;
+        margin: 0 auto;
     }
 }

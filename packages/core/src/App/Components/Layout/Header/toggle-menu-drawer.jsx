@@ -12,13 +12,14 @@ import {
     usePaymentAgentTransferVisible,
     useP2PSettings,
 } from '@deriv/hooks';
-import { getOSNameWithUAParser, getStaticUrl, routes, useIsMounted, whatsapp_url } from '@deriv/shared';
+import { getOSNameWithUAParser, getStaticUrl, routes, useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import getRoutesConfig from 'App/Constants/routes-config';
 import LiveChat from 'App/Components/Elements/LiveChat';
+import WhatsApp from 'App/Components/Elements/WhatsApp';
 import { MenuTitle, MobileLanguageMenu } from './Components/ToggleMenu';
 import MenuLink from './menu-link';
 import PlatformSwitcher from './platform-switcher';
@@ -427,16 +428,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 )}
                                 {cs_chat_whatsapp && (
                                     <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
-                                        <Icon icon='IcWhatsApp' className='drawer-icon' />
-                                        <a
-                                            className='header__menu-mobile-whatsapp-link'
-                                            href={whatsapp_url}
-                                            target='_blank'
-                                            rel='noopener noreferrer'
-                                            onClick={toggleDrawer}
-                                        >
-                                            {localize('WhatsApp')}
-                                        </a>
+                                        <WhatsApp onClick={toggleDrawer} />
                                     </MobileDrawer.Item>
                                 )}
                                 {cs_chat_livechat && (

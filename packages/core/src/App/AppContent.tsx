@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRemoteConfig } from '@deriv/api';
 import { useDevice } from '@deriv-com/ui';
 import { useIsMounted } from '@deriv/shared';
@@ -17,7 +17,7 @@ import Devtools from './Devtools';
 import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 import initDatadog from '../Utils/Datadog';
 import { ThemeProvider } from '@deriv-com/quill-ui';
-import { useGrowthbookIsOn } from '@deriv/hooks';
+import { useGrowthbookIsOn, useLiveChat } from '@deriv/hooks';
 import { useTranslations } from '@deriv-com/translations';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
@@ -37,6 +37,20 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { data } = useRemoteConfig(isMounted());
     const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();
+
+    const livechat_client_information: Parameters<typeof useLiveChat>[0] = {
+        is_client_initialized: store.client.is_client_initialized,
+        is_logged_in: store.client.is_logged_in,
+        loginid: store.client.loginid,
+        landing_company_shortcode: store.client.landing_company_shortcode,
+        currency: store.client.currency,
+        residence: store.client.residence,
+        email: store.client.email,
+        first_name: store.client.account_settings.first_name,
+        last_name: store.client.account_settings.last_name,
+    };
+
+    useLiveChat(livechat_client_information);
 
     React.useEffect(() => {
         switchLanguage(current_language);

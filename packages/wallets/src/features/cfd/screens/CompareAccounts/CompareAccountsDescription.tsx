@@ -49,11 +49,10 @@ const CompareAccountsDescription = ({
             </div>
             {!isEuRegion && (
                 <div className='wallets-compare-accounts-text-container__separator'>
-                    <WalletText align='center' as='h1' size='xl' weight='bold'>
-                        {jurisdictionData.spread}
-                    </WalletText>
-                    <WalletText align='center' as='p' size='2xs'>
-                        {jurisdictionData.spread_description}
+                    <div className='wallets-compare-accounts-title__separator'>
+                        <WalletText align='center' as='h1' size='xl' weight='bold'>
+                            {jurisdictionData.spread}
+                        </WalletText>
                         {marketTypeShortCode === MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI && (
                             <Tooltip
                                 as='div'
@@ -65,6 +64,9 @@ const CompareAccountsDescription = ({
                                 <InfoIcon />
                             </Tooltip>
                         )}
+                    </div>
+                    <WalletText align='center' as='p' size='2xs'>
+                        {jurisdictionData.spread_description}
                     </WalletText>
                 </div>
             )}

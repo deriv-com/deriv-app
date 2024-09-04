@@ -56,13 +56,15 @@ const JurisdictionModal = () => {
     const modalFooter = isDynamicLeverageVisible
         ? undefined
         : () => (
-              <WalletButton
-                  disabled={!selectedJurisdiction || (selectedJurisdiction !== 'svg' && !isCheckBoxChecked)}
-                  isFullWidth={!isDesktop}
-                  onClick={() => show(<JurisdictionFlow />)}
-              >
-                  <Localize i18n_default_text='Next' />
-              </WalletButton>
+              <div className='wallets-jurisdiction-modal__footer'>
+                  <WalletButton
+                      disabled={!selectedJurisdiction || (selectedJurisdiction !== 'svg' && !isCheckBoxChecked)}
+                      isFullWidth={!isDesktop}
+                      onClick={() => show(<JurisdictionFlow />)}
+                  >
+                      <Localize i18n_default_text='Next' />
+                  </WalletButton>
+              </div>
           );
 
     useEffect(() => {

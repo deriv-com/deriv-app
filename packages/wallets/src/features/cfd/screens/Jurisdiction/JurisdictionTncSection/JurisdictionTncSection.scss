@@ -33,4 +33,11 @@
             }
         }
     }
+
+    &__container {
+        max-width: 60rem;
+        margin: 0 auto;
+        width: 100%;
+        text-align: center;
+    }
 }

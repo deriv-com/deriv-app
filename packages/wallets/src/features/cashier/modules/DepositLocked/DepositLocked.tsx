@@ -8,8 +8,7 @@ import {
     useWebsiteStatus,
 } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
-import { Loader } from '@deriv-com/ui';
-import { WalletsActionScreen } from '../../../../components';
+import { ActionScreen, Loader } from '@deriv-com/ui';
 import getDepositLockedDesc from './DepositLockedContent';
 import './DepositLocked.scss';
 
@@ -48,7 +47,7 @@ const DepositLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     if (isDepositLocked) {
         return (
             <div className='wallets-deposit-locked'>
-                <WalletsActionScreen
+                <ActionScreen
                     description={getDepositLockedDesc({
                         askFixDetails,
                         clientTncStatus,

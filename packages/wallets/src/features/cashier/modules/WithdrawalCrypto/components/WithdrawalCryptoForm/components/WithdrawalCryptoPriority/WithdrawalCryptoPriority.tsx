@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
 import { useTranslations } from '@deriv-com/translations';
-import { Tooltip } from '@deriv-com/ui';
-import { WalletCheckbox, WalletsPriorityCryptoWithdrawLoader } from '../../../../../../../../components';
+import { Checkbox, Tooltip } from '@deriv-com/ui';
+import { WalletsPriorityCryptoWithdrawLoader } from '../../../../../../../../components';
 import InfoIcon from '../../../../../../../../public/images/ic-info-outline.svg';
 import { useWithdrawalCryptoContext } from '../../../../provider';
 import { WithdrawalCryptoPriorityFeeInfo } from '../WithdrawalCryptoPriorityFeeInfo';
@@ -41,12 +41,11 @@ const WithdrawalCryptoPriority = () => {
     }, []);
 
     return (
-        <>
+        <React.Fragment>
             <div className='wallets-crypto-form-checkbox'>
-                <WalletCheckbox
+                <Checkbox
                     checked={values.priorityWithdrawal}
                     label={localize('Priority withdrawal')}
-                    labelFontSize='md'
                     name='priorityWithdrawal'
                     onChange={e => {
                         if (!values.priorityWithdrawal) {
@@ -74,7 +73,7 @@ const WithdrawalCryptoPriority = () => {
             {!isLoadingCryptoEstimationFee && values.priorityWithdrawal && (
                 <WithdrawalCryptoPriorityFeeInfo cryptoAmount={values.cryptoAmount} />
             )}
-        </>
+        </React.Fragment>
     );
 };
 

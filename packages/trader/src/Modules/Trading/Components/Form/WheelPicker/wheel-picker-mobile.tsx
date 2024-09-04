@@ -68,14 +68,12 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
 
     const swipeableHandlers = useSwipeable({
         onSwipeStart: eventData => {
-            eventData.event.preventDefault();
             eventData.event.stopPropagation();
             if (pickerRef.current && pickerRef.current.contains(eventData.event.target as Node)) {
                 setSwipe(swipe => ({ ...swipe, startY: swipe.translateY }));
             }
         },
         onSwiping: ({ deltaY, first, event }) => {
-            event.preventDefault();
             event.stopPropagation();
             if (first || (pickerRef.current && !pickerRef.current.contains(event.target as Node))) return;
             const { translateY, newIndex } = calculateLimits(swipe.startY, deltaY, optionHeight, options.length);
@@ -87,7 +85,6 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
             setSelectedIndex(newIndex);
         },
         onSwiped: ({ deltaY, event }) => {
-            event.preventDefault();
             event.stopPropagation();
             if (pickerRef.current && !pickerRef.current.contains(event.target as Node)) return;
             const { newIndex } = calculateLimits(swipe.startY, deltaY, optionHeight, options.length);
@@ -124,6 +121,14 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
         if (index === selectedIndex - 1 || index === selectedIndex + 1) return 'xs';
         return 'xxs';
     };
+    const dynamicPadding = (currency: string) => {
+        const basePadding = 40;
+        const paddingPerChar = 11;
+
+        const maxLength = Math.max(...options.map((option: string) => option.length), currency.length);
+
+        return basePadding + maxLength * paddingPerChar;
+    };
 
     return (
         <div className='wheel-picker-mobile'>
@@ -137,7 +142,7 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
                         as='h1'
                         className='currency-label'
                         style={{
-                            paddingLeft: String(Math.abs(Math.max(Number(...options)))).length * 15 + 40,
+                            paddingLeft: `${dynamicPadding(currency)}px`,
                         }}
                     >
                         {currency}

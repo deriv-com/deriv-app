@@ -61,7 +61,7 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({ transac
                 </React.Fragment>
             ) : (
                 <React.Fragment>
-                    <Text size='sm'>
+                    <Text align='start' size='sm'>
                         <Localize i18n_default_text='No recent transactions.' />
                     </Text>
                     <Divider />

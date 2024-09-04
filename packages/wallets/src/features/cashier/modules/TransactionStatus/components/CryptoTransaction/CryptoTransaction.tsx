@@ -71,7 +71,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
     return (
         <div className='wallets-crypto-transaction'>
             <div className='wallets-crypto-transaction__type-and-status'>
-                <Text lineHeight='sm' size='xs'>
+                <Text align='start' lineHeight='sm' size='xs'>
                     {transaction.is_deposit ? (
                         <Localize i18n_default_text='Deposit {{currency}}' values={{ currency }} />
                     ) : (
@@ -87,7 +87,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                                 .replace('_', '-')}`
                         )}
                     />
-                    <Text lineHeight='2xs' size='2xs'>
+                    <Text align='start' lineHeight='2xs' size='2xs'>
                         {getStatusName(transaction.status_code)}
                     </Text>
                     {!!transaction.is_valid_to_cancel && !isMobile && (
@@ -102,15 +102,15 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                 </div>
             </div>
             <div className='wallets-crypto-transaction__amount-and-date'>
-                <Text color='less-prominent' size='2xs'>
+                <Text align='start' color='less-prominent' size='2xs'>
                     {transaction.formatted_amount}
                 </Text>
-                <Text color='less-prominent' size='2xs'>
+                <Text align='start' color='less-prominent' size='2xs'>
                     {moment.unix(transaction.submit_date).utc().format('MMM D, YYYY')}
                 </Text>
             </div>
             {transaction?.transaction_fee && (
-                <Text color='less-prominent' lineHeight='xs' size='2xs'>
+                <Text align='start' color='less-prominent' lineHeight='xs' size='2xs'>
                     <Localize
                         i18n_default_text='Transaction fee: {{fee}} {{currency}}'
                         values={{
@@ -120,7 +120,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                     />
                 </Text>
             )}
-            <Text lineHeight='2xs' size='2xs'>
+            <Text align='start' lineHeight='2xs' size='2xs'>
                 <Localize
                     components={[
                         <a
@@ -135,7 +135,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                     values={{ address: formattedAddressHash }}
                 />
             </Text>
-            <Text lineHeight='2xs' size='2xs'>
+            <Text align='start' lineHeight='2xs' size='2xs'>
                 <Localize
                     components={[
                         <a
@@ -152,7 +152,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
             </Text>
             {transaction.is_deposit && (
                 <div>
-                    <Text lineHeight='2xs' size='2xs'>
+                    <Text align='start' lineHeight='2xs' size='2xs'>
                         <Localize
                             components={[<span className='wallets-crypto-transaction__red-text' key={0} />]}
                             i18n_default_text='Confirmations: <0>{{confirmations}}</0>'

@@ -15,10 +15,11 @@ import { useDBotStore } from 'Stores/useDBotStore';
 
 type TAnnouncements = {
     is_mobile?: boolean;
+    is_tablet?: boolean;
     handleTabChange: (item: number) => void;
 };
 
-const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) => {
+const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnnouncements) => {
     const {
         load_modal: { toggleLoadModal },
     } = useDBotStore();
@@ -88,6 +89,7 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
     React.useEffect(() => {
         const number_ammount_active_announce = Object.values(read_announcements_map).filter(value => value).length;
         setAmountActiveAnnounce(number_ammount_active_announce);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [read_announcements_map]);
 
     const handleOnCancel = () => {
@@ -142,6 +144,7 @@ const Announcements = observer(({ is_mobile, handleTabChange }: TAnnouncements) 
                     className={classNames('', {
                         'notifications__wrapper--mobile': is_mobile,
                         'notifications__wrapper--desktop': !is_mobile,
+                        'notifications__wrapper--tablet': is_tablet,
                     })}
                     clearNotificationsCallback={clearNotificationsCallback}
                     componentConfig={{

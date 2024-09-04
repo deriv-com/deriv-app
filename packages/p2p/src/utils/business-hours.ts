@@ -35,6 +35,9 @@ const DAYS_OF_WEEK = {
     saturday: 6,
 };
 
+const DAYS_IN_WEEK = 7;
+const MINUTES_IN_WEEK = MINUTES_IN_DAY * DAYS_IN_WEEK;
+
 // This function returns an object with the days of the week, their labels, and their values
 export const getDaysOfWeek = (): TDaysOfWeek => {
     return {
@@ -113,63 +116,77 @@ const adjustOverflow = (timeRanges: TTimeRange[]) => {
 };
 
 /**
+ * Constrain the time ranges to 7 entries, handling any necessary wrapping or merging.
+ * @param timeRanges
+ * @returns
+ */
+const constrainTo7Days = (timeRanges: TTimeRange[]): TTimeRange[] => {
+    const dayRanges: TTimeRange[] = [];
+
+    for (let i = 0; i < DAYS_IN_WEEK; i++) {
+        const dayStart = i * MINUTES_IN_DAY;
+        const dayEnd = (i + 1) * MINUTES_IN_DAY;
+
+        // Collect all ranges that fall within this day
+        const rangesForDay = timeRanges.filter(range => {
+            return (
+                (range.start_min && range.start_min >= dayStart && range.start_min < dayEnd) || // Starts within the day
+                (range.end_min && range.end_min > dayStart && range.end_min <= dayEnd) || // Ends within the day
+                (range.start_min && range.end_min && range.start_min < dayStart && range.end_min > dayEnd) // Spans across the entire day
+            );
+        });
+
+        if (rangesForDay.length === 0) {
+            // No ranges for this day, push null placeholder
+            dayRanges.push({ start_min: null, end_min: null });
+        } else {
+            // Merge the ranges for the day
+            const mergedRange = {
+                start_min: Math.min(...rangesForDay.map(r => Math.max(r.start_min ?? 0, dayStart))),
+                end_min: Math.max(...rangesForDay.map(r => Math.min(r.end_min ?? 0, dayEnd))),
+            };
+            dayRanges.push(mergedRange);
+        }
+    }
+
+    return dayRanges;
+};
+
+/**
  * The below function adjusts the time by adding or subtracting the offset based on the timezone
  * @param timeRanges
  * @param offset
  * @returns
  */
 const adjustTimeRangesWithOffset = (timeRanges: TTimeRange[], offset: number) => {
-    // Separate null and non-null ranges
-    let nonNullRanges: TRange[] = [];
+    const adjustedRanges: TTimeRange[] = [];
 
     timeRanges.forEach(range => {
-        if (range.start_min !== null && range.end_min !== null) {
-            nonNullRanges.push(range as TRange);
-        }
-    });
-
-    // Adjust the non-null ranges
-    nonNullRanges = nonNullRanges.map(range => {
-        let adjustedStart = range.start_min;
-        let adjustedEnd = range.end_min;
-
-        if (adjustedStart !== null) {
-            adjustedStart -= offset;
+        if (range.start_min === null || range.end_min === null) {
+            adjustedRanges.push(range);
+            return;
         }
 
-        if (adjustedEnd !== null) {
-            adjustedEnd -= offset;
-        }
+        // Apply the offset to both start and end times
+        const start = (range.start_min - offset + MINUTES_IN_DAY * DAYS_IN_WEEK) % (MINUTES_IN_DAY * DAYS_IN_WEEK);
+        const end = (range.end_min - offset + MINUTES_IN_DAY * DAYS_IN_WEEK) % (MINUTES_IN_DAY * DAYS_IN_WEEK);
 
-        return { start_min: adjustedStart, end_min: adjustedEnd };
-    });
-
-    // Sort the adjusted non-null ranges
-    nonNullRanges.sort((a, b) => a.start_min - b.start_min);
-
-    // Merge back the null values into their original positions
-    let result: TTimeRange[] = [];
-    let nonNullIndex = 0;
-    timeRanges.forEach(range => {
-        if (range.start_min !== null && range.end_min !== null) {
-            result.push(nonNullRanges[nonNullIndex++]);
+        // Handle wrap-around if start is greater than end (crossing midnight)
+        if (start >= end) {
+            // Push two ranges: one from start to end of the day, and one from the beginning of the day to end
+            adjustedRanges.push({
+                start_min: start,
+                end_min: (Math.floor(start / MINUTES_IN_DAY) + 1) * MINUTES_IN_DAY,
+            });
+            adjustedRanges.push({ start_min: Math.floor(end / MINUTES_IN_DAY) * MINUTES_IN_DAY, end_min: end });
         } else {
-            result.push(range);
+            // Regular case where start is less than end
+            adjustedRanges.push({ start_min: start, end_min: end });
         }
     });
 
-    if (result.length > 7) {
-        if (offset < 0) {
-            result[0].start_min =
-                (result[0].start_min ?? 0) - ((result[7]?.end_min ?? 0) - (result[7]?.start_min ?? 0));
-            result = result.splice(0, 7);
-        } else if (offset > 0) {
-            result[7].end_min = (result[7].end_min ?? 0) + ((result[0]?.end_min ?? 0) - (result[0]?.start_min ?? 0));
-            result = result.splice(1, 8);
-        }
-    }
-
-    return adjustOverflow(result);
+    // Now constrain this to 7 days
+    return constrainTo7Days(adjustedRanges);
 };
 
 /**
@@ -177,45 +194,40 @@ const adjustTimeRangesWithOffset = (timeRanges: TTimeRange[], offset: number) =>
  * @param splitRanges
  * @returns
  */
-const addNullObjectsForGaps = (splitRanges: TTimeRange[], offset = 0) => {
-    const finalRanges = [];
-    const MINUTES_IN_DAY = 1440;
-    const MINUTES_IN_WEEK = MINUTES_IN_DAY * 7;
+const addNullObjectsForGaps = (splitRanges: TTimeRange[]) => {
+    const finalRanges: TTimeRange[] = [];
 
-    // Check for gap at the start of the week
-    const firstStart = splitRanges.length > 0 ? splitRanges[0].start_min ?? 0 : MINUTES_IN_WEEK;
-    if (firstStart > 0) {
-        const nullObjectsCount = Math.floor((firstStart - offset) / MINUTES_IN_DAY);
-        for (let i = 0; i < nullObjectsCount; i++) {
-            finalRanges.push({ start_min: null, end_min: null });
-        }
-    }
-
-    for (let i = 0; i < splitRanges.length; i++) {
+    for (let i = 0; i < splitRanges.length - 1; i++) {
         finalRanges.push(splitRanges[i]);
-        if (i < splitRanges.length - 1) {
-            const currentEnd = splitRanges[i].end_min ?? 0;
-            const nextStart = splitRanges[i + 1].start_min ?? 0;
-            const gap = nextStart - currentEnd;
 
-            // Calculate the number of null objects needed
-            if (gap >= MINUTES_IN_DAY) {
-                const nullObjectsCount = Math.floor(gap / MINUTES_IN_DAY);
-                for (let j = 0; j < nullObjectsCount; j++) {
-                    finalRanges.push({ start_min: null, end_min: null });
-                }
+        const currentEnd = splitRanges[i].end_min ?? 0;
+        const nextStart = splitRanges[i + 1].start_min ?? 0;
+        const gap = nextStart - currentEnd;
+
+        // If the gap is larger than a day, insert null objects
+        if (gap >= MINUTES_IN_DAY) {
+            const nullObjectsCount = Math.floor(gap / MINUTES_IN_DAY);
+            for (let j = 0; j < nullObjectsCount; j++) {
+                finalRanges.push({ start_min: null, end_min: null });
             }
         }
     }
 
-    // Check for gap at the end of the week
-    const lastEnd = splitRanges.length > 0 ? splitRanges[splitRanges.length - 1].end_min ?? 0 : 0;
-    if (lastEnd < MINUTES_IN_WEEK) {
-        const nullObjectsCount = Math.floor((MINUTES_IN_WEEK - (lastEnd - offset)) / MINUTES_IN_DAY);
-        for (let i = 0; i < nullObjectsCount; i++) {
+    // Add the last range
+    finalRanges.push(splitRanges[splitRanges.length - 1]);
+
+    // Handle wrap-around gap (last to first)
+    const lastEnd = splitRanges[splitRanges.length - 1].end_min ?? 0;
+    const firstStart = splitRanges[0].start_min ?? 0;
+    const wrapAroundGap = MINUTES_IN_WEEK - lastEnd + firstStart;
+
+    if (wrapAroundGap >= MINUTES_IN_DAY) {
+        const nullObjectsCount = Math.floor(wrapAroundGap / MINUTES_IN_DAY);
+        for (let j = 0; j < nullObjectsCount; j++) {
             finalRanges.push({ start_min: null, end_min: null });
         }
     }
+
     return finalRanges;
 };
 
@@ -249,7 +261,6 @@ type TRange = {
  * @param timezoneOffset 
  * @returns 
  */
-
 export const splitTimeRange = (timeRanges: TRange[] = [], offset = 0): TTimeRange[] => {
     // Handle the case when timeRanges is undefined or an empty array
     if (!timeRanges || timeRanges.length === 0) {
@@ -287,9 +298,10 @@ export const splitTimeRange = (timeRanges: TRange[] = [], offset = 0): TTimeRang
     // Sort the split ranges
     splitRanges.sort((a, b) => a.start_min - b.start_min);
 
-    const resultWithGaps = addNullObjectsForGaps(splitRanges, offset);
+    const resultWithGaps = addNullObjectsForGaps(splitRanges);
 
     const resultWithOffset = adjustTimeRangesWithOffset(resultWithGaps, offset);
+
     return resultWithOffset;
 };
 

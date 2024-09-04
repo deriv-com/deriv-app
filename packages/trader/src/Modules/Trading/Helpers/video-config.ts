@@ -3,7 +3,7 @@ type TDtraderVideoUrl = {
 };
 
 type TVideoVariants = {
-    dark: string;
+    dark?: string;
     light: string;
 };
 
@@ -50,6 +50,9 @@ export const DESCRIPTION_VIDEO_ID: TDtraderVideoUrl = {
     vanilla: {
         light: '9b8b6ae67d3a720e4aee2665889d17fb',
         dark: '8f04e9d768b8e08a1d87830c95c6b9c8',
+    },
+    accumulator_stats: {
+        light: 'cfd0bd25af245c1c987106a247cbb81a',
     },
 };
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ActionSheet, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
+import { DESCRIPTION_VIDEO_ID } from 'Modules/Trading/Helpers/video-config';
 
 const AccumulatorStatsDescription = ({ onActionSheetClose }: { onActionSheetClose: () => void }) => {
     const src = 'cfd0bd25af245c1c987106a247cbb81a';
@@ -14,11 +15,10 @@ const AccumulatorStatsDescription = ({ onActionSheetClose }: { onActionSheetClos
                             allowFullScreen={false}
                             width='100%'
                             height='100%'
-                            src={`https://iframe.cloudflarestream.com/${src}?muted=true&controls=false&autoplay=true&loop=true&preload=auto`}
+                            src={`https://iframe.cloudflarestream.com/${DESCRIPTION_VIDEO_ID.accumulator_stats.light}?muted=true&controls=false&autoplay=true&loop=true&preload=auto`}
                         />
                     </div>
                 </div>
-
                 <div className='stats-description__content'>
                     <div className='stats-description__content__title'>
                         <Text size='lg' bold>

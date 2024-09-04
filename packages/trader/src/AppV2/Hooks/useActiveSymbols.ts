@@ -140,7 +140,6 @@ const useActiveSymbols = () => {
             prev_loginid.current !== loginid &&
             !is_switching
         ) {
-            setActiveSymbols([]);
             refetch();
             prev_loginid.current = loginid;
         }

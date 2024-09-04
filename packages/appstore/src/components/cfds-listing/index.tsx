@@ -252,11 +252,13 @@ const CFDsListing = observer(() => {
         >
             {!isDesktop && <CompareAccount accounts_sub_text={accounts_sub_text} />}
             <AddDerivAccount />
-            <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
-                <Text line_height='m' weight='bold' color='prominent'>
-                    {localize('Deriv MT5')}
-                </Text>
-            </div>
+            {combined_cfd_mt5_accounts.length > 0 && (
+                <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
+                    <Text line_height='m' weight='bold' color='prominent'>
+                        {localize('Deriv MT5')}
+                    </Text>
+                </div>
+            )}
             {has_svg_accounts_to_migrate && is_landing_company_loaded && <MigrationBanner />}
             {is_landing_company_loaded && !is_populating_mt5_account_list ? (
                 <React.Fragment>

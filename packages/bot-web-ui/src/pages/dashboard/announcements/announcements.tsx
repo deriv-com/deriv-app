@@ -13,10 +13,11 @@ import { performButtonAction } from './utils/accumulator-helper-functions';
 
 type TAnnouncements = {
     is_mobile?: boolean;
+    is_tablet?: boolean;
     handleTabChange: (item: number) => void;
 };
 
-const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
+const Announcements = ({ is_mobile, is_tablet, handleTabChange }: TAnnouncements) => {
     const [is_announce_dialog_open, setIsAnnounceDialogOpen] = React.useState(false);
     const [is_open_announce_list, setIsOpenAnnounceList] = React.useState(false);
     const [selected_announcement, setSelectedAnnouncement] = React.useState<TAnnouncement | null>(null);
@@ -133,6 +134,7 @@ const Announcements = ({ is_mobile, handleTabChange }: TAnnouncements) => {
                     className={clsx('', {
                         'notifications__wrapper--mobile': is_mobile,
                         'notifications__wrapper--desktop': !is_mobile,
+                        'notifications__wrapper--tablet': is_tablet,
                     })}
                     clearNotificationsCallback={clearNotificationsCallback}
                     componentConfig={{

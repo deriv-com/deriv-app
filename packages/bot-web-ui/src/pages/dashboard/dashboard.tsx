@@ -19,7 +19,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
     const { dashboard_strategies } = load_modal;
     const { active_tab, active_tour } = dashboard;
     const has_dashboard_strategies = !!dashboard_strategies?.length;
-    const { is_desktop } = ui;
+    const { is_desktop, is_tablet } = ui;
 
     return (
         <React.Fragment>
@@ -29,7 +29,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                 })}
             >
                 <div className='tab__dashboard__content'>
-                    <Announcements is_mobile={!is_desktop} handleTabChange={handleTabChange} />
+                    <Announcements is_mobile={!is_desktop} is_tablet={is_tablet} handleTabChange={handleTabChange} />
                     <div className='quick-panel'>
                         <div
                             className={classNames('tab__dashboard__header', {

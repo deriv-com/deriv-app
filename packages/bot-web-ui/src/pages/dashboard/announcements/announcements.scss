@@ -76,7 +76,8 @@
         border-width: 1px;
         margin-inline-end: 1rem;
 
-        &--desktop {
+        &--desktop,
+        &--tablet {
             z-index: 10;
             top: 5rem;
             right: 0;
@@ -85,6 +86,14 @@
 
             @include rtl {
                 right: -24rem;
+            }
+        }
+
+        &--tablet {
+            height: auto;
+
+            @include rtl {
+                right: -37rem;
             }
         }
 

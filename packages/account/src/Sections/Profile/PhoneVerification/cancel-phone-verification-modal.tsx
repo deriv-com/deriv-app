@@ -64,6 +64,8 @@ const CancelPhoneVerificationModal = observer(() => {
             isMobile={isMobile}
             showHandleBar
             isOpened={show_modal}
+            isNonExpandable
+            shouldCloseModalOnSwipeDown
             shouldCloseOnPrimaryButtonClick
             primaryButtonLabel={<Localize i18n_default_text='Continue verification' />}
             buttonColor='coral'

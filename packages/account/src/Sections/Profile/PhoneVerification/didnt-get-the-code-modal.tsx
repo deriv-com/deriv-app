@@ -74,6 +74,8 @@ const DidntGetTheCodeModal = ({
             isMobile={isMobile}
             showHandleBar
             isOpened={should_show_didnt_get_the_code_modal}
+            isNonExpandable
+            shouldCloseModalOnSwipeDown
             showSecondaryButton
             primaryButtonCallback={handleResendCode}
             secondaryButtonCallback={handleChangeOTPVerification}

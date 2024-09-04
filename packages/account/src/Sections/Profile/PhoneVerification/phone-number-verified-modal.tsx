@@ -39,6 +39,7 @@ const PhoneNumberVerifiedModal = observer(
                 isOpened={should_show_phone_number_verified_modal}
                 showHandleBar={false}
                 showCrossIcon={false}
+                isNonExpandable
                 buttonColor='coral'
                 primaryButtonCallback={handleDoneButton}
                 primaryButtonLabel={<Localize i18n_default_text='OK' />}

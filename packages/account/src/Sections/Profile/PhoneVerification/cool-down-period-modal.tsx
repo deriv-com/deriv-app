@@ -28,6 +28,7 @@ const CoolDownPeriodModal = observer(
                 isMobile={isMobile}
                 showCrossIcon={false}
                 showHandleBar={false}
+                isNonExpandable
                 primaryButtonLabel={<Localize i18n_default_text='OK' />}
                 primaryButtonCallback={handleCloseCoolDownPeriodModal}
                 disableCloseOnOverlay

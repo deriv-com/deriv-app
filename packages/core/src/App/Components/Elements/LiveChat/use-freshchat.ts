@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useEffect, useState } from 'react';
 import { useIsMounted } from 'usehooks-ts';
 
 const useFreshChat = () => {
@@ -15,7 +15,7 @@ const useFreshChat = () => {
         };
     };
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         setDefaultSettings();
     }, []);
 

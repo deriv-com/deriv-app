@@ -12,6 +12,7 @@ import TakeProfit from './TakeProfit';
 import AccumulatorsInformation from './AccumulatorsInformation';
 import Multiplier from './Multiplier';
 import RiskManagement from './RiskManagement';
+import MultipliersDealCancellationInfo from './MultipliersDealCancellationInfo';
 import TradeTypeTabs from './TradeTypeTabs';
 import Strike from './Strike';
 import PayoutPerPoint from './PayoutPerPoint';
@@ -26,9 +27,9 @@ type TTradeParametersProps = {
 };
 
 const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
-    const { contract_type, symbol } = useTraderStore();
+    const { contract_type, has_cancellation, symbol } = useTraderStore();
     const isVisible = (component_key: string) => {
-        const params = getTradeParams(symbol)?.[contract_type] ?? {};
+        const params = getTradeParams(symbol, has_cancellation)?.[contract_type] ?? {};
         return component_key in params;
     };
 
@@ -40,6 +41,7 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
             )}
         >
             {is_minimized && isVisible('expiration') && <MultipliersExpirationInfo />}
+            {is_minimized && isVisible('mult_info_display') && <MultipliersDealCancellationInfo />}
             {is_minimized && isVisible('payout_per_point_info') && <PayoutPerPointInfo />}
             {is_minimized && isVisible('allow_equals') && <AllowEquals />}
             {is_minimized && isVisible('payout') && <PayoutInfo />}
@@ -66,6 +68,7 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
                 {isVisible('barrier_info') && !is_minimized && <BarrierInfo />}
                 {isVisible('payout_per_point_info') && !is_minimized && <PayoutPerPointInfo />}
                 {isVisible('payout') && !is_minimized && <PayoutInfo />}
+                {isVisible('mult_info_display') && !is_minimized && <MultipliersDealCancellationInfo />}
             </div>
         </div>
     );

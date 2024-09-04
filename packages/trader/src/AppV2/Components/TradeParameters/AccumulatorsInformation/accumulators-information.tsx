@@ -14,7 +14,7 @@ const AccumulatorsInformation = observer(() => {
 
     return (
         <div className='accumulators-info__wrapper'>
-            <Text size='sm' className='accumulators-info__title'>
+            <Text size='sm'>
                 <Localize i18n_default_text='Max. payout' />
             </Text>
             {maximum_payout ? (

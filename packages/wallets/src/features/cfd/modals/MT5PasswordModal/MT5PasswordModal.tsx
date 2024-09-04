@@ -22,6 +22,7 @@ import { CreatePassword, EnterPassword, MT5ResetPasswordModal } from '../../scre
 import MT5AccountAdded from '../MT5AccountAdded/MT5AccountAdded';
 import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
 import { MT5PasswordModalFooter, SuccessModalFooter } from './MT5PasswordModalFooters';
+import './MT5PasswordModal.scss';
 
 type TProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
@@ -180,38 +181,47 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     }, [hasMT5Account, isDemo, localize, mt5Title, updateMT5Password]);
 
     const renderFooter = useCallback(() => {
-        if (createMT5AccountSuccess) return <SuccessModalFooter isDemo={isDemo} />;
+        if (createMT5AccountSuccess)
+            return (
+                <div className='wallets-mt5-password-modal__footer'>
+                    <SuccessModalFooter isDemo={isDemo} />
+                </div>
+            );
 
         if (isMT5PasswordNotSet)
             return (
-                <WalletButton
+                <div className='wallets-mt5-password-modal__footer'>
+                    <WalletButton
+                        disabled={
+                            !password ||
+                            createMT5AccountLoading ||
+                            tradingPlatformPasswordChangeLoading ||
+                            !validPasswordMT5(password)
+                        }
+                        isFullWidth
+                        isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
+                        onClick={onSubmit}
+                        size='lg'
+                    >
+                        <Localize i18n_default_text='Create {{mt5Title}} password' values={{ mt5Title }} />
+                    </WalletButton>
+                </div>
+            );
+
+        return (
+            <div className='wallets-mt5-password-modal__footer'>
+                <MT5PasswordModalFooter
                     disabled={
                         !password ||
                         createMT5AccountLoading ||
                         tradingPlatformPasswordChangeLoading ||
-                        !validPasswordMT5(password)
+                        !validPassword(password)
                     }
-                    isFullWidth
                     isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
-                    onClick={onSubmit}
-                    size='lg'
-                >
-                    <Localize i18n_default_text='Create {{mt5Title}} password' values={{ mt5Title }} />
-                </WalletButton>
-            );
-
-        return (
-            <MT5PasswordModalFooter
-                disabled={
-                    !password ||
-                    createMT5AccountLoading ||
-                    tradingPlatformPasswordChangeLoading ||
-                    !validPassword(password)
-                }
-                isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
-                onPrimaryClick={onSubmit}
-                onSecondaryClick={() => sendEmailVerification()}
-            />
+                    onPrimaryClick={onSubmit}
+                    onSecondaryClick={() => sendEmailVerification()}
+                />
+            </div>
         );
     }, [
         createMT5AccountLoading,
@@ -319,15 +329,15 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         );
     }
 
-    if (!isDesktop) {
-        return (
-            <ModalStepWrapper renderFooter={!updateMT5Password ? renderFooter : undefined} title={renderTitle()}>
-                {PasswordComponent}
-            </ModalStepWrapper>
-        );
+    if (isDesktop) {
+        return <ModalWrapper hideCloseButton={createMT5AccountSuccess}>{PasswordComponent}</ModalWrapper>;
     }
 
-    return <ModalWrapper hideCloseButton={createMT5AccountSuccess}>{PasswordComponent}</ModalWrapper>;
+    return (
+        <ModalStepWrapper renderFooter={!updateMT5Password ? renderFooter : undefined} title={renderTitle()}>
+            <div className='wallets-mt5-password-modal__body'>{PasswordComponent}</div>
+        </ModalStepWrapper>
+    );
 };
 
 export default MT5PasswordModal;

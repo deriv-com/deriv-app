@@ -4,6 +4,7 @@ import { useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components';
 import { PlatformDetails } from '../../constants';
 import { EnterPassword } from '../../screens';
+import './EnterPasswordModal.scss';
 
 const EnterPasswordModal: FC<ComponentProps<typeof EnterPassword>> = ({
     isForgotPasswordLoading,
@@ -26,19 +27,21 @@ const EnterPasswordModal: FC<ComponentProps<typeof EnterPassword>> = ({
     if (isDesktop) {
         return (
             <ModalWrapper>
-                <EnterPassword
-                    isForgotPasswordLoading={isForgotPasswordLoading}
-                    isLoading={isLoading}
-                    marketType={marketType}
-                    modalTitle={title}
-                    onPasswordChange={onPasswordChange}
-                    onPrimaryClick={onPrimaryClick}
-                    onSecondaryClick={onSecondaryClick}
-                    password={password}
-                    passwordError={passwordError}
-                    platform={platform}
-                    setPassword={setPassword}
-                />
+                <div className='wallets-password-modal__body'>
+                    <EnterPassword
+                        isForgotPasswordLoading={isForgotPasswordLoading}
+                        isLoading={isLoading}
+                        marketType={marketType}
+                        modalTitle={title}
+                        onPasswordChange={onPasswordChange}
+                        onPrimaryClick={onPrimaryClick}
+                        onSecondaryClick={onSecondaryClick}
+                        password={password}
+                        passwordError={passwordError}
+                        platform={platform}
+                        setPassword={setPassword}
+                    />
+                </div>
             </ModalWrapper>
         );
     }
@@ -47,42 +50,46 @@ const EnterPasswordModal: FC<ComponentProps<typeof EnterPassword>> = ({
         <ModalStepWrapper
             renderFooter={() => {
                 return (
-                    <WalletButtonGroup isFullWidth>
-                        <WalletButton
-                            isFullWidth
-                            isLoading={isForgotPasswordLoading}
-                            onClick={onSecondaryClick}
-                            size={buttonSize}
-                            variant='outlined'
-                        >
-                            <Localize i18n_default_text='Forgot password?' />
-                        </WalletButton>
-                        <WalletButton
-                            disabled={!password || isLoading}
-                            isFullWidth
-                            isLoading={isLoading}
-                            onClick={onPrimaryClick}
-                            size={buttonSize}
-                        >
-                            <Localize i18n_default_text='Add account' />
-                        </WalletButton>
-                    </WalletButtonGroup>
+                    <div className='wallets-password-modal__footer'>
+                        <WalletButtonGroup isFullWidth>
+                            <WalletButton
+                                isFullWidth
+                                isLoading={isForgotPasswordLoading}
+                                onClick={onSecondaryClick}
+                                size={buttonSize}
+                                variant='outlined'
+                            >
+                                <Localize i18n_default_text='Forgot password?' />
+                            </WalletButton>
+                            <WalletButton
+                                disabled={!password || isLoading}
+                                isFullWidth
+                                isLoading={isLoading}
+                                onClick={onPrimaryClick}
+                                size={buttonSize}
+                            >
+                                <Localize i18n_default_text='Add account' />
+                            </WalletButton>
+                        </WalletButtonGroup>
+                    </div>
                 );
             }}
             title={title}
         >
-            <EnterPassword
-                isForgotPasswordLoading={isForgotPasswordLoading}
-                isLoading={isLoading}
-                marketType={marketType}
-                onPasswordChange={onPasswordChange}
-                onPrimaryClick={onPrimaryClick}
-                onSecondaryClick={onSecondaryClick}
-                password={password}
-                passwordError={passwordError}
-                platform={platform}
-                setPassword={setPassword}
-            />
+            <div className='wallets-password-modal__body'>
+                <EnterPassword
+                    isForgotPasswordLoading={isForgotPasswordLoading}
+                    isLoading={isLoading}
+                    marketType={marketType}
+                    onPasswordChange={onPasswordChange}
+                    onPrimaryClick={onPrimaryClick}
+                    onSecondaryClick={onSecondaryClick}
+                    password={password}
+                    passwordError={passwordError}
+                    platform={platform}
+                    setPassword={setPassword}
+                />
+            </div>
         </ModalStepWrapper>
     );
 };

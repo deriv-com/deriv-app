@@ -60,20 +60,24 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
         (isTransferAllowed = false) => {
             if (isTransferAllowed) {
                 return (
-                    <WalletButtonGroup isFlex isFullWidth>
-                        <WalletButton onClick={hide} size={buttonSize} variant='outlined'>
-                            <Localize i18n_default_text='Maybe later' />
-                        </WalletButton>
-                        <WalletButton
-                            onClick={() => {
-                                hide();
-                                history.push('/wallet/account-transfer', { toAccountLoginId: addedAccount?.loginid });
-                            }}
-                            size={buttonSize}
-                        >
-                            <Localize i18n_default_text='Transfer funds' />
-                        </WalletButton>
-                    </WalletButtonGroup>
+                    <div className='wallets-mt5-password-modal__footer'>
+                        <WalletButtonGroup isFlex isFullWidth>
+                            <WalletButton onClick={hide} size={buttonSize} variant='outlined'>
+                                <Localize i18n_default_text='Maybe later' />
+                            </WalletButton>
+                            <WalletButton
+                                onClick={() => {
+                                    hide();
+                                    history.push('/wallet/account-transfer', {
+                                        toAccountLoginId: addedAccount?.loginid,
+                                    });
+                                }}
+                                size={buttonSize}
+                            >
+                                <Localize i18n_default_text='Transfer funds' />
+                            </WalletButton>
+                        </WalletButtonGroup>
+                    </div>
                 );
             }
             return (
@@ -187,10 +191,18 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
     if (isLoading) return null;
 
     if (isDesktop) {
-        return <ModalWrapper hideCloseButton>{renderMainContent}</ModalWrapper>;
+        return (
+            <ModalWrapper hideCloseButton>
+                <div className='wallets-mt5-password-modal__body'>{renderMainContent}</div>
+            </ModalWrapper>
+        );
     }
 
-    return <ModalStepWrapper renderFooter={renderAccountSuccessButton}>{renderMainContent}</ModalStepWrapper>;
+    return (
+        <ModalStepWrapper renderFooter={renderAccountSuccessButton}>
+            <div className='wallets-mt5-password-modal__body'>{renderMainContent}</div>
+        </ModalStepWrapper>
+    );
 };
 
 export default MT5AccountAdded;

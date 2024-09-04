@@ -4,26 +4,13 @@ import useResidenceList from './useResidenceList';
 import useSettings from './useSettings';
 
 const acknowledged_statuses = ['pending', 'verified'];
+const failed_statuses = ['rejected', 'expired', 'suspected'];
 
 /** A custom hook to get the proof of identity verification info of the current user. */
 const usePOI = () => {
     const { data: authentication_data, isSuccess: isAuthenticationSuccess, ...rest } = useAuthentication();
     const { data: residence_list_data, isSuccess: isResidenceListSuccess } = useResidenceList();
     const { data: get_settings_data, isSuccess: isGetSettingsSuccess } = useSettings();
-
-    const is_poi_required = useMemo(() => {
-        const services = authentication_data?.identity?.services || {};
-        const { idv, onfido, manual } = services;
-
-        if (!idv?.status || !onfido?.status || !manual?.status) {
-            return null;
-        }
-        return !(
-            acknowledged_statuses.includes(idv.status) ||
-            acknowledged_statuses.includes(onfido.status) ||
-            acknowledged_statuses.includes(manual.status)
-        );
-    }, [authentication_data?.identity?.services]);
 
     /**
      * @description Get the previous POI attempts details (if any)
@@ -32,6 +19,23 @@ const usePOI = () => {
         const latest_poi_attempt = authentication_data?.attempts?.latest;
         return latest_poi_attempt;
     }, [authentication_data?.attempts?.latest]);
+
+    const is_poi_required = useMemo(() => {
+        const services = authentication_data?.identity?.services || {};
+        const { idv, onfido, manual } = services;
+
+        if (!idv?.status || !onfido?.status || !manual?.status) {
+            return null;
+        }
+
+        return (
+            !(
+                acknowledged_statuses.includes(idv.status) ||
+                acknowledged_statuses.includes(onfido.status) ||
+                acknowledged_statuses.includes(manual.status)
+            ) || failed_statuses.includes(previous_service?.status as string)
+        );
+    }, [authentication_data?.identity?.services, previous_service]);
 
     /**
      * @description Get the current step based on a few checks. Returns configuration for document validation as well.

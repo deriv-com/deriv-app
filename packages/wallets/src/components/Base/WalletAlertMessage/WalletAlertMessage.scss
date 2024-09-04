@@ -27,12 +27,10 @@
         }
     }
 
-    &__message {
-        &-container {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            padding: 0.8rem 0;
-        }
+    &__message-container {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 0.8rem 0;
     }
 }

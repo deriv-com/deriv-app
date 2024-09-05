@@ -1,11 +1,16 @@
 import React, { useEffect } from 'react';
-import moment from 'moment';
 import { useActiveWalletAccount, useAllAccountsList, useTransactions } from '@deriv/api-v2';
 import { Loader, Text } from '@deriv-com/ui';
 import { TransactionsCompletedRow } from '../TransactionsCompletedRow';
 import { TransactionsNoDataState } from '../TransactionsNoDataState';
 import { TransactionsTable } from '../TransactionsTable';
 import './TransactionsCompletedDemoResetBalance.scss';
+
+const formatUnixDate = (unixTimestamp: number) => {
+    const date = new Date(unixTimestamp * 1000);
+    const options = { day: '2-digit', month: 'short', year: 'numeric' } as const;
+    return date.toLocaleDateString('en-GB', options);
+};
 
 const TransactionsCompletedDemoResetBalance: React.FC = () => {
     const {
@@ -41,7 +46,7 @@ const TransactionsCompletedDemoResetBalance: React.FC = () => {
         <TransactionsTable
             columns={[
                 {
-                    accessorFn: row => row.transaction_time && moment.unix(row.transaction_time).format('DD MMM YYYY'),
+                    accessorFn: row => row.transaction_time && formatUnixDate(row.transaction_time),
                     accessorKey: 'date',
                     header: 'Date',
                 },
@@ -51,8 +56,7 @@ const TransactionsCompletedDemoResetBalance: React.FC = () => {
             rowGroupRender={transaction => (
                 <div className='wallets-transactions-completed-demo-reset-balance__group-title'>
                     <Text color='primary' size='2xs'>
-                        {transaction.transaction_time &&
-                            moment.unix(transaction.transaction_time).format('DD MMM YYYY')}
+                        {transaction.transaction_time && formatUnixDate(transaction.transaction_time)}
                     </Text>
                 </div>
             )}

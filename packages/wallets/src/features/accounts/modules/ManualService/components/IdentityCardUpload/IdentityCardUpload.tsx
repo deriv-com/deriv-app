@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Formik, FormikValues } from 'formik';
-import moment from 'moment';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Divider, Loader } from '@deriv-com/ui';
 import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
@@ -34,6 +33,12 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
         } catch (error) {
             setError((error as THooks.DocumentUpload).error);
         }
+    };
+
+    const addDays = (days: number) => {
+        const date = new Date();
+        date.setDate(date.getDate() + days);
+        return date;
     };
 
     if (isLoading) {
@@ -108,7 +113,7 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
                                     />
                                     <DatePicker
                                         label={localize('Expiry date*')}
-                                        minDate={moment().add(2, 'days').toDate()}
+                                        minDate={addDays(2)}
                                         name='identityCardExpiryDate'
                                     />
                                 </div>

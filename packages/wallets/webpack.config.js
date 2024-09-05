@@ -44,7 +44,6 @@ module.exports = function (env) {
                 '@deriv-com/analytics': '@deriv-com/analytics',
                 '@deriv-com/translations': '@deriv-com/translations',
                 classnames: true,
-                moment: true,
                 react: true,
                 'react-dom': true,
                 'react-router-dom': true,

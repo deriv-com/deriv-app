@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Formik, FormikValues } from 'formik';
-import moment from 'moment';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Divider, Loader } from '@deriv-com/ui';
 import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
@@ -34,6 +33,12 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
         } catch (error) {
             setError((error as THooks.DocumentUpload).error);
         }
+    };
+
+    const addDays = (days: number) => {
+        const date = new Date();
+        date.setDate(date.getDate() + days);
+        return date;
     };
 
     if (isLoading) {
@@ -106,7 +111,7 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                                     />
                                     <DatePicker
                                         label={localize('Expiry date*')}
-                                        minDate={moment().add(2, 'days').toDate()}
+                                        minDate={addDays(2)}
                                         name='drivingLicenseExpiryDate'
                                     />
                                 </div>

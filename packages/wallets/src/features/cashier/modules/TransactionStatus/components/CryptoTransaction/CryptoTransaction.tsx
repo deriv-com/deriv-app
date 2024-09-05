@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
-import moment from 'moment';
 import { useCancelCryptoTransaction } from '@deriv/api-v2';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { getTruncatedString } from '@deriv/utils';
@@ -68,6 +67,11 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
         );
     }, [cancelTransaction, hide, localize, show]);
 
+    const formatUnixToDate = (unixTimestamp: number) => {
+        const date = new Date(unixTimestamp * 1000);
+        return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    };
+
     return (
         <div className='wallets-crypto-transaction'>
             <div className='wallets-crypto-transaction__type-and-status'>
@@ -106,7 +110,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                     {transaction.formatted_amount}
                 </Text>
                 <Text color='less-prominent' size='2xs'>
-                    {moment.unix(transaction.submit_date).utc().format('MMM D, YYYY')}
+                    {formatUnixToDate(transaction.submit_date)}
                 </Text>
             </div>
             {transaction?.transaction_fee && (

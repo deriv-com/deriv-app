@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { Field, useFormikContext } from 'formik';
-import moment from 'moment';
 import { TSocketError } from '@deriv/api-v2/types';
 import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
@@ -45,6 +44,18 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
         setFieldValue('arePersonalDetailsVerified', event.target.checked);
     };
 
+    const getMaxDate = () => {
+        const date = new Date();
+        date.setFullYear(date.getFullYear() - 18);
+        return date;
+    };
+
+    const getMinDate = () => {
+        const date = new Date();
+        date.setFullYear(date.getFullYear() - 100);
+        return date;
+    };
+
     return (
         <div className='wallets-verify-personal-details'>
             <InlineMessage>
@@ -79,9 +90,9 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
                         disabled={values.arePersonalDetailsVerified}
                         displayFormat={dateDisplayFormat}
                         label={localize('Date of birth*')}
-                        maxDate={moment().subtract(18, 'years').toDate()}
+                        maxDate={getMaxDate()}
                         message={localize('Your date of birth as in your identity document')}
-                        minDate={moment().subtract(100, 'years').toDate()}
+                        minDate={getMinDate()}
                         mobileAlignment='above'
                         name='dateOfBirth'
                         showMessage

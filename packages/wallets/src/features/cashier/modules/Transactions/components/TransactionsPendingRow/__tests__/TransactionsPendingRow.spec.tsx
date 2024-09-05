@@ -14,15 +14,6 @@ jest.mock('@deriv/api-v2', () => ({
     useCancelCryptoTransaction: jest.fn(() => ({ mutate: jest.fn() })),
 }));
 
-jest.mock('moment', () => ({
-    unix: jest.fn(() => ({
-        format: jest.fn(),
-        utc: jest.fn(() => ({
-            format: jest.fn(),
-        })),
-    })),
-}));
-
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: () => ({

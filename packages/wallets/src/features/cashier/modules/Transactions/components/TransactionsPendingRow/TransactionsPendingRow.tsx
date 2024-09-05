@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
 import classNames from 'classnames';
-import moment from 'moment';
 import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api-v2';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { getTruncatedString } from '@deriv/utils';
@@ -26,7 +25,7 @@ type TProps = {
 
 const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
     const { data } = useActiveWalletAccount();
-    const { isMobile } = useDevice();
+    const { isDesktop, isMobile } = useDevice();
     const { localize } = useTranslations();
     const displayCode = useMemo(() => data?.currency_config?.display_code || 'USD', [data]);
     const modal = useModal();
@@ -88,6 +87,16 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
         }
     }, [isMobile, localize, modal, statusDescription]);
 
+    const formatUnixDate = (unixTimestamp: number, options?: Intl.DateTimeFormatOptions) => {
+        const date = new Date(unixTimestamp * 1000);
+        return date.toLocaleDateString('en-GB', options);
+    };
+
+    const formatUnixTime = (unixTimestamp: number) => {
+        const date = new Date(unixTimestamp * 1000);
+        return `${date.toLocaleTimeString('en-GB', { hour12: false })} GMT`;
+    };
+
     return (
         <React.Fragment>
             <Divider color='var(--border-divider)' />
@@ -144,7 +153,11 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                             />
                             <TransactionsPendingRowField
                                 name={localize('Date')}
-                                value={moment.unix(transaction.submit_date).format('DD MMM YYYY')}
+                                value={formatUnixDate(transaction.submit_date, {
+                                    day: '2-digit',
+                                    month: 'short',
+                                    year: 'numeric',
+                                })}
                                 valueTextProps={{
                                     color: 'general',
                                 }}
@@ -154,10 +167,9 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                     <TransactionsPendingRowField
                         className={{ 'wallets-transactions-pending-row__transaction-time': !isMobile }}
                         name={localize('Time')}
-                        value={moment
-                            .unix(transaction.submit_date)
-                            .utc()
-                            .format(isMobile ? 'HH:mm:ss [GMT]' : 'DD MMM YYYY HH:mm:ss [GMT]')}
+                        value={`${isDesktop && `${formatUnixDate(transaction.submit_date)} `}${formatUnixTime(
+                            transaction.submit_date
+                        )}`}
                         valueTextProps={{
                             color: 'general',
                             size: isMobile ? 'xs' : '2xs',

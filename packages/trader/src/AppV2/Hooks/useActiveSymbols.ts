@@ -88,11 +88,12 @@ const useActiveSymbols = () => {
                 } else if (!active_symbols?.length) {
                     setActiveSymbols([]);
                 } else {
-                    setActiveSymbols(active_symbols);
-                    setActiveSymbolsV2(active_symbols);
                     default_symbol_ref.current = isSymbolAvailable(active_symbols)
                         ? symbol
                         : (await pickDefaultSymbol(active_symbols)) || '1HZ100V';
+
+                    setActiveSymbols(active_symbols);
+                    setActiveSymbolsV2(active_symbols);
 
                     if (symbol !== default_symbol_ref.current) {
                         onChange({ target: { name: 'symbol', value: default_symbol_ref.current } });

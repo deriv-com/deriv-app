@@ -21,21 +21,18 @@ const usePOI = () => {
     }, [authentication_data?.attempts?.latest]);
 
     const is_poi_required = useMemo(() => {
-        const services = authentication_data?.identity?.services || {};
-        const { idv, onfido, manual } = services;
+        const { services = {} } = authentication_data?.identity || {};
+        const statuses = [services.idv?.status, services.onfido?.status, services.manual?.status];
 
-        if (!idv?.status || !onfido?.status || !manual?.status) {
+        if (statuses.some(status => !status)) {
             return null;
         }
 
-        return (
-            !(
-                acknowledged_statuses.includes(idv.status) ||
-                acknowledged_statuses.includes(onfido.status) ||
-                acknowledged_statuses.includes(manual.status)
-            ) || failed_statuses.includes(previous_service?.status as string)
-        );
-    }, [authentication_data?.identity?.services, previous_service]);
+        const hasAcknowledgedStatus = statuses.some(status => status && acknowledged_statuses.includes(status));
+        const isPreviousStatusFailed = failed_statuses.includes(previous_service?.status as string);
+
+        return !hasAcknowledgedStatus || isPreviousStatusFailed;
+    }, [authentication_data?.identity, previous_service?.status]);
 
     /**
      * @description Get the current step based on a few checks. Returns configuration for document validation as well.

@@ -11,7 +11,7 @@ export type TContentItem = {
 };
 
 export type TAnnounce = {
-    id: number;
+    id: string;
     main_title: string;
     confirm_button_text?: string;
     cancel_button_text?: string;
@@ -36,7 +36,7 @@ export type TAnnouncement = {
 export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
     MOVING_STRATEGIES_ANNOUNCE: {
         announcement: {
-            id: 0,
+            id: 'MOVING_STRATEGIES_ANNOUNCE',
             main_title: localize('Moving strategies to Deriv Bot'),
             confirm_button_text: localize('Import strategy'),
             base_classname: 'announcement-dialog',
@@ -83,7 +83,7 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
 
     BLOCKLY_ANNOUNCE: {
         announcement: {
-            id: 1,
+            id: 'BLOCKLY_ANNOUNCE',
             main_title: localize('Google Blockly v10 update'),
             base_classname: 'announcement-dialog',
             title: localize(
@@ -101,7 +101,7 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
 
     ACCUMULATOR_ANNOUNCE: {
         announcement: {
-            id: 2,
+            id: 'ACCUMULATOR_ANNOUNCE',
             main_title: localize('Accumulators now on Deriv Bot'),
             confirm_button_text: localize('Try now'),
             cancel_button_text: localize('Learn more'),

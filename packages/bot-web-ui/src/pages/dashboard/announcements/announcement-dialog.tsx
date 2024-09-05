@@ -1,9 +1,9 @@
 import React from 'react';
-import { Dialog, Icon, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Dialog, Text } from '@deriv/components';
 import { LabelPairedCheckCaptionFillIcon } from '@deriv/quill-icons';
 import './announcement-dialog.scss';
 import { TAnnounce, TContentItem } from './config';
+import { IconAnnounceModal } from './announcement-components';
 
 type TAccumulatorAnnouncementDialog = {
     announcement: TAnnounce;
@@ -21,6 +21,7 @@ const AnnouncementDialog = ({
     setIsAnnounceDialogOpen,
 }: TAccumulatorAnnouncementDialog) => {
     const {
+        id,
         main_title,
         confirm_button_text,
         cancel_button_text,
@@ -46,7 +47,7 @@ const AnnouncementDialog = ({
         >
             <div className={`${base_classname}__body-text`}>
                 <div className={`${base_classname}__body-icon`}>
-                    <Icon icon='IcTradetypeAccu' className='category-type' color='brand' size='80' />
+                    <IconAnnounceModal announce_id={id} />
                 </div>
                 <div>
                     <Text as='p' line_height='xl' size='xs' align='center' className={`${base_classname}__title`}>

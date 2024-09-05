@@ -19,7 +19,7 @@ export const AnalyticsInitializer = async () => {
                 growthbookDecryptionKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
                 rudderstackKey: process.env.RUDDERSTACK_KEY,
             };
-            Analytics.initialise(config);
+            await Analytics?.initialise(config);
             await Analytics?.getInstances()?.ab?.GrowthBook?.loadFeatures();
             const ppc_campaign_cookies =
                 Cookies.getJSON('utm_data') === 'null'

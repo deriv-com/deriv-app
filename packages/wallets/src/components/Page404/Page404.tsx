@@ -1,12 +1,13 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { ActionScreen, Button, Text } from '@deriv-com/ui';
 import useDevice from '../../hooks/useDevice';
-import { WalletButton, WalletText } from '../Base';
-import { WalletsActionScreen } from '../WalletsActionScreen';
 import './Page404.scss';
 
 const Page404 = () => {
     const { isMobile } = useDevice();
+    const { localize } = useTranslations();
     const titleSize = isMobile ? 'md' : '2xl';
     const descriptionSize = isMobile ? 'sm' : 'md';
     const buttonSize = isMobile ? 'lg' : 'md';
@@ -22,23 +23,23 @@ const Page404 = () => {
 
     return (
         <div className='wallets-page-404'>
-            <WalletsActionScreen
-                description={'You may have followed a broken link, or the page has moved to a new address.'}
-                descriptionSize={descriptionSize}
-                icon={errorImage}
-                renderButtons={() => (
-                    <WalletButton
+            <ActionScreen
+                actionButtons={
+                    <Button
                         onClick={() => {
                             history.push('/');
                         }}
                         size={buttonSize}
                     >
-                        <WalletText color='white' size={buttonTextSize} weight='bold'>
-                            Return to Trader&apos;s Hub
-                        </WalletText>
-                    </WalletButton>
-                )}
-                title="We couldn't find that page"
+                        <Text color='white' size={buttonTextSize} weight='bold'>
+                            <Localize i18n_default_text="Return to Trader's Hub" />
+                        </Text>
+                    </Button>
+                }
+                description={localize('You may have followed a broken link, or the page has moved to a new address.')}
+                descriptionSize={descriptionSize}
+                icon={errorImage}
+                title={localize("We couldn't find that page")}
                 titleSize={titleSize}
             />
         </div>

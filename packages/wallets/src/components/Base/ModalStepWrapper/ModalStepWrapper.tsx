@@ -7,6 +7,7 @@ import { WalletText } from '../WalletText';
 import './ModalStepWrapper.scss';
 
 type TModalStepWrapperProps = {
+    disableAnimation?: boolean;
     disableScroll?: boolean;
     renderFooter?: () => ReactNode;
     shouldFixedFooter?: boolean;
@@ -17,8 +18,21 @@ type TModalStepWrapperProps = {
     title?: string;
 };
 
+type TFooterProps = {
+    hasRenderFooter: boolean;
+    renderFooter: TModalStepWrapperProps['renderFooter'];
+};
+
+const Footer: FC<TFooterProps> = ({ hasRenderFooter, renderFooter }) =>
+    hasRenderFooter && renderFooter ? (
+        <div className='wallets-modal-step-wrapper__footer' data-testid='dt_modal_step_wrapper_footer'>
+            {renderFooter()}
+        </div>
+    ) : null;
+
 const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     children,
+    disableAnimation = false,
     disableScroll = false,
     renderFooter,
     shouldFixedFooter = true,
@@ -45,16 +59,10 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shouldHideDerivAppHeader]);
 
-    const Footer = () =>
-        hasRenderFooter ? (
-            <div className='wallets-modal-step-wrapper__footer' data-testid='dt_modal_step_wrapper_footer'>
-                {renderFooter()}
-            </div>
-        ) : null;
-
     return (
         <div
             className={classNames('wallets-modal-step-wrapper', {
+                'wallets-modal-step-wrapper--disable-animation': disableAnimation,
                 'wallets-modal-step-wrapper--disable-scroll': disableScroll,
                 'wallets-modal-step-wrapper--fixed-footer': fixedFooter && !shouldHideHeader,
                 'wallets-modal-step-wrapper--hide-deriv-app-header': shouldHideDerivAppHeader,
@@ -77,9 +85,9 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
             )}
             <div className='wallets-modal-step-wrapper__body' data-testid='dt_modal_step_wrapper_body'>
                 {children}
-                {!shouldFixedFooter && <Footer />}
+                {!shouldFixedFooter && <Footer hasRenderFooter={hasRenderFooter} renderFooter={renderFooter} />}
             </div>
-            {shouldFixedFooter && <Footer />}
+            {shouldFixedFooter && <Footer hasRenderFooter={hasRenderFooter} renderFooter={renderFooter} />}
         </div>
     );
 };

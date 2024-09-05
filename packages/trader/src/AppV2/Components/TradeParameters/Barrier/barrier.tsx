@@ -5,25 +5,36 @@ import { ActionSheet, TextField } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import Carousel from 'AppV2/Components/Carousel';
-import BarrierHeader from './barrier-header';
 import BarrierDescription from './barrier-description';
 import BarrierInput from './barrier-input';
+import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 
 type TDurationProps = {
     is_minimized?: boolean;
 };
 
 const Barrier = observer(({ is_minimized }: TDurationProps) => {
-    const { barrier_1, onChange, validation_errors, duration } = useTraderStore();
+    const { barrier_1, onChange, duration_unit, setV2ParamsInitialValues, v2_params_initial_values } = useTraderStore();
     const [is_open, setIsOpen] = React.useState(false);
-    const [currentPage, setCurrentPage] = React.useState(0);
     const [initialBarrierValue, setInitialBarrierValue] = React.useState('');
-    const isDays = duration > 1440;
+    const isDays = duration_unit == 'd';
+
+    const onClose = (is_saved = false) => {
+        if (is_open) {
+            if (!is_saved) {
+                onChange({ target: { name: 'barrier_1', value: initialBarrierValue } });
+            }
+            setV2ParamsInitialValues({ value: '', name: 'barrier_1' });
+            setIsOpen(false);
+        }
+    };
 
     const barrier_carousel_pages = [
         {
             id: 1,
-            component: <BarrierInput isDays={isDays} setInitialBarrierValue={setInitialBarrierValue} />,
+            component: (
+                <BarrierInput isDays={isDays} setInitialBarrierValue={setInitialBarrierValue} onClose={onClose} />
+            ),
         },
         {
             id: 2,
@@ -31,53 +42,22 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
         },
     ];
 
-    const onClose = (is_saved = false) => {
-        if (is_open) {
-            if (!is_saved) {
-                onChange({ target: { name: 'barrier_1', value: initialBarrierValue } });
-            }
-            setCurrentPage(0);
-            setIsOpen(false);
-        }
-    };
-
     return (
         <>
             <TextField
                 variant='fill'
                 readOnly
                 label={<Localize i18n_default_text='Barrier' key={`barrier${is_minimized ? '-minimized' : ''}`} />}
-                value={barrier_1}
+                value={v2_params_initial_values.barrier_1 || barrier_1}
                 onClick={() => setIsOpen(true)}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
             />
             <ActionSheet.Root isOpen={is_open} onClose={() => onClose(false)} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
-                        current_index={currentPage}
-                        setCurrentIndex={setCurrentPage}
-                        header={BarrierHeader}
+                        header={CarouselHeader}
                         title={<Localize i18n_default_text='Barrier' />}
                         pages={barrier_carousel_pages}
-                    />
-                    <ActionSheet.Footer
-                        alignment='vertical'
-                        shouldCloseOnPrimaryButtonClick={false}
-                        primaryAction={
-                            currentPage == 0
-                                ? {
-                                      content: <Localize i18n_default_text='Save' />,
-                                      onAction: () => {
-                                          if (validation_errors.barrier_1.length === 0) {
-                                              onClose(true);
-                                          }
-                                      },
-                                  }
-                                : {
-                                      content: <Localize i18n_default_text='Got it' />,
-                                      onAction: () => setCurrentPage(0),
-                                  }
-                        }
                     />
                 </ActionSheet.Portal>
             </ActionSheet.Root>

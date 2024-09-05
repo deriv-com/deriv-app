@@ -8,7 +8,14 @@ import { useDBotStore } from 'Stores/useDBotStore';
 const LocalFooter = observer(() => {
     const { ui } = useStore();
     const { load_modal, dashboard } = useDBotStore();
-    const { is_open_button_loading, loadFileFromLocal, setLoadedLocalFile, toggleLoadModal } = load_modal;
+    const {
+        is_open_button_loading,
+        is_open_button_disabled,
+        loadStrategyOnBotBuilder,
+        setLoadedLocalFile,
+        saveStrategyToLocalStorage,
+        toggleLoadModal,
+    } = load_modal;
     const { setOpenSettings, setPreviewOnPopup } = dashboard;
 
     const { is_desktop } = ui;
@@ -22,7 +29,9 @@ const LocalFooter = observer(() => {
             <Button
                 text={localize('Open')}
                 onClick={() => {
-                    loadFileFromLocal();
+                    loadStrategyOnBotBuilder();
+                    saveStrategyToLocalStorage();
+                    setLoadedLocalFile(null);
                     toggleLoadModal();
                     setPreviewOnPopup(false);
                     setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);
@@ -31,6 +40,7 @@ const LocalFooter = observer(() => {
                 has_effect
                 primary
                 large
+                disabled={is_open_button_disabled}
             />
         </Wrapper>
     );

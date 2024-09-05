@@ -6,8 +6,9 @@ import { Localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
 
 const WalletsBannerUpgrading = observer(() => {
-    const { traders_hub } = useStore();
+    const { traders_hub, common } = useStore();
     const { is_demo } = traders_hub;
+    const { current_language } = common;
     const { isDesktop, isMobile, isTablet } = useDevice();
     let titleFontSize, descriptionFontSize, iconHeight, iconWidth;
 
@@ -39,7 +40,7 @@ const WalletsBannerUpgrading = observer(() => {
     }, [is_demo]);
 
     return (
-        <div className='wallets-banner wallets-banner-upgrading'>
+        <div className='wallets-banner wallets-banner-upgrading' key={`wallets-banner__${current_language}--upgrading`}>
             <div className='wallets-banner__content wallets-banner-upgrading__content'>
                 <div className='wallets-banner-upgrading__loading' data-testid='dt_wallets_loading_dots'>
                     <span className='wallets-banner-upgrading__dot' />

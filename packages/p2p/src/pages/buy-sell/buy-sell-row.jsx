@@ -4,9 +4,10 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import { Icon, Table, Text } from '@deriv/components';
-import { isMobile, routes } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useP2PExchangeRate } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -40,9 +41,9 @@ const BuySellRow = ({ row: advert }) => {
 
     const { buy_sell_store, general_store } = useStores();
     const { showModal } = useModalManagerContext();
+    const { isDesktop, isMobile } = useDevice();
     const {
         client: { currency },
-        ui: { is_desktop },
     } = useStore();
     const history = useHistory();
     const exchange_rate = useP2PExchangeRate(local_currency);
@@ -97,7 +98,7 @@ const BuySellRow = ({ row: advert }) => {
                 key: 'NicknameModal',
                 props: {
                     onConfirm: () => buy_sell_store.setSelectedAdvert(advert),
-                    should_hide_close_btn: is_desktop,
+                    should_hide_close_btn: isDesktop,
                 },
             });
         } else {
@@ -105,203 +106,203 @@ const BuySellRow = ({ row: advert }) => {
         }
     };
 
-    if (isMobile()) {
+    if (isDesktop) {
         return (
-            <div className='buy-sell-row'>
-                <div className='buy-sell-row__advertiser' onClick={() => onClickRow()}>
-                    <OnlineStatusAvatar
-                        is_online={advertiser_details.is_online}
-                        nickname={advertiser_name}
-                        size={32}
-                        text_size='s'
-                    />
-                    <div className='buy-sell-row__advertiser-name'>
-                        <div className='buy-sell__cell--container__row'>
-                            <Text className='buy-sell-row__advertiser-name--text' size='xs' weight='bold'>
-                                {advertiser_name}
-                            </Text>
-                            <TradeBadge trade_count={advertiser_details.completed_orders_count} />
-                        </div>
-                        <div className='buy-sell-row__rating'>
-                            {!!rating_count && !!rating_average ? (
-                                <div className='buy-sell-row__rating--row'>
-                                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xxs'}>
-                                        {rating_average_decimal}
-                                    </Text>
-                                    <StarRating
-                                        empty_star_className='buy-sell-row__rating--star'
-                                        empty_star_icon='IcEmptyStar'
-                                        full_star_className='buy-sell-row__rating--star'
-                                        full_star_icon='IcFullStar'
-                                        initial_value={rating_average_decimal}
-                                        is_readonly
-                                        number_of_stars={5}
-                                        should_allow_hover_effect={false}
-                                        star_size={14}
-                                    />
-                                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xxs'}>
-                                        ({rating_count})
-                                    </Text>
+            <Table.Row className='buy-sell__table-row'>
+                <Table.Cell>
+                    <div
+                        className={classNames('buy-sell__cell', { 'buy-sell__cell-hover': !general_store.is_barred })}
+                        onClick={() => onClickRow()}
+                    >
+                        <OnlineStatusAvatar
+                            is_online={advertiser_details.is_online}
+                            nickname={advertiser_name}
+                            size={24}
+                            text_size='xxs'
+                        />
+                        <div className='buy-sell__cell--container'>
+                            <div className='buy-sell__cell--container__row'>
+                                <div
+                                    className={classNames({
+                                        'buy-sell__name': !general_store.is_barred,
+                                    })}
+                                >
+                                    {advertiser_name}
                                 </div>
-                            ) : (
-                                <Text color='less-prominent' size='xxs'>
-                                    <Localize i18n_default_text='Not rated yet' />
-                                </Text>
-                            )}
+                                <TradeBadge trade_count={advertiser_details.completed_orders_count} />
+                            </div>
+                            <div className='buy-sell-row__rating'>
+                                {!!rating_count && !!rating_average ? (
+                                    <div className='buy-sell-row__rating--row'>
+                                        <Text color='less-prominent' size='xxs'>
+                                            {rating_average_decimal}
+                                        </Text>
+                                        <StarRating
+                                            empty_star_className='buy-sell-row__rating--star'
+                                            empty_star_icon='IcEmptyStar'
+                                            full_star_className='buy-sell-row__rating--star'
+                                            full_star_icon='IcFullStar'
+                                            initial_value={rating_average_decimal}
+                                            is_readonly
+                                            number_of_stars={5}
+                                            should_allow_hover_effect={false}
+                                            star_size={14}
+                                        />
+                                        <Text color='less-prominent' size='xxs'>
+                                            ({rating_count})
+                                        </Text>
+                                    </div>
+                                ) : (
+                                    <Text color='less-prominent' size='xxs'>
+                                        <Localize i18n_default_text='Not rated yet' />
+                                    </Text>
+                                )}
+                            </div>
                         </div>
                     </div>
-                    <Icon className='buy-sell-row__advertiser-arrow' icon='IcChevronRightBold' size={16} />
-                </div>
-                <div className='buy-sell-row__information'>
-                    <div className='buy-sell-row__rate'>
-                        <Text as='div' size='xxs'>
-                            <Localize i18n_default_text='Rate (1 {{currency}})' values={{ currency }} />
-                        </Text>
-                        <Text as='div' color='profit-success' weight='bold'>
-                            {display_effective_rate} {local_currency}
-                        </Text>
-                        <Text as='div' color='less-prominent' size='xxs'>
-                            <Localize
-                                i18n_default_text='Limits {{ min_order }}–{{ max_order }} {{ currency }}'
-                                values={{
-                                    min_order: min_order_amount_limit_display,
-                                    max_order: max_order_amount_limit_display,
-                                    currency: account_currency,
-                                }}
-                            />
-                        </Text>
-                    </div>
-                    <div className='buy-sell-row__payment-methods-list'>
+                </Table.Cell>
+                <Table.Cell>
+                    {min_order_amount_limit_display}&ndash;{max_order_amount_limit_display} {account_currency}
+                </Table.Cell>
+                <Table.Cell>
+                    <Text color='profit-success' size='xs' weight='bold'>
+                        {display_effective_rate} {local_currency}
+                    </Text>
+                </Table.Cell>
+                <Table.Cell>
+                    <div className='buy-sell-row__payment-method'>
                         {payment_method_names ? (
                             payment_method_names.map((payment_method, key) => {
                                 return (
-                                    <div className='buy-sell-row__payment-method' key={key}>
-                                        <Text line_height='l' size='xxxs'>
+                                    <div className='buy-sell-row__payment-method--label' key={key}>
+                                        <Text size='xs' line_height='l'>
                                             {payment_method}
                                         </Text>
                                     </div>
                                 );
                             })
                         ) : (
-                            <div className='buy-sell-row__payment-method'>
-                                <Text line_height='l' size='xxxs'>
+                            <div className='buy-sell-row__payment-method--label'>
+                                <Text size='xs' line_height='l'>
                                     -
                                 </Text>
                             </div>
                         )}
                     </div>
-                    {!is_my_advert && (
+                </Table.Cell>
+                {is_my_advert ? (
+                    <Table.Cell />
+                ) : (
+                    <Table.Cell className='buy-sell__button'>
                         <BuySellRowAction
                             account_currency={account_currency}
-                            className='buy-sell-row__button'
                             eligibility_status={eligibility_status}
                             is_buy_advert={is_buy_advert}
                             is_eligible={is_eligible}
                             onClick={onClickBuySell}
                         />
-                    )}
-                </div>
-            </div>
+                    </Table.Cell>
+                )}
+            </Table.Row>
         );
     }
 
     return (
-        <Table.Row className='buy-sell__table-row'>
-            <Table.Cell>
-                <div
-                    className={classNames('buy-sell__cell', { 'buy-sell__cell-hover': !general_store.is_barred })}
-                    onClick={() => onClickRow()}
-                >
-                    <OnlineStatusAvatar
-                        is_online={advertiser_details.is_online}
-                        nickname={advertiser_name}
-                        size={24}
-                        text_size='xxs'
-                    />
-                    <div className='buy-sell__cell--container'>
-                        <div className='buy-sell__cell--container__row'>
-                            <div
-                                className={classNames({
-                                    'buy-sell__name': !general_store.is_barred,
-                                })}
-                            >
-                                {advertiser_name}
-                            </div>
-                            <TradeBadge trade_count={advertiser_details.completed_orders_count} />
-                        </div>
-                        <div className='buy-sell-row__rating'>
-                            {!!rating_count && !!rating_average ? (
-                                <div className='buy-sell-row__rating--row'>
-                                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xxs'}>
-                                        {rating_average_decimal}
-                                    </Text>
-                                    <StarRating
-                                        empty_star_className='buy-sell-row__rating--star'
-                                        empty_star_icon='IcEmptyStar'
-                                        full_star_className='buy-sell-row__rating--star'
-                                        full_star_icon='IcFullStar'
-                                        initial_value={rating_average_decimal}
-                                        is_readonly
-                                        number_of_stars={5}
-                                        should_allow_hover_effect={false}
-                                        star_size={14}
-                                    />
-                                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xxs'}>
-                                        ({rating_count})
-                                    </Text>
-                                </div>
-                            ) : (
-                                <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xxs'}>
-                                    <Localize i18n_default_text='Not rated yet' />
+        <div className='buy-sell-row'>
+            <div className='buy-sell-row__advertiser' onClick={() => onClickRow()}>
+                <OnlineStatusAvatar
+                    is_online={advertiser_details.is_online}
+                    nickname={advertiser_name}
+                    size={32}
+                    text_size='s'
+                />
+                <div className='buy-sell-row__advertiser-name'>
+                    <div className='buy-sell__cell--container__row'>
+                        <Text className='buy-sell-row__advertiser-name--text' size='xs' weight='bold'>
+                            {advertiser_name}
+                        </Text>
+                        <TradeBadge trade_count={advertiser_details.completed_orders_count} />
+                    </div>
+                    <div className='buy-sell-row__rating'>
+                        {!!rating_count && !!rating_average ? (
+                            <div className='buy-sell-row__rating--row'>
+                                <Text color='less-prominent' size={isMobile ? 'xxs' : 'xxxs'}>
+                                    {rating_average_decimal}
                                 </Text>
-                            )}
-                        </div>
+                                <StarRating
+                                    empty_star_className='buy-sell-row__rating--star'
+                                    empty_star_icon='IcEmptyStar'
+                                    full_star_className='buy-sell-row__rating--star'
+                                    full_star_icon='IcFullStar'
+                                    initial_value={rating_average_decimal}
+                                    is_readonly
+                                    number_of_stars={5}
+                                    should_allow_hover_effect={false}
+                                    star_size={14}
+                                />
+                                <Text color='less-prominent' size={isMobile ? 'xxs' : 'xxxs'}>
+                                    ({rating_count})
+                                </Text>
+                            </div>
+                        ) : (
+                            <Text color='less-prominent' size='xxs'>
+                                <Localize i18n_default_text='Not rated yet' />
+                            </Text>
+                        )}
                     </div>
                 </div>
-            </Table.Cell>
-            <Table.Cell>
-                {min_order_amount_limit_display}&ndash;{max_order_amount_limit_display} {account_currency}
-            </Table.Cell>
-            <Table.Cell>
-                <Text color='profit-success' size='xs' weight='bold'>
-                    {display_effective_rate} {local_currency}
-                </Text>
-            </Table.Cell>
-            <Table.Cell>
-                <div className='buy-sell-row__payment-method'>
+                <Icon className='buy-sell-row__advertiser-arrow' icon='IcChevronRightBold' size={16} />
+            </div>
+            <div className='buy-sell-row__information'>
+                <div className='buy-sell-row__rate'>
+                    <Text as='div' size={isMobile ? 'xxs' : 'xxxs'}>
+                        <Localize i18n_default_text='Rate (1 {{currency}})' values={{ currency }} />
+                    </Text>
+                    <Text as='div' color='profit-success' weight='bold'>
+                        {display_effective_rate} {local_currency}
+                    </Text>
+                    <Text as='div' color='less-prominent' size='xs'>
+                        <Localize
+                            i18n_default_text='Limits {{ min_order }}–{{ max_order }} {{ currency }}'
+                            values={{
+                                min_order: min_order_amount_limit_display,
+                                max_order: max_order_amount_limit_display,
+                                currency: account_currency,
+                            }}
+                        />
+                    </Text>
+                </div>
+                <div className='buy-sell-row__payment-methods-list'>
                     {payment_method_names ? (
                         payment_method_names.map((payment_method, key) => {
                             return (
-                                <div className='buy-sell-row__payment-method--label' key={key}>
-                                    <Text size='xs' line_height='l'>
+                                <div className='buy-sell-row__payment-method' key={key}>
+                                    <Text line_height='l' size={isMobile ? 'xxxs' : 'xxs'}>
                                         {payment_method}
                                     </Text>
                                 </div>
                             );
                         })
                     ) : (
-                        <div className='buy-sell-row__payment-method--label'>
-                            <Text size='xs' line_height='l'>
+                        <div className='buy-sell-row__payment-method'>
+                            <Text line_height='l' size={isMobile ? 'xxxs' : 'xxs'}>
                                 -
                             </Text>
                         </div>
                     )}
                 </div>
-            </Table.Cell>
-            {is_my_advert ? (
-                <Table.Cell />
-            ) : (
-                <Table.Cell className='buy-sell__button'>
+                {!is_my_advert && (
                     <BuySellRowAction
                         account_currency={account_currency}
+                        className='buy-sell-row__button'
                         eligibility_status={eligibility_status}
                         is_buy_advert={is_buy_advert}
                         is_eligible={is_eligible}
                         onClick={onClickBuySell}
                     />
-                </Table.Cell>
-            )}
-        </Table.Row>
+                )}
+            </div>
+        </div>
     );
 };
 

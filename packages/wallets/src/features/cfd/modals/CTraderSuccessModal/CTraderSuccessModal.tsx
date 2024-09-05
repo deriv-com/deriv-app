@@ -48,13 +48,13 @@ const CTraderSuccessModal = ({ createdAccount, isDemo, walletCurrencyType }: TCT
                 title={' '}
             >
                 <CFDSuccess
+                    actionButtons={
+                        <CTraderSuccessModalButtons createdAccount={createdAccount} hide={hide} isDemo={isDemo} />
+                    }
                     description={description}
                     displayBalance={cTraderAccount.display_balance}
                     marketType='all'
                     platform='ctrader'
-                    renderButton={() => (
-                        <CTraderSuccessModalButtons createdAccount={createdAccount} hide={hide} isDemo={isDemo} />
-                    )}
                     title={
                         <Localize
                             i18n_default_text='Your {{ctraderTitle}}{{demoTitle}} account is ready'
@@ -72,13 +72,13 @@ const CTraderSuccessModal = ({ createdAccount, isDemo, walletCurrencyType }: TCT
     return (
         <ModalWrapper hideCloseButton>
             <CFDSuccess
+                actionButtons={
+                    <CTraderSuccessModalButtons createdAccount={createdAccount} hide={hide} isDemo={isDemo} />
+                }
                 description={description}
                 displayBalance={cTraderAccount.display_balance}
                 marketType='all'
                 platform={PlatformDetails.ctrader.platform}
-                renderButton={() => (
-                    <CTraderSuccessModalButtons createdAccount={createdAccount} hide={hide} isDemo={isDemo} />
-                )}
                 title={
                     <Localize
                         i18n_default_text='Your {{ctraderTitle}}{{demoTitle}} account is ready'

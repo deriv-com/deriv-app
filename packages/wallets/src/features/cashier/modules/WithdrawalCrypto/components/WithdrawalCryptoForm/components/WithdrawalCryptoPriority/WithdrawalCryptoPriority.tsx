@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
-import { Tooltip } from '@deriv-com/ui';
-import { WalletCheckbox, WalletsPriorityCryptoWithdrawLoader } from '../../../../../../../../components';
+import { useTranslations } from '@deriv-com/translations';
+import { Checkbox, Tooltip } from '@deriv-com/ui';
+import { WalletsPriorityCryptoWithdrawLoader } from '../../../../../../../../components';
 import InfoIcon from '../../../../../../../../public/images/ic-info-outline.svg';
 import { useWithdrawalCryptoContext } from '../../../../provider';
 import { WithdrawalCryptoPriorityFeeInfo } from '../WithdrawalCryptoPriorityFeeInfo';
 import './WithdrawalCryptoPriority.scss';
 
 const WithdrawalCryptoPriority = () => {
+    const { localize } = useTranslations();
+
     const { handleChange, values } = useFormikContext<{
         cryptoAmount: string;
         priorityWithdrawal: boolean;
@@ -38,12 +41,11 @@ const WithdrawalCryptoPriority = () => {
     }, []);
 
     return (
-        <>
+        <React.Fragment>
             <div className='wallets-crypto-form-checkbox'>
-                <WalletCheckbox
+                <Checkbox
                     checked={values.priorityWithdrawal}
-                    label={'Priority withdrawal'}
-                    labelFontSize='md'
+                    label={localize('Priority withdrawal')}
                     name='priorityWithdrawal'
                     onChange={e => {
                         if (!values.priorityWithdrawal) {
@@ -59,7 +61,9 @@ const WithdrawalCryptoPriority = () => {
                 />
                 <Tooltip
                     as='div'
-                    tooltipContent='Pay a small fee to prioritise your withdrawal, this fee will be deducted from the withdrawal amount.'
+                    tooltipContent={localize(
+                        'Pay a small fee to prioritise your withdrawal, this fee will be deducted from the withdrawal amount.'
+                    )}
                     tooltipPosition='top'
                 >
                     <InfoIcon />
@@ -69,7 +73,7 @@ const WithdrawalCryptoPriority = () => {
             {!isLoadingCryptoEstimationFee && values.priorityWithdrawal && (
                 <WithdrawalCryptoPriorityFeeInfo cryptoAmount={values.cryptoAmount} />
             )}
-        </>
+        </React.Fragment>
     );
 };
 

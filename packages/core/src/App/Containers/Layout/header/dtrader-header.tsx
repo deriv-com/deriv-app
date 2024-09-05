@@ -64,11 +64,7 @@ const DTraderHeader = observer(() => {
             if (config.link_to === routes.dxtrade) {
                 return is_dxtrade_allowed;
             }
-            if (
-                config.link_to === routes.bot ||
-                config.href === routes.binarybot ||
-                config.href === routes.smarttrader
-            ) {
+            if (config.link_to === routes.bot || config.href === routes.smarttrader) {
                 return is_bot_allowed;
             }
             return true;

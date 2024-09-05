@@ -402,7 +402,6 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableCFDAccounts() {
-        this.root_store.client.setIsLandingCompanyLoaded(false);
         const getAccountDesc = () => {
             return !this.is_eu_user || this.is_demo_low_risk
                 ? localize('CFDs on financial instruments.')
@@ -459,7 +458,6 @@ export default class TradersHubStore extends BaseStore {
         this.getAvailableCTraderAccounts();
         this.getAvailableMt5Accounts();
         this.setCombinedCFDMT5Accounts();
-        this.root_store.client.setIsLandingCompanyLoaded(true);
     }
 
     get financial_restricted_countries() {

@@ -1615,10 +1615,12 @@ export default class ClientStore extends BaseStore {
             await WS.mt5LoginList().then(this.responseMt5LoginList);
             WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
 
+            this.setIsLandingCompanyLoaded(false);
             const mt5_response = await WS.tradingPlatformAvailableAccounts({
                 platform: CFD_PLATFORMS.MT5,
             });
             this.responseTradingPlatformAvailableAccounts(mt5_response);
+            this.setIsLandingCompanyLoaded(true);
 
             const ctrader_response = await WS.tradingPlatformAvailableAccounts({ platform: CFD_PLATFORMS.CTRADER });
             this.responseCTraderTradingPlatformAvailableAccounts(ctrader_response);

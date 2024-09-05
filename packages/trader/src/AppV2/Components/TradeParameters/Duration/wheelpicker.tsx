@@ -30,8 +30,9 @@ const DurationWheelPicker = ({
     toggle_picker: boolean;
 }) => {
     const options = React.useMemo(() => getOptionPerUnit(unit), [unit]);
+
     return (
-        <>
+        <div className='duration-container__wheel-picker-container'>
             {unit !== 'et' ? (
                 <WheelPickerContainer
                     key={`${unit}-${toggle_picker}`}
@@ -52,7 +53,7 @@ const DurationWheelPicker = ({
                     hoursInterval={1}
                 />
             )}
-        </>
+        </div>
     );
 };
 

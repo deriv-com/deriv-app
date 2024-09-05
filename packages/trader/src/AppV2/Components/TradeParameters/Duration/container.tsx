@@ -15,6 +15,19 @@ const DurationActionSheetContainer = observer(
         const [expiry_date_data, setExpiryDate] = useState<Date>(new Date());
         const [end_time, setEndTime] = useState<string>('');
         const [toggle_picker, setTogglePicker] = useState<boolean>(false);
+        const [current_gmt_time, setCurrentGmtTime] = useState<string>('');
+
+        const updateCurrentGmtTime = () => {
+            const now = new Date();
+            const gmt_time = now.toLocaleTimeString('en-GB', { timeZone: 'GMT', hour12: false });
+            setCurrentGmtTime(gmt_time);
+        };
+
+        useEffect(() => {
+            updateCurrentGmtTime();
+            const interval = setInterval(updateCurrentGmtTime, 60000);
+            return () => clearInterval(interval);
+        }, []);
 
         const onAction = () => {
             if (unit == 'h') {
@@ -42,10 +55,10 @@ const DurationActionSheetContainer = observer(
             }
         };
         const onChangeUnit = (value: string) => {
+            setUnit(value);
             if (unit !== 'h') {
                 setSelectedHour([]);
             }
-            setUnit(value);
         };
 
         const handleSelectExpiryDate = (date: Date) => {
@@ -108,7 +121,7 @@ const DurationActionSheetContainer = observer(
                         <CaptionText color='quill-typography__color--subtle'>
                             <Localize i18n_default_text='Current time' />
                         </CaptionText>
-                        <Text>{`${end_time} GMT`}</Text>
+                        <Text size='sm'>{`${current_gmt_time} GMT`}</Text>
                     </div>
                 )}
                 <ActionSheet.Footer

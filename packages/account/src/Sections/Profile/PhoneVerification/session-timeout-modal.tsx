@@ -5,6 +5,7 @@ import { Modal, Text } from '@deriv-com/quill-ui';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
+import { useEffect } from 'react';
 
 const SessionTimeoutModal = observer(() => {
     const { isMobile } = useDevice();
@@ -12,9 +13,16 @@ const SessionTimeoutModal = observer(() => {
     const { localize } = useTranslations();
     const { should_show_session_timeout_modal } = usePhoneNumberVerificationSessionTimer();
     const { ui } = useStore();
-    const { is_phone_verification_completed, setShouldShowPhoneNumberOTP } = ui;
+    const { is_phone_verification_completed, setShouldShowPhoneNumberOTP, setIsForcedToExitPnv } = ui;
+
+    useEffect(() => {
+        if (should_show_session_timeout_modal) {
+            setIsForcedToExitPnv(true);
+        }
+    }, [should_show_session_timeout_modal]);
 
     const redirectBackToPersonalDetails = () => {
+        setIsForcedToExitPnv(false);
         setShouldShowPhoneNumberOTP(false);
         history.push(routes.personal_details);
     };

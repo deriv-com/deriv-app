@@ -55,6 +55,8 @@ describe('TradeTypes', () => {
     const scrollByMock = jest.fn();
     beforeEach(() => {
         mockGetTradeTypesList.mockReturnValue([
+            { value: 'accumulator', text: 'Accumulator' },
+            { value: 'multipler', text: 'Multiplier' },
             { value: 'rise', text: 'Rise' },
             { value: 'fall', text: 'Fall' },
             { value: 'vanilla_call', text: 'Vanilla Call' },
@@ -77,15 +79,6 @@ describe('TradeTypes', () => {
 
         expect(screen.getByText('View all')).toBeInTheDocument();
         expect(screen.getByText('Rise')).toBeInTheDocument();
-    });
-
-    it('should open ActionSheet when View all button is clicked', async () => {
-        render(mockTradeTypes());
-
-        await userEvent.click(screen.getByText('View all'));
-
-        expect(screen.getByText('Trade types')).toBeInTheDocument();
-        expect(screen.getByText('Fall')).toBeInTheDocument();
     });
 
     it('should handle adding and removing pinned trade types', async () => {

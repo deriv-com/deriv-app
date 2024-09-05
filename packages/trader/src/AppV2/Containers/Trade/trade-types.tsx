@@ -218,7 +218,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     };
 
     const trade_type_chips = getTradeTypeChips();
-    const should_show_view_all = trade_type_chips.length < 2;
+    const should_show_view_all = trade_type_chips.length >= 2;
 
     return (
         <div className='trade__trade-types' ref={trade_types_ref}>

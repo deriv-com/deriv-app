@@ -17,6 +17,8 @@
         min-height: var(--core-spacing-1600);
         white-space: nowrap;
         scrollbar-width: none;
+        scroll-behavior: smooth;
+        transition: left var(--core-motion-duration-300) ease-in;
 
         &::-webkit-scrollbar {
             display: none;

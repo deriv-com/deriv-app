@@ -129,15 +129,15 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     const scrollToSelectedTradeType = () => {
         setTimeout(() => {
             let position_x = 0;
-            if (trade_types_ref?.current) {
+            if (trade_types_ref.current) {
                 const selected_chip = trade_types_ref?.current.querySelector(
                     'button[data-state="selected"]'
                 ) as HTMLButtonElement;
                 if (selected_chip) {
-                    position_x = selected_chip?.getBoundingClientRect()?.x || 0;
+                    position_x = selected_chip?.getBoundingClientRect()?.x - 8 || 0;
                 }
                 trade_types_ref.current.scrollBy({
-                    left: position_x - 16,
+                    left: position_x,
                     top: 0,
                 });
             }

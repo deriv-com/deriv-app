@@ -9,6 +9,7 @@ export * from './WalletAlertMessage';
 export * from './WalletButton';
 export * from './WalletButtonGroup';
 export * from './WalletClipboard';
+export * from './WalletDialog';
 export * from './WalletLink';
 export * from './WalletPasswordFieldLazy';
 export * from './WalletText';

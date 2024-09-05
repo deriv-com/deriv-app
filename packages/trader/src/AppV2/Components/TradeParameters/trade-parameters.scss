@@ -43,7 +43,7 @@
             &--minimized {
                 max-height: 0px;
                 padding: 0px;
-                transition: transform 0.5s, opacity 0.5s, max-height 0.5s, padding 0.1s;
+                transition: transform 0.5s, opacity 0.5s, max-height 0.1s, padding 0.1s;
 
                 &--enter,
                 &--exit {

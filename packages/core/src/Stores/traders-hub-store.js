@@ -423,6 +423,7 @@ export default class TradersHubStore extends BaseStore {
                 market_type: 'financial',
                 product: 'financial',
                 icon: !this.is_eu_user || this.is_demo_low_risk ? 'Financial' : 'CFDs',
+                availability: 'All',
             },
             {
                 name: 'Swap-Free',
@@ -431,6 +432,7 @@ export default class TradersHubStore extends BaseStore {
                 market_type: 'all',
                 product: 'swap_free',
                 icon: 'SwapFree',
+                availability: 'Non-EU',
             },
             {
                 name: localize('Zero Spread'),
@@ -439,6 +441,7 @@ export default class TradersHubStore extends BaseStore {
                 market_type: 'all',
                 product: 'zero_spread',
                 icon: 'ZeroSpread',
+                availability: 'Non-EU',
             },
         ];
         this.available_cfd_accounts = all_available_accounts.map(account => {
@@ -480,6 +483,12 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableMt5Accounts() {
+        if (this.is_eu_user && !this.is_demo_low_risk) {
+            this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
+                ['EU', 'All'].some(region => region === account.availability)
+            );
+            return;
+        }
         if (Object.keys(this.dynamic_available_platforms).length > 0) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account => {
                 return account.platform === CFD_PLATFORMS.MT5 && this.dynamic_available_platforms[account.product];
@@ -509,6 +518,14 @@ export default class TradersHubStore extends BaseStore {
         );
     }
     getAvailableCTraderAccounts() {
+        if (this.is_eu_user && !this.is_demo_low_risk) {
+            this.available_ctrader_accounts = this.available_cfd_accounts.filter(
+                account =>
+                    ['EU', 'All'].some(region => region === account.availability) &&
+                    account.platform === CFD_PLATFORMS.CTRADER
+            );
+            return;
+        }
         if (Object.keys(this.dynamic_available_platforms).length > 0) {
             this.available_ctrader_accounts = this.available_cfd_accounts.filter(account => {
                 return account.platform === CFD_PLATFORMS.CTRADER && this.dynamic_available_platforms[account.product];

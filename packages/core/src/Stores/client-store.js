@@ -2492,11 +2492,11 @@ export default class ClientStore extends BaseStore {
     }
 
     responseTradingPlatformAvailableAccounts(response) {
-        this.setIsLandingCompanyLoaded(false);
+        setIsLandingCompanyLoaded(false);
         if (!response.error) {
             this.trading_platform_available_accounts = response.trading_platform_available_accounts;
         }
-        this.setIsLandingCompanyLoaded(true);
+        setIsLandingCompanyLoaded(true);
     }
 
     responseCTraderTradingPlatformAvailableAccounts(response) {

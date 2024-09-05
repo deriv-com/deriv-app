@@ -24,7 +24,7 @@ export const previewProposal = (
     const requests = createProposalRequests(new_store as Parameters<typeof createProposalRequests>[0]);
     const subscription_map: { [key: string]: boolean } = {};
 
-    const onResponse = (response: TResponse<PriceProposalRequest, PriceProposalResponse, 'proposal'>) => {
+    const onResponse = (response: TResponse<PriceProposalRequest, ProposalResponse, 'proposal'>) => {
         if (!should_show_error && (response.error || !response.subscription)) return;
 
         if (response.subscription) {

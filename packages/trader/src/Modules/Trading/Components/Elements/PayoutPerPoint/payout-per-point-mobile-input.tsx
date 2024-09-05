@@ -100,7 +100,7 @@ const PayoutPerPointMobileInput = ({
                         as='p'
                         className='distance-to-current-spot'
                     >
-                        <Localize i18n_default_text='Distance to current spot' />
+                        <Localize i18n_default_text='Distance to current spot:' />
                     </Text>
                     <Popover
                         alignment='top'

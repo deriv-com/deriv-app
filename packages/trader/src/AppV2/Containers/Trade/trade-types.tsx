@@ -134,7 +134,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                     'button[data-state="selected"]'
                 ) as HTMLButtonElement;
                 if (selected_chip) {
-                    position_x = selected_chip?.getBoundingClientRect()?.x - 8 || 0;
+                    position_x = selected_chip.getBoundingClientRect()?.x - 8 || 0;
                 }
                 trade_types_ref.current.scrollBy({
                     left: position_x,

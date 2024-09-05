@@ -50,6 +50,7 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
             component: (
                 <RiskManagementPicker
                     closeActionSheet={closeActionSheet}
+                    initial_tab_index={Number(has_cancellation)}
                     should_show_deal_cancellation={should_show_deal_cancellation}
                 />
             ),

@@ -587,27 +587,33 @@ export const isDarkRgbColour = string_rgb => {
 };
 /* eslint-enable */
 
-export const modifyBlockOnCollapse = (instance, block_image, block_name) => {
-    const collapsed_field = instance.getField('_TEMP_COLLAPSED_FIELD');
-    const collapsed_input = instance.getInput('_TEMP_COLLAPSED_INPUT');
-    // Return if the block is not collapsed
-    if (!instance.collapsed_) return;
+export const modifyBlockOnCollapse = block_instance => {
+    try {
+        if (!block_instance.collapsed_) return;
+        const [block_image, block_name] = block_instance?.inputList[0]?.fieldRow.map(field => field.value_);
+        const collapsed_field = block_instance?.getField('_TEMP_COLLAPSED_FIELD');
+        const collapsed_input = block_instance?.getInput('_TEMP_COLLAPSED_INPUT');
+        // Return if the block is not collapsed
 
-    // Initialize the icon_added property if not already done
-    if (collapsed_input) {
-        // Add the image and label fields
-        collapsed_input.appendField(new Blockly.FieldImage(block_image, 25, 25, '', ''));
-        collapsed_input.appendField(new Blockly.FieldLabel(block_name, 'blocklyTextRootBlockHeader'));
+        // Initialize the icon_added property if not already done
+        if (collapsed_input) {
+            // Add the image and label fields
+            collapsed_input.appendField(new Blockly.FieldImage(block_image, 25, 25, '', ''));
+            collapsed_input.appendField(new Blockly.FieldLabel(block_name, 'blocklyTextRootBlockHeader'));
 
-        // Add the dropdown icon
-        const dropdown_path = `${instance.workspace.options.pathToMedia}dropdown-arrow.svg`;
-        const field_expand_icon = new Blockly.FieldImage(dropdown_path, 16, 16, localize('Collapsed'), () =>
-            instance.setCollapsed(false)
-        );
-        collapsed_input.appendField(field_expand_icon);
+            // Add the dropdown icon
+            const dropdown_path = `${block_instance?.workspace.options.pathToMedia}dropdown-arrow.svg`;
+            const field_expand_icon = new Blockly.FieldImage(dropdown_path, 16, 16, localize('Collapsed'), () =>
+                block_instance?.setCollapsed(false)
+            );
+            collapsed_input.appendField(field_expand_icon);
 
-        // hide the default collapsed field
-        collapsed_field.setVisible(false);
+            // hide the default collapsed field
+            collapsed_field.setVisible(false);
+        }
+    } catch (e) {
+        // eslint-disable-next-line
+        console.log(e);
     }
 };
 

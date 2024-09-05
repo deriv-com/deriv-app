@@ -10,6 +10,7 @@ Blockly.Blocks.trade_definition = {
         this.jsonInit(this.definition());
         this.setDeletable(false);
         this.isInit = false;
+        this.is_collapsed_flag = false;
     },
     definition() {
         return {
@@ -146,9 +147,13 @@ Blockly.Blocks.trade_definition = {
             }
 
             removeExtraInput(this);
-            const block_image = this.inputList[0].fieldRow[0].value_;
-            const block_name = this.inputList[0].fieldRow[1].value_;
-            modifyBlockOnCollapse(this, block_image, block_name);
+            const is_block_collapsed = this.isCollapsed();
+            if (is_block_collapsed && !this.is_collapsed_flag) {
+                modifyBlockOnCollapse(this);
+                this.is_collapsed_flag = true;
+            } else if (!is_block_collapsed) {
+                this.is_collapsed_flag = false;
+            }
         }
     },
 };

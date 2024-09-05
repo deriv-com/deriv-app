@@ -5,6 +5,7 @@ import { modifyBlockOnCollapse, modifyContextMenu, removeExtraInput } from '../.
 Blockly.Blocks.during_purchase = {
     init() {
         this.jsonInit(this.definition());
+        this.is_collapsed_flag = false;
     },
     definition() {
         return {
@@ -64,9 +65,13 @@ Blockly.Blocks.during_purchase = {
             (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
             removeExtraInput(this);
-            const block_image = this.inputList[0].fieldRow[0].value_;
-            const block_name = this.inputList[0].fieldRow[1].value_;
-            modifyBlockOnCollapse(this, block_image, block_name);
+            const is_block_collapsed = this.isCollapsed();
+            if (is_block_collapsed && !this.is_collapsed_flag) {
+                modifyBlockOnCollapse(this);
+                this.is_collapsed_flag = true;
+            } else if (!is_block_collapsed) {
+                this.is_collapsed_flag = false;
+            }
         }
     },
     customContextMenu(menu) {

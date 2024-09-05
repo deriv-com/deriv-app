@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { defineContract } from '../../images';
 import DBotStore from '../../../dbot-store';
-import { runIrreversibleEvents, removeExtraInput, modifyContextMenu, modifyBlockOnCollapse } from '../../../utils';
+import { runIrreversibleEvents, modifyContextMenu, modifyBlockOnCollapse } from '../../../utils';
 import { removeErrorHandlingEventListener, initErrorHandlingListener } from '../../../../utils';
 import { config } from '../../../../constants/config';
 
@@ -10,7 +10,7 @@ Blockly.Blocks.trade_definition = {
         this.jsonInit(this.definition());
         this.setDeletable(false);
         this.isInit = false;
-        this.is_collapsed_flag = false;
+        //this.is_collapsed_flag = false;
     },
     definition() {
         return {
@@ -145,14 +145,8 @@ Blockly.Blocks.trade_definition = {
                     this.dispose();
                 });
             }
-
-            removeExtraInput(this);
-            const is_block_collapsed = this.isCollapsed();
-            if (is_block_collapsed && !this.is_collapsed_flag) {
+            if (this.isCollapsed()) {
                 modifyBlockOnCollapse(this);
-                this.is_collapsed_flag = true;
-            } else if (!is_block_collapsed) {
-                this.is_collapsed_flag = false;
             }
         }
     },

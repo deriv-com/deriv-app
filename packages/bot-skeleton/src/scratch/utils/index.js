@@ -590,10 +590,13 @@ export const isDarkRgbColour = string_rgb => {
 export const modifyBlockOnCollapse = block_instance => {
     try {
         // Return if the block is not collapsed
-        if (!block_instance.collapsed_) return;
+        if (!block_instance?.collapsed_) return;
         const [block_image, block_name] = block_instance?.inputList[0]?.fieldRow.map(field => field.value_);
-        const collapsed_field = block_instance?.getField('_TEMP_COLLAPSED_FIELD');
-        const collapsed_input = block_instance?.getInput('_TEMP_COLLAPSED_INPUT');
+        const type_of_block = block_instance?.getField(block_instance.type);
+        if (type_of_block) return;
+
+        const collapsed_field = block_instance?.getField(Blockly.constants.COLLAPSED_FIELD_NAME);
+        const collapsed_input = block_instance?.getInput(Blockly.constants.COLLAPSED_INPUT_NAME);
 
         // Initialize the icon_added property if not already done
         if (collapsed_input) {
@@ -606,7 +609,7 @@ export const modifyBlockOnCollapse = block_instance => {
             const field_expand_icon = new Blockly.FieldImage(dropdown_path, 16, 16, localize('Collapsed'), () =>
                 block_instance?.setCollapsed(false)
             );
-            collapsed_input.appendField(field_expand_icon);
+            collapsed_input.appendField(field_expand_icon, block_instance.type);
 
             // hide the default collapsed field
             collapsed_field.setVisible(false);

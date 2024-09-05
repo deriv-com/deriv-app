@@ -1,11 +1,10 @@
 import { localize } from '@deriv/translations';
 import { sellContract } from '../../images';
-import { modifyBlockOnCollapse, modifyContextMenu, removeExtraInput } from '../../../utils';
+import { modifyBlockOnCollapse, modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.during_purchase = {
     init() {
         this.jsonInit(this.definition());
-        this.is_collapsed_flag = false;
     },
     definition() {
         return {
@@ -64,13 +63,8 @@ Blockly.Blocks.during_purchase = {
             event.type === Blockly.Events.BLOCK_CHANGE ||
             (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
-            removeExtraInput(this);
-            const is_block_collapsed = this.isCollapsed();
-            if (is_block_collapsed && !this.is_collapsed_flag) {
+            if (this.isCollapsed()) {
                 modifyBlockOnCollapse(this);
-                this.is_collapsed_flag = true;
-            } else if (!is_block_collapsed) {
-                this.is_collapsed_flag = false;
             }
         }
     },

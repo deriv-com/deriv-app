@@ -1,4 +1,5 @@
 import React, { FC, useCallback } from 'react';
+import { useTranslations } from '@deriv-com/translations';
 import { Divider, Tab, Tabs } from '@deriv-com/ui';
 import { CFDPlatformsList } from '../../features';
 import useDevice from '../../hooks/useDevice';
@@ -14,6 +15,7 @@ type TProps = {
 
 const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, onTabClickHandler }) => {
     const { isMobile } = useDevice();
+    const { localize } = useTranslations();
 
     const onChangeTabHandler = useCallback((activeTab: number) => onTabClickHandler?.(activeTab), [onTabClickHandler]);
 
@@ -25,11 +27,11 @@ const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, onTabClickHandler })
                 onChange={onChangeTabHandler}
                 wrapperClassName='wallets-accounts-list'
             >
-                <Tab className='wallets-accounts-list__tab' title='CFDs'>
+                <Tab className='wallets-accounts-list__tab' title={localize('CFDs')}>
                     <CFDPlatformsList />
                     <Divider color='var(--wallets-banner-border-color)' />
                 </Tab>
-                <Tab className='wallets-accounts-list__tab' title='Options'>
+                <Tab className='wallets-accounts-list__tab' title={localize('Options')}>
                     <OptionsAndMultipliersListing />
                     <Divider color='var(--wallets-banner-border-color)' />
                 </Tab>

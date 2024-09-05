@@ -28,6 +28,7 @@ const usePOI = () => {
         const services = authentication_data?.identity?.services;
         const idv_submission_left = services?.idv?.submissions_left ?? 0;
         const onfido_submission_left = services?.onfido?.submissions_left ?? 0;
+        const is_ng_client = user_country_code === 'ng'; // flag for checking if client is from Nigeria
         if (is_idv_supported && idv_submission_left && !authentication_data?.is_idv_disallowed) {
             return {
                 country_code: user_country_code,
@@ -35,8 +36,22 @@ const usePOI = () => {
                 status: services?.idv?.status,
                 submission_left: idv_submission_left,
                 document_supported: matching_residence_data?.identity?.services?.idv?.documents_supported,
+                ...(is_ng_client &&
+                    is_onfido_supported &&
+                    onfido_submission_left && {
+                        onfido_supported: ['passport', 'driving-license', 'identity-card'],
+                    }),
             };
         } else if (is_onfido_supported && onfido_submission_left) {
+            if (is_ng_client) {
+                return {
+                    country_code: user_country_code,
+                    service: 'manual',
+                    onfido_supported: ['passport', 'driving-license', 'identity-card'],
+                    status: services?.manual?.status,
+                };
+            }
+
             return {
                 country_code: user_country_code,
                 service: 'onfido',

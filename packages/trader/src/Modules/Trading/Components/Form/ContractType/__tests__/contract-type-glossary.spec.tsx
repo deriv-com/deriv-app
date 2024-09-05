@@ -33,7 +33,7 @@ describe('<ContractTypeGlossary />', () => {
 
         expect(
             screen.getByText(
-                'We’ll offer to buy your contract at this price should you choose to sell it before its expiry. This is based on several factors, such as the current spot price. We won’t offer a contract value if the remaining duration is below 15 seconds or if the contract duration is in ticks.'
+                'This is the resale value of your contract, based on the prevailing market conditions (e.g, the current spot), including additional commissions if any.'
             )
         ).toBeInTheDocument();
     });

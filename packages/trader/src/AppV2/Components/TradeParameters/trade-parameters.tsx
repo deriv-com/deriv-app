@@ -12,6 +12,7 @@ import TakeProfit from './TakeProfit';
 import AccumulatorsInformation from './AccumulatorsInformation';
 import Multiplier from './Multiplier';
 import RiskManagement from './RiskManagement';
+import MultipliersDealCancellationInfo from './MultipliersDealCancellationInfo';
 import TradeTypeTabs from './TradeTypeTabs';
 import Strike from './Strike';
 import PayoutPerPoint from './PayoutPerPoint';
@@ -25,9 +26,9 @@ type TTradeParametersProps = {
 };
 
 const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
-    const { contract_type, symbol } = useTraderStore();
+    const { contract_type, has_cancellation, symbol } = useTraderStore();
     const isVisible = (component_key: string) => {
-        const params = getTradeParams(symbol)?.[contract_type] ?? {};
+        const params = getTradeParams(symbol, has_cancellation)?.[contract_type] ?? {};
         return component_key in params;
     };
 
@@ -55,6 +56,7 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
                 {isVisible('accu_info_display') && <AccumulatorsInformation is_minimized={is_minimized} />}
                 {isVisible('barrier_info') && !is_minimized && <BarrierInfo />}
                 {isVisible('payout_per_point_info') && !is_minimized && <PayoutPerPointInfo />}
+                {isVisible('mult_info_display') && !is_minimized && <MultipliersDealCancellationInfo />}
             </div>
             {is_minimized && isVisible('expiration') && (
                 <div className='trade-params__options-info-standalone'>
@@ -65,6 +67,9 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
                 <div className='trade-params__options-info-standalone'>
                     <PayoutPerPointInfo />
                 </div>
+            )}
+            {is_minimized && isVisible('mult_info_display') && (
+                <MultipliersDealCancellationInfo classname='multipliers-info--standalone' />
             )}
         </React.Fragment>
     );

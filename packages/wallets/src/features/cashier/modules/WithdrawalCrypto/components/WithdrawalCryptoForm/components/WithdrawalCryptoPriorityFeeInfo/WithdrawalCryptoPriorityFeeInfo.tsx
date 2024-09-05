@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text, Tooltip } from '@deriv-com/ui';
 import { useWithdrawalCryptoContext } from '../../../../provider';
 import './WithdrawalCryptoPriorityFeeInfo.scss';
@@ -7,6 +7,7 @@ import './WithdrawalCryptoPriorityFeeInfo.scss';
 const WithdrawalCryptoPriorityFeeInfo = ({ cryptoAmount }: { cryptoAmount: string }) => {
     const { activeWallet, countDownEstimationFee, cryptoEstimationsFee, fractionalDigits, serverTime } =
         useWithdrawalCryptoContext();
+    const { localize } = useTranslations();
 
     return (
         <div className='wallets-withdrawal-crypto-form__priority-withdrawal-info'>
@@ -29,7 +30,11 @@ const WithdrawalCryptoPriorityFeeInfo = ({ cryptoAmount }: { cryptoAmount: strin
                     </Text>
                     :
                 </Text>
-                <Tooltip as='div' tooltipContent={`Fee calculated at ${serverTime} GMT`} tooltipPosition='top'>
+                <Tooltip
+                    as='div'
+                    tooltipContent={localize('Fee calculated at {{serverTime}} GMT', { serverTime })}
+                    tooltipPosition='top'
+                >
                     <span className='wallets-withdrawal-crypto-form-underline'>
                         <Text as='div' size='sm'>
                             {cryptoEstimationsFee.toFixed(fractionalDigits.crypto as number)} {activeWallet?.currency}

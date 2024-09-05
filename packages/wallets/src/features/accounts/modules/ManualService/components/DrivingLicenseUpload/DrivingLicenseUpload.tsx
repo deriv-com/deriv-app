@@ -6,6 +6,7 @@ import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '.
 import DrivingLicenseCardBack from '../../../../../../public/images/accounts/document-back.svg';
 import DrivingLicenseCardFront from '../../../../../../public/images/accounts/driving-license-front.svg';
 import { THooks } from '../../../../../../types';
+import { getAdjustedDate } from '../../../../../../utils/utils';
 import { Footer } from '../../../components';
 import { getGeneralDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
@@ -33,12 +34,6 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
         } catch (error) {
             setError((error as THooks.DocumentUpload).error);
         }
-    };
-
-    const addDays = (days: number) => {
-        const date = new Date();
-        date.setDate(date.getDate() + days);
-        return date;
     };
 
     if (isLoading) {
@@ -111,7 +106,7 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                                     />
                                     <DatePicker
                                         label={localize('Expiry date*')}
-                                        minDate={addDays(2)}
+                                        minDate={getAdjustedDate(2, 'days')}
                                         name='drivingLicenseExpiryDate'
                                     />
                                 </div>

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useCryptoTransactions } from '@deriv/api-v2';
 import { Loader, Text } from '@deriv-com/ui';
+import { getFormattedDateString } from '../../../../../../utils/utils';
 import { TransactionsNoDataState } from '../TransactionsNoDataState';
 import { TransactionsPendingRow } from '../TransactionsPendingRow';
 import { TransactionsTable } from '../TransactionsTable';
@@ -10,12 +11,6 @@ type TProps = {
     filter?: NonNullable<
         NonNullable<NonNullable<Parameters<ReturnType<typeof useCryptoTransactions>['subscribe']>>[0]>['payload']
     >['transaction_type'];
-};
-
-const formatUnixDate = (unixTimestamp: number) => {
-    const date = new Date(unixTimestamp * 1000);
-    const options = { day: '2-digit', month: 'short', year: 'numeric' } as const;
-    return date.toLocaleDateString('en-GB', options);
 };
 
 const TransactionsPending: React.FC<TProps> = ({ filter = 'all' }) => {
@@ -37,7 +32,13 @@ const TransactionsPending: React.FC<TProps> = ({ filter = 'all' }) => {
             <TransactionsTable
                 columns={[
                     {
-                        accessorFn: row => formatUnixDate(row.submit_date),
+                        accessorFn: row =>
+                            getFormattedDateString(
+                                row.submit_date,
+                                { day: '2-digit', month: 'short', year: 'numeric' },
+                                'DD MMM YYYY',
+                                true
+                            ),
                         accessorKey: 'date',
                         header: 'Date',
                     },
@@ -47,7 +48,13 @@ const TransactionsPending: React.FC<TProps> = ({ filter = 'all' }) => {
                 rowGroupRender={transaction => (
                     <div className='wallets-transactions-pending__group-title'>
                         <Text color='primary' size='2xs'>
-                            {transaction.submit_date && formatUnixDate(transaction.submit_date)}
+                            {transaction.submit_date &&
+                                getFormattedDateString(
+                                    transaction.submit_date,
+                                    { day: '2-digit', month: 'short', year: 'numeric' },
+                                    'DD MMM YYYY',
+                                    true
+                                )}
                         </Text>
                     </div>
                 )}

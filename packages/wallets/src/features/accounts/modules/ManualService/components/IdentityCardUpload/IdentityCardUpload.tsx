@@ -6,6 +6,7 @@ import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '.
 import IdentityCardBack from '../../../../../../public/images/accounts/document-back.svg';
 import IdentityCardFront from '../../../../../../public/images/accounts/identity-card-front.svg';
 import { THooks } from '../../../../../../types';
+import { getAdjustedDate } from '../../../../../../utils/utils';
 import { Footer } from '../../../components';
 import { getGeneralDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
@@ -33,12 +34,6 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
         } catch (error) {
             setError((error as THooks.DocumentUpload).error);
         }
-    };
-
-    const addDays = (days: number) => {
-        const date = new Date();
-        date.setDate(date.getDate() + days);
-        return date;
     };
 
     if (isLoading) {
@@ -113,7 +108,7 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
                                     />
                                     <DatePicker
                                         label={localize('Expiry date*')}
-                                        minDate={addDays(2)}
+                                        minDate={getAdjustedDate(2, 'days')}
                                         name='identityCardExpiryDate'
                                     />
                                 </div>

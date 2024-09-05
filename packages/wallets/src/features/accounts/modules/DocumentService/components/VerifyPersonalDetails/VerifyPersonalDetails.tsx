@@ -5,6 +5,7 @@ import { TSocketError } from '@deriv/api-v2/types';
 import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { DatePicker, FormField, InlineMessage, WalletText } from '../../../../../../components';
+import { getAdjustedDate } from '../../../../../../utils/utils';
 import { VerifyPersonalDetailsErrorMessage } from './components';
 import { TVerifyPersonalDetailsValues } from './types';
 import {
@@ -44,18 +45,6 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
         setFieldValue('arePersonalDetailsVerified', event.target.checked);
     };
 
-    const getMaxDate = () => {
-        const date = new Date();
-        date.setFullYear(date.getFullYear() - 18);
-        return date;
-    };
-
-    const getMinDate = () => {
-        const date = new Date();
-        date.setFullYear(date.getFullYear() - 100);
-        return date;
-    };
-
     return (
         <div className='wallets-verify-personal-details'>
             <InlineMessage>
@@ -90,9 +79,9 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
                         disabled={values.arePersonalDetailsVerified}
                         displayFormat={dateDisplayFormat}
                         label={localize('Date of birth*')}
-                        maxDate={getMaxDate()}
+                        maxDate={getAdjustedDate(18, 'years')}
                         message={localize('Your date of birth as in your identity document')}
-                        minDate={getMinDate()}
+                        minDate={getAdjustedDate(100, 'years')}
                         mobileAlignment='above'
                         name='dateOfBirth'
                         showMessage

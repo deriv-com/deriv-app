@@ -8,6 +8,7 @@ import { Button, Text } from '@deriv-com/ui';
 import { useModal } from '../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../hooks/useDevice';
 import { THooks } from '../../../../../../types';
+import { getFormattedDateString } from '../../../../../../utils/utils';
 import { WalletActionModal } from '../../../../components/WalletActionModal';
 import { getFormattedConfirmations, getStatusName } from '../../../../helpers/transaction-helpers';
 import './CryptoTransaction.scss';
@@ -67,11 +68,6 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
         );
     }, [cancelTransaction, hide, localize, show]);
 
-    const formatUnixToDate = (unixTimestamp: number) => {
-        const date = new Date(unixTimestamp * 1000);
-        return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-    };
-
     return (
         <div className='wallets-crypto-transaction'>
             <div className='wallets-crypto-transaction__type-and-status'>
@@ -110,7 +106,12 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                     {transaction.formatted_amount}
                 </Text>
                 <Text color='less-prominent' size='2xs'>
-                    {formatUnixToDate(transaction.submit_date)}
+                    {getFormattedDateString(
+                        transaction.submit_date,
+                        { day: 'numeric', month: 'short', year: 'numeric' },
+                        undefined,
+                        true
+                    )}
                 </Text>
             </div>
             {transaction?.transaction_fee && (

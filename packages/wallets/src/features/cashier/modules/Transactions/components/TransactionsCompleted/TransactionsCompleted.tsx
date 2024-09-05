@@ -2,6 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useActiveWalletAccount, useAllAccountsList, useInfiniteTransactions } from '@deriv/api-v2';
 import { TSocketRequestPayload } from '@deriv/api-v2/types';
 import { Loader, Text } from '@deriv-com/ui';
+import { getFormattedDateString } from '../../../../../../utils/utils';
 import { useCashierScroll } from '../../../../context';
 import { TransactionsCompletedRow } from '../TransactionsCompletedRow';
 import { TransactionsNoDataState } from '../TransactionsNoDataState';
@@ -12,12 +13,6 @@ type TFilter = NonNullable<TSocketRequestPayload<'statement'>['payload']>['actio
 
 type TProps = {
     filter?: TFilter;
-};
-
-const formatUnixDate = (unixTimestamp: number) => {
-    const date = new Date(unixTimestamp * 1000);
-    const options = { day: '2-digit', month: 'short', year: 'numeric' } as const;
-    return date.toLocaleDateString('en-GB', options);
 };
 
 const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
@@ -65,7 +60,14 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
         <TransactionsTable
             columns={[
                 {
-                    accessorFn: row => row.transaction_time && formatUnixDate(row.transaction_time),
+                    accessorFn: row =>
+                        row.transaction_time &&
+                        getFormattedDateString(
+                            row.transaction_time,
+                            { day: '2-digit', month: 'short', year: 'numeric' },
+                            'DD MMM YYYY',
+                            true
+                        ),
                     accessorKey: 'date',
                     header: 'Date',
                 },
@@ -75,7 +77,13 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
             rowGroupRender={transaction => (
                 <div className='wallets-transactions-completed__group-title'>
                     <Text color='primary' size='2xs'>
-                        {transaction.transaction_time && formatUnixDate(transaction.transaction_time)}
+                        {transaction.transaction_time &&
+                            getFormattedDateString(
+                                transaction.transaction_time,
+                                { day: '2-digit', month: 'short', year: 'numeric' },
+                                'DD MMM YYYY',
+                                true
+                            )}
                     </Text>
                 </div>
             )}

@@ -5,6 +5,7 @@ import { Divider, Loader } from '@deriv-com/ui';
 import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
 import PassportPlaceholder from '../../../../../../public/images/accounts/passport-placeholder.svg';
 import { THooks } from '../../../../../../types';
+import { getAdjustedDate } from '../../../../../../utils/utils';
 import { Footer } from '../../../components';
 import { getGeneralDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
@@ -32,12 +33,6 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
         } catch (error) {
             setError((error as THooks.DocumentUpload).error);
         }
-    };
-
-    const addDays = (days: number) => {
-        const date = new Date();
-        date.setDate(date.getDate() + days);
-        return date;
     };
 
     if (isLoading) {
@@ -103,7 +98,7 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                                     <FormField label={localize('Passport number*')} name='passportNumber' />
                                     <DatePicker
                                         label={localize('Expiry date*')}
-                                        minDate={addDays(2)}
+                                        minDate={getAdjustedDate(2, 'days')}
                                         name='passportExpiryDate'
                                     />
                                 </div>

@@ -45,7 +45,11 @@ const DerivAppsGetAccount: React.FC = () => {
             const createAccountResponse = await createNewRealAccount({
                 payload: {
                     currency: activeWallet?.currency_config?.display_code,
-                    date_of_birth: getFormattedDateString(dateOfBirth?.toString() || ''),
+                    date_of_birth: getFormattedDateString(dateOfBirth?.toString() || '', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                    }),
                     first_name: firstName,
                     last_name: lastName,
                     residence: countryCode || '',

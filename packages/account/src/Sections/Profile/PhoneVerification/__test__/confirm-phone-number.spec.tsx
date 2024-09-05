@@ -13,6 +13,7 @@ jest.mock('@deriv/hooks', () => ({
         requestOnSMS: jest.fn(),
         setErrorMessage: jest.fn(),
         setUsersPhoneNumber: jest.fn(),
+        setIsDisabledRequestButton: jest.fn(),
     })),
     useSettings: jest.fn(() => ({
         data: {},
@@ -54,8 +55,10 @@ describe('ConfirmPhoneNumber', () => {
 
     it('should call setErrorMessage when the user presses a key', async () => {
         const mock_set_error_message = jest.fn();
+        const mock_set_is_disabled_request_button = jest.fn();
         (useRequestPhoneNumberOTP as jest.Mock).mockReturnValue({
             setErrorMessage: mock_set_error_message,
+            setIsDisabledRequestButton: mock_set_is_disabled_request_button,
         });
         render(
             <StoreProvider store={store}>
@@ -69,6 +72,7 @@ describe('ConfirmPhoneNumber', () => {
         userEvent.type(phone_number_textfield, '+01293291291');
         await waitFor(() => {
             expect(mock_set_error_message).toHaveBeenCalled();
+            expect(mock_set_is_disabled_request_button).toHaveBeenCalled();
         });
     });
 

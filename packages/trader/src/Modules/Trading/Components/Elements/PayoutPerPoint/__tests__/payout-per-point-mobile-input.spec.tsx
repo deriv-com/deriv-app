@@ -26,6 +26,7 @@ describe('PayoutPerPointMobileInput', () => {
         onPayoutClick: jest.fn(),
         selectedBarrier: '5',
         payout_per_point: '20',
+        contract_type: 'turboslong',
         currency: 'USD',
     };
 

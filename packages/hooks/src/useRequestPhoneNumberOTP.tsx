@@ -38,6 +38,10 @@ const useRequestPhoneNumberOTP = () => {
         return carrier === VERIFICATION_SERVICES.SMS ? localize('WhatsApp') : localize('SMS');
     };
 
+    const getCurrentCarrier = () => {
+        return carrier === VERIFICATION_SERVICES.SMS ? localize('SMS') : localize('WhatsApp');
+    };
+
     const requestOnSMS = () => {
         mutate({
             payload: {
@@ -99,8 +103,11 @@ const useRequestPhoneNumberOTP = () => {
                 setIsDisabledRequestButton(false);
                 setErrorMessage(
                     <Localize
-                        i18n_default_text='An error occurred. Get new code via {{other_carriers}}.'
-                        values={{ other_carriers: getOtherCarrier() }}
+                        i18n_default_text="We're unable to send codes via {{ current_carrier }} right now. Get your code by {{other_carriers}}."
+                        values={{
+                            current_carrier: getCurrentCarrier(),
+                            other_carriers: getOtherCarrier(),
+                        }}
                     />
                 );
                 break;
@@ -123,6 +130,8 @@ const useRequestPhoneNumberOTP = () => {
         sendEmailOTPVerification,
         is_disabled_request_button,
         setIsDisabledRequestButton,
+        getCurrentCarrier,
+        getOtherCarrier,
         mutate,
         ...rest,
     };

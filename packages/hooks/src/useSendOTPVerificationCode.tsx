@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useMutation } from '@deriv/api';
 import { TSocketError } from '@deriv/api/types';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import useRequestPhoneNumberOTP from './useRequestPhoneNumberOTP';
 import { useStore } from '@deriv/stores';
 import useSettings from './useSettings';
 
 /** A hook for verifying Phone Number OTP and Email OTP */
 const useSendOTPVerificationCode = () => {
-    const [phone_otp_error_message, setPhoneOtpErrorMessage] = useState('');
+    const [phone_otp_error_message, setPhoneOtpErrorMessage] = useState<React.ReactNode>('');
     const [show_cool_down_period_modal, setShowCoolDownPeriodModal] = useState(false);
     const { ui } = useStore();
     const { setIsForcedToExitPnv } = ui;
@@ -20,8 +20,15 @@ const useSendOTPVerificationCode = () => {
         ...rest
     } = useMutation('phone_number_verify');
     const { refetch } = useSettings();
-    const { sendEmailOTPVerification, email_otp_error, is_email_verified, requestOnSMS, requestOnWhatsApp } =
-        useRequestPhoneNumberOTP();
+    const {
+        sendEmailOTPVerification,
+        email_otp_error,
+        is_email_verified,
+        getCurrentCarrier,
+        getOtherCarrier,
+        requestOnSMS,
+        requestOnWhatsApp,
+    } = useRequestPhoneNumberOTP();
 
     const formatPhoneOtpError = (error: TSocketError<'phone_number_verify'>['error']) => {
         switch (error.code) {
@@ -54,6 +61,17 @@ const useSendOTPVerificationCode = () => {
                 refetch();
                 setIsForcedToExitPnv(true);
                 setShowCoolDownPeriodModal(true);
+                break;
+            case 'PhoneNumberVerificationSuspended':
+                setPhoneOtpErrorMessage(
+                    <Localize
+                        i18n_default_text="We're unable to send codes via {{ current_carrier }} right now. Get your code by {{other_carriers}}."
+                        values={{
+                            current_carrier: getCurrentCarrier(),
+                            other_carriers: getOtherCarrier(),
+                        }}
+                    />
+                );
                 break;
             default:
                 setPhoneOtpErrorMessage(error.message);

@@ -49,18 +49,14 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
             numbered_content: [
                 {
                     id: 0,
-                    text: localize('Download your Binary Bot strategy in XML format.'),
+                    text: localize('Download your strategy in XML format and import it to Deriv Bot.'),
                 },
                 {
                     id: 1,
-                    text: localize('Import your strategy to Deriv Bot.'),
-                },
-                {
-                    id: 2,
                     text: localize('Run your updated strategy to check its performance.'),
                 },
                 {
-                    id: 3,
+                    id: 2,
                     text: localize('Save the updated strategy for quicker re-imports.'),
                 },
             ],
@@ -69,7 +65,7 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
                     id: 0,
                     text: (
                         <Localize
-                            i18n_default_text='<0>Note</0>: Uploading complex strategies may take some time.Saving them from Deriv Bot ensures quicker access later.If you have questions, contact us via <1/>.'
+                            i18n_default_text='<0>Note</0>: Uploading complex strategies may take some time. Saving them from Deriv Bot ensures quicker access later. If you have questions, contact us via <1/>.'
                             components={[<strong key={0} />, <OpenLiveChatLink className='' key={1} />]}
                         />
                     ),
@@ -86,13 +82,35 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
             id: 'BLOCKLY_ANNOUNCE',
             main_title: localize('Google Blockly v10 update'),
             base_classname: 'announcement-dialog',
-            title: localize(
-                'We have updated our Blockly system in Deriv Bot from <strong>version 3 to version 10</strong>. This brings:'
+            title: (
+                <Localize
+                    i18n_default_text='We have updated our Blockly system in Deriv Bot from <0>version 3 to version 10</0>. This brings:'
+                    components={[<strong key={0} />]}
+                />
             ),
-            content: [
+            numbered_content: [
                 {
                     id: 0,
-                    text: localize('Trade Accumulators to build up potential profits with a structured approach.'),
+                    text: localize('Better security.'),
+                },
+                {
+                    id: 1,
+                    text: localize('Faster performance.'),
+                },
+                {
+                    id: 2,
+                    text: localize('New features for developers.'),
+                },
+            ],
+            plain_text: [
+                {
+                    id: 0,
+                    text: (
+                        <Localize
+                            i18n_default_text='<0>Note</0>: Some complex strategies might face issues in the Bot Builder. If you have questions, contact us via <1/>.'
+                            components={[<strong key={0} />, <OpenLiveChatLink className='' key={1} />]}
+                        />
+                    ),
                 },
             ],
         },
@@ -106,7 +124,12 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
             confirm_button_text: localize('Try now'),
             cancel_button_text: localize('Learn more'),
             base_classname: 'announcement-dialog',
-            title: localize('<strong>Boost your trading strategy with Accumulators</strong>'),
+            title: (
+                <Localize
+                    i18n_default_text='<0>Boost your trading strategy with Accumulators</0>'
+                    components={[<strong key={0} />]}
+                />
+            ),
             content: [
                 {
                     id: 0,

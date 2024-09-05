@@ -166,6 +166,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
                     setIsAnnounceDialogOpen={setIsAnnounceDialogOpen}
                     handleOnCancel={!selected_announcement?.should_not_be_cancel ? handleOnCancel : null}
                     handleOnConfirm={handleOnConfirm}
+                    is_tablet={is_tablet}
                 />
             )}
         </div>

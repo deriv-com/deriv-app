@@ -11,6 +11,7 @@ type TAccumulatorAnnouncementDialog = {
     setIsAnnounceDialogOpen: (is_announce_dialog_open: boolean) => void;
     handleOnConfirm: () => void;
     handleOnCancel: () => void | null;
+    is_tablet?: boolean;
 };
 
 const AnnouncementDialog = ({
@@ -19,6 +20,7 @@ const AnnouncementDialog = ({
     handleOnCancel,
     is_announce_dialog_open,
     setIsAnnounceDialogOpen,
+    is_tablet,
 }: TAccumulatorAnnouncementDialog) => {
     const {
         id,
@@ -43,14 +45,14 @@ const AnnouncementDialog = ({
             is_mobile_full_width
             has_close_icon
             onClose={() => setIsAnnounceDialogOpen(false)}
-            className={base_classname}
+            className={is_tablet ? `${base_classname} ${base_classname}--tablet` : base_classname}
         >
             <div className={`${base_classname}__body-text`}>
-                <div className={`${base_classname}__body-icon`}>
+                <div className={`${base_classname}__body-icon--${id.toLowerCase()}`}>
                     <IconAnnounceModal announce_id={id} />
                 </div>
-                <div>
-                    <Text as='p' line_height='xl' size='xs' align='center' className={`${base_classname}__title`}>
+                <div className={`${base_classname}__body-main-content`}>
+                    <Text as='p' line_height='xl' size='xs' className={`${base_classname}__title--${id.toLowerCase()}`}>
                         {title}
                     </Text>
                     {Array.isArray(content) &&
@@ -60,33 +62,40 @@ const AnnouncementDialog = ({
                                     <div>
                                         <LabelPairedCheckCaptionFillIcon fill='var(--icon-black-plus)' />
                                     </div>
-                                    <Text as='p' line_height='xl' size='xs'>
+                                    <Text as='p' line_height='l' size='xs'>
                                         {content_item?.text}
                                     </Text>
                                 </div>
                             );
                         })}
                     {Array.isArray(numbered_content) && (
-                        <div className={`${base_classname}__body-item`}>
-                            <ol className={`${base_classname}__body-item`}>
-                                {numbered_content.map((content: TContentItem) => (
-                                    <Text
-                                        as='li'
-                                        line_height='xl'
-                                        size='xs'
-                                        key={content?.id}
-                                        styles={{ listStyle: 'auto' }}
-                                    >
-                                        {content?.text}
-                                    </Text>
-                                ))}
-                            </ol>
-                        </div>
+                        <ol className={`${base_classname}__body-item--numbered`}>
+                            {numbered_content.map((content: TContentItem) => (
+                                <Text
+                                    as='li'
+                                    line_height='xl'
+                                    size='xs'
+                                    key={content?.id}
+                                    styles={{ listStyle: 'auto' }}
+                                >
+                                    {content?.text}
+                                </Text>
+                            ))}
+                        </ol>
                     )}
                     {Array.isArray(plain_text) && (
                         <div>
                             {plain_text.map((plain_text_item: TContentItem) => (
-                                <span key={plain_text_item?.id}>{plain_text_item.text}</span>
+                                <span key={plain_text_item?.id}>
+                                    <Text
+                                        line_height='m'
+                                        size='xs'
+                                        key={plain_text_item.id}
+                                        styles={{ listStyle: 'auto' }}
+                                    >
+                                        {plain_text_item.text}
+                                    </Text>
+                                </span>
                             ))}
                         </div>
                     )}

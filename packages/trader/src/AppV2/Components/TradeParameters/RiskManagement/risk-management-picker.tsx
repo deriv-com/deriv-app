@@ -6,11 +6,16 @@ import TakeProfitAndStopLossContainer from './take-profit-and-stop-loss-containe
 
 type TRiskManagementPickerProps = {
     closeActionSheet: () => void;
+    initial_tab_index?: number;
     should_show_deal_cancellation?: boolean;
 };
 
-const RiskManagementPicker = ({ closeActionSheet, should_show_deal_cancellation }: TRiskManagementPickerProps) => {
-    const [tab_index, setTabIndex] = React.useState(0);
+const RiskManagementPicker = ({
+    closeActionSheet,
+    initial_tab_index = 0,
+    should_show_deal_cancellation,
+}: TRiskManagementPickerProps) => {
+    const [tab_index, setTabIndex] = React.useState(initial_tab_index);
 
     return (
         <ActionSheet.Content className='risk-management__picker'>

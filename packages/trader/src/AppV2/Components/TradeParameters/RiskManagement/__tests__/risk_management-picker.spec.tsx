@@ -24,4 +24,14 @@ describe('RiskManagementPicker', () => {
 
         expect(screen.getByText('Page content 2')).toBeInTheDocument();
     });
+
+    it('should open initial tab corresponding to passed initial_tab_index prop', () => {
+        render(<RiskManagementPicker {...mock_props} initial_tab_index={1} />);
+
+        const first_tab = screen.getAllByRole('button')[0];
+        const second_tab = screen.getAllByRole('button')[1];
+
+        expect(first_tab).not.toHaveClass('item selected');
+        expect(second_tab).toHaveClass('item selected');
+    });
 });

@@ -25,12 +25,14 @@ export const getTradeParams = (symbol?: string, has_cancellation?: boolean) => (
         duration: true,
         barrier: true,
         stake: true,
+        payout: true,
     },
     [TRADE_TYPES.TOUCH]: {
         trade_type_tabs: true,
         duration: true,
         barrier: true,
         stake: true,
+        payout: true,
     },
     [TRADE_TYPES.MATCH_DIFF]: {
         last_digit: true,

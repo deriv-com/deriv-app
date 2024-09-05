@@ -41,8 +41,8 @@ jest.mock('AppV2/Utils/trade-types-utils', () => ({
 jest.mock('@lottiefiles/dotlottie-react', () => ({
     DotLottieReact: jest.fn(() => <div>DotLottieReact</div>),
 }));
+jest.mock('AppV2/Components/OnboardingGuide', () => jest.fn(() => 'OnboardingGuide'));
 jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
-    ...jest.requireActual('AppV2/Hooks/useContractsForCompany'),
     __esModule: true,
     default: jest.fn(() => ({
         contracts_for_company: mock_contract_data,
@@ -94,7 +94,9 @@ describe('Trade', () => {
                     ],
                 },
             },
+            client: { is_logged_in: true },
         });
+        localStorage.clear();
     });
 
     const mockTrade = () => {
@@ -127,6 +129,7 @@ describe('Trade', () => {
         expect(screen.getAllByText('Trade Parameters')).toHaveLength(2);
         expect(screen.getByText('Chart')).toBeInTheDocument();
         expect(screen.getByText('Purchase Button')).toBeInTheDocument();
+        expect(screen.getByText('OnboardingGuide')).toBeInTheDocument();
     });
 
     it('should render Current Spot  component if it is digit contract type', () => {
@@ -143,5 +146,20 @@ describe('Trade', () => {
         fireEvent.scroll(screen.getByTestId('dt_bottom_nav'));
 
         expect(spySetIsMinimizedParamsVisible).toBeCalled();
+    });
+
+    it('should not render OnboardingGuide if localStorage flag is equal to true', () => {
+        const key = 'guide_dtrader_v2_trade_page';
+        localStorage.setItem(key, 'true');
+        render(mockTrade());
+
+        expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();
+    });
+
+    it('should not render OnboardingGuide if client is not logged in', () => {
+        default_mock_store.client.is_logged_in = false;
+        render(mockTrade());
+
+        expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();
     });
 });

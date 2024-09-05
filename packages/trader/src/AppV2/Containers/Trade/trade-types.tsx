@@ -31,6 +31,7 @@ type TResultItem = {
 const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTypesProps) => {
     const [is_open, setIsOpen] = React.useState<boolean>(false);
     const [is_editing, setIsEditing] = React.useState<boolean>(false);
+    const trade_types_ref = React.useRef<HTMLDivElement>(null);
 
     const createArrayFromCategories = (data: TTradeTypesProps['trade_types']): TItem[] => {
         const result: TItem[] = [];
@@ -125,6 +126,24 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         }));
     };
 
+    const scrollToSelectedTradeType = () => {
+        setTimeout(() => {
+            let position_x = 0;
+            if (trade_types_ref.current) {
+                const selected_chip = trade_types_ref.current.querySelector(
+                    'button[data-state="selected"]'
+                ) as HTMLButtonElement;
+                if (selected_chip) {
+                    position_x = selected_chip.getBoundingClientRect().x - 8 || 0;
+                }
+                trade_types_ref.current.scrollBy({
+                    left: position_x,
+                    top: 0,
+                });
+            }
+        }, 0);
+    };
+
     React.useEffect(() => {
         const sorted_trade_types_array = trade_types_array.sort((a, b) => a.title?.localeCompare(b.title));
 
@@ -155,6 +174,10 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         setOtherTradeTypes(default_other_trade_types);
     }, [saved_pinned_trade_types_string, trade_types_array]);
 
+    React.useEffect(() => {
+        scrollToSelectedTradeType();
+    }, []);
+
     const savePinnedToLocalStorage = () => {
         localStorage.setItem('pinned_trade_types', JSON.stringify(pinned_trade_types));
         localStorage.setItem('other_trade_types', JSON.stringify(other_trade_types));
@@ -167,6 +190,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
 
     const handleOnTradeTypeSelect = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         onTradeTypeSelect(e);
+        scrollToSelectedTradeType();
         setIsOpen(false);
     };
 
@@ -197,7 +221,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     const should_show_view_all = trade_type_chips.length < 2;
 
     return (
-        <div className='trade__trade-types'>
+        <div className='trade__trade-types' ref={trade_types_ref}>
             {trade_type_chips.map(({ title, id }: TItem) => (
                 <Chip.Selectable key={id} onChipSelect={onTradeTypeSelect} selected={isTradeTypeSelected(id)}>
                     <Text size='sm'>{title}</Text>

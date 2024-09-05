@@ -1,22 +1,22 @@
 import React, { ComponentProps, ReactNode } from 'react';
-import { WalletsActionScreen } from '../WalletsActionScreen';
+import { ActionScreen } from '@deriv-com/ui';
 import './WalletSuccess.scss';
 
 type TSuccessProps = {
+    actionButtons?: ComponentProps<typeof ActionScreen>['actionButtons'];
     description: ReactNode;
-    renderButtons?: ComponentProps<typeof WalletsActionScreen>['renderButtons'];
     renderIcon: () => ReactNode;
     title: ReactNode;
 };
 
-const WalletSuccess: React.FC<TSuccessProps> = ({ description, renderButtons, renderIcon, title }) => {
+const WalletSuccess: React.FC<TSuccessProps> = ({ actionButtons, description, renderIcon, title }) => {
     return (
         <div className='wallets-success'>
-            <WalletsActionScreen
+            <ActionScreen
+                actionButtons={actionButtons}
                 description={description}
                 descriptionSize='sm'
                 icon={renderIcon()}
-                renderButtons={renderButtons}
                 title={title}
             />
         </div>

@@ -69,7 +69,14 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
                 </Text>
             </div>
             <div className='wallets-verification-failed__footer'>
-                <Button color='black' onClick={() => hide()} size={isDesktop ? 'lg' : 'md'} variant='outlined'>
+                <Button
+                    borderWidth='sm'
+                    color='black'
+                    onClick={() => hide()}
+                    size={isDesktop ? 'lg' : 'md'}
+                    textSize={isDesktop ? 'md' : 'sm'}
+                    variant='outlined'
+                >
                     <Localize i18n_default_text='Maybe later' />
                 </Button>
                 <Button
@@ -81,6 +88,7 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
                         )
                     }
                     size={isDesktop ? 'lg' : 'md'}
+                    textSize={isDesktop ? 'md' : 'sm'}
                 >
                     <Localize i18n_default_text='Resubmit documents' />
                 </Button>

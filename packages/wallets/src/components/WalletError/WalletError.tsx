@@ -21,7 +21,13 @@ const WalletError: React.FC<TProps> = ({ buttonText, buttonVariant = 'contained'
             <div className='wallets-error'>
                 <ActionScreen
                     actionButtons={
-                        <Button isFullWidth={!isDesktop} onClick={onClick} size='lg' variant={buttonVariant}>
+                        <Button
+                            isFullWidth={!isDesktop}
+                            onClick={onClick}
+                            size='lg'
+                            textSize='md'
+                            variant={buttonVariant}
+                        >
                             {buttonText ?? <Localize i18n_default_text='Try again' />}
                         </Button>
                     }

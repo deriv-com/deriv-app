@@ -20,7 +20,7 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
     const { localize } = useTranslations();
 
     const renderButtons = (
-        <Button isFullWidth={!isDesktop} onClick={onClick} size='lg'>
+        <Button isFullWidth={!isDesktop} onClick={onClick} size='lg' textSize={isDesktop ? 'sm' : 'md'}>
             {isInvestorPassword ? localize('Ok') : localize('Done')}
         </Button>
     );

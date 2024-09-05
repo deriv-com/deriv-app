@@ -589,11 +589,11 @@ export const isDarkRgbColour = string_rgb => {
 
 export const modifyBlockOnCollapse = block_instance => {
     try {
+        // Return if the block is not collapsed
         if (!block_instance.collapsed_) return;
         const [block_image, block_name] = block_instance?.inputList[0]?.fieldRow.map(field => field.value_);
         const collapsed_field = block_instance?.getField('_TEMP_COLLAPSED_FIELD');
         const collapsed_input = block_instance?.getInput('_TEMP_COLLAPSED_INPUT');
-        // Return if the block is not collapsed
 
         // Initialize the icon_added property if not already done
         if (collapsed_input) {

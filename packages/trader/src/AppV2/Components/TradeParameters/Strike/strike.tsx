@@ -9,6 +9,7 @@ import { Skeleton } from '@deriv/components';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
+import { isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import StrikeWheel from './strike-wheel';
 
 type TStrikeProps = {
@@ -28,7 +29,7 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
         v2_params_initial_values,
     } = useTraderStore();
 
-    const is_small_screen = window.innerHeight <= 640;
+    const is_small_screen = isSmallScreen();
     const strike_price_list = strike_price_choices.map((strike_price: string) => ({ value: strike_price }));
     const payout_per_point: string | number = isEmptyObject(proposal_info)
         ? ''
@@ -84,7 +85,7 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
                 value={barrier_1}
             />
             <ActionSheet.Root isOpen={is_open} onClose={() => setIsOpen(false)} position='left' expandable={false}>
-                <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen={is_small_screen}>
+                <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         classname={clsx('strike__carousel', is_small_screen && 'strike__carousel--small')}
                         header={CarouselHeader}

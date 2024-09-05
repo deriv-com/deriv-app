@@ -5,7 +5,7 @@ import { useOnfido } from '@deriv/api-v2';
 import { LegacyArrowLeft2pxIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Loader, Text } from '@deriv-com/ui';
-import { InlineMessage, ModalStepWrapper } from '../../../../../../components';
+import { InlineMessage, ModalStepWrapper, WalletText } from '../../../../../../components';
 import { useVerifyPersonalDetails, VerifyPersonalDetails } from '../VerifyPersonalDetails';
 import './Onfido.scss';
 
@@ -51,6 +51,11 @@ const Onfido: React.FC<TOnfidoProps> = ({ onClickBack, onCompletion }) => {
                 </button>
             )}
             <div className='wallets-onfido'>
+                <div className='wallets-onfido__content'>
+                    <Text weight='bold'>
+                        <Localize i18n_default_text='Identity verification' />
+                    </Text>
+                </div>
                 {!isPersonalDetailsSubmitted && (
                     <Formik initialValues={initialPersonalDetailsValues} onSubmit={onSubmit}>
                         {({ handleSubmit }) => {

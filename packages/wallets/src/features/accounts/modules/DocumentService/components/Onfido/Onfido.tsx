@@ -5,7 +5,7 @@ import { useOnfido } from '@deriv/api-v2';
 import { LegacyArrowLeft2pxIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Loader, Text } from '@deriv-com/ui';
-import { InlineMessage, ModalStepWrapper, WalletText } from '../../../../../../components';
+import { InlineMessage, ModalStepWrapper } from '../../../../../../components';
 import { useVerifyPersonalDetails, VerifyPersonalDetails } from '../VerifyPersonalDetails';
 import './Onfido.scss';
 

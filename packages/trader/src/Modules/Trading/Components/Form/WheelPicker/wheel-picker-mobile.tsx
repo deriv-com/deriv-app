@@ -17,6 +17,29 @@ type SwipeState = {
     translateY: number;
 };
 
+const calculateCharacterWidth = (str: string) => {
+    const charWidths = {
+        uppercase: 1.5,
+        lowercase: 0.8,
+        number: 1.5,
+        punctuation: 0.7,
+        default: 1.0,
+    };
+
+    return [...str].reduce((totalWidth, char) => {
+        if (/[A-Z]/.test(char)) {
+            return totalWidth + charWidths.uppercase;
+        } else if (/[a-z]/.test(char)) {
+            return totalWidth + charWidths.lowercase;
+        } else if (/[0-9]/.test(char)) {
+            return totalWidth + charWidths.number;
+        } else if (/[\.,:;!?]/.test(char)) {
+            return totalWidth + charWidths.punctuation;
+        }
+        return totalWidth + charWidths.default;
+    }, 0);
+};
+
 export function getTargetIndex({
     deltaY,
     snapTolerance,
@@ -68,11 +91,13 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
 
     const swipeableHandlers = useSwipeable({
         onSwipeStart: eventData => {
+            eventData.event.stopPropagation();
             if (pickerRef.current && pickerRef.current.contains(eventData.event.target as Node)) {
                 setSwipe(swipe => ({ ...swipe, startY: swipe.translateY }));
             }
         },
         onSwiping: ({ deltaY, first, event }) => {
+            event.stopPropagation();
             if (first || (pickerRef.current && !pickerRef.current.contains(event.target as Node))) return;
             const { translateY, newIndex } = calculateLimits(swipe.startY, deltaY, optionHeight, options.length);
             setSwipe(swipe => ({
@@ -83,6 +108,7 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
             setSelectedIndex(newIndex);
         },
         onSwiped: ({ deltaY, event }) => {
+            event.stopPropagation();
             if (pickerRef.current && !pickerRef.current.contains(event.target as Node)) return;
             const { newIndex } = calculateLimits(swipe.startY, deltaY, optionHeight, options.length);
             setSwipe(swipe => ({ ...swipe, deltaY: 0, translateY: optionHeight * newIndex }));
@@ -118,6 +144,19 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
         if (index === selectedIndex - 1 || index === selectedIndex + 1) return 'xs';
         return 'xxs';
     };
+    const dynamicPadding = (currency: string, options: string[]) => {
+        const basePadding = 40;
+        const paddingMultiplier = 8;
+
+        const currencyWidth = calculateCharacterWidth(currency);
+        const maxOptionWidth = Math.max(...options.map(option => calculateCharacterWidth(option)));
+        let maxContentWidth = Math.max(currencyWidth, maxOptionWidth);
+        if (currencyWidth === maxOptionWidth) {
+            maxContentWidth += 2;
+        }
+
+        return basePadding + maxContentWidth * paddingMultiplier;
+    };
 
     return (
         <div className='wheel-picker-mobile'>
@@ -131,7 +170,7 @@ const WheelPickerMobile: React.FC<WheelPickerMobileProps> = ({
                         as='h1'
                         className='currency-label'
                         style={{
-                            paddingLeft: String(Math.abs(Math.max(Number(...options)))).length * 15 + 40,
+                            paddingLeft: `${dynamicPadding(currency, options)}px`,
                         }}
                     >
                         {currency}

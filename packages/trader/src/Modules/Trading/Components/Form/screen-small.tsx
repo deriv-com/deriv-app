@@ -257,6 +257,7 @@ const ScreenSmall = observer(({ is_trade_enabled }: { is_trade_enabled: boolean 
                     onPayoutClick={setPayoutPerPoint}
                     payoutChoices={payout_choices}
                     payout_per_point={payout_per_point}
+                    contract_type={contract_type}
                 />
             ) : (
                 <CollapsibleTradeParams has_allow_equals={has_allow_equals} {...collapsible_trade_params_props} />

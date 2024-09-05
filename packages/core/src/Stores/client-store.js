@@ -166,6 +166,8 @@ export default class ClientStore extends BaseStore {
     subscriptions = {};
     exchange_rates = {};
 
+    is_cfds_available_accouts_loading = true;
+
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
@@ -493,8 +495,14 @@ export default class ClientStore extends BaseStore {
             () => [this.is_logged_in, this.clients_country],
             async () => {
                 if (!this.is_logged_in && this.clients_country) {
-                    await this.setMT5TradingPlatformAvailableAccounts();
-                    await this.setCTraderTradingPlatformAvailableAccounts();
+                    await this.setCFDSTradingPlatformAvailableAccounts({
+                        platform: CFD_PLATFORMS.MT5,
+                        country_code: this.clients_country,
+                    });
+                    await this.setCFDSTradingPlatformAvailableAccounts({
+                        platform: CFD_PLATFORMS.CTRADER,
+                        country_code: this.clients_country,
+                    });
                 }
             }
         );
@@ -1615,8 +1623,8 @@ export default class ClientStore extends BaseStore {
             await WS.mt5LoginList().then(this.responseMt5LoginList);
             WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
 
-            await this.setMT5TradingPlatformAvailableAccounts();
-            await this.setCTraderTradingPlatformAvailableAccounts();
+            await this.setCFDSTradingPlatformAvailableAccounts({ platform: CFD_PLATFORMS.MT5 });
+            await this.setCFDSTradingPlatformAvailableAccounts({ platform: CFD_PLATFORMS.CTRADER });
 
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER).then(this.responseTradingPlatformAccountsList);
@@ -2893,30 +2901,16 @@ export default class ClientStore extends BaseStore {
         return this.loginid?.startsWith('MF');
     }
 
-    async setMT5TradingPlatformAvailableAccounts() {
+    async setCFDSTradingPlatformAvailableAccounts(params) {
+        this.is_cfds_available_accouts_loading = true;
+        const availabilityFunctions = {
+            [CFD_PLATFORMS.MT5]: this.responseTradingPlatformAvailableAccounts,
+            [CFD_PLATFORMS.CTRADER]: this.responseCTraderTradingPlatformAvailableAccounts,
+        };
         this.setIsLandingCompanyLoaded(false);
-        const params = {
-            platform: CFD_PLATFORMS.MT5,
-        };
-
-        if (!this.is_logged_in) {
-            params.country_code = this.clients_country;
-        }
         const response = await WS.tradingPlatformAvailableAccounts(params);
-        this.responseTradingPlatformAvailableAccounts(response);
-        this.setIsLandingCompanyLoaded(true);
-    }
-
-    async setCTraderTradingPlatformAvailableAccounts() {
-        const params = {
-            platform: CFD_PLATFORMS.CTRADER,
-        };
-
-        if (!this.is_logged_in) {
-            params.country_code = this.clients_country;
-        }
-        const response = await WS.tradingPlatformAvailableAccounts(params);
-        this.responseCTraderTradingPlatformAvailableAccounts(response);
+        availabilityFunctions[params.platform](response);
+        this.is_cfds_available_accouts_loading = false;
     }
 
     get account_time_of_closure() {

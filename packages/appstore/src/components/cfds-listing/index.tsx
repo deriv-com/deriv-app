@@ -89,6 +89,7 @@ const CFDsListing = observer(() => {
         is_populating_mt5_account_list,
         real_account_creation_unlock_date,
         ctrader_total_balance,
+        is_cfds_available_accouts_loading,
     } = client;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal, setShouldShowCooldownModal, setIsMT5VerificationFailedModal } = ui;
@@ -260,7 +261,7 @@ const CFDsListing = observer(() => {
                 </div>
             )}
             {has_svg_accounts_to_migrate && is_landing_company_loaded && <MigrationBanner />}
-            {is_landing_company_loaded && !is_populating_mt5_account_list ? (
+            {is_landing_company_loaded && !is_populating_mt5_account_list && !is_cfds_available_accouts_loading ? (
                 <React.Fragment>
                     {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
@@ -389,7 +390,7 @@ const CFDsListing = observer(() => {
                             </div>
                         </React.Fragment>
                     )}
-                    {is_landing_company_loaded ? (
+                    {is_landing_company_loaded && !is_cfds_available_accouts_loading ? (
                         available_ctrader_accounts.map(account => {
                             const existing_accounts = getExistingAccounts(account.platform, account.market_type);
                             const has_existing_accounts = existing_accounts.length > 0;

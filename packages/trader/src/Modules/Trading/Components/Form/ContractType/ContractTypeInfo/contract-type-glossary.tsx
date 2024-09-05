@@ -66,7 +66,7 @@ const ContractTypeGlossary = ({
                     {
                         type: 'paragraph',
                         text: (
-                            <Localize i18n_default_text='Your payout is equal to the payout per point multiplied by the difference between the final price and barrier.' />
+                            <Localize i18n_default_text='The payout at expiry is equal to the payout per point multiplied by the distance between the final price and the barrier.' />
                         ),
                     },
                     { type: 'heading', text: <Localize i18n_default_text='Expiry' /> },

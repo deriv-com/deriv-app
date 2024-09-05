@@ -587,7 +587,7 @@ export const isDarkRgbColour = string_rgb => {
 };
 /* eslint-enable */
 
-export const modifyBlockOnCollapse = block_instance => {
+export const modifyMainBlockOnCollapse = block_instance => {
     try {
         // Return if the block is not collapsed
         if (!block_instance?.collapsed_) return;
@@ -620,9 +620,8 @@ export const modifyBlockOnCollapse = block_instance => {
     }
 };
 
-export const removeExtraInput = instance => {
+export const modifyProcedureBlockOnCollapse = instance => {
     const collapsed_input = instance.getInput('_TEMP_COLLAPSED_INPUT');
-    const procedures_array = ['procedures_defreturn', 'procedures_defnoreturn'];
     if (collapsed_input && instance.collapsed_ && !collapsed_input.icon_added) {
         collapsed_input.icon_added = true;
         const dropdown_path = `${instance.workspace.options.pathToMedia}dropdown-arrow.svg`;
@@ -632,22 +631,15 @@ export const removeExtraInput = instance => {
         const function_name = instance.getFieldValue('NAME');
         const args = ` (${instance?.arguments?.join(', ')})`;
 
-        if (procedures_array.includes(instance.type)) {
-            collapsed_input
-                .appendField(new Blockly.FieldLabel(localize('function'), ''))
-                .appendField(new Blockly.FieldLabel(function_name + args, 'header__title'))
-                .appendField(field_expand_icon);
-        }
+        collapsed_input
+            .appendField(new Blockly.FieldLabel(localize('function'), ''))
+            .appendField(new Blockly.FieldLabel(function_name + args, 'header__title'))
+            .appendField(field_expand_icon);
 
         const remove_last_input = dummy_input => {
             const tmp_array = dummy_input.fieldRow;
-
-            const value_input = procedures_array.includes(instance.type) ? 0 : 2;
-            if (!procedures_array.includes(instance.type)) {
-                tmp_array[0]?.setClass('blocklyTextRootBlockHeader');
-            }
-            tmp_array[value_input]?.setVisible(false);
-            tmp_array[value_input]?.forceRerender();
+            tmp_array[0]?.setVisible(false);
+            tmp_array[0]?.forceRerender();
         };
         remove_last_input(collapsed_input);
     }

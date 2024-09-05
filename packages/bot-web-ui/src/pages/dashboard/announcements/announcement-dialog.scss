@@ -55,6 +55,14 @@
         }
     }
 
+    &--tablet {
+        .dc-dialog {
+            &__content {
+                max-width: 100% !important;
+            }
+        }
+    }
+
     &__body-icon {
         display: flex;
         justify-content: center;

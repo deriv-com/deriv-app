@@ -158,6 +158,7 @@ const Announcements = ({ is_mobile, is_tablet, handleTabChange }: TAnnouncements
                     setIsAnnounceDialogOpen={setIsAnnounceDialogOpen}
                     handleOnCancel={handleOnCancel}
                     handleOnConfirm={handleOnConfirm}
+                    is_tablet={is_tablet}
                 />
             )}
         </div>

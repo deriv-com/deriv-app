@@ -11,6 +11,7 @@ type TAccumulatorAnnouncementDialog = {
     setIsAnnounceDialogOpen: (is_announce_dialog_open: boolean) => void;
     handleOnConfirm: () => void;
     handleOnCancel: () => void;
+    is_tablet?: boolean;
 };
 
 const AnnouncementDialog = ({
@@ -19,6 +20,7 @@ const AnnouncementDialog = ({
     handleOnCancel,
     is_announce_dialog_open,
     setIsAnnounceDialogOpen,
+    is_tablet,
 }: TAccumulatorAnnouncementDialog) => {
     const { main_title, confirm_button_text, cancel_button_text, base_classname, title, content } = announcement;
     return (
@@ -33,7 +35,7 @@ const AnnouncementDialog = ({
             is_mobile_full_width
             has_close_icon
             onClose={() => setIsAnnounceDialogOpen(false)}
-            className={base_classname}
+            className={is_tablet ? `${base_classname} ${base_classname}--tablet` : base_classname}
         >
             <div className={`${base_classname}__body-text`}>
                 <div className={`${base_classname}__body-icon`}>

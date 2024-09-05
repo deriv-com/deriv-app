@@ -194,8 +194,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     };
 
     const trade_type_chips = getTradeTypeChips();
-    const should_show_view_all =
-        trade_type_chips.length < getItems(pinned_trade_types).length + getItems(other_trade_types).length;
+    const should_show_view_all = trade_type_chips.length < 2;
 
     return (
         <div className='trade__trade-types'>

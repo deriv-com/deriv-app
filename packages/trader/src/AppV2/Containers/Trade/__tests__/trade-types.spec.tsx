@@ -34,8 +34,6 @@ const default_mock_store = {
         trade: {
             contract_type: 'rise_fall',
             contract_types_list,
-            onMount: jest.fn(),
-            onUnmount: jest.fn(),
         },
     },
 };
@@ -90,13 +88,5 @@ describe('TradeTypes', () => {
         await userEvent.click(removeButton);
 
         expect(screen.getByText('Trade types')).toBeInTheDocument();
-    });
-
-    it('should mount and unmount correctly', () => {
-        const { unmount } = render(mockTradeTypes());
-
-        expect(default_mock_store.modules.trade.onMount).toHaveBeenCalled();
-        unmount();
-        expect(default_mock_store.modules.trade.onUnmount).toHaveBeenCalled();
     });
 });

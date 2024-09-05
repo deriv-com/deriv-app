@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useRemoteConfig } from '@deriv/api';
 import { useDevice } from '@deriv-com/ui';
 import { useIsMounted } from '@deriv/shared';

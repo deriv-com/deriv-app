@@ -91,7 +91,7 @@ const AccountLimits = observer(
             account_balance,
             payout,
             market_specific,
-            num_of_days_limit,
+            lifetime_limit,
             remainder,
             withdrawal_since_inception_monetary,
         } = account_limits;
@@ -239,7 +239,7 @@ const AccountLimits = observer(
 
                                 {!is_app_settings && (
                                     <WithdrawalLimitsTable
-                                        num_of_days_limit={num_of_days_limit}
+                                        lifetime_limit={lifetime_limit}
                                         remainder={remainder}
                                         withdrawal_since_inception_monetary={withdrawal_since_inception_monetary}
                                     />

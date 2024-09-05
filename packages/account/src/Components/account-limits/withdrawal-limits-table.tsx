@@ -7,13 +7,13 @@ import AccountLimitsTableCell from './account-limits-table-cell';
 import AccountLimitsTableHeader from './account-limits-table-header';
 
 type TWithdrawalLimitsTable = {
-    num_of_days_limit?: string | number;
+    lifetime_limit?: string | number;
     withdrawal_since_inception_monetary?: string | number;
     remainder?: string | number;
 };
 
 const WithdrawalLimitsTable = observer(
-    ({ num_of_days_limit, withdrawal_since_inception_monetary, remainder }: TWithdrawalLimitsTable) => {
+    ({ lifetime_limit, withdrawal_since_inception_monetary, remainder }: TWithdrawalLimitsTable) => {
         const { client } = useStore();
         const { currency, is_fully_authenticated } = client;
         return (
@@ -39,7 +39,7 @@ const WithdrawalLimitsTable = observer(
                                         <Localize i18n_default_text='Total withdrawal allowed' />
                                     </AccountLimitsTableCell>
                                     <AccountLimitsTableCell align='right'>
-                                        {FormatUtils.formatMoney((num_of_days_limit as number) ?? 0, {
+                                        {FormatUtils.formatMoney((lifetime_limit as number) ?? 0, {
                                             currency: currency as CurrencyConstants.Currency,
                                         })}
                                     </AccountLimitsTableCell>

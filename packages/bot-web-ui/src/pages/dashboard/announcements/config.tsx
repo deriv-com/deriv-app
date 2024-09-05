@@ -16,7 +16,7 @@ export type TAnnounce = {
     confirm_button_text?: string;
     cancel_button_text?: string;
     base_classname: string;
-    title: string;
+    title: string | React.ReactElement;
     content?: TContentItem[];
     numbered_content?: TContentItem[];
     plain_text?: TContentItem[];
@@ -40,7 +40,12 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
             main_title: localize('Moving strategies to Deriv Bot'),
             confirm_button_text: localize('Import strategy'),
             base_classname: 'announcement-dialog',
-            title: localize('<strong>Follow these steps to smoothly transfer your strategies:</strong>'),
+            title: (
+                <Localize
+                    i18n_default_text='<0>Follow these steps to smoothly transfer your strategies:</0>'
+                    components={[<strong key={0} />]}
+                />
+            ),
             numbered_content: [
                 {
                     id: 0,

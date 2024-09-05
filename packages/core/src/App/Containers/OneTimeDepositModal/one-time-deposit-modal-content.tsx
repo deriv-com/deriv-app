@@ -1,3 +1,4 @@
+import React from 'react';
 import classNames from 'classnames';
 import { useDevice } from '@deriv-com/ui';
 import { Text } from '@deriv/components';

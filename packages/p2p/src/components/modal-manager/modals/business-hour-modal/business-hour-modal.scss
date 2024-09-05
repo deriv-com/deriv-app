@@ -5,9 +5,10 @@
         gap: 1.6rem;
         padding-top: 0;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 1.6rem;
-            height: calc(100vh - 21rem);
+            height: calc(100% - 14rem);
+            align-items: center;
         }
     }
 

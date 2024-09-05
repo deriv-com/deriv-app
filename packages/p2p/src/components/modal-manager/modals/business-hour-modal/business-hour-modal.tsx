@@ -43,7 +43,7 @@ const HeaderRenderer = ({ show_edit }: { show_edit: boolean }) => (
 );
 
 const BusinessHourModal = () => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { hideModal, is_modal_open, showModal, useSavedState } = useModalManagerContext();
     const { my_profile_store } = useStores();
     const { business_hours, setEditedBusinessHours, edited_business_hours } = my_profile_store;
@@ -136,71 +136,72 @@ const BusinessHourModal = () => {
         }
     };
 
-    if (isMobile) {
+    if (isDesktop) {
         return (
-            <MobileFullPageModal
+            <Modal
                 className='business-hour-modal'
-                body_className='business-hour-modal__body'
-                is_modal_open={is_modal_open}
-                renderPageFooterChildren={() => (
+                is_open={is_modal_open}
+                has_close_icon={!show_edit}
+                should_close_on_click_outside={false}
+                title={<HeaderRenderer show_edit={show_edit} />}
+                toggleModal={onClickCancel}
+                width='44rem'
+            >
+                <Modal.Body className='business-hour-modal__body'>
+                    {show_edit ? (
+                        <BusinessHourModalEdit
+                            data={business_hours_input}
+                            is_disabled={is_disabled}
+                            ref={ref}
+                            saved_details={edited_business_hours}
+                            setIsDisabled={setIsDisabled}
+                        />
+                    ) : (
+                        <BusinessHourModalMain business_days={business_hours_input} />
+                    )}
+                </Modal.Body>
+                <Modal.Footer className='business-hour-modal__footer'>
                     <BusinessHourModalFooter
-                        onClickCancel={onClickCancel}
+                        is_disabled={is_disabled}
                         onClickSave={onClickSave}
+                        onClickCancel={onClickCancel}
                         setShowEdit={setShowEdit}
                         show_edit={show_edit}
                     />
-                )}
-                renderPageHeaderElement={<HeaderRenderer show_edit={show_edit} />}
-                pageHeaderReturnFn={() => (show_edit ? setShowEdit(false) : hideModal())}
-            >
-                {show_edit ? (
-                    <BusinessHourModalEdit
-                        data={business_hours_input}
-                        is_disabled={is_disabled}
-                        ref={ref}
-                        saved_details={edited_business_hours}
-                        setIsDisabled={setIsDisabled}
-                    />
-                ) : (
-                    <BusinessHourModalMain business_days={business_hours_input} />
-                )}
-            </MobileFullPageModal>
+                </Modal.Footer>
+            </Modal>
         );
     }
 
     return (
-        <Modal
+        <MobileFullPageModal
             className='business-hour-modal'
-            is_open={is_modal_open}
-            has_close_icon={!show_edit}
-            should_close_on_click_outside={false}
-            title={<HeaderRenderer show_edit={show_edit} />}
-            toggleModal={onClickCancel}
-            width='44rem'
-        >
-            <Modal.Body className='business-hour-modal__body'>
-                {show_edit ? (
-                    <BusinessHourModalEdit
-                        data={business_hours_input}
-                        is_disabled={is_disabled}
-                        ref={ref}
-                        saved_details={edited_business_hours}
-                        setIsDisabled={setIsDisabled}
-                    />
-                ) : (
-                    <BusinessHourModalMain business_days={business_hours_input} />
-                )}
-            </Modal.Body>
-            <Modal.Footer className='business-hour-modal__footer'>
+            body_className='business-hour-modal__body'
+            height_offset='80px'
+            is_modal_open={is_modal_open}
+            renderPageFooterChildren={() => (
                 <BusinessHourModalFooter
-                    is_disabled={is_disabled}
-                    onClickSave={onClickSave}
                     onClickCancel={onClickCancel}
+                    onClickSave={onClickSave}
                     setShowEdit={setShowEdit}
                     show_edit={show_edit}
                 />
-            </Modal.Footer>
-        </Modal>
+            )}
+            renderPageHeaderElement={<HeaderRenderer show_edit={show_edit} />}
+            pageHeaderReturnFn={() => (show_edit ? setShowEdit(false) : hideModal())}
+        >
+            {show_edit ? (
+                <BusinessHourModalEdit
+                    data={business_hours_input}
+                    is_disabled={is_disabled}
+                    ref={ref}
+                    saved_details={edited_business_hours}
+                    setIsDisabled={setIsDisabled}
+                />
+            ) : (
+                <BusinessHourModalMain business_days={business_hours_input} />
+            )}
+        </MobileFullPageModal>
     );
 };
 

@@ -1615,15 +1615,8 @@ export default class ClientStore extends BaseStore {
             await WS.mt5LoginList().then(this.responseMt5LoginList);
             WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
 
-            this.setIsLandingCompanyLoaded(false);
-            const mt5_response = await WS.tradingPlatformAvailableAccounts({
-                platform: CFD_PLATFORMS.MT5,
-            });
-            this.responseTradingPlatformAvailableAccounts(mt5_response);
-            this.setIsLandingCompanyLoaded(true);
-
-            const ctrader_response = await WS.tradingPlatformAvailableAccounts({ platform: CFD_PLATFORMS.CTRADER });
-            this.responseCTraderTradingPlatformAvailableAccounts(ctrader_response);
+            await this.setMT5TradingPlatformAvailableAccounts();
+            await this.setCTraderTradingPlatformAvailableAccounts();
 
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER).then(this.responseTradingPlatformAccountsList);
@@ -2901,18 +2894,28 @@ export default class ClientStore extends BaseStore {
     }
 
     async setMT5TradingPlatformAvailableAccounts() {
-        const response = await WS.tradingPlatformAvailableAccounts({
-            country_code: this.clients_country,
+        this.setIsLandingCompanyLoaded(false);
+        const params = {
             platform: CFD_PLATFORMS.MT5,
-        });
+        };
+
+        if (!this.is_logged_in) {
+            params.country_code = this.clients_country;
+        }
+        const response = await WS.tradingPlatformAvailableAccounts(params);
         this.responseTradingPlatformAvailableAccounts(response);
+        this.setIsLandingCompanyLoaded(true);
     }
 
     async setCTraderTradingPlatformAvailableAccounts() {
-        const response = await WS.tradingPlatformAvailableAccounts({
-            country_code: this.clients_country,
+        const params = {
             platform: CFD_PLATFORMS.CTRADER,
-        });
+        };
+
+        if (!this.is_logged_in) {
+            params.country_code = this.clients_country;
+        }
+        const response = await WS.tradingPlatformAvailableAccounts(params);
         this.responseCTraderTradingPlatformAvailableAccounts(response);
     }
 

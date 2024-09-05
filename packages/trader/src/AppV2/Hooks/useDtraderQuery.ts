@@ -9,21 +9,19 @@ type QueryResult<T> = {
     refetch: () => void;
 };
 
-type QueryOptionsBase = {
+type QueryOptions = {
     wait_for_authorize?: boolean;
     enabled?: boolean;
 };
-
-type QueryOptions = QueryOptionsBase;
 
 // Cache object to store the results
 const cache: Record<string, any> = {};
 const ongoing_requests: Record<string, Promise<any> | undefined> = {};
 
-const useDtraderQueryBase = <Response>(
+export const useDtraderQuery = <Response>(
     keys: string[],
     request: Record<string, any>,
-    options: QueryOptionsBase = {}
+    options: QueryOptions = {}
 ): QueryResult<Response> => {
     const key = keys.join('-');
     const { enabled = true } = options;
@@ -91,14 +89,7 @@ const useDtraderQueryBase = <Response>(
     return { data, error, is_fetching, refetch };
 };
 
-export const useDtraderQuery = <Response>(
-    keys: string[],
-    request: Record<string, any>,
-    options: QueryOptions = {}
-): QueryResult<Response> => {
-    return useDtraderQueryBase<Response>(keys, request, options);
-};
-
-export const invalidateDTraderCache = (key: string) => {
+export const invalidateDTraderCache = (keys: string[]) => {
+    const key = keys.join('-');
     cache[key] = null;
 };

@@ -35,7 +35,7 @@ const CompareAccountsCard = ({
                 {product === PRODUCT.ZEROSPREAD && (
                     <div className='wallets-compare-accounts-card__banner'>
                         <Text color='white' size='xs' weight='bold'>
-                            <Localize i18n_default_text='New' />
+                            <Localize i18n_default_text='NEW' />
                         </Text>
                     </div>
                 )}

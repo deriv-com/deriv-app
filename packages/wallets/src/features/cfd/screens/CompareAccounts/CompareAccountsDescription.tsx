@@ -56,10 +56,10 @@ const CompareAccountsDescription = ({
                         {marketTypeShortCode === MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI && (
                             <Tooltip
                                 as='div'
-                                data-testid='dt_wallets_compare_accounts_title__tooltip'
-                                tooltipContainerClassName='wallets-compare-accounts-title__tooltip'
+                                data-testid='wallets-compare-accounts-text-container__tooltip'
                                 tooltipContent={localize('Commissions apply')}
-                                tooltipPosition='bottom-start'
+                                tooltipOffset={20}
+                                tooltipPosition='top'
                             >
                                 <InfoIcon />
                             </Tooltip>

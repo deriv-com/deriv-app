@@ -38,7 +38,7 @@ describe('PayoutPerPointMobileInput', () => {
         render(<PayoutPerPointMobileInput {...defaultProps} />);
 
         expect(screen.getByText('Payout per Point')).toBeInTheDocument();
-        expect(screen.getByText('Distance to current spot')).toBeInTheDocument();
+        expect(screen.getByText('Distance to current spot:')).toBeInTheDocument();
         expect(screen.getByText('MockWheelPickerMobile - USD')).toBeInTheDocument();
         expect(screen.getByText('Save')).toBeInTheDocument();
         expect(screen.getByText('IcCross')).toBeInTheDocument();

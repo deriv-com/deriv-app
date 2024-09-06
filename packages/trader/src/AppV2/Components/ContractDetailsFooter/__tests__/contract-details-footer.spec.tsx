@@ -44,7 +44,7 @@ describe('ContractDetailsFooter', () => {
         (isMultiplierContract as jest.Mock).mockImplementation(() => false);
         (isValidToSell as jest.Mock).mockImplementation(() => true);
         renderFooter();
-        const closeButton = screen.getByRole('button', { name: /close @ 100.00 usd/i });
+        const closeButton = screen.getByRole('button', { name: /close 100.00 usd/i });
         expect(closeButton).toBeInTheDocument();
         expect(closeButton).toBeEnabled();
     });
@@ -76,7 +76,7 @@ describe('ContractDetailsFooter', () => {
         (isValidToSell as jest.Mock).mockImplementation(() => true);
 
         renderFooter();
-        const closeButton = screen.getByRole('button', { name: /close @ 100.00 usd/i });
+        const closeButton = screen.getByRole('button', { name: /close 100.00 usd/i });
 
         userEvent.click(closeButton);
 

@@ -24,9 +24,9 @@ const EmptyPositions = ({ isClosedTab, noMatchesFound }: TEmptyPositionsProps) =
                     {noMatchesFound && <Localize i18n_default_text='No matches found' />}
                     {!noMatchesFound &&
                         (isClosedTab ? (
-                            <Localize i18n_default_text='No closed trades' />
+                            <Localize i18n_default_text='No closed positions' />
                         ) : (
-                            <Localize i18n_default_text='No open trades' />
+                            <Localize i18n_default_text='No open positions' />
                         ))}
                 </Text>
                 <Text size='sm' centered color='quill-typography__color--subtle'>
@@ -35,9 +35,9 @@ const EmptyPositions = ({ isClosedTab, noMatchesFound }: TEmptyPositionsProps) =
                     )}
                     {!noMatchesFound &&
                         (isClosedTab ? (
-                            <Localize i18n_default_text='Your closed trades will be shown here.' />
+                            <Localize i18n_default_text='Your closed positions will be shown here.' />
                         ) : (
-                            <Localize i18n_default_text='Your open trades will appear here.' />
+                            <Localize i18n_default_text='Your open positions will appear here.' />
                         ))}
                 </Text>
             </div>

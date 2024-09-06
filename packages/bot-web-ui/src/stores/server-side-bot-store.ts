@@ -7,6 +7,7 @@ import { TClientStore } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import { downloadFile } from 'Utils/download';
+import { SERVER_BOT_CONFIG } from '../pages/server-side-bot/config';
 
 export type TFormData = {
     [key: string]: string | number | boolean;
@@ -85,6 +86,14 @@ export type TJournalItem = {
     time?: string;
 };
 
+export type TLossThresholdWarningData = {
+    show: boolean;
+    loss_amount?: string | number;
+    currency?: string;
+    highlight_field?: Array<string>;
+    already_shown?: boolean;
+};
+
 export const getDate = (epoch: number) => {
     const DATE_TIME_FORMAT_WITH_OFFSET = 'YYYY-MM-DD HH:mm:ss Z';
     return moment.unix(epoch).utc().local().format(DATE_TIME_FORMAT_WITH_OFFSET);
@@ -107,6 +116,20 @@ export default class ServerBotStore {
 
     pocs: { [key: string]: ProposalOpenContract } = {};
     should_subscribe = true;
+    loss_threshold_warning_data: TLossThresholdWarningData = {
+        show: false,
+    };
+    current_duration_min_max = {
+        min: 0,
+        max: 10,
+    };
+    selected_strategy = 'MARTINGALE';
+    form_data: TFormData = {
+        symbol: SERVER_BOT_CONFIG.DEFAULT.symbol,
+        tradetype: SERVER_BOT_CONFIG.DEFAULT.tradetype,
+        durationtype: SERVER_BOT_CONFIG.DEFAULT.durationtype,
+        action: 'RUN',
+    };
 
     constructor(client_store: TClientStore) {
         this.client_store = client_store;
@@ -119,6 +142,10 @@ export default class ServerBotStore {
             pocs: observable,
             journal: observable,
             should_subscribe: observable,
+            selected_strategy: observable,
+            form_data: observable,
+            current_duration_min_max: observable,
+            loss_threshold_warning_data: observable,
             setShouldSubscribe: action,
             performance: computed,
             setListLoading: action,
@@ -136,6 +163,10 @@ export default class ServerBotStore {
             setJournal: action,
             setBotList: action,
             setActiveBotId: action,
+            setLossThresholdWarningData: action,
+            initializeLossThresholdWarningData: action,
+            setCurrentDurationMinMax: action,
+            setSelectedStrategy: action,
         });
     }
 
@@ -192,8 +223,6 @@ export default class ServerBotStore {
         const { msg_type, echo_req } = data;
 
         if (data?.error) {
-            // eslint-disable-next-line no-console
-            console.info(data.error);
             if (data.error.message) {
                 this.onJournalMessage(JOURNAL_TYPE.ERROR, {
                     msg: data.error.message,
@@ -576,5 +605,35 @@ export default class ServerBotStore {
             // eslint-disable-next-line no-console
             console.dir(error);
         }
+    };
+
+    setLossThresholdWarningData = (data: TLossThresholdWarningData) => {
+        this.loss_threshold_warning_data = {
+            ...this.loss_threshold_warning_data,
+            ...data,
+        };
+    };
+
+    initializeLossThresholdWarningData = () => {
+        this.loss_threshold_warning_data = {
+            show: false,
+            highlight_field: [],
+            already_shown: false,
+        };
+    };
+
+    setCurrentDurationMinMax = (min = 0, max = 10) => {
+        this.current_duration_min_max = {
+            min,
+            max,
+        };
+    };
+
+    setValue = (name: string, value: string | number | boolean) => {
+        this.form_data[name as keyof TFormData] = value;
+    };
+
+    setSelectedStrategy = (strategy: string) => {
+        this.selected_strategy = strategy;
     };
 }

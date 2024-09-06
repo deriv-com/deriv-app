@@ -28,8 +28,8 @@ const TradeTypeOption: React.FC<TTradeTypeOption> = ({ trade_type: { value, icon
 const TradeTypeSelect: React.FC = () => {
     const [trade_types, setTradeTypes] = React.useState<TTradeType[]>([]);
     const { setFieldValue, values, validateForm } = useFormikContext<TFormData>();
-    const { quick_strategy } = useDBotStore();
-    const { setValue } = quick_strategy;
+    const { server_bot } = useDBotStore();
+    const { setValue } = server_bot;
 
     React.useEffect(() => {
         if (values?.symbol) {

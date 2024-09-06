@@ -166,6 +166,8 @@ export default class ClientStore extends BaseStore {
     subscriptions = {};
     exchange_rates = {};
 
+    is_cfd_available_accounts_loading = true;
+
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
@@ -501,6 +503,22 @@ export default class ClientStore extends BaseStore {
                         platform: CFD_PLATFORMS.CTRADER,
                         country_code: this.clients_country,
                     });
+                }
+
+                // Set a loader when client authorizing
+                if (this.is_logged_in) {
+                    await this.setCFDSTradingPlatformAvailableAccounts(
+                        {
+                            platform: CFD_PLATFORMS.MT5,
+                        },
+                        true
+                    );
+                    await this.setCFDSTradingPlatformAvailableAccounts(
+                        {
+                            platform: CFD_PLATFORMS.CTRADER,
+                        },
+                        true
+                    );
                 }
             }
         );
@@ -2899,13 +2917,15 @@ export default class ClientStore extends BaseStore {
         return this.loginid?.startsWith('MF');
     }
 
-    async setCFDSTradingPlatformAvailableAccounts(params) {
+    async setCFDSTradingPlatformAvailableAccounts(params, is_set_loader) {
+        if (is_set_loader) this.is_cfd_available_accounts_loading = true;
         const availabilityFunctions = {
             [CFD_PLATFORMS.MT5]: this.responseTradingPlatformAvailableAccounts,
             [CFD_PLATFORMS.CTRADER]: this.responseCTraderTradingPlatformAvailableAccounts,
         };
         const response = await WS.tradingPlatformAvailableAccounts(params);
         availabilityFunctions[params.platform](response);
+        if (is_set_loader) this.is_cfd_available_accounts_loading = false;
     }
 
     get account_time_of_closure() {

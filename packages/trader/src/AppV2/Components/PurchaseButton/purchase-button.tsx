@@ -132,17 +132,27 @@ const PurchaseButton = observer(() => {
                         const is_single_button = contract_types.length === 1;
                         const is_loading = loading_button_index === index;
                         const is_disabled = !is_trade_enabled_v2 || info.has_error;
-                        /* TODO: stop using error text for is_max_payout_exceeded after validation_params are added to proposal API (both success & error response):
-                E.g., for is_max_payout_exceeded, we have to temporarily check the error text: Max payout error always contains 3 numbers, the check will work for any languages: */
-                        const float_number_search_regex = /\d+(\.\d+)?/g;
-                        const is_max_payout_exceeded =
-                            info.has_error && info.message?.match(float_number_search_regex)?.length === 3;
-                        const api_error = info.has_error && !is_market_closed && !!info.message ? info.message : '';
-                        const error_message = is_max_payout_exceeded ? (
-                            <Localize i18n_default_text='Exceeds max payout' />
-                        ) : (
-                            api_error
-                        );
+
+                        const getErrorMessage = () => {
+                            if (['amount', 'stake'].includes(info.error_field ?? '')) {
+                                return <Localize i18n_default_text='Invalid stake' />;
+                            }
+
+                            /* TODO: stop using error text for is_max_payout_exceeded after validation_params are added to proposal API (both success & error response):
+                            E.g., for is_max_payout_exceeded, we have to temporarily check the error text: Max payout error always contains 3 numbers, the check will work for any languages: */
+                            const float_number_search_regex = /\d+(\.\d+)?/g;
+                            const is_max_payout_exceeded =
+                                info.has_error && info.message?.match(float_number_search_regex)?.length === 3;
+
+                            if (is_max_payout_exceeded) {
+                                return <Localize i18n_default_text='Exceeds max payout' />;
+                            }
+
+                            const api_error = info.has_error && !is_market_closed && !!info.message ? info.message : '';
+                            return api_error;
+                        };
+
+                        const error_message = getErrorMessage();
 
                         return (
                             <React.Fragment key={trade_type}>
@@ -160,13 +170,14 @@ const PurchaseButton = observer(() => {
                                         is_single_button && 'purchase-button--single'
                                     )}
                                     isLoading={is_loading}
+                                    isOpaque
                                     disabled={is_disabled && !is_loading}
                                     onClick={() => {
                                         setLoadingButtonIndex(index);
                                         onPurchaseV2(trade_type, isMobile, addNotificationBannerCallback);
                                     }}
                                 >
-                                    {!is_loading && !is_accumulator && (
+                                    {!is_loading && (
                                         <PurchaseButtonContent
                                             {...purchase_button_content_props}
                                             error={error_message}
@@ -176,14 +187,6 @@ const PurchaseButton = observer(() => {
                                         />
                                     )}
                                 </Button>
-                                {is_disabled && !is_loading && (
-                                    <div
-                                        className={clsx(
-                                            'purchase-button--disabled-background',
-                                            is_single_button && 'single'
-                                        )}
-                                    />
-                                )}
                             </React.Fragment>
                         );
                     })}
@@ -207,11 +210,11 @@ const PurchaseButton = observer(() => {
                                 : `${cardLabels.CLOSE} ${current_stake} ${currency}`
                         }
                         fullWidth
+                        isOpaque
                         className='purchase-button purchase-button--single'
                         disabled={is_accu_sell_disabled}
                         onClick={() => onClickSell(active_accu_contract?.contract_info.contract_id)}
                     />
-                    {is_accu_sell_disabled && <div className='purchase-button--disabled-background single' />}
                 </div>
             </CSSTransition>
         </React.Fragment>

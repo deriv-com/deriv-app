@@ -53,6 +53,8 @@ const mockTradeTypes = (mocked_store = mockStore(default_mock_store)) => {
 };
 
 describe('TradeTypes', () => {
+    const originalScrollBy = HTMLElement.prototype.scrollBy;
+    const scrollByMock = jest.fn();
     beforeEach(() => {
         mockGetTradeTypesList.mockReturnValue([
             { value: 'rise', text: 'Rise' },
@@ -60,6 +62,16 @@ describe('TradeTypes', () => {
             { value: 'vanilla_call', text: 'Vanilla Call' },
             { value: 'vanilla_put', text: 'Vanilla Put' },
         ]);
+    });
+    beforeAll(() => {
+        Object.defineProperty(HTMLElement.prototype, 'scrollBy', {
+            value: scrollByMock,
+        });
+    });
+    afterAll(() => {
+        Object.defineProperty(HTMLElement.prototype, 'scrollBy', {
+            value: originalScrollBy,
+        });
     });
 
     it('should render the TradeTypes component with pinned and other trade types', () => {
@@ -98,5 +110,15 @@ describe('TradeTypes', () => {
         expect(default_mock_store.modules.trade.onMount).toHaveBeenCalled();
         unmount();
         expect(default_mock_store.modules.trade.onUnmount).toHaveBeenCalled();
+    });
+
+    it('should scroll to the selected trade type when tradeList is clicked', async () => {
+        render(mockTradeTypes());
+        Object.defineProperty(HTMLElement.prototype, 'scrollBy', {
+            value: scrollByMock,
+        });
+        await userEvent.click(screen.getByText('Rise'));
+        await new Promise(resolve => setTimeout(resolve, 0));
+        expect(scrollByMock).toHaveBeenCalled();
     });
 });

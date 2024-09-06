@@ -49,7 +49,7 @@ const useSyncLocalStorageClientAccounts = () => {
                 setLocalStorageClientAccounts(localStorageData);
             }
         },
-        [setLocalStorageClientAccounts, settingsData]
+        [mutateAsync, setLocalStorageClientAccounts, settingsData]
     );
 
     const addTradingAccountToLocalStorage = useCallback(
@@ -103,7 +103,7 @@ const useSyncLocalStorageClientAccounts = () => {
                 setLocalStorageClientAccounts(localStorageData);
             }
         },
-        [setLocalStorageClientAccounts, settingsData]
+        [mutateAsync, setLocalStorageClientAccounts, settingsData]
     );
 
     return { addTradingAccountToLocalStorage, addWalletAccountToLocalStorage };

@@ -9,9 +9,15 @@ import ModulesProvider from 'Stores/Providers/modules-providers';
 import Positions from '../positions';
 import userEvent from '@testing-library/user-event';
 
-const defaultMockStore = mockStore({});
+const defaultMockStore = mockStore({
+    modules: {
+        positions: { onUnmount: jest.fn() },
+    },
+    client: { is_logged_in: true },
+});
 
 jest.mock('../positions-content', () => jest.fn(() => 'mockPositionsContent'));
+jest.mock('AppV2/Components/OnboardingGuide', () => jest.fn(() => 'OnboardingGuide'));
 
 describe('Positions', () => {
     const mockPositions = () => {
@@ -31,12 +37,9 @@ describe('Positions', () => {
         Element.prototype.scrollTo = jest.fn();
     });
 
-    beforeAll(() => {
-        Element.prototype.scrollTo = jest.fn();
-    });
-
     afterEach(() => {
         jest.clearAllMocks();
+        localStorage.clear();
     });
 
     it('should render component', () => {
@@ -52,6 +55,7 @@ describe('Positions', () => {
 
         expect(screen.getByText(utils.TAB_NAME.OPEN)).toBeInTheDocument();
         expect(screen.getByText(utils.TAB_NAME.CLOSED)).toBeInTheDocument();
+        expect(screen.getByText('OnboardingGuide')).toBeInTheDocument();
     });
 
     it('should call setPositionURLParams with appropriate argument if user clicks on Closed tab', () => {
@@ -63,5 +67,20 @@ describe('Positions', () => {
 
         userEvent.click(screen.getByText(utils.TAB_NAME.OPEN));
         expect(mockSetPositionURLParams).toBeCalledWith(utils.TAB_NAME.OPEN.toLowerCase());
+    });
+
+    it('should not render OnboardingGuide if localStorage flag is equal to true', () => {
+        const key = 'guide_dtrader_v2_positions_page';
+        localStorage.setItem(key, 'true');
+        render(mockPositions());
+
+        expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();
+    });
+
+    it('should not render OnboardingGuide if client is not logged in', () => {
+        defaultMockStore.client.is_logged_in = false;
+        render(mockPositions());
+
+        expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();
     });
 });

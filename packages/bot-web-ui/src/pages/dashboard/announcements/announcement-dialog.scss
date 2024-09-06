@@ -114,6 +114,11 @@
 
         &--numbered {
             margin-left: 2rem;
+
+            @include rtl {
+                margin-right: 2rem;
+                margin-left: 0;
+            }
         }
     }
 

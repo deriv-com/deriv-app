@@ -17,7 +17,7 @@ const defaultMockStore = mockStore({
 });
 
 jest.mock('../positions-content', () => jest.fn(() => 'mockPositionsContent'));
-jest.mock('AppV2/Components/OnboardingGuide', () => jest.fn(() => 'OnboardingGuide'));
+jest.mock('AppV2/Components/OnboardingGuide/GuideForPages', () => jest.fn(() => 'OnboardingGuide'));
 
 describe('Positions', () => {
     const mockPositions = () => {

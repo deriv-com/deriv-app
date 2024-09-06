@@ -41,7 +41,7 @@ jest.mock('AppV2/Utils/trade-types-utils', () => ({
 jest.mock('@lottiefiles/dotlottie-react', () => ({
     DotLottieReact: jest.fn(() => <div>DotLottieReact</div>),
 }));
-jest.mock('AppV2/Components/OnboardingGuide', () => jest.fn(() => 'OnboardingGuide'));
+jest.mock('AppV2/Components/OnboardingGuide/GuideForPages', () => jest.fn(() => 'OnboardingGuide'));
 jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
     __esModule: true,
     default: jest.fn(() => ({

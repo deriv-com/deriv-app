@@ -1,3 +1,4 @@
+import { reaction } from 'mobx';
 import { TStores } from '@deriv/stores/types';
 import type { TDbot, TWebSocket } from 'Types';
 import AppStore from './app-store';
@@ -72,7 +73,15 @@ export default class RootStore {
         this.chart_store = new ChartStore(this);
         this.blockly_store = new BlocklyStore(this);
         this.data_collection_store = new DataCollectionStore(this, core);
+        this.server_bot = new ServerBotStore(core.client);
 
-        this.server_bot = new ServerBotStore(this);
+        reaction(
+            () => core.client.is_virtual,
+            (is_virtual: boolean) => {
+                if (core?.client?.is_logged_in && is_virtual) {
+                    this.server_bot = new ServerBotStore(core.client);
+                }
+            }
+        );
     }
 }

@@ -3,10 +3,10 @@ import moment from 'moment';
 import { ProposalOpenContract } from '@deriv/api-types';
 import { api_base } from '@deriv/bot-skeleton';
 import { isEnded } from '@deriv/shared';
+import { TClientStore } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import { downloadFile } from 'Utils/download';
-import RootStore from './root-store';
 
 export type TFormData = {
     [key: string]: string | number | boolean;
@@ -91,7 +91,7 @@ export const getDate = (epoch: number) => {
 };
 
 export default class ServerBotStore {
-    root_store: RootStore;
+    client_store: TClientStore;
     is_loading_bot_list = true;
     active_bot_id = '';
     bot_list: TServerBotItem[] = [];
@@ -108,8 +108,8 @@ export default class ServerBotStore {
     pocs: { [key: string]: ProposalOpenContract } = {};
     should_subscribe = true;
 
-    constructor(root_store: RootStore) {
-        this.root_store = root_store;
+    constructor(client_store: TClientStore) {
+        this.client_store = client_store;
         makeObservable(this, {
             is_loading_bot_list: observable,
             active_bot_id: observable,
@@ -184,6 +184,10 @@ export default class ServerBotStore {
         this.active_bot_id = bot_id;
     };
 
+    setActiveBot = (active_bot: Partial<TServerBotItem>) => {
+        this.active_bot = active_bot;
+    };
+
     onMessage = ({ data }) => {
         const { msg_type, echo_req } = data;
 
@@ -249,19 +253,19 @@ export default class ServerBotStore {
                             const index = bot_list.findIndex(bot => bot.bot_id === bot_id);
                             bot_list[index].status = 'stopped';
                             this.setBotList(bot_list);
-                            this.active_bot = {
+                            this.setActiveBot({
                                 bot_id,
                                 status: 'stopped',
-                            };
+                            });
                         }
                         const bot_list = [...this.bot_list];
                         const index = bot_list.findIndex(bot => bot.bot_id === bot_id);
                         bot_list[index].status = 'stopped';
                         this.setBotList(bot_list);
-                        this.active_bot = {
+                        this.setActiveBot({
                             bot_id,
                             status: 'stopped',
-                        };
+                        });
                     }
                 }
             }
@@ -394,7 +398,7 @@ export default class ServerBotStore {
 
             // Setting the active_bot object with the running bot details
             if (running_bot?.bot_id) {
-                this.active_bot = running_bot;
+                this.setActiveBot(running_bot);
                 this.subscribeToBotNotification(running_bot?.bot_id);
             }
 
@@ -446,7 +450,7 @@ export default class ServerBotStore {
                         amount: data.stake,
                         basis: 'stake',
                         contract_type: data.type,
-                        currency: this.root_store?.app?.core?.client?.currency || 'USD',
+                        currency: this.client_store?.currency || 'USD',
                         duration: data.duration,
                         duration_unit: data.durationtype,
                         symbol: data.symbol,
@@ -504,10 +508,10 @@ export default class ServerBotStore {
 
     startBot = async (bot_id: string) => {
         try {
-            this.active_bot = {
+            this.setActiveBot({
                 bot_id,
                 status: 'starting',
-            };
+            });
             if (!this.subscriptions[bot_id]) this.subscribeToBotNotification(bot_id);
 
             const { bot_start, error } = await api_base.api.send({
@@ -523,7 +527,7 @@ export default class ServerBotStore {
             const index = bot_list.findIndex(bot => bot.bot_id === bot_id);
             bot_list[index].status = 'running';
             this.setBotList(bot_list);
-            this.active_bot = bot_list[index];
+            this.setActiveBot(bot_list[index]);
 
             const msg = bot_start?.message || localize('Bot started successfully');
             botNotification(msg);
@@ -539,10 +543,10 @@ export default class ServerBotStore {
 
     stopBot = async (bot_id: string) => {
         try {
-            this.active_bot = {
+            this.setActiveBot({
                 ...this.active_bot,
                 status: 'stopping',
-            };
+            });
 
             const { bot_stop, error } = await api_base.api.send({
                 bot_stop: 1,
@@ -559,11 +563,10 @@ export default class ServerBotStore {
             const index = bot_list.findIndex(bot => bot.bot_id === bot_id);
             bot_list[index].status = 'stopped';
             this.setBotList(bot_list);
-
-            this.active_bot = {
+            this.setActiveBot({
                 ...this.active_bot,
                 status: 'stopped',
-            };
+            });
 
             this.onJournalMessage(JOURNAL_TYPE.INFO, {
                 msg: bot_stop?.message || localize('Bot stopped successfully'),

@@ -1,3 +1,3 @@
-import FailedVerificationModal from './failed-verification-modal';
+import VerificationDocsListModal from './verification-docs-list-modal';
 
-export default FailedVerificationModal;
+export default VerificationDocsListModal;

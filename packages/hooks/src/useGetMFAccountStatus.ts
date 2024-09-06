@@ -5,7 +5,7 @@ const useGetMFAccountStatus = () => {
     const { client } = useStore();
     const { account_status } = client || {};
     const authentication = account_status?.authentication;
-
+    const poi_status = authentication?.identity?.status;
     const onfido_status = authentication?.identity?.services?.onfido?.status;
     const manual_status = authentication?.identity?.services?.manual?.status;
     const poa_status = authentication?.document?.status;
@@ -24,7 +24,6 @@ const useGetMFAccountStatus = () => {
     const need_poa_resubmission = poa_status && failed_cases.includes(poa_status);
     const poa_pending = poa_status === STATUS.PENDING;
     const poa_not_submitted = poa_status === STATUS.NONE;
-    const need_poa_submission = !poa_pending && (need_poa_resubmission || poa_not_submitted);
 
     const poi_verified_by_onfido_or_manual = [onfido_status, manual_status].includes(STATUS.VERIFIED);
     const poi_pending_by_onfido_or_manual =
@@ -50,11 +49,14 @@ const useGetMFAccountStatus = () => {
         }
         return null;
     };
+    const getVerificationStatus = () => ({
+        poi_status,
+        poa_status,
+    });
 
     return {
         mf_account_status: getMFAccountStatus(),
-        need_poi_submission,
-        need_poa_submission,
+        kyc_status: getVerificationStatus(),
     };
 };
 

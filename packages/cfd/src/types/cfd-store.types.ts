@@ -70,7 +70,6 @@ export type TCFDStore = {
         actions: FormikHelpers<TCFDPasswordFormValues>
     ) => void;
     new_account_response: Mt5NewAccount;
-    has_created_account_for_selected_jurisdiction: boolean;
     enableCFDPasswordModal: () => void;
     setSentEmailModalStatus: (status: boolean) => void;
     onMount: () => void;

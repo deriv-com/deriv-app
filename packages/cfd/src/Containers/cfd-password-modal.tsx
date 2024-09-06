@@ -589,6 +589,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         if (is_logged_in) {
             updateMT5Status();
             updateAccountStatus();
+
             if (platform === CFD_PLATFORMS.MT5 && default_jurisdiction)
                 setJurisdictionSelectedShortcode(default_jurisdiction);
         }

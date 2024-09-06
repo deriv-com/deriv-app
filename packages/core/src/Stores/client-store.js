@@ -144,7 +144,6 @@ export default class ClientStore extends BaseStore {
 
     mt5_trading_servers = [];
     dxtrade_trading_servers = [];
-    is_cfd_poi_completed = false;
 
     cfd_score = 0;
 
@@ -230,7 +229,6 @@ export default class ClientStore extends BaseStore {
             financial_assessment: observable,
             mt5_trading_servers: observable,
             dxtrade_trading_servers: observable,
-            is_cfd_poi_completed: observable,
             prev_real_account_loginid: observable,
             prev_account_type: observable,
             is_already_attempted: observable,
@@ -2435,6 +2433,13 @@ export default class ClientStore extends BaseStore {
                     /^(MT[DR]?)/i,
                     ''
                 );
+                const requirements = {
+                    client_kyc_status: {
+                        poa_status: 'none',
+                        poi_status: 'verified',
+                        valid_tin: 0,
+                    },
+                };
                 if (account.error) {
                     const { account_type, server } = account.error.details;
                     this.setMT5DisabledSignupTypes({
@@ -2450,6 +2455,7 @@ export default class ClientStore extends BaseStore {
                 return {
                     ...account,
                     display_login,
+                    requirements,
                 };
             });
         } else {
@@ -2476,7 +2482,20 @@ export default class ClientStore extends BaseStore {
 
     responseTradingPlatformAvailableAccounts(response) {
         if (!response.error) {
-            this.trading_platform_available_accounts = response.trading_platform_available_accounts;
+            this.trading_platform_available_accounts = response.trading_platform_available_accounts.map(account => {
+                const requirements = {
+                    client_kyc_status: {
+                        poa_status: 'none',
+                        poi_status: 'verified',
+                        valid_tin: 0,
+                    },
+                };
+
+                return {
+                    ...account,
+                    requirements,
+                };
+            });
         }
     }
 

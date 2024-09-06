@@ -25,13 +25,7 @@ const getMT5StatusBadgeConfig = (mt5_account_status: TMT5AccountStatus) => {
                         i18n_default_text='<0>Verification failed.</0> <1>Why?</1>'
                         components={[
                             <Text key={0} weight='bold' size='xxxs' color='var(--status-danger)' />,
-                            <Text
-                                key={1}
-                                className='link-verification-failed'
-                                onClick={() => {
-                                    //TODO: default jurisdiction;
-                                }}
-                            />,
+                            <Text key={1} className='link-verification-failed' />,
                         ]}
                     />
                 ),
@@ -44,13 +38,7 @@ const getMT5StatusBadgeConfig = (mt5_account_status: TMT5AccountStatus) => {
                         i18n_default_text='<0>Needs verification.</0><1>Verify now</1>'
                         components={[
                             <Text key={0} weight='bold' size='xxxs' color='var(--status-info)' />,
-                            <Text
-                                key={1}
-                                className='link-need-verification'
-                                onClick={() => {
-                                    //TODO: default jurisdiction;
-                                }}
-                            />,
+                            <Text key={1} className='link-need-verification' />,
                         ]}
                     />
                 ),

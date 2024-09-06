@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
+import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { StandaloneChartCandlestickRegularIcon, StandaloneClockThreeRegularIcon } from '@deriv/quill-icons';
-import { Badge } from '@deriv-com/quill-ui';
+import { Badge, Navigation } from '@deriv-com/quill-ui';
 import { useStore } from '@deriv/stores';
-import BottomNavItem from './bottom-nav-item';
 import { useHistory, useLocation } from 'react-router';
 
 type BottomNavProps = {
@@ -41,6 +41,7 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
                         color='danger'
                         size='sm'
                         contentSize='sm'
+                        className='bottom-nav-item__position-badge'
                     >
                         <StandaloneClockThreeRegularIcon
                             iconSize='sm'
@@ -53,7 +54,12 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
                         fill='var(--semantic-color-monochrome-textIcon-normal-high)'
                     />
                 ),
-            label: <Localize i18n_default_text='Positions' />,
+            label: (
+                <React.Fragment>
+                    <span className='user-guide__anchor' />
+                    <Localize i18n_default_text='Positions' />
+                </React.Fragment>
+            ),
             path: routes.trader_positions,
         },
     ];
@@ -69,18 +75,24 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
             <div className='bottom-nav-selection' onScroll={onScroll}>
                 {children}
             </div>
-            <div className='bottom-nav-container'>
+            <Navigation.Bottom className='bottom-nav-container' onChange={(_, index) => handleSelect(index)}>
                 {bottomNavItems.map((item, index) => (
-                    <BottomNavItem
+                    <Navigation.BottomAction
                         key={index}
                         index={index}
+                        activeIcon={item.icon}
                         icon={item.icon}
-                        selectedIndex={selectedIndex}
                         label={item.label}
-                        setSelectedIndex={handleSelect}
+                        selected={index === selectedIndex}
+                        showLabel
+                        className={clsx(
+                            'bottom-nav-item',
+                            index === selectedIndex && 'bottom-nav-item--active',
+                            item.path === routes.trader_positions && 'bottom-nav-item--positions'
+                        )}
                     />
                 ))}
-            </div>
+            </Navigation.Bottom>
         </div>
     );
 });

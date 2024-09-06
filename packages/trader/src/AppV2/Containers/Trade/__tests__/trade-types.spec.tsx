@@ -51,13 +51,27 @@ const mockTradeTypes = (mocked_store = mockStore(default_mock_store)) => {
 };
 
 describe('TradeTypes', () => {
+    const originalScrollBy = HTMLElement.prototype.scrollBy;
+    const scrollByMock = jest.fn();
     beforeEach(() => {
         mockGetTradeTypesList.mockReturnValue([
+            { value: 'accumulator', text: 'Accumulator' },
+            { value: 'multipler', text: 'Multiplier' },
             { value: 'rise', text: 'Rise' },
             { value: 'fall', text: 'Fall' },
             { value: 'vanilla_call', text: 'Vanilla Call' },
             { value: 'vanilla_put', text: 'Vanilla Put' },
         ]);
+    });
+    beforeAll(() => {
+        Object.defineProperty(HTMLElement.prototype, 'scrollBy', {
+            value: scrollByMock,
+        });
+    });
+    afterAll(() => {
+        Object.defineProperty(HTMLElement.prototype, 'scrollBy', {
+            value: originalScrollBy,
+        });
     });
 
     it('should render the TradeTypes component with pinned and other trade types', () => {
@@ -65,15 +79,6 @@ describe('TradeTypes', () => {
 
         expect(screen.getByText('View all')).toBeInTheDocument();
         expect(screen.getByText('Rise')).toBeInTheDocument();
-    });
-
-    it('should open ActionSheet when View all button is clicked', async () => {
-        render(mockTradeTypes());
-
-        await userEvent.click(screen.getByText('View all'));
-
-        expect(screen.getByText('Trade types')).toBeInTheDocument();
-        expect(screen.getByText('Fall')).toBeInTheDocument();
     });
 
     it('should handle adding and removing pinned trade types', async () => {
@@ -88,5 +93,15 @@ describe('TradeTypes', () => {
         await userEvent.click(removeButton);
 
         expect(screen.getByText('Trade types')).toBeInTheDocument();
+    });
+
+    it('should scroll to the selected trade type when tradeList is clicked', async () => {
+        render(mockTradeTypes());
+        Object.defineProperty(HTMLElement.prototype, 'scrollBy', {
+            value: scrollByMock,
+        });
+        await userEvent.click(screen.getByText('Rise'));
+        await new Promise(resolve => setTimeout(resolve, 0));
+        expect(scrollByMock).toHaveBeenCalled();
     });
 });

@@ -146,6 +146,7 @@ export type TV2ParamsInitialValues = {
     stake?: string | number;
     strike?: string | number;
     multiplier?: number;
+    barrier_1?: number;
 };
 type TContractDataForGTM = Omit<Partial<PriceProposalRequest>, 'cancellation' | 'limit_order'> &
     ReturnType<typeof getProposalInfo> & {
@@ -685,7 +686,13 @@ export default class TradeStore extends BaseStore {
         }
     }
 
-    setV2ParamsInitialValues({ value, name }: { value: number | string; name: keyof TV2ParamsInitialValues }) {
+    setV2ParamsInitialValues({
+        value,
+        name,
+    }: {
+        value: number | string | boolean;
+        name: keyof TV2ParamsInitialValues;
+    }) {
         this.v2_params_initial_values = { ...this.v2_params_initial_values, ...{ [name]: value } };
     }
 
@@ -804,6 +811,10 @@ export default class TradeStore extends BaseStore {
     }
 
     async setContractTypes() {
+        if (this.is_dtrader_v2_enabled) {
+            return;
+        }
+
         let contractType: string | undefined = '';
         if (this.symbol && this.is_symbol_in_active_symbols) {
             await Symbol.onChangeSymbolAsync(this.symbol);

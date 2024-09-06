@@ -49,6 +49,7 @@ const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({
                 isDemo={Boolean(transferAccount.is_virtual)}
                 isInterWallet={transferAccount === wallet}
                 mt5Group={transferAccount === mt5Account ? mt5Account.group : undefined}
+                product={mt5Account?.product}
                 transactionID={transactionID}
             />
         );

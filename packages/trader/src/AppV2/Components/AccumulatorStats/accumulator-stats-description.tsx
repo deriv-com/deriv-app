@@ -2,21 +2,13 @@ import React from 'react';
 import { ActionSheet, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { UNIFIED_MODE_VIDEO_ID } from 'Modules/Trading/Helpers/video-config';
+import StreamIframe from '../OnboardingGuide/StreamIframe';
 
 const AccumulatorStatsDescription = ({ onActionSheetClose }: { onActionSheetClose: () => void }) => {
     return (
         <ActionSheet.Portal showHandlebar={false}>
             <div className='stats-description'>
-                <div className='stats-description__player-wrapper'>
-                    <div className='stats-description__player-wrapper__player'>
-                        <iframe
-                            allowFullScreen={false}
-                            width='100%'
-                            height='100%'
-                            src={`https://iframe.cloudflarestream.com/${UNIFIED_MODE_VIDEO_ID.accumulator_stats}?muted=true&controls=false&autoplay=true&loop=true&preload=auto`}
-                        />
-                    </div>
-                </div>
+                <StreamIframe src={UNIFIED_MODE_VIDEO_ID.accumulator_stats} />
                 <div className='stats-description__content'>
                     <div className='stats-description__content__title'>
                         <Text size='lg' bold>

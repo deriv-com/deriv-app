@@ -2,6 +2,8 @@ import React from 'react';
 import { Modal } from '@deriv-com/quill-ui';
 import { useLocalStorageData } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
+import { UNIFIED_MODE_VIDEO_ID } from 'Modules/Trading/Helpers/video-config';
+import StreamIframe from '../StreamIframe';
 
 const TradeTypesSelectionGuide = () => {
     const [is_modal_open, setIsModalOpen] = React.useState(false);
@@ -38,7 +40,7 @@ const TradeTypesSelectionGuide = () => {
             primaryButtonCallback={onFinishGuide}
         >
             <Modal.Header
-                image={<div className='video-placeholder' />}
+                image={<StreamIframe src={UNIFIED_MODE_VIDEO_ID.accumulator_stats} />}
                 title={<Localize i18n_default_text='Manage your trade types' />}
             />
             <Modal.Body>

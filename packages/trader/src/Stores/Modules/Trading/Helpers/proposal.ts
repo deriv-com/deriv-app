@@ -49,11 +49,12 @@ type TValidationParams =
                   max: string;
                   min: string;
               };
+              stop_loss: { max: string; min: string };
           };
       }
     | undefined;
 
-type ExpandedProposal = Proposal & TValidationParams;
+export type ExpandedProposal = Proposal & TValidationParams;
 
 const isVisible = (elem: HTMLElement) => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
 

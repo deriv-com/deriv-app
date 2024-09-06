@@ -53,5 +53,10 @@ export const DESCRIPTION_VIDEO_ID: TDtraderVideoUrl = {
     },
 };
 
+// The ids here won't have dark and light theme
+export const UNIFIED_MODE_VIDEO_ID = {
+    accumulator_stats: 'cfd0bd25af245c1c987106a247cbb81a',
+};
+
 export const getDescriptionVideoId = (contract_type = '', is_dark_theme = false) =>
     DESCRIPTION_VIDEO_ID[contract_type]?.[is_dark_theme ? 'dark' : 'light'];

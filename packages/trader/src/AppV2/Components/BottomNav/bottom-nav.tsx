@@ -54,7 +54,12 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
                         fill='var(--semantic-color-monochrome-textIcon-normal-high)'
                     />
                 ),
-            label: <Localize i18n_default_text='Positions' />,
+            label: (
+                <React.Fragment>
+                    <span className='user-guide__anchor' />
+                    <Localize i18n_default_text='Positions' />
+                </React.Fragment>
+            ),
             path: routes.trader_positions,
         },
     ];
@@ -80,7 +85,11 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
                         label={item.label}
                         selected={index === selectedIndex}
                         showLabel
-                        className={clsx('bottom-nav-item', index === selectedIndex && 'bottom-nav-item--active')}
+                        className={clsx(
+                            'bottom-nav-item',
+                            index === selectedIndex && 'bottom-nav-item--active',
+                            item.path === routes.trader_positions && 'bottom-nav-item--positions'
+                        )}
                     />
                 ))}
             </Navigation.Bottom>

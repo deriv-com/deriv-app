@@ -54,10 +54,12 @@ const DepositNowOrLaterModal = observer(() => {
             });
 
         setShouldShowDepositNowOrLaterModal(false);
-        setShouldShowOneTimeDepositModal(false);
 
-        // for MF accounts we need to show success modal
-        if (is_mf_account) toggleAccountSuccessModal();
+        if (is_click_on_cancel_button) {
+            setShouldShowOneTimeDepositModal(false);
+            // for MF accounts we need to show success modal
+            if (is_mf_account) toggleAccountSuccessModal();
+        }
     };
 
     React.useEffect(() => {
@@ -84,7 +86,6 @@ const DepositNowOrLaterModal = observer(() => {
             is_visible={should_show_deposit_now_or_later_modal}
             has_close_icon
             is_closed_on_cancel={false}
-            onEscapeButtonCancel={onClose}
         >
             <Text align='center' size={isMobile ? 'xxs' : 'xs'}>
                 <Localize i18n_default_text="Make a deposit to trade the world's markets!" />

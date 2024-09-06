@@ -166,8 +166,6 @@ export default class ClientStore extends BaseStore {
     subscriptions = {};
     exchange_rates = {};
 
-    is_cfds_available_accouts_loading = true;
-
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
@@ -2902,15 +2900,12 @@ export default class ClientStore extends BaseStore {
     }
 
     async setCFDSTradingPlatformAvailableAccounts(params) {
-        this.is_cfds_available_accouts_loading = true;
         const availabilityFunctions = {
             [CFD_PLATFORMS.MT5]: this.responseTradingPlatformAvailableAccounts,
             [CFD_PLATFORMS.CTRADER]: this.responseCTraderTradingPlatformAvailableAccounts,
         };
-        this.setIsLandingCompanyLoaded(false);
         const response = await WS.tradingPlatformAvailableAccounts(params);
         availabilityFunctions[params.platform](response);
-        this.is_cfds_available_accouts_loading = false;
     }
 
     get account_time_of_closure() {

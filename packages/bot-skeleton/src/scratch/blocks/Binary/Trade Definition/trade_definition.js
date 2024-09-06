@@ -10,7 +10,6 @@ Blockly.Blocks.trade_definition = {
         this.jsonInit(this.definition());
         this.setDeletable(false);
         this.isInit = false;
-        //this.is_collapsed_flag = false;
     },
     definition() {
         return {

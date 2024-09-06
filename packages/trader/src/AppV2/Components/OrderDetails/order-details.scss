@@ -17,6 +17,13 @@
             border-bottom: var(--core-borderWidth-75) solid var(--core-color-opacity-black-100);
             padding: var(--core-spacing-400) 0;
 
+            &:first-child {
+                padding-top: 0;
+            }
+            &:last-child {
+                border-bottom: none;
+                padding-bottom: 0;
+            }
             &-cell {
                 display: flex;
                 justify-content: space-between;

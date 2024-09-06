@@ -1,0 +1,15 @@
+//TODO: remove after video for position page guide will be ready
+.video-placeholder {
+    position: relative;
+    height: 218.5px;
+    width: 100%;
+    background-color: var(--core-color-solid-slate-750);
+
+    &:before {
+        content: 'Placeholder. Video will arrive soon';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}

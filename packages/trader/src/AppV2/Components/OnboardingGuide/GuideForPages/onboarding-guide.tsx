@@ -15,12 +15,18 @@ const OnboardingGuide = ({ type = 'trade_page' }: TOnboardingGuideProps) => {
     const guide_timeout_ref = React.useRef<ReturnType<typeof setTimeout>>();
     const is_button_clicked_ref = React.useRef(false);
 
-    const [guide_dtrader_v2, setGuideDtraderV2] = useLocalStorageData<boolean>(`guide_dtrader_v2_${type}`, false);
+    const [guide_dtrader_v2, setGuideDtraderV2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
+        trade_types_selection: false,
+        trade_page: false,
+        positions_page: false,
+    });
+
     const is_trade_page_guide = type === 'trade_page';
 
     const onFinishGuide = React.useCallback(() => {
         setShouldRunGuide(false);
-        setGuideDtraderV2(true);
+        setGuideDtraderV2({ ...guide_dtrader_v2, [type]: true });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setGuideDtraderV2]);
 
     const onGuideSkip = () => {
@@ -57,9 +63,10 @@ const OnboardingGuide = ({ type = 'trade_page' }: TOnboardingGuideProps) => {
     };
 
     React.useEffect(() => {
-        if (!guide_dtrader_v2) guide_timeout_ref.current = setTimeout(() => setIsModalOpen(true), 800);
+        if (!guide_dtrader_v2?.[type]) guide_timeout_ref.current = setTimeout(() => setIsModalOpen(true), 800);
 
         return () => clearTimeout(guide_timeout_ref.current);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [guide_dtrader_v2]);
 
     return (

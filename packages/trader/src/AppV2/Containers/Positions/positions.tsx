@@ -15,7 +15,11 @@ import OnboardingGuide from 'AppV2/Components/OnboardingGuide/GuideForPages';
 const Positions = observer(() => {
     const [hasButtonsDemo, setHasButtonsDemo] = React.useState(true);
     const [activeTab, setActiveTab] = React.useState(getPositionsV2TabIndexFromURL());
-    const [guide_dtrader_v2] = useLocalStorageData<boolean>('guide_dtrader_v2_positions_page', false);
+    const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
+        trade_types_selection: false,
+        trade_page: false,
+        positions_page: false,
+    });
     const history = useHistory();
 
     const {
@@ -75,7 +79,7 @@ const Positions = observer(() => {
                     </Tab.Content>
                 </Tab.Container>
             </div>
-            {!guide_dtrader_v2 && is_logged_in && <OnboardingGuide type='positions_page' />}
+            {!guide_dtrader_v2?.positions_page && is_logged_in && <OnboardingGuide type='positions_page' />}
         </BottomNav>
     );
 });

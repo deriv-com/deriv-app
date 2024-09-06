@@ -52,6 +52,7 @@ describe('<TradeHeaderExtensions />', () => {
             isMobile: true,
             isTablet: false,
             isTabletPortrait: false,
+            isMobileOrTabletLandscape: false,
         }));
 
         renderTraderFooterExtensions(mock_store);

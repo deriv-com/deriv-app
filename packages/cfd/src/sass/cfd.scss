@@ -103,9 +103,8 @@
             display: block;
             .cfd-password-modal__content {
                 max-height: 100%;
-            }
-            .dc-form-submit-button {
-                justify-content: flex-start;
+                border-block: 1px solid var(--general-hover);
+                margin-bottom: 0;
             }
         }
     }

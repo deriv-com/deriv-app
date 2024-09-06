@@ -70,7 +70,7 @@ describe('DepositErrorScreen', () => {
 
         render(<DepositErrorScreen error={error} />);
 
-        expect(screen.getByText('Maintenance in progess')).toBeInTheDocument();
+        expect(screen.getByText('Maintenance in progress')).toBeInTheDocument();
         expect(screen.getByText('Crypto Connection Error')).toBeInTheDocument();
         expect(screen.queryByText('Try again')).not.toBeInTheDocument();
     });

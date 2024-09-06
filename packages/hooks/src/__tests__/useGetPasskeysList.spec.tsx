@@ -29,7 +29,9 @@ describe('useGetPasskeysList', () => {
 
         const { result } = renderHook(() => useGetPasskeysList(), { wrapper });
 
-        expect(useQuery).toHaveBeenCalledWith('passkeys_list', { options: { enabled: true, retry: 0 } });
+        expect(useQuery).toHaveBeenCalledWith('passkeys_list', {
+            options: { enabled: true, retry: 0, refetchOnWindowFocus: false, staleTime: Infinity },
+        });
         expect(result.current.passkeys_list).toEqual([]);
     });
 
@@ -39,7 +41,9 @@ describe('useGetPasskeysList', () => {
 
         const { result } = renderHook(() => useGetPasskeysList(), { wrapper });
 
-        expect(useQuery).toHaveBeenCalledWith('passkeys_list', { options: { enabled: false, retry: 0 } });
+        expect(useQuery).toHaveBeenCalledWith('passkeys_list', {
+            options: { enabled: false, retry: 0, refetchOnWindowFocus: false, staleTime: Infinity },
+        });
         expect(result.current.passkeys_list).toEqual(undefined);
     });
 
@@ -49,7 +53,9 @@ describe('useGetPasskeysList', () => {
 
         const { result } = renderHook(() => useGetPasskeysList(), { wrapper });
 
-        expect(useQuery).toHaveBeenCalledWith('passkeys_list', { options: { enabled: false, retry: 0 } });
+        expect(useQuery).toHaveBeenCalledWith('passkeys_list', {
+            options: { enabled: false, retry: 0, refetchOnWindowFocus: false, staleTime: Infinity },
+        });
         expect(result.current.passkeys_list).toEqual(undefined);
     });
 });

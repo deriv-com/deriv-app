@@ -1,6 +1,5 @@
 import React, { ComponentProps } from 'react';
-import { Button } from '@deriv-com/ui';
-import { WalletsActionScreen } from '../WalletsActionScreen';
+import { ActionScreen, Button } from '@deriv-com/ui';
 import './WalletsErrorScreen.scss';
 
 type TProps = {
@@ -14,15 +13,15 @@ type TProps = {
 const WalletsErrorScreen: React.FC<TProps> = ({ buttonText, buttonVariant = 'contained', message, onClick, title }) => {
     return (
         <div className='wallets-error-screen'>
-            <WalletsActionScreen
-                description={message}
-                renderButtons={() =>
+            <ActionScreen
+                actionButtons={
                     buttonText ? (
                         <Button borderWidth='sm' onClick={onClick} size='lg' textSize='md' variant={buttonVariant}>
                             {buttonText}
                         </Button>
-                    ) : null
+                    ) : undefined
                 }
+                description={message}
                 title={title}
             />
         </div>

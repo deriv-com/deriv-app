@@ -10,7 +10,7 @@ type TAccumulatorAnnouncementDialog = {
     is_announce_dialog_open: boolean;
     setIsAnnounceDialogOpen: (is_announce_dialog_open: boolean) => void;
     handleOnConfirm: () => void;
-    handleOnCancel: () => void | null;
+    handleOnCancel: (() => void) | null;
     is_tablet?: boolean;
 };
 

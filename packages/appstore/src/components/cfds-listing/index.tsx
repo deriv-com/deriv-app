@@ -66,7 +66,6 @@ const CFDsListing = observer(() => {
         no_MF_account,
         toggleAccountTransferModal,
         is_demo,
-        openVerificationDocsListModal,
         showTopUpModal,
         no_CR_account,
         setSelectedAccount,
@@ -79,10 +78,10 @@ const CFDsListing = observer(() => {
         setAccountUnavailableModal,
         setServerMaintenanceModal,
         setProduct,
+        setJurisdictionSelectedShortcode,
     } = cfd;
 
     const {
-        account_status,
         is_landing_company_loaded,
         is_populating_mt5_account_list,
         real_account_creation_unlock_date,
@@ -219,7 +218,6 @@ const CFDsListing = observer(() => {
                                       existing_account?.landing_company_short
                                   )
                                 : '';
-
                         return (
                             <TradingAppCard
                                 action_type={existing_account.action_type}
@@ -252,13 +250,13 @@ const CFDsListing = observer(() => {
                                         } else if (no_real_cr_non_eu_regulator || no_real_mf_account_eu_regulator) {
                                             openDerivRealAccountNeededModal();
                                         } else {
+                                            setJurisdictionSelectedShortcode('bvi');
                                             setAccountType({
                                                 category: selected_account_type,
                                                 type: existing_account.market_type,
                                             });
                                             setProduct(existing_account.product);
                                             setAppstorePlatform(existing_account.platform);
-                                            getAccount();
                                             getTradingPlatformStatus(existing_account.platform);
                                         }
                                     } else if (existing_account.action_type === 'multi-action') {
@@ -308,8 +306,8 @@ const CFDsListing = observer(() => {
                                     category: selected_account_type,
                                     type: existing_account.market_type,
                                     jurisdiction: existing_account.landing_company_short,
+                                    product: existing_account.product,
                                 }}
-                                openVerificationDocsListModal={openVerificationDocsListModal}
                                 market_type={existing_account?.market_type}
                             />
                         );

@@ -18,7 +18,7 @@ const useGetDefaultMT5Jurisdiction = () => {
     )[0]?.shortcode;
 
     // return default_jurisdiction;
-    return 'vanuatu';
+    return 'bvi';
 };
 
 export default useGetDefaultMT5Jurisdiction;

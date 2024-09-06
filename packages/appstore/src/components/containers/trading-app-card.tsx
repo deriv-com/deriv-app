@@ -43,21 +43,32 @@ const TradingAppCard = ({
     short_code_and_region,
     mt5_acc_auth_status,
     selected_mt5_jurisdiction,
-    openVerificationDocsListModal,
     market_type,
     is_new = false,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
     const {
         common,
         traders_hub,
-        ui,
         modules: { cfd },
-        client,
     } = useStore();
-    const { is_eu_user, is_demo_low_risk, content_flag, is_real, selected_account_type } = traders_hub;
+
+    const {
+        is_eu_user,
+        is_demo_low_risk,
+        content_flag,
+        is_real,
+        selected_account_type,
+        toggleVerificationModal,
+        getMT5AccountKYCStatus,
+    } = traders_hub;
     const { current_language, setAppstorePlatform } = common;
-    const { is_account_being_created, setAccountUnavailableModal, setServerMaintenanceModal } = cfd;
-    const { account_status: { authentication } = {} } = client;
+    const {
+        is_account_being_created,
+        setAccountUnavailableModal,
+        setServerMaintenanceModal,
+        setJurisdictionSelectedShortcode,
+        setProduct,
+    } = cfd;
 
     const [is_traders_dashboard_tracking_enabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'ce_tradershub_dashboard_tracking',
@@ -87,6 +98,15 @@ const TradingAppCard = ({
                 return setServerMaintenanceModal(true);
             case TRADING_PLATFORM_STATUS.UNAVAILABLE:
                 return setAccountUnavailableModal(true);
+            case MT5_ACCOUNT_STATUS.PENDING:
+            case MT5_ACCOUNT_STATUS.FAILED:
+            case MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION: {
+                setJurisdictionSelectedShortcode(selected_mt5_jurisdiction?.jurisdiction ?? '');
+                setProduct(selected_mt5_jurisdiction?.product ?? '');
+                getMT5AccountKYCStatus();
+                return toggleVerificationModal(true);
+            }
+
             default:
         }
     };

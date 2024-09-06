@@ -539,7 +539,6 @@ const mock = (): TStores & { is_mock: boolean } => {
                 active_modal: '',
                 data: {},
             },
-            openVerificationDocsListModal: jest.fn(),
             setTogglePlatformType: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
             selectAccountType: jest.fn(),

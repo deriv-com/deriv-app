@@ -79,6 +79,14 @@ const useActiveSymbols = () => {
 
     useEffect(
         () => {
+            const checkSymbolChange = (new_symbol: string) => {
+                // To call contracts_for during initialization
+                const is_initailization = !default_symbol_ref.current && new_symbol;
+                const has_symbol_changed = symbol != new_symbol;
+                if (is_initailization || has_symbol_changed) {
+                    onChange({ target: { name: 'symbol', value: new_symbol } });
+                }
+            };
             const process = async () => {
                 if (!response) return;
 
@@ -88,17 +96,15 @@ const useActiveSymbols = () => {
                 } else if (!active_symbols?.length) {
                     setActiveSymbols([]);
                 } else {
-                    default_symbol_ref.current = isSymbolAvailable(active_symbols)
+                    const new_symbol = isSymbolAvailable(active_symbols)
                         ? symbol
                         : (await pickDefaultSymbol(active_symbols)) || '1HZ100V';
 
                     setActiveSymbols(active_symbols);
                     setActiveSymbolsV2(active_symbols);
-
-                    if (symbol !== default_symbol_ref.current) {
-                        onChange({ target: { name: 'symbol', value: default_symbol_ref.current } });
-                    }
-                    setTradeURLParams({ symbol: default_symbol_ref.current, contractType: contract_type });
+                    checkSymbolChange(new_symbol);
+                    setTradeURLParams({ symbol: new_symbol, contractType: contract_type });
+                    default_symbol_ref.current = new_symbol;
                 }
             };
             process();

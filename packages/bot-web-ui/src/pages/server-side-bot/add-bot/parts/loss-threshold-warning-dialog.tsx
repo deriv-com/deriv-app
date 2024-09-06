@@ -4,16 +4,15 @@ import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { SERVER_BOT_LOSS_THRESHOLD_WARNING } from '../constants';
-import useQsSubmitHandler from '../form-wrappers/useQsSubmitHandler';
+import useSubmitHandler from '../form-wrappers/useSubmitHandler';
 import './loss-threshold-warning-dialog.scss';
 
 const base_classname = 'loss-threshold-warning-dialog';
 
 const LossThresholdWarningDialog = observer(() => {
-    const { quick_strategy } = useDBotStore();
-    const { loss_threshold_warning_data, setLossThresholdWarningData, initializeLossThresholdWarningData } =
-        quick_strategy;
-    const { proceedFormSubmission } = useQsSubmitHandler();
+    const { server_bot } = useDBotStore();
+    const { loss_threshold_warning_data, setLossThresholdWarningData, initializeLossThresholdWarningData } = server_bot;
+    const { proceedFormSubmission } = useSubmitHandler();
 
     const handleAmountEdit = () => {
         setLossThresholdWarningData({

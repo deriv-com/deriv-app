@@ -263,7 +263,8 @@ const CFDsListing = observer(() => {
                     {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
 
-                        const track_account_subtitle = existing_account.tracking_name;
+                        const track_account_subtitle = existing_account.tracking_name ?? '';
+
                         const has_mt5_account_status =
                             existing_account?.status || is_idv_revoked || hasMaintenanceStatus
                                 ? getMT5AccountAuthStatus(

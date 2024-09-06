@@ -69,8 +69,7 @@ const MT5MobileRedirectOption: FC<TMT5MobileRedirectOptionProps> = ({ mt5TradeAc
             <Text as='p' size='xs'>
                 <Localize
                     components={[<strong key={0} />]}
-                    i18n_default_text="Note: Don't have the MT5 app? Tap the <0>Trade with MT5 mobile app</0> button to
-                download. Once you have installed the app, return to this screen and hit the same button to log in."
+                    i18n_default_text="Note: Don't have the MT5 app? Tap the <0>Trade with MT5 mobile app</0> button to download. Once you have installed the app, return to this screen and hit the same button to log in."
                 />
             </Text>
         </div>

@@ -262,7 +262,7 @@ export const ContractType = (() => {
     };
 
     const getComponents = (c_type: string) => {
-        const check = ['duration', 'amount', ...contract_types[c_type].components].filter(
+        const check = ['duration', 'amount', ...contract_types[c_type]?.components].filter(
             component =>
                 !(
                     component === 'duration' &&

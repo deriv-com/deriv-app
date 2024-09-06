@@ -270,7 +270,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                     </ActionSheet.Content>
                 </ActionSheet.Portal>
             </ActionSheet.Root>
-            <TradeTypesSelectionGuide is_open={is_open} />
+            {is_open && <TradeTypesSelectionGuide />}
         </div>
     );
 };

@@ -67,7 +67,7 @@ const OnboardingGuide = ({ type = 'trade_page' }: TOnboardingGuideProps) => {
 
         return () => clearTimeout(guide_timeout_ref.current);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [guide_dtrader_v2]);
+    }, [guide_dtrader_v2?.[type]]);
 
     return (
         <React.Fragment>

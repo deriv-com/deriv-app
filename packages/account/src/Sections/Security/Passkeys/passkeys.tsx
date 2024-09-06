@@ -9,6 +9,7 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv-com/translations';
 import { PasskeyErrorModal } from './components/passkey-error-modal';
 import { PasskeyReminderModal } from './components/passkey-reminder-modal';
+import { PasskeyRemoveConfirmationModal } from './components/passkey-remove-confirmation-modal';
 import { PasskeysStatusContainer } from './components/passkeys-status-container';
 import {
     clearRefTimeOut,
@@ -21,7 +22,6 @@ import {
 } from './passkeys-configs';
 import { TServerError } from '../../../Types';
 import './passkeys.scss';
-import { PasskeyRemoveConfirmationModal } from 'Sections/Security/Passkeys/components/passkey-remove-confirmation-modal';
 
 export type TPasskey = {
     id: number;

@@ -49,11 +49,13 @@ const EnterPasswordModal: FC<ComponentProps<typeof EnterPassword>> = ({
                 return (
                     <WalletButtonGroup isFullWidth>
                         <Button
+                            borderWidth='sm'
                             color='black'
                             isFullWidth
                             isLoading={isForgotPasswordLoading}
                             onClick={onSecondaryClick}
                             size='lg'
+                            textSize={isDesktop ? 'md' : 'sm'}
                             variant='outlined'
                         >
                             <Localize i18n_default_text='Forgot password?' />
@@ -64,6 +66,7 @@ const EnterPasswordModal: FC<ComponentProps<typeof EnterPassword>> = ({
                             isLoading={isLoading}
                             onClick={onPrimaryClick}
                             size='lg'
+                            textSize={isDesktop ? 'md' : 'sm'}
                         >
                             <Localize i18n_default_text='Add account' />
                         </Button>

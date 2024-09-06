@@ -28,16 +28,23 @@ const SuccessModal: FC<TProps> = ({
     const renderButton =
         accountType === 'demo' ? (
             <div className='wallets-success-btn'>
-                <Button isFullWidth onClick={onSecondaryClick} size={isDesktop ? 'md' : 'lg'}>
+                <Button isFullWidth onClick={onSecondaryClick} size={isDesktop ? 'md' : 'lg'} textSize='sm'>
                     <Localize i18n_default_text='OK' />
                 </Button>
             </div>
         ) : (
             <WalletButtonGroup isFlex isFullWidth>
-                <Button color='black' onClick={onSecondaryClick} size={isDesktop ? 'md' : 'lg'} variant='outlined'>
+                <Button
+                    borderWidth='sm'
+                    color='black'
+                    onClick={onSecondaryClick}
+                    size={isDesktop ? 'md' : 'lg'}
+                    textSize='sm'
+                    variant='outlined'
+                >
                     <Localize i18n_default_text='Maybe later' />
                 </Button>
-                <Button onClick={onPrimaryClick} size={isDesktop ? 'md' : 'lg'}>
+                <Button onClick={onPrimaryClick} size={isDesktop ? 'md' : 'lg'} textSize='sm'>
                     <Localize i18n_default_text='Transfer funds' />
                 </Button>
             </WalletButtonGroup>

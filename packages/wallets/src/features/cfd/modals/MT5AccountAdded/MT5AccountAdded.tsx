@@ -60,7 +60,14 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
             if (isTransferAllowed) {
                 return (
                     <WalletButtonGroup isFlex isFullWidth>
-                        <Button color='black' onClick={hide} size={isDesktop ? 'md' : 'lg'} variant='outlined'>
+                        <Button
+                            borderWidth='sm'
+                            color='black'
+                            onClick={hide}
+                            size={isDesktop ? 'md' : 'lg'}
+                            textSize='sm'
+                            variant='outlined'
+                        >
                             <Localize i18n_default_text='Maybe later' />
                         </Button>
                         <Button
@@ -69,6 +76,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                                 history.push('/wallet/account-transfer', { toAccountLoginId: addedAccount?.loginid });
                             }}
                             size={isDesktop ? 'md' : 'lg'}
+                            textSize='sm'
                         >
                             <Localize i18n_default_text='Transfer funds' />
                         </Button>
@@ -77,13 +85,13 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
             }
             return (
                 <div className='wallets-success-btn'>
-                    <Button isFullWidth onClick={hide} size={isDesktop ? 'md' : 'lg'}>
+                    <Button isFullWidth onClick={hide} size={isDesktop ? 'md' : 'lg'} textSize='sm'>
                         <Localize i18n_default_text='OK' />
                     </Button>
                 </div>
             );
         },
-        [hide, history, addedAccount?.loginid, isDesktop]
+        [hide, isDesktop, history, addedAccount?.loginid]
     );
 
     const renderSuccessDescription = useMemo(() => {

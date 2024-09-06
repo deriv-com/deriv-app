@@ -38,6 +38,7 @@ const CreatePasswordModal: FC<ComponentProps<typeof CreatePassword>> = ({
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'
+                        textSize={isDesktop ? 'md' : 'sm'}
                     >
                         <Localize
                             i18n_default_text='Create {{platformTitle}} password'

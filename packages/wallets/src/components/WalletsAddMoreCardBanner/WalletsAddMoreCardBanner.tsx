@@ -96,7 +96,7 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
                     switchWalletAccount(newAccountWallet.client_id);
                 }}
                 size={isDesktop ? 'lg' : 'sm'}
-                textSize={isDesktop ? 'sm' : 'xs'}
+                textSize='sm'
             >
                 {isAdded ? <Localize i18n_default_text='Added' /> : <Localize i18n_default_text='Add' />}
             </Button>

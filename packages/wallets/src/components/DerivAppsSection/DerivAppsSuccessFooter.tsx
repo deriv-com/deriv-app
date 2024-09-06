@@ -14,11 +14,12 @@ const DerivAppsSuccessFooter = () => {
     return (
         <div className='wallets-deriv-apps-success-footer'>
             <Button
+                borderWidth='sm'
                 color='black'
                 isFullWidth={!isDesktop}
                 onClick={hide}
                 size='lg'
-                textSize={isDesktop ? 'sm' : 'xs'}
+                textSize='sm'
                 variant='outlined'
             >
                 <Localize i18n_default_text='Maybe later' />
@@ -30,7 +31,7 @@ const DerivAppsSuccessFooter = () => {
                     hide();
                 }}
                 size='lg'
-                textSize={isDesktop ? 'sm' : 'xs'}
+                textSize='sm'
             >
                 <Localize i18n_default_text='Transfer funds' />
             </Button>

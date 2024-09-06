@@ -104,7 +104,7 @@ const WalletsResetMT5Password = ({
             show(
                 <WalletsErrorMT5InvestorPassword
                     actionButtons={
-                        <Button isFullWidth={!isDesktop} onClick={hide} textSize={isDesktop ? 'sm' : 'md'}>
+                        <Button isFullWidth={!isDesktop} onClick={hide} textSize='sm'>
                             <Localize i18n_default_text='Ok' />
                         </Button>
                     }

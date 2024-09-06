@@ -57,7 +57,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         status: emailVerificationStatus,
     } = useVerifyEmail();
     const { data: mt5AccountsData } = useMT5AccountsList();
-    const { isMobile } = useDevice();
+    const { isDesktop, isMobile } = useDevice();
     const { getModalState, hide } = useModal();
     const { data: settingsData } = useSettings();
     const { localize } = useTranslations();
@@ -196,6 +196,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                     isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                     onClick={onSubmit}
                     size='lg'
+                    textSize={isDesktop ? 'md' : 'sm'}
                 >
                     <Localize i18n_default_text='Create {{mt5Title}} password' values={{ mt5Title }} />
                 </Button>
@@ -218,6 +219,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         createMT5AccountLoading,
         createMT5AccountSuccess,
         isDemo,
+        isDesktop,
         isMT5PasswordNotSet,
         mt5Title,
         onSubmit,

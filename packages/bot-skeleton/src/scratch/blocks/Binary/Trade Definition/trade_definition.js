@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { defineContract } from '../../images';
 import DBotStore from '../../../dbot-store';
-import { runIrreversibleEvents, modifyContextMenu, modifyMainBlockOnCollapse } from '../../../utils';
+import { runIrreversibleEvents, modifyContextMenu, appendCollapsedMainBlocksFields } from '../../../utils';
 import { removeErrorHandlingEventListener, initErrorHandlingListener } from '../../../../utils';
 import { config } from '../../../../constants/config';
 
@@ -146,7 +146,7 @@ Blockly.Blocks.trade_definition = {
                 });
             }
             if (this.isCollapsed()) {
-                modifyMainBlockOnCollapse(this);
+                appendCollapsedMainBlocksFields(this);
             }
         }
     },

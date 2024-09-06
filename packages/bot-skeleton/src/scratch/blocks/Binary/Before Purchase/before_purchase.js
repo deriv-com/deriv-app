@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { purchase } from '../../images';
-import { modifyMainBlockOnCollapse, modifyContextMenu } from '../../../utils';
+import { appendCollapsedMainBlocksFields, modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.before_purchase = {
     init() {
@@ -57,7 +57,7 @@ Blockly.Blocks.before_purchase = {
             (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
             if (this.isCollapsed()) {
-                modifyMainBlockOnCollapse(this);
+                appendCollapsedMainBlocksFields(this);
             }
         }
     },

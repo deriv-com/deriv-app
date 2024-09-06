@@ -587,14 +587,14 @@ export const isDarkRgbColour = string_rgb => {
 };
 /* eslint-enable */
 
-export const modifyMainBlockOnCollapse = block_instance => {
+export const appendCollapsedMainBlocksFields = block_instance => {
     try {
         // Return if the block is not collapsed
         if (!block_instance?.collapsed_) return;
-        const [block_image, block_name] = block_instance?.inputList[0]?.fieldRow.map(field => field.value_);
         const type_of_block = block_instance?.getField(block_instance.type);
         if (type_of_block) return;
 
+        const [block_image, block_name] = block_instance?.inputList[0]?.fieldRow.map(field => field.value_);
         const collapsed_field = block_instance?.getField(Blockly.constants.COLLAPSED_FIELD_NAME);
         const collapsed_input = block_instance?.getInput(Blockly.constants.COLLAPSED_INPUT_NAME);
 
@@ -620,7 +620,7 @@ export const modifyMainBlockOnCollapse = block_instance => {
     }
 };
 
-export const modifyProcedureBlockOnCollapse = instance => {
+export const appendCollapsedProcedureBlocksFields = instance => {
     const collapsed_input = instance.getInput('_TEMP_COLLAPSED_INPUT');
     if (collapsed_input && instance.collapsed_ && !collapsed_input.icon_added) {
         collapsed_input.icon_added = true;

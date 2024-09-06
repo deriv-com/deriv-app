@@ -620,6 +620,9 @@ type TClientStore = {
     setTradersHubTracking: (value: boolean) => void;
     account_time_of_closure?: number;
     is_account_to_be_closed_by_residence: boolean;
+    freshworks_token: string;
+    getFreshworksToken: () => Promise<string>;
+    setFreshworksToken: (token: string) => void;
 };
 
 type TCommonStoreError = {

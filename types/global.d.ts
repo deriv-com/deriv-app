@@ -18,6 +18,9 @@ declare global {
         };
         DD_RUM: object | undefined;
         fcWidget: {
+            user: {
+                setProperties: (values) => void;
+            };
             show: VoidFunction;
             hide: VoidFunction;
             open: VoidFunction;

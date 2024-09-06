@@ -165,6 +165,7 @@ export default class ClientStore extends BaseStore {
 
     subscriptions = {};
     exchange_rates = {};
+    freshworks_token = '';
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -423,6 +424,9 @@ export default class ClientStore extends BaseStore {
             setTradersHubTracking: action.bound,
             account_time_of_closure: computed,
             is_account_to_be_closed_by_residence: computed,
+            freshworks_token: observable,
+            getFreshworksToken: action.bound,
+            setFreshworksToken: action.bound,
         });
 
         reaction(
@@ -2892,5 +2896,22 @@ export default class ClientStore extends BaseStore {
 
     get is_account_to_be_closed_by_residence() {
         return this.account_time_of_closure && this.residence && this.residence === 'sn';
+    }
+
+    async getFreshworksToken() {
+        const response = await WS.authorized.getServiceToken('freshworks');
+
+        if (!response.error) {
+            const { freshworks } = response.service_token;
+            const token = freshworks?.token;
+            this.setFreshworksToken(token);
+            return token;
+        }
+
+        return this.freshworks_token;
+    }
+
+    setFreshworksToken(token) {
+        this.freshworks_token = token;
     }
 }

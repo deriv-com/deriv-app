@@ -10,7 +10,6 @@ $TWO_BUTTONS_FOOTER_HEIGHT: 120px;
     flex-direction: column;
     overflow: auto;
     gap: var(--semantic-spacing-general-sm);
-    height: 100vh;
     padding-bottom: var(--semantic-spacing-general-4xl);
 
     .contract-details-chart {
@@ -18,14 +17,14 @@ $TWO_BUTTONS_FOOTER_HEIGHT: 120px;
     }
     &--two-buttons {
         padding-bottom: 186px;
-
+        height: 100vh;
         .contract-details-chart {
             height: min(360px, calc(100vh - $HEADER_HEIGHT - $FIXED_PADDING_HEIGHT - $TWO_BUTTONS_FOOTER_HEIGHT));
         }
     }
     &--one-button {
         padding-bottom: 130px;
-
+        height: 100vh;
         .contract-details-chart {
             height: min(360px, calc(100vh - $HEADER_HEIGHT - $FIXED_PADDING_HEIGHT - $ONE_BUTTON_FOOTER_HEIGHT));
         }

@@ -38,8 +38,6 @@ import { CFD_PLATFORMS, CATEGORY } from '../Helpers/cfd-config';
 import classNames from 'classnames';
 import { getDxCompanies, getMtCompanies, TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 
-import { useGetDefaultMT5Jurisdiction } from '@deriv/hooks';
-
 const MT5CreatePassword = makeLazyLoader(
     () => moduleLoader(() => import('./mt5-create-password/mt5-create-password')),
     () => <div />
@@ -514,12 +512,10 @@ const CFDPasswordForm = observer(
 const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalProps) => {
     const { isDesktop } = useDevice();
     const { client, traders_hub, ui } = useStore();
-    const default_jurisdiction = useGetDefaultMT5Jurisdiction();
 
     const {
         email,
         account_status,
-        landing_companies,
         is_logged_in,
         is_populating_mt5_account_list,
         is_dxtrade_allowed,
@@ -589,9 +585,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         if (is_logged_in) {
             updateMT5Status();
             updateAccountStatus();
-
-            if (platform === CFD_PLATFORMS.MT5 && default_jurisdiction)
-                setJurisdictionSelectedShortcode(default_jurisdiction);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -724,12 +717,12 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const success_modal_submit_label = React.useMemo(() => {
         if (account_type.category === CATEGORY.REAL) {
             if (platform === CFD_PLATFORMS.MT5) {
-                return is_eu_user || is_selected_mt5_verified ? localize('Transfer now') : localize('OK');
+                return localize('Transfer now');
             }
             return localize('Transfer now');
         }
         return localize('Continue');
-    }, [platform, account_type, is_eu_user, is_selected_mt5_verified]);
+    }, [platform, account_type, is_eu_user]);
 
     const success_modal_cancel_label = React.useMemo(() => {
         if (is_eu_user && account_type.category === 'real' && platform === CFD_PLATFORMS.MT5) {
@@ -982,11 +975,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 icon_size='xlarge'
                 text_submit={success_modal_submit_label}
                 text_cancel={success_modal_cancel_label}
-                has_cancel={
-                    platform === CFD_PLATFORMS.MT5
-                        ? (is_eu_user || is_selected_mt5_verified) && account_type.category === CATEGORY.REAL
-                        : account_type.category === CATEGORY.REAL
-                }
+                has_cancel={account_type.category === CATEGORY.REAL}
                 has_close_icon={false}
                 width='auto'
                 is_medium_button={!isDesktop}

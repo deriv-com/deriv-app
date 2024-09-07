@@ -25,7 +25,6 @@ import {
     useTradingPlatformStatus,
     TradingPlatformStatus,
     useGrowthbookGetFeatureValue,
-    useGetDefaultMT5Jurisdiction,
 } from '@deriv/hooks';
 
 import './cfds-listing.scss';
@@ -71,6 +70,7 @@ const CFDsListing = observer(() => {
         setSelectedAccount,
         CFDs_restricted_countries,
         financial_restricted_countries,
+        getDefaultJurisdiction,
     } = traders_hub;
     const {
         setAccountType,
@@ -93,7 +93,6 @@ const CFDsListing = observer(() => {
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
-    const default_jurisdiction = useGetDefaultMT5Jurisdiction();
     const [is_traders_dashboard_tracking_enabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'ce_tradershub_dashboard_tracking',
         defaultValue: false,
@@ -250,13 +249,13 @@ const CFDsListing = observer(() => {
                                         } else if (no_real_cr_non_eu_regulator || no_real_mf_account_eu_regulator) {
                                             openDerivRealAccountNeededModal();
                                         } else {
-                                            setJurisdictionSelectedShortcode('bvi');
                                             setAccountType({
                                                 category: selected_account_type,
                                                 type: existing_account.market_type,
                                             });
                                             setProduct(existing_account.product);
                                             setAppstorePlatform(existing_account.platform);
+                                            setJurisdictionSelectedShortcode(getDefaultJurisdiction());
                                             getTradingPlatformStatus(existing_account.platform);
                                         }
                                     } else if (existing_account.action_type === 'multi-action') {

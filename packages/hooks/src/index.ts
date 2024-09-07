@@ -84,7 +84,6 @@ export { default as useResidenceSelfDeclaration } from './useResidenceSelfDeclar
 export { default as useTotalAssetCurrency } from './useTotalAssetCurrency';
 export { default as useGrowthbookIsOn } from './useGrowthbookIsOn';
 export { default as useResidenceList } from './useResidenceList';
-export { default as useGetDefaultMT5Jurisdiction } from './useGetDefaultMT5Jurisdiction';
 export { default as useGetStatus } from './useGetStatus';
 export { default as useTradingPlatformStatus } from './useTradingPlatformStatus';
 export type { TradingPlatformStatus } from './useTradingPlatformStatus';

@@ -126,6 +126,8 @@ export default class TradersHubStore extends BaseStore {
             setIsCFDRestrictedCountry: action.bound,
             setIsFinancialRestrictedCountry: action.bound,
             setIsSetupRealAccountOrGoToDemoModalVisible: action.bound,
+
+            getDefaultJurisdiction: action.bound,
         });
 
         reaction(
@@ -546,7 +548,20 @@ export default class TradersHubStore extends BaseStore {
             account => account.platform === CFD_PLATFORMS.CTRADER
         );
     }
+    /**
+     * Get default Jurisdiction for MT5 product types
+     * Product types = Standard /Financial /Swap Free /Zero Spread/
+     *
+     */
+    getDefaultJurisdiction() {
+        const { trading_platform_available_accounts } = this.root_store.client;
+        const { product } = this.root_store.modules.cfd;
 
+        const default_jurisdiction = trading_platform_available_accounts.filter(
+            available_account => available_account.product === product && available_account.is_default_jurisdiction
+        )[0]?.shortcode;
+        return default_jurisdiction;
+    }
     getExistingAccounts(platform, market_type, product) {
         const { residence } = this.root_store.client;
         const current_list = this.root_store.modules?.cfd?.current_list || [];
@@ -632,11 +647,11 @@ export default class TradersHubStore extends BaseStore {
         const { createCFDAccount, enableCFDPasswordModal } = modules.cfd;
         await this.getMT5AccountKYCStatus();
         if (has_active_real_account && platform === CFD_PLATFORMS.MT5) {
-            if (Object.keys(this.selected_jurisdiction_kyc_status).length === 0) {
+            if (this.selected_jurisdiction_kyc_status && Object.keys(this.selected_jurisdiction_kyc_status)?.length) {
+                this.toggleVerificationModal(true);
+            } else {
                 //all kyc requirements satisfied)
                 enableCFDPasswordModal();
-            } else {
-                this.toggleVerificationModal(true);
             }
         } else if (platform === CFD_PLATFORMS.DXTRADE) {
             enableCFDPasswordModal();
@@ -835,7 +850,6 @@ export default class TradersHubStore extends BaseStore {
             const selected_mt5_account = trading_platform_available_accounts.filter(
                 account => account.shortcode === jurisdiction_selected_shortcode && account.product === product
             );
-
             if (selected_mt5_account.length) {
                 this.setSelectedJurisdictionKYCStatus(selected_mt5_account[0].requirements.client_kyc_status);
             } else {

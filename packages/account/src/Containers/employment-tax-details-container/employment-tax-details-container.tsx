@@ -108,13 +108,11 @@ const EmploymentTaxDetailsContainer = ({
 
     useOnClickOutside(tin_ref, () => setIsTinPopoverOpen(false), validateClickOutside);
 
-    const { is_tin_mandatory, tin_employment_status_bypass } = tin_validation_config;
+    const { tin_employment_status_bypass } = tin_validation_config;
 
     const should_show_no_tax_details_checkbox =
         !is_tin_autoset &&
-        ((!is_tin_mandatory &&
-            tin_employment_status_bypass?.includes(values.employment_status) &&
-            !!values.tax_residence) ||
+        ((tin_employment_status_bypass?.includes(values.employment_status) && !!values.tax_residence) ||
             values.tin_skipped);
 
     const isFieldDisabled = (field_name: string) =>

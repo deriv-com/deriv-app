@@ -5,7 +5,7 @@ import { localize, Localize } from '@deriv/translations';
 import { Text, Modal } from '@deriv/components';
 import { AUTH_STATUS_CODES, ACCOUNT_BADGE_STATUS, routes } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
-import { useGetStatus } from '@deriv/hooks';
+import { useGetStatus, useIsSelectedMT5AccountCreated } from '@deriv/hooks';
 import './verification-docs-list-modal.scss';
 import {
     DerivLightUploadPoiIcon,
@@ -19,7 +19,7 @@ type TAccountBadgeStatus = typeof ACCOUNT_BADGE_STATUS[keyof typeof ACCOUNT_BADG
 type TListItemProps = {
     id: string;
     text: string;
-    status: string;
+    status: string | number;
     route: string;
 };
 
@@ -29,9 +29,9 @@ const iconsMap = {
     [ACCOUNT_BADGE_STATUS.FAILED]: DerivLightDeclinedPoiIcon,
 };
 
-const ListItem = observer(({ text, status, route }: TListItemProps) => {
+const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
     const { isMobile } = useDevice();
-    const { traders_hub, common } = useStore();
+    const { traders_hub } = useStore();
     const { toggleVerificationModal } = traders_hub;
     const history = useHistory();
 
@@ -45,7 +45,7 @@ const ListItem = observer(({ text, status, route }: TListItemProps) => {
             <Text size={isMobile ? 'xxs' : 'xs'} line_height='xl'>
                 <Localize i18n_default_text={text} />
             </Text>
-            {status === AUTH_STATUS_CODES.NONE ? (
+            {status === AUTH_STATUS_CODES.NONE || (id === 'tax' && status === 0) ? (
                 <LabelPairedChevronRightCaptionBoldIcon />
             ) : (
                 <Text size={isMobile ? 'xxs' : 'xs'} line_height='xl'>
@@ -64,18 +64,22 @@ const BadgeIcon = memo(({ status_badge }: { status_badge: TAccountBadgeStatus })
 BadgeIcon.displayName = 'BadgeIcon';
 
 const VerificationDocsListModal = observer(() => {
-    const { traders_hub } = useStore();
+    const {
+        traders_hub,
+        modules: { cfd },
+    } = useStore();
     const { is_verification_docs_list_modal_visible, toggleVerificationModal } = traders_hub;
-
+    const { mt5_companies, account_type } = cfd;
     const { isMobile } = useDevice();
     const { status_badge, client_kyc_status } = useGetStatus();
+    const current_account = useIsSelectedMT5AccountCreated();
     const { poi_status, poa_status, valid_tin } = client_kyc_status;
 
     const items = [
         { id: 'identity', text: 'Proof of identity', status: poi_status, route: routes.proof_of_identity },
         { id: 'address', text: 'Proof of address', status: poa_status, route: routes.proof_of_address },
         { id: 'tax', text: 'Tax residence', status: valid_tin, route: routes.personal_details },
-    ].filter(item => item.status || item.status === 1);
+    ].filter(item => item.status || item.status === 0);
 
     return (
         <Modal
@@ -89,20 +93,22 @@ const VerificationDocsListModal = observer(() => {
             <div className='verification-docs-list-modal__content'>
                 <BadgeIcon status_badge={status_badge} />
                 <Text size={isMobile ? 'xxs' : 'xs'} line_height='xl' align='center'>
-                    <Localize i18n_default_text='Once we verify your identity and address, you can start trading.' />
+                    {current_account && Object.keys(current_account).length ? (
+                        <Localize i18n_default_text='Your account needs verification.' />
+                    ) : (
+                        <Localize
+                            i18n_default_text='Once your account details are complete, your {{platform}} {{product}} account will be ready for you.'
+                            values={{
+                                platform: 'MT5',
+                                product: mt5_companies[account_type.category][account_type.type]?.title || '',
+                            }}
+                        />
+                    )}
                 </Text>
                 <div className='verification-docs-list-modal__content-list'>
-                    {items.map(item =>
-                        item.status ? (
-                            <ListItem
-                                key={item.id}
-                                id={item.id}
-                                text={item.text}
-                                status={item.status}
-                                route={item.route}
-                            />
-                        ) : null
-                    )}
+                    {items.map(item => (
+                        <ListItem key={item.id} id={item.id} text={item.text} status={item.status} route={item.route} />
+                    ))}
                 </div>
             </div>
         </Modal>

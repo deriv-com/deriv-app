@@ -2455,7 +2455,7 @@ export default class ClientStore extends BaseStore {
                 return {
                     ...account,
                     display_login,
-                    // requirements,
+                    requirements,
                 };
             });
         } else {

@@ -86,4 +86,5 @@ export { default as useGrowthbookIsOn } from './useGrowthbookIsOn';
 export { default as useResidenceList } from './useResidenceList';
 export { default as useGetStatus } from './useGetStatus';
 export { default as useTradingPlatformStatus } from './useTradingPlatformStatus';
+export { default as useIsSelectedMT5AccountCreated } from './useIsSelectedMT5AccountCreated';
 export type { TradingPlatformStatus } from './useTradingPlatformStatus';

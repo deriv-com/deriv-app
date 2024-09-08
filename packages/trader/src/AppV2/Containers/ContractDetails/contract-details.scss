@@ -10,19 +10,19 @@ $TWO_BUTTONS_FOOTER_HEIGHT: 120px;
     flex-direction: column;
     overflow: auto;
     gap: var(--semantic-spacing-general-sm);
-    padding-bottom: var(--semantic-spacing-general-4xl);
+    padding-bottom: var(--semantic-spacing-general-sm);
 
     .contract-details-chart {
         height: min(360px, calc(100vh - $HEADER_HEIGHT - $FIXED_PADDING_HEIGHT));
     }
     &--two-buttons {
-        height: calc(100vh - $TWO_BUTTONS_FOOTER_HEIGHT);
+        height: calc(100vh - $TWO_BUTTONS_FOOTER_HEIGHT - $HEADER_HEIGHT);
         .contract-details-chart {
             height: min(360px, calc(100vh - $HEADER_HEIGHT - $FIXED_PADDING_HEIGHT - $TWO_BUTTONS_FOOTER_HEIGHT));
         }
     }
     &--one-button {
-        height: calc(100vh - $ONE_BUTTON_FOOTER_HEIGHT);
+        height: calc(100vh - $ONE_BUTTON_FOOTER_HEIGHT - $HEADER_HEIGHT);
         .contract-details-chart {
             height: min(360px, calc(100vh - $HEADER_HEIGHT - $FIXED_PADDING_HEIGHT - $ONE_BUTTON_FOOTER_HEIGHT));
         }

@@ -10,6 +10,7 @@ $TWO_BUTTONS_FOOTER_HEIGHT: 120px;
     flex-direction: column;
     overflow: auto;
     gap: var(--semantic-spacing-general-sm);
+    height: 100%;
     padding-bottom: var(--semantic-spacing-general-sm);
 
     .contract-details-chart {

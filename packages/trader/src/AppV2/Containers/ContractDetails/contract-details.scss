@@ -16,15 +16,13 @@ $TWO_BUTTONS_FOOTER_HEIGHT: 120px;
         height: min(360px, calc(100vh - $HEADER_HEIGHT - $FIXED_PADDING_HEIGHT));
     }
     &--two-buttons {
-        padding-bottom: 186px;
-        height: 100vh;
+        height: calc(100vh - $TWO_BUTTONS_FOOTER_HEIGHT);
         .contract-details-chart {
             height: min(360px, calc(100vh - $HEADER_HEIGHT - $FIXED_PADDING_HEIGHT - $TWO_BUTTONS_FOOTER_HEIGHT));
         }
     }
     &--one-button {
-        padding-bottom: 130px;
-        height: 100vh;
+        height: calc(100vh - $ONE_BUTTON_FOOTER_HEIGHT);
         .contract-details-chart {
             height: min(360px, calc(100vh - $HEADER_HEIGHT - $FIXED_PADDING_HEIGHT - $ONE_BUTTON_FOOTER_HEIGHT));
         }

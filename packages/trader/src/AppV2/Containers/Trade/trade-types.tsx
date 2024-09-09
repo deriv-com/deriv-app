@@ -61,6 +61,47 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         return array.sort((a, b) => a.title?.localeCompare(b.title));
     }, [trade_types]);
 
+    const getPinnedItems = useCallback(() => {
+        const pinned_items = filterItems(getItems(saved_pinned_trade_types), sorted_trade_types_array);
+
+        if (pinned_items.length === 0) {
+            pinned_items.push(...sorted_trade_types_array.slice(0, 5));
+        }
+        return pinned_items;
+    }, [saved_pinned_trade_types, sorted_trade_types_array]);
+
+    const setTradeTypes = useCallback(() => {
+        const pinned_items = getPinnedItems();
+
+        const default_pinned_trade_types = [
+            {
+                id: 'pinned',
+                title: localize('Pinned'),
+                items: pinned_items,
+            },
+        ];
+
+        const default_other_trade_types = [
+            {
+                id: 'other',
+                items: sorted_trade_types_array.filter(
+                    item => !pinned_items.some(pinned_item => pinned_item.id === item.id)
+                ),
+            },
+        ];
+
+        setPinnedTradeTypes(default_pinned_trade_types);
+        setOtherTradeTypes(default_other_trade_types);
+    }, [getPinnedItems, sorted_trade_types_array]);
+
+    useEffect(() => {
+        setTradeTypes();
+    }, [setTradeTypes]);
+
+    useEffect(() => {
+        scrollToSelectedTradeType();
+    }, []);
+
     const handleCloseTradeTypes = () => {
         setIsOpen(false);
         setIsEditing(false);
@@ -149,47 +190,6 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
             }
         }, 0);
     };
-
-    const getPinnedItems = useCallback(() => {
-        const pinned_items = filterItems(getItems(saved_pinned_trade_types), sorted_trade_types_array);
-
-        if (pinned_items.length === 0) {
-            pinned_items.push(...sorted_trade_types_array.slice(0, 5));
-        }
-        return pinned_items;
-    }, [saved_pinned_trade_types, sorted_trade_types_array]);
-
-    const setTradeTypes = useCallback(() => {
-        const pinned_items = getPinnedItems();
-
-        const default_pinned_trade_types = [
-            {
-                id: 'pinned',
-                title: localize('Pinned'),
-                items: pinned_items,
-            },
-        ];
-
-        const default_other_trade_types = [
-            {
-                id: 'other',
-                items: sorted_trade_types_array.filter(
-                    item => !pinned_items.some(pinned_item => pinned_item.id === item.id)
-                ),
-            },
-        ];
-
-        setPinnedTradeTypes(default_pinned_trade_types);
-        setOtherTradeTypes(default_other_trade_types);
-    }, [getPinnedItems, sorted_trade_types_array]);
-
-    useEffect(() => {
-        setTradeTypes();
-    }, [setTradeTypes]);
-
-    useEffect(() => {
-        scrollToSelectedTradeType();
-    }, []);
 
     const savePinnedToLocalStorage = () => {
         localStorage.setItem('pinned_trade_types', JSON.stringify(pinned_trade_types));

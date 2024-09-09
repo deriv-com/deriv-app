@@ -22,8 +22,22 @@ import { useTranslations } from '@deriv-com/translations';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
-    const { has_wallet } = store.client;
-    const { current_language } = store.common;
+    const {
+        has_wallet,
+        is_logged_in,
+        loginid,
+        is_client_initialized,
+        landing_company_shortcode,
+        currency,
+        residence,
+        email,
+        setIsPasskeySupported,
+        account_settings,
+    } = store.client;
+    const { first_name, last_name } = account_settings;
+    const { current_language, changeSelectedLanguage } = store.common;
+    const { is_dark_mode_on, setDarkMode } = store.ui;
+
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
 
@@ -39,15 +53,15 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const is_passkeys_supported = browserSupportsWebAuthn();
 
     const livechat_client_information: Parameters<typeof useLiveChat>[0] = {
-        is_client_initialized: store.client.is_client_initialized,
-        is_logged_in: store.client.is_logged_in,
-        loginid: store.client.loginid,
-        landing_company_shortcode: store.client.landing_company_shortcode,
-        currency: store.client.currency,
-        residence: store.client.residence,
-        email: store.client.email,
-        first_name: store.client.account_settings.first_name,
-        last_name: store.client.account_settings.last_name,
+        is_client_initialized,
+        is_logged_in,
+        loginid,
+        landing_company_shortcode,
+        currency,
+        residence,
+        email,
+        first_name,
+        last_name,
     };
 
     useLiveChat(livechat_client_information);
@@ -58,11 +72,18 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
 
     React.useEffect(() => {
         if (isGBLoaded && isWebPasskeysFFEnabled && isServicePasskeysFFEnabled) {
-            store.client.setIsPasskeySupported(
+            setIsPasskeySupported(
                 is_passkeys_supported && isServicePasskeysFFEnabled && isWebPasskeysFFEnabled && isMobile
             );
         }
-    }, [isServicePasskeysFFEnabled, isGBLoaded, isWebPasskeysFFEnabled, is_passkeys_supported, isMobile, store.client]);
+    }, [
+        isServicePasskeysFFEnabled,
+        isGBLoaded,
+        isWebPasskeysFFEnabled,
+        is_passkeys_supported,
+        isMobile,
+        setIsPasskeySupported,
+    ]);
 
     React.useEffect(() => {
         initDatadog(tracking_datadog);
@@ -71,17 +92,17 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     // intentionally switch the user with wallets to light mode and EN language
     React.useLayoutEffect(() => {
         if (has_wallet) {
-            if (store.ui.is_dark_mode_on) {
-                store.ui.setDarkMode(false);
+            if (is_dark_mode_on) {
+                setDarkMode(false);
             }
-            if (store.common.current_language !== 'EN') {
-                store.common.changeSelectedLanguage('EN');
+            if (current_language !== 'EN') {
+                changeSelectedLanguage('EN');
             }
         }
-    }, [has_wallet, store.common, store.ui]);
+    }, [has_wallet, current_language, changeSelectedLanguage, is_dark_mode_on, setDarkMode]);
 
     return (
-        <ThemeProvider theme={store.ui.is_dark_mode_on ? 'dark' : 'light'}>
+        <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>
             <LandscapeBlocker />
             <Header />
             <ErrorBoundary root_store={store}>

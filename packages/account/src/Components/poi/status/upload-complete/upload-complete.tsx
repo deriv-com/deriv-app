@@ -15,7 +15,7 @@ export const UploadComplete = ({
 }: TPOIStatus) => {
     const message = localize('Review in progress');
     const description = is_manual_upload
-        ? localize('Your proof of identity is under review. We’ll get back to you within 1–3  days.')
+        ? localize('Your proof of identity is under review. We’ll get back to you within 1–3 working days.')
         : localize('Your proof of identity is under review. We’ll get back to you within 5 minutes.');
 
     const is_redirected_from_platform = isNavigationFromP2P() || isNavigationFromDerivGO();

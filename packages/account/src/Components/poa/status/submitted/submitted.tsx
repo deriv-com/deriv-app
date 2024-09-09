@@ -2,7 +2,6 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isNavigationFromP2P, isNavigationFromDerivGO, routes } from '@deriv/shared';
-import ContinueTradingButton from '../../continue-trading-button';
 import IconMessageContent from '../../../icon-message-content';
 import RouteButton from '../../../route-button';
 import { TPoaStatusProps } from '../../../../Types';

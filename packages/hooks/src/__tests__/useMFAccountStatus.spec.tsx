@@ -1,4 +1,5 @@
 import { mockStore, StoreProvider } from '@deriv/stores';
+import { ACCOUNT_BADGE_STATUS } from '@deriv/shared';
 import { renderHook } from '@testing-library/react-hooks';
 import * as React from 'react';
 import useMFAccountStatus from '../useMFAccountStatus';
@@ -20,7 +21,7 @@ describe('useMFAccountStatus', () => {
     it('should return mf_status if conditions are met', () => {
         mock_store.client.is_eu = true;
         mockUseHasMaltaInvestAccount.mockReturnValue(true);
-        mockUseGetMFAccountStatus.mockReturnValue('needs_verification');
+        mockUseGetMFAccountStatus.mockReturnValue(ACCOUNT_BADGE_STATUS.NEEDS_VERIFICATION);
         const { result } = renderHook(() => useMFAccountStatus(), {
             wrapper,
         });
@@ -28,7 +29,7 @@ describe('useMFAccountStatus', () => {
     });
     it('should return null if conditions are not met', () => {
         mockUseHasMaltaInvestAccount.mockReturnValue(false);
-        mockUseGetMFAccountStatus.mockReturnValue('needs_verification');
+        mockUseGetMFAccountStatus.mockReturnValue(ACCOUNT_BADGE_STATUS.NEEDS_VERIFICATION);
         const { result } = renderHook(() => useMFAccountStatus(), {
             wrapper,
         });

@@ -8,7 +8,7 @@ const AccumulatorStatsDescription = ({ onActionSheetClose }: { onActionSheetClos
     return (
         <ActionSheet.Portal showHandlebar={false}>
             <div className='stats-description'>
-                <StreamIframe src={UNIFIED_MODE_VIDEO_ID.accumulator_stats} />
+                <StreamIframe src={UNIFIED_MODE_VIDEO_ID.accumulator_stats} title='accumulator_stats' />
                 <div className='stats-description__content'>
                     <div className='stats-description__content__title'>
                         <Text size='lg' bold>

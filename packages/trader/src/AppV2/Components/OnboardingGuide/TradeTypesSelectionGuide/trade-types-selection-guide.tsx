@@ -40,7 +40,7 @@ const TradeTypesSelectionGuide = () => {
             primaryButtonCallback={onFinishGuide}
         >
             <Modal.Header
-                image={<StreamIframe src={UNIFIED_MODE_VIDEO_ID.accumulator_stats} />}
+                image={<StreamIframe src={UNIFIED_MODE_VIDEO_ID.accumulator_stats} title='trade_types_selection' />}
                 title={<Localize i18n_default_text='Manage your trade types' />}
             />
             <Modal.Body>

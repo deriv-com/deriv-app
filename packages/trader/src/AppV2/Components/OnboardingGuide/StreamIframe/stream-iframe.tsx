@@ -9,6 +9,7 @@ type TStreamIframeProps = Pick<React.ComponentProps<'iframe'>, 'height' | 'width
     preload?: string;
     src: string;
     test_id?: string;
+    title?: string;
 };
 
 const StreamIframe = ({
@@ -20,6 +21,7 @@ const StreamIframe = ({
     preload = 'auto',
     src,
     test_id,
+    title,
     ...props
 }: TStreamIframeProps) => {
     const params = [
@@ -40,6 +42,7 @@ const StreamIframe = ({
                 height='100%'
                 src={`https://iframe.cloudflarestream.com/${src}?${params}`}
                 data-testid={test_id}
+                title={title}
                 {...props}
             />
         </div>

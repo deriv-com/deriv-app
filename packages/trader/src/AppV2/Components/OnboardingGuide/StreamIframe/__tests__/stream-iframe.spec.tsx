@@ -8,6 +8,7 @@ const video_stream_testid = 'dt_video_stream';
 const mocked_props = {
     src: UNIFIED_MODE_VIDEO_ID.accumulator_stats,
     test_id: video_stream_testid,
+    title: 'accumulator_stats',
 };
 
 describe('StreamIframe component', () => {

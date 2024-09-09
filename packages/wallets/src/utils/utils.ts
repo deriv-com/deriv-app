@@ -13,6 +13,7 @@ export const getFormattedDateString = (
     unix = false
 ): string => {
     let dateObj: Date;
+    const dateOptions: Intl.DateTimeFormatOptions = { ...options };
 
     if (typeof dateInput === 'number' && unix) {
         dateObj = new Date(dateInput * 1000);
@@ -25,28 +26,28 @@ export const getFormattedDateString = (
     // Custom handling for different input formats
     switch (format) {
         case 'YYYY-MM-DD':
-            options.year = 'numeric';
-            options.month = '2-digit';
-            options.day = '2-digit';
+            dateOptions.year = 'numeric';
+            dateOptions.month = '2-digit';
+            dateOptions.day = '2-digit';
             break;
         case 'DD MMM YYYY':
-            options.day = '2-digit';
-            options.month = 'short';
-            options.year = 'numeric';
+            dateOptions.day = '2-digit';
+            dateOptions.month = 'short';
+            dateOptions.year = 'numeric';
             break;
         case 'MMM DD YYYY':
-            options.day = '2-digit';
-            options.month = 'short';
-            options.year = 'numeric';
-            return dateObj.toLocaleDateString('en-GB', options).replace(/(\d{2}) (\w{3}) (\d{4})/, '$2 $1 $3');
+            dateOptions.day = '2-digit';
+            dateOptions.month = 'short';
+            dateOptions.year = 'numeric';
+            return dateObj.toLocaleDateString('en-GB', dateOptions).replace(/(\d{2}) (\w{3}) (\d{4})/, '$2 $1 $3');
         default:
-            options.year = 'numeric';
-            options.month = '2-digit';
-            options.day = '2-digit';
+            dateOptions.year = 'numeric';
+            dateOptions.month = '2-digit';
+            dateOptions.day = '2-digit';
             break;
     }
 
-    const formattedDate = dateObj.toLocaleDateString('en-GB', options);
+    const formattedDate = dateObj.toLocaleDateString('en-GB', dateOptions);
     return format === 'DD MMM YYYY' || format === 'MMM DD YYYY'
         ? formattedDate
         : formattedDate.replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3-$2-$1');

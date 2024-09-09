@@ -160,7 +160,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                         className={{ 'wallets-transactions-pending-row__transaction-time': !isMobile }}
                         name={localize('Time')}
                         value={`${
-                            isDesktop && `${getFormattedDateString(transaction.submit_date)} `
+                            isDesktop && `${getFormattedDateString(transaction.submit_date, {}, undefined, true)} `
                         }${getFormattedTimeString(transaction.submit_date, true)}`}
                         valueTextProps={{
                             color: 'general',

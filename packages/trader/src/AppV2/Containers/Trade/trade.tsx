@@ -25,7 +25,6 @@ const Trade = observer(() => {
     const chart_ref = React.useRef<HTMLDivElement>(null);
     const {
         client: { is_logged_in },
-        ui: { has_only_forward_starting_contracts: is_market_unavailable_visible },
     } = useStore();
     const { active_symbols, contract_type, is_market_closed, onMount, onChange, onUnmount } = useTraderStore();
     const { contract_types_list } = useContractsForCompany();
@@ -48,7 +47,6 @@ const Trade = observer(() => {
 
     const dynamic_chart_height =
         window.innerHeight - HEIGHT.HEADER - HEIGHT.BOTTOM_NAV - HEIGHT.ADVANCED_FOOTER - HEIGHT.PADDING;
-    const show_purchase_btn = !(is_market_closed && !is_market_unavailable_visible);
 
     const onTradeTypeSelect = React.useCallback(
         (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
@@ -104,7 +102,7 @@ const Trade = observer(() => {
                         <TradeParametersContainer is_minimized_visible={is_minimized_params_visible} is_minimized>
                             <TradeParameters is_minimized />
                         </TradeParametersContainer>
-                        {show_purchase_btn && <PurchaseButton />}
+                        {!is_market_closed && <PurchaseButton />}
                     </div>
                     {!guide_dtrader_v2 && is_logged_in && <OnboardingGuide type='trade_page' />}
                 </React.Fragment>

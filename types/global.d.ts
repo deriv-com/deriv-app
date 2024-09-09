@@ -27,9 +27,11 @@ declare global {
             on: (key: string, callback: VoidFunction) => void;
             setConfig: (config: Record<string, Record<string, any>>) => void;
             isLoaded: () => boolean;
+            authenticate: (token: string) => void;
         };
         fcWidgetMessengerConfig: {
-            config: Record<string, Record<string, any>>;
+            config?: Record<string, Record<string, any>>;
+            jwtAuthToken?: string;
         };
         fcSettings: {
             [key: string]: any;

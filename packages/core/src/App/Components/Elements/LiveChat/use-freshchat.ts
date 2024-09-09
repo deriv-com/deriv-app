@@ -24,7 +24,8 @@ const useFreshChat = () => {
                     setIsReady(true);
                     if (is_logged_in) {
                         const token = await getFreshworksToken();
-                        window.fcWidget.user.setProperties({ cf_user_jwt: token });
+                        window.fcWidget.authenticate(token);
+                        // window.fcWidget.user.setProperties({ cf_user_jwt: token });
                     }
                 });
             },

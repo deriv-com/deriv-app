@@ -48,7 +48,7 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
 
     return (
         <div className='wallets-verify-personal-details'>
-            <InlineMessage>
+            <InlineMessage iconPosition='top' variant='warning'>
                 <WalletText size='sm'>
                     <Localize
                         components={[<strong key={0} />]}

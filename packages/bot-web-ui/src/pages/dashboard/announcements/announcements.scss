@@ -161,6 +161,17 @@
                 display: flex;
                 justify-content: center;
                 flex-direction: column;
+
+                .dc-text {
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    width: 32rem;
+
+                    @include mobile-or-tablet-screen {
+                        width: 28rem;
+                    }
+                }
             }
         }
 

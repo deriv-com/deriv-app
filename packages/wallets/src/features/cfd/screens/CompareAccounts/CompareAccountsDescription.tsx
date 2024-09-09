@@ -24,7 +24,7 @@ const CompareAccountsDescription = ({ isDemo, isEuRegion, marketType, shortCode 
         >
             <div className='wallets-compare-accounts-text-container__separator'>
                 <Text align='center' as='h1' size='xl' weight='bold'>
-                    {'Up to'} {jurisdictionData.leverage}
+                    {jurisdictionData.leverage}
                 </Text>
                 <Text align='center' as='p' size='2xs'>
                     {!isEuRegion ? jurisdictionData.leverage_description : 'Leverage'}

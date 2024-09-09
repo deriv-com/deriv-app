@@ -70,7 +70,11 @@ export const getFormattedTimeString = (dateInput: Date | number | string, unix =
         throw new Error('Invalid date input');
     }
 
-    return `${dateObj.toLocaleTimeString('en-GB', { hour12: false })} GMT`;
+    // Utilize UTC methods to return time in GMT regardless of local timezone
+    return `${dateObj.getUTCHours().toString().padStart(2, '0')}:${dateObj
+        .getUTCMinutes()
+        .toString()
+        .padStart(2, '0')}:${dateObj.getUTCSeconds().toString().padStart(2, '0')} GMT`;
 };
 
 export const getAdjustedDate = (amount: number, type: 'days' | 'years') => {

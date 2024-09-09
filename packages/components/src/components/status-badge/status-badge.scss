@@ -11,20 +11,26 @@
         border: 1.5px solid var(--status-info);
         align-items: center;
         white-space: nowrap;
+        font-size: var(--text-size-xxxs);
 
         &--pending {
-            font-size: var(--text-size-xxxs);
             color: var(--status-warning);
             background-color: var(--status-warning-transparent);
             border: 1.5px;
+            font-weight: bold;
         }
 
         &--needs_verification {
             height: 100%;
             width: 100%;
-            font-size: var(--text-size-xxxs);
+
             background-color: var(--status-info-transparent);
             border: 1.5px;
+            color: var(--status-info);
+            font-weight: bold;
+            cursor: pointer;
+            padding-left: 0.3rem;
+            text-decoration: underline;
         }
 
         &--migrated_with_position,
@@ -41,6 +47,7 @@
             color: var(--status-danger);
             background-color: var(--status-danger-transparent);
             border: 1.5px;
+            font-weight: bold;
         }
 
         &--icon {

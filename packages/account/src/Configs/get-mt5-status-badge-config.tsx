@@ -10,39 +10,27 @@ const getMT5StatusBadgeConfig = (mt5_account_status: TMT5AccountStatus) => {
     switch (mt5_account_status) {
         case MT5_ACCOUNT_STATUS.PENDING:
             return {
-                text: (
-                    <Localize
-                        i18n_default_text='<0>Pending verification</0>'
-                        components={[<Text key={0} weight='bold' size='xxxs' color='var(--status-warning)' />]}
-                    />
-                ),
-                icon: 'IcAlertWarning',
+                text: <Localize i18n_default_text='In review' />,
+                icon: 'IcMt5Pending',
             };
         case MT5_ACCOUNT_STATUS.FAILED:
             return {
                 text: (
                     <Localize
-                        i18n_default_text='<0>Verification failed.</0> <1>Why?</1>'
-                        components={[
-                            <Text key={0} weight='bold' size='xxxs' color='var(--status-danger)' />,
-                            <Text key={1} className='link-verification-failed' />,
-                        ]}
+                        i18n_default_text='Failed'
+                        onClick={() => {
+                            //TODO: default jurisdiction;
+                        }}
                     />
                 ),
-                icon: 'IcRedWarning',
+                icon: 'IcMt5Failed',
+                icon_size: '18',
             };
         case MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION: {
             return {
-                text: (
-                    <Localize
-                        i18n_default_text='<0>Needs verification.</0><1>Verify now</1>'
-                        components={[
-                            <Text key={0} weight='bold' size='xxxs' color='var(--status-info)' />,
-                            <Text key={1} className='link-need-verification' />,
-                        ]}
-                    />
-                ),
-                icon: 'IcAlertInfo',
+                text: <Localize i18n_default_text='Needs Verification' />,
+                icon: 'IcMt5Verification',
+                icon_size: '18',
             };
         }
         case MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION:

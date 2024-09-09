@@ -1,8 +1,8 @@
 import React, { ComponentProps, FC } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components';
-import useDevice from '../../../../hooks/useDevice';
+import { Button, useDevice } from '@deriv-com/ui';
+import { ModalStepWrapper, ModalWrapper, WalletButtonGroup } from '../../../../components';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess } from '../../screens';
 
@@ -19,34 +19,40 @@ const SuccessModal: FC<TProps> = ({
     onSecondaryClick,
     platform = 'dxtrade',
 }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { localize } = useTranslations();
     const { data: activeWallet } = useActiveWalletAccount();
 
     const accountType = activeWallet?.is_virtual ? localize('demo') : 'real';
 
-    const renderButton = () => {
-        return accountType === 'demo' ? (
+    const renderButton =
+        accountType === 'demo' ? (
             <div className='wallets-success-btn'>
-                <WalletButton isFullWidth onClick={onSecondaryClick} size={isMobile ? 'lg' : 'md'}>
+                <Button isFullWidth onClick={onSecondaryClick} size={isDesktop ? 'md' : 'lg'} textSize='sm'>
                     <Localize i18n_default_text='OK' />
-                </WalletButton>
+                </Button>
             </div>
         ) : (
             <WalletButtonGroup isFlex isFullWidth>
-                <WalletButton onClick={onSecondaryClick} size={isMobile ? 'lg' : 'md'} variant='outlined'>
+                <Button
+                    borderWidth='sm'
+                    color='black'
+                    onClick={onSecondaryClick}
+                    size={isDesktop ? 'md' : 'lg'}
+                    textSize='sm'
+                    variant='outlined'
+                >
                     <Localize i18n_default_text='Maybe later' />
-                </WalletButton>
-                <WalletButton onClick={onPrimaryClick} size={isMobile ? 'lg' : 'md'}>
+                </Button>
+                <Button onClick={onPrimaryClick} size={isDesktop ? 'md' : 'lg'} textSize='sm'>
                     <Localize i18n_default_text='Transfer funds' />
-                </WalletButton>
+                </Button>
             </WalletButtonGroup>
         );
-    };
 
-    if (isMobile) {
+    if (!isDesktop) {
         return (
-            <ModalStepWrapper renderFooter={renderButton} title={' '}>
+            <ModalStepWrapper renderFooter={() => renderButton} title={' '}>
                 <CFDSuccess
                     description={description}
                     displayBalance={displayBalance}
@@ -69,11 +75,11 @@ const SuccessModal: FC<TProps> = ({
     return (
         <ModalWrapper hideCloseButton>
             <CFDSuccess
+                actionButtons={renderButton}
                 description={description}
                 displayBalance={displayBalance}
                 marketType={marketType}
                 platform={platform}
-                renderButton={renderButton}
                 title={
                     <Localize
                         i18n_default_text='Your {{platformTitle}}{{demoTitle}} account is ready'

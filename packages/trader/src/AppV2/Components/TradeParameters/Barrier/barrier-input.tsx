@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ActionSheet, Chip, Text, TextField, TextFieldAddon } from '@deriv-com/quill-ui';
 
 import { localize, Localize } from '@deriv/translations';
@@ -26,13 +26,12 @@ const BarrierInput = observer(
         isDays: boolean;
         onClose: (val: boolean) => void;
     }) => {
-        const { barrier_1, onChange, validation_errors, proposal_info } = useTraderStore();
+        const { barrier_1, onChange, validation_errors, tick_data, setV2ParamsInitialValues } = useTraderStore();
         const [option, setOption] = React.useState(0);
-        const proposal = Object.values(proposal_info);
-        const spotPrice = proposal[1]?.spot ?? '';
 
         React.useEffect(() => {
             setInitialBarrierValue(barrier_1);
+            setV2ParamsInitialValues({ name: 'barrier_1', value: barrier_1 });
             if (barrier_1.includes('-')) {
                 setOption(1);
             } else if (barrier_1.includes('+')) {
@@ -58,14 +57,16 @@ const BarrierInput = observer(
                 newValue = `0${newValue}`;
             }
 
+            setV2ParamsInitialValues({ name: 'barrier_1', value: newValue });
             onChange({ target: { name: 'barrier_1', value: newValue } });
         };
 
-        const handleOnChange = (e: { target: { name: string; value: unknown } }) => {
+        const handleOnChange = (e: { target: { name: string; value: string } }) => {
             let value = e.target.value;
             if (option === 0) value = `+${value}`;
             if (option === 1) value = `-${value}`;
             onChange({ target: { name: 'barrier_1', value } });
+            setV2ParamsInitialValues({ name: 'barrier_1', value });
         };
 
         return (
@@ -89,43 +90,57 @@ const BarrierInput = observer(
                         <div>
                             {option === 2 || isDays ? (
                                 <TextField
-                                    type='number'
+                                    customType='commaRemoval'
                                     name='barrier_1'
-                                    status={validation_errors?.barrier_1.length > 0 ? 'error' : 'neutral'}
+                                    noStatusIcon
+                                    status={
+                                        validation_errors?.barrier_1.length > 0 && barrier_1 !== ''
+                                            ? 'error'
+                                            : 'neutral'
+                                    }
                                     value={barrier_1}
                                     allowDecimals
                                     allowSign={false}
                                     inputMode='decimal'
+                                    regex={/[^0-9.,]/g}
                                     textAlignment='center'
                                     onChange={handleOnChange}
                                     placeholder={localize('Distance to spot')}
                                     variant='fill'
-                                    message={validation_errors?.barrier_1[0]}
+                                    message={barrier_1 !== '' ? validation_errors?.barrier_1[0] : ''}
                                 />
                             ) : (
                                 <TextFieldAddon
                                     fillAddonBorderColor='var(--semantic-color-slate-solid-surface-frame-mid)'
-                                    type='number'
+                                    customType='commaRemoval'
                                     name='barrier_1'
+                                    noStatusIcon
                                     addonLabel={option == 0 ? '+' : '-'}
                                     value={barrier_1.replace(/[+-]/g, '')}
                                     allowDecimals
                                     inputMode='decimal'
                                     allowSign={false}
-                                    status={validation_errors?.barrier_1.length > 0 ? 'error' : 'neutral'}
+                                    status={
+                                        validation_errors?.barrier_1.length > 0 && barrier_1 !== ''
+                                            ? 'error'
+                                            : 'neutral'
+                                    }
                                     onChange={handleOnChange}
                                     placeholder={localize('Distance to spot')}
+                                    regex={/[^0-9.,]/g}
                                     variant='fill'
-                                    message={validation_errors?.barrier_1[0]}
+                                    message={barrier_1 !== '' ? validation_errors?.barrier_1[0] : ''}
                                 />
                             )}
-                            {validation_errors?.barrier_1.length == 0 && <div style={{ height: '22px' }} />}
+                            {(validation_errors?.barrier_1.length == 0 || barrier_1 === '') && (
+                                <div className='barrier-params__error-area' />
+                            )}
                         </div>
                         <div className='barrier-params__current-spot-wrapper'>
                             <Text size='sm'>
                                 <Localize i18n_default_text='Current spot' />
                             </Text>
-                            <Text size='sm'>{spotPrice}</Text>
+                            <Text size='sm'>{tick_data?.quote}</Text>
                         </div>
                     </div>
                 </ActionSheet.Content>

@@ -14,13 +14,6 @@ export const AnalyticsInitializer = async () => {
             .then(res => res.json())
             .catch(() => FIREBASE_INIT_DATA);
         if (process.env.RUDDERSTACK_KEY && flags?.tracking_rudderstack) {
-            const config = {
-                growthbookKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
-                growthbookDecryptionKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
-                rudderstackKey: process.env.RUDDERSTACK_KEY,
-            };
-            await Analytics?.initialise(config);
-            await Analytics?.getInstances()?.ab?.GrowthBook?.loadFeatures();
             const ppc_campaign_cookies =
                 Cookies.getJSON('utm_data') === 'null'
                     ? {
@@ -30,20 +23,28 @@ export const AnalyticsInitializer = async () => {
                           utm_content: 'no content',
                       }
                     : Cookies.getJSON('utm_data');
-
-            Analytics.setAttributes({
-                account_type: account_type === 'null' ? 'unlogged' : account_type,
-                app_id: String(getAppId()),
-                device_type: window.innerWidth <= MAX_MOBILE_WIDTH ? 'mobile' : 'desktop',
-                device_language: navigator?.language || 'en-EN',
-                user_language: getLanguage().toLowerCase(),
-                country: Cookies.get('clients_country') || Cookies?.getJSON('website_status')?.clients_country,
-                utm_source: ppc_campaign_cookies?.utm_source,
-                utm_medium: ppc_campaign_cookies?.utm_medium,
-                utm_campaign: ppc_campaign_cookies?.utm_campaign,
-                utm_content: ppc_campaign_cookies?.utm_content,
-                domain: window.location.hostname,
-            });
+            const config = {
+                growthbookKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
+                growthbookDecryptionKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
+                rudderstackKey: process.env.RUDDERSTACK_KEY,
+                growthbookOptions: {
+                    attributes: {
+                        account_type: account_type === 'null' ? 'unlogged' : account_type,
+                        app_id: String(getAppId()),
+                        device_type: window.innerWidth <= MAX_MOBILE_WIDTH ? 'mobile' : 'desktop',
+                        device_language: navigator?.language || 'en-EN',
+                        user_language: getLanguage().toLowerCase(),
+                        country:
+                            Cookies.getJSON('clients_country') || Cookies?.getJSON('website_status')?.clients_country,
+                        utm_source: ppc_campaign_cookies?.utm_source,
+                        utm_medium: ppc_campaign_cookies?.utm_medium,
+                        utm_campaign: ppc_campaign_cookies?.utm_campaign,
+                        utm_content: ppc_campaign_cookies?.utm_content,
+                        domain: window.location.hostname,
+                    },
+                },
+            };
+            await Analytics?.initialise(config);
         }
     }
 };

@@ -41,17 +41,17 @@ const mockStatusData = {
 };
 
 describe('DepositLocked', () => {
-    afterEach(() => {
+    beforeEach(() => {
         jest.clearAllMocks();
     });
 
     it('should render loader when no account status data', () => {
-        (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({});
-        (useSettings as jest.Mock).mockReturnValueOnce({ data: mockSettingsData });
-        (useWebsiteStatus as jest.Mock).mockReturnValueOnce({ data: mockWebsiteStatusData });
-        (useAuthentication as jest.Mock).mockReturnValueOnce({ data: mockAuthenticationData });
-        (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
-        (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: null });
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({});
+        (useSettings as jest.Mock).mockReturnValue({ data: mockSettingsData });
+        (useWebsiteStatus as jest.Mock).mockReturnValue({ data: mockWebsiteStatusData });
+        (useAuthentication as jest.Mock).mockReturnValue({ data: mockAuthenticationData });
+        (useCashierValidation as jest.Mock).mockReturnValue({ data: mockCashierValidationData });
+        (useAccountStatus as jest.Mock).mockReturnValue({ data: null });
 
         render(
             <DepositLocked>
@@ -69,14 +69,14 @@ describe('DepositLocked', () => {
             is_financial_information_not_complete: false,
             is_trading_experience_not_complete: false,
         };
-        (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({});
-        (useSettings as jest.Mock).mockReturnValueOnce({ data: mockSettingsData });
-        (useWebsiteStatus as jest.Mock).mockReturnValueOnce({ data: mockWebsiteStatusData });
-        (useAuthentication as jest.Mock).mockReturnValueOnce({ data: mockAuthenticationData });
-        (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
-        (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: mockLockedStatusData });
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({});
+        (useSettings as jest.Mock).mockReturnValue({ data: mockSettingsData });
+        (useWebsiteStatus as jest.Mock).mockReturnValue({ data: mockWebsiteStatusData });
+        (useAuthentication as jest.Mock).mockReturnValue({ data: mockAuthenticationData });
+        (useCashierValidation as jest.Mock).mockReturnValue({ data: mockCashierValidationData });
+        (useAccountStatus as jest.Mock).mockReturnValue({ data: mockLockedStatusData });
 
-        (getDepositLockedDesc as jest.Mock).mockReturnValueOnce('Locked Description');
+        (getDepositLockedDesc as jest.Mock).mockReturnValue('Locked Description');
 
         render(
             <DepositLocked>
@@ -90,14 +90,14 @@ describe('DepositLocked', () => {
     });
 
     it('should render children when not in a locked state', () => {
-        (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({});
-        (useSettings as jest.Mock).mockReturnValueOnce({ data: mockSettingsData });
-        (useWebsiteStatus as jest.Mock).mockReturnValueOnce({ data: mockWebsiteStatusData });
-        (useAuthentication as jest.Mock).mockReturnValueOnce({ data: mockAuthenticationData });
-        (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
-        (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: mockStatusData });
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({});
+        (useSettings as jest.Mock).mockReturnValue({ data: mockSettingsData });
+        (useWebsiteStatus as jest.Mock).mockReturnValue({ data: mockWebsiteStatusData });
+        (useAuthentication as jest.Mock).mockReturnValue({ data: mockAuthenticationData });
+        (useCashierValidation as jest.Mock).mockReturnValue({ data: mockCashierValidationData });
+        (useAccountStatus as jest.Mock).mockReturnValue({ data: mockStatusData });
 
-        (getDepositLockedDesc as jest.Mock).mockReturnValueOnce(null);
+        (getDepositLockedDesc as jest.Mock).mockReturnValue(null);
 
         render(
             <DepositLocked>
@@ -106,5 +106,78 @@ describe('DepositLocked', () => {
         );
 
         expect(screen.getByText('Test Child Component')).toBeInTheDocument();
+    });
+
+    it('should handle MF account', () => {
+        const mockMFAccountData = {
+            currency: 'USD',
+            excluded_until: '2023-12-31',
+            loginid: 'MF12345',
+        };
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: mockMFAccountData });
+        (useSettings as jest.Mock).mockReturnValue({ data: mockSettingsData });
+        (useWebsiteStatus as jest.Mock).mockReturnValue({ data: mockWebsiteStatusData });
+        (useAuthentication as jest.Mock).mockReturnValue({ data: mockAuthenticationData });
+        (useCashierValidation as jest.Mock).mockReturnValue({ data: mockCashierValidationData });
+        (useAccountStatus as jest.Mock).mockReturnValue({ data: { ...mockStatusData, is_deposit_locked: true } });
+
+        (getDepositLockedDesc as jest.Mock).mockReturnValue('MF Account Locked');
+
+        render(
+            <DepositLocked>
+                <div>Test Child Component</div>
+            </DepositLocked>
+        );
+
+        expect(screen.getByText('MF Account Locked')).toBeInTheDocument();
+    });
+
+    it('should handle POA/POI verification needed', () => {
+        const mockVerificationNeededData = {
+            ...mockAuthenticationData,
+            is_poa_needed: true,
+            is_poi_needed: true,
+        };
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: { currency: 'USD' } });
+        (useSettings as jest.Mock).mockReturnValue({ data: mockSettingsData });
+        (useWebsiteStatus as jest.Mock).mockReturnValue({ data: mockWebsiteStatusData });
+        (useAuthentication as jest.Mock).mockReturnValue({ data: mockVerificationNeededData });
+        (useCashierValidation as jest.Mock).mockReturnValue({ data: mockCashierValidationData });
+        (useAccountStatus as jest.Mock).mockReturnValue({ data: { ...mockStatusData, is_deposit_locked: true } });
+
+        (getDepositLockedDesc as jest.Mock).mockReturnValue('POI/POA Verification Needed');
+
+        render(
+            <DepositLocked>
+                <div>Test Child Component</div>
+            </DepositLocked>
+        );
+
+        expect(screen.getByText('POI/POA Verification Needed')).toBeInTheDocument();
+    });
+
+    it('should handle financial information and trading experience not complete', () => {
+        const mockIncompleteInfoData = {
+            ...mockStatusData,
+            is_deposit_locked: true,
+            is_financial_information_not_complete: true,
+            is_trading_experience_not_complete: true,
+        };
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: { currency: 'USD' } });
+        (useSettings as jest.Mock).mockReturnValue({ data: mockSettingsData });
+        (useWebsiteStatus as jest.Mock).mockReturnValue({ data: mockWebsiteStatusData });
+        (useAuthentication as jest.Mock).mockReturnValue({ data: mockAuthenticationData });
+        (useCashierValidation as jest.Mock).mockReturnValue({ data: mockCashierValidationData });
+        (useAccountStatus as jest.Mock).mockReturnValue({ data: mockIncompleteInfoData });
+
+        (getDepositLockedDesc as jest.Mock).mockReturnValue('Incomplete Financial Information');
+
+        render(
+            <DepositLocked>
+                <div>Test Child Component</div>
+            </DepositLocked>
+        );
+
+        expect(screen.getByText('Incomplete Financial Information')).toBeInTheDocument();
     });
 });

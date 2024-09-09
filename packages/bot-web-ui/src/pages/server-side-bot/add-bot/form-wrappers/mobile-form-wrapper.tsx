@@ -5,7 +5,7 @@ import { observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TFormValues } from '../types';
-import useQsSubmitHandler from './useQsSubmitHandler';
+import useSubmitHandler from './useSubmitHandler';
 import '../add-bot.scss';
 
 type TMobileFormWrapper = {
@@ -14,9 +14,9 @@ type TMobileFormWrapper = {
 
 const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) => {
     const { isValid, validateForm } = useFormikContext<TFormValues>();
-    const { quick_strategy } = useDBotStore();
-    const { selected_strategy } = quick_strategy;
-    const { handleSubmit } = useQsSubmitHandler();
+    const { server_bot } = useDBotStore();
+    const { selected_strategy } = server_bot;
+    const { handleSubmit } = useSubmitHandler();
 
     React.useEffect(() => {
         validateForm();

@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ContractTypeFilter from '../contract-type-filter';
 
-const defaultFilterName = 'All trade types';
+const defaultFilterName = 'Trade types';
 const mockProps = {
     onApplyContractTypeFilter: jest.fn(),
     contractTypeFilter: [],
@@ -25,16 +25,16 @@ describe('ContractTypeFilter', () => {
 
         render(<ContractTypeFilter {...mockProps} contractTypeFilter={mockContractTypeFilter} />);
 
-        expect(screen.queryByText(defaultFilterName)).not.toBeInTheDocument();
-        expect(screen.getByText(mockContractTypeFilter[0])).toBeInTheDocument();
+        expect(screen.queryByText(defaultFilterName)).toBeInTheDocument();
+        expect(screen.getByText('(1)')).toBeInTheDocument();
     });
 
     it('should render correct chip name is contractTypeFilter is with multiple items', () => {
         const mockContractTypeFilter = ['Vanillas', 'Turbos'];
         render(<ContractTypeFilter {...mockProps} contractTypeFilter={mockContractTypeFilter} />);
 
-        expect(screen.queryByText(defaultFilterName)).not.toBeInTheDocument();
-        expect(screen.getByText(`${mockContractTypeFilter.length} trade types`)).toBeInTheDocument();
+        expect(screen.queryByText(defaultFilterName)).toBeInTheDocument();
+        expect(screen.getByText('(2)')).toBeInTheDocument();
     });
 
     it('should call onApplyContractTypeFilter and setter (spied on) with array with chosen option after user clicks on contract type and clicks on "Apply" button', () => {

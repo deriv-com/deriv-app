@@ -43,10 +43,7 @@ const WithdrawalCryptoReceipt: React.FC<TProps> = ({ onClose, withdrawalReceipt 
                 </div>
 
                 <Text align='center' as='p'>
-                    <Localize
-                        i18n_default_text="Your withdrawal is currently in review. It will be processed within 24 hours. We'll send you
-                    an email once your transaction has been processed."
-                    />
+                    <Localize i18n_default_text="Your withdrawal is currently in review. It will be processed within 24 hours. We'll send you an email once your transaction has been processed." />
                 </Text>
             </div>
             <div className='wallets-withdrawal-crypto-receipt__actions'>

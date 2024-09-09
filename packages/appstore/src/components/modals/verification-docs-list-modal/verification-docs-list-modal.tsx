@@ -3,7 +3,7 @@ import { observer, useStore } from '@deriv/stores';
 import { useHistory } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
 import { Text, Modal, UILoader, MobileDialog } from '@deriv/components';
-import { AUTH_STATUS_CODES, routes } from '@deriv/shared';
+import { AUTH_STATUS_CODES, routes, CFD_PLATFORMS } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
 import { useGetStatus, useIsSelectedMT5AccountCreated } from '@deriv/hooks';
 import './verification-docs-list-modal.scss';
@@ -46,6 +46,7 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
 const VerificationDocsListModalContent = observer(() => {
     const {
         modules: { cfd },
+        common: { platform },
     } = useStore();
     const { mt5_companies, account_type } = cfd;
     const { isMobile } = useDevice();
@@ -63,9 +64,7 @@ const VerificationDocsListModalContent = observer(() => {
         <div className='verification-docs-list-modal__content'>
             <DerivLightUploadPoiIcon height={120} width={120} />
             <Text size={isMobile ? 'xxs' : 'xs'} line_height='xl' align='center'>
-                {is_selected_MT5_account_created ? (
-                    <Localize i18n_default_text='Your account needs verification.' />
-                ) : (
+                {platform === CFD_PLATFORMS.MT5 && !is_selected_MT5_account_created ? (
                     <Localize
                         i18n_default_text='Once your account details are complete, your {{platform}} {{product}} account will be ready for you.'
                         values={{
@@ -73,6 +72,8 @@ const VerificationDocsListModalContent = observer(() => {
                             product: mt5_companies[account_type.category][account_type.type]?.title || '',
                         }}
                     />
+                ) : (
+                    <Localize i18n_default_text='Your account needs verification.' />
                 )}
             </Text>
             <div className='verification-docs-list-modal__content-list'>
@@ -85,19 +86,23 @@ const VerificationDocsListModalContent = observer(() => {
 });
 
 const VerificationDocsListModal = observer(() => {
-    const { traders_hub } = useStore();
+    const { traders_hub, common } = useStore();
     const { is_verification_docs_list_modal_visible, toggleVerificationModal } = traders_hub;
+    const { platform } = common;
     const { is_selected_MT5_account_created } = useIsSelectedMT5AccountCreated();
     const { isDesktop } = useDevice();
+    const title =
+        platform === CFD_PLATFORMS.MT5 && !is_selected_MT5_account_created
+            ? localize('Create account')
+            : localize('Verify your account');
+
     return (
         <Suspense fallback={<UILoader />}>
             {isDesktop ? (
                 <Modal
                     is_open={is_verification_docs_list_modal_visible}
                     toggleModal={() => toggleVerificationModal(false)}
-                    title={
-                        is_selected_MT5_account_created ? localize('Verify your account') : localize('Create account')
-                    }
+                    title={title}
                     width='44rem'
                     should_header_stick_body={false}
                     has_close_icon
@@ -107,9 +112,7 @@ const VerificationDocsListModal = observer(() => {
             ) : (
                 <MobileDialog
                     portal_element_id='deriv_app'
-                    title={
-                        is_selected_MT5_account_created ? localize('Verify your account') : localize('Create account')
-                    }
+                    title={title}
                     visible={is_verification_docs_list_modal_visible}
                     onClose={() => toggleVerificationModal(false)}
                 >

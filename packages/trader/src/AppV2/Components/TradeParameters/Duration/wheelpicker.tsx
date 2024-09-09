@@ -1,5 +1,6 @@
 import { TimeWheelPickerContainer, WheelPickerContainer } from '@deriv-com/quill-ui';
 import { getOptionPerUnit } from 'AppV2/Utils/trade-params-utils';
+import clsx from 'clsx';
 import React from 'react';
 
 const formatCurrentGMTDate = () => {
@@ -20,22 +21,24 @@ const DurationWheelPicker = ({
     setWheelPickerValue,
     selected_hour,
     selected_time,
-    toggle_picker,
 }: {
     unit: string;
     setEndTime: (arg: string) => void;
     setWheelPickerValue: (index: number, value: string | number) => void;
     selected_hour: number[];
     selected_time: number[];
-    toggle_picker: boolean;
 }) => {
     const options = React.useMemo(() => getOptionPerUnit(unit), [unit]);
 
     return (
-        <div className='duration-container__wheel-picker-container'>
+        <div
+            className={clsx('duration-container__wheel-picker-container', {
+                'duration-container__wheel-picker-container__day': ['d', 'et'].includes(unit),
+            })}
+        >
             {unit !== 'et' ? (
                 <WheelPickerContainer
-                    key={`${unit}-${toggle_picker}`}
+                    {...(unit === 'd' ? { key: unit } : {})}
                     data={options}
                     defaultValue={[String(selected_time)]}
                     containerHeight={unit == 'd' ? '228px' : '268px'}
@@ -44,7 +47,6 @@ const DurationWheelPicker = ({
                 />
             ) : (
                 <TimeWheelPickerContainer
-                    key={unit}
                     is12Hour={false}
                     startTimeIn24Format={formatCurrentGMTDate()}
                     minutesInterval={5}

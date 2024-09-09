@@ -14,7 +14,6 @@ const DurationActionSheetContainer = observer(
         const [selected_time, setSelectedTime] = useState([duration]);
         const [expiry_date_data, setExpiryDate] = useState<Date>(new Date());
         const [end_time, setEndTime] = useState<string>('');
-        const [toggle_picker, setTogglePicker] = useState<boolean>(false);
         const [current_gmt_time, setCurrentGmtTime] = useState<string>('');
 
         const updateCurrentGmtTime = () => {
@@ -30,15 +29,16 @@ const DurationActionSheetContainer = observer(
         }, []);
 
         const onAction = () => {
-            if (unit == 'h') {
+            if (unit === 'h') {
                 const minutes = selected_hour[0] * 60 + selected_hour[1];
+                setSelectedHour([minutes]);
                 onChangeMultiple({
                     duration_unit: 'm',
                     duration: Number(minutes),
                     expiry_time: null,
                     expiry_type: 'duration',
                 });
-            } else if (unit == 'et') {
+            } else if (unit === 'et') {
                 setSelectedHour([]);
                 onChangeMultiple({
                     expiry_time: end_time,
@@ -54,12 +54,16 @@ const DurationActionSheetContainer = observer(
                 });
             }
         };
-        const onChangeUnit = (value: string) => {
-            setUnit(value);
-            if (unit !== 'h') {
-                setSelectedHour([]);
-            }
-        };
+
+        const onChangeUnit = React.useCallback(
+            (value: string) => {
+                setUnit(value);
+                if (value !== 'h') {
+                    setSelectedHour([]);
+                }
+            },
+            [setUnit, setSelectedHour]
+        );
 
         const handleSelectExpiryDate = (date: Date) => {
             setExpiryDate(date);
@@ -104,14 +108,12 @@ const DurationActionSheetContainer = observer(
                     setWheelPickerValue={setWheelPickerValue}
                     selected_hour={selected_hour}
                     selected_time={selected_time}
-                    toggle_picker={toggle_picker}
                 />
                 {unit == 'd' && (
                     <DurationEndTimePicker
                         setExpiryDate={handleSelectExpiryDate}
                         setSelectedTime={val => {
                             setSelectedTime(val);
-                            setTogglePicker(!toggle_picker);
                         }}
                         expiry_date={expiry_date_data}
                     />

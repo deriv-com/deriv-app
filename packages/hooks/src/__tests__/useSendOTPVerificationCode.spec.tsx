@@ -35,6 +35,8 @@ describe('useSendOTPVerificationCode', () => {
         sendEmailOTPVerification: jest.fn(),
         email_otp_error: {},
         is_email_verified: false,
+        getCurrentCarrier: jest.fn(),
+        getOtherCarrier: jest.fn(),
     };
 
     const mock_use_settings_value = {
@@ -120,6 +122,20 @@ describe('useSendOTPVerificationCode', () => {
         const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
 
         expect(result.current.phone_otp_error_message).toBe('Invalid code. Try again or get a new code.');
+    });
+
+    it('should handle PhoneNumberVerificationSuspended for email_top_error', () => {
+        mock_request_phone_number_otp_response.email_otp_error = {
+            code: 'PhoneNumberVerificationSuspended',
+            message: 'PhoneNumberVerificationSuspended',
+        };
+
+        const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
+
+        if (React.isValidElement(result.current?.phone_otp_error_message))
+            expect(result.current.phone_otp_error_message.props.i18n_default_text).toBe(
+                "We're unable to send codes via {{ current_carrier }} right now. Get your code by {{other_carriers}}."
+            );
     });
 
     it('should handle NoAttemptsLeft for email_top_error', () => {

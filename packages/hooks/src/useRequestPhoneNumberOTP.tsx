@@ -132,6 +132,7 @@ const useRequestPhoneNumberOTP = () => {
         setIsDisabledRequestButton,
         getCurrentCarrier,
         getOtherCarrier,
+        setCarrier,
         mutate,
         ...rest,
     };

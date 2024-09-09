@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMutation } from '@deriv/api';
 import { TSocketError } from '@deriv/api/types';
 import { localize, Localize } from '@deriv/translations';

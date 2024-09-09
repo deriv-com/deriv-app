@@ -122,6 +122,50 @@ describe('useRequestPhoneNumberOTP', () => {
             );
     });
 
+    it('should return Localized error message when PhoneNumberVerificationSuspended error code is passed inside', () => {
+        (useMutation as jest.Mock).mockReturnValue(mock_response);
+        const { result } = renderHook(() => useRequestPhoneNumberOTP(), { wrapper });
+
+        act(() => {
+            result.current.formatError({ code: 'PhoneNumberVerificationSuspended', message: '' });
+        });
+
+        if (result.current?.error_message && React.isValidElement(result.current?.error_message))
+            expect(result.current?.error_message?.props.i18n_default_text).toBe(
+                "We're unable to send codes via {{ current_carrier }} right now. Get your code by {{other_carriers}}."
+            );
+    });
+
+    it('should render getOtherCarrier which will return the opposite value of selected carrier', () => {
+        (useMutation as jest.Mock).mockReturnValue(mock_response);
+        const { result } = renderHook(() => useRequestPhoneNumberOTP(), { wrapper });
+
+        act(() => {
+            result.current.setCarrier(VERIFICATION_SERVICES.SMS);
+        });
+        expect(result.current.getOtherCarrier()).toEqual('WhatsApp');
+
+        act(() => {
+            result.current.setCarrier(VERIFICATION_SERVICES.WHATSAPP);
+        });
+        expect(result.current.getOtherCarrier()).toEqual('SMS');
+    });
+
+    it('should render getCurrentCarrier which will return the current value of selected carrier', () => {
+        (useMutation as jest.Mock).mockReturnValue(mock_response);
+        const { result } = renderHook(() => useRequestPhoneNumberOTP(), { wrapper });
+
+        act(() => {
+            result.current.setCarrier(VERIFICATION_SERVICES.WHATSAPP);
+        });
+        expect(result.current.getCurrentCarrier()).toEqual('WhatsApp');
+
+        act(() => {
+            result.current.setCarrier(VERIFICATION_SERVICES.SMS);
+        });
+        expect(result.current.getCurrentCarrier()).toEqual('SMS');
+    });
+
     it('should return given error message when Other error code is passed inside', () => {
         const { result } = renderHook(() => useRequestPhoneNumberOTP(), { wrapper });
 

@@ -15,7 +15,7 @@ const remoteConfigQuery = async function () {
     return response.json();
 };
 
-function useRemoteConfig(enabled = true) {
+function useRemoteConfig(enabled = false) {
     const [data, setData] = useState(initData);
 
     useEffect(() => {

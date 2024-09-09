@@ -33,7 +33,7 @@ const useLiveChat = (client_information: TLiveChatClientInformation) => {
     const reset_password = URLUtils.getQueryParameter('action') === 'reset_password';
     const should_disable_livechat = url_params.get('code') && reset_password;
 
-    const { data } = useRemoteConfig();
+    const { data } = useRemoteConfig(true);
     const { cs_chat_livechat } = data;
 
     useEffect(() => {

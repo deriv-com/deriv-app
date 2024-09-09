@@ -7,7 +7,7 @@ const modal_text = 'Pin, rearrange, or remove your favorite trade types for easy
 const localStorage_key = 'guide_dtrader_v2';
 const video = 'Video';
 
-jest.mock('../../StreamIframe', () => jest.fn(() => <div>{video}</div>));
+jest.mock('../../../StreamIframe', () => jest.fn(() => <div>{video}</div>));
 
 describe('TradeTypesSelectionGuide', () => {
     beforeEach(() => {

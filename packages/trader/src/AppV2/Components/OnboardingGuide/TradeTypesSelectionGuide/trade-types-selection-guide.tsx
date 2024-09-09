@@ -3,7 +3,7 @@ import { Modal } from '@deriv-com/quill-ui';
 import { useLocalStorageData } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
 import { UNIFIED_MODE_VIDEO_ID } from 'Modules/Trading/Helpers/video-config';
-import StreamIframe from '../StreamIframe';
+import StreamIframe from '../../StreamIframe';
 
 const TradeTypesSelectionGuide = () => {
     const [is_modal_open, setIsModalOpen] = React.useState(false);

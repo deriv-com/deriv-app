@@ -15,14 +15,7 @@ const getMT5StatusBadgeConfig = (mt5_account_status: TMT5AccountStatus) => {
             };
         case MT5_ACCOUNT_STATUS.FAILED:
             return {
-                text: (
-                    <Localize
-                        i18n_default_text='Failed'
-                        onClick={() => {
-                            //TODO: default jurisdiction;
-                        }}
-                    />
-                ),
+                text: <Localize i18n_default_text='Failed' />,
                 icon: 'IcMt5Failed',
                 icon_size: '18',
             };

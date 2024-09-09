@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { URLUtils } from '@deriv-com/utils';
-import { useIsMounted } from 'usehooks-ts';
 import { useRemoteConfig } from '@deriv/api';
 
 type TLiveChatClientInformation = {
@@ -33,9 +32,8 @@ const useLiveChat = (client_information: TLiveChatClientInformation) => {
     const url_params = new URLSearchParams(url_query_string);
     const reset_password = URLUtils.getQueryParameter('action') === 'reset_password';
     const should_disable_livechat = url_params.get('code') && reset_password;
-    const isMounted = useIsMounted();
 
-    const { data } = useRemoteConfig(isMounted());
+    const { data } = useRemoteConfig();
     const { cs_chat_livechat } = data;
 
     useEffect(() => {
@@ -45,7 +43,7 @@ const useLiveChat = (client_information: TLiveChatClientInformation) => {
     }, [is_client_initialized, cs_chat_livechat]);
 
     useEffect(() => {
-        if (isMounted() && !should_disable_livechat && is_client_initialized) {
+        if (!should_disable_livechat && is_client_initialized) {
             window.LiveChatWidget?.on('ready', data => {
                 //hide red widget on responsive
                 if (data.state.visibility === 'minimized') {
@@ -79,7 +77,6 @@ const useLiveChat = (client_information: TLiveChatClientInformation) => {
         }
     }, [
         email,
-        isMounted,
         should_disable_livechat,
         loginid,
         is_logged_in,

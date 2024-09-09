@@ -52,7 +52,7 @@ const AnnouncementDialog = ({
                     <IconAnnounceModal announce_id={id} />
                 </div>
                 <div className={`${base_classname}__body-main-content`}>
-                    <Text as='p' line_height='xl' size='xs' className={`${base_classname}__title--${id.toLowerCase()}`}>
+                    <Text as='p' size='xs' className={`${base_classname}__title--${id.toLowerCase()}`}>
                         {title}
                     </Text>
                     {Array.isArray(content) &&

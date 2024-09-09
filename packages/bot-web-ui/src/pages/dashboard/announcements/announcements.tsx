@@ -134,8 +134,8 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
                     </Text>
                 )}
                 {amount_active_announce !== 0 && (
-                    <div className='announcements__amount' data-testid='announcements__amount'>
-                        <p>{amount_active_announce}</p>
+                    <div className='announcements__amount'>
+                        <p data-testid='announcements__amount'>{amount_active_announce}</p>
                     </div>
                 )}
             </button>

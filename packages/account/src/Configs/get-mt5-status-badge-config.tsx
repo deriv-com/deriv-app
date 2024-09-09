@@ -10,54 +10,47 @@ const getMT5StatusBadgeConfig = (mt5_account_status: TMT5AccountStatus) => {
     switch (mt5_account_status) {
         case MT5_ACCOUNT_STATUS.PENDING:
             return {
-                text: <Localize i18n_default_text='In review' className='link-pending' />,
+                text: <Localize i18n_default_text='In review' />,
                 icon: 'IcMt5Pending',
-                icon_size: '19',
             };
         case MT5_ACCOUNT_STATUS.FAILED:
             return {
                 text: (
                     <Localize
                         i18n_default_text='Failed'
-                        className='link-verification-failed'
                         onClick={() => {
                             //TODO: default jurisdiction;
                         }}
                     />
                 ),
                 icon: 'IcMt5Failed',
-                icon_size: 19,
             };
         case MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION: {
             return {
                 text: <Localize i18n_default_text='Needs Verification' />,
                 icon: 'IcMt5Verification',
-                icon_size: '19',
+                icon_size: 19,
             };
         }
         case MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION:
             return {
                 text: <Localize i18n_default_text='<0>No new positions</0>' components={[BadgeTextComponent]} />,
                 icon: 'IcAlertWarning',
-                icon_size: '19',
             };
         case MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION:
             return {
                 text: <Localize i18n_default_text='<0>Account closed</0>' components={[BadgeTextComponent]} />,
                 icon: 'IcAlertWarning',
-                icon_size: '19',
             };
         case MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE:
             return {
                 text: <Localize i18n_default_text='<0>Server maintenance</0>' components={[BadgeTextComponent]} />,
                 icon: 'IcAlertWarning',
-                icon_size: '19',
             };
         case TRADING_PLATFORM_STATUS.UNAVAILABLE:
             return {
                 text: <Localize i18n_default_text='<0>Unavailable</0>' components={[BadgeTextComponent]} />,
                 icon: 'IcAlertWarning',
-                icon_size: '2',
             };
         default:
             return {

@@ -87,7 +87,7 @@ const TradingAppCard = ({
         link_to: '',
     };
 
-    const { text: badge_text, icon: badge_icon } = getMT5StatusBadgeConfig(mt5_acc_auth_status);
+    const { text: badge_text, icon: badge_icon, icon_size: badge_size } = getMT5StatusBadgeConfig(mt5_acc_auth_status);
 
     const handleStatusBadgeClick = (mt5_acc_auth_status: string) => {
         switch (mt5_acc_auth_status) {
@@ -229,6 +229,7 @@ const TradingAppCard = ({
                             account_status={mt5_acc_auth_status}
                             icon={badge_icon}
                             text={badge_text}
+                            icon_size={badge_size}
                             onClick={() => {
                                 setAppstorePlatform(platform);
                                 handleStatusBadgeClick(mt5_acc_auth_status);

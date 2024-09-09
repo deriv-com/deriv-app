@@ -7,12 +7,14 @@ type TStatusBadgeProps = {
     account_status: string | null;
     icon: string;
     text: ReactNode;
+    icon_size: string;
     onClick?: () => void;
 };
 
 const StatusBadge = ({
     account_status,
     icon,
+    icon_size = '11',
     text,
     className,
     onClick,
@@ -32,7 +34,7 @@ const StatusBadge = ({
                 `switcher-status-badge__container--icon--${account_status ?? 'failed'}`
             )}
         >
-            <Icon icon={icon} size='11' />
+            <Icon icon={icon} size={icon_size} />
         </div>
         {text}
     </div>

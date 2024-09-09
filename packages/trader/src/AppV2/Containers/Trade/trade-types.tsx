@@ -6,6 +6,7 @@ import { TradeTypeList } from 'AppV2/Components/TradeTypeList';
 import { getTradeTypesList } from 'AppV2/Utils/trade-types-utils';
 import { checkContractTypePrefix } from 'AppV2/Utils/contract-type';
 import { Localize, localize } from '@deriv/translations';
+import { safeParse } from '@deriv/utils';
 import Guide from '../../Components/Guide';
 
 type TTradeTypesProps = {
@@ -48,7 +49,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
 
     const saved_pinned_trade_types_string: string = localStorage.getItem('pinned_trade_types') ?? '[]';
     const saved_pinned_trade_types: TResultItem[] = useMemo(
-        () => JSON.parse(saved_pinned_trade_types_string),
+        () => safeParse(saved_pinned_trade_types_string),
         [saved_pinned_trade_types_string]
     );
 
@@ -237,7 +238,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     };
 
     const trade_type_chips = getTradeTypeChips();
-    const should_show_view_all = trade_type_chips.length >= 2;
+    const should_show_view_all = trade_type_chips.length >= 2 || getItems(other_trade_types).length > 0;
 
     return (
         <div className='trade__trade-types' ref={trade_types_ref}>

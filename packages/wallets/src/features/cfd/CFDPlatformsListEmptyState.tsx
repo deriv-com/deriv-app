@@ -2,8 +2,7 @@ import React, { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
-import { WalletButton } from '../../components/Base';
+import { Button, Text } from '@deriv-com/ui';
 import './CFDPlatformsList.scss';
 
 const CFDPlatformsListEmptyState = () => {
@@ -24,7 +23,7 @@ const CFDPlatformsListEmptyState = () => {
                     values={{ currency: activeWallet?.currency, walletCurrencyType: fiatAccount?.wallet_currency_type }}
                 />
             </Text>
-            <WalletButton
+            <Button
                 color='primary-light'
                 onClick={() =>
                     history.push('/wallet/account-transfer', {
@@ -32,9 +31,10 @@ const CFDPlatformsListEmptyState = () => {
                     })
                 }
                 size='lg'
+                textSize='md'
             >
                 <Localize i18n_default_text='Transfer' />
-            </WalletButton>
+            </Button>
         </div>
     );
 };

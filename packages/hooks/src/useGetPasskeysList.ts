@@ -8,7 +8,7 @@ const useGetPasskeysList = () => {
     const { is_passkey_supported } = client;
     const { network_status } = common;
 
-    const { data, error, isLoading, isFetching, ...rest } = useQuery('passkeys_list', {
+    const { data, error, isLoading, isFetching, refetch, ...rest } = useQuery('passkeys_list', {
         options: {
             enabled: is_passkey_supported && isSuccess && !isAuthorizeFetching && network_status.class === 'online',
             retry: 0,

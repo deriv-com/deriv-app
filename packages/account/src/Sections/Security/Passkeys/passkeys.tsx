@@ -130,10 +130,8 @@ const Passkeys = observer(() => {
 
             if (should_hide_error) return;
 
-            if (isNotExistedPasskey(error as TServerError)) {
-                // TODO: add the logic to show the error while removing the passkey
-                // setPasskeyStatus(PASSKEY_STATUS_CODES.REMOVING);
-                return;
+            if (passkey_status === PASSKEY_STATUS_CODES.REMOVING) {
+                setPasskeyStatus(passkeys_list?.length ? PASSKEY_STATUS_CODES.LIST : PASSKEY_STATUS_CODES.NO_PASSKEY);
             }
 
             is_reminder_modal_open && setIsReminderModalOpen(false);
@@ -194,7 +192,7 @@ const Passkeys = observer(() => {
             renamePasskey(current_managed_passkey.id, passkey_data?.name ?? current_managed_passkey.name);
         }
         if (passkey_status === PASSKEY_STATUS_CODES.REMOVED) {
-            setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
+            setPasskeyStatus(passkeys_list?.length ? PASSKEY_STATUS_CODES.LIST : PASSKEY_STATUS_CODES.NO_PASSKEY);
         }
         // next condition is for future additional verification screen
         // if (passkey_status === PASSKEY_STATUS_CODES.REMOVING) {
@@ -248,7 +246,7 @@ const Passkeys = observer(() => {
             <PasskeyErrorModal error={error} is_modal_open={is_error_modal_open} onButtonClick={onCloseErrorModal} />
             {/* TODO: Remove confirmation modal, when verification page is implemented*/}
             <PasskeyRemoveConfirmationModal
-                is_modal_open={passkey_status === PASSKEY_STATUS_CODES.REMOVING}
+                is_modal_open={passkey_status === PASSKEY_STATUS_CODES.REMOVING && !is_error_modal_open}
                 onSecondaryButtonClick={() => {
                     setPasskeyStatus(
                         passkeys_list?.length ? PASSKEY_STATUS_CODES.LIST : PASSKEY_STATUS_CODES.NO_PASSKEY

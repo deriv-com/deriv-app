@@ -542,6 +542,45 @@ export default class TradeStore extends BaseStore {
 
         // Adds intercept to change min_max value of duration validation
         reaction(
+            () => [this.contract_types_list_v2, this.has_symbols_for_v2],
+            () => {
+                if (!this.has_symbols_for_v2 || !this.contract_types_list_v2 || !this.is_dtrader_v2_enabled) return;
+                const searchParams = new URLSearchParams(window.location.search);
+                const urlSymbol = searchParams.get('symbol');
+                const urlContractType = searchParams.get('trade_type');
+                const tradeStoreString = sessionStorage.getItem('trade_store');
+                const tradeStoreObj = JSON.parse(tradeStoreString ?? '{}');
+
+                const flattedContractTypesV2 = Object.values(this.contract_types_list_v2)
+                    .map(contract_type => contract_type.categories)
+                    .flatMap(categories => categories);
+                const isValidContractType = flattedContractTypesV2.some(
+                    contract_type => contract_type.value === urlContractType
+                );
+                const isValidSymbol = this.active_symbols.some(symbol => symbol.symbol === urlSymbol);
+
+                if (urlSymbol && isValidSymbol) {
+                    tradeStoreObj.symbol = urlSymbol;
+                    sessionStorage.setItem('trade_store', JSON.stringify(tradeStoreObj));
+                    this.symbol = urlSymbol;
+                } else {
+                    this.root_store.ui.toggleUrlUnavailableModal(true);
+                    // this.symbol = (await pickDefaultSymbol(this.active_symbols)) || '1HZ100V';
+                }
+                if (urlContractType && isValidContractType) {
+                    tradeStoreObj.contract_type = urlContractType;
+                    sessionStorage.setItem('trade_store', JSON.stringify(tradeStoreObj));
+                    this.contract_type = urlContractType;
+                } else {
+                    this.root_store.ui.toggleUrlUnavailableModal(true);
+                    // this.contract_type =
+                    //     flattedContractTypesV2.find(contract_type => contract_type.value === 'accumulator')?.value ||
+                    //     flattedContractTypesV2.find(contract_type => contract_type.value === 'multiplier')?.value ||
+                    //     'accumulator';
+                }
+            }
+        );
+        reaction(
             () => [this.contract_expiry_type, this.duration_min_max, this.duration_unit, this.expiry_type],
             () => {
                 this.changeDurationValidationRules();

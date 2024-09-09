@@ -41,6 +41,7 @@ module.exports = function (env) {
         },
         externals: [
             {
+                '@deriv/shared': '@deriv/shared',
                 '@deriv-com/analytics': '@deriv-com/analytics',
                 '@deriv-com/translations': '@deriv-com/translations',
                 classnames: true,
@@ -49,6 +50,8 @@ module.exports = function (env) {
                 'react-dom': true,
                 'react-router-dom': true,
             },
+            /^@deriv\/shared\/.+$/,
+            /^@deriv\/translations\/.+$/,
         ],
         mode: is_release ? 'production' : 'development',
         module: {

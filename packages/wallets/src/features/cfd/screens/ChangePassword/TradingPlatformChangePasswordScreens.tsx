@@ -3,10 +3,9 @@ import classNames from 'classnames';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { DerivLightDmt5PasswordIcon, DerivLightIcDxtradePasswordIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { ActionScreen, Text } from '@deriv-com/ui';
-import { SentEmailContent, WalletButton } from '../../../../components';
+import { ActionScreen, Button, Text, useDevice } from '@deriv-com/ui';
+import { SentEmailContent } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
-import useDevice from '../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../types';
 import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
 import { PlatformDetails } from '../../constants';
@@ -57,10 +56,10 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
             ),
             button: (
                 <div className='wallets-change-password__btn'>
-                    <WalletButton onClick={() => hide()} size='lg' textSize={buttonTextSize} variant='outlined'>
+                    <Button color='black' onClick={() => hide()} size='lg' textSize={buttonTextSize} variant='outlined'>
                         <Localize i18n_default_text='Cancel' />
-                    </WalletButton>
-                    <WalletButton
+                    </Button>
+                    <Button
                         onClick={() => {
                             handleSendEmail();
                             handleClick('emailVerification');
@@ -69,7 +68,7 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
                         textSize={buttonTextSize}
                     >
                         <Localize i18n_default_text='Confirm' />
-                    </WalletButton>
+                    </Button>
                 </div>
             ),
             headingText: localize('Confirm to change your {{title}} password', { title }),
@@ -80,9 +79,9 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
                 { title }
             ),
             button: (
-                <WalletButton onClick={() => handleClick('confirmationScreen')} size='lg' textSize={buttonTextSize}>
+                <Button onClick={() => handleClick('confirmationScreen')} size='lg' textSize={buttonTextSize}>
                     <Localize i18n_default_text='Change password' />
-                </WalletButton>
+                </Button>
             ),
             headingText: localize('{{title}} password', { title }),
         },

@@ -3,7 +3,6 @@ import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api-
 import { useTranslations } from '@deriv-com/translations';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { WalletButton } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import useDevice from '../../../../../hooks/useDevice';
 import TradingPlatformChangePasswordScreens from '../TradingPlatformChangePasswordScreens';
@@ -122,7 +121,6 @@ describe('TradingPlatformChangePasswordScreens', () => {
             },
             verify_email: 'test@mail.com',
         });
-        expect(WalletButton).toHaveBeenCalledWith(expect.objectContaining({ textSize: 'md' }), {});
     });
 
     it('calls handleSendEmail when Confirm is clicked and the platform is dxtrade', () => {

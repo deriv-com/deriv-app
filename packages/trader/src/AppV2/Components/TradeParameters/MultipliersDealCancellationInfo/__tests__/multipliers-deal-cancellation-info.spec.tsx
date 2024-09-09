@@ -32,6 +32,17 @@ describe('MultipliersDealCancellationInfo', () => {
             </TraderProviders>
         );
 
+    it('should not render if there is an API error ', () => {
+        default_mock_store.modules.trade.proposal_info = {
+            MULTUP: {
+                has_error: true,
+            },
+        };
+        const { container } = mockMultipliersDealCancellationInfo();
+
+        expect(container).toBeEmptyDOMElement();
+    });
+
     it('should render skeleton, if proposal_info is empty', () => {
         default_mock_store.modules.trade.proposal_info = {};
         mockMultipliersDealCancellationInfo();

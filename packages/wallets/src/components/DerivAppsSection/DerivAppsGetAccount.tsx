@@ -8,12 +8,12 @@ import {
 } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Text, useDevice } from '@deriv-com/ui';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
 import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import { getFormattedDateString } from '../../utils/utils';
-import { ModalStepWrapper, WalletButton } from '../Base';
+import { ModalStepWrapper } from '../Base';
 import { useModal } from '../ModalProvider';
 import { TradingAccountCard } from '../TradingAccountCard';
 import { WalletMarketIcon } from '../WalletMarketIcon';
@@ -112,13 +112,13 @@ const DerivAppsGetAccount: React.FC = () => {
                 </Text>
             </TradingAccountCard.Content>
             <TradingAccountCard.Button>
-                <WalletButton
+                <Button
                     color='primary-light'
                     disabled={isAccountCreationLoading || isActiveLinkedToTradingAccountLoading}
                     onClick={createTradingAccount}
                 >
                     <Localize i18n_default_text='Get' />
-                </WalletButton>
+                </Button>
             </TradingAccountCard.Button>
         </TradingAccountCard>
     );

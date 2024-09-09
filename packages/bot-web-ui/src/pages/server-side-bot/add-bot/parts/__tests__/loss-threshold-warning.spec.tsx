@@ -55,7 +55,7 @@ describe('LossThresholdWarningDialog', () => {
     });
 
     it('should handle edit the amount button click', () => {
-        mock_dbot_store?.quick_strategy.setLossThresholdWarningData({
+        mock_dbot_store?.server_bot.setLossThresholdWarningData({
             show: true,
         });
         render(<LossThresholdWarningDialog />, {
@@ -63,11 +63,11 @@ describe('LossThresholdWarningDialog', () => {
         });
         const edit_amount_btn = screen.getByRole('button', { name: /Edit the amount/i });
         userEvent.click(edit_amount_btn);
-        expect(mock_dbot_store?.quick_strategy.loss_threshold_warning_data.show).toBeFalsy();
+        expect(mock_dbot_store?.server_bot.loss_threshold_warning_data.show).toBeFalsy();
     });
 
     it('should handle continue button click', async () => {
-        mock_dbot_store?.quick_strategy.setLossThresholdWarningData({
+        mock_dbot_store?.server_bot.setLossThresholdWarningData({
             show: true,
         });
         render(<LossThresholdWarningDialog />, {
@@ -76,12 +76,12 @@ describe('LossThresholdWarningDialog', () => {
         const continue_btn = screen.getByRole('button', { name: /Yes, continue/i });
         userEvent.click(continue_btn);
         await waitFor(() => {
-            expect(mock_dbot_store?.quick_strategy.loss_threshold_warning_data.show).toBeFalsy();
+            expect(mock_dbot_store?.server_bot.loss_threshold_warning_data.show).toBeFalsy();
         });
     });
 
     it('should handle dont show again checkbox click', () => {
-        mock_dbot_store?.quick_strategy.setLossThresholdWarningData({
+        mock_dbot_store?.server_bot.setLossThresholdWarningData({
             show: true,
         });
         render(<LossThresholdWarningDialog />, {

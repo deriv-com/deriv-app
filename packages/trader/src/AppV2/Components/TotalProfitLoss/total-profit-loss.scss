@@ -19,10 +19,10 @@
     }
     &__amount {
         &.positive {
-            color: var(--core-color-solid-green-600);
+            color: var(--core-color-solid-green-700);
         }
         &.negative {
-            color: var(--core-color-solid-red-600);
+            color: var(--core-color-solid-red-700);
         }
     }
 }

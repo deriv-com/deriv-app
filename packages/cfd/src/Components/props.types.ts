@@ -293,7 +293,6 @@ export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     selected_mt5_jurisdiction?: TOpenAccountTransferMeta &
         TJurisdictionData & {
             platform?: string;
+            product?: string;
         };
-
-    openVerificationDocsListModal?: () => void;
 };

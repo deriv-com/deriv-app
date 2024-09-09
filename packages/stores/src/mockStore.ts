@@ -539,7 +539,6 @@ const mock = (): TStores & { is_mock: boolean } => {
                 active_modal: '',
                 data: {},
             },
-            openVerificationDocsListModal: jest.fn(),
             setTogglePlatformType: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
             selectAccountType: jest.fn(),
@@ -566,6 +565,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_setup_real_account_or_go_to_demo_modal_visible: false,
             setIsSetupRealAccountOrGoToDemoModalVisible: jest.fn(),
             toggleVerificationModal: jest.fn(),
+            selected_jurisdiction_kyc_status: {},
+            setSelectedJurisdictionKYCStatus: jest.fn(),
         },
         notifications: {
             addNotificationMessage: jest.fn(),

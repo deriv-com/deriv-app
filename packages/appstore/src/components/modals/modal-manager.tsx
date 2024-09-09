@@ -11,7 +11,7 @@ import CFDResetPasswordModal from '@deriv/cfd/src/Containers/cfd-reset-password-
 const VerificationDocsListModal = makeLazyLoader(
     () =>
         moduleLoader(
-            () => import(/* webpackChunkName: "modal_failed-veriification-modal" */ './verification-docs-list-modal')
+            () => import(/* webpackChunkName: "modal_verification-docs-list-modal" */ './verification-docs-list-modal')
         ),
     () => <Loading />
 )();

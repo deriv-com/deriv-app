@@ -1,6 +1,13 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 
-import { CFD_PLATFORMS, ContentFlag, formatMoney, getAppstorePlatforms, getCFDAvailableAccount } from '@deriv/shared';
+import {
+    CFD_PLATFORMS,
+    ContentFlag,
+    formatMoney,
+    getAppstorePlatforms,
+    getCFDAvailableAccount,
+    WS,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import BaseStore from './base-store';
 import { isEuCountry } from '_common/utility';
@@ -24,6 +31,7 @@ export default class TradersHubStore extends BaseStore {
         active_modal: '',
         data: {},
     };
+    selected_jurisdiction_kyc_status = {};
     is_account_transfer_modal_open = false;
     selected_account = {};
     is_real_wallets_upgrade_on = false;
@@ -59,6 +67,7 @@ export default class TradersHubStore extends BaseStore {
             is_onboarding_visited: observable,
             is_first_time_visit: observable,
             selected_account: observable,
+            selected_jurisdiction_kyc_status: observable,
             selected_account_type: observable,
             selected_platform_type: observable,
             active_modal_tab: observable,
@@ -75,7 +84,9 @@ export default class TradersHubStore extends BaseStore {
             getAvailableCFDAccounts: action.bound,
             getAvailableDxtradeAccounts: action.bound,
             getAvailableCTraderAccounts: action.bound,
+            setSelectedJurisdictionKYCStatus: action.bound,
             getExistingAccounts: action.bound,
+            getMT5AccountKYCStatus: action.bound,
             handleTabItemClick: action.bound,
             setWalletModalActiveTab: action.bound,
             setWalletModalActiveWalletID: action.bound,
@@ -107,7 +118,6 @@ export default class TradersHubStore extends BaseStore {
             setIsOnboardingVisited: action.bound,
             setIsFirstTimeVisit: action.bound,
             toggleVerificationModal: action.bound,
-            openVerificationDocsListModal: action.bound,
             toggleRegulatorsCompareModal: action.bound,
             showTopUpModal: action.bound,
             toggleWalletsUpgrade: action.bound,
@@ -116,6 +126,8 @@ export default class TradersHubStore extends BaseStore {
             setIsCFDRestrictedCountry: action.bound,
             setIsFinancialRestrictedCountry: action.bound,
             setIsSetupRealAccountOrGoToDemoModalVisible: action.bound,
+
+            getDefaultJurisdiction: action.bound,
         });
 
         reaction(
@@ -200,6 +212,9 @@ export default class TradersHubStore extends BaseStore {
         this.is_cfd_restricted_country = value;
     }
 
+    setSelectedJurisdictionKYCStatus(status) {
+        this.selected_jurisdiction_kyc_status = status;
+    }
     setIsFinancialRestrictedCountry(value) {
         this.is_financial_restricted_country = value;
     }
@@ -533,7 +548,20 @@ export default class TradersHubStore extends BaseStore {
             account => account.platform === CFD_PLATFORMS.CTRADER
         );
     }
+    /**
+     * Get default Jurisdiction for MT5 product types
+     * Product types = Standard /Financial /Swap Free /Zero Spread/
+     *
+     */
+    getDefaultJurisdiction() {
+        const { trading_platform_available_accounts } = this.root_store.client;
+        const { product } = this.root_store.modules.cfd;
 
+        const default_jurisdiction = trading_platform_available_accounts.filter(
+            available_account => available_account.product === product && available_account.is_default_jurisdiction
+        )[0]?.shortcode;
+        return default_jurisdiction;
+    }
     getExistingAccounts(platform, market_type, product) {
         const { residence } = this.root_store.client;
         const current_list = this.root_store.modules?.cfd?.current_list || [];
@@ -616,10 +644,15 @@ export default class TradersHubStore extends BaseStore {
     async openRealAccount(account_type, platform) {
         const { client, modules } = this.root_store;
         const { has_active_real_account } = client;
-        const { createCFDAccount, enableCFDPasswordModal, setAccountType } = modules.cfd;
+        const { createCFDAccount, enableCFDPasswordModal } = modules.cfd;
+        await this.getMT5AccountKYCStatus();
         if (has_active_real_account && platform === CFD_PLATFORMS.MT5) {
-            setAccountType(account_type);
-            enableCFDPasswordModal();
+            if (this.selected_jurisdiction_kyc_status && Object.keys(this.selected_jurisdiction_kyc_status)?.length) {
+                this.toggleVerificationModal(true);
+            } else {
+                //all kyc requirements satisfied)
+                enableCFDPasswordModal();
+            }
         } else if (platform === CFD_PLATFORMS.DXTRADE) {
             enableCFDPasswordModal();
         } else {
@@ -763,18 +796,8 @@ export default class TradersHubStore extends BaseStore {
         this.is_account_transfer_modal_open = !this.is_account_transfer_modal_open;
     }
 
-    toggleVerificationModal() {
-        this.is_verification_docs_list_modal_visible = !this.is_verification_docs_list_modal_visible;
-    }
-
-    openVerificationDocsListModal() {
-        const {
-            modules: { cfd },
-        } = this.root_store;
-        const { setJurisdictionSelectedShortcode } = cfd;
-
-        setJurisdictionSelectedShortcode('');
-        this.toggleVerificationModal();
+    toggleVerificationModal(value) {
+        this.is_verification_docs_list_modal_visible = value;
     }
 
     showTopUpModal(data) {
@@ -810,5 +833,28 @@ export default class TradersHubStore extends BaseStore {
 
     setIsSetupRealAccountOrGoToDemoModalVisible(value) {
         this.is_setup_real_account_or_go_to_demo_modal_visible = value;
+    }
+
+    async getMT5AccountKYCStatus() {
+        const { updateMt5LoginList, trading_platform_available_accounts, mt5_login_list } = this.root_store.client;
+        const { jurisdiction_selected_shortcode, product } = this.root_store.modules.cfd;
+        await WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5);
+        await updateMt5LoginList();
+        const current_account = mt5_login_list.filter(
+            account => account.landing_company_short === jurisdiction_selected_shortcode && account.product === product
+        );
+
+        if (current_account.length) {
+            this.setSelectedJurisdictionKYCStatus(current_account[0].requirements.client_kyc_status);
+        } else {
+            const selected_mt5_account = trading_platform_available_accounts.filter(
+                account => account.shortcode === jurisdiction_selected_shortcode && account.product === product
+            );
+            if (selected_mt5_account.length) {
+                this.setSelectedJurisdictionKYCStatus(selected_mt5_account[0].requirements.client_kyc_status);
+            } else {
+                this.setSelectedJurisdictionKYCStatus({});
+            }
+        }
     }
 }

@@ -1087,8 +1087,7 @@ type TTradersHubStore = {
     selectRegion: (region: string) => void;
     closeAccountTransferModal: () => void;
     toggleRegulatorsCompareModal: () => void;
-    openVerificationDocsListModal: () => void;
-    toggleVerificationModal: () => void;
+    toggleVerificationModal: (value: boolean) => void;
     modal_data: TModalData;
     financial_restricted_countries: boolean;
     selected_account_type: string;
@@ -1129,6 +1128,8 @@ type TTradersHubStore = {
     setIsCFDRestrictedCountry: (value: boolean) => void;
     setIsFinancialRestrictedCountry: (value: boolean) => void;
     setIsSetupRealAccountOrGoToDemoModalVisible: (value: boolean) => void;
+    selected_jurisdiction_kyc_status: Record<string, string>;
+    setSelectedJurisdictionKYCStatus: (value: Record<string, string>) => void;
 };
 
 type TContractReplay = {

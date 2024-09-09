@@ -1,3 +1,3 @@
-import VerificationDocsListModalContent from './verification-docs-list-modal';
+import VerificationDocsListModal from './verification-docs-list-modal';
 
-export default VerificationDocsListModalContent;
+export default VerificationDocsListModal;

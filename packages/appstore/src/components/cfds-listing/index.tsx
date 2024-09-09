@@ -25,7 +25,6 @@ import {
     useTradingPlatformStatus,
     TradingPlatformStatus,
     useGrowthbookGetFeatureValue,
-    useGetDefaultMT5Jurisdiction,
 } from '@deriv/hooks';
 
 import './cfds-listing.scss';
@@ -66,12 +65,12 @@ const CFDsListing = observer(() => {
         no_MF_account,
         toggleAccountTransferModal,
         is_demo,
-        openVerificationDocsListModal,
         showTopUpModal,
         no_CR_account,
         setSelectedAccount,
         CFDs_restricted_countries,
         financial_restricted_countries,
+        getDefaultJurisdiction,
     } = traders_hub;
     const {
         setAccountType,
@@ -79,10 +78,10 @@ const CFDsListing = observer(() => {
         setAccountUnavailableModal,
         setServerMaintenanceModal,
         setProduct,
+        setJurisdictionSelectedShortcode,
     } = cfd;
 
     const {
-        account_status,
         is_landing_company_loaded,
         is_populating_mt5_account_list,
         real_account_creation_unlock_date,
@@ -94,7 +93,6 @@ const CFDsListing = observer(() => {
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
-    const default_jurisdiction = useGetDefaultMT5Jurisdiction();
     const [is_traders_dashboard_tracking_enabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'ce_tradershub_dashboard_tracking',
         defaultValue: false,
@@ -219,7 +217,6 @@ const CFDsListing = observer(() => {
                                       existing_account?.landing_company_short
                                   )
                                 : '';
-
                         return (
                             <TradingAppCard
                                 action_type={existing_account.action_type}
@@ -258,7 +255,7 @@ const CFDsListing = observer(() => {
                                             });
                                             setProduct(existing_account.product);
                                             setAppstorePlatform(existing_account.platform);
-                                            getAccount();
+                                            setJurisdictionSelectedShortcode(getDefaultJurisdiction());
                                             getTradingPlatformStatus(existing_account.platform);
                                         }
                                     } else if (existing_account.action_type === 'multi-action') {
@@ -308,8 +305,8 @@ const CFDsListing = observer(() => {
                                     category: selected_account_type,
                                     type: existing_account.market_type,
                                     jurisdiction: existing_account.landing_company_short,
+                                    product: existing_account.product,
                                 }}
-                                openVerificationDocsListModal={openVerificationDocsListModal}
                                 market_type={existing_account?.market_type}
                             />
                         );

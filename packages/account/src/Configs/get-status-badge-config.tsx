@@ -1,10 +1,14 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { ACCOUNT_BADGE_STATUS } from '@deriv/shared';
+import { ACCOUNT_BADGE_STATUS, TAccountBadgeStatus } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { TAccountBadgeStatus } from '../Types/common.type';
 
-const getStatusBadgeConfig = (account_status: TAccountBadgeStatus, openVerificationDocsListModal: () => void) => {
+const getStatusBadgeConfig = (account_status: TAccountBadgeStatus, onClickBanner?: () => void) => {
+    const handleOnClick = () => {
+        if (onClickBanner) {
+            onClickBanner();
+        }
+    };
     switch (account_status) {
         case ACCOUNT_BADGE_STATUS.PENDING:
             return {
@@ -20,15 +24,14 @@ const getStatusBadgeConfig = (account_status: TAccountBadgeStatus, openVerificat
             return {
                 text: (
                     <Localize
-                        i18n_default_text='<0>Verification failed.</0> <1>Why?</1>'
+                        i18n_default_text='<0>Verification failed</0>'
                         components={[
-                            <Text key={0} weight='bold' size='xxxs' color='var(--status-danger)' />,
                             <Text
-                                key={1}
-                                className='link-verification-failed'
-                                onClick={() => {
-                                    openVerificationDocsListModal();
-                                }}
+                                key={0}
+                                weight='bold'
+                                size='xxxs'
+                                color='var(--status-danger)'
+                                onClick={handleOnClick}
                             />,
                         ]}
                     />
@@ -39,15 +42,14 @@ const getStatusBadgeConfig = (account_status: TAccountBadgeStatus, openVerificat
             return {
                 text: (
                     <Localize
-                        i18n_default_text='<0>Needs verification.</0><1>Verify now</1>'
+                        i18n_default_text='<0>Needs Verfication.Verify now</0>'
                         components={[
-                            <Text key={0} weight='bold' size='xxxs' color='var(--status-info)' />,
                             <Text
-                                key={1}
-                                className='link-need-verification'
-                                onClick={() => {
-                                    openVerificationDocsListModal();
-                                }}
+                                key={0}
+                                weight='bold'
+                                size='xxxs'
+                                color='var(--status-info)'
+                                onClick={handleOnClick}
                             />,
                         ]}
                     />

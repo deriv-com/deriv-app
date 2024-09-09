@@ -24,7 +24,7 @@ const CfdPasswordModalInfo = ({
             <Text size='xxxs'>
                 {need_tnc ? (
                     <Localize
-                        i18n_default_text='You are adding your {{platform}} {{product}} account under {{company}}, regulated by the {{licence_name}} .'
+                        i18n_default_text='You are adding your {{platform}} {{product}} account under {{company}}, regulated by the {{licence_name}}.'
                         values={{
                             platform,
                             product,

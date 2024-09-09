@@ -27,7 +27,7 @@ export const DBVI_COMPANY_NAMES = {
         tnc_url: 'tnc/general-terms.pdf',
         licence_name: `Vanuatu Financial Services Commission`,
     },
-    svg: { name: 'Deriv (SVG) LLC', tnc_url: '', licence_name: `Deriv (SVG) LLC (company no. 273 LLC 2020).` },
+    svg: { name: 'Deriv (SVG) LLC', tnc_url: '', licence_name: `Deriv (SVG) LLC (company no. 273 LLC 2020)` },
 } as const;
 
 export const JURISDICTION_MARKET_TYPES = {

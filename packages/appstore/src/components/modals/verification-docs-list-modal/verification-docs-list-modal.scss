@@ -1,35 +1,26 @@
-.failed-verification-modal {
-    @include mobile {
-        .dc-dialog__dialog {
-            max-width: 32rem;
-        }
-        .dc-dialog__footer {
-            .dc-btn {
-                flex: 1;
-                margin-bottom: 0;
-            }
-
-            .dc-dialog__button {
-                max-width: fit-content;
-                .dc-text.dc-btn__text {
-                    font-size: 1.2rem;
-                }
-            }
-        }
-    }
-    &__failed_list {
-        padding: 1.2rem 2.4rem;
-        &-item {
-            display: list-item;
-            list-style-type: disc;
-            &:first-child {
-                margin-bottom: 0.8rem;
+.verification-docs-list-modal {
+    &__content {
+        display: flex;
+        flex-direction: column;
+        padding: 2.4rem;
+        justify-content: center;
+        align-items: center;
+        &-list {
+            padding: 1.2rem 2.4rem;
+            width: 100%;
+            &-item {
+                border-radius: 2 * $BORDER_RADIUS;
+                background: var(--core-color-solid-slate-75, #f6f7f8);
+                display: flex;
+                padding: 0.8rem 1.6rem;
+                justify-content: space-between;
+                margin: 1.6rem;
             }
         }
     }
 }
 
-.dc-modal__container_failed-verification-modal {
+.dc-modal__container_verification-docs-list-modal {
     .dc-modal-body {
         padding: 0 2.4rem;
     }

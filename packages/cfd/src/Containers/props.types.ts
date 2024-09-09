@@ -310,20 +310,6 @@ export type TDMT5CompareModalContentProps = {
     toggleCompareAccounts: () => void;
 };
 
-export type TCFDDbviOnboardingProps = {
-    account_status: GetAccountStatus;
-    context: RootStore;
-    disableApp: () => void;
-    enableApp: () => void;
-    fetchAccountSettings: () => void;
-    has_created_account_for_selected_jurisdiction: boolean;
-    is_virtual: boolean;
-    jurisdiction_selected_shortcode: string;
-    openPasswordModal: () => void;
-    updateAccountStatus: () => void;
-    updateMT5Status: () => void;
-};
-
 type TDynamicLeverage = {
     from: number;
     to: number;

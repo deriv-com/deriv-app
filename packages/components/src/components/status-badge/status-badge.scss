@@ -16,15 +16,12 @@
         &--pending {
             color: var(--status-warning);
             background-color: var(--status-warning-transparent);
-
             text-decoration: underline;
         }
 
         &--needs_verification {
             background-color: var(--status-info-transparent);
             color: var(--status-info);
-            cursor: pointer;
-            padding-left: 0.3rem;
             text-decoration: underline;
         }
 

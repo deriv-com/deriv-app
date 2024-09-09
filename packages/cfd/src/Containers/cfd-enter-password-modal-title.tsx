@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { getCFDPlatformNames, getCFDPlatformLabel } from '@deriv/shared';
+import { getCFDPlatformLabel } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { CATEGORY, CFD_PLATFORMS } from '../Helpers/cfd-config';
@@ -29,7 +29,7 @@ const CFDEnterPasswordModalTitle = observer(({ platform }: TCFDEnterPasswordModa
                 <Localize
                     i18n_default_text='Enter your {{platform}} password to add an {{platform}} {{account}} account.'
                     values={{
-                        platform: getCFDPlatformNames(platform),
+                        platform: getCFDPlatformLabel(platform),
                         account: getAccountCardTitle(),
                     }}
                 />

@@ -2,6 +2,7 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { DBVI_COMPANY_NAMES } from '@deriv/shared';
+import { useIsSelectedMT5AccountCreated } from '@deriv/hooks';
 
 type CfdPasswordModalInfoProps = {
     jurisdiction_selected_shortcode: string;
@@ -16,6 +17,7 @@ const CfdPasswordModalInfo = ({
     product,
     need_tnc,
 }: CfdPasswordModalInfoProps) => {
+    const { selected_mt5_account } = useIsSelectedMT5AccountCreated();
     return (
         <div className='cfd-password-modal-info'>
             <div className='cfd-password-modal-info__icon'>
@@ -28,7 +30,7 @@ const CfdPasswordModalInfo = ({
                         values={{
                             platform,
                             product,
-                            company: DBVI_COMPANY_NAMES[jurisdiction_selected_shortcode].name,
+                            company: selected_mt5_account.name,
                             licence_name: DBVI_COMPANY_NAMES[jurisdiction_selected_shortcode].licence_name,
                         }}
                     />

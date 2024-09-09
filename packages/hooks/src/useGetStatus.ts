@@ -16,13 +16,13 @@ const getStatusBadge = (status: string) => {
 const useGetStatus = () => {
     const { common, traders_hub } = useStore();
     const { mf_account_status, kyc_status } = useGetMFAccountStatus();
-    const current_account = useIsSelectedMT5AccountCreated();
+    const { selected_mt5_account } = useIsSelectedMT5AccountCreated();
     const { platform } = common;
     const { selected_jurisdiction_kyc_status } = traders_hub;
     if (platform === CFD_PLATFORMS.MT5) {
         return {
-            status_badge: current_account?.status
-                ? getStatusBadge(current_account?.status)
+            status_badge: selected_mt5_account?.status
+                ? getStatusBadge(selected_mt5_account?.status)
                 : MT5_ACCOUNT_STATUS.PENDING,
             client_kyc_status: selected_jurisdiction_kyc_status,
         };

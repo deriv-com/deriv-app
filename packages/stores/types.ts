@@ -107,6 +107,9 @@ type TPopulateSettingsExtensionsMenuItem = {
 type TProduct = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx';
 
 type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
+type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
+    product?: string;
+};
 
 type TIconTypes =
     | 'Derived'
@@ -227,7 +230,7 @@ type TAccountsList = {
     is_disabled?: boolean | number;
     loginid?: string;
     trader_accounts_list?: DetailsOfEachMT5Loginid[];
-    mt5_login_list?: DetailsOfEachMT5Loginid[];
+    mt5_login_list?: TDetailsOfEachMT5Loginid[];
     title?: string;
 }[];
 
@@ -494,8 +497,8 @@ type TClientStore = {
     responseMt5LoginList: ({
         mt5_login_list,
     }: {
-        mt5_login_list: DetailsOfEachMT5Loginid[];
-    }) => DetailsOfEachMT5Loginid[];
+        mt5_login_list: TDetailsOfEachMT5Loginid[];
+    }) => TDetailsOfEachMT5Loginid[];
     responseTradingPlatformAccountsList: ({
         trading_platform_accounts,
     }: {
@@ -532,7 +535,7 @@ type TClientStore = {
     updateAccountStatus: () => Promise<void>;
     is_authentication_needed: boolean;
     authentication_status: TAuthenticationStatus;
-    mt5_login_list: DetailsOfEachMT5Loginid[];
+    mt5_login_list: TDetailsOfEachMT5Loginid[];
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     should_allow_poinc_authentication: boolean;

@@ -24,12 +24,13 @@ const getMT5StatusBadgeConfig = (mt5_account_status: TMT5AccountStatus) => {
                     />
                 ),
                 icon: 'IcMt5Failed',
+                icon_size: '19',
             };
         case MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION: {
             return {
                 text: <Localize i18n_default_text='Needs Verification' />,
                 icon: 'IcMt5Verification',
-                icon_size: 19,
+                icon_size: '19',
             };
         }
         case MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION:

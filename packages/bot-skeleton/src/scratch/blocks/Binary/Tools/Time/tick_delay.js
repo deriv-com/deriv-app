@@ -52,11 +52,10 @@ Blockly.Blocks.tick_delay = {
                 }
 
                 // Check if the evaluated result is less than or equal to zero
-                if (evaluated_result <= 0) {
-                    this.error_message = localize(
-                        'Value must be greater than zero. Provided value: {{ input_value }}.',
-                        { input_value }
-                    );
+                if (evaluated_result < 0) {
+                    this.error_message = localize('Values cannot be negative. Provided value: {{ input_value }}.', {
+                        input_value,
+                    });
                     return true; // Return false for values less than or equal to zero
                 }
             },

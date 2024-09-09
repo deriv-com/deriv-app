@@ -161,7 +161,10 @@ export default Engine =>
                     const entry_tick_time = this.data.contract.entry_tick_time;
                     const exit_tick_time = this.data.contract.exit_tick_time;
                     const total_seconds = Number(exit_tick_time) - Number(entry_tick_time);
-                    const total_delay = total_seconds * 1000;
+                    let total_delay = total_seconds * 1000;
+                    if (tick_value <= 0) {
+                        total_delay = 0;
+                    }
 
                     const callback = async ticksList => {
                         if (!tick_delayed) {

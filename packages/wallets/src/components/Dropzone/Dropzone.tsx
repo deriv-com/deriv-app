@@ -12,7 +12,7 @@ import classNames from 'classnames';
 import { useDropzone } from 'react-dropzone';
 import { DerivLightDropzoneFrameIcon, DerivLightIcCloudUploadIcon, LegacyClose2pxIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
-import { Button } from '@deriv-com/ui';
+import { Button, useDevice } from '@deriv-com/ui';
 import { IconButton, WalletText } from '../Base';
 import './Dropzone.scss';
 
@@ -70,6 +70,7 @@ const Dropzone: React.FC<TProps> = ({
         defaultFile ? { file: defaultFile, name: defaultFile.name, preview: URL.createObjectURL(defaultFile) } : null
     );
 
+    const { isDesktop } = useDevice();
     const [showHoverMessage, setShowHoverMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string>();
     const { getInputProps, getRootProps, open, rootRef } = useDropzone({
@@ -146,7 +147,13 @@ const Dropzone: React.FC<TProps> = ({
                             </WalletText>
                             {buttonText && (
                                 <div className='wallets-dropzone__placeholder-text'>
-                                    <Button color='black' onClick={open} variant='outlined'>
+                                    <Button
+                                        borderWidth='sm'
+                                        color='black'
+                                        onClick={open}
+                                        textSize={isDesktop ? 'sm' : 'md'}
+                                        variant='outlined'
+                                    >
                                         {buttonText}
                                     </Button>
                                 </div>

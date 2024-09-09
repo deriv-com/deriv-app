@@ -9,6 +9,7 @@ import { CONTRACT_TYPES, getGrowthRatePercentage, isEmptyObject } from '@deriv/s
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
+import { isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import GrowthRatePicker from './growth-rate-picker';
 
 type TGrowthRateProps = {
@@ -31,7 +32,7 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
     } = useTraderStore();
 
     const [is_open, setIsOpen] = React.useState(false);
-    const is_small_screen = window.innerHeight <= 640;
+    const is_small_screen = isSmallScreen();
     const info = proposal_info?.[CONTRACT_TYPES.ACCUMULATOR] || {};
     const is_proposal_data_available =
         is_trade_enabled && !isEmptyObject(proposal_info) && !!info.id && is_purchase_enabled;
@@ -103,7 +104,7 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
                 variant='fill'
             />
             <ActionSheet.Root isOpen={is_open} onClose={onActionSheetClose} position='left' expandable={false}>
-                <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen={is_small_screen}>
+                <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         classname={clsx('growth-rate__carousel', is_small_screen && 'growth-rate__carousel--small')}
                         header={CarouselHeader}

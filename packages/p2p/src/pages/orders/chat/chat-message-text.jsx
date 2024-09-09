@@ -9,7 +9,7 @@ const ChatMessageText = React.memo(({ children, color, type = '' }) => (
         <Text
             as='p'
             color={color}
-            line_height={type === ChatMessage.TYPE_ADMIN ? 'xl' : 'm'}
+            line_height={type === ChatMessage.TYPE_ADMIN ? 'l' : 'm'}
             size={type === ChatMessage.TYPE_ADMIN ? 'xxs' : 'xs'}
         >
             {children}

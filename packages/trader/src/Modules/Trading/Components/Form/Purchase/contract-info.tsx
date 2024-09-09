@@ -55,8 +55,6 @@ const ContractInfo = ({
             case 'stake': {
                 if (is_vanilla) {
                     return vanilla_payout_text;
-                } else if (is_turbos) {
-                    return localized_basis.payout_per_point;
                 }
                 return localized_basis.payout;
             }
@@ -81,17 +79,12 @@ const ContractInfo = ({
     const { message, obj_contract_basis, stake } = proposal_info;
 
     const setHintMessage = () => {
-        if (is_turbos) return turbos_payout_message;
         if (is_vanilla) return vanilla_payout_message;
         return message;
     };
 
     return (
-        <div
-            className={classNames('trade-container__price', {
-                'trade-container__price--turbos': is_turbos,
-            })}
-        >
+        <div className='trade-container__price'>
             <div
                 id={`dt_purchase_${type.toLowerCase()}_price`}
                 data-testid={`dt_purchase_${type.toLowerCase()}_price`}
@@ -99,7 +92,6 @@ const ContractInfo = ({
                     'trade-container__price-info--disabled': has_error_or_not_loaded,
                     'trade-container__price-info--slide': is_loading && !should_fade,
                     'trade-container__price-info--fade': is_loading && should_fade,
-                    'trade-container__price-info--turbos': is_turbos,
                 })}
             >
                 {is_multiplier || is_accumulator ? (
@@ -122,6 +114,7 @@ const ContractInfo = ({
                 ) : (
                     !is_multiplier &&
                     !is_accumulator &&
+                    !is_turbos &&
                     obj_contract_basis && (
                         <React.Fragment>
                             <div className='trade-container__price-info-basis'>{basis_text}</div>
@@ -131,7 +124,6 @@ const ContractInfo = ({
                                         has_error_or_not_loaded={has_error_or_not_loaded}
                                         proposal_info={proposal_info}
                                         currency={getCurrencyDisplayCode(currency)}
-                                        is_turbos={is_turbos}
                                         is_vanilla={is_vanilla}
                                     />
                                 </div>
@@ -140,7 +132,6 @@ const ContractInfo = ({
                                     has_error_or_not_loaded={has_error_or_not_loaded}
                                     proposal_info={proposal_info}
                                     currency={getCurrencyDisplayCode(currency)}
-                                    is_turbos={is_turbos}
                                     is_vanilla={is_vanilla}
                                 />
                             )}

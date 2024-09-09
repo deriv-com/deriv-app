@@ -32,8 +32,8 @@ const QSInput: React.FC<TQSInput> = observer(
             ui: { is_desktop },
             client: { currency },
         } = useStore();
-        const { quick_strategy } = useDBotStore();
-        const { loss_threshold_warning_data } = quick_strategy;
+        const { server_bot } = useDBotStore();
+        const { loss_threshold_warning_data } = server_bot;
 
         const [has_focus, setFocus] = React.useState(false);
         const { setFieldValue, setFieldTouched } = useFormikContext();

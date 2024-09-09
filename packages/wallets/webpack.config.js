@@ -41,9 +41,12 @@ module.exports = function (env) {
         },
         externals: [
             {
+                '@deriv/quill-icons': `@deriv/quill-icons`,
                 '@deriv/shared': '@deriv/shared',
+                '@deriv/utils': '@deriv/utils',
                 '@deriv-com/analytics': '@deriv-com/analytics',
                 '@deriv-com/translations': '@deriv-com/translations',
+                '@deriv-com/utils': '@deriv-com/utils',
                 classnames: true,
                 moment: 'moment',
                 react: true,

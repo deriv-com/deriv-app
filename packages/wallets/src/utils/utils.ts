@@ -25,11 +25,6 @@ export const getFormattedDateString = (
 
     // Custom handling for different input formats
     switch (format) {
-        case 'YYYY-MM-DD':
-            dateOptions.year = 'numeric';
-            dateOptions.month = '2-digit';
-            dateOptions.day = '2-digit';
-            break;
         case 'DD MMM YYYY':
             dateOptions.day = '2-digit';
             dateOptions.month = 'short';

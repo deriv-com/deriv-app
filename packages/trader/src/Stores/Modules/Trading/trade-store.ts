@@ -543,8 +543,8 @@ export default class TradeStore extends BaseStore {
         // Adds intercept to change min_max value of duration validation
         reaction(
             () => [this.contract_types_list_v2, this.has_symbols_for_v2],
-            async () => {
-                if (!this.has_symbols_for_v2 || !this.contract_types_list_v2 || this.is_dtrader_v2_enabled) return;
+            () => {
+                if (!this.has_symbols_for_v2 || !this.contract_types_list_v2 || !this.is_dtrader_v2_enabled) return;
                 const searchParams = new URLSearchParams(window.location.search);
                 const urlSymbol = searchParams.get('symbol');
                 const urlContractType = searchParams.get('trade_type');

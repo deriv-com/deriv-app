@@ -82,7 +82,7 @@ const useActiveSymbols = () => {
             const checkSymbolChange = (new_symbol: string) => {
                 // To call contracts_for during initialization
                 const is_initailization = !default_symbol_ref.current && new_symbol;
-                const has_symbol_changed = symbol != new_symbol;
+                const has_symbol_changed = symbol != new_symbol && new_symbol;
                 if (is_initailization || has_symbol_changed) {
                     onChange({ target: { name: 'symbol', value: new_symbol } });
                 }
@@ -102,10 +102,6 @@ const useActiveSymbols = () => {
 
                     setActiveSymbols(active_symbols);
                     setActiveSymbolsV2(active_symbols);
-
-                    if (symbol !== default_symbol_ref.current) {
-                        onChange({ target: { name: 'symbol', value: default_symbol_ref.current } });
-                    }
                     setTradeURLParams({ symbol: new_symbol });
                     checkSymbolChange(new_symbol);
                     default_symbol_ref.current = new_symbol;

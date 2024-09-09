@@ -65,13 +65,11 @@ const Onfido: React.FC<TOnfidoProps> = ({ onClickBack, onCompletion }) => {
                 >
                     <div className='wallets-onfido__wrapper-onfido-container' id={onfidoContainerId} />
                     {!isPersonalDetailsSubmitted ? (
-                        <div className='wallets-onfido__wrapper-overlay'>
-                            <InlineMessage variant='info'>
-                                <Text size='2xs'>
-                                    <Localize i18n_default_text='Hit the checkbox above to choose your document.' />
-                                </Text>
-                            </InlineMessage>
-                        </div>
+                        <InlineMessage className='wallets-onfido__inline-message' variant='info'>
+                            <Text size='2xs'>
+                                <Localize i18n_default_text='Hit the checkbox above to choose your document.' />
+                            </Text>
+                        </InlineMessage>
                     ) : (
                         <div className='wallets-onfido__wrapper-overlay'>
                             <InlineMessage

@@ -1,0 +1,12 @@
+.payout-selector {
+    width: 100%;
+    .payout-field {
+        display: flex;
+        .indicator-icon {
+            margin-inline-start: 0.4rem;
+        }
+    }
+    .payout-value {
+        margin-left: 6.2rem;
+    }
+}

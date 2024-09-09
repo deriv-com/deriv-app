@@ -17,8 +17,8 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
     const { ui } = useStore();
     const { is_desktop } = ui;
     const [list, setList] = React.useState<TDropdownItems[]>([]);
-    const { quick_strategy } = useDBotStore();
-    const { setValue } = quick_strategy;
+    const { server_bot } = useDBotStore();
+    const { setValue } = server_bot;
     const { setFieldValue, values } = useFormikContext<TFormData>();
     const { symbol, tradetype } = values;
 

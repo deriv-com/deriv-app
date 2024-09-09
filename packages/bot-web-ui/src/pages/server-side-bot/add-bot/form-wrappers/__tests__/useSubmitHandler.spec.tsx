@@ -5,7 +5,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import useQsSubmitHandler from '../useQsSubmitHandler';
+import useSubmitHandler from '../useSubmitHandler';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 
@@ -63,7 +63,7 @@ jest.mock('@deriv/bot-skeleton', () => ({
 
 jest.mock('../../../../../xml/martingale_max-stake.xml', () => '');
 
-describe('useQsSubmitHandler hook', () => {
+describe('useSubmitHandler hook', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_dbot_store: RootStore | undefined;
     const mock_store = mockStore({});
 
@@ -71,11 +71,9 @@ describe('useQsSubmitHandler hook', () => {
         mock_dbot_store = mockDBotStore(mock_store, mock_ws);
         mock_dbot_store = {
             ...mock_dbot_store,
-            quick_strategy: {
-                ...mock_dbot_store.quick_strategy,
+            server_bot: {
+                ...mock_dbot_store.server_bot,
                 setLossThresholdWarningData: jest.fn(),
-                onSubmit: jest.fn(),
-                toggleStopBotDialog: jest.fn(),
             },
         };
         const mockOnSubmit = jest.fn();
@@ -92,9 +90,9 @@ describe('useQsSubmitHandler hook', () => {
         );
     });
 
-    it('should call useQsSubmitHandler hook', async () => {
+    it('should call useSubmitHandler hook', async () => {
         mock_store.client.is_logged_in = true;
-        const { result } = renderHook(() => useQsSubmitHandler(), { wrapper });
+        const { result } = renderHook(() => useSubmitHandler(), { wrapper });
         result.current.handleSubmit();
 
         const { handleSubmit, proceedFormSubmission } = result.current;
@@ -103,49 +101,48 @@ describe('useQsSubmitHandler hook', () => {
         expect(typeof proceedFormSubmission).toBe('function');
     });
 
-    it('useQsSubmitHandler hook should not call setLossThresholdWarningData() when is_logged_in equals false', () => {
+    it('useSubmitHandler hook should not call setLossThresholdWarningData() when is_logged_in equals false', () => {
         mock_store.client.is_logged_in = false;
-        const { result } = renderHook(() => useQsSubmitHandler(), { wrapper });
+        const { result } = renderHook(() => useSubmitHandler(), { wrapper });
         result.current.handleSubmit();
 
-        expect(mock_dbot_store?.quick_strategy.setLossThresholdWarningData).not.toHaveBeenCalled();
+        expect(mock_dbot_store?.server_bot.setLossThresholdWarningData).not.toHaveBeenCalled();
     });
 
-    it('useQsSubmitHandler hook should not call setLossThresholdWarningData() when bot is running handle toggleStopBotDialog() and make it false', () => {
+    it('useSubmitHandler hook should not call setLossThresholdWarningData() when bot is running handle toggleStopBotDialog() and make it false', () => {
         mock_dbot_store?.run_panel?.setIsRunning(true);
         mock_store.client.is_logged_in = false;
-        const { result } = renderHook(() => useQsSubmitHandler(), { wrapper });
+        const { result } = renderHook(() => useSubmitHandler(), { wrapper });
         result.current.handleSubmit();
 
-        expect(mock_dbot_store?.quick_strategy.is_open).toBeFalsy();
-        expect(mock_dbot_store?.quick_strategy.setLossThresholdWarningData).not.toHaveBeenCalled();
+        expect(mock_dbot_store?.server_bot.setLossThresholdWarningData).not.toHaveBeenCalled();
     });
 
-    it('useQsSubmitHandler hook should not call setLossThresholdWarningData() when the balance not less than loss and loss not bigger than profit', () => {
+    it('useSubmitHandler hook should not call setLossThresholdWarningData() when the balance not less than loss and loss not bigger than profit', () => {
         mock_store.client.balance = undefined;
 
-        const { result } = renderHook(() => useQsSubmitHandler(), { wrapper });
+        const { result } = renderHook(() => useSubmitHandler(), { wrapper });
         result.current.handleSubmit();
 
-        expect(mock_dbot_store?.quick_strategy.setLossThresholdWarningData).not.toHaveBeenCalled();
+        expect(mock_dbot_store?.server_bot.setLossThresholdWarningData).not.toHaveBeenCalled();
     });
 
-    it('useQsSubmitHandler hook should not call setLossThresholdWarningData() when the balance more than loss and loss not bigger than profit', () => {
+    it('useSubmitHandler hook should not call setLossThresholdWarningData() when the balance more than loss and loss not bigger than profit', () => {
         mock_store.client.balance = 100000000;
 
-        const { result } = renderHook(() => useQsSubmitHandler(), { wrapper });
+        const { result } = renderHook(() => useSubmitHandler(), { wrapper });
         result.current.handleSubmit();
 
-        expect(mock_dbot_store?.quick_strategy.setLossThresholdWarningData).not.toHaveBeenCalled();
+        expect(mock_dbot_store?.server_bot.setLossThresholdWarningData).not.toHaveBeenCalled();
     });
 
-    it('useQsSubmitHandler hook should call setLossThresholdWarningData() when is_logged_in equals true and balance is less than loss', () => {
+    it('useSubmitHandler hook should call setLossThresholdWarningData() when is_logged_in equals true and balance is less than loss', () => {
         mock_store.client.is_logged_in = true;
         mock_store.client.balance = -1;
 
-        const { result } = renderHook(() => useQsSubmitHandler(), { wrapper });
+        const { result } = renderHook(() => useSubmitHandler(), { wrapper });
         result.current.handleSubmit();
 
-        expect(mock_dbot_store?.quick_strategy.setLossThresholdWarningData).toHaveBeenCalled();
+        expect(mock_dbot_store?.server_bot.setLossThresholdWarningData).toHaveBeenCalled();
     });
 });

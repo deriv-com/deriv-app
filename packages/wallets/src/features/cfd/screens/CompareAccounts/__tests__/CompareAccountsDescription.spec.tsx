@@ -14,7 +14,7 @@ describe('CompareAccountsDescription', () => {
         counterparty_company_description: 'Counterparty company description',
         jurisdiction: 'St. Vincent & Grenadines',
         jurisdiction_description: 'Jurisdiction description',
-        leverage: '1:1000',
+        leverage: 'Up to 1:1000',
         leverage_description: 'Leverage description',
         regulator: 'Financial Commission',
         regulator_description: 'Regulator description',

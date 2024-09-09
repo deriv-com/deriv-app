@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordReset } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { Button, Text } from '@deriv-com/ui';
 import { CFD_PLATFORMS, PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import { TPlatforms } from '../../types';
 import { validPassword, validPasswordMT5 } from '../../utils/password-validation';
-import { ModalStepWrapper, WalletButton, WalletPasswordFieldLazy } from '../Base';
+import { ModalStepWrapper, WalletPasswordFieldLazy } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletError } from '../WalletError';
 import WalletsErrorMT5InvestorPassword from './WalletsErrorMT5InvestorPassword';
@@ -35,7 +35,7 @@ const WalletsResetMT5Password = ({
     platform,
     verificationCode,
 }: WalletsResetMT5PasswordProps) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { title } = isInvestorPassword ? PlatformDetails.mt5Investor : PlatformDetails[platform];
     const {
         error: changePasswordError,
@@ -104,9 +104,9 @@ const WalletsResetMT5Password = ({
             show(
                 <WalletsErrorMT5InvestorPassword
                     actionButtons={
-                        <WalletButton isFullWidth={isMobile} onClick={hide}>
+                        <Button isFullWidth={!isDesktop} onClick={hide} textSize='sm'>
                             <Localize i18n_default_text='Ok' />
-                        </WalletButton>
+                        </Button>
                     }
                     errorMessage={changeInvestorPasswordError?.error?.message}
                     title={title}
@@ -118,31 +118,39 @@ const WalletsResetMT5Password = ({
 
     const renderButtons = () => (
         <div className={'wallets-reset-mt5-password__footer'}>
-            <WalletButton isFullWidth={isMobile} onClick={() => hide()} size='lg' variant='outlined'>
+            <Button
+                color='black'
+                isFullWidth={!isDesktop}
+                onClick={() => hide()}
+                size='lg'
+                textSize='sm'
+                variant='outlined'
+            >
                 <Localize i18n_default_text='Cancel' />
-            </WalletButton>
-            <WalletButton
+            </Button>
+            <Button
                 disabled={isMT5 ? !validPasswordMT5(password) : !validPassword(password)}
-                isFullWidth={isMobile}
+                isFullWidth={!isDesktop}
                 isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
                 onClick={handleSubmit}
                 size='lg'
+                textSize='sm'
                 variant='contained'
             >
                 <Localize i18n_default_text='Create' />
-            </WalletButton>
+            </Button>
         </div>
     );
 
     return (
         <ModalStepWrapper
-            renderFooter={isMobile ? renderButtons : undefined}
-            shouldHideFooter={!isMobile}
-            shouldHideHeader={!isMobile}
+            renderFooter={isDesktop ? undefined : renderButtons}
+            shouldHideFooter={isDesktop}
+            shouldHideHeader={isDesktop}
             title={localize('Manage {{title}} password', { title })}
         >
             <div className='wallets-reset-mt5-password'>
-                <Text align={isMobile ? 'center' : 'start'} weight='bold'>
+                <Text align={isDesktop ? 'start' : 'center'} weight='bold'>
                     <Localize i18n_default_text='Create a new {{title}} password' values={{ title }} />
                 </Text>
                 {isMT5 && !isInvestorPassword && (
@@ -166,7 +174,7 @@ const WalletsResetMT5Password = ({
                 <Text align='start' size='sm'>
                     {modalDescription[platform]}
                 </Text>
-                {!isMobile && renderButtons()}
+                {isDesktop && renderButtons()}
             </div>
         </ModalStepWrapper>
     );

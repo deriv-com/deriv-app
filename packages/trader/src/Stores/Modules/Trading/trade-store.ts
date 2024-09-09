@@ -651,7 +651,13 @@ export default class TradeStore extends BaseStore {
         }
     }
 
-    setV2ParamsInitialValues({ value, name }: { value: number | string; name: keyof TV2ParamsInitialValues }) {
+    setV2ParamsInitialValues({
+        value,
+        name,
+    }: {
+        value: number | string | boolean;
+        name: keyof TV2ParamsInitialValues;
+    }) {
         this.v2_params_initial_values = { ...this.v2_params_initial_values, ...{ [name]: value } };
     }
 

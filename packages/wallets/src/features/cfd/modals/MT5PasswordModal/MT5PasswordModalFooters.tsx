@@ -1,22 +1,23 @@
 import React, { ComponentProps } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Localize } from '@deriv-com/translations';
-import { WalletButton, WalletButtonGroup } from '../../../../components';
+import { Button } from '@deriv-com/ui';
+import { WalletButtonGroup } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 
 type TProps = {
-    disabled: ComponentProps<typeof WalletButton>['disabled'];
+    disabled: ComponentProps<typeof Button>['disabled'];
     isDemo?: boolean;
-    isLoading: ComponentProps<typeof WalletButton>['isLoading'];
-    onPrimaryClick: ComponentProps<typeof WalletButton>['onClick'];
-    onSecondaryClick: ComponentProps<typeof WalletButton>['onClick'];
+    isLoading: ComponentProps<typeof Button>['isLoading'];
+    onPrimaryClick: ComponentProps<typeof Button>['onClick'];
+    onSecondaryClick: ComponentProps<typeof Button>['onClick'];
 };
 
 export const SuccessModalFooter = ({ isDemo }: Pick<TProps, 'isDemo'>) => {
     const history = useHistory();
     const { hide } = useModal();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     const handleOnClickReal = () => {
         hide();
@@ -26,21 +27,28 @@ export const SuccessModalFooter = ({ isDemo }: Pick<TProps, 'isDemo'>) => {
     if (isDemo) {
         return (
             <div className='wallets-success-btn'>
-                <WalletButton isFullWidth onClick={hide} size={isMobile ? 'lg' : 'md'}>
+                <Button isFullWidth onClick={hide} size={isDesktop ? 'md' : 'lg'} textSize='sm'>
                     <Localize i18n_default_text='OK' />
-                </WalletButton>
+                </Button>
             </div>
         );
     }
 
     return (
         <WalletButtonGroup isFlex isFullWidth>
-            <WalletButton onClick={hide} size={isMobile ? 'lg' : 'md'} variant='outlined'>
+            <Button
+                borderWidth='sm'
+                color='black'
+                onClick={hide}
+                size={isDesktop ? 'md' : 'lg'}
+                textSize='sm'
+                variant='outlined'
+            >
                 <Localize i18n_default_text='Maybe later' />
-            </WalletButton>
-            <WalletButton onClick={() => handleOnClickReal()} size={isMobile ? 'lg' : 'md'}>
+            </Button>
+            <Button onClick={handleOnClickReal} size={isDesktop ? 'md' : 'lg'} textSize='sm'>
                 <Localize i18n_default_text='Transfer funds' />
-            </WalletButton>
+            </Button>
         </WalletButtonGroup>
     );
 };
@@ -51,22 +59,31 @@ export const MT5PasswordModalFooter = ({
     onPrimaryClick,
     onSecondaryClick,
 }: Exclude<TProps, 'isDemo'>) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     return (
         <WalletButtonGroup isFullWidth>
-            <WalletButton isFullWidth onClick={onSecondaryClick} size={isMobile ? 'lg' : 'md'} variant='outlined'>
+            <Button
+                borderWidth='sm'
+                color='black'
+                isFullWidth
+                onClick={onSecondaryClick}
+                size={isDesktop ? 'md' : 'lg'}
+                textSize='sm'
+                variant='outlined'
+            >
                 <Localize i18n_default_text='Forgot password?' />
-            </WalletButton>
-            <WalletButton
+            </Button>
+            <Button
                 disabled={disabled}
                 isFullWidth
                 isLoading={isLoading}
                 onClick={onPrimaryClick}
-                size={isMobile ? 'lg' : 'md'}
+                size={isDesktop ? 'md' : 'lg'}
+                textSize='sm'
             >
                 <Localize i18n_default_text='Add account' />
-            </WalletButton>
+            </Button>
         </WalletButtonGroup>
     );
 };

@@ -75,6 +75,7 @@ import {
     TradingTimesRequest,
 } from '@deriv/api-types';
 import { STATE_TYPES, TPayload, getChartAnalyticsData } from './Helpers/chart';
+import { safeParse } from '@deriv/utils';
 
 type TBarriers = Array<
     ChartBarrierStore & {
@@ -549,7 +550,7 @@ export default class TradeStore extends BaseStore {
                 const urlSymbol = searchParams.get('symbol');
                 const urlContractType = searchParams.get('trade_type');
                 const tradeStoreString = sessionStorage.getItem('trade_store');
-                const tradeStoreObj = JSON.parse(tradeStoreString ?? '{}');
+                const tradeStoreObj = safeParse(tradeStoreString ?? '{}') ?? {};
 
                 const flattedContractTypesV2 = Object.values(this.contract_types_list_v2)
                     .map(contract_type => contract_type.categories)
@@ -565,7 +566,6 @@ export default class TradeStore extends BaseStore {
                     this.symbol = urlSymbol;
                 } else {
                     this.root_store.ui.toggleUrlUnavailableModal(true);
-                    // this.symbol = (await pickDefaultSymbol(this.active_symbols)) || '1HZ100V';
                 }
                 if (urlContractType && isValidContractType) {
                     tradeStoreObj.contract_type = urlContractType;
@@ -573,10 +573,6 @@ export default class TradeStore extends BaseStore {
                     this.contract_type = urlContractType;
                 } else {
                     this.root_store.ui.toggleUrlUnavailableModal(true);
-                    // this.contract_type =
-                    //     flattedContractTypesV2.find(contract_type => contract_type.value === 'accumulator')?.value ||
-                    //     flattedContractTypesV2.find(contract_type => contract_type.value === 'multiplier')?.value ||
-                    //     'accumulator';
                 }
             }
         );

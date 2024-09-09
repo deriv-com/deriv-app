@@ -49,7 +49,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
 
     const saved_pinned_trade_types_string: string = localStorage.getItem('pinned_trade_types') ?? '[]';
     const saved_pinned_trade_types: TResultItem[] = useMemo(
-        () => safeParse(saved_pinned_trade_types_string),
+        () => safeParse(saved_pinned_trade_types_string) ?? [],
         [saved_pinned_trade_types_string]
     );
 

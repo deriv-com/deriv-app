@@ -56,7 +56,10 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     const [other_trade_types, setOtherTradeTypes] = useState<TResultItem[]>([]);
     const [pinned_trade_types, setPinnedTradeTypes] = useState<TResultItem[]>(saved_pinned_trade_types);
 
-    const trade_types_array = useMemo(() => createArrayFromCategories(trade_types), [trade_types]);
+    const sorted_trade_types_array = useMemo(() => {
+        const array = createArrayFromCategories(trade_types);
+        return array.sort((a, b) => a.title?.localeCompare(b.title));
+    }, [trade_types]);
 
     const handleCloseTradeTypes = () => {
         setIsOpen(false);
@@ -147,14 +150,17 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         }, 0);
     };
 
-    const getDefaultTradeTypes = useCallback(() => {
-        const sorted_trade_types_array = trade_types_array.sort((a, b) => a.title?.localeCompare(b.title));
-
+    const getPinnedItems = useCallback(() => {
         const pinned_items = filterItems(getItems(saved_pinned_trade_types), sorted_trade_types_array);
 
         if (pinned_items.length === 0) {
             pinned_items.push(...sorted_trade_types_array.slice(0, 5));
         }
+        return pinned_items;
+    }, [saved_pinned_trade_types, sorted_trade_types_array]);
+
+    const setTradeTypes = useCallback(() => {
+        const pinned_items = getPinnedItems();
 
         const default_pinned_trade_types = [
             {
@@ -173,19 +179,13 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
             },
         ];
 
-        return {
-            default_pinned_trade_types,
-            default_other_trade_types,
-        };
-    }, [saved_pinned_trade_types, trade_types_array]);
-
-    useEffect(() => {
-        const { default_pinned_trade_types, default_other_trade_types } = getDefaultTradeTypes();
-
-        localStorage.setItem('pinned_trade_types', JSON.stringify(default_pinned_trade_types));
         setPinnedTradeTypes(default_pinned_trade_types);
         setOtherTradeTypes(default_other_trade_types);
-    }, [getDefaultTradeTypes]);
+    }, [getPinnedItems, sorted_trade_types_array]);
+
+    useEffect(() => {
+        setTradeTypes();
+    }, [setTradeTypes]);
 
     useEffect(() => {
         scrollToSelectedTradeType();
@@ -207,10 +207,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     };
 
     const handleOpenActionSheet = () => {
-        const { default_pinned_trade_types, default_other_trade_types } = getDefaultTradeTypes();
-        setPinnedTradeTypes(default_pinned_trade_types);
-        setOtherTradeTypes(default_other_trade_types);
-
+        setTradeTypes();
         setIsOpen(true);
     };
 
@@ -225,7 +222,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     };
 
     const getTradeTypeChips = () => {
-        const pinned_items = saved_pinned_trade_types[0]?.items ?? [];
+        const pinned_items = getPinnedItems();
         const is_contract_type_in_pinned = pinned_items.some(item => item.id === contract_type);
 
         const other_item = !is_contract_type_in_pinned

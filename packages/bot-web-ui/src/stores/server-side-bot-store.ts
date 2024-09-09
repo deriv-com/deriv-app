@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import moment from 'moment';
 import { ProposalOpenContract } from '@deriv/api-types';
 import { api_base } from '@deriv/bot-skeleton';
@@ -167,8 +167,33 @@ export default class ServerBotStore {
             initializeLossThresholdWarningData: action,
             setCurrentDurationMinMax: action,
             setSelectedStrategy: action,
+            resetValues: action,
         });
+
+        reaction(
+            () => this.client_store.is_virtual,
+            (is_virtual: boolean) => {
+                if (this?.client_store?.is_logged_in && is_virtual) {
+                    this.resetValues();
+                }
+            }
+        );
     }
+
+    resetValues = () => {
+        this.is_loading_bot_list = true;
+        this.active_bot_id = '';
+        this.bot_list = [];
+        this.active_bot = {
+            status: 'stopped',
+        };
+        this.order = 0;
+        this.transactions = {};
+        this.journal = [];
+        this.subscriptions = {};
+        this.pocs = {};
+        this.should_subscribe = true;
+    };
 
     get performance() {
         let total_runs = 0;
@@ -479,7 +504,7 @@ export default class ServerBotStore {
                         amount: data.stake,
                         basis: 'stake',
                         contract_type: data.type,
-                        currency: this.client_store?.currency || 'USD',
+                        currency: this.client_store?.currency ?? 'USD',
                         duration: data.duration,
                         duration_unit: data.durationtype,
                         symbol: data.symbol,

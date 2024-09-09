@@ -16,7 +16,7 @@ export type TAnnounce = {
     confirm_button_text?: string;
     cancel_button_text?: string;
     base_classname: string;
-    title: string | React.ReactElement;
+    title: React.ReactNode;
     content?: TContentItem[];
     numbered_content?: TContentItem[];
     plain_text?: TContentItem[];

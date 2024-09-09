@@ -173,11 +173,20 @@
 
     .stats-description {
         text-align: left;
-        &__placeholder {
-            height: 220px;
+        &__player-wrapper {
+            position: relative;
             width: 100%;
-            background-color: var(--core-color-opacity-black-100);
+            padding-top: 56.25%; // 16:9 aspect ratio (9/16 = 0.5625 or 56.25%)
+            overflow: hidden;
+            &__player {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
         }
+
         &__content {
             margin: var(--core-spacing-1200);
             &__title {

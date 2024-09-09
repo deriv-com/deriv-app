@@ -1767,8 +1767,7 @@ export default class ClientStore extends BaseStore {
             ?.match(/[a-zA-Z]+/g)
             ?.join('');
         setTimeout(() => {
-            Analytics.setAttributes({
-                user_id: this.user_id,
+            const analytics_config = {
                 account_type: broker === 'null' ? 'unlogged' : broker,
                 residence_country: this.residence,
                 app_id: String(getAppId()),
@@ -1782,7 +1781,9 @@ export default class ClientStore extends BaseStore {
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,
                 utm_content: ppc_campaign_cookies?.utm_content,
                 domain: window.location.hostname,
-            });
+            };
+            if (this.user_id) analytics_config.user_id = this.user_id;
+            Analytics.setAttributes(analytics_config);
         }, 4);
 
         return {

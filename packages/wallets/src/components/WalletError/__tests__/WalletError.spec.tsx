@@ -3,6 +3,13 @@ import { render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../ModalProvider';
 import WalletError from '../WalletError';
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({
+        isDesktop: true,
+    })),
+}));
+
 const mockModalHide = jest.fn();
 jest.mock('../../ModalProvider', () => ({
     ...jest.requireActual('../../ModalProvider'),

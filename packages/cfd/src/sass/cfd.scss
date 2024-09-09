@@ -97,6 +97,17 @@
             }
         }
     }
+    @include mobile-or-tablet-landscape {
+        .cfd-password-change__content {
+            overflow-y: auto;
+            display: block;
+            .cfd-password-modal__content {
+                max-height: 100%;
+                border-block: 1px solid var(--general-hover);
+                margin-bottom: 0;
+            }
+        }
+    }
 }
 .dc-mobile-dialog__mt5-email-sent {
     padding-bottom: 1rem;

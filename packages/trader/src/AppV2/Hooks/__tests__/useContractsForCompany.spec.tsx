@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react-hooks';
 import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../trader-providers';
 import { WS, getContractCategoriesConfig, getContractTypesConfig, cloneObject } from '@deriv/shared';

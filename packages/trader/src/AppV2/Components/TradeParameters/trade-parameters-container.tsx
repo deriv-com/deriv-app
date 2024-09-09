@@ -1,6 +1,5 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { CSSTransition } from 'react-transition-group';
 import { Text } from '@deriv-com/quill-ui';
 import Guide from '../Guide';
 
@@ -14,22 +13,8 @@ const TradeParametersContainer = ({
     is_minimized,
     is_minimized_visible,
 }: React.PropsWithChildren<TTradeParametersContainer>) =>
-    is_minimized ? (
-        <div className='trade-params--minimized'>
-            <CSSTransition
-                in={is_minimized_visible}
-                timeout={0}
-                classNames={{
-                    appear: 'trade-params__options__wrapper--minimized--enter',
-                    enter: 'trade-params__options__wrapper--minimized--enter',
-                    enterDone: 'trade-params__options__wrapper--minimized--enter-done',
-                    exit: 'trade-params__options__wrapper--minimized--exit',
-                }}
-                unmountOnExit
-            >
-                {children}
-            </CSSTransition>
-        </div>
+    is_minimized && is_minimized_visible ? (
+        <div className='trade-params--minimized'>{children}</div>
     ) : (
         <section className='trade-params'>
             <div className='trade-params__title'>

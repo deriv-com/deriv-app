@@ -48,6 +48,7 @@ const PhoneVerificationPage = observer(() => {
             is_virtual ||
             is_phone_number_verified
         ) {
+            setIsForcedToExitPnv(true);
             history.push(routes.personal_details);
         }
     }, [

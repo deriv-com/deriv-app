@@ -7,7 +7,7 @@ import { OpenLiveChatLink } from '@deriv/components';
 
 export type TContentItem = {
     id: number;
-    text: string | React.ReactElement;
+    text: React.ReactNode;
 };
 
 export type TAnnounce = {

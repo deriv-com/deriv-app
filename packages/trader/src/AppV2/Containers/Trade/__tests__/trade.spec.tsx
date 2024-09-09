@@ -160,4 +160,12 @@ describe('Trade', () => {
 
         expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();
     });
+
+    it('should not render Purchase Button if is_market_closed === true and has_only_forward_starting_contracts === false', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
+        default_mock_store.ui.has_only_forward_starting_contracts = false;
+        render(mockTrade());
+
+        expect(screen.queryByText('Purchase Button')).not.toBeInTheDocument();
+    });
 });

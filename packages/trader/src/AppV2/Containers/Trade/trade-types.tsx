@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Chip, Text, ActionSheet } from '@deriv-com/quill-ui';
 import { DraggableList } from 'AppV2/Components/DraggableList';
@@ -7,7 +7,6 @@ import { getTradeTypesList } from 'AppV2/Utils/trade-types-utils';
 import { checkContractTypePrefix } from 'AppV2/Utils/contract-type';
 import { Localize, localize } from '@deriv/translations';
 import Guide from '../../Components/Guide';
-import { useLocalStorageData } from '@deriv/hooks';
 
 type TTradeTypesProps = {
     onTradeTypeSelect: (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
@@ -47,10 +46,14 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         return result;
     };
 
-    const [saved_pinned_trade_types] = useLocalStorageData<TResultItem[]>('pinned_trade_types', []);
+    const saved_pinned_trade_types_string: string = localStorage.getItem('pinned_trade_types') ?? '[]';
+    const saved_pinned_trade_types: TResultItem[] = useMemo(
+        () => JSON.parse(saved_pinned_trade_types_string),
+        [saved_pinned_trade_types_string]
+    );
 
-    const [other_trade_types, setOtherTradeTypes] = React.useState<TResultItem[]>([]);
-    const [pinned_trade_types, setPinnedTradeTypes] = React.useState<TResultItem[]>(saved_pinned_trade_types || []);
+    const [other_trade_types, setOtherTradeTypes] = useState<TResultItem[]>([]);
+    const [pinned_trade_types, setPinnedTradeTypes] = useState<TResultItem[]>(saved_pinned_trade_types);
 
     const trade_types_array = useMemo(() => createArrayFromCategories(trade_types), [trade_types]);
 
@@ -143,10 +146,10 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         }, 0);
     };
 
-    React.useEffect(() => {
+    const getDefaultTradeTypes = useCallback(() => {
         const sorted_trade_types_array = trade_types_array.sort((a, b) => a.title?.localeCompare(b.title));
 
-        const pinned_items = filterItems(getItems(saved_pinned_trade_types ?? []), sorted_trade_types_array);
+        const pinned_items = filterItems(getItems(saved_pinned_trade_types), sorted_trade_types_array);
 
         if (pinned_items.length === 0) {
             pinned_items.push(...sorted_trade_types_array.slice(0, 5));
@@ -169,11 +172,21 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
             },
         ];
 
+        return {
+            default_pinned_trade_types,
+            default_other_trade_types,
+        };
+    }, [saved_pinned_trade_types, trade_types_array]);
+
+    useEffect(() => {
+        const { default_pinned_trade_types, default_other_trade_types } = getDefaultTradeTypes();
+
+        localStorage.setItem('pinned_trade_types', JSON.stringify(default_pinned_trade_types));
         setPinnedTradeTypes(default_pinned_trade_types);
         setOtherTradeTypes(default_other_trade_types);
-    }, [trade_types_array]);
+    }, [getDefaultTradeTypes]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         scrollToSelectedTradeType();
     }, []);
 
@@ -192,6 +205,14 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         setIsOpen(false);
     };
 
+    const handleOpenActionSheet = () => {
+        const { default_pinned_trade_types, default_other_trade_types } = getDefaultTradeTypes();
+        setPinnedTradeTypes(default_pinned_trade_types);
+        setOtherTradeTypes(default_other_trade_types);
+
+        setIsOpen(true);
+    };
+
     const isTradeTypeSelected = (value: string) =>
         checkContractTypePrefix([contract_type, value]) || contract_type === value;
 
@@ -203,7 +224,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     };
 
     const getTradeTypeChips = () => {
-        const pinned_items = pinned_trade_types[0]?.items ?? [];
+        const pinned_items = saved_pinned_trade_types[0]?.items ?? [];
         const is_contract_type_in_pinned = pinned_items.some(item => item.id === contract_type);
 
         const other_item = !is_contract_type_in_pinned
@@ -226,7 +247,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                 </Chip.Selectable>
             ))}
             {should_show_view_all && (
-                <button key='trade-types-all' onClick={() => setIsOpen(true)} className='trade__trade-types-header'>
+                <button key='trade-types-all' onClick={handleOpenActionSheet} className='trade__trade-types-header'>
                     <Text size='sm' bold underlined>
                         {<Localize i18n_default_text='View all' />}
                     </Text>

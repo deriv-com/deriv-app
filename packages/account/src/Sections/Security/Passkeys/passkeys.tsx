@@ -56,8 +56,6 @@ const Passkeys = observer(() => {
 
     const [passkey_status, setPasskeyStatus] = useState<TPasskeysStatus>(PASSKEY_STATUS_CODES.LIST);
     const [is_reminder_modal_open, setIsReminderModalOpen] = useState(false);
-    // TODO: remove this useState when verification page is implemented
-    const [is_remove_confirmation_modal_open, setIsRemoveConfirmationModalOpen] = useState(false);
     const [is_error_modal_open, setIsErrorModalOpen] = useState(false);
     const [is_snackbar_open, setIsSnackbarOpen] = useState(false);
     const [current_managed_passkey, setCurrentManagedPasskey] = useState<TCurrentManagedPasskey>({

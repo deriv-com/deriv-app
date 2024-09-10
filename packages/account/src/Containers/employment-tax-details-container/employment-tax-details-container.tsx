@@ -113,7 +113,7 @@ const EmploymentTaxDetailsContainer = ({
     const should_show_no_tax_details_checkbox =
         !is_tin_autoset &&
         ((tin_employment_status_bypass?.includes(values.employment_status) && !!values.tax_residence) ||
-            values.tin_skipped);
+            Boolean(values.tin_skipped));
 
     const isFieldDisabled = (field_name: string) =>
         isFieldImmutable(field_name, editable_fields) || !!values.tin_skipped;

@@ -6,10 +6,11 @@ import TraderProviders from '../../../../trader-providers';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import Trade from '../trade';
 import { TRADE_TYPES, redirectToLogin } from '@deriv/shared';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Router } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { useSignupHandler } from 'AppV2/Hooks/useSignUpHandler';
 import { renderHook } from '@testing-library/react-hooks';
+import { createMemoryHistory } from 'history';
 
 const mock_contract_data = {
     contracts_for_company: {
@@ -70,6 +71,7 @@ jest.mock('AppV2/Hooks/useSignUpHandler');
 describe('Trade', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
 
+    const history = createMemoryHistory();
     beforeEach(() => {
         default_mock_store = mockStore({
             modules: {
@@ -119,7 +121,7 @@ describe('Trade', () => {
 
     const mockTrade = () => {
         return (
-            <BrowserRouter>
+            <Router history={history}>
                 <TraderProviders store={default_mock_store}>
                     <ReportsStoreProvider>
                         <ModulesProvider store={default_mock_store}>
@@ -127,7 +129,7 @@ describe('Trade', () => {
                         </ModulesProvider>
                     </ReportsStoreProvider>
                 </TraderProviders>
-            </BrowserRouter>
+            </Router>
         );
     };
 
@@ -219,7 +221,7 @@ describe('Trade', () => {
 
         const depositButton = screen.getByText('Deposit now');
         userEvent.click(depositButton);
-        expect(mockHistoryPush).toHaveBeenCalled();
+        expect(history.location.pathname).toBe('/cashier/deposit');
     });
 
     it('should handle login when Login button is clicked', () => {

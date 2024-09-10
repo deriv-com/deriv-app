@@ -57,6 +57,11 @@
 
         &-banner {
             background-color: rgba(75, 180, 179, 0.16);
+            animation-name: animate-verified-message;
+            animation-duration: 0.2s;
+            animation-fill-mode: forwards;
+            animation-delay: 2.5s;
+            transition: opacity 1s ease;
         }
 
         &-onfido-container {

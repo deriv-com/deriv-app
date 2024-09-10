@@ -15,7 +15,7 @@
             align-items: center;
 
             &-text {
-                color: var(--core-color-solid-slate-50);
+                color: var(--component-textIcon-static-prominentDark);
             }
         }
     }
@@ -57,7 +57,7 @@
     &--bounce {
         height: var(--core-spacing-3200);
         width: var(--core-spacing-2400);
-        fill: var(--core-color-solid-slate-50);
+        fill: var(--component-textIcon-static-prominentDark);
         animation: bounce var(--core-motion-duration-400) ease-in-out var(--core-motion-duration-100) infinite;
     }
 }

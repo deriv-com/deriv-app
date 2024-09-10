@@ -49,9 +49,7 @@ const useActiveSymbols = () => {
     const { barrier_category } = (available_contract_types?.[contract_type]?.config || {}) as any;
 
     const isQueryEnabled = useCallback(() => {
-        if (!available_contract_types) return false;
-        if (is_contracts_loading_ref.current) return false;
-        if (is_switching) return false;
+        if (!available_contract_types || is_contracts_loading_ref.current || is_switching) return false;
         return true;
     }, [available_contract_types, is_switching, is_contracts_loading_ref]);
 
@@ -105,11 +103,11 @@ const useActiveSymbols = () => {
                         ? symbol
                         : (await pickDefaultSymbol(active_symbols)) || '1HZ100V';
 
+                    default_symbol_ref.current = new_symbol;
                     setActiveSymbols(active_symbols);
                     setActiveSymbolsV2(active_symbols);
                     setTradeURLParams({ symbol: new_symbol });
                     checkSymbolChange(new_symbol);
-                    default_symbol_ref.current = new_symbol;
                 }
             };
             process();

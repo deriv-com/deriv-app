@@ -53,11 +53,17 @@ describe('useContractsForCompany', () => {
             type_2: { trade_types: ['type_2'], title: 'Type 2', barrier_count: 1 },
         });
 
-        invalidateDTraderCache(['contracts_for_company']);
-
         (cloneObject as jest.Mock).mockImplementation(obj => JSON.parse(JSON.stringify(obj)));
 
         jest.clearAllMocks();
+    });
+
+    afterEach(() => {
+        invalidateDTraderCache([
+            'contracts_for_company',
+            mocked_store.client.loginid ?? '',
+            mocked_store.client.landing_company_shortcode,
+        ]);
     });
 
     it('should fetch and set contract types for the company successfully', async () => {

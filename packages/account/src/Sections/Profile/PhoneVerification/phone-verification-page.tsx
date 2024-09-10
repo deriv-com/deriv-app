@@ -99,7 +99,6 @@ const PhoneVerificationPage = observer(() => {
             <VerificationLinkExpiredModal
                 should_show_verification_link_expired_modal={should_show_verification_link_expired_modal}
                 setShouldShowVerificationLinkExpiredModal={setShouldShowVerificationLinkExpiredModal}
-                setIsForcedToExitPnv={setIsForcedToExitPnv}
             />
             {!should_show_verification_link_expired_modal && <SessionTimeoutModal />}
             <CancelPhoneVerificationModal />

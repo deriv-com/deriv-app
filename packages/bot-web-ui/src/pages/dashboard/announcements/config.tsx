@@ -197,7 +197,7 @@ export const BOT_ANNOUNCEMENTS_LIST: TAnnouncementItem[] = [
         icon: IconAnnounce,
         title: localize('Accumulators is now on Deriv Bot'),
         message: localize('Boost your trading strategy with Accumulators.'),
-        date: '20 July 2024 00:00 UTC',
+        date: '2 July 2024 00:00 UTC',
         buttonAction: BUTTON_ACTION_TYPE.MODAL_BUTTON_ACTION,
         actionText: '',
     },

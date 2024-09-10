@@ -141,7 +141,7 @@ describe('Trade', () => {
 
     it('should render AccumulatorStats if is_accumulator === true', () => {
         default_mock_store.modules.trade.is_accumulator = true;
-        render(mockTrade());
+        mockTrade();
 
         expect(screen.getByText('AccumulatorStats')).toBeInTheDocument();
     });

@@ -63,9 +63,11 @@ const DurationActionSheetContainer = observer(
                 if (value !== 'h') {
                     setSelectedHour([]);
                 }
-                setTimeout(() => {
+                const timeoutId = setTimeout(() => {
                     setIsWheelPickerLoading(false);
                 }, 500);
+
+                return () => clearTimeout(timeoutId);
             },
             [setUnit, setSelectedHour]
         );

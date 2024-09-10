@@ -35,11 +35,11 @@ $BOTTOM_NAV_HEIGHT: var(--core-spacing-2800);
 
             .user-guide__anchor {
                 position: absolute;
-                height: var(--core-size-2500);
+                height: var(--core-size-3200);
                 width: var(--core-size-4600);
                 left: 50%;
                 top: 50%;
-                transform: translate(-50%, -50%);
+                transform: translate(-50%, -70%);
             }
         }
     }

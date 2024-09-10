@@ -23,8 +23,14 @@ const useFreshChat = () => {
                 window.fcWidget.on('widget:loaded', async () => {
                     setIsReady(true);
                     if (is_logged_in && loginid) {
-                        const res = await window.fcWidget.user.getUUID();
-                        const uuid = res.data.uuid;
+                        let uuid = '';
+                        try {
+                            const res = await window.fcWidget.user.getUUID();
+                            uuid = res.data.uuid;
+                        } catch (error) {
+                            // eslint-disable-next-line no-console
+                            console.log('something wrong with UUID. Error = ', error);
+                        }
 
                         const token = await getFreshworksToken({
                             freshchat_uuid: uuid,

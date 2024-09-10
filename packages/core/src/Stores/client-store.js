@@ -81,6 +81,7 @@ export default class ClientStore extends BaseStore {
     device_data = {};
     is_authorize = false;
     is_logging_in = false;
+    is_client_initialized = false;
     has_logged_out = false;
     is_landing_company_loaded = false;
     is_account_setting_loaded = false;
@@ -203,6 +204,7 @@ export default class ClientStore extends BaseStore {
             device_data: observable,
             is_authorize: observable,
             is_logging_in: observable,
+            is_client_initialized: observable,
             has_logged_out: observable,
             is_landing_company_loaded: observable,
             is_account_setting_loaded: observable,
@@ -359,6 +361,7 @@ export default class ClientStore extends BaseStore {
             setAccountStatus: action.bound,
             updateAccountStatus: action.bound,
             setInitialized: action.bound,
+            setIsClientInitialized: action.bound,
             cleanUp: action.bound,
             logout: action.bound,
             setLogout: action.bound,
@@ -1663,6 +1666,7 @@ export default class ClientStore extends BaseStore {
             window.location.href.replace(`${search}`, excludeParamsFromUrlQuery(search, unused_params))
         );
 
+        this.setIsClientInitialized();
         return true;
     }
 
@@ -1973,6 +1977,10 @@ export default class ClientStore extends BaseStore {
             this.accounts[this.loginid].email = email;
             this.email = email;
         }
+    }
+
+    setIsClientInitialized() {
+        this.is_client_initialized = true;
     }
 
     setAccountSettings(settings) {

@@ -70,6 +70,16 @@ const ContractTypeWidget = observer(
             };
         }, [handleClickOutside]);
 
+        React.useEffect(() => {
+            if (typeof is_dialog_open === 'boolean') {
+                Analytics.trackEvent('ce_trade_types_form', {
+                    action: is_dialog_open ? 'open' : 'close',
+                    form_source: 'contract_set_up_form',
+                    form_name: 'default',
+                });
+            }
+        }, [is_dialog_open]);
+
         const handleCategoryClick: React.ComponentProps<typeof ContractType.Dialog>['onCategoryClick'] = ({ key }) => {
             if (key) setSelectedCategory(key);
         };

@@ -317,13 +317,6 @@ export default class TradeStore extends BaseStore {
     is_trade_params_expanded = true;
     wheel_picker_initial_values: TWheelPickerInitialValues = {};
 
-    debouncedSendTradeParamsAnalytics = debounce((payload: TEvents['ce_contracts_set_up_form']) => {
-        if (payload.action === 'change_parameter_value') {
-            const { duration_type, parameter_value } = payload;
-            if (!duration_type && parameter_value === '') return;
-        }
-        Analytics.trackEvent('ce_contracts_set_up_form', payload);
-    }, 2000);
     debouncedSetChartStatus = debounce((status: boolean) => {
         runInAction(() => {
             this.is_chart_loading = status;
@@ -514,7 +507,6 @@ export default class TradeStore extends BaseStore {
             resetAccumulatorData: action.bound,
             resetErrorServices: action.bound,
             resetPreviousSymbol: action.bound,
-            sendTradeParamsAnalytics: action.bound,
             setActiveSymbols: action.bound,
             setActiveSymbolsV2: action.bound,
             setBarrierChoices: action.bound,
@@ -1106,24 +1098,6 @@ export default class TradeStore extends BaseStore {
                                     status: 'open',
                                 });
                             }
-                            if (
-                                !this.root_store.ui.is_mobile &&
-                                (this.basis_list.length > 1 || this.duration_units_list.length > 1)
-                            ) {
-                                const durationMode =
-                                    this.root_store.ui.is_advanced_duration && this.expiry_type
-                                        ? this.expiry_type
-                                        : ANALYTICS_DURATIONS.find(value => value.startsWith(this.duration_unit)) ?? '';
-                                this.sendTradeParamsAnalytics({
-                                    action: 'run_contract',
-                                    ...(this.duration_units_list.length && durationMode
-                                        ? { switcher_duration_mode_name: durationMode }
-                                        : {}),
-                                    ...(this.basis_list.length > 1 && this.basis
-                                        ? { switcher_stakepayout_mode_name: this.basis }
-                                        : {}),
-                                });
-                            }
 
                             this.is_purchasing_contract = false;
                             return;
@@ -1153,28 +1127,6 @@ export default class TradeStore extends BaseStore {
         [].forEach.bind(el_purchase_value, el => {
             (el as HTMLDivElement).classList.add('trade-container__price-info--fade');
         })();
-    };
-
-    sendTradeParamsAnalytics = (
-        options: Partial<TEvents['ce_contracts_set_up_form']> & { durationUnit?: string },
-        isDebounced?: boolean
-    ) => {
-        const { durationUnit, ...passThrough } = options;
-        const payload = {
-            ...passThrough,
-            form_name: 'default',
-            trade_type_name: getContractTypesConfig()[this.contract_type]?.title,
-            ...(durationUnit
-                ? {
-                      duration_type: ANALYTICS_DURATIONS.find(value => value.startsWith(durationUnit ?? '')) ?? '',
-                  }
-                : {}),
-        } as TEvents['ce_contracts_set_up_form'];
-        if (isDebounced) {
-            this.debouncedSendTradeParamsAnalytics(payload);
-        } else {
-            Analytics.trackEvent('ce_contracts_set_up_form', payload);
-        }
     };
 
     /**

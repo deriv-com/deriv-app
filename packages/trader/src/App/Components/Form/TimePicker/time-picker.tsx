@@ -34,7 +34,6 @@ const TimePicker = observer(
         validation_errors,
     }: TTimePickerProps) => {
         const { ui } = useStore();
-        const { sendTradeParamsAnalytics } = useTraderStore();
         const { current_focus, setCurrentFocus } = ui;
         const [is_open, setIsOpen] = React.useState(false);
         const [wrapper_ref, setWrapperRef] = React.useState<HTMLDivElement | null>(null);
@@ -54,15 +53,6 @@ const TimePicker = observer(
 
             if (value !== selected_time) {
                 onChange({ target: { name, value } });
-                sendTradeParamsAnalytics(
-                    {
-                        action: 'change_parameter_value',
-                        parameter_field_type: 'time_picker',
-                        parameter_type: 'time_picker',
-                        parameter_value: value,
-                    },
-                    true
-                );
             }
         };
 

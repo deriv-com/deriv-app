@@ -35,11 +35,6 @@
         &--icon {
             cursor: pointer;
         }
-
-        @include mobile {
-            margin-top: 1.6rem;
-            padding-inline-start: 1.6rem;
-        }
     }
 
     &__card {
@@ -61,9 +56,14 @@
             width: 60%;
             margin-top: 2.4rem;
             margin-bottom: 4.4rem;
-            @include mobile {
-                width: 100%;
+            @include mobile-or-tablet-screen {
                 margin-top: 3.2rem;
+            }
+            @include tablet-screen {
+                width: 80%;
+            }
+            @include mobile-screen {
+                width: 100%;
             }
 
             &__livechat {
@@ -106,9 +106,14 @@
                 width: 60%;
                 margin-top: 1.6rem;
                 align-items: flex-start;
-                @include mobile {
-                    width: 100%;
+                @include mobile-or-tablet-screen {
                     gap: 3.2rem;
+                }
+                @include tablet-screen {
+                    width: 80%;
+                }
+                @include mobile-screen {
+                    width: 100%;
                 }
             }
         }

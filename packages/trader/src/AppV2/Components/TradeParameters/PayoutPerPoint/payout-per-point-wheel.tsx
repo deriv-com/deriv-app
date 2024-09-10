@@ -3,7 +3,7 @@ import debounce from 'lodash.debounce';
 import { ActionSheet, Text, WheelPicker } from '@deriv-com/quill-ui';
 import { Skeleton } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-// import type { TV2ParamsInitialValues } from 'Stores/Modules/Trading/trade-store';
+import type { TV2ParamsInitialValues } from 'Stores/Modules/Trading/trade-store';
 
 type TPayoutPerPointWheelProps = {
     barrier?: string | number;
@@ -12,7 +12,7 @@ type TPayoutPerPointWheelProps = {
     payout_per_point_list: {
         value: string;
     }[];
-    // setV2ParamsInitialValues: ({ value, name }: { value: number | string; name: keyof TV2ParamsInitialValues }) => void;
+    setV2ParamsInitialValues: ({ value, name }: { value: number | string; name: keyof TV2ParamsInitialValues }) => void;
 };
 
 const onWheelPickerScrollDebounced = debounce(
@@ -24,21 +24,21 @@ const PayoutPerPointWheel = ({
     barrier,
     current_payout_per_point,
     onPayoutPerPointSelect,
+    setV2ParamsInitialValues,
     payout_per_point_list,
-}: // setV2ParamsInitialValues,
-TPayoutPerPointWheelProps) => {
+}: TPayoutPerPointWheelProps) => {
     const initial_value_ref = React.useRef<string | number>();
     const selected_value_ref = React.useRef<string | number>(current_payout_per_point);
 
     const onSave = () => {
         initial_value_ref.current = selected_value_ref.current;
-        // setV2ParamsInitialValues({ value: selected_value_ref.current, name: 'strike' });
+        setV2ParamsInitialValues({ value: selected_value_ref.current, name: 'payout_per_point' });
     };
 
     React.useEffect(() => {
         if (!initial_value_ref.current && current_payout_per_point) {
             initial_value_ref.current = current_payout_per_point;
-            // setV2ParamsInitialValues({ value: current_payout_per_point, name: 'strike' });
+            setV2ParamsInitialValues({ value: current_payout_per_point, name: 'payout_per_point' });
         }
 
         return () => {

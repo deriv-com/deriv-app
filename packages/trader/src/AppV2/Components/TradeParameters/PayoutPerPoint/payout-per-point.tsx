@@ -20,11 +20,12 @@ const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
     const [is_open, setIsOpen] = React.useState(false);
     const {
         barrier_1,
-        payout_choices,
-        setPayoutPerPoint,
-        // setV2ParamsInitialValues,
-        payout_per_point,
         currency,
+        payout_choices,
+        payout_per_point,
+        setPayoutPerPoint,
+        setV2ParamsInitialValues,
+        v2_params_initial_values,
     } = useTraderStore();
 
     const is_small_screen = isSmallScreen();
@@ -47,7 +48,7 @@ const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
                     }
                     barrier={barrier_1}
                     payout_per_point_list={payout_per_point_list}
-                    // setV2ParamsInitialValues={setV2ParamsInitialValues}
+                    setV2ParamsInitialValues={setV2ParamsInitialValues}
                 />
             ),
         },
@@ -64,13 +65,13 @@ const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
     ];
     const classname = clsx('trade-params__option', is_minimized && 'trade-params__option--minimized');
 
-    // React.useEffect(() => {
-    //     const initial_strike = v2_params_initial_values?.strike;
-    //     if (initial_strike && barrier_1 !== initial_strike) {
-    //         setPayoutPerPoint(initial_strike);
-    //     }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, []);
+    React.useEffect(() => {
+        const initial_payout_per_point = v2_params_initial_values?.payout_per_point;
+        if (initial_payout_per_point && payout_per_point !== initial_payout_per_point) {
+            setPayoutPerPoint(initial_payout_per_point);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     if (!payout_per_point)
         return (

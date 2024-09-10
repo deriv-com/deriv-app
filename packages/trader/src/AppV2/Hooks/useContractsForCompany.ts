@@ -93,6 +93,12 @@ const useContractsForCompany = () => {
     );
 
     useEffect(() => {
+        setAvailableContractTypes(undefined);
+        setContractTypesList([]);
+        is_fetching_ref.current = true;
+    }, [loginid]);
+
+    useEffect(() => {
         try {
             const { contracts_for_company } = response || {};
             const available_contract_types: ReturnType<typeof getContractTypesConfig> = {};
@@ -147,14 +153,6 @@ const useContractsForCompany = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [response]);
-
-    useEffect(() => {
-        if (is_switching) {
-            setAvailableContractTypes(undefined);
-            setContractTypesList([]);
-            is_fetching_ref.current = true;
-        }
-    }, [is_switching]);
 
     return { trade_types, contract_types_list, available_contract_types, is_fetching_ref };
 };

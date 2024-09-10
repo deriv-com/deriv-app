@@ -26,14 +26,15 @@ const Poa: React.FC<TPoaProps> = ({ onCompletion }) => {
         upload: upload_,
     } = usePoa();
     const [errorDocumentUpload, setErrorDocumentUpload] = useState<THooks.DocumentUpload['error']>();
+    const [showLoader, setShowLoader] = useState(true);
 
     useEffect(() => {
         if (isSubmissionSuccess && onCompletion) {
             onCompletion();
         }
-    }, [isSubmissionSuccess, onCompletion]);
 
-    if (isLoading) return <Loader />;
+        setShowLoader(isLoading);
+    }, [isSubmissionSuccess, onCompletion, isLoading]);
 
     const upload = async (values: FormikValues) => {
         try {
@@ -42,6 +43,8 @@ const Poa: React.FC<TPoaProps> = ({ onCompletion }) => {
             setErrorDocumentUpload((error as THooks.DocumentUpload).error);
         }
     };
+
+    if (showLoader) return <Loader />;
 
     return (
         <Formik

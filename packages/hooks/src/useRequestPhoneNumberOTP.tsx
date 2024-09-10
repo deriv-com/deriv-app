@@ -111,6 +111,12 @@ const useRequestPhoneNumberOTP = () => {
                     />
                 );
                 break;
+            case 'InvalidPhone':
+                setIsDisabledRequestButton(false);
+                setErrorMessage(
+                    <Localize i18n_default_text='Enter a valid phone number, including the country code (e.g. +15417541234).' />
+                );
+                break;
             default:
                 setErrorMessage(message);
                 break;

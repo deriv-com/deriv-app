@@ -13,7 +13,7 @@ const useFreshChat = () => {
 
     const [isReady, setIsReady] = useState(false);
     const { client } = useStore();
-    const { getFreshworksToken, is_logged_in } = client;
+    const { getFreshworksToken, is_logged_in, loginid, email, account_settings, currency, residence, user_id } = client;
 
     const setDefaultSettings = () => {
         window.fcWidgetMessengerConfig = {
@@ -28,8 +28,17 @@ const useFreshChat = () => {
             onInit() {
                 window.fcWidget.on('widget:loaded', async () => {
                     setIsReady(true);
-                    if (is_logged_in) {
-                        const token = await getFreshworksToken();
+                    if (is_logged_in && loginid) {
+                        const token = await getFreshworksToken({
+                            freshchat_uuid: window.fcWidget.user.getUUID(),
+                            user_id,
+                            email,
+                            first_name: account_settings.first_name ?? '',
+                            last_name: account_settings.last_name ?? '',
+                            loginid,
+                            currency,
+                            residence,
+                        });
                         window.fcWidget.authenticate(token);
                         // window.fcWidget.user.setProperties({ cf_user_jwt: token });
                     }

@@ -13,6 +13,7 @@ declare global {
         fcWidget: {
             user: {
                 setProperties: (values) => void;
+                getUUID: () => string;
             };
             show: VoidFunction;
             hide: VoidFunction;

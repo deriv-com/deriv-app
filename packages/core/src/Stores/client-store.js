@@ -2907,8 +2907,8 @@ export default class ClientStore extends BaseStore {
         return this.account_time_of_closure && this.residence && this.residence === 'sn';
     }
 
-    async getFreshworksToken() {
-        const response = await WS.authorized.getServiceToken('freshworks');
+    async getFreshworksToken(extra_fields) {
+        const response = await WS.authorized.getServiceToken('freshworks_auth_jwt', undefined, { extra_fields });
 
         if (!response.error) {
             const { freshworks } = response.service_token;

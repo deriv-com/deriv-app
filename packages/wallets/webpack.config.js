@@ -48,7 +48,6 @@ module.exports = function (env) {
                 '@deriv-com/translations': '@deriv-com/translations',
                 '@deriv-com/utils': '@deriv-com/utils',
                 classnames: true,
-                moment: 'moment',
                 react: true,
                 'react-dom': true,
                 'react-router-dom': true,
@@ -208,9 +207,6 @@ module.exports = function (env) {
             }),
         ],
         resolve: {
-            alias: {
-                moment: path.resolve(__dirname, 'node_modules/moment'),
-            },
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
     };

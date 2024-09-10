@@ -14,7 +14,10 @@ const GuideContainer = ({ should_run, onFinishGuide }: TGuideContainerProps) => 
     const [step_index, setStepIndex] = React.useState(0);
 
     const callbackHandle = (data: CallBackProps) => {
-        const { status } = data;
+        const { status, step, index } = data;
+        if (index === 0) {
+            step.disableBeacon = true;
+        }
         const finished_statuses: TFinishedStatuses = [STATUS.FINISHED, STATUS.SKIPPED];
 
         if (finished_statuses.includes(status)) onFinishGuide();

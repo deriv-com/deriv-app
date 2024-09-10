@@ -7,6 +7,7 @@ import { TransactionStatus } from '../TransactionStatus';
 import DepositCryptoAddress from './components/DepositCryptoAddress/DepositCryptoAddress';
 import DepositCryptoCurrencyDetails from './components/DepositCryptoCurrencyDetails/DepositCryptoCurrencyDetails';
 import DepositCryptoDisclaimers from './components/DepositCryptoDisclaimers/DepositCryptoDisclaimers';
+import DepositCryptoInfoNotice from './components/DepositCryptoInfoNotice/DepositCryptoInfoNotice';
 import DepositCryptoTryFiatOnRamp from './components/DepositCryptoTryFiatOnRamp/DepositCryptoTryFiatOnRamp';
 import './DepositCrypto.scss';
 
@@ -24,6 +25,7 @@ const DepositCrypto = () => {
         <div className='wallets-deposit-crypto'>
             <div className='wallets-deposit-crypto__side-pane' />
             <div className='wallets-deposit-crypto__main-content'>
+                <DepositCryptoInfoNotice />
                 <DepositCryptoCurrencyDetails />
                 <DepositCryptoAddress depositCryptoAddress={depositCryptoAddress} />
                 <DepositCryptoDisclaimers />

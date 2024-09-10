@@ -625,6 +625,7 @@ export type TClientStore = {
     freshworks_token: string;
     getFreshworksToken: (extra_fields: Record<string, string>) => Promise<string>;
     setFreshworksToken: (token: string) => void;
+    user_id: string;
 };
 
 type TCommonStoreError = {

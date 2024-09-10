@@ -316,6 +316,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             freshworks_token: '',
             getFreshworksToken: jest.fn(),
             setFreshworksToken: jest.fn(),
+            user_id: '',
         },
         common: {
             error: common_store_error,

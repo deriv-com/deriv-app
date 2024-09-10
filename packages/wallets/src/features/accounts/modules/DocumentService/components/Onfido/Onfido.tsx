@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { Formik, FormikValues } from 'formik';
 import { useOnfido } from '@deriv/api-v2';
+import { TSocketError } from '@deriv/api-v2/types';
 import { LegacyArrowLeft2pxIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Loader, Text } from '@deriv-com/ui';
@@ -18,8 +19,9 @@ const Onfido: React.FC<TOnfidoProps> = ({ onClickBack, onCompletion }) => {
     const { localize } = useTranslations();
     const { data: onfidoData, isLoading: isOnfidoLoading } = useOnfido();
     const { hasSubmitted: isOnfidoSubmissionSuccessful, onfidoContainerId } = onfidoData;
+    const [errorVerifyPersonalDetails, setErrorVerifyPersonalDetails] =
+        useState<TSocketError<'set_settings'>['error']>();
     const {
-        error: errorPersonalDetails,
         initialValues: initialPersonalDetailsValues,
         isLoading: isPersonalDetailsDataLoading,
         isSubmitted: isPersonalDetailsSubmitted,
@@ -34,8 +36,12 @@ const Onfido: React.FC<TOnfidoProps> = ({ onClickBack, onCompletion }) => {
         }
     }, [isOnfidoSubmissionSuccessful, isPersonalDetailsSubmitted, onCompletion]);
 
-    const onSubmit = (values: FormikValues) => {
-        submitPersonalDetails(values);
+    const onSubmit = async (values: FormikValues) => {
+        try {
+            await submitPersonalDetails(values);
+        } catch (error) {
+            setErrorVerifyPersonalDetails(error as TSocketError<'set_settings'>['error']);
+        }
     };
 
     if (isLoading) return <Loader />;
@@ -54,7 +60,12 @@ const Onfido: React.FC<TOnfidoProps> = ({ onClickBack, onCompletion }) => {
                 {!isPersonalDetailsSubmitted && (
                     <Formik initialValues={initialPersonalDetailsValues} onSubmit={onSubmit}>
                         {({ handleSubmit }) => {
-                            return <VerifyPersonalDetails error={errorPersonalDetails} onVerification={handleSubmit} />;
+                            return (
+                                <VerifyPersonalDetails
+                                    error={errorVerifyPersonalDetails}
+                                    onVerification={handleSubmit}
+                                />
+                            );
                         }}
                     </Formik>
                 )}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
+import { TSocketError } from '@deriv/api-v2/types';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import { FormDropdown, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
@@ -35,7 +36,6 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
         submit: submitIDVDetails,
     } = useIDVService();
     const {
-        error: errorPersonalDetails,
         initialValues: initialPersonalDetailsValues,
         isLoading: isPersonalDetailsDataLoading,
         isSubmitted: isPersonalDetailsSubmitted,
@@ -43,17 +43,23 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
         submit: submitPersonalDetails,
     } = useVerifyPersonalDetails();
     const [clientHasDocuments, setClientHasDocuments] = useState<boolean>(true);
+    const [errorVerifyPersonalDetails, setErrorVerifyPersonalDetails] =
+        useState<TSocketError<'set_settings'>['error']>();
 
     const isDataLoading = isIDVDataLoading || isPersonalDetailsDataLoading;
     const isSubmitting = isIDVSubmitting && isPersonalDetailsSubmitting;
     const isSubmitted = isIDVSubmitted && isPersonalDetailsSubmitted;
 
-    const errorMessage = previousSubmissionErrorStatus ?? errorIDVDetails ?? errorPersonalDetails;
+    const errorMessage = previousSubmissionErrorStatus ?? errorIDVDetails;
 
-    const submit = (values: TIDVServiceValues & TVerifyPersonalDetailsValues) => {
+    const submit = async (values: TIDVServiceValues & TVerifyPersonalDetailsValues) => {
         if (clientHasDocuments) {
-            submitPersonalDetails(values);
-            submitIDVDetails(values);
+            try {
+                await submitPersonalDetails(values);
+                submitIDVDetails(values);
+            } catch (err) {
+                setErrorVerifyPersonalDetails((err as TSocketError<'set_settings'>).error);
+            }
         } else if (onDocumentNotAvailable) {
             return onDocumentNotAvailable();
         }
@@ -91,9 +97,7 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                     >
                         <div className='wallets-idv-service'>
                             <div className='wallets-idv-service__body'>
-                                {!!errorMessage?.message && (
-                                    <IDVServiceErrorMessage message={localize(errorMessage.message)} />
-                                )}
+                                {!!errorIDVDetails && <IDVServiceErrorMessage error={errorIDVDetails} />}
                                 <div className='wallets-idv-service__title'>
                                     <WalletText weight='bold'>
                                         <Localize i18n_default_text='Identity verification' />
@@ -169,7 +173,7 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                                     </>
                                 )}
                             </div>
-                            {clientHasDocuments && <VerifyPersonalDetails error={errorPersonalDetails} />}
+                            {clientHasDocuments && <VerifyPersonalDetails error={errorVerifyPersonalDetails} />}
                         </div>
                     </ModalStepWrapper>
                 );

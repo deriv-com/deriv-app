@@ -17,7 +17,7 @@ import {
 import './VerifyPersonalDetails.scss';
 
 type TVerifyPersonalDetailsProps = {
-    error?: TSocketError<'get_settings'>['error'] | TSocketError<'set_settings'>['error'];
+    error?: TSocketError<'set_settings'>['error'];
     onVerification?: VoidFunction;
 };
 

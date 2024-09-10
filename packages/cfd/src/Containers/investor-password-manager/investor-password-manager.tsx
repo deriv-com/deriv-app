@@ -1,26 +1,20 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Form, Formik, FieldProps } from 'formik';
-import { PasswordInput, PasswordMeter, Text, Button, Icon } from '@deriv/components';
+import { PasswordInput, PasswordMeter, Text, Button } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getErrorMessages } from '@deriv/shared';
-import { TCFDPasswordSuccessMessage, TInvestorPasswordManager, TPasswordManagerModalFormValues } from './props.types';
+import CFDPasswordSuccessMessage from './cfd-password-success-message';
+import { TMultiStepRefProps, TPasswordManagerModalFormValues } from '../props.types';
 
-const CFDPasswordSuccessMessage = ({ toggleModal, is_investor }: TCFDPasswordSuccessMessage) => (
-    <div className='cfd-password-manager__success'>
-        <Icon icon='IcPasswordUpdated' size={128} />
-        <Text as='p' size='xxs' align='center'>
-            {is_investor ? (
-                <Localize i18n_default_text='Your investor password has been changed.' />
-            ) : (
-                <Localize i18n_default_text='Your password has been changed.' />
-            )}
-        </Text>
-        <Button onClick={toggleModal} className='cfd-password-manager__success-btn' primary large>
-            <p className='dc-btn__text'>{localize('OK')}</p>
-        </Button>
-    </div>
-);
+type TInvestorPasswordManagerProps = {
+    error_message_investor: string;
+    is_submit_success_investor: boolean;
+    multi_step_ref: React.MutableRefObject<TMultiStepRefProps | undefined>;
+    onSubmit: (values: TPasswordManagerModalFormValues) => Promise<void>;
+    setPasswordType: (value: string) => void;
+    toggleModal: () => void;
+    validatePassword: (values: { old_password: string; new_password: string; password_type: string }) => void | object;
+};
 
 const InvestorPasswordManager = ({
     error_message_investor,
@@ -30,7 +24,7 @@ const InvestorPasswordManager = ({
     setPasswordType,
     toggleModal,
     validatePassword,
-}: TInvestorPasswordManager) => {
+}: TInvestorPasswordManagerProps) => {
     if (is_submit_success_investor) {
         return <CFDPasswordSuccessMessage toggleModal={toggleModal} is_investor />;
     }
@@ -133,16 +127,6 @@ const InvestorPasswordManager = ({
             </Formik>
         </div>
     );
-};
-
-InvestorPasswordManager.propTypes = {
-    error_message_investor: PropTypes.string,
-    is_submit_success_investor: PropTypes.bool,
-    multi_step_ref: PropTypes.object,
-    onSubmit: PropTypes.func,
-    setPasswordType: PropTypes.func,
-    toggleModal: PropTypes.func,
-    validatePassword: PropTypes.func,
 };
 
 export default InvestorPasswordManager;

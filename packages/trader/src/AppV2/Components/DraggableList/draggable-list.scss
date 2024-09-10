@@ -9,6 +9,7 @@
 
         &__title {
             font-size: var(--core-fontSize-75);
+            color: var(--component-textIcon-normal-default);
         }
 
         &__left {
@@ -41,6 +42,9 @@
             display: flex;
             justify-content: space-between;
             padding: 0 var(--core-spacing-600) 0 var(--core-spacing-800);
+            &-button {
+                color: var(--component-textIcon-normal-prominent);
+            }
         }
 
         &__droppable-area {

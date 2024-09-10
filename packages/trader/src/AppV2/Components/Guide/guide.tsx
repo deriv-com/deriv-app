@@ -40,7 +40,7 @@ const Guide = observer(({ has_label, show_guide_for_selected_contract }: TGuide)
     return (
         <React.Fragment>
             <Button
-                color='black'
+                color={is_dark_mode_on ? 'white' : 'black'}
                 icon={<LabelPairedPresentationScreenSmRegularIcon key='guide-button-icon' />}
                 onClick={() => setIsDescriptionOpened(true)}
                 variant={has_label ? 'secondary' : 'tertiary'}

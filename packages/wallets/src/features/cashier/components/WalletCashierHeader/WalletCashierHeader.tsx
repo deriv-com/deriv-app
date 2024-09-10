@@ -52,6 +52,11 @@ const getRealAccountTabs = () => {
 const getVirtualAccountTabs = () => {
     const virtualAccountTabs = [
         {
+            icon: <LabelPairedArrowsRotateMdRegularIcon />,
+            path: 'reset-balance',
+            text: <Localize i18n_default_text='Reset Balance' />,
+        },
+        {
             icon: <LabelPairedArrowUpArrowDownMdRegularIcon />,
             path: 'account-transfer',
             text: <Localize i18n_default_text='Transfer' />,
@@ -60,11 +65,6 @@ const getVirtualAccountTabs = () => {
             icon: <LabelPairedSquareListMdRegularIcon />,
             path: 'transactions',
             text: <Localize i18n_default_text='Transactions' />,
-        },
-        {
-            icon: <LabelPairedArrowsRotateMdRegularIcon />,
-            path: 'reset-balance',
-            text: <Localize i18n_default_text='Reset Balance' />,
         },
     ] as const;
 

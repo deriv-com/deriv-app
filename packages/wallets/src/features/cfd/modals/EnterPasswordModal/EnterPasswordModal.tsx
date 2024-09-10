@@ -1,7 +1,7 @@
 import React, { ComponentProps, FC } from 'react';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { useDevice } from '@deriv-com/ui';
-import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components';
+import { Button, useDevice } from '@deriv-com/ui';
+import { ModalStepWrapper, ModalWrapper, WalletButtonGroup } from '../../../../components';
 import { PlatformDetails } from '../../constants';
 import { EnterPassword } from '../../screens';
 import './EnterPasswordModal.scss';
@@ -22,7 +22,7 @@ const EnterPasswordModal: FC<ComponentProps<typeof EnterPassword>> = ({
     const { localize } = useTranslations();
 
     const title = localize('Enter your {{platformTitle}} password', { platformTitle: PlatformDetails[platform].title });
-    const buttonSize = isDesktop ? 'md' : 'lg';
+    const buttonTextSize = isDesktop ? 'md' : 'sm';
 
     if (isDesktop) {
         return (
@@ -52,24 +52,28 @@ const EnterPasswordModal: FC<ComponentProps<typeof EnterPassword>> = ({
                 return (
                     <div className='wallets-password-modal__footer'>
                         <WalletButtonGroup isFullWidth>
-                            <WalletButton
+                            <Button
+                                borderWidth='sm'
+                                color='black'
                                 isFullWidth
                                 isLoading={isForgotPasswordLoading}
                                 onClick={onSecondaryClick}
-                                size={buttonSize}
+                                size='lg'
+                                textSize={buttonTextSize}
                                 variant='outlined'
                             >
                                 <Localize i18n_default_text='Forgot password?' />
-                            </WalletButton>
-                            <WalletButton
+                            </Button>
+                            <Button
                                 disabled={!password || isLoading}
                                 isFullWidth
                                 isLoading={isLoading}
                                 onClick={onPrimaryClick}
-                                size={buttonSize}
+                                size='lg'
+                                textSize={buttonTextSize}
                             >
                                 <Localize i18n_default_text='Add account' />
-                            </WalletButton>
+                            </Button>
                         </WalletButtonGroup>
                     </div>
                 );
@@ -81,6 +85,7 @@ const EnterPasswordModal: FC<ComponentProps<typeof EnterPassword>> = ({
                     isForgotPasswordLoading={isForgotPasswordLoading}
                     isLoading={isLoading}
                     marketType={marketType}
+                    modalTitle={title}
                     onPasswordChange={onPasswordChange}
                     onPrimaryClick={onPrimaryClick}
                     onSecondaryClick={onSecondaryClick}

@@ -27,7 +27,14 @@ const TradingPlatformStatus: React.FC<TradingPlatformStatusModalProps> = ({ isSe
                 <Text size='sm'>{content}</Text>
             </div>
             <div className='wallets-server-maintenance__footer'>
-                <Button color='black' onClick={() => hide()} size={isDesktop ? 'md' : 'sm'} variant='outlined'>
+                <Button
+                    borderWidth='sm'
+                    color='black'
+                    onClick={() => hide()}
+                    size={isDesktop ? 'md' : 'lg'}
+                    textSize='sm'
+                    variant='outlined'
+                >
                     {localize('OK')}
                 </Button>
             </div>

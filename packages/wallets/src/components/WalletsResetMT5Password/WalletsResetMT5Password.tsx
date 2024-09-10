@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordReset } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Text, useDevice } from '@deriv-com/ui';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 import { CFD_PLATFORMS, PlatformDetails } from '../../features/cfd/constants';
 import { TPlatforms } from '../../types';
 import { validPassword, validPasswordMT5 } from '../../utils/password-validation';
-import { ModalStepWrapper, WalletButton, WalletPasswordFieldLazy } from '../Base';
+import { ModalStepWrapper, WalletPasswordFieldLazy } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletError } from '../WalletError';
 import WalletsErrorMT5InvestorPassword from './WalletsErrorMT5InvestorPassword';
@@ -103,9 +103,9 @@ const WalletsResetMT5Password = ({
             show(
                 <WalletsErrorMT5InvestorPassword
                     actionButtons={
-                        <WalletButton isFullWidth={!isDesktop} onClick={hide}>
+                        <Button isFullWidth={!isDesktop} onClick={hide} textSize='sm'>
                             <Localize i18n_default_text='Ok' />
-                        </WalletButton>
+                        </Button>
                     }
                     errorMessage={changeInvestorPasswordError?.error?.message}
                     title={title}
@@ -116,20 +116,28 @@ const WalletsResetMT5Password = ({
     }, [platform, title, actionParams, isChangeInvestorPasswordSuccess, isChangeInvestorPasswordError]);
 
     const renderButtons = () => (
-        <div className='wallets-reset-mt5-password__footer'>
-            <WalletButton isFullWidth={!isDesktop} onClick={() => hide()} size='lg' variant='outlined'>
+        <div className={'wallets-reset-mt5-password__footer'}>
+            <Button
+                color='black'
+                isFullWidth={!isDesktop}
+                onClick={() => hide()}
+                size='lg'
+                textSize='sm'
+                variant='outlined'
+            >
                 <Localize i18n_default_text='Cancel' />
-            </WalletButton>
-            <WalletButton
+            </Button>
+            <Button
                 disabled={isMT5 ? !validPasswordMT5(password) : !validPassword(password)}
                 isFullWidth={!isDesktop}
                 isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
                 onClick={handleSubmit}
                 size='lg'
+                textSize='sm'
                 variant='contained'
             >
                 <Localize i18n_default_text='Create' />
-            </WalletButton>
+            </Button>
         </div>
     );
 
@@ -138,7 +146,7 @@ const WalletsResetMT5Password = ({
             renderFooter={!isDesktop ? renderButtons : undefined}
             shouldHideFooter={isDesktop}
             shouldHideHeader={isDesktop}
-            title={localize('Manage {{title}} password', { localize })}
+            title={localize('Manage {{title}} password', { title })}
         >
             <div className='wallets-reset-mt5-password'>
                 <Text align={isDesktop ? 'left' : 'center'} weight='bold'>

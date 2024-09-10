@@ -40,8 +40,9 @@
     .timer {
         background-color: var(--core-color-opacity-black-75);
 
+        &,
         .dc-remaining-time {
-            font-size: unset;
+            font-size: var(--core-fontSize-50);
         }
     }
     .status-and-profit {
@@ -86,14 +87,17 @@
         button {
             all: unset;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             width: var(--core-size-3600);
             height: 100%;
             cursor: pointer;
 
-            .label {
+            .label,
+            .dc-remaining-time {
                 color: var(--core-color-solid-slate-50);
+                font-size: var(--core-fontSize-50);
             }
             &:disabled:not(.loading) {
                 background-color: var(--core-color-opacity-black-200);
@@ -137,7 +141,7 @@
     }
     &.lost {
         .profit {
-            color: var(--core-color-solid-red-600);
+            color: var(--core-color-solid-red-700);
         }
         button:not(:disabled),
         button.loading {
@@ -150,7 +154,7 @@
     }
     &.won {
         .profit {
-            color: var(--core-color-solid-green-600);
+            color: var(--core-color-solid-green-700);
         }
         button:not(:disabled),
         button.loading {

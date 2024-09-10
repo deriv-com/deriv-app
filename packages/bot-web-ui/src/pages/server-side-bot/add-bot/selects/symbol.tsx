@@ -28,11 +28,11 @@ const MarketOption: React.FC<TMarketOption> = ({ symbol }) => (
 );
 
 const SymbolSelect: React.FC = () => {
-    const { quick_strategy } = useDBotStore();
+    const { server_bot } = useDBotStore();
     const {
         ui: { is_desktop },
     } = useStore();
-    const { setValue } = quick_strategy;
+    const { setValue } = server_bot;
     const [active_symbols, setActiveSymbols] = React.useState<TSymbol[]>([]);
     const [is_input_started, setIsInputStarted] = useState(false);
     const [input_value, setInputValue] = useState({ text: '', value: '' });

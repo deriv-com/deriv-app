@@ -10,9 +10,9 @@ import {
     useVerifyEmail,
 } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { useDevice } from '@deriv-com/ui';
+import { Button, useDevice } from '@deriv-com/ui';
 import { SentEmailContent, WalletError } from '../../../../components';
-import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components/Base';
+import { ModalStepWrapper, ModalWrapper } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
@@ -191,7 +191,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         if (isMT5PasswordNotSet)
             return (
                 <div className='wallets-mt5-password-modal__footer'>
-                    <WalletButton
+                    <Button
                         disabled={
                             !password ||
                             createMT5AccountLoading ||
@@ -202,9 +202,10 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                         isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                         onClick={onSubmit}
                         size='lg'
+                        textSize={isDesktop ? 'md' : 'sm'}
                     >
                         <Localize i18n_default_text='Create {{mt5Title}} password' values={{ mt5Title }} />
-                    </WalletButton>
+                    </Button>
                 </div>
             );
 
@@ -227,6 +228,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         createMT5AccountLoading,
         createMT5AccountSuccess,
         isDemo,
+        isDesktop,
         isMT5PasswordNotSet,
         mt5Title,
         onSubmit,

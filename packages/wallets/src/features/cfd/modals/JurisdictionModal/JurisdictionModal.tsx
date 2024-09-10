@@ -1,8 +1,8 @@
 import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { useAvailableMT5Accounts } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Loader, useDevice } from '@deriv-com/ui';
-import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
+import { Button, Loader, useDevice } from '@deriv-com/ui';
+import { ModalStepWrapper } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import { DynamicLeverageContext } from '../../components/DynamicLeverageContext';
 import { PlatformDetails } from '../../constants';
@@ -57,13 +57,13 @@ const JurisdictionModal = () => {
         ? undefined
         : () => (
               <div className='wallets-jurisdiction-modal__footer'>
-                  <WalletButton
+                  <Button
                       disabled={!selectedJurisdiction || (selectedJurisdiction !== 'svg' && !isCheckBoxChecked)}
                       isFullWidth={!isDesktop}
                       onClick={() => show(<JurisdictionFlow />)}
                   >
                       <Localize i18n_default_text='Next' />
-                  </WalletButton>
+                  </Button>
               </div>
           );
 

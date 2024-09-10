@@ -3,26 +3,31 @@ import { LegacyWarningIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
 import { ActionScreen, Button, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../Base';
-import WalletButton from '../Base/WalletButton/WalletButton';
 import './WalletError.scss';
 
 type TProps = {
     buttonText?: string;
-    buttonVariant?: ComponentProps<typeof WalletButton>['variant'];
+    buttonVariant?: ComponentProps<typeof Button>['variant'];
     errorMessage: string;
     onClick?: () => void;
     title?: string;
 };
 
 const WalletError: React.FC<TProps> = ({ buttonText, buttonVariant = 'contained', errorMessage, onClick, title }) => {
-    const { isDesktop, isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     return (
         <ModalStepWrapper shouldHideHeader={isDesktop}>
             <div className='wallets-error'>
                 <ActionScreen
                     actionButtons={
-                        <Button isFullWidth={isMobile} onClick={onClick} size='lg' variant={buttonVariant}>
+                        <Button
+                            isFullWidth={!isDesktop}
+                            onClick={onClick}
+                            size='lg'
+                            textSize='md'
+                            variant={buttonVariant}
+                        >
                             {buttonText ?? <Localize i18n_default_text='Try again' />}
                         </Button>
                     }

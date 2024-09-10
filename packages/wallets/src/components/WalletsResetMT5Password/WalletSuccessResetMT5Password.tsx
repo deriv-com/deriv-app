@@ -15,19 +15,19 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
     onClick,
     title,
 }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { localize } = useTranslations();
 
     const renderButtons = (
-        <Button isFullWidth={isMobile} onClick={onClick} size='lg'>
+        <Button isFullWidth={!isDesktop} onClick={onClick} size='lg' textSize='sm'>
             {isInvestorPassword ? localize('Ok') : localize('Done')}
         </Button>
     );
 
     return (
         <ModalStepWrapper
-            renderFooter={isMobile ? () => renderButtons : undefined}
-            shouldHideFooter={!isMobile}
+            renderFooter={isDesktop ? undefined : () => renderButtons}
+            shouldHideFooter={isDesktop}
             title={
                 isInvestorPassword
                     ? localize('Reset {{title}} password', { title })
@@ -36,7 +36,7 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
         >
             <div className='wallets-reset-mt5-password'>
                 <ActionScreen
-                    actionButtons={isMobile ? undefined : renderButtons}
+                    actionButtons={isDesktop ? renderButtons : undefined}
                     description={
                         isInvestorPassword
                             ? localize('Your investor password has been changed.')

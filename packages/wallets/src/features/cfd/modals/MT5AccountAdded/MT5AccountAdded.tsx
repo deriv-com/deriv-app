@@ -2,8 +2,8 @@ import React, { FC, useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useJurisdictionStatus, useMT5AccountsList, usePOA, usePOI } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { useDevice } from '@deriv-com/ui';
-import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components';
+import { Button, useDevice } from '@deriv-com/ui';
+import { ModalStepWrapper, ModalWrapper, WalletButtonGroup } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import {
@@ -62,10 +62,17 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                 return (
                     <div className='wallets-mt5-password-modal__footer'>
                         <WalletButtonGroup isFlex isFullWidth>
-                            <WalletButton onClick={hide} size={buttonSize} variant='outlined'>
+                            <Button
+                                borderWidth='sm'
+                                color='black'
+                                onClick={hide}
+                                size={buttonSize}
+                                textSize='sm'
+                                variant='outlined'
+                            >
                                 <Localize i18n_default_text='Maybe later' />
-                            </WalletButton>
-                            <WalletButton
+                            </Button>
+                            <Button
                                 onClick={() => {
                                     hide();
                                     history.push('/wallet/account-transfer', {
@@ -73,22 +80,23 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                                     });
                                 }}
                                 size={buttonSize}
+                                textSize='sm'
                             >
                                 <Localize i18n_default_text='Transfer funds' />
-                            </WalletButton>
+                            </Button>
                         </WalletButtonGroup>
                     </div>
                 );
             }
             return (
                 <div className='wallets-success-btn'>
-                    <WalletButton isFullWidth onClick={hide} size={buttonSize}>
+                    <Button isFullWidth onClick={hide} size={buttonSize} textSize='sm'>
                         <Localize i18n_default_text='OK' />
-                    </WalletButton>
+                    </Button>
                 </div>
             );
         },
-        [hide, buttonSize, history, addedAccount?.loginid]
+        [hide, isDesktop, history, addedAccount?.loginid]
     );
 
     const renderSuccessDescription = useMemo(() => {

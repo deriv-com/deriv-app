@@ -4,7 +4,6 @@ import { useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { WalletButton } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import TradingPlatformChangePasswordScreens from '../TradingPlatformChangePasswordScreens';
 
@@ -123,7 +122,6 @@ describe('TradingPlatformChangePasswordScreens', () => {
             },
             verify_email: 'test@mail.com',
         });
-        expect(WalletButton).toHaveBeenCalledWith(expect.objectContaining({ textSize: 'md' }), {});
     });
 
     it('calls handleSendEmail when Confirm is clicked and the platform is dxtrade', () => {

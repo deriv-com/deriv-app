@@ -8,8 +8,8 @@ import {
     LabelPairedPlusMdBoldIcon,
 } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
-import { Text, useDevice } from '@deriv-com/ui';
-import { IconButton, WalletButton } from '../Base';
+import { Button, Text, useDevice } from '@deriv-com/ui';
+import { IconButton } from '../Base';
 import './WalletListCardActions.scss';
 
 type TProps = {
@@ -20,8 +20,9 @@ const getWalletHeaderButtons = (localize: ReturnType<typeof useTranslations>['lo
     const buttons = [
         {
             className: isDemo ? 'wallets-mobile-actions-content-icon' : 'wallets-mobile-actions-content-icon--primary',
-            color: isDemo ? 'white' : 'primary',
+            color: isDemo ? 'black' : 'primary',
             icon: isDemo ? <LabelPairedArrowsRotateMdBoldIcon /> : <LabelPairedPlusMdBoldIcon fill='#FFF' />,
+            iconColor: isDemo ? 'white' : 'primary',
             name: isDemo ? 'reset-balance' : 'deposit',
             text: isDemo ? localize('Reset balance') : localize('Deposit'),
             variant: isDemo ? 'outlined' : 'contained',
@@ -29,8 +30,9 @@ const getWalletHeaderButtons = (localize: ReturnType<typeof useTranslations>['lo
         },
         {
             className: 'wallets-mobile-actions-content-icon',
-            color: 'white',
+            color: 'black',
             icon: <LabelPairedMinusMdBoldIcon />,
+            iconColor: 'white',
             name: 'withdrawal',
             text: localize('Withdraw'),
             variant: 'outlined',
@@ -38,8 +40,9 @@ const getWalletHeaderButtons = (localize: ReturnType<typeof useTranslations>['lo
         },
         {
             className: 'wallets-mobile-actions-content-icon',
-            color: 'white',
+            color: 'black',
             icon: <LabelPairedArrowUpArrowDownMdBoldIcon />,
+            iconColor: 'white',
             name: 'account-transfer',
             text: localize('Transfer'),
             variant: 'outlined',
@@ -55,7 +58,7 @@ const getWalletHeaderButtons = (localize: ReturnType<typeof useTranslations>['lo
 
 const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { isDesktop, isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const history = useHistory();
     const { localize } = useTranslations();
 
@@ -66,8 +69,10 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
         return (
             <div className='wallets-header__actions'>
                 {getWalletHeaderButtons(localize, isDemo).map(button => (
-                    <WalletButton
-                        ariaLabel={button.name}
+                    <Button
+                        aria-label={button.name}
+                        borderWidth='sm'
+                        color={button.color}
                         icon={button.icon}
                         key={button.name}
                         onClick={() => {
@@ -77,7 +82,7 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
                         variant={button.variant}
                     >
                         {isActive ? button.text : ''}
-                    </WalletButton>
+                    </Button>
                 ))}
             </div>
         );
@@ -90,15 +95,14 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
                         <IconButton
                             aria-label={button.name}
                             className={button.className}
-                            color={button.color}
+                            color={button.iconColor}
                             icon={button.icon}
                             onClick={() => {
                                 history.push(`/wallet/${button.name}`, { accountsActiveTabIndex });
                             }}
                             size='lg'
                         />
-                        {/* TODO: Update text sizing based on screen sizes on deriv-com/ui package */}
-                        <Text align='center' size={isMobile ? 'sm' : 'xs'} weight={button.weight}>
+                        <Text size='sm' weight={button.text === localize('Deposit') ? 'bold' : 'normal'}>
                             {button.text}
                         </Text>
                     </div>

@@ -1,8 +1,8 @@
 import React, { ComponentProps, FC } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { useDevice } from '@deriv-com/ui';
-import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components';
+import { Button, useDevice } from '@deriv-com/ui';
+import { ModalStepWrapper, ModalWrapper, WalletButtonGroup } from '../../../../components';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess } from '../../screens';
 
@@ -30,18 +30,25 @@ const SuccessModal: FC<TProps> = ({
     const renderButton =
         accountType === 'demo' ? (
             <div className='wallets-success-btn'>
-                <WalletButton isFullWidth onClick={onSecondaryClick} size={buttonSize}>
+                <Button isFullWidth onClick={onSecondaryClick} size={buttonSize} textSize='sm'>
                     <Localize i18n_default_text='OK' />
-                </WalletButton>
+                </Button>
             </div>
         ) : (
             <WalletButtonGroup isFlex isFullWidth>
-                <WalletButton onClick={onSecondaryClick} size={buttonSize} variant='outlined'>
+                <Button
+                    borderWidth='sm'
+                    color='black'
+                    onClick={onSecondaryClick}
+                    size={buttonSize}
+                    textSize='sm'
+                    variant='outlined'
+                >
                     <Localize i18n_default_text='Maybe later' />
-                </WalletButton>
-                <WalletButton onClick={onPrimaryClick} size={buttonSize}>
+                </Button>
+                <Button onClick={onPrimaryClick} size={buttonSize} textSize='sm'>
                     <Localize i18n_default_text='Transfer funds' />
-                </WalletButton>
+                </Button>
             </WalletButtonGroup>
         );
 

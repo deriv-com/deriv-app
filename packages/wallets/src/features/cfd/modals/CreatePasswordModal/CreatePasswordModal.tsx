@@ -1,7 +1,7 @@
 import React, { ComponentProps, FC } from 'react';
 import { Localize } from '@deriv-com/translations';
-import { useDevice } from '@deriv-com/ui';
-import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components';
+import { Button, useDevice } from '@deriv-com/ui';
+import { ModalStepWrapper, ModalWrapper } from '../../../../components';
 import { PlatformDetails } from '../../constants';
 import { CreatePassword } from '../../screens';
 import '../EnterPasswordModal/EnterPasswordModal.scss';
@@ -35,18 +35,19 @@ const CreatePasswordModal: FC<ComponentProps<typeof CreatePassword>> = ({
             renderFooter={() => {
                 return (
                     <div className='wallets-password-modal__footer'>
-                        <WalletButton
+                        <Button
                             disabled={!password || isLoading}
                             isFullWidth
                             isLoading={isLoading}
                             onClick={onPrimaryClick}
-                            size={isDesktop ? 'md' : 'lg'}
+                            size='lg'
+                            textSize={isDesktop ? 'md' : 'sm'}
                         >
                             <Localize
                                 i18n_default_text='Create {{platformTitle}} password'
                                 values={{ platformTitle: PlatformDetails[platform].title }}
                             />
-                        </WalletButton>
+                        </Button>
                     </div>
                 );
             }}

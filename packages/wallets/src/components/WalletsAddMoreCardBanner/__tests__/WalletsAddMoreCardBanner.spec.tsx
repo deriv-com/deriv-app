@@ -20,12 +20,6 @@ type TWalletAddedSuccess = {
     onSecondaryButtonClick: () => void;
 };
 
-type TWalletButton = {
-    children: React.ReactNode;
-    disabled: boolean;
-    onClick: () => void;
-};
-
 jest.mock('@deriv/api-v2', () => ({
     useCreateWallet: jest.fn(),
 }));
@@ -60,14 +54,6 @@ jest.mock('../../WalletAddedSuccess', () => ({
             <button onClick={onPrimaryButtonClick}>Primary</button>
             <button onClick={onSecondaryButtonClick}>Secondary</button>
         </div>
-    ),
-}));
-
-jest.mock('../../Base', () => ({
-    WalletButton: ({ children, disabled, onClick }: TWalletButton) => (
-        <button data-testid='wallet-button' disabled={disabled} onClick={onClick}>
-            {children}
-        </button>
     ),
 }));
 
@@ -118,7 +104,7 @@ describe('WalletsAddMoreCardBanner', () => {
         );
 
         expect(screen.getByTestId('wallet-currency-icon')).toBeInTheDocument();
-        expect(screen.getByTestId('wallet-button')).toHaveTextContent('Add');
+        expect(screen.getByRole('button')).toHaveTextContent('Add');
     });
 
     it('should disable the button when is added is true', () => {
@@ -128,8 +114,8 @@ describe('WalletsAddMoreCardBanner', () => {
             </ModalProvider>
         );
 
-        expect(screen.getByTestId('wallet-button')).toBeDisabled();
-        expect(screen.getByTestId('wallet-button')).toHaveTextContent('Added');
+        expect(screen.getByRole('button')).toBeDisabled();
+        expect(screen.getByRole('button')).toHaveTextContent('Added');
     });
 
     it('should call mutate with correct arguments when add button is clicked', () => {
@@ -139,7 +125,7 @@ describe('WalletsAddMoreCardBanner', () => {
             </ModalProvider>
         );
 
-        fireEvent.click(screen.getByTestId('wallet-button'));
+        fireEvent.click(screen.getByText('Add'));
 
         expect(mockMutate).toHaveBeenCalledWith({ account_type: 'doughflow', currency: 'USD' });
     });

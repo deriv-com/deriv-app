@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { TSocketError } from '@deriv/api-v2/types';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Text, useDevice } from '@deriv-com/ui';
-import { WalletButton, WalletButtonGroup, WalletPasswordFieldLazy, WalletTextField } from '../../../../components';
+import { Button, Text, useDevice } from '@deriv-com/ui';
+import { WalletButtonGroup, WalletPasswordFieldLazy, WalletTextField } from '../../../../components';
 import PasswordViewerIcon from '../../../../components/Base/WalletPasswordField/PasswordViewerIcon';
 import { getPasswordRequirements } from '../../../../constants/password';
 import { validPasswordMT5 } from '../../../../utils/password-validation';
@@ -124,21 +124,25 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
                         </div>
                         <div className='wallets-mt5-reset__footer'>
                             <WalletButtonGroup isFlex isFullWidth={!isDesktop}>
-                                <WalletButton
+                                <Button
+                                    borderWidth='sm'
+                                    color='black'
                                     onClick={sendEmailVerification}
                                     size={walletButtonSizes}
+                                    textSize='sm'
                                     variant='outlined'
                                 >
                                     <Localize i18n_default_text='Forgot password?' />
-                                </WalletButton>
-                                <WalletButton
+                                </Button>
+                                <Button
                                     disabled={!!errors.currentPassword || !validPasswordMT5(values.newPassword)}
                                     isLoading={isLoading}
                                     size={walletButtonSizes}
+                                    textSize='sm'
                                     type='submit'
                                 >
                                     <Localize i18n_default_text='Change my password' />
-                                </WalletButton>
+                                </Button>
                             </WalletButtonGroup>
                         </div>
                     </Form>

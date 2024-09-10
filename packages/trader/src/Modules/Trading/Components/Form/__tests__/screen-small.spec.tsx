@@ -56,8 +56,8 @@ jest.mock('Modules/Trading/Containers/trade-params-mobile', () => ({
     BarrierMobile: jest.fn(() => <div>BarrierMobile</div>),
     LastDigitMobile: jest.fn(() => <div>LastDigitMobile</div>),
 }));
-jest.mock('Modules/Trading/Components/Form/TradeParams/Turbos/barrier-selector', () =>
-    jest.fn(() => <div>BarrierSelector</div>)
+jest.mock('Modules/Trading/Components/Form/TradeParams/Turbos/payout-selector', () =>
+    jest.fn(() => <div>PayoutSelector</div>)
 );
 jest.mock('Modules/Trading/Components/Form/TradeParams/strike', () => jest.fn(() => <div>Strike</div>));
 jest.mock('Modules/Trading/Components/Elements/mobile-widget', () =>
@@ -105,7 +105,7 @@ describe('<ScreenSmall />', () => {
         expect(screen.queryByText(/Digit: 9/i)).not.toBeInTheDocument();
         expect(screen.queryByText(/LastDigitMobile/i)).not.toBeInTheDocument();
         expect(screen.queryByText(/BarrierMobile/i)).not.toBeInTheDocument();
-        expect(screen.queryByText(/BarrierSelector/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/PayoutSelector/i)).not.toBeInTheDocument();
         expect(screen.queryByText(/Strike/i)).not.toBeInTheDocument();
     });
     it('should call function setIsTradeParamsExpanded if MobileWidget was toggled', () => {
@@ -137,14 +137,14 @@ describe('<ScreenSmall />', () => {
         render(mockScreenSmall(mockStore(default_mock_store), default_mock_props));
 
         expect(screen.getByText(/TakeProfit/i)).toBeInTheDocument();
-        expect(screen.getByText(/PayoutPerPointMobile/i)).toBeInTheDocument();
+        expect(screen.getByText(/PayoutSelector/i)).toBeInTheDocument();
     });
     it('should render all specific components inside CollapsibleTradeParams if isVisible returns true for current trade type', () => {
         default_mock_store.modules.trade.form_components = [
             'trade_type_tabs',
             'last_digit',
             'barrier',
-            'barrier_selector',
+            'payout_selector',
             'strike',
         ];
         render(mockScreenSmall(mockStore(default_mock_store), default_mock_props));
@@ -153,7 +153,6 @@ describe('<ScreenSmall />', () => {
         expect(screen.getByText(/Digit: 9/i)).toBeInTheDocument();
         expect(screen.getByText(/LastDigitMobile/i)).toBeInTheDocument();
         expect(screen.getByText(/BarrierMobile/i)).toBeInTheDocument();
-        expect(screen.getByText(/BarrierSelector/i)).toBeInTheDocument();
         expect(screen.getByText(/Strike/i)).toBeInTheDocument();
     });
     it('should render specific for allow_equals component inside CollapsibleTradeParams', () => {

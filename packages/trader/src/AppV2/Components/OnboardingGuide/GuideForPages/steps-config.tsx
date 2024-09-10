@@ -5,7 +5,6 @@ import { Localize } from '@deriv/translations';
 const STEPS = [
     {
         content: <Localize i18n_default_text='Scroll left or right to explore trade types.' />,
-        disableBeacon: true,
         offset: 0,
         spotlightPadding: 2,
         target: '.trade__trade-types',
@@ -13,7 +12,6 @@ const STEPS = [
     },
     {
         content: <Localize i18n_default_text='View available markets here.' />,
-        disableBeacon: true,
         offset: 4,
         placement: 'bottom-start' as Step['placement'],
         spotlightPadding: 8,
@@ -22,7 +20,6 @@ const STEPS = [
     },
     {
         content: <Localize i18n_default_text='Specify your trade parameters.' />,
-        disableBeacon: true,
         offset: 4,
         spotlightPadding: 8,
         target: '.trade-params',
@@ -41,12 +38,11 @@ const STEPS = [
                 display: 'none',
             },
         },
-        target: '.purchase-button__wrapper',
+        target: '.react-joyride__overlay',
         title: 'scroll-icon',
     },
     {
         content: <Localize i18n_default_text='Track market trends with our interactive charts.' />,
-        disableBeacon: true,
         spotlightPadding: 8,
         offset: 4,
         target: '.trade__chart-tooltip',
@@ -55,7 +51,6 @@ const STEPS = [
     },
     {
         content: <Localize i18n_default_text='Scroll left or right to adjust your trade parameters.' />,
-        disableBeacon: true,
         disableScrolling: false,
         offset: -4,
         target: '.trade__parameter',
@@ -63,7 +58,6 @@ const STEPS = [
     },
     {
         content: <Localize i18n_default_text='View your positions here.' />,
-        disableBeacon: true,
         offset: -4,
         target: '.user-guide__anchor',
         title: <Localize i18n_default_text='Check your positions (6/6)' />,

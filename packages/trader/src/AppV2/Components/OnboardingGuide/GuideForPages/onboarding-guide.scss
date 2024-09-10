@@ -8,11 +8,27 @@
         flex-direction: column;
         align-items: flex-start;
         min-width: var(--core-size-4300);
+        transition: transform 0.5s ease-in;
+
+        @keyframes slide-in-tooltip {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        animation: slide-in-tooltip var(--core-motion-duration-100) linear;
 
         &-scroll {
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            padding-top: calc(100vh - 224px);
 
             &-text {
                 color: var(--core-color-solid-slate-50);
@@ -21,7 +37,7 @@
     }
 
     &__button {
-        align-self: flex-end;
+        align-self: flex-start;
     }
 
     &__header {

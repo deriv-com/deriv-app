@@ -21,6 +21,7 @@ jest.mock('AppV2/Components/BottomNav', () =>
         </div>
     ))
 );
+jest.mock('AppV2/Components/AccumulatorStats', () => jest.fn(() => <div>AccumulatorStats</div>));
 jest.mock('AppV2/Components/ClosedMarketMessage', () => jest.fn(() => <div>ClosedMarketMessage</div>));
 jest.mock('AppV2/Components/CurrentSpot', () => jest.fn(() => <div>Current Spot</div>));
 jest.mock('AppV2/Components/PurchaseButton', () => jest.fn(() => <div>Purchase Button</div>));
@@ -116,11 +117,12 @@ describe('Trade', () => {
         expect(screen.getByTestId('dt_trade_loader')).toBeInTheDocument();
     });
 
-    it('should render trading page with all components', () => {
+    it('should render trading page with all necessary components', () => {
         mockTrade();
 
         expect(screen.queryByTestId('dt_trade_loader')).not.toBeInTheDocument();
         expect(screen.queryByText('Current Spot')).not.toBeInTheDocument();
+        expect(screen.queryByText('AccumulatorStats')).not.toBeInTheDocument();
 
         expect(screen.getByText('Trade Types Selection')).toBeInTheDocument();
         expect(screen.getByText('MarketSelector')).toBeInTheDocument();
@@ -135,6 +137,13 @@ describe('Trade', () => {
         mockTrade();
 
         expect(screen.getByText('Current Spot')).toBeInTheDocument();
+    });
+
+    it('should render AccumulatorStats if is_accumulator === true', () => {
+        default_mock_store.modules.trade.is_accumulator = true;
+        render(mockTrade());
+
+        expect(screen.getByText('AccumulatorStats')).toBeInTheDocument();
     });
 
     it('should call state setter when user scrolls BottomNav', () => {

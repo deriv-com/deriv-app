@@ -140,11 +140,12 @@ describe('Trade', () => {
         expect(screen.getByTestId('dt_trade_loader')).toBeInTheDocument();
     });
 
-    it('should render trading page with all components', () => {
+    it('should render trading page with all necessary components', () => {
         render(mockTrade());
 
         expect(screen.queryByTestId('dt_trade_loader')).not.toBeInTheDocument();
         expect(screen.queryByText('Current Spot')).not.toBeInTheDocument();
+        expect(screen.queryByText('AccumulatorStats')).not.toBeInTheDocument();
 
         expect(screen.getByText('Trade Types Selection')).toBeInTheDocument();
         expect(screen.getByText('MarketSelector')).toBeInTheDocument();
@@ -159,6 +160,13 @@ describe('Trade', () => {
         render(mockTrade());
 
         expect(screen.getByText('Current Spot')).toBeInTheDocument();
+    });
+
+    it('should render AccumulatorStats if is_accumulator === true', () => {
+        default_mock_store.modules.trade.is_accumulator = true;
+        render(mockTrade());
+
+        expect(screen.getByText('AccumulatorStats')).toBeInTheDocument();
     });
 
     it('should call state setter when user scrolls BottomNav', () => {

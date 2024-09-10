@@ -5,6 +5,7 @@ import {
     AccountsDmt5FinancialIcon,
     AccountsDmt5StandardIcon,
     AccountsDmt5SwfIcon,
+    AccountsDmt5ZrsIcon,
     DerivProductDerivXBrandDarkWordmarkIcon,
     LabelPairedLinuxXlIcon,
     LabelPairedMacosXlIcon,
@@ -13,16 +14,23 @@ import {
     PartnersProductDerivMt5BrandLightLogoHorizontalIcon,
 } from '@deriv/quill-icons';
 import { localize } from '@deriv-com/translations';
-import { TPlatforms } from '../../types';
+import { THooks, TPlatforms } from '../../types';
 import { ctraderLinks, whiteLabelLinks } from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 
-export const getMarketTypeDetails = () =>
+const zeroSpreadDetails = {
+    description: localize('Zero spread CFDs on financial and derived instruments'),
+    icon: <AccountsDmt5ZrsIcon height={48} width={48} />,
+    title: 'Zero Spread',
+};
+const swapFreeDetails = {
+    description: localize('Swap-free CFDs on selected financial and derived instruments'),
+    icon: <AccountsDmt5SwfIcon height={48} width={48} />,
+    title: 'Swap-Free',
+};
+
+export const getMarketTypeDetails = (product?: THooks.AvailableMT5Accounts['product']) =>
     ({
-        all: {
-            description: localize('Swap-free CFDs on selected financial and derived instruments'),
-            icon: <AccountsDmt5SwfIcon height={48} width={48} />,
-            title: 'Swap-Free',
-        },
+        all: product === PRODUCT.ZEROSPREAD ? zeroSpreadDetails : swapFreeDetails,
         financial: {
             description: localize('CFDs on financial instruments'),
             icon: <AccountsDmt5FinancialIcon height={48} width={48} />,
@@ -157,6 +165,13 @@ export const JURISDICTION = {
     MALTA_INVEST: 'maltainvest',
     SVG: 'svg',
     VANUATU: 'vanuatu',
+} as const;
+
+export const PRODUCT = {
+    CTRADER: 'ctrader',
+    DERIVX: 'derivx',
+    SWAPFREE: 'swap_free',
+    ZEROSPREAD: 'zero_spread',
 } as const;
 
 /**

@@ -1,15 +1,16 @@
 import React, { useRef, useState } from 'react';
 import { Form as FormikForm, Formik } from 'formik';
 import * as Yup from 'yup';
-import { config as qs_config } from '@deriv/bot-skeleton';
 import { MobileFullPageModal, Modal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { SERVER_BOT_CONFIG } from '../config';
 import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
 import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
 import LossThresholdWarningDialog from './parts/loss-threshold-warning-dialog';
 import { STRATEGIES } from './config';
+import { SERVER_BOT_FIELDS } from './constants';
 import Form from './form';
 import { TConfigItem, TFormData } from './types';
 import './add-bot.scss';
@@ -38,24 +39,18 @@ const getErrorMessage = (dir: 'MIN' | 'MAX', value: number, type = 'DEFAULT') =>
 };
 
 export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children, setFormVisibility }) => {
-    const { quick_strategy, server_bot } = useDBotStore();
-    const { selected_strategy, form_data, current_duration_min_max, initializeLossThresholdWarningData, setValue } =
-        quick_strategy;
+    const { server_bot } = useDBotStore();
+    const { selected_strategy, current_duration_min_max, initializeLossThresholdWarningData, createBot } = server_bot;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const [dynamic_schema, setDynamicSchema] = useState(Yup.object().shape({}));
     const is_mounted = useRef(true);
-    const { createBot } = server_bot;
 
     let initial_value: TFormData | null = null;
 
     const getSavedValues = () => {
         let data: TFormData | null = null;
         try {
-            const data = JSON.parse(localStorage.getItem('server-form-fields') || '{}');
-            Object.keys(data).forEach(key => {
-                initial_value[key as keyof TFormData] = data[key];
-                setValue(key, data[key]);
-            });
+            data = JSON.parse(localStorage.getItem(SERVER_BOT_FIELDS) || '{}');
         } catch {
             data = null;
         }
@@ -66,27 +61,26 @@ export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children, set
         const data = getSavedValues();
         initial_value = {
             name: data?.name ?? 'Martingale',
-            symbol: data?.symbol ?? qs_config.QUICK_STRATEGY.DEFAULT.symbol,
+            symbol: data?.symbol ?? SERVER_BOT_CONFIG.DEFAULT.symbol,
             tradetype: data?.tradetype ?? '',
             type: data?.type ?? '',
-            durationtype: data?.durationtype ?? qs_config.QUICK_STRATEGY.DEFAULT.durationtype,
+            durationtype: data?.durationtype ?? SERVER_BOT_CONFIG.DEFAULT.durationtype,
             duration: data?.duration ?? '1',
             stake: data?.stake ?? '1',
             loss: data?.loss ?? '',
             profit: data?.profit ?? '',
-            size: data?.size ?? String(qs_config.QUICK_STRATEGY.DEFAULT.size),
+            size: data?.size ?? String(SERVER_BOT_CONFIG.DEFAULT.size),
+            max_stake: data?.max_stake ?? 10,
         };
         return initial_value;
     };
 
     React.useEffect(() => {
+        initializeLossThresholdWarningData();
+
         return () => {
             is_mounted.current = false;
         };
-    }, []);
-
-    React.useEffect(() => {
-        initializeLossThresholdWarningData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -179,6 +173,7 @@ export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children, set
 
     const handleSubmit = (form_data: TFormData) => {
         setFormVisibility(false);
+        localStorage?.setItem(SERVER_BOT_FIELDS, JSON.stringify(form_data));
         createBot(form_data);
     };
 

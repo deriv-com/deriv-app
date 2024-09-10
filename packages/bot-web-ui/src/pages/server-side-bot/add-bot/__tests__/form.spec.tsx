@@ -35,6 +35,16 @@ jest.mock('@deriv/bot-skeleton', () => ({
                         icon: ['CALLE', 'PUTE'],
                     },
                 ],
+                getContractTypes: () => [
+                    {
+                        text: 'Up/Down',
+                        value: 'CALL',
+                    },
+                    {
+                        text: 'Up/Down',
+                        value: 'PUT',
+                    },
+                ],
             },
             active_symbols: {
                 getSymbolsForBot: () => [
@@ -63,9 +73,9 @@ window.Blockly = {
 
 jest.mock('../config', () => ({
     STRATEGIES: {
-        RSI: {
-            name: 'RSI',
-            label: 'RSI',
+        MARTINGALE: {
+            name: 'MARTINGALE',
+            label: 'MARTINGALE',
             description: 'test',
             fields: [
                 [
@@ -187,7 +197,7 @@ jest.mock('../config', () => ({
     },
 }));
 
-describe('<QuickStrategyForm />', () => {
+describe('<AddForm />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_dbot_store: RootStore | undefined;
     const mock_store = mockStore({
         ui: {
@@ -197,7 +207,7 @@ describe('<QuickStrategyForm />', () => {
 
     beforeEach(() => {
         mock_dbot_store = mockDBotStore(mock_store, mock_ws);
-        mock_dbot_store?.quick_strategy?.setSelectedStrategy('RSI');
+        mock_dbot_store?.server_bot?.setSelectedStrategy('MARTINGALE');
         const mockOnSubmit = jest.fn();
         const initial_value = {
             tradetype: 'callput',
@@ -237,8 +247,8 @@ describe('<QuickStrategyForm />', () => {
     });
 
     it('should render the form with existing duration values and possitive last digit prediction', () => {
-        mock_dbot_store?.quick_strategy?.setCurrentDurationMinMax(1, 2);
-        mock_dbot_store?.quick_strategy?.setValue('last_digit_prediction', 5);
+        mock_dbot_store?.server_bot?.setCurrentDurationMinMax(1, 2);
+        mock_dbot_store?.server_bot?.setValue('last_digit_prediction', 5);
         const { container } = render(<QuickStrategyForm />, {
             wrapper,
         });

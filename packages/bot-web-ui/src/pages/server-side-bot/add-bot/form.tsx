@@ -1,27 +1,27 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useFormikContext } from 'formik';
 import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
-import QSInput from './inputs/qs-input';
-import QSInputLabel from './inputs/qs-input-label';
-import QsTextInput from './inputs/qs-text-input';
-import QSCheckbox from './inputs/qs-toggle-switch';
+import QSInput from './inputs/add-input';
+import QSInputLabel from './inputs/add-input-label';
+import QsTextInput from './inputs/add-text-input';
+import QSCheckbox from './inputs/add-toggle-switch';
 import ContractTypeSelect from './selects/contract-type';
 import DurationTypeSelect from './selects/duration-type';
 import SymbolSelect from './selects/symbol';
 import TradeTypeSelect from './selects/trade-type';
 import { STRATEGIES } from './config';
+import { SERVER_BOT_FIELDS } from './constants';
 import { TConfigItem, TFormData, TShouldHave } from './types';
 import './add-bot.scss';
 
 const QuickStrategyForm = observer(() => {
     const { ui } = useStore();
-    const { quick_strategy } = useDBotStore();
-    const { selected_strategy, setValue, form_data } = quick_strategy;
+    const { server_bot } = useDBotStore();
+    const { selected_strategy, setValue, form_data, current_duration_min_max } = server_bot;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const { is_desktop } = ui;
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
-    const { current_duration_min_max } = quick_strategy;
 
     const [isEnabledToggleSwitch, setIsEnabledToggleSwitch] = React.useState(false);
 
@@ -29,7 +29,7 @@ const QuickStrategyForm = observer(() => {
         window.addEventListener('keydown', handleEnter);
         let data: TFormData | null = null;
         try {
-            data = JSON.parse(localStorage.getItem('server-form-fields') ?? '{}');
+            data = JSON.parse(localStorage.getItem(SERVER_BOT_FIELDS) ?? '{}');
         } catch {
             data = null;
         }

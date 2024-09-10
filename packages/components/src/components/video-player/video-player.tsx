@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Stream, StreamPlayerApi } from '@cloudflare/stream-react';
+import { useIsRtl } from '@deriv/hooks';
 import { isSafariBrowser, mobileOSDetect } from '@deriv/shared';
 import debounce from 'lodash.debounce';
 import VideoOverlay from './video-overlay';
@@ -16,6 +17,8 @@ type TVideoPlayerProps = {
 };
 
 const VideoPlayer = ({ className, data_testid, height, is_mobile, muted = false, src }: TVideoPlayerProps) => {
+    const is_rtl = useIsRtl();
+
     const should_autoplay =
         (!isSafariBrowser() || (is_mobile && mobileOSDetect() !== 'iOS' && mobileOSDetect() !== 'unknown')) ?? true;
 
@@ -51,6 +54,7 @@ const VideoPlayer = ({ className, data_testid, height, is_mobile, muted = false,
             | TouchEvent
             | MouseEvent
     ) => {
+        const full_width = 100;
         const progress_bar = progress_bar_ref.current;
         const client_X =
             e.type === 'mousemove' || e.type === 'click'
@@ -60,8 +64,9 @@ const VideoPlayer = ({ className, data_testid, height, is_mobile, muted = false,
         let new_width =
             ((client_X - shift_X - (progress_bar?.getBoundingClientRect().left ?? 0)) /
                 (progress_bar?.getBoundingClientRect().width ?? 0)) *
-            100;
-        if (new_width >= 100) new_width = 100;
+            full_width;
+        if (is_rtl) new_width = full_width - new_width;
+        if (new_width >= full_width) new_width = full_width;
         if (new_width <= 0) new_width = 0;
         return parseFloat(new_width.toFixed(3));
     };

@@ -12,8 +12,6 @@ module.exports = {
         '^Services/(.*)$': '<rootDir>/src/services/$1',
         '^Utils/(.*)$': '<rootDir>/src/utils/$1',
     },
-    // remove later
-    testRegex: 'packages/bot-skeleton/src/services/api/__tests__/datadog-middleware.spec.ts',
     globals: {
         __webpack_public_path__: '/',
     },

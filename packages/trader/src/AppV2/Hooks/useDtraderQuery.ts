@@ -18,16 +18,18 @@ type QueryOptions = {
 const cache: Record<string, any> = {};
 const ongoing_requests: Record<string, Promise<any> | undefined> = {};
 
+const getKey = (keys: string | string[]) => (Array.isArray(keys) ? keys.join('-') : keys);
+
 export const useDtraderQuery = <Response>(
-    keys: string[],
+    keys: string | string[],
     request: Record<string, any>,
     options: QueryOptions = {}
 ): QueryResult<Response> => {
-    const key = keys.join('-');
+    const key = getKey(keys);
     const { enabled = true } = options;
     const [data, setData] = useState<Response | null>(cache[key] || null);
     const [error, setError] = useState<TServerError | null>(null);
-    const [is_fetching, setIsLoading] = useState(!cache[key] && enabled);
+    const [is_fetching, setIsFetching] = useState(!cache[key] && enabled);
     const is_mounted = useRef(false);
     const request_string = JSON.stringify(request);
 
@@ -42,7 +44,7 @@ export const useDtraderQuery = <Response>(
     }, []);
 
     const fetchData = useCallback(() => {
-        setIsLoading(true);
+        setIsFetching(true);
 
         let send_promise: Promise<any> | undefined;
 
@@ -60,18 +62,18 @@ export const useDtraderQuery = <Response>(
 
                 cache[key] = result;
                 setData(result);
-                setIsLoading(false);
+                setIsFetching(false);
             })
             .catch((err: TServerError) => {
                 if (!is_mounted.current) return;
 
                 setError(err);
-                setIsLoading(false);
+                setIsFetching(false);
             })
             .finally(() => {
                 delete ongoing_requests[key];
             });
-    }, [setIsLoading, key, request_string, wait_for_authorize]);
+    }, [key, request_string, wait_for_authorize]);
 
     useEffect(() => {
         if (enabled && !cache[key]) {
@@ -80,16 +82,14 @@ export const useDtraderQuery = <Response>(
     }, [key, fetchData, enabled]);
 
     const refetch = useCallback(() => {
-        if (enabled) {
-            cache[key] = null;
-            fetchData();
-        }
-    }, [enabled, fetchData, key]);
+        cache[key] = null;
+        fetchData();
+    }, [fetchData, key]);
 
     return { data, error, is_fetching, refetch };
 };
 
-export const invalidateDTraderCache = (keys: string[]) => {
-    const key = keys.join('-');
+export const invalidateDTraderCache = (keys: string | string[]) => {
+    const key = getKey(keys);
     cache[key] = null;
 };

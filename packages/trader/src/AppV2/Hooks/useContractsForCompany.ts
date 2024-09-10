@@ -24,6 +24,8 @@ type TContractsForCompanyResponse = {
     };
 };
 
+const CONTRACTS_FOR_COMPANY = 'contracts_for_company';
+
 const useContractsForCompany = () => {
     const [contract_types_list, setContractTypesList] = React.useState<TContractTypesList | []>([]);
 
@@ -43,7 +45,7 @@ const useContractsForCompany = () => {
         error,
         is_fetching,
     } = useDtraderQuery<TContractsForCompanyResponse>(
-        ['contracts_for_company'],
+        [CONTRACTS_FOR_COMPANY],
         {
             contracts_for_company: 1,
             landing_company: landing_company_shortcode,
@@ -60,7 +62,7 @@ const useContractsForCompany = () => {
         ReturnType<typeof getContractTypesConfig> | undefined
     >();
 
-    const prev_loginid = useRef(loginid);
+    const prev_loginid = useRef<string | undefined>(loginid);
     const is_fetching_ref = useRef(is_fetching);
 
     const isContractTypeAvailable = useCallback(
@@ -97,7 +99,6 @@ const useContractsForCompany = () => {
         try {
             const { contracts_for_company } = response || {};
             const available_contract_types: ReturnType<typeof getContractTypesConfig> = {};
-
             is_fetching_ref.current = false;
 
             if (!error && contracts_for_company?.available.length) {
@@ -151,14 +152,12 @@ const useContractsForCompany = () => {
     }, [response]);
 
     useEffect(() => {
-        if (isLoginidDefined(prev_loginid.current) && prev_loginid.current !== loginid && !is_switching) {
-            setContractTypesList([]);
-            setAvailableContractTypes(undefined);
+        if (isQueryEnabled() && prev_loginid.current !== loginid && !is_switching) {
             refetch();
             prev_loginid.current = loginid;
             is_fetching_ref.current = true;
         }
-    }, [loginid, is_switching, refetch]);
+    }, [isQueryEnabled, is_switching, loginid, refetch]);
 
     return { trade_types, contract_types_list, available_contract_types, is_fetching_ref };
 };

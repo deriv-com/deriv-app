@@ -15,16 +15,14 @@ import { usePrevious } from '@deriv/components';
 import { useTraderStore } from 'Stores/useTraderStores';
 import useContractsForCompany from './useContractsForCompany';
 import { useDtraderQuery } from './useDtraderQuery';
-import { isLoginidDefined } from 'AppV2/Utils/client';
 
 const useActiveSymbols = () => {
     const { client, common } = useStore();
-    const { loginid, is_switching, is_logged_in } = client;
+    const { loginid, is_switching } = client;
     const { showError } = common;
     const {
         active_symbols: symbols_from_store,
         contract_type,
-        has_symbols_for_v2,
         is_vanilla,
         is_turbos,
         onChange,
@@ -60,7 +58,7 @@ const useActiveSymbols = () => {
     }, [available_contract_types, is_contracts_loading_ref]);
 
     const { data: response, refetch } = useDtraderQuery<ActiveSymbolsResponse>(
-        ['active_symbols', contract_type],
+        ['active_symbols'],
         {
             active_symbols: 'brief',
             contract_type: getContractTypesList(),
@@ -123,30 +121,13 @@ const useActiveSymbols = () => {
             return;
         }
 
-        if (!symbols_from_store.length || !has_symbols_for_v2 || has_contract_type_changed) {
+        if (available_contract_types && has_contract_type_changed) {
             refetch();
-        } else {
-            setActiveSymbols(symbols_from_store);
         }
-    }, [
-        available_contract_types,
-        contract_type,
-        refetch,
-        has_symbols_for_v2,
-        is_logged_in,
-        previous_contract_type,
-        symbols_from_store,
-        is_vanilla,
-        is_turbos,
-    ]);
+    }, [available_contract_types, contract_type, previous_contract_type, refetch, is_vanilla, is_turbos]);
 
     useEffect(() => {
-        if (
-            isQueryEnabled() &&
-            isLoginidDefined(prev_loginid.current) &&
-            prev_loginid.current !== loginid &&
-            !is_switching
-        ) {
+        if (isQueryEnabled() && prev_loginid.current !== loginid && !is_switching) {
             refetch();
             prev_loginid.current = loginid;
         }

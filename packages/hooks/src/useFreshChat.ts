@@ -1,9 +1,15 @@
 import { useStore } from '@deriv/stores';
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useScript } from 'usehooks-ts';
+import useGrowthbookGetFeatureValue from './useGrowthbookGetFeatureValue';
 
 const useFreshChat = () => {
     useScript('https://fw-cdn.com/11706964/4344125.js');
+
+    const [enable_freshworks_live_chat] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_freshworks_live_chat',
+        defaultValue: true,
+    });
 
     const [isReady, setIsReady] = useState(false);
     const { client } = useStore();
@@ -27,12 +33,22 @@ const useFreshChat = () => {
                         window.fcWidget.authenticate(token);
                         // window.fcWidget.user.setProperties({ cf_user_jwt: token });
                     }
+
+                    if (/*isGBLoaded && */ enable_freshworks_live_chat) {
+                        if (!window.LiveChatWidget) window.LiveChatWidget = {} as any;
+                        window.LiveChatWidget.call = (method: string) => {
+                            if (method === 'maximize') return window.fcWidget?.open();
+                            if (method === 'minimize') return window.fcWidget?.close();
+                            if (method === 'hide') return window.fcWidget?.hide();
+                            if (method === 'destroy') return window.fcWidget?.destroy();
+                        };
+                    }
                 });
             },
         };
     };
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         setDefaultSettings();
     }, []);
 

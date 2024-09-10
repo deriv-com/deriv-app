@@ -1,7 +1,6 @@
 import React from 'react';
 import { useRemoteConfig } from '@deriv/api';
 import { useDevice } from '@deriv-com/ui';
-import { useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 import P2PIFrame from 'Modules/P2PIFrame';
@@ -17,7 +16,7 @@ import Devtools from './Devtools';
 import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 import initDatadog from '../Utils/Datadog';
 import { ThemeProvider } from '@deriv-com/quill-ui';
-import { useGrowthbookIsOn, useLiveChat } from '@deriv/hooks';
+import { useGrowthbookIsOn, useLiveChat, useFreshChat } from '@deriv/hooks';
 import { useTranslations } from '@deriv-com/translations';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
@@ -47,8 +46,8 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const [isServicePasskeysFFEnabled] = useGrowthbookIsOn({
         featureFlag: 'service_passkeys',
     });
-    const isMounted = useIsMounted();
-    const { data } = useRemoteConfig(isMounted());
+
+    const { data } = useRemoteConfig(true);
     const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();
 
@@ -65,6 +64,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     };
 
     useLiveChat(livechat_client_information);
+    useFreshChat();
 
     React.useEffect(() => {
         switchLanguage(current_language);

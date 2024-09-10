@@ -1,5 +1,6 @@
 import React from 'react';
 import { Formik } from 'formik';
+import { ApiHelpers } from '@deriv/bot-skeleton';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -94,5 +95,28 @@ describe('<TradeType />', () => {
             userEvent.click(option_element);
         });
         expect(autocomplete_element).toHaveDisplayValue([/Rise\/Fall/i]);
+    });
+
+    it('should be empty list if value not found on the first time the browser is used', async () => {
+        const mockAPI = ApiHelpers.instance as unknown as {
+            contracts_for: {
+                getTradeTypesForQuickStrategy: jest.Mock<string, string[]>;
+            };
+        };
+        if (mockAPI) {
+            mockAPI.contracts_for.getTradeTypesForQuickStrategy = jest.fn().mockReturnValue([]);
+        }
+
+        render(<TradeType />, {
+            wrapper,
+        });
+
+        const autocomplete_element = screen.getByTestId('dt_qs_tradetype');
+        userEvent.click(autocomplete_element);
+        await waitFor(() => {
+            const option_element = screen.getByText('No results found');
+            userEvent.click(option_element);
+        });
+        expect(autocomplete_element).toHaveDisplayValue('');
     });
 });

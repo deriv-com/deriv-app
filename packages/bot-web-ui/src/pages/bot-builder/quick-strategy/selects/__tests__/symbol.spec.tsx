@@ -135,9 +135,8 @@ describe('<SymbolSelect />', () => {
                 getSymbolsForBot: jest.Mock<string, string[]>;
             };
         };
-        if (mockAPI) {
-            mockAPI.active_symbols.getSymbolsForBot = jest.fn().mockReturnValue([]);
-        }
+        mockAPI.active_symbols.getSymbolsForBot = jest.fn().mockReturnValue([]);
+
         render(<SymbolSelect />, {
             wrapper,
         });

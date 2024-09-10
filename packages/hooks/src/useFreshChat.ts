@@ -29,8 +29,11 @@ const useFreshChat = () => {
                 window.fcWidget.on('widget:loaded', async () => {
                     setIsReady(true);
                     if (is_logged_in && loginid) {
+                        const res = await window.fcWidget.user.getUUID();
+                        const uuid = res.data.uuid;
+
                         const token = await getFreshworksToken({
-                            freshchat_uuid: window.fcWidget.user.getUUID(),
+                            freshchat_uuid: uuid,
                             user_id,
                             email,
                             first_name: account_settings.first_name ?? '',

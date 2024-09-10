@@ -34,7 +34,7 @@ const DepositErrorScreen: React.FC<TProps> = ({ error }) => {
         [CryptoDepositErrorCodes.CryptoConnectionError]: {
             ...defaultContent,
             buttonText: undefined,
-            title: <Localize i18n_default_text='Maintenance in progess' />,
+            title: <Localize i18n_default_text='Maintenance in progress' />,
         },
         [CryptoDepositErrorCodes.SuspendedCurrency]: {
             ...defaultContent,

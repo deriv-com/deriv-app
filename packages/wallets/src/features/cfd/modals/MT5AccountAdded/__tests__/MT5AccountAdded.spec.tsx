@@ -87,7 +87,7 @@ describe('MT5AccountAdded', () => {
         );
         expect(screen.getByText('Your Financial demo account is ready')).toBeInTheDocument();
         expect(screen.getByText("Let's practise trading with 10,000.00 USD virtual funds.")).toBeInTheDocument();
-        const okButton = screen.getByRole('button', { name: 'OK' });
+        const okButton = screen.getAllByRole('button', { name: 'OK' })[0];
         expect(okButton).toBeInTheDocument();
         expect(okButton).toBeEnabled();
         okButton.click();
@@ -111,9 +111,11 @@ describe('MT5AccountAdded', () => {
                 </WalletsAuthProvider>
             </APIProvider>
         );
-        expect(screen.getByText('Your Financial account is ready')).toBeInTheDocument();
+        expect(screen.getByText('Your Financial (SVG) account is ready')).toBeInTheDocument();
         expect(
-            screen.getByText('Transfer funds from your undefined Wallet to your Financial account to start trading.')
+            screen.getByText(
+                'Transfer funds from your undefined Wallet to your Financial (SVG) account to start trading.'
+            )
         ).toBeInTheDocument();
     });
 
@@ -285,9 +287,9 @@ describe('MT5AccountAdded', () => {
             </Router>
         );
 
-        expect(screen.getByText('Your Financial account is ready')).toBeInTheDocument();
+        expect(screen.getByText('Your Financial (SVG) account is ready')).toBeInTheDocument();
         expect(
-            screen.getByText('Transfer funds from your USD Wallet to your Financial account to start trading.')
+            screen.getByText('Transfer funds from your USD Wallet to your Financial (SVG) account to start trading.')
         ).toBeInTheDocument();
         expect(screen.getAllByRole('button', { name: 'Transfer funds' })[0]).toBeInTheDocument();
         expect(screen.getAllByRole('button', { name: 'Maybe later' })[0]).toBeInTheDocument();

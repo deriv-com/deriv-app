@@ -55,6 +55,7 @@ const getCommonFields = (data: TContractInfo) => {
                 ? ticks_duration_text
                 : `${getDurationTime(data) ?? ''} ${getDurationUnitText(getDurationPeriod(data)) ?? ''}`,
         [CARD_LABELS.PAYOUT_PER_POINT]: data.display_number_of_contracts ?? '',
+        [CARD_LABELS.POTENTIAL_PAYOUT]: data.payout,
     };
 };
 // For Multiplier
@@ -91,6 +92,7 @@ const transformCallPutData = (data: TContractInfo) => {
         [CARD_LABELS.DURATION]: commonFields[CARD_LABELS.DURATION],
         [CARD_LABELS.BARRIER]: data.barrier ?? '',
         [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
+        [CARD_LABELS.POTENTIAL_PAYOUT]: commonFields[CARD_LABELS.POTENTIAL_PAYOUT],
     };
 };
 
@@ -121,6 +123,7 @@ const transformDigitsData = (data: TContractInfo) => {
         }`,
         [CARD_LABELS.TARGET]: getBarrierValue(data),
         [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
+        [CARD_LABELS.POTENTIAL_PAYOUT]: commonFields[CARD_LABELS.POTENTIAL_PAYOUT],
     };
 };
 

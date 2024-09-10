@@ -5,7 +5,11 @@ import { ReportsStoreProvider } from '../../../../../../reports/src/Stores/useRe
 import TraderProviders from '../../../../trader-providers';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import Trade from '../trade';
-import { TRADE_TYPES } from '@deriv/shared';
+import { TRADE_TYPES, redirectToLogin } from '@deriv/shared';
+import { BrowserRouter } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
+import { useSignupHandler } from 'AppV2/Hooks/useSignUpHandler';
+import { renderHook } from '@testing-library/react-hooks';
 
 const mock_contract_data = {
     contracts_for_company: {
@@ -20,6 +24,19 @@ jest.mock('AppV2/Components/BottomNav', () =>
         </div>
     ))
 );
+const mockHistoryPush = jest.fn();
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: mockHistoryPush,
+    }),
+}));
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    redirectToLogin: jest.fn(),
+}));
+
 jest.mock('AppV2/Components/ClosedMarketMessage', () => jest.fn(() => <div>ClosedMarketMessage</div>));
 jest.mock('AppV2/Components/CurrentSpot', () => jest.fn(() => <div>Current Spot</div>));
 jest.mock('AppV2/Components/PurchaseButton', () => jest.fn(() => <div>Purchase Button</div>));
@@ -48,6 +65,7 @@ jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
         contracts_for_company: mock_contract_data,
     })),
 }));
+jest.mock('AppV2/Hooks/useSignUpHandler');
 
 describe('Trade', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
@@ -93,19 +111,23 @@ describe('Trade', () => {
                 },
             },
             client: { is_logged_in: true },
+            common: { resetServicesError: jest.fn() },
         });
         localStorage.clear();
+        (useSignupHandler as jest.Mock).mockReturnValue({ handleSignup: jest.fn() });
     });
 
     const mockTrade = () => {
         return (
-            <TraderProviders store={default_mock_store}>
-                <ReportsStoreProvider>
-                    <ModulesProvider store={default_mock_store}>
-                        <Trade />
-                    </ModulesProvider>
-                </ReportsStoreProvider>
-            </TraderProviders>
+            <BrowserRouter>
+                <TraderProviders store={default_mock_store}>
+                    <ReportsStoreProvider>
+                        <ModulesProvider store={default_mock_store}>
+                            <Trade />
+                        </ModulesProvider>
+                    </ReportsStoreProvider>
+                </TraderProviders>
+            </BrowserRouter>
         );
     };
 
@@ -159,5 +181,75 @@ describe('Trade', () => {
         render(mockTrade());
 
         expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();
+    });
+    it('should not render the ActionSheet when there is no error', () => {
+        render(mockTrade());
+
+        expect(screen.queryByText('Insufficient balance')).not.toBeInTheDocument();
+        expect(screen.queryByText('Start trading with us')).not.toBeInTheDocument();
+    });
+
+    it('should display insufficient balance message when services_error is InsufficientBalance', () => {
+        default_mock_store.common.services_error = {
+            code: 'InsufficientBalance',
+            message: 'You do not have enough balance.',
+        };
+        render(mockTrade());
+        expect(screen.getByText('Insufficient balance')).toBeInTheDocument();
+        expect(screen.getByText('You do not have enough balance.')).toBeInTheDocument();
+    });
+
+    it('should display authorization required message when services_error is AuthorizationRequired', () => {
+        default_mock_store.common.services_error = {
+            code: 'AuthorizationRequired',
+            message: 'You need to log in to place a trade',
+            type: 'buy',
+        };
+        render(mockTrade());
+        expect(screen.getByText('Start trading with us')).toBeInTheDocument();
+        expect(screen.getByText('Log in or create a free account to place a trade.')).toBeInTheDocument();
+    });
+
+    it('should call history.push to deposit when Deposit now button is clicked', () => {
+        default_mock_store.common.services_error = {
+            code: 'InsufficientBalance',
+            message: 'You do not have enough balance.',
+        };
+        render(mockTrade());
+
+        const depositButton = screen.getByText('Deposit now');
+        userEvent.click(depositButton);
+        expect(mockHistoryPush).toHaveBeenCalled();
+    });
+
+    it('should handle login when Login button is clicked', () => {
+        default_mock_store.common.services_error = {
+            code: 'AuthorizationRequired',
+            message: 'You need to log in to place a trade',
+            type: 'buy',
+        };
+
+        render(mockTrade());
+
+        const loginButton = screen.getByText('Login');
+        userEvent.click(loginButton);
+
+        expect(redirectToLogin).toHaveBeenCalled();
+    });
+
+    it('should handle sign-up when Create free account button is clicked', () => {
+        default_mock_store.common.services_error = {
+            code: 'AuthorizationRequired',
+            message: 'You need to log in to place a trade',
+            type: 'buy',
+        };
+        const { result } = renderHook(() => useSignupHandler());
+
+        render(mockTrade());
+
+        const signupButton = screen.getByText('Create free account');
+        userEvent.click(signupButton);
+
+        expect(result.current.handleSignup).toHaveBeenCalled();
     });
 });

@@ -5,24 +5,33 @@ import { getLanguage, Localize } from '@deriv/translations';
 import { redirectToLogin } from '@deriv/shared';
 import { useSignupHandler } from 'AppV2/Hooks/useSignUpHandler';
 import './service-error-sheet.scss';
+import { useHistory } from 'react-router';
 
 const ServiceErrorSheet = observer(() => {
     const [is_open, setIsOpen] = useState(false);
     const { common } = useStore();
-    const { services_error } = common;
+    const { services_error, resetServicesError } = common;
     const { handleSignup } = useSignupHandler();
+    const history = useHistory();
+
+    const isInsufficientBalance =
+        services_error.code === 'InsufficientBalance' || services_error.code === 'InvalidContractProposal';
+    const isAuthorizationRequired = services_error.code === 'AuthorizationRequired' && services_error.type === 'buy';
 
     useEffect(() => {
-        if (
-            services_error.code === 'InsufficientBalance' ||
-            (services_error.code === 'AuthorizationRequired' && services_error.type === 'buy')
-        ) {
+        if (isInsufficientBalance || isAuthorizationRequired) {
             setIsOpen(true);
         }
     }, [services_error]);
 
+    useEffect(() => {
+        if (!is_open && services_error.code) {
+            resetServicesError();
+        }
+    }, [resetServicesError, is_open]);
+
     const renderContent = () => {
-        if (services_error.code === 'InsufficientBalance') {
+        if (isInsufficientBalance) {
             return (
                 <>
                     <Text size='lg' bold className='service-error-sheet__body__heading'>
@@ -33,7 +42,7 @@ const ServiceErrorSheet = observer(() => {
             );
         }
 
-        if (services_error.code === 'AuthorizationRequired' && services_error.type === 'buy') {
+        if (isAuthorizationRequired) {
             return (
                 <>
                     <Text size='lg' bold className='service-error-sheet__body__heading'>
@@ -53,7 +62,11 @@ const ServiceErrorSheet = observer(() => {
         <ActionSheet.Root
             className='service-error-sheet'
             isOpen={is_open}
-            onClose={() => setIsOpen(false)}
+            onClose={() => {
+                if (services_error.code) {
+                    setIsOpen(false);
+                }
+            }}
             expandable={false}
             position='left'
         >
@@ -62,27 +75,34 @@ const ServiceErrorSheet = observer(() => {
                 <ActionSheet.Footer
                     className='service-error-sheet__footer'
                     alignment='vertical'
-                    {...(services_error.code === 'InsufficientBalance'
+                    {...(isInsufficientBalance
                         ? {
                               primaryAction: {
                                   content: <Localize i18n_default_text='Deposit now' />,
                                   onAction: () => {
-                                      // Handle deposit action
+                                      resetServicesError();
+                                      history.push('/cashier/deposit');
                                   },
                               },
                               primaryButtonColor: 'coral',
                           }
                         : {})}
-                    {...(services_error.code === 'AuthorizationRequired' && services_error.type === 'buy'
+                    {...(isAuthorizationRequired
                         ? {
                               primaryAction: {
                                   content: <Localize i18n_default_text='Create free account' />,
-                                  onAction: () => handleSignup(),
+                                  onAction: () => {
+                                      resetServicesError();
+                                      handleSignup();
+                                  },
                               },
                               primaryButtonColor: 'coral',
                               secondaryAction: {
                                   content: <Localize i18n_default_text='Login' />,
-                                  onAction: () => redirectToLogin(false, getLanguage()),
+                                  onAction: () => {
+                                      resetServicesError();
+                                      redirectToLogin(false, getLanguage());
+                                  },
                               },
                           }
                         : {})}

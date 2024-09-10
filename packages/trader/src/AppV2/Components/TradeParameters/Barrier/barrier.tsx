@@ -14,7 +14,7 @@ type TDurationProps = {
 };
 
 const Barrier = observer(({ is_minimized }: TDurationProps) => {
-    const { barrier_1, onChange, duration_unit } = useTraderStore();
+    const { barrier_1, onChange, duration_unit, setV2ParamsInitialValues, v2_params_initial_values } = useTraderStore();
     const [is_open, setIsOpen] = React.useState(false);
     const [initialBarrierValue, setInitialBarrierValue] = React.useState('');
     const isDays = duration_unit == 'd';
@@ -24,6 +24,7 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
             if (!is_saved) {
                 onChange({ target: { name: 'barrier_1', value: initialBarrierValue } });
             }
+            setV2ParamsInitialValues({ value: '', name: 'barrier_1' });
             setIsOpen(false);
         }
     };
@@ -47,7 +48,7 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
                 variant='fill'
                 readOnly
                 label={<Localize i18n_default_text='Barrier' key={`barrier${is_minimized ? '-minimized' : ''}`} />}
-                value={barrier_1}
+                value={v2_params_initial_values.barrier_1 || barrier_1}
                 onClick={() => setIsOpen(true)}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
             />

@@ -1,40 +1,3 @@
-const darkMode = () => {
-    const workspace = Blockly;
-    workspace.Colours.RootBlock = {
-        colour: '#183046',
-        colourSecondary: '#F2F3F5',
-        colourTertiary: '#151717',
-    };
-    workspace.Colours.Base = {
-        colour: '#C2C2C2',
-        colourSecondary: '#0e0e0e',
-        colourTertiary: '#0e0e0e',
-    };
-
-    workspace.Colours.Special1 = {
-        colour: '#C2C2C2',
-        colourSecondary: '#0e0e0e',
-        colourTertiary: '#6d7278',
-    };
-
-    workspace.Colours.Special2 = {
-        colour: '#C2C2C2',
-        colourSecondary: '#0e0e0e',
-        colourTertiary: '#D27954',
-    };
-
-    workspace.Colours.Special3 = {
-        colour: '#C2C2C2',
-        colourSecondary: '#0e0e0e',
-        colourTertiary: '#D27954',
-    };
-    workspace.Colours.Special4 = {
-        colour: '#000',
-        colourSecondary: '#ffffff',
-        colourTertiary: '#0e0e0e',
-    };
-};
-
 const lightMode = () => {
     const workspace = Blockly;
     workspace.Colours.RootBlock = {
@@ -73,4 +36,5 @@ const lightMode = () => {
         colourTertiary: '#0e0e0e',
     };
 };
-export const setColors = is_dark_mode => (is_dark_mode ? darkMode() : lightMode());
+
+export const setColors = () => lightMode();

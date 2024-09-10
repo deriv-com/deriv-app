@@ -80,7 +80,7 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
                 />
             ) : (
                 <Localize
-                    i18n_default_text="You've reached the lifetime transfer limit from your {{sourceAccountName}} to any fiat Wallet. Verify your account to upgrade the limit."
+                    i18n_default_text="You've reached the lifetime transfer limit from your {{sourceAccountName}} to any Wallet. Verify your account to upgrade the limit."
                     values={{ sourceAccountName: sourceAccount.accountName }}
                 />
             );
@@ -104,7 +104,7 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
                         />
                     ) : (
                         <Localize
-                            i18n_default_text='The lifetime transfer limit from {{sourceAccountName}} to any fiat Wallets is up to {{formattedSourceCurrencyLimit}}.'
+                            i18n_default_text='The lifetime transfer limit from {{sourceAccountName}} to any Wallet is up to {{formattedSourceCurrencyLimit}}.'
                             values={{ formattedSourceCurrencyLimit, sourceAccountName: sourceAccount.accountName }}
                         />
                     );
@@ -140,7 +140,7 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
                     />
                 ) : (
                     <Localize
-                        i18n_default_text='Your remaining lifetime transfer limit from {{sourceAccountName}} to any fiat Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.'
+                        i18n_default_text='Your remaining lifetime transfer limit from {{sourceAccountName}} to any Wallet is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.'
                         values={{ formattedSourceCurrencyRemainder, sourceAccountName: sourceAccount.accountName }}
                     />
                 );

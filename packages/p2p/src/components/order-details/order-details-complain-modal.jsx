@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, MobileFullPageModal, Modal, Text } from '@deriv/components';
-import { isMobile, useIsMounted } from '@deriv/shared';
+import { useIsMounted } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 import { localize, Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import FormError from 'Components/section-error';
@@ -37,6 +38,7 @@ const OrderDetailsComplainModal = ({
     should_show_complain_modal,
 }) => {
     const isMounted = useIsMounted();
+    const { isDesktop } = useDevice();
     const [dispute_reason, setDisputeReason] = React.useState('');
     const [error_message, setErrorMessage] = React.useState('');
 
@@ -57,70 +59,70 @@ const OrderDetailsComplainModal = ({
 
     const onCheckboxChange = reason => setDisputeReason(reason);
 
-    if (isMobile()) {
+    if (isDesktop) {
         return (
-            <MobileFullPageModal
-                body_className='order-details-complain-modal__body'
+            <Modal
                 className='order-details-complain-modal'
-                height_offset='80px'
-                is_flex
-                is_modal_open={should_show_complain_modal}
-                page_header_className='order-details-complain-modal__header'
-                page_header_text={localize('Complaint')}
-                pageHeaderReturnFn={hideComplainOrderModal}
-                renderPageFooterChildren={() => (
-                    <ComplainFooter
-                        dispute_reason={dispute_reason}
-                        disputeOrderRequest={disputeOrderRequest}
-                        error_message={error_message}
-                        hideComplainOrderModal={hideComplainOrderModal}
-                    />
+                is_open={should_show_complain_modal}
+                toggleModal={hideComplainOrderModal}
+                has_close_icon
+                renderTitle={() => (
+                    <Text color='prominent' weight='bold'>
+                        <Localize i18n_default_text="What's your complaint?" />
+                    </Text>
                 )}
-                page_footer_className='order-details-complain-modal__footer'
+                width='440px'
+                height='500px'
             >
-                <OrderDetailsComplainModalRadioGroup
-                    is_buy_order_for_user={is_buy_order_for_user}
-                    dispute_reason={dispute_reason}
-                    onCheckboxChange={onCheckboxChange}
-                />
-                <ComplainExplanation />
-            </MobileFullPageModal>
+                <Modal.Body className='order-details-complain-modal__body'>
+                    <OrderDetailsComplainModalRadioGroup
+                        is_buy_order_for_user={is_buy_order_for_user}
+                        dispute_reason={dispute_reason}
+                        onCheckboxChange={onCheckboxChange}
+                    />
+                    <ComplainExplanation />
+                </Modal.Body>
+                <Modal.Footer>
+                    <div className='order-details-complain-modal__footer'>
+                        <ComplainFooter
+                            dispute_reason={dispute_reason}
+                            disputeOrderRequest={disputeOrderRequest}
+                            error_message={error_message}
+                            hideComplainOrderModal={hideComplainOrderModal}
+                        />
+                    </div>
+                </Modal.Footer>
+            </Modal>
         );
     }
 
     return (
-        <Modal
+        <MobileFullPageModal
+            body_className='order-details-complain-modal__body'
             className='order-details-complain-modal'
-            is_open={should_show_complain_modal}
-            toggleModal={hideComplainOrderModal}
-            has_close_icon
-            renderTitle={() => (
-                <Text color='prominent' weight='bold'>
-                    <Localize i18n_default_text="What's your complaint?" />
-                </Text>
-            )}
-            width='440px'
-            height='500px'
-        >
-            <Modal.Body className='order-details-complain-modal__body'>
-                <OrderDetailsComplainModalRadioGroup
-                    is_buy_order_for_user={is_buy_order_for_user}
+            height_offset='80px'
+            is_flex
+            is_modal_open={should_show_complain_modal}
+            page_header_className='order-details-complain-modal__header'
+            page_header_text={localize('Complaint')}
+            pageHeaderReturnFn={hideComplainOrderModal}
+            renderPageFooterChildren={() => (
+                <ComplainFooter
                     dispute_reason={dispute_reason}
-                    onCheckboxChange={onCheckboxChange}
+                    disputeOrderRequest={disputeOrderRequest}
+                    error_message={error_message}
+                    hideComplainOrderModal={hideComplainOrderModal}
                 />
-                <ComplainExplanation />
-            </Modal.Body>
-            <Modal.Footer>
-                <div className='order-details-complain-modal__footer'>
-                    <ComplainFooter
-                        dispute_reason={dispute_reason}
-                        disputeOrderRequest={disputeOrderRequest}
-                        error_message={error_message}
-                        hideComplainOrderModal={hideComplainOrderModal}
-                    />
-                </div>
-            </Modal.Footer>
-        </Modal>
+            )}
+            page_footer_className='order-details-complain-modal__footer'
+        >
+            <OrderDetailsComplainModalRadioGroup
+                is_buy_order_for_user={is_buy_order_for_user}
+                dispute_reason={dispute_reason}
+                onCheckboxChange={onCheckboxChange}
+            />
+            <ComplainExplanation />
+        </MobileFullPageModal>
     );
 };
 

@@ -1,8 +1,8 @@
-import { Button, TButtonColor, TButtonVariant } from '@deriv-com/quill-ui';
+import React from 'react';
+import { Button, TButtonColor } from '@deriv-com/quill-ui';
 import { RemainingTime } from '@deriv/components';
 import { TContractInfo, getCardLabelsV2, isMultiplierContract, isValidToCancel, isValidToSell } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
-import React from 'react';
 import { observer } from 'mobx-react';
 import { TRegularSizesWithExtraLarge } from '@deriv-com/quill-ui/dist/types';
 import { FormatUtils } from '@deriv-com/utils';
@@ -12,7 +12,6 @@ type ContractInfoProps = {
 };
 
 type ButtonProps = {
-    variant: TButtonVariant;
     color: TButtonColor;
     size: TRegularSizesWithExtraLarge;
     fullWidth: boolean;
@@ -36,11 +35,13 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
     const is_multiplier = isMultiplierContract(contract_type);
 
     const cardLabels = getCardLabelsV2();
-    const bidDetails = !is_valid_to_cancel ? `@${bid_price} ${currency}` : '';
+    const formatted_bid_price = FormatUtils.formatMoney(bid_price || 0, {
+        currency: currency as 'USD', // currency types mismatched between utils and shared
+    });
+    const bidDetails = !is_valid_to_cancel ? `${formatted_bid_price} ${currency}` : '';
     const label = `${cardLabels.CLOSE} ${bidDetails}`;
 
     const buttonProps: ButtonProps = {
-        variant: 'secondary',
         color: 'black',
         size: 'lg',
         fullWidth: true,
@@ -53,6 +54,7 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                     <Button
                         label={label}
                         isLoading={is_sell_requested}
+                        isOpaque
                         disabled={Number(profit) < 0 && is_valid_to_cancel}
                         onClick={() => onClickSell(contract_id)}
                         {...buttonProps}
@@ -74,6 +76,8 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                                 </>
                             }
                             disabled={Number(profit) >= 0}
+                            isOpaque
+                            variant='secondary'
                             {...buttonProps}
                         />
                     )}
@@ -82,10 +86,11 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                 <Button
                     label={
                         is_valid_to_sell
-                            ? `${cardLabels.CLOSE} @ ${FormatUtils.formatMoney(bid_price || 0)} ${currency}`
+                            ? `${cardLabels.CLOSE} ${formatted_bid_price} ${currency}`
                             : cardLabels.RESALE_NOT_OFFERED
                     }
                     isLoading={is_sell_requested && is_valid_to_sell}
+                    isOpaque
                     onClick={is_valid_to_sell ? () => onClickSell(contract_id) : undefined}
                     disabled={!is_valid_to_sell}
                     {...buttonProps}

@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useStore } from '@deriv/stores';
 import { Loading } from '@deriv/components';
@@ -110,7 +111,7 @@ const Trade = observer(() => {
                         </div>
                         {is_accumulator && <AccumulatorStats />}
                     </div>
-                    <div className='trade__parameter'>
+                    <div className={clsx('trade__parameter', { 'trade__parameter--with-button': !is_market_closed })}>
                         <TradeParametersContainer is_minimized_visible={is_minimized_params_visible} is_minimized>
                             <TradeParameters is_minimized />
                         </TradeParametersContainer>

@@ -21,6 +21,7 @@ const useActiveSymbols = () => {
     const { showError } = common;
     const {
         active_symbols: symbols_from_store,
+        processContractsForV2,
         contract_type,
         is_vanilla,
         is_turbos,
@@ -82,12 +83,15 @@ const useActiveSymbols = () => {
 
     useEffect(
         () => {
-            const checkSymbolChange = (new_symbol: string) => {
+            const checkSymbolChange = async (new_symbol: string) => {
                 // To call contracts_for during initialization
                 const is_initailization = !default_symbol_ref.current && new_symbol;
                 const has_symbol_changed = symbol != new_symbol && new_symbol;
+                default_symbol_ref.current = new_symbol;
+
                 if (is_initailization || has_symbol_changed) {
-                    onChange({ target: { name: 'symbol', value: new_symbol } });
+                    await onChange({ target: { name: 'symbol', value: new_symbol } });
+                    processContractsForV2();
                 }
             };
             const process = async () => {
@@ -103,11 +107,10 @@ const useActiveSymbols = () => {
                         ? symbol
                         : (await pickDefaultSymbol(active_symbols)) || '1HZ100V';
 
-                    default_symbol_ref.current = new_symbol;
+                    checkSymbolChange(new_symbol);
                     setActiveSymbols(active_symbols);
                     setActiveSymbolsV2(active_symbols);
                     setTradeURLParams({ symbol: new_symbol });
-                    checkSymbolChange(new_symbol);
                 }
             };
             process();

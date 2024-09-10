@@ -69,6 +69,7 @@ describe('useActiveSymbols', () => {
                     is_vanilla: false,
                     contract_type: TRADE_TYPES.RISE_FALL,
                     onChange: jest.fn(),
+                    processContractsForV2: jest.fn(),
                     setActiveSymbolsV2: jest.fn(),
                     symbol: '',
                 },
@@ -187,13 +188,13 @@ describe('useActiveSymbols', () => {
         });
     });
 
-    it('should call active_symbols API for Turbos if previous contract is Turbos and next contract is vanilla', async () => {
-        mocked_store.modules.trade.contract_type = 'turboslong';
+    it('should call active_symbols API for Turbos if contract is changed', async () => {
+        mocked_store.modules.trade.contract_type = 'contract_type1';
         mocked_store.modules.trade.is_turbos = true;
         const active_symbols_call_spy = jest.spyOn(WS.authorized, 'send');
         renderHook(() => useActiveSymbols(), { wrapper });
 
-        mocked_store.modules.trade.contract_type = 'vanillaput';
+        mocked_store.modules.trade.contract_type = 'contract_type2';
 
         await waitFor(() => {
             expect(active_symbols_call_spy).toBeCalledTimes(2);

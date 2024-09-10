@@ -483,6 +483,7 @@ export default class TradeStore extends BaseStore {
             clearPurchaseInfo: action.bound,
             clientInitListener: action.bound,
             clearV2ParamsInitialValues: action.bound,
+            processContractsForV2: action.bound,
             enablePurchase: action.bound,
             exportLayout: action.bound,
             forgetAllProposal: action.bound,
@@ -817,6 +818,16 @@ export default class TradeStore extends BaseStore {
             showUnavailableLocationError(showError, is_logged_in);
         }
         await this.processNewValuesAsync({ active_symbols });
+    }
+
+    async processContractsForV2() {
+        const contract_categories = ContractType.getContractCategories();
+        this.processNewValuesAsync({
+            ...(contract_categories as Pick<TradeStore, 'contract_types_list'> & {
+                has_only_forward_starting_contracts: boolean;
+            }),
+        });
+        this.processNewValuesAsync(ContractType.getContractValues(this));
     }
 
     async setContractTypes() {

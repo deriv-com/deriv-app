@@ -79,9 +79,8 @@ const useContractsForCompany = () => {
 
     const validateContractType = useCallback(
         (trade_types: TContractType[]) => {
-            let new_contract_type = contract_type;
             if (!isContractTypeAvailable(trade_types) && trade_types.length > 0) {
-                new_contract_type = trade_types[0].value;
+                const new_contract_type = trade_types[0].value;
                 onChange({
                     target: {
                         name: 'contract_type',
@@ -89,9 +88,8 @@ const useContractsForCompany = () => {
                     },
                 });
             }
-            setTradeURLParams({ contractType: new_contract_type });
         },
-        [contract_type, isContractTypeAvailable, onChange]
+        [isContractTypeAvailable, onChange]
     );
 
     useEffect(() => {
@@ -99,6 +97,12 @@ const useContractsForCompany = () => {
         setContractTypesList([]);
         is_fetching_ref.current = true;
     }, [loginid]);
+
+    useEffect(() => {
+        if (available_contract_types && Object.keys(available_contract_types).length > 0) {
+            setTradeURLParams({ contractType: contract_type });
+        }
+    }, [available_contract_types, contract_type]);
 
     useEffect(() => {
         try {

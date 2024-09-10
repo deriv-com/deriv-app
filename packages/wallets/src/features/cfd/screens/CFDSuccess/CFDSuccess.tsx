@@ -11,6 +11,7 @@ import { CFD_PLATFORMS, getMarketTypeDetails, MARKET_TYPE, PlatformDetails } fro
 import './CFDSuccess.scss';
 
 type TSuccessProps = {
+    actionButtons?: ComponentProps<typeof WalletSuccess>['actionButtons'];
     description: React.ReactNode;
     displayBalance:
         | TDisplayBalance.CtraderAccountsList
@@ -18,16 +19,15 @@ type TSuccessProps = {
         | TDisplayBalance.MT5AccountsList;
     marketType?: TMarketTypes.SortedMT5Accounts;
     platform?: TPlatforms.All;
-    renderButton?: ComponentProps<typeof WalletSuccess>['renderButtons'];
     title: React.ReactNode;
 };
 
 const CFDSuccess: React.FC<TSuccessProps> = ({
+    actionButtons,
     description,
     displayBalance,
     marketType,
     platform,
-    renderButton,
     title,
 }) => {
     const { data } = useActiveWalletAccount();
@@ -54,8 +54,8 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
 
     return (
         <WalletSuccess
+            actionButtons={isDesktop ? actionButtons : undefined}
             description={description}
-            renderButtons={isDesktop ? renderButton : undefined}
             renderIcon={() => (
                 <WalletGradientBackground
                     bodyClassName='wallets-cfd-success__gradient'
@@ -91,7 +91,10 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
                                     {data?.currency} Wallet
                                 </Text>
                                 {!displayBalance ? (
-                                    <div className='wallets-skeleton wallets-cfd-success__balance-loader' />
+                                    <div
+                                        className='wallets-skeleton wallets-cfd-success__balance-loader'
+                                        data-testid='dt_wallets_cfd_success_skeleton_loader'
+                                    />
                                 ) : (
                                     <Text size='sm' weight='bold'>
                                         {displayBalance}

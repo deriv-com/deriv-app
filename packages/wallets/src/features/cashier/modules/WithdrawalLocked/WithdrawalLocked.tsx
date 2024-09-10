@@ -9,8 +9,7 @@ import {
     useCurrencyConfig,
 } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
-import { Loader } from '@deriv-com/ui';
-import { WalletsActionScreen } from '../../../../components';
+import { ActionScreen, Loader } from '@deriv-com/ui';
 import getWithdrawalLockedDesc, { getWithdrawalLimitReachedDesc } from './WithdrawalLockedContent';
 import './WithdrawalLocked.scss';
 
@@ -21,7 +20,10 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { data: accountLimits } = useAccountLimits();
     const { data: accountStatus } = useAccountStatus();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
-    const { data: cryptoConfig } = useCryptoConfig();
+    const isCryptoProvider = activeWallet?.currency_config?.platform.cashier.includes('crypto');
+    const { data: cryptoConfig } = useCryptoConfig({
+        enabled: isCryptoProvider,
+    });
 
     const currency = activeWallet?.currency || 'USD';
 
@@ -40,7 +42,11 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const isWithdrawalLocked = accountStatus?.is_withdrawal_locked;
 
     const remainder = accountLimits?.remainder;
-    const minimumWithdrawal = activeWallet?.currency_config?.is_crypto ? cryptoConfig?.minimum_withdrawal : 0.01;
+    const fractionalDigits = activeWallet?.currency_config?.fractional_digits
+        ? Math.pow(10, -activeWallet.currency_config.fractional_digits)
+        : 0.01;
+    const minimumWithdrawal = isCryptoProvider ? cryptoConfig?.minimum_withdrawal : fractionalDigits;
+
     const withdrawalLimitReached = !!(
         typeof remainder !== 'undefined' &&
         typeof minimumWithdrawal !== 'undefined' &&
@@ -55,7 +61,7 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     if (withdrawalLimitReached) {
         return (
             <div className='wallets-withdrawal-locked'>
-                <WalletsActionScreen
+                <ActionScreen
                     description={getWithdrawalLimitReachedDesc({
                         askFinancialRiskApproval,
                         poaNeedsVerification,
@@ -77,7 +83,7 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     if (isWithdrawalLocked) {
         return (
             <div className='wallets-withdrawal-locked'>
-                <WalletsActionScreen
+                <ActionScreen
                     description={getWithdrawalLockedDesc({
                         askAuthenticate,
                         askFixDetails,

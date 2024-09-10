@@ -1,6 +1,5 @@
 import React from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import debounce from 'lodash.debounce';
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, IconTradeTypes, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
@@ -29,18 +28,8 @@ const TradeTypeOption: React.FC<TTradeTypeOption> = ({ trade_type: { value, icon
 const TradeTypeSelect: React.FC = () => {
     const [trade_types, setTradeTypes] = React.useState<TTradeType[]>([]);
     const { setFieldValue, values, validateForm } = useFormikContext<TFormData>();
-    const { quick_strategy } = useDBotStore();
-    const { setValue } = quick_strategy;
-
-    React.useEffect(() => {
-        const first_time_user_data = !(JSON.parse(localStorage?.getItem('qs-fields') as string) as TFormData);
-        if (first_time_user_data) {
-            setFieldValue?.('tradetype', trade_types?.[0]?.value);
-            validateForm();
-            setValue('tradetype', trade_types?.[0]?.value);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const { server_bot } = useDBotStore();
+    const { setValue } = server_bot;
 
     React.useEffect(() => {
         if (values?.symbol) {
@@ -55,9 +44,8 @@ const TradeTypeSelect: React.FC = () => {
                     setValue('tradetype', trade_types?.[0].value);
                 }
             };
-            debounce(async () => {
-                getTradeTypes();
-            }, 100)();
+            getTradeTypes();
+            validateForm();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [values?.symbol]);

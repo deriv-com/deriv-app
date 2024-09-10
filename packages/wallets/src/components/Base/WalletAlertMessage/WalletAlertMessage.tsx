@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { LegacyLossIcon, LegacySettlementFillIcon, LegacyWonIcon } from '@deriv/quill-icons';
+import { LegacyLossIcon, LegacySettlementFillIcon, LegacyWarningIcon, LegacyWonIcon } from '@deriv/quill-icons';
 import { WalletText } from '../index';
 import './WalletAlertMessage.scss';
 
@@ -19,12 +19,17 @@ const typeMapper = {
         fill: '#4BB4B3',
         icon: LegacyWonIcon,
     },
+    warning: {
+        color: 'warning',
+        fill: '#FFD166',
+        icon: LegacyWarningIcon,
+    },
 } as const;
 
 type TProps = {
     children?: ReactNode;
     message: ReactNode;
-    type: 'error' | 'info' | 'success';
+    type: 'error' | 'info' | 'success' | 'warning';
 };
 
 const WalletAlertMessage: React.FC<TProps> = ({ children, message, type }) => {

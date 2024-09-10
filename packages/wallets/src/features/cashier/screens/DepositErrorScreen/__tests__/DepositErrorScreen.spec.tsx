@@ -70,7 +70,7 @@ describe('DepositErrorScreen', () => {
 
         render(<DepositErrorScreen error={error} />);
 
-        expect(screen.getByText('Maintenance in progess')).toBeInTheDocument();
+        expect(screen.getByText('Maintenance in progress')).toBeInTheDocument();
         expect(screen.getByText('Crypto Connection Error')).toBeInTheDocument();
         expect(screen.queryByText('Try again')).not.toBeInTheDocument();
     });
@@ -95,5 +95,19 @@ describe('DepositErrorScreen', () => {
 
         fireEvent.click(ReloadButton);
         expect(reloadMock).toHaveBeenCalled();
+    });
+
+    it('should render without crashing when no data received', () => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: null });
+        const error = {
+            code: 'MyError',
+            message: 'Error message',
+        };
+
+        render(<DepositErrorScreen error={error} />);
+
+        expect(screen.getByText('Oops, something went wrong!')).toBeInTheDocument();
+        expect(screen.getByText('Error message')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument();
     });
 });

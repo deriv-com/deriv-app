@@ -40,6 +40,7 @@ export default function mockWebsiteStatus(context: Context) {
                         is_suspended: 0,
                         is_withdrawal_suspended: 0,
                         name: 'Australian Dollar',
+                        platform: { cashier: ['doughflow'], ramp: [] },
                         stake_default: 15,
                         transfer_between_accounts: {
                             fees: {
@@ -87,6 +88,7 @@ export default function mockWebsiteStatus(context: Context) {
                         is_suspended: 0,
                         is_withdrawal_suspended: 0,
                         name: 'Bitcoin',
+                        platform: { cashier: ['crypto'], ramp: [] },
                         stake_default: 0.0004,
                         transfer_between_accounts: {
                             fees: {
@@ -134,6 +136,7 @@ export default function mockWebsiteStatus(context: Context) {
                         is_suspended: 1,
                         is_withdrawal_suspended: 1,
                         name: 'Binance USD',
+                        platform: { cashier: ['crypto'], ramp: [] },
                         stake_default: 10,
                         transfer_between_accounts: {
                             fees: {
@@ -181,6 +184,7 @@ export default function mockWebsiteStatus(context: Context) {
                         is_suspended: 1,
                         is_withdrawal_suspended: 1,
                         name: 'Multi-Collateral DAI',
+                        platform: { cashier: ['crypto'], ramp: [] },
                         stake_default: 10,
                         transfer_between_accounts: {
                             fees: {
@@ -228,6 +232,7 @@ export default function mockWebsiteStatus(context: Context) {
                         is_suspended: 0,
                         is_withdrawal_suspended: 0,
                         name: 'Ethereum',
+                        platform: { cashier: ['crypto'], ramp: [] },
                         stake_default: 0.005,
                         transfer_between_accounts: {
                             fees: {
@@ -275,6 +280,7 @@ export default function mockWebsiteStatus(context: Context) {
                         is_suspended: 0,
                         is_withdrawal_suspended: 0,
                         name: 'Euro',
+                        platform: { cashier: ['doughflow'], ramp: [] },
                         stake_default: 10,
                         transfer_between_accounts: {
                             fees: {
@@ -322,6 +328,7 @@ export default function mockWebsiteStatus(context: Context) {
                         is_suspended: 1,
                         is_withdrawal_suspended: 1,
                         name: 'STATIS Euro',
+                        platform: { cashier: ['crypto'], ramp: [] },
                         stake_default: 10,
                         transfer_between_accounts: {
                             fees: {
@@ -369,6 +376,7 @@ export default function mockWebsiteStatus(context: Context) {
                         is_suspended: 0,
                         is_withdrawal_suspended: 0,
                         name: 'Pound Sterling',
+                        platform: { cashier: ['doughflow'], ramp: [] },
                         stake_default: 8,
                         transfer_between_accounts: {
                             fees: {
@@ -416,6 +424,7 @@ export default function mockWebsiteStatus(context: Context) {
                         is_suspended: 1,
                         is_withdrawal_suspended: 1,
                         name: 'IDK',
+                        platform: { cashier: ['crypto'], ramp: [] },
                         stake_default: 150,
                         transfer_between_accounts: {
                             fees: {
@@ -463,6 +472,7 @@ export default function mockWebsiteStatus(context: Context) {
                         is_suspended: 0,
                         is_withdrawal_suspended: 0,
                         name: 'Litecoin',
+                        platform: { cashier: ['crypto'], ramp: [] },
                         stake_default: 0.13,
                         transfer_between_accounts: {
                             fees: {
@@ -510,6 +520,7 @@ export default function mockWebsiteStatus(context: Context) {
                         is_suspended: 1,
                         is_withdrawal_suspended: 1,
                         name: 'Paxos Standard',
+                        platform: { cashier: ['crypto'], ramp: [] },
                         stake_default: 10,
                         transfer_between_accounts: {
                             fees: {
@@ -557,6 +568,7 @@ export default function mockWebsiteStatus(context: Context) {
                         is_suspended: 1,
                         is_withdrawal_suspended: 1,
                         name: 'True USD',
+                        platform: { cashier: ['crypto'], ramp: [] },
                         stake_default: 10,
                         transfer_between_accounts: {
                             fees: {
@@ -604,6 +616,7 @@ export default function mockWebsiteStatus(context: Context) {
                         is_suspended: 1,
                         is_withdrawal_suspended: 1,
                         name: 'Binary Coin',
+                        platform: { cashier: ['crypto'], ramp: [] },
                         stake_default: 10,
                         transfer_between_accounts: {
                             fees: {
@@ -651,6 +664,7 @@ export default function mockWebsiteStatus(context: Context) {
                         is_suspended: 0,
                         is_withdrawal_suspended: 0,
                         name: 'US Dollar',
+                        platform: { cashier: ['doughflow'], ramp: [] },
                         stake_default: 10,
                         transfer_between_accounts: {
                             fees: {
@@ -698,6 +712,7 @@ export default function mockWebsiteStatus(context: Context) {
                         is_suspended: 0,
                         is_withdrawal_suspended: 0,
                         name: 'USD Coin',
+                        platform: { cashier: ['crypto'], ramp: [] },
                         stake_default: 10,
                         transfer_between_accounts: {
                             fees: {
@@ -745,6 +760,7 @@ export default function mockWebsiteStatus(context: Context) {
                         is_suspended: 1,
                         is_withdrawal_suspended: 1,
                         name: 'USDK',
+                        platform: { cashier: ['crypto'], ramp: [] },
                         stake_default: 10,
                         transfer_between_accounts: {
                             fees: {
@@ -792,6 +808,7 @@ export default function mockWebsiteStatus(context: Context) {
                         is_suspended: 0,
                         is_withdrawal_suspended: 0,
                         name: 'Tether Omni',
+                        platform: { cashier: ['crypto'], ramp: [] },
                         stake_default: 10,
                         transfer_between_accounts: {
                             fees: {
@@ -839,6 +856,7 @@ export default function mockWebsiteStatus(context: Context) {
                         is_suspended: 0,
                         is_withdrawal_suspended: 0,
                         name: 'Tether ERC20',
+                        platform: { cashier: ['crypto'], ramp: [] },
                         stake_default: 10,
                         transfer_between_accounts: {
                             fees: {
@@ -886,6 +904,7 @@ export default function mockWebsiteStatus(context: Context) {
                         is_suspended: 1,
                         is_withdrawal_suspended: 1,
                         name: 'Tether TRC20',
+                        platform: { cashier: ['crypto'], ramp: [] },
                         stake_default: 10,
                         transfer_between_accounts: {
                             fees: {

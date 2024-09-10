@@ -543,7 +543,7 @@ export default class TradeStore extends BaseStore {
         });
 
         when(
-            () => Object.keys(this.contract_types_list_v2).length > 0,
+            () => !isEmptyObject(this.contract_types_list_v2),
             () => {
                 if (!this.contract_types_list_v2 || !this.is_dtrader_v2_enabled) return;
                 const searchParams = new URLSearchParams(window.location.search);
@@ -648,7 +648,7 @@ export default class TradeStore extends BaseStore {
                     delete this.validation_rules.take_profit;
                 }
                 this.resetAccumulatorData();
-                if (!isEmptyObject(this.contract_types_list)) {
+                if (!isEmptyObject(this.contract_types_list) || !isEmptyObject(this.contract_types_list_v2)) {
                     setTradeURLParams({ contractType: this.contract_type });
                 }
                 this.root_store.notifications.removeTradeNotifications();

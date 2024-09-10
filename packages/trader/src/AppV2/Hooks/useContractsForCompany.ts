@@ -77,10 +77,20 @@ const useContractsForCompany = () => {
             : getTradeTypesList(categories as TContractTypesList);
     }, []);
 
-    const validateContractType = useCallback(
+    const getNewContractType = useCallback(
         (trade_types: TContractType[]) => {
             if (!isContractTypeAvailable(trade_types) && trade_types.length > 0) {
-                const new_contract_type = trade_types[0].value;
+                return trade_types[0].value;
+            }
+            return contract_type;
+        },
+        [contract_type, isContractTypeAvailable]
+    );
+
+    const processNewContractType = useCallback(
+        (new_contract_type: string) => {
+            const has_contract_type_changed = contract_type != new_contract_type && new_contract_type;
+            if (has_contract_type_changed) {
                 onChange({
                     target: {
                         name: 'contract_type',
@@ -88,8 +98,9 @@ const useContractsForCompany = () => {
                     },
                 });
             }
+            setTradeURLParams({ contractType: new_contract_type });
         },
-        [isContractTypeAvailable, onChange]
+        [contract_type, onChange]
     );
 
     useEffect(() => {
@@ -97,12 +108,6 @@ const useContractsForCompany = () => {
         setContractTypesList([]);
         is_fetching_ref.current = true;
     }, [loginid]);
-
-    useEffect(() => {
-        if (available_contract_types && Object.keys(available_contract_types).length > 0) {
-            setTradeURLParams({ contractType: contract_type });
-        }
-    }, [available_contract_types, contract_type]);
 
     useEffect(() => {
         try {
@@ -151,7 +156,9 @@ const useContractsForCompany = () => {
 
                 const trade_types = getTradeTypes(available_categories);
                 setTradeTypes(trade_types);
-                validateContractType(trade_types);
+
+                const new_contract_type = getNewContractType(trade_types);
+                processNewContractType(new_contract_type);
             }
         } catch (err) {
             /* eslint-disable no-console */

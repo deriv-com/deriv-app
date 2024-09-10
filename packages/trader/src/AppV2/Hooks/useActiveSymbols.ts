@@ -83,7 +83,7 @@ const useActiveSymbols = () => {
 
     useEffect(
         () => {
-            const checkSymbolChange = async (new_symbol: string) => {
+            const processNewSymbol = async (new_symbol: string) => {
                 // To call contracts_for during initialization
                 const is_initailization = !default_symbol_ref.current && new_symbol;
                 const has_symbol_changed = symbol != new_symbol && new_symbol;
@@ -93,7 +93,9 @@ const useActiveSymbols = () => {
                     await onChange({ target: { name: 'symbol', value: new_symbol } });
                     processContractsForV2();
                 }
+                setTradeURLParams({ symbol: new_symbol });
             };
+
             const process = async () => {
                 if (!response) return;
 
@@ -107,10 +109,9 @@ const useActiveSymbols = () => {
                         ? symbol
                         : (await pickDefaultSymbol(active_symbols)) || '1HZ100V';
 
-                    checkSymbolChange(new_symbol);
+                    processNewSymbol(new_symbol);
                     setActiveSymbols(active_symbols);
                     setActiveSymbolsV2(active_symbols);
-                    setTradeURLParams({ symbol: new_symbol });
                 }
             };
             process();

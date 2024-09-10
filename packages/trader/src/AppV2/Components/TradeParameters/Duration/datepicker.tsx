@@ -23,21 +23,12 @@ const formatDate = (date: Date) => {
     return `${formatted_date} GMT`;
 };
 
-const calculateTotalDays = (expiry_date: Date) => {
-    const today = new Date();
-    const time_difference = expiry_date.getTime() - today.getTime();
-    const day_difference = Math.ceil(time_difference / (1000 * 60 * 60 * 24));
-    return day_difference;
-};
-
 const DurationEndTimePicker = ({
     expiry_date,
     setExpiryDate,
-    setSelectedTime,
 }: {
     setExpiryDate: (date: Date) => void;
     expiry_date: Date;
-    setSelectedTime: (arg: number[]) => void;
 }) => {
     const [open_date_picker, setOpenDatePicker] = useState(false);
 
@@ -71,7 +62,6 @@ const DurationEndTimePicker = ({
                             onChange={date => {
                                 if (date && date instanceof Date) {
                                     setExpiryDate(date);
-                                    setSelectedTime([calculateTotalDays(date)]);
                                     setOpenDatePicker(false);
                                 }
                             }}

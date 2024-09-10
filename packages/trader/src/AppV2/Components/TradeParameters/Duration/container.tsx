@@ -14,8 +14,9 @@ const DurationActionSheetContainer = observer(
         const [selected_time, setSelectedTime] = useState([duration]);
         const [expiry_date_data, setExpiryDate] = useState<Date>(new Date());
         const [end_time, setEndTime] = useState<string>('');
+        const [toggle_date_picker, setToggleDatePicker] = useState<boolean>(false);
         const [current_gmt_time, setCurrentGmtTime] = useState<string>('');
-
+        const [is_wheelpicker_loading, setIsWheelPickerLoading] = useState<boolean>(false);
         const updateCurrentGmtTime = () => {
             const now = new Date();
             const gmt_time = now.toLocaleTimeString('en-GB', { timeZone: 'GMT', hour12: false });
@@ -57,10 +58,14 @@ const DurationActionSheetContainer = observer(
 
         const onChangeUnit = React.useCallback(
             (value: string) => {
+                setIsWheelPickerLoading(true);
                 setUnit(value);
                 if (value !== 'h') {
                     setSelectedHour([]);
                 }
+                setTimeout(() => {
+                    setIsWheelPickerLoading(false);
+                }, 500);
             },
             [setUnit, setSelectedHour]
         );
@@ -71,6 +76,7 @@ const DurationActionSheetContainer = observer(
             const time_difference = +date - +current_date;
             const day_difference = Math.ceil(time_difference / (1000 * 60 * 60 * 24));
             setSelectedTime([day_difference]);
+            setToggleDatePicker(!toggle_date_picker);
         };
 
         useEffect(() => {
@@ -89,15 +95,16 @@ const DurationActionSheetContainer = observer(
                 arr[index] = num_value;
                 setSelectedHour(arr);
             } else if (unit == 'd') {
-                setSelectedTime([num_value]);
-                const updated_date = new Date();
-                updated_date.setDate(updated_date.getDate() + num_value);
-                setExpiryDate(updated_date);
+                if (selected_time[0] !== num_value) {
+                    const updated_date = new Date();
+                    updated_date.setDate(updated_date.getDate() + num_value);
+                    setSelectedTime([num_value]);
+                    setExpiryDate(updated_date);
+                }
             } else {
                 setSelectedTime([num_value]);
             }
         };
-
         return (
             <div className='duration-container'>
                 <ActionSheet.Header title={<Localize i18n_default_text='Duration' />} />
@@ -107,16 +114,12 @@ const DurationActionSheetContainer = observer(
                     setEndTime={setEndTime}
                     setWheelPickerValue={setWheelPickerValue}
                     selected_hour={selected_hour}
+                    is_wheelpicker_loading={is_wheelpicker_loading}
                     selected_time={selected_time}
+                    toggle_date_picker={toggle_date_picker}
                 />
                 {unit == 'd' && (
-                    <DurationEndTimePicker
-                        setExpiryDate={handleSelectExpiryDate}
-                        setSelectedTime={val => {
-                            setSelectedTime(val);
-                        }}
-                        expiry_date={expiry_date_data}
-                    />
+                    <DurationEndTimePicker setExpiryDate={handleSelectExpiryDate} expiry_date={expiry_date_data} />
                 )}
                 {unit == 'et' && (
                     <div className='duration-container__endtime'>

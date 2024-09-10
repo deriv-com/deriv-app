@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { useStore } from '@deriv/stores';
-import { cloneObject, getContractCategoriesConfig, getContractTypesConfig } from '@deriv/shared';
+import { cloneObject, getContractCategoriesConfig, getContractTypesConfig, setTradeURLParams } from '@deriv/shared';
 import { TConfig, TContractTypesList } from 'Types';
 import { useDtraderQuery } from './useDtraderQuery';
 import { isLoginidDefined } from 'AppV2/Utils/client';
@@ -79,17 +79,19 @@ const useContractsForCompany = () => {
 
     const validateContractType = useCallback(
         (trade_types: TContractType[]) => {
+            let new_contract_type = contract_type;
             if (!isContractTypeAvailable(trade_types) && trade_types.length > 0) {
-                const default_contract_type = trade_types[0].value;
+                new_contract_type = trade_types[0].value;
                 onChange({
                     target: {
                         name: 'contract_type',
-                        value: default_contract_type,
+                        value: new_contract_type,
                     },
                 });
             }
+            setTradeURLParams({ contractType: new_contract_type });
         },
-        [isContractTypeAvailable, onChange]
+        [contract_type, isContractTypeAvailable, onChange]
     );
 
     useEffect(() => {

@@ -541,41 +541,54 @@ export default class TradeStore extends BaseStore {
             updateSymbol: action.bound,
         });
 
-        // Adds intercept to change min_max value of duration validation
-        reaction(
-            () => [this.contract_types_list_v2, this.has_symbols_for_v2],
+        when(
+            () => Object.keys(this.contract_types_list_v2).length > 0,
             () => {
-                if (!this.has_symbols_for_v2 || !this.contract_types_list_v2 || !this.is_dtrader_v2_enabled) return;
+                if (!this.contract_types_list_v2 || !this.is_dtrader_v2_enabled) return;
                 const searchParams = new URLSearchParams(window.location.search);
-                const urlSymbol = searchParams.get('symbol');
                 const urlContractType = searchParams.get('trade_type');
                 const tradeStoreString = sessionStorage.getItem('trade_store');
                 const tradeStoreObj = safeParse(tradeStoreString ?? '{}') ?? {};
-
                 const flattedContractTypesV2 = Object.values(this.contract_types_list_v2)
                     .map(contract_type => contract_type.categories)
                     .flatMap(categories => categories);
                 const isValidContractType = flattedContractTypesV2.some(
                     contract_type => contract_type.value === urlContractType
                 );
-                const isValidSymbol = this.active_symbols.some(symbol => symbol.symbol === urlSymbol);
-
-                if (urlSymbol && isValidSymbol) {
-                    tradeStoreObj.symbol = urlSymbol;
-                    sessionStorage.setItem('trade_store', JSON.stringify(tradeStoreObj));
-                    this.symbol = urlSymbol;
-                } else {
-                    this.root_store.ui.toggleUrlUnavailableModal(true);
-                }
-                if (urlContractType && isValidContractType) {
-                    tradeStoreObj.contract_type = urlContractType;
-                    sessionStorage.setItem('trade_store', JSON.stringify(tradeStoreObj));
-                    this.contract_type = urlContractType;
-                } else {
-                    this.root_store.ui.toggleUrlUnavailableModal(true);
+                if (urlContractType) {
+                    if (isValidContractType) {
+                        tradeStoreObj.contract_type = urlContractType;
+                        sessionStorage.setItem('trade_store', JSON.stringify(tradeStoreObj));
+                        this.contract_type = urlContractType;
+                    } else {
+                        this.root_store.ui.toggleUrlUnavailableModal(true);
+                    }
                 }
             }
         );
+
+        when(
+            () => this.has_symbols_for_v2,
+            () => {
+                if (!this.contract_types_list_v2 || !this.is_dtrader_v2_enabled) return;
+                const searchParams = new URLSearchParams(window.location.search);
+                const urlSymbol = searchParams.get('symbol');
+                const tradeStoreString = sessionStorage.getItem('trade_store');
+                const tradeStoreObj = safeParse(tradeStoreString ?? '{}') ?? {};
+                const isValidSymbol = this.active_symbols.some(symbol => symbol.symbol === urlSymbol);
+
+                if (urlSymbol) {
+                    if (isValidSymbol) {
+                        tradeStoreObj.symbol = urlSymbol;
+                        sessionStorage.setItem('trade_store', JSON.stringify(tradeStoreObj));
+                        this.symbol = urlSymbol;
+                    } else {
+                        this.root_store.ui.toggleUrlUnavailableModal(true);
+                    }
+                }
+            }
+        );
+
         reaction(
             () => [this.contract_expiry_type, this.duration_min_max, this.duration_unit, this.expiry_type],
             () => {

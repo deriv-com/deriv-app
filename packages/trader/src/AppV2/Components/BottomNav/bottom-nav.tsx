@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
-import { StandaloneChartCandlestickRegularIcon, StandaloneClockThreeRegularIcon } from '@deriv/quill-icons';
+import { StandaloneChartAreaFillIcon, StandaloneClockThreeRegularIcon } from '@deriv/quill-icons';
 import { Badge, Navigation } from '@deriv-com/quill-ui';
 import { useStore } from '@deriv/stores';
 import { useHistory, useLocation } from 'react-router';
@@ -22,12 +22,7 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
 
     const bottomNavItems = [
         {
-            icon: (
-                <StandaloneChartCandlestickRegularIcon
-                    iconSize='sm'
-                    fill='var(--semantic-color-monochrome-textIcon-normal-high)'
-                />
-            ),
+            icon: <StandaloneChartAreaFillIcon iconSize='sm' />,
             label: <Localize i18n_default_text='Trade' />,
             path: routes.trade,
         },

@@ -6,6 +6,7 @@ import {
     AccountsDmt5FinancialIcon,
     AccountsDmt5StandardIcon,
     AccountsDmt5SwfIcon,
+    AccountsDmt5ZrsIcon,
     CurrencyAudIcon,
     CurrencyBtcIcon,
     CurrencyEthIcon,
@@ -38,6 +39,8 @@ export const AppIcons: TIconTypes = {
 };
 
 export const CFDPlatformIcons: TIconTypes = {
+    all_swap_free: AccountsDmt5SwfIcon,
+    all_zero_spread: AccountsDmt5ZrsIcon,
     ctrader: AccountsDerivCtraderIcon,
     dxtrade: AccountsDerivXIcon,
 };

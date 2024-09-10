@@ -6,6 +6,7 @@ import { Tabs } from '../../../../../components/Base';
 import MT5ChangePasswordScreens from '../MT5ChangePasswordScreens';
 
 jest.mock('@deriv-com/translations', () => ({
+    localize: jest.fn(),
     useTranslations: jest.fn(),
 }));
 

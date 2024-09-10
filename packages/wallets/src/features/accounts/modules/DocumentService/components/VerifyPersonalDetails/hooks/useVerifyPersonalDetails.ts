@@ -9,7 +9,6 @@ const useVerifyPersonalDetails = () => {
     const { data: settings, isLoading, updateAsync } = useSettings();
     const [isSubmissionInitiated, setIsSubmissionInitiated] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
-    const [error, setError] = useState<TSocketError<'set_settings'>>();
 
     const formattedDateOfBirth = getFormattedDateString(new Date((settings.date_of_birth ?? 0) * 1000));
 
@@ -19,7 +18,7 @@ const useVerifyPersonalDetails = () => {
         lastName: settings.last_name,
     };
 
-    const submit = (values: FormikValues | TVerifyPersonalDetailsValues) => {
+    const submit = async (values: FormikValues | TVerifyPersonalDetailsValues) => {
         const isDirty =
             formattedDateOfBirth !== values.dateOfBirth ||
             settings.first_name !== values.firstName ||
@@ -27,26 +26,27 @@ const useVerifyPersonalDetails = () => {
 
         if (isDirty) {
             setIsSubmissionInitiated(true);
-            updateAsync({
-                date_of_birth: values.dateOfBirth,
-                first_name: values.firstName,
-                last_name: values.lastName,
-            })
-                .then(() => {
-                    setIsSubmitted(true);
-                    setIsSubmissionInitiated(false);
-                })
-                .catch(err => {
-                    setIsSubmissionInitiated(false);
-                    setError(err as TSocketError<'set_settings'>);
+
+            try {
+                await updateAsync({
+                    date_of_birth: values.dateOfBirth,
+                    first_name: values.firstName,
+                    last_name: values.lastName,
                 });
+                setIsSubmitted(true);
+                setIsSubmissionInitiated(false);
+                return Promise.resolve();
+            } catch (err) {
+                setIsSubmissionInitiated(false);
+                const error = (err as TSocketError<'set_settings'>).error;
+                return Promise.reject(error);
+            }
         } else {
             setIsSubmitted(true);
         }
     };
 
     return {
-        error: error?.error,
         initialValues,
         isLoading,
         isSubmitted,

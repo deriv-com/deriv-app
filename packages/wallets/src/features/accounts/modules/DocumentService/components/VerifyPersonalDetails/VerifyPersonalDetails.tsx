@@ -114,7 +114,7 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
                     </WalletText>
                 </label>
             </div>
-            {error && <VerifyPersonalDetailsErrorMessage error={error?.code} />}
+            {error && <VerifyPersonalDetailsErrorMessage error={error} />}
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDepositCryptoAddress } from '@deriv/api-v2';
+import { useActiveWalletAccount, useCurrencyConfig, useDepositCryptoAddress } from '@deriv/api-v2';
 import { Divider, Loader } from '@deriv-com/ui';
 import { isServerError } from '../../../../utils/utils';
 import { DepositErrorScreen } from '../../screens';
@@ -13,7 +13,11 @@ import './DepositCrypto.scss';
 
 const DepositCrypto = () => {
     const { data: depositCryptoAddress, error, isLoading } = useDepositCryptoAddress();
+    const { data: activeWallet } = useActiveWalletAccount();
+    const { getConfig } = useCurrencyConfig();
+
     const depositCryptoError = error?.error;
+    const isTUSDT = activeWallet?.currency && getConfig(activeWallet.currency)?.is_tUSDT;
 
     if (isLoading) return <Loader />;
 
@@ -25,7 +29,7 @@ const DepositCrypto = () => {
         <div className='wallets-deposit-crypto'>
             <div className='wallets-deposit-crypto__side-pane' />
             <div className='wallets-deposit-crypto__main-content'>
-                <DepositCryptoInfoNotice />
+                {isTUSDT && <DepositCryptoInfoNotice />}
                 <DepositCryptoCurrencyDetails />
                 <DepositCryptoAddress depositCryptoAddress={depositCryptoAddress} />
                 <DepositCryptoDisclaimers />

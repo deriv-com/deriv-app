@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useCurrentCurrencyConfig } from '@deriv/hooks';
 import { observer } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import { Divider } from '../../components/divider';
@@ -16,6 +17,7 @@ import DepositCryptoSideNoteTryFiatOnRamp from './components/deposit-crypto-side
 const DepositCrypto: React.FC = observer(() => {
     const { isDesktop } = useDevice();
     const { general_store } = useCashierStore();
+    const currency_config = useCurrentCurrencyConfig();
     const { setIsDeposit } = general_store;
 
     useEffect(() => {
@@ -34,7 +36,7 @@ const DepositCrypto: React.FC = observer(() => {
             right={!isDesktop ? undefined : <DepositCryptoSideNotes />}
         >
             <DepositSubPageAnalyticsEventTracker deposit_category='crypto' />
-            <DepositCryptoInfoNotice />
+            {currency_config?.is_tUSDT && <DepositCryptoInfoNotice />}
             <DepositCryptoCurrencyDetails />
             <DepositCryptoWalletAddress />
             <Divider />

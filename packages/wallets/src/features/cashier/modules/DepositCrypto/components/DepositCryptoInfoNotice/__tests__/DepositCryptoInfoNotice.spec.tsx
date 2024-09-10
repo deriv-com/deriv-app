@@ -1,11 +1,6 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import DepositCryptoInfoNotice from '../DepositCryptoInfoNotice';
-
-jest.mock('@deriv/api-v2', () => ({
-    useActiveWalletAccount: jest.fn(),
-}));
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
@@ -26,20 +21,7 @@ jest.mock('@deriv-com/ui', () => ({
 }));
 
 describe('DepositCryptoInfoNotice', () => {
-    it('renders nothing when currency is not tUSDT', () => {
-        (useActiveWalletAccount as jest.Mock).mockReturnValue({
-            data: { currency: 'USD' },
-        });
-
-        const { container } = render(<DepositCryptoInfoNotice />);
-        expect(container).toBeEmptyDOMElement();
-    });
-
-    it('renders the notice when currency is tUSDT', () => {
-        (useActiveWalletAccount as jest.Mock).mockReturnValue({
-            data: { currency: 'tUSDT' },
-        });
-
+    it('renders the tUSDT deposit info notice when currency is tUSDT', () => {
         render(<DepositCryptoInfoNotice />);
 
         const sectionMessage = screen.getByTestId('mock-section-message');
@@ -52,14 +34,5 @@ describe('DepositCryptoInfoNotice', () => {
         expect(
             screen.getByText('Verify the address on this page before each deposit to avoid losing funds.')
         ).toBeInTheDocument();
-    });
-
-    it('handles null activeWallet data', () => {
-        (useActiveWalletAccount as jest.Mock).mockReturnValue({
-            data: null,
-        });
-
-        const { container } = render(<DepositCryptoInfoNotice />);
-        expect(container).toBeEmptyDOMElement();
     });
 });

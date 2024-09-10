@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-import { useWalletMigration, useTncStatusUpdate } from '@deriv/hooks';
+import { useWalletMigration, useIsTNCNeeded } from '@deriv/hooks';
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
@@ -131,8 +131,8 @@ const AppModals = observer(() => {
 
     const should_show_wallets_upgrade_completed_modal = Cookies.get('recent_wallets_migration');
 
-    const need_tnc_status_update = useTncStatusUpdate();
-    if (need_tnc_status_update) {
+    const is_tnc_needed = useIsTNCNeeded();
+    if (is_tnc_needed) {
         toggleTncUpdateModal(true);
     }
     React.useEffect(() => {

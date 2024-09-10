@@ -49,7 +49,7 @@ export { default as useMT5SVGEligibleToMigrate } from './useMT5SVGEligibleToMigr
 export { default as useNeedAuthentication } from './useNeedAuthentication';
 export { default as useNeedFinancialAssessment } from './useNeedFinancialAssessment';
 export { default as useNeedPOI } from './useNeedPOI';
-export { default as useNeedTNC } from './useNeedTNC';
+export { default as useIsTNCNeeded } from './useIsTNCNeeded';
 export { default as useNotificationEvent } from './useNotificationEvent';
 export { default as useOnrampVisible } from './useOnrampVisible';
 export { default as useP2PAdvertInfo } from './useP2PAdvertInfo';
@@ -88,4 +88,3 @@ export { default as useGrowthbookIsOn } from './useGrowthbookIsOn';
 export { default as useResidenceList } from './useResidenceList';
 export { default as useTradingPlatformStatus } from './useTradingPlatformStatus';
 export type { TradingPlatformStatus } from './useTradingPlatformStatus';
-export { default as useTncStatusUpdate } from './useTncStatusUpdate';

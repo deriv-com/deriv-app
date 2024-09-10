@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
-import useTncStatusUpdate from '../useTncStatusUpdate';
+import useIsTNCNeeded from '../useIsTNCNeeded';
 
-describe('useTncStatusUpdate', () => {
+describe('useIsTNCNeeded', () => {
     it('should return true if current landing company is svg and tnc_status for svg is 0', () => {
         const mock = mockStore({
             client: {
@@ -19,7 +19,7 @@ describe('useTncStatusUpdate', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useTncStatusUpdate(), { wrapper });
+        const { result } = renderHook(() => useIsTNCNeeded(), { wrapper });
 
         expect(result.current).toBe(true);
     });
@@ -38,7 +38,7 @@ describe('useTncStatusUpdate', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useTncStatusUpdate(), { wrapper });
+        const { result } = renderHook(() => useIsTNCNeeded(), { wrapper });
 
         expect(result.current).toBe(false);
     });
@@ -57,7 +57,7 @@ describe('useTncStatusUpdate', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useTncStatusUpdate(), { wrapper });
+        const { result } = renderHook(() => useIsTNCNeeded(), { wrapper });
 
         expect(result.current).toBe(true);
     });
@@ -76,7 +76,7 @@ describe('useTncStatusUpdate', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useTncStatusUpdate(), { wrapper });
+        const { result } = renderHook(() => useIsTNCNeeded(), { wrapper });
 
         expect(result.current).toBe(false);
     });

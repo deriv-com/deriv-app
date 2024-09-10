@@ -317,7 +317,6 @@ export default class NotificationStore extends BaseStore {
             is_eu,
             is_identity_verification_needed,
             is_logged_in,
-            is_tnc_needed,
             landing_company_shortcode,
             loginid,
             obj_total_balance,
@@ -603,10 +602,6 @@ export default class NotificationStore extends BaseStore {
                 if (is_website_up && !has_trustpilot && daysSince(account_open_date) > 7) {
                     this.addNotificationMessage(this.client_notifications.trustpilot);
                 }
-                if (is_tnc_needed) {
-                    this.addNotificationMessage(this.client_notifications.tnc);
-                }
-
                 has_missing_required_field = hasMissingRequiredField(account_settings, client, isAccountOfType);
                 if (has_missing_required_field) {
                     this.addNotificationMessage(

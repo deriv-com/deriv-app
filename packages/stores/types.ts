@@ -475,7 +475,6 @@ export type TClientStore = {
     is_populating_dxtrade_account_list: boolean;
     is_populating_ctrader_account_list: boolean;
     is_switching: boolean;
-    is_tnc_needed: boolean;
     is_high_risk: boolean;
     is_trading_experience_incomplete: boolean;
     is_virtual: boolean;

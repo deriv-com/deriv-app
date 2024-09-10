@@ -11,15 +11,13 @@ type TIdentityVerificationDocumentAddPayload = Parameters<
  * - To submit IDV verification for verification flow in Wallets.
  */
 const useIdentityDocumentVerificationAdd = () => {
-    const { mutate: _mutate, ...rest } = useMutation('identity_verification_document_add');
+    const { mutateAsync, ...rest } = useMutation('identity_verification_document_add');
 
-    const submitIDVDocuments = useCallback(
-        (payload: TIdentityVerificationDocumentAddPayload) =>
-            _mutate({
-                payload,
-            }),
-        [_mutate]
-    );
+    const submitIDVDocuments = (payload: TIdentityVerificationDocumentAddPayload) => {
+        return mutateAsync({
+            payload,
+        });
+    };
 
     return {
         /** Call this function upon IDV submission.
@@ -31,8 +29,6 @@ const useIdentityDocumentVerificationAdd = () => {
          * - issuing_country: The country in which the documents are issued and supported.
          */
         submitIDVDocuments,
-        /** The original mutate function returned by useMutation */
-        _mutate,
         ...rest,
     };
 };

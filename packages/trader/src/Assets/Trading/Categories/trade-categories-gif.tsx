@@ -58,7 +58,7 @@ const TradeCategoriesGIF = ({
             return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} />;
         case TRADE_TYPES.TURBOS.LONG:
         case TRADE_TYPES.TURBOS.SHORT:
-            return <ImageTurbos />;
+            return <ContractTypeDescriptionVideo selected_contract_type='turbos' />;
         case TRADE_TYPES.VANILLA.CALL:
         case TRADE_TYPES.VANILLA.PUT:
             return <ContractTypeDescriptionVideo selected_contract_type='vanilla' />;

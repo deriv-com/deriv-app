@@ -8,9 +8,9 @@ import {
     LabelPairedPlusMdBoldIcon,
 } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { Button, Text } from '@deriv-com/ui';
 import useDevice from '../../hooks/useDevice';
-import { IconButton, WalletButton } from '../Base';
+import { IconButton } from '../Base';
 import './WalletListCardActions.scss';
 
 type TProps = {
@@ -21,24 +21,27 @@ const getWalletHeaderButtons = (localize: ReturnType<typeof useTranslations>['lo
     const buttons = [
         {
             className: isDemo ? 'wallets-mobile-actions-content-icon' : 'wallets-mobile-actions-content-icon--primary',
-            color: isDemo ? 'white' : 'primary',
+            color: isDemo ? 'black' : 'primary',
             icon: isDemo ? <LabelPairedArrowsRotateMdBoldIcon /> : <LabelPairedPlusMdBoldIcon fill='#FFF' />,
+            iconColor: isDemo ? 'white' : 'primary',
             name: isDemo ? 'reset-balance' : 'deposit',
             text: isDemo ? localize('Reset balance') : localize('Deposit'),
             variant: isDemo ? 'outlined' : 'contained',
         },
         {
             className: 'wallets-mobile-actions-content-icon',
-            color: 'white',
+            color: 'black',
             icon: <LabelPairedMinusMdBoldIcon />,
+            iconColor: 'white',
             name: 'withdrawal',
             text: localize('Withdraw'),
             variant: 'outlined',
         },
         {
             className: 'wallets-mobile-actions-content-icon',
-            color: 'white',
+            color: 'black',
             icon: <LabelPairedArrowUpArrowDownMdBoldIcon />,
+            iconColor: 'white',
             name: 'account-transfer',
             text: localize('Transfer'),
             variant: 'outlined',
@@ -69,7 +72,7 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
                             <IconButton
                                 aria-label={button.name}
                                 className={button.className}
-                                color={button.color}
+                                color={button.iconColor}
                                 icon={button.icon}
                                 onClick={() => {
                                     history.push(`/wallet/${button.name}`, { accountsActiveTabIndex });
@@ -88,8 +91,10 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
     return (
         <div className='wallets-header__actions'>
             {getWalletHeaderButtons(localize, isDemo).map(button => (
-                <WalletButton
-                    ariaLabel={button.name}
+                <Button
+                    aria-label={button.name}
+                    borderWidth='sm'
+                    color={button.color}
                     icon={button.icon}
                     key={button.name}
                     onClick={() => {
@@ -99,7 +104,7 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
                     variant={button.variant}
                 >
                     {isActive ? button.text : ''}
-                </WalletButton>
+                </Button>
             ))}
         </div>
     );

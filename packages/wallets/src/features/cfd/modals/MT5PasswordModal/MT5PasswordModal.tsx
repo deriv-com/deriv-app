@@ -10,8 +10,9 @@ import {
     useVerifyEmail,
 } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
+import { Button } from '@deriv-com/ui';
 import { SentEmailContent, WalletError } from '../../../../components';
-import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components/Base';
+import { ModalStepWrapper, ModalWrapper } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
@@ -58,7 +59,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
         status: emailVerificationStatus,
     } = useVerifyEmail();
     const { data: mt5AccountsData } = useMT5AccountsList();
-    const { isMobile } = useDevice();
+    const { isDesktop, isMobile } = useDevice();
     const { getModalState, hide } = useModal();
     const { data: settingsData } = useSettings();
     const { localize } = useTranslations();
@@ -187,7 +188,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
 
         if (isMT5PasswordNotSet)
             return (
-                <WalletButton
+                <Button
                     disabled={
                         !password ||
                         createMT5AccountLoading ||
@@ -198,9 +199,10 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
                     isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                     onClick={onSubmit}
                     size='lg'
+                    textSize={isDesktop ? 'md' : 'sm'}
                 >
                     <Localize i18n_default_text='Create {{mt5Title}} password' values={{ mt5Title }} />
-                </WalletButton>
+                </Button>
             );
 
         return (
@@ -220,6 +222,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
         createMT5AccountLoading,
         createMT5AccountSuccess,
         isDemo,
+        isDesktop,
         isMT5PasswordNotSet,
         mt5Title,
         onSubmit,

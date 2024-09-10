@@ -2,8 +2,8 @@ import React, { FC, useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useJurisdictionStatus, useMT5AccountsList, usePOA, usePOI } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { useDevice } from '@deriv-com/ui';
-import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components';
+import { Button, useDevice } from '@deriv-com/ui';
+import { ModalStepWrapper, ModalWrapper, WalletButtonGroup } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import {
@@ -30,7 +30,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
     const { getVerificationStatus, isSuccess } = useJurisdictionStatus();
 
     const history = useHistory();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { getModalState, hide } = useModal();
     const { localize } = useTranslations();
 
@@ -61,30 +61,38 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
             if (isTransferAllowed) {
                 return (
                     <WalletButtonGroup isFlex isFullWidth>
-                        <WalletButton onClick={hide} size={isMobile ? 'lg' : 'md'} variant='outlined'>
+                        <Button
+                            borderWidth='sm'
+                            color='black'
+                            onClick={hide}
+                            size={isDesktop ? 'md' : 'lg'}
+                            textSize='sm'
+                            variant='outlined'
+                        >
                             <Localize i18n_default_text='Maybe later' />
-                        </WalletButton>
-                        <WalletButton
+                        </Button>
+                        <Button
                             onClick={() => {
                                 hide();
                                 history.push('/wallet/account-transfer', { toAccountLoginId: addedAccount?.loginid });
                             }}
-                            size={isMobile ? 'lg' : 'md'}
+                            size={isDesktop ? 'md' : 'lg'}
+                            textSize='sm'
                         >
                             <Localize i18n_default_text='Transfer funds' />
-                        </WalletButton>
+                        </Button>
                     </WalletButtonGroup>
                 );
             }
             return (
                 <div className='wallets-success-btn'>
-                    <WalletButton isFullWidth onClick={hide} size={isMobile ? 'lg' : 'md'}>
+                    <Button isFullWidth onClick={hide} size={isDesktop ? 'md' : 'lg'} textSize='sm'>
                         <Localize i18n_default_text='OK' />
-                    </WalletButton>
+                    </Button>
                 </div>
             );
         },
-        [hide, history, addedAccount?.loginid, isMobile]
+        [hide, isDesktop, history, addedAccount?.loginid]
     );
 
     const renderSuccessDescription = useMemo(() => {
@@ -200,7 +208,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
 
     if (isLoading) return null;
 
-    if (isMobile) {
+    if (!isDesktop) {
         return <ModalStepWrapper renderFooter={renderAccountSuccessButton}>{renderMainContent}</ModalStepWrapper>;
     }
 

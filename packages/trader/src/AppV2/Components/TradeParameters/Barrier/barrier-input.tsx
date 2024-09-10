@@ -90,8 +90,9 @@ const BarrierInput = observer(
                         <div>
                             {option === 2 || isDays ? (
                                 <TextField
-                                    type='number'
+                                    customType='commaRemoval'
                                     name='barrier_1'
+                                    noStatusIcon
                                     status={
                                         validation_errors?.barrier_1.length > 0 && barrier_1 !== ''
                                             ? 'error'
@@ -101,6 +102,7 @@ const BarrierInput = observer(
                                     allowDecimals
                                     allowSign={false}
                                     inputMode='decimal'
+                                    regex={/[^0-9.,]/g}
                                     textAlignment='center'
                                     onChange={handleOnChange}
                                     placeholder={localize('Distance to spot')}
@@ -110,8 +112,9 @@ const BarrierInput = observer(
                             ) : (
                                 <TextFieldAddon
                                     fillAddonBorderColor='var(--semantic-color-slate-solid-surface-frame-mid)'
-                                    type='number'
+                                    customType='commaRemoval'
                                     name='barrier_1'
+                                    noStatusIcon
                                     addonLabel={option == 0 ? '+' : '-'}
                                     value={barrier_1.replace(/[+-]/g, '')}
                                     allowDecimals
@@ -124,6 +127,7 @@ const BarrierInput = observer(
                                     }
                                     onChange={handleOnChange}
                                     placeholder={localize('Distance to spot')}
+                                    regex={/[^0-9.,]/g}
                                     variant='fill'
                                     message={barrier_1 !== '' ? validation_errors?.barrier_1[0] : ''}
                                 />

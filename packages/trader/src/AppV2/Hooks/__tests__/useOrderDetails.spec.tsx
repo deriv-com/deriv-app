@@ -67,6 +67,7 @@ describe('useOrderDetails', () => {
             [CARD_LABELS.DURATION]: '5 Ticks',
             [CARD_LABELS.BARRIER]: '1000',
             [CARD_LABELS.STAKE]: '100.00 USD',
+            [CARD_LABELS.POTENTIAL_PAYOUT]: 19.55,
         });
     });
 
@@ -91,6 +92,7 @@ describe('useOrderDetails', () => {
             [CARD_LABELS.DURATION]: '5 ticks',
             [CARD_LABELS.TARGET]: undefined,
             [CARD_LABELS.STAKE]: '100.00 USD',
+            [CARD_LABELS.POTENTIAL_PAYOUT]: 19.55,
         });
     });
 

@@ -21,21 +21,16 @@ describe('AccumulatorsInformation', () => {
             }))
     );
 
-    const mockAccumulatorsInformation = (props?: React.ComponentProps<typeof AccumulatorsInformation>) =>
+    const mockAccumulatorsInformation = () =>
         render(
             <TraderProviders store={default_mock_store}>
                 <ModulesProvider store={default_mock_store}>
-                    <AccumulatorsInformation {...props} />
+                    <AccumulatorsInformation />
                 </ModulesProvider>
             </TraderProviders>
         );
-    it('should not render if description is not passed', () => {
-        const { container } = mockAccumulatorsInformation({ is_minimized: true });
 
-        expect(container).toBeEmptyDOMElement();
-    });
-
-    it('should not render if there is API error ', () => {
+    it('should not render if there is an API error ', () => {
         default_mock_store.modules.trade.proposal_info = {
             ACCU: {
                 has_error: true,

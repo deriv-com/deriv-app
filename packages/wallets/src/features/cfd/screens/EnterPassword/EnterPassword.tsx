@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
-import { WalletButton, WalletPasswordFieldLazy } from '../../../../components/Base';
-import useDevice from '../../../../hooks/useDevice';
+import { Button, Text, useDevice } from '@deriv-com/ui';
+import { WalletPasswordFieldLazy } from '../../../../components/Base';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password-validation';
 import { CFDPasswordModalTnc } from '../../components/CFDPasswordModalTnc';
@@ -101,22 +100,23 @@ const EnterPassword: React.FC<TProps> = ({
             </div>
             {isDesktop && (
                 <div className='wallets-enter-password__buttons'>
-                    <WalletButton
+                    <Button
+                        color='black'
                         isLoading={isForgotPasswordLoading}
                         onClick={onSecondaryClick}
                         size='lg'
                         variant='outlined'
                     >
                         <Localize i18n_default_text='Forgot password?' />
-                    </WalletButton>
-                    <WalletButton
-                        disabled={isLoading || !validPassword(password) || !checked}
+                    </Button>
+                    <Button
+                        disabled={isLoading || !validPassword(password)}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'
                     >
                         <Localize i18n_default_text='Add account' />
-                    </WalletButton>
+                    </Button>
                 </div>
             )}
         </div>

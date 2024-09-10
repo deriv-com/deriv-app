@@ -154,7 +154,7 @@ const TradingAppCard = ({
             </div>
             <div
                 className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}
-                data-testid={`dt_trading-app-card_${is_real ? 'real' : 'demo'}_${platform_name
+                data-testid={`dt_trading-app-card_${is_real ? 'real' : 'demo'}_${String(platform_name)
                     .replaceAll(' ', '-')
                     .toLowerCase()}${
                     selected_mt5_jurisdiction?.jurisdiction ? `_${selected_mt5_jurisdiction.jurisdiction}` : ''

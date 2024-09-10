@@ -88,31 +88,31 @@ export const getAppToContentMapper = () =>
             icon: <LabelPairedWindowsXlIcon />,
             link: ctraderLinks.windows,
             text: localize('Download'),
-            title: 'CTrader Windows App',
+            title: localize('CTrader Windows App'),
         },
         linux: {
             icon: <LabelPairedLinuxXlIcon />,
             link: whiteLabelLinks.linux,
             text: localize('Learn more'),
-            title: 'MetaTrader 5 Linux app',
+            title: localize('MetaTrader 5 Linux app'),
         },
         macos: {
             icon: <LabelPairedMacosXlIcon />,
             link: whiteLabelLinks.macos,
             text: localize('Download'),
-            title: 'MetaTrader 5 MacOS app',
+            title: localize('MetaTrader 5 MacOS app'),
         },
         web: {
             icon: <PartnersProductDerivMt5BrandLightLogoHorizontalIcon height={32} width={32} />,
             link: whiteLabelLinks.webtrader_url,
             text: localize('Open'),
-            title: 'MetaTrader 5 web',
+            title: localize('MetaTrader 5 web'),
         },
         windows: {
             icon: <LabelPairedWindowsXlIcon />,
             link: whiteLabelLinks.windows,
             text: localize('Download'),
-            title: 'MetaTrader 5 Windows app',
+            title: localize('MetaTrader 5 Windows app'),
         },
     } as const);
 

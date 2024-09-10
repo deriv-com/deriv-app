@@ -6,10 +6,10 @@ import {
     shouldShowExpiration,
     TRADE_TYPES,
 } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import React, { ReactNode } from 'react';
 
-export const getTradeParams = (symbol?: string) => ({
+export const getTradeParams = (symbol?: string, has_cancellation?: boolean) => ({
     [TRADE_TYPES.RISE_FALL]: {
         duration: true,
         stake: true,
@@ -25,12 +25,14 @@ export const getTradeParams = (symbol?: string) => ({
         duration: true,
         barrier: true,
         stake: true,
+        payout: true,
     },
     [TRADE_TYPES.TOUCH]: {
         trade_type_tabs: true,
         duration: true,
         barrier: true,
         stake: true,
+        payout: true,
     },
     [TRADE_TYPES.MATCH_DIFF]: {
         last_digit: true,
@@ -56,6 +58,7 @@ export const getTradeParams = (symbol?: string) => ({
         multiplier: true,
         stake: true,
         risk_management: true,
+        ...(has_cancellation ? { mult_info_display: true } : {}),
         ...(shouldShowExpiration(symbol) ? { expiration: true } : {}),
     },
     [TRADE_TYPES.TURBOS.LONG]: {
@@ -174,6 +177,40 @@ export const getTradeTypeTabsList = (contract_type = '') => {
     return tab_list.filter(({ is_displayed }) => is_displayed);
 };
 
+export const isSmallScreen = () => window.innerHeight <= 640;
+
+export const addUnit = ({
+    value,
+    unit = localize('min'),
+    should_add_space = true,
+}: {
+    value: string | number;
+    unit?: string;
+    should_add_space?: boolean;
+}) => `${typeof value === 'number' ? value : parseInt(value)}${should_add_space ? ' ' : ''}${unit}`;
+
+export const getSnackBarText = ({
+    has_cancellation,
+    has_take_profit,
+    has_stop_loss,
+    switching_cancellation,
+    switching_tp_sl,
+}: {
+    has_cancellation?: boolean;
+    has_take_profit?: boolean;
+    has_stop_loss?: boolean;
+    switching_cancellation?: boolean;
+    switching_tp_sl?: boolean;
+}) => {
+    if (switching_cancellation && has_cancellation) {
+        if (has_take_profit && has_stop_loss) return <Localize i18n_default_text='TP and SL have been turned off.' />;
+        if (has_take_profit) return <Localize i18n_default_text='TP has been turned off.' />;
+        if (has_stop_loss) return <Localize i18n_default_text='SL has been turned off.' />;
+    }
+    if (switching_tp_sl && (has_take_profit || has_stop_loss) && has_cancellation)
+        return <Localize i18n_default_text='DC has been turned off.' />;
+};
+
 export const getOptionPerUnit = (unit: string): { value: number; label: ReactNode }[][] => {
     const unitConfig: Record<
         string,
@@ -185,7 +222,7 @@ export const getOptionPerUnit = (unit: string): { value: number; label: ReactNod
         t: { start: 1, end: 10, label: <Localize i18n_default_text='tick' /> },
         h: () => {
             const hour_options = generateOptions(1, 23, 'h');
-            const minute_options = generateOptions(1, 59, 'min');
+            const minute_options = generateOptions(0, 59, 'min');
             return [hour_options, minute_options];
         },
     };

@@ -24,7 +24,6 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
     const { localize } = useTranslations();
     const description = localize('Make a deposit into your new Wallet.');
     const title = useMemo(() => localize('Your {{currency}} wallet is ready', { currency }), [currency, localize]);
-
     const renderIcon = useCallback(
         () => (
             <div className='wallets-add-more__success-card'>

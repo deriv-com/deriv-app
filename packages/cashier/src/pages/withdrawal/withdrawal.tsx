@@ -1,4 +1,6 @@
 import React from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { BrowserHistory } from 'history';
 import { Loading } from '@deriv/components';
 import { useCurrentCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
@@ -73,7 +75,7 @@ const WithdrawalPageContent = observer(() => {
     );
 });
 
-const Withdrawal = observer(() => {
+const Withdrawal = observer(({ history }: { history: BrowserHistory }) => {
     const { client } = useStore();
     const {
         balance,
@@ -83,7 +85,9 @@ const Withdrawal = observer(() => {
         account_limits,
     } = client;
     const { withdraw, transaction_history } = useCashierStore();
-    const { is_transactions_crypto_visible } = transaction_history;
+    const { is_transactions_crypto_visible, setIsTransactionsCryptoVisible } = transaction_history;
+    const search_params = new URLSearchParams(history.location.search);
+    const action_param = search_params?.get('action');
 
     const {
         check10kLimit,
@@ -112,6 +116,12 @@ const Withdrawal = observer(() => {
         return () => willMountWithdraw(verification_code);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [willMountWithdraw]);
+
+    React.useEffect(() => {
+        if (action_param === 'crypto_transactions_withdraw') {
+            setIsTransactionsCryptoVisible(true);
+        }
+    }, [action_param, setIsTransactionsCryptoVisible]);
 
     if (is_switching || is_10k_withdrawal_limit_reached === undefined)
         return (

@@ -342,7 +342,7 @@ describe('getOptionPerUnit', () => {
 
         expect(result).toHaveLength(2);
         expect(hourView).toEqual([...Array(23)].map((_, i) => `${i + 1} h`));
-        expect(minuteView).toEqual([...Array(59)].map((_, i) => `${i + 1} min`));
+        expect(minuteView).toEqual([...Array(60)].map((_, i) => `${i} min`));
     });
 
     test('returns empty array for invalid unit', () => {

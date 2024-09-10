@@ -25,7 +25,6 @@ jest.mock('@deriv/hooks', () => ({
 describe('VerificationLinkExpiredModal', () => {
     let modal_root_el: HTMLElement;
     const mockSetShowVerificationLinkExpiredModal = jest.fn();
-    const mockSetIsForcedToExitPnv = jest.fn();
 
     beforeEach(() => {
         mockSetShowVerificationLinkExpiredModal.mockClear();
@@ -53,7 +52,6 @@ describe('VerificationLinkExpiredModal', () => {
                     <VerificationLinkExpiredModal
                         should_show_verification_link_expired_modal
                         setShouldShowVerificationLinkExpiredModal={mockSetShowVerificationLinkExpiredModal}
-                        setIsForcedToExitPnv={mockSetIsForcedToExitPnv}
                     />
                 </StoreProvider>
             </APIProvider>

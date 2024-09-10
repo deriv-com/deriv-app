@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useHistory } from 'react-router';
 import { Button } from '@deriv/components';
-import { useIsPhoneNumberVerified, useVerifyEmail } from '@deriv/hooks';
+import { useIsPhoneNumberVerified, useSettings, useVerifyEmail } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTranslations, Localize } from '@deriv-com/translations';
@@ -22,10 +22,15 @@ export const VerifyButton = observer(
         const { is_phone_number_verified } = useIsPhoneNumberVerified();
         const history = useHistory();
         const { localize } = useTranslations();
+        const { refetch } = useSettings();
         //@ts-expect-error remove this when phone_number_verification is added to api calls
         const { sendPhoneNumberVerifyEmail, WS, is_loading, error } = useVerifyEmail('phone_number_verification');
         const { isDesktop } = useDevice();
         const ref = useRef<HTMLDivElement | null>(null);
+
+        useEffect(() => {
+            refetch();
+        }, [refetch]);
 
         useEffect(() => {
             if (is_scroll_to_verify_button) {

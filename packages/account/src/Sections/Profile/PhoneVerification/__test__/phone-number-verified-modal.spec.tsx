@@ -4,18 +4,19 @@ import { render, screen } from '@testing-library/react';
 import PhoneNumberVerifiedModal from '../phone-number-verified-modal';
 import userEvent from '@testing-library/user-event';
 import { mockStore, StoreProvider } from '@deriv/stores';
+import { routes } from '@deriv/shared';
 
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
 }));
 
-const mockRefetch = jest.fn(() => Promise.resolve());
+const mockPush = jest.fn();
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useSettings: jest.fn(() => ({
-        refetch: mockRefetch,
-    })),
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: mockPush,
+    }),
 }));
 
 describe('PhoneNumberVerifiedModal', () => {
@@ -52,6 +53,7 @@ describe('PhoneNumberVerifiedModal', () => {
         renderModal();
         const doneButton = screen.getByRole('button', { name: /OK/ });
         await userEvent.click(doneButton);
-        expect(mockRefetch).toHaveBeenCalledTimes(1);
+        expect(mockPush).toHaveBeenCalledTimes(1);
+        expect(mockPush).toBeCalledWith(routes.personal_details);
     });
 });

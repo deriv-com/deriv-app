@@ -1,19 +1,21 @@
 import { useEffect } from 'react';
-import { usePhoneVerificationAnalytics, useSettings } from '@deriv/hooks';
+import { usePhoneVerificationAnalytics } from '@deriv/hooks';
 import { Modal, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
+import { useHistory } from 'react-router-dom';
+import { routes } from '@deriv/shared';
 
 type TPhoneNumberVerifiedModal = {
     should_show_phone_number_verified_modal: boolean;
 };
 
 const PhoneNumberVerifiedModal = observer(({ should_show_phone_number_verified_modal }: TPhoneNumberVerifiedModal) => {
-    const { refetch } = useSettings();
+    const history = useHistory();
 
     const handleDoneButton = () => {
-        refetch();
+        history.push(routes.personal_details);
     };
     const { isMobile } = useDevice();
     const { ui } = useStore();

@@ -16,6 +16,9 @@ jest.mock('@deriv/hooks', () => ({
         WS: {},
         error: null,
     })),
+    useSettings: jest.fn(() => ({
+        refetch: jest.fn(),
+    })),
 }));
 
 describe('VerifyButton', () => {

@@ -31,7 +31,7 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 
 import { TProducts } from '../Components/props.types';
-import SuccessDialog from '../Components/success-dialog.jsx';
+import SuccessDialog from '../Components/success-dialog/success-dialog';
 import CFDPasswordModalTitle from './cfd-password-modal-title';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import MigrationSuccessModal from '../Components/migration-success-modal';

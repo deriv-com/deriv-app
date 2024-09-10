@@ -1,9 +1,9 @@
 import React from 'react';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AccumulatorStats from '../accumulator-stats';
 import TraderProviders from '../../../../trader-providers';
-import { mockStore, useStore } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';
 
 describe('AccumulatorStats', () => {
@@ -91,9 +91,7 @@ describe('AccumulatorStats', () => {
     });
     test('should set animationClass and isMovingTransition based on rows[0][0] changes', async () => {
         renderAccumulatorState(default_mock_store);
-        jest.advanceTimersByTime(3000);
-        await waitFor(() => {
-            expect(screen.getByTestId('accumulator-first-stat')).toHaveClass('animate-success');
-        });
+        await waitFor(() => jest.advanceTimersByTime(300));
+        expect(screen.getByTestId('accumulator-first-stat')).toHaveClass('animate-success');
     });
 });

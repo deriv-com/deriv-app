@@ -92,8 +92,6 @@ describe('AccumulatorStats', () => {
     test('should set animationClass and isMovingTransition based on rows[0][0] changes', async () => {
         renderAccumulatorState(default_mock_store);
         await waitFor(() => jest.advanceTimersByTime(300));
-        await waitFor(() => {
-            expect(screen.getByTestId('accumulator-first-stat')).toHaveClass('animate-success');
-        });
+        expect(screen.getByTestId('accumulator-first-stat')).toHaveClass('animate-success');
     });
 });

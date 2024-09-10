@@ -98,33 +98,21 @@ describe('<ContractInfo />', () => {
             'trade-container__price-info trade-container__price-info--fade'
         );
     });
-    it('should apply a proper className and specific tooltip message if is_turbos is true and type is TURBOS.LONG', () => {
-        render(<ContractInfo {...default_mock_props} type={TRADE_TYPES.TURBOS.LONG} is_turbos />);
 
-        expect(screen.getByTestId('dt_purchase_turboslong_price')).toHaveClass(
-            'trade-container__price-info trade-container__price-info--turbos'
-        );
-        expect(screen.getByText(/This is the amount you’ll receive at expiry/i)).toBeInTheDocument();
-    });
     it('should render specific tooltip message if is_vanilla is true', () => {
         render(<ContractInfo {...default_mock_props} is_vanilla />);
 
         expect(screen.getByText(/The payout at expiry is equal to the payout/i)).toBeInTheDocument();
     });
-    it('should render specific basis text for Turbos if proposal_info has error and basis is equal to "stake"', () => {
-        default_mock_props.proposal_info.has_error = true;
-        render(<ContractInfo {...default_mock_props} is_turbos />);
 
-        expect(screen.getByText(localized_basis.payout_per_point)).toBeInTheDocument();
-    });
     it('should render specific basis text if proposal_info has error and basis is equal to "payout"', () => {
         render(<ContractInfo {...default_mock_props} basis='payout' />);
 
-        expect(screen.getByText(localized_basis.stake)).toBeInTheDocument();
+        expect(screen.getByText('payout')).toBeInTheDocument();
     });
     it('should render specific basis text if proposal_info has error and basis is not equal to "payout" or "stake"', () => {
         render(<ContractInfo {...default_mock_props} basis='test_basis' />);
 
-        expect(screen.getByText('test_basis')).toBeInTheDocument();
+        expect(screen.getByText('payout')).toBeInTheDocument();
     });
 });

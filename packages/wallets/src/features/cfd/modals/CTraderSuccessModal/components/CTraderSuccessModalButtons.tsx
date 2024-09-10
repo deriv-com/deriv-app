@@ -1,7 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Localize } from '@deriv-com/translations';
-import { WalletButton, WalletButtonGroup } from '../../../../../components';
+import { Button } from '@deriv-com/ui';
+import { WalletButtonGroup } from '../../../../../components';
 import useDevice from '../../../../../hooks/useDevice';
 import { THooks } from '../../../../../types';
 
@@ -13,32 +14,40 @@ type TCTraderSuccessModalButtons = {
 
 const CTraderSuccessModalButtons = ({ createdAccount, hide, isDemo }: TCTraderSuccessModalButtons) => {
     const history = useHistory();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     if (isDemo) {
         return (
             <div className='wallets-success-btn'>
-                <WalletButton isFullWidth onClick={hide} size={isMobile ? 'lg' : 'md'}>
+                <Button isFullWidth onClick={hide} size={isDesktop ? 'md' : 'lg'} textSize='sm'>
                     <Localize i18n_default_text='OK' />
-                </WalletButton>
+                </Button>
             </div>
         );
     }
 
     return (
         <WalletButtonGroup isFlex isFullWidth>
-            <WalletButton onClick={hide} size={isMobile ? 'lg' : 'md'} variant='outlined'>
+            <Button
+                borderWidth='sm'
+                color='black'
+                onClick={hide}
+                size={isDesktop ? 'md' : 'lg'}
+                textSize='sm'
+                variant='outlined'
+            >
                 <Localize i18n_default_text='Maybe later' />
-            </WalletButton>
-            <WalletButton
+            </Button>
+            <Button
                 onClick={() => {
                     hide();
                     history.push('/wallet/account-transfer', { toAccountLoginId: createdAccount?.account_id });
                 }}
-                size={isMobile ? 'lg' : 'md'}
+                size={isDesktop ? 'md' : 'lg'}
+                textSize='sm'
             >
                 <Localize i18n_default_text='Transfer funds' />
-            </WalletButton>
+            </Button>
         </WalletButtonGroup>
     );
 };

@@ -398,7 +398,7 @@ type RealAccountSignupSettings = {
     success_message: string;
 };
 
-type TClientStore = {
+export type TClientStore = {
     fetchStatesList: () => Promise<StatesList>;
     account_type: string;
     accounts: { [k: string]: TActiveAccount };

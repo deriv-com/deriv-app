@@ -108,12 +108,10 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
     const getBasisList = () => basis_list.map(item => ({ text: item.text, value: item.value }));
 
     const changeAmount = ({ target }: { target: { name: string; value: string | number; type?: string } }) => {
-        const { value } = target;
         onChange({ target });
     };
 
     const changeAllowEquals = ({ target }: { target: { name: string; value: number } }) => {
-        const { value } = target;
         onChange({ target });
     };
 

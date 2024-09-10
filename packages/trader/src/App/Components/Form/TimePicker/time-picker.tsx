@@ -5,7 +5,6 @@ import { Icon, InputField } from '@deriv/components';
 import Dialog from './dialog';
 import { observer, useStore } from '@deriv/stores';
 import moment from 'moment';
-import { useTraderStore } from 'Stores/useTraderStores';
 
 type TTimePickerProps = {
     end_times: moment.Moment[];

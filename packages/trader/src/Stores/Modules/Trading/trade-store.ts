@@ -33,7 +33,6 @@ import {
     hasBarrier,
     isHighLow,
     CONTRACT_TYPES,
-    getContractTypesConfig,
     setTradeURLParams,
     getTradeURLParams,
     isTouchContract,

@@ -1,6 +1,4 @@
 import moment from 'moment';
-import { waitFor } from '@testing-library/react';
-import { Analytics, TEvents } from '@deriv-com/analytics';
 import { mockStore } from '@deriv/stores';
 import TradeStore from '../trade-store';
 import { configure } from 'mobx';

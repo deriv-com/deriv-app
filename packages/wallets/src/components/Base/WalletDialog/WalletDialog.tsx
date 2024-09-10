@@ -1,87 +1,39 @@
-import React, { isValidElement, PropsWithChildren } from 'react';
-import { Button, Dialog, Text } from '@deriv-com/ui';
+import React, { PropsWithChildren } from 'react';
+import classNames from 'classnames';
+import { Dialog } from '@deriv-com/ui';
+import WalletDialogContent from './WalletDialogContent';
+import WalletDialogFooter from './WalletDialogFooter';
+import WalletDialogHeader from './WalletDialogHeader';
 import './WalletDialog.scss';
 
-type TWalletDialogProps = {
-    cancelButtonText?: JSX.Element | string;
-    confirmButtonText?: JSX.Element | string;
-    hideCloseIcon?: boolean;
+type TProps = {
+    className?: string;
     isVisible: boolean;
-    onCancel?: VoidFunction;
     onClose: VoidFunction;
-    onConfirm?: VoidFunction;
     shouldCloseOnOverlayClick?: boolean;
-    title?: JSX.Element | string;
 };
 
-const WalletDialog: React.FC<PropsWithChildren<TWalletDialogProps>> = ({
-    cancelButtonText,
+const WalletDialog = ({
     children,
-    confirmButtonText,
-    hideCloseIcon = false,
+    className,
     isVisible = false,
-    onCancel,
     onClose,
-    onConfirm,
     shouldCloseOnOverlayClick = false,
-    title,
-}) => {
-    const isText =
-        typeof children === 'string' ||
-        (isValidElement(children) && typeof children?.props?.i18n_default_text === 'string');
-
-    const onConfirmHandler = () => {
-        onConfirm?.();
-        onClose();
-    };
-
-    const onCancelHandler = () => {
-        onCancel?.();
-        onClose();
-    };
-
+}: PropsWithChildren<TProps>) => {
     return (
         <Dialog
-            className='wallets-dialog'
+            className={classNames('wallets-dialog', className)}
             isOpen={isVisible}
             onRequestClose={onClose}
             shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
         >
-            {title && (
-                <Dialog.Header
-                    className='wallets-dialog__header'
-                    hideCloseIcon={hideCloseIcon}
-                    onRequestClose={onClose}
-                >
-                    <Text weight='bold'>{title}</Text>
-                </Dialog.Header>
-            )}
-            {children && (
-                <Dialog.Body className='wallets-dialog__body'>
-                    {isText ? <Text size='sm'>{children}</Text> : children}
-                </Dialog.Body>
-            )}
-            <Dialog.Footer className='wallets-dialog__footer'>
-                {cancelButtonText && (
-                    <Button
-                        color='black'
-                        onClick={onCancelHandler}
-                        size='lg'
-                        textSize='sm'
-                        type='button'
-                        variant='outlined'
-                    >
-                        {cancelButtonText}
-                    </Button>
-                )}
-                {confirmButtonText && (
-                    <Button onClick={onConfirmHandler} size='lg' textSize='sm' type='button'>
-                        {confirmButtonText}
-                    </Button>
-                )}
-            </Dialog.Footer>
+            {children}
         </Dialog>
     );
 };
+
+WalletDialog.Header = WalletDialogHeader;
+WalletDialog.Content = WalletDialogContent;
+WalletDialog.Footer = WalletDialogFooter;
 
 export default WalletDialog;

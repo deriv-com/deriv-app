@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import Amount from 'Modules/Trading/Components/Form/TradeParams/amount';
 import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier';
-import BarrierSelector from 'Modules/Trading/Components/Form/TradeParams/Turbos/barrier-selector';
+import PayoutSelector from 'Modules/Trading/Components/Form/TradeParams/Turbos/payout-selector';
 import Duration from 'Modules/Trading/Components/Form/TradeParams/Duration';
 import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit';
 import CancelDeal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/cancel-deal';
@@ -22,22 +22,34 @@ type TTradeParams = {
 };
 
 const TradeParams = observer(({ is_minimized = false }: TTradeParams) => {
-    const { form_components } = useTraderStore();
+    const { form_components, is_turbos } = useTraderStore();
     const isVisible = (component_key: string) => {
         return form_components.includes(component_key);
     };
-
+    if (is_turbos) {
+        return (
+            <>
+                <Fieldset className={classNames('trade-container__fieldset', 'trade-container__fieldset--no-padding')}>
+                    {isVisible('trade_type_tabs') && <TradeTypeTabs key={'trade_type_tabs'} />}
+                </Fieldset>
+                {isVisible('amount') && <Amount key={'amount'} is_minimized={is_minimized} />}
+                {isVisible('payout_selector') && <PayoutSelector key={'payout_selector'} />}
+                {isVisible('duration') && <Duration key={'duration'} is_minimized={is_minimized} />}
+                {isVisible('take_profit') && <TakeProfit key={'take_profit'} />}
+            </>
+        );
+    }
     return (
         <React.Fragment>
             {isVisible('duration') && <Duration key={'duration'} is_minimized={is_minimized} />}
             {isVisible('barrier') && <Barrier key={'barrier'} is_minimized={is_minimized} />}
             {isVisible('last_digit') && <LastDigit key={'last_digit'} is_minimized={is_minimized} />}
             {isVisible('accumulator') && <Accumulator key={'accumulator'} />}
-            {(isVisible('trade_type_tabs') || isVisible('strike') || isVisible('barrier_selector')) && (
+            {(isVisible('trade_type_tabs') || isVisible('strike') || isVisible('payout_selector')) && (
                 <Fieldset className={classNames('trade-container__fieldset', 'trade-container__fieldset--no-padding')}>
                     {isVisible('trade_type_tabs') && <TradeTypeTabs key={'trade_type_tabs'} />}
                     {isVisible('strike') && <Strike key={'strike'} />}
-                    {isVisible('barrier_selector') && <BarrierSelector key={'barrier_selector'} />}
+                    {isVisible('payout_selector') && <PayoutSelector key={'payout_selector'} />}
                 </Fieldset>
             )}
             {isVisible('amount') && <Amount key={'amount'} is_minimized={is_minimized} />}

@@ -81,6 +81,12 @@ export const useDtraderQuery = <Response>(
         }
     }, [key, fetchData, enabled]);
 
+    useEffect(() => {
+        if (enabled && data !== cache[key]) {
+            setData(cache[key]);
+        }
+    }, [enabled, key, data]);
+
     const refetch = useCallback(() => {
         cache[key] = null;
         fetchData();

@@ -11,7 +11,6 @@ import {
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { ActiveSymbols, ActiveSymbolsResponse } from '@deriv/api-types';
-import { usePrevious } from '@deriv/components';
 import { useTraderStore } from 'Stores/useTraderStores';
 import useContractsForCompany from './useContractsForCompany';
 import { useDtraderQuery } from './useDtraderQuery';
@@ -34,8 +33,6 @@ const useActiveSymbols = () => {
     const { available_contract_types, is_fetching_ref: is_contracts_loading_ref } = useContractsForCompany();
 
     const default_symbol_ref = useRef('');
-    const previous_contract_type = usePrevious(contract_type);
-    const prev_loginid = useRef(loginid);
 
     const trade_types_with_barrier_category = [
         TRADE_TYPES.RISE_FALL,
@@ -54,11 +51,21 @@ const useActiveSymbols = () => {
     const isQueryEnabled = useCallback(() => {
         if (!available_contract_types) return false;
         if (is_contracts_loading_ref.current) return false;
+        if (is_switching) return false;
         return true;
-    }, [available_contract_types, is_contracts_loading_ref]);
+    }, [available_contract_types, is_switching, is_contracts_loading_ref]);
 
-    const { data: response, refetch } = useDtraderQuery<ActiveSymbolsResponse>(
-        ['active_symbols'],
+    const getContractType = () => {
+        if (isTurbosContract(contract_type)) {
+            return 'turbos';
+        } else if (isVanillaContract(contract_type)) {
+            return 'vanilla';
+        }
+        return contract_type;
+    };
+
+    const { data: response } = useDtraderQuery<ActiveSymbolsResponse>(
+        ['active_symbols', loginid ?? '', getContractType()],
         {
             active_symbols: 'brief',
             contract_type: getContractTypesList(),
@@ -110,28 +117,6 @@ const useActiveSymbols = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [response]
     );
-    useEffect(() => {
-        const has_contract_type_changed =
-            previous_contract_type && contract_type && previous_contract_type !== contract_type;
-
-        if (
-            (isVanillaContract(previous_contract_type) && is_vanilla) ||
-            (isTurbosContract(previous_contract_type) && is_turbos)
-        ) {
-            return;
-        }
-
-        if (available_contract_types && has_contract_type_changed) {
-            refetch();
-        }
-    }, [available_contract_types, contract_type, previous_contract_type, refetch, is_vanilla, is_turbos]);
-
-    useEffect(() => {
-        if (isQueryEnabled() && prev_loginid.current !== loginid && !is_switching) {
-            refetch();
-            prev_loginid.current = loginid;
-        }
-    }, [loginid, is_switching, refetch, isQueryEnabled]);
 
     return { default_symbol: default_symbol_ref.current, activeSymbols };
 };

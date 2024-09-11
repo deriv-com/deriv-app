@@ -1,14 +1,16 @@
 import React, { PropsWithChildren } from 'react';
 import { APIProvider } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import WalletsAuthProvider from '../../../AuthProvider';
-import useDevice from '../../../hooks/useDevice';
 import { ModalProvider } from '../../ModalProvider';
 import WalletSuccessResetMT5Password from '../WalletSuccessResetMT5Password';
 
-jest.mock('../../../hooks/useDevice');
-const mockUseDevice = useDevice as jest.MockedFunction<typeof useDevice>;
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 
 const wrapper = ({ children }: PropsWithChildren) => (
     <APIProvider>
@@ -25,22 +27,20 @@ const props = {
 };
 
 describe('<WalletsErrorMT5InvestorPassword />', () => {
+    beforeEach(() => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+    });
+
+    afterAll(() => {
+        jest.clearAllMocks();
+    });
+
     it('should render WalletSuccessResetMT5Password', () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: true,
-            isMobile: false,
-            isTablet: false,
-        });
         render(<WalletSuccessResetMT5Password {...props} />, { wrapper });
         expect(screen.getByTestId('dt_modal_step_wrapper'));
     });
 
     it('should render content if isInvestorPassword is true', () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: true,
-            isMobile: false,
-            isTablet: false,
-        });
         render(<WalletSuccessResetMT5Password {...props} isInvestorPassword />, { wrapper });
         expect(screen.getByText('Reset mocked password'));
         expect(screen.getByText('Password saved'));
@@ -49,11 +49,6 @@ describe('<WalletsErrorMT5InvestorPassword />', () => {
     });
 
     it('should render content if isInvestorPassword is false', () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: true,
-            isMobile: false,
-            isTablet: false,
-        });
         render(<WalletSuccessResetMT5Password {...props} />, { wrapper });
         expect(screen.getByText('Manage mocked password'));
         expect(screen.getByText('Success'));
@@ -66,11 +61,6 @@ describe('<WalletsErrorMT5InvestorPassword />', () => {
     });
 
     it('should execute function onClick when button is clicked', () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: true,
-            isMobile: false,
-            isTablet: false,
-        });
         render(<WalletSuccessResetMT5Password {...props} />, { wrapper });
         expect(screen.getByRole('button', { name: 'Done' }));
         userEvent.click(screen.getByRole('button', { name: 'Done' }));
@@ -78,11 +68,8 @@ describe('<WalletsErrorMT5InvestorPassword />', () => {
     });
 
     it('should render WalletSuccessResetMT5Password on Mobile', () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: false,
-            isMobile: true,
-            isTablet: false,
-        });
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
+
         render(<WalletSuccessResetMT5Password {...props} />, { wrapper });
         expect(screen.getByTestId('dt_modal_step_wrapper'));
     });

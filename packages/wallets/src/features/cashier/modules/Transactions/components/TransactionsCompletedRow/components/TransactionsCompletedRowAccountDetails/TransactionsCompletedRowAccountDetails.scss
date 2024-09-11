@@ -28,7 +28,7 @@
         min-width: 10.4rem;
     }
     &__transaction-id {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin-top: 0.4rem;
         }
     }

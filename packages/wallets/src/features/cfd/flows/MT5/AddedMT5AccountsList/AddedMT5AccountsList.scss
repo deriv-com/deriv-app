@@ -1,4 +1,13 @@
 .wallets-added-mt5 {
+    &__card--disabled {
+        cursor: pointer;
+        opacity: 0.48;
+        @include desktop {
+            &:hover {
+                background: none;
+            }
+        }
+    }
     &__icon {
         width: fit-content;
 

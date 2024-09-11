@@ -10,7 +10,7 @@
 
     @include desktop {
         padding-inline: 1.6rem;
-        $columns: 2;
+        $columns: 3;
         $grid-last-row-children: '&:nth-last-child(-n+#{$columns})';
         #{$grid-last-row-children} > &__section,
         #{$grid-last-row-children} ~ & > &__section {

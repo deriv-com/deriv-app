@@ -1,9 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { useJurisdictionStatus, useTradingPlatformStatus } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
+import { WalletDisabledAccountModal, WalletStatusBadge } from '../../../../../components';
 import { InlineMessage } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
@@ -24,7 +25,65 @@ type TProps = {
     account: THooks.MT5AccountsList;
 };
 
+type TTradingAccountJurisdictionStatusInfoProps = {
+    isAccountDisabled?: boolean;
+    isJurisdictionFailure?: boolean;
+    isJurisdictionPending?: boolean;
+    selectedJurisdiction: THooks.MT5AccountsList['landing_company_short'];
+};
+
+const TradingAccountJurisdictionStatusInfo: React.FC<TTradingAccountJurisdictionStatusInfoProps> = ({
+    isAccountDisabled,
+    isJurisdictionFailure,
+    isJurisdictionPending,
+    selectedJurisdiction,
+}) => {
+    const { show } = useModal();
+    if (isAccountDisabled) {
+        return <WalletStatusBadge status='disabled' />;
+    }
+    if (isJurisdictionPending) {
+        return (
+            <div className='wallets-added-mt5__details-badge'>
+                <InlineMessage size='xs' type='warning' variant='outlined'>
+                    <Text color='warning' size='2xs' weight='bold'>
+                        <Localize i18n_default_text='Pending verification' />
+                    </Text>
+                </InlineMessage>
+            </div>
+        );
+    }
+
+    if (isJurisdictionFailure) {
+        return (
+            <div className='wallets-added-mt5__details-badge'>
+                <InlineMessage size='xs' type='error' variant='outlined'>
+                    <Text color='error' size='2xs' weight='bold'>
+                        <Localize
+                            components={[
+                                <a
+                                    className='wallets-added-mt5__badge--error-link'
+                                    key={0}
+                                    onClick={() =>
+                                        show(<VerificationFailedModal selectedJurisdiction={selectedJurisdiction} />, {
+                                            defaultRootId: 'wallets_modal_root',
+                                        })
+                                    }
+                                />,
+                            ]}
+                            i18n_default_text='Verification failed <0>Why?</0>'
+                        />
+                    </Text>
+                </InlineMessage>
+            </div>
+        );
+    }
+    return null;
+};
+
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
+    const [shouldShowDisabledAccountModal, setShouldShowDisabledAccountModal] = useState(false);
+    const { localize } = useTranslations();
     const { getVerificationStatus } = useJurisdictionStatus();
     const jurisdictionStatus = useMemo(
         () => getVerificationStatus(account.landing_company_short || JURISDICTION.SVG, account.status),
@@ -45,103 +104,87 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE ||
         account.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
     const showPlatformStatus = hasPlatformStatus && !(jurisdictionStatus.is_pending || jurisdictionStatus.is_failed);
+    // @ts-expect-error The enabled property exists, but the api-types are invalid
+    const isAccountDisabled = !account?.rights?.enabled;
+    const shouldShowBalance = !(jurisdictionStatus.is_failed || jurisdictionStatus.is_pending) && !isAccountDisabled;
+
     return (
-        <TradingAccountCard
-            disabled={jurisdictionStatus.is_pending}
-            onClick={() => {
-                if (hasPlatformStatus)
-                    return show(<TradingPlatformStatusModal isServerMaintenance={isServerMaintenance} />, {
-                        defaultRootId: 'wallets_modal_root',
-                    });
-                if (platformStatus === TRADING_PLATFORM_STATUS.ACTIVE) {
-                    return jurisdictionStatus.is_failed
-                        ? show(<VerificationFailedModal selectedJurisdiction={account.landing_company_short} />, {
-                              defaultRootId: 'wallets_modal_root',
-                          })
-                        : show(
-                              <MT5TradeModal
-                                  marketType={account.market_type ?? MARKET_TYPE.ALL}
-                                  mt5Account={account}
-                                  platform={PlatformDetails.mt5.platform}
-                              />
-                          );
-                }
-            }}
-        >
-            <TradingAccountCard.Icon className='wallets-added-mt5__icon'>
-                {getMarketTypeDetails(account.product)[account.market_type || MARKET_TYPE.ALL].icon}
-            </TradingAccountCard.Icon>
-            <TradingAccountCard.Section>
-                <TradingAccountCard.Content className='wallets-added-mt5__details'>
-                    <div className='wallets-added-mt5__details-title'>
-                        <Text size='sm'>{title}</Text>
-                    </div>
-                    {!(jurisdictionStatus.is_failed || jurisdictionStatus.is_pending) && (
-                        <Text size='sm' weight='bold'>
-                            {account.display_balance}
+        <>
+            <TradingAccountCard
+                className={classNames({ 'wallets-added-mt5__card--disabled': isAccountDisabled })}
+                disabled={jurisdictionStatus.is_pending}
+                onClick={() => {
+                    if (isAccountDisabled) {
+                        return setShouldShowDisabledAccountModal(true);
+                    }
+                    if (hasPlatformStatus)
+                        return show(<TradingPlatformStatusModal isServerMaintenance={isServerMaintenance} />, {
+                            defaultRootId: 'wallets_modal_root',
+                        });
+                    if (platformStatus === TRADING_PLATFORM_STATUS.ACTIVE) {
+                        return jurisdictionStatus.is_failed
+                            ? show(<VerificationFailedModal selectedJurisdiction={account.landing_company_short} />, {
+                                  defaultRootId: 'wallets_modal_root',
+                              })
+                            : show(
+                                  <MT5TradeModal
+                                      marketType={account.market_type ?? MARKET_TYPE.ALL}
+                                      mt5Account={account}
+                                      platform={PlatformDetails.mt5.platform}
+                                  />
+                              );
+                    }
+                }}
+            >
+                <TradingAccountCard.Icon className='wallets-added-mt5__icon'>
+                    {getMarketTypeDetails(account.product)[account.market_type || MARKET_TYPE.ALL].icon}
+                </TradingAccountCard.Icon>
+                <TradingAccountCard.Section>
+                    <TradingAccountCard.Content className='wallets-added-mt5__details'>
+                        <div className='wallets-added-mt5__details-title'>
+                            <Text size='sm'>{title}</Text>
+                        </div>
+                        {shouldShowBalance && (
+                            <Text size='sm' weight='bold'>
+                                {account.display_balance}
+                            </Text>
+                        )}
+
+                        <Text as='p' size='xs'>
+                            {account.display_login}
                         </Text>
-                    )}
-
-                    <Text as='p' size='xs'>
-                        {account.display_login}
-                    </Text>
-                    {jurisdictionStatus.is_pending && (
-                        <div className='wallets-added-mt5__details-badge'>
-                            <InlineMessage size='xs' type='warning' variant='outlined'>
-                                <Text color='warning' size='2xs' weight='bold'>
-                                    <Localize i18n_default_text='Pending verification' />
-                                </Text>
-                            </InlineMessage>
-                        </div>
-                    )}
-
-                    {jurisdictionStatus.is_failed && (
-                        <div className='wallets-added-mt5__details-badge'>
-                            <InlineMessage size='xs' type='error' variant='outlined'>
-                                <Text color='error' size='2xs' weight='bold'>
-                                    <Localize
-                                        components={[
-                                            <a
-                                                className='wallets-added-mt5__badge--error-link'
-                                                key={0}
-                                                onClick={() =>
-                                                    show(
-                                                        <VerificationFailedModal
-                                                            selectedJurisdiction={account.landing_company_short}
-                                                        />,
-                                                        {
-                                                            defaultRootId: 'wallets_modal_root',
-                                                        }
-                                                    )
-                                                }
-                                            />,
-                                        ]}
-                                        i18n_default_text='Verification failed <0>Why?</0>'
-                                    />
-                                </Text>
-                            </InlineMessage>
-                        </div>
-                    )}
-                </TradingAccountCard.Content>
-                <TradingAccountCard.Button
-                    className={classNames('wallets-added-mt5__icon', {
-                        'wallets-added-mt5__icon--pending': jurisdictionStatus.is_pending,
-                    })}
-                >
-                    {showPlatformStatus ? (
-                        <PlatformStatusBadge
-                            badgeSize='md'
-                            className='wallets-added-mt5__icon--badge'
-                            mt5Account={account}
+                        <TradingAccountJurisdictionStatusInfo
+                            isAccountDisabled={isAccountDisabled}
+                            isJurisdictionFailure={jurisdictionStatus.is_failed}
+                            isJurisdictionPending={jurisdictionStatus.is_pending}
+                            selectedJurisdiction={account.landing_company_short}
                         />
-                    ) : (
-                        <div className='wallets-available-mt5__icon'>
-                            <LabelPairedChevronRightCaptionRegularIcon width={16} />
-                        </div>
-                    )}
-                </TradingAccountCard.Button>
-            </TradingAccountCard.Section>
-        </TradingAccountCard>
+                    </TradingAccountCard.Content>
+                    <TradingAccountCard.Button
+                        className={classNames('wallets-added-mt5__icon', {
+                            'wallets-added-mt5__icon--pending': jurisdictionStatus.is_pending,
+                        })}
+                    >
+                        {showPlatformStatus ? (
+                            <PlatformStatusBadge
+                                badgeSize='md'
+                                className='wallets-added-mt5__icon--badge'
+                                mt5Account={account}
+                            />
+                        ) : (
+                            <div className='wallets-available-mt5__icon'>
+                                <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                            </div>
+                        )}
+                    </TradingAccountCard.Button>
+                </TradingAccountCard.Section>
+            </TradingAccountCard>
+            <WalletDisabledAccountModal
+                accountType={localize('CFDs')}
+                isVisible={shouldShowDisabledAccountModal}
+                onClose={() => setShouldShowDisabledAccountModal(false)}
+            />
+        </>
     );
 };
 

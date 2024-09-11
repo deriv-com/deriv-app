@@ -111,7 +111,7 @@ describe('getPersonalDetailsBaseValidationSchema', () => {
         const { account_opening_reason } = getPersonalDetailsBaseValidationSchema('svg').fields;
 
         await expect(account_opening_reason.validate('Investment')).resolves.toBe('Investment');
-        await expect(account_opening_reason.validate('')).rejects.toThrow('Intended use of account is required.');
+        await expect(account_opening_reason.validate('')).rejects.toThrow('Account opening reason is required.');
     });
 
     it('should throw an error if citizen is invalid', async () => {

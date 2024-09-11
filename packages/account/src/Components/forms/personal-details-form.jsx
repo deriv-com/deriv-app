@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { Field, useFormikContext } from 'formik';
-import { Autocomplete, Checkbox, Dropdown, InlineMessage, RadioGroup, SelectNative, Text } from '@deriv/components';
+import { Autocomplete, Checkbox, InlineMessage, RadioGroup, SelectNative, Text } from '@deriv/components';
 import { routes, validPhone } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { isFieldImmutable, verifyFields } from '../../Helpers/utils';
@@ -12,6 +12,7 @@ import FormSubHeader from '../form-sub-header';
 import InlineNoteWithIcon from '../inline-note-with-icon';
 import { useResidenceList } from '@deriv/hooks';
 import { useDevice } from '@deriv-com/ui';
+import AccountOpeningReasonField from './form-fields/account-opening-reason';
 
 const PersonalDetailsForm = props => {
     const { isDesktop } = useDevice();
@@ -516,56 +517,5 @@ const PlaceOfBirthField = ({ handleChange, setFieldValue, disabled, residence_li
                 </React.Fragment>
             )}
         </Field>
-    );
-};
-
-const AccountOpeningReasonField = ({ required, account_opening_reason_list, setFieldValue, disabled }) => {
-    const { isDesktop } = useDevice();
-    return (
-        <React.Fragment>
-            <Field name='account_opening_reason'>
-                {({ field, meta }) => (
-                    <React.Fragment>
-                        {isDesktop ? (
-                            <Dropdown
-                                placeholder={
-                                    required
-                                        ? localize('Intended use of account*')
-                                        : localize('Intended use of account')
-                                }
-                                name={field.name}
-                                disabled={disabled}
-                                is_align_text_left
-                                list={account_opening_reason_list}
-                                {...field}
-                                error={meta.touched && meta.error}
-                                list_portal_id='modal_root'
-                                required
-                            />
-                        ) : (
-                            <SelectNative
-                                placeholder={localize('Please select')}
-                                name={field.name}
-                                label={
-                                    required
-                                        ? localize('Intended use of account*')
-                                        : localize('Intended use of account')
-                                }
-                                list_items={account_opening_reason_list}
-                                error={meta.touched && meta.error}
-                                onChange={e => {
-                                    field.onChange(e);
-                                    setFieldValue('account_opening_reason', e.target.value, true);
-                                }}
-                                {...field}
-                                required
-                                data_testid='account_opening_reason_mobile'
-                                disabled={disabled}
-                            />
-                        )}
-                    </React.Fragment>
-                )}
-            </Field>
-        </React.Fragment>
     );
 };

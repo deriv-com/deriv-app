@@ -124,7 +124,7 @@ export const getPersonalDetailsBaseValidationSchema = (broker_code?: string) =>
             is: () => broker_code === 'maltainvest',
             then: Yup.string().required(localize('Salutation is required.')),
         }),
-        account_opening_reason: Yup.string().required(localize('Intended use of account is required.')),
+        account_opening_reason: Yup.string().required(localize('Account opening reason is required.')),
         first_name: Yup.string()
             .required(localize('First name is required.'))
             .max(50, localize('Enter no more than 50 characters.'))

@@ -160,7 +160,7 @@ export const getFormFieldsConfig = (
         account_opening_reason: {
             label: (
                 <Localize
-                    i18n_default_text='Intended use of account{{required}}'
+                    i18n_default_text='Account opening reason{{required}}'
                     values={{ required: isFieldRequired('account_opening_reason') ? '*' : '' }}
                 />
             ),
@@ -185,7 +185,7 @@ export const getFormFieldsConfig = (
             rules: [
                 [
                     'req',
-                    <Localize key='account_opening_reason' i18n_default_text='Intended use of account is required.' />,
+                    <Localize key='account_opening_reason' i18n_default_text='Account opening reason is required.' />,
                 ],
             ],
         },

@@ -22,6 +22,9 @@ import { useStatesList, useResidenceList, useTinValidations } from '@deriv/hooks
 import EmploymentTaxDetailsContainer from 'Containers/employment-tax-details-container';
 import { isFieldImmutable } from 'Helpers/utils';
 import { PersonalDetailsValueTypes } from 'Types';
+import AccountOpeningReasonField from '../../../Components/forms/form-fields/account-opening-reason';
+import { account_opening_reason_list } from './constants';
+import './personal-details-form.scss';
 
 type TRestState = {
     show_form: boolean;
@@ -358,26 +361,34 @@ const PersonalDetailsForm = observer(() => {
                                     />
                                 </fieldset>
                                 {!is_virtual && (
-                                    <fieldset className='account-form__fieldset'>
-                                        <Input
-                                            data-lpignore='true'
-                                            type='text'
-                                            name='phone'
-                                            id={'phone'}
-                                            label={localize('Phone number*')}
-                                            //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
-                                            value={values.phone}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
+                                    <Fragment>
+                                        <fieldset className='account-form__fieldset'>
+                                            <Input
+                                                data-lpignore='true'
+                                                type='text'
+                                                name='phone'
+                                                id={'phone'}
+                                                label={localize('Phone number*')}
+                                                //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
+                                                value={values.phone}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                required
+                                                error={errors.phone}
+                                                disabled={isFieldDisabled('phone')}
+                                                data-testid='dt_phone'
+                                            />
+                                        </fieldset>
+                                        <AccountOpeningReasonField
+                                            account_opening_reason_list={account_opening_reason_list}
+                                            setFieldValue={setFieldValue}
+                                            disabled={isFieldDisabled('account_opening_reason')}
                                             required
-                                            error={errors.phone}
-                                            disabled={isFieldDisabled('phone')}
-                                            data-testid='dt_phone'
                                         />
-                                    </fieldset>
+                                    </Fragment>
                                 )}
                                 {!is_virtual && (
-                                    <Fragment>
+                                    <div className='employment-tin-section'>
                                         <FormSubHeader title={localize('Employment and tax information')} />
                                         <EmploymentTaxDetailsContainer
                                             editable_fields={employment_tax_editable_fields}
@@ -487,7 +498,7 @@ const PersonalDetailsForm = observer(() => {
                                                 </div>
                                             </Fragment>
                                         )}
-                                    </Fragment>
+                                    </div>
                                 )}
                                 {!!current_landing_company?.support_professional_client && (
                                     <Fragment>

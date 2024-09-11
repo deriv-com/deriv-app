@@ -32,6 +32,7 @@ export const getPersonalDetailsInitialValues = (
         first_name: account_settings.first_name,
         last_name: account_settings.last_name,
         phone: account_settings.phone,
+        account_opening_reason: account_settings.account_opening_reason,
         employment_status: account_settings?.employment_status,
         tax_residence:
             (account_settings?.tax_residence

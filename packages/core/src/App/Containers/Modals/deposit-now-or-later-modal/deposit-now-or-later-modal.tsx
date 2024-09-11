@@ -8,13 +8,11 @@ import './deposit-now-or-later-modal.scss';
 
 const DepositNowOrLaterModal = observer(() => {
     const { isMobile } = useDevice();
-    const { client, ui } = useStore();
-    const { is_mf_account } = client;
+    const { ui } = useStore();
     const {
         should_show_deposit_now_or_later_modal,
         setShouldShowDepositNowOrLaterModal,
         setShouldShowOneTimeDepositModal,
-        toggleAccountSuccessModal,
     } = ui;
 
     const onConfirmModal = () => {

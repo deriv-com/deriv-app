@@ -15,6 +15,14 @@
         &-item {
             display: flex;
             gap: 1.6rem;
+            align-items: center;
+            width: 100%;
+        }
+
+        &-item--disabled {
+            & > :last-child {
+                margin-left: auto;
+            }
         }
 
         &-content {
@@ -71,13 +79,20 @@
         justify-content: flex-start;
         border-radius: 0.4rem;
 
-        &:hover:not(&--active) {
+        &:hover:not(&--active):not(&--disabled) {
             cursor: pointer;
             background: var(--system-light-6-hover-background, #e6e9e9);
         }
 
         &--active {
             background: var(--system-light-5-active-background, #d6dadb);
+        }
+        &--disabled {
+            cursor: not-allowed;
+            opacity: 0.48;
+            &:hover {
+                background: none;
+            }
         }
     }
 }

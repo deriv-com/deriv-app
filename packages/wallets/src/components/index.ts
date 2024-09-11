@@ -19,6 +19,7 @@ export * from './WalletBadge';
 export * from './WalletCard';
 export * from './WalletCurrencyCard';
 export * from './WalletCurrencyIcon';
+export * from './WalletDisabledAccountModal';
 export * from './WalletError';
 export * from './WalletGradientBackground';
 export * from './WalletListCard';

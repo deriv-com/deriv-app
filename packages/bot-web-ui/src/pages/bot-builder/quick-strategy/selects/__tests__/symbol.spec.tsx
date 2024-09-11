@@ -121,7 +121,6 @@ describe('<SymbolSelect />', () => {
         render(<SymbolSelect />, { wrapper });
 
         const autocomplete_element = screen.getByTestId('dt_qs_symbol');
-        userEvent.click(autocomplete_element);
         userEvent.type(autocomplete_element, 'Invalid');
         userEvent.tab();
 
@@ -142,7 +141,6 @@ describe('<SymbolSelect />', () => {
         });
 
         const autocomplete_element = screen.getByTestId('dt_qs_symbol');
-        userEvent.click(autocomplete_element);
         userEvent.type(autocomplete_element, 'Invalid');
         userEvent.tab();
 

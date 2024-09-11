@@ -43,6 +43,7 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) 
                             isDemo={Boolean(account?.demo_account)}
                             marketType={account?.market_type}
                             platform={account?.account_type as TPlatforms.All}
+                            product={account?.product}
                             size='xs'
                         />
                     )}

@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
-import { useAuthorize, useJurisdictionStatus, useTradingPlatformStatus } from '@deriv/api-v2';
+import { useJurisdictionStatus, useTradingPlatformStatus } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Text, useDevice } from '@deriv-com/ui';
+import { Text } from '@deriv-com/ui';
 import { InlineMessage } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
@@ -25,14 +25,12 @@ type TProps = {
 };
 
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
-    const { data: activeWallet } = useAuthorize();
     const { getVerificationStatus } = useJurisdictionStatus();
     const jurisdictionStatus = useMemo(
         () => getVerificationStatus(account.landing_company_short || JURISDICTION.SVG, account.status),
         [account.landing_company_short, account.status, getVerificationStatus]
     );
-    const { title } = getMarketTypeDetails()[account.market_type ?? MARKET_TYPE.ALL];
-    const { isDesktop } = useDevice();
+    const { title } = getMarketTypeDetails(account.product)[account.market_type ?? MARKET_TYPE.ALL];
     const { show } = useModal();
 
     const { getPlatformStatus } = useTradingPlatformStatus();
@@ -71,18 +69,11 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
             }}
         >
             <TradingAccountCard.Icon className='wallets-added-mt5__icon'>
-                {getMarketTypeDetails()[account.market_type || MARKET_TYPE.ALL].icon}
+                {getMarketTypeDetails(account.product)[account.market_type || MARKET_TYPE.ALL].icon}
             </TradingAccountCard.Icon>
             <TradingAccountCard.Content className='wallets-added-mt5__details'>
                 <div className='wallets-added-mt5__details-title'>
                     <Text size='sm'>{title}</Text>
-                    {!activeWallet?.is_virtual && (
-                        <div className='wallets-added-mt5__details-title-landing-company'>
-                            <Text color='prominent' size={isDesktop ? 'xs' : 'sm'}>
-                                {account.landing_company_short?.toUpperCase()}
-                            </Text>
-                        </div>
-                    )}
                 </div>
                 {!(jurisdictionStatus.is_failed || jurisdictionStatus.is_pending) && (
                     <Text size='sm' weight='bold'>

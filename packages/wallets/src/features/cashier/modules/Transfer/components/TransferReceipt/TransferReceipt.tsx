@@ -30,6 +30,7 @@ const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balan
                 isDemoWallet={Boolean(activeWallet?.demo_account)}
                 marketType={account?.market_type}
                 platform={account?.account_type as TPlatforms.All}
+                product={account?.product}
                 walletName={activeWallet?.accountName}
             />
         );

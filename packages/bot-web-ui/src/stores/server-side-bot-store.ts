@@ -378,8 +378,15 @@ export default class ServerBotStore {
         try {
             const items = [[localize('Journal')]];
             [...this.journal].map(item => {
-                const arr = [item.msg];
-                items.push(arr);
+                let combinedMessage;
+                if (item?.type === JOURNAL_TYPE.WON) {
+                    combinedMessage = `Profit amount: ${item?.amount || ''}`;
+                } else if (item?.type === JOURNAL_TYPE.LOSS) {
+                    combinedMessage = `Loss amount: ${item?.amount || ''}`;
+                } else {
+                    combinedMessage = `${item?.type || ''}:${item?.msg || ''}`;
+                }
+                items.push([combinedMessage]);
             });
             const content = items.map(e => e.join(',')).join('\n');
             downloadFile(localize('Journal'), content);
@@ -388,7 +395,6 @@ export default class ServerBotStore {
             console.dir(error);
         }
     };
-
     handleProposalOpenContract = (poc: ProposalOpenContract) => {
         if (poc && !poc?.contract_id && this.active_bot?.bot_id) return;
 

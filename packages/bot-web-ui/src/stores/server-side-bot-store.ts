@@ -380,11 +380,11 @@ export default class ServerBotStore {
             [...this.journal].map(item => {
                 let combinedMessage;
                 if (item?.type === JOURNAL_TYPE.WON) {
-                    combinedMessage = `Profit amount: ${item?.amount || ''}`;
+                    combinedMessage = `Profit amount: ${item?.amount ?? ''}`;
                 } else if (item?.type === JOURNAL_TYPE.LOSS) {
-                    combinedMessage = `Loss amount: ${item?.amount || ''}`;
+                    combinedMessage = `Loss amount: ${item?.amount ?? ''}`;
                 } else {
-                    combinedMessage = `${item?.type || ''}:${item?.msg || ''}`;
+                    combinedMessage = `${item?.type || ''}:${item?.msg ?? ''}`;
                 }
                 items.push([combinedMessage]);
             });

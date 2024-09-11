@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text } from '@deriv-com/quill-ui';
 import clsx from 'clsx';
 
@@ -13,10 +13,22 @@ const StatsRow = ({
     is_moving_transaction: boolean;
     className: string;
 }) => {
+    const [animationKey, setAnimationKey] = useState<number>(0);
+
+    useEffect(() => {
+        setAnimationKey(prevKey => prevKey + 1);
+    }, [animation_class]);
+
     return (
         <>
             <div className={`${className}__stat`}>
-                <Text size='sm' bold className={animation_class} data-testid='accumulator-first-stat'>
+                <Text
+                    size='sm'
+                    bold
+                    className={animation_class}
+                    key={animationKey}
+                    data-testid='accumulator-first-stat'
+                >
                     {rows[0]}
                 </Text>
             </div>

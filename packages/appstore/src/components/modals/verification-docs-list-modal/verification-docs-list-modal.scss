@@ -18,6 +18,11 @@
             }
         }
     }
+    &__card {
+        display: flex;
+        gap: 0.8rem;
+        align-items: center;
+    }
 }
 
 .dc-modal__container_verification-docs-list-modal {

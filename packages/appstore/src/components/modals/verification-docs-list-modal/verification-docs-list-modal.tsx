@@ -16,12 +16,6 @@ type TListItemProps = {
     route: string;
 };
 
-const iconsMap = {
-    [ACCOUNT_BADGE_STATUS.NEEDS_VERIFICATION]: DerivLightUploadPoiIcon,
-    [ACCOUNT_BADGE_STATUS.PENDING]: DerivLightWaitingPoiIcon,
-    [ACCOUNT_BADGE_STATUS.FAILED]: DerivLightDeclinedPoiIcon,
-};
-
 type TAuthStatusCodes = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
 
 const MT5BadgeStatus = (status: TAuthStatusCodes) => {
@@ -73,7 +67,7 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
             {status === AUTH_STATUS_CODES.NONE || (id === 'tax' && status === 0) ? (
                 <LabelPairedChevronRightCaptionBoldIcon />
             ) : (
-                <div className='verification-docs-list-modal-item'>
+                <div className='verification-docs-list-modal__card'>
                     <StatusBadge account_status={status} icon={badge_icon} text={badge_text} icon_size={badge_size} />
                     <LabelPairedChevronRightCaptionBoldIcon fill='#c7c7c7' />
                 </div>

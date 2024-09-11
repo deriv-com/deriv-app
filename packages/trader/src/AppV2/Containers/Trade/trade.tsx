@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useStore } from '@deriv/stores';
 import { Loading } from '@deriv/components';
@@ -17,7 +18,7 @@ import TradeTypes from './trade-types';
 import MarketSelector from 'AppV2/Components/MarketSelector';
 import useContractsForCompany, { TContractTypesList } from 'AppV2/Hooks/useContractsForCompany';
 import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
-import OnboardingGuide from 'AppV2/Components/OnboardingGuide';
+import OnboardingGuide from 'AppV2/Components/OnboardingGuide/GuideForPages';
 
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
@@ -25,11 +26,23 @@ const Trade = observer(() => {
     const {
         client: { is_logged_in },
     } = useStore();
-    const { active_symbols, contract_type, has_cancellation, symbol, is_accumulator, onMount, onChange, onUnmount } =
-        useTraderStore();
+    const {
+        active_symbols,
+        contract_type,
+        has_cancellation,
+        symbol,
+        is_accumulator,
+        is_market_closed,
+        onMount,
+        onChange,
+        onUnmount,
+    } = useTraderStore();
     const { contract_types_list } = useContractsForCompany();
-    const [guide_dtrader_v2] = useLocalStorageData<boolean>('guide_dtrader_v2_trade_page', false);
-
+    const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
+        trade_types_selection: false,
+        trade_page: false,
+        positions_page: false,
+    });
     const trade_types = React.useMemo(() => {
         return Array.isArray(contract_types_list) && contract_types_list.length === 0
             ? []
@@ -101,13 +114,13 @@ const Trade = observer(() => {
                         </div>
                         {is_accumulator && <AccumulatorStats />}
                     </div>
-                    <div className='trade__parameter'>
+                    <div className={clsx('trade__parameter', { 'trade__parameter--with-button': !is_market_closed })}>
                         <TradeParametersContainer is_minimized_visible={is_minimized_params_visible} is_minimized>
                             <TradeParameters is_minimized />
                         </TradeParametersContainer>
-                        <PurchaseButton />
+                        {!is_market_closed && <PurchaseButton />}
                     </div>
-                    {!guide_dtrader_v2 && is_logged_in && <OnboardingGuide type='trade_page' />}
+                    {!guide_dtrader_v2?.trade_page && is_logged_in && <OnboardingGuide type='trade_page' />}
                 </React.Fragment>
             ) : (
                 <Loading.DTraderV2 />

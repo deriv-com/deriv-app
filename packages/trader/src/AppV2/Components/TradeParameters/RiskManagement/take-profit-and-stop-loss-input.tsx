@@ -77,7 +77,8 @@ const TakeProfitAndStopLossInput = ({
     const decimals = getDecimalPlaces(currency);
     const currency_display_code = getCurrencyDisplayCode(currency);
     const Component = has_actionsheet_wrapper ? ActionSheet.Content : 'div';
-    const should_set_validation_params = is_multiplier && is_enabled && new_input_value === '';
+    const should_set_validation_params =
+        is_multiplier && is_enabled && (new_input_value === '' || typeof new_input_value === 'undefined');
 
     const min_value = validation_params[contract_types[0]]?.[type]?.min;
     const max_value = validation_params[contract_types[0]]?.[type]?.max;
@@ -174,6 +175,7 @@ const TakeProfitAndStopLossInput = ({
                 onProposalResponse,
                 {
                     ...(is_take_profit_input ? { has_take_profit: is_enabled } : { has_stop_loss: is_enabled }),
+                    has_cancellation: false,
                     ...(is_take_profit_input
                         ? { take_profit: is_enabled ? input_value : '' }
                         : { stop_loss: is_enabled ? input_value : '' }),

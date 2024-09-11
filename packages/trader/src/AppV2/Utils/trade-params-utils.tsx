@@ -25,12 +25,14 @@ export const getTradeParams = (symbol?: string, has_cancellation?: boolean) => (
         duration: true,
         barrier: true,
         stake: true,
+        payout: true,
     },
     [TRADE_TYPES.TOUCH]: {
         trade_type_tabs: true,
         duration: true,
         barrier: true,
         stake: true,
+        payout: true,
     },
     [TRADE_TYPES.MATCH_DIFF]: {
         last_digit: true,
@@ -220,7 +222,7 @@ export const getOptionPerUnit = (unit: string): { value: number; label: ReactNod
         t: { start: 1, end: 10, label: <Localize i18n_default_text='tick' /> },
         h: () => {
             const hour_options = generateOptions(1, 23, 'h');
-            const minute_options = generateOptions(1, 59, 'min');
+            const minute_options = generateOptions(0, 59, 'min');
             return [hour_options, minute_options];
         },
     };

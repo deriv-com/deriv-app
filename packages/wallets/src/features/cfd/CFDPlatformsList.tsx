@@ -2,8 +2,8 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
-import { WalletButton, WalletLink } from '../../components/Base';
+import { Button, Text } from '@deriv-com/ui';
+import { WalletLink } from '../../components/Base';
 import useDevice from '../../hooks/useDevice';
 import CFDPlatformsListEmptyState from './CFDPlatformsListEmptyState';
 import { CFDPlatformsListAccounts } from './components';
@@ -33,7 +33,8 @@ const CFDPlatformsList: React.FC = () => {
                                 i18n_default_text='Trade bigger positions with less capital on a wide range of global markets. <0>Learn more</0>'
                             />
                         </Text>
-                        <WalletButton
+                        <Button
+                            color='primary-transparent'
                             onClick={() => {
                                 history.push('/compare-accounts');
                             }}
@@ -42,7 +43,7 @@ const CFDPlatformsList: React.FC = () => {
                             variant='ghost'
                         >
                             <Localize i18n_default_text='Compare accounts' />
-                        </WalletButton>
+                        </Button>
                     </div>
                 ) : (
                     <div>
@@ -50,7 +51,8 @@ const CFDPlatformsList: React.FC = () => {
                             <Text size='xl' weight='bold'>
                                 <Localize i18n_default_text='CFDs' />
                             </Text>
-                            <WalletButton
+                            <Button
+                                color='primary-transparent'
                                 onClick={() => {
                                     history.push('/compare-accounts');
                                 }}
@@ -58,7 +60,7 @@ const CFDPlatformsList: React.FC = () => {
                                 variant='ghost'
                             >
                                 <Localize i18n_default_text='Compare accounts' />
-                            </WalletButton>
+                            </Button>
                         </div>
                         <Text size='md'>
                             <Localize

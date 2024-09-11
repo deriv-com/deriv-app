@@ -12,6 +12,7 @@ const mock_contract_data = {
         available: [{ contract_type: 'type_1' }, { contract_type: 'type_2' }, { contract_type: 'unsupported_type' }],
     },
 };
+const localStorage_key = 'guide_dtrader_v2';
 
 jest.mock('AppV2/Components/BottomNav', () =>
     jest.fn(({ children, onScroll }) => (
@@ -20,6 +21,7 @@ jest.mock('AppV2/Components/BottomNav', () =>
         </div>
     ))
 );
+jest.mock('AppV2/Components/AccumulatorStats', () => jest.fn(() => <div>AccumulatorStats</div>));
 jest.mock('AppV2/Components/ClosedMarketMessage', () => jest.fn(() => <div>ClosedMarketMessage</div>));
 jest.mock('AppV2/Components/CurrentSpot', () => jest.fn(() => <div>Current Spot</div>));
 jest.mock('AppV2/Components/PurchaseButton', () => jest.fn(() => <div>Purchase Button</div>));
@@ -41,8 +43,8 @@ jest.mock('AppV2/Utils/trade-types-utils', () => ({
 jest.mock('@lottiefiles/dotlottie-react', () => ({
     DotLottieReact: jest.fn(() => <div>DotLottieReact</div>),
 }));
+jest.mock('AppV2/Components/OnboardingGuide/GuideForPages', () => jest.fn(() => 'OnboardingGuide'));
 jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
-    ...jest.requireActual('AppV2/Hooks/useContractsForCompany'),
     __esModule: true,
     default: jest.fn(() => ({
         contracts_for_company: mock_contract_data,
@@ -92,11 +94,13 @@ describe('Trade', () => {
                     ],
                 },
             },
+            client: { is_logged_in: true },
         });
+        localStorage.clear();
     });
 
-    const mockTrade = () => {
-        return (
+    const mockTrade = () =>
+        render(
             <TraderProviders store={default_mock_store}>
                 <ReportsStoreProvider>
                     <ModulesProvider store={default_mock_store}>
@@ -105,41 +109,70 @@ describe('Trade', () => {
                 </ReportsStoreProvider>
             </TraderProviders>
         );
-    };
 
     it('should render loader if there is no active_symbols or contract_types_list', () => {
         default_mock_store = mockStore({});
-        render(mockTrade());
+        mockTrade();
 
         expect(screen.getByTestId('dt_trade_loader')).toBeInTheDocument();
     });
 
-    it('should render trading page with all components', () => {
-        render(mockTrade());
+    it('should render trading page with all necessary components', () => {
+        mockTrade();
 
         expect(screen.queryByTestId('dt_trade_loader')).not.toBeInTheDocument();
         expect(screen.queryByText('Current Spot')).not.toBeInTheDocument();
+        expect(screen.queryByText('AccumulatorStats')).not.toBeInTheDocument();
 
         expect(screen.getByText('Trade Types Selection')).toBeInTheDocument();
         expect(screen.getByText('MarketSelector')).toBeInTheDocument();
         expect(screen.getAllByText('Trade Parameters')).toHaveLength(2);
         expect(screen.getByText('Chart')).toBeInTheDocument();
         expect(screen.getByText('Purchase Button')).toBeInTheDocument();
+        expect(screen.getByText('OnboardingGuide')).toBeInTheDocument();
     });
 
     it('should render Current Spot  component if it is digit contract type', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.EVEN_ODD;
-        render(mockTrade());
+        mockTrade();
 
         expect(screen.getByText('Current Spot')).toBeInTheDocument();
     });
 
+    it('should render AccumulatorStats if is_accumulator === true', () => {
+        default_mock_store.modules.trade.is_accumulator = true;
+        mockTrade();
+
+        expect(screen.getByText('AccumulatorStats')).toBeInTheDocument();
+    });
+
     it('should call state setter when user scrolls BottomNav', () => {
         const spySetIsMinimizedParamsVisible = jest.spyOn(React, 'useState');
-        render(mockTrade());
+        mockTrade();
 
         fireEvent.scroll(screen.getByTestId('dt_bottom_nav'));
 
         expect(spySetIsMinimizedParamsVisible).toBeCalled();
+    });
+
+    it('should not render OnboardingGuide if localStorage flag is equal to true', () => {
+        const field = { trade_page: true };
+        localStorage.setItem(localStorage_key, JSON.stringify(field));
+        mockTrade();
+
+        expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();
+    });
+
+    it('should not render OnboardingGuide if client is not logged in', () => {
+        default_mock_store.client.is_logged_in = false;
+        mockTrade();
+
+        expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();
+    });
+
+    it('should not render Purchase Button if is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
+        mockTrade();
+        expect(screen.queryByText('Purchase Button')).not.toBeInTheDocument();
     });
 });

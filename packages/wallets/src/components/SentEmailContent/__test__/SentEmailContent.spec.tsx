@@ -12,7 +12,9 @@ jest.mock('../../../hooks/useSendPasswordResetEmail', () => ({
 }));
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
-    useDevice: jest.fn(() => ({})),
+    useDevice: jest.fn(() => ({
+        isDesktop: true,
+    })),
 }));
 
 const wrapper = ({ children }: PropsWithChildren) => (

@@ -10,6 +10,7 @@ type TInstrumentsLabelHighlighted = {
     isEuRegion: boolean;
     marketType: THooks.AvailableMT5Accounts['market_type'];
     platform: TPlatforms.All;
+    product?: THooks.AvailableMT5Accounts['product'];
     shortCode: THooks.AvailableMT5Accounts['shortcode'];
 };
 
@@ -18,9 +19,10 @@ const InstrumentsLabelHighlighted = ({
     isEuRegion,
     marketType,
     platform,
+    product,
     shortCode,
 }: TInstrumentsLabelHighlighted) => {
-    const iconData = [...getHighlightedIconLabel(platform, isEuRegion, marketType, shortCode)];
+    const iconData = [...getHighlightedIconLabel(platform, isEuRegion, marketType, shortCode, product)];
 
     return (
         <div

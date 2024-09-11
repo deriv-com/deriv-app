@@ -1,9 +1,8 @@
 import React from 'react';
 import { Localize } from '@deriv-com/translations';
-import { Checkbox, InlineMessage, Text } from '@deriv-com/ui';
+import { Checkbox, InlineMessage, Text, useDevice } from '@deriv-com/ui';
 import { WalletLink } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
-import useDevice from '../../../../hooks/useDevice';
 import { THooks, TPlatforms } from '../../../../types';
 import { companyNamesAndUrls, getMarketTypeDetails, PlatformDetails } from '../../constants';
 import './CFDPasswordModalTnc.scss';

@@ -9,6 +9,7 @@ import ModulesProvider from 'Stores/Providers/modules-providers';
 import Positions from '../positions';
 import userEvent from '@testing-library/user-event';
 
+const localStorage_key = 'guide_dtrader_v2';
 const defaultMockStore = mockStore({
     modules: {
         positions: { onUnmount: jest.fn() },
@@ -17,11 +18,11 @@ const defaultMockStore = mockStore({
 });
 
 jest.mock('../positions-content', () => jest.fn(() => 'mockPositionsContent'));
-jest.mock('AppV2/Components/OnboardingGuide', () => jest.fn(() => 'OnboardingGuide'));
+jest.mock('AppV2/Components/OnboardingGuide/GuideForPages', () => jest.fn(() => 'OnboardingGuide'));
 
 describe('Positions', () => {
-    const mockPositions = () => {
-        return (
+    const mockPositions = () =>
+        render(
             <BrowserRouter>
                 <TraderProviders store={defaultMockStore}>
                     <ReportsStoreProvider>
@@ -32,7 +33,7 @@ describe('Positions', () => {
                 </TraderProviders>
             </BrowserRouter>
         );
-    };
+
     beforeAll(() => {
         Element.prototype.scrollTo = jest.fn();
     });
@@ -43,7 +44,7 @@ describe('Positions', () => {
     });
 
     it('should render component', () => {
-        render(mockPositions());
+        mockPositions();
 
         const tabs = screen.getAllByRole('tab');
         expect(tabs).toHaveLength(2);
@@ -60,7 +61,7 @@ describe('Positions', () => {
 
     it('should call setPositionURLParams with appropriate argument if user clicks on Closed tab', () => {
         const mockSetPositionURLParams = jest.spyOn(utils, 'setPositionURLParams') as jest.Mock;
-        render(mockPositions());
+        mockPositions();
 
         userEvent.click(screen.getByText(utils.TAB_NAME.CLOSED));
         expect(mockSetPositionURLParams).toBeCalledWith(utils.TAB_NAME.CLOSED.toLowerCase());
@@ -70,16 +71,17 @@ describe('Positions', () => {
     });
 
     it('should not render OnboardingGuide if localStorage flag is equal to true', () => {
-        const key = 'guide_dtrader_v2_positions_page';
-        localStorage.setItem(key, 'true');
-        render(mockPositions());
+        const field = { positions_page: true };
+        localStorage.setItem(localStorage_key, JSON.stringify(field));
+
+        mockPositions();
 
         expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();
     });
 
     it('should not render OnboardingGuide if client is not logged in', () => {
         defaultMockStore.client.is_logged_in = false;
-        render(mockPositions());
+        mockPositions();
 
         expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();
     });

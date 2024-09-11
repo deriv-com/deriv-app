@@ -13,9 +13,9 @@ jest.mock('@deriv-com/ui', () => ({
     Text: jest.fn(({ children }) => <div data-testid='dt_wallets_tnc_text'>{children}</div>),
 }));
 
-jest.mock('../../../../../hooks/useDevice', () => ({
-    __esModule: true,
-    default: jest.fn(() => ({ isDesktop: true })),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
 jest.mock('../../../../../components/ModalProvider', () => ({

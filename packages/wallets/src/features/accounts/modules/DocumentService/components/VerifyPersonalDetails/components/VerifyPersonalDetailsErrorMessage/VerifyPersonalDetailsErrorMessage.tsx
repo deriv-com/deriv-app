@@ -1,9 +1,8 @@
 import React from 'react';
 import { TSocketError } from '@deriv/api-v2/types';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { InlineMessage, WalletText } from '../../../../../../../../components';
-import useDevice from '../../../../../../../../hooks/useDevice';
 
 type TErrorMessageProps = {
     error: TSocketError<'get_settings'>['error']['code'] | TSocketError<'set_settings'>['error']['code'];

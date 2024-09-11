@@ -14,12 +14,12 @@ const ServiceErrorSheet = observer(() => {
     const { handleSignup } = useSignupHandler();
     const history = useHistory();
 
-    const isInsufficientBalance =
+    const is_insufficient_balance =
         services_error.code === 'InsufficientBalance' || services_error.code === 'InvalidContractProposal';
-    const isAuthorizationRequired = services_error.code === 'AuthorizationRequired' && services_error.type === 'buy';
+    const is_authorization_required = services_error.code === 'AuthorizationRequired' && services_error.type === 'buy';
 
     useEffect(() => {
-        if (isInsufficientBalance || isAuthorizationRequired) {
+        if (is_insufficient_balance || is_authorization_required) {
             setIsOpen(true);
         }
     }, [services_error]);
@@ -31,7 +31,7 @@ const ServiceErrorSheet = observer(() => {
     }, [resetServicesError, is_open]);
 
     const renderContent = () => {
-        if (isInsufficientBalance) {
+        if (is_insufficient_balance) {
             return (
                 <>
                     <Text size='lg' bold className='service-error-sheet__body__heading'>
@@ -42,7 +42,7 @@ const ServiceErrorSheet = observer(() => {
             );
         }
 
-        if (isAuthorizationRequired) {
+        if (is_authorization_required) {
             return (
                 <>
                     <Text size='lg' bold className='service-error-sheet__body__heading'>
@@ -75,7 +75,7 @@ const ServiceErrorSheet = observer(() => {
                 <ActionSheet.Footer
                     className='service-error-sheet__footer'
                     alignment='vertical'
-                    {...(isInsufficientBalance
+                    {...(is_insufficient_balance
                         ? {
                               primaryAction: {
                                   content: <Localize i18n_default_text='Deposit now' />,
@@ -87,7 +87,7 @@ const ServiceErrorSheet = observer(() => {
                               primaryButtonColor: 'coral',
                           }
                         : {})}
-                    {...(isAuthorizationRequired
+                    {...(is_authorization_required
                         ? {
                               primaryAction: {
                                   content: <Localize i18n_default_text='Create free account' />,

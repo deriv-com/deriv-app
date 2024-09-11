@@ -19,9 +19,10 @@ type TProps = {
     account?: THooks.CreateMT5Account;
     marketType: TMarketTypes.SortedMT5Accounts;
     platform: TPlatforms.All;
+    product?: THooks.AvailableMT5Accounts['product'];
 };
 
-const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
+const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product }) => {
     const { data: activeWallet, isLoading: isActiveWalletAccountLoading } = useActiveWalletAccount();
     const { data: mt5Accounts, isLoading: isMT5AccountsListLoading } = useMT5AccountsList();
     const { data: poiData, isLoading: isPOILoading } = usePOI();
@@ -47,7 +48,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
     const marketTypeTitle =
         marketType === MARKET_TYPE.ALL && platform in PlatformDetails && platform !== CFD_PLATFORMS.MT5
             ? PlatformDetails[platform].title
-            : getMarketTypeDetails()[marketType].title;
+            : getMarketTypeDetails(product)[marketType].title;
     const selectedJurisdiction = getModalState('selectedJurisdiction');
     const landingCompanyName = `(${
         companyNamesAndUrls?.[selectedJurisdiction as keyof typeof companyNamesAndUrls]?.shortcode
@@ -101,10 +102,17 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
             });
         }
         return localize(
-            'Transfer funds from your {{walletCurrencyType}} Wallet to your {{marketTypeTitle}} account to start trading.',
-            { marketTypeTitle, walletCurrencyType: activeWallet?.wallet_currency_type }
+            'Transfer funds from your {{walletCurrencyType}} Wallet to your {{marketTypeTitle}} {{landingCompanyName}} account to start trading.',
+            { landingCompanyName, marketTypeTitle, walletCurrencyType: activeWallet?.wallet_currency_type }
         );
-    }, [activeWallet?.wallet_currency_type, addedAccount?.display_balance, isDemo, localize, marketTypeTitle]);
+    }, [
+        activeWallet?.wallet_currency_type,
+        addedAccount?.display_balance,
+        isDemo,
+        marketTypeTitle,
+        landingCompanyName,
+        localize,
+    ]);
 
     const renderMainContent = useMemo(() => {
         if (!isSuccess || isLoading) return null;
@@ -127,8 +135,10 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                             }
                         )}
                         displayBalance={addedAccount?.display_balance}
+                        landingCompanyName={landingCompanyName}
                         marketType={marketType}
                         platform={platform}
+                        product={product}
                         title={localize('Almost there')}
                     />
                 );
@@ -146,8 +156,10 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                             }
                         )}
                         displayBalance={addedAccount?.display_balance}
+                        landingCompanyName={landingCompanyName}
                         marketType={marketType}
                         platform={platform}
+                        product={product}
                         title={localize('Almost there')}
                     />
                 );
@@ -159,13 +171,15 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                 actionButtons={renderAccountSuccessButton(!isDemo)}
                 description={renderSuccessDescription}
                 displayBalance={addedAccount?.display_balance}
+                landingCompanyName={landingCompanyName}
                 marketType={marketType}
                 platform={platform}
+                product={product}
                 title={
                     <Localize
-                        i18n_default_text='Your {{marketTypeTitle}}{{demoTitle}} account is ready'
+                        i18n_default_text='Your {{marketTypeTitle}} {{demoTitle}} account is ready'
                         values={{
-                            demoTitle: isDemo ? localize(' demo') : '',
+                            demoTitle: isDemo ? localize('demo') : landingCompanyName,
                             marketTypeTitle,
                         }}
                     />
@@ -189,6 +203,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
         poiData,
         renderAccountSuccessButton,
         renderSuccessDescription,
+        product,
     ]);
 
     if (isLoading) return null;

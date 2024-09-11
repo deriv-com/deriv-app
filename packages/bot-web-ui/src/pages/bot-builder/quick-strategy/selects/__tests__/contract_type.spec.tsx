@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { ApiHelpers } from '@deriv/bot-skeleton';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -187,5 +188,25 @@ describe('<ContractType /> Desktop', () => {
             userEvent.click(option_element);
         });
         expect(autocomplete_element).toHaveDisplayValue('RISE');
+    });
+
+    it('should be empty list if value not found', async () => {
+        const mockAPI = ApiHelpers.instance as unknown as {
+            contracts_for: {
+                getContractTypes: jest.Mock<string, string[]>;
+            };
+        };
+        mockAPI.contracts_for.getContractTypes = jest.fn().mockReturnValue([]);
+
+        render(<ContractType name='type' />, {
+            wrapper,
+        });
+        const autocomplete_element = screen.getByTestId('dt_qs_contract_type');
+        userEvent.click(autocomplete_element);
+        await waitFor(() => {
+            const option_element = screen.getByText('No results found');
+            userEvent.click(option_element);
+        });
+        expect(autocomplete_element).toHaveDisplayValue('');
     });
 });

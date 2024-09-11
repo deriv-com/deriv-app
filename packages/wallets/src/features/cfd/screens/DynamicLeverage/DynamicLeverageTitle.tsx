@@ -1,14 +1,13 @@
 import React, { FC } from 'react';
 import { LegacyArrowLeft2pxIcon, LegacyArrowRight2pxIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
-import useDevice from '../../../../hooks/useDevice';
+import { Text, useDevice } from '@deriv-com/ui';
 import useIsRtl from '../../../../hooks/useIsRtl';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
 import './DynamicLeverageTitle.scss';
 
 export const DynamicLeverageTitle: FC = () => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const isRtl = useIsRtl();
 
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
@@ -30,7 +29,7 @@ export const DynamicLeverageTitle: FC = () => {
                     onClick={toggleDynamicLeverage}
                 />
             )}
-            <Text color='prominent' size={isMobile ? 'sm' : 'md'} weight='bold'>
+            <Text color='prominent' size={isDesktop ? 'md' : 'sm'} weight='bold'>
                 <Localize i18n_default_text='Get more out of Deriv MT5 Financial' />
             </Text>
         </div>

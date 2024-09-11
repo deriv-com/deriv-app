@@ -1,7 +1,7 @@
 import React from 'react';
 import { LabelPairedChevronLeftCaptionBoldIcon, LabelPairedChevronRightCaptionBoldIcon } from '@deriv/quill-icons';
+import { useDevice } from '@deriv-com/ui';
 import { WalletText } from '../../../../../../../../components';
-import useDevice from '../../../../../../../../hooks/useDevice';
 import useIsRtl from '../../../../../../../../hooks/useIsRtl';
 import { TManualDocumentType } from '../../../../utils';
 import './DocumentSelectionCard.scss';

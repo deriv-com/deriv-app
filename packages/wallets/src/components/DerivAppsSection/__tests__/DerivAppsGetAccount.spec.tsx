@@ -73,6 +73,7 @@ const wrapper = ({ children }: PropsWithChildren) => {
 describe('DerivAppsGetAccount', () => {
     beforeEach(() => {
         jest.clearAllMocks();
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
     });
 
     it('renders the component', () => {

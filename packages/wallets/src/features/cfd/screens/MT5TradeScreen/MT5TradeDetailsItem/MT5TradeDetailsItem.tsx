@@ -20,7 +20,6 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value = '',
     const isRtl = useIsRtl();
 
     const textSize = isDesktop ? 'xs' : 'sm';
-
     return (
         <div
             className={classNames('wallets-mt5-trade-details-item', {

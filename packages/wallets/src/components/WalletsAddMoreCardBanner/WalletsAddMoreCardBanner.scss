@@ -9,7 +9,7 @@
         padding: 1.6rem;
         background: none;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 16rem;
             height: 9.6rem;
             padding: 1rem;
@@ -23,8 +23,10 @@
     &__success-footer {
         width: 24rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 100%;
+            max-width: 60rem;
+            margin: 0 auto;
         }
     }
 
@@ -33,7 +35,7 @@
             padding: 1.6rem;
             width: 24rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 21.6rem;
             }
         }

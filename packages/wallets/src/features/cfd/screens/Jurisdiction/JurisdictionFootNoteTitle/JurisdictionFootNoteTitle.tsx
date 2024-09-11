@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useTranslations } from '@deriv-com/translations';
-import { WalletText } from '../../../../../components/Base';
+import { Text } from '@deriv-com/ui';
 import { THooks } from '../../../../../types';
 import { getMarketTypeDetails } from '../../../constants';
 
@@ -56,9 +56,9 @@ const JurisdictionFootNoteTitle: FC<TJurisdictionFootNoteTitle> = ({ marketType,
     }
 
     return (
-        <WalletText align='center' size='sm' weight='bold'>
+        <Text align='center' size='sm' weight='bold'>
             {footnoteText}
-        </WalletText>
+        </Text>
     );
 };
 

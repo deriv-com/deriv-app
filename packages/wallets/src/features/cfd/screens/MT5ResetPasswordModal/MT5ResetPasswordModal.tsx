@@ -34,6 +34,7 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
     const { localize } = useTranslations();
     const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);
 
+    const walletButtonSizes = isDesktop ? 'md' : 'lg';
     const initialValues: TFormInitialValues = { currentPassword: '', newPassword: '' };
     const formikRef = useRef<FormikProps<TFormInitialValues> | null>(null);
 
@@ -127,7 +128,7 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
                                     borderWidth='sm'
                                     color='black'
                                     onClick={sendEmailVerification}
-                                    size={isDesktop ? 'md' : 'lg'}
+                                    size={walletButtonSizes}
                                     textSize='sm'
                                     variant='outlined'
                                 >
@@ -136,7 +137,7 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
                                 <Button
                                     disabled={!!errors.currentPassword || !validPasswordMT5(values.newPassword)}
                                     isLoading={isLoading}
-                                    size={isDesktop ? 'md' : 'lg'}
+                                    size={walletButtonSizes}
                                     textSize='sm'
                                     type='submit'
                                 >

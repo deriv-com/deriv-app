@@ -1,10 +1,9 @@
 import React from 'react';
 import { useCtraderAccountsList } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Loader } from '@deriv-com/ui';
+import { Loader, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper, ModalWrapper } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
-import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess } from '../../screens';
@@ -18,7 +17,7 @@ type TCTraderSuccessModal = {
 
 const CTraderSuccessModal = ({ createdAccount, isDemo, walletCurrencyType }: TCTraderSuccessModal) => {
     const { data: cTraderAccounts, isLoading: isCtraderAccountsListLoading } = useCtraderAccountsList();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { hide } = useModal();
     const { localize } = useTranslations();
 
@@ -39,14 +38,9 @@ const CTraderSuccessModal = ({ createdAccount, isDemo, walletCurrencyType }: TCT
               }
           );
 
-    if (isMobile) {
+    if (isDesktop) {
         return (
-            <ModalStepWrapper
-                renderFooter={() => (
-                    <CTraderSuccessModalButtons createdAccount={createdAccount} hide={hide} isDemo={isDemo} />
-                )}
-                title={' '}
-            >
+            <ModalWrapper hideCloseButton>
                 <CFDSuccess
                     actionButtons={
                         <CTraderSuccessModalButtons createdAccount={createdAccount} hide={hide} isDemo={isDemo} />
@@ -54,7 +48,7 @@ const CTraderSuccessModal = ({ createdAccount, isDemo, walletCurrencyType }: TCT
                     description={description}
                     displayBalance={cTraderAccount.display_balance}
                     marketType='all'
-                    platform='ctrader'
+                    platform={PlatformDetails.ctrader.platform}
                     title={
                         <Localize
                             i18n_default_text='Your {{ctraderTitle}}{{demoTitle}} account is ready'
@@ -65,12 +59,16 @@ const CTraderSuccessModal = ({ createdAccount, isDemo, walletCurrencyType }: TCT
                         />
                     }
                 />
-                ;
-            </ModalStepWrapper>
+            </ModalWrapper>
         );
     }
     return (
-        <ModalWrapper hideCloseButton>
+        <ModalStepWrapper
+            renderFooter={() => (
+                <CTraderSuccessModalButtons createdAccount={createdAccount} hide={hide} isDemo={isDemo} />
+            )}
+            title={' '}
+        >
             <CFDSuccess
                 actionButtons={
                     <CTraderSuccessModalButtons createdAccount={createdAccount} hide={hide} isDemo={isDemo} />
@@ -89,7 +87,7 @@ const CTraderSuccessModal = ({ createdAccount, isDemo, walletCurrencyType }: TCT
                     />
                 }
             />
-        </ModalWrapper>
+        </ModalStepWrapper>
     );
 };
 

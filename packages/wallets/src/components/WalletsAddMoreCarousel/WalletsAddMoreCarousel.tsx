@@ -4,8 +4,7 @@ import { useHover } from 'usehooks-ts';
 import { useAllWalletAccounts, useAuthorize } from '@deriv/api-v2';
 import { LabelPairedChevronLeftLgFillIcon, LabelPairedChevronRightLgFillIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
-import useDevice from '../../hooks/useDevice';
+import { Text, useDevice } from '@deriv-com/ui';
 import useIsRtl from '../../hooks/useIsRtl';
 import { IconButton } from '../Base';
 import { WalletsAddMoreLoader } from '../SkeletonLoader';
@@ -13,7 +12,7 @@ import WalletsAddMoreCard from '../WalletsAddMoreCard';
 import './WalletsAddMoreCarousel.scss';
 
 const WalletsAddMoreCarousel: React.FC = () => {
-    const { isDesktop, isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { data: wallets, isLoading } = useAllWalletAccounts();
     const { isInitializing } = useAuthorize();
     const isRtl = useIsRtl();
@@ -41,8 +40,8 @@ const WalletsAddMoreCarousel: React.FC = () => {
     useEffect(() => {
         if (!walletsAddMoreEmblaAPI) return;
 
-        walletsAddMoreEmblaAPI.reInit({ watchDrag: isMobile });
-    }, [walletsAddMoreEmblaAPI, isMobile]);
+        walletsAddMoreEmblaAPI.reInit({ watchDrag: !isDesktop });
+    }, [walletsAddMoreEmblaAPI, isDesktop]);
 
     useEffect(() => {
         if (!walletsAddMoreEmblaAPI) return;

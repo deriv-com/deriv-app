@@ -17,7 +17,7 @@ import LinkTitle from './LinkTitle';
 import './OptionsAndMultipliersListing.scss';
 
 const OptionsAndMultipliersListing = () => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { localize } = useTranslations();
     const history = useHistory();
     const isRtl = useIsRtl();
@@ -27,12 +27,12 @@ const OptionsAndMultipliersListing = () => {
         <div className='wallets-options-and-multipliers-listing'>
             <section className='wallets-options-and-multipliers-listing__header'>
                 <div className='wallets-options-and-multipliers-listing__header-title'>
-                    {!isMobile && (
-                        <Text align='start' size='xl' weight='bold'>
+                    {isDesktop && (
+                        <Text align='center' size='xl' weight='bold'>
                             <Localize i18n_default_text='Options' />
                         </Text>
                     )}
-                    <Text align='start' size={isMobile ? 'sm' : 'md'}>
+                    <Text align='start' size={isDesktop ? 'md' : 'sm'}>
                         <Localize i18n_default_text='Predict the market, profit if you’re right, risk only what you put in. ' />
                         <WalletLink staticUrl='/trade-types/options/digital-options/up-and-down/'>
                             <Localize i18n_default_text='Learn more' />

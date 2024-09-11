@@ -1,7 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import { InlineMessage, WalletText } from '../../../../../../../components';
-import useDevice from '../../../../../../../hooks/useDevice';
 import './IDVServiceErrorMessage.scss';
 
 const IDVServiceErrorMessage = ({ message }: { message: string }) => {

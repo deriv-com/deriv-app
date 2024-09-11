@@ -2,8 +2,9 @@
     width: 100%;
     max-width: 60rem;
     min-width: 51.2rem;
+    margin-inline: auto;
 
-    @include mobile {
+    @include mobile-screen {
         width: 100%;
         min-width: 100%;
         height: auto;

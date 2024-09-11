@@ -93,7 +93,7 @@ const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
                 onClick={() => setIsOpen(true)}
                 readOnly
                 variant='fill'
-                value={`${payout_per_point} ${currency_display_code}`}
+                value={`${v2_params_initial_values?.payout_per_point ?? payout_per_point} ${currency_display_code}`}
             />
             <ActionSheet.Root isOpen={is_open} onClose={() => setIsOpen(false)} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>

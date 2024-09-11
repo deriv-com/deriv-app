@@ -6,6 +6,7 @@ import {
     useCtraderServiceToken,
     useDxtradeAccountsList,
 } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { useModal } from '../../../../../components/ModalProvider';
 import MT5TradeScreen from '../MT5TradeScreen';
@@ -21,6 +22,11 @@ jest.mock('@deriv/api-v2', () => ({
     useDxtradeAccountsList: jest.fn(),
 }));
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(),
+}));
+
 jest.mock('../../../../../components/ModalProvider', () => ({
     useModal: jest.fn(),
 }));
@@ -32,6 +38,7 @@ describe('MT5TradeScreen', () => {
 
     beforeEach(() => {
         (useHistory as jest.Mock).mockReturnValue({ push: mockHistoryPush });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
         (useModal as jest.Mock).mockReturnValue({
             getModalState: jest.fn(state => {
                 if (state === 'platform') return 'mt5';
@@ -49,8 +56,12 @@ describe('MT5TradeScreen', () => {
                 wallet_currency_type: 'USD',
             },
         });
-        (useDxtradeAccountsList as jest.Mock).mockReturnValue({});
-        (useCtraderAccountsList as jest.Mock).mockReturnValue({ data: [] });
+        (useDxtradeAccountsList as jest.Mock).mockReturnValue({
+            data: [{ account_id: 'DX123', display_balance: '1000', login: 'DX123' }],
+        });
+        (useCtraderAccountsList as jest.Mock).mockReturnValue({
+            data: [{ account_id: 'CT234', display_balance: '1000', login: 'CT234' }],
+        });
         (useCtraderServiceToken as jest.Mock).mockReturnValue({ mutateAsync: jest.fn() });
     });
 
@@ -88,6 +99,7 @@ describe('MT5TradeScreen', () => {
 
         render(<MT5TradeScreen />);
 
+        expect(screen.getAllByText('DX123')[0]).toBeInTheDocument();
         expect(screen.getByText('Username')).toBeInTheDocument();
         expect(screen.getByText('Password')).toBeInTheDocument();
         expect(screen.getByText('Forgot Password?')).toBeInTheDocument();
@@ -120,6 +132,33 @@ describe('MT5TradeScreen', () => {
         ).toBeInTheDocument();
     });
 
+    it('renders correctly for a demo account', () => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({
+            data: {
+                currency_config: { display_code: 'USD', fractional_digits: 2 },
+                is_virtual: true,
+                loginid: 'VRW1234',
+                wallet_currency_type: 'USD',
+            },
+        });
+
+        render(
+            <MT5TradeScreen
+                // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+                mt5Account={{
+                    display_balance: '10000',
+                    landing_company_short: 'svg',
+                    loginid: 'VRW1234',
+                    market_type: 'synthetic',
+                }}
+            />
+        );
+
+        expect(screen.getByText('Standard')).toBeInTheDocument();
+        expect(screen.getByText('MetaTrader 5 web')).toBeInTheDocument();
+        expect(screen.getByText('Demo')).toBeInTheDocument();
+    });
+
     it('redirects to transfer page for current account on click of transfer button', () => {
         render(
             <MT5TradeScreen
@@ -143,6 +182,25 @@ describe('MT5TradeScreen', () => {
         });
     });
 
+    it('renders MT5MobileRedirectOption on mobile for MT5 platform', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
+
+        render(
+            <MT5TradeScreen
+                // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+                mt5Account={{
+                    display_balance: '1000',
+                    landing_company_short: 'svg',
+                    loginid: 'CRW1234',
+                    market_type: 'synthetic',
+                }}
+            />
+        );
+
+        expect(screen.getByText('MetaTrader5 web terminal')).toBeInTheDocument();
+        expect(screen.getAllByText('Trade with MT5 mobile app')[0]).toBeInTheDocument();
+    });
+
     it('shows "Account closed" message for migrated account without position', () => {
         render(
             <MT5TradeScreen
@@ -164,5 +222,28 @@ describe('MT5TradeScreen', () => {
         );
 
         expect(screen.getByText('No new positions')).toBeInTheDocument();
+    });
+
+    it('handles other platforms', () => {
+        (useModal as jest.Mock).mockReturnValue({
+            getModalState: jest.fn(state => {
+                if (state === 'platform') return 'mt5Investor';
+                return null;
+            }),
+            hide: mockHide,
+            show: mockShow,
+        });
+
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({
+            data: undefined,
+        });
+
+        render(<MT5TradeScreen />);
+
+        expect(screen.getByTestId('dt_mt5_trade_screen')).toBeInTheDocument();
+
+        expect(screen.queryByText('MetaTrader 5 web')).not.toBeInTheDocument();
+        expect(screen.queryByText('Deriv X')).not.toBeInTheDocument();
+        expect(screen.queryByText('cTrader')).not.toBeInTheDocument();
     });
 });

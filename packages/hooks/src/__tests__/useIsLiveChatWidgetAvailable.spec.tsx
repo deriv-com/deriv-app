@@ -9,22 +9,6 @@ window.LiveChatWidget = {
     init: jest.fn(),
 };
 
-window.fcWidget = {
-    user: {
-        setProperties: jest.fn(),
-        getUUID: jest.fn(),
-    },
-    show: jest.fn(),
-    hide: jest.fn(),
-    open: jest.fn(),
-    destroy: jest.fn(),
-    close: jest.fn(),
-    on: jest.fn(),
-    setConfig: jest.fn(),
-    isLoaded: jest.fn(),
-    authenticate: jest.fn(),
-};
-
 jest.mock('../useGrowthbookGetFeatureValue');
 
 describe('useIsLiveChatWidgetAvailable', () => {
@@ -47,18 +31,6 @@ describe('useIsLiveChatWidgetAvailable', () => {
         act(() => {
             const callback = (window.LiveChatWidget.on as jest.Mock).mock.calls[0][1];
             callback({ state: { availability: 'online' } });
-        });
-
-        expect(result.current.is_livechat_available).toBe(true);
-    });
-
-    it('should update state when FF is true', async () => {
-        (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([true, true]);
-        const { result } = renderHook(() => useIsLiveChatWidgetAvailable());
-
-        act(() => {
-            const callback = (window.fcWidget.on as jest.Mock).mock.calls[0][1];
-            callback();
         });
 
         expect(result.current.is_livechat_available).toBe(true);

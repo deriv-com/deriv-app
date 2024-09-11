@@ -87,5 +87,4 @@ export { default as useTotalAssetCurrency } from './useTotalAssetCurrency';
 export { default as useGrowthbookIsOn } from './useGrowthbookIsOn';
 export { default as useResidenceList } from './useResidenceList';
 export { default as useTradingPlatformStatus } from './useTradingPlatformStatus';
-
 export type { TradingPlatformStatus } from './useTradingPlatformStatus';

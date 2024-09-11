@@ -1,14 +1,14 @@
 import React from 'react';
+import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useStore } from '@deriv/stores';
 import { Loading } from '@deriv/components';
-import { isAccumulatorContract } from '@deriv/shared';
 import { useLocalStorageData } from '@deriv/hooks';
 import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
 import { useTraderStore } from 'Stores/useTraderStores';
 import BottomNav from 'AppV2/Components/BottomNav';
 import PurchaseButton from 'AppV2/Components/PurchaseButton';
-import { HEIGHT } from 'AppV2/Utils/layout-utils';
+import { getChartHeight, HEIGHT } from 'AppV2/Utils/layout-utils';
 import { TradeParametersContainer, TradeParameters } from 'AppV2/Components/TradeParameters';
 import CurrentSpot from 'AppV2/Components/CurrentSpot';
 import { TradeChart } from '../Chart';
@@ -17,7 +17,7 @@ import TradeTypes from './trade-types';
 import MarketSelector from 'AppV2/Components/MarketSelector';
 import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
-import OnboardingGuide from 'AppV2/Components/OnboardingGuide';
+import OnboardingGuide from 'AppV2/Components/OnboardingGuide/GuideForPages';
 
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
@@ -25,9 +25,23 @@ const Trade = observer(() => {
     const {
         client: { is_logged_in },
     } = useStore();
-    const { active_symbols, contract_type, onMount, onChange, onUnmount } = useTraderStore();
+    const {
+        active_symbols,
+        contract_type,
+        has_cancellation,
+        symbol,
+        is_accumulator,
+        is_market_closed,
+        onMount,
+        onChange,
+        onUnmount,
+    } = useTraderStore();
     const { trade_types } = useContractsForCompany();
-    const [guide_dtrader_v2] = useLocalStorageData<boolean>('guide_dtrader_v2_trade_page', false);
+    const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
+        trade_types_selection: false,
+        trade_page: false,
+        positions_page: false,
+    });
 
     const symbols = React.useMemo(
         () =>
@@ -37,9 +51,6 @@ const Trade = observer(() => {
             })),
         [active_symbols]
     );
-
-    const dynamic_chart_height =
-        window.innerHeight - HEIGHT.HEADER - HEIGHT.BOTTOM_NAV - HEIGHT.ADVANCED_FOOTER - HEIGHT.PADDING;
 
     const onTradeTypeSelect = React.useCallback(
         (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
@@ -85,19 +96,25 @@ const Trade = observer(() => {
                             <TradeParameters />
                         </TradeParametersContainer>
                         <div className='trade__chart-tooltip'>
-                            <section className='trade__chart' style={{ height: dynamic_chart_height }} ref={chart_ref}>
+                            <section
+                                className='trade__chart'
+                                style={{
+                                    height: getChartHeight({ is_accumulator, symbol, has_cancellation, contract_type }),
+                                }}
+                                ref={chart_ref}
+                            >
                                 <TradeChart />
                             </section>
                         </div>
-                        {isAccumulatorContract(contract_type) && <AccumulatorStats />}
+                        {is_accumulator && <AccumulatorStats />}
                     </div>
-                    <div className='trade__parameter'>
+                    <div className={clsx('trade__parameter', { 'trade__parameter--with-button': !is_market_closed })}>
                         <TradeParametersContainer is_minimized_visible={is_minimized_params_visible} is_minimized>
                             <TradeParameters is_minimized />
                         </TradeParametersContainer>
-                        <PurchaseButton />
+                        {!is_market_closed && <PurchaseButton />}
                     </div>
-                    {!guide_dtrader_v2 && is_logged_in && <OnboardingGuide type='trade_page' />}
+                    {!guide_dtrader_v2?.trade_page && is_logged_in && <OnboardingGuide type='trade_page' />}
                 </React.Fragment>
             ) : (
                 <Loading.DTraderV2 />

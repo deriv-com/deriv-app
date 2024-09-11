@@ -7,6 +7,7 @@ import { getTradeTypesList } from 'AppV2/Utils/trade-types-utils';
 import { checkContractTypePrefix } from 'AppV2/Utils/contract-type';
 import { Localize, localize } from '@deriv/translations';
 import { safeParse } from '@deriv/utils';
+import TradeTypesSelectionGuide from 'AppV2/Components/OnboardingGuide/TradeTypesSelectionGuide';
 import Guide from '../../Components/Guide';
 
 type TTradeTypesProps = {
@@ -285,6 +286,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                     </ActionSheet.Content>
                 </ActionSheet.Portal>
             </ActionSheet.Root>
+            {is_open && <TradeTypesSelectionGuide />}
         </div>
     );
 };

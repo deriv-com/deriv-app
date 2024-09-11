@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, FormikErrors, FormikHelpers } from 'formik';
 import { DerivLightDmt5PasswordIcon } from '@deriv/quill-icons';
-import { FormSubmitButton, PasswordInput, PasswordMeter, Text } from '@deriv/components';
+import { FormSubmitButton, PasswordInput, PasswordMeter, Text, Icon } from '@deriv/components';
 import { getCFDPlatformLabel, getCFDPlatformNames, getErrorMessages } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
@@ -75,7 +75,7 @@ const MT5CreatePassword = ({
                         data-testid='dt_mt5_create_password'
                     >
                         <div className='mt5-password-modal__create-password-content'>
-                            <DerivLightDmt5PasswordIcon height='150px' width='150px' />
+                            <Icon icon='IcMt5Password' size={150} />
 
                             <Text
                                 size='xs'

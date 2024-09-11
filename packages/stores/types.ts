@@ -107,7 +107,8 @@ type TPopulateSettingsExtensionsMenuItem = {
 type TProduct = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx';
 
 type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
-type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
+
+export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     product?: string;
 };
 
@@ -198,7 +199,7 @@ type TAccount = NonNullable<Authorize['account_list']>[0] & {
     account_category?: 'wallet' | 'trading';
 };
 
-type TCtraderAccountsList = DetailsOfEachMT5Loginid & {
+type TCtraderAccountsList = TDetailsOfEachMT5Loginid & {
     display_balance?: string;
     platform?: string;
 };
@@ -256,6 +257,7 @@ type TTradingPlatformAvailableAccount = {
             tax_information: string[];
         };
         signup: string[];
+        client_kyc_status?: Record<string, string>;
     };
     shortcode?: DetailsOfEachMT5Loginid['landing_company_short'];
     sub_account_type: string;
@@ -263,6 +265,8 @@ type TTradingPlatformAvailableAccount = {
     available_count?: number;
     product: TProduct;
     is_default_jurisdiction: boolean; //TODO: check for default jurisdiction project
+    licence_number?: string;
+    regulatory_authority?: string;
 };
 
 type TAvailableCFDAccounts = {
@@ -574,7 +578,7 @@ type TClientStore = {
     /** @deprecated Use `useCurrencyConfig` or `useCurrentCurrencyConfig` from `@deriv/hooks` package instead. */
     is_crypto: (currency?: string) => boolean;
     ctrader_accounts_list: TCtraderAccountsList[];
-    dxtrade_accounts_list: (DetailsOfEachMT5Loginid & { account_id?: string })[];
+    dxtrade_accounts_list: (TDetailsOfEachMT5Loginid & { account_id?: string })[];
     default_currency: string;
     resetVirtualBalance: () => Promise<void>;
     has_enabled_two_fa: boolean;

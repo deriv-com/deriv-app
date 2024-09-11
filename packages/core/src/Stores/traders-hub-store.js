@@ -126,7 +126,6 @@ export default class TradersHubStore extends BaseStore {
             setIsCFDRestrictedCountry: action.bound,
             setIsFinancialRestrictedCountry: action.bound,
             setIsSetupRealAccountOrGoToDemoModalVisible: action.bound,
-
             getDefaultJurisdiction: action.bound,
         });
 
@@ -836,18 +835,19 @@ export default class TradersHubStore extends BaseStore {
     }
 
     async getMT5AccountKYCStatus() {
-        const { updateMt5LoginList, trading_platform_available_accounts, mt5_login_list } = this.root_store.client;
         const { jurisdiction_selected_shortcode, product } = this.root_store.modules.cfd;
-        await WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5);
-        await updateMt5LoginList();
-        const current_account = mt5_login_list.filter(
+        const { trading_platform_available_accounts } = await WS.authorized.tradingPlatformAvailableAccounts(
+            CFD_PLATFORMS.MT5
+        );
+        const { mt5_login_list } = await WS.authorized.mt5LoginList();
+        const current_account = mt5_login_list?.filter(
             account => account.landing_company_short === jurisdiction_selected_shortcode && account.product === product
         );
 
         if (current_account.length) {
             this.setSelectedJurisdictionKYCStatus(current_account[0].requirements.client_kyc_status);
         } else {
-            const selected_mt5_account = trading_platform_available_accounts.filter(
+            const selected_mt5_account = trading_platform_available_accounts?.filter(
                 account => account.shortcode === jurisdiction_selected_shortcode && account.product === product
             );
             if (selected_mt5_account.length) {

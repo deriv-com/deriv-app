@@ -5,6 +5,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import MT5CreatePassword from '../mt5-create-password';
 import { mockStore } from '@deriv/stores';
 import CFDProviders from '../../../cfd-providers';
+import { CFD_PLATFORMS } from '@deriv/shared';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -33,11 +34,10 @@ jest.mock('@deriv/shared', () => ({
 
 describe('<MT5CreatePassword/>', () => {
     const mockFn = jest.fn();
-    const mockSubmitMt5Password = jest.fn();
     const history = createBrowserHistory();
     let modalRoot;
 
-    let mockRootStore = {
+    const mockRootStore = {
         modules: {
             cfd: {
                 error_message: '',
@@ -53,7 +53,7 @@ describe('<MT5CreatePassword/>', () => {
 
     const default_props = {
         password: '',
-        platform: 'mt5',
+        platform: CFD_PLATFORMS.MT5,
         error_message: '',
         validatePassword: jest.fn(),
         onSubmit: jest.fn(),

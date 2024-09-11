@@ -35,6 +35,7 @@ const useGetMFAccountStatus = () => {
     const need_poi_submission = !poi_pending_by_onfido_or_manual && !poi_verified_by_onfido_or_manual;
 
     const need_poi_resubmission = !poi_not_submitted_by_onfido_or_manual && need_poi_submission;
+    const is_verified = poi_status === STATUS.VERIFIED && poa_status === STATUS.VERIFIED;
 
     const getMFAccountStatus = () => {
         if (poa_status && onfido_status && manual_status) {
@@ -49,10 +50,7 @@ const useGetMFAccountStatus = () => {
         }
         return null;
     };
-    const getVerificationStatus = () => ({
-        poi_status,
-        poa_status,
-    });
+    const getVerificationStatus = () => (!is_verified ? { poi_status, poa_status } : {});
 
     return {
         mf_account_status: getMFAccountStatus(),

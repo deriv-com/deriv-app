@@ -1,12 +1,22 @@
-import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api-v2';
+import React, { PropsWithChildren } from 'react';
+import { APIProvider, useActiveWalletAccount } from '@deriv/api-v2';
 import { render, screen, waitFor } from '@testing-library/react';
+import WalletsAuthProvider from '../../../AuthProvider';
+import { ModalProvider } from '../../ModalProvider';
 import WalletsContainer from '../WalletsContainer';
-import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useActiveWalletAccount: jest.fn(),
 }));
+
+const wrapper = ({ children }: PropsWithChildren) => (
+    <APIProvider>
+        <WalletsAuthProvider>
+            <ModalProvider>{children}</ModalProvider>
+        </WalletsAuthProvider>
+    </APIProvider>
+);
 
 describe('WalletsContainer', () => {
     const renderHeaderMock = jest.fn(() => <div data-testid='header'>Header</div>);
@@ -21,7 +31,7 @@ describe('WalletsContainer', () => {
             data: undefined,
         });
 
-        render(<WalletsContainer renderHeader={renderHeaderMock}>{children}</WalletsContainer>);
+        render(<WalletsContainer renderHeader={renderHeaderMock}>{children}</WalletsContainer>, { wrapper });
 
         expect(screen.getByTestId('header')).toBeInTheDocument();
         expect(screen.getByTestId('children')).toBeInTheDocument();
@@ -37,7 +47,7 @@ describe('WalletsContainer', () => {
             },
         });
 
-        render(<WalletsContainer renderHeader={renderHeaderMock}>{children}</WalletsContainer>);
+        render(<WalletsContainer renderHeader={renderHeaderMock}>{children}</WalletsContainer>, { wrapper });
 
         expect(screen.getByTestId('dt_wallets_container_header')).toHaveClass('wallets-container__header--virtual');
         expect(screen.getByTestId('dt_wallets_container')).toHaveClass('wallets-container--virtual');
@@ -52,7 +62,7 @@ describe('WalletsContainer', () => {
             },
         });
 
-        render(<WalletsContainer renderHeader={renderHeaderMock}>{children}</WalletsContainer>);
+        render(<WalletsContainer renderHeader={renderHeaderMock}>{children}</WalletsContainer>, { wrapper });
 
         const containerElement = screen.getByTestId('dt_wallets_container');
         if (containerElement) {

@@ -1,0 +1,22 @@
+.wallets-disabled-account-banner {
+    &__container {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.6rem;
+    }
+    &__content {
+        display: flex;
+        gap: 0.8rem;
+        text-align: center;
+        padding: 1.6rem;
+        border-radius: 16px;
+        background-color: #ff9c1314;
+        width: 100%;
+
+        @include mobile {
+            width: 32.8rem;
+        }
+    }
+}

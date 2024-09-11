@@ -16,10 +16,12 @@ const Journal: React.FC<TJournal> = observer(({ setActiveTabIndex }) => {
         client: { currency },
     } = useStore();
     const { server_bot } = useDBotStore();
-    const { journal, resetJournal, downloadJournal } = server_bot;
+    const { active_bot, journal, downloadJournal, showClearStatDialog } = server_bot;
     const has_journal = !!journal.length;
     const font_size = 'xxs';
     const uid = 'journal';
+    const is_bot_running = active_bot?.status !== 'stopped';
+    const should_disable = !has_journal || is_bot_running;
 
     React.useEffect(() => {
         const last_journal = journal?.[journal.length - 1];
@@ -137,10 +139,10 @@ const Journal: React.FC<TJournal> = observer(({ setActiveTabIndex }) => {
                 )}
             </div>
             <div className='ssb-journal__footer'>
-                <Button secondary disabled={!has_journal} onClick={() => resetJournal()}>
+                <Button secondary disabled={should_disable} onClick={() => showClearStatDialog()}>
                     <Localize i18n_default_text='Reset' />
                 </Button>
-                <Button secondary disabled={!has_journal} onClick={() => downloadJournal()}>
+                <Button secondary disabled={should_disable} onClick={() => downloadJournal()}>
                     <Localize i18n_default_text='Download' />
                 </Button>
             </div>

@@ -39,6 +39,15 @@ const Summary: React.FC = observer(() => {
 
     const txns = bot_transactions ? Object.values(bot_transactions) : [];
     const has_summary = !!txns?.length;
+    // when we allow multiple bots to run at the same time, it should be an array
+    // const is_some_bot_running = active_bots.every(item => item.status !== 'stopped');
+    const is_bot_running = active_bot?.status !== 'stopped';
+
+    React.useEffect(() => {
+        if (!is_bot_running) resetTransactions();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_bot_running]);
+
     return (
         <div className='ssb-summary'>
             <div className='ssb-summary__content'>
@@ -147,7 +156,7 @@ const Summary: React.FC = observer(() => {
                     </ul>
                 </div>
                 <div className='ssb-summary__footer__actions'>
-                    <Button secondary disabled={!has_summary} onClick={() => resetTransactions()}>
+                    <Button secondary disabled={!has_summary || is_bot_running} onClick={() => resetTransactions()}>
                         <Localize i18n_default_text='Reset' />
                     </Button>
                 </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopWrapper, MobileFullPageModal, MobileWrapper } from '@deriv/components';
+import { DesktopWrapper, Dialog, MobileFullPageModal, MobileWrapper } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { TServerBotItem } from 'Stores/server-side-bot-store';
@@ -16,7 +16,17 @@ const ServerSideBot: React.FC = observer(() => {
     const { server_bot } = useDBotStore();
     const { ui } = useStore();
     const { is_mobile } = ui;
-    const { active_bot_id, setActiveBotId, bot_list } = server_bot;
+    const {
+        active_bot_id,
+        setActiveBotId,
+        bot_list,
+        is_dialog_open,
+        dialog_options,
+        onCloseDialog,
+        onOkButtonClick,
+        onCancelButtonClick,
+    } = server_bot;
+    const { cancel_button_text, ok_button_text, title, message } = dialog_options as { [key: string]: string };
 
     React.useEffect(() => {
         if (active_bot_id) {
@@ -59,6 +69,21 @@ const ServerSideBot: React.FC = observer(() => {
                     <PerformancePanel />
                 </div>
             </MobileFullPageModal>
+            <Dialog
+                cancel_button_text={cancel_button_text || localize('Cancel')}
+                className='dc-dialog__wrapper--fixed'
+                confirm_button_text={ok_button_text || localize('Ok')}
+                has_close_icon
+                is_mobile_full_width={false}
+                is_visible={is_dialog_open}
+                onCancel={onCloseDialog}
+                onClose={onCancelButtonClick || onCloseDialog}
+                onConfirm={onOkButtonClick || onCloseDialog}
+                portal_element_id='modal_root'
+                title={title}
+            >
+                {message}
+            </Dialog>
         </>
     );
 });

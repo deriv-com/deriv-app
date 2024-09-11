@@ -4,6 +4,7 @@ import { ActiveSymbols } from '@deriv/api-types';
 import useActiveSymbols from './useActiveSymbols';
 import { useTraderStore } from 'Stores/useTraderStores';
 
+// The hook handles the cases when the selected `contract_type` is changed during account switch or if the symbol is not available in the URL param.
 const useDefaultSymbol = () => {
     const { processContractsForV2, onChange, symbol: symbol_from_store } = useTraderStore();
     const { activeSymbols: active_symbols } = useActiveSymbols();

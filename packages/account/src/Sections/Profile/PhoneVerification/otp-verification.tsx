@@ -42,6 +42,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
         requestOnSMS,
         requestOnWhatsApp,
         email_otp_error,
+        reset,
     } = useSendOTPVerificationCode();
     const {
         setNextEmailOtpRequestTimer,
@@ -91,6 +92,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
         setOtp('');
         setPhoneOtpErrorMessage('');
         should_show_phone_number_otp ? setNextPhoneOtpRequestTimer(undefined) : setNextEmailOtpRequestTimer(undefined);
+        reset();
     };
 
     const handleGetOtpValue = (e: React.ChangeEvent<HTMLInputElement>) => {

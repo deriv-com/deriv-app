@@ -1,13 +1,13 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import useDevice from '../../../hooks/useDevice';
 import Page404 from '../Page404';
 
-jest.mock('../../../hooks/useDevice', () => ({
-    __esModule: true,
-    default: jest.fn(() => ({ isMobile: false })),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: false })),
 }));
 
 jest.mock('react-router-dom', () => ({

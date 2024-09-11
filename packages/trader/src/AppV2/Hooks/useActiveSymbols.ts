@@ -80,12 +80,7 @@ const useActiveSymbols = () => {
     );
 
     const isSymbolAvailable = (active_symbols: ActiveSymbols) => {
-        const has_initialized = has_initialized_ref.current;
-
-        return active_symbols.some(symbol_info => {
-            const exchange_open_check = has_initialized ? true : symbol_info.exchange_is_open === 1;
-            return symbol_info.symbol === symbol && exchange_open_check;
-        });
+        return active_symbols.some(symbol_info => symbol_info.symbol === symbol);
     };
 
     useEffect(

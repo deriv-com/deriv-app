@@ -19,6 +19,9 @@ const DocumentSelection: React.FC<TProps> = ({ onSelectDocument }) => {
     return (
         <div className='wallets-document-selection'>
             <div className='wallets-document-selection__content'>
+                <Text weight='bold'>
+                    <Localize i18n_default_text='Identity verification' />
+                </Text>
                 <Text>
                     <Localize i18n_default_text='Please upload one of the following documents:' />
                 </Text>

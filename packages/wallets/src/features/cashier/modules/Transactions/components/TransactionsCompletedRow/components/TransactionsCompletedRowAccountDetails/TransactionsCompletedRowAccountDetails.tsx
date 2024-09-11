@@ -16,6 +16,7 @@ type TProps = {
     isDemo: boolean;
     isInterWallet?: boolean;
     mt5Group?: string;
+    product?: THooks.AvailableMT5Accounts['product'];
     transactionID?: number;
 };
 
@@ -28,6 +29,7 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
     isDemo,
     isInterWallet = false,
     mt5Group,
+    product,
     transactionID,
 }) => {
     const { isDesktop } = useDevice();
@@ -48,6 +50,7 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
                     isDemo={isDemo}
                     marketType={marketType ?? MARKET_TYPE.ALL}
                     platform={accountType as TPlatforms.All}
+                    product={product}
                 />
             )}
             <div

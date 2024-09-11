@@ -407,11 +407,11 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageTurbos to be rendered when trade category is TRADE_TYPES.TURBOS.LONG', async () => {
+    it('expect VideoTurbos to be rendered when trade category is TRADE_TYPES.TURBOS.LONG', async () => {
         jest.isolateModules(() => {
-            jest.doMock('Assets/SvgComponents/trade_explanations/img-turbos.svg', () => ({
+            jest.doMock('../contract-type-description-video', () => ({
                 __esModule: true,
-                default: jest.fn(() => 'ImageTurbos'),
+                default: jest.fn(() => 'VideoTurbos'),
             }));
 
             import('../trade-categories-gif')
@@ -422,7 +422,7 @@ describe('<TradeCategoriesGIF />', () => {
                             selected_contract_type={TRADE_TYPES.TURBOS.LONG}
                         />
                     );
-                    expect(screen.getByText(/imageturbos/i)).toBeInTheDocument();
+                    expect(screen.getByText(/videoturbos/i)).toBeInTheDocument();
                 })
                 .catch(error => {
                     throw new Error(error);

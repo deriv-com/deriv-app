@@ -1,7 +1,7 @@
 import { localize } from '@deriv-com/translations';
 import getInstrumentsIcons from '../../../../public/images/tradingInstruments';
 import { THooks, TPlatforms } from '../../../../types';
-import { CFD_PLATFORMS, MARKET_TYPE } from '../../constants';
+import { CFD_PLATFORMS, MARKET_TYPE, PRODUCT } from '../../constants';
 import { JURISDICTION, MARKET_TYPE_SHORTCODE } from './constants';
 
 type THighlightedIconLabel = {
@@ -18,9 +18,13 @@ const getHighlightedIconLabel = (
     platform: TPlatforms.All,
     isEuRegion: boolean,
     marketType: TMarketTypes,
-    shortCode: TShortCode
+    shortCode: TShortCode,
+    product?: THooks.AvailableMT5Accounts['product']
 ): THighlightedIconLabel[] => {
-    const marketTypeShortCode = marketType?.concat('_', shortCode || '');
+    const marketTypeShortCode =
+        platform === CFD_PLATFORMS.MT5 && marketType === 'all'
+            ? `${marketType}_${product}_${shortCode}`
+            : marketType?.concat('_', shortCode ?? '');
 
     const forexLabel = (() => {
         if (isEuRegion) {
@@ -28,11 +32,14 @@ const getHighlightedIconLabel = (
         } else if (marketTypeShortCode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN) {
             return localize('Forex: standard/exotic');
         } else if (
-            (platform === CFD_PLATFORMS.MT5 && marketTypeShortCode === MARKET_TYPE_SHORTCODE.ALL_SVG) ||
+            (platform === CFD_PLATFORMS.MT5 && marketTypeShortCode === MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG) ||
             platform === CFD_PLATFORMS.CTRADER
         ) {
             return localize('Forex: major/minor');
-        } else if (marketType === MARKET_TYPE.SYNTHETIC) {
+        } else if (
+            marketType === MARKET_TYPE.SYNTHETIC ||
+            (platform === CFD_PLATFORMS.MT5 && marketTypeShortCode === MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI)
+        ) {
             return localize('Forex: standard');
         }
         return localize('Forex: standard/micro');
@@ -95,6 +102,19 @@ const getHighlightedIconLabel = (
         case MARKET_TYPE.ALL:
         default:
             if (platform === CFD_PLATFORMS.MT5) {
+                if (product === PRODUCT.ZEROSPREAD) {
+                    return [
+                        { highlighted: true, icon: 'Forex', text: forexLabel },
+                        { highlighted: false, icon: 'Stocks', text: 'Stocks' },
+                        { highlighted: true, icon: 'StockIndices', text: 'Stock indices' },
+                        { highlighted: true, icon: 'Commodities', text: 'Commodities' },
+                        { highlighted: true, icon: 'Cryptocurrencies', text: 'Cryptocurrencies' },
+                        { highlighted: false, icon: 'ETF', text: 'ETFs' },
+                        { highlighted: true, icon: 'Synthetics', text: 'Synthetic indices' },
+                        { highlighted: true, icon: 'Baskets', text: 'Basket indices' },
+                        { highlighted: true, icon: 'DerivedFX', text: 'Derived FX' },
+                    ];
+                }
                 return [
                     { highlighted: true, icon: 'Forex', text: forexLabel },
                     { highlighted: true, icon: 'Stocks', text: localize('Stocks') },
@@ -192,6 +212,15 @@ const getJurisdictionDescription = (shortcode?: string) => {
                 regulator_license: localize(
                     'Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)'
                 ),
+            };
+        case MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI:
+            return {
+                ...cfdConfig,
+                counterparty_company: 'Deriv (BVI) Ltd',
+                jurisdiction: 'British Virgin Islands',
+                regulator: 'British Virgin Islands Financial Services Commission',
+                regulator_license: '(License no. SIBA/L/18/1114)',
+                spread: '0.0 pips',
             };
         case MARKET_TYPE_SHORTCODE.ALL_DXTRADE:
         case MARKET_TYPE_SHORTCODE.ALL_SVG:

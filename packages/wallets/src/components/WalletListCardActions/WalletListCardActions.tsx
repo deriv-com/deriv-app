@@ -8,8 +8,7 @@ import {
     LabelPairedPlusMdBoldIcon,
 } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
-import { Button, Text } from '@deriv-com/ui';
-import useDevice from '../../hooks/useDevice';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 import { IconButton } from '../Base';
 import './WalletListCardActions.scss';
 
@@ -27,6 +26,7 @@ const getWalletHeaderButtons = (localize: ReturnType<typeof useTranslations>['lo
             name: isDemo ? 'reset-balance' : 'deposit',
             text: isDemo ? localize('Reset balance') : localize('Deposit'),
             variant: isDemo ? 'outlined' : 'contained',
+            weight: isDemo ? 'normal' : 'bold',
         },
         {
             className: 'wallets-mobile-actions-content-icon',
@@ -36,6 +36,7 @@ const getWalletHeaderButtons = (localize: ReturnType<typeof useTranslations>['lo
             name: 'withdrawal',
             text: localize('Withdraw'),
             variant: 'outlined',
+            weight: 'normal',
         },
         {
             className: 'wallets-mobile-actions-content-icon',
@@ -45,6 +46,7 @@ const getWalletHeaderButtons = (localize: ReturnType<typeof useTranslations>['lo
             name: 'account-transfer',
             text: localize('Transfer'),
             variant: 'outlined',
+            weight: 'normal',
         },
     ] as const;
 
@@ -56,56 +58,56 @@ const getWalletHeaderButtons = (localize: ReturnType<typeof useTranslations>['lo
 
 const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const history = useHistory();
     const { localize } = useTranslations();
 
     const isActive = activeWallet?.is_active;
     const isDemo = activeWallet?.is_virtual;
 
-    if (isMobile)
+    if (isDesktop)
         return (
-            <div className='wallets-mobile-actions__container'>
-                <div className='wallets-mobile-actions'>
-                    {getWalletHeaderButtons(localize, isDemo).map(button => (
-                        <div className='wallets-mobile-actions-content' key={button.name}>
-                            <IconButton
-                                aria-label={button.name}
-                                className={button.className}
-                                color={button.iconColor}
-                                icon={button.icon}
-                                onClick={() => {
-                                    history.push(`/wallet/${button.name}`, { accountsActiveTabIndex });
-                                }}
-                                size='lg'
-                            />
-                            <Text size='sm' weight={button.text === localize('Deposit') ? 'bold' : 'normal'}>
-                                {button.text}
-                            </Text>
-                        </div>
-                    ))}
-                </div>
+            <div className='wallets-header__actions'>
+                {getWalletHeaderButtons(localize, isDemo).map(button => (
+                    <Button
+                        aria-label={button.name}
+                        borderWidth='sm'
+                        color={button.color}
+                        icon={button.icon}
+                        key={button.name}
+                        onClick={() => {
+                            history.push(`/wallet/${button.name}`);
+                        }}
+                        rounded='lg'
+                        variant={button.variant}
+                    >
+                        {isActive ? button.text : ''}
+                    </Button>
+                ))}
             </div>
         );
 
     return (
-        <div className='wallets-header__actions'>
-            {getWalletHeaderButtons(localize, isDemo).map(button => (
-                <Button
-                    aria-label={button.name}
-                    borderWidth='sm'
-                    color={button.color}
-                    icon={button.icon}
-                    key={button.name}
-                    onClick={() => {
-                        history.push(`/wallet/${button.name}`);
-                    }}
-                    rounded='lg'
-                    variant={button.variant}
-                >
-                    {isActive ? button.text : ''}
-                </Button>
-            ))}
+        <div className='wallets-mobile-actions__container'>
+            <div className='wallets-mobile-actions'>
+                {getWalletHeaderButtons(localize, isDemo).map(button => (
+                    <div className='wallets-mobile-actions-content' key={button.name}>
+                        <IconButton
+                            aria-label={button.name}
+                            className={button.className}
+                            color={button.iconColor}
+                            icon={button.icon}
+                            onClick={() => {
+                                history.push(`/wallet/${button.name}`, { accountsActiveTabIndex });
+                            }}
+                            size='lg'
+                        />
+                        <Text size='sm' weight={button.text === localize('Deposit') ? 'bold' : 'normal'}>
+                            {button.text}
+                        </Text>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

@@ -13,7 +13,7 @@ describe('CompareAccountsDescription', () => {
         counterparty_company_description: 'Counterparty company description',
         jurisdiction: 'St. Vincent & Grenadines',
         jurisdiction_description: 'Jurisdiction description',
-        leverage: '1:1000',
+        leverage: 'Up to 1:1000',
         leverage_description: 'Leverage description',
         regulator: 'Financial Commission',
         regulator_description: 'Regulator description',
@@ -30,6 +30,7 @@ describe('CompareAccountsDescription', () => {
         isDemo: false,
         isEuRegion: false,
         marketType: 'financial' as const,
+        platform: 'mt5' as const,
         shortCode: 'SVG',
     };
 
@@ -69,5 +70,25 @@ describe('CompareAccountsDescription', () => {
         render(<CompareAccountsDescription {...defaultProps} />);
 
         expect(getJurisdictionDescription).toHaveBeenCalledWith('financial_SVG');
+    });
+
+    it('renders tooltip for zero spread', () => {
+        render(
+            <CompareAccountsDescription
+                {...defaultProps}
+                marketType='all'
+                platform='mt5'
+                product='zero_spread'
+                shortCode='bvi'
+            />
+        );
+        const tooltip = screen.getByTestId('wallets-compare-accounts-text-container__tooltip');
+        expect(tooltip).toBeInTheDocument();
+    });
+
+    it('does not render tooltip for non-Labuan jurisdictions', () => {
+        render(<CompareAccountsDescription {...defaultProps} />);
+
+        expect(screen.queryByTestId('wallets-compare-accounts-text-container__tooltip')).not.toBeInTheDocument();
     });
 });

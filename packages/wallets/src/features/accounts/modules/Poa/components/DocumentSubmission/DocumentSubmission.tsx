@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
 import { useIsEuRegion } from '@deriv/api-v2';
 import { LabelPairedArrowUpFromBracketXlFillIcon } from '@deriv/quill-icons';
@@ -23,6 +23,12 @@ const DocumentSubmission: React.FC = () => {
         ),
         localize('Home rental agreement: valid and current agreement.'),
     ];
+
+    useEffect(() => {
+        return () => {
+            setFieldValue('poaFile', null);
+        };
+    }, [setFieldValue]);
 
     return (
         <div className='wallets-poa__document'>

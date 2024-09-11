@@ -4,6 +4,7 @@ import { modifyContextMenu, evaluateExpression } from '../../../../utils';
 Blockly.Blocks.tick_delay = {
     init() {
         this.jsonInit(this.definition());
+        this.workspace_to_code = Blockly.JavaScript.javascriptGenerator.workspaceToCode(Blockly.derivWorkspace);
     },
     definition() {
         return {
@@ -47,6 +48,9 @@ Blockly.Blocks.tick_delay = {
                 const evaluated_result = evaluateExpression(input_value);
                 // Check if the evaluated result is invalid
                 if (evaluated_result === 'invalid_input') {
+                    if (this.workspace_to_code.includes(input_value)) {
+                        return false;
+                    }
                     this.error_message = localize('Invalid Input {{ input_value }}.', { input_value });
                     return true; // Return false for invalid input
                 }

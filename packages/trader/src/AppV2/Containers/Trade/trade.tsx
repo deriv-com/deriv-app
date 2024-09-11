@@ -18,8 +18,8 @@ import TradeTypes from './trade-types';
 import MarketSelector from 'AppV2/Components/MarketSelector';
 import useContractsForCompany, { TContractTypesList } from 'AppV2/Hooks/useContractsForCompany';
 import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
-import OnboardingGuide from 'AppV2/Components/OnboardingGuide';
-import ServiceErrorSheet from 'AppV2/Components/ServiceErrorSheet/service-error-sheet';
+import OnboardingGuide from 'AppV2/Components/OnboardingGuide/GuideForPages';
+import ServiceErrorSheet from 'AppV2/Components/ServiceErrorSheet';
 
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);

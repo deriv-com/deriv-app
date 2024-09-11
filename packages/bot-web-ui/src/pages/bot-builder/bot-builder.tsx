@@ -26,7 +26,7 @@ const BotBuilder = observer(() => {
     const { is_desktop } = ui;
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
-    const { data: remote_config_data } = useRemoteConfig();
+    const { data: remote_config_data } = useRemoteConfig(true);
     let deleted_block_id: null | string = null;
 
     React.useEffect(() => {

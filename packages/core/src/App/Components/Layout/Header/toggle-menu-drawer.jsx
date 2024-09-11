@@ -72,7 +72,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
     const is_wallet_route = route.startsWith(routes.wallets) || route.startsWith(routes.wallets_compare_accounts);
 
-    const { data } = useRemoteConfig();
+    const { data } = useRemoteConfig(true);
     const { cs_chat_livechat, cs_chat_whatsapp } = data;
 
     const liveChat = useLiveChat(false, loginid);

@@ -46,7 +46,7 @@ const Footer = observer(() => {
         toggleSettingsModal,
         toggleLanguageSettingsModal,
     } = ui;
-    const { data } = useRemoteConfig();
+    const { data } = useRemoteConfig(true);
     const { cs_chat_livechat, cs_chat_whatsapp } = data;
     const { show_eu_related_content } = traders_hub;
 

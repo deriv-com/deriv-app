@@ -68,7 +68,7 @@ const TradingHubFooter = observer(() => {
     };
 
     const location = window.location.pathname;
-    const { data } = useRemoteConfig();
+    const { data } = useRemoteConfig(true);
     const { cs_chat_livechat, cs_chat_whatsapp } = data;
 
     const showPopover = !isTabletOs;

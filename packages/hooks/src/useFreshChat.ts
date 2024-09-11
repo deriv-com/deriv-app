@@ -1,11 +1,10 @@
 import { useStore } from '@deriv/stores';
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect } from 'react';
 import { useScript } from 'usehooks-ts';
 
 const useFreshChat = () => {
     useScript('https://fw-cdn.com/11706964/4344125.js');
 
-    const [isReady, setIsReady] = useState(false);
     const { client } = useStore();
     const { getFreshworksToken, is_logged_in, loginid, email, account_settings, currency, residence, user_id } = client;
 
@@ -21,7 +20,6 @@ const useFreshChat = () => {
         window.fcSettings = {
             onInit() {
                 window.fcWidget.on('widget:loaded', async () => {
-                    setIsReady(true);
                     if (is_logged_in && loginid) {
                         let uuid = '';
                         try {
@@ -53,11 +51,6 @@ const useFreshChat = () => {
     useLayoutEffect(() => {
         setDefaultSettings();
     }, []);
-
-    return {
-        isReady,
-        widget: window.fcWidget,
-    };
 };
 
 export default useFreshChat;

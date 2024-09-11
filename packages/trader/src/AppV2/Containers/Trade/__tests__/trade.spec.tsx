@@ -48,6 +48,8 @@ jest.mock('../../Chart', () => ({
     ...jest.requireActual('../../Chart'),
     TradeChart: jest.fn(() => <div>Chart</div>),
 }));
+jest.mock('AppV2/Components/AccumulatorStats', () => jest.fn(() => <div>AccumulatorStats</div>));
+
 jest.mock('AppV2/Components/TradeParameters', () => ({
     ...jest.requireActual('AppV2/Components/TradeParameters'),
     TradeParametersContainer: jest.fn(({ children }) => <div>{children}</div>),
@@ -136,13 +138,13 @@ describe('Trade', () => {
 
     it('should render loader if there is no active_symbols or contract_types_list', () => {
         default_mock_store = mockStore({});
-        mockTrade();
+        render(mockTrade());
 
         expect(screen.getByTestId('dt_trade_loader')).toBeInTheDocument();
     });
 
     it('should render trading page with all necessary components', () => {
-        mockTrade();
+        render(mockTrade());
 
         expect(screen.queryByTestId('dt_trade_loader')).not.toBeInTheDocument();
         expect(screen.queryByText('Current Spot')).not.toBeInTheDocument();
@@ -158,21 +160,21 @@ describe('Trade', () => {
 
     it('should render Current Spot  component if it is digit contract type', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.EVEN_ODD;
-        mockTrade();
+        render(mockTrade());
 
         expect(screen.getByText('Current Spot')).toBeInTheDocument();
     });
 
     it('should render AccumulatorStats if is_accumulator === true', () => {
         default_mock_store.modules.trade.is_accumulator = true;
-        mockTrade();
+        render(mockTrade());
 
         expect(screen.getByText('AccumulatorStats')).toBeInTheDocument();
     });
 
     it('should call state setter when user scrolls BottomNav', () => {
         const spySetIsMinimizedParamsVisible = jest.spyOn(React, 'useState');
-        mockTrade();
+        render(mockTrade());
 
         fireEvent.scroll(screen.getByTestId('dt_bottom_nav'));
 
@@ -182,14 +184,13 @@ describe('Trade', () => {
     it('should not render OnboardingGuide if localStorage flag is equal to true', () => {
         const field = { trade_page: true };
         localStorage.setItem(localStorage_key, JSON.stringify(field));
-        mockTrade();
-
+        render(mockTrade());
         expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();
     });
 
     it('should not render OnboardingGuide if client is not logged in', () => {
         default_mock_store.client.is_logged_in = false;
-        mockTrade();
+        render(mockTrade());
 
         expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();
     });

@@ -384,7 +384,7 @@ export default class ServerBotStore {
                 } else if (item?.type === JOURNAL_TYPE.LOSS) {
                     combinedMessage = `Loss amount: ${item?.amount ?? ''}`;
                 } else {
-                    combinedMessage = `${item?.type || ''}:${item?.msg ?? ''}`;
+                    combinedMessage = `${item?.type ?? ''}:${item?.msg ?? ''}`;
                 }
                 items.push([combinedMessage]);
             });

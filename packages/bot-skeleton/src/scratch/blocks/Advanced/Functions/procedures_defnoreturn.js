@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { plusIconLight } from '../../images';
-import { removeExtraInput, modifyContextMenu } from '../../../utils';
+import { appendCollapsedProcedureBlocksFields, modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.procedures_defnoreturn = {
     init() {
@@ -90,7 +90,7 @@ Blockly.Blocks.procedures_defnoreturn = {
                     block.setFieldValue(event.newValue, 'NAME');
                 });
             }
-            removeExtraInput(this);
+            appendCollapsedProcedureBlocksFields(this);
         }
     },
     /**

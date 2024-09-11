@@ -4,7 +4,7 @@ import { ActionSheet, Text } from '@deriv-com/quill-ui';
 import { getLanguage, Localize } from '@deriv/translations';
 import { redirectToLogin } from '@deriv/shared';
 import { useHistory } from 'react-router';
-import { useSignupTrigger } from '@deriv/hooks';
+import { useSignupTrigger } from 'AppV2/Hooks/useSignupTrigger';
 import ServiceErrorDescription from './service-error-description';
 
 const ServiceErrorSheet = observer(() => {

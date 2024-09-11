@@ -9,6 +9,8 @@ import { TRADE_TYPES, redirectToLogin } from '@deriv/shared';
 import { Router } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from 'history';
+import { useSignupTrigger } from '../../../Hooks/useSignupTrigger';
+import { renderHook } from '@testing-library/react-hooks';
 
 const mock_contract_data = {
     contracts_for_company: {
@@ -16,13 +18,6 @@ const mock_contract_data = {
     },
 };
 const localStorage_key = 'guide_dtrader_v2';
-const mocked_handle_signup = jest.fn();
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useSignupTrigger: jest.fn(() => ({
-        handleSignup: mocked_handle_signup,
-    })),
-}));
 
 jest.mock('AppV2/Components/BottomNav', () =>
     jest.fn(({ children, onScroll }) => (
@@ -74,6 +69,7 @@ jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
         contracts_for_company: mock_contract_data,
     })),
 }));
+jest.mock('AppV2/Hooks/useSignupTrigger');
 
 describe('Trade', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
@@ -122,6 +118,7 @@ describe('Trade', () => {
             client: { is_logged_in: true },
             common: { resetServicesError: jest.fn() },
         });
+        (useSignupTrigger as jest.Mock).mockReturnValue({ handleSignup: jest.fn() });
         localStorage.clear();
     });
 
@@ -258,11 +255,13 @@ describe('Trade', () => {
             message: 'You need to log in to place a trade',
             type: 'buy',
         };
+        const { result } = renderHook(() => useSignupTrigger());
+
         render(mockTrade());
 
         const signupButton = screen.getByText('Create free account');
         userEvent.click(signupButton);
 
-        expect(mocked_handle_signup).toHaveBeenCalled();
+        expect(result.current.handleSignup).toHaveBeenCalled();
     });
 });

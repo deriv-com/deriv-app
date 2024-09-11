@@ -1,19 +1,11 @@
-import { useEffect, useState } from 'react';
 import { redirectToSignUp, mobileOSDetectAsync, isSafari } from '@deriv/shared';
-import useGrowthbookGetFeatureValue from './useGrowthbookGetFeatureValue';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 
 export const useSignupTrigger = () => {
-    const [redirect_to_os_signup, setRedirectToOSSignup] = useState(false);
-    const [trigger_os_signup, isGBLoaded] = useGrowthbookGetFeatureValue({
+    const [trigger_os_signup] = useGrowthbookGetFeatureValue({
         featureFlag: 'trigger_os_signup',
         defaultValue: false,
     });
-
-    useEffect(() => {
-        if (isGBLoaded) {
-            setRedirectToOSSignup(trigger_os_signup);
-        }
-    }, [isGBLoaded, trigger_os_signup]);
 
     const handleOutSystemsRedirection = () => {
         switch (process.env.NODE_ENV) {
@@ -29,15 +21,11 @@ export const useSignupTrigger = () => {
     const handleSignup = async () => {
         const os = await mobileOSDetectAsync();
 
-        if (redirect_to_os_signup) {
+        if (trigger_os_signup) {
             if (os === 'iOS' || isSafari()) {
                 redirectToSignUp();
-            } else {
-                window.open(handleOutSystemsRedirection());
-            }
-        } else {
-            redirectToSignUp();
-        }
+            } else window.open(handleOutSystemsRedirection());
+        } else redirectToSignUp();
     };
 
     return { handleSignup };

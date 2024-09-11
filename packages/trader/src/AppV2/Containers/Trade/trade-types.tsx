@@ -5,6 +5,7 @@ import { DraggableList } from 'AppV2/Components/DraggableList';
 import { TradeTypeList } from 'AppV2/Components/TradeTypeList';
 import { getTradeTypesList } from 'AppV2/Utils/trade-types-utils';
 import { Localize, localize } from '@deriv/translations';
+import TradeTypesSelectionGuide from 'AppV2/Components/OnboardingGuide/TradeTypesSelectionGuide';
 import Guide from '../../Components/Guide';
 
 type TTradeTypesProps = {
@@ -30,6 +31,7 @@ type TResultItem = {
 const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTypesProps) => {
     const [is_open, setIsOpen] = React.useState<boolean>(false);
     const [is_editing, setIsEditing] = React.useState<boolean>(false);
+    const trade_types_ref = React.useRef<HTMLDivElement>(null);
 
     const { onMount, onUnmount } = useTraderStore();
 
@@ -125,6 +127,24 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         }));
     };
 
+    const scrollToSelectedTradeType = () => {
+        setTimeout(() => {
+            let position_x = 0;
+            if (trade_types_ref.current) {
+                const selected_chip = trade_types_ref.current.querySelector(
+                    'button[data-state="selected"]'
+                ) as HTMLButtonElement;
+                if (selected_chip) {
+                    position_x = selected_chip.getBoundingClientRect().x - 8 || 0;
+                }
+                trade_types_ref.current.scrollBy({
+                    left: position_x,
+                    top: 0,
+                });
+            }
+        }, 0);
+    };
+
     React.useEffect(() => {
         const formatted_items = createArrayFromCategories(trade_types);
         const default_pinned_trade_types = [
@@ -160,6 +180,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     React.useEffect(() => {
         onMount();
 
+        scrollToSelectedTradeType();
         if (saved_pinned_trade_types.length > 0) {
             setPinnedTradeTypes(saved_pinned_trade_types);
         }
@@ -185,6 +206,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
 
     const handleOnTradeTypeSelect = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         onTradeTypeSelect(e);
+        scrollToSelectedTradeType();
         setIsOpen(false);
     };
 
@@ -194,7 +216,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         [contract_type, value].every(type => type.startsWith('rise_fall')) ||
         contract_type === value;
     return (
-        <div className='trade__trade-types'>
+        <div className='trade__trade-types' ref={trade_types_ref}>
             {saved_pinned_trade_types.length > 0 &&
                 saved_pinned_trade_types[0].items.map(({ title, id }: TItem) => (
                     <Chip.Selectable key={id} onChipSelect={onTradeTypeSelect} selected={isTradeTypeSelected(id)}>
@@ -248,6 +270,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                     </ActionSheet.Content>
                 </ActionSheet.Portal>
             </ActionSheet.Root>
+            {is_open && <TradeTypesSelectionGuide />}
         </div>
     );
 };

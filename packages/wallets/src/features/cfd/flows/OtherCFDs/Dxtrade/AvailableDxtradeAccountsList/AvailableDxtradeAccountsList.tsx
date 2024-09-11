@@ -1,5 +1,6 @@
 import React from 'react';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
+import { Localize } from '@deriv-com/translations';
 import { TradingAccountCard } from '../../../../../../components';
 import { WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
@@ -19,7 +20,7 @@ const AvailableDxtradeAccountsList: React.FC = () => {
                     <WalletText size='sm'>Deriv X</WalletText>
                 </p>
                 <WalletText size='xs'>
-                    CFDs on financial and derived instruments via a customisable platform.
+                    <Localize i18n_default_text='CFDs on financial and derived instruments via a customisable platform.' />
                 </WalletText>
             </TradingAccountCard.Content>
             <TradingAccountCard.Button>

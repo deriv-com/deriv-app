@@ -29,7 +29,7 @@
         &--migrated_without_position,
         &--under_maintenance,
         &--unavailable {
-            border: 1.5px solid var(--status-warning);
+            border: 1.5px solid var(--c);
             color: var(--status-warning);
             font-size: var(--text-size-xxxs);
             align-items: center;
@@ -40,6 +40,13 @@
             font-weight: bold;
             text-decoration: underline;
             background-color: var(--status-danger-transparent);
+        }
+
+        &--verified {
+            margin-top: 0.1rem;
+            color: var(--status-success);
+            background-color: var(--status-success-transparent);
+            font-weight: bold;
         }
 
         &--icon {

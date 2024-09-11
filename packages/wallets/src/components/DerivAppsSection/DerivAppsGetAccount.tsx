@@ -101,24 +101,26 @@ const DerivAppsGetAccount: React.FC = () => {
             <TradingAccountCard.Icon>
                 <WalletMarketIcon icon='standard' size={isDesktop ? 'lg' : 'md'} />
             </TradingAccountCard.Icon>
-            <TradingAccountCard.Content>
-                <Text size='sm'>Options</Text>
-                <Text size='xs'>
-                    <Localize i18n_default_text='One options account for all platforms.' />
-                </Text>
-            </TradingAccountCard.Content>
-            <TradingAccountCard.Button>
-                <Button
-                    borderWidth='sm'
-                    color='black'
-                    disabled={isAccountCreationLoading || isActiveLinkedToTradingAccountLoading}
-                    onClick={createTradingAccount}
-                    rounded='md'
-                    variant='outlined'
-                >
-                    <Localize i18n_default_text='Enable' />
-                </Button>
-            </TradingAccountCard.Button>
+            <TradingAccountCard.Section>
+                <TradingAccountCard.Content>
+                    <Text size='sm'>Options</Text>
+                    <Text size='xs'>
+                        <Localize i18n_default_text='One options account for all platforms.' />
+                    </Text>
+                </TradingAccountCard.Content>
+                <TradingAccountCard.Button>
+                    <Button
+                        borderWidth='sm'
+                        color='black'
+                        disabled={isAccountCreationLoading || isActiveLinkedToTradingAccountLoading}
+                        onClick={createTradingAccount}
+                        rounded='md'
+                        variant='outlined'
+                    >
+                        <Localize i18n_default_text='Enable' />
+                    </Button>
+                </TradingAccountCard.Button>
+            </TradingAccountCard.Section>
         </TradingAccountCard>
     );
 };

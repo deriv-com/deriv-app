@@ -93,24 +93,26 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
             <TradingAccountCard.Icon className='wallets-available-mt5__icon'>
                 {getMarketTypeDetails(account.product)[account.market_type || MARKET_TYPE.ALL].icon}
             </TradingAccountCard.Icon>
-            <TradingAccountCard.Content className='wallets-available-mt5__details'>
-                <div className='wallets-available-mt5__title'>
-                    <Text className='' size='sm'>
-                        {title}
-                    </Text>
-                    {account.product === PRODUCT.ZEROSPREAD && (
-                        <div className='wallets-available-mt5__badge'>
-                            <Text size='xs' weight='bold'>
-                                NEW
-                            </Text>
-                        </div>
-                    )}
-                </div>
-                <Text size='xs'>{description}</Text>
-            </TradingAccountCard.Content>
-            <TradingAccountCard.Button className='wallets-available-mt5__icon'>
-                <LabelPairedChevronRightCaptionRegularIcon width={16} />
-            </TradingAccountCard.Button>
+            <TradingAccountCard.Section>
+                <TradingAccountCard.Content className='wallets-available-mt5__details'>
+                    <div className='wallets-available-mt5__title'>
+                        <Text className='' size='sm'>
+                            {title}
+                        </Text>
+                        {account.product === PRODUCT.ZEROSPREAD && (
+                            <div className='wallets-available-mt5__badge'>
+                                <Text size='xs' weight='bold'>
+                                    NEW
+                                </Text>
+                            </div>
+                        )}
+                    </div>
+                    <Text size='xs'>{description}</Text>
+                </TradingAccountCard.Content>
+                <TradingAccountCard.Button className='wallets-available-mt5__icon'>
+                    <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                </TradingAccountCard.Button>
+            </TradingAccountCard.Section>
         </TradingAccountCard>
     );
 };

@@ -50,18 +50,20 @@ const OptionsAndMultipliersListing = () => {
                             <TradingAccountCard.Icon>
                                 <LinkTitle platform={key} />
                             </TradingAccountCard.Icon>
-                            <TradingAccountCard.Content>
-                                <Text size='sm'>{title}</Text>
-                                <Text size='xs'>{description}</Text>
-                            </TradingAccountCard.Content>
-                            {activeLinkedToTradingAccount?.loginid && (
-                                <TradingAccountCard.Button>
-                                    <LabelPairedChevronRightCaptionRegularIcon
-                                        data-testid='dt_label_paired_chevron'
-                                        width={16}
-                                    />
-                                </TradingAccountCard.Button>
-                            )}
+                            <TradingAccountCard.Section>
+                                <TradingAccountCard.Content>
+                                    <Text size='sm'>{title}</Text>
+                                    <Text size='xs'>{description}</Text>
+                                </TradingAccountCard.Content>
+                                {activeLinkedToTradingAccount?.loginid && (
+                                    <TradingAccountCard.Button>
+                                        <LabelPairedChevronRightCaptionRegularIcon
+                                            data-testid='dt_label_paired_chevron'
+                                            width={16}
+                                        />
+                                    </TradingAccountCard.Button>
+                                )}
+                            </TradingAccountCard.Section>
                         </TradingAccountCard>
                     );
                 })}

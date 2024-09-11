@@ -15,17 +15,19 @@ const AvailableDxtradeAccountsList: React.FC = () => {
             <TradingAccountCard.Icon data-testid='dt_icon_dxtrade'>
                 {PlatformDetails.dxtrade.icon}
             </TradingAccountCard.Icon>
-            <TradingAccountCard.Content>
-                <p className='wallets-available-dxtrade__details-title'>
-                    <WalletText size='sm'>Deriv X</WalletText>
-                </p>
-                <WalletText size='xs'>
-                    <Localize i18n_default_text='CFDs on financial and derived instruments via a customisable platform.' />
-                </WalletText>
-            </TradingAccountCard.Content>
-            <TradingAccountCard.Button>
-                <LabelPairedChevronRightCaptionRegularIcon width={16} />
-            </TradingAccountCard.Button>
+            <TradingAccountCard.Section>
+                <TradingAccountCard.Content>
+                    <p className='wallets-available-dxtrade__details-title'>
+                        <WalletText size='sm'>Deriv X</WalletText>
+                    </p>
+                    <WalletText size='xs'>
+                        <Localize i18n_default_text='CFDs on financial and derived instruments via a customisable platform.' />
+                    </WalletText>
+                </TradingAccountCard.Content>
+                <TradingAccountCard.Button>
+                    <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                </TradingAccountCard.Button>
+            </TradingAccountCard.Section>
         </TradingAccountCard>
     );
 };

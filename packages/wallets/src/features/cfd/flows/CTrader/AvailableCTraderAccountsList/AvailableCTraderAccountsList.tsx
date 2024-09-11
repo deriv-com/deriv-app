@@ -58,15 +58,17 @@ const AvailableCTraderAccountsList: React.FC = () => {
     return (
         <TradingAccountCard disabled={isCFDAccountCreationLoading || isCFDAccountCreationSuccess} onClick={onSubmit}>
             <TradingAccountCard.Icon>{PlatformDetails.ctrader.icon}</TradingAccountCard.Icon>
-            <TradingAccountCard.Content>
-                <Text size='sm'>{PlatformDetails.ctrader.title}</Text>
-                <Text size='xs'>
-                    <Localize i18n_default_text='CFDs on financial and derived instruments with copy trading.' />
-                </Text>
-            </TradingAccountCard.Content>
-            <TradingAccountCard.Button>
-                <LabelPairedChevronRightCaptionRegularIcon width={16} />
-            </TradingAccountCard.Button>
+            <TradingAccountCard.Section>
+                <TradingAccountCard.Content>
+                    <Text size='sm'>{PlatformDetails.ctrader.title}</Text>
+                    <Text size='xs'>
+                        <Localize i18n_default_text='CFDs on financial and derived instruments with copy trading.' />
+                    </Text>
+                </TradingAccountCard.Content>
+                <TradingAccountCard.Button>
+                    <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                </TradingAccountCard.Button>
+            </TradingAccountCard.Section>
         </TradingAccountCard>
     );
 };

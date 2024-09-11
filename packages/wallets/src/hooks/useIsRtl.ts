@@ -1,8 +1,8 @@
-import { useTranslations } from '@deriv-com/translations';
+import { getInitialLanguage } from '@deriv-com/translations';
 
 const useIsRtl = () => {
-    const { currentLang } = useTranslations();
-    return currentLang === 'AR';
+    const i18nLanguage = getInitialLanguage();
+    return i18nLanguage === 'AR';
 };
 
 export default useIsRtl;

@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
-import { useAuthorize, useJurisdictionStatus, useTradingPlatformStatus } from '@deriv/api-v2';
+import { useJurisdictionStatus, useTradingPlatformStatus } from '@deriv/api-v2';
 import {
     LabelPairedChevronLeftCaptionRegularIcon,
     LabelPairedChevronRightCaptionRegularIcon,
 } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Text, useDevice } from '@deriv-com/ui';
+import { Text } from '@deriv-com/ui';
 import { InlineMessage } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
@@ -29,7 +29,6 @@ type TProps = {
 };
 
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
-    const { data: activeWallet } = useAuthorize();
     const { getVerificationStatus } = useJurisdictionStatus();
     const { localize } = useTranslations();
     const isRtl = useIsRtl();
@@ -37,8 +36,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         () => getVerificationStatus(account.landing_company_short || JURISDICTION.SVG, account.status),
         [account.landing_company_short, account.status, getVerificationStatus]
     );
-    const { title } = getMarketTypeDetails(localize)[account.market_type ?? MARKET_TYPE.ALL];
-    const { isMobile } = useDevice();
+    const { title } = getMarketTypeDetails(localize, account.product)[account.market_type ?? MARKET_TYPE.ALL];
     const { show } = useModal();
 
     const { getPlatformStatus } = useTradingPlatformStatus();
@@ -77,20 +75,11 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
             }}
         >
             <TradingAccountCard.Icon className='wallets-added-mt5__icon'>
-                {getMarketTypeDetails(localize)[account.market_type || MARKET_TYPE.ALL].icon}
+                {getMarketTypeDetails(localize, account.product)[account.market_type || MARKET_TYPE.ALL].icon}
             </TradingAccountCard.Icon>
             <TradingAccountCard.Content className='wallets-added-mt5__details'>
                 <div className='wallets-added-mt5__details-title'>
-                    <Text align='start' size='sm'>
-                        {title}
-                    </Text>
-                    {!activeWallet?.is_virtual && (
-                        <div className='wallets-added-mt5__details-title-landing-company'>
-                            <Text align='start' color='prominent' size={isMobile ? 'sm' : 'xs'}>
-                                {account.landing_company_short?.toUpperCase()}
-                            </Text>
-                        </div>
-                    )}
+                    <Text size='sm'>{title}</Text>
                 </div>
                 {!(jurisdictionStatus.is_failed || jurisdictionStatus.is_pending) && (
                     <Text align='start' size='sm' weight='bold'>

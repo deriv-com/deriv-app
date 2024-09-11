@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, FormikValues } from 'formik';
 import { useTranslations } from '@deriv-com/translations';
 import { InlineMessage, Loader, Text } from '@deriv-com/ui';
@@ -26,12 +26,15 @@ const Poa: React.FC<TPoaProps> = ({ onCompletion }) => {
         upload: upload_,
     } = usePoa();
     const [errorDocumentUpload, setErrorDocumentUpload] = useState<THooks.DocumentUpload['error']>();
+    const [showLoader, setShowLoader] = useState(true);
 
-    if (isLoading) return <Loader />;
+    useEffect(() => {
+        if (isSubmissionSuccess && onCompletion) {
+            onCompletion();
+        }
 
-    if (isSubmissionSuccess && onCompletion) {
-        onCompletion();
-    }
+        setShowLoader(isLoading);
+    }, [isSubmissionSuccess, onCompletion, isLoading]);
 
     const upload = async (values: FormikValues) => {
         try {
@@ -40,6 +43,8 @@ const Poa: React.FC<TPoaProps> = ({ onCompletion }) => {
             setErrorDocumentUpload((error as THooks.DocumentUpload).error);
         }
     };
+
+    if (showLoader) return <Loader />;
 
     return (
         <Formik

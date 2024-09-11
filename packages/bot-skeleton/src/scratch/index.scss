@@ -1204,11 +1204,15 @@ drag a block and selected text moves instead.
         ry: 16px;
     }
 
-    .blocklyTextRootBlockHeader {
+    .blocklyTextRootBlockHeader,
+    .blocklyTextRootBlockHeaderCollapsed {
         width: 17rem !important;
         color: #fff;
         fill: #ffffff;
         font-size: 1.9rem;
+    }
+    .blocklyTextRootBlockHeaderCollapsed {
+        font-size: 1.8rem;
     }
 
     .blocklyTextTickAnalysis {

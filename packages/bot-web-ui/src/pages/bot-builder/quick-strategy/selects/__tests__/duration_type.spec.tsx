@@ -56,9 +56,10 @@ describe('<DurationUnit />', () => {
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
         const mock_onSubmit = jest.fn();
         const initial_value = {
-            durationtype: 1,
+            durationtype: 's',
             symbol: 'R_100',
             tradetype: 'callput',
+            duration: 15,
         };
 
         wrapper = ({ children }: { children: JSX.Element }) => (

@@ -1,12 +1,10 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
     CONTRACT_TYPES,
     TRADE_TYPES,
     getContractTypesConfig,
     isTurbosContract,
     isVanillaContract,
-    pickDefaultSymbol,
-    setTradeURLParams,
 } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
@@ -21,21 +19,14 @@ const useActiveSymbols = () => {
     const { showError } = common;
     const {
         active_symbols: symbols_from_store,
-        processContractsForV2,
         contract_type,
         is_vanilla,
         is_turbos,
-        onChange,
         setActiveSymbolsV2,
-        symbol,
     } = useTraderStore();
     const [activeSymbols, setActiveSymbols] = useState<ActiveSymbols | []>(symbols_from_store);
 
     const { available_contract_types, is_fetching_ref: is_contracts_loading_ref } = useContractsForCompany();
-
-    const default_symbol_ref = useRef('');
-
-    const has_initialized_ref = useRef(false);
 
     const trade_types_with_barrier_category = [
         TRADE_TYPES.RISE_FALL,
@@ -79,26 +70,8 @@ const useActiveSymbols = () => {
         }
     );
 
-    const isSymbolAvailable = (active_symbols: ActiveSymbols) => {
-        return active_symbols.some(symbol_info => symbol_info.symbol === symbol);
-    };
-
     useEffect(
         () => {
-            const processNewSymbol = async (new_symbol: string) => {
-                // To call contracts_for during initialization
-                const has_initialized = has_initialized_ref.current;
-                const is_initailization = !has_initialized && new_symbol;
-                const has_symbol_changed = symbol != new_symbol && new_symbol;
-                default_symbol_ref.current = new_symbol;
-
-                if (is_initailization || has_symbol_changed) {
-                    await onChange({ target: { name: 'symbol', value: new_symbol } });
-                    processContractsForV2();
-                }
-                setTradeURLParams({ symbol: new_symbol });
-            };
-
             const process = async () => {
                 if (!response) return;
 
@@ -108,14 +81,8 @@ const useActiveSymbols = () => {
                 } else if (!active_symbols?.length) {
                     setActiveSymbols([]);
                 } else {
-                    const new_symbol = isSymbolAvailable(active_symbols)
-                        ? symbol
-                        : (await pickDefaultSymbol(active_symbols)) || '1HZ100V';
-
-                    processNewSymbol(new_symbol);
                     setActiveSymbols(active_symbols);
                     setActiveSymbolsV2(active_symbols);
-                    has_initialized_ref.current = true;
                 }
             };
             process();
@@ -124,7 +91,7 @@ const useActiveSymbols = () => {
         [response]
     );
 
-    return { default_symbol: default_symbol_ref.current, activeSymbols };
+    return { activeSymbols };
 };
 
 export default useActiveSymbols;

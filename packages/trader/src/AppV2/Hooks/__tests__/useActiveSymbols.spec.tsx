@@ -106,28 +106,6 @@ describe('useActiveSymbols', () => {
             expect(result.current.activeSymbols).toEqual(logged_in_active_symbols);
         });
     });
-    it('should set correct default_symbol and call correct onChange when store symbol is not set', async () => {
-        const { result } = renderHook(() => useActiveSymbols(), {
-            wrapper,
-        });
-
-        await waitFor(() => {
-            expect(result.current.default_symbol).toEqual('EURUSD');
-            expect(mocked_store.modules.trade.onChange).toHaveBeenCalledWith({
-                target: { name: 'symbol', value: 'EURUSD' },
-            });
-        });
-    });
-    it('should set correct default_symbol based on the symbol availability', async () => {
-        mocked_store.modules.trade.symbol = 'test';
-        const { result } = renderHook(() => useActiveSymbols(), {
-            wrapper,
-        });
-
-        await waitFor(() => {
-            expect(result.current.default_symbol).toEqual('EURUSD');
-        });
-    });
     it('should set active symbols from store when is_logged_in and contract_type are unchanged', async () => {
         mocked_store.modules.trade.active_symbols = [{ symbol: 'fromStore' }];
         mocked_store.modules.trade.has_symbols_for_v2 = true;

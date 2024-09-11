@@ -615,8 +615,7 @@ export const appendCollapsedMainBlocksFields = block_instance => {
             collapsed_field.setVisible(false);
         }
     } catch (e) {
-        // eslint-disable-next-line
-        console.log(e);
+        globalObserver.emit('ui.log.error', e);
     }
 };
 

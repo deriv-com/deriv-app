@@ -2,8 +2,8 @@ import React, { PropsWithChildren } from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
-import useDevice from '../../../hooks/useDevice';
 import WalletListCardActions from '../WalletListCardActions';
 
 jest.mock('@deriv/api-v2', () => ({
@@ -19,15 +19,17 @@ jest.mock('@deriv/api-v2', () => ({
     })),
 }));
 
-jest.mock('../../../hooks/useDevice');
-const mockedUseDevice = useDevice as jest.MockedFunction<typeof useDevice>;
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 
 const history = createMemoryHistory();
 const wrapper = ({ children }: PropsWithChildren) => <Router history={history}>{children}</Router>;
 
 describe('WalletListCardActions', () => {
     beforeEach(() => {
-        mockedUseDevice.mockReturnValue({ isDesktop: true, isMobile: false, isTablet: false });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
     });
 
     afterEach(() => {
@@ -94,7 +96,7 @@ describe('WalletListCardActions', () => {
     });
 
     it('should render the actions for mobile', () => {
-        mockedUseDevice.mockReturnValue({ isDesktop: false, isMobile: true, isTablet: false });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false, isMobile: true });
         const { container } = render(<WalletListCardActions />, {
             wrapper,
         });
@@ -104,7 +106,7 @@ describe('WalletListCardActions', () => {
     });
 
     it('should switch account and redirect to the correct page when clicking on one of the actions and wallet is inactive for mobile', () => {
-        mockedUseDevice.mockReturnValue({ isDesktop: false, isMobile: true, isTablet: false });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false, isMobile: true });
         render(<WalletListCardActions />, {
             wrapper,
         });
@@ -159,7 +161,7 @@ describe('WalletListCardActions', () => {
                 loginid: 'CRW123456',
             },
         });
-        mockedUseDevice.mockReturnValue({ isDesktop: false, isMobile: true, isTablet: false });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false, isMobile: true });
 
         render(<WalletListCardActions accountsActiveTabIndex={1} />, {
             wrapper,
@@ -184,7 +186,7 @@ describe('WalletListCardActions', () => {
                 loginid: 'VRW123456',
             },
         });
-        mockedUseDevice.mockReturnValue({ isDesktop: false, isMobile: true, isTablet: false });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false, isMobile: true });
 
         render(<WalletListCardActions accountsActiveTabIndex={1} />, {
             wrapper,

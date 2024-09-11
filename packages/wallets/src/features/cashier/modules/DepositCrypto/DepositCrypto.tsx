@@ -22,7 +22,7 @@ const DepositCrypto = () => {
 
     return (
         <div className='wallets-deposit-crypto'>
-            <div className='wallets-deposit-crypto__side-pane' />
+            <div className='wallets-deposit-crypto__left-content' /> {/* This div is used for alignment */}
             <div className='wallets-deposit-crypto__main-content'>
                 <DepositCryptoCurrencyDetails />
                 <DepositCryptoAddress depositCryptoAddress={depositCryptoAddress} />
@@ -30,7 +30,7 @@ const DepositCrypto = () => {
                 <Divider color='var(--border-divider)' height={2} />
                 <DepositCryptoTryFiatOnRamp />
             </div>
-            <div className='wallets-deposit-crypto__side-pane'>
+            <div className='wallets-deposit-crypto__right-content'>
                 <TransactionStatus transactionType='deposit' />
             </div>
         </div>

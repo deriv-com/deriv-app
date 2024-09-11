@@ -1,14 +1,16 @@
 import React, { ComponentProps, PropsWithChildren } from 'react';
 import { WalletTourGuide } from 'src/components/WalletTourGuide';
 import { APIProvider } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../AuthProvider';
-import useDevice from '../../../hooks/useDevice';
 import { ModalProvider } from '../../ModalProvider';
 import AccountsList from '../AccountsList';
 
-jest.mock('../../../hooks/useDevice');
-const mockUseDevice = useDevice as jest.MockedFunction<typeof useDevice>;
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 
 const mockWalletTourGuide = jest.fn();
 jest.mock(
@@ -33,13 +35,16 @@ const wrapper = ({ children }: PropsWithChildren) => (
 );
 
 describe('AccountsList', () => {
-    it('should render account list in mobile view', () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: false,
-            isMobile: true,
-            isTablet: false,
-        });
+    beforeEach(() => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+    });
 
+    afterAll(() => {
+        jest.clearAllMocks();
+    });
+
+    it('should render account list in mobile view', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         render(<AccountsList accountsActiveTabIndex={0} onTabClickHandler={jest.fn()} />, {
             wrapper,
         });
@@ -50,11 +55,7 @@ describe('AccountsList', () => {
     });
 
     it('should show Options tab in mobile view when the tab active', () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: false,
-            isMobile: true,
-            isTablet: false,
-        });
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
         render(<AccountsList accountsActiveTabIndex={0} onTabClickHandler={jest.fn()} />, {
             wrapper,
@@ -72,11 +73,8 @@ describe('AccountsList', () => {
 
     it('should trigger `onTabClickHandler` with proper tab index when the user switches the tab', () => {
         const onTabClickHandler = jest.fn();
-        mockUseDevice.mockReturnValue({
-            isDesktop: false,
-            isMobile: true,
-            isTablet: false,
-        });
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
+
         render(<AccountsList accountsActiveTabIndex={0} onTabClickHandler={onTabClickHandler} />, {
             wrapper,
         });
@@ -86,11 +84,7 @@ describe('AccountsList', () => {
     });
 
     it('should render account list in desktop view', () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: true,
-            isMobile: false,
-            isTablet: false,
-        });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
         render(<AccountsList />, { wrapper });
 
         expect(screen.getByTestId('dt_desktop_accounts_list')).toBeInTheDocument();
@@ -99,11 +93,7 @@ describe('AccountsList', () => {
     });
 
     it('should render wallet tour guide in mobile view with isWalletSettled set to false', () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: false,
-            isMobile: true,
-            isTablet: false,
-        });
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
         render(<AccountsList accountsActiveTabIndex={0} onTabClickHandler={jest.fn()} />, {
             wrapper,
@@ -113,11 +103,7 @@ describe('AccountsList', () => {
     });
 
     it('should render wallet tour guide in mobile view with isWalletSettled set to true', () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: false,
-            isMobile: true,
-            isTablet: false,
-        });
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
         render(<AccountsList accountsActiveTabIndex={0} onTabClickHandler={jest.fn()} />, {
             wrapper,

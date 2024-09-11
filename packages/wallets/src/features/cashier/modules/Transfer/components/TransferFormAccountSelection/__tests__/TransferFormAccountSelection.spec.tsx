@@ -1,17 +1,16 @@
 import React from 'react';
 import { APIProvider } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../../../../../AuthProvider';
 import { useModal } from '../../../../../../../components/ModalProvider';
-import useDevice from '../../../../../../../hooks/useDevice';
 import TransferFormAccountSelection from '../TransferFormAccountSelection';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     Divider: jest.fn(() => <div data-testid='wallets-divider' />),
+    useDevice: jest.fn(() => ({})),
 }));
-
-jest.mock('../../../../../../../hooks/useDevice', () => jest.fn());
 
 jest.mock('../../../../../../../components/ModalProvider', () => ({
     useModal: jest.fn(),
@@ -41,7 +40,7 @@ describe('TransferFormAccountSelection', () => {
     };
 
     beforeEach(() => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
         (useModal as jest.Mock).mockReturnValue({ hide: mockModalHide });
     });
 

@@ -51,6 +51,11 @@ const Onfido: React.FC<TOnfidoProps> = ({ onClickBack, onCompletion }) => {
                 </button>
             )}
             <div className='wallets-onfido'>
+                <div className='wallets-onfido__content'>
+                    <Text weight='bold'>
+                        <Localize i18n_default_text='Identity verification' />
+                    </Text>
+                </div>
                 {!isPersonalDetailsSubmitted && (
                     <Formik initialValues={initialPersonalDetailsValues} onSubmit={onSubmit}>
                         {({ handleSubmit }) => {

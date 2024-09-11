@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { redirectToSignUp, mobileOSDetectAsync, isSafari } from '@deriv/shared';
-import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
+import useGrowthbookGetFeatureValue from './useGrowthbookGetFeatureValue';
 
-export const useSignupHandler = () => {
+export const useSignupTrigger = () => {
     const [redirect_to_os_signup, setRedirectToOSSignup] = useState(false);
     const [trigger_os_signup, isGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'trigger_os_signup',

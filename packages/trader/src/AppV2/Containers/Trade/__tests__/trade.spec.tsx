@@ -6,10 +6,8 @@ import TraderProviders from '../../../../trader-providers';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import Trade from '../trade';
 import { TRADE_TYPES, redirectToLogin } from '@deriv/shared';
-import { BrowserRouter, Router } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
-import { useSignupHandler } from 'AppV2/Hooks/useSignUpHandler';
-import { renderHook } from '@testing-library/react-hooks';
 import { createMemoryHistory } from 'history';
 
 const mock_contract_data = {
@@ -18,6 +16,13 @@ const mock_contract_data = {
     },
 };
 const localStorage_key = 'guide_dtrader_v2';
+const mocked_handle_signup = jest.fn();
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useSignupTrigger: jest.fn(() => ({
+        handleSignup: mocked_handle_signup,
+    })),
+}));
 
 jest.mock('AppV2/Components/BottomNav', () =>
     jest.fn(({ children, onScroll }) => (
@@ -69,7 +74,6 @@ jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
         contracts_for_company: mock_contract_data,
     })),
 }));
-jest.mock('AppV2/Hooks/useSignUpHandler');
 
 describe('Trade', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
@@ -119,7 +123,6 @@ describe('Trade', () => {
             common: { resetServicesError: jest.fn() },
         });
         localStorage.clear();
-        (useSignupHandler as jest.Mock).mockReturnValue({ handleSignup: jest.fn() });
     });
 
     const mockTrade = () => {
@@ -255,13 +258,11 @@ describe('Trade', () => {
             message: 'You need to log in to place a trade',
             type: 'buy',
         };
-        const { result } = renderHook(() => useSignupHandler());
-
         render(mockTrade());
 
         const signupButton = screen.getByText('Create free account');
         userEvent.click(signupButton);
 
-        expect(result.current.handleSignup).toHaveBeenCalled();
+        expect(mocked_handle_signup).toHaveBeenCalled();
     });
 });

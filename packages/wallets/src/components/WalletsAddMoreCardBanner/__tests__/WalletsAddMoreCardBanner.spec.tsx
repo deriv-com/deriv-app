@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useCreateWallet } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import useDevice from '../../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../../hooks/useSyncLocalStorageClientAccounts';
 import useWalletAccountSwitcher from '../../../hooks/useWalletAccountSwitcher';
 import { ModalProvider } from '../../ModalProvider';
@@ -28,7 +28,10 @@ jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),
 }));
 
-jest.mock('../../../hooks/useDevice', () => jest.fn());
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 jest.mock('../../../hooks/useSyncLocalStorageClientAccounts', () => jest.fn());
 jest.mock('../../../hooks/useWalletAccountSwitcher', () => jest.fn());
 
@@ -73,7 +76,7 @@ describe('WalletsAddMoreCardBanner', () => {
             status: 'idle',
         });
 
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
         (useSyncLocalStorageClientAccounts as jest.Mock).mockReturnValue({
             addWalletAccountToLocalStorage: mockAddWalletAccountToLocalStorage,
         });

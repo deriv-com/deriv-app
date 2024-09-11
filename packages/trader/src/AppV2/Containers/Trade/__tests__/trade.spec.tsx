@@ -172,8 +172,7 @@ describe('Trade', () => {
 
     it('should not render Purchase Button if is_market_closed === true', () => {
         default_mock_store.modules.trade.is_market_closed = true;
-        render(mockTrade());
-
+        mockTrade();
         expect(screen.queryByText('Purchase Button')).not.toBeInTheDocument();
     });
 });

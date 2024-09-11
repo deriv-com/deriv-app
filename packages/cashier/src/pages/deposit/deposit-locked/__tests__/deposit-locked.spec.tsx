@@ -26,7 +26,7 @@ jest.mock('Components/cashier-locked', () => {
 
 describe('<DepositLocked />', () => {
     it('should show the proof of identity document verification message', () => {
-        (useIsTNCNeeded as jest.Mock).mockRejectedValue(false);
+        (useIsTNCNeeded as jest.Mock).mockReturnValue(false);
 
         const mock_root_store = mockStore({
             client: {

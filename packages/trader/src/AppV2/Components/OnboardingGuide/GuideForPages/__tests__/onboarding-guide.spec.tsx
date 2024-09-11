@@ -6,6 +6,7 @@ import OnboardingGuide from '../onboarding-guide';
 const trading_modal_text = 'Welcome to the new Deriv Trader';
 const positions_modal_text = 'View your positions';
 const guide_container = 'GuideContainer';
+const localStorage_key = 'guide_dtrader_v2';
 
 jest.mock('../guide-container', () =>
     jest.fn(({ should_run }: { should_run?: boolean }) => <div>{should_run && guide_container}</div>)
@@ -62,7 +63,7 @@ describe('OnboardingGuide', () => {
     });
 
     it('should close the Modal for positions page, set flag to localStorage equal to true and do NOT start the guide after user clicks on "Got it" button', async () => {
-        const key = 'guide_dtrader_v2_positions_page';
+        const field = 'positions_page';
         jest.useFakeTimers();
         render(<OnboardingGuide type='positions_page' />);
 
@@ -70,20 +71,20 @@ describe('OnboardingGuide', () => {
 
         expect(screen.getByText(positions_modal_text)).toBeInTheDocument();
         expect(screen.queryByText(guide_container)).not.toBeInTheDocument();
-        expect(localStorage.getItem(key)).toBe('false');
+        expect(JSON.parse(localStorage.getItem(localStorage_key) as string)[field]).toBe(false);
 
         userEvent.click(screen.getByRole('button'));
         await waitFor(() => jest.advanceTimersByTime(300));
 
         expect(screen.queryByText(positions_modal_text)).not.toBeInTheDocument();
         expect(screen.queryByText(guide_container)).not.toBeInTheDocument();
-        expect(localStorage.getItem(key)).toBe('true');
+        expect(JSON.parse(localStorage.getItem(localStorage_key) as string)[field]).toBe(true);
 
         jest.useRealTimers();
     });
 
     it('should close the Modal for trading page and set flag to localStorage equal to true if user clicks on overlay and do NOT start the guide', async () => {
-        const key = 'guide_dtrader_v2_trade_page';
+        const field = 'trade_page';
         jest.useFakeTimers();
         render(<OnboardingGuide />);
 
@@ -91,14 +92,14 @@ describe('OnboardingGuide', () => {
 
         expect(screen.getByText(trading_modal_text)).toBeInTheDocument();
         expect(screen.queryByText(guide_container)).not.toBeInTheDocument();
-        expect(localStorage.getItem(key)).toBe('false');
+        expect(JSON.parse(localStorage.getItem(localStorage_key) as string)[field]).toBe(false);
 
         userEvent.click(screen.getByTestId('dt-actionsheet-overlay'));
         await waitFor(() => jest.advanceTimersByTime(300));
 
         expect(screen.queryByText(trading_modal_text)).not.toBeInTheDocument();
         expect(screen.queryByText(guide_container)).not.toBeInTheDocument();
-        expect(localStorage.getItem(key)).toBe('true');
+        expect(JSON.parse(localStorage.getItem(localStorage_key) as string)[field]).toBe(true);
 
         jest.useRealTimers();
     });

@@ -79,7 +79,7 @@ describe('<DepositNowOrLaterModal />', () => {
         expect(setShouldShowDepositNowOrLaterModal).toHaveBeenCalledWith(false);
     });
 
-    it('should call setShouldShowDepositNowOrLaterModal, setShouldShowOneTimeDepositModal and toggleAccountSuccessModal for ROW account when try to click cancel or close button', () => {
+    it('should call setShouldShowDepositNowOrLaterModal and setShouldShowOneTimeDepositModal for ROW account when try to click cancel or close button', () => {
         render(<DepositNowOrLaterModal />, {
             wrapper: wrapper(),
         });

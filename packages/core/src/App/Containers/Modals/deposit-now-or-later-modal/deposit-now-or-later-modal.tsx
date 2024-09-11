@@ -57,8 +57,6 @@ const DepositNowOrLaterModal = observer(() => {
 
         if (is_click_on_cancel_button) {
             setShouldShowOneTimeDepositModal(false);
-            // for MF accounts we need to show success modal
-            if (is_mf_account) toggleAccountSuccessModal();
         }
     };
 

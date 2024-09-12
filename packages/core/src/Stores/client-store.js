@@ -2911,8 +2911,8 @@ export default class ClientStore extends BaseStore {
         const response = await WS.authorized.getServiceToken('freshworks_auth_jwt', undefined, { extra_fields });
 
         if (!response.error) {
-            const { freshworks } = response.service_token;
-            const token = freshworks?.token;
+            const { freshworks_auth_jwt } = response.service_token;
+            const token = freshworks_auth_jwt?.token;
             this.setFreshworksToken(token);
             return token;
         }

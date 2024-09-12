@@ -1,13 +1,14 @@
 import React from 'react';
 import { Localize } from '@deriv-com/translations';
-import { InlineMessage, WalletText } from '../../../../../../components';
+import { InlineMessage } from '@deriv-com/ui';
+import { WalletText } from '../../../../../../components';
 
 const NeedHelpMessage = () => {
     const onClickLiveChat = () => window.LC_API.open_chat_window();
 
     return (
         <div className='wallets-tax-information__message'>
-            <InlineMessage type='information' variant='contained'>
+            <InlineMessage variant='info'>
                 <WalletText size='xs'>
                     <Localize
                         components={[

@@ -15,7 +15,7 @@ const AddedDxtradeAccountsList: React.FC = () => {
         <React.Fragment>
             {data?.map(account => (
                 <TradingAccountCard
-                    key={account?.account_id}
+                    key={account?.login}
                     onClick={() => show(<MT5TradeModal platform={PlatformDetails.dxtrade.platform} />)}
                 >
                     <TradingAccountCard.Icon>{PlatformDetails.dxtrade.icon}</TradingAccountCard.Icon>

@@ -31,7 +31,9 @@ describe('DepositCryptoInfoNotice', () => {
         expect(screen.getByTestId('mock-section-message')).toHaveAttribute('data-variant', 'info');
         expect(screen.getByTestId('mock-section-message-title')).toHaveTextContent('Important:');
         expect(
-            screen.getByText('Verify the address on this page before each deposit to avoid losing funds.')
+            screen.getByText(
+                'Verify the address on this page before each deposit to avoid losing funds. Occasionally, the address could be updated.'
+            )
         ).toBeInTheDocument();
     });
 });

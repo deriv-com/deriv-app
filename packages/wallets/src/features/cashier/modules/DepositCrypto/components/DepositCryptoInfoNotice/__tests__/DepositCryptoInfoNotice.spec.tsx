@@ -32,7 +32,9 @@ describe('DepositCryptoInfoNotice', () => {
         expect(title).toHaveTextContent('Important:');
 
         expect(
-            screen.getByText('Verify the address on this page before each deposit to avoid losing funds.')
+            screen.getByText(
+                'Verify the address on this page before each deposit to avoid losing funds. Occasionally, the address could be updated.'
+            )
         ).toBeInTheDocument();
     });
 });

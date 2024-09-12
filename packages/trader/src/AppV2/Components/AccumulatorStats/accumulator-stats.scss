@@ -113,6 +113,8 @@
 
 .accumulator-stats-sheet-wrapper {
     .stats-sheet {
+        max-height: 100vh;
+        overflow-y: auto;
         padding: var(--core-spacing-800);
         text-align: center;
         .slide-right {

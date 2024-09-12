@@ -114,7 +114,7 @@ describe('WalletsDisabledAccountsBanner', () => {
         expect(window.LC_API.open_chat_window).toHaveBeenCalled();
     });
 
-    it('renders the icon with correct styles', () => {
+    it('renders the icon', () => {
         render(<WalletsDisabledAccountsBanner disabledAccounts={[mockDisabledAccounts[0]]} />);
         expect(screen.getByTestId('dt_wallets_disabled_account_notification_icon')).toBeInTheDocument();
     });

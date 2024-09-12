@@ -39,7 +39,7 @@ const WalletsDisabledAccountsBanner: FC<TProps> = ({ disabledAccounts }) => {
                 }
                 iconPosition='top'
                 type='filled'
-                variant='warning'
+                variant='general'
             >
                 <Text lineHeight='lg' size={isDesktop ? 'sm' : 'md'}>
                     <Localize

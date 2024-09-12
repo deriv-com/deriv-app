@@ -108,6 +108,7 @@ const EnterPassword: React.FC<TProps> = ({
                         isLoading={isForgotPasswordLoading}
                         onClick={onSecondaryClick}
                         size='lg'
+                        textSize='sm'
                         variant='outlined'
                     >
                         <Localize i18n_default_text='Forgot password?' />
@@ -117,6 +118,7 @@ const EnterPassword: React.FC<TProps> = ({
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'
+                        textSize='sm'
                     >
                         <Localize i18n_default_text='Add account' />
                     </Button>

@@ -1,27 +1,31 @@
-import { useQuery } from '@deriv/api';
+import { useState } from 'react';
 import { useStore } from '@deriv/stores';
-import useAuthorize from './useAuthorize';
+
+type TError = { code?: string; name?: string; message: string };
 
 const useGetPasskeysList = () => {
-    const { client, common } = useStore();
-    const { isSuccess, isFetching: isAuthorizeFetching } = useAuthorize();
-    const { is_passkey_supported } = client;
-    const { network_status } = common;
+    const { client } = useStore();
+    const { passkeys_list, fetchPasskeysList } = client;
 
-    const { data, error, isLoading, isFetching, refetch, ...rest } = useQuery('passkeys_list', {
-        options: {
-            enabled: is_passkey_supported && isSuccess && !isAuthorizeFetching && network_status.class === 'online',
-            retry: 0,
-            refetchOnWindowFocus: false,
-            staleTime: Infinity,
-        },
-    });
+    const [is_passkeys_list_loading, setIsPasskeysListLoading] = useState(false);
+    const [passkeys_list_error, setPasskeysListError] = useState<TError | null>(null);
+
+    const refetchPasskeysList = async () => {
+        try {
+            setIsPasskeysListLoading(true);
+            await fetchPasskeysList();
+        } catch (e) {
+            setPasskeysListError(e as TError);
+        } finally {
+            setIsPasskeysListLoading(false);
+        }
+    };
 
     return {
-        passkeys_list: data?.passkeys_list,
-        passkeys_list_error: error ?? null,
-        is_passkeys_list_loading: isLoading || isFetching,
-        ...rest,
+        passkeys_list,
+        passkeys_list_error,
+        is_passkeys_list_loading,
+        refetchPasskeysList,
     };
 };
 

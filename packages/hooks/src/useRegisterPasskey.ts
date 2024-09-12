@@ -1,14 +1,11 @@
 import { useState } from 'react';
 import { startRegistration } from '@simplewebauthn/browser';
 import { PublicKeyCredentialCreationOptionsJSON } from '@simplewebauthn/typescript-types';
-import { useInvalidateQuery } from '@deriv/api';
 import { WS } from '@deriv/shared';
 
 type TError = { code?: string; name?: string; message: string };
 
 const useRegisterPasskey = ({ onSuccess }: { onSuccess: () => void }) => {
-    const invalidate = useInvalidateQuery();
-
     const [passkey_registration_error, setPasskeyRegistrationError] = useState<TError | null>(null);
     const [public_key, setPublicKey] = useState<null | PublicKeyCredentialCreationOptionsJSON>(null);
 
@@ -31,7 +28,6 @@ const useRegisterPasskey = ({ onSuccess }: { onSuccess: () => void }) => {
                     publicKeyCredential: authenticator_response,
                 });
                 if (passkeys_register_response?.passkeys_register?.properties?.name) {
-                    invalidate('passkeys_list');
                     onSuccess();
                 } else if (passkeys_register_response?.error) {
                     setPasskeyRegistrationError(passkeys_register_response?.error);

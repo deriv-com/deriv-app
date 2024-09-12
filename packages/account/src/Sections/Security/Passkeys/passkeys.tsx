@@ -1,7 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import { InlineMessage, Loading } from '@deriv/components';
-import { useInvalidateQuery } from '@deriv/api';
 import { useGetPasskeysList, useRegisterPasskey, useRemovePasskey, useRenamePasskey } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
@@ -64,23 +63,23 @@ const Passkeys = observer(() => {
         name: '',
     });
 
-    const invalidate = useInvalidateQuery();
-
     const onSuccessPasskeyRegister = () => {
         setShouldShowPasskeyNotification(false);
         removeNotificationByKey({ key: 'enable_passkey' });
+        refetchPasskeysList();
         passkeysMenuActionEventTrack('create_passkey_finished');
         setPasskeyStatus(PASSKEY_STATUS_CODES.CREATED);
         setPasskeysStatusToCookie('available');
     };
 
     const onSuccessPasskeyRemove = () => {
-        invalidate('passkeys_list');
+        refetchPasskeysList();
         setPasskeyStatus(PASSKEY_STATUS_CODES.REMOVED);
         passkeysMenuActionEventTrack('passkey_remove_success');
     };
 
     const onSuccessPasskeyRename = () => {
+        refetchPasskeysList();
         setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
         setIsSnackbarOpen(true);
         passkeysMenuActionEventTrack('passkey_rename_success');
@@ -90,7 +89,7 @@ const Passkeys = observer(() => {
         }, 5000);
     };
 
-    const { passkeys_list, is_passkeys_list_loading, passkeys_list_error } = useGetPasskeysList();
+    const { passkeys_list, is_passkeys_list_loading, passkeys_list_error, refetchPasskeysList } = useGetPasskeysList();
     const { passkey_removing_error, removePasskey } = useRemovePasskey({ onSuccess: onSuccessPasskeyRemove });
     const { passkey_renaming_error, renamePasskey } = useRenamePasskey({ onSuccess: onSuccessPasskeyRename });
     const { createPasskey, startPasskeyRegistration, passkey_registration_error } = useRegisterPasskey({

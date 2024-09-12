@@ -103,9 +103,11 @@ export const PlatformsDesktopDownload = ({
                     }
                 }}
             >
-                <Text color='general' size='xxs' weight='bold'>
-                    <Localize i18n_default_text='Web terminal' />
-                </Text>
+                <div className='cfd-trade-modal__platform-button-text'>
+                    <Text color='general' size='xxs' weight='bold'>
+                        <Localize i18n_default_text='Web terminal' />
+                    </Text>
+                </div>
             </Button>
         </React.Fragment>
     );

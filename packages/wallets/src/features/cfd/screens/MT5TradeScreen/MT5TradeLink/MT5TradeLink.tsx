@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 import { useCtraderServiceToken } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
-import { Divider, Text } from '@deriv-com/ui';
-import { WalletButton } from '../../../../../components/Base';
+import { Button, Divider, Text } from '@deriv-com/ui';
 import { getPlatformFromUrl } from '../../../../../helpers/urls';
 import { THooks, TPlatforms } from '../../../../../types';
 import { CFD_PLATFORMS, getAppToContentMapper, PlatformDetails } from '../../../constants';
@@ -77,14 +76,22 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
                     )}
                 </div>
                 {(platform === CFD_PLATFORMS.MT5 || app === CFD_PLATFORMS.CTRADER) && (
-                    <WalletButton onClick={() => window.open(link)} size='sm' variant='outlined'>
+                    <Button
+                        borderWidth='sm'
+                        color='black'
+                        onClick={() => window.open(link)}
+                        size='sm'
+                        variant='outlined'
+                    >
                         {text}
-                    </WalletButton>
+                    </Button>
                 )}
                 {platform !== CFD_PLATFORMS.MT5 && app !== CFD_PLATFORMS.CTRADER && (
-                    <WalletButton onClick={onClickWebTerminal} size='sm' variant='outlined'>
-                        <Localize i18n_default_text='Web terminal' />
-                    </WalletButton>
+                    <Button borderWidth='sm' color='black' onClick={onClickWebTerminal} size='sm' variant='outlined'>
+                        <Text color='black' size='xs' weight='bold'>
+                            <Localize i18n_default_text='Web terminal' />
+                        </Text>
+                    </Button>
                 )}
             </div>
         </React.Fragment>

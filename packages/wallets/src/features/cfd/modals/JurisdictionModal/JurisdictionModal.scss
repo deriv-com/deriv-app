@@ -15,8 +15,9 @@
     &__footer {
         width: 100%;
 
-        .wallets-button {
-            margin-left: auto;
+        @include desktop-screen {
+            display: flex;
+            justify-content: flex-end;
         }
 
         @include mobile-or-tablet-screen {

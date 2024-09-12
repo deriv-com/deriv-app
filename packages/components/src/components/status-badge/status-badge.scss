@@ -29,12 +29,14 @@
         &--migrated_without_position,
         &--under_maintenance,
         &--unavailable {
-            border: 1.5px solid var(--c);
+            border: 1.5px solid var(--status-warning);
             color: var(--status-warning);
             font-size: var(--text-size-xxxs);
             align-items: center;
         }
-        &--failed {
+        &--failed,
+        &--rejected,
+        &--suspended {
             border-color: var(--status-danger);
             color: var(--status-danger);
             font-weight: bold;

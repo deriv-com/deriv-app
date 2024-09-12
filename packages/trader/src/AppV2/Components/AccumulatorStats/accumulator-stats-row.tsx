@@ -32,17 +32,16 @@ const StatsRow = ({
                     {rows[0]}
                 </Text>
             </div>
-            <div
-                className={clsx(`${className}__moving`, {
-                    'slide-right': is_moving_transaction,
-                })}
-            >
-                {rows.slice(1)?.map((el: number, i: number) => (
-                    <div key={i + 1} className={`${className}__stat`}>
-                        <Text size='sm'>{el}</Text>
-                    </div>
-                ))}
-            </div>
+            {rows.slice(1)?.map((el: number, i: number) => (
+                <div
+                    key={i + 1}
+                    className={clsx(`${className}__stat`, {
+                        'slide-right': is_moving_transaction && i == 0,
+                    })}
+                >
+                    <Text size='sm'>{el}</Text>
+                </div>
+            ))}
         </>
     );
 };

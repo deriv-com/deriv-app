@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Localize } from '@deriv-com/translations';
-import { Button } from '@deriv-com/ui';
+import { Button, Text } from '@deriv-com/ui';
 import { THooks } from '../../../../types';
 
 type TGetMessageProps = {
@@ -26,13 +26,17 @@ const getMessage = ({
             <Localize i18n_default_text='No trading accounts or other wallets are available to receive funds' />
         );
         const description = isVirtual ? (
-            <Localize i18n_default_text="Add a demo trading account in Trader's hub to receive funds from this Wallet to start trading." />
+            <Text align='center' size='md'>
+                <Localize i18n_default_text="Add a demo trading account in Trader's hub to receive funds from this Wallet to start trading." />
+            </Text>
         ) : (
-            <Localize i18n_default_text="Add a trading account or Wallet in Trader's hub to receive funds from this Wallet." />
+            <Text align='center' size='md'>
+                <Localize i18n_default_text="Add a trading account or Wallet in Trader's hub to receive funds from this Wallet." />
+            </Text>
         );
 
         return {
-            actionButton: () => (
+            actionButton: (
                 <Button borderWidth='sm' onClick={() => history.push('/')} size='lg' textSize='md'>
                     <Localize i18n_default_text="Back to Trader's hub" />
                 </Button>
@@ -49,12 +53,16 @@ const getMessage = ({
             <Localize i18n_default_text='No funds in any trading accounts or wallets' />
         );
         const description = isVirtual ? (
-            <Localize i18n_default_text='Please reset the balance of your Demo Wallet to make a transfer.' />
+            <Text align='center' size='md'>
+                <Localize i18n_default_text='Please reset the balance of your Demo Wallet to make a transfer.' />
+            </Text>
         ) : (
-            <Localize
-                i18n_default_text='Please make a deposit to your {{currency}} Wallet to make a transfer.'
-                values={{ currency }}
-            />
+            <Text align='center' size='md'>
+                <Localize
+                    i18n_default_text='Please make a deposit to your {{currency}} Wallet to make a transfer.'
+                    values={{ currency }}
+                />
+            </Text>
         );
         const locationPathName = `/wallet/${isVirtual ? 'reset-balance' : 'deposit'}` as const;
         const buttonText = isVirtual ? (
@@ -64,7 +72,7 @@ const getMessage = ({
         );
 
         return {
-            actionButton: () => (
+            actionButton: (
                 <Button borderWidth='sm' onClick={() => history.push(locationPathName)} size='lg' textSize='md'>
                     {buttonText}
                 </Button>

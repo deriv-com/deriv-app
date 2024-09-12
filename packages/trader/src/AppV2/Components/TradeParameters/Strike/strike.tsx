@@ -9,6 +9,7 @@ import { Skeleton } from '@deriv/components';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
+import { isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import StrikeWheel from './strike-wheel';
 
 type TStrikeProps = {
@@ -24,11 +25,11 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
         currency,
         onChange,
         proposal_info,
-        setWheelPickerInitialValues,
-        wheel_picker_initial_values,
+        setV2ParamsInitialValues,
+        v2_params_initial_values,
     } = useTraderStore();
 
-    const is_small_screen = window.innerHeight <= 640;
+    const is_small_screen = isSmallScreen();
     const strike_price_list = strike_price_choices.map((strike_price: string) => ({ value: strike_price }));
     const payout_per_point: string | number = isEmptyObject(proposal_info)
         ? ''
@@ -47,7 +48,7 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
                     onStrikePriceSelect={handleStrikeChange}
                     payout_per_point={payout_per_point}
                     strike_price_list={strike_price_list}
-                    setWheelPickerInitialValues={setWheelPickerInitialValues}
+                    setV2ParamsInitialValues={setV2ParamsInitialValues}
                 />
             ),
         },
@@ -59,7 +60,7 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
     const classname = clsx('trade-params__option', is_minimized && 'trade-params__option--minimized');
 
     React.useEffect(() => {
-        const initial_strike = wheel_picker_initial_values?.strike;
+        const initial_strike = v2_params_initial_values?.strike;
         if (initial_strike && barrier_1 !== initial_strike) {
             handleStrikeChange(initial_strike);
         }
@@ -84,7 +85,7 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
                 value={barrier_1}
             />
             <ActionSheet.Root isOpen={is_open} onClose={() => setIsOpen(false)} position='left' expandable={false}>
-                <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen={is_small_screen}>
+                <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         classname={clsx('strike__carousel', is_small_screen && 'strike__carousel--small')}
                         header={CarouselHeader}

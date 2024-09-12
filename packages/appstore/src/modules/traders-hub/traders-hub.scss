@@ -66,3 +66,11 @@
     border-bottom: 1px solid var(--button-primary-default);
     border-radius: 0;
 }
+
+.get-started-trading-banner-ct:has(*) {
+    margin-block-end: 3.2rem;
+
+    @include desktop-screen {
+        margin-block-end: 6.4rem;
+    }
+}

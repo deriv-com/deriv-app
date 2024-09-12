@@ -2,6 +2,10 @@
     &__icon {
         width: fit-content;
 
+        &--badge {
+            border: 1px solid var(--status-warning, #ffad3a);
+            border-radius: 1rem;
+        }
         &--pending {
             opacity: 0.5;
         }
@@ -14,10 +18,6 @@
     }
 
     &__details {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        flex-grow: 1;
         user-select: none;
 
         &-title {
@@ -25,25 +25,10 @@
             align-items: center;
             gap: 0.8rem;
             align-self: stretch;
-
-            &-landing-company {
-                display: flex;
-                height: 2.4rem;
-                padding: 0rem 0.4rem;
-                align-items: center;
-                gap: 0.4rem;
-                border-radius: 0.4rem;
-                background: var(--system-light-7-secondary-background, #f2f3f4);
-
-                & > .wallets-text {
-                    opacity: 0.7;
-                }
-            }
         }
 
         &-badge {
             width: fit-content;
-
             & a {
                 cursor: pointer;
                 text-decoration: underline;
@@ -58,7 +43,7 @@
             font-size: 1.2rem;
             line-height: 1.4rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 font-size: 1.4rem;
                 line-height: 2rem;
             }

@@ -32,6 +32,7 @@ const useInfiniteTransactions = () => {
         },
         payload: {
             action_type: filter,
+            description: 1,
         },
     });
 

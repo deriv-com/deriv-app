@@ -28,7 +28,6 @@ type TPlatforms = {
     mt5: TPlatform;
     dxtrade: TPlatform;
     smarttrader: TPlatform;
-    bbot: TPlatform;
     go: TPlatform;
 };
 
@@ -37,7 +36,6 @@ type TPlatformsAppstore = {
     trader: TPlatformAppstore;
     dbot: TPlatformAppstore;
     smarttrader: TPlatformAppstore;
-    bbot: TPlatformAppstore;
     go: TPlatformAppstore;
 };
 
@@ -73,4 +71,18 @@ export const getAppstorePlatforms = () => {
 
 export const getPlatformSettingsAppstore = (platform_key: keyof TPlatformsAppstore): TPlatformAppstore => {
     return config_data.platforms_appstore[platform_key];
+};
+
+export const getDomainName = () => {
+    // Split the hostname into parts
+    const domainParts = window.location.hostname.split('.');
+
+    // Ensure we have at least two parts (SLD and TLD)
+    if (domainParts.length >= 2) {
+        // Combine the SLD and TLD
+        const domain = `${domainParts[domainParts.length - 2]}.${domainParts[domainParts.length - 1]}`;
+        return domain;
+    }
+
+    return '';
 };

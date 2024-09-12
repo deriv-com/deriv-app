@@ -1,10 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { WalletCurrencyCard, WalletListCardBadge, WalletMarketCurrencyIcon } from '../../../../../../components';
-import useDevice from '../../../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../../../types';
+import { PlatformStatusBadge } from '../../../../../cfd/components/PlatformStatusBadge';
+import { TRADING_PLATFORM_STATUS } from '../../../../../cfd/constants';
 import type { TAccount } from '../../types';
 import './TransferFormAccountCard.scss';
 
@@ -14,9 +15,12 @@ type TProps = {
 };
 
 const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const isInput = type === 'input';
     const isModal = type === 'modal';
+
+    const hasPlatformStatus =
+        account?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE || TRADING_PLATFORM_STATUS.MAINTENANCE;
 
     return (
         <div
@@ -39,11 +43,12 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) 
                             isDemo={Boolean(account?.demo_account)}
                             marketType={account?.market_type}
                             platform={account?.account_type as TPlatforms.All}
+                            product={account?.product}
                             size='xs'
                         />
                     )}
                 </div>
-                {isInput && isMobile && !!account?.demo_account && <WalletListCardBadge />}
+                {isInput && !isDesktop && !!account?.demo_account && <WalletListCardBadge />}
             </div>
 
             <div className='wallets-transfer-form-account-card__content'>
@@ -59,6 +64,14 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) 
                     />
                 </Text>
             </div>
+
+            {account?.status && hasPlatformStatus && (
+                <PlatformStatusBadge
+                    badgeSize='sm'
+                    cashierAccount={account}
+                    className='wallets-transfer-form-account-card--badge'
+                />
+            )}
 
             {isModal && !!account?.demo_account && (
                 <div className='wallets-transfer-form-account-card__modal-badge'>

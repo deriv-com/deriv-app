@@ -8,7 +8,6 @@ import {
     excludeParamsFromUrlQuery,
     filterUrlQuery,
     getPropertyValue,
-    getUrlBinaryBot,
     getUrlSmartTrader,
     isCryptocurrency,
     isDesktopOs,
@@ -280,6 +279,7 @@ export default class ClientStore extends BaseStore {
             is_dxtrade_password_not_set: computed,
             is_financial_information_incomplete: computed,
             is_deposit_lock: computed,
+            is_duplicate_dob_phone: computed,
             is_withdrawal_lock: computed,
             is_trading_experience_incomplete: computed,
             authentication_status: computed,
@@ -451,9 +451,8 @@ export default class ClientStore extends BaseStore {
                 const should_update_preferred_language =
                     language !== this.account_settings?.preferred_language &&
                     this.preferred_language !== this.account_settings?.preferred_language;
-
+                window.history.replaceState({}, document.title, urlForLanguage(language));
                 if (should_update_preferred_language) {
-                    window.history.replaceState({}, document.title, urlForLanguage(language));
                     this.setPreferredLanguage(language);
                     await WS.setSettings({
                         set_settings: 1,
@@ -745,6 +744,10 @@ export default class ClientStore extends BaseStore {
 
     get is_deposit_lock() {
         return this.account_status?.status?.some(status_name => status_name === 'deposit_locked');
+    }
+
+    get is_duplicate_dob_phone() {
+        return this.account_status?.status?.some(status_name => status_name === 'duplicate_dob_phone');
     }
 
     get is_withdrawal_lock() {
@@ -1764,8 +1767,7 @@ export default class ClientStore extends BaseStore {
             ?.match(/[a-zA-Z]+/g)
             ?.join('');
         setTimeout(() => {
-            Analytics.setAttributes({
-                user_id: this.user_id,
+            const analytics_config = {
                 account_type: broker === 'null' ? 'unlogged' : broker,
                 residence_country: this.residence,
                 app_id: String(getAppId()),
@@ -1779,7 +1781,9 @@ export default class ClientStore extends BaseStore {
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,
                 utm_content: ppc_campaign_cookies?.utm_content,
                 domain: window.location.hostname,
-            });
+            };
+            if (this.user_id) analytics_config.user_id = this.user_id;
+            Analytics.setAttributes(analytics_config);
         }, 4);
 
         return {
@@ -2535,17 +2539,14 @@ export default class ClientStore extends BaseStore {
 
     syncWithLegacyPlatforms(active_loginid, client_accounts) {
         const smartTrader = {};
-        const binaryBot = {};
         const p2p = {};
 
         smartTrader.iframe = document.getElementById('localstorage-sync');
-        binaryBot.iframe = document.getElementById('localstorage-sync__bot');
         p2p.iframe = document.getElementById('localstorage-sync__p2p');
         smartTrader.origin = getUrlSmartTrader();
-        binaryBot.origin = getUrlBinaryBot(false);
         p2p.origin = getUrlP2P(false);
 
-        [smartTrader, binaryBot, p2p].forEach(platform => {
+        [smartTrader, p2p].forEach(platform => {
             if (platform.iframe) {
                 // Keep client.accounts in sync (in case user wasn't logged in).
                 platform.iframe.contentWindow.postMessage(

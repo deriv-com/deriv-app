@@ -13,6 +13,14 @@ export const MARKET_TYPE = {
 } as const;
 
 // Remove the hardcoded values and use the values from the API once it's ready
+export const PRODUCT = {
+    CTRADER: 'ctrader',
+    DERIVX: 'derivx',
+    SWAPFREE: 'swap_free',
+    ZEROSPREAD: 'zero_spread',
+} as const;
+
+// Remove the hardcoded values and use the values from the API once it's ready
 export const CFD_PLATFORMS = {
     CFDS: 'CFDs',
     CTRADER: 'ctrader',
@@ -136,7 +144,12 @@ const useCFDCompareAccounts = (isEU?: boolean) => {
     const demoAvailableAccounts = useMemo(() => {
         if (!sortedMt5Accounts) return;
         if (isEU) return sortedMt5Accounts.filter(account => account.shortcode === JURISDICTION.MALTAINVEST);
-        return sortedMt5Accounts.filter(account => account.shortcode === JURISDICTION.SVG);
+        return sortedMt5Accounts.filter(account => {
+            if (account.product === PRODUCT.ZEROSPREAD) {
+                return account.shortcode === JURISDICTION.BVI;
+            }
+            return account.shortcode === JURISDICTION.SVG;
+        });
     }, [isEU, sortedMt5Accounts]);
 
     const modifiedData = useMemo(() => {

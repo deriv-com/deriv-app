@@ -41,8 +41,6 @@ const WalletWithdrawal = () => {
         }
     }, [activeWallet?.loginid, switchAccount]);
 
-    const isCrypto = activeWallet?.currency_config?.is_crypto;
-
     if (!activeWallet || isBalanceLoading) {
         return <Loader />;
     }
@@ -51,8 +49,10 @@ const WalletWithdrawal = () => {
         return <WithdrawalNoBalance activeWallet={activeWallet} />;
     }
 
-    if (activeWallet?.currency && verificationCode && !isBalanceLoading) {
-        return isCrypto ? (
+    if (activeWallet?.currency_config && verificationCode && !isBalanceLoading) {
+        const isCryptoProvider = activeWallet.currency_config.platform.cashier.includes('crypto');
+
+        return isCryptoProvider ? (
             <WithdrawalCryptoModule
                 setResendEmail={setResendEmail}
                 setVerificationCode={setVerificationCode}

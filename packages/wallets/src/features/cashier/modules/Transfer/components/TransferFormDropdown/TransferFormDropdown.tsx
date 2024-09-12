@@ -1,12 +1,13 @@
 import React, { RefObject, useCallback, useEffect, useMemo } from 'react';
 import { useFormikContext } from 'formik';
 import { useHistory } from 'react-router-dom';
+import { useTradingPlatformStatus } from '@deriv/api-v2';
 import { LegacyChevronDown2pxIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { WalletListCardBadge } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
-import useDevice from '../../../../../../hooks/useDevice';
+import { TRADING_PLATFORM_STATUS } from '../../../../../cfd/constants';
 import { useTransfer } from '../../provider';
 import { TInitialTransferFormValues, TToAccount } from '../../types';
 import { TransferFormAccountCard } from '../TransferFormAccountCard';
@@ -23,8 +24,10 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     const { accounts, activeWallet } = useTransfer();
     const { localize } = useTranslations();
     const { fromAccount, toAccount } = values;
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const modal = useModal();
+    const { getPlatformStatus } = useTradingPlatformStatus();
+
     const isFromAccountDropdown = fieldName === 'fromAccount';
 
     const fromAccountList = useMemo(() => {
@@ -54,6 +57,12 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
         location.pathname === '/wallet/account-transfer' ? location.state?.toAccountLoginId : undefined;
     const shouldDefaultUSDWallet =
         location.pathname === '/wallet/account-transfer' ? location.state?.shouldSelectDefaultWallet : false;
+
+    const platformStatus = getPlatformStatus(selectedAccount?.account_type ?? '');
+
+    const hasPlatformStatus =
+        selectedAccount?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE ||
+        platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
 
     const toDefaultAccount = useMemo(
         () => toAccountList.walletAccounts.find(wallet => wallet.currency === 'USD'),
@@ -126,7 +135,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                         toAccount={toAccount}
                     />,
                     {
-                        rootRef: isMobile ? mobileAccountsListRef : undefined,
+                        rootRef: !isDesktop ? mobileAccountsListRef : undefined,
                     }
                 );
             }}
@@ -136,7 +145,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                 <div className='wallets-transfer-form-dropdown__header'>
                     <Text size='sm'>{label}</Text>
 
-                    {isMobile && <LegacyChevronDown2pxIcon iconSize='xs' />}
+                    {!isDesktop && <LegacyChevronDown2pxIcon iconSize='xs' />}
                 </div>
 
                 {selectedAccount ? (
@@ -154,14 +163,19 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                 )}
             </div>
 
-            {!isMobile && (
+            {isDesktop && (
                 <>
                     {selectedAccount?.demo_account ? (
                         <div className='wallets-transfer-form-dropdown__badge'>
                             <WalletListCardBadge />
                         </div>
                     ) : null}
-                    <LegacyChevronDown2pxIcon className='wallets-transfer-form-dropdown__icon-dropdown' iconSize='xs' />
+                    {!hasPlatformStatus && (
+                        <LegacyChevronDown2pxIcon
+                            className='wallets-transfer-form-dropdown__icon-dropdown'
+                            iconSize='xs'
+                        />
+                    )}
                 </>
             )}
         </button>

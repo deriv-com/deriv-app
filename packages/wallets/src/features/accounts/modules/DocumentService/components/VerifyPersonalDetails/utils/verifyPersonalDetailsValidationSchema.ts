@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 import { TTranslations } from '../../../../../../../types';
 
 export const getValidateArePersonalDetailsVerified = (value: boolean, localize: TTranslations['localize']) => {
-    if (!value) return localize('Please verify personal details to proceed.');
+    if (value === false) return localize('Please verify personal details to proceed.');
 };
 
 export const getDateOfBirthValidator = (localize: TTranslations['localize']) =>

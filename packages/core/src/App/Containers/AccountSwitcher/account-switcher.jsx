@@ -18,12 +18,13 @@ import {
 import { observer, useStore } from '@deriv/stores';
 import { routes, formatMoney, ContentFlag } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useHasSetCurrency } from '@deriv/hooks';
+import { useGrowthbookGetFeatureValue, useHasSetCurrency } from '@deriv/hooks';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { BinaryLink } from 'App/Components/Routes';
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
 import { getSortedAccountList, getSortedCFDList, isDemo } from './helpers';
+import { useOAuth2 } from '@deriv-com/auth-client';
 
 const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
     const { client, ui, traders_hub } = useStore();
@@ -70,6 +71,11 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
     const [is_non_eu_regulator_visible, setNonEuRegulatorVisible] = React.useState(true);
     const [is_eu_regulator_visible, setEuRegulatorVisible] = React.useState(true);
 
+    const [is_oauth2_hydra_enabled] = useGrowthbookGetFeatureValue({
+        featureFlag: 'hydra_be',
+        defaultValue: false,
+    });
+
     const wrapper_ref = React.useRef();
     const scroll_ref = React.useRef(null);
 
@@ -93,12 +99,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         }
     };
 
-    const handleLogout = async () => {
-        closeAccountsDialog();
-        if (is_positions_drawer_on) {
-            togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
-        }
-
+    const logoutRedirect = async () => {
         // for DBot we need to logout first and only after this redirect to TH
         if (window.location.pathname.startsWith(routes.bot)) {
             await logoutClient();
@@ -107,6 +108,22 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
             history.push(routes.traders_hub);
             await logoutClient();
         }
+    };
+
+    const { OAuth2Logout } = useOAuth2(logoutRedirect);
+
+    const handleLogout = async () => {
+        closeAccountsDialog();
+        if (is_positions_drawer_on) {
+            togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
+        }
+
+        if (is_oauth2_hydra_enabled) {
+            await OAuth2Logout();
+            return;
+        }
+
+        await logoutRedirect();
     };
 
     const closeAccountsDialog = () => {

@@ -69,7 +69,7 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
             ) : (
                 <div className='verification-docs-list-modal__card'>
                     <StatusBadge account_status={status} icon={badge_icon} text={badge_text} icon_size={badge_size} />
-                    <LabelPairedChevronRightCaptionBoldIcon fill='#c7c7c7' />
+                    <LabelPairedChevronRightCaptionBoldIcon fill='var(--fill-disabled)' />
                 </div>
             )}
         </div>

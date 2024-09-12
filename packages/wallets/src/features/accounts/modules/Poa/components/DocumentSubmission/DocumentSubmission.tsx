@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
 import { useIsEuRegion } from '@deriv/api-v2';
 import { LabelPairedArrowUpFromBracketXlFillIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import { Dropzone, WalletText } from '../../../../../../components';
-import useDevice from '../../../../../../hooks/useDevice';
 import { TDocumentSubmission } from '../../types';
 import { getExampleImagesConfig } from '../../utils';
 import { CommonMistakesExamples } from '../CommonMistakesExamples';
@@ -23,6 +23,12 @@ const DocumentSubmission: React.FC = () => {
         ),
         localize('Home rental agreement: valid and current agreement.'),
     ];
+
+    useEffect(() => {
+        return () => {
+            setFieldValue('poaFile', null);
+        };
+    }, [setFieldValue]);
 
     return (
         <div className='wallets-poa__document'>

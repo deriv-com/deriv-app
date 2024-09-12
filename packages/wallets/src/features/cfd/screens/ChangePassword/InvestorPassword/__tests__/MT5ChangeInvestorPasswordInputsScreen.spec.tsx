@@ -1,10 +1,9 @@
 import React, { PropsWithChildren } from 'react';
 import { useTradingPlatformInvestorPasswordChange } from '@deriv/api-v2';
+import { Button, useDevice } from '@deriv-com/ui';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { WalletButton } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
-import useDevice from '../../../../../../hooks/useDevice';
 import { validPasswordMT5 } from '../../../../../../utils/password-validation';
 import MT5ChangeInvestorPasswordInputsScreen from '../MT5ChangeInvestorPasswordInputsScreen';
 
@@ -22,9 +21,9 @@ jest.mock('../../../../../../components', () => ({
     )),
 }));
 
-jest.mock('../../../../../../components/Base', () => ({
-    ...jest.requireActual('../../../../../../components/Base'),
-    WalletButton: jest.fn(
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    Button: jest.fn(
         ({
             children,
             disabled,
@@ -46,6 +45,7 @@ jest.mock('../../../../../../components/Base', () => ({
             );
         }
     ),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
 jest.mock('../../../../../../components/ModalProvider', () => ({
@@ -58,8 +58,6 @@ jest.mock('../../../../../../components/Base/WalletPasswordField/PasswordViewerI
         <button onClick={() => setViewPassword(!viewPassword)}>PasswordViewerIcon</button>
     ))
 );
-
-jest.mock('../../../../../../hooks/useDevice', () => jest.fn());
 
 jest.mock('../../../../../../utils/password-validation', () => ({
     ...jest.requireActual('../../../../../../utils/password-validation'),
@@ -75,9 +73,7 @@ describe('MT5ChangeInvestorPasswordInputsScreen', () => {
         (useModal as jest.Mock).mockReturnValue({
             getModalState: jest.fn().mockReturnValue('test-account-id'),
         });
-        (useDevice as jest.Mock).mockReturnValue({
-            isMobile: false,
-        });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
         (validPasswordMT5 as jest.Mock).mockReturnValue(true);
     });
 
@@ -138,14 +134,14 @@ describe('MT5ChangeInvestorPasswordInputsScreen', () => {
         expect(screen.getByText('Error changing password')).toBeInTheDocument();
     });
 
-    it('shows the loader when the change investor password mutation is loading', () => {
+    it('shows the loader when the change investor password mutation is loading', async () => {
         (useTradingPlatformInvestorPasswordChange as jest.Mock).mockReturnValue({
             status: 'loading',
         });
 
         render(<MT5ChangeInvestorPasswordInputsScreen />);
 
-        expect(
+        await expect(
             screen.getByRole('button', {
                 name: 'Loading...',
             })
@@ -168,6 +164,6 @@ describe('MT5ChangeInvestorPasswordInputsScreen', () => {
 
         render(<MT5ChangeInvestorPasswordInputsScreen />);
 
-        expect(WalletButton).toHaveBeenCalledWith(expect.objectContaining({ textSize: 'md' }), {});
+        expect(Button).toHaveBeenCalledWith(expect.objectContaining({ textSize: 'md' }), {});
     });
 });

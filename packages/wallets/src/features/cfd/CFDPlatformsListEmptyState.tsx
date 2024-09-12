@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
-import { WalletButton, WalletText } from '../../components/Base';
+import { Button, Text } from '@deriv-com/ui';
 import './CFDPlatformsList.scss';
 
 const CFDPlatformsListEmptyState = () => {
@@ -17,14 +17,13 @@ const CFDPlatformsListEmptyState = () => {
 
     return (
         <div className='wallets-cfd-list__cfd-empty-state'>
-            <WalletText align='center' weight='bold'>
+            <Text align='center' weight='bold'>
                 <Localize
-                    i18n_default_text="To trade CFDs, you'll need to use your {{walletCurrencyType}} Wallet. Click Transfer to
-                move your {{currency}} to your {{walletCurrencyType}} Wallet."
+                    i18n_default_text="To trade CFDs, you'll need to use your {{walletCurrencyType}} Wallet. Click Transfer to move your {{currency}} to your {{walletCurrencyType}} Wallet."
                     values={{ currency: activeWallet?.currency, walletCurrencyType: fiatAccount?.wallet_currency_type }}
                 />
-            </WalletText>
-            <WalletButton
+            </Text>
+            <Button
                 color='primary-light'
                 onClick={() =>
                     history.push('/wallet/account-transfer', {
@@ -32,9 +31,10 @@ const CFDPlatformsListEmptyState = () => {
                     })
                 }
                 size='lg'
+                textSize='md'
             >
                 <Localize i18n_default_text='Transfer' />
-            </WalletButton>
+            </Button>
         </div>
     );
 };

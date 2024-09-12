@@ -1,16 +1,22 @@
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
-import useDevice from '../../../../hooks/useDevice';
 import InlineMessage from '../InlineMessage';
 
-jest.mock('../../../../hooks/useDevice', () => ({
-    __esModule: true,
-    default: jest.fn(() => ({
-        isMobile: false,
-    })),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
 }));
 
 describe('InlineMessage', () => {
+    beforeEach(() => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+    });
+
+    afterAll(() => {
+        jest.clearAllMocks();
+    });
+
     const getInLineMessageEl = () => screen.getByTestId('dt_inline_message');
     const getInLineMessageIconEl = () => screen.getByTestId('dt_inline_message_icon');
 
@@ -52,7 +58,6 @@ describe('InlineMessage', () => {
     });
 
     it('renders with correct font size on desktop', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
         const { rerender } = render(<InlineMessage size='lg'> Test message </InlineMessage>);
         expect(screen.getByText('Test message')).toHaveStyle('font-size: 16px');
 

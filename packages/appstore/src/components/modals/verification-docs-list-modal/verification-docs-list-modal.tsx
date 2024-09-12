@@ -31,7 +31,8 @@ const MT5BadgeStatus = (status: TAuthStatusCodes) => {
                 text: <Localize i18n_default_text='In review' />,
                 icon: 'IcMt5Pending',
             };
-        case AUTH_STATUS_CODES.REJECTED || AUTH_STATUS_CODES.SUSPENDED:
+        case AUTH_STATUS_CODES.REJECTED:
+        case AUTH_STATUS_CODES.SUSPECTED:
             return {
                 text: <Localize i18n_default_text='Failed' />,
                 icon: 'IcMt5Failed',

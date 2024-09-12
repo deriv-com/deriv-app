@@ -3,8 +3,11 @@ import { Formik } from 'formik';
 import { render, screen } from '@testing-library/react';
 import { APIProvider } from '@deriv/api';
 import EmploymentTaxDetailsContainer from '../employment-tax-details-container';
+import { mockStore, StoreProvider } from '@deriv/stores';
 
 describe('Testing <EmploymentTaxDetailsContainer/> component', () => {
+    const store = mockStore({});
+
     it('should render EmploymentTaxDetailsContainer component', () => {
         const props: React.ComponentProps<typeof EmploymentTaxDetailsContainer> = {
             editable_fields: [],
@@ -15,11 +18,14 @@ describe('Testing <EmploymentTaxDetailsContainer/> component', () => {
                 tin_employment_status_bypass: [],
             },
         };
+
         render(
             <APIProvider>
-                <Formik initialValues={{}} onSubmit={jest.fn()}>
-                    <EmploymentTaxDetailsContainer {...props} />
-                </Formik>
+                <StoreProvider store={store}>
+                    <Formik initialValues={{}} onSubmit={jest.fn()}>
+                        <EmploymentTaxDetailsContainer {...props} />
+                    </Formik>
+                </StoreProvider>
             </APIProvider>
         );
 

@@ -1,9 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Localize } from '@deriv-com/translations';
-import { Button } from '@deriv-com/ui';
+import { Button, useDevice } from '@deriv-com/ui';
 import { WalletButtonGroup } from '../../../../../components';
-import useDevice from '../../../../../hooks/useDevice';
 import { THooks } from '../../../../../types';
 
 type TCTraderSuccessModalButtons = {
@@ -16,10 +15,12 @@ const CTraderSuccessModalButtons = ({ createdAccount, hide, isDemo }: TCTraderSu
     const history = useHistory();
     const { isDesktop } = useDevice();
 
+    const walletButtonSizes = isDesktop ? 'md' : 'lg';
+
     if (isDemo) {
         return (
             <div className='wallets-success-btn'>
-                <Button isFullWidth onClick={hide} size={isDesktop ? 'md' : 'lg'} textSize='sm'>
+                <Button isFullWidth onClick={hide} size={walletButtonSizes} textSize='sm'>
                     <Localize i18n_default_text='OK' />
                 </Button>
             </div>
@@ -32,7 +33,7 @@ const CTraderSuccessModalButtons = ({ createdAccount, hide, isDemo }: TCTraderSu
                 borderWidth='sm'
                 color='black'
                 onClick={hide}
-                size={isDesktop ? 'md' : 'lg'}
+                size={walletButtonSizes}
                 textSize='sm'
                 variant='outlined'
             >
@@ -43,7 +44,7 @@ const CTraderSuccessModalButtons = ({ createdAccount, hide, isDemo }: TCTraderSu
                     hide();
                     history.push('/wallet/account-transfer', { toAccountLoginId: createdAccount?.account_id });
                 }}
-                size={isDesktop ? 'md' : 'lg'}
+                size={walletButtonSizes}
                 textSize='sm'
             >
                 <Localize i18n_default_text='Transfer funds' />

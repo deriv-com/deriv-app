@@ -110,7 +110,7 @@ const EnterPassword: React.FC<TProps> = ({
                         <Localize i18n_default_text='Forgot password?' />
                     </Button>
                     <Button
-                        disabled={isLoading || !validPassword(password)}
+                        disabled={isLoading || !validPassword(password) || !checked}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'

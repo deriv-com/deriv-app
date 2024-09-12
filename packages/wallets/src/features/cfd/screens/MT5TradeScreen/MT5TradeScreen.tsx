@@ -4,7 +4,7 @@ import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList 
 import { LabelPairedArrowUpArrowDownMdBoldIcon, LabelPairedCircleExclamationMdFillIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
-import { WalletListCardBadge } from '../../../../components';
+import { WalletBadge, WalletListCardBadge } from '../../../../components';
 import { InlineMessage } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
@@ -36,7 +36,9 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     const platform = getModalState('platform') ?? mt5Platform;
 
     const { icon: platformIcon, title: platformTitle } = PlatformDetails[platform as keyof typeof PlatformDetails];
-    const { icon: marketTypeIcon, title: marketTypeTitle } = getMarketTypeDetails()[marketType ?? 'all'];
+    const { icon: marketTypeIcon, title: marketTypeTitle } = getMarketTypeDetails(mt5Account?.product)[
+        marketType ?? 'all'
+    ];
 
     const platformToAccountsListMapper = useMemo(
         () => ({
@@ -127,8 +129,10 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                             <div className='wallets-mt5-trade-screen__label'>
                                 <Text lineHeight='3xs' size={isDesktop ? 'sm' : 'md'}>
                                     {platform === mt5Platform ? marketTypeTitle : platformTitle}{' '}
-                                    {!activeWalletData?.is_virtual && details?.landing_company_short?.toUpperCase()}
                                 </Text>
+                                {!activeWalletData?.is_virtual && (
+                                    <WalletBadge>{details?.landing_company_short?.toUpperCase()}</WalletBadge>
+                                )}
                                 {activeWalletData?.is_virtual && <WalletListCardBadge />}
                             </div>
                             <Text color='less-prominent' size='xs'>

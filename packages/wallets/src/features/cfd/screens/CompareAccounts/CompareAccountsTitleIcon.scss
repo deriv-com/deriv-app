@@ -8,6 +8,7 @@
     &__separator {
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 0.8em;
     }
 
@@ -15,7 +16,7 @@
         width: 19rem;
         z-index: 9999;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 16rem;
         }
     }

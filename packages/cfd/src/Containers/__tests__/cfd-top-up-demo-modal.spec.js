@@ -4,7 +4,7 @@ import CFDTopUpDemoModal from '../cfd-top-up-demo-modal.tsx';
 import CFDProviders from '../../cfd-providers';
 import { mockStore } from '@deriv/stores';
 
-jest.mock('../../Components/success-dialog.jsx', () => () => <div>Success Dialog</div>);
+jest.mock('../../Components/success-dialog', () => () => <div>Success Dialog</div>);
 
 describe('CFDTopUpDemoModal', () => {
     let modal_root_el;

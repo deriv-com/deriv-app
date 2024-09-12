@@ -25,6 +25,7 @@ const useExtendedTransferAccountProperties = (
                 displayCurrencyCode: currencyConfig?.display_code,
                 landingCompanyName: activeWallet?.landing_company_name as TWalletLandingCompanyName,
                 mt5MarketType: getMarketType(account.mt5_group),
+                product: account.product,
             });
             const displayBalance = displayMoney(Number(account.balance), currencyConfig?.display_code, {
                 fractional_digits: currencyConfig?.fractional_digits,

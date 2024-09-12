@@ -6,14 +6,22 @@
     height: 100%;
     width: 100%;
 
-    @include desktop {
+    @include desktop-screen {
         border-radius: 0 0 1.6rem 1.6rem;
     }
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         padding: 1.6rem;
         width: 100%;
         height: auto;
+    }
+
+    &__divider {
+        width: 100%;
+        @include tablet-screen {
+            width: 80%;
+            margin-inline: auto;
+        }
     }
 
     &__tabs {

@@ -67,7 +67,7 @@ const WalletCard: React.FC<TProps> = ({
                             ) : (
                                 <Text
                                     color={isDemo ? 'white' : 'general'}
-                                    size={isCarouselContent ? 'xl' : 'sm'}
+                                    size={isCarouselContent ? 'lg' : 'sm'}
                                     weight='bold'
                                 >
                                     {balance}

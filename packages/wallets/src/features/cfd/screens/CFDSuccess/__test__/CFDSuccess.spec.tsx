@@ -1,5 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen, within } from '@testing-library/react';
 import CFDSuccess from '../CFDSuccess';
 
@@ -9,11 +10,9 @@ jest.mock('@deriv/api-v2', () => ({
     })),
 }));
 
-jest.mock('../../../../../hooks/useDevice', () => ({
-    __esModule: true,
-    default: jest.fn(() => ({
-        isDesktop: true,
-    })),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
 }));
 
 jest.mock('../../../../../components/WalletGradientBackground', () => ({
@@ -49,6 +48,11 @@ describe('CFDSuccess', () => {
         platform: 'mt5' as const,
         title: 'Test Title',
     };
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+    });
 
     it('renders default CFD success content', () => {
         render(<CFDSuccess {...mockProps} />);

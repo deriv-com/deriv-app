@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { LegacyClose2pxIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
-import CloseIcon from '../../../../public/images/ic-close-dark.svg';
 import './CompareAccountsHeader.scss';
 
 type TCompareAccountsHeader = {
@@ -31,9 +31,10 @@ const CompareAccountsHeader = ({ isDemo, isEuRegion }: TCompareAccountsHeader) =
                     )}
                 </Text>
             </div>
-            <CloseIcon
+            <LegacyClose2pxIcon
                 className='wallets-compare-accounts-header__close-icon'
                 data-testid='dt_wallets_compare_accounts_header_close_icon'
+                iconSize='xs'
                 onClick={() => {
                     history.push('/');
                 }}

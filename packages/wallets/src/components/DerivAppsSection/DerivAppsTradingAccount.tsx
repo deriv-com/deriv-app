@@ -16,7 +16,7 @@ import { WalletStatusBadge } from '../WalletStatusBadge';
 const DerivAppsTradingAccount = () => {
     const [shouldShowDisabledAccountModal, setShouldShowDisabledAccountModal] = useState(false);
     const { localize } = useTranslations();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const history = useHistory();
     const { data: authorizeData } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
@@ -37,7 +37,7 @@ const DerivAppsTradingAccount = () => {
                 }}
             >
                 <TradingAccountCard.Icon>
-                    <WalletMarketIcon icon='standard' size={isMobile ? 'md' : 'lg'} />
+                    <WalletMarketIcon icon='standard' size={isDesktop ? 'lg' : 'md'} />
                 </TradingAccountCard.Icon>
                 <TradingAccountCard.Section>
                     <TradingAccountCard.Content>
@@ -83,12 +83,13 @@ const DerivAppsTradingAccount = () => {
                     </TradingAccountCard.Button>
                 </TradingAccountCard.Section>
             </TradingAccountCard>
-
-            <WalletDisabledAccountModal
-                accountType={localize('Options')}
-                isVisible={shouldShowDisabledAccountModal}
-                onClose={() => setShouldShowDisabledAccountModal(false)}
-            />
+            {shouldShowDisabledAccountModal && (
+                <WalletDisabledAccountModal
+                    accountType={localize('Options')}
+                    isVisible={shouldShowDisabledAccountModal}
+                    onClose={() => setShouldShowDisabledAccountModal(false)}
+                />
+            )}
         </>
     );
 };

@@ -6,11 +6,11 @@
         cursor: unset;
     }
 
-    @include desktop {
+    @include desktop-screen {
         min-width: 35.2rem;
     }
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         width: 100%;
         padding-inline: 1.6rem;
     }

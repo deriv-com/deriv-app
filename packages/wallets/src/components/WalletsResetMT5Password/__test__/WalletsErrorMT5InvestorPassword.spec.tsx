@@ -1,13 +1,15 @@
 import React, { PropsWithChildren } from 'react';
 import { APIProvider } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../AuthProvider';
-import useDevice from '../../../hooks/useDevice';
 import { ModalProvider } from '../../ModalProvider';
 import WalletsErrorMT5InvestorPassword from '../WalletsErrorMT5InvestorPassword';
 
-jest.mock('../../../hooks/useDevice');
-const mockUseDevice = useDevice as jest.MockedFunction<typeof useDevice>;
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 
 const wrapper = ({ children }: PropsWithChildren) => (
     <APIProvider>
@@ -24,12 +26,15 @@ const props = {
 };
 
 describe('<WalletsErrorMT5InvestorPassword />', () => {
+    beforeEach(() => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+    });
+
+    afterAll(() => {
+        jest.clearAllMocks();
+    });
+
     it('should render WalletsErrorMT5InvestorPassword on Desktop', () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: true,
-            isMobile: false,
-            isTablet: false,
-        });
         render(<WalletsErrorMT5InvestorPassword {...props} />, { wrapper });
         expect(screen.getByTestId('dt_modal_step_wrapper'));
         expect(screen.getByTestId('dt_modal_step_wrapper_header_icon'));
@@ -39,11 +44,7 @@ describe('<WalletsErrorMT5InvestorPassword />', () => {
     });
 
     it('should render WalletsErrorMT5InvestorPassword on Mobile', () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: false,
-            isMobile: true,
-            isTablet: false,
-        });
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         render(<WalletsErrorMT5InvestorPassword {...props} />, { wrapper });
         expect(screen.getByTestId('dt_modal_step_wrapper'));
         expect(screen.getByTestId('dt_modal_step_wrapper_header_icon'));

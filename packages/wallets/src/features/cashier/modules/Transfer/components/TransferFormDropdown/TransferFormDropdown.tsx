@@ -4,10 +4,9 @@ import { useHistory } from 'react-router-dom';
 import { useTradingPlatformStatus } from '@deriv/api-v2';
 import { LegacyChevronDown2pxIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { WalletListCardBadge } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
-import useDevice from '../../../../../../hooks/useDevice';
 import { TRADING_PLATFORM_STATUS } from '../../../../../cfd/constants';
 import { useTransfer } from '../../provider';
 import { TInitialTransferFormValues, TToAccount } from '../../types';
@@ -25,7 +24,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     const { accounts, activeWallet } = useTransfer();
     const { localize } = useTranslations();
     const { fromAccount, toAccount } = values;
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const modal = useModal();
     const { getPlatformStatus } = useTradingPlatformStatus();
 
@@ -136,7 +135,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                         toAccount={toAccount}
                     />,
                     {
-                        rootRef: isMobile ? mobileAccountsListRef : undefined,
+                        rootRef: !isDesktop ? mobileAccountsListRef : undefined,
                     }
                 );
             }}
@@ -146,7 +145,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                 <div className='wallets-transfer-form-dropdown__header'>
                     <Text size='sm'>{label}</Text>
 
-                    {isMobile && <LegacyChevronDown2pxIcon iconSize='xs' />}
+                    {!isDesktop && <LegacyChevronDown2pxIcon iconSize='xs' />}
                 </div>
 
                 {selectedAccount ? (
@@ -164,7 +163,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                 )}
             </div>
 
-            {!isMobile && (
+            {isDesktop && (
                 <>
                     {selectedAccount?.demo_account ? (
                         <div className='wallets-transfer-form-dropdown__badge'>

@@ -1,6 +1,5 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
-import { Text } from '@deriv-com/quill-ui';
 import { LabelPairedArrowLeftSmBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -29,9 +28,9 @@ const DTraderContractDetailsHeader = observer(() => {
                     data-testid='arrow'
                     onClick={handleBack}
                 />
-                <Text size='md' bold>
+                <div className='contract-details-header-v2__content'>
                     <Localize i18n_default_text='Contract Details' />
-                </Text>
+                </div>
             </React.Suspense>
         </header>
     );

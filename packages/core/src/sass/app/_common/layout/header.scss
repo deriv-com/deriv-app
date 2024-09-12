@@ -467,6 +467,14 @@
     justify-content: center;
     height: var(--core-spacing-2000);
     padding: var(--core-spacing-400) var(--core-spacing-50);
+
+    &__content {
+        font-family: var(--semantic-typography-body-md-bold-default-fontFamily);
+        font-size: var(--semantic-typography-body-md-bold-default-fontSize);
+        font-weight: var(--semantic-typography-body-md-bold-default-fontWeight);
+        line-height: var(--semantic-typography-body-md-bold-default-lineHeight);
+        color: var(--component-textIcon-normal-default);
+    }
     .arrow {
         position: absolute;
         cursor: pointer;

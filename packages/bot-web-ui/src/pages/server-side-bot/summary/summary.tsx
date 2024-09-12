@@ -43,11 +43,6 @@ const Summary: React.FC = observer(() => {
     // const is_some_bot_running = active_bots.every(item => item.status !== 'stopped');
     const is_bot_running = active_bot?.status !== 'stopped';
 
-    React.useEffect(() => {
-        if (!is_bot_running) resetTransactions();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_bot_running]);
-
     return (
         <div className='ssb-summary'>
             <div className='ssb-summary__content'>

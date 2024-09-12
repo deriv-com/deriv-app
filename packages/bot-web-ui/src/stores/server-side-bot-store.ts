@@ -678,13 +678,14 @@ export default class ServerBotStore {
         this.onCancelButtonClick = this.onCloseDialog;
         this.onOkButtonClick = () => {
             this.resetJournal();
+            this.resetTransactions();
             this.onCloseDialog();
         };
         this.onCloseDialog();
         this.dialog_options = {
             title: localize('Are you sure?'),
             message: localize(
-                'This will clear all data in the summary, transactions, and journal panels. All counters will be reset to zero.'
+                'This will clear all data in the summary and journal panels. All counters will be reset to zero.'
             ),
             cancel_button_text: localize('Cancel'),
             ok_button_text: localize('Ok'),

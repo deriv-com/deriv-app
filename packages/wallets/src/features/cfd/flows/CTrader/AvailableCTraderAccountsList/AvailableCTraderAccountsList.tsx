@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { TradingAccountCard, WalletError } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import { PlatformDetails } from '../../../constants';
 import { CTraderSuccessModal } from '../../../modals/CTraderSuccessModal';
-import { Localize } from '@deriv-com/translations';
 
 const AvailableCTraderAccountsList: React.FC = () => {
     const { hide, show } = useModal();
@@ -19,6 +19,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
         status,
     } = useCreateOtherCFDAccount();
     const { data: activeWallet } = useActiveWalletAccount();
+    const { localize } = useTranslations();
 
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
 
@@ -45,9 +46,9 @@ const AvailableCTraderAccountsList: React.FC = () => {
         if (status === 'error') {
             show(
                 <WalletError
-                    errorMessage={error?.error?.message ?? 'Something went wrong. Please try again'}
+                    errorMessage={error?.error?.message ?? localize('Something went wrong. Please try again')}
                     onClick={() => hide()}
-                    title={error?.error?.message ?? 'Error'}
+                    title={error?.error?.message ?? localize('Error')}
                 />
             );
         }

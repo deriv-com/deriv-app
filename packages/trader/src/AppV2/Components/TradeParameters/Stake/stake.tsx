@@ -52,10 +52,11 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         message: message_2 = '',
         payout: payout_2 = 0,
     } = proposal_info[contract_types[1]] ?? {};
-    const is_loading_proposal = !id_1 || (!!contract_types[1] && !id_2);
+    const is_loading_proposal = !has_error_1 && !has_error_2 && (!id_1 || (!!contract_types[1] && !id_2));
     const proposal_error_message_1 = has_error_1 ? message_1 : '';
     const proposal_error_message_2 = has_error_2 ? message_2 : '';
-    const proposal_error_message = proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount[0];
+    const proposal_error_message =
+        proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount?.[0];
     /* TODO: stop using Max payout from error text as a default max payout and stop using error text for is_max_payout_exceeded after validation_params are added to proposal API (both success & error response):
     E.g., for is_max_payout_exceeded, we have to temporarily check the error text: Max payout error always contains 3 numbers, the check will work for any languages: */
     const float_number_search_regex = /\d+(\.\d+)?/g;
@@ -145,12 +146,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
 
     const handleOnChange = (e: { target: { name: string; value: string } }) => {
         setShouldShowError(e.target.value !== '');
-        // TODO: this value modifications will no longer be needed after quill-ui TextFieldWithSteppers is improved to accept and replace commas with dots:
-        let value = e.target.value.replaceAll(',', '.').replaceAll(/\.{2,}/g, '.');
-        if (Number(value.match(/\./g)?.length) > 1) {
-            value = parseFloat(value).toString();
-        }
-        onChange({ target: { name: 'amount', value } });
+        onChange({ target: { name: 'amount', value: e.target.value } });
     };
 
     const onClose = (is_saved = false) => {
@@ -171,9 +167,11 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 variant='fill'
                 readOnly
                 label={<Localize i18n_default_text='Stake' key={`stake${is_minimized ? '-minimized' : ''}`} />}
+                noStatusIcon
                 onClick={() => setIsOpen(true)}
                 value={`${v2_params_initial_values?.stake ?? amount} ${getCurrencyDisplayCode(currency)}`}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
+                status={stake_error && !is_open ? 'error' : undefined}
             />
             <ActionSheet.Root isOpen={is_open} onClose={() => onClose(false)} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>
@@ -182,11 +180,13 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                         <TextFieldWithSteppers
                             allowDecimals
                             allowSign={false}
+                            customType='commaRemoval'
                             decimals={getDecimalPlaces(currency)}
                             data-testid='dt_input_with_steppers'
                             message={getInputMessage()}
                             minusDisabled={Number(amount) - 1 <= 0}
                             name='amount'
+                            noStatusIcon
                             onChange={handleOnChange}
                             placeholder={localize('Amount')}
                             regex={/[^0-9.,]/g}

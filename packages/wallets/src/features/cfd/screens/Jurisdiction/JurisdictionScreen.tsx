@@ -57,6 +57,7 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({
                 'wallets-jurisdiction-screen--flip': isDynamicLeverageVisible,
                 'wallets-jurisdiction-screen--hidden': isDynamicLeverageVisible && isJurisdictionScreenHidden,
             })}
+            data-testid='dt_wallets_jurisdiction_screen'
         >
             <div className='wallets-jurisdiction-screen__cards'>
                 {jurisdictions.map(jurisdiction => (

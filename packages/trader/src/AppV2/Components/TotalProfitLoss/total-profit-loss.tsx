@@ -8,18 +8,20 @@ import { Localize } from '@deriv/translations';
 type TTotalProfitLossProps = {
     currency?: string;
     hasBottomAlignment?: boolean;
+    is_bold?: boolean;
     positionsCount?: number | string;
-    totalProfitLoss: number;
+    totalProfitLoss: number | string;
 };
 
 const TotalProfitLoss = ({
     currency,
     hasBottomAlignment,
+    is_bold = true,
     positionsCount = '',
     totalProfitLoss,
 }: TTotalProfitLossProps) => (
     <div className={clsx('total-profit-loss', hasBottomAlignment && 'bottom')} data-testid='dt_total_profit_loss'>
-        <Text bold size='sm'>
+        <Text bold={is_bold} size='sm' className='total-profit-loss__label'>
             {hasBottomAlignment ? (
                 <Localize i18n_default_text='Last {{positionsCount}} contracts:' values={{ positionsCount }} />
             ) : (
@@ -28,10 +30,10 @@ const TotalProfitLoss = ({
         </Text>
         <Text
             className={clsx('total-profit-loss__amount', {
-                positive: totalProfitLoss > 0,
-                negative: totalProfitLoss < 0,
+                positive: +totalProfitLoss > 0,
+                negative: +totalProfitLoss < 0,
             })}
-            bold
+            bold={is_bold}
             size='sm'
         >
             <Money amount={totalProfitLoss} currency={currency} show_currency has_sign />

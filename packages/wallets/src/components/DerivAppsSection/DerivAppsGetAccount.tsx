@@ -9,11 +9,11 @@ import {
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { toMoment } from '@deriv/utils';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Text, useDevice } from '@deriv-com/ui';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
 import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
-import { ModalStepWrapper, WalletButton } from '../Base';
+import { ModalStepWrapper } from '../Base';
 import { useModal } from '../ModalProvider';
 import { TradingAccountCard } from '../TradingAccountCard';
 import { WalletMarketIcon } from '../WalletMarketIcon';
@@ -79,12 +79,12 @@ const DerivAppsGetAccount: React.FC = () => {
                     shouldHideHeader={isDesktop}
                 >
                     <CFDSuccess
+                        actionButtons={<DerivAppsSuccessFooter />}
                         description={localize(
                             'Transfer funds from your {{walletCurrencyType}} Wallet to your Options account to start trading.',
                             { walletCurrencyType: activeWallet?.wallet_currency_type }
                         )}
                         displayBalance={displayBalance}
-                        renderButton={() => <DerivAppsSuccessFooter />}
                         title={localize('Your Options account is ready')}
                     />
                 </ModalStepWrapper>,
@@ -108,13 +108,13 @@ const DerivAppsGetAccount: React.FC = () => {
                 </Text>
             </TradingAccountCard.Content>
             <TradingAccountCard.Button>
-                <WalletButton
+                <Button
                     color='primary-light'
                     disabled={isAccountCreationLoading || isActiveLinkedToTradingAccountLoading}
                     onClick={createTradingAccount}
                 >
                     <Localize i18n_default_text='Get' />
-                </WalletButton>
+                </Button>
             </TradingAccountCard.Button>
         </TradingAccountCard>
     );

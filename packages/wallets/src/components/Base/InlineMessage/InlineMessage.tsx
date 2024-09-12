@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import useDevice from '../../../hooks/useDevice';
+import { useDevice } from '@deriv-com/ui';
 import AlertAnnounce from '../../../public/images/alert-annouce.svg';
 import AlertDanger from '../../../public/images/alert-danger.svg';
 import AlertInfo from '../../../public/images/alert-info.svg';
@@ -20,18 +20,18 @@ type TProps = RequireAtLeastOne<{ children: React.ReactNode; message: React.Reac
 };
 
 const InlineMessage: React.FC<TProps> = ({ children, message, size = 'xs', title, type = 'warning', variant }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const Icon = typeIconMapper[type];
-    const iconSize = size === 'lg' && !isMobile ? 24 : 16;
+    const iconSize = size === 'lg' && isDesktop ? 24 : 16;
 
     const sizeToFontSizeMapper: Record<string, string> = useMemo(
         () => ({
-            lg: isMobile ? '14px' : '16px',
-            md: isMobile ? '12px' : '14px',
-            sm: isMobile ? '10px' : '12px',
-            xs: isMobile ? '8px' : '10px',
+            lg: isDesktop ? '16px' : '14px',
+            md: isDesktop ? '14px' : '12px',
+            sm: isDesktop ? '12px' : '10px',
+            xs: isDesktop ? '10px' : '8px',
         }),
-        [isMobile]
+        [isDesktop]
     );
 
     const fontSize = sizeToFontSizeMapper[size];

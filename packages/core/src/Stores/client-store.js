@@ -451,9 +451,8 @@ export default class ClientStore extends BaseStore {
                 const should_update_preferred_language =
                     language !== this.account_settings?.preferred_language &&
                     this.preferred_language !== this.account_settings?.preferred_language;
-
+                window.history.replaceState({}, document.title, urlForLanguage(language));
                 if (should_update_preferred_language) {
-                    window.history.replaceState({}, document.title, urlForLanguage(language));
                     this.setPreferredLanguage(language);
                     await WS.setSettings({
                         set_settings: 1,
@@ -1768,8 +1767,7 @@ export default class ClientStore extends BaseStore {
             ?.match(/[a-zA-Z]+/g)
             ?.join('');
         setTimeout(() => {
-            Analytics.setAttributes({
-                user_id: this.user_id,
+            const analytics_config = {
                 account_type: broker === 'null' ? 'unlogged' : broker,
                 residence_country: this.residence,
                 app_id: String(getAppId()),
@@ -1783,7 +1781,9 @@ export default class ClientStore extends BaseStore {
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,
                 utm_content: ppc_campaign_cookies?.utm_content,
                 domain: window.location.hostname,
-            });
+            };
+            if (this.user_id) analytics_config.user_id = this.user_id;
+            Analytics.setAttributes(analytics_config);
         }, 4);
 
         return {

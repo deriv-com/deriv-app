@@ -110,4 +110,8 @@ export type TIconTypes = Record<string, IconTypes>;
 
 export type TCurrencyIconTypes = Record<THooks.WalletAccountsList['wallet_currency_type'], IconTypes>;
 
+export type TProductForMarketDetails = NonNullable<
+    Exclude<THooks.AvailableMT5Accounts['product'], 'financial' | 'standard'>
+>;
+
 export type TTranslations = ReturnType<typeof useTranslations>;

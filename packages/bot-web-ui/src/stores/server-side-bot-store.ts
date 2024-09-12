@@ -378,20 +378,20 @@ export default class ServerBotStore {
         try {
             const items = [[localize('Journal')]];
             [...this.journal].map(item => {
-                let combinedMessage;
+                let combined_message;
 
                 switch (item?.type) {
                     case JOURNAL_TYPE.WON:
-                        combinedMessage = `Profit amount: ${item?.amount ?? ''}`;
+                        combined_message = `Profit amount: ${item?.amount ?? ''}`;
                         break;
                     case JOURNAL_TYPE.LOSS:
-                        combinedMessage = `Loss amount: ${item?.amount ?? ''}`;
+                        combined_message = `Loss amount: ${item?.amount ?? ''}`;
                         break;
                     default:
-                        combinedMessage = `${item?.type ?? ''}:${item?.msg ?? ''}`;
+                        combined_message = `${item?.type ?? ''}:${item?.msg ?? ''}`;
                         break;
                 }
-                items.push([combinedMessage]);
+                items.push([combined_message]);
             });
             const content = items.map(e => e.join(',')).join('\n');
             downloadFile(localize('Journal'), content);

@@ -541,6 +541,7 @@ export type TClientStore = {
     account_settings: GetSettings & {
         upload_file?: string;
         poi_state?: string;
+        tin_skipped?: boolean;
     };
     residence_list: ResidenceList;
     should_restrict_bvi_account_creation: boolean;

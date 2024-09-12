@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, Fragment } from 'react';
+import { useState, useRef, useEffect, Fragment, useMemo } from 'react';
 import clsx from 'clsx';
 import { Formik, Form, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router';
@@ -181,9 +181,19 @@ const PersonalDetailsForm = observer(() => {
         return !!account_settings?.immutable_fields?.includes(name);
     };
 
-    const employment_tax_editable_fields = ['employment_status', 'tax_residence', 'tax_identification_number'].filter(
-        field => isFieldImmutable(field, account_settings?.immutable_fields)
-    );
+    const employment_tax_editable_fields = useMemo(() => {
+        const fields_to_disable = ['employment_status', 'tax_identification_number'].filter(field =>
+            isFieldImmutable(field, account_settings?.immutable_fields)
+        );
+        /*
+            [TODO]: Will be removed once BE enables tax_residence in immutable_fields
+            If Tax_residence value is present in response, then it must not be editable
+        */
+        if (!account_settings?.tax_residence) {
+            fields_to_disable.push('tax_residence');
+        }
+        return fields_to_disable;
+    }, [account_settings?.immutable_fields, account_settings?.tax_residence]);
 
     const { api_error, show_form } = rest_state;
 
@@ -395,9 +405,6 @@ const PersonalDetailsForm = observer(() => {
                                             parent_ref={scroll_div_ref}
                                             handleChange={mutate}
                                             tin_validation_config={tin_validation_config}
-                                            is_tin_autoset={
-                                                account_settings.tax_identification_number === 'Approved000'
-                                            }
                                         />
                                         {!is_virtual && (
                                             <Fragment>

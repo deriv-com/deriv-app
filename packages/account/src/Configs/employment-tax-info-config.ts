@@ -30,6 +30,10 @@ const generateEmploymentTaxInfoFormValues = ({
         default_value: false,
         supported_in: ['svg', 'maltainvest'],
     },
+    tin_skipped: {
+        default_value: 0,
+        supported_in: ['svg', 'maltainvest'],
+    },
 });
 
 const getEmploymentTaxIfoConfig = (

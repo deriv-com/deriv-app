@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { useHistory } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
-import { Text, Modal, UILoader, MobileDialog } from '@deriv/components';
+import { Text, Modal, UILoader, MobileDialog, StatusBadge } from '@deriv/components';
 import { AUTH_STATUS_CODES, routes, CFD_PLATFORMS } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
 import { useGetStatus, useIsSelectedMT5AccountCreated } from '@deriv/hooks';
@@ -16,7 +16,38 @@ type TListItemProps = {
     route: string;
 };
 
+type TAuthStatusCodes = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+
+const MT5BadgeStatus = (status: TAuthStatusCodes) => {
+    switch (status) {
+        case AUTH_STATUS_CODES.VERIFIED:
+            return {
+                text: <Localize i18n_default_text='Verified' />,
+                icon: 'IcMt5Success',
+                icon_size: '18',
+            };
+        case AUTH_STATUS_CODES.PENDING:
+            return {
+                text: <Localize i18n_default_text='In review' />,
+                icon: 'IcMt5Pending',
+            };
+        case AUTH_STATUS_CODES.REJECTED:
+        case AUTH_STATUS_CODES.SUSPECTED:
+            return {
+                text: <Localize i18n_default_text='Failed' />,
+                icon: 'IcMt5Failed',
+                icon_size: '18',
+            };
+        default:
+            return {
+                text: '',
+                icon: '',
+            };
+    }
+};
+
 const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
+    const { text: badge_text, icon: badge_icon, icon_size: badge_size } = MT5BadgeStatus(status);
     const { isMobile } = useDevice();
     const { traders_hub } = useStore();
     const { toggleVerificationModal } = traders_hub;
@@ -29,15 +60,18 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
 
     return (
         <div className='verification-docs-list-modal__content-list-item' onClick={onClickItem}>
-            <Text size={isMobile ? 'xxs' : 'xs'} line_height='xl'>
-                <Localize i18n_default_text={text} />
-            </Text>
+            <div>
+                <Text size={isMobile ? 'xxs' : 'xs'} line_height='xl'>
+                    <Localize i18n_default_text={text} />
+                </Text>
+            </div>
             {status === AUTH_STATUS_CODES.NONE || (id === 'tax' && status === 0) ? (
                 <LabelPairedChevronRightCaptionBoldIcon />
             ) : (
-                <Text size={isMobile ? 'xxs' : 'xs'} line_height='xl'>
-                    <Localize i18n_default_text={status} />
-                </Text>
+                <div className='verification-docs-list-modal__card'>
+                    <StatusBadge account_status={status} icon={badge_icon} text={badge_text} icon_size={badge_size} />
+                    <LabelPairedChevronRightCaptionBoldIcon fill='var(--text-primary)' />
+                </div>
             )}
         </div>
     );

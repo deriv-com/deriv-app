@@ -379,12 +379,17 @@ export default class ServerBotStore {
             const items = [[localize('Journal')]];
             [...this.journal].map(item => {
                 let combinedMessage;
-                if (item?.type === JOURNAL_TYPE.WON) {
-                    combinedMessage = `Profit amount: ${item?.amount ?? ''}`;
-                } else if (item?.type === JOURNAL_TYPE.LOSS) {
-                    combinedMessage = `Loss amount: ${item?.amount ?? ''}`;
-                } else {
-                    combinedMessage = `${item?.type ?? ''}:${item?.msg ?? ''}`;
+
+                switch (item?.type) {
+                    case JOURNAL_TYPE.WON:
+                        combinedMessage = `Profit amount: ${item?.amount ?? ''}`;
+                        break;
+                    case JOURNAL_TYPE.LOSS:
+                        combinedMessage = `Loss amount: ${item?.amount ?? ''}`;
+                        break;
+                    default:
+                        combinedMessage = `${item?.type ?? ''}:${item?.msg ?? ''}`;
+                        break;
                 }
                 items.push([combinedMessage]);
             });

@@ -33,7 +33,6 @@ const TradingAccountCard = ({ children, className, disabled, onClick }: PropsWit
             data-testid='dt_wallets_trading_account_card'
             onClick={handleClick}
             onKeyDown={handleClick}
-            role='button'
             tabIndex={disabled ? -1 : 0} // Remove focusability if disabled
         >
             {children}

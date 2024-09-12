@@ -1,6 +1,5 @@
 export * from './ATMAmountInput';
 export * from './IconButton';
-export * from './InlineMessage';
 export * from './ModalStepWrapper';
 export * from './ModalWrapper';
 export * from './ProgressBar';

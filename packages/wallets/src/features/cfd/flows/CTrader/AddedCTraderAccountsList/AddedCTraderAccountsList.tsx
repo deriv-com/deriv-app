@@ -13,9 +13,9 @@ const AddedCTraderAccountsList: React.FC = () => {
 
     return (
         <React.Fragment>
-            {cTraderAccounts?.map(account => (
+            {cTraderAccounts?.map((account, index) => (
                 <TradingAccountCard
-                    key={`added-ctrader-${account.login}`}
+                    key={`added-ctrader-${account.login}-${index}`}
                     onClick={() => show(<MT5TradeModal platform={PlatformDetails.ctrader.platform} />)}
                 >
                     <TradingAccountCard.Icon>{PlatformDetails.ctrader.icon}</TradingAccountCard.Icon>

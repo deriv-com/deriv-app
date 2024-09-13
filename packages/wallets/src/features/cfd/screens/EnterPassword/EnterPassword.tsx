@@ -12,14 +12,14 @@ import './EnterPassword.scss';
 type TProps = {
     isForgotPasswordLoading?: boolean;
     isLoading?: boolean;
-    isTncChecked: boolean;
+    isTncChecked?: boolean;
     isVirtual?: boolean;
     marketType: TMarketTypes.CreateOtherCFDAccount;
     modalTitle?: string;
     onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onPrimaryClick?: () => void;
     onSecondaryClick?: () => void;
-    onTncChange: () => void;
+    onTncChange?: () => void;
     password: string;
     passwordError?: boolean;
     platform: TPlatforms.All;
@@ -30,7 +30,7 @@ type TProps = {
 const EnterPassword: React.FC<TProps> = ({
     isForgotPasswordLoading,
     isLoading,
-    isTncChecked,
+    isTncChecked = true,
     isVirtual,
     marketType,
     modalTitle,
@@ -95,7 +95,7 @@ const EnterPassword: React.FC<TProps> = ({
                 {product === PRODUCT.ZEROSPREAD && !isVirtual && (
                     <CFDPasswordModalTnc
                         checked={isTncChecked}
-                        onChange={onTncChange}
+                        onChange={() => onTncChange?.()}
                         platform={platform}
                         product={product}
                     />

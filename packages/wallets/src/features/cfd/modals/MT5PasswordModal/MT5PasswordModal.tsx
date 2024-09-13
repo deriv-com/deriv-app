@@ -194,7 +194,8 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
                         !password ||
                         createMT5AccountLoading ||
                         tradingPlatformPasswordChangeLoading ||
-                        !validPasswordMT5(password)
+                        !validPasswordMT5(password) ||
+                        !isTncChecked
                     }
                     isFullWidth
                     isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
@@ -250,9 +251,13 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
             return (
                 <CreatePasswordMT5
                     isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
+                    isTncChecked={isTncChecked}
                     isVirtual={isVirtual}
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}
+                    onTncChange={() => {
+                        setIsTncChecked(prev => !prev);
+                    }}
                     password={password}
                     platform={mt5Platform}
                     product={product}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { LabelPairedTriangleExclamationMdFillIcon } from '@deriv/quill-icons';
+import { LabelPairedTriangleExclamationSmBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
 import { Badge } from '@deriv-com/ui';
 
@@ -12,7 +12,7 @@ type TProps = {
 const statusConfig = {
     disabled: {
         color: 'danger',
-        icon: <LabelPairedTriangleExclamationMdFillIcon fill='#EC3F3F' />,
+        icon: <LabelPairedTriangleExclamationSmBoldIcon fill='var(--du-status-danger, #ec3f3f)' />,
         text: <Localize i18n_default_text='Disabled' />,
     },
 } as const;

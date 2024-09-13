@@ -1,4 +1,4 @@
-import React, { ComponentProps, PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from 'react';
 import classNames from 'classnames';
 import TradingAccountCardButton from './TradingAccountCardButton';
 import TradingAccountCardContent from './TradingAccountCardContent';
@@ -13,20 +13,30 @@ export type TCommonProps = {
 
 type TProps = {
     className?: string;
-    disabled?: ComponentProps<'button'>['disabled'];
-    onClick?: ComponentProps<'button'>['onClick'];
+    disabled?: boolean;
+    onClick?: () => void;
 };
 
 const TradingAccountCard = ({ children, className, disabled, onClick }: PropsWithChildren<TProps>) => {
+    const handleClick = () => {
+        if (!disabled && onClick) {
+            onClick();
+        }
+    };
+
     return (
-        <button
-            className={classNames('wallets-trading-account-card', className)}
+        <div
+            aria-disabled={disabled}
+            className={classNames('wallets-trading-account-card', className, {
+                'wallets-trading-account-card--disabled': disabled,
+            })}
             data-testid='dt_wallets_trading_account_card'
-            disabled={disabled}
-            onClick={onClick}
+            onClick={handleClick}
+            onKeyDown={handleClick}
+            tabIndex={disabled ? -1 : 0} // Remove focusability if disabled
         >
             {children}
-        </button>
+        </div>
     );
 };
 

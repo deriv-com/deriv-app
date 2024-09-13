@@ -8,8 +8,8 @@ const DepositCryptoTryFiatOnRamp = () => {
     const history = useHistory();
 
     return (
-        <div className='wallets-deposit-crypto-try-fiat-onramp'>
-            <Text align='center' size='xs'>
+        <div className='wallets-deposit-crypto-try-fiat-onramp__container'>
+            <Text align='center' className='wallets-deposit-crypto-try-fiat-onramp__content' size='xs'>
                 <Localize
                     components={[
                         <a

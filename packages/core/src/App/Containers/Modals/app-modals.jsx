@@ -132,9 +132,13 @@ const AppModals = observer(() => {
     const should_show_wallets_upgrade_completed_modal = Cookies.get('recent_wallets_migration');
 
     const is_tnc_needed = useIsTNCNeeded();
-    if (is_tnc_needed) {
-        toggleTncUpdateModal(true);
-    }
+
+    React.useEffect(() => {
+        if (is_tnc_needed) {
+            toggleTncUpdateModal(true);
+        }
+    }, [is_tnc_needed, toggleTncUpdateModal]);
+
     React.useEffect(() => {
         if (is_logged_in && is_authorize) {
             fetchFinancialAssessment().then(response => {
